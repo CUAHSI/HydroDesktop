@@ -8,8 +8,8 @@
     <ProjectGuid>{9181CDE5-AD24-473D-A524-C3775563C902}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImportFromWaterML</RootNamespace>
-    <AssemblyName>ImportFromWaterML</AssemblyName>
+    <RootNamespace>DataImport</RootNamespace>
+    <AssemblyName>DataImport</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
