@@ -165,7 +165,7 @@ Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Fla
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\FetchBasemap\*"; DestDir: "{app}\Plugins\FetchBasemap"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
+;Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
 Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\Search2\*"; DestDir: "{app}\Plugins\Search2"; Flags: ignoreversion;
