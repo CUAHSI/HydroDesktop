@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\Source\bin\Debug\GreenAmpt.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./Config.xml" />
-  </Arguments>
-</LinkableComponent>
