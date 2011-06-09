@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
+using DataImport;
 
 //using HydroDesktop.Database.Model;
 namespace ImportFromWaterML
