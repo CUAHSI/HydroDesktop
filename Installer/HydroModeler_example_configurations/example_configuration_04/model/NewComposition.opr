@@ -1,0 +1,5 @@
+<guiComposition version="1.0">
+  <models />
+  <links />
+  <runproperties listenedeventtypes="00000000000" triggerinvoke="01/01/1900 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+</guiComposition>

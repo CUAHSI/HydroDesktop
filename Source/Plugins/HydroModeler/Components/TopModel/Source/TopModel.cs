@@ -130,105 +130,125 @@ namespace TopModel
                 _output_elementset[i] = this.GetOutputExchangeItem(i).ElementSet.ID;
                 _output_quantity[i] = this.GetOutputExchangeItem(i).Quantity.ID;
             }
+            # region
+            //if (properties.ContainsKey("Weather"))
+                //inputfile = (string)properties["Weather"];
+             
+            //if (inputfile != null)
+            //{
+            //    StreamReader sr = new StreamReader(inputfile);
+            //    string line = sr.ReadLine();
+            //    c= Convert.ToDouble(line.Split(',')[1]);
 
-            if (properties.ContainsKey("Weather"))
-                inputfile = (string)properties["Weather"];
+            //     line = sr.ReadLine();
+            //    Tmax = Convert.ToDouble(line.Split(',')[1]);
 
-            if (inputfile != null)
-            {
-                StreamReader sr = new StreamReader(inputfile);
-                string line = sr.ReadLine();
-                c= Convert.ToDouble(line.Split(',')[1]);
+            //    line = sr.ReadLine();
+            //    interception = Convert.ToDouble(line.Split(',')[1]);
 
-                 line = sr.ReadLine();
-                Tmax = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                interception = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                int i = 0;
-                //reading the PPT of the basin from the input file
+            //    line = sr.ReadLine();
+            //    int i = 0;
+            //    //reading the PPT of the basin from the input file
                
-                while (line != null)
-                {
-                    string[] values = line.Split(',');
-                    PPT = new double[values.Count()];
-                    for (int j = 0; j <= PPT.Length-1; j++)
-                    {
-                        PPT[j] = Convert.ToDouble(values[j]);
-                    }
-                    //reading the PET of the basin from the input file
+            //    while (line != null)
+            //    {
+            //        string[] values = line.Split(',');
+            //        PPT = new double[values.Count()];
+            //        for (int j = 0; j <= PPT.Length-1; j++)
+            //        {
+            //            PPT[j] = Convert.ToDouble(values[j]);
+            //        }
+            //        //reading the PET of the basin from the input file
                    
-                    i++;
-                    line = sr.ReadLine();
-                    string[] valuess = line.Split(',');
-                    PET = new double[valuess.Count()];
-                    for (int j = 0; j <= PET.Length-1; j++)
-                    {
-                        PET[j] = Convert.ToDouble(valuess[j]);
+            //        i++;
+            //        line = sr.ReadLine();
+            //        string[] valuess = line.Split(',');
+            //        PET = new double[valuess.Count()];
+            //        for (int j = 0; j <= PET.Length-1; j++)
+            //        {
+            //            PET[j] = Convert.ToDouble(valuess[j]);
 
-                    }
-                    //reading the R rate of the subsurface flow  from the input file
-                    i++;
-                    line = sr.ReadLine();
-                    string[] values3 = line.Split(',');
-                    R = new double[values3.Count()];
-                    for (int j = 0; j <= R.Length-1; j++)
-                    {
-                        R[j] = Convert.ToDouble(values3[j]);
+            //        }
+            //        //reading the R rate of the subsurface flow  from the input file
+            //        i++;
+            //        line = sr.ReadLine();
+            //        string[] values3 = line.Split(',');
+            //        R = new double[values3.Count()];
+            //        for (int j = 0; j <= R.Length-1; j++)
+            //        {
+            //            R[j] = Convert.ToDouble(values3[j]);
 
-                    }
-                    i++;
-                    line = sr.ReadLine();
-                }
+            //        }
+            //        i++;
+            //        line = sr.ReadLine();
+            //    }
 
-            }
+            //}
+            # endregion 
             if (properties.ContainsKey("TI"))
                 inputfile1 = (string)properties["TI"];
             if (inputfile1 != null)
             {
                 StreamReader sr = new StreamReader(inputfile1);
-                string line;
+                string line = sr.ReadLine();
+                c = Convert.ToDouble(line.Split(',')[1]);
+
+                line = sr.ReadLine();
+                Tmax = Convert.ToDouble(line.Split(',')[1]);
+
+                line = sr.ReadLine();
+                interception = Convert.ToDouble(line.Split(',')[1]);
+                
                  line = sr.ReadLine();
                 int i = 0;
                 //reading the TI of the basin from the input file
                 
                 while (line != null)
                 {
-                    string[] values = line.Split(',');
-                    TI = new double[values.Count()];
+                    string[] values1 = line.Split(',');
+                    TI = new double[values1.Count()-1];
 
                     for (int j = 0; j <= TI.Length-1; j++)
                     {
-                        TI[j] = Convert.ToDouble(values[j]);
+                        TI[j] = Convert.ToDouble(values1[j]);
                     }
                     //reading the freq of the basin from the input file
                     
                     i++;
                     line = sr.ReadLine();
-                    string[] valuess = line.Split(',');
-                    freq = new double[valuess.Count()];
-                    for (int j = 0; j <= freq.Length-1; j++)
-                    {
-                        freq[j] = Convert.ToDouble(valuess[j]);
+                    
+                        string[] valuess = line.Split(',');
+                        freq = new double[valuess.Count()-1];
+                        for (int j = 0; j <= freq.Length - 1; j++)
+                        {
+                            freq[j] = Convert.ToDouble(valuess[j]);
 
-                    }
+                        }
+                  
+                    i++;
+                    line = sr.ReadLine();
+                   
+                        string[] values3 = line.Split(',');
+                        R = new double[values3.Count()];
+                        for (int j = 0; j <= R.Length - 1; j++)
+                        {
+                            R[j] = Convert.ToDouble(values3[j]);
+
+                        }
+                    
                     i++;
                     line = sr.ReadLine();
                 }
-
                 //Adding the PPT & PET Data to a Dictionary
-                _dt = this.GetTimeStep() / 86400;
-                TimeStamp time = (TimeStamp)this.GetCurrentTime();
-                 DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
-                
-                for (int v = 0; v <= PPT.GetLength(0) - 1; v++)
-                {
-                    Precip.Add(curr_time, PPT[v]);
-                    //ET.Add(curr_time, PET[v]);
-                     curr_time = curr_time.AddDays(_dt);
-                }
+                //_dt = this.GetTimeStep() / 86400;
+                //TimeStamp time = (TimeStamp)this.GetCurrentTime();
+                // DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
+                //for (int v = 0; v <= PPT.GetLength(0) - 1; v++)
+                //{
+                //    Precip.Add(curr_time, PPT[v]);
+                //    //ET.Add(curr_time, PET[v]);
+                //     curr_time = curr_time.AddDays(_dt);
+                //}
               
             }    
                             
@@ -242,22 +262,30 @@ namespace TopModel
             TimeStamp time = (TimeStamp)this.GetCurrentTime();
             DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
             ScalarSet ss = (ScalarSet)this.GetValues("PET", "TopModel");
+            ScalarSet we = (ScalarSet)this.GetValues("PPT", "TopModel");
             
             for (int i=0; i<ss.Count;i++)
             {
                 ET_daily = ss.data[i];
             }
-            if(Precip.ContainsKey(curr_time))
+            for (int h = 0; h < we.Count; h++)
             {
-              PPT_daily = Precip[curr_time];
+                PPT_daily = we.data[h];
             }
+            # region
+            //used when reading from input csv file
+            //used it if the metrological data are readed from csv file
+            //if(Precip.ContainsKey(curr_time))
+            //{
+            //  PPT_daily = Precip[curr_time];
+            //}
             //if (ET.ContainsKey(curr_time))
             //{
             //   ET_daily = ET[curr_time];
             //}
-            
+            # endregion
             //declaring the flow matrices here since they are related with the size of input matrices
-            double[] S_d = new double[PPT.GetLength(0)];
+            double[] S_d = new double[R.GetLength(0)];
             double[] over_flow = new double[TI.GetLength(0)]; //Infiltration excess
             double[] reduced_ET = new double[TI.GetLength(0)];//Reduced ET due to dryness
             
@@ -336,7 +364,7 @@ namespace TopModel
            outputValues.Add(curr_time, q);
 
            int fff = q_outputs.Count;
-           double[] Q = new double[PPT.GetLength(0)];
+           double[] Q = new double[R.GetLength(0)];
         
                
            //create array to copy the stored runoff values for a Array list to a [] 
