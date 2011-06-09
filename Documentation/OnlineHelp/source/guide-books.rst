@@ -1,0 +1,16 @@
+.. index:: guide books
+
+Guide Books
+===========
+
+Guide books focus on specific tasks that a user might perform.  You can browse quick tasks like how to open a project, or walk through comprehensive tutorials that illustrate how to use HydroDesktop to answer science questions.
+
+Guide Books:
+
+.. toctree::
+   :maxdepth: 2
+
+   using-the-orb
+   working-with-databases
+   table-tab
+   

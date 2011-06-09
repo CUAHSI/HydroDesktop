@@ -1,0 +1,114 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>EPA Delineation &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="EPA Tools" href="EPA-tool.html" />
+    <link rel="next" title="Fetch Basemap" href="../FetchBasemap/FetchBasemap.html" />
+    <link rel="prev" title="EPA Tools" href="EPA-tool.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="EPA-tool.html" >EPA Tools</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">EPA Delineation</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="../FetchBasemap/FetchBasemap.html" title="Fetch Basemap" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="EPA-tool.html" title="EPA Tools" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="epa-delineation">
+<span id="index-0"></span><h1>EPA Delineation<a class="headerlink" href="#epa-delineation" title="Permalink to this headline">¶</a></h1>
+<p>After you specify one point on the main map, EPA Delineation tool returns back to you the watershed delineated from that point based on NHD, as well as all NHD flowlines that flow down to the point in that watershed. It uses EPA&#8217;s WATERS Web and Database Services.</p>
+<div class="section" id="delineating-your-watershed">
+<h2>Delineating Your Watershed<a class="headerlink" href="#delineating-your-watershed" title="Permalink to this headline">¶</a></h2>
+<p>Using EPA Delineation tool to get the watershed shapefile makes it possible to search hydrological data within particular watersheds. It follows several steps:</p>
+<ol class="arabic simple">
+<li>Click the <strong>Delineate</strong> button in the <strong>EPA Delineation</strong> Panel in the <strong>Home</strong> Tab.</li>
+<li>Specify the names of <em>Watershed Point</em>, <em>Watershed</em> and <em>Streamline</em> for the files that you want to save.</li>
+<li>Click <strong>OK</strong>. You will find the cursor turns to a cross shape.</li>
+<li>Click at one point that you want to use as the outlet on the map.</li>
+<li>The Delineation tool is now starting to collect the coordinate information of the point you clicked and send it to the EPA Web Services to get responses.</li>
+<li>Wait until the message telling you <em>&#8220;Drawing Features on the Map...&#8221;</em>. The message box will close automatically after all procedures ending.</li>
+<li>You will find three shapefiles with the names you specified shown on the top of the map. They are temporarily saved in <em>UsersApplication DataHydroDesktopDelineation</em> folder in your system.</li>
+<li>You can export the features as shapefiles to other locations by right clicking on the name and selecting <strong>Data &#8211;&gt; Export Data</strong>.</li>
+<li>You can also check the attributes of these shapefiles by right clicking on the name and selecting <strong>View Attributes</strong>, or directly click the <strong>Attribute</strong> button in the ribbon tab.</li>
+</ol>
+<p>Now you have a pretty hydrological view of all the upstream of your particular point.</p>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on May 26, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

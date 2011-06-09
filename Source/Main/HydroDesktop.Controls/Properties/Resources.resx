@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="defaulticon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defaulticon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wgs84ProjectionString" xml:space="preserve">
+    <value>GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223562997]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]]</value>
+  </data>
+  <data name="AmeriFlux" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ameriflux.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BaltimoreGW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\baltimoregw.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BaltPrecip" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\baltprecip.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Benthic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\benthic.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BESOD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\besod.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BESSoil" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bessoil.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CIMS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\cims.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="COTCsnow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\cotcsnow.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_ariz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_ariz.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_boulder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_boulder.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_catalina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_catalina.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_luquillo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_luquillo.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_merced" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_merced.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_psu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_psu.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="czo_udel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czo_udel.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CZSNW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\czsnw.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="defaulticon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\defaulticon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EPA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\epa.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GlacialRidge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glacialridge.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GW_Edwards" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gw_edwards.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HermineFlood" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\hermineflood.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HydroNEXRAD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\hydronexrad.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IIHRTippingB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\iihrtippingb.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IIHRWQ" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\iihrwq.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LBL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\lbl.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LittleBearRiver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\littlebearriver.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoganRiver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\loganriver.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MAST" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\mast.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MPE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\mpe.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MuddyRiver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\muddyriver.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MudLake" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\mudlake.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NADP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nadp.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NCDCISH" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ncdcish.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NLDAS_MOS0125_H" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nldas_mos0125_h.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NPCA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\npca.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWISDV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nwisdv.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWISGW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nwisgw.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWISIID" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nwisiid.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWISUV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nwisuv.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWS_WGRFC_Daily_MPE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nws-wgrfc_daily_mpe.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWS_WGRFC_Daily_MPE_Recent_Values" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nws-wgrfc_daily_mpe_recent_values.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWS_WGRFC_Daily_MPE_Recent_Values1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nws_wgrfc_daily_mpe_recent_values.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWS_WGRFC_Hourly_MPE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nws-wgrfc_hourly_mpe.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWS_WGRFC_Hourly_MPE_Recent_Values" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nws-wgrfc_hourly_mpe_recent_values.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NWS_WGRFC_MPE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nws-wgrfc mpe.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ODMDCEW2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\odmdcew2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ODMPMRW2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\odmpmrw2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ODMRCEW2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\odmrcew2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ParadiseCreek" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\paradisecreek.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PWP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pwp.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RIMP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\rimp.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RioGrandeET" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\riograndeet.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RiverGages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\rivergages.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SantaFe_RainDlySRWMD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\santafe-raindlysrwmd.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SDRPF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sdrpf.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_CTDSondes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe_ctdsondes.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_FLStoret" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe-flstoret.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_GWL_USGS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe_gwl_usgs.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_MICROWAVECITRA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe_microwavecitra.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_SRGWL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe-srgwl.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_SRWMD_SurfWater" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe_srwmd_surfwater.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_Storet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe_storet.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SFe_SWFGWL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sfe_swfgwl.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SRBHOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\srbhos.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TCEQ_SWQM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\tceq swqm.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TIFP_LowerSabine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\tifp_lowersabine.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TIFP_LowerSanAntonio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\tifp_lowersanantonio.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TWDB_Sondes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\twdb_sondes.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TWDB_Wind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\twdb_wind.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WFO_FWD_Hourly_MPE_Recent_Values" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\wfo_fwd_hourly_mpe_recent_values.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>
