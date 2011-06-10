@@ -156,7 +156,9 @@
     <Compile Include="frmProperty.Designer.cs">
       <DependentUpon>frmProperty.cs</DependentUpon>
     </Compile>
-    <Compile Include="HydroApplicationManager.cs" />
+    <Compile Include="HydroApplicationManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="HydroDatabase.cs" />
     <Compile Include="NewTheme.cs">
       <SubType>Form</SubType>
