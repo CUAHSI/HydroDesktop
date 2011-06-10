@@ -36,19 +36,19 @@
       <HintPath>..\..\..\Utilities\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Gui.Core">
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.GUI\Core\bin\Debug\Oatc.OpenMI.Gui.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Gui.Core.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.GUI\Core\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.GUI\Core\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
       <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="OpenMI.Standard">
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.GUI\Core\bin\Debug\OpenMI.Standard.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll</HintPath>
     </Reference>
     <Reference Include="SharpMap">
       <HintPath>..\..\..\Utilities\SharpMap\SharpMap.dll</HintPath>
