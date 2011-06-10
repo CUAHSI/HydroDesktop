@@ -19,7 +19,12 @@ namespace HydroDesktop.Main
             {
                 components.Dispose();
             }
+
+			// fixed issue 7216
+			this.SwapDatabasesOnExit();
+
             base.Dispose(disposing);
+
         }
 
         #region Windows Form Designer generated code

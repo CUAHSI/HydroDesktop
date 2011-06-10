@@ -379,6 +379,45 @@ namespace HydroDesktop.Main
             }
         }
 
+		// fix 2011/06/06 : 
+		// issue 7216 : http://hydrodesktop.codeplex.com/workitem/7216
+		// temp files swap
+		public void SwapDatabasesOnExit(){
+			// delete all temp file under this folder
+			string tempDir = Settings.Instance.TempDirectory;
+			if (!HasWriteAccessToFolder(tempDir)) return;
+			if (!Directory.Exists(tempDir)) return;
+
+			// enum and delete 
+			DirectoryInfo dirInf = new DirectoryInfo(tempDir);
+			FileInfo[] fileInfs = dirInf.GetFiles();
+			if ( fileInfs.Length == 0 ) return;
+
+			for (int i = 0; i < fileInfs.Length; i++ )
+			{
+				DeleteTempFile(fileInfs[i]);
+			}
+		}
+
+		// fixed issue 7216
+		// delete temp file pointed by fiTemp
+		protected bool DeleteTempFile(FileInfo fiTemp){
+			if (!fiTemp.Exists)
+			{ // maybe is a folder
+				return false;
+			} 
+			
+			try
+			{
+				fiTemp.Delete();
+				return true;
+			}
+			catch (System.Exception ex)
+			{
+				return false;
+			}
+		}
+
         private bool HasWriteAccessToFolder(string folderPath)
         {
             try
@@ -1695,7 +1734,6 @@ namespace HydroDesktop.Main
 
         private void OrbPrint_Click(object sender, EventArgs e)
         {
-
             //DotSpatial.Controls.LayoutForm layoutFrm = new DotSpatial.Controls.LayoutForm();
             //layoutFrm.MapControl = mainMap;
             //layoutFrm.Show(this);
@@ -1710,9 +1748,9 @@ namespace HydroDesktop.Main
             }
             catch (System.Drawing.Printing.InvalidPrinterException ex)
             {
-                MessageBox.Show(ex.Message, "Print error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               MessageBox.Show(ex.Message, "Print error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            //mogikanin code ends
+           //mogikanin code ends
         }
 
         private void OrbAbout_Click(object sender, EventArgs e)
