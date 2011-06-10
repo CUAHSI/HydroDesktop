@@ -1,0 +1,35 @@
+<guiComposition version="1.0">
+  <models>
+    <model omi="models\PenmanMonteith\ET.omi" rect_x="270" rect_y="216" rect_width="115" rect_height="75" />
+    <model omi="models\SolarRadiation\NSR.omi" rect_x="44" rect_y="209" rect_width="115" rect_height="75" />
+    <model omi="data\cuahsi-his\DbReader.omi" rect_x="150" rect_y="46" rect_width="115" rect_height="75" />
+    <model omi="data\cuahsi-his\DbWriter.omi" rect_x="275" rect_y="380" rect_width="115" rect_height="75" />
+    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="484" rect_y="206" rect_width="100" rect_height="100" />
+  </models>
+  <links>
+    <uilink model_providing="PET: Penman-Monteith2" model_accepting="Oatc.OpenMI.Gui.Trigger">
+      <link id="2" source_elementset="SC_NC Study" source_quantity="PET" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+    </uilink>
+    <uilink model_providing="DbReader" model_accepting="PET: Penman-Monteith2">
+      <link id="10" source_elementset="TempDew" source_quantity="Dew Point Temperature" target_elementset="SC_NC Study" target_quantity="Dew Point Temperature" />
+      <link id="11" source_elementset="TempMax" source_quantity="Maximum Temperature" target_elementset="SC_NC Study" target_quantity="Maximum Temperature" />
+      <link id="12" source_elementset="TempMin" source_quantity="Minimum Temperature" target_elementset="SC_NC Study" target_quantity="Minimum Temperature" />
+      <link id="13" source_elementset="Temp" source_quantity="Temperature" target_elementset="SC_NC Study" target_quantity="Temperature" />
+      <link id="14" source_elementset="Wind" source_quantity="wind speed" target_elementset="SC_NC Study" target_quantity="wind speed" />
+    </uilink>
+    <uilink model_providing="DbReader" model_accepting="Solar Radiation">
+      <link id="4" source_elementset="TempDew" source_quantity="Dew Point Temperature" target_elementset="SC_NC Study" target_quantity="Dew Point Temperature" />
+      <link id="5" source_elementset="TempMax" source_quantity="Maximum Temperature" target_elementset="SC_NC Study" target_quantity="Maximum Temperature" />
+      <link id="6" source_elementset="TempMin" source_quantity="Minimum Temperature" target_elementset="SC_NC Study" target_quantity="Minimum Temperature" />
+      <link id="7" source_elementset="TempMinNextDay" source_quantity="Minimum Temperature NextDay" target_elementset="SC_NC Study" target_quantity="Minimum Temperature in Advance" />
+      <link id="8" source_elementset="MonthlyAvTempRan" source_quantity="Monthly Average Temp Range" target_elementset="SC_NC Study" target_quantity="Monthly average daily temp range" />
+    </uilink>
+    <uilink model_providing="PET: Penman-Monteith2" model_accepting="DbWriter">
+      <link id="18" source_elementset="SC_NC Study" source_quantity="PET" target_elementset="any element set" target_quantity="any quantity" />
+    </uilink>
+    <uilink model_providing="Solar Radiation" model_accepting="PET: Penman-Monteith2">
+      <link id="16" source_elementset="SC_NC Study" source_quantity="NSR" target_elementset="SC_NC Study" target_quantity="NSR" />
+    </uilink>
+  </links>
+  <runproperties listenedeventtypes="11111111111" triggerinvoke="12/30/1983 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+</guiComposition>

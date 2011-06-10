@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="TopModel.Linkable_Component" Assembly="..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\TopModel.dll">
+  <Arguments>
+    <Argument Key="ConfigFile" ReadOnly="true" Value=".\config.xml" />
+    <Argument Key="Weather" ReadOnly="true" Value="..\Data\Weather.csv" />
+    <Argument Key="TI" ReadOnly="true" Value="..\Data\TI.csv" />
+  </Arguments>
+</LinkableComponent>

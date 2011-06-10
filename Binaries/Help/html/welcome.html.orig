@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to HydroDesktop Help &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="index.html" />
+    <link rel="next" title="General Concepts" href="general-concepts.html" />
+    <link media="only screen and (max-device-width: 480px)" href="_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+    <div class="breadcrumb">Welcome to HydroDesktop Help</div>
+	<div class="pagebutton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="general-concepts.html" title="General Concepts" accesskey="N">next</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="#">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="index-0"></span><div class="section" id="welcome-to-hydrodesktop-help">
+<h1>Welcome to HydroDesktop Help<a class="headerlink" href="#welcome-to-hydrodesktop-help" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to the help system for HydroDesktop. This help system provides comprehensive documentation for all aspects of using HydroDesktop, as well as complete walkthroughs for performing example use cases.</p>
+<div class="section" id="about-hydrodesktop">
+<h2>About HydroDesktop<a class="headerlink" href="#about-hydrodesktop" title="Permalink to this headline">¶</a></h2>
+<p>HydroDesktop is a free and open source desktop application developed in C# .NET that serves as a client for CUAHSI HIS WaterOneFlow Web services data and includes data discovery, download, visualization, editing, and integration with other analysis and modeling tools.  By communicating with WaterOneFlow, HydroDesktop gives the user access to rich hydrologic datasets that have been published using this Web service standard.</p>
+<p>The HydroDesktop source code is hosted on Codeplex at <a class="reference external" href="http://hydrodesktop.codeplex.com/">http://hydrodesktop.codeplex.com/</a>.  For more information about CUAHSI HIS, see the HIS Web site at <a class="reference external" href="http://his.cuahsi.org/">http://his.cuahsi.org/</a>.</p>
+</div>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="general-concepts.html">General Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general-concepts.html#wateroneflow-web-service">WaterOneFlow Web Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-concepts.html#data-management">Data Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-concepts.html#search">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-concepts.html#projects">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-concepts.html#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/extensions.html">Extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions/EpaTools/EPA-tool.html">EPA Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions/FetchBasemap/FetchBasemap.html">Fetch Basemap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions/HydroModeler/HydroModeler.html">HydroModeler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions/HydroR/HydroR.html">HydroR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide-books.html">Guide Books</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using-the-orb.html">Using the Orb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="working-with-databases.html">Working with Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-tab.html">Table Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph-view-tab.html">Graph Tab</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="version-history.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="version-history.html#release-1-1-beta-390-jan-26-2011">Release 1.1 Beta 390 (Jan 26, 2011)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version-history.html#release-1-1-beta-342-dec-9-2010">Release 1.1 Beta 342 (Dec 9, 2010)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version-history.html#release-1-1-beta-rc4-aug-28-2010">Release 1.1 Beta RC4 (Aug 28, 2010)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version-history.html#release-1-0-beta-rc12-aug-20-2010">Release 1.0 Beta RC12 (Aug 20, 2010)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version-history.html#release-1-0-beta-rc9-jul-19-2010">Release 1.0 Beta RC9 (Jul 19, 2010)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version-history.html#release-0-7-alpha-mar-25-2010">Release 0.7 Alpha (Mar 25, 2010)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+<p>In addition to this help system, you can find documentation at <a class="reference external" href="http://hydrodesktop.codeplex.com/documentation">http://hydrodesktop.codeplex.com/documentation</a>.</p>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+<<<<<<< local
+      &nbsp;Last updated on Apr 28, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.&nbsp;
+=======
+      &nbsp;Last updated on Apr 26, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+>>>>>>> other
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>
