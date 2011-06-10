@@ -90,8 +90,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMI.Standard">
-      <HintPath>Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
+    <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
