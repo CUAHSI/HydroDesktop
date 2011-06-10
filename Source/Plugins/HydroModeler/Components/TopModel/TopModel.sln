@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopModel", "TopModel.csproj", "{870615F2-EBC2-4F4F-B8EA-DE21E3415FB8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E7BCDCF-7F46-4220-94D5-351F0B56CD9E}"
-	ProjectSection(SolutionItems) = preProject
-		Source\TopModel.cs = Source\TopModel.cs
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopModelTest", "Test\TopModelTest.csproj", "{5887EA84-7E2D-48BA-BF4C-109314956FB1}"
 EndProject
 Global
