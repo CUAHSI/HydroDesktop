@@ -129,6 +129,27 @@ namespace TopModelTest.UnitTest
         {
             engine.Finish();
         }
+
+        /// <summary>
+        /// Tests the read_topo_input method.
+        /// </summary>
+        [Test]
+        public void read_Topo()
+        {
+            TopModel.TopModel model = new TopModel.TopModel();
+            double[] t;
+            double[] f;
+            model.read_topo_input("../../../Data/TI_raster.txt", out t, out f);
+
+            List<double> tarray = new List<double>(t);
+            Assert.IsTrue(tarray.Contains(-3.9816));
+            Assert.IsTrue(tarray.Contains(3.4375));
+            Assert.IsTrue(tarray.Contains(4.0013));
+
+            List<double> farray = new List<double>(f);
+            Assert.IsTrue(farray.Contains(0.0001684069));
+            Assert.IsTrue(farray.Contains(0.0003368137));
+        }
         
     }
 }

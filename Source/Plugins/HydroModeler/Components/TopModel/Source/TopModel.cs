@@ -396,8 +396,60 @@ namespace TopModel
         //}
         # endregion
 
+        /// <summary>
+        /// Reads an input raster ascii file containing topographic index to produce topographic index and topographic frequency arrays
+        /// </summary>
+        /// <param name="topographicIndex">ASCII raster file containing topographic index values</param>
+        /// <param name="ti">output topographic index array</param>
+        /// <param name="freq">output topographic frequency array</param>
+        public void read_topo_input(string topographicIndex, out double[] ti, out double[] freq)
+        {
+            //---- begin reading the values stored in the topo file
+            StreamReader sr = new StreamReader(topographicIndex);
 
+            //-- read header info
+            string line = null;
+            for (int i=0; i<=5; i++)
+                line = sr.ReadLine();
 
+            //-- save the nodata value
+            string nodata = line.Split(' ')[line.Split(' ').Length-1];
+            line = sr.ReadLine();
+
+            //-- store all values != nodata in a list
+            List<double> topoList = new List<double>();
+            int lineNum = 0;
+            while (!String.IsNullOrEmpty(line))
+            {
+                lineNum += 1;
+                string[] vals = line.TrimEnd(' ').Split(' ');
+                for (int i = 0; i <= vals.Length - 1; i++)
+                    if (vals[i] != nodata)
+                        topoList.Add(Convert.ToDouble(vals[i]));
+                line = sr.ReadLine();
+            }
+
+            //---- calculate frequency of each topographic index
+            //-- consolidate topo list into unique values 
+            Dictionary<double, double> d = new Dictionary<double, double>();
+            foreach (double t in topoList)
+                if (d.ContainsKey(t))
+                    d[t] += 1.0;
+                else
+                    d.Add(t, 1.0);
+
+            //-- calculate topo frequency, then return both topographic index and topo frequency arrays
+            double total = (double)topoList.Count;
+            ti = new double[d.Count];
+            freq = new double[d.Count];
+            int index = 0;
+            foreach (KeyValuePair<double, double> pair in d)
+            {
+                ti[index] = Math.Round(pair.Key,4);
+                freq[index] = Math.Round(d[pair.Key] / total, 10);
+                index ++;
+            }
+        }
     }
     
 }
