@@ -32,7 +32,7 @@
         <ShapefilePath>.\StreamNet.shp</ShapefilePath>
       </ElementSet>
       <Quantity>
-        <ID>PPT</ID>
+        <ID>Precip</ID>
         <Description>Rainfall</Description>
         <Dimensions>
           <Dimension>

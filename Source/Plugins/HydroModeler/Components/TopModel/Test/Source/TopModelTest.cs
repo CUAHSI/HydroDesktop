@@ -73,7 +73,7 @@ namespace TopModelTest.UnitTest
                 Console.WriteLine("{0:D}\t\t\t {1:F}", j, pe[j], Known_pe[j]);
 
                 //Check to see if the computed values equal the known ones
-                    Assert.IsTrue(Math.Round(pe[j], 2) == Known_pe_Answers.Dequeue());  
+                Assert.IsTrue(Math.Round(pe[j], 2) == Known_pe_Answers.Dequeue());  
             }
 
             Console.WriteLine("\n ----- Perform-Time-Step finished Sucessfully -----");
