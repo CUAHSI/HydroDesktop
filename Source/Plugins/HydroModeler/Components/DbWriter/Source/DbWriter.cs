@@ -534,8 +534,9 @@ namespace CUAHSI.HIS
                     int last_row = tbl.Rows.Count - 1;
 
                     //store the new site code and id info
-                    site.Code = (Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 1 + new_series_count).ToString();
-                    site.Id = Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 2 + new_series_count;
+                    //site.Code = (Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 1 + new_series_count).ToString();
+                    site.Code = site.Name;
+                    site.Id = Convert.ToInt32(tbl.Rows[last_row].ItemArray[1]) + 2 + new_series_count;
 
                     //add 1 to new series count so that the same site code isn't selected twice
                     new_series_count++;

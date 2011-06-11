@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>PET</ID>
+        <Description>Potential Evapotranspiration</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/day</ID>
+          <Description>Millimeters per day</Description>
+          <ConversionFactorToSI>0.000000011574074</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Climate Station 01</ID>
+        <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
+        <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Temp</ID>
+        <Description>Daily Averaged Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Temperature</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>Celsius</ID>
+          <Description>Degrees Celsius</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Climate Station 01</ID>
+        <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
+        <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Max Temp</ID>
+        <Description>Maximum Daily Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Temperature</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>Celsius</ID>
+          <Description>Degrees Celsius</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Climate Station 01</ID>
+        <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
+        <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Min Temp</ID>
+        <Description>Minimum Daily Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Temperature</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>Celsius</ID>
+          <Description>Degrees Celsius</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>01/05/2008 00:00:00 </StartDateTime>
+    <EndDateTime>01/01/2009 2:00:00 </EndDateTime>
+    <TimeStepInSeconds>86400</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>Hargreaves PET</ID>
+    <Description>Potential Evapotranspiration Calculated Using the Hargreaves-Samani Method</Description>
+  </ModelInfo>
+</Configuration>

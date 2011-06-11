@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\..\bin\Hargreaves.dll">
+  <Arguments>
+    <Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" />
+    <Argument Key="Output" ReadOnly="true" Value=".\Pet_Output.csv" />
+  </Arguments>
+</LinkableComponent>
