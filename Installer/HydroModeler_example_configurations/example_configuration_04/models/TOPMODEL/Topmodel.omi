@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="TopModel.Linkable_Component" Assembly="..\..\bin\TopModel.dll">
+  <Arguments>
+    <Argument Key="ConfigFile" ReadOnly="true" Value=".\config.xml" />
+    <Argument Key="TI" ReadOnly="true" Value=".\TI.csv" />
+    <Argument Key="OutDir" ReadOnly="true" Value = ".\" />
+  </Arguments>
+</LinkableComponent>

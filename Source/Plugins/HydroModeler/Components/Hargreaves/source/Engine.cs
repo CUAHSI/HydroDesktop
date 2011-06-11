@@ -106,6 +106,9 @@ namespace Hargreaves
             //---- set output values
             this.SetValues(output_quantity, output_elementset, new ScalarSet(pet));
 
+            //---- advance to the next timestep
+            this.AdvanceTime();
+
             return true;
         }
 
