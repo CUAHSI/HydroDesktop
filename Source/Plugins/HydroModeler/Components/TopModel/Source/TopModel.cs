@@ -26,9 +26,15 @@ namespace TopModel
     {
         # region Global Variables
         //---GLOBAL VARIABLES  ----
+        double R;//subsurface Recharge rate [L/T]
+        double c; //recession parameter (m)
+        double Tmax; //Average effective transmissivity of the soil when the profile is just saturated
+        double interception;//intial interciption of the watershed
+        
+        
         double[] PPT; // Daily Precipitation Data (in)
         double[] PET; //Daily Evaptranspiration Data
-        double[] R;//subsurface Recharge rate [L/T]
+       
         double[] TI;//topographic index
         double[] freq;//topographic index frequency
         double lamda_average;//average lamda
@@ -39,9 +45,7 @@ namespace TopModel
         double q_infiltration;
         bool IsFirstTimeStep = true;
         double S_average; //average saturation deficit
-        double c; //recession parameter (m)
-        double Tmax; //Average effective transmissivity of the soil when the profile is just saturated
-        double interception;//intial interciption of the watershed
+        
         double _dt;//get the timestep size
         Dictionary<DateTime, double> Precip = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> ET = new Dictionary<DateTime, double>();
@@ -109,9 +113,10 @@ namespace TopModel
             string topo_input = (string)properties["TI"];
 
             //read model input parameters
-            double m = Convert.ToDouble(properties["m"]);
-            double tmax = Convert.ToDouble(properties["Tmax"]);
-            //double interception = (double)properties["Interception"];
+            c = Convert.ToDouble(properties["m"]);
+            Tmax = Convert.ToDouble(properties["Tmax"]);
+            R = Convert.ToDouble(properties["R"]);
+            interception = Convert.ToDouble(properties["Interception"]);
 
             //set OpenMI internal variables
             this.SetVariablesFromConfigFile(configFile);
@@ -141,6 +146,22 @@ namespace TopModel
             //read topographic indices from input file
             read_topo_input(topo_input, out TI, out freq);
 
+            //---- calculate saturation deficit
+            //calculate lamda average for the watershed
+            double[] TI_freq = new double[TI.GetLength(0)];
+
+            for (int i = 0; i <= TI.GetLength(0) - 1; i++)
+            {
+                TI_freq[i] = TI[i] * freq[i];
+            }
+
+            lamda_average = TI_freq.Sum() / freq.Sum();
+
+            //HACK: where is r?
+
+            //catchement average saturation deficit(S_bar)
+            double S_bar = -c * ((Math.Log(R / Tmax)) + lamda_average);
+            S_average = S_bar;
 
         }
         public override bool PerformTimeStep()
@@ -148,8 +169,10 @@ namespace TopModel
             //reading the appropriate value from PPT & PET dictionary 
             TimeStamp time = (TimeStamp)this.GetCurrentTime();
             DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
-            ScalarSet ss = (ScalarSet)this.GetValues("PET", "TopModel");
-            ScalarSet we = (ScalarSet)this.GetValues("PPT", "TopModel");
+            ScalarSet ss = (ScalarSet)this.GetValues(_input_quantity[1], _input_elementset[1]);  //PET
+            ScalarSet we = (ScalarSet)this.GetValues(_input_quantity[0], _input_elementset[1]);  //Rainfall
+            //ScalarSet ss = (ScalarSet)this.GetValues("PET", "TopModel");
+            //ScalarSet we = (ScalarSet)this.GetValues("PPT", "TopModel");
 
             for (int i = 0; i < ss.Count; i++)
             {
@@ -172,28 +195,9 @@ namespace TopModel
             //}
             # endregion
             //declaring the flow matrices here since they are related with the size of input matrices
-            double[] S_d = new double[R.GetLength(0)];
+            double[] S_d = new double[TI.GetLength(0)];
             double[] over_flow = new double[TI.GetLength(0)]; //Infiltration excess
             double[] reduced_ET = new double[TI.GetLength(0)];//Reduced ET due to dryness
-
-
-            if (IsFirstTimeStep)
-            {
-                //calculate lamda average for the watershed
-                double[] TI_freq = new double[TI.GetLength(0)];
-
-                for (int i = 0; i <= TI.GetLength(0) - 1; i++)
-                {
-                    TI_freq[i] = TI[i] * freq[i];
-                }
-
-                lamda_average = TI_freq.Sum() / freq.Sum();
-
-                //catchement average saturation deficit(S_bar)
-                double S_bar = -c * ((Math.Log(R[0] / Tmax)) + lamda_average);
-                S_average = S_bar;
-                IsFirstTimeStep = false;
-            }
 
 
             //calculate the saturation deficit for each TIpoint 
@@ -251,7 +255,7 @@ namespace TopModel
             outputValues.Add(curr_time, q);
 
             int fff = q_outputs.Count;
-            double[] Q = new double[R.GetLength(0)];
+            double[] Q = new double[TI.GetLength(0)];
 
 
             //create array to copy the stored runoff values for a Array list to a [] 
