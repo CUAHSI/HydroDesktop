@@ -108,6 +108,11 @@ namespace TopModel
             //read topographic input file
             string topo_input = (string)properties["TI"];
 
+            //read model input parameters
+            double m = Convert.ToDouble(properties["m"]);
+            double tmax = Convert.ToDouble(properties["Tmax"]);
+            //double interception = (double)properties["Interception"];
+
             //set OpenMI internal variables
             this.SetVariablesFromConfigFile(configFile);
 

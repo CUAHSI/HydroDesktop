@@ -28,7 +28,9 @@ namespace TopModelTest.UnitTest
             System.Collections.Hashtable args = new System.Collections.Hashtable();
             args.Add("ConfigFile", "../../Data/configTest.xml");
             args.Add("TI", "../../Data/TI_raster.txt");
-            args.Add("Weather", "../../Data/Weather.csv");
+            args.Add("m","180");
+            args.Add("Tmax", "250000");
+
           
             engine.Initialize(args);
             Console.WriteLine("\n ----- Initialize finished Sucessfully -----");
