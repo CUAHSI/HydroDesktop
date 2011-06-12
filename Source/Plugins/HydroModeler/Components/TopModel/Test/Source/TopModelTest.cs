@@ -30,6 +30,7 @@ namespace TopModelTest.UnitTest
             args.Add("TI", "../../Data/TI_raster.txt");
             args.Add("m","180");
             args.Add("Tmax", "250000");
+            args.Add("Interception", "3");
             args.Add("R", "9.66");
           
             engine.Initialize(args);
