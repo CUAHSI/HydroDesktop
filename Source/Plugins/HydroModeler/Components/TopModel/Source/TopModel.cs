@@ -101,11 +101,12 @@ namespace TopModel
         }
         public override void Initialize(System.Collections.Hashtable properties)
         {
-            string inputfile = null;
-            string inputfile1 = null;
 
             //Get config file path defined in sample.omi
             string configFile = (string)properties["ConfigFile"];
+
+            //read topographic input file
+            string topo_input = (string)properties["TI"];
 
             //set OpenMI internal variables
             this.SetVariablesFromConfigFile(configFile);
@@ -132,128 +133,9 @@ namespace TopModel
                 _output_quantity[i] = this.GetOutputExchangeItem(i).Quantity.ID;
             }
 
-            # region
-            //if (properties.ContainsKey("Weather"))
-            //inputfile = (string)properties["Weather"];
+            //read topographic indices from input file
+            read_topo_input(topo_input, out TI, out freq);
 
-            //if (inputfile != null)
-            //{
-            //    StreamReader sr = new StreamReader(inputfile);
-            //    string line = sr.ReadLine();
-            //    c= Convert.ToDouble(line.Split(',')[1]);
-
-            //     line = sr.ReadLine();
-            //    Tmax = Convert.ToDouble(line.Split(',')[1]);
-
-            //    line = sr.ReadLine();
-            //    interception = Convert.ToDouble(line.Split(',')[1]);
-
-            //    line = sr.ReadLine();
-            //    int i = 0;
-            //    //reading the PPT of the basin from the input file
-
-            //    while (line != null)
-            //    {
-            //        string[] values = line.Split(',');
-            //        PPT = new double[values.Count()];
-            //        for (int j = 0; j <= PPT.Length-1; j++)
-            //        {
-            //            PPT[j] = Convert.ToDouble(values[j]);
-            //        }
-            //        //reading the PET of the basin from the input file
-
-            //        i++;
-            //        line = sr.ReadLine();
-            //        string[] valuess = line.Split(',');
-            //        PET = new double[valuess.Count()];
-            //        for (int j = 0; j <= PET.Length-1; j++)
-            //        {
-            //            PET[j] = Convert.ToDouble(valuess[j]);
-
-            //        }
-            //        //reading the R rate of the subsurface flow  from the input file
-            //        i++;
-            //        line = sr.ReadLine();
-            //        string[] values3 = line.Split(',');
-            //        R = new double[values3.Count()];
-            //        for (int j = 0; j <= R.Length-1; j++)
-            //        {
-            //            R[j] = Convert.ToDouble(values3[j]);
-
-            //        }
-            //        i++;
-            //        line = sr.ReadLine();
-            //    }
-
-            //}
-            # endregion
-
-            if (properties.ContainsKey("TI"))
-                inputfile1 = (string)properties["TI"];
-            if (inputfile1 != null)
-            {
-                StreamReader sr = new StreamReader(inputfile1);
-                string line = sr.ReadLine();
-                c = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                Tmax = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                interception = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                int i = 0;
-                //reading the TI of the basin from the input file
-
-                while (line != null)
-                {
-                    string[] values1 = line.Split(',');
-                    TI = new double[values1.Count() - 1];
-
-                    for (int j = 0; j <= TI.Length - 1; j++)
-                    {
-                        TI[j] = Convert.ToDouble(values1[j]);
-                    }
-                    //reading the freq of the basin from the input file
-
-                    i++;
-                    line = sr.ReadLine();
-
-                    string[] valuess = line.Split(',');
-                    freq = new double[valuess.Count() - 1];
-                    for (int j = 0; j <= freq.Length - 1; j++)
-                    {
-                        freq[j] = Convert.ToDouble(valuess[j]);
-
-                    }
-
-                    i++;
-                    line = sr.ReadLine();
-
-                    string[] values3 = line.Split(',');
-                    R = new double[values3.Count()];
-                    for (int j = 0; j <= R.Length - 1; j++)
-                    {
-                        R[j] = Convert.ToDouble(values3[j]);
-
-                    }
-
-                    i++;
-                    line = sr.ReadLine();
-                }
-                //Adding the PPT & PET Data to a Dictionary
-                //_dt = this.GetTimeStep() / 86400;
-                //TimeStamp time = (TimeStamp)this.GetCurrentTime();
-                // DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
-                //for (int v = 0; v <= PPT.GetLength(0) - 1; v++)
-                //{
-                //    Precip.Add(curr_time, PPT[v]);
-                //    //ET.Add(curr_time, PET[v]);
-                //     curr_time = curr_time.AddDays(_dt);
-                //}
-
-            }
 
         }
         public override bool PerformTimeStep()
@@ -395,6 +277,8 @@ namespace TopModel
         //    return new double[0, 0];
         //}
         # endregion
+
+       
 
         /// <summary>
         /// Reads an input raster ascii file containing topographic index to produce topographic index and topographic frequency arrays

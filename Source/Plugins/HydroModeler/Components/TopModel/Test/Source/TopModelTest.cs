@@ -27,7 +27,7 @@ namespace TopModelTest.UnitTest
             Console.WriteLine("\n----Begining Intialize----");
             System.Collections.Hashtable args = new System.Collections.Hashtable();
             args.Add("ConfigFile", "../../Data/configTest.xml");
-            args.Add("TI", "../../Data/TI.csv");
+            args.Add("TI", "../../Data/TI_raster.txt");
             args.Add("Weather", "../../Data/Weather.csv");
           
             engine.Initialize(args);
@@ -41,7 +41,7 @@ namespace TopModelTest.UnitTest
             Console.WriteLine("\n ----- Beginning Perform-Time-Step -----");
             System.Collections.Hashtable args = new System.Collections.Hashtable();
             args.Add("ConfigFile", "../../data/configTest.xml");
-            args.Add("TI", "../../Data/TI.csv");
+            args.Add("TI", "../../Data/TI_raster.csv");
             args.Add("Weather", "../../Data/Weather.csv");
 
             engine.Initialize(args);
