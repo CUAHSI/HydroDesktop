@@ -26,37 +26,37 @@ namespace TopModel
     {
         # region Global Variables
         //---GLOBAL VARIABLES  ----
+
+        //---- model inputs
         double R;//subsurface Recharge rate [L/T]
         double c; //recession parameter (m)
         double Tmax; //Average effective transmissivity of the soil when the profile is just saturated
         double interception;//intial interciption of the watershed
-        
-        
-        double[] PPT; // Daily Precipitation Data (in)
-        double[] PET; //Daily Evaptranspiration Data
-       
+
         double[] TI;//topographic index
         double[] freq;//topographic index frequency
+
         double lamda_average;//average lamda
         double PPT_daily;
         double ET_daily;
         double q_overland;
         double q_subsurface;
         double q_infiltration;
-        bool IsFirstTimeStep = true;
         double S_average; //average saturation deficit
         
-        double _dt;//get the timestep size
         Dictionary<DateTime, double> Precip = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> ET = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> outputValues = new Dictionary<DateTime, double>();
+
         string[] _input_elementset;
         string[] _output_elementset;
         string[] _output_quantity;
         string[] _input_quantity;
+
         ArrayList _DateTimes = new ArrayList();
         ArrayList q_outputs = new ArrayList();
         ArrayList q_infltration_outputs = new ArrayList();
+
         string outputPath = System.IO.Directory.GetCurrentDirectory() + "/output";
 
         #endregion
@@ -157,8 +157,6 @@ namespace TopModel
 
             lamda_average = TI_freq.Sum() / freq.Sum();
 
-            //HACK: where is r?
-
             //catchement average saturation deficit(S_bar)
             double S_bar = -c * ((Math.Log(R / Tmax)) + lamda_average);
             S_average = S_bar;
@@ -167,38 +165,22 @@ namespace TopModel
         public override bool PerformTimeStep()
         {
             //reading the appropriate value from PPT & PET dictionary 
-            TimeStamp time = (TimeStamp)this.GetCurrentTime();
-            DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
-            ScalarSet ss = (ScalarSet)this.GetValues(_input_quantity[1], _input_elementset[1]);  //PET
-            ScalarSet we = (ScalarSet)this.GetValues(_input_quantity[0], _input_elementset[1]);  //Rainfall
-            //ScalarSet ss = (ScalarSet)this.GetValues("PET", "TopModel");
-            //ScalarSet we = (ScalarSet)this.GetValues("PPT", "TopModel");
+            ScalarSet input_pet = (ScalarSet)this.GetValues(_input_quantity[1], _input_elementset[1]);  //PET
+            ScalarSet input_precip = (ScalarSet)this.GetValues(_input_quantity[0], _input_elementset[1]);  //Rainfall
 
-            for (int i = 0; i < ss.Count; i++)
+            for (int i = 0; i < input_pet.Count; i++)
             {
-                ET_daily = ss.data[i];
+                ET_daily = input_pet.data[i];
             }
-            for (int h = 0; h < we.Count; h++)
+            for (int h = 0; h < input_precip.Count; h++)
             {
-                PPT_daily = we.data[h];
+                PPT_daily = input_precip.data[h];
             }
-            # region
-            //used when reading from input csv file
-            //used it if the metrological data are readed from csv file
-            //if(Precip.ContainsKey(curr_time))
-            //{
-            //  PPT_daily = Precip[curr_time];
-            //}
-            //if (ET.ContainsKey(curr_time))
-            //{
-            //   ET_daily = ET[curr_time];
-            //}
-            # endregion
+
             //declaring the flow matrices here since they are related with the size of input matrices
             double[] S_d = new double[TI.GetLength(0)];
             double[] over_flow = new double[TI.GetLength(0)]; //Infiltration excess
             double[] reduced_ET = new double[TI.GetLength(0)];//Reduced ET due to dryness
-
 
             //calculate the saturation deficit for each TIpoint 
             double[] S = new double[TI.GetLength(0)];
@@ -247,47 +229,25 @@ namespace TopModel
             double q = q_overland + q_subsurface;
 
             //Storing values of DateTimes and surface runoff values
-            TimeStamp t = (TimeStamp)this.GetCurrentTime();
-            DateTime T = CalendarConverter.ModifiedJulian2Gregorian(t.ModifiedJulianDay);
-            _DateTimes.Add(T);
+            TimeStamp time = (TimeStamp)this.GetCurrentTime();
+            DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
+            _DateTimes.Add(curr_time);
             q_outputs.Add(q);
             q_infltration_outputs.Add(q_infiltration);
             outputValues.Add(curr_time, q);
 
-            int fff = q_outputs.Count;
-            double[] Q = new double[TI.GetLength(0)];
-
 
             //create array to copy the stored runoff values for a Array list to a [] 
-            double[] te = q_outputs.ToArray(typeof(double)) as double[];
-
+            double[] runoff = q_outputs.ToArray(typeof(double)) as double[];
 
             //set the basin outflow as runoff output
             string q1 = this.GetOutputExchangeItem(0).Quantity.ID;
             string e1 = this.GetOutputExchangeItem(0).ElementSet.ID;
-            this.SetValues(q1, e1, new ScalarSet(te));
+            this.SetValues(q1, e1, new ScalarSet(runoff));
 
             this.AdvanceTime();
             return true;
         }
-
-        # region intial methods
-        //public double[,] Root_Zone_Model()
-        //{
-        //    return new double[0, 0];
-        //}
-        //public double[,] Gravity_Drainage_Model()
-        //{
-        //    return new double[0, 0];
-        //}
-
-        //public double[,] SaturatedZoneModel()
-        //{
-        //    return new double[0, 0];
-        //}
-        # endregion
-
-       
 
         /// <summary>
         /// Reads an input raster ascii file containing topographic index to produce topographic index and topographic frequency arrays
