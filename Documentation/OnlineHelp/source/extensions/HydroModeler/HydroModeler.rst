@@ -41,9 +41,9 @@ Help Topics
    
    OpeningOprFile
    
-   ChangingModelInputs
-   
    LinkingModels
    
    RunningComposition
+
+   ChangingInputs
 
