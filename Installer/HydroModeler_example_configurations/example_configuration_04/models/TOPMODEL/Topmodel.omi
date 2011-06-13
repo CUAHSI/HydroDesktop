@@ -2,7 +2,10 @@
 <LinkableComponent Type="TopModel.Linkable_Component" Assembly="..\..\bin\TopModel.dll">
   <Arguments>
     <Argument Key="ConfigFile" ReadOnly="true" Value=".\config.xml" />
-    <Argument Key="TI" ReadOnly="true" Value=".\TI.csv" />
-    <Argument Key="OutDir" ReadOnly="true" Value = ".\" />
+    <Argument Key="TI" ReadOnly="true" Value=".\TI_raster.txt" />
+    <Argument Key="m" ReadOnly="true" Value="180" />
+    <Argument Key="Tmax" ReadOnly="true" Value="250000" />
+    <Argument Key="R" ReadOnly="true" Value="9.66" />
+    <Argument Key="Interception" ReadOnly="true" Value="3" />
   </Arguments>
 </LinkableComponent>

@@ -166,7 +166,7 @@ namespace TopModel
         {
             //reading the appropriate value from PPT & PET dictionary 
             ScalarSet input_pet = (ScalarSet)this.GetValues(_input_quantity[1], _input_elementset[1]);  //PET
-            ScalarSet input_precip = (ScalarSet)this.GetValues(_input_quantity[0], _input_elementset[1]);  //Rainfall
+            ScalarSet input_precip = (ScalarSet)this.GetValues(_input_quantity[0], _input_elementset[0]);  //Rainfall
 
             for (int i = 0; i < input_pet.Count; i++)
             {
@@ -236,9 +236,8 @@ namespace TopModel
             q_infltration_outputs.Add(q_infiltration);
             outputValues.Add(curr_time, q);
 
-
-            //create array to copy the stored runoff values for a Array list to a [] 
-            double[] runoff = q_outputs.ToArray(typeof(double)) as double[];
+            double[] runoff = new double[1];
+            runoff[0] = q;
 
             //set the basin outflow as runoff output
             string q1 = this.GetOutputExchangeItem(0).Quantity.ID;

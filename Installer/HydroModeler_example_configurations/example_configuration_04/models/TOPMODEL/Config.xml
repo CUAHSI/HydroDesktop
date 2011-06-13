@@ -3,21 +3,26 @@
   <ExchangeItems>
     <OutputExchangeItem>
       <ElementSet>
-        <ID>TopModel</ID>
-        <Description>watershed Runoff</Description>
+        <ID>Coweeta Streamflow</ID>
+        <Description>Coweeta watershed, NC</Description>
+         <ShapefilePath>..\..\data\gis\weir18.shp</ShapefilePath>
       </ElementSet>
       <Quantity>
         <ID>Runoff</ID>
-        <Description>Runoff </Description>
+        <Description>Runoff per unit area</Description>
         <Dimensions>
           <Dimension>
-            <Base>cfs</Base>
+            <Base>L</Base>
             <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
           </Dimension>
         </Dimensions>
         <Unit>
-          <ID>cfs</ID>
-          <Description>cfs</Description>
+          <ID>mm/day</ID>
+          <Description>millimeters per day</Description>
           <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
@@ -26,13 +31,13 @@
     </OutputExchangeItem>
     <InputExchangeItem>
       <ElementSet>
-        <ID>TopModel</ID>
-        <Description>Precipitation_TopModel</Description>
+        <ID>Coweeta Precipitation</ID>
+        <Description>Coweeta watershed, NC</Description>
+         <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
         <Version>1</Version>
-        <ShapefilePath>.\StreamNet.shp</ShapefilePath>
       </ElementSet>
       <Quantity>
-        <ID>PPT</ID>
+        <ID>Precipitation</ID>
         <Description>Rainfall</Description>
         <Dimensions>
           <Dimension>
@@ -42,7 +47,7 @@
         </Dimensions>
         <Unit>
           <ID>mm</ID>
-          <Description>inches</Description>
+          <Description>millimeters</Description>
           <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
@@ -51,14 +56,14 @@
     </InputExchangeItem>
     <InputExchangeItem>
       <ElementSet>
-        <ID>TopModel</ID>
-        <Description>PET_Topmodel</Description>
+        <ID>Coweeta</ID>
+        <Description>Coweeta watershed in NC</Description>
+         <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
         <Version>1</Version>
-        <ShapefilePath>.\StreamNet.shp</ShapefilePath>
       </ElementSet>
       <Quantity>
         <ID>PET</ID>
-        <Description>Evaptranspiration</Description>
+        <Description>Potential Evapotranspiration</Description>
         <Dimensions>
           <Dimension>
             <Power>1</Power>
@@ -67,32 +72,7 @@
         </Dimensions>
         <Unit>
           <ID>mm</ID>
-          <Description>inches</Description>
-          <ConversionFactorToSI>1</ConversionFactorToSI>
-          <OffSetToSI>0</OffSetToSI>
-        </Unit>
-        <ValueType>Scalar</ValueType>
-      </Quantity>
-    </InputExchangeItem>
-    <InputExchangeItem>
-      <ElementSet>
-        <ID>TopModel</ID>
-        <Description>Topographic Index</Description>
-        <Version>1</Version>
-        <ShapefilePath>.\StreamNet.shp</ShapefilePath>
-      </ElementSet>
-      <Quantity>
-        <ID>TI</ID>
-        <Description>Topographic Index</Description>
-        <Dimensions>
-          <Dimension>
-            <Power>1</Power>
-            <Base>Length</Base>
-          </Dimension>
-        </Dimensions>
-        <Unit>
-          <ID>in</ID>
-          <Description>inches</Description>
+          <Description>millimeters</Description>
           <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
@@ -101,12 +81,12 @@
     </InputExchangeItem>
   </ExchangeItems>
   <TimeHorizon>
-    <StartDateTime>01/01/2010 00:00:00 AM</StartDateTime>
-    <EndDateTime>12/31/2010 00:00:00 AM</EndDateTime>
+    <StartDateTime>01/05/2008 12:00:00 AM</StartDateTime>
+    <EndDateTime>01/01/2009 12:00:00 AM</EndDateTime>
     <TimeStepInSeconds>86400</TimeStepInSeconds>
   </TimeHorizon>
   <ModelInfo>
     <ID>TopModel</ID>
-    <Description>Runoff calculation</Description>
+    <Description>Topographic rainfall runoff Model </Description>
   </ModelInfo>
 </Configuration>
