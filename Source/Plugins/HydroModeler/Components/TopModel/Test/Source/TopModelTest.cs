@@ -76,7 +76,7 @@ namespace TopModelTest.UnitTest
                 double[] pe = ((ScalarSet)engine.GetValues("Runoff", "TopModel")).data;
 
 
-                Console.WriteLine("{0:D}\t\t\t {1:F}", j, pe[j], Known_pe[j]); 
+                Console.WriteLine("{0:D}\t\t\t {1:F}", j, pe[0], Known_pe[j]); 
             }
 
             Console.WriteLine("\n ----- Perform-Time-Step finished Sucessfully -----");

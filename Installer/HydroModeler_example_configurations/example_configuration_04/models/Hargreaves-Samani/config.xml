@@ -24,7 +24,7 @@
         <Unit>
           <ID>mm/day</ID>
           <Description>Millimeters per day</Description>
-          <ConversionFactorToSI>0.000000011574074</ConversionFactorToSI>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
         <ValueType>Scalar</ValueType>

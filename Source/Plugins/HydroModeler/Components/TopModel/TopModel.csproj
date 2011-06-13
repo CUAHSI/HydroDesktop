@@ -35,27 +35,34 @@
       <SpecificVersion>False</SpecificVersion>
       <ExecutableExtension>.exe</ExecutableExtension>
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Gui.ConfigurationEditor.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="OpenMI.Standard">
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SharpMap, Version=0.9.2423.31552, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SharpMap.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SMW">
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
