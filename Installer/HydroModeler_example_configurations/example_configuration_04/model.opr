@@ -8,22 +8,22 @@
   </models>
   <links>
     <uilink model_providing="DbReader" model_accepting="Hargreaves PET">
-      <link id="2" source_elementset="Coweeta Max Temperature" source_quantity="Temperature" target_elementset="Climate Station 01" target_quantity="Max Temp" />
-      <link id="3" source_elementset="Coweeta Min Temperature" source_quantity="Temperature" target_elementset="Climate Station 01" target_quantity="Min Temp" />
-      <link id="4" source_elementset="Coweeta Temperature" source_quantity="Temperature" target_elementset="Climate Station 01" target_quantity="Temp" />
+      <link id="28" source_elementset="Coweeta Ave Temp" source_quantity="Temperature" target_elementset="Climate Station 01" target_quantity="Temp" />
+      <link id="29" source_elementset="Coweeta Max Temp" source_quantity="Temperature" target_elementset="Climate Station 01" target_quantity="Max Temp" />
+      <link id="30" source_elementset="Coweeta Min Temp" source_quantity="Temperature" target_elementset="Climate Station 01" target_quantity="Min Temp" />
     </uilink>
     <uilink model_providing="Hargreaves PET" model_accepting="TopModel">
-      <link id="12" source_elementset="Coweeta" source_quantity="PET" target_elementset="Coweeta" target_quantity="PET" />
+      <link id="26" source_elementset="Coweeta" source_quantity="PET" target_elementset="Coweeta" target_quantity="PET" />
     </uilink>
     <uilink model_providing="DbReader" model_accepting="TopModel">
-      <link id="20" source_elementset="Coweeta Precipitation" source_quantity="Precipitation" target_elementset="Coweeta Precipitation" target_quantity="Precipitation" />
+      <link id="32" source_elementset="Coweeta Precipitation" source_quantity="Precipitation" target_elementset="Coweeta Precipitation" target_quantity="Precipitation" />
     </uilink>
     <uilink model_providing="TopModel" model_accepting="DbWriter">
-      <link id="16" source_elementset="Coweeta Streamflow" source_quantity="Runoff" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="34" source_elementset="Coweeta Streamflow" source_quantity="Streamflow" target_elementset="any element set" target_quantity="any quantity" />
     </uilink>
     <uilink model_providing="TopModel" model_accepting="Oatc.OpenMI.Gui.Trigger">
-      <link id="18" source_elementset="Coweeta Streamflow" source_quantity="Runoff" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+      <link id="36" source_elementset="Coweeta Streamflow" source_quantity="Streamflow" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
     </uilink>
   </links>
-  <runproperties listenedeventtypes="11111111111" triggerinvoke="01/01/2009 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+  <runproperties listenedeventtypes="11111111111" triggerinvoke="10/31/2009 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
 </guiComposition>
