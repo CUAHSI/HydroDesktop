@@ -3,7 +3,7 @@
   <ExchangeItems>
     <OutputExchangeItem>
       <ElementSet>
-        <ID>Coweeta Streamflow</ID>
+        <ID>Coweeta Runoff</ID>
         <Description>Coweeta watershed, NC</Description>
          <ShapefilePath>..\..\data\gis\weir18.shp</ShapefilePath>
       </ElementSet>
@@ -23,6 +23,34 @@
         <Unit>
           <ID>mm/day</ID>
           <Description>millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta Streamflow</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\weir18.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>Streamflow</ID>
+        <Description>Streamflow at the outlet of watershed 18</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>L</Base>
+            <Power>3</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>liters per second</ID>
+          <Description>liters per second</Description>
           <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
@@ -81,8 +109,8 @@
     </InputExchangeItem>
   </ExchangeItems>
   <TimeHorizon>
-    <StartDateTime>01/05/2008 12:00:00 AM</StartDateTime>
-    <EndDateTime>01/01/2009 12:00:00 AM</EndDateTime>
+    <StartDateTime>01/02/2006 12:00:00 AM</StartDateTime>
+    <EndDateTime>10/31/2009 12:00:00 AM</EndDateTime>
     <TimeStepInSeconds>86400</TimeStepInSeconds>
   </TimeHorizon>
   <ModelInfo>

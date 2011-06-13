@@ -111,8 +111,8 @@
     
   </ExchangeItems>
   <TimeHorizon>
-    <StartDateTime>01/05/2008 00:00:00 </StartDateTime>
-    <EndDateTime>01/01/2009 2:00:00 </EndDateTime>
+    <StartDateTime>01/02/2006 00:00:00 </StartDateTime>
+    <EndDateTime>10/31/2009 00:00:00 </EndDateTime>
     <TimeStepInSeconds>86400</TimeStepInSeconds>
   </TimeHorizon>
   <ModelInfo>

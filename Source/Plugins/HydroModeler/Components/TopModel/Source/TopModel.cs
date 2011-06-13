@@ -43,7 +43,9 @@ namespace TopModel
         double q_subsurface;
         double q_infiltration;
         double S_average; //average saturation deficit
-        
+
+        double _watershedArea = 0; //area of the watershed. used to convert runoff into streamflow
+
         Dictionary<DateTime, double> Precip = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> ET = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> outputValues = new Dictionary<DateTime, double>();
@@ -82,16 +84,16 @@ namespace TopModel
             swa.WriteLine("Daily Runoff....");
             DateTime start = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetTimeHorizon().Start).ModifiedJulianDay);
             DateTime end = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetTimeHorizon().End).ModifiedJulianDay);
-            swa.WriteLine("StartDate: , " + String.Format("{0:d/M/yyyy}", start));
-            swa.WriteLine("EndDate: , " + String.Format("{0:d/M/yyyy}", end));
+            swa.WriteLine("StartDate: , " + String.Format("{0:MM/dd/yyyy hh:mm:ss}", start));
+            swa.WriteLine("EndDate: , " + String.Format("{0:MM/dd/yyyy hh:mm:ss}", end));
             swa.WriteLine();
-            swa.WriteLine("Time [d:M:yyyy], Runoff");
+            swa.WriteLine("Time [0:MM/dd/yyyy hh:mm:ss], Runoff");
 
 
             foreach (KeyValuePair<DateTime, double> kvp in outputValues)
             {
 
-                string time = String.Format("{0:d/M/yyyy}", kvp.Key);
+                string time = String.Format("{0:MM/dd/yyyy hh:mm:ss}", kvp.Key);
                 swa.Write(time + ",");
 
                 swa.Write(kvp.Value.ToString() + ",");
@@ -117,6 +119,7 @@ namespace TopModel
             Tmax = Convert.ToDouble(properties["Tmax"]);
             R = Convert.ToDouble(properties["R"]);
             interception = Convert.ToDouble(properties["Interception"]);
+            _watershedArea = Convert.ToDouble(properties["WatershedArea_SquareMeters"]);
 
             //set OpenMI internal variables
             this.SetVariablesFromConfigFile(configFile);
@@ -236,13 +239,25 @@ namespace TopModel
             q_infltration_outputs.Add(q_infiltration);
             outputValues.Add(curr_time, q);
 
+            //save runoff
             double[] runoff = new double[1];
-            runoff[0] = q;
+            runoff[0] = q;// *_watershedArea;
+
+            //-- calculate streamflow using watershed area
+            double[] streamflow = new double[1];
+            streamflow[0] = q * (_watershedArea) / 86400;
+
+
 
             //set the basin outflow as runoff output
             string q1 = this.GetOutputExchangeItem(0).Quantity.ID;
             string e1 = this.GetOutputExchangeItem(0).ElementSet.ID;
             this.SetValues(q1, e1, new ScalarSet(runoff));
+
+            string q2 = this.GetOutputExchangeItem(1).Quantity.ID;
+            string e2 = this.GetOutputExchangeItem(1).ElementSet.ID;
+            this.SetValues(q2, e2, new ScalarSet(streamflow));
+            
 
             this.AdvanceTime();
             return true;
@@ -261,8 +276,12 @@ namespace TopModel
 
             //-- read header info
             string line = null;
-            for (int i=0; i<=5; i++)
+            for (int i=0; i<=4; i++)
                 line = sr.ReadLine();
+
+            //-- save the cellsize
+            double cellsize = Convert.ToDouble(line.Split(' ')[line.Split(' ').Length - 1]);
+            line = sr.ReadLine();
 
             //-- save the nodata value
             string nodata = line.Split(' ')[line.Split(' ').Length-1];
@@ -277,7 +296,8 @@ namespace TopModel
                 string[] vals = line.TrimEnd(' ').Split(' ');
                 for (int i = 0; i <= vals.Length - 1; i++)
                     if (vals[i] != nodata)
-                        topoList.Add(Convert.ToDouble(vals[i]));
+                        topoList.Add(Convert.ToDouble(vals[i])); _watershedArea += cellsize;
+                        
                 line = sr.ReadLine();
             }
 
