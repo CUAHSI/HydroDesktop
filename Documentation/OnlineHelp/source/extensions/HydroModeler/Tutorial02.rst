@@ -22,11 +22,11 @@ Procedures of creating a Model Composition
 1-	Open the start menu and from program choose the CAUHSI HIS, then press hydrodesktop icon.
 
 .. figure:: ./images/Totorial02/Hydrodesktop_start.png
-	:align: center
+   :align: center
 
 2-	check that you have the latest version of hydrodesktop by comparing the version number  of the CUAHSI Hydro Desktop you have and the latest available on  http://hydrodesktop.codeplex.com/releases/view/59853	 ( ex; Hydro Desktop version is 1.2537.0). Choose Create New Empty Project button.
 
-.. figure:: ./images/Totorial02/newproject.png
+.. figure:: ./images/Tutorial02/newproject.png
 :align: center
 
 3-	Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler
