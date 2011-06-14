@@ -21,18 +21,6 @@ Introduction
 
    Methods
 
-Tutorials
----------
-
-.. toctree::
-   :maxdepth: 2
-   
-   Tutorial01
-   
-   Tutorial02
-   
-   Tutorial03
-
 Help Topics
 -----------
 
@@ -46,4 +34,16 @@ Help Topics
    RunningComposition
 
    ChangingInputs
+
+Tutorials
+---------
+
+.. toctree::
+   :maxdepth: 2
+   
+   Tutorial01
+   
+   Tutorial02
+   
+   Tutorial03
 
