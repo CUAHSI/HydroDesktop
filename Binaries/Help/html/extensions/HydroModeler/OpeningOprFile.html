@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Scope &mdash; HydroDesktop Help</title>
+    <title>Opening an OpenMI Project File &mdash; HydroDesktop Help</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
     <link rel="up" title="HydroModeler" href="HydroModeler.html" />
-    <link rel="next" title="Part 1 - Getting started" href="Part1.html" />
-    <link rel="prev" title="Introduction" href="Intro.html" />
+    <link rel="next" title="Linking Models into Compositions" href="LinkingModels.html" />
+    <link rel="prev" title="Methods" href="Methods.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -34,10 +34,10 @@
 <div id="header">
         <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
         <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Scope</div>
+    <div class="breadcrumb">Opening an OpenMI Project File</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="Part1.html" title="Part 1 - Getting started" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="Intro.html" title="Introduction" accesskey="P">previous</a></div>
+	<div class="pagebutton"><a href="LinkingModels.html" title="Linking Models into Compositions" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="Methods.html" title="Methods" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
@@ -77,9 +77,40 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="scope">
-<h1>Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h1>
-<p id="index-0">This document is divided into three main sections.  The first section explains the basic concept of HydroModeler by walking you through a sample model configuration.  The second section explains how a new model can be created by altering model inputs.  Finally, the third section provides a description of how to create a model component with a basic explanation of the source code in a sample component.    All source codes are available for viewing and downloading from our repository (<a class="reference external" href="http://hydrodesktop.codeplex.com/SourceControl/list/changesets">http://hydrodesktop.codeplex.com/SourceControl/list/changesets</a>) .</p>
+  <div class="section" id="opening-an-openmi-project-file">
+<span id="index-0"></span><h1>Opening an OpenMI Project File<a class="headerlink" href="#opening-an-openmi-project-file" title="Permalink to this headline">¶</a></h1>
+<p>A simple model configuration can be created and executed using freely available model components provided by the HydroDesktop community.  This section describes how to access the pre-developed model components built in to HydroModeler.  If you have downloaded a stable release of HydroDesktop, a few preset example configurations will be available to you and displayed in the left hand box of the HydroModeler window.
+Within each of these example configurations exist a &#8220;bin&#8221; folder, which contains all of the libraries needed to run the model, a &#8220;data&#8221; folder, which contains all of the necessary input files for each model component and a &#8220;models&#8221; folder, which contains files pertaining to each individual model components.</p>
+<ol class="arabic simple">
+<li>Open HydroDesktop.</li>
+<li>Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen -&gt; Extensions -&gt; HydroModeler.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig13.jpg" src="../../_images/HM_fig13.jpg" />
+</div>
+<ol class="arabic simple" start="3">
+<li>A new page will appear.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig23.jpg" src="../../_images/HM_fig23.jpg" />
+</div>
+<ol class="arabic simple" start="4">
+<li>If none of the example configurations are present in the left hand box, look to the top of the page and find an area labeled Current Directory.  Click the button to the right of the text box and navigate to the following directory.</li>
+</ol>
+<p><strong>Program Files/CUAHSI HIS/HydroDesktop/Plugins/HydroModeler/hydromodeler_example_configuration</strong>
+<em>(Note that the exact location will vary slight, based on where you installed HydroDesktop)</em></p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig33.jpg" src="../../_images/HM_fig33.jpg" />
+</div>
+<ol class="arabic simple" start="5">
+<li>Once the example configurations are displayed, you can navigate into the folders to find the .opr files for the preset configuration you are looking for.  You can double click, click and drag, or click the Add Item button to display the configuration.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig43.jpg" src="../../_images/HM_fig43.jpg" />
+</div>
+<ol class="arabic simple" start="6">
+<li>After the configuration has been loaded, you are free to manipulate and run the configuration as you see fit.</li>
+</ol>
 </div>
 
 
@@ -90,7 +121,7 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on May 26, 2011.&nbsp;
+      &nbsp;Last updated on Jun 14, 2011.&nbsp;
       &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
