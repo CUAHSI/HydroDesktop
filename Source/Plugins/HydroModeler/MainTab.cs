@@ -126,6 +126,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private bool _hasChanged = false;
         private string _oldText;
         bool _allowEdit = true;
+        string opr_path;
 
         #endregion
 
@@ -194,6 +195,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             set {  image_path = value; }
         }
 
+        public string OPR_Path
+        {
+            get { return opr_path; }
+            set { opr_path = value; }
+        }
         #region Icon Creation
         public struct IconInfo
         {
@@ -3718,22 +3724,39 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         if (((Oatc.OpenMI.Gui.Core.UIModel)_composition.Models[i]).OmiFilename == filename)
                         {
 
-                            //--- reload the composition ---
+                            //---- reload the composition ---
 
-                            //save the currently loaded opr file path
-                            string currentOPR = _composition.FilePath;
+                            //-- get the current file path
+                            string path = _composition.FilePath;
 
-                            if (currentOPR == null)
-                            {
-                                menuFileSaveAs_Click(this, new EventArgs());
-                                currentOPR = _composition.FilePath;
-                            }
+                            //-- overwrite the original file
+                            _composition.SaveToFile(path);
 
-                            //clear the composition window
+                            //-- clear the composition window
                             this.clear();
 
-                            //reload the currentOpr
-                            this.OpenOprFile(currentOPR);
+                            //-- remove extra characters (in path) from the trigger
+                            StreamReader sr = new StreamReader(path);
+                            string contents = sr.ReadToEnd();
+                            sr.Close();
+
+                            if (contents.Contains("Oatc.OpenMI.Gui.Trigger"))
+                            {
+                                int end = contents.IndexOf("Oatc.OpenMI.Gui.Trigger");
+                                int index = end - 1;
+                                int count = 0;
+                                while (contents[index] != '\"')
+                                { count++; index--; }
+                                contents = contents.Remove(end - count, count);
+                            }
+
+                            //-- rewrite the opr with revised trigger info
+                            StreamWriter sw = new StreamWriter(path);
+                            sw.Write(contents);
+                            sw.Close();
+
+                            //-- reopen the opr file
+                            this.OpenOprFile(_composition.FilePath);
 
                             break;
                         }

@@ -34,13 +34,15 @@ using System.Windows.Forms;
 using Oatc.OpenMI.Gui.Core;
 using OpenMI.Standard;
 using System.IO;
+using DotSpatial.Controls;
+using DotSpatial.Controls.RibbonControls;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
 	/// <summary>
 	/// Summary description for RunBox.
 	/// </summary>
-	public class RunBox : System.Windows.Forms.Form
+    public class RunBox : System.Windows.Forms.Form
 	{
 		CompositionManager _composition;
 
@@ -217,18 +219,70 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 			{
                 case DialogResult.Yes:
                     {
-                        
 
-                        //temporarily save file
-                        _composition.SaveToFile(this._currentDirectory + "\\temp.opr");
+                        #region old reload method
+                        //////_composition.Reload();
 
-                        //clear composition window
+
+                        //////temporarily save file
+                        ////_composition.SaveToFile(this._currentDirectory + "\\temp.opr");
+
+                        //////clear composition window
+                        ////_composition.RemoveAllModels();
+
+                        //////HACK: fix to fix opr file
+                        //////make sure that the trigger does not contain any extra characters
+                        ////string filename = this._currentDirectory + "\\temp.opr";
+                        ////StreamReader sr = new StreamReader(filename);
+                        ////string contents = sr.ReadToEnd();
+                        ////sr.Close();
+
+                        ////if (contents.Contains("Oatc.OpenMI.Gui.Trigger"))
+                        ////{
+                        ////    int end = contents.IndexOf("Oatc.OpenMI.Gui.Trigger");
+                        ////    int index = end - 1;
+                        ////    int count = 0;
+                        ////    while (contents[index] != '\"')
+                        ////    {
+                        ////        count++;
+                        ////        index--;
+                        ////    }
+
+                        ////    contents = contents.Remove(end - count, count);
+                        ////}
+
+                        ////StreamWriter sw = new StreamWriter(filename);
+                        ////sw.Write(contents);
+                        ////sw.Close();
+
+                        //////reload temp opr
+                        ////_composition.LoadFromFile(this._currentDirectory + "\\temp.opr");
+
+                        ////System.IO.File.Delete(this._currentDirectory + "\\temp.opr");
+
+                        //////foreach (UIModel model in models)
+                        //////_composition.AddModel(model.
+                        //////    if (model.ModelID.Contains("Oatc"))
+                        //////    {
+                        //////        _composition.RemoveModel(model);
+                        //////        break;
+                        //////    }
+                        //////_composition.Reload();
+                        #endregion
+
+                        //---- reload the composition ---
+
+                        //-- get the current file path
+                        string path = _composition.FilePath;
+
+                        //-- overwrite the original file
+                        _composition.SaveToFile(path);
+
+                        //-- clear the composition window
                         _composition.RemoveAllModels();
 
-                        //HACK: fix to fix opr file
-                        //make sure that the trigger does not contain any extra characters
-                        string filename = this._currentDirectory + "\\temp.opr";
-                        StreamReader sr = new StreamReader(filename);
+                        //-- remove extra characters (in path) from the trigger
+                        StreamReader sr = new StreamReader(path);
                         string contents = sr.ReadToEnd();
                         sr.Close();
 
@@ -238,31 +292,18 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             int index = end - 1;
                             int count = 0;
                             while (contents[index] != '\"')
-                            {
-                                count++;
-                                index--;
-                            }
-
+                            { count++; index--; }
                             contents = contents.Remove(end - count, count);
                         }
 
-                        StreamWriter sw = new StreamWriter(filename);
+                        //-- rewrite the opr with revised trigger info
+                        StreamWriter sw = new StreamWriter(path);
                         sw.Write(contents);
                         sw.Close();
 
-                        //reload temp opr
-                        _composition.LoadFromFile(this._currentDirectory + "\\temp.opr");
+                        //-- reopen the opr file
+                        _composition.LoadFromFile(_composition.FilePath);
 
-                        System.IO.File.Delete(this._currentDirectory + "\\temp.opr");
-
-                        //foreach (UIModel model in models)
-                            //_composition.AddModel(model.
-                        //    if (model.ModelID.Contains("Oatc"))
-                        //    {
-                        //        _composition.RemoveModel(model);
-                        //        break;
-                        //    }
-                        //_composition.Reload();
                         break;
                     }
 				default:
