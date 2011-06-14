@@ -15,7 +15,7 @@ These terms will give you a general understanding of some of the file formats th
 
 This is what a .omi file looks like when loaded into HydroModeler.
 
-.. figure:: ./images/KeyTerms/HM_fig1.jpg
+.. figure:: ./images/KeyTerms/HM_fig1.png
    :align: center
 
 2. ***.opr file:**
@@ -24,7 +24,7 @@ This is what a .omi file looks like when loaded into HydroModeler.
 
 This is what a .opr file looks like when loaded into HydroModeler.
 
-.. figure:: ./images/KeyTerms/HM_fig2.jpg
+.. figure:: ./images/KeyTerms/HM_fig2.png
    :align: center
 
 
@@ -47,12 +47,12 @@ These terms are for advanced users that wish to create and implement their own m
 
 This is a configuration file opened using Internet Explorer.
 
-.. figure:: ./images/KeyTerms/HM_fig3.jpg
+.. figure:: ./images/KeyTerms/HM_fig3.png
    :align: center
 
 This is a configuration file opened using Notepad++.
 
-.. figure:: ./images/KeyTerms/HM_fig4.jpg
+.. figure:: ./images/KeyTerms/HM_fig4.png
    :align: center
 
 4. ***.shp file**
@@ -61,10 +61,10 @@ This is a configuration file opened using Notepad++.
 
 This is an example of a .shp file that has been added to a configuration file.
 
-.. figure:: ./images/KeyTerms/HM_fig5.jpg
+.. figure:: ./images/KeyTerms/HM_fig5.png
    :align: center
 
 This is an example of .shp files resulting image, created using HydroModeler's ElementSetViewer.
 
-.. figure:: ./images/KeyTerms/HM_fig6.jpg
+.. figure:: ./images/KeyTerms/HM_fig6.png
    :align: center
