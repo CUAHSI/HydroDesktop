@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\..\Program Files\CUAHSI HIS\HydroDesktop\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_04\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
