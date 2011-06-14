@@ -1,0 +1,154 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Key Terms &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="Methods" href="Methods.html" />
+    <link rel="prev" title="Design" href="Design.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Key Terms</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="Methods.html" title="Methods" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="Design.html" title="Design" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="key-terms">
+<span id="index-0"></span><h1>Key Terms<a class="headerlink" href="#key-terms" title="Permalink to this headline">¶</a></h1>
+<p>These are important terms to remember when using HydroModeler.  This first segment focuses on the terminology found by simply using HydroModeler.  HydroModeler also leaves room for development of your own components, so the second portion covers terminology found when creating your own models.</p>
+<div class="section" id="using-hydromodeler">
+<h2>Using HydroModeler<a class="headerlink" href="#using-hydromodeler" title="Permalink to this headline">¶</a></h2>
+<p>These terms will give you a general understanding of some of the file formats that are used in HydroModeler.</p>
+<ol class="arabic simple">
+<li><strong>*.omi file:</strong></li>
+</ol>
+<p><em>OpenMI model file</em>.  These will be the models and tools you can use to help compile your projects.  Each of these components will run a different method that will be used to process the desired data you need.  A breif explanation of the methods found in the pre-existing models can be found in the following page.  If you have access to the appropriate programing software, you also have the ability to develop your own model components.</p>
+<p>This is what a .omi file looks like when loaded into HydroModeler.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig11.jpg" src="../../_images/HM_fig11.jpg" />
+</div>
+<ol class="arabic simple" start="2">
+<li><strong>*.opr file:</strong></li>
+</ol>
+<p><em>OpenMI project file</em>.  After compiling and linking all the models and tools in your project, your project will be saved with the following extension.  This will be helpful to you in the future once you begin creating projects as you will not need to recreate a specific setup of components and links.  Analysis of hydrological data will more than likely require multiple iterations and having these .opr files saved will prevent you from wasting a lot of time reproducing these projects.</p>
+<p>This is what a .opr file looks like when loaded into HydroModeler.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig21.jpg" src="../../_images/HM_fig21.jpg" />
+</div>
+</div>
+<div class="section" id="development">
+<h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
+<p>These terms are for advanced users that wish to create and implement their own models.  Visual Studio is the primary software used in the development of HydroModeler, but there are a number of other programming software that can be utilized.</p>
+<ol class="arabic simple">
+<li><strong>*.dll file:</strong></li>
+</ol>
+<p><em>Dynamic link library file</em>.  The primary purpose of these files is to help facilitate the processes of your computer by providing the required functions and data needed from each individual model.  When you run a project from HydroModeler, it will call the model files contained within the project.  The .dll will retrieve the required information from the model components and return it back to the main processes.  Each of these model componenets will have their own .dll files.  The benifits behind using .dll files is so that multiple programs can access a models information as well as speeding up the processes of your computer by running only when its associated model is present in your project.</p>
+<ol class="arabic simple" start="2">
+<li><strong>SMW:</strong></li>
+</ol>
+<p><em>Simple Model Wrapper</em>. This is an approach for creating OpenMI model components that simplifies the OpenMI interface.</p>
+<ol class="arabic simple" start="3">
+<li><strong>config.xml file:</strong></li>
+</ol>
+<p><em>Model configuration file when using Simple Model Wrapper</em>.  These files store all the information about the data, including a description of the data, it&#8217;s conversion factor, and it&#8217;s units.  Double Clicking these files will allow you to view them through Internet Explorer.  For simple viewing purposes, this is the best program to use because it will color code the syntax, making the file much easier to read.  However, internet explorer will not allow you to edit the files and you mush use a seperate program for editting.  Notpad is the best way to achieve this as it is free.  However, using just notepad makes it diffucult to view these files because there is no color coding, but there is an extened version of notepad you can download called Notepad++ which can be obtained here  <a class="reference external" href="http://notepad-plus-plus.org/download">http://notepad-plus-plus.org/download</a></p>
+<p>This is a configuration file opened using Internet Explorer.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig31.jpg" src="../../_images/HM_fig31.jpg" />
+</div>
+<p>This is a configuration file opened using Notepad++.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig41.jpg" src="../../_images/HM_fig41.jpg" />
+</div>
+<ol class="arabic simple" start="4">
+<li><strong>*.shp file</strong></li>
+</ol>
+<p><em>Shapefile.</em>  This file is used to graphically describe your data using points, polylines, or polygons.  A shapefile can be included in your configuration files and subsequently read by the HydroModeler plug in.  HydroModeler has a build in viewer that can display this graphical representation and is called the ElementSetViewer, which you can find more information about in the Linking Components section of the HydroModeler help files.</p>
+<p>This is an example of a .shp file that has been added to a configuration file.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig51.jpg" src="../../_images/HM_fig51.jpg" />
+</div>
+<p>This is an example of .shp files resulting image, created using HydroModeler&#8217;s ElementSetViewer.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig6.jpg" src="../../_images/HM_fig6.jpg" />
+</div>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Jun 14, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

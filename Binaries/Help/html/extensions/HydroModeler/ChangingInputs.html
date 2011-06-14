@@ -1,0 +1,130 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Changing the Input characteristics &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="Tutorial 1: Quick Start" href="Tutorial01.html" />
+    <link rel="prev" title="Running a Model Composition" href="RunningComposition.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Changing the Input characteristics</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="Tutorial01.html" title="Tutorial 1: Quick Start" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="RunningComposition.html" title="Running a Model Composition" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="changing-the-input-characteristics">
+<span id="index-0"></span><h1>Changing the Input characteristics<a class="headerlink" href="#changing-the-input-characteristics" title="Permalink to this headline">¶</a></h1>
+<p>As mentioned in the Key Terms section, the config.xml file will encompass all of the variable information.  In this section, I will show you how to manipulate this file so that you get the desire information associated with the data that will run through your project.</p>
+<ol class="arabic simple">
+<li>First we will want to open the configuration file.  The Current Directory will default to the example configurations folder imbedded within HydroModeler.  This will be the folder we want to navigate to using Windows Explorer.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig1.jpg" src="../../_images/HM_fig1.jpg" />
+</div>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig2.jpg" src="../../_images/HM_fig2.jpg" />
+</div>
+<ol class="arabic simple" start="2">
+<li>Now that we have found the example configurations folder, navigate through the folders to the specific component you would like to edit.  I will be using the  Sediment_Diff model from example 3, which is found in the models folder.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig3.jpg" src="../../_images/HM_fig3.jpg" />
+</div>
+<ol class="arabic simple" start="3">
+<li>Open this folder to display the associated configuration file.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig4.jpg" src="../../_images/HM_fig4.jpg" />
+</div>
+<ol class="arabic simple" start="4">
+<li>We can edit the configuration file using multiple programs, however, for the sake of saving time and possibly money, I will be using notepad to access this file.   The only downside to using notepad is the information is not formated like shown in Key Terms and can be quite difficult to read at times.</li>
+<li>Right click on the configuration file and select Open With and then select notpad.  You should now see the following screen.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig5.jpg" src="../../_images/HM_fig5.jpg" />
+</div>
+<ol class="arabic simple" start="6">
+<li>Now imagine that the data we have is at 5 second intervals.  Towards the bottom, we can find the time horizon information.  At the bottom of this segment is the TimeStepInSeconds branch.  Currently, this is defaulted to 1 second.  However if our information is taken at 5, like previously mentioned, we will need to change this value from 1 to 5 so that the component is processing our data correctly.</li>
+<li>There are a number of characteristics that we can change, but you want to be sure of what you are editting.  Changing the wrong thing has the possiblity of causing the component to work incorrectly while using it in HydroModeler.  One thing you will not want to change is the Quantity ID.  This information is utilized in the programming in HydroModeler and if this is changed then HydroModeler may not be able to find the specific aspect of this variable.  This could cause an error message within HydroModeler or worse, causing data not to be set correctly and outputting incorrect information.</li>
+</ol>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Jun 14, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
