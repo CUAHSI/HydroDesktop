@@ -1051,6 +1051,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         {
             StopAllActions();
 
+            //if pan is currently selected, disable it
+            this.Ispan = false;
+            RibbonButton s = ((RibbonButton)rps[4].Items[0]);
+            s.Checked = false;
+
+
             _isAddingConnection = true;
             compositionBox.Cursor = _sourceCursor;
             Cursor.Current = _sourceCursor;
