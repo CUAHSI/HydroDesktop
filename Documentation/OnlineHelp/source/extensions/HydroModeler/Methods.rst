@@ -9,56 +9,60 @@ This page will give you a brief overview of the inherent methods used in HydroMo
 Concentration
 -------------
 
-1.	**Water_adv:**
++ **Water_adv:**
 
-2.	**Sediment_Diff:**	
+*Advection.*  The Water_adv component is used to calculate the dispersion of contaminants by water flow.  As a contaminant is introduced at a specified location in a flowing body of water, such as a river, it begins to migrate downstream over time.  Water_adv can find the concentration of contaminants at any given time by considering things like the flow rate and dispersion coefficient.
+
++ **Sediment_Diff:**
+
+*Diffusion.*  The Sediment_Diff component is used to calculate	the diffusion of contaminants to areas of lower levels of contamination.  As a contaminated river continues to flow, some of these contaminants will infiltrate into the soil.  Again, this component can calculate the level of contamination in the soil at any time, given certain constants, like the flow rate and dispersion coefficient.
 
 EvapoTranspiration
 ------------------
 
-1.	**Hargreaves:**
++ **Hargreaves:**
 
-2.	**ET:**
++ **ET:**
 
-3.	**PT_PET:**
++ **PT_PET:**
 
 Infiltration
 ------------
 
-1.	**GreenAmpt:**
++ **GreenAmpt:**
 
-2.	**CNMethod:**
++ **CNMethod:**
 
 Routing
 -------
 
-1.	**Muskingum:**	
++ **Muskingum:**	
 
 Runoff
 ------
 
-1.	**2dDiffusiveWave:**
++ **2dDiffusiveWave:**
 
-2.	**NRCS UnitHydrograph:**
++ **NRCS UnitHydrograph:**
 
-3.	**TopModel:**
++ **TopModel:**
 
 SolarRadiation
 --------------
 
-1.	**NSR:**
++ **NSR:**
 
 Other
 -----
 
-1.	**LoadCalculator:**
++ **LoadCalculator:**
 
-2.	**wtmpReader:**
++ **wtmpReader:**
 
-3.	**RandomInputGenerator:**
++ **RandomInputGenerator:**
 
-4.	**HydroLink:**
++ **HydroLink:**
 
-5.	**DbReader:**
++ **DbReader:**
 
-6.	**DbWriter:**
++ **DbWriter:**
