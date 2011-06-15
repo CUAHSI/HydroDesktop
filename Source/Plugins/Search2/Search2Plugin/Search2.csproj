@@ -121,9 +121,19 @@
     <Compile Include="AdvancedSettingsDialog.Designer.cs">
       <DependentUpon>AdvancedSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="DownloadArg.cs" />
-    <Compile Include="Downloader.cs" />
-    <Compile Include="DownloadInfo.cs" />
+    <Compile Include="Download\Exceptions\DataSeriesFromXmlException.cs" />
+    <Compile Include="Download\Downloader.cs" />
+    <Compile Include="Download\DownloadInfo.cs" />
+    <Compile Include="Download\DownloadArg.cs" />
+    <Compile Include="Download\DownloadManager.cs" />
+    <Compile Include="Download\DownloadManagerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Download\DownloadManagerUI.Designer.cs">
+      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Download\Exceptions\DownloadXmlException.cs" />
+    <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />
     <Compile Include="WebServicesList.cs" />
@@ -161,6 +171,9 @@
     <EmbeddedResource Include="AdvancedSettingsDialog.resx">
       <DependentUpon>AdvancedSettingsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Download\DownloadManagerUI.resx">
+      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
