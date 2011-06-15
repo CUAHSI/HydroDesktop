@@ -17,9 +17,6 @@ Introduction
 
    Design
 
-   KeyTerms
-
-   Methods
 
 Help Topics
 -----------
@@ -35,6 +32,7 @@ Help Topics
 
    ChangingInputs
 
+
 Tutorials
 ---------
 
@@ -47,3 +45,13 @@ Tutorials
    
    Tutorial03
 
+
+Reference
+---------
+
+.. toctree::
+   :maxdepth: 2
+
+   Glossary
+
+   ExampleConfig
