@@ -1,0 +1,125 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Working with Databases &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="index.html" />
+    <link rel="up" title="Guide Books" href="guide-books.html" />
+    <link rel="next" title="Table Tab" href="table-tab.html" />
+    <link rel="prev" title="Using the Orb" href="using-the-orb.html" />
+    <link media="only screen and (max-device-width: 480px)" href="_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="guide-books.html" accesskey="U">Guide Books</a><img src="_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Working with Databases</div>
+	<div class="pagebutton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="table-tab.html" title="Table Tab" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="using-the-orb.html" title="Using the Orb" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="welcome.html">Welcome</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="guide-books.html">Guide Books</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="using-the-orb.html">Using the Orb</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Working with Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-tab.html">Table Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph-view-tab.html">Graph Tab</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="working-with-databases">
+<span id="index-0"></span><h1>Working with Databases<a class="headerlink" href="#working-with-databases" title="Permalink to this headline">¶</a></h1>
+<p>Temporal data are stored in a relational database called the Data Repository.  Catalogs of available data, which may not yet have been downloaded into the Data Repository, are maintained in another database called the Metadata Cache database.</p>
+<p>Tools in HydroDesktop know how to read these databases and present information from them to the user, and they also know how to properly save information to these databases.  Therefore, it&#8217;s generally a good idea to use HydroDesktop to work with these databases.  However, some users may want to open the databases directly. This page describes how to locate and open HydroDesktop databases outside of HydroDesktop.</p>
+<div class="section" id="locating-the-hydrodesktop-databases">
+<span id="index-1"></span><h2>Locating the HydroDesktop Databases<a class="headerlink" href="#locating-the-hydrodesktop-databases" title="Permalink to this headline">¶</a></h2>
+<p>The <em>Data Repository</em> database is linked to the current project opened in HydroDesktop. To locate the Data Repository database:</p>
+<ol class="arabic simple">
+<li>In the Ribbon, in the <strong>Table</strong> tab, in the <strong>Database</strong> panel, click <strong>Change</strong>.  The location of the current database is shown in the dialog that opens.</li>
+</ol>
+<p>The <em>Metadata Cache</em> database is located in the application directory for HydroDesktop, e.g., C:\Program Files\CUAHSI HIS\HydroDesktop\databases\MetadataCache.sqlite.</p>
+</div>
+<div class="section" id="viewing-the-hydrodesktop-databases">
+<span id="index-2"></span><h2>Viewing the HydroDesktop Databases<a class="headerlink" href="#viewing-the-hydrodesktop-databases" title="Permalink to this headline">¶</a></h2>
+<p>HydroDesktop attempts to provide simplified and useful views into its databases through its user interface.  However, it is also possible to open and peruse the database contents directly.  By default, HydroDesktop uses SQLite as its database format.  You can view the contents of a SQLite database using the following free viewers:</p>
+<ul class="simple">
+<li>SQLite Database Browser - <a class="reference external" href="http://sourceforge.net/projects/sqlitebrowser/">http://sourceforge.net/projects/sqlitebrowser/</a></li>
+<li>Firefox SQLite Manager Add-on (requires Firefox) - <a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/5817/">https://addons.mozilla.org/en-US/firefox/addon/5817/</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+<<<<<<< local
+      &nbsp;Last updated on Apr 28, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.&nbsp;
+=======
+      &nbsp;Last updated on Apr 26, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+>>>>>>> other
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>

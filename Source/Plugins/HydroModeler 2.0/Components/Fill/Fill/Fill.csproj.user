@@ -1,0 +1,6 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\OATC OpenMI Editor 2.0 Alpha 3\Oatc_OpenMI_Editor.exe</StartProgram>
+  </PropertyGroup>
+</Project>
