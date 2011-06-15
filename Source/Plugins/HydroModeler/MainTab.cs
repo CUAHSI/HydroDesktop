@@ -2070,13 +2070,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             col = new ColumnHeader();
             col.Text = "Property";
-            col.Width = 125;
+            col.Width = 90;
             col.TextAlign = HorizontalAlignment.Left;
             this.properties.Columns.Add(col);
 
             col = new ColumnHeader();
             col.Text = "Value";
-            col.Width = 70;
+            col.Width = 105;
             col.TextAlign = HorizontalAlignment.Left;
             this.properties.Columns.Add(col);
 
@@ -2834,16 +2834,21 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     //loop through args
                     foreach (XmlNode arg in Argument)
                     {
+                        //-- get the argument key
                         string Key = arg.OuterXml.Split(' ')[1].Split('=')[1];
                         Key = Key.Remove(0, 1).Remove(Key.Length - 2, 1);
+
+                        //-- get the argument value
                         string Value = arg.OuterXml.Split(' ')[3].Split('=')[1];
                         for (int i = 4; i <= arg.OuterXml.Split(' ').Length - 1; i++)
-                            Value += arg.OuterXml.Split(' ')[i];
+                            Value += " "+ arg.OuterXml.Split(' ')[i];
+                        //-- replace xml characters in value
                         Value = Value.Replace("/>", "");
                         Value = Value.Replace(">", "");
-                        Value = Value.Replace(".\\", "");
-                        Value = Value.Replace("\\", "");
+                        //Value = Value.Replace(".\\", "");
+                        //Value = Value.Replace("\\", "");
                         Value = Value.Replace("\"", "");
+
                         ////remove /> characters if there isnt a space after this element
                         //if(arg.OuterXml.Split(' ').Length == 3)        
                         //    Value = Value.Remove(0, 1).Remove(Value.Length - 2, 1);
@@ -3735,35 +3740,47 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //-- get the current file path
                             string path = _composition.FilePath;
 
-                            //-- overwrite the original file
-                            _composition.SaveToFile(path);
-
-                            //-- clear the composition window
-                            this.clear();
-
-                            //-- remove extra characters (in path) from the trigger
-                            StreamReader sr = new StreamReader(path);
-                            string contents = sr.ReadToEnd();
-                            sr.Close();
-
-                            if (contents.Contains("Oatc.OpenMI.Gui.Trigger"))
+                            if (path != null)
                             {
-                                int end = contents.IndexOf("Oatc.OpenMI.Gui.Trigger");
-                                int index = end - 1;
-                                int count = 0;
-                                while (contents[index] != '\"')
-                                { count++; index--; }
-                                contents = contents.Remove(end - count, count);
+
+                                //-- overwrite the original file
+                                _composition.SaveToFile(path);
+
+
+                                //-- clear the composition window
+                                this.clear();
+
+                                //-- remove extra characters (in path) from the trigger
+                                StreamReader sr = new StreamReader(path);
+                                string contents = sr.ReadToEnd();
+                                sr.Close();
+
+                                if (contents.Contains("Oatc.OpenMI.Gui.Trigger"))
+                                {
+                                    int end = contents.IndexOf("Oatc.OpenMI.Gui.Trigger");
+                                    int index = end - 1;
+                                    int count = 0;
+                                    while (contents[index] != '\"')
+                                    { count++; index--; }
+                                    contents = contents.Remove(end - count, count);
+                                }
+
+                                //-- rewrite the opr with revised trigger info
+                                StreamWriter sw = new StreamWriter(path);
+                                sw.Write(contents);
+                                sw.Close();
+
+                                //-- reopen the opr file
+                                this.OpenOprFile(_composition.FilePath);
                             }
+                            else
+                            {
+                                //-- clear the composition window
+                                this.clear();
 
-                            //-- rewrite the opr with revised trigger info
-                            StreamWriter sw = new StreamWriter(path);
-                            sw.Write(contents);
-                            sw.Close();
-
-                            //-- reopen the opr file
-                            this.OpenOprFile(_composition.FilePath);
-
+                                //-- reload model component
+                                this.AddModel(filename);
+                            }
                             break;
                         }
                     }
