@@ -132,134 +132,22 @@ namespace CUAHSI.HIS.Test
             Console.WriteLine("end: " + CalendarConverter.ModifiedJulian2Gregorian(his.TimeHorizon.End.ModifiedJulianDay).ToString());
         }
 
-        ///// <summary>
-        ///// This method tests Hydrolinks ability to read elements from the waterml database
-        ///// </summary>
-        //[Test]
-        //public void GetElements()
-        //{
-        //    Console.Write("Begin Get Elemtents Test...");
-        //    DbReader his = new DbReader();
-        //    IArgument[] arguments = new IArgument[1];
-        //    arguments[0] = new Argument("DbPath", @"..\data\cuahsi-his\demo.db", true, "Database");
-        //    his.Initialize(arguments);
-        //    for (int i = 0; i < his.OutputExchangeItemCount; ++i)
-        //    {
-        //        IElementSet es = his.GetOutputExchangeItem(i).ElementSet;
-        //        for (int j = 0; j < es.ElementCount; ++j)
-        //        {
-        //            Console.WriteLine(es.GetXCoordinate(j, 0).ToString() + ", " +
-        //                es.GetYCoordinate(j, 0).ToString());
-        //        }
-        //    }
-        //    Console.WriteLine("model description: " + his.ModelDescription);
+        [Test]
+        public void ReadOmiArgs()
+        {
+            DbWriter his = new DbWriter();
 
-        //}
+            IArgument[] arguments = new IArgument[5];
+            arguments[0] = new Argument("DbPath", @"..\data\cuahsi-his\demo.db", true, "Database");
+            arguments[1] = new Argument("Organization","University of South Carolina",true,"");
+            arguments[2] = new Argument("Address","none",true,"");
+            arguments[3] = new Argument("Citation","none",true,"");
+            arguments[4] = new Argument("City", "none",true,"");
 
+            Dictionary<string, string> db_args = his.ReadDbArgs(arguments);
 
+        }
 
-        ///// <summary>
-        ///// This method tests the implementation of the linear interpolation algorithm (part of the smart
-        ///// buffer) within Hydrolink.  Values are added to the smart buffer in 10min intervals, then are 
-        ///// requested at 5min intervals.
-        ///// </summary>
-        //[Test]
-        //public void LinearTimeInterpolation()
-        //{
-        //    Console.Write("Begin Linear Interpolation Test...");
-
-        //    //create the his component
-        //    DbReader his = new DbReader();
-        //    IArgument[] arguments = new IArgument[1];
-        //    arguments[0] = new Argument("DbPath", @"..\data\cuahsi-his\demo.db", true, "Database");
-        //    his.Initialize(arguments);
-
-        //    //create a trigger component
-        //    Trigger trigger = new Trigger();
-        //    trigger.Initialize(null);
-
-        //    //link the two components
-        //    Link link = new Link();
-        //    link.ID = "link-1";
-        //    link.TargetElementSet = trigger.GetInputExchangeItem(0).ElementSet;
-        //    link.TargetQuantity = trigger.GetInputExchangeItem(0).Quantity;
-        //    link.TargetComponent = trigger;
-
-
-        //    link.SourceElementSet = his.GetOutputExchangeItem(1).ElementSet;
-        //    link.SourceQuantity = his.GetOutputExchangeItem(1).Quantity;
-        //    link.TargetComponent = his;
-
-
-        //    //Spatial interpolation
-        //    IDataOperation dataOp = (his).GetOutputExchangeItem(0).GetDataOperation(7);
-        //    link.AddDataOperation(dataOp);
-
-
-        //    //run configuration
-        //    his.AddLink(link);
-
-        //    trigger.Validate();
-        //    his.Validate();
-
-        //    //prepare 
-        //    his.Prepare();
-
-        //    DateTime dt = Convert.ToDateTime("2009-08-20T21:40:00");
-
-        //    SmartBuffer _smartBuffer = new SmartBuffer();
-
-        //    //Add all values to buffer in 10min intervals
-        //    Console.Write("Storing values in the smart buffer (10min resolution)... ");
-        //    while (dt <= Convert.ToDateTime("2009-08-21T02:00:00"))
-        //    {
-
-        //        ITimeStamp time_stmp = new TimeStamp(CalendarConverter.Gregorian2ModifiedJulian(dt));
-        //        ScalarSet scalarset = (ScalarSet)his.GetValues(time_stmp, "link-1");
-
-        //        if (scalarset.Count == 0)
-        //        {
-        //            int f = his.GetOutputExchangeItem(1).ElementSet.ElementCount;
-        //            ArrayList zeroArray = new ArrayList();
-        //            for (int i = 0; i <= f - 1; i++)
-        //                zeroArray.Add(0.0);
-
-        //            double[] zeros = (double[])zeroArray.ToArray(typeof(double));
-
-        //            scalarset = new ScalarSet(zeros);
-        //        }
-
-        //        _smartBuffer.AddValues(time_stmp, scalarset);
-
-        //        dt = dt.AddMinutes(10);
-        //    }
-        //    Console.WriteLine("done.\n\n");
-
-        //    //request values from the smart buffer at 5min intervals
-        //    dt = Convert.ToDateTime("2009-08-20T21:40:00");
-        //    while (dt <= Convert.ToDateTime("2009-08-21T02:00:00"))
-        //    {
-
-        //        ITimeStamp time_stmp = new TimeStamp(CalendarConverter.Gregorian2ModifiedJulian(dt));
-
-        //        //Get values at requested time
-        //        ScalarSet scalarset = (ScalarSet)_smartBuffer.GetValues(time_stmp);
-
-        //        Console.WriteLine("GetValues: " + dt.ToString("s"));
-
-
-        //        //loop through interpolated values
-        //        int i = 0;
-        //        foreach (double d in scalarset.data)
-        //        {
-
-        //            Console.WriteLine(link.SourceElementSet.GetElementID(i).ToString() + " " + d.ToString());
-        //            ++i;
-        //        }
-        //        dt = dt.AddMinutes(5);
-        //    }
-
-        //    Console.Write("done. \n");
-        //}
+        
     }
 }

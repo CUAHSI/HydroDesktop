@@ -180,17 +180,18 @@ namespace CUAHSI.HIS
                 if (property.Key == "IgnoreValue") { _ignore = Convert.ToDouble(property.Value); }
             }
             
-            //create generic input and output exchange items
+            //---- create generic input and output exchange items
             InputExchangeItem inExchangeItem = new InputExchangeItem();
-            inExchangeItem.ElementSet = new ElementSet("any element set", "any element set", ElementType.IDBased, null);
+            inExchangeItem.ElementSet = new ElementSet("any element set", "any element set", ElementType.IDBased, new Oatc.OpenMI.Sdk.Backbone.SpatialReference("1"));
             inExchangeItem.Quantity = new Quantity("any quantity");
             _inputExchangeItems.Add(inExchangeItem);
+
             OutputExchangeItem outExchangeItem = new OutputExchangeItem();
-            outExchangeItem.ElementSet = new ElementSet("dummy element set", "dummy element set", ElementType.IDBased, null);
+            outExchangeItem.ElementSet = new ElementSet("dummy element set", "dummy element set", ElementType.IDBased, new Oatc.OpenMI.Sdk.Backbone.SpatialReference("1"));
             outExchangeItem.Quantity = new Quantity("dummy quantity");
             _outputExchangeItems.Add(outExchangeItem);
 
-            //define arbitrary start and end times
+            //---- define arbitrary start and end times
             _earliestInputTime = CalendarConverter.Gregorian2ModifiedJulian(new DateTime(1900,1,1));
             _latestInputTime = CalendarConverter.Gregorian2ModifiedJulian(new DateTime(2100, 12, 31));
 
@@ -559,6 +560,7 @@ namespace CUAHSI.HIS
                 //--- Attempt to spatially define elements 7-15-2010 ---
                 try
                 {
+
                     //save site latitude and longitude
                     if (link.SourceElementSet.ElementType == ElementType.XYPoint)
                     {
@@ -715,5 +717,18 @@ namespace CUAHSI.HIS
             }
         }
         #endregion
+
+        public Dictionary<string, string> ReadDbArgs(IArgument[] arguments)
+        {
+            //---- enumerate over arguments
+            var e = arguments.AsEnumerable();
+            Dictionary<string, string> dict = new Dictionary<string,string>();
+
+            //---- store each argument in a dictionary
+            foreach (object obj in e)
+                dict.Add(((Argument)obj).Key, ((Argument)obj).Value);
+
+            return dict;
+        }
     }
 }
