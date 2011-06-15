@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Key Terms &mdash; HydroDesktop Help</title>
+    <title>Glossary &mdash; HydroDesktop Help</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
     <link rel="up" title="HydroModeler" href="HydroModeler.html" />
-    <link rel="next" title="Methods" href="Methods.html" />
-    <link rel="prev" title="Design" href="Design.html" />
+    <link rel="next" title="Example Configurations" href="ExampleConfig.html" />
+    <link rel="prev" title="Tutorial 3: Creating a New Model Component" href="Tutorial03.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -34,10 +34,10 @@
 <div id="header">
         <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
         <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Key Terms</div>
+    <div class="breadcrumb">Glossary</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="Methods.html" title="Methods" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="Design.html" title="Design" accesskey="P">previous</a></div>
+	<div class="pagebutton"><a href="ExampleConfig.html" title="Example Configurations" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="Tutorial03.html" title="Tutorial 3: Creating a New Model Component" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
@@ -77,64 +77,58 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="key-terms">
-<span id="index-0"></span><h1>Key Terms<a class="headerlink" href="#key-terms" title="Permalink to this headline">¶</a></h1>
-<p>These are important terms to remember when using HydroModeler.  This first segment focuses on the terminology found by simply using HydroModeler.  HydroModeler also leaves room for development of your own components, so the second portion covers terminology found when creating your own models.</p>
-<div class="section" id="using-hydromodeler">
-<h2>Using HydroModeler<a class="headerlink" href="#using-hydromodeler" title="Permalink to this headline">¶</a></h2>
-<p>These terms will give you a general understanding of some of the file formats that are used in HydroModeler.</p>
-<ul class="simple">
-<li><strong>*.omi file:</strong></li>
-</ul>
-<p><em>OpenMI model file</em>.  These will be the models and tools you can use to help compile your projects.  Each of these components will run a different method that will be used to process the desired data you need.  A breif explanation of the methods found in the pre-existing models can be found in the following page.  If you have access to the appropriate programing software, you also have the ability to develop your own model components.</p>
-<p>This is what a .omi file looks like when loaded into HydroModeler.</p>
-<div class="figure align-center">
-<img alt="../../_images/HM_fig116.png" src="../../_images/HM_fig116.png" />
-</div>
-<ul class="simple">
-<li><strong>*.opr file:</strong></li>
-</ul>
-<p><em>OpenMI project file</em>.  After compiling and linking all the models and tools in your project, your project will be saved with the following extension.  This will be helpful to you in the future once you begin creating projects as you will not need to recreate a specific setup of components and links.  Analysis of hydrological data will more than likely require multiple iterations and having these .opr files saved will prevent you from wasting a lot of time reproducing these projects.</p>
-<p>This is what a .opr file looks like when loaded into HydroModeler.</p>
-<div class="figure align-center">
-<img alt="../../_images/HM_fig217.png" src="../../_images/HM_fig217.png" />
-</div>
-</div>
-<div class="section" id="development">
-<h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
-<p>These terms are for advanced users that wish to create and implement their own models.  Visual Studio is the primary software used in the development of HydroModeler, but there are a number of other programming software that can be utilized.</p>
-<ul class="simple">
-<li><strong>*.dll file:</strong></li>
-</ul>
-<p><em>Dynamic link library file</em>.  The primary purpose of these files is to help facilitate the processes of your computer by providing the required functions and data needed from each individual model.  When you run a project from HydroModeler, it will call the model files contained within the project.  The .dll will retrieve the required information from the model components and return it back to the main processes.  Each of these model componenets will have their own .dll files.  The benifits behind using .dll files is so that multiple programs can access a models information as well as speeding up the processes of your computer by running only when its associated model is present in your project.</p>
-<ul class="simple">
-<li><strong>SMW:</strong></li>
-</ul>
-<p><em>Simple Model Wrapper</em>. This is an approach for creating OpenMI model components that simplifies the OpenMI interface, which in turn, allows you to create your own components with ease by reducing the amount of code required.  The Simple Model Wrapper will reduce the required number of methods from 19 to 3.  When designing your components, they will consist of three methods, called Initialize, Preform Time Step, and Finish.  Initialize will set up the model with initial conditions, units, and system parameters.  Perform Time Step will take all the initialized information and process it to output your calculated values.  It will return these values so that they may be accessed by other components.  The Finish method will close out any files opened to retrieve any information, for example, the configuration file.  This method helps to conserve computer memory and allow processes to run faster.</p>
-<ul class="simple">
-<li><strong>config.xml file:</strong></li>
-</ul>
+  <div class="section" id="glossary">
+<span id="index-0"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
+<p>This is a glossary of terms frequently found when using HydroModeler.</p>
+<div class="section" id="config-xml-file">
+<h2>config.xml file<a class="headerlink" href="#config-xml-file" title="Permalink to this headline">¶</a></h2>
 <p><em>Model configuration file when using Simple Model Wrapper</em>.  These files store all the information about the data, including a description of the data, it&#8217;s conversion factor, and it&#8217;s units.  The benifit to using configuration files is that when the data changes, components to not need to be recompiled.  Double Clicking these files will allow you to view them through Internet Explorer.  For simple viewing purposes, this is the best program to use because it will color code the syntax, making the file much easier to read.  However, internet explorer will not allow you to edit the files and you mush use a seperate program for editting.  Notpad is the best way to achieve this as it is free.  However, using just notepad makes it diffucult to view these files because there is no color coding, but there is an extened version of notepad you can download called Notepad++ which can be obtained here  <a class="reference external" href="http://notepad-plus-plus.org/download">http://notepad-plus-plus.org/download</a></p>
 <p>This is a configuration file opened using Internet Explorer.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig317.png" src="../../_images/HM_fig317.png" />
+<img alt="../../_images/HM_fig323.png" src="../../_images/HM_fig323.png" />
 </div>
 <p>This is a configuration file opened using Notepad++.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig417.png" src="../../_images/HM_fig417.png" />
+<img alt="../../_images/HM_fig423.png" src="../../_images/HM_fig423.png" />
 </div>
-<ul class="simple">
-<li><strong>*.shp file</strong></li>
-</ul>
+</div>
+<div class="section" id="dll-file">
+<h2><a href="#id1"><span class="problematic" id="id2">*</span></a>.dll file<a class="headerlink" href="#dll-file" title="Permalink to this headline">¶</a></h2>
+<p><em>Dynamic link library file</em>.  The primary purpose of these files is to help facilitate the processes of your computer by providing the required functions and data needed from each individual model.  When you run a project from HydroModeler, it will call the model files contained within the project.  The .dll will retrieve the required information from the model components and return it back to the main processes.  Each of these model componenets will have their own .dll files.  The benifits behind using .dll files is so that multiple programs can access a models information as well as speeding up the processes of your computer by running only when its associated model is present in your project.</p>
+</div>
+<div class="section" id="omi-file">
+<h2><a href="#id3"><span class="problematic" id="id4">*</span></a>.omi file<a class="headerlink" href="#omi-file" title="Permalink to this headline">¶</a></h2>
+<p>These terms will give you a general understanding of some of the file formats that are used in HydroModeler.</p>
+<p><em>OpenMI model file</em>.  These will be the models and tools you can use to help compile your projects.  Each of these components will run a different method that will be used to process the desired data you need.  A breif explanation of the methods found in the pre-existing models can be found in the following page.  If you have access to the appropriate programing software, you also have the ability to develop your own model components.</p>
+<p>This is what a .omi file looks like when loaded into HydroModeler.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig122.png" src="../../_images/HM_fig122.png" />
+</div>
+</div>
+<div class="section" id="opr-file">
+<h2><a href="#id5"><span class="problematic" id="id6">*</span></a>.opr file<a class="headerlink" href="#opr-file" title="Permalink to this headline">¶</a></h2>
+<p><em>OpenMI project file</em>.  After compiling and linking all the models and tools in your project, your project will be saved with the following extension.  This will be helpful to you in the future once you begin creating projects as you will not need to recreate a specific setup of components and links.  Analysis of hydrological data will more than likely require multiple iterations and having these .opr files saved will prevent you from wasting a lot of time reproducing these projects.</p>
+<p>This is what a .opr file looks like when loaded into HydroModeler.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig223.png" src="../../_images/HM_fig223.png" />
+</div>
+<p>These terms are for advanced users that wish to create and implement their own models.  Visual Studio is the primary software used in the development of HydroModeler, but there are a number of other programming software that can be utilized.</p>
+</div>
+<div class="section" id="shp-file">
+<h2><a href="#id7"><span class="problematic" id="id8">*</span></a>.shp file<a class="headerlink" href="#shp-file" title="Permalink to this headline">¶</a></h2>
 <p><em>Shapefile.</em>  This file is used to graphically describe your data using points, polylines, or polygons.  A shapefile can be included in your configuration files and subsequently read by the HydroModeler plug in.  A .shp file is not required and is also not the only format that can be used.  An alternative would be to use an ASCII files.  HydroModeler has a build in viewer that can display this graphical representation and is called the ElementSetViewer, which you can find more information about in the Linking Components section of the HydroModeler help files.</p>
 <p>This is an example of a .shp file that has been added to a configuration file.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig511.png" src="../../_images/HM_fig511.png" />
+<img alt="../../_images/HM_fig517.png" src="../../_images/HM_fig517.png" />
 </div>
 <p>This is an example of .shp files resulting image, created using HydroModeler&#8217;s ElementSetViewer.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig65.png" src="../../_images/HM_fig65.png" />
+<img alt="../../_images/HM_fig610.png" src="../../_images/HM_fig610.png" />
 </div>
+</div>
+<div class="section" id="smw">
+<h2>SMW<a class="headerlink" href="#smw" title="Permalink to this headline">¶</a></h2>
+<p><em>Simple Model Wrapper</em>. This is an approach for creating OpenMI model components that simplifies the OpenMI interface, which in turn, allows you to create your own components with ease by reducing the amount of code required.  The Simple Model Wrapper will reduce the required number of methods from 19 to 3.  When designing your components, they will consist of three methods, called Initialize, Preform Time Step, and Finish.  Initialize will set up the model with initial conditions, units, and system parameters.  Perform Time Step will take all the initialized information and process it to output your calculated values.  It will return these values so that they may be accessed by other components.  The Finish method will close out any files opened to retrieve any information, for example, the configuration file.  This method helps to conserve computer memory and allow processes to run faster.</p>
 </div>
 </div>
 

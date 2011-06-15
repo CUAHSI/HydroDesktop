@@ -1,6 +1,6 @@
 .. index:: ChangingModelInputs
 
-Changing the Input characteristics
+Changing the Input Characteristics
 ==================================
 
 As mentioned in the Key Terms section, the config.xml file will encompass all of the variable information.  In this section, I will show you how to manipulate this file so that you get the desire information associated with the data that will run through your project.
