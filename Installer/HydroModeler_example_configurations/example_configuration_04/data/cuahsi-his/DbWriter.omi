@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <LinkableComponent Type="CUAHSI.HIS.DbWriter" Assembly="..\..\bin\DbWriter.dll">
 <Arguments>
-    <Argument Key="DbPath" ReadOnly="true" Value=".\example4.sqlite " />
-    <Argument Key="MethodDescription" ReadOnly="true" Value="Test Simulation 1" />
-    <Argument Key="SourceOrganization" ReadOnly="true" Value="University of South Carolina " />
-    <Argument Key="SourceAddress" ReadOnly="true" Value="300 Main St. " />
-    <Argument Key="SourceCity" ReadOnly="true" Value="Columbia " />
-    <Argument Key="SourceState" ReadOnly="true" Value="SC " />
-    <Argument Key="SourceZip" ReadOnly="true" Value="29206 " />
-    <Argument Key="SourceContact" ReadOnly="true" Value="none " />
-    <Argument Key="VariableCategory" ReadOnly="true" Value="Hydrology " />
-    <Argument Key="VariableSampleMedium" ReadOnly="true" Value="Surface Water " />
+    <Argument Key="DbPath" ReadOnly="true" Value=".\example4.sqlite   " />
+    <Argument Key="Method.Description" ReadOnly="true" Value="Simulation 2, m=80, Tmax=270000" />
+    <Argument Key="Source.Organization" ReadOnly="true" Value="University of South Carolina   " />
+    <Argument Key="Source.Address" ReadOnly="true" Value="300 Main St.   " />
+    <Argument Key="Source.City" ReadOnly="true" Value="Columbia   " />
+    <Argument Key="Source.State" ReadOnly="true" Value="SC   " />
+    <Argument Key="Source.Zip" ReadOnly="true" Value="29206   " />
+    <Argument Key="Source.Contact" ReadOnly="true" Value="none   " />
+    <Argument Key="Variable.Category" ReadOnly="true" Value="Hydrology   " />
+    <Argument Key="Variable.SampleMedium" ReadOnly="true" Value="SurfaceWater   " />
 </Arguments>
 </LinkableComponent>
