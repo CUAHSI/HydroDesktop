@@ -82,56 +82,60 @@
 <p>This page will give you a brief overview of the inherent methods used in HydroModeler to create and run your projects.  Each of the built in components are found within their respective categories.  The other sub category will contain information about the tools that are used to collect, store, and maniupulate your data.</p>
 <div class="section" id="concentration">
 <h2>Concentration<a class="headerlink" href="#concentration" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>Water_adv:</strong></li>
+</ul>
+<p><em>Advection.</em>  The Water_adv component is used to calculate the dispersion of contaminants by water flow.  As a contaminant is introduced at a specified location in a flowing body of water, such as a river, it begins to migrate downstream over time.  Water_adv can find the concentration of contaminants at any given time by considering things like the flow rate and dispersion coefficient.</p>
+<ul class="simple">
 <li><strong>Sediment_Diff:</strong></li>
-</ol>
+</ul>
+<p><em>Diffusion.</em>  The Sediment_Diff component is used to calculate  the diffusion of contaminants to areas of lower levels of contamination.  As a contaminated river continues to flow, some of these contaminants will infiltrate into the soil.  Again, this component can calculate the level of contamination in the soil at any time, given certain constants, like the flow rate and dispersion coefficient.</p>
 </div>
 <div class="section" id="evapotranspiration">
 <h2>EvapoTranspiration<a class="headerlink" href="#evapotranspiration" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>Hargreaves:</strong></li>
 <li><strong>ET:</strong></li>
 <li><strong>PT_PET:</strong></li>
-</ol>
+</ul>
 </div>
 <div class="section" id="infiltration">
 <h2>Infiltration<a class="headerlink" href="#infiltration" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>GreenAmpt:</strong></li>
 <li><strong>CNMethod:</strong></li>
-</ol>
+</ul>
 </div>
 <div class="section" id="routing">
 <h2>Routing<a class="headerlink" href="#routing" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>Muskingum:</strong></li>
-</ol>
+</ul>
 </div>
 <div class="section" id="runoff">
 <h2>Runoff<a class="headerlink" href="#runoff" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>2dDiffusiveWave:</strong></li>
 <li><strong>NRCS UnitHydrograph:</strong></li>
 <li><strong>TopModel:</strong></li>
-</ol>
+</ul>
 </div>
 <div class="section" id="solarradiation">
 <h2>SolarRadiation<a class="headerlink" href="#solarradiation" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>NSR:</strong></li>
-</ol>
+</ul>
 </div>
 <div class="section" id="other">
 <h2>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
+<ul class="simple">
 <li><strong>LoadCalculator:</strong></li>
 <li><strong>wtmpReader:</strong></li>
 <li><strong>RandomInputGenerator:</strong></li>
 <li><strong>HydroLink:</strong></li>
 <li><strong>DbReader:</strong></li>
 <li><strong>DbWriter:</strong></li>
-</ol>
+</ul>
 </div>
 </div>
 
@@ -143,7 +147,7 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Jun 14, 2011.&nbsp;
+      &nbsp;Last updated on Jun 15, 2011.&nbsp;
       &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
