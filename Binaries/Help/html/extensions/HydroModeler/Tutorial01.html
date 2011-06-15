@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial 1: Quick Start &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="Tutorial 2: Creating and Running a Model Composition" href="Tutorial02.html" />
+    <link rel="prev" title="Changing the Input characteristics" href="ChangingInputs.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Tutorial 1: Quick Start</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="Tutorial02.html" title="Tutorial 2: Creating and Running a Model Composition" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="ChangingInputs.html" title="Changing the Input characteristics" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tutorial-1-quick-start">
+<span id="index-0"></span><h1>Tutorial 1: Quick Start<a class="headerlink" href="#tutorial-1-quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-hydrodesktop-interface">
+<span id="index-1"></span><h2>The HydroDesktop interface<a class="headerlink" href="#the-hydrodesktop-interface" title="Permalink to this headline">¶</a></h2>
+<p>The primary part of the HydroDesktop interface is the map and the map layers box.  With the map layers box, you are able to enable or disable a range of options that display simple base data (countries of the world, U.S states, major rivers and lakes, watersheds) to the map. The other parts are the Graph View and Table view menu. By default the map view does not contain any site with hydrological time series data. These sites can be added to the map in two possible ways:</p>
+<ol class="arabic simple">
+<li>Search and Download Data</li>
+<li>Open an existing HydroDesktop database with downloaded data. This option is explained in Appendix 2.</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_figure1.png" src="extensions\HydroModeler\images\HM_figure1.png" />
+</div>
+</div>
+<div class="section" id="hydromodeler-plugin">
+<span id="index-2"></span><h2>HydroModeler Plugin<a class="headerlink" href="#hydromodeler-plugin" title="Permalink to this headline">¶</a></h2>
+<p>HydroModeler is a plugin application that extends the core HydroDesktop application to support hydrologic modeling.  HydroModeler makes use of the OpenMI standard to provide a &#8220;plug and play&#8221; framework.  By adopting the OpenMI standard HydroModeler is able to focus on the specific task of running integrated modeling configurations.</p>
+</div>
+<div class="section" id="open-an-existing-model">
+<span id="index-3"></span><h2>Open an Existing Model<a class="headerlink" href="#open-an-existing-model" title="Permalink to this headline">¶</a></h2>
+<p>A simple model configuration can be created and executed using freely available model components, provided by the HydroDesktop community.  This section describes how to utilize pre-developed model components to recreate a model simulation.</p>
+<ol class="arabic simple">
+<li>Download the latest version of HydroDesktop (available at <a class="reference external" href="http://www.hydrodesktop.com/">http://www.hydrodesktop.com/</a>), and follow the installation wizard.</li>
+</ol>
+<p>If you have downloaded the beta 1.0 release of HydroDesktop the example configurations for HydroModeler are included in the installer under Plugins - HydroModeler.  Otherwise,  you will need to download the example configurations separately.  Navigate to the Documentation tab on the HydroDesktop website.  Here you will find tutorials on various features, including &#8220;HydroModeler Example Configuration&#8221;.  Download the latest version.</p>
+<ol class="arabic simple" start="2">
+<li>Extract this folder into c:/Temp, so that the HydroModeler folder is located at to C:/Temp/HydroModeler_example_configuration...</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig2.png" src="extensions\HydroModeler\images\HM_fig2.png" />
+</div>
+<p>In the bin directory you will find all of the libraries needed to run the model.  The &#8220;data&#8221; folder contains all of the necessary input files for each model component, and the &#8220;models&#8221; folder contains files pertaining to each individual model components.</p>
+<ol class="arabic simple" start="3">
+<li>Open HydroDesktop (Start - Program Files - HydroDesktop).</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig3.png" src="extensions\HydroModeler\images\HM_fig3.png" />
+</div>
+<ol class="arabic simple" start="4">
+<li>Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler.</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig4.png" src="extensions\HydroModeler\images\HM_fig4.png" />
+</div>
+<ol class="arabic simple" start="5">
+<li>A new page will appear:</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig5.png" src="extensions\HydroModeler\images\HM_fig5.png" />
+</div>
+<ol class="arabic simple" start="6">
+<li>At the top of the page there is an area labeled Current Directory.  Use the toggle button to navigate to the location of the HydroModeler example that was downloaded in step 2 (c:/temp/HydroModeler_example_configuration/...).  In the window to the left you should see the folders within the HydroModeler example.  Double click on SmithBranchModel.opr.  The HydroModeler window should now look like this:</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig6.png" src="extensions\HydroModeler\images\HM_fig6.png" />
+</div>
+<p>Clicking on the arrows provides information about the data being passed across each linkage.  Everything has been pre-defined, so there is no need to edit any of the links.</p>
+<ol class="arabic simple" start="7">
+<li>Execute the model by selecting the &#8220;Run&#8221; button from the top of the page.</li>
+<li>The Run Properties window will appear.  This is where simulation properties are specified, such as notifications, log file path, etc... Everything has been pre-set so all that is needed is to click RUN!</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig7.png" src="extensions\HydroModeler\images\HM_fig7.png" />
+</div>
+<ol class="arabic simple" start="9">
+<li>During model simulation, a progress window will show you events that are occurring.  When simulation is complete, the last notification will read &#8220;Simulation Finished Successfully&#8221;.  Click &#8220;Close&#8221;. At the next dialog window, click &#8220;Yes&#8221; to reload the model components.</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\HM_fig8.png" src="extensions\HydroModeler\images\HM_fig8.png" />
+</div>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Jun 15, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
