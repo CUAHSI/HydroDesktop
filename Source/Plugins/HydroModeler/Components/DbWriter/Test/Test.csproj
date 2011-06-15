@@ -40,6 +40,9 @@
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\..\..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+    </Reference>
     <Reference Include="HydroDesktop.Interfaces">
       <HintPath>..\..\..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
     </Reference>
@@ -75,6 +78,9 @@
     <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="RandomInputGenerator">
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\RandomInputGenerator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

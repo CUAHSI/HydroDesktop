@@ -10,6 +10,7 @@ using Oatc.OpenMI.Sdk.DevelopmentSupport;
 using Oatc.OpenMI.Sdk.Buffer;
 using System.Collections;
 using System.Windows.Forms;
+using RandomInputGenerator;
 
 namespace CUAHSI.HIS.Test
 {
@@ -135,16 +136,65 @@ namespace CUAHSI.HIS.Test
         [Test]
         public void ReadOmiArgs()
         {
-            DbWriter his = new DbWriter();
+            DbWriter dbwriter = new DbWriter();
+            RandomInputGenerator.InputGenerator random = new InputGenerator();
 
-            IArgument[] arguments = new IArgument[5];
-            arguments[0] = new Argument("DbPath", @"..\data\cuahsi-his\demo.db", true, "Database");
-            arguments[1] = new Argument("Organization","University of South Carolina",true,"");
-            arguments[2] = new Argument("Address","none",true,"");
-            arguments[3] = new Argument("Citation","none",true,"");
-            arguments[4] = new Argument("City", "none",true,"");
+            //---- initialize random input generator
+            IArgument[] arg = new IArgument[1];
+            arg[0] = new Argument("ElementCount", "1", true, "");
+            random.Initialize(arg);
 
-            Dictionary<string, string> db_args = his.ReadDbArgs(arguments);
+            //---- initialize dbwriter
+            string myCustomMethod = "Simulation 1, m=10, Tmax=100000";
+            string myVariableName = "millimeters per second";
+            string mySourceContact = "Tony";
+            string mySourceDesc = "Test dource description";
+            IArgument[] arguments = new IArgument[17];
+            arguments[0] = new Argument("DbPath",@".\example4.sqlite",true,"");
+            arguments[1] = new Argument("Variable.UnitName",myVariableName,true,"");
+            arguments[2] = new Argument("Variable.UnitAbbr","m^3/s",true,"");
+            arguments[3] = new Argument("Variable.UnitType","Flow",true,"");        
+            arguments[4] = new Argument("Time.UnitName","second",true,"");
+            arguments[5] = new Argument("Time.UnitAbbr","s",true,"");
+            arguments[6] = new Argument("Time.UnitType","Time",true,"");
+            arguments[7] = new Argument("Method.Description",myCustomMethod,true,"");
+            arguments[8] = new Argument("Source.Organization","University of South Carolina",true,"");
+            arguments[9] = new Argument("Source.Address","300 Main St.",true,"");
+            arguments[10] = new Argument("Source.City","Columbia",true,"");
+            arguments[11] = new Argument("Source.State","SC",true,"");
+            arguments[12] = new Argument("Source.Zip","29206",true,"");
+            arguments[13] = new Argument("Source.Contact",mySourceContact,true,"");
+            arguments[14] = new Argument("Variable.Category","  ",true,""); //intentionally left blank
+            arguments[15] = new Argument("Variable.SampleMedium","Surface Water",true,"");
+            arguments[16] = new Argument("Source.Description", mySourceDesc, true, "");
+
+            dbwriter.Initialize(arguments);
+
+            //---- link the components
+            Link link = new Link();
+            link.ID = "link-1";
+            link.TargetElementSet = dbwriter.GetInputExchangeItem(0).ElementSet;
+            link.TargetQuantity = dbwriter.GetInputExchangeItem(0).Quantity;
+            link.TargetComponent = dbwriter;
+            ElementSet eset = new ElementSet("rand element set", "r_eset", ElementType.XYPoint, new SpatialReference("1"));
+            Element e = new Element("1");
+            e.AddVertex(new Vertex(1, 1, 0));
+            eset.AddElement(e);
+            link.SourceElementSet = eset;
+            link.SourceQuantity = random.GetOutputExchangeItem(0).Quantity;
+            link.SourceComponent = random;
+            dbwriter.AddLink(link);
+
+            //---- get the series info
+            HydroDesktop.Interfaces.ObjectModel.Series series = dbwriter.serieses["r_eset_RandomInputGenerator_loc0"];
+
+            //---- check that omi values were set properly
+            Assert.IsTrue(series.Method.Description == myCustomMethod);
+            Assert.IsTrue(series.Variable.VariableUnit.Name == myVariableName);
+            Assert.IsTrue(series.Source.ContactName == mySourceContact);
+            Assert.IsTrue(series.Variable.GeneralCategory == "Hydrology", "blank argument is not ignored!!");
+            Assert.IsTrue(series.Source.Description == mySourceDesc);
+            
 
         }
 
