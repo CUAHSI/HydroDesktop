@@ -39,6 +39,7 @@ namespace CUAHSI.HIS
         double _ignore = -999;
         int new_series_count = 0;
         public Dictionary<string, string> dbargs;
+        public Dictionary<int, string> series2link;
         //private DbOperations _db;
 
         #region ILinkableComponent Members
@@ -112,14 +113,13 @@ namespace CUAHSI.HIS
             //write each series to the database
             foreach (Series series in serieses.Values)
             {
-                //get the linkID stored in CreateSeries()
-                string linkID = series.Source.ISOMetadata.MetadataLink;
 
-                //get the theme corresponding to the link
-                Theme thisTheme = themes[linkID];
+                //-- get the theme
+                Theme theme = series.ThemeList[0];
 
-                //save data
-                db.SaveSeriesAsCopy(series, thisTheme);   
+                //-- save data series
+                db.SaveSeriesAsCopy(series, theme);
+
             }
         
             //clear all values in the buffer
@@ -445,9 +445,15 @@ namespace CUAHSI.HIS
                                     //check to see if series exists
                                     if (serieses.ContainsKey(siteName))
                                     {
-                                        //get the series
+
+                                        //-- get the series
                                         Series series = serieses[siteName];
 
+                                        //-- store the associated theme
+                                        if(!series.ThemeList.Contains(themes[link.ID]))
+                                            series.ThemeList.Add(themes[link.ID]);
+
+                                        //-- save data values
                                         series.AddDataValue(CalendarConverter.ModifiedJulian2Gregorian(ts.ModifiedJulianDay), vals.data[j]);
                                     }
                                 } 
@@ -683,7 +689,7 @@ namespace CUAHSI.HIS
 
                     _db = new DbOperations(conn, DatabaseTypes.SQLite);
                     tbl = _db.LoadTable("values", sql);
-                    int last_row = tbl.Rows.Count;
+                    int last_row = tbl.Rows.Count - 1;
 
                     //store the new site code and id info
                     //site.Code = (Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 1 + new_series_count).ToString();
