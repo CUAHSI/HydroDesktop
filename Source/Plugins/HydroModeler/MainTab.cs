@@ -3202,12 +3202,16 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private void properties_populateOPR(string file)
         {
             //define some colors
-            Color headerColor = Color.Gray;
-            Color groupColor = Color.Silver;
-            Color itemColor = Color.WhiteSmoke;
+            //Color headerColor = Color.Gray;
+            //Color groupColor = Color.Silver;
+            //Color itemColor = Color.WhiteSmoke;
             //Color headerColor = Color.Salmon;
             //Color groupColor = Color.LightGreen;
             //Color itemColor = Color.LightBlue;
+
+            Color headerColor = Color.DarkBlue;
+            Color groupColor = Color.RoyalBlue;
+            Color itemColor = Color.Gray;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
@@ -3267,14 +3271,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 li = new ListViewItem("Link id=" + links[i].linkID.ToString());
                 li.UseItemStyleForSubItems = true;
-                li.BackColor = headerColor;
+                li.ForeColor = headerColor;
                 li.Font = new Font(li.Font, FontStyle.Bold);
                 this.properties.Items.Add(li);
 
                 //set the providing model name 
                 li = new ListViewItem("Providing Model");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = groupColor;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].provider;
                 li.SubItems.Add(lsi);
@@ -3283,7 +3288,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the providing model name 
                 li = new ListViewItem("Quantity");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].provider_quantity;
                 li.SubItems.Add(lsi);
@@ -3292,7 +3298,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Element Set");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].provider_elementset;
                 li.SubItems.Add(lsi);
@@ -3301,7 +3308,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Accepting Model");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = groupColor;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].accepter;
                 li.SubItems.Add(lsi);
@@ -3310,7 +3318,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the providing model name 
                 li = new ListViewItem("Quantity");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].accepter_quantity;
                 li.SubItems.Add(lsi);
@@ -3319,7 +3328,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Element Set");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].accepter_elementset;
                 li.SubItems.Add(lsi);
@@ -3328,7 +3338,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Data Operation");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = groupColor;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].dataoperation;
                 li.SubItems.Add(lsi);
