@@ -17,9 +17,6 @@ Introduction
 
    Design
 
-   KeyTerms
-
-   Methods
 
 Help Topics
 -----------
@@ -35,6 +32,7 @@ Help Topics
 
    ChangingInputs
 
+
 Tutorials
 ---------
 
@@ -47,3 +45,34 @@ Tutorials
    
    Tutorial03
 
+
+Example Configurations
+----------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   ExConfig1
+
+   ExConfig2
+
+   ExConfig3
+
+
+Glossary
+--------
+
+.. toctree::
+   :maxdepth: 2
+
+   config
+
+   dll
+
+   omi
+
+   opr
+
+   shp
+
+   smw
