@@ -79,7 +79,228 @@
             
   <div class="section" id="tutorial-3-creating-a-new-model-component">
 <span id="index-0"></span><h1>Tutorial 3: Creating a New Model Component<a class="headerlink" href="#tutorial-3-creating-a-new-model-component" title="Permalink to this headline">¶</a></h1>
-<p>To come...</p>
+<p>The purpose of this tutorial is to show how to create a new component from scratch. In this demonstration, using Visual Studio C#.</p>
+<p>C# is an object oriented programming language designed for building a wide variety of applications that run on the .NET Framework.  The .NET Framework is a Windows component that supports building and running of applications and Web services.  The key components of the .NET Framework are the common language runtime and the class library.  The class library is a collection of classes, interfaces, and value types that are included in the Microsoft .NET Framework.  The class library is designed to be the foundation on which the .NET Framework applications, components, and controls are built.</p>
+<div class="section" id="hargreaves-component-structure">
+<h2>Hargreaves Component Structure<a class="headerlink" href="#hargreaves-component-structure" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="getting-stared-with-visual-c">
+<h2>Getting stared with Visual C#<a class="headerlink" href="#getting-stared-with-visual-c" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>If you do not have access to Microsoft Visual Studio you can download Microsoft Visual C# 2010 for free from <a class="reference external" href="http://www.microsoft.com/express/Downloads/">http://www.microsoft.com/express/Downloads/</a></li>
+<li>Choose the tab Visual Studio 2010 Express.  Then select Visual C# 2010 Express Edition.  Click Download and follow instructions to install.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig4441.png" src="../../_images/HM_fig4441.png" />
+</div>
+<ol class="arabic simple" start="3">
+<li>If you are learning C# or need a refresher there are many tutorials available on-line that can help.  The address below will take you to Microsoft&#8217;s Development Network were they have a beginners learning center.  There are several links available here for learning Visual Studio C# and Visual Studio Basic: <a class="reference external" href="http://msdn.microsoft.com/en-us/beginner/bb308734.aspx">http://msdn.microsoft.com/en-us/beginner/bb308734.aspx</a></li>
+</ol>
+</div>
+<div class="section" id="sample-component">
+<span id="index-1"></span><h2>Sample Component<a class="headerlink" href="#sample-component" title="Permalink to this headline">¶</a></h2>
+<p>The sample component is a shell of how code should be written to run in HydroDesktop.  This component can be used as a guide to create and run more meaningful hydrological applications.</p>
+<ol class="arabic simple">
+<li>Download the latest version of HydroDesktop <a class="reference external" href="http://hydrodesktop.codeplex.com/SourceControl/list/changesets">http://hydrodesktop.codeplex.com/SourceControl/list/changesets</a>.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Download27.png" src="../../_images/Download27.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="2">
+<li>The sample component is available on the HydroDesktop website (<a class="reference external" href="http://hydrodesktop.codeplex.com/SourceControl/changeset/view">http://hydrodesktop.codeplex.com/SourceControl/changeset/view</a>/320c9bb87767#) and in the downloaded version.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Sample35.png" src="../../_images/Sample35.png" />
+</div>
+<p>.</p>
+</div>
+<div class="section" id="create-hargreaves-component-using-microsoft-visual-c">
+<span id="index-2"></span><h2>Create Hargreaves component using Microsoft Visual C#.<a class="headerlink" href="#create-hargreaves-component-using-microsoft-visual-c" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Open the start menu and from program choose Microsoft Visual studio, then Microsoft Visual studio.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/open31.png" src="../../_images/open31.png" />
+</div>
+<p>.</p>
+<p>2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components.</p>
+<div class="figure align-center">
+<img alt="../../_images/class25.png" src="../../_images/class25.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="3">
+<li>Add two folders (source-data), copy class1.cs into source folder and rename it Hargreaves.cs</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/folders24.png" src="../../_images/folders24.png" />
+</div>
+<div class="section" id="adding-references">
+<h3>Adding References<a class="headerlink" href="#adding-references" title="Permalink to this headline">¶</a></h3>
+<p>A reference is a file that is required to run the code you have written.  Usually a reference identifies a dll (Dynamic Linking Library) file.  The references can be viewed by expanding the Reference option listed in the Solution Explorer window located on the upper right side of the page.</p>
+<ol class="arabic simple">
+<li>Right click on Reference and select Add Reference.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/ref23.png" src="../../_images/ref23.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="2">
+<li>A window will pop up. Using the tabs, browse to C:/Hydrodesktop/Binaries/Plugins/HydroModeler, and add (Oatc.OpenMI.Sdk.Backbone.dll-Oatc.OpenMI.Sdk.Buffer.dll-Oatc.OpenMI.Sdk.DevelopmentSupport.dll-Oatc.OpenMI.Sdk.Wrapper.dll-OpenMI.Standard.dll)</li>
+<li>Navigate to C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin and add SMW.dll.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/referencesstructure23.png" src="../../_images/referencesstructure23.png" />
+</div>
+<p>.</p>
+</div>
+<div class="section" id="namespaces">
+<span id="index-3"></span><h3>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline">¶</a></h3>
+<p>Namespaces allow you a way to organize your code.  The &#8220;using&#8221; directive can be implemented as a way of accessing members of a namespace without having to type out their full name each time they are used.  When a new project is created several common namespaces are inserted.</p>
+<ol class="arabic simple">
+<li>Implement the using directive to add the namespaces of the references we add.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/system23.png" src="../../_images/system23.png" />
+</div>
+</div>
+<div class="section" id="create-the-linkable-component">
+<span id="index-4"></span><h3>Create the Linkable component<a class="headerlink" href="#create-the-linkable-component" title="Permalink to this headline">¶</a></h3>
+<p>1.Add a new class under the source folder and rename it as <strong>LinkableComponent</strong> (camel back typing).</p>
+<div class="figure align-center">
+<img alt="../../_images/linkablecomponent21.png" src="../../_images/linkablecomponent21.png" />
+</div>
+<p>.</p>
+<p>2.Inherit the linkable engine class from Oatc.OpenMI.Sdk.Wrapper namespace.</p>
+<div class="figure align-center">
+<img alt="../../_images/inherited15.png" src="../../_images/inherited15.png" />
+</div>
+<p>.</p>
+</div>
+<div class="section" id="create-the-configuration-xml">
+<span id="index-5"></span><h3>Create the Configuration Xml<a class="headerlink" href="#create-the-configuration-xml" title="Permalink to this headline">¶</a></h3>
+<p>Configuration file define the exchange items (output-input) of the component, and the time horizon of the component ( start-end-step) time.</p>
+<ol class="arabic simple">
+<li>Add a xml file to the Data folder.</li>
+<li>Copy the configuration structure from the sample component into your config.xml.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/config14.png" src="../../_images/config14.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="3">
+<li>Hargreaves component have three input exchange items, one output exchange item.</li>
+<li>In output exchange item we define the Element set(ID-Description-path for output shape file if necessary), and Quantity (ID-Dimensions-units-value type).</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/outputexchangeitem13.png" src="../../_images/outputexchangeitem13.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="5">
+<li>In input exchange item we define Element set(ID-Description-path for input shape file if necessary), and Quantity (ID-Dimensions-units-value type). Repeat for the rest of the exchange items</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/inputexchangeitem11.png" src="../../_images/inputexchangeitem11.png" />
+</div>
+<p>.</p>
+</div>
+<div class="section" id="create-the-omi-file">
+<span id="index-6"></span><h3>Create the omi file<a class="headerlink" href="#create-the-omi-file" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><strong>omi</strong> is used to define (Linkable component- <em>relative</em> location for component dll-path for cofiguration.xml- input &amp; output arguments)</div></blockquote>
+<ol class="arabic simple">
+<li>Create a xml file, add it under data folder and name it as Hargreaves.</li>
+<li>Change the file extension to omi.</li>
+<li>Define the relative path for the Hargeaves.dll.</li>
+<li>Define an argument (Key-ReadOnly-Value) for the configuration file. key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and the value point to the <em>relative</em> location of the configuration.xml.</li>
+<li>Add an argument named Output to define the relative location of the output csv file.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/omi10.png" src="../../_images/omi10.png" />
+</div>
+<p>.</p>
+</div>
+<div class="section" id="methods">
+<span id="index-7"></span><h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+<p>There are several major parts to this code:</p>
+<ol class="arabic simple">
+<li>Defining the global variables- In this section variables are defined using specific data types such as string, integer, double, and Boolean.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/variable21.png" src="../../_images/variable21.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="2">
+<li>The Finish method- This section of code tells the application to write output files based on data acquired during the simulation.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/finish8.png" src="../../_images/finish8.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="3">
+<li>The Initialize method- Gives the application instructions on operations that need to be preformed prior to running the simulation.  This section locates the configuration file and sets internal variables in OpenMI.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/start8.png" src="../../_images/start8.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="4">
+<li>The Calculations Section- For the Sample Component the calculation section is written so that the application simply generates random numbers.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/preform7.png" src="../../_images/preform7.png" />
+</div>
+<p>.</p>
+<p>Within the Finish method there is code telling the application where to write the output file.  This line should be changed now to specify where you would like the output file.  If you choose not to change the code then by default the output text file created by HydroModeler will go up two directories from where you run HydroDesktop.</p>
+</div>
+<div class="section" id="compiling">
+<span id="index-8"></span><h3>Compiling<a class="headerlink" href="#compiling" title="Permalink to this headline">¶</a></h3>
+<p>The next steps involve compiling the application.  Compiling is the process of converting written code into an executable file that the computer can run.
+In Visual Studio C# select Build - Build Solution</p>
+<ol class="arabic simple">
+<li>right click on the Hargreaves.csproj,  selsect properties, Debug, start external program, and navigate to HydroDesktop.exe in C:/Hydrodesktop/Binaries/HydroDesktop.exe</li>
+</ol>
+<div class="figure align-center">
+<img alt="extensions\HydroModeler\images\compile.png" src="extensions\HydroModeler\images\compile.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="2">
+<li>Build the solution to check for any errors and alert you to them in the Error List window at the bottom of the screen.</li>
+</ol>
+</div>
+<div class="section" id="hydrodesktop">
+<span id="index-9"></span><h3>HydroDesktop<a class="headerlink" href="#hydrodesktop" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Start HydroDesktop</li>
+<li>Click the icon in the upper left corner of the screen.  Then select Extensions - HydroModeler.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig507.png" src="../../_images/HM_fig507.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="3">
+<li>Using the drop down tab next to Current Directory, change the directory to the location of your Hargreaves Component files.</li>
+<li>Once you have the directory pointing to the Sample Component a list of folders will appear to the left side of the screen.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig516.png" src="../../_images/HM_fig516.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="5">
+<li>To add the Sample Component Model double click on the data folder then on the sample (type = model).</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/ModelAdding6.png" src="../../_images/ModelAdding6.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="6">
+<li>Add the model and trigger</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/trigger3.png" src="../../_images/trigger3.png" />
+</div>
+</div>
+</div>
 </div>
 
 
@@ -90,7 +311,7 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Jun 14, 2011.&nbsp;
+      &nbsp;Last updated on Jun 16, 2011.&nbsp;
       &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>

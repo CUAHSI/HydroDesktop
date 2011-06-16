@@ -85,12 +85,12 @@
 <p>In this exercise we are interested in calculating the runoff (mm/day) using TopModel component for watershed number 18 in cowetta watershed, Asheville, NC. TopModel component needs an ascii raster of Topographic index for every pixel in the watershed, model parameter (m-To-interception), and  two input exchange items (Daily Precipitation-Daily Potential Evapotranspiration) changing with every time step. First, daily precipitation rate (mm) is obtained from the Db reader (connected to data base). Second, daily evapotranspiration rate (mm/day) is calculated and delivered by Hargreaves component. Db reader supply three input exchange items (Maximum-Minimum-Average) daily Temperature to Hargreaves component. The Db reader is connected to the stored data of watershed 18. Finally, the TopModel will be connected with a trigger to start the calculation at every time step (day), and the Db writer component to store the runoff value to data base. The stored runoff can be plotted as a time series using hydrodesktop grah.</p>
 </div>
 <div class="section" id="composite-creation">
-<h2>Composite Creation<a class="headerlink" href="#composite-creation" title="Permalink to this headline">¶</a></h2>
+<span id="index-1"></span><h2>Composite Creation<a class="headerlink" href="#composite-creation" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Open the start menu and from program choose the CAUHSI HIS, then press hydrodesktop icon.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/Hydrodesktop_start86.png" src="../../_images/Hydrodesktop_start86.png" />
+<img alt="../../_images/Hydrodesktop_start89.png" src="../../_images/Hydrodesktop_start89.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
@@ -139,7 +139,7 @@
 <li>From the top bar choose table and press change button to define the path for the SQlite database file, navigate to C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his and select weather Data repository.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/tables79.png" src="../../_images/tables79.png" />
+<img alt="../../_images/tables82.png" src="../../_images/tables82.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="10">
@@ -154,7 +154,7 @@
 <li>Connect the Dbreader to the TopModel to supply the TopModel with the precipitation data of Coweeta watershed. choose Dbreader as a source and TopModel as a target component.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/DbTopmodel75.png" src="../../_images/DbTopmodel75.png" />
+<img alt="../../_images/DbTopmodel78.png" src="../../_images/DbTopmodel78.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="13">
