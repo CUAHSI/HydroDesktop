@@ -225,6 +225,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
            
             
             //help
+            help_panel.ButtonMoreVisible = false;
+
             rb = new RibbonButton();
             help_panel.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.help.GetThumbnailImage(20, 20, null, IntPtr.Zero);
@@ -235,6 +237,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             #endregion
 
             #region view_panel
+            view_panel.ButtonMoreVisible = false;
+
             rb = new RibbonButton();
             view_panel.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(32, 32, null, IntPtr.Zero);
