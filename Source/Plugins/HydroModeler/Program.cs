@@ -94,7 +94,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //update filelist
             string text = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
-            hydroModelerControl.UpdateFileList(text);
+            hydroModelerControl.filelist_update(text);
 
             //set pan mouse image
             hydroModelerControl.Image_Path = ImagePath;
@@ -298,7 +298,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             path = path.Replace('/', '\\');
 
             //update file list
-            hydroModelerControl.UpdateFileList(path);
+            hydroModelerControl.filelist_update(path);
         }
         public void ribbonTextBox_update(string path)
         {
@@ -389,7 +389,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         {
             DialogResult result =  MessageBox.Show("Are you sure you want to remove all models from the composition window?", "Important Question", MessageBoxButtons.YesNo); 
             if(result == DialogResult.Yes)
-                hydroModelerControl.clear();
+                hydroModelerControl.composition_clear();
         }
         void getHelp(object sender, EventArgs e)
         {
