@@ -8,10 +8,6 @@ Composite structure
 -------------------
 In this exercise we are interested in calculating the runoff (mm/day) using TopModel component for watershed number 18 in cowetta watershed, Asheville, NC. TopModel component needs an ascii raster of Topographic index for every pixel in the watershed, model parameter (m-To-interception), and  two input exchange items (Daily Precipitation-Daily Potential Evapotranspiration) changing with every time step. First, daily precipitation rate (mm) is obtained from the Db reader (connected to data base). Second, daily evapotranspiration rate (mm/day) is calculated and delivered by Hargreaves component. Db reader supply three input exchange items (Maximum-Minimum-Average) daily Temperature to Hargreaves component. The Db reader is connected to the stored data of watershed 18. Finally, the TopModel will be connected with a trigger to start the calculation at every time step (day), and the Db writer component to store the runoff value to data base. The stored runoff can be plotted as a time series using hydrodesktop grah.
 
-.. index:: 
-   single:Composite Creation
-
- 
 Composite Creation
 --------------
 
