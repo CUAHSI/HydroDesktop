@@ -31,7 +31,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         //private System.Windows.Forms.HScrollBar compositionHScrollBar;
         private System.Windows.Forms.PictureBox compositionBox;
         private System.Windows.Forms.ListView fileList;
-        private System.Windows.Forms.ListView properties;
+        private MyListView properties;
         private System.Windows.Forms.Panel ListPanel;
         private System.Windows.Forms.SplitContainer container;
         //private TextBox output_box;
@@ -961,7 +961,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
             //refresh filelist
-            this.UpdateFileList(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
         }
 
 
@@ -1025,7 +1025,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             dlgFile.Dispose();
 
             //refresh filelist
-            this.UpdateFileList(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             UpdateTitle();
         }
 
@@ -1772,7 +1772,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // 
             this.contextConfigurationAdd.Index = 0;
             this.contextConfigurationAdd.Text = "Add Configuration";
-            this.contextConfigurationAdd.Click += new System.EventHandler(this.contextConfigurationAdd_Click);
+            this.contextConfigurationAdd.Click += new System.EventHandler(this.composition_addconfiguration);
             // 
             // contextModelAdd
             // 
@@ -1874,7 +1874,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.ListPanel = new Panel();
             this.fileList = new ListView();
-            this.properties = new ListView();
+            this.properties = new MyListView();
             this.tb_navigate = new TextBox();
             this.changeDir = new Button();
             this.currentDir = new Label();
@@ -1913,7 +1913,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.container2.Name = "container2";
             this.container2.Size = new System.Drawing.Size(602, 288);
             this.container2.Orientation = Orientation.Horizontal;
-            this.container2.SplitterDistance = (int)((2.0/3.0)*(double)container.Panel1.Height);
+            this.container2.SplitterDistance = (int)((2.0/3.7)*(double)container.Panel1.Height);
             this.container2.SplitterMoved += new SplitterEventHandler(container2_SplitterMoved);
             this.container.Panel1.Controls.Add(container2);
             //
@@ -1944,8 +1944,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.compositionBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.compositionBox_MouseDown);
             this.compositionBox.Paint += new System.Windows.Forms.PaintEventHandler(this.compositionBox_Paint);
             this.compositionBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.compositionBox_MouseUp);
-            this.compositionBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterModel);
-            this.compositionBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropModel);
+            this.compositionBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.composition_dragenter);
+            this.compositionBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.composition_dragdrop);
             this.compositionBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.compositionBox_mousewheel);
             this.compositionBox.MouseEnter += new EventHandler(compositionBox_MouseEnter);
             this.compositionBox.MouseLeave += new EventHandler(compositionBox_MouseLeave);
@@ -2041,7 +2041,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this._Save.Location = new Point(50, this.container2.Panel2.Height - 35);
             this._Save.Enabled = false;
             this._Save.Visible = true;
-            this._Save.Click += new EventHandler(_Save_Click);
+            this._Save.Click += new EventHandler(save_click);
             this.container2.Panel2.Controls.Add(this._Save);
             //
             // Dialog Directory
@@ -2054,9 +2054,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.t.Size = new Size(75, 30);
             this.t.Text = "Test";
             this.t.Visible = false;
-            this.t.KeyPress += new KeyPressEventHandler(textbox_KeyPress);
-            this.t.LostFocus += new EventHandler(tb_LostFocus);
+            this.t.KeyPress += new KeyPressEventHandler(textbox_keypress);
+            this.t.LostFocus += new EventHandler(textbox_lostfocus);
             this.container2.Panel2.Controls.Add(this.t);
+
             //
             // Properties Window
             //
@@ -2081,14 +2082,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.properties.Columns.Add(col);
 
             this.properties.AllowColumnReorder = true;
-            this.properties.GridLines = true;
+            this.properties.GridLines = false;
             this.properties.View = View.Details;
             this.properties.FullRowSelect = true;
             this.properties.MultiSelect = false;
             this.properties.LabelEdit = false;
+            this.properties.Scroll += new ScrollEventHandler(properties_scroll);
+            this.properties.MouseWheel += new MouseEventHandler(properties_MouseWheel);
             this.properties.MouseDown += new MouseEventHandler(properties_MouseDown);
             this.properties.ColumnWidthChanging += new ColumnWidthChangingEventHandler(properties_ColumnWidthChanging);
-
             this.container2.Panel2.Controls.Add(this.properties); //add to container2 panel 2
 
             //
@@ -2193,11 +2195,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         #region HydroModeler Event Handelers
 
-        private void contextConfigurationAdd_Click(object sender, EventArgs e)
+        //-- filelist methods
+        private void filelist_mouseMoving(object sender, MouseEventArgs e)
         {
-            menuFileOpen_Click(sender, e);
+            if (_isdragging)
+            {
+                currentX = e.X;
+                currentY = e.Y;
+            }
         }
-        public void UpdateFileList(string path)
+        private void filelist_itemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
+        {
+            fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
+        }
+        public void filelist_update(string path)
         {
             //pass the new directory to the runBox dialog
             _runBox._currentDirectory = path;
@@ -2350,59 +2361,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             this.fileList.EndUpdate();
         }
-        private void filelist_mouseMoving(object sender, MouseEventArgs e)
-        {
-            if (_isdragging)
-            {
-                currentX = e.X;
-                currentY = e.Y;
-            }
-        }
-        private void filelist_itemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
-        {
-            fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
-        }
-        private void SelectModel(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            //check that a single left click was performed
-            if (e.Button == MouseButtons.Left && e.Clicks == 1)
-            {
-                //make sure an item has been selected
-                if (fileList.SelectedItems.Count > 0)
-                {
-                    //make sure the item is not a folder
-                    if (fileList.SelectedItems[0].SubItems[2].Text != " ")
-                    {
-                        if (fileList.SelectedItems[0].SubItems[2].Text == ".omi")
-                        {
-                            string key = fileList.SelectedItems[0].SubItems[0].Text + "." + fileList.SelectedItems[0].SubItems[2].Text;
-                            //get the item path
-                            string path = openmiFiles[key];
-                            PopulateProperties(path);
-                        }
-
-                        _isdragging = true;
-                        initialX = e.X;
-                        initialY = e.Y;
-                        fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
-
-                    }
-                }
-            }
-            else if (e.Clicks > 1)
-            {
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                filelist_context_display(e);
-            }
-            //else if (fileList.SelectedItems.Count > 0)
-            //{
-            //    ClickModel(this, e);
-            //}
-
-
-        }
         private void fileList_Click(object sender, MouseEventArgs e)
         {
 
@@ -2423,7 +2381,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         try
                         {
                             string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
-                            saveChanges(path);
+                            properties_savechanges(path);
                         }
                         catch (Exception) { }
                     }
@@ -2451,7 +2409,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateProperties(path);
+                        properties_populate(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2468,7 +2426,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateOPRProperties(path);
+                        properties_populateOPR(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2510,7 +2468,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateProperties(path);
+                        properties_populate(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2530,7 +2488,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateOPRProperties(path);
+                        properties_populateOPR(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2582,7 +2540,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
         }
-        private void LeaveFileList(object sender, EventArgs e)
+        private void filelist_leave(object sender, EventArgs e)
         {
 
             //get item from list view
@@ -2601,14 +2559,79 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             else
                 this.OpenOprFile(path);
         }
-        private void DragEnterModel(object sender, DragEventArgs e)
+        private void filelist_context_edit(object sender, EventArgs e)
+        {
+            ////HydroModeler.XmlViewer viewer = new HydroModeler.XmlViewer();
+
+            ////ListViewItem lvi = lvi = this.fileList.SelectedItems[0];
+
+            ////string path = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            ////string file = lvi.SubItems[0].Text + "." + lvi.SubItems[2].Text;
+
+            ////viewer.populate(path + "\\" + file);
+
+
+
+        }
+        private void fileList_SizeChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //-- composition methods
+        private void composition_addconfiguration(object sender, EventArgs e)
+        {
+            menuFileOpen_Click(sender, e);
+        }
+        private void composition_selectmodel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //check that a single left click was performed
+            if (e.Button == MouseButtons.Left && e.Clicks == 1)
+            {
+                //make sure an item has been selected
+                if (fileList.SelectedItems.Count > 0)
+                {
+                    //make sure the item is not a folder
+                    if (fileList.SelectedItems[0].SubItems[2].Text != " ")
+                    {
+                        if (fileList.SelectedItems[0].SubItems[2].Text == ".omi")
+                        {
+                            string key = fileList.SelectedItems[0].SubItems[0].Text + "." + fileList.SelectedItems[0].SubItems[2].Text;
+                            //get the item path
+                            string path = openmiFiles[key];
+                            properties_populate(path);
+                        }
+
+                        _isdragging = true;
+                        initialX = e.X;
+                        initialY = e.Y;
+                        fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
+
+                    }
+                }
+            }
+            else if (e.Clicks > 1)
+            {
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                filelist_context_display(e);
+            }
+            //else if (fileList.SelectedItems.Count > 0)
+            //{
+            //    ClickModel(this, e);
+            //}
+
+
+        }
+        private void composition_dragenter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ListViewItem)))
             {
                 e.Effect = DragDropEffects.Copy;
             }
         }
-        private void DragDropModel(object sender, DragEventArgs e)
+        private void composition_dragdrop(object sender, DragEventArgs e)
         {
             //change to wait cursor
             compositionBox.Cursor = Cursors.WaitCursor;
@@ -2691,6 +2714,23 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             }
         }
+        public void composition_clear()
+        {
+            _composition.RemoveAllModels();
+
+            //disable "add connection"
+            ((RibbonButton)rps[1].Items[2]).Enabled = false;
+
+            //disable "run"
+            ((RibbonButton)rps[1].Items[3]).Enabled = false;
+
+            CompositionUpdateArea();
+            UpdateControls();
+            UpdateTitle();
+
+        }
+
+        //-- ribbon change dir methods
         public string changeDir_Click(object sender, EventArgs e)
         {
             DialogResult result = this.dirDialog.ShowDialog();
@@ -2698,13 +2738,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             if (result == DialogResult.OK)
             {
                 path = dirDialog.SelectedPath;
-                UpdateFileList(path);
+                filelist_update(path);
                 //tb_navigate.Text = path;
             }
 
             return path;
 
         }
+
+        //-- container methods
         private void container_SplitterMoved(object sender, EventArgs e)
         {
             //get splitter width
@@ -2758,49 +2800,25 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this._Save.Location = new Point(width - this._Save.Width - 100, height2 - 35);
 
         }
-        public void clear()
-        {
-            _composition.RemoveAllModels();
-
-            //disable "add connection"
-            ((RibbonButton)rps[1].Items[2]).Enabled = false;
-
-            //disable "run"
-            ((RibbonButton)rps[1].Items[3]).Enabled = false;
-
-            CompositionUpdateArea();
-            UpdateControls();
-            UpdateTitle();
-
-        }
-        private void filelist_context_edit(object sender, EventArgs e)
-        {
-            ////HydroModeler.XmlViewer viewer = new HydroModeler.XmlViewer();
-
-            ////ListViewItem lvi = lvi = this.fileList.SelectedItems[0];
-
-            ////string path = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
-            ////string file = lvi.SubItems[0].Text + "." + lvi.SubItems[2].Text;
-
-            ////viewer.populate(path + "\\" + file);
 
 
-
-        }
-        private void fileList_SizeChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void PopulateProperties(string file)
+        //-- properties methods
+        private void properties_populate(string file)
         {
 
             //define some colors
-            Color headerColor = Color.Gray;
-            Color groupColor = Color.Silver;
-            Color itemColor = Color.WhiteSmoke;
+            //Color headerColor = Color.Gray;
+            //Color groupColor = Color.Silver;
+            //Color itemColor = Color.WhiteSmoke;
             //Color headerColor = Color.Salmon;
             //Color groupColor = Color.LightGreen;
             //Color itemColor = Color.LightBlue;
+
+
+            Color headerColor = Color.DarkBlue;
+            Color groupColor = Color.RoyalBlue;
+            Color itemColor = Color.Gray;
+
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
@@ -2841,7 +2859,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         //-- get the argument value
                         string Value = arg.OuterXml.Split(' ')[3].Split('=')[1];
                         for (int i = 4; i <= arg.OuterXml.Split(' ').Length - 1; i++)
-                            Value += " "+ arg.OuterXml.Split(' ')[i];
+                            Value += " " + arg.OuterXml.Split(' ')[i];
                         //-- replace xml characters in value
                         Value = Value.Replace("/>", "");
                         Value = Value.Replace(">", "");
@@ -2876,24 +2894,31 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             ListViewItem li;
             ListViewItem.ListViewSubItem lsi;
 
+
             li = new ListViewItem("Omi Arguments");
             li.UseItemStyleForSubItems = true;
-            li.BackColor = headerColor;
+            //li.BackColor = headerColor;
+            li.ForeColor = headerColor;
             li.Font = new Font(li.Font, FontStyle.Bold);
             this.properties.Items.Add(li);
 
             //set the class name 
             li = new ListViewItem("Class");
             li.UseItemStyleForSubItems = false;
-            li.BackColor = itemColor;
+            //li.BackColor = itemColor;
+            li.ForeColor = itemColor;
+            li.Font = new Font(li.Font, FontStyle.Bold);
             lsi = new ListViewItem.ListViewSubItem();
             lsi.Text = className;
             li.SubItems.Add(lsi);
             this.properties.Items.Add(li);
+
             //set the assembly name
             li = new ListViewItem("Assembly");
             li.UseItemStyleForSubItems = false;
-            li.BackColor = itemColor;
+            //li.BackColor = itemColor;
+            li.ForeColor = itemColor;
+            li.Font = new Font(li.Font, FontStyle.Bold);
             lsi = new ListViewItem.ListViewSubItem();
             lsi.Text = assembly;
             li.SubItems.Add(lsi);
@@ -2906,7 +2931,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //
                 li = new ListViewItem(kvp.Key);
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                //li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = kvp.Value;
                 li.SubItems.Add(lsi);
@@ -2944,14 +2971,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Exchange Item Property
                             li = new ListViewItem("Output Exchange Item");
                             li.UseItemStyleForSubItems = true;
-                            li.BackColor = headerColor;
+                            li.ForeColor = headerColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
                             //add ElementSet Property
                             li = new ListViewItem("Element Set");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -2960,7 +2987,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
                                 lsi = new ListViewItem.ListViewSubItem();
                                 lsi.Text = e.FirstChild.Value;
                                 li.SubItems.Add(lsi);
@@ -2970,7 +2998,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Quantity Property
                             li = new ListViewItem("Quantity");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -2979,7 +3007,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
                                 lsi = new ListViewItem.ListViewSubItem();
 
                                 if (e.Name == "Dimensions")
@@ -3001,7 +3029,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                     {
                                         li = new ListViewItem("Unit: " + unit.Name);
                                         li.UseItemStyleForSubItems = false;
-                                        li.BackColor = itemColor;
+                                        li.ForeColor = itemColor;
+                                        li.Font = new Font(li.Font, FontStyle.Bold);
                                         lsi = new ListViewItem.ListViewSubItem();
                                         lsi.Text = unit.FirstChild.Value;
                                         li.SubItems.Add(lsi);
@@ -3013,7 +3042,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                 {
                                     li = new ListViewItem(e.Name);
                                     li.UseItemStyleForSubItems = false;
-                                    li.BackColor = itemColor;
+                                    li.ForeColor = itemColor;
+                                    li.Font = new Font(li.Font, FontStyle.Bold);
                                     lsi = new ListViewItem.ListViewSubItem();
                                     lsi.Text = e.FirstChild.Value;
                                     li.SubItems.Add(lsi);
@@ -3034,14 +3064,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Exchange Item Property
                             li = new ListViewItem("Input Exchange Item");
                             li.UseItemStyleForSubItems = true;
-                            li.BackColor = headerColor;
+                            li.ForeColor = headerColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
                             //add ElementSet Property
                             li = new ListViewItem("Element Set");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -3050,7 +3080,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
                                 lsi = new ListViewItem.ListViewSubItem();
                                 lsi.Text = e.FirstChild.Value;
                                 li.SubItems.Add(lsi);
@@ -3060,7 +3091,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Quantity Property
                             li = new ListViewItem("Quantity");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -3069,7 +3100,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
                                 lsi = new ListViewItem.ListViewSubItem();
 
                                 if (e.Name == "Dimensions")
@@ -3091,7 +3123,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                     {
                                         li = new ListViewItem("Unit: " + unit.Name);
                                         li.UseItemStyleForSubItems = false;
-                                        li.BackColor = itemColor;
+                                        li.ForeColor = itemColor;
+                                        li.Font = new Font(li.Font, FontStyle.Bold);
                                         lsi = new ListViewItem.ListViewSubItem();
                                         lsi.Text = unit.FirstChild.Value;
                                         li.SubItems.Add(lsi);
@@ -3103,7 +3136,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                 {
                                     li = new ListViewItem(e.Name);
                                     li.UseItemStyleForSubItems = false;
-                                    li.BackColor = itemColor;
+                                    li.ForeColor = itemColor;
+                                    li.Font = new Font(li.Font, FontStyle.Bold);
                                     lsi = new ListViewItem.ListViewSubItem();
                                     lsi.Text = e.FirstChild.Value;
                                     li.SubItems.Add(lsi);
@@ -3121,14 +3155,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         //add TimeHorizon Property
                         li = new ListViewItem("Time Horizon");
                         li.UseItemStyleForSubItems = true;
-                        li.BackColor = headerColor;
+                        li.ForeColor = headerColor;
                         li.Font = new Font(li.Font, FontStyle.Bold);
                         this.properties.Items.Add(li);
                         foreach (XmlNode child in timeHorizon.ChildNodes)
                         {
                             li = new ListViewItem(child.Name);
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = itemColor;
+                            li.ForeColor = itemColor;
+                            li.Font = new Font(li.Font, FontStyle.Bold);
                             lsi = new ListViewItem.ListViewSubItem();
                             lsi.Text = child.FirstChild.Value;
                             li.SubItems.Add(lsi);
@@ -3143,14 +3178,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         //add Model Info Poroperty
                         li = new ListViewItem("Model Info");
                         li.UseItemStyleForSubItems = true;
-                        li.BackColor = headerColor;
+                        li.ForeColor = headerColor;
                         li.Font = new Font(li.Font, FontStyle.Bold);
                         this.properties.Items.Add(li);
                         foreach (XmlNode child in modelInfo.ChildNodes)
                         {
                             li = new ListViewItem(child.Name);
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = itemColor;
+                            li.ForeColor = itemColor;
+                            li.Font = new Font(li.Font, FontStyle.Bold);
                             lsi = new ListViewItem.ListViewSubItem();
                             lsi.Text = child.FirstChild.Value;
                             li.SubItems.Add(lsi);
@@ -3163,7 +3199,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
             this.properties.EndUpdate();
         }
-        private void PopulateOPRProperties(string file)
+        private void properties_populateOPR(string file)
         {
             //define some colors
             Color headerColor = Color.Gray;
@@ -3312,7 +3348,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                 //make sure any changes that have been made are saved
                 if (t.Visible == true)
-                    setProperty();
+                    textbox_setproperty();
 
                 //make sure the item is not a folder
                 if (lvi != null)
@@ -3333,7 +3369,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             try
                             {
                                 //disable scrolling
-                                this.properties.Scrollable = false;
+                                //this.properties.Scrollable = false;
 
                                 //get the sub item
                                 ListViewItem.ListViewSubItem lvsi = lvi.SubItems[1];
@@ -3366,34 +3402,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 }
             }
         }
-        private void textbox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                setProperty();
-            }
-        }
-        private void setProperty()
-        {
-            try
-            {
-                ListViewItem.ListViewSubItem sub = _currentLvi.SubItems[1];
-                if (t.Text != _oldText)
-                {
-                    this.properties.BeginUpdate();
-                    sub.Text = t.Text;
-                    this.properties.EndUpdate();
-                    _hasChanged = true;
-                    _Save.Enabled = true;
-
-                }
-                t.Visible = false;
-                //re enable scrolling
-                this.properties.Scrollable = true;
-            }
-            catch (Exception) { }
-        }
-        private void saveTheseChanges(string file)
+        private void properties_saveOmiOpr(string file)
         {
             Dictionary<string, string> newVals = new Dictionary<string, string>();
             List<string> output = new List<string>();
@@ -3573,7 +3582,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             string configStream = null;
             if (config != null)
-                configStream = ReWriteConfig(values, config);
+                configStream = properties_writeconfig(values, config);
 
             #region Update OMI and Config Values
 
@@ -3599,7 +3608,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
         }
-        private string ReWriteConfig(List<List<string>> values, string path)
+        private string properties_writeconfig(List<List<string>> values, string path)
         {
             string id = "";
             string configStream = null;
@@ -3715,13 +3724,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             return configStream;
         }
-        private void saveChanges(string filename)
+        private void properties_savechanges(string filename)
         {
             DialogResult result = MessageBox.Show("Would you like to save the changes made to " + filename + " ?", "Important Question", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)
             {
-                saveTheseChanges(filename);
+                properties_saveOmiOpr(filename);
 
                 int length = filename.Split('\\').Length;
                 //string id = ((Oatc.OpenMI.Gui.Core.UIModel)_composition.Models[0]).OmiFilename;
@@ -3748,7 +3757,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
                                 //-- clear the composition window
-                                this.clear();
+                                this.composition_clear();
 
                                 //-- remove extra characters (in path) from the trigger
                                 StreamReader sr = new StreamReader(path);
@@ -3776,7 +3785,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             else
                             {
                                 //-- clear the composition window
-                                this.clear();
+                                this.composition_clear();
 
                                 //-- reload model component
                                 this.AddModel(filename);
@@ -3793,24 +3802,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 _hasChanged = false;
             }
 
-        }
-        private void _Save_Click(object sender, EventArgs e)
-        {
-            string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
-
-            try
-            {
-                saveChanges(path);
-            }
-            catch (SystemException)
-            {
-                DialogResult failed = MessageBox.Show("HydroModeler encountered an error while saving. Please make sure that the values entered are in the correct format, and file exist at the paths specified. ", "Error", MessageBoxButtons.OK);
-            }
-
-        }
-        private void tb_LostFocus(object sender, EventArgs e)
-        {
-            setProperty();
         }
         private void properties_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
@@ -3836,6 +3827,70 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             }
         }
+        private void properties_MouseWheel(object sender, MouseEventArgs e)
+        {
+            //-- check if edit textbox is visable
+            if (t.Visible == true)
+                //-- set the textbox value
+                textbox_setproperty();
+        }
+        private void properties_scroll(object sender, ScrollEventArgs e)
+        {
+            //-- check if edit textbox is visable
+            if (t.Visible == true)
+                //-- set the textbox value
+                textbox_setproperty();
+        }
+
+        //-- properties save button methods
+        private void save_click(object sender, EventArgs e)
+        {
+            string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
+
+            try
+            {
+                properties_savechanges(path);
+            }
+            catch (SystemException)
+            {
+                DialogResult failed = MessageBox.Show("HydroModeler encountered an error while saving. Please make sure that the values entered are in the correct format, and file exist at the paths specified. ", "Error", MessageBoxButtons.OK);
+            }
+
+        }
+
+        //-- textbox edit methods
+        private void textbox_lostfocus(object sender, EventArgs e)
+        {
+            textbox_setproperty();
+        }
+        private void textbox_setproperty()
+        {
+            try
+            {
+                ListViewItem.ListViewSubItem sub = _currentLvi.SubItems[1];
+                if (t.Text != _oldText)
+                {
+                    this.properties.BeginUpdate();
+                    sub.Text = t.Text;
+                    this.properties.EndUpdate();
+                    _hasChanged = true;
+                    _Save.Enabled = true;
+
+                }
+                t.Visible = false;
+                //re enable scrolling
+                this.properties.Scrollable = true;
+            }
+            catch (Exception) { }
+        }
+        private void textbox_keypress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                textbox_setproperty();
+            }
+        }
+
 
         #region Context Menu Handelers
         private void ClickModel(object sender, EventArgs e)
@@ -3860,7 +3915,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     string path = Folders[key];
 
                     //update the filelist
-                    UpdateFileList(path);
+                    filelist_update(path);
 
                     //update the ribbon textbox text
                     ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
@@ -3874,7 +3929,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     string path = Folders[key.Substring(0, 3)];
 
                     //update the filelist
-                    UpdateFileList(path);
+                    filelist_update(path);
 
                     //update the ribbon textbox text
                     ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
@@ -3908,10 +3963,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                 //clear the composition window if the deleted item is currently loaded
                 if (openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text] == _composition.FilePath)
-                    clear();
+                    composition_clear();
 
                 //refresh the file browser
-                this.UpdateFileList(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+                this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             }
         }
         #endregion
@@ -3960,5 +4015,28 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
 
     }
+
+
+    /// <summary>
+    /// This class is necessary to create and eventhandler for listview scrolling
+    /// </summary>
+    public class MyListView : ListView
+    {
+        public event ScrollEventHandler Scroll;
+        protected virtual void OnScroll(ScrollEventArgs e)
+        {
+            ScrollEventHandler handler = this.Scroll;
+            if (handler != null) handler(this, e);
+        }
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == 0x115)
+            { // Trap WM_VSCROLL
+                OnScroll(new ScrollEventArgs((ScrollEventType)(m.WParam.ToInt32() & 0xffff), 0));
+            }
+        }
+    }
+
 
 }

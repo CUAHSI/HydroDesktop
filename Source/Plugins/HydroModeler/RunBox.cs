@@ -307,7 +307,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         break;
                     }
 				default:
-                    hydroModelerControl.clear();
+                    hydroModelerControl.composition_clear();
 					break;
 			}
 		
