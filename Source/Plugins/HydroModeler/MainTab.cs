@@ -2052,7 +2052,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // textbox
             //
             this.t.Location = new Point(0, this.container2.Panel2.Height - 35);
-            this.t.Size = new Size(75, 30);
+            this.t.Size = new Size(30, 30);
             this.t.Text = "Test";
             this.t.Visible = false;
             this.t.KeyPress += new KeyPressEventHandler(textbox_keypress);
@@ -2802,7 +2802,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         }
 
-
         //-- properties methods
         private void properties_populate(string file)
         {
@@ -3376,19 +3375,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                 ListViewItem.ListViewSubItem lvsi = lvi.SubItems[1];
 
                                 //create a text box in that exact location
-                                t.Location = new Point(lvsi.Bounds.X + 5, lvsi.Bounds.Y + 2);
+                                t.Location = new Point(lvsi.Bounds.X+7, lvsi.Bounds.Y + 2);
                                 t.Size = new Size(lvsi.Bounds.Width, lvsi.Bounds.Height + 1);
                                 t.Font = lvi.Font;
                                 t.BorderStyle = BorderStyle.None;
                                 t.Text = lvsi.Text;
                                 t.Visible = true;
+                                
 
                                 //save the old text
                                 _oldText = t.Text;
                                 _currentLvi = lvi;
 
                                 //highlight the text
-                                t.SelectAll();
+                                //t.SelectAll();
                                 t.HideSelection = false;
                             }
                             catch (ArgumentOutOfRangeException) { }
@@ -4023,6 +4023,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
     /// </summary>
     public class MyListView : ListView
     {
+        private const int WM_HSCROLL = 0x114;
+        private const int WM_VSCROLL = 0x115;
         public event ScrollEventHandler Scroll;
         protected virtual void OnScroll(ScrollEventArgs e)
         {
@@ -4032,9 +4034,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
-            if (m.Msg == 0x115)
-            { // Trap WM_VSCROLL
+            if (m.Msg == WM_VSCROLL)
+            { 
+                //vertical scrolling
                 OnScroll(new ScrollEventArgs((ScrollEventType)(m.WParam.ToInt32() & 0xffff), 0));
+            }
+            else if (m.Msg == WM_HSCROLL)
+            {
+                //horizontal scrolling
             }
         }
     }
