@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
     <link rel="up" title="HydroModeler" href="HydroModeler.html" />
-    <link rel="next" title="HydroR" href="../HydroR/HydroR.html" />
+    <link rel="next" title="config.xml file" href="config.html" />
     <link rel="prev" title="Example Configuration 2 - Penman-Monteith" href="ExConfig2.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
@@ -36,7 +36,7 @@
         <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
     <div class="breadcrumb">Example Configuration 3 - Bidirectional Link</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="../HydroR/HydroR.html" title="HydroR" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="config.html" title="config.xml file" accesskey="N">next</a></div>
 	<div class="pagebutton"><a href="ExConfig2.html" title="Example Configuration 2 - Penman-Monteith" accesskey="P">previous</a></div>
 </div>
 
@@ -80,7 +80,23 @@
   <div class="section" id="example-configuration-3-bidirectional-link">
 <span id="index-0"></span><h1>Example Configuration 3 - Bidirectional Link<a class="headerlink" href="#example-configuration-3-bidirectional-link" title="Permalink to this headline">¶</a></h1>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig10014.png" src="../../_images/HM_fig10014.png" />
+<img alt="../../_images/HM_fig10017.png" src="../../_images/HM_fig10017.png" />
+</div>
+<p>Example configuration 3&#8217;s primary objective is to solve for the concentration of a contaminant in a river and its riverbed by simultaneously solving for both the soil and the water concentrations using a bidirectional link.  To do this, the process is broken up into two seperate components.  The two components are the water advection and sediment diffusion models.  Advection is generally associated with the lateral movement of the contaminant and diffusion with the infiltration into the soil.  The water advection model is comprised of movement in both the x and z direction.  The sediment diffusion model is only concerned with contanimants moving in the z direction.  A clearer representation of this is given in the image below.  The flow velocity and diffusion coefficients are required to help use determine the level of contamination in the soil and water.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig1011.png" src="../../_images/HM_fig1011.png" />
+</div>
+<p>These two components are both derived from the equation shown below.  D represents the diffusion coefficients in the x and z directions.  u represents the velocity in the x direction and v represents the velocity in the z direction.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig1021.png" src="../../_images/HM_fig1021.png" />
+</div>
+<p>To obtain the equation for the water advection component, we only concern ourselves with the x and z direction since we assume that the dominate means of contaminant transportation is advection in the x direction and diffusion in the z direction.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig1031.png" src="../../_images/HM_fig1031.png" />
+</div>
+<p>We use similar assumptions to help us derive the sediment diffusion component.  Only concerned with the diffusion in the z direction, we can reduce the equation as follows.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig1041.png" src="../../_images/HM_fig1041.png" />
 </div>
 </div>
 
