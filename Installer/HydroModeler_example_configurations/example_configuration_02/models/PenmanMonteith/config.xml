@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>Potantial Evapotranspiration</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>PET</ID>
+        <Description>Potantial Evapotranspiration</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>time</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/d</ID>
+          <Description>millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>Standardized Reference Evapotranspiration(ASCE-Penman-Monteith)</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>StandardizedET</ID>
+        <Description>Standardized Reference Evapotranspiration</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>time</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/d</ID>
+          <Description>millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>NetRadiation</Description>
+        <Version>1</Version>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>NSR</ID>
+        <Description>net radiation</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Megajoule</Base>
+          </Dimension>
+          <Dimension>
+            <Power>-2</Power>
+            <Base>meter</Base>
+          </Dimension>
+          <Dimension>
+            <Power>-1</Power>
+            <Base>day</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>MJ/m^2/d</ID>
+          <Description>Megajoule per square meter per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+     </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>Temperature of the gauge</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Temperature</ID>
+        <Description>Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>C</ID>
+          <Description>degree</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>Dew Point Temperature of the gauge</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Dew Point Temperature</ID>
+        <Description>Dew Point Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>C</ID>
+          <Description>degree</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>Maximum Temperature of the gauge</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Maximum Temperature</ID>
+        <Description>Maximum Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>C</ID>
+          <Description>degree</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>Minimum Temperature of the gauge</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Minimum Temperature</ID>
+        <Description>Minimum Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>C</ID>
+          <Description>degree</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>SC_NC Study</ID>
+        <Description>wind speed of the gauge</Description>
+        <ShapefilePath>../../data/ModelData/PeTgauges.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>wind speed</ID>
+        <Description>wind speed</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>Time</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>m/s</ID>
+          <Description>meter/second</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>01/01/1982</StartDateTime>
+    <EndDateTime>12/31/1983</EndDateTime>
+    <TimeStepInSeconds>86400</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>PET: Penman-Monteith2</ID>
+    <Description>This component calculates PET(potantial evapotranspiration) and ETsz(Standardized Evapotranspiration) using a variation of the Penman-Monteith algorithm, defined by ASCE</Description>
+  </ModelInfo>
+</Configuration>
