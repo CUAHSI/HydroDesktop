@@ -420,10 +420,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "OMI filename: " + fullPath + "\n" + "Exception: " + ex.ToString(),
-                    "Error occured while adding the model...",
+                    
+                    ex.Message.ToString(),
+                    "Failed to load model...",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBoxIcon.Warning);
             }
 
             // Reset the culture every time a new model is added.
@@ -2051,7 +2052,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // textbox
             //
             this.t.Location = new Point(0, this.container2.Panel2.Height - 35);
-            this.t.Size = new Size(75, 30);
+            this.t.Size = new Size(30, 30);
             this.t.Text = "Test";
             this.t.Visible = false;
             this.t.KeyPress += new KeyPressEventHandler(textbox_keypress);
@@ -2670,10 +2671,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         catch (Exception ex)
                         {
                             MessageBox.Show(
-                                "OMI filename: " + path + "\n" + "Exception: " + ex.ToString(),
-                                "Error occured while adding the model...",
+                                ex.Message.ToString(),
+                                "Failed to load model...",
                                 MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                                MessageBoxIcon.Warning);
                         }
 
 
@@ -2800,7 +2801,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this._Save.Location = new Point(width - this._Save.Width - 100, height2 - 35);
 
         }
-
 
         //-- properties methods
         private void properties_populate(string file)
@@ -3202,12 +3202,16 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private void properties_populateOPR(string file)
         {
             //define some colors
-            Color headerColor = Color.Gray;
-            Color groupColor = Color.Silver;
-            Color itemColor = Color.WhiteSmoke;
+            //Color headerColor = Color.Gray;
+            //Color groupColor = Color.Silver;
+            //Color itemColor = Color.WhiteSmoke;
             //Color headerColor = Color.Salmon;
             //Color groupColor = Color.LightGreen;
             //Color itemColor = Color.LightBlue;
+
+            Color headerColor = Color.DarkBlue;
+            Color groupColor = Color.RoyalBlue;
+            Color itemColor = Color.Gray;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
@@ -3267,14 +3271,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 li = new ListViewItem("Link id=" + links[i].linkID.ToString());
                 li.UseItemStyleForSubItems = true;
-                li.BackColor = headerColor;
+                li.ForeColor = headerColor;
                 li.Font = new Font(li.Font, FontStyle.Bold);
                 this.properties.Items.Add(li);
 
                 //set the providing model name 
                 li = new ListViewItem("Providing Model");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = groupColor;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].provider;
                 li.SubItems.Add(lsi);
@@ -3283,7 +3288,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the providing model name 
                 li = new ListViewItem("Quantity");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].provider_quantity;
                 li.SubItems.Add(lsi);
@@ -3292,7 +3298,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Element Set");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].provider_elementset;
                 li.SubItems.Add(lsi);
@@ -3301,7 +3308,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Accepting Model");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = groupColor;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].accepter;
                 li.SubItems.Add(lsi);
@@ -3310,7 +3318,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the providing model name 
                 li = new ListViewItem("Quantity");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].accepter_quantity;
                 li.SubItems.Add(lsi);
@@ -3319,7 +3328,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Element Set");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].accepter_elementset;
                 li.SubItems.Add(lsi);
@@ -3328,7 +3338,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //set the accepting model name
                 li = new ListViewItem("Data Operation");
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = groupColor;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = links[i].dataoperation;
                 li.SubItems.Add(lsi);
@@ -3375,19 +3386,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                 ListViewItem.ListViewSubItem lvsi = lvi.SubItems[1];
 
                                 //create a text box in that exact location
-                                t.Location = new Point(lvsi.Bounds.X + 5, lvsi.Bounds.Y + 2);
+                                t.Location = new Point(lvsi.Bounds.X+7, lvsi.Bounds.Y + 2);
                                 t.Size = new Size(lvsi.Bounds.Width, lvsi.Bounds.Height + 1);
                                 t.Font = lvi.Font;
                                 t.BorderStyle = BorderStyle.None;
                                 t.Text = lvsi.Text;
                                 t.Visible = true;
+                                
 
                                 //save the old text
                                 _oldText = t.Text;
                                 _currentLvi = lvi;
 
                                 //highlight the text
-                                t.SelectAll();
+                                //t.SelectAll();
                                 t.HideSelection = false;
                             }
                             catch (ArgumentOutOfRangeException) { }
@@ -4022,6 +4034,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
     /// </summary>
     public class MyListView : ListView
     {
+        private const int WM_HSCROLL = 0x114;
+        private const int WM_VSCROLL = 0x115;
         public event ScrollEventHandler Scroll;
         protected virtual void OnScroll(ScrollEventArgs e)
         {
@@ -4031,9 +4045,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
-            if (m.Msg == 0x115)
-            { // Trap WM_VSCROLL
+            if (m.Msg == WM_VSCROLL)
+            { 
+                //vertical scrolling
                 OnScroll(new ScrollEventArgs((ScrollEventType)(m.WParam.ToInt32() & 0xffff), 0));
+            }
+            else if (m.Msg == WM_HSCROLL)
+            {
+                //horizontal scrolling
             }
         }
     }
