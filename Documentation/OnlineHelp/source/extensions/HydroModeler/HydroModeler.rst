@@ -46,12 +46,33 @@ Tutorials
    Tutorial03
 
 
-Reference
----------
+Example Configurations
+----------------------
 
 .. toctree::
    :maxdepth: 2
 
-   Glossary
+   ExConfig1
 
-   ExampleConfig
+   ExConfig2
+
+   ExConfig3
+
+
+Glossary
+--------
+
+.. toctree::
+   :maxdepth: 2
+
+   config
+
+   dll
+
+   omi
+
+   opr
+
+   shp
+
+   smw

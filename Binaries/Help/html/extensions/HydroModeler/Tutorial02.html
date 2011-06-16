@@ -90,14 +90,14 @@
 <li>Open the start menu and from program choose the CAUHSI HIS, then press hydrodesktop icon.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/Hydrodesktop_start86.png" src="../../_images/Hydrodesktop_start86.png" />
+<img alt="../../_images/Hydrodesktop_start.png" src="../../_images/Hydrodesktop_start.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
 <li>check that you have the latest version of hydrodesktop by comparing the version number  of the CUAHSI Hydro Desktop you have and the latest available on  <a class="reference external" href="http://hydrodesktop.codeplex.com/releases/view/59853">http://hydrodesktop.codeplex.com/releases/view/59853</a> (ex; Hydro Desktop version is 1.2537.0). Choose Create New Empty Project button.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/newproject4.png" src="../../_images/newproject4.png" />
+<img alt="../../_images/newproject.png" src="../../_images/newproject.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="3">
@@ -118,7 +118,7 @@
 <li>Edit the Topmodel.omi and be sure that the TopModel.Linkable_Component&#8221; Assembly  is pointing relatively toward the right TopModel.dll file of the model. check the path of both the input TI_raster,configuration file.xml, and revise the values of the input model parameters.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/TopModel.omi3.png" src="../../_images/TopModel.omi3.png" />
+<img alt="../../_images/TopModel.omi.png" src="../../_images/TopModel.omi.png" />
 </div>
 <ol class="arabic simple" start="6">
 <li>Follow the same procedures to be sure that  the Hargreaves, Db reader, Dbwriter omi files are  pointing toward the right .dll file and DataRepository.sqlite.</li>
@@ -132,14 +132,14 @@
 <li>Navigate to C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models and add all two models (TopModel-Hargreaves),and add the DbReader and DbWriter components from C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his. now all the models should be added to the HydroModeler workspace. Right click in the HydroModeler workspace and select Add Trigger. A Trigger starts the simulation by invoking the action GetValues on the model at a specified time.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/Component2.png" src="../../_images/Component2.png" />
+<img alt="../../_images/Component.png" src="../../_images/Component.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="9">
 <li>From the top bar choose table and press change button to define the path for the SQlite database file, navigate to C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his and select weather Data repository.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/tables79.png" src="../../_images/tables79.png" />
+<img alt="../../_images/tables.png" src="../../_images/tables.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="10">
@@ -147,49 +147,49 @@
 <li>Click on the arrow mark to open a connection properties window. Define the output exchange item that will be supplied as an input exchange item.  check the (+) mark for Temperature  of the Dbreader Output Exchange Items to show the three exchanging Temperature items,  check Coweeta max Temperature box and Hargreaves PET Max Temp box, and then press apply to activate the link. Repeat for all links.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/Dbconnection2.png" src="../../_images/Dbconnection2.png" />
+<img alt="../../_images/Dbconnection.png" src="../../_images/Dbconnection.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="12">
 <li>Connect the Dbreader to the TopModel to supply the TopModel with the precipitation data of Coweeta watershed. choose Dbreader as a source and TopModel as a target component.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/DbTopmodel75.png" src="../../_images/DbTopmodel75.png" />
+<img alt="../../_images/DbTopmodel.png" src="../../_images/DbTopmodel.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="13">
 <li>Connect the Hargreaves PET as a source component to supply the daily calculated PET  to TopModel component.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/hargreaves-TopModel2.png" src="../../_images/hargreaves-TopModel2.png" />
+<img alt="../../_images/hargreaves-TopModel.png" src="../../_images/hargreaves-TopModel.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="14">
 <li>Link the TopModel Component as a source to the Db Writer to store the output data (daily runoff hydrograph).</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/DbWriter-TopModel2.png" src="../../_images/DbWriter-TopModel2.png" />
+<img alt="../../_images/DbWriter-TopModel.png" src="../../_images/DbWriter-TopModel.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="15">
 <li>Link the TopModel as a source component to the trigger.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/TopModel-Trigger2.png" src="../../_images/TopModel-Trigger2.png" />
+<img alt="../../_images/TopModel-Trigger.png" src="../../_images/TopModel-Trigger.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="16">
 <li>Right click in the HydroModeler workspace and select Run.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/run2.png" src="../../_images/run2.png" />
+<img alt="../../_images/run.png" src="../../_images/run.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="17">
 <li>Select Set all within Events listened during calculation, click Latest overlapping to determine the simulation end time, and finally click RUN!!.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/runsetup2.png" src="../../_images/runsetup2.png" />
+<img alt="../../_images/runsetup.png" src="../../_images/runsetup.png" />
 </div>
 <p>.</p>
 </div>
