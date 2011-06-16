@@ -420,10 +420,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "OMI filename: " + fullPath + "\n" + "Exception: " + ex.ToString(),
-                    "Error occured while adding the model...",
+                    
+                    ex.Message.ToString(),
+                    "Failed to load model...",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBoxIcon.Warning);
             }
 
             // Reset the culture every time a new model is added.
@@ -2670,10 +2671,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         catch (Exception ex)
                         {
                             MessageBox.Show(
-                                "OMI filename: " + path + "\n" + "Exception: " + ex.ToString(),
-                                "Error occured while adding the model...",
+                                ex.Message.ToString(),
+                                "Failed to load model...",
                                 MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                                MessageBoxIcon.Warning);
                         }
 
 
