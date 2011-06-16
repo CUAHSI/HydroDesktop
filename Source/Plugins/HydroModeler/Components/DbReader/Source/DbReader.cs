@@ -42,6 +42,7 @@ namespace CUAHSI.HIS
         private Dictionary<string, List<double>> _times = new Dictionary<string,List<double>>();
         private Dictionary<string, int> _lastIndex = new Dictionary<string, int>();
         
+
         private int _searchDistance = -999;
 
         //set the relaxation factor to -999 initially.  This will be modified if a value is specified in the omi file.
@@ -559,12 +560,54 @@ namespace CUAHSI.HIS
             }
             _db = new DbOperations(conn, DatabaseTypes.SQLite);
  
-            //build list of output exchange items from db themes
+            //----build list of output exchange items from db themes
+            List<string> warnings = new List<string>();
+            //-- get all themes
             DataTable themes = _db.LoadTable("themes", "SELECT ThemeID, ThemeName from DataThemeDescriptions");
             foreach (DataRow theme in themes.Rows)
             {
-                IOutputExchangeItem outExchangeItem = buildExchangeItemFromTheme(theme["ThemeID"].ToString(), theme["ThemeName"].ToString());
-                _outputExchangeItems.Add(outExchangeItem);
+                //-- get all the variables associated with the theme
+                DataTable variables = _db.LoadTable("vars","SELECT Variables.VariableUnitsID,ThemeName "+
+                                                            "FROM Variables "+
+                                                            "INNER JOIN DataSeries ON Variables.VariableID=DataSeries.VariableID "+
+                                                            "INNER JOIN DataThemes ON DataSeries.SeriesID=DataThemes.SeriesID "+
+                                                            "INNER JOIN DataThemeDescriptions ON DataThemes.ThemeID=DataThemeDescriptions.ThemeID "+
+                                                            "WHERE DataThemes.ThemeID = "+theme[0].ToString());
+                //-- make sure that all series in theme have the same variable
+                bool saveTheme = true;
+                for (int i = 1; i <= variables.Rows.Count - 1; i++)
+                {
+                    if (variables.Rows[0][0].ToString() != variables.Rows[i][0].ToString())
+                    {
+                        //-- don't save this theme
+                        saveTheme = false;
+
+                        //-- add this theme to the warnings list
+                        warnings.Add("\""+variables.Rows[0][1].ToString()+"\"");
+
+                        break;
+                    }
+                }
+
+                //-- save all themes containing exactly one variable
+                if (saveTheme)
+                {
+                    IOutputExchangeItem outExchangeItem = buildExchangeItemFromTheme(theme["ThemeID"].ToString(), theme["ThemeName"].ToString());
+                    _outputExchangeItems.Add(outExchangeItem);
+                }
+            }
+
+            //---- notify the user if some themes cannot be loaded
+            if(warnings.Count > 0)
+            {
+                string title = "One or more themes could not be loaded...";
+                string message = "The DbReader component requires that all data series in given theme have a unique variable. " + 
+                                "One or more of the themes in this database do not fit this criteria, and therefore cannot be loaded. " +
+                                "\n\n--- The following themes will not be loaded --- \n";
+                foreach(string warning in warnings)
+                    message += "\nTheme Name: "+warning;
+
+                System.Windows.Forms.MessageBox.Show(message,title,System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Warning);               
             }
         }
 
