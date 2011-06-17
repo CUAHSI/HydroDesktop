@@ -78,7 +78,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 			//
 
 			_elementSetViewer = new ElementSetViewer();
-            _elementSetViewer.ResizeEnd += new EventHandler(elementSetViewer_ResizeEnd);
+            //_elementSetViewer.ResizeEnd += new EventHandler(elementSetViewer_ResizeEnd);
 		}
 
 		/// <summary>
@@ -518,15 +518,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
         /// <summary>
-        /// Forces the element set viewer to redraw.  This is triggered after the form has stopped moving.
+        /// Forces the element set viewer to redraw.  This is triggered after the form has stopped moving. (moved into elementset viewer class)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void elementSetViewer_ResizeEnd(object sender, System.EventArgs e)
-        {
-            //force the elementset view to refresh
-            _elementSetViewer.Refresh();
+        //private void elementSetViewer_ResizeEnd(object sender, System.EventArgs e)
+        //{
+        //    //force the elementset view to refresh
+        //    _elementSetViewer.Refresh();
 
-        }
+        //}
     }
 }
