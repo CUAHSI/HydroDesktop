@@ -56,7 +56,7 @@ Create Hargreaves component using Microsoft Visual C#.
    :align: center
 .
 
-2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path **C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components**.
+2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path *C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components*.
 
 .. figure:: ./images/Tutorial03/class.png
    :align: center
@@ -79,9 +79,9 @@ A reference is a file that is required to run the code you have written.  Usuall
    :align: center
 .
 
-2. A window will pop up. Using the tabs, browse to **C:/Hydrodesktop/Binaries/Plugins/HydroModeler**, and add (Oatc.OpenMI.Sdk.Backbone.dll - Oatc.OpenMI.Sdk.Buffer.dll - Oatc.OpenMI.Sdk.DevelopmentSupport.dll - Oatc.OpenMI.Sdk.Wrapper.dll - OpenMI.Standard.dll)
+2. A window will pop up. Using the tabs, browse to *C:/Hydrodesktop/Binaries/Plugins/HydroModeler*, and add (Oatc.OpenMI.Sdk.Backbone.dll - Oatc.OpenMI.Sdk.Buffer.dll - Oatc.OpenMI.Sdk.DevelopmentSupport.dll - Oatc.OpenMI.Sdk.Wrapper.dll - OpenMI.Standard.dll)
 
-3. Navigate to **C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin** and add SMW.dll.
+3. Navigate to *C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin* and add SMW.dll.
 
 .. figure:: ./images/Tutorial03/referencesstructure.png
    :align: center
@@ -155,7 +155,7 @@ Configuration file define the exchange items (output - input) of the component, 
 
 Create the omi file
 ''''''''''''''''''
- **omi** is used to define (Linkable component- *relative* location for component dll-path for cofiguration.xml- input & output arguments)
+ **omi** is defined by (Linkable component - *relative* location for component dll - path for cofiguration.xml - input & output arguments)
 
 1. Create a xml file, add it under data folder and name it as Hargreaves.
 
@@ -222,7 +222,7 @@ Compiling
 The next step involves compiling the application.  Compiling is the process of converting written code into an executable file that the computer can run.  
 In Visual Studio C#, select Build - Build Solution
 
-1. Right click on the Hargreaves.csproj,  select properties, Debug, start external program, and navigate to HydroDesktop.exe in **C:/Hydrodesktop/Binaries/HydroDesktop.exe**.
+1. Right click on the Hargreaves.csproj,  select properties, Debug, start external program, and navigate to HydroDesktop.exe in *C:/Hydrodesktop/Binaries/HydroDesktop.exe*.
 
 .. figure:: ./images/Tutorial03/compile.png
    :align: center
@@ -277,7 +277,7 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 
 2. Open the start menu and choose Microsoft Visual studio.
 
-3. Create a new project, don't forget to choose visual C#, class Library, named Hagreaves test, and save under **C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves**. 
+3. Create a new project, don't forget to choose visual C#, class Library, named Hagreaves test, and save under *C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves*. 
 
 4. Add the nunit.framework dll to your references, Don't forget to add all the references you used in creating the component, and implement the using directive to add the Nunit.Framework namespace to your solution.
 
