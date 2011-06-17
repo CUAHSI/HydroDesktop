@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
-    <StartProgram>C:\_Code\_HD\HydroDesktopHG\Binaries\HydroDesktop.exe</StartProgram>
+    <StartProgram>C:\Program Files\CUAHSI HIS\HydroDesktop\HydroDesktop.exe</StartProgram>
     <StartArguments>
     </StartArguments>
   </PropertyGroup>
