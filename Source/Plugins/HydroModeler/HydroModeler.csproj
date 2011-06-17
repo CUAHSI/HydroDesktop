@@ -63,10 +63,6 @@
       <HintPath>..\..\..\Binaries\HydroDesktop.Help.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Oatc.OpenMI.Gui.Controls, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Oatc\Gui\Controls\obj\Release\Oatc.OpenMI.Gui.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="Oatc.OpenMI.Gui.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Oatc\Gui\Core\obj\Release\Oatc.OpenMI.Gui.Core.dll</HintPath>
@@ -214,6 +210,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Utilities\OpenMI\gui\Controls\Oatc.OpenMI.Gui.Controls.csproj">
+      <Project>{FC8850E1-3C5A-4B6D-8012-A7411B06F863}</Project>
+      <Name>Oatc.OpenMI.Gui.Controls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
