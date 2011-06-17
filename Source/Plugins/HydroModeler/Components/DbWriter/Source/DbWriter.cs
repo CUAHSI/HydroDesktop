@@ -163,23 +163,51 @@ namespace CUAHSI.HIS
         /// <param name="properties">arguments stored in the *.omi file</param>
         public void Initialize(IArgument[] properties)
         {
-            //set connection string equal to the repository that HD is connected to
-            conn = Settings.Instance.DataRepositoryConnectionString;
 
             //extract argument(s) from OMI file
             foreach (IArgument property in properties)
             {
                 //overwrite the connection string, if one is given in the *.omi
                 if (property.Key == "DbPath") 
-                { 
                     _dbPath = property.Value;
-                    FileInfo fi = new FileInfo(_dbPath);
-                    conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
-                }
+
                 //default value for relationFactor is 1;
                 if (property.Key == "Relaxation") { _smartBuffer.RelaxationFactor = Convert.ToDouble(property.Value); }
                 if (property.Key == "IgnoreValue") { _ignore = Convert.ToDouble(property.Value); }
             }
+
+            //---- set database to default if dbpath is invalid
+            string conn = null;
+            //-- first check if dbpath is null
+            bool pass = true;
+            if (String.IsNullOrWhiteSpace(_dbPath))
+                pass = false;
+            //-- next, check that dbpath points to an actual file
+            else
+            {
+                string fullpath = System.IO.Path.GetFullPath(_dbPath);
+                if (!File.Exists(fullpath))
+                {
+                    pass = false;
+
+                    //-- warn the user that the database could not be found
+                    System.Windows.Forms.MessageBox.Show("The database supplied in DbWriter.omi could not be found. As a result the DbWriter will connect to the current HydroDesktop database." +
+                                "\n\n--- The following database could not be found --- \n" + fullpath,
+                        "An Error Occurred While Loading Database...",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                }
+            }
+
+
+            //-- set the connection string
+            if (!pass)
+                conn = Settings.Instance.DataRepositoryConnectionString;
+            else
+            {
+                FileInfo fi = new FileInfo(_dbPath);
+                conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
+            }
+
 
             //---- read db info provided by omi
             dbargs = ReadDbArgs(properties);
