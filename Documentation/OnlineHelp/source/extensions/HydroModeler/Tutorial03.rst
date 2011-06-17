@@ -10,7 +10,7 @@ C# is an object oriented programming language designed for building a wide varie
 
 Hargreaves Component Structure
 ------------------------------
-Hargreaves is an Evapotranspiration model, that is simple in practical use, requires only two easily accessible parameters, temperature and solar energy. the total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component need three input exchange items  (Maximum-Minimum-Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration) 
+Hargreaves is an Evapotranspiration model, that is simple in practical use.  It requires only two easily accessible parameters, temperature and solar energy. The total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component need three input exchange items  (Maximum - Minimum - Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration) 
 
 Getting stared with Visual C#
 ------------------------------
@@ -56,13 +56,13 @@ Create Hargreaves component using Microsoft Visual C#.
    :align: center
 .
 
-2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components.
+2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path **C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components**.
 
 .. figure:: ./images/Tutorial03/class.png
    :align: center
 .
 
-3. Add two folders (source-data), copy class1.cs into source folder and rename it Hargreaves.cs 
+3. Add two folders (source - data), copy class1.cs into source folder and rename it Hargreaves.cs 
 
 .. figure:: ./images/Tutorial03/folders.png
    :align: center
@@ -79,9 +79,9 @@ A reference is a file that is required to run the code you have written.  Usuall
    :align: center
 .
 
-2. A window will pop up. Using the tabs, browse to C:/Hydrodesktop/Binaries/Plugins/HydroModeler, and add (Oatc.OpenMI.Sdk.Backbone.dll-Oatc.OpenMI.Sdk.Buffer.dll-Oatc.OpenMI.Sdk.DevelopmentSupport.dll-Oatc.OpenMI.Sdk.Wrapper.dll-OpenMI.Standard.dll)
+2. A window will pop up. Using the tabs, browse to **C:/Hydrodesktop/Binaries/Plugins/HydroModeler**, and add (Oatc.OpenMI.Sdk.Backbone.dll - Oatc.OpenMI.Sdk.Buffer.dll - Oatc.OpenMI.Sdk.DevelopmentSupport.dll - Oatc.OpenMI.Sdk.Wrapper.dll - OpenMI.Standard.dll)
 
-3. Navigate to C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin and add SMW.dll.
+3. Navigate to **C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin** and add SMW.dll.
 
 .. figure:: ./images/Tutorial03/referencesstructure.png
    :align: center
@@ -107,7 +107,7 @@ Namespaces allow you a way to organize your code.  The "using" directive can be 
 
 Create the Linkable component
 ''''''''''''''''''''''''''''
-1.Add a new class under the source folder and rename it as **LinkableComponent** (camel back typing). 
+1.Add a new class under the source folder and rename it as LinkableComponent (camel back typing). 
 
 .. figure:: ./images/Tutorial03/linkablecomponent.png
    :align: center
@@ -125,7 +125,7 @@ Create the Linkable component
 Create the Configuration Xml
 ''''''''''''''''''''''''''''
 
-Configuration file define the exchange items (output-input) of the component, and the time horizon of the component ( start-end-step) time. 
+Configuration file define the exchange items (output - input) of the component, and the time horizon of the component (start - end - step) time. 
 
 1. Add a xml file to the Data folder.
 
@@ -137,13 +137,13 @@ Configuration file define the exchange items (output-input) of the component, an
 
 3. Hargreaves component have three input exchange items, one output exchange item.
 
-4. In output exchange item we define the Element set(ID-Description-path for output shape file if necessary), and Quantity (ID-Dimensions-units-value type).
+4. In output exchange item we define the Element set(ID - Description - path for output shape file, if necessary), and Quantity (ID - Dimensions - units - value type).
 
 .. figure:: ./images/Tutorial03/outputexchangeitem.png
    :align: center
 .
 
-5. In input exchange item we define Element set(ID-Description-path for input shape file if necessary), and Quantity (ID-Dimensions-units-value type). Repeat for the rest of the exchange items
+5. In input exchange item we define Element set (ID - Description - path for input shape file, if necessary), and Quantity (ID - Dimensions - units - value type). Repeat for the rest of the exchange items
 
 .. figure:: ./images/Tutorial03/inputexchangeitem.png
    :align: center
@@ -163,7 +163,7 @@ Create the omi file
 
 3. Define the relative path for the Hargeaves.dll.
 
-4. Define an argument (Key-ReadOnly-Value) for the configuration file. key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and the value point to the *relative* location of the configuration.xml.
+4. Define an argument (Key - ReadOnly - Value) for the configuration file. Key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and Value points to the *relative* location of the configuration.xml.
 
 5. Add an argument named Output to define the relative location of the output csv file.
 
@@ -204,14 +204,14 @@ There are several major parts to this code:
 .
 
 
-4. The Calculations Section- For the Sample Component the calculation section is written so that the application simply generates random numbers. 
+4. The Calculations Section- For the Sample Component, the calculation section is written so that the application simply generates random numbers. 
 
   
 .. figure:: ./images/Tutorial03/preform.png
    :align: center
 .
 
-Within the Finish method there is code telling the application where to write the output file.  This line should be changed now to specify where you would like the output file.  If you choose not to change the code then by default the output text file created by HydroModeler will go up two directories from where you run HydroDesktop.  
+Within the Finish method there is code telling the application where to write the output file.  This line should be changed now to specify where you would like the output file to be created.  If you choose not to change the code then by default the output text file created by HydroModeler will go up two directories from where you run HydroDesktop.  
 
 .. index:: 
    single: Compiling
@@ -219,16 +219,16 @@ Within the Finish method there is code telling the application where to write th
 Compiling
 ''''''''''
 
-The next steps involve compiling the application.  Compiling is the process of converting written code into an executable file that the computer can run.  
-In Visual Studio C# select Build - Build Solution
+The next step involves compiling the application.  Compiling is the process of converting written code into an executable file that the computer can run.  
+In Visual Studio C#, select Build - Build Solution
 
-1. right click on the Hargreaves.csproj,  selsect properties, Debug, start external program, and navigate to HydroDesktop.exe in C:/Hydrodesktop/Binaries/HydroDesktop.exe
+1. Right click on the Hargreaves.csproj,  select properties, Debug, start external program, and navigate to HydroDesktop.exe in **C:/Hydrodesktop/Binaries/HydroDesktop.exe**.
 
 .. figure:: ./images/Tutorial03/compile.png
    :align: center
 .
 
-2. Build the solution to check for any errors and alert you to them in the Error List window at the bottom of the screen.
+2. Build the solution to check for any errors.  If there are any errors, the Error List window at the bottom of the screen will notify you.
     
 
 .. index:: 
@@ -277,16 +277,16 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 
 2. Open the start menu and choose Microsoft Visual studio.
 
-3. Create a new project, don't forget to choose visual C#, class Library, named Hagreaves test, and save under C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves. 
+3. Create a new project, don't forget to choose visual C#, class Library, named Hagreaves test, and save under **C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves**. 
 
 4. Add the nunit.framework dll to your references, Don't forget to add all the references you used in creating the component, and implement the using directive to add the Nunit.Framework namespace to your solution.
 
-5. close the HargreavesTest project, and add it to Hargreaves project solution in order to debug any error appear if any of your tests fail.
+5. Close the HargreavesTest project, and add it to Hargreaves project solution in order to debug any error messages that may appear if any of your tests fail.
 
 .. figure:: ./images/Tutorial03/Test.png
    :align: center
 
-6. In Intialization() method test.
+6. In the Intialization() method test.
 
 
   * Create instance of the hargreaves model.
@@ -298,7 +298,7 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 .. figure:: ./images/Tutorial03/intialization .png
    :align: center
 
-7. PreformTimeStep() method test.
+7. In the PreformTimeStep() method test.
 
 
   * Assign data into IValueSets.
@@ -307,19 +307,19 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 
   * Call perform time step.
 
-  * Assert that calculated values are equal to the already known values of the test.
+  * Assert that calculated values are equal to the known values of the test.
 
 
 .. figure:: ./images/Tutorial03/preformtest .png
    :align: center
 
-8. Finish() method test.
+8. In the Finish() method test.
 
 .. figure:: ./images/Tutorial03/finishtest .png
    :align: center
 
 
-9.Calculated PET() method (method created to calculate the Evapotranspiration rate)
+9. In the Calculated PET() method (method created to calculate the Evapotranspiration rate)
 
 
   

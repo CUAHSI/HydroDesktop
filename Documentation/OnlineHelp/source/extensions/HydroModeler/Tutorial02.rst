@@ -18,7 +18,7 @@ Composite Creation
    :align: center
 .
 
-2. check that you have the latest version of hydrodesktop by comparing the version number  of the CUAHSI Hydro Desktop you have and the latest available on  http://hydrodesktop.codeplex.com/releases/view/59853 (ex; Hydro Desktop version is 1.2537.0). Choose Create New Empty Project button.
+2. Check that you have the latest version of hydrodesktop by comparing the version number  of the CUAHSI Hydro Desktop you have and the latest available on  http://hydrodesktop.codeplex.com/releases/view/59853 (ex; Hydro Desktop version is 1.2537.0). Choose Create New Empty Project button.
   
 .. figure:: ./images/Tutorial02/newproject.png
    :align: center
@@ -31,7 +31,7 @@ Composite Creation
 .
 
 
-4.	Navigate to C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04-models/TOPMODEL. 
+4.	Navigate to **C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04-models/TOPMODEL**. 
 
 .. figure:: ./images/Tutorial02/CurrentDirectory.png
    :align: center
@@ -51,27 +51,27 @@ Composite Creation
    :align: center
 .
 
-8.	 Navigate to C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models and add all two models (TopModel-Hargreaves),and add the DbReader and DbWriter components from C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his. now all the models should be added to the HydroModeler workspace. Right click in the HydroModeler workspace and select Add Trigger. A Trigger starts the simulation by invoking the action GetValues on the model at a specified time. 
+8.	 Navigate to **C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models** and add both models (TopModel-Hargreaves),and add the DbReader and DbWriter components from **C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his**. Now all the models should be added to the HydroModeler workspace. Right click in the HydroModeler workspace and select Add Trigger. A Trigger starts the simulation by invoking the action GetValues on the model at a specified time. 
 
 .. figure:: ./images/Tutorial02/Component.png
    :align: center
 .
 
-9.	From the top bar choose table and press change button to define the path for the SQlite database file, navigate to C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his and select weather Data repository.
+9.	From the top bar choose table and press change button to define the path for the SQlite database file, navigate to **C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his** and select weather Data repository.
 
 .. figure:: ./images/Tutorial02/tables.png
    :align: center
 .
 
-10.	return back to the HydroModeler tab. Right click in the HydroModeler workspace and select Add Connection. Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign as a target component.
+10.	Return back to the HydroModeler tab. Right click in the HydroModeler workspace and select Add Connection. Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign as a target component.
 
-11.	Click on the arrow mark to open a connection properties window. Define the output exchange item that will be supplied as an input exchange item.  check the (+) mark for Temperature  of the Dbreader Output Exchange Items to show the three exchanging Temperature items,  check Coweeta max Temperature box and Hargreaves PET Max Temp box, and then press apply to activate the link. Repeat for all links. 
+11.	Click on the arrow mark to open a connection properties window. Define the output exchange item that will be supplied as an input exchange item.  Click the (+) mark for Temperature  of the Dbreader Output Exchange Items to show the three exchanging Temperature items,  check Coweeta max Temperature box and Hargreaves PET Max Temp box, and then press apply to activate the link. Repeat for all links. 
 
 .. figure:: ./images/Tutorial02/Dbconnection.png
    :align: center
 .	
 
-12.	Connect the Dbreader to the TopModel to supply the TopModel with the precipitation data of Coweeta watershed. choose Dbreader as a source and TopModel as a target component. 
+12.	Connect the Dbreader to the TopModel to supply the TopModel with the precipitation data of Coweeta watershed. Choose Dbreader as a source and TopModel as a target component. 
 
 .. figure:: ./images/Tutorial02/DbTopmodel.png
    :align: center
