@@ -168,6 +168,7 @@
     <ProjectReference Include="..\Core\Oatc.OpenMI.Gui.Core.csproj">
       <Project>{5ED7C71D-E89A-41F7-8B34-54C0C099412C}</Project>
       <Name>Oatc.OpenMI.Gui.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

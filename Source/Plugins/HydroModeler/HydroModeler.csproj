@@ -37,81 +37,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Modeling">
-      <HintPath>..\..\..\Binaries\DotSpatial.Modeling.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Modeling.Forms">
-      <HintPath>..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Help, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Binaries\HydroDesktop.Help.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Gui.Controls, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Oatc\Gui\Controls\obj\Release\Oatc.OpenMI.Gui.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Gui.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Oatc\Gui\Core\obj\Release\Oatc.OpenMI.Gui.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Buffer, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Spatial, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Spatial.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Wrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMI.Standard">
-      <HintPath>Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
-      <HintPath>..\..\..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll</HintPath>
-    </Reference>
-	<Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -217,38 +142,47 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Utilities\OpenMI\gui\Controls\Oatc.OpenMI.Gui.Controls.csproj">
-      <Project>{FC8850E1-3C5A-4B6D-8012-A7411B06F863}</Project>
-      <Name>Oatc.OpenMI.Gui.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\gui\Core\Oatc.OpenMI.Gui.Core.csproj">
-      <Project>{5ED7C71D-E89A-41F7-8B34-54C0C099412C}</Project>
-      <Name>Oatc.OpenMI.Gui.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\sdk\Backbone\Oatc.OpenMI.Sdk.Backbone.csproj">
-      <Project>{23C206AE-CBEF-4FD1-9928-BF04147B62B2}</Project>
-      <Name>Oatc.OpenMI.Sdk.Backbone</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\sdk\Buffer\Oatc.OpenMI.Sdk.Buffer.csproj">
-      <Project>{C9844E74-074D-46FA-AEF6-371B3481468B}</Project>
-      <Name>Oatc.OpenMI.Sdk.Buffer</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\sdk\DevelopmentSupport\Oatc.OpenMI.Sdk.DevelopmentSupport.csproj">
-      <Project>{B7BE8C7F-0679-4022-81A5-6A314C058429}</Project>
-      <Name>Oatc.OpenMI.Sdk.DevelopmentSupport</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\sdk\Spatial\Oatc.OpenMI.Sdk.Spatial.csproj">
-      <Project>{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}</Project>
-      <Name>Oatc.OpenMI.Sdk.Spatial</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\sdk\Wrapper\Oatc.OpenMI.Sdk.Wrapper.csproj">
-      <Project>{3DF52260-A727-405B-88A8-630BCE9085AC}</Project>
-      <Name>Oatc.OpenMI.Sdk.Wrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="Utilities\OpenMI\standard\OpenMI.Standard\OpenMI.Standard.csproj">
-      <Project>{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}</Project>
-      <Name>OpenMI.Standard</Name>
-    </ProjectReference>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Help">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Help.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Gui.Controls">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Gui.Core">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Backbone">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Buffer">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Spatial">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMI.Standard">
+      <HintPath>Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
