@@ -2,7 +2,7 @@
 <LinkableComponent Type="CUAHSI.HIS.DbWriter" Assembly="..\..\bin\DbWriter.dll">
 <Arguments>
     <Argument Key="DbPath" ReadOnly="true" Value=".\HD_Project.sqlite   " />
-    <Argument Key="Method.Description" ReadOnly="true" Value="Simulation 2, m=80, Tmax=270000" />
+    <Argument Key="Method.Description" ReadOnly="true" Value="PET Model Simulation 1" />
     <Argument Key="Source.Organization" ReadOnly="true" Value="University of South Carolina   " />
     <Argument Key="Source.Address" ReadOnly="true" Value="300 Main St.   " />
     <Argument Key="Source.City" ReadOnly="true" Value="Columbia   " />
