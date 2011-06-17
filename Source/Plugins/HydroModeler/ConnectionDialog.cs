@@ -616,326 +616,318 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(ConnectionDialog));
-			this.listLinks = new System.Windows.Forms.ListBox();
-			this.buttonClose = new System.Windows.Forms.Button();
-			this.providerExchangeItemSelector = new Oatc.OpenMI.Gui.Controls.ExchangeItemSelector();
-			this.acceptorExchangeItemSelector = new Oatc.OpenMI.Gui.Controls.ExchangeItemSelector();
-			this.DimensionFilterCheckBox = new System.Windows.Forms.CheckBox();
-			this.ElementTypeFilterCheckBox = new System.Windows.Forms.CheckBox();
-			this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-			this.groupBoxOutputExchnageItems = new System.Windows.Forms.GroupBox();
-			this.labelWarning = new System.Windows.Forms.Label();
-			this.labelInfo = new System.Windows.Forms.Label();
-			this.groupBoxLinks = new System.Windows.Forms.GroupBox();
-			this.buttonApply = new System.Windows.Forms.Button();
-			this.buttonRemove = new System.Windows.Forms.Button();
-			this.groupBoxProperties = new System.Windows.Forms.GroupBox();
-			this.buttonViewElementSet = new System.Windows.Forms.Button();
-			this.groupBoxTools = new System.Windows.Forms.GroupBox();
-			this.groupBoxInputExchangeItems = new System.Windows.Forms.GroupBox();
-			this.panelBottom = new System.Windows.Forms.Panel();
-			this.splitterHorizontal = new System.Windows.Forms.Splitter();
-			this.splitterVertical2 = new System.Windows.Forms.Splitter();
-			this.splitterVertical1 = new System.Windows.Forms.Splitter();
-			this.groupBoxOutputExchnageItems.SuspendLayout();
-			this.groupBoxLinks.SuspendLayout();
-			this.groupBoxProperties.SuspendLayout();
-			this.groupBoxTools.SuspendLayout();
-			this.groupBoxInputExchangeItems.SuspendLayout();
-			this.panelBottom.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// listLinks
-			// 
-			this.listLinks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.listLinks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.listLinks.HorizontalExtent = 3000;
-			this.listLinks.HorizontalScrollbar = true;
-			this.listLinks.Location = new System.Drawing.Point(8, 16);
-			this.listLinks.Name = "listLinks";
-			this.listLinks.Size = new System.Drawing.Size(444, 106);
-			this.listLinks.TabIndex = 5;
-			this.listLinks.SelectedIndexChanged += new System.EventHandler(this.listLinks_SelectedIndexChanged);
-			// 
-			// buttonClose
-			// 
-			this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonClose.Location = new System.Drawing.Point(544, 140);
-			this.buttonClose.Name = "buttonClose";
-			this.buttonClose.Size = new System.Drawing.Size(84, 28);
-			this.buttonClose.TabIndex = 8;
-			this.buttonClose.Text = "&Close";
-			this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-			// 
-			// providerExchangeItemSelector
-			// 
-			this.providerExchangeItemSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.providerExchangeItemSelector.Location = new System.Drawing.Point(8, 16);
-			this.providerExchangeItemSelector.Name = "providerExchangeItemSelector";
-			this.providerExchangeItemSelector.Size = new System.Drawing.Size(188, 112);
-			this.providerExchangeItemSelector.TabIndex = 0;
-			this.providerExchangeItemSelector.CheckboxesChanged += new System.EventHandler(this.providerExchangeItemSelector_CheckboxesChanged);
-			this.providerExchangeItemSelector.SelectionChanged += new System.EventHandler(this.providerExchangeItemSelector_SelectionChanged);
-			// 
-			// acceptorExchangeItemSelector
-			// 
-			this.acceptorExchangeItemSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.acceptorExchangeItemSelector.Location = new System.Drawing.Point(8, 16);
-			this.acceptorExchangeItemSelector.Name = "acceptorExchangeItemSelector";
-			this.acceptorExchangeItemSelector.Size = new System.Drawing.Size(188, 112);
-			this.acceptorExchangeItemSelector.TabIndex = 1;
-			this.acceptorExchangeItemSelector.CheckboxesChanged += new System.EventHandler(this.acceptorExchangeItemSelector_CheckboxesChanged);
-			this.acceptorExchangeItemSelector.SelectionChanged += new System.EventHandler(this.acceptorExchangeItemSelector_SelectionChanged);
-			// 
-			// DimensionFilterCheckBox
-			// 
-			this.DimensionFilterCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.DimensionFilterCheckBox.Checked = true;
-			this.DimensionFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.DimensionFilterCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.DimensionFilterCheckBox.Location = new System.Drawing.Point(8, 145);
-			this.DimensionFilterCheckBox.Name = "DimensionFilterCheckBox";
-			this.DimensionFilterCheckBox.Size = new System.Drawing.Size(172, 16);
-			this.DimensionFilterCheckBox.TabIndex = 2;
-			this.DimensionFilterCheckBox.Text = "Use &Dimension filter";
-			this.DimensionFilterCheckBox.CheckedChanged += new System.EventHandler(this.DimensionFilterCheckBox_CheckedChanged);
-			// 
-			// ElementTypeFilterCheckBox
-			// 
-			this.ElementTypeFilterCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.ElementTypeFilterCheckBox.Checked = true;
-			this.ElementTypeFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.ElementTypeFilterCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.ElementTypeFilterCheckBox.Location = new System.Drawing.Point(8, 129);
-			this.ElementTypeFilterCheckBox.Name = "ElementTypeFilterCheckBox";
-			this.ElementTypeFilterCheckBox.Size = new System.Drawing.Size(172, 16);
-			this.ElementTypeFilterCheckBox.TabIndex = 3;
-			this.ElementTypeFilterCheckBox.Text = "Use &ElementType filter";
-			this.ElementTypeFilterCheckBox.CheckedChanged += new System.EventHandler(this.ElementTypeFilterCheckBox_CheckedChanged);
-			// 
-			// propertyGrid
-			// 
-			this.propertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.propertyGrid.CommandsVisibleIfAvailable = true;
-			this.propertyGrid.Cursor = System.Windows.Forms.Cursors.HSplit;
-			this.propertyGrid.LargeButtons = false;
-			this.propertyGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
-			this.propertyGrid.Location = new System.Drawing.Point(8, 16);
-			this.propertyGrid.Name = "propertyGrid";
-			this.propertyGrid.Size = new System.Drawing.Size(209, 145);
-			this.propertyGrid.TabIndex = 4;
-			this.propertyGrid.Text = "propertyGrid1";
-			this.propertyGrid.ViewBackColor = System.Drawing.SystemColors.Window;
-			this.propertyGrid.ViewForeColor = System.Drawing.SystemColors.WindowText;
-			// 
-			// groupBoxOutputExchnageItems
-			// 
-			this.groupBoxOutputExchnageItems.Controls.Add(this.labelWarning);
-			this.groupBoxOutputExchnageItems.Controls.Add(this.providerExchangeItemSelector);
-			this.groupBoxOutputExchnageItems.Dock = System.Windows.Forms.DockStyle.Left;
-			this.groupBoxOutputExchnageItems.Location = new System.Drawing.Point(8, 28);
-			this.groupBoxOutputExchnageItems.Name = "groupBoxOutputExchnageItems";
-			this.groupBoxOutputExchnageItems.Size = new System.Drawing.Size(204, 165);
-			this.groupBoxOutputExchnageItems.TabIndex = 23;
-			this.groupBoxOutputExchnageItems.TabStop = false;
-			this.groupBoxOutputExchnageItems.Text = " Output Exchange Items";
-			// 
-			// labelWarning
-			// 
-			this.labelWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelWarning.ForeColor = System.Drawing.Color.Red;
-			this.labelWarning.Location = new System.Drawing.Point(8, 132);
-			this.labelWarning.Name = "labelWarning";
-			this.labelWarning.Size = new System.Drawing.Size(188, 28);
-			this.labelWarning.TabIndex = 2;
-			this.labelWarning.Text = "Warning: Selected combination of DataOperations is invalid !";
-			this.labelWarning.Visible = false;
-			// 
-			// labelInfo
-			// 
-			this.labelInfo.Dock = System.Windows.Forms.DockStyle.Top;
-			this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.labelInfo.ForeColor = System.Drawing.SystemColors.Desktop;
-			this.labelInfo.Location = new System.Drawing.Point(8, 0);
-			this.labelInfo.Name = "labelInfo";
-			this.labelInfo.Size = new System.Drawing.Size(636, 28);
-			this.labelInfo.TabIndex = 24;
-			this.labelInfo.Text = "Connection XXX =>\n YYY";
-			this.labelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// groupBoxLinks
-			// 
-			this.groupBoxLinks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBoxLinks.Controls.Add(this.buttonApply);
-			this.groupBoxLinks.Controls.Add(this.buttonRemove);
-			this.groupBoxLinks.Controls.Add(this.listLinks);
-			this.groupBoxLinks.Location = new System.Drawing.Point(104, 4);
-			this.groupBoxLinks.Name = "groupBoxLinks";
-			this.groupBoxLinks.Size = new System.Drawing.Size(528, 128);
-			this.groupBoxLinks.TabIndex = 25;
-			this.groupBoxLinks.TabStop = false;
-			this.groupBoxLinks.Text = " Links";
-			// 
-			// buttonApply
-			// 
-			this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonApply.Location = new System.Drawing.Point(456, 16);
-			this.buttonApply.Name = "buttonApply";
-			this.buttonApply.Size = new System.Drawing.Size(64, 24);
-			this.buttonApply.TabIndex = 6;
-			this.buttonApply.Text = "&Apply";
-			this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
-			// 
-			// buttonRemove
-			// 
-			this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonRemove.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonRemove.Location = new System.Drawing.Point(456, 48);
-			this.buttonRemove.Name = "buttonRemove";
-			this.buttonRemove.Size = new System.Drawing.Size(64, 24);
-			this.buttonRemove.TabIndex = 7;
-			this.buttonRemove.Text = "&Remove";
-			this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
-			// 
-			// groupBoxProperties
-			// 
-			this.groupBoxProperties.Controls.Add(this.propertyGrid);
-			this.groupBoxProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBoxProperties.Location = new System.Drawing.Point(422, 28);
-			this.groupBoxProperties.Name = "groupBoxProperties";
-			this.groupBoxProperties.Size = new System.Drawing.Size(222, 165);
-			this.groupBoxProperties.TabIndex = 26;
-			this.groupBoxProperties.TabStop = false;
-			this.groupBoxProperties.Text = "DataOperation properties";
-			// 
-			// buttonViewElementSet
-			// 
-			this.buttonViewElementSet.Enabled = false;
-			this.buttonViewElementSet.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonViewElementSet.Location = new System.Drawing.Point(8, 16);
-			this.buttonViewElementSet.Name = "buttonViewElementSet";
-			this.buttonViewElementSet.Size = new System.Drawing.Size(80, 32);
-			this.buttonViewElementSet.TabIndex = 8;
-			this.buttonViewElementSet.Text = "ElementSet &viewer";
-			this.buttonViewElementSet.Click += new System.EventHandler(this.buttonViewElementSet_Click);
-			// 
-			// groupBoxTools
-			// 
-			this.groupBoxTools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left)));
-			this.groupBoxTools.Controls.Add(this.buttonViewElementSet);
-			this.groupBoxTools.Location = new System.Drawing.Point(4, 4);
-			this.groupBoxTools.Name = "groupBoxTools";
-			this.groupBoxTools.Size = new System.Drawing.Size(96, 128);
-			this.groupBoxTools.TabIndex = 27;
-			this.groupBoxTools.TabStop = false;
-			this.groupBoxTools.Text = "Tools";
-			// 
-			// groupBoxInputExchangeItems
-			// 
-			this.groupBoxInputExchangeItems.Controls.Add(this.acceptorExchangeItemSelector);
-			this.groupBoxInputExchangeItems.Controls.Add(this.DimensionFilterCheckBox);
-			this.groupBoxInputExchangeItems.Controls.Add(this.ElementTypeFilterCheckBox);
-			this.groupBoxInputExchangeItems.Dock = System.Windows.Forms.DockStyle.Left;
-			this.groupBoxInputExchangeItems.Location = new System.Drawing.Point(215, 28);
-			this.groupBoxInputExchangeItems.Name = "groupBoxInputExchangeItems";
-			this.groupBoxInputExchangeItems.Size = new System.Drawing.Size(204, 165);
-			this.groupBoxInputExchangeItems.TabIndex = 0;
-			this.groupBoxInputExchangeItems.TabStop = false;
-			this.groupBoxInputExchangeItems.Text = " Input Exchange Items";
-			// 
-			// panelBottom
-			// 
-			this.panelBottom.Controls.Add(this.buttonClose);
-			this.panelBottom.Controls.Add(this.groupBoxLinks);
-			this.panelBottom.Controls.Add(this.groupBoxTools);
-			this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panelBottom.Location = new System.Drawing.Point(8, 197);
-			this.panelBottom.Name = "panelBottom";
-			this.panelBottom.Size = new System.Drawing.Size(636, 168);
-			this.panelBottom.TabIndex = 28;
-			// 
-			// splitterHorizontal
-			// 
-			this.splitterHorizontal.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitterHorizontal.Location = new System.Drawing.Point(8, 193);
-			this.splitterHorizontal.MinExtra = 150;
-			this.splitterHorizontal.MinSize = 150;
-			this.splitterHorizontal.Name = "splitterHorizontal";
-			this.splitterHorizontal.Size = new System.Drawing.Size(636, 4);
-			this.splitterHorizontal.TabIndex = 30;
-			this.splitterHorizontal.TabStop = false;
-			// 
-			// splitterVertical2
-			// 
-			this.splitterVertical2.Location = new System.Drawing.Point(419, 28);
-			this.splitterVertical2.MinExtra = 150;
-			this.splitterVertical2.MinSize = 150;
-			this.splitterVertical2.Name = "splitterVertical2";
-			this.splitterVertical2.Size = new System.Drawing.Size(3, 165);
-			this.splitterVertical2.TabIndex = 24;
-			this.splitterVertical2.TabStop = false;
-			// 
-			// splitterVertical1
-			// 
-			this.splitterVertical1.Location = new System.Drawing.Point(212, 28);
-			this.splitterVertical1.MinExtra = 150;
-			this.splitterVertical1.MinSize = 150;
-			this.splitterVertical1.Name = "splitterVertical1";
-			this.splitterVertical1.Size = new System.Drawing.Size(3, 165);
-			this.splitterVertical1.TabIndex = 27;
-			this.splitterVertical1.TabStop = false;
-			// 
-			// ConnectionDialog
-			// 
-			this.AcceptButton = this.buttonClose;
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.buttonClose;
-			this.ClientSize = new System.Drawing.Size(652, 373);
-			this.Controls.Add(this.groupBoxProperties);
-			this.Controls.Add(this.splitterVertical2);
-			this.Controls.Add(this.groupBoxInputExchangeItems);
-			this.Controls.Add(this.splitterVertical1);
-			this.Controls.Add(this.groupBoxOutputExchnageItems);
-			this.Controls.Add(this.splitterHorizontal);
-			this.Controls.Add(this.labelInfo);
-			this.Controls.Add(this.panelBottom);
-			this.DockPadding.Bottom = 8;
-			this.DockPadding.Left = 8;
-			this.DockPadding.Right = 8;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(660, 400);
-			this.Name = "ConnectionDialog";
-			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Connection properties";
-			this.Closing += new System.ComponentModel.CancelEventHandler(this.LinkDialog_Closing);
-			this.groupBoxOutputExchnageItems.ResumeLayout(false);
-			this.groupBoxLinks.ResumeLayout(false);
-			this.groupBoxProperties.ResumeLayout(false);
-			this.groupBoxTools.ResumeLayout(false);
-			this.groupBoxInputExchangeItems.ResumeLayout(false);
-			this.panelBottom.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectionDialog));
+            this.listLinks = new System.Windows.Forms.ListBox();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.providerExchangeItemSelector = new Oatc.OpenMI.Gui.Controls.ExchangeItemSelector();
+            this.acceptorExchangeItemSelector = new Oatc.OpenMI.Gui.Controls.ExchangeItemSelector();
+            this.DimensionFilterCheckBox = new System.Windows.Forms.CheckBox();
+            this.ElementTypeFilterCheckBox = new System.Windows.Forms.CheckBox();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.groupBoxOutputExchnageItems = new System.Windows.Forms.GroupBox();
+            this.labelWarning = new System.Windows.Forms.Label();
+            this.labelInfo = new System.Windows.Forms.Label();
+            this.groupBoxLinks = new System.Windows.Forms.GroupBox();
+            this.buttonApply = new System.Windows.Forms.Button();
+            this.buttonRemove = new System.Windows.Forms.Button();
+            this.groupBoxProperties = new System.Windows.Forms.GroupBox();
+            this.buttonViewElementSet = new System.Windows.Forms.Button();
+            this.groupBoxTools = new System.Windows.Forms.GroupBox();
+            this.groupBoxInputExchangeItems = new System.Windows.Forms.GroupBox();
+            this.panelBottom = new System.Windows.Forms.Panel();
+            this.splitterHorizontal = new System.Windows.Forms.Splitter();
+            this.splitterVertical2 = new System.Windows.Forms.Splitter();
+            this.splitterVertical1 = new System.Windows.Forms.Splitter();
+            this.groupBoxOutputExchnageItems.SuspendLayout();
+            this.groupBoxLinks.SuspendLayout();
+            this.groupBoxProperties.SuspendLayout();
+            this.groupBoxTools.SuspendLayout();
+            this.groupBoxInputExchangeItems.SuspendLayout();
+            this.panelBottom.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // listLinks
+            // 
+            this.listLinks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listLinks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listLinks.HorizontalExtent = 3000;
+            this.listLinks.HorizontalScrollbar = true;
+            this.listLinks.Location = new System.Drawing.Point(8, 16);
+            this.listLinks.Name = "listLinks";
+            this.listLinks.Size = new System.Drawing.Size(450, 106);
+            this.listLinks.TabIndex = 5;
+            this.listLinks.SelectedIndexChanged += new System.EventHandler(this.listLinks_SelectedIndexChanged);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonClose.Location = new System.Drawing.Point(550, 140);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(84, 28);
+            this.buttonClose.TabIndex = 8;
+            this.buttonClose.Text = "&Close";
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // providerExchangeItemSelector
+            // 
+            this.providerExchangeItemSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.providerExchangeItemSelector.Location = new System.Drawing.Point(8, 16);
+            this.providerExchangeItemSelector.Name = "providerExchangeItemSelector";
+            this.providerExchangeItemSelector.Size = new System.Drawing.Size(188, 262);
+            this.providerExchangeItemSelector.TabIndex = 0;
+            this.providerExchangeItemSelector.SelectionChanged += new System.EventHandler(this.providerExchangeItemSelector_SelectionChanged);
+            this.providerExchangeItemSelector.CheckboxesChanged += new System.EventHandler(this.providerExchangeItemSelector_CheckboxesChanged);
+            // 
+            // acceptorExchangeItemSelector
+            // 
+            this.acceptorExchangeItemSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.acceptorExchangeItemSelector.Location = new System.Drawing.Point(8, 16);
+            this.acceptorExchangeItemSelector.Name = "acceptorExchangeItemSelector";
+            this.acceptorExchangeItemSelector.Size = new System.Drawing.Size(188, 262);
+            this.acceptorExchangeItemSelector.TabIndex = 1;
+            this.acceptorExchangeItemSelector.SelectionChanged += new System.EventHandler(this.acceptorExchangeItemSelector_SelectionChanged);
+            this.acceptorExchangeItemSelector.CheckboxesChanged += new System.EventHandler(this.acceptorExchangeItemSelector_CheckboxesChanged);
+            // 
+            // DimensionFilterCheckBox
+            // 
+            this.DimensionFilterCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.DimensionFilterCheckBox.Checked = true;
+            this.DimensionFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DimensionFilterCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.DimensionFilterCheckBox.Location = new System.Drawing.Point(8, 295);
+            this.DimensionFilterCheckBox.Name = "DimensionFilterCheckBox";
+            this.DimensionFilterCheckBox.Size = new System.Drawing.Size(172, 16);
+            this.DimensionFilterCheckBox.TabIndex = 2;
+            this.DimensionFilterCheckBox.Text = "Use &Dimension filter";
+            this.DimensionFilterCheckBox.CheckedChanged += new System.EventHandler(this.DimensionFilterCheckBox_CheckedChanged);
+            // 
+            // ElementTypeFilterCheckBox
+            // 
+            this.ElementTypeFilterCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ElementTypeFilterCheckBox.Checked = true;
+            this.ElementTypeFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ElementTypeFilterCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ElementTypeFilterCheckBox.Location = new System.Drawing.Point(8, 279);
+            this.ElementTypeFilterCheckBox.Name = "ElementTypeFilterCheckBox";
+            this.ElementTypeFilterCheckBox.Size = new System.Drawing.Size(172, 16);
+            this.ElementTypeFilterCheckBox.TabIndex = 3;
+            this.ElementTypeFilterCheckBox.Text = "Use &ElementType filter";
+            this.ElementTypeFilterCheckBox.CheckedChanged += new System.EventHandler(this.ElementTypeFilterCheckBox_CheckedChanged);
+            // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.propertyGrid.Cursor = System.Windows.Forms.Cursors.HSplit;
+            this.propertyGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
+            this.propertyGrid.Location = new System.Drawing.Point(8, 16);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(215, 295);
+            this.propertyGrid.TabIndex = 4;
+            // 
+            // groupBoxOutputExchnageItems
+            // 
+            this.groupBoxOutputExchnageItems.Controls.Add(this.labelWarning);
+            this.groupBoxOutputExchnageItems.Controls.Add(this.providerExchangeItemSelector);
+            this.groupBoxOutputExchnageItems.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBoxOutputExchnageItems.Location = new System.Drawing.Point(8, 28);
+            this.groupBoxOutputExchnageItems.Name = "groupBoxOutputExchnageItems";
+            this.groupBoxOutputExchnageItems.Size = new System.Drawing.Size(204, 315);
+            this.groupBoxOutputExchnageItems.TabIndex = 23;
+            this.groupBoxOutputExchnageItems.TabStop = false;
+            this.groupBoxOutputExchnageItems.Text = " Output Exchange Items";
+            // 
+            // labelWarning
+            // 
+            this.labelWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelWarning.ForeColor = System.Drawing.Color.Red;
+            this.labelWarning.Location = new System.Drawing.Point(8, 282);
+            this.labelWarning.Name = "labelWarning";
+            this.labelWarning.Size = new System.Drawing.Size(188, 28);
+            this.labelWarning.TabIndex = 2;
+            this.labelWarning.Text = "Warning: Selected combination of DataOperations is invalid !";
+            this.labelWarning.Visible = false;
+            // 
+            // labelInfo
+            // 
+            this.labelInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInfo.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.labelInfo.Location = new System.Drawing.Point(8, 0);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(642, 28);
+            this.labelInfo.TabIndex = 24;
+            this.labelInfo.Text = "Connection XXX =>\n YYY";
+            this.labelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // groupBoxLinks
+            // 
+            this.groupBoxLinks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxLinks.Controls.Add(this.buttonApply);
+            this.groupBoxLinks.Controls.Add(this.buttonRemove);
+            this.groupBoxLinks.Controls.Add(this.listLinks);
+            this.groupBoxLinks.Location = new System.Drawing.Point(104, 4);
+            this.groupBoxLinks.Name = "groupBoxLinks";
+            this.groupBoxLinks.Size = new System.Drawing.Size(534, 128);
+            this.groupBoxLinks.TabIndex = 25;
+            this.groupBoxLinks.TabStop = false;
+            this.groupBoxLinks.Text = " Links";
+            // 
+            // buttonApply
+            // 
+            this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonApply.Location = new System.Drawing.Point(462, 16);
+            this.buttonApply.Name = "buttonApply";
+            this.buttonApply.Size = new System.Drawing.Size(64, 24);
+            this.buttonApply.TabIndex = 6;
+            this.buttonApply.Text = "&Apply";
+            this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRemove.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonRemove.Location = new System.Drawing.Point(462, 48);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(64, 24);
+            this.buttonRemove.TabIndex = 7;
+            this.buttonRemove.Text = "&Remove";
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
+            // 
+            // groupBoxProperties
+            // 
+            this.groupBoxProperties.Controls.Add(this.propertyGrid);
+            this.groupBoxProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxProperties.Location = new System.Drawing.Point(422, 28);
+            this.groupBoxProperties.Name = "groupBoxProperties";
+            this.groupBoxProperties.Size = new System.Drawing.Size(228, 315);
+            this.groupBoxProperties.TabIndex = 26;
+            this.groupBoxProperties.TabStop = false;
+            this.groupBoxProperties.Text = "DataOperation properties";
+            // 
+            // buttonViewElementSet
+            // 
+            this.buttonViewElementSet.Enabled = false;
+            this.buttonViewElementSet.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonViewElementSet.Location = new System.Drawing.Point(8, 16);
+            this.buttonViewElementSet.Name = "buttonViewElementSet";
+            this.buttonViewElementSet.Size = new System.Drawing.Size(80, 32);
+            this.buttonViewElementSet.TabIndex = 8;
+            this.buttonViewElementSet.Text = "ElementSet &viewer";
+            this.buttonViewElementSet.Click += new System.EventHandler(this.buttonViewElementSet_Click);
+            // 
+            // groupBoxTools
+            // 
+            this.groupBoxTools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxTools.Controls.Add(this.buttonViewElementSet);
+            this.groupBoxTools.Location = new System.Drawing.Point(4, 4);
+            this.groupBoxTools.Name = "groupBoxTools";
+            this.groupBoxTools.Size = new System.Drawing.Size(96, 128);
+            this.groupBoxTools.TabIndex = 27;
+            this.groupBoxTools.TabStop = false;
+            this.groupBoxTools.Text = "Tools";
+            // 
+            // groupBoxInputExchangeItems
+            // 
+            this.groupBoxInputExchangeItems.Controls.Add(this.acceptorExchangeItemSelector);
+            this.groupBoxInputExchangeItems.Controls.Add(this.DimensionFilterCheckBox);
+            this.groupBoxInputExchangeItems.Controls.Add(this.ElementTypeFilterCheckBox);
+            this.groupBoxInputExchangeItems.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBoxInputExchangeItems.Location = new System.Drawing.Point(215, 28);
+            this.groupBoxInputExchangeItems.Name = "groupBoxInputExchangeItems";
+            this.groupBoxInputExchangeItems.Size = new System.Drawing.Size(204, 315);
+            this.groupBoxInputExchangeItems.TabIndex = 0;
+            this.groupBoxInputExchangeItems.TabStop = false;
+            this.groupBoxInputExchangeItems.Text = " Input Exchange Items";
+            // 
+            // panelBottom
+            // 
+            this.panelBottom.Controls.Add(this.buttonClose);
+            this.panelBottom.Controls.Add(this.groupBoxLinks);
+            this.panelBottom.Controls.Add(this.groupBoxTools);
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBottom.Location = new System.Drawing.Point(8, 347);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(642, 168);
+            this.panelBottom.TabIndex = 28;
+            // 
+            // splitterHorizontal
+            // 
+            this.splitterHorizontal.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitterHorizontal.Location = new System.Drawing.Point(8, 343);
+            this.splitterHorizontal.MinExtra = 150;
+            this.splitterHorizontal.MinSize = 150;
+            this.splitterHorizontal.Name = "splitterHorizontal";
+            this.splitterHorizontal.Size = new System.Drawing.Size(642, 4);
+            this.splitterHorizontal.TabIndex = 30;
+            this.splitterHorizontal.TabStop = false;
+            // 
+            // splitterVertical2
+            // 
+            this.splitterVertical2.Location = new System.Drawing.Point(419, 28);
+            this.splitterVertical2.MinExtra = 150;
+            this.splitterVertical2.MinSize = 150;
+            this.splitterVertical2.Name = "splitterVertical2";
+            this.splitterVertical2.Size = new System.Drawing.Size(3, 315);
+            this.splitterVertical2.TabIndex = 24;
+            this.splitterVertical2.TabStop = false;
+            // 
+            // splitterVertical1
+            // 
+            this.splitterVertical1.Location = new System.Drawing.Point(212, 28);
+            this.splitterVertical1.MinExtra = 150;
+            this.splitterVertical1.MinSize = 150;
+            this.splitterVertical1.Name = "splitterVertical1";
+            this.splitterVertical1.Size = new System.Drawing.Size(3, 315);
+            this.splitterVertical1.TabIndex = 27;
+            this.splitterVertical1.TabStop = false;
+            // 
+            // ConnectionDialog
+            // 
+            this.AcceptButton = this.buttonClose;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.CancelButton = this.buttonClose;
+            this.ClientSize = new System.Drawing.Size(658, 523);
+            this.Controls.Add(this.groupBoxProperties);
+            this.Controls.Add(this.splitterVertical2);
+            this.Controls.Add(this.groupBoxInputExchangeItems);
+            this.Controls.Add(this.splitterVertical1);
+            this.Controls.Add(this.groupBoxOutputExchnageItems);
+            this.Controls.Add(this.splitterHorizontal);
+            this.Controls.Add(this.labelInfo);
+            this.Controls.Add(this.panelBottom);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(660, 400);
+            this.Name = "ConnectionDialog";
+            this.Padding = new System.Windows.Forms.Padding(8, 0, 8, 8);
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Connection properties";
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.LinkDialog_Closing);
+            this.groupBoxOutputExchnageItems.ResumeLayout(false);
+            this.groupBoxLinks.ResumeLayout(false);
+            this.groupBoxProperties.ResumeLayout(false);
+            this.groupBoxTools.ResumeLayout(false);
+            this.groupBoxInputExchangeItems.ResumeLayout(false);
+            this.panelBottom.ResumeLayout(false);
+            this.ResumeLayout(false);
 
 		}
 		#endregion	

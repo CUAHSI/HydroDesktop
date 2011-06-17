@@ -32,12 +32,14 @@ namespace CUAHSI.HIS
         private string _dbPath;
         private SmartBuffer _smartBuffer = new SmartBuffer();
         //private string _fullPath; //path to the .dll
-        Dictionary<string, Series> serieses = new Dictionary<string, Series>();
-        Dictionary<string, Theme> themes = new Dictionary<string, Theme>();
-        Dictionary<string, Series> dataSeries = new Dictionary<string, Series>();
+        public Dictionary<string, Series> serieses = new Dictionary<string, Series>();
+        public Dictionary<string, Theme> themes = new Dictionary<string, Theme>();
+        public Dictionary<string, Series> dataSeries = new Dictionary<string, Series>();
         string conn = null;
         double _ignore = -999;
         int new_series_count = 0;
+        public Dictionary<string, string> dbargs;
+        public Dictionary<int, string> series2link;
         //private DbOperations _db;
 
         #region ILinkableComponent Members
@@ -111,14 +113,13 @@ namespace CUAHSI.HIS
             //write each series to the database
             foreach (Series series in serieses.Values)
             {
-                //get the linkID stored in CreateSeries()
-                string linkID = series.Source.ISOMetadata.MetadataLink;
 
-                //get the theme corresponding to the link
-                Theme thisTheme = themes[linkID];
+                //-- get the theme
+                Theme theme = series.ThemeList[0];
 
-                //save data
-                db.SaveSeriesAsCopy(series, thisTheme);   
+                //-- save data series
+                db.SaveSeriesAsCopy(series, theme);
+
             }
         
             //clear all values in the buffer
@@ -162,35 +163,78 @@ namespace CUAHSI.HIS
         /// <param name="properties">arguments stored in the *.omi file</param>
         public void Initialize(IArgument[] properties)
         {
-            //set connection string equal to the repository that HD is connected to
-            conn = Settings.Instance.DataRepositoryConnectionString;
 
             //extract argument(s) from OMI file
             foreach (IArgument property in properties)
             {
                 //overwrite the connection string, if one is given in the *.omi
                 if (property.Key == "DbPath") 
-                { 
                     _dbPath = property.Value;
-                    FileInfo fi = new FileInfo(_dbPath);
-                    conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
-                }
+
                 //default value for relationFactor is 1;
                 if (property.Key == "Relaxation") { _smartBuffer.RelaxationFactor = Convert.ToDouble(property.Value); }
                 if (property.Key == "IgnoreValue") { _ignore = Convert.ToDouble(property.Value); }
             }
+
+            //---- set database to default if dbpath is invalid
+            string fullpath = "";
+            //-- first check if dbpath is null
+            bool pass = true;
+            if (String.IsNullOrWhiteSpace(_dbPath))
+                pass = false;
+            //-- next, check that dbpath points to an actual file
+            else
+            {
+                //-- if relative path is given
+                if (!Path.IsPathRooted(_dbPath))
+                {
+                    fullpath = System.IO.Path.GetFullPath(System.IO.Directory.GetCurrentDirectory() + _dbPath);
+                }
+                //-- if absolute path
+                else
+                {
+                    fullpath = System.IO.Path.GetFullPath(_dbPath);
+                }
+
+                if (!File.Exists(fullpath))
+                {
+                    pass = false;
+
+                    //-- warn the user that the database could not be found
+                    System.Windows.Forms.MessageBox.Show("The database supplied in DbWriter.omi could not be found. As a result the DbWriter will connect to the current HydroDesktop database." +
+                                "\n\n--- The following database could not be found --- \n" + fullpath,
+                        "An Error Occurred While Loading Database...",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                }
+            }
+
+
+            //-- set the connection string
+            if (!pass)
+                conn = Settings.Instance.DataRepositoryConnectionString;
+            else
+            {
+                //FileInfo fi = new FileInfo(fullpath);
+                //conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
+                conn = @"Data Source = " + fullpath + ";New=False;Compress=True;Version=3";
+            }
+
+
+            //---- read db info provided by omi
+            dbargs = ReadDbArgs(properties);
             
-            //create generic input and output exchange items
+            //---- create generic input and output exchange items
             InputExchangeItem inExchangeItem = new InputExchangeItem();
-            inExchangeItem.ElementSet = new ElementSet("any element set", "any element set", ElementType.IDBased, null);
+            inExchangeItem.ElementSet = new ElementSet("any element set", "any element set", ElementType.IDBased, new Oatc.OpenMI.Sdk.Backbone.SpatialReference("1"));
             inExchangeItem.Quantity = new Quantity("any quantity");
             _inputExchangeItems.Add(inExchangeItem);
+
             OutputExchangeItem outExchangeItem = new OutputExchangeItem();
-            outExchangeItem.ElementSet = new ElementSet("dummy element set", "dummy element set", ElementType.IDBased, null);
+            outExchangeItem.ElementSet = new ElementSet("dummy element set", "dummy element set", ElementType.IDBased, new Oatc.OpenMI.Sdk.Backbone.SpatialReference("1"));
             outExchangeItem.Quantity = new Quantity("dummy quantity");
             _outputExchangeItems.Add(outExchangeItem);
 
-            //define arbitrary start and end times
+            //---- define arbitrary start and end times
             _earliestInputTime = CalendarConverter.Gregorian2ModifiedJulian(new DateTime(1900,1,1));
             _latestInputTime = CalendarConverter.Gregorian2ModifiedJulian(new DateTime(2100, 12, 31));
 
@@ -360,265 +404,6 @@ namespace CUAHSI.HIS
         }
 
         /// <summary>
-        /// build HD data model to store time-series data
-        /// </summary>
-        /// <param name="link">the link that was added to the composition</param>
-        public void CreateSeries(ILink link)
-        {
-
-            #region Create DataModel Objects [HACK]
-            
-            //create variable
-            HydroDesktop.Interfaces.ObjectModel.Unit VarUnit = new HydroDesktop.Interfaces.ObjectModel.Unit();
-            VarUnit.Name = link.SourceQuantity.Unit.Description;
-            VarUnit.Abbreviation = link.SourceQuantity.Unit.ID;
-            VarUnit.UnitsType = link.SourceQuantity.ValueType.ToString();
-
-            //create time unit
-            //TODO: Get these from the trigger
-            HydroDesktop.Interfaces.ObjectModel.Unit TimeUnit = new HydroDesktop.Interfaces.ObjectModel.Unit();
-            TimeUnit.Name = "Time";
-            TimeUnit.Abbreviation = "none";
-            TimeUnit.UnitsType = "Irregular";
-            
-            //create unit
-            HydroDesktop.Interfaces.ObjectModel.Unit unit = new HydroDesktop.Interfaces.ObjectModel.Unit();
-            unit.Abbreviation = link.SourceQuantity.Unit.ID;
-
-            //create method
-            HydroDesktop.Interfaces.ObjectModel.Method method = new Method();
-            method.Link = link.SourceComponent.ModelID;
-            if (link.SourceComponent.ComponentID == null)
-                method.Link = "unknown";
-            method.Description = link.SourceComponent.ModelDescription;
-            if (link.SourceComponent.ComponentDescription == null)
-                method.Description = "unknown";
-
-            //define data service info
-            DataServiceInfo dataservice = new DataServiceInfo();
-            dataservice.Abstract = "none";
-            dataservice.Citation = "none";
-            dataservice.ContactEmail = "none";
-            dataservice.ContactName = "none";
-            dataservice.EastLongitude = -999;
-            dataservice.HarveDateTime = DateTime.Now;
-            dataservice.Id = -999;
-            dataservice.NorthLatitude = -999;
-            dataservice.HISCentralID = -999;
-            dataservice.ServiceCode = "none";
-            dataservice.DescriptionURL = "none";
-            dataservice.EndpointURL = "none";
-            dataservice.ServiceName = "none";
-            dataservice.Protocol = "none";
-            dataservice.ServiceTitle = "none";
-            dataservice.ServiceType = "none";
-            dataservice.Version = -999;
-            dataservice.SiteCount = link.SourceElementSet.ElementCount;
-
-            //create metadata
-            ISOMetadata meta = new ISOMetadata();
-            meta.Abstract = "none";
-            //meta.DataService = dataservice;
-            meta.Id = -999;
-            meta.ProfileVersion = "none";
-            meta.Title = "none";
-            meta.TopicCategory = "none";
-            //this field is used to link the dataseries to the themes in the Finish method
-            meta.MetadataLink = link.ID ;
-
-            //create source
-            Source source = new Source();
-            source.Organization = "University of South Carolina";
-            source.Address = "none";
-            source.Citation = "none";
-            source.City = "none";
-            source.ContactName = "none";
-            //source.DataService = dataservice;
-            source.Description = "none";
-            source.Email = "none";
-            source.Id = -999;
-            source.Link = "none";
-            source.OriginId = -999;
-            source.Phone = "none";
-            source.State = "none";
-            source.ZipCode = -999;
-            source.ISOMetadata = meta;
-
-            //create variable
-            Variable variable = new Variable();
-            variable.Code = link.SourceQuantity.Description;
-            variable.Name = link.SourceQuantity.ID;
-            variable.VariableUnit = VarUnit;
-            variable.TimeUnit = TimeUnit;
-            variable.Speciation = "unknown";
-            variable.GeneralCategory = "none";
-            variable.NoDataValue = -999;
-            variable.SampleMedium = "unknown";
-            variable.TimeSupport = -999;
-            variable.VocabularyPrefix = "none";
-            variable.ValueType = "scalar";
-            variable.DataType = "unknown";
-
-            //variable.VariableUnit.Abbreviation = link.SourceQuantity.Unit.Description;
-
-
-
-            //create qualControl
-            QualityControlLevel qualControl = new QualityControlLevel();
-            qualControl.Code = "qual1";
-            qualControl.Definition = "Quality control level 1";
-            qualControl.Id = 1;
-            qualControl.Explanation = "unknown";
-            qualControl.OriginId = -999;
-            //qualControl.DataService = dataservice;
-
-            #endregion
-
-
-            #region Build Sites
-            
-            RepositoryManagerSQL db = null;
-
-            //check to see if the database path is overridden
-            if (conn != null)
-            {
-                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, conn);
-            }
-            else
-            {
-                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
-                conn = Settings.Instance.DataRepositoryConnectionString;
-            }
-                
-            
-
-            Dictionary<long, Site> sites = new Dictionary<long, Site>();
-
-            //loop through all elements in the source components element set
-            for (int i = 0; i < link.SourceElementSet.ElementCount; ++i)
-            {
-                //define spatial reference
-                HydroDesktop.Interfaces.ObjectModel.SpatialReference spatial = new HydroDesktop.Interfaces.ObjectModel.SpatialReference();
-                spatial.Id = -999;
-                spatial.Notes = "none";
-                spatial.SRSID = -999;
-                spatial.SRSName = "none";
-
-
-                //--- create site ---
-                Site site = new Site();
-
-                //create a unique site name [variable_model_location]
-                site.Name = (link.SourceElementSet.ID + "_" + link.SourceComponent.ModelID + "_loc" + i.ToString()).Replace(' ', '_');
-
-                //check if a sitename already exists in the repository
-                string sql = "SELECT s.SiteCode, s.SiteID " +
-                                                    "FROM Sites s " +
-                                                    "WHERE s.SiteName= '" + site.Name + "' ";
-                
-                DbOperations _db = new DbOperations(conn, DatabaseTypes.SQLite);
-                System.Data.DataTable tbl = _db.LoadTable("values", sql);
-
-                if (tbl.Rows.Count > 0)
-                {
-                    site.Code = tbl.Rows[0].ItemArray[0].ToString();
-                    site.Id = Convert.ToInt32(tbl.Rows[0].ItemArray[1]);
-                }
-                else
-                {
-                    //create a new site
-                    sql = "SELECT s.SiteCode, s.SiteID FROM Sites s ";
-
-                    _db = new DbOperations(conn, DatabaseTypes.SQLite);
-                    tbl = _db.LoadTable("values", sql);
-                    int last_row = tbl.Rows.Count - 1;
-
-                    //store the new site code and id info
-                    site.Code = (Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 1 + new_series_count).ToString();
-                    site.Id = Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 2 + new_series_count;
-
-                    //add 1 to new series count so that the same site code isn't selected twice
-                    new_series_count++;
-                }
-
-                site.SpatialReference = spatial;
-                site.Comments = "none";
-                site.County = "none";                
-                site.Elevation_m = -999;
-                site.Latitude = -999;                
-                site.LocalProjection = spatial;                
-                site.LocalX = -999;
-                site.LocalY = -999;
-                site.Longitude = -999;
-                //site.DataService = dataservice;
-                //site.LatLongDatumID = -999;
-                //site.LocalProjectionID = -999;
-                
-
-                //--- Attempt to spatially define elements 7-15-2010 ---
-                try
-                {
-                    //save site latitude and longitude
-                    if (link.SourceElementSet.ElementType == ElementType.XYPoint)
-                    {
-                        site.Latitude = link.SourceElementSet.GetYCoordinate(i, 0);
-                        site.Longitude = link.SourceElementSet.GetXCoordinate(i, 0);
-                        site.LocalX = 0;
-                        site.LocalY = 0;
-                    }
-                    else
-                    {
-                        ////List<Point> points = new List<Point>();
-                        ////for(int p=0; p<= link.SourceElementSet.GetVertexCount(i)-1; p++)
-                        ////{
-                        ////        Point point = new Point(link.SourceElementSet.GetXCoordinate(i, p),
-                        ////            link.SourceElementSet.GetYCoordinate(i, p));
-
-                        ////        points.Add(point);
-                        ////}
-                        //////create polyline
-                        ////LineString ls = new LineString(points);
-
-                        ////new SharpMap.CoordinateSystems.ProjectedCoordinateSystem()
-                        ////ls.SpatialReference = 
-
-                        site.Latitude = link.SourceElementSet.GetYCoordinate(i, 0);
-                        site.Longitude = link.SourceElementSet.GetXCoordinate(i, 0);
-
-                        //link.SourceElementSet.SpatialReference.ID;
-                        site.LocalX = 0;
-                        site.LocalY = 0;
-
-
-
-                    }
-                }
-                catch (Exception e) { }
-
-
-                site.NetworkPrefix = "none";
-                site.PosAccuracy_m = -999;
-                site.State = "none";
-                //site.TimeZone = new TimeZoneInfo.TransitionTime();
-                
-                site.VerticalDatum = "unknown";
-
-                if (!sites.ContainsKey(site.Id))
-                {
-                    //add site and series to dictionary if they don't already exist
-                    sites.Add(site.Id, site);
-                    Series series = new Series(site, variable, method, qualControl, source);
-                    series.Id = i;
-                    if (!serieses.ContainsKey(site.Name)) { serieses.Add(site.Name, series); }
-                    //else{serieses.Add(site.Name, series);}
-
-                }
-            }
-            #endregion
-
-        }
-
-        /// <summary>
         /// Defines the actions that occur every time an event is recognized
         /// </summary>
         /// <param name="anEvent">the event that was triggered</param>
@@ -699,9 +484,15 @@ namespace CUAHSI.HIS
                                     //check to see if series exists
                                     if (serieses.ContainsKey(siteName))
                                     {
-                                        //get the series
+
+                                        //-- get the series
                                         Series series = serieses[siteName];
 
+                                        //-- store the associated theme
+                                        if(!series.ThemeList.Contains(themes[link.ID]))
+                                            series.ThemeList.Add(themes[link.ID]);
+
+                                        //-- save data values
                                         series.AddDataValue(CalendarConverter.ModifiedJulian2Gregorian(ts.ModifiedJulianDay), vals.data[j]);
                                     }
                                 } 
@@ -714,5 +505,334 @@ namespace CUAHSI.HIS
             }
         }
         #endregion
+
+        /// <summary>
+        /// build HD data model to store time-series data
+        /// </summary>
+        /// <param name="link">the link that was added to the composition</param>
+        public void CreateSeries(ILink link)
+        {
+
+            #region Create DataModel Objects [HACK]
+
+            //---- create variable unit
+            HydroDesktop.Interfaces.ObjectModel.Unit VarUnit = new HydroDesktop.Interfaces.ObjectModel.Unit();
+            VarUnit.Name = link.SourceQuantity.Unit.Description;    //defined by link
+            VarUnit.Abbreviation = link.SourceQuantity.Unit.ID;     //defined by link
+            VarUnit.UnitsType = link.SourceQuantity.ID;             //defined by link
+
+            //---- create time unit
+            HydroDesktop.Interfaces.ObjectModel.Unit TimeUnit = new HydroDesktop.Interfaces.ObjectModel.Unit();
+            TimeUnit.Name = "second";           //default value (cannot be changed) 
+            TimeUnit.Abbreviation = "s";        //default value (cannot be changed)
+            TimeUnit.UnitsType = "Time";        //default value (cannot be changed)
+
+            //create unit
+            //HydroDesktop.Interfaces.ObjectModel.Unit unit = new HydroDesktop.Interfaces.ObjectModel.Unit();
+            //unit.Abbreviation = link.SourceQuantity.Unit.ID;
+
+            //---- create method
+            HydroDesktop.Interfaces.ObjectModel.Method method = new Method();
+            method.Link = link.SourceComponent.ModelID;
+            method.Link = "none";                                           //*default value
+            method.Description = link.SourceComponent.ModelDescription;     //*default value
+            if (link.SourceComponent.ComponentDescription == null)
+                method.Description = "none";
+
+            //---- define data service info
+            DataServiceInfo dataservice = new DataServiceInfo();
+            dataservice.Abstract = "none";                                  //*default value
+            dataservice.Citation = "none";                                  //*default value
+            dataservice.ContactEmail = "none";                              //*default value
+            dataservice.ContactName = "none";                               //*default value
+            dataservice.EastLongitude = -999;                               //*default value
+            dataservice.HarveDateTime = DateTime.Now;                       //*default value
+            dataservice.Id = -999;                                          //*default value
+            dataservice.NorthLatitude = -999;                               //*default value
+            dataservice.HISCentralID = -999;                                //*default value
+            dataservice.ServiceCode = "none";                               //*default value
+            dataservice.DescriptionURL = "none";                            //*default value
+            dataservice.EndpointURL = "none";                               //*default value
+            dataservice.ServiceName = "none";                               //*default value
+            dataservice.Protocol = "none";                                  //*default value
+            dataservice.ServiceTitle = "none";                              //*default value
+            dataservice.ServiceType = "none";                               //*default value
+            dataservice.Version = -999;                                     //*default value
+            dataservice.SiteCount = link.SourceElementSet.ElementCount;     //defined by link
+
+            //---- create metadata
+            ISOMetadata meta = new ISOMetadata();
+            meta.Abstract = "none";                                         //*default value
+            meta.Id = -999;                                                 //*default value
+            meta.ProfileVersion = "none";                                   //*default value
+            meta.Title = "none";                                            //*default value
+            meta.TopicCategory = "none";                                    //*default value
+            meta.MetadataLink = "none";                                     //*default value
+
+            //---- create source
+            Source source = new Source();
+            source.Organization = "University of South Carolina";           //*default value
+            source.Address = "300 Main St.";                                //*default value
+            source.Citation = "none";                                       //*default value
+            source.City = "Columbia";                                       //*default value
+            source.ContactName = "none";                                    //*default value
+            source.Description = "none";                                    //*default value
+            source.Email = "none";                                          //*default value
+            source.Id = -999;                                               //*default value
+            source.Link = "none";                                           //*default value
+            source.OriginId = -999;                                         //*default value
+            source.Phone = "none";                                          //*default value
+            source.State = "SC";                                            //*default value
+            source.ZipCode = 29206;                                         //*default value
+            source.ISOMetadata = meta;
+
+            //---- create variable
+            Variable variable = new Variable();
+            variable.Code = link.SourceQuantity.Description;                //defined by link
+            variable.Name = link.SourceQuantity.ID;                         //defined by link
+            variable.VariableUnit = VarUnit;                                //defined by link
+            variable.TimeUnit = TimeUnit;                                   //defined by link
+            variable.Speciation = "H20";                                    //*default value
+            variable.GeneralCategory = "Hydrology";                         //*default value
+            variable.NoDataValue = -999;                                    //*default value
+            variable.SampleMedium = "Surface Water";                        //*default value
+            variable.TimeSupport = 1;                                       //TODO: determine in finish
+            variable.VocabularyPrefix = "none";                             //*default value
+            variable.ValueType = "Model Simulation Result";                 //*default value
+            variable.DataType = "Incremental";                              //*default value
+
+            //---- create qualControl
+            QualityControlLevel qualControl = new QualityControlLevel();
+            qualControl.Code = "qual1";                                     //*default value
+            qualControl.Definition = "Quality control level 1";             //*default value
+            qualControl.Id = 1;                                             //*default value
+            qualControl.Explanation = "unknown";                            //*default value
+            qualControl.OriginId = -999;                                    //*default value
+
+            #endregion
+
+
+            #region Build Sites
+
+            RepositoryManagerSQL db = null;
+
+            //check to see if the database path is overridden
+            if (conn != null)
+            {
+                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, conn);
+            }
+            else
+            {
+                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+                //conn = Settings.Instance.DataRepositoryConnectionString;
+            }
+
+            //---- override default db info with those provided by omi
+            //-- standard omi args
+            if (dbargs.ContainsKey("Method.Description")) { method.Description = dbargs["Method.Description"];}
+            if (dbargs.ContainsKey("Source.Organization")) { source.Organization = dbargs["Source.Organization"]; }
+            if (dbargs.ContainsKey("Source.Address")) { source.Address = dbargs["Source.Address"]; }
+            if (dbargs.ContainsKey("Source.City")) { source.City = dbargs["Source.City"]; }
+            if (dbargs.ContainsKey("Source.State")) { source.State = dbargs["Source.State"]; }
+            if (dbargs.ContainsKey("Source.Zip")) { source.ZipCode = Convert.ToInt32(dbargs["Source.Zip"]); }
+            if (dbargs.ContainsKey("Source.Contact")) { source.ContactName = dbargs["Source.Contact"]; }
+            if (dbargs.ContainsKey("Variable.Category")) { variable.GeneralCategory = dbargs["Variable.Category"]; }
+            if (dbargs.ContainsKey("Variable.SampleMedium")) { variable.SampleMedium = dbargs["Variable.SampleMedium"];}
+
+            //-extra omi args
+            if (dbargs.ContainsKey("Method.Link")) { method.Link = dbargs["Method.Link"]; }
+            if (dbargs.ContainsKey("DataService.Abstract")) { dataservice.Abstract = dbargs["DataService.Abstract"]; }
+            if (dbargs.ContainsKey("DataService.Citation")) { dataservice.Citation = dbargs["DataService.Citation"]; }
+            if (dbargs.ContainsKey("DataService.ContactEmail")) { dataservice.ContactEmail = dbargs["DataService.ContactEmail"]; }
+            if (dbargs.ContainsKey("DataService.ContactName")) { dataservice.ContactName = dbargs["DataService.ContactName"]; }
+            if (dbargs.ContainsKey("DataService.EastLongitude")) { dataservice.EastLongitude = Convert.ToDouble(dbargs["DataService.EastLongitude"]); }
+            if (dbargs.ContainsKey("DataService.HarveDateTime")) { dataservice.HarveDateTime = Convert.ToDateTime(dbargs["DataService.HarveDateTime"]); }
+            if (dbargs.ContainsKey("DataService.ID")) { dataservice.Id = Convert.ToInt64(dbargs["DataService.ID"]); }
+            if (dbargs.ContainsKey("DataService.NorthLatitude")) { dataservice.NorthLatitude = Convert.ToDouble(dbargs["DataService.NorthLatitude"]); }
+            if (dbargs.ContainsKey("DataService.HISCentralID")) { dataservice.HISCentralID = Convert.ToInt32(dbargs["DataService.HISCentralID"]); }
+            if (dbargs.ContainsKey("DataService.ServiceCode")) { dataservice.ServiceCode = dbargs["DataService.ServiceCode"]; }
+            if (dbargs.ContainsKey("DataService.DescriptionURL")) { dataservice.DescriptionURL = dbargs["DataService.DescriptionURL"]; }  
+            if (dbargs.ContainsKey("DataService.EndpointURL")) { dataservice.EndpointURL = dbargs["DataService.EndpointURL"]; }
+            if (dbargs.ContainsKey("DataService.ServiceName")) { dataservice.ServiceName = dbargs["DataService.ServiceName"]; }
+            if (dbargs.ContainsKey("DataService.Protocol")) { dataservice.Protocol = dbargs["DataService.Protocol"]; }
+            if (dbargs.ContainsKey("DataService.ServiceTitle")) { dataservice.ServiceTitle = dbargs["DataService.ServiceTitle"]; }
+            if (dbargs.ContainsKey("DataService.ServiceType")) { dataservice.ServiceType = dbargs["DataService.ServiceType"]; }
+            if (dbargs.ContainsKey("DataService.Version")) { dataservice.Version = Convert.ToDouble(dbargs["DataService.Version"]); }
+                
+            if (dbargs.ContainsKey("ISOMetadata.Abstract")) { meta.Abstract = dbargs["ISOMetadata.Abstract"]; }
+            if (dbargs.ContainsKey("ISOMetadata.ID")) { meta.Id = Convert.ToInt64(dbargs["ISOMetadata.ID"]); }
+            if (dbargs.ContainsKey("ISOMetadata.ProfileVersion")) { meta.ProfileVersion = dbargs["ISOMetadata.ProfileVersion"]; }
+            if (dbargs.ContainsKey("ISOMetadata.Title")) { meta.Title = dbargs["ISOMetadata.Title"]; }
+            if (dbargs.ContainsKey("ISOMetadata.TopicCategory")) { meta.TopicCategory = dbargs["ISOMetadata.TopicCategory"]; }
+            if (dbargs.ContainsKey("ISOMetadata.MetadataLink")) { meta.MetadataLink = dbargs["ISOMetadata.MetadataLink"]; }
+                
+            if (dbargs.ContainsKey("Source.Citation")) { source.Citation = dbargs["Source.Citation"]; }
+            if (dbargs.ContainsKey("Source.Description")) { source.Description = dbargs["Source.Description"]; }
+            if (dbargs.ContainsKey("Source.Email")) { source.Email = dbargs["Source.Email"]; }
+            if (dbargs.ContainsKey("Source.ID")) { source.Id = Convert.ToInt64(dbargs["Source.ID"]); }
+            if (dbargs.ContainsKey("Source.Link")) { source.Link = dbargs["Source.Link"]; }
+            if (dbargs.ContainsKey("Source.OrginID")) { source.OriginId = Convert.ToInt32(dbargs["Source.OrginID"]); } 
+            if (dbargs.ContainsKey("Source.Phone")) { source.Phone = dbargs["Source.Phone"]; }
+
+            if (dbargs.ContainsKey("Variable.Code")) { variable.Code = dbargs["Variable.Code"]; }
+            if (dbargs.ContainsKey("Variable.Name")) { variable.Name = dbargs["Variable.Name"]; }
+            if (dbargs.ContainsKey("Variable.Speciation")) { variable.Speciation = dbargs["Variable.Speciation"]; }
+            if (dbargs.ContainsKey("Variable.NoDataValue")) { variable.NoDataValue = Convert.ToDouble(dbargs["Variable.NoDataValue"]); }
+            if (dbargs.ContainsKey("Variable.VocabPrefix")) { variable.VocabularyPrefix = dbargs["Variable.VocabPrefix"]; }
+            if (dbargs.ContainsKey("Variable.ValueType")) { variable.ValueType = dbargs["Variable.ValueType"]; }
+            if (dbargs.ContainsKey("Variable.DataValue")) { variable.DataType = dbargs["Variable.DataValue"]; }
+
+            if (dbargs.ContainsKey("QualityControl.Code")) { qualControl.Code = dbargs["QualityControl.Code"]; }
+            if (dbargs.ContainsKey("QualityControl.Definition")) { qualControl.Definition = dbargs["QualityControl.Definition"]; }
+            if (dbargs.ContainsKey("QualityControl.ID")) { qualControl.Id = Convert.ToInt64(dbargs["QualityControl.ID"]); }
+            if (dbargs.ContainsKey("QualityControl.Explanation")) { qualControl.Explanation = dbargs["QualityControl.Explanation"]; }
+            if (dbargs.ContainsKey("QualityControl.OriginId")) { qualControl.OriginId = Convert.ToInt32(dbargs["QualityControl.OriginId"]); }
+
+            #region create sites
+            Dictionary<long, Site> sites = new Dictionary<long, Site>();
+
+            //loop through all elements in the source components element set
+            for (int i = 0; i < link.SourceElementSet.ElementCount; ++i)
+            {
+                //TODO: Get spatial reference from elementset
+                //---- define spatial reference
+                HydroDesktop.Interfaces.ObjectModel.SpatialReference spatial = new HydroDesktop.Interfaces.ObjectModel.SpatialReference();
+                spatial.Id = 18;                                                    //*
+                spatial.Notes = "NAD27-UTM zone 17N projected coordinate";          //*
+                spatial.SRSID = 26717;                                              //*
+                spatial.SRSName = "NAD27 / UTM zone 17N";                           //*
+
+                //--- create site ---
+                Site site = new Site();
+
+                //create a unique site name [variable_model_location]
+                site.Name = (link.SourceElementSet.ID + "_" + link.SourceComponent.ModelID + "_loc" + i.ToString()).Replace(' ', '_');
+
+                //check if a sitename already exists in the repository
+                string sql = "SELECT s.SiteCode, s.SiteID " +
+                                                    "FROM Sites s " +
+                                                    "WHERE s.SiteName= '" + site.Name + "' ";
+
+                DbOperations _db = new DbOperations(conn, DatabaseTypes.SQLite);
+                System.Data.DataTable tbl = _db.LoadTable("values", sql);
+
+                if (tbl.Rows.Count > 0)
+                {
+                    site.Code = tbl.Rows[0].ItemArray[0].ToString();
+                    site.Id = Convert.ToInt32(tbl.Rows[0].ItemArray[1]);
+                }
+                else
+                {
+                    //create a new site
+                    sql = "SELECT s.SiteCode, s.SiteID FROM Sites s ";
+
+                    _db = new DbOperations(conn, DatabaseTypes.SQLite);
+                    tbl = _db.LoadTable("values", sql);
+                    int last_row = tbl.Rows.Count - 1;
+
+                    site.Code = site.Name;
+                    //-- if the database is not blank
+                    if (last_row >= 0)
+                    {
+                        site.Id = Convert.ToInt32(tbl.Rows[last_row].ItemArray[1]) + 2 + new_series_count;
+                    }
+                    else
+                        site.Id = new_series_count++;
+
+                    //add 1 to new series count so that the same site code isn't selected twice
+                    new_series_count++;
+                }
+
+                site.SpatialReference = spatial;
+                site.Comments = "none";
+                site.County = "none";
+                site.Elevation_m = -999;
+                site.Latitude = -999;
+                site.LocalProjection = spatial;
+                site.LocalX = -999;
+                site.LocalY = -999;
+                site.Longitude = -999;
+
+
+                //--- Attempt to spatially define elements 7-15-2010 ---
+                try
+                {
+
+                    //save site latitude and longitude
+                    if (link.SourceElementSet.ElementType == ElementType.XYPoint)
+                    {
+                        site.Latitude = link.SourceElementSet.GetYCoordinate(i, 0);
+                        site.Longitude = link.SourceElementSet.GetXCoordinate(i, 0);
+                        site.LocalX = 0;
+                        site.LocalY = 0;
+                    }
+                    else
+                    {
+                        ////List<Point> points = new List<Point>();
+                        ////for(int p=0; p<= link.SourceElementSet.GetVertexCount(i)-1; p++)
+                        ////{
+                        ////        Point point = new Point(link.SourceElementSet.GetXCoordinate(i, p),
+                        ////            link.SourceElementSet.GetYCoordinate(i, p));
+
+                        ////        points.Add(point);
+                        ////}
+                        //////create polyline
+                        ////LineString ls = new LineString(points);
+
+                        ////new SharpMap.CoordinateSystems.ProjectedCoordinateSystem()
+                        ////ls.SpatialReference = 
+
+                        site.Latitude = link.SourceElementSet.GetYCoordinate(i, 0);
+                        site.Longitude = link.SourceElementSet.GetXCoordinate(i, 0);
+
+                        //link.SourceElementSet.SpatialReference.ID;
+                        site.LocalX = 0;
+                        site.LocalY = 0;
+
+
+
+                    }
+                }
+                catch (Exception) { }
+
+
+                site.NetworkPrefix = "none";
+                site.PosAccuracy_m = -999;
+                site.State = "SC";                  //*
+
+                //site.TimeZone = new TimeZoneInfo.TransitionTime();
+
+                site.VerticalDatum = "unknown";     //*
+
+                if (!sites.ContainsKey(site.Id))
+                {
+                    //add site and series to dictionary if they don't already exist
+                    sites.Add(site.Id, site);
+                    Series series = new Series(site, variable, method, qualControl, source);
+                    series.Id = i;
+                    if (!serieses.ContainsKey(site.Name)) { serieses.Add(site.Name, series); }
+                    //else{serieses.Add(site.Name, series);}
+
+                }
+            }
+            #endregion
+
+            #endregion
+
+        }
+
+        public Dictionary<string, string> ReadDbArgs(IArgument[] arguments)
+        {
+            //---- enumerate over arguments
+            var e = arguments.AsEnumerable();
+            Dictionary<string, string> dict = new Dictionary<string,string>();
+
+            //---- store each argument in a dictionary
+            foreach (object obj in e)
+                if (!String.IsNullOrWhiteSpace(((Argument)obj).Value)) //ignore missing values
+                    dict.Add(((Argument)obj).Key, ((Argument)obj).Value);
+
+            return dict;
+        }
     }
 }

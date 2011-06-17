@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
 using System.Xml;
-using System.Xml.XPath;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using System.IO;
 using HydroDesktop.Configuration;
 using DotSpatial.Projections;
-using System.Collections;
 using DotSpatial.Symbology;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
 using HydroDesktop.Interfaces;
-using System.Net;
 using log4net;
+using HydroDesktop.Search.Download;
 
 namespace HydroDesktop.Search
 {
@@ -50,6 +45,8 @@ namespace HydroDesktop.Search
 
         // this handles the rectangle drawing
         private RectangleDrawing _rectangleDrawing;
+
+        private readonly DownloadManager _downLoadManager;
 
         #endregion
 
@@ -101,10 +98,10 @@ namespace HydroDesktop.Search
 
             //set the series selected event
             searchDataGridView1.SelectionChanged += new EventHandler(searchDataGridView1_SelectionChanged);
-            
-        }
 
-        
+
+            _downLoadManager = new DownloadManager {Log = log};
+        }
 
         #endregion
 
@@ -348,7 +345,6 @@ namespace HydroDesktop.Search
         //On load populates the combo box...
         private void Populate_xmlcombo()
         {
-
             string fname = Application.StartupPath + "\\q_save.xml";
             log.Debug("Populate_xmlcombo: Reading  file " + fname);
             XmlDocument doc = new XmlDocument();
@@ -1958,12 +1954,9 @@ namespace HydroDesktop.Search
             Cancel_worker();
 
             //if download is in progress, cancel the download
-            backgroundWorker2.CancelAsync();
-            //if (btnCancel.Text == "Cancel")
-            //{
 
-
-            //}
+            //TODO: remove it
+            _downLoadManager.Cancel();
         }
 
         /// <summary>
@@ -2068,23 +2061,25 @@ namespace HydroDesktop.Search
             }
 
             //create a list of the SiteCode-VariableCode combinations for download
-            List<DownloadInfo> downloadList = new List<DownloadInfo>();
-            List<string> fileNameList = new List<String>(); //to ensure, that no duplicate files are 
+            var downloadList = new List<DownloadInfo>();
+            var fileNameList = new List<String>(); //to ensure, that no duplicate files are 
             //downloaded..
             foreach (IFeature selFeature in searchDataGridView1.MapLayer.Selection.ToFeatureList())
             {
                 DataRow row = selFeature.DataRow;
 
-                DownloadInfo di = new DownloadInfo();
-                di.SiteName = row["SiteName"].ToString();
-                di.FullSiteCode = row["SiteCode"].ToString();
-                di.FullVariableCode = row["VarCode"].ToString();
-                di.Wsdl = row["ServiceURL"].ToString();
-                di.StartDate = dateTimePickStart.Value;
-                di.EndDate = dateTimePickEnd.Value;
-                di.VariableName = row["VarName"].ToString();
-                di.Latitude = Convert.ToDouble(row["Latitude"]); //selFeature.Coordinates[0].Y;
-                di.Longitude = Convert.ToDouble(row["Longitude"]); //selFeature.Coordinates[0].X;
+                var di = new DownloadInfo
+                             {
+                                 SiteName = row["SiteName"].ToString(),
+                                 FullSiteCode = row["SiteCode"].ToString(),
+                                 FullVariableCode = row["VarCode"].ToString(),
+                                 Wsdl = row["ServiceURL"].ToString(),
+                                 StartDate = dateTimePickStart.Value,
+                                 EndDate = dateTimePickEnd.Value,
+                                 VariableName = row["VarName"].ToString(),
+                                 Latitude = Convert.ToDouble(row["Latitude"]),
+                                 Longitude = Convert.ToDouble(row["Longitude"])
+                             };
 
                 string fileBaseName = di.FullSiteCode + "|" + di.FullVariableCode;
                 if (!fileNameList.Contains(fileBaseName))
@@ -2094,9 +2089,7 @@ namespace HydroDesktop.Search
                 }
             }
 
-            DownloadArg arg = new DownloadArg();
-            arg.DownloadList = downloadList;
-            arg.DataTheme = theme;
+            var arg = new DownloadArg(downloadList, theme);
 
             //setup the progress bar
             panelSearch.Visible = true;
@@ -2110,239 +2103,87 @@ namespace HydroDesktop.Search
             //this will ensure that cancel button is enabled as next download can also be cancelled by user at any time.
             this.btnCancel.Enabled = true;
             //Download the data in a background process
-            if (backgroundWorker2.IsBusy)
+            if (_downLoadManager.IsBusy)
             {
                 MessageBox.Show("The previous download command is still active, wait....");
                 return;
             }
-            else backgroundWorker2.RunWorkerAsync(arg);
+
+            _downLoadManager.ProgressChanged += _downLoadManager_ProgressChanged;
+            _downLoadManager.Completed += _downLoadManager_Completed;
+            _downLoadManager.Start(arg);
         }
 
-        void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        private void progBarSearch2_Click(object sender, EventArgs e)
         {
-            backgroundWorker2.ReportProgress(0, "Connecting to server...");
-
-            DownloadArg arg = e.Argument as DownloadArg;
-            List<DownloadInfo> downloadList = arg.DownloadList;
-            Theme theme = arg.DataTheme;
-            Dictionary<string, DownloadInfo> downloadFiles = new Dictionary<string, DownloadInfo>();
-
-            List<Series> seriesList = new List<Series>();
-
-            if (downloadList == null)
-            {
-                throw new ArgumentException("Error in Download - invalid argument");
-            }
-
-            Downloader objDownloader = new Downloader();
-            objDownloader.ConnectionString = Settings.Instance.DataRepositoryConnectionString;
-
-            int numTotalSeries = downloadList.Count;
-            int numDownloaded = 0;
-            string message = string.Empty;
-            List<string> servicesWithErrors = new List<string>();
-
-            for (int i = 0; i < downloadList.Count; i++)
-            {
-                //for each data series, download data values and save them
-                //to a xml file.
-                DownloadInfo di = downloadList[i];
-                string fileName = objDownloader.DownloadXmlDataValues(di);
-
-                if (File.Exists(fileName))
-                {
-                    //to ensure there are no duplicate file names:
-                    if (!downloadFiles.ContainsKey(fileName))
-                    {
-                        downloadFiles.Add(fileName, di);
-                        numDownloaded++;
-
-                        //update progress
-                        //message = di.SiteName + " - " + di.VariableName + "(" + numDownloaded + "/" + numTotalSeries + ")";
-                        message = "Downloading series " + (i + 1).ToString() + " of " + numTotalSeries.ToString();
-                        int percentProgress = (numDownloaded * 100) / numTotalSeries;
-                        backgroundWorker2.ReportProgress(percentProgress, message);
-                    }
-                    else
-                    {
-                        int percentProgress = (numDownloaded * 100) / numTotalSeries;
-                        message = di.SiteName + " - " + di.VariableName + " - Error Downloading data.";
-                    }
-                }
-                else
-                {
-                    int percentProgress = (numDownloaded * 100) / numTotalSeries;
-                    message = di.SiteName + " - " + di.VariableName + " - Error Downloading Data.";
-                    backgroundWorker2.ReportProgress(percentProgress, message);
-                    if (servicesWithErrors.Contains(di.Wsdl) == false)
-                    {
-                        servicesWithErrors.Add(di.Wsdl);
-                    }
-                }
-
-                //if supports cancelation, cancel work.
-                if (backgroundWorker2.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            }
-
-            // Summarize errors that may have occurred. 
-            string errorMessage = "";
-            if (servicesWithErrors.Count > 0)
-            {
-                StringBuilder serviceErrorsBuilder = new StringBuilder("Errors occurred accessing data from these services:\n");
-                foreach (string serviceUri in servicesWithErrors)
-                {
-                    serviceErrorsBuilder.AppendLine(serviceUri);
-                }
-                serviceErrorsBuilder.AppendLine("");
-                errorMessage = serviceErrorsBuilder.ToString();
-            }
-
-            //In the next step we'll save data values to database
-            backgroundWorker2.ReportProgress(0, "Saving values..");
-
-            int numTotalFiles = downloadFiles.Count;
-            int numCurrentFile = 0;
-            int numSaveErrors = 0;
-            foreach (KeyValuePair<string, DownloadInfo> kp in downloadFiles)
-            {
-                //if supports cancelation, cancel work.
-                if (backgroundWorker2.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
-                string xmlFileName = kp.Key;
-                DownloadInfo dInfo = kp.Value;
-                //this function reads the xml file, converts it to a data series object and saves it to the
-                //database.
-                IList<Series> seriesLst = objDownloader.DataSeriesFromXml(xmlFileName, dInfo);
-                if (seriesList != null && seriesLst != null)
-                {
-                    message = string.Empty;
-
-                    foreach (Series series in seriesLst)
-                    {
-                        int numSavedValues =
-                            objDownloader.SaveDataSeries(series, theme, OverwriteOptions.Copy);
-
-                        if (numSavedValues > 0)
-                        {
-                            seriesList.Add(series);
-                            message = "Saving " + (numCurrentFile + 1).ToString() + " series out of " + downloadFiles.Count;
-                            message += dInfo.SiteName + " - " + dInfo.VariableName +
-                                " " + numSavedValues + " values saved." + "\n";
-                        }
-                        else
-                        {
-                            message += "Error saving " + dInfo.SiteName + " - " + dInfo.VariableName + "\n";
-                            int percent = (numCurrentFile * 100) / numTotalFiles + 1;
-                            backgroundWorker2.ReportProgress(percent, message);
-                            numSaveErrors += 1;
-                        }
-
-                        int percentProgress = (numCurrentFile * 100) / numTotalFiles + 1;
-                        backgroundWorker2.ReportProgress(percentProgress, message);
-                    }
-                }
-                else
-                {
-                    numSaveErrors += 1;
-                }
-
-                numCurrentFile += 1;
-            }
-
-            // Summarize errors that may have occurred. 
-            if (numSaveErrors != 0)
-            {
-                errorMessage += "Error saving data. Number of time series not saved to database: " + numSaveErrors;
-            }
-
-            backgroundWorker2.ReportProgress(100, "Saving Theme");
-            //create a feature set that will be displayed on the map
-
-            backgroundWorker2.ReportProgress(0, "Download Complete.");
-
-            // Prepare results to send back.
-            TimeSeriesDownloadResults results = new TimeSeriesDownloadResults();
-            if (theme != null)
-            {
-                // TODO: What happens if theme is null? No name sent back?
-                results.ThemeName = theme.Name;
-            }
-            results.WarningMessage = errorMessage;
-
-            e.Result = results;
+            if (_downLoadManager.IsUIVisible)
+                _downLoadManager.HideUI();
+            else
+                _downLoadManager.ShowUI();
         }
 
-        void backgroundWorker2_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        void _downLoadManager_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
-            int progVal = e.ProgressPercentage;
-            if (progVal > 100) progVal = 100;
-            if (progVal < 0) progVal = 0;
-            progBarSearch2.Value = e.ProgressPercentage;
-            lblSearching.Text = e.UserState.ToString();
-            //txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + e.UserState.ToString());
-        }
+            // Unsubscribe from events
+            _downLoadManager.Completed -= _downLoadManager_Completed;
+            _downLoadManager.ProgressChanged -= _downLoadManager_ProgressChanged;
 
-        void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
             //reset the progress bar
             progBarSearch2.Value = 0;
 
             if (e.Cancelled)
             {
-                MessageBox.Show("Data download has been cancelled");
+                MessageBox.Show(string.Format("Data download has been cancelled." + Environment.NewLine +
+                                              "{0} out of {1} series were saved to database.",
+                                              _downLoadManager.DownloadProgressInfo.DownloadedAndSaved,
+                                              _downLoadManager.DownloadProgressInfo.TotalSeries),
+                                "Cancelled", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
                 panelSearch.Visible = false;
                 btnCancel.Text = "Cancel";
                 return;
             }
-            else if (e.Error != null)
+            if (e.Error != null)
             {
-                MessageBox.Show("Error occurred during data download. " + (e.Error as Exception).ToString());
+                MessageBox.Show("Error occurred during data download." + Environment.NewLine + e.Error, "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             else
             {
-                // Read the download results.
-                TimeSeriesDownloadResults results = e.Result as TimeSeriesDownloadResults;
-                string themeName = string.Empty;
-                string messageToUser = string.Empty;
-                if (results != null)
-                {
-                    themeName = results.ThemeName;
-                    messageToUser = results.WarningMessage;
-                }
+                var themeName = _downLoadManager.CurrentDownloadArg.DataTheme == null
+                                       ? string.Empty
+                                       : _downLoadManager.CurrentDownloadArg.DataTheme.Name;
 
                 //Display theme in the main map
                 AddThemeToMap(themeName);
 
                 //Change the form's appearance
-                this.lblSearching.Text = "Download Complete.";
-                //this.lblTitleDownload.Text = "Download Complete.";
+                lblSearching.Text = "Download Complete.";
 
                 //refreshing the AddExisiting theme
                 AddExistingThemes();
                 txtThemeName.Text = "";
 
                 // Report messages to the user.
-                if (String.IsNullOrEmpty(messageToUser) == true)
-                {
-                    messageToUser = "Data download complete.";
-                }
-                MessageBox.Show(messageToUser);
-
-
+                MessageBox.Show(string.Format("Data download complete." + Environment.NewLine +
+                                              "Downloaded and saved: {0}" + Environment.NewLine +
+                                              "Failed series: {1}",
+                                              _downLoadManager.DownloadProgressInfo.DownloadedAndSaved,
+                                              _downLoadManager.DownloadProgressInfo.WithError),
+                                "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             //Change the 'cancel' button to 'close
             btnCancel.Text = "Cancel";
             //make the download progress-bar panel disappear
             panelSearch.Visible = false;
+
+        }
+
+        void _downLoadManager_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progBarSearch2.Value = e.ProgressPercentage;
+            lblSearching.Text = e.UserState != null? e.UserState.ToString() : string.Empty;
         }
 
         private void AddThemeToMap(string themeName)
@@ -2451,7 +2292,7 @@ namespace HydroDesktop.Search
                   MessageBoxDefaultButton.Button2);
             if (result3 == DialogResult.Yes)
             {
-                if (backgroundWorker1.IsBusy || backgroundWorker2.IsBusy)
+                if (backgroundWorker1.IsBusy || _downLoadManager.IsBusy)
                 {
                     MessageBox.Show("Background search/download is active. Please wait.");
                     return;
@@ -2628,7 +2469,7 @@ namespace HydroDesktop.Search
         private void RunSearchBackgroundWorker()
         {
             // TODO: Why check backgroundWorker2? Isn't that one used only for time series download?
-            if (backgroundWorker2.IsBusy || backgroundWorker1.IsBusy)
+            if (_downLoadManager.IsBusy || backgroundWorker1.IsBusy)
             {
                 MessageBox.Show("A previous search is still executing.  Please try again later.");
                 return;

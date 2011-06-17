@@ -34,13 +34,15 @@ using System.Windows.Forms;
 using Oatc.OpenMI.Gui.Core;
 using OpenMI.Standard;
 using System.IO;
+using DotSpatial.Controls;
+using DotSpatial.Controls.RibbonControls;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
 	/// <summary>
 	/// Summary description for RunBox.
 	/// </summary>
-	public class RunBox : System.Windows.Forms.Form
+    public class RunBox : System.Windows.Forms.Form
 	{
 		CompositionManager _composition;
 
@@ -84,7 +86,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 			get { return(progressBarRun); }
 		}
 
-
 		/// <summary>
 		/// Listview showing events during simulation.
 		/// </summary>
@@ -93,7 +94,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 		{
 			get { return(listViewEvents); }
 		}
-		
 
 		/// <summary>
 		/// Timer used to initiate sending of events to UI listeners.
@@ -134,6 +134,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 		private void RunBox_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
 		{
+            
 			// this event is fired when this dialog is shown
 			StartSimulation();		
 		}
@@ -217,18 +218,70 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 			{
                 case DialogResult.Yes:
                     {
-                        
 
-                        //temporarily save file
-                        _composition.SaveToFile(this._currentDirectory + "\\temp.opr");
+                        #region old reload method
+                        //////_composition.Reload();
 
-                        //clear composition window
+
+                        //////temporarily save file
+                        ////_composition.SaveToFile(this._currentDirectory + "\\temp.opr");
+
+                        //////clear composition window
+                        ////_composition.RemoveAllModels();
+
+                        //////HACK: fix to fix opr file
+                        //////make sure that the trigger does not contain any extra characters
+                        ////string filename = this._currentDirectory + "\\temp.opr";
+                        ////StreamReader sr = new StreamReader(filename);
+                        ////string contents = sr.ReadToEnd();
+                        ////sr.Close();
+
+                        ////if (contents.Contains("Oatc.OpenMI.Gui.Trigger"))
+                        ////{
+                        ////    int end = contents.IndexOf("Oatc.OpenMI.Gui.Trigger");
+                        ////    int index = end - 1;
+                        ////    int count = 0;
+                        ////    while (contents[index] != '\"')
+                        ////    {
+                        ////        count++;
+                        ////        index--;
+                        ////    }
+
+                        ////    contents = contents.Remove(end - count, count);
+                        ////}
+
+                        ////StreamWriter sw = new StreamWriter(filename);
+                        ////sw.Write(contents);
+                        ////sw.Close();
+
+                        //////reload temp opr
+                        ////_composition.LoadFromFile(this._currentDirectory + "\\temp.opr");
+
+                        ////System.IO.File.Delete(this._currentDirectory + "\\temp.opr");
+
+                        //////foreach (UIModel model in models)
+                        //////_composition.AddModel(model.
+                        //////    if (model.ModelID.Contains("Oatc"))
+                        //////    {
+                        //////        _composition.RemoveModel(model);
+                        //////        break;
+                        //////    }
+                        //////_composition.Reload();
+                        #endregion
+
+                        //---- reload the composition ---
+
+                        //-- get the current file path
+                        string path = _composition.FilePath;
+
+                        //-- overwrite the original file
+                        _composition.SaveToFile(path);
+
+                        //-- clear the composition window
                         _composition.RemoveAllModels();
 
-                        //HACK: fix to fix opr file
-                        //make sure that the trigger does not contain any extra characters
-                        string filename = this._currentDirectory + "\\temp.opr";
-                        StreamReader sr = new StreamReader(filename);
+                        //-- remove extra characters (in path) from the trigger
+                        StreamReader sr = new StreamReader(path);
                         string contents = sr.ReadToEnd();
                         sr.Close();
 
@@ -238,35 +291,22 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             int index = end - 1;
                             int count = 0;
                             while (contents[index] != '\"')
-                            {
-                                count++;
-                                index--;
-                            }
-
+                            { count++; index--; }
                             contents = contents.Remove(end - count, count);
                         }
 
-                        StreamWriter sw = new StreamWriter(filename);
+                        //-- rewrite the opr with revised trigger info
+                        StreamWriter sw = new StreamWriter(path);
                         sw.Write(contents);
                         sw.Close();
 
-                        //reload temp opr
-                        _composition.LoadFromFile(this._currentDirectory + "\\temp.opr");
+                        //-- reopen the opr file
+                        _composition.LoadFromFile(_composition.FilePath);
 
-                        System.IO.File.Delete(this._currentDirectory + "\\temp.opr");
-
-                        //foreach (UIModel model in models)
-                            //_composition.AddModel(model.
-                        //    if (model.ModelID.Contains("Oatc"))
-                        //    {
-                        //        _composition.RemoveModel(model);
-                        //        break;
-                        //    }
-                        //_composition.Reload();
                         break;
                     }
 				default:
-                    hydroModelerControl.clear();
+                    hydroModelerControl.composition_clear();
 					break;
 			}
 		
@@ -298,153 +338,154 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
-			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
-			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
-			System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("");
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(RunBox));
-			this.labelInfo = new System.Windows.Forms.Label();
-			this.buttonStop = new System.Windows.Forms.Button();
-			this.progressBarRun = new System.Windows.Forms.ProgressBar();
-			this.buttonClose = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
-			this.timerProgress = new System.Windows.Forms.Timer(this.components);
-			this.listViewEvents = new System.Windows.Forms.ListView();
-			this._colType = new System.Windows.Forms.ColumnHeader();
-			this._colDescription = new System.Windows.Forms.ColumnHeader();
-			this._colSender = new System.Windows.Forms.ColumnHeader();
-			this._colSimulationTime = new System.Windows.Forms.ColumnHeader();
-			this._colOrder = new System.Windows.Forms.ColumnHeader();
-			this.SuspendLayout();
-			// 
-			// labelInfo
-			// 
-			this.labelInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelInfo.Location = new System.Drawing.Point(4, 4);
-			this.labelInfo.Name = "labelInfo";
-			this.labelInfo.Size = new System.Drawing.Size(460, 16);
-			this.labelInfo.TabIndex = 0;
-			this.labelInfo.Text = "Running...";
-			// 
-			// buttonStop
-			// 
-			this.buttonStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonStop.Location = new System.Drawing.Point(280, 202);
-			this.buttonStop.Name = "buttonStop";
-			this.buttonStop.Size = new System.Drawing.Size(84, 24);
-			this.buttonStop.TabIndex = 1;
-			this.buttonStop.Text = "Stop !!!";
-			this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
-			// 
-			// progressBarRun
-			// 
-			this.progressBarRun.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBarRun.Location = new System.Drawing.Point(4, 24);
-			this.progressBarRun.Maximum = 256;
-			this.progressBarRun.Name = "progressBarRun";
-			this.progressBarRun.Size = new System.Drawing.Size(464, 24);
-			this.progressBarRun.TabIndex = 2;
-			this.progressBarRun.EnabledChanged += new System.EventHandler(this.progressBarRun_EnabledChanged);
-			// 
-			// buttonClose
-			// 
-			this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonClose.Enabled = false;
-			this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonClose.Location = new System.Drawing.Point(372, 202);
-			this.buttonClose.Name = "buttonClose";
-			this.buttonClose.Size = new System.Drawing.Size(84, 24);
-			this.buttonClose.TabIndex = 3;
-			this.buttonClose.Text = "Close";
-			this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-			// 
-			// label1
-			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.label1.Location = new System.Drawing.Point(4, 56);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(464, 16);
-			this.label1.TabIndex = 5;
-			this.label1.Text = "Events:";
-			// 
-			// listViewEvents
-			// 
-			this.listViewEvents.AllowColumnReorder = true;
-			this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.listViewEvents.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.listViewEvents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																							 this._colOrder,
-																							 this._colType,
-																							 this._colDescription,
-																							 this._colSender,
-																							 this._colSimulationTime});
-			this.listViewEvents.FullRowSelect = true;
-			this.listViewEvents.GridLines = true;
-			this.listViewEvents.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-																						   listViewItem1,
-																						   listViewItem2,
-																						   listViewItem3,
-																						   listViewItem4});
-			this.listViewEvents.Location = new System.Drawing.Point(4, 76);
-			this.listViewEvents.Name = "listViewEvents";
-			this.listViewEvents.Size = new System.Drawing.Size(464, 116);
-			this.listViewEvents.TabIndex = 6;
-			this.listViewEvents.View = System.Windows.Forms.View.Details;
-			// 
-			// _colType
-			// 
-			this._colType.Text = "Type";
-			this._colType.Width = 82;
-			// 
-			// _colDescription
-			// 
-			this._colDescription.Text = "Description";
-			this._colDescription.Width = 147;
-			// 
-			// _colSender
-			// 
-			this._colSender.Text = "Sender";
-			this._colSender.Width = 82;
-			// 
-			// _colSimulationTime
-			// 
-			this._colSimulationTime.Text = "Simulation Time";
-			this._colSimulationTime.Width = 102;
-			// 
-			// _colOrder
-			// 
-			this._colOrder.Text = "Order";
-			this._colOrder.Width = 48;
-			// 
-			// RunBox
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.buttonClose;
-			this.ClientSize = new System.Drawing.Size(472, 233);
-			this.Controls.Add(this.listViewEvents);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.buttonClose);
-			this.Controls.Add(this.progressBarRun);
-			this.Controls.Add(this.buttonStop);
-			this.Controls.Add(this.labelInfo);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(440, 200);
-			this.Name = "RunBox";
-			this.ShowInTaskbar = false;
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-			this.Text = "Simulation progress";
-			this.Closing += new System.ComponentModel.CancelEventHandler(this.RunBox_Closing);
-			this.Paint += new System.Windows.Forms.PaintEventHandler(this.RunBox_Paint);
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RunBox));
+            this.labelInfo = new System.Windows.Forms.Label();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.progressBarRun = new System.Windows.Forms.ProgressBar();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.timerProgress = new System.Windows.Forms.Timer(this.components);
+            this.listViewEvents = new System.Windows.Forms.ListView();
+            this._colOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._colType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._colDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._colSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._colSimulationTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SuspendLayout();
+            // 
+            // labelInfo
+            // 
+            this.labelInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelInfo.Location = new System.Drawing.Point(4, 4);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(507, 16);
+            this.labelInfo.TabIndex = 0;
+            this.labelInfo.Text = "Running...";
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonStop.Location = new System.Drawing.Point(327, 569);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(84, 24);
+            this.buttonStop.TabIndex = 1;
+            this.buttonStop.Text = "Stop !!!";
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
+            // 
+            // progressBarRun
+            // 
+            this.progressBarRun.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarRun.Location = new System.Drawing.Point(4, 24);
+            this.progressBarRun.Maximum = 256;
+            this.progressBarRun.Name = "progressBarRun";
+            this.progressBarRun.Size = new System.Drawing.Size(511, 24);
+            this.progressBarRun.TabIndex = 2;
+            this.progressBarRun.EnabledChanged += new System.EventHandler(this.progressBarRun_EnabledChanged);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonClose.Enabled = false;
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonClose.Location = new System.Drawing.Point(419, 569);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(84, 24);
+            this.buttonClose.TabIndex = 3;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(4, 56);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(511, 16);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Events:";
+            // 
+            // listViewEvents
+            // 
+            this.listViewEvents.AllowColumnReorder = true;
+            this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewEvents.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listViewEvents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this._colOrder,
+            this._colType,
+            this._colDescription,
+            this._colSender,
+            this._colSimulationTime});
+            this.listViewEvents.FullRowSelect = true;
+            this.listViewEvents.GridLines = true;
+            this.listViewEvents.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4});
+            this.listViewEvents.Location = new System.Drawing.Point(4, 76);
+            this.listViewEvents.Name = "listViewEvents";
+            this.listViewEvents.Size = new System.Drawing.Size(511, 483);
+            this.listViewEvents.TabIndex = 6;
+            this.listViewEvents.UseCompatibleStateImageBehavior = false;
+            this.listViewEvents.View = System.Windows.Forms.View.Details;
+            // 
+            // _colOrder
+            // 
+            this._colOrder.Text = "Order";
+            this._colOrder.Width = 48;
+            // 
+            // _colType
+            // 
+            this._colType.Text = "Type";
+            this._colType.Width = 82;
+            // 
+            // _colDescription
+            // 
+            this._colDescription.Text = "Description";
+            this._colDescription.Width = 147;
+            // 
+            // _colSender
+            // 
+            this._colSender.Text = "Sender";
+            this._colSender.Width = 82;
+            // 
+            // _colSimulationTime
+            // 
+            this._colSimulationTime.Text = "Simulation Time";
+            this._colSimulationTime.Width = 155;
+            // 
+            // RunBox
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.CancelButton = this.buttonClose;
+            this.ClientSize = new System.Drawing.Size(519, 600);
+            this.Controls.Add(this.listViewEvents);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.buttonClose);
+            this.Controls.Add(this.progressBarRun);
+            this.Controls.Add(this.buttonStop);
+            this.Controls.Add(this.labelInfo);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(440, 200);
+            this.Name = "RunBox";
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Text = "Simulation progress";
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.RunBox_Closing);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.RunBox_Paint);
+            this.ResumeLayout(false);
 
 		}
 		#endregion

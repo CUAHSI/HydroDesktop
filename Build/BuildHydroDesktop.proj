@@ -44,7 +44,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ProjectName>hydrodesktop</ProjectName>
 	<MajorVersion Condition="'$(MajorVersion)' == ''">1</MajorVersion>
 	<MinorVersion Condition="'$(MinorVersion)' == ''">2</MinorVersion>
-	<ReleaseVersion Condition="'$(ReleaseVersion)' == ''">Unknown</ReleaseVersion><!--hopefully populated by target VersionConfig -->
+	<!--<ReleaseVersion Condition="'$(ReleaseVersion)' == ''">Unknown</ReleaseVersion> --><!--hopefully populated by target VersionConfig -->
     <ReleaseName Condition="'$(ReleaseName)' == ''">Beta</ReleaseName><!-- really release type -->
     <IsDefaultRelease Condition="'$(IsDefaultRelease)' == ''">false</IsDefaultRelease>
     <ShowToPublic Condition="'$(ShowToPublic)' == ''">false</ShowToPublic>
@@ -120,7 +120,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 
 <PropertyGroup>
-<ReleaseVersion>$(Major).$(Minor).$(Build).$(Revision)</ReleaseVersion>
+<ReleaseVersion Condition="'$(ReleaseVersion)' == ''">$(Major).$(Minor).$(Build).$(Revision)</ReleaseVersion>
 </PropertyGroup>
 			  <MSBuild.Community.Tasks.AssemblyInfo CodeLanguage="CS"  
                 OutputFile="$(SourceDirectory)\Source\Main\HydroDesktop.Main\Properties\AssemblyInfo.cs" 
