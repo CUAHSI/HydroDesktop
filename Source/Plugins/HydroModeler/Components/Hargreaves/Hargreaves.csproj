@@ -63,9 +63,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="data\Hargreaves.omi" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="data\config.xml">
       <SubType>Designer</SubType>
     </Content>

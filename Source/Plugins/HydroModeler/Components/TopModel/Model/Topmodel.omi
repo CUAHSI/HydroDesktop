@@ -2,7 +2,11 @@
 <LinkableComponent Type="TopModel.Linkable_Component" Assembly="..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\TopModel.dll">
   <Arguments>
     <Argument Key="ConfigFile" ReadOnly="true" Value=".\config.xml" />
-    <Argument Key="Weather" ReadOnly="true" Value="..\Data\Weather.csv" />
-    <Argument Key="TI" ReadOnly="true" Value="..\Data\TI.csv" />
+    <Argument Key="TI" ReadOnly="true" Value="..\Data\TI_raster.txt" />
+    <Argument Key="m" ReadOnly="true" Value="180" />
+    <Argument Key="Tmax" ReadOnly="true" Value="250000" />
+    <Argument Key="R" ReadOnly="true" Value="9.66" />
+    <Argument Key="Interception" ReadOnly="true" Value="3" />
+    <Argument Key="WatershedArea_SquareMeters" ReadOnly="true" Value="124800" />
   </Arguments>
 </LinkableComponent>

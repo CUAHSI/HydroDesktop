@@ -41,7 +41,6 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnRestoreSearch = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.spcHor1 = new System.Windows.Forms.SplitContainer();
             this.btnRunSearchMain = new System.Windows.Forms.Button();
             this.checkSummary = new System.Windows.Forms.CheckBox();
@@ -317,14 +316,6 @@
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // backgroundWorker2
-            // 
-            this.backgroundWorker2.WorkerReportsProgress = true;
-            this.backgroundWorker2.WorkerSupportsCancellation = true;
-            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
-            this.backgroundWorker2.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker2_ProgressChanged);
-            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
             // spcHor1
             // 
@@ -1207,6 +1198,7 @@
             this.progBarSearch2.Name = "progBarSearch2";
             this.progBarSearch2.Size = new System.Drawing.Size(264, 17);
             this.progBarSearch2.TabIndex = 26;
+            this.progBarSearch2.Click += new System.EventHandler(this.progBarSearch2_Click);
             // 
             // lblSearching
             // 
@@ -1961,7 +1953,6 @@
         private System.Windows.Forms.RadioButton radioButton12;
         private System.Windows.Forms.RadioButton rbAppend;
         private System.Windows.Forms.RadioButton rbOverwrite;
-        private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label31;
         public System.Windows.Forms.Label lblRestoreDates;
