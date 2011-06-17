@@ -5,8 +5,15 @@ namespace HydroDesktop.Search.Download.Exceptions
 {
     class SaveDataSeriesException : Exception
     {
-         public SaveDataSeriesException()
-            : this("Save Data Series Exception")
+        private const string DEFAULT_MESSAGE = "Save Data Series Exception.";
+
+        public SaveDataSeriesException()
+            : this(DEFAULT_MESSAGE)
+        {
+
+        }
+        public SaveDataSeriesException(Exception inner)
+            : this(DEFAULT_MESSAGE, inner)
         {
 
         }

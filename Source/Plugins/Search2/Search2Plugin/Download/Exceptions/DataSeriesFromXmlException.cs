@@ -5,8 +5,15 @@ namespace HydroDesktop.Search.Download.Exceptions
 {
     class DataSeriesFromXmlException : Exception
     {
-         public DataSeriesFromXmlException()
-            : this("Data Series From Xml Exception")
+        private const string DEFAULT_MESSAGE = "Data Series From Xml Exception.";
+
+        public DataSeriesFromXmlException()
+            : this(DEFAULT_MESSAGE)
+        {
+
+        }
+        public DataSeriesFromXmlException(Exception inner)
+            : this(DEFAULT_MESSAGE, inner)
         {
 
         }
@@ -26,5 +33,6 @@ namespace HydroDesktop.Search.Download.Exceptions
         {
 
         }
+        
     }
 }

@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
 using System.Xml;
-using System.Xml.XPath;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using System.IO;
 using HydroDesktop.Configuration;
 using DotSpatial.Projections;
-using System.Collections;
 using DotSpatial.Symbology;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
 using HydroDesktop.Interfaces;
-using System.Net;
 using log4net;
 using HydroDesktop.Search.Download;
 
@@ -52,7 +46,7 @@ namespace HydroDesktop.Search
         // this handles the rectangle drawing
         private RectangleDrawing _rectangleDrawing;
 
-        private readonly DownloadManager _downLoadManager = new DownloadManager();
+        private readonly DownloadManager _downLoadManager;
 
         #endregion
 
@@ -104,10 +98,10 @@ namespace HydroDesktop.Search
 
             //set the series selected event
             searchDataGridView1.SelectionChanged += new EventHandler(searchDataGridView1_SelectionChanged);
-            
-        }
 
-        
+
+            _downLoadManager = new DownloadManager {Log = log};
+        }
 
         #endregion
 
@@ -2139,47 +2133,45 @@ namespace HydroDesktop.Search
 
             if (e.Cancelled)
             {
-                MessageBox.Show("Data download has been cancelled");
+                MessageBox.Show(string.Format("Data download has been cancelled." + Environment.NewLine +
+                                              "{0} out of {1} series were saved to database.",
+                                              _downLoadManager.DownloadProgressInfo.DownloadedAndSaved,
+                                              _downLoadManager.DownloadProgressInfo.TotalSeries),
+                                "Cancelled", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
                 panelSearch.Visible = false;
                 btnCancel.Text = "Cancel";
                 return;
             }
-            else if (e.Error != null)
+            if (e.Error != null)
             {
-                MessageBox.Show("Error occurred during data download. " + (e.Error as Exception).ToString());
+                MessageBox.Show("Error occurred during data download." + Environment.NewLine + e.Error, "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             else
             {
-                // Read the download results.
-                var results = e.Result as TimeSeriesDownloadResults;
-                string themeName = string.Empty;
-                string messageToUser = string.Empty;
-                if (results != null)
-                {
-                    themeName = results.ThemeName;
-                    messageToUser = results.WarningMessage;
-                }
+                var themeName = _downLoadManager.CurrentDownloadArg.DataTheme == null
+                                       ? string.Empty
+                                       : _downLoadManager.CurrentDownloadArg.DataTheme.Name;
 
                 //Display theme in the main map
                 AddThemeToMap(themeName);
 
                 //Change the form's appearance
-                this.lblSearching.Text = "Download Complete.";
-                //this.lblTitleDownload.Text = "Download Complete.";
+                lblSearching.Text = "Download Complete.";
 
                 //refreshing the AddExisiting theme
                 AddExistingThemes();
                 txtThemeName.Text = "";
 
                 // Report messages to the user.
-                if (String.IsNullOrEmpty(messageToUser) == true)
-                {
-                    messageToUser = "Data download complete.";
-                }
-                MessageBox.Show(messageToUser);
-
-
+                MessageBox.Show(string.Format("Data download complete." + Environment.NewLine +
+                                              "Downloaded and saved: {0}" + Environment.NewLine +
+                                              "Failed series: {1}",
+                                              _downLoadManager.DownloadProgressInfo.DownloadedAndSaved,
+                                              _downLoadManager.DownloadProgressInfo.WithError),
+                                "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             //Change the 'cancel' button to 'close
             btnCancel.Text = "Cancel";

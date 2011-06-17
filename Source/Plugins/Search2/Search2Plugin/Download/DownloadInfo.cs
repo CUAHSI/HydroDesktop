@@ -130,6 +130,29 @@ namespace HydroDesktop.Search.Download
             }
         }
 
+        private TimeSpan _downloadTimeTaken;
+        public TimeSpan DownloadTimeTaken
+        {
+            get { return _downloadTimeTaken; }
+            set
+            {
+                _downloadTimeTaken = value;
+                NotifyPropertyChanged("DownloadTimeTaken");
+            }
+        }
+
+
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value;
+                NotifyPropertyChanged("ErrorMessage");
+            }
+        }
+
         #endregion
 
         #region Events

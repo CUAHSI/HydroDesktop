@@ -35,15 +35,18 @@ namespace HydroDesktop.Search.Download
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor with default connection string (from settings).
+        /// </summary>
         public Downloader()
         {
-
+            ConnectionString = Settings.Instance.DataRepositoryConnectionString;
         }
 
         #endregion
 
         #region Properties
-    
+
         /// <summary>
         /// Gets or sets the start date of all downloaded time series
         /// </summary>
@@ -170,7 +173,7 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new DownloadXmlException("Download xml exception", ex);
+                throw new DownloadXmlException(ex);
             }
         }
 
@@ -179,16 +182,18 @@ namespace HydroDesktop.Search.Download
         #region Database Methods
 
         /// <summary>
-        /// Converts the xml file to a list of data series objects.
-        /// In most cases the list will only contain one object.
+        /// Converts the xml file to a data series object.
         /// </summary>
         /// <param name="xmlFile">The name of the xml file</param>
         /// <param name="dInfo">Download info</param>
-        /// <returns>the data series list</returns>
+        /// <returns>The data series object</returns>
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
-        public IList<Series> DataSeriesFromXml(string xmlFile, DownloadInfo dInfo)
+        /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
+        /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
+        public Series DataSeriesFromXml(string xmlFile, DownloadInfo dInfo)
         {
             IList<Series> seriesList;
+
             try
             {
                 //get the service version
@@ -206,9 +211,15 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new DataSeriesFromXmlException("Data Series From Xml Exception", ex);
+                throw new DataSeriesFromXmlException(ex);
             }
-            return seriesList;
+
+            if (seriesList == null || seriesList.Count == 0)
+                throw new NoSeriesFromXmlException();
+            if (seriesList.Count > 1)
+                throw new TooMuchSeriesFromXmlException();
+
+            return seriesList[0];
         }
 
         /// <summary>
@@ -218,14 +229,10 @@ namespace HydroDesktop.Search.Download
         /// </summary>
         /// <param name="series">The data series to be saved</param>
         /// <param name="theme">The theme associated with this data series</param>
-        /// <param name="overwrite">Determines how to handle duplicate data values.</param>
         /// <returns>The number of saved data values</returns>
         /// <exception cref="SaveDataSeriesException">Something wrong during SaveDataSeries</exception>
-        public int SaveDataSeries(Series series, Theme theme, OverwriteOptions overwrite)
+        public int SaveDataSeries(Series series, Theme theme)
         {
-            //check if the series has values
-            //TODO: we should display error message ('series has no data values')
-            // no pass an event
             if (series.GetValueCount() == 0) return 0;
 
             try
@@ -236,17 +243,8 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new SaveDataSeriesException("Save Data Series Exception", ex);
+                throw new SaveDataSeriesException(ex);
             }
-        }
-
-        public DateTime ConvertDateTime(object timeObj)
-        {
-            if (timeObj == null) return DateTime.MinValue;
-
-            string timeStr = timeObj.ToString();
-            timeStr = timeStr.Replace("T", " ");
-            return Convert.ToDateTime(timeStr);
         }
 
         #endregion

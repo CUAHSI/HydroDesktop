@@ -121,6 +121,7 @@
     <Compile Include="AdvancedSettingsDialog.Designer.cs">
       <DependentUpon>AdvancedSettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Download\DownloadProgressInfo.cs" />
     <Compile Include="Download\Exceptions\DataSeriesFromXmlException.cs" />
     <Compile Include="Download\Downloader.cs" />
     <Compile Include="Download\DownloadInfo.cs" />
@@ -133,11 +134,12 @@
       <DependentUpon>DownloadManagerUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Download\Exceptions\DownloadXmlException.cs" />
+    <Compile Include="Download\Exceptions\NoSeriesFromXmlException.cs" />
     <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
+    <Compile Include="Download\Exceptions\TooMuchSeriesFromXmlException.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />
     <Compile Include="WebServicesList.cs" />
-    <Compile Include="TimeSeriesDownloadResults.cs" />
     <Compile Include="HdSearchOntologyHelper.cs" />
     <Compile Include="HISCentralSearcher.cs" />
     <Compile Include="HydrodesktopSearchException.cs" />
