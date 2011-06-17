@@ -106,3 +106,17 @@ Composite Creation
 .. figure:: ./images/Tutorial02/runsetup.png
    :align: center
 .
+
+18.	Simulation running.
+
+.. figure:: ./images/Tutorial02/duringruning.png
+   :align: center
+.
+
+19.	Simulation finish succesfully.
+
+.. figure:: ./images/Tutorial02/finishsuccess.png
+   :align: center
+.
+
+20. Go for the table tab.
