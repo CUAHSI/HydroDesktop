@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace HydroDesktop.Search.Download
@@ -32,8 +33,7 @@ namespace HydroDesktop.Search.Download
             {
                 if (manager == null) throw new ArgumentNullException("manager");
             }
-
-            lblCurrentInfo.Text = string.Empty;
+            
             lblTotalInfo.Text = string.Empty;
 
             _manager = manager;
@@ -45,14 +45,14 @@ namespace HydroDesktop.Search.Download
             FormClosing += DownloadManagerUI_FormClosing;
 
             BindDownloadInfoTable();
+            BindDownloadProgressInfo();
             ShowHideDetails(); // by default details is not shown
             dgvDownloadData.CellFormatting += dgvDownloadData_CellFormatting;
 
             //
-            btnShowFullLog.Enabled = false;
             btnSendError.Enabled = false;
         }
-     
+
         #endregion
 
         #region Private methods
@@ -73,6 +73,31 @@ namespace HydroDesktop.Search.Download
             {
                 e.CellStyle.BackColor = Color.Green;
             }
+            else if (dInfo.Status == DownloadInfoStatus.OkWithWarnings)
+            {
+                e.CellStyle.BackColor = Color.Orange;
+            }
+        }
+
+
+        private void BindDownloadProgressInfo()
+        {
+            var dpInfo = _manager.DownloadProgressInfo; // to avoid long names
+            if (dpInfo == null)
+            {
+                lcDownloadedAndSavedInfo.Text = null;
+                lcWithErrorInfo.Text = null;
+                lcTotalSeriesInfo.Text = null;
+                lcRemainingSeriesInfo.Text = null;
+                lcEstimatedTimeInfo.Text = null;
+                return;
+            }
+
+            lcDownloadedAndSavedInfo.DataBindings.Add(new Binding("Text", dpInfo, "DownloadedAndSaved"));
+            lcWithErrorInfo.DataBindings.Add(new Binding("Text", dpInfo, "WithError"));
+            lcTotalSeriesInfo.DataBindings.Add(new Binding("Text", dpInfo, "TotalSeries"));
+            lcRemainingSeriesInfo.DataBindings.Add(new Binding("Text", dpInfo, "RemainingSeries"));
+            lcEstimatedTimeInfo.DataBindings.Add(new Binding("Text", dpInfo, "EstimatedTime"));
         }
 
         private void BindDownloadInfoTable()
@@ -105,7 +130,21 @@ namespace HydroDesktop.Search.Download
 
         void _manager_OnMessage(object sender, LogMessageEventArgs e)
         {
-            lbOutput.Items.Add(e.Message);
+            var split = e.Message.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            split[0] = DateTime.Now.ToLongTimeString() + " " + split[0];
+            foreach (var mes in split)
+                lbOutput.Items.Add(mes);
+
+            if (e.Exception != null)
+            {
+                var message = string.Format("Exception details:" + Environment.NewLine +
+                                            "Message: {0}" + Environment.NewLine + 
+                                            "Stacktrace: {1}", e.Exception.Message,
+                                            e.Exception.StackTrace);
+                split = message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                foreach (var mes in split)
+                    lbOutput.Items.Add(mes);
+            }
         }
 
         void _manager_Canceled(object sender, EventArgs e)
@@ -193,7 +232,18 @@ namespace HydroDesktop.Search.Download
             _showHideDetails = !_showHideDetails;
         }
 
-        #endregion
+        private void btnCopyLog_Click(object sender, EventArgs e)
+        {
+            var sb = new StringBuilder();
+            
+            foreach(var item in lbOutput.Items)
+            {
+                sb.Append(lbOutput.GetItemText(item) + Environment.NewLine);
+            }
 
+            Clipboard.SetText(sb.ToString());
+        }
+
+        #endregion
     }
 }

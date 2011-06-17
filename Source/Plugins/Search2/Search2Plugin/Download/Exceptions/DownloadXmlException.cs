@@ -3,10 +3,17 @@ using System.Runtime.Serialization;
 
 namespace HydroDesktop.Search.Download.Exceptions
 {
-    public class DownloadXmlException : Exception
+    class DownloadXmlException : Exception
     {
+        private const string DEFAULT_MESSAGE = "Download Xml Exception.";
+
         public DownloadXmlException()
-            : this("Download Xml Exception")
+            : this(DEFAULT_MESSAGE)
+        {
+
+        }
+        public DownloadXmlException(Exception inner)
+            : this(DEFAULT_MESSAGE, inner)
         {
 
         }

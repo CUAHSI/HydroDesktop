@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using HydroDesktop.Configuration;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Search.Download.Exceptions;
 
@@ -59,11 +59,8 @@ namespace HydroDesktop.Search.Download
             get { return _downloadManagerUI == null ? false : _downloadManagerUI.Visible; }
         }
 
-        internal DownloadArg CurrentDownloadArg
-        {
-            get;
-            private set;
-        }
+        internal DownloadArg CurrentDownloadArg { get; private set; }
+        internal DownloadProgressInfo DownloadProgressInfo { get; private set; }
 
         #endregion
 
@@ -80,6 +77,7 @@ namespace HydroDesktop.Search.Download
                 throw new ArgumentNullException("args");
 
             CurrentDownloadArg = args;
+            DownloadProgressInfo = new DownloadProgressInfo {TotalSeries = CurrentDownloadArg.DownloadList.Count};
             _downloadManagerUI = new DownloadManagerUI(this);
             ShowUI();
             _worker.RunWorkerAsync(new DownloadArgWrapper { DownloadArg = args, DownloadManagerUI = _downloadManagerUI });
@@ -144,7 +142,7 @@ namespace HydroDesktop.Search.Download
             var handler = OnMessage;
             if (handler != null)
             {
-                handler(this, new LogMessageEventArgs(message));
+                handler(this, new LogMessageEventArgs(message, exception));
             }
         }
 
@@ -163,7 +161,11 @@ namespace HydroDesktop.Search.Download
         void _worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (e.UserState != null)
-                DoLogInfo(e.UserState.ToString());
+            {
+                var mes = e.UserState.ToString();
+                if (!string.IsNullOrEmpty(mes))
+                    DoLogInfo(mes);
+            }
 
             var handler = ProgressChanged;
             if (handler != null)
@@ -180,133 +182,187 @@ namespace HydroDesktop.Search.Download
             var downloadList = arg.DownloadArg.DownloadList;
             var theme = arg.DownloadArg.DataTheme;
 
-            var downloadFiles = new Dictionary<string, DownloadInfo>();
-            var seriesList = new List<Series>();
+            var downloadedFiles = new Dictionary<string, DownloadInfo>();
 
-            var objDownloader = new Downloader
-                                    {
-                                        ConnectionString = Settings.Instance.DataRepositoryConnectionString
-                                    };
-
+            var objDownloader = new Downloader();
             var numTotalSeries = downloadList.Count;
             var numDownloaded = 0;
-            var downloadedCount = 1;
+            var downloadedCount = 0;
 
+            #region Downloading
+            
             foreach (var di in downloadList)
             {
                 if (_worker.CancellationPending)
                 {
                     e.Cancel = true;
-                    return;
+                    goto finalLogging;
                 }
 
                 string fileName;
-
+                var startTime = DateTime.Now;
                 try
                 {
                     di.Status = DownloadInfoStatus.Downloading;
                     fileName = objDownloader.DownloadXmlDataValues(di);
                     di.Status = DownloadInfoStatus.Downloaded;
+                    DownloadProgressInfo.Downloaded++;
                 }
                 catch (DownloadXmlException ex)
                 {
                     di.Status = DownloadInfoStatus.Error;
+                    di.ErrorMessage = ex.Message;
                     DoLogError(ex.Message, ex);
+                    DownloadProgressInfo.WithError++;
                     continue;
+                }
+                finally
+                {
+                    // Calculcate estimated time
+                    var endTime = DateTime.Now;
+                    var diff = endTime.Subtract(startTime).TotalSeconds;
+                    di.DownloadTimeTaken = TimeSpan.FromSeconds(diff);
+                    var interval = diff*
+                                   (DownloadProgressInfo.TotalSeries -
+                                    (DownloadProgressInfo.WithError + DownloadProgressInfo.Downloaded))/
+                                   DownloadProgressInfo.Downloaded + 1;
+                    DownloadProgressInfo.EstimatedTimeForDownload = interval < Int32.MaxValue
+                                                             ? new TimeSpan(0, 0, (int) interval)
+                                                             : TimeSpan.MaxValue;
                 }
 
                 Debug.Assert(File.Exists(fileName)); // we just downloaded this file
 
                 //to ensure there are no duplicate file names:
-                if (!downloadFiles.ContainsKey(fileName))
+                if (!downloadedFiles.ContainsKey(fileName))
                 {
-                    downloadFiles.Add(fileName, di);
+                    downloadedFiles.Add(fileName, di);
                     numDownloaded++;
 
-                    var message = "Downloading series " + (downloadedCount++) + " of " + numTotalSeries;
+                    downloadedCount++;
+                    var message = "Downloading series " + downloadedCount + " of " + numTotalSeries;
                     var percentProgress = (numDownloaded*100)/numTotalSeries;
                     _worker.ReportProgress(percentProgress, message);
                 }
             }
 
+            DownloadProgressInfo.EstimatedTimeForDownload = new TimeSpan();
+
+            #endregion
+
             //In the next step we'll save data values to database
             _worker.ReportProgress(0, "Saving values..");
 
-            var numTotalFiles = downloadFiles.Count;
+            #region Saving
+
+            var numTotalFiles = downloadedFiles.Count;
             var numCurrentFile = 0;
-            foreach (var kp in downloadFiles)
+            foreach (var kp in downloadedFiles)
             {
                 if (_worker.CancellationPending)
                 {
                     e.Cancel = true;
-                    return;
+                    goto finalLogging;
                 }
-
-                var xmlFileName = kp.Key;
+                
                 var dInfo = kp.Value;
-                IList<Series> seriesLst;
+                Series series;
+                var startTime = DateTime.Now;
 
+                // Parsing series from xml
                 try
                 {
-                    seriesLst = objDownloader.DataSeriesFromXml(xmlFileName, dInfo);
+                    series = objDownloader.DataSeriesFromXml(kp.Key, dInfo);
                 }
                 catch (DataSeriesFromXmlException ex)
                 {
                     dInfo.Status = DownloadInfoStatus.Error;
+                    DownloadProgressInfo.WithError++;
                     DoLogError(ex.Message, ex);
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }catch(NoSeriesFromXmlException ex)
+                {
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DownloadProgressInfo.WithError++;
+                    DoLogError(ex.Message); // No stack trace
+                    dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
-
-                Debug.Assert(seriesLst != null);
-
-                var savedCount = 0;
-                foreach (var series in seriesLst)
+                catch(TooMuchSeriesFromXmlException ex)
                 {
-                    var message = string.Empty;
-
-                    int numSavedValues;
-                    try
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DownloadProgressInfo.WithError++;
+                    DoLogError(ex.Message); // No stack trace
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }
+                Debug.Assert(series != null);
+                
+                // Save series to database
+                int numSavedValues;
+                try
+                {
+                    numSavedValues = objDownloader.SaveDataSeries(series, theme);
+                    DownloadProgressInfo.DownloadedAndSaved++;
+                    
+                    if (numSavedValues == 0)
                     {
-                        numSavedValues = objDownloader.SaveDataSeries(series, theme, OverwriteOptions.Copy);
-                        savedCount++;
-                    }
-                    catch (SaveDataSeriesException ex)
-                    {
-                        DoLogError(ex.Message, ex);
-                        numSavedValues = 0;
-                    }
-
-                    if (numSavedValues > 0)
-                    {
-                        seriesList.Add(series);
-                        message = "Saving " + (numCurrentFile + 1) + " series out of " + downloadFiles.Count;
-                        message += dInfo.SiteName + " - " + dInfo.VariableName +
-                                   " " + numSavedValues + " values saved." + "\n";
-                    }
-
-                    var percentProgress = (numCurrentFile*100)/numTotalFiles + 1;
-                    _worker.ReportProgress(percentProgress, message);
+                        DoLogInfo(string.Format("Warning: {0} has no data values!", series));
+                        dInfo.Status = DownloadInfoStatus.OkWithWarnings;
+                    }else
+                        dInfo.Status = DownloadInfoStatus.Ok;
+                }
+                catch (SaveDataSeriesException ex)
+                {
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DoLogError(ex.Message, ex);
+                    DownloadProgressInfo.WithError++;
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }finally
+                {
+                    // Calculcate estimated time
+                    var endTime = DateTime.Now;
+                    var diff = endTime.Subtract(startTime).TotalSeconds;
+                    var interval = diff * DownloadProgressInfo.RemainingSeries / DownloadProgressInfo.DownloadedAndSaved + 1;
+                    DownloadProgressInfo.EstimatedTimeForSave = interval < Int32.MaxValue
+                                                             ? new TimeSpan(0, 0, (int)(interval))
+                                                             : TimeSpan.MaxValue;
                 }
 
-                dInfo.Status = savedCount == seriesLst.Count
-                                   ? DownloadInfoStatus.Ok
-                                   : DownloadInfoStatus.Error;
+                var message = "Saving " + (numCurrentFile + 1) + " series out of " + downloadedFiles.Count;
+                message += dInfo.SiteName + " - " + dInfo.VariableName +
+                               " " + numSavedValues + " values saved." + "\n";
 
-                numCurrentFile += 1;
+                var percentProgress = (numCurrentFile * 100) / numTotalFiles + 1;
+                _worker.ReportProgress(percentProgress, message);
+                numCurrentFile++;
             }
-           
-            _worker.ReportProgress(0, "Saving Theme");
-            _worker.ReportProgress(100, "Download Complete.");
 
-            // Prepare results to send back.
-            var results = new TimeSeriesDownloadResults();
-            if (theme != null)
+            DownloadProgressInfo.EstimatedTimeForSave = new TimeSpan();
+
+            #endregion
+
+finalLogging:
+
+            #region Final logging
+
+            var sb = new StringBuilder(Environment.NewLine);
+            sb.AppendLine("===============" );
+            sb.AppendLine("Total:");
+            sb.AppendLine("ServiceURL SiteCode VariableCode StartDate EndDate DownloadTime Status ErrorMessage");
+            foreach (var di in downloadList)
             {
-                // TODO: What happens if theme is null? No name sent back?
-                results.ThemeName = theme.Name;
+                sb.AppendFormat("{0} {1} {2} {3} {4} {5} {6} {7}" + Environment.NewLine, di.Wsdl, di.FullSiteCode, di.FullVariableCode, di.StartDate,
+                                di.EndDate, di.DownloadTimeTaken, di.Status, di.ErrorMessage);
             }
+            sb.AppendLine("===============");
+            DoLogInfo(sb.ToString());
+               
+            #endregion
 
-            e.Result = results;
+            _worker.ReportProgress(100, "Download Complete.");
         }
 
         #endregion
@@ -331,10 +387,12 @@ namespace HydroDesktop.Search.Download
     class LogMessageEventArgs : EventArgs
     {
         public string Message {get;private set;}
+        public Exception Exception { get; private set; }
 
-        public LogMessageEventArgs(string message)
+        public LogMessageEventArgs(string message, Exception exception = null)
         {
             Message = message;
+            Exception = exception;
         }
     }
 }
