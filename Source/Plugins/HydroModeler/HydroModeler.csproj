@@ -94,7 +94,8 @@
     <Reference Include="OpenMI.Standard">
       <HintPath>Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
       <HintPath>..\..\..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll</HintPath>
-    <Reference Include="System" />
+    </Reference>
+	<Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
