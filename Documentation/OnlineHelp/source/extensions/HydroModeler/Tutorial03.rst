@@ -3,13 +3,14 @@
 Tutorial 3: Creating a New Model Component
 ==========================================
    
-The purpose of this tutorial is to show how to create a new component from scratch. In this demonstration, using Visual Studio C#.  
+The purpose of this tutorial is to show how to create a new component from scratch. In this demonstration, using Visual Studio C#. 
 
 C# is an object oriented programming language designed for building a wide variety of applications that run on the .NET Framework.  The .NET Framework is a Windows component that supports building and running of applications and Web services.  The key components of the .NET Framework are the common language runtime and the class library.  The class library is a collection of classes, interfaces, and value types that are included in the Microsoft .NET Framework.  The class library is designed to be the foundation on which the .NET Framework applications, components, and controls are built. 
 
 
 Hargreaves Component Structure
 ------------------------------
+Hargreaves is an Evapotranspiration model, that is simple in practical use, requires only two easily accessible parameters, temperature and solar energy. the total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component need three input exchange items  (Maximum-Minimum-Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration) 
 
 Getting stared with Visual C#
 ------------------------------
@@ -237,7 +238,7 @@ In Visual Studio C# select Build - Build Solution
 HydroDesktop
 '''''''''''''
 
-1. Start HydroDesktop
+1. Start HydroDesktop.
 
 2. Click the icon in the upper left corner of the screen.  Then select Extensions - HydroModeler.
 
@@ -262,6 +263,67 @@ HydroDesktop
 6. Add the model and trigger
 
 .. figure:: ./images/Tutorial03/trigger.png
+   :align: center
+
+.. index:: 
+   single: Creating a unit test case
+
+
+Creating a unit test case
+'''''''''''''''''''''''''
+We can test the preformance of the three methods (Initialize-PerformTimeStep-Finish) implemented when building a new component, or test any other method in the Visual studio solutions using TestDriven.Net.
+
+1. Download TestDriven.Net from  http://www.testdriven.net 
+
+2. Open the start menu and choose Microsoft Visual studio.
+
+3. Create a new project, don't forget to choose visual C#, class Library, named Hagreaves test, and save under C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves. 
+
+4. Add the nunit.framework dll to your references, Don't forget to add all the references you used in creating the component, and implement the using directive to add the Nunit.Framework namespace to your solution.
+
+5. close the HargreavesTest project, and add it to Hargreaves project solution in order to debug any error appear if any of your tests fail.
+
+.. figure:: ./images/Tutorial03/Test.png
+   :align: center
+
+6. In Intialization() method test.
+
+
+  * Create instance of the hargreaves model.
+ 
+  * Define input arguments.
+
+  * Call the initialize method.
+
+.. figure:: ./images/Tutorial03/intialization .png
+   :align: center
+
+7. PreformTimeStep() method test.
+
+
+  * Assign data into IValueSets.
+ 
+  * Set input exchange items values.
+
+  * Call perform time step.
+
+  * Assert that calculated values are equal to the already known values of the test.
+
+
+.. figure:: ./images/Tutorial03/preformtest .png
+   :align: center
+
+8. Finish() method test.
+
+.. figure:: ./images/Tutorial03/finishtest .png
+   :align: center
+
+
+9.Calculated PET() method (method created to calculate the Evapotranspiration rate)
+
+
+  
+.. figure:: ./images/Tutorial03/PET .png
    :align: center
 
 

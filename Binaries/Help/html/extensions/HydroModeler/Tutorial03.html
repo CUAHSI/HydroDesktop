@@ -83,6 +83,7 @@
 <p>C# is an object oriented programming language designed for building a wide variety of applications that run on the .NET Framework.  The .NET Framework is a Windows component that supports building and running of applications and Web services.  The key components of the .NET Framework are the common language runtime and the class library.  The class library is a collection of classes, interfaces, and value types that are included in the Microsoft .NET Framework.  The class library is designed to be the foundation on which the .NET Framework applications, components, and controls are built.</p>
 <div class="section" id="hargreaves-component-structure">
 <h2>Hargreaves Component Structure<a class="headerlink" href="#hargreaves-component-structure" title="Permalink to this headline">¶</a></h2>
+<p>Hargreaves is an Evapotranspiration model, that is simple in practical use, requires only two easily accessible parameters, temperature and solar energy. the total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component need three input exchange items  (Maximum-Minimum-Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration)</p>
 </div>
 <div class="section" id="getting-stared-with-visual-c">
 <h2>Getting stared with Visual C#<a class="headerlink" href="#getting-stared-with-visual-c" title="Permalink to this headline">¶</a></h2>
@@ -91,7 +92,7 @@
 <li>Choose the tab Visual Studio 2010 Express.  Then select Visual C# 2010 Express Edition.  Click Download and follow instructions to install.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig444.png" src="../../_images/HM_fig444.png" />
+<img alt="../../_images/HM_fig4415.png" src="../../_images/HM_fig4415.png" />
 </div>
 <ol class="arabic simple" start="3">
 <li>If you are learning C# or need a refresher there are many tutorials available on-line that can help.  The address below will take you to Microsoft&#8217;s Development Network were they have a beginners learning center.  There are several links available here for learning Visual Studio C# and Visual Studio Basic: <a class="reference external" href="http://msdn.microsoft.com/en-us/beginner/bb308734.aspx">http://msdn.microsoft.com/en-us/beginner/bb308734.aspx</a></li>
@@ -104,14 +105,14 @@
 <li>Download the latest version of HydroDesktop <a class="reference external" href="http://hydrodesktop.codeplex.com/SourceControl/list/changesets">http://hydrodesktop.codeplex.com/SourceControl/list/changesets</a>.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/Download3.png" src="../../_images/Download3.png" />
+<img alt="../../_images/Download14.png" src="../../_images/Download14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
 <li>The sample component is available on the HydroDesktop website (<a class="reference external" href="http://hydrodesktop.codeplex.com/SourceControl/changeset/view">http://hydrodesktop.codeplex.com/SourceControl/changeset/view</a>/320c9bb87767#) and in the downloaded version.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/Sample3.png" src="../../_images/Sample3.png" />
+<img alt="../../_images/Sample14.png" src="../../_images/Sample14.png" />
 </div>
 <p>.</p>
 </div>
@@ -121,19 +122,19 @@
 <li>Open the start menu and from program choose Microsoft Visual studio, then Microsoft Visual studio.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/open3.png" src="../../_images/open3.png" />
+<img alt="../../_images/open14.png" src="../../_images/open14.png" />
 </div>
 <p>.</p>
 <p>2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components.</p>
 <div class="figure align-center">
-<img alt="../../_images/class3.png" src="../../_images/class3.png" />
+<img alt="../../_images/class14.png" src="../../_images/class14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="3">
 <li>Add two folders (source-data), copy class1.cs into source folder and rename it Hargreaves.cs</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/folders3.png" src="../../_images/folders3.png" />
+<img alt="../../_images/folders14.png" src="../../_images/folders14.png" />
 </div>
 <div class="section" id="adding-references">
 <h3>Adding References<a class="headerlink" href="#adding-references" title="Permalink to this headline">¶</a></h3>
@@ -142,7 +143,7 @@
 <li>Right click on Reference and select Add Reference.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/ref3.png" src="../../_images/ref3.png" />
+<img alt="../../_images/ref14.png" src="../../_images/ref14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
@@ -150,7 +151,7 @@
 <li>Navigate to C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin and add SMW.dll.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/referencesstructure3.png" src="../../_images/referencesstructure3.png" />
+<img alt="../../_images/referencesstructure14.png" src="../../_images/referencesstructure14.png" />
 </div>
 <p>.</p>
 </div>
@@ -161,19 +162,19 @@
 <li>Implement the using directive to add the namespaces of the references we add.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/system3.png" src="../../_images/system3.png" />
+<img alt="../../_images/system14.png" src="../../_images/system14.png" />
 </div>
 </div>
 <div class="section" id="create-the-linkable-component">
 <span id="index-4"></span><h3>Create the Linkable component<a class="headerlink" href="#create-the-linkable-component" title="Permalink to this headline">¶</a></h3>
 <p>1.Add a new class under the source folder and rename it as <strong>LinkableComponent</strong> (camel back typing).</p>
 <div class="figure align-center">
-<img alt="../../_images/linkablecomponent3.png" src="../../_images/linkablecomponent3.png" />
+<img alt="../../_images/linkablecomponent14.png" src="../../_images/linkablecomponent14.png" />
 </div>
 <p>.</p>
 <p>2.Inherit the linkable engine class from Oatc.OpenMI.Sdk.Wrapper namespace.</p>
 <div class="figure align-center">
-<img alt="../../_images/inherited3.png" src="../../_images/inherited3.png" />
+<img alt="../../_images/inherited14.png" src="../../_images/inherited14.png" />
 </div>
 <p>.</p>
 </div>
@@ -185,7 +186,7 @@
 <li>Copy the configuration structure from the sample component into your config.xml.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/config3.png" src="../../_images/config3.png" />
+<img alt="../../_images/config14.png" src="../../_images/config14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="3">
@@ -193,14 +194,14 @@
 <li>In output exchange item we define the Element set(ID-Description-path for output shape file if necessary), and Quantity (ID-Dimensions-units-value type).</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/outputexchangeitem3.png" src="../../_images/outputexchangeitem3.png" />
+<img alt="../../_images/outputexchangeitem14.png" src="../../_images/outputexchangeitem14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="5">
 <li>In input exchange item we define Element set(ID-Description-path for input shape file if necessary), and Quantity (ID-Dimensions-units-value type). Repeat for the rest of the exchange items</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/inputexchangeitem3.png" src="../../_images/inputexchangeitem3.png" />
+<img alt="../../_images/inputexchangeitem14.png" src="../../_images/inputexchangeitem14.png" />
 </div>
 <p>.</p>
 </div>
@@ -216,7 +217,7 @@
 <li>Add an argument named Output to define the relative location of the output csv file.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/omi3.png" src="../../_images/omi3.png" />
+<img alt="../../_images/omi14.png" src="../../_images/omi14.png" />
 </div>
 <p>.</p>
 </div>
@@ -227,28 +228,28 @@
 <li>Defining the global variables- In this section variables are defined using specific data types such as string, integer, double, and Boolean.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/variable3.png" src="../../_images/variable3.png" />
+<img alt="../../_images/variable14.png" src="../../_images/variable14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
 <li>The Finish method- This section of code tells the application to write output files based on data acquired during the simulation.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/finish3.png" src="../../_images/finish3.png" />
+<img alt="../../_images/finish14.png" src="../../_images/finish14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="3">
 <li>The Initialize method- Gives the application instructions on operations that need to be preformed prior to running the simulation.  This section locates the configuration file and sets internal variables in OpenMI.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/start3.png" src="../../_images/start3.png" />
+<img alt="../../_images/start14.png" src="../../_images/start14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="4">
 <li>The Calculations Section- For the Sample Component the calculation section is written so that the application simply generates random numbers.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/preform3.png" src="../../_images/preform3.png" />
+<img alt="../../_images/preform14.png" src="../../_images/preform14.png" />
 </div>
 <p>.</p>
 <p>Within the Finish method there is code telling the application where to write the output file.  This line should be changed now to specify where you would like the output file.  If you choose not to change the code then by default the output text file created by HydroModeler will go up two directories from where you run HydroDesktop.</p>
@@ -261,7 +262,7 @@ In Visual Studio C# select Build - Build Solution</p>
 <li>right click on the Hargreaves.csproj,  selsect properties, Debug, start external program, and navigate to HydroDesktop.exe in C:/Hydrodesktop/Binaries/HydroDesktop.exe</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/compile3.png" src="../../_images/compile3.png" />
+<img alt="../../_images/compile14.png" src="../../_images/compile14.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
@@ -271,11 +272,11 @@ In Visual Studio C# select Build - Build Solution</p>
 <div class="section" id="hydrodesktop">
 <span id="index-9"></span><h3>HydroDesktop<a class="headerlink" href="#hydrodesktop" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>Start HydroDesktop</li>
+<li>Start HydroDesktop.</li>
 <li>Click the icon in the upper left corner of the screen.  Then select Extensions - HydroModeler.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig504.png" src="../../_images/HM_fig504.png" />
+<img alt="../../_images/HM_fig5015.png" src="../../_images/HM_fig5015.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="3">
@@ -283,21 +284,72 @@ In Visual Studio C# select Build - Build Solution</p>
 <li>Once you have the directory pointing to the Sample Component a list of folders will appear to the left side of the screen.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig5113.png" src="../../_images/HM_fig5113.png" />
+<img alt="../../_images/HM_fig5124.png" src="../../_images/HM_fig5124.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="5">
 <li>To add the Sample Component Model double click on the data folder then on the sample (type = model).</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/ModelAdding4.png" src="../../_images/ModelAdding4.png" />
+<img alt="../../_images/ModelAdding15.png" src="../../_images/ModelAdding15.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="6">
 <li>Add the model and trigger</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/trigger3.png" src="../../_images/trigger3.png" />
+<img alt="../../_images/trigger14.png" src="../../_images/trigger14.png" />
+</div>
+</div>
+<div class="section" id="creating-a-unit-test-case">
+<span id="index-10"></span><h3>Creating a unit test case<a class="headerlink" href="#creating-a-unit-test-case" title="Permalink to this headline">¶</a></h3>
+<p>We can test the preformance of the three methods (Initialize-PerformTimeStep-Finish) implemented when building a new component, or test any other method in the Visual studio solutions using TestDriven.Net.</p>
+<ol class="arabic simple">
+<li>Download TestDriven.Net from  <a class="reference external" href="http://www.testdriven.net">http://www.testdriven.net</a></li>
+<li>Open the start menu and choose Microsoft Visual studio.</li>
+<li>Create a new project, don&#8217;t forget to choose visual C#, class Library, named Hagreaves test, and save under C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves.</li>
+<li>Add the nunit.framework dll to your references, Don&#8217;t forget to add all the references you used in creating the component, and implement the using directive to add the Nunit.Framework namespace to your solution.</li>
+<li>close the HargreavesTest project, and add it to Hargreaves project solution in order to debug any error appear if any of your tests fail.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Test9.png" src="../../_images/Test9.png" />
+</div>
+<ol class="arabic simple" start="6">
+<li>In Intialization() method test.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Create instance of the hargreaves model.</li>
+<li>Define input arguments.</li>
+<li>Call the initialize method.</li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+<img alt="../../_images/intialization9.png" src="../../_images/intialization9.png" />
+</div>
+<ol class="arabic simple" start="7">
+<li>PreformTimeStep() method test.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Assign data into IValueSets.</li>
+<li>Set input exchange items values.</li>
+<li>Call perform time step.</li>
+<li>Assert that calculated values are equal to the already known values of the test.</li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+<img alt="../../_images/preformtest2.png" src="../../_images/preformtest2.png" />
+</div>
+<ol class="arabic simple" start="8">
+<li>Finish() method test.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/finishtest2.png" src="../../_images/finishtest2.png" />
+</div>
+<p>9.Calculated PET() method (method created to calculate the Evapotranspiration rate)</p>
+<div class="figure align-center">
+<img alt="../../_images/PET2.png" src="../../_images/PET2.png" />
 </div>
 </div>
 </div>
@@ -311,7 +363,7 @@ In Visual Studio C# select Build - Build Solution</p>
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Jun 16, 2011.&nbsp;
+      &nbsp;Last updated on Jun 17, 2011.&nbsp;
       &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
