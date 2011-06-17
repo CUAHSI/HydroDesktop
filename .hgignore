@@ -50,3 +50,4 @@ glob:System.Spatial.Topology/System.Spatial.Topology/ClassDiagram3.cd
 *.bat
 glob:Binaries/
 glob:*.ReSharper
+glob:*.orig
