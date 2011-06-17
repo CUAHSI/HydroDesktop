@@ -80,23 +80,23 @@
   <div class="section" id="example-configuration-3-bidirectional-link">
 <span id="index-0"></span><h1>Example Configuration 3 - Bidirectional Link<a class="headerlink" href="#example-configuration-3-bidirectional-link" title="Permalink to this headline">¶</a></h1>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig10019.png" src="../../_images/HM_fig10019.png" />
+<img alt="../../_images/HM_fig100.png" src="../../_images/HM_fig100.png" />
 </div>
 <p>Example configuration 3&#8217;s primary objective is to solve for the concentration of a contaminant in a river and its riverbed by simultaneously solving for both the soil and the water concentrations using a bidirectional link.  To do this, the process is broken up into two seperate components.  The two components are the water advection and sediment diffusion models.  Advection is generally associated with the lateral movement of the contaminant and diffusion with the infiltration into the soil.  The water advection model is comprised of movement in both the x and z direction.  The sediment diffusion model is only concerned with contanimants moving in the z direction.  A clearer representation of this is given in the image below.  The flow velocity and diffusion coefficients are required to help use determine the level of contamination in the soil and water.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig1013.png" src="../../_images/HM_fig1013.png" />
+<img alt="../../_images/HM_fig101.png" src="../../_images/HM_fig101.png" />
 </div>
 <p>These two components are both derived from the equation shown below.  D represents the diffusion coefficients in the x and z directions.  u represents the velocity in the x direction and v represents the velocity in the z direction.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig1023.png" src="../../_images/HM_fig1023.png" />
+<img alt="../../_images/HM_fig102.png" src="../../_images/HM_fig102.png" />
 </div>
 <p>To obtain the equation for the water advection component, we only concern ourselves with the x and z direction since we assume that the dominate means of contaminant transportation is advection in the x direction and diffusion in the z direction.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig1033.png" src="../../_images/HM_fig1033.png" />
+<img alt="../../_images/HM_fig103.png" src="../../_images/HM_fig103.png" />
 </div>
 <p>We use similar assumptions to help us derive the sediment diffusion component.  Only concerned with the diffusion in the z direction, we can reduce the equation as follows.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig1043.png" src="../../_images/HM_fig1043.png" />
+<img alt="../../_images/HM_fig104.png" src="../../_images/HM_fig104.png" />
 </div>
 </div>
 
