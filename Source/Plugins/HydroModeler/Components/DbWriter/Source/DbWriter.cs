@@ -177,7 +177,7 @@ namespace CUAHSI.HIS
             }
 
             //---- set database to default if dbpath is invalid
-            string conn = null;
+            string fullpath = "";
             //-- first check if dbpath is null
             bool pass = true;
             if (String.IsNullOrWhiteSpace(_dbPath))
@@ -185,7 +185,17 @@ namespace CUAHSI.HIS
             //-- next, check that dbpath points to an actual file
             else
             {
-                string fullpath = System.IO.Path.GetFullPath(_dbPath);
+                //-- if relative path is given
+                if (!Path.IsPathRooted(_dbPath))
+                {
+                    fullpath = System.IO.Path.GetFullPath(System.IO.Directory.GetCurrentDirectory() + _dbPath);
+                }
+                //-- if absolute path
+                else
+                {
+                    fullpath = System.IO.Path.GetFullPath(_dbPath);
+                }
+
                 if (!File.Exists(fullpath))
                 {
                     pass = false;
@@ -204,8 +214,9 @@ namespace CUAHSI.HIS
                 conn = Settings.Instance.DataRepositoryConnectionString;
             else
             {
-                FileInfo fi = new FileInfo(_dbPath);
-                conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
+                //FileInfo fi = new FileInfo(fullpath);
+                //conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
+                conn = @"Data Source = " + fullpath + ";New=False;Compress=True;Version=3";
             }
 
 
@@ -613,7 +624,7 @@ namespace CUAHSI.HIS
             else
             {
                 db = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
-                conn = Settings.Instance.DataRepositoryConnectionString;
+                //conn = Settings.Instance.DataRepositoryConnectionString;
             }
 
             //---- override default db info with those provided by omi
@@ -719,10 +730,14 @@ namespace CUAHSI.HIS
                     tbl = _db.LoadTable("values", sql);
                     int last_row = tbl.Rows.Count - 1;
 
-                    //store the new site code and id info
-                    //site.Code = (Convert.ToInt32(tbl.Rows[last_row].ItemArray[0]) + 1 + new_series_count).ToString();
                     site.Code = site.Name;
-                    site.Id = Convert.ToInt32(tbl.Rows[last_row].ItemArray[1]) + 2 + new_series_count;
+                    //-- if the database is not blank
+                    if (last_row >= 0)
+                    {
+                        site.Id = Convert.ToInt32(tbl.Rows[last_row].ItemArray[1]) + 2 + new_series_count;
+                    }
+                    else
+                        site.Id = new_series_count++;
 
                     //add 1 to new series count so that the same site code isn't selected twice
                     new_series_count++;
