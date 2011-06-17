@@ -55,27 +55,27 @@
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Buffer, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Spatial, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Spatial.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Spatial.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Wrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
@@ -97,6 +97,7 @@
       <HintPath>..\..\..\..\..\..\Binaries\System.Data.SQLite.DLL</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>

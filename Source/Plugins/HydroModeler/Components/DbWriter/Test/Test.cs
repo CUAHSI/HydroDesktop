@@ -10,6 +10,7 @@ using Oatc.OpenMI.Sdk.DevelopmentSupport;
 using Oatc.OpenMI.Sdk.Buffer;
 using System.Collections;
 using System.Windows.Forms;
+using RandomInputGenerator;
 
 namespace CUAHSI.HIS.Test
 {
@@ -132,134 +133,71 @@ namespace CUAHSI.HIS.Test
             Console.WriteLine("end: " + CalendarConverter.ModifiedJulian2Gregorian(his.TimeHorizon.End.ModifiedJulianDay).ToString());
         }
 
-        ///// <summary>
-        ///// This method tests Hydrolinks ability to read elements from the waterml database
-        ///// </summary>
-        //[Test]
-        //public void GetElements()
-        //{
-        //    Console.Write("Begin Get Elemtents Test...");
-        //    DbReader his = new DbReader();
-        //    IArgument[] arguments = new IArgument[1];
-        //    arguments[0] = new Argument("DbPath", @"..\data\cuahsi-his\demo.db", true, "Database");
-        //    his.Initialize(arguments);
-        //    for (int i = 0; i < his.OutputExchangeItemCount; ++i)
-        //    {
-        //        IElementSet es = his.GetOutputExchangeItem(i).ElementSet;
-        //        for (int j = 0; j < es.ElementCount; ++j)
-        //        {
-        //            Console.WriteLine(es.GetXCoordinate(j, 0).ToString() + ", " +
-        //                es.GetYCoordinate(j, 0).ToString());
-        //        }
-        //    }
-        //    Console.WriteLine("model description: " + his.ModelDescription);
+        [Test]
+        public void ReadOmiArgs()
+        {
+            DbWriter dbwriter = new DbWriter();
+            RandomInputGenerator.InputGenerator random = new InputGenerator();
 
-        //}
+            //---- initialize random input generator
+            IArgument[] arg = new IArgument[1];
+            arg[0] = new Argument("ElementCount", "1", true, "");
+            random.Initialize(arg);
 
+            //---- initialize dbwriter
+            string myCustomMethod = "Simulation 1, m=10, Tmax=100000";
+            string myVariableName = "millimeters per second";
+            string mySourceContact = "Tony";
+            string mySourceDesc = "Test dource description";
+            IArgument[] arguments = new IArgument[17];
+            arguments[0] = new Argument("DbPath",@".\example4.sqlite",true,"");
+            arguments[1] = new Argument("Variable.UnitName",myVariableName,true,"");
+            arguments[2] = new Argument("Variable.UnitAbbr","m^3/s",true,"");
+            arguments[3] = new Argument("Variable.UnitType","Flow",true,"");        
+            arguments[4] = new Argument("Time.UnitName","second",true,"");
+            arguments[5] = new Argument("Time.UnitAbbr","s",true,"");
+            arguments[6] = new Argument("Time.UnitType","Time",true,"");
+            arguments[7] = new Argument("Method.Description",myCustomMethod,true,"");
+            arguments[8] = new Argument("Source.Organization","University of South Carolina",true,"");
+            arguments[9] = new Argument("Source.Address","300 Main St.",true,"");
+            arguments[10] = new Argument("Source.City","Columbia",true,"");
+            arguments[11] = new Argument("Source.State","SC",true,"");
+            arguments[12] = new Argument("Source.Zip","29206",true,"");
+            arguments[13] = new Argument("Source.Contact",mySourceContact,true,"");
+            arguments[14] = new Argument("Variable.Category","  ",true,""); //intentionally left blank
+            arguments[15] = new Argument("Variable.SampleMedium","Surface Water",true,"");
+            arguments[16] = new Argument("Source.Description", mySourceDesc, true, "");
 
+            dbwriter.Initialize(arguments);
 
-        ///// <summary>
-        ///// This method tests the implementation of the linear interpolation algorithm (part of the smart
-        ///// buffer) within Hydrolink.  Values are added to the smart buffer in 10min intervals, then are 
-        ///// requested at 5min intervals.
-        ///// </summary>
-        //[Test]
-        //public void LinearTimeInterpolation()
-        //{
-        //    Console.Write("Begin Linear Interpolation Test...");
+            //---- link the components
+            Link link = new Link();
+            link.ID = "link-1";
+            link.TargetElementSet = dbwriter.GetInputExchangeItem(0).ElementSet;
+            link.TargetQuantity = dbwriter.GetInputExchangeItem(0).Quantity;
+            link.TargetComponent = dbwriter;
+            ElementSet eset = new ElementSet("rand element set", "r_eset", ElementType.XYPoint, new SpatialReference("1"));
+            Element e = new Element("1");
+            e.AddVertex(new Vertex(1, 1, 0));
+            eset.AddElement(e);
+            link.SourceElementSet = eset;
+            link.SourceQuantity = random.GetOutputExchangeItem(0).Quantity;
+            link.SourceComponent = random;
+            dbwriter.AddLink(link);
 
-        //    //create the his component
-        //    DbReader his = new DbReader();
-        //    IArgument[] arguments = new IArgument[1];
-        //    arguments[0] = new Argument("DbPath", @"..\data\cuahsi-his\demo.db", true, "Database");
-        //    his.Initialize(arguments);
+            //---- get the series info
+            HydroDesktop.Interfaces.ObjectModel.Series series = dbwriter.serieses["r_eset_RandomInputGenerator_loc0"];
 
-        //    //create a trigger component
-        //    Trigger trigger = new Trigger();
-        //    trigger.Initialize(null);
+            //---- check that omi values were set properly
+            Assert.IsTrue(series.Method.Description == myCustomMethod);
+            Assert.IsTrue(series.Variable.VariableUnit.Name == myVariableName);
+            Assert.IsTrue(series.Source.ContactName == mySourceContact);
+            Assert.IsTrue(series.Variable.GeneralCategory == "Hydrology", "blank argument is not ignored!!");
+            Assert.IsTrue(series.Source.Description == mySourceDesc);
+            
 
-        //    //link the two components
-        //    Link link = new Link();
-        //    link.ID = "link-1";
-        //    link.TargetElementSet = trigger.GetInputExchangeItem(0).ElementSet;
-        //    link.TargetQuantity = trigger.GetInputExchangeItem(0).Quantity;
-        //    link.TargetComponent = trigger;
+        }
 
-
-        //    link.SourceElementSet = his.GetOutputExchangeItem(1).ElementSet;
-        //    link.SourceQuantity = his.GetOutputExchangeItem(1).Quantity;
-        //    link.TargetComponent = his;
-
-
-        //    //Spatial interpolation
-        //    IDataOperation dataOp = (his).GetOutputExchangeItem(0).GetDataOperation(7);
-        //    link.AddDataOperation(dataOp);
-
-
-        //    //run configuration
-        //    his.AddLink(link);
-
-        //    trigger.Validate();
-        //    his.Validate();
-
-        //    //prepare 
-        //    his.Prepare();
-
-        //    DateTime dt = Convert.ToDateTime("2009-08-20T21:40:00");
-
-        //    SmartBuffer _smartBuffer = new SmartBuffer();
-
-        //    //Add all values to buffer in 10min intervals
-        //    Console.Write("Storing values in the smart buffer (10min resolution)... ");
-        //    while (dt <= Convert.ToDateTime("2009-08-21T02:00:00"))
-        //    {
-
-        //        ITimeStamp time_stmp = new TimeStamp(CalendarConverter.Gregorian2ModifiedJulian(dt));
-        //        ScalarSet scalarset = (ScalarSet)his.GetValues(time_stmp, "link-1");
-
-        //        if (scalarset.Count == 0)
-        //        {
-        //            int f = his.GetOutputExchangeItem(1).ElementSet.ElementCount;
-        //            ArrayList zeroArray = new ArrayList();
-        //            for (int i = 0; i <= f - 1; i++)
-        //                zeroArray.Add(0.0);
-
-        //            double[] zeros = (double[])zeroArray.ToArray(typeof(double));
-
-        //            scalarset = new ScalarSet(zeros);
-        //        }
-
-        //        _smartBuffer.AddValues(time_stmp, scalarset);
-
-        //        dt = dt.AddMinutes(10);
-        //    }
-        //    Console.WriteLine("done.\n\n");
-
-        //    //request values from the smart buffer at 5min intervals
-        //    dt = Convert.ToDateTime("2009-08-20T21:40:00");
-        //    while (dt <= Convert.ToDateTime("2009-08-21T02:00:00"))
-        //    {
-
-        //        ITimeStamp time_stmp = new TimeStamp(CalendarConverter.Gregorian2ModifiedJulian(dt));
-
-        //        //Get values at requested time
-        //        ScalarSet scalarset = (ScalarSet)_smartBuffer.GetValues(time_stmp);
-
-        //        Console.WriteLine("GetValues: " + dt.ToString("s"));
-
-
-        //        //loop through interpolated values
-        //        int i = 0;
-        //        foreach (double d in scalarset.data)
-        //        {
-
-        //            Console.WriteLine(link.SourceElementSet.GetElementID(i).ToString() + " " + d.ToString());
-        //            ++i;
-        //        }
-        //        dt = dt.AddMinutes(5);
-        //    }
-
-        //    Console.Write("done. \n");
-        //}
+        
     }
 }

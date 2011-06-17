@@ -31,7 +31,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         //private System.Windows.Forms.HScrollBar compositionHScrollBar;
         private System.Windows.Forms.PictureBox compositionBox;
         private System.Windows.Forms.ListView fileList;
-        private System.Windows.Forms.ListView properties;
+        private MyListView properties;
         private System.Windows.Forms.Panel ListPanel;
         private System.Windows.Forms.SplitContainer container;
         //private TextBox output_box;
@@ -126,6 +126,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private bool _hasChanged = false;
         private string _oldText;
         bool _allowEdit = true;
+        string opr_path;
 
         #endregion
 
@@ -194,6 +195,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             set {  image_path = value; }
         }
 
+        public string OPR_Path
+        {
+            get { return opr_path; }
+            set { opr_path = value; }
+        }
         #region Icon Creation
         public struct IconInfo
         {
@@ -414,10 +420,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "OMI filename: " + fullPath + "\n" + "Exception: " + ex.ToString(),
-                    "Error occured while adding the model...",
+                    
+                    ex.Message.ToString(),
+                    "Failed to load model...",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBoxIcon.Warning);
             }
 
             // Reset the culture every time a new model is added.
@@ -955,7 +962,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
             //refresh filelist
-            this.UpdateFileList(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
         }
 
 
@@ -1019,7 +1026,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             dlgFile.Dispose();
 
             //refresh filelist
-            this.UpdateFileList(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             UpdateTitle();
         }
 
@@ -1044,6 +1051,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         public void menuEditConnectionAdd_Click(object sender, System.EventArgs e)
         {
             StopAllActions();
+
+            //if pan is currently selected, disable it
+            this.Ispan = false;
+            RibbonButton s = ((RibbonButton)rps[4].Items[0]);
+            s.Checked = false;
+
 
             _isAddingConnection = true;
             compositionBox.Cursor = _sourceCursor;
@@ -1760,7 +1773,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // 
             this.contextConfigurationAdd.Index = 0;
             this.contextConfigurationAdd.Text = "Add Configuration";
-            this.contextConfigurationAdd.Click += new System.EventHandler(this.contextConfigurationAdd_Click);
+            this.contextConfigurationAdd.Click += new System.EventHandler(this.composition_addconfiguration);
             // 
             // contextModelAdd
             // 
@@ -1862,7 +1875,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.ListPanel = new Panel();
             this.fileList = new ListView();
-            this.properties = new ListView();
+            this.properties = new MyListView();
             this.tb_navigate = new TextBox();
             this.changeDir = new Button();
             this.currentDir = new Label();
@@ -1901,7 +1914,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.container2.Name = "container2";
             this.container2.Size = new System.Drawing.Size(602, 288);
             this.container2.Orientation = Orientation.Horizontal;
-            this.container2.SplitterDistance = (int)((2.0/3.0)*(double)container.Panel1.Height);
+            this.container2.SplitterDistance = (int)((2.0/3.7)*(double)container.Panel1.Height);
             this.container2.SplitterMoved += new SplitterEventHandler(container2_SplitterMoved);
             this.container.Panel1.Controls.Add(container2);
             //
@@ -1932,8 +1945,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.compositionBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.compositionBox_MouseDown);
             this.compositionBox.Paint += new System.Windows.Forms.PaintEventHandler(this.compositionBox_Paint);
             this.compositionBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.compositionBox_MouseUp);
-            this.compositionBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterModel);
-            this.compositionBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropModel);
+            this.compositionBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.composition_dragenter);
+            this.compositionBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.composition_dragdrop);
             this.compositionBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.compositionBox_mousewheel);
             this.compositionBox.MouseEnter += new EventHandler(compositionBox_MouseEnter);
             this.compositionBox.MouseLeave += new EventHandler(compositionBox_MouseLeave);
@@ -2029,7 +2042,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this._Save.Location = new Point(50, this.container2.Panel2.Height - 35);
             this._Save.Enabled = false;
             this._Save.Visible = true;
-            this._Save.Click += new EventHandler(_Save_Click);
+            this._Save.Click += new EventHandler(save_click);
             this.container2.Panel2.Controls.Add(this._Save);
             //
             // Dialog Directory
@@ -2039,12 +2052,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // textbox
             //
             this.t.Location = new Point(0, this.container2.Panel2.Height - 35);
-            this.t.Size = new Size(75, 30);
+            this.t.Size = new Size(30, 30);
             this.t.Text = "Test";
             this.t.Visible = false;
-            this.t.KeyPress += new KeyPressEventHandler(textbox_KeyPress);
-            this.t.LostFocus += new EventHandler(tb_LostFocus);
+            this.t.KeyPress += new KeyPressEventHandler(textbox_keypress);
+            this.t.LostFocus += new EventHandler(textbox_lostfocus);
             this.container2.Panel2.Controls.Add(this.t);
+
             //
             // Properties Window
             //
@@ -2058,25 +2072,26 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             col = new ColumnHeader();
             col.Text = "Property";
-            col.Width = 125;
+            col.Width = 90;
             col.TextAlign = HorizontalAlignment.Left;
             this.properties.Columns.Add(col);
 
             col = new ColumnHeader();
             col.Text = "Value";
-            col.Width = 70;
+            col.Width = 105;
             col.TextAlign = HorizontalAlignment.Left;
             this.properties.Columns.Add(col);
 
             this.properties.AllowColumnReorder = true;
-            this.properties.GridLines = true;
+            this.properties.GridLines = false;
             this.properties.View = View.Details;
             this.properties.FullRowSelect = true;
             this.properties.MultiSelect = false;
             this.properties.LabelEdit = false;
+            this.properties.Scroll += new ScrollEventHandler(properties_scroll);
+            this.properties.MouseWheel += new MouseEventHandler(properties_MouseWheel);
             this.properties.MouseDown += new MouseEventHandler(properties_MouseDown);
             this.properties.ColumnWidthChanging += new ColumnWidthChangingEventHandler(properties_ColumnWidthChanging);
-
             this.container2.Panel2.Controls.Add(this.properties); //add to container2 panel 2
 
             //
@@ -2174,13 +2189,27 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         */
         #endregion
 
+
+
+
+        #endregion
+
         #region HydroModeler Event Handelers
 
-        private void contextConfigurationAdd_Click(object sender, EventArgs e)
+        //-- filelist methods
+        private void filelist_mouseMoving(object sender, MouseEventArgs e)
         {
-            menuFileOpen_Click(sender, e);
+            if (_isdragging)
+            {
+                currentX = e.X;
+                currentY = e.Y;
+            }
         }
-        public void UpdateFileList(string path)
+        private void filelist_itemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
+        {
+            fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
+        }
+        public void filelist_update(string path)
         {
             //pass the new directory to the runBox dialog
             _runBox._currentDirectory = path;
@@ -2204,7 +2233,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     string[] oprfiles = Directory.GetFiles(path, "*.opr");
                     //string[] xmlfiles = Directory.GetFiles(path, "*.xml");
 
-                     
+
                     string[] folders = Directory.GetDirectories(path);
 
                     //add omi files to dictionary
@@ -2229,7 +2258,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     //
                     //--- add "up dir" to dictionary ---
                     //
-                    path = path.Replace('/','\\');
+                    path = path.Replace('/', '\\');
 
                     //remove end '\\' if there is one
                     path = path.TrimEnd('\\');
@@ -2263,7 +2292,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                     //sort folders by name
                     var fldrs = from key in Folders.Keys
-                    //            orderby Folders[key] ascending
+                                //            orderby Folders[key] ascending
                                 select key;
 
 
@@ -2306,7 +2335,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             li = new ListViewItem(k.Split('.')[0], 0);
                             lsi.Text = "Component";
                         }
-                        else 
+                        else
                         {
                             //set file name
                             li = new ListViewItem(k.Split('.')[0], 1);
@@ -2330,61 +2359,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 catch (Exception) { }
 
             }
-            
+
             this.fileList.EndUpdate();
-        }
-        private void filelist_mouseMoving(object sender, MouseEventArgs e)
-        {
-            if (_isdragging)
-            {
-                currentX = e.X;
-                currentY = e.Y;
-            }
-        }
-        private void filelist_itemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
-        {
-            fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
-        }
-        private void SelectModel(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            //check that a single left click was performed
-            if (e.Button == MouseButtons.Left && e.Clicks == 1)
-            {
-                //make sure an item has been selected
-                if (fileList.SelectedItems.Count > 0)
-                {
-                    //make sure the item is not a folder
-                    if (fileList.SelectedItems[0].SubItems[2].Text != " ")
-                    {
-                        if (fileList.SelectedItems[0].SubItems[2].Text == ".omi")
-                        {
-                            string key = fileList.SelectedItems[0].SubItems[0].Text+ "." +fileList.SelectedItems[0].SubItems[2].Text;
-                            //get the item path
-                            string path = openmiFiles[key];
-                            PopulateProperties(path);
-                        }
-
-                        _isdragging = true;
-                        initialX = e.X;
-                        initialY = e.Y;
-                        fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
-
-                    }
-                }
-            }
-            else if (e.Clicks > 1)
-            {
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                filelist_context_display(e);
-            }
-            //else if (fileList.SelectedItems.Count > 0)
-            //{
-            //    ClickModel(this, e);
-            //}
-
-            
         }
         private void fileList_Click(object sender, MouseEventArgs e)
         {
@@ -2406,7 +2382,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         try
                         {
                             string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
-                            saveChanges(path);
+                            properties_savechanges(path);
                         }
                         catch (Exception) { }
                     }
@@ -2419,7 +2395,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //clear items from the properties window
                 this.properties.Items.Clear();
 
-                if (lvi.SubItems[2].Text != " " )
+                if (lvi.SubItems[2].Text != " ")
                 {
                     //check that it is an omi file
                     if (lvi.SubItems[2].Text == "omi")
@@ -2434,8 +2410,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateProperties(path);
-                         
+                        properties_populate(path);
+
                         //set the current file
                         _currentFile = path;
                     }
@@ -2451,7 +2427,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateOPRProperties(path);
+                        properties_populateOPR(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2460,12 +2436,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
             if (e.Button == MouseButtons.Right)
-            {  
+            {
                 filelist_context_display(e);
             }
-         
+
         }
-        void fileList_SelectedIndexChanged(object sender, EventArgs e)
+        private void fileList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (fileList.SelectedItems.Count > 0)
             {
@@ -2493,7 +2469,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateProperties(path);
+                        properties_populate(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2513,7 +2489,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         string path = openmiFiles[key];
 
                         //populate the properties window
-                        PopulateOPRProperties(path);
+                        properties_populateOPR(path);
 
                         //set the current file
                         _currentFile = path;
@@ -2523,7 +2499,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
         private void filelist_context_display(MouseEventArgs e)
         {
-            
+
             //get item from list view
             ListViewItem lvi = this.fileList.GetItemAt(e.X, e.Y);
 
@@ -2565,9 +2541,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
         }
-        private void LeaveFileList(object sender, EventArgs e)
+        private void filelist_leave(object sender, EventArgs e)
         {
-            
+
             //get item from list view
             ListViewItem lvi = this.fileList.SelectedItems[0];
 
@@ -2584,14 +2560,79 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             else
                 this.OpenOprFile(path);
         }
-        private void DragEnterModel(object sender, DragEventArgs e)
+        private void filelist_context_edit(object sender, EventArgs e)
+        {
+            ////HydroModeler.XmlViewer viewer = new HydroModeler.XmlViewer();
+
+            ////ListViewItem lvi = lvi = this.fileList.SelectedItems[0];
+
+            ////string path = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            ////string file = lvi.SubItems[0].Text + "." + lvi.SubItems[2].Text;
+
+            ////viewer.populate(path + "\\" + file);
+
+
+
+        }
+        private void fileList_SizeChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //-- composition methods
+        private void composition_addconfiguration(object sender, EventArgs e)
+        {
+            menuFileOpen_Click(sender, e);
+        }
+        private void composition_selectmodel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //check that a single left click was performed
+            if (e.Button == MouseButtons.Left && e.Clicks == 1)
+            {
+                //make sure an item has been selected
+                if (fileList.SelectedItems.Count > 0)
+                {
+                    //make sure the item is not a folder
+                    if (fileList.SelectedItems[0].SubItems[2].Text != " ")
+                    {
+                        if (fileList.SelectedItems[0].SubItems[2].Text == ".omi")
+                        {
+                            string key = fileList.SelectedItems[0].SubItems[0].Text + "." + fileList.SelectedItems[0].SubItems[2].Text;
+                            //get the item path
+                            string path = openmiFiles[key];
+                            properties_populate(path);
+                        }
+
+                        _isdragging = true;
+                        initialX = e.X;
+                        initialY = e.Y;
+                        fileList.DoDragDrop(fileList.SelectedItems[0], DragDropEffects.Copy);
+
+                    }
+                }
+            }
+            else if (e.Clicks > 1)
+            {
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                filelist_context_display(e);
+            }
+            //else if (fileList.SelectedItems.Count > 0)
+            //{
+            //    ClickModel(this, e);
+            //}
+
+
+        }
+        private void composition_dragenter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ListViewItem)))
             {
                 e.Effect = DragDropEffects.Copy;
             }
         }
-        private void DragDropModel(object sender, DragEventArgs e)
+        private void composition_dragdrop(object sender, DragEventArgs e)
         {
             //change to wait cursor
             compositionBox.Cursor = Cursors.WaitCursor;
@@ -2630,10 +2671,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         catch (Exception ex)
                         {
                             MessageBox.Show(
-                                "OMI filename: " + path + "\n" + "Exception: " + ex.ToString(),
-                                "Error occured while adding the model...",
+                                ex.Message.ToString(),
+                                "Failed to load model...",
                                 MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                                MessageBoxIcon.Warning);
                         }
 
 
@@ -2658,12 +2699,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 {
                     ToolTip tip = new ToolTip();
 
-                    Point topLeft = this.PointToScreen(new Point(this.container.Panel2.Left,this.container.Panel2.Top));
+                    Point topLeft = this.PointToScreen(new Point(this.container.Panel2.Left, this.container.Panel2.Top));
 
                     int y = e.Y - topLeft.Y + 32;
                     int x = e.X;
-                    tip.Show("Sorry, cannot add a folder to the composition window", this, x,y, 1000);
-                      
+                    tip.Show("Sorry, cannot add a folder to the composition window", this, x, y, 1000);
+
 
                 }
 
@@ -2671,9 +2712,26 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 compositionBox.Cursor = Cursors.Default;
 
                 _isdragging = false;
-                
+
             }
         }
+        public void composition_clear()
+        {
+            _composition.RemoveAllModels();
+
+            //disable "add connection"
+            ((RibbonButton)rps[1].Items[2]).Enabled = false;
+
+            //disable "run"
+            ((RibbonButton)rps[1].Items[3]).Enabled = false;
+
+            CompositionUpdateArea();
+            UpdateControls();
+            UpdateTitle();
+
+        }
+
+        //-- ribbon change dir methods
         public string changeDir_Click(object sender, EventArgs e)
         {
             DialogResult result = this.dirDialog.ShowDialog();
@@ -2681,13 +2739,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             if (result == DialogResult.OK)
             {
                 path = dirDialog.SelectedPath;
-                UpdateFileList(path);
+                filelist_update(path);
                 //tb_navigate.Text = path;
             }
 
             return path;
-            
+
         }
+
+        //-- container methods
         private void container_SplitterMoved(object sender, EventArgs e)
         {
             //get splitter width
@@ -2698,14 +2758,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.fileList.Width = newWidth;
 
             //set column widths
-            this.fileList.Columns[0].Width = Convert.ToInt32( 3 * newWidth/5) -2;
-            this.fileList.Columns[1].Width = Convert.ToInt32(newWidth/5);
-            this.fileList.Columns[2].Width = Convert.ToInt32(newWidth/5);
+            this.fileList.Columns[0].Width = Convert.ToInt32(3 * newWidth / 5) - 2;
+            this.fileList.Columns[1].Width = Convert.ToInt32(newWidth / 5);
+            this.fileList.Columns[2].Width = Convert.ToInt32(newWidth / 5);
 
             this.fileList.Invalidate();
 
             // Move the AddItem box
-           
+
 
             //Resize the label
             this.emptylabel2.Width = newWidth;
@@ -2716,7 +2776,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.properties.Width = newWidth;                                                   //set the new width for the properties window
             int oldWidth = this.properties.Columns[0].Width + this.properties.Columns[1].Width; //get the old width
             double ratio = (Double)(this.properties.Columns[0].Width) / oldWidth;               //calculate the percentage of total width for column 1
-            this.properties.Columns[0].Width = (Int32)(newWidth*ratio - 2);                     //set column 1 width
+            this.properties.Columns[0].Width = (Int32)(newWidth * ratio - 2);                     //set column 1 width
             this.properties.Columns[1].Width = (Int32)(newWidth * (1 - ratio) - 2);             //set column 2 width
             this.AddModelButton.Location = new Point(newWidth - this.AddModelButton.Width - 15, this.container2.Panel2.Height - 35);    //set button loc
             this._Save.Location = new Point(newWidth - this._Save.Width - 100, this.container2.Panel2.Height - 35);    //set button loc
@@ -2733,7 +2793,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //set new heights in panel 1
             this.fileList.Height = height1 - 2;
-            
+
 
             //set new heights in panel 2
             this.properties.Height = height2 - 45;
@@ -2741,49 +2801,24 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this._Save.Location = new Point(width - this._Save.Width - 100, height2 - 35);
 
         }
-        public void clear()
-        {
-            _composition.RemoveAllModels();
 
-            //disable "add connection"
-            ((RibbonButton)rps[1].Items[2]).Enabled = false;
-
-            //disable "run"
-            ((RibbonButton)rps[1].Items[3]).Enabled = false;
-
-            CompositionUpdateArea();
-            UpdateControls();
-            UpdateTitle();
-            
-        }
-        private void filelist_context_edit(object sender, EventArgs e)
-        {
-            ////HydroModeler.XmlViewer viewer = new HydroModeler.XmlViewer();
-
-            ////ListViewItem lvi = lvi = this.fileList.SelectedItems[0];
-            
-            ////string path = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
-            ////string file = lvi.SubItems[0].Text + "." + lvi.SubItems[2].Text;
-
-            ////viewer.populate(path + "\\" + file);
-            
-            
-
-        }
-        private void fileList_SizeChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void PopulateProperties(string file)
+        //-- properties methods
+        private void properties_populate(string file)
         {
 
             //define some colors
-            Color headerColor = Color.Gray;
-            Color groupColor = Color.Silver;
-            Color itemColor = Color.WhiteSmoke;
+            //Color headerColor = Color.Gray;
+            //Color groupColor = Color.Silver;
+            //Color itemColor = Color.WhiteSmoke;
             //Color headerColor = Color.Salmon;
             //Color groupColor = Color.LightGreen;
             //Color itemColor = Color.LightBlue;
+
+
+            Color headerColor = Color.DarkBlue;
+            Color groupColor = Color.RoyalBlue;
+            Color itemColor = Color.Gray;
+
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
@@ -2804,7 +2839,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //get the class name and assembly path
             string className = linkableComponent.OuterXml.Split('=')[1].Split('\"')[1];
             string assembly = linkableComponent.OuterXml.Split('=')[2].Split('\"')[1];
-            
+
             //loop through the root children
             foreach (XmlNode Arguments in elements)
             {
@@ -2813,19 +2848,25 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 {
                     //get arguments children
                     XmlNodeList Argument = Arguments.ChildNodes;
-                    
+
                     //loop through args
                     foreach (XmlNode arg in Argument)
                     {
+                        //-- get the argument key
                         string Key = arg.OuterXml.Split(' ')[1].Split('=')[1];
                         Key = Key.Remove(0, 1).Remove(Key.Length - 2, 1);
+
+                        //-- get the argument value
                         string Value = arg.OuterXml.Split(' ')[3].Split('=')[1];
-                        for(int i=4; i<=arg.OuterXml.Split(' ').Length-1;i++)
-                            Value += arg.OuterXml.Split(' ')[i];
-                        Value = Value.Replace("/>","");
+                        for (int i = 4; i <= arg.OuterXml.Split(' ').Length - 1; i++)
+                            Value += " " + arg.OuterXml.Split(' ')[i];
+                        //-- replace xml characters in value
+                        Value = Value.Replace("/>", "");
                         Value = Value.Replace(">", "");
-                        Value = Value.Replace("\\", "");
+                        //Value = Value.Replace(".\\", "");
+                        //Value = Value.Replace("\\", "");
                         Value = Value.Replace("\"", "");
+
                         ////remove /> characters if there isnt a space after this element
                         //if(arg.OuterXml.Split(' ').Length == 3)        
                         //    Value = Value.Remove(0, 1).Remove(Value.Length - 2, 1);
@@ -2836,7 +2877,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         }
                         catch (Exception)
                         {
-                            while(args.ContainsKey(Key))
+                            while (args.ContainsKey(Key))
                                 Key += " ";
 
                             args.Add(Key, Value);
@@ -2846,31 +2887,38 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 }
             }
 
-            
+
 
             this.properties.BeginUpdate();
 
             ListViewItem li;
             ListViewItem.ListViewSubItem lsi;
 
+
             li = new ListViewItem("Omi Arguments");
             li.UseItemStyleForSubItems = true;
-            li.BackColor = headerColor;
+            //li.BackColor = headerColor;
+            li.ForeColor = headerColor;
             li.Font = new Font(li.Font, FontStyle.Bold);
             this.properties.Items.Add(li);
-             
+
             //set the class name 
             li = new ListViewItem("Class");
             li.UseItemStyleForSubItems = false;
-            li.BackColor = itemColor;
+            //li.BackColor = itemColor;
+            li.ForeColor = itemColor;
+            li.Font = new Font(li.Font, FontStyle.Bold);
             lsi = new ListViewItem.ListViewSubItem();
             lsi.Text = className;
             li.SubItems.Add(lsi);
             this.properties.Items.Add(li);
+
             //set the assembly name
             li = new ListViewItem("Assembly");
             li.UseItemStyleForSubItems = false;
-            li.BackColor = itemColor;
+            //li.BackColor = itemColor;
+            li.ForeColor = itemColor;
+            li.Font = new Font(li.Font, FontStyle.Bold);
             lsi = new ListViewItem.ListViewSubItem();
             lsi.Text = assembly;
             li.SubItems.Add(lsi);
@@ -2883,18 +2931,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //
                 li = new ListViewItem(kvp.Key);
                 li.UseItemStyleForSubItems = false;
-                li.BackColor = itemColor;
+                //li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
                 lsi.Text = kvp.Value;
                 li.SubItems.Add(lsi);
                 this.properties.Items.Add(li);
             }
-            
-            
+
+
             //loop through the arguments, and see if any of the xml data can be loaded
             foreach (KeyValuePair<string, string> kvp in args)
             {
-                if(kvp.Value.Contains(".xml"))
+                if (kvp.Value.Contains(".xml"))
                 {
                     try
                     {
@@ -2921,14 +2971,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Exchange Item Property
                             li = new ListViewItem("Output Exchange Item");
                             li.UseItemStyleForSubItems = true;
-                            li.BackColor = headerColor;
+                            li.ForeColor = headerColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
                             //add ElementSet Property
                             li = new ListViewItem("Element Set");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -2937,7 +2987,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
                                 lsi = new ListViewItem.ListViewSubItem();
                                 lsi.Text = e.FirstChild.Value;
                                 li.SubItems.Add(lsi);
@@ -2947,7 +2998,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Quantity Property
                             li = new ListViewItem("Quantity");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -2956,10 +3007,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
                                 lsi = new ListViewItem.ListViewSubItem();
-                                
-                                if(e.Name == "Dimensions")
+
+                                if (e.Name == "Dimensions")
                                 {
                                     XmlNodeList dims = e.ChildNodes;
                                     string dimension = null;
@@ -2978,7 +3029,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                     {
                                         li = new ListViewItem("Unit: " + unit.Name);
                                         li.UseItemStyleForSubItems = false;
-                                        li.BackColor = itemColor;
+                                        li.ForeColor = itemColor;
+                                        li.Font = new Font(li.Font, FontStyle.Bold);
                                         lsi = new ListViewItem.ListViewSubItem();
                                         lsi.Text = unit.FirstChild.Value;
                                         li.SubItems.Add(lsi);
@@ -2990,7 +3042,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                 {
                                     li = new ListViewItem(e.Name);
                                     li.UseItemStyleForSubItems = false;
-                                    li.BackColor = itemColor;
+                                    li.ForeColor = itemColor;
+                                    li.Font = new Font(li.Font, FontStyle.Bold);
                                     lsi = new ListViewItem.ListViewSubItem();
                                     lsi.Text = e.FirstChild.Value;
                                     li.SubItems.Add(lsi);
@@ -3011,14 +3064,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Exchange Item Property
                             li = new ListViewItem("Input Exchange Item");
                             li.UseItemStyleForSubItems = true;
-                            li.BackColor = headerColor;
+                            li.ForeColor = headerColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
                             //add ElementSet Property
                             li = new ListViewItem("Element Set");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -3027,7 +3080,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
                                 lsi = new ListViewItem.ListViewSubItem();
                                 lsi.Text = e.FirstChild.Value;
                                 li.SubItems.Add(lsi);
@@ -3037,7 +3091,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             //add Quantity Property
                             li = new ListViewItem("Quantity");
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = groupColor;
+                            li.ForeColor = groupColor;
                             li.Font = new Font(li.Font, FontStyle.Bold);
                             this.properties.Items.Add(li);
 
@@ -3046,7 +3100,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             {
                                 li = new ListViewItem(e.Name);
                                 li.UseItemStyleForSubItems = false;
-                                li.BackColor = itemColor;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
                                 lsi = new ListViewItem.ListViewSubItem();
 
                                 if (e.Name == "Dimensions")
@@ -3068,7 +3123,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                     {
                                         li = new ListViewItem("Unit: " + unit.Name);
                                         li.UseItemStyleForSubItems = false;
-                                        li.BackColor = itemColor;
+                                        li.ForeColor = itemColor;
+                                        li.Font = new Font(li.Font, FontStyle.Bold);
                                         lsi = new ListViewItem.ListViewSubItem();
                                         lsi.Text = unit.FirstChild.Value;
                                         li.SubItems.Add(lsi);
@@ -3080,7 +3136,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                 {
                                     li = new ListViewItem(e.Name);
                                     li.UseItemStyleForSubItems = false;
-                                    li.BackColor = itemColor;
+                                    li.ForeColor = itemColor;
+                                    li.Font = new Font(li.Font, FontStyle.Bold);
                                     lsi = new ListViewItem.ListViewSubItem();
                                     lsi.Text = e.FirstChild.Value;
                                     li.SubItems.Add(lsi);
@@ -3098,14 +3155,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         //add TimeHorizon Property
                         li = new ListViewItem("Time Horizon");
                         li.UseItemStyleForSubItems = true;
-                        li.BackColor = headerColor;
+                        li.ForeColor = headerColor;
                         li.Font = new Font(li.Font, FontStyle.Bold);
                         this.properties.Items.Add(li);
                         foreach (XmlNode child in timeHorizon.ChildNodes)
                         {
                             li = new ListViewItem(child.Name);
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = itemColor;
+                            li.ForeColor = itemColor;
+                            li.Font = new Font(li.Font, FontStyle.Bold);
                             lsi = new ListViewItem.ListViewSubItem();
                             lsi.Text = child.FirstChild.Value;
                             li.SubItems.Add(lsi);
@@ -3120,14 +3178,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         //add Model Info Poroperty
                         li = new ListViewItem("Model Info");
                         li.UseItemStyleForSubItems = true;
-                        li.BackColor = headerColor;
+                        li.ForeColor = headerColor;
                         li.Font = new Font(li.Font, FontStyle.Bold);
                         this.properties.Items.Add(li);
                         foreach (XmlNode child in modelInfo.ChildNodes)
                         {
                             li = new ListViewItem(child.Name);
                             li.UseItemStyleForSubItems = false;
-                            li.BackColor = itemColor;
+                            li.ForeColor = itemColor;
+                            li.Font = new Font(li.Font, FontStyle.Bold);
                             lsi = new ListViewItem.ListViewSubItem();
                             lsi.Text = child.FirstChild.Value;
                             li.SubItems.Add(lsi);
@@ -3140,15 +3199,19 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
             this.properties.EndUpdate();
         }
-        private void PopulateOPRProperties(string file)
+        private void properties_populateOPR(string file)
         {
             //define some colors
-            Color headerColor = Color.Gray;
-            Color groupColor = Color.Silver;
-            Color itemColor = Color.WhiteSmoke;
+            //Color headerColor = Color.Gray;
+            //Color groupColor = Color.Silver;
+            //Color itemColor = Color.WhiteSmoke;
             //Color headerColor = Color.Salmon;
             //Color groupColor = Color.LightGreen;
             //Color itemColor = Color.LightBlue;
+
+            Color headerColor = Color.DarkBlue;
+            Color groupColor = Color.RoyalBlue;
+            Color itemColor = Color.Gray;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
@@ -3163,133 +3226,140 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             List<UiLink> links = new List<UiLink>();
 
 
-                foreach (XmlNode children in elements)
+            foreach (XmlNode children in elements)
+            {
+                if (children.Name == "links")
                 {
-                    if (children.Name == "links")
+                    //loop through the links
+                    foreach (XmlNode child in children)
                     {
-                        //loop through the links
-                        foreach (XmlNode child in children)
+                        /*TODO:  This catches the instance when a link has yet to be formed between two components.
+                                 In the future it should also load this information, right now its just omitting it.base */
+                        try
                         {
-                            /*TODO:  This catches the instance when a link has yet to be formed between two components.
-                                     In the future it should also load this information, right now its just omitting it.base */
-                            try
+                            //get some data from the opr file and store it in the UiLink class
+                            string provider = child.OuterXml.Split('=')[1].Split('\"')[1];
+                            string accepter = child.OuterXml.Split('=')[2].Split('\"')[1];
+                            int id = Convert.ToInt32(child.InnerXml.Split('=')[1].Split('\"')[1]);
+                            string p_element = child.InnerXml.Split('=')[2].Split('\"')[1];
+                            string p_quantity = child.InnerXml.Split('=')[3].Split('\"')[1];
+                            string a_element = child.InnerXml.Split('=')[4].Split('\"')[1];
+                            string a_quantity = child.InnerXml.Split('=')[5].Split('\"')[1];
+                            string dataop = "none";
+                            if (child.ChildNodes[0].HasChildNodes)
                             {
-                                //get some data from the opr file and store it in the UiLink class
-                                string provider = child.OuterXml.Split('=')[1].Split('\"')[1];
-                                string accepter = child.OuterXml.Split('=')[2].Split('\"')[1];
-                                int id = Convert.ToInt32(child.InnerXml.Split('=')[1].Split('\"')[1]);
-                                string p_element = child.InnerXml.Split('=')[2].Split('\"')[1];
-                                string p_quantity = child.InnerXml.Split('=')[3].Split('\"')[1];
-                                string a_element = child.InnerXml.Split('=')[4].Split('\"')[1];
-                                string a_quantity = child.InnerXml.Split('=')[5].Split('\"')[1];
-                                string dataop = "none";
-                                if (child.ChildNodes[0].HasChildNodes)
-                                {
-                                    dataop = (child.InnerXml.Split('=')[6].Split('\"')[1]);
+                                dataop = (child.InnerXml.Split('=')[6].Split('\"')[1]);
 
-                                }
+                            }
 
-                                links.Add(new UiLink(id, provider, accepter, p_element, p_quantity, a_element, a_quantity, dataop));
-                            }
-                            catch (Exception)
-                            {
-                            }
+                            links.Add(new UiLink(id, provider, accepter, p_element, p_quantity, a_element, a_quantity, dataop));
+                        }
+                        catch (Exception)
+                        {
                         }
                     }
                 }
+            }
 
 
-                this.properties.BeginUpdate();
+            this.properties.BeginUpdate();
 
-                ListViewItem li;
-                ListViewItem.ListViewSubItem lsi;
+            ListViewItem li;
+            ListViewItem.ListViewSubItem lsi;
 
-                for (int i = 0; i <= links.Count - 1; i++)
-                {
-                    li = new ListViewItem("Link id=" + links[i].linkID.ToString());
-                    li.UseItemStyleForSubItems = true;
-                    li.BackColor = headerColor;
-                    li.Font = new Font(li.Font, FontStyle.Bold);
-                    this.properties.Items.Add(li);
+            for (int i = 0; i <= links.Count - 1; i++)
+            {
+                li = new ListViewItem("Link id=" + links[i].linkID.ToString());
+                li.UseItemStyleForSubItems = true;
+                li.ForeColor = headerColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                this.properties.Items.Add(li);
 
-                    //set the providing model name 
-                    li = new ListViewItem("Providing Model");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = groupColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].provider;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the providing model name 
+                li = new ListViewItem("Providing Model");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].provider;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                    //set the providing model name 
-                    li = new ListViewItem("Quantity");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = itemColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].provider_quantity;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the providing model name 
+                li = new ListViewItem("Quantity");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].provider_quantity;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                    //set the accepting model name
-                    li = new ListViewItem("Element Set");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = itemColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].provider_elementset;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the accepting model name
+                li = new ListViewItem("Element Set");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].provider_elementset;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                    //set the accepting model name
-                    li = new ListViewItem("Accepting Model");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = groupColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].accepter;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the accepting model name
+                li = new ListViewItem("Accepting Model");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].accepter;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                    //set the providing model name 
-                    li = new ListViewItem("Quantity");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = itemColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].accepter_quantity;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the providing model name 
+                li = new ListViewItem("Quantity");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].accepter_quantity;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                    //set the accepting model name
-                    li = new ListViewItem("Element Set");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = itemColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].accepter_elementset;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the accepting model name
+                li = new ListViewItem("Element Set");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].accepter_elementset;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                    //set the accepting model name
-                    li = new ListViewItem("Data Operation");
-                    li.UseItemStyleForSubItems = false;
-                    li.BackColor = groupColor;
-                    lsi = new ListViewItem.ListViewSubItem();
-                    lsi.Text = links[i].dataoperation;
-                    li.SubItems.Add(lsi);
-                    this.properties.Items.Add(li);
+                //set the accepting model name
+                li = new ListViewItem("Data Operation");
+                li.UseItemStyleForSubItems = false;
+                li.ForeColor = groupColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = links[i].dataoperation;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-                }
+            }
             this.properties.EndUpdate();
 
         }
         private void properties_MouseDown(object sender, MouseEventArgs e)
         {
             //make sure a file has been selected
-            if (_currentFile!=null)
+            if (_currentFile != null)
             {
                 //get the selected item
                 ListViewItem lvi = properties.GetItemAt(e.X, e.Y);
 
                 //make sure any changes that have been made are saved
                 if (t.Visible == true)
-                    setProperty();
+                    textbox_setproperty();
 
                 //make sure the item is not a folder
                 if (lvi != null)
@@ -3303,32 +3373,33 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                             ToolTip tip = new ToolTip();
                             int y = this.container2.Panel2.Top + properties.Location.Y + e.Y + 32;
                             int x = e.X;
-                            tip.Show("Editing is not available for this file", this, x,y,1000);
+                            tip.Show("Editing is not available for this file", this, x, y, 1000);
                         }
                         else
                         {
                             try
                             {
                                 //disable scrolling
-                                this.properties.Scrollable = false;
+                                //this.properties.Scrollable = false;
 
                                 //get the sub item
                                 ListViewItem.ListViewSubItem lvsi = lvi.SubItems[1];
 
                                 //create a text box in that exact location
-                                t.Location = new Point(lvsi.Bounds.X + 5, lvsi.Bounds.Y + 2);
+                                t.Location = new Point(lvsi.Bounds.X+7, lvsi.Bounds.Y + 2);
                                 t.Size = new Size(lvsi.Bounds.Width, lvsi.Bounds.Height + 1);
                                 t.Font = lvi.Font;
                                 t.BorderStyle = BorderStyle.None;
                                 t.Text = lvsi.Text;
                                 t.Visible = true;
+                                
 
                                 //save the old text
                                 _oldText = t.Text;
                                 _currentLvi = lvi;
 
                                 //highlight the text
-                                t.SelectAll();
+                                //t.SelectAll();
                                 t.HideSelection = false;
                             }
                             catch (ArgumentOutOfRangeException) { }
@@ -3338,41 +3409,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     {
                         //highlight the selected item
                         this.properties.Items[lvi.Index].Selected = true;
-                        this.properties.Refresh();  
+                        this.properties.Refresh();
                     }
                 }
             }
         }
-        private void textbox_KeyPress(object sender, KeyPressEventArgs e)
+        private void properties_saveOmiOpr(string file)
         {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                setProperty();
-            }
-        }
-        private void setProperty()
-        {
-            try
-            {
-                ListViewItem.ListViewSubItem sub = _currentLvi.SubItems[1];
-                if (t.Text != _oldText)
-                {
-                    this.properties.BeginUpdate();
-                    sub.Text = t.Text;
-                    this.properties.EndUpdate();
-                    _hasChanged = true;
-                    _Save.Enabled = true;
-
-                }
-                t.Visible = false;
-                //re enable scrolling
-                this.properties.Scrollable = true;
-            }
-            catch (Exception) { }
-        }
-        private void saveTheseChanges(string file)
-        {
-            Dictionary<string,string> newVals = new Dictionary<string,string>();
+            Dictionary<string, string> newVals = new Dictionary<string, string>();
             List<string> output = new List<string>();
             List<string> input = new List<string>();
             List<string> time = new List<string>();
@@ -3386,7 +3430,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             int inputItems = 0;
 
             //read properties window to get new values
-            for(int i = 0; i< this.properties.Items.Count; i++)
+            for (int i = 0; i < this.properties.Items.Count; i++)
             {
                 //get row info
                 ListViewItem lvi = this.properties.Items[i];
@@ -3395,18 +3439,18 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 {
                     if (headerItem.Contains("Omi Arguments"))
                     {
-                        newVals.Add(headerItem+":"+lvi.Text, lvi.SubItems[1].Text);
+                        newVals.Add(headerItem + ":" + lvi.Text, lvi.SubItems[1].Text);
                     }
                     else if (headerItem.Contains("Output Exchange Item"))
                     {
-                        if(lvi.Text.Contains("Dimensions"))
+                        if (lvi.Text.Contains("Dimensions"))
                             output.Add("Dimension:" + lvi.SubItems[1].Text);
                         else
                             output.Add(lvi.SubItems[1].Text);
                     }
                     else if (headerItem.Contains("Input Exchange Item"))
                     {
-                        if(lvi.Text.Contains("Dimensions"))
+                        if (lvi.Text.Contains("Dimensions"))
                             input.Add("Dimension:" + lvi.SubItems[1].Text);
                         else
                             input.Add(lvi.SubItems[1].Text);
@@ -3434,7 +3478,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         else if (lvi.Text == "Input Exchange Item")
                         {
                             inputItems++;
-                            headerItem = lvi.Text+ inputItems;
+                            headerItem = lvi.Text + inputItems;
                             //input.Add(lvi.Text);
                         }
                         else
@@ -3467,7 +3511,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             values.Add(input);
             values.Add(time);
             values.Add(model);
-          
+
 
             #region Edit the OMI file
             //Open Omi file
@@ -3481,7 +3525,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //get the class name and assembly path
             string className = linkableComponent.OuterXml.Split('=')[1].Split('\"')[1];
             string assembly = linkableComponent.OuterXml.Split('=')[2].Split('\"')[1];
-            
+
 
 
             //
@@ -3490,7 +3534,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             XmlNodeList args = omiRoot.SelectNodes("/LinkableComponent/Arguments/Argument");
             foreach (XmlNode arg in args)
             {
-                if(arg.OuterXml.Contains("ConfigFile"))
+                if (arg.OuterXml.Contains("ConfigFile"))
                 {
                     //get the length of the omi filename
                     int characters = file.Split('\\')[file.Split('\\').Length - 1].Length;
@@ -3513,13 +3557,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             srOmi.Close();
 
             for (int i = 0; i <= contents.Length - 1; i++)
-            {   
+            {
                 //replace class name and assembly pat
                 if (contents[i].Contains("Type"))
                 {
                     string type = newVals["Omi Arguments:Class"];
                     string assemblyName = newVals["Omi Arguments:Assembly"];
-                    contents[i] = "<LinkableComponent Type=\""+type+"\" Assembly=\""+assemblyName+"\">\r";
+                    contents[i] = "<LinkableComponent Type=\"" + type + "\" Assembly=\"" + assemblyName + "\">\r";
 
                     //remove class and assembly from dictionary
                     newVals.Remove("Omi Arguments:Class");
@@ -3527,7 +3571,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                     break;
                 }
-           }
+            }
 
             //replace aruments
             foreach (KeyValuePair<string, string> kvp in newVals)
@@ -3535,8 +3579,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 if (kvp.Key.Split(':')[0] == "Omi Arguments")
                 {
                     for (int i = 0; i <= contents.Length - 1; i++)
-                    {  
-                        if (contents[i].Contains(kvp.Key.Split(':')[1]))
+                    {
+                        //Argument Key=\"ConfigFile\"
+                        if (contents[i].Contains("Argument Key=\""+kvp.Key.Split(':')[1]+"\""))
                         {
                             contents[i] = "    <Argument Key=\"" + kvp.Key.Split(':')[1] + "\" ReadOnly=\"true\" Value=\"" + kvp.Value + "\" />\r";
                             break;
@@ -3548,8 +3593,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             #endregion
 
             string configStream = null;
-            if(config!= null)
-                configStream = ReWriteConfig(values, config);
+            if (config != null)
+                configStream = properties_writeconfig(values, config);
 
             #region Update OMI and Config Values
 
@@ -3575,79 +3620,79 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
         }
-        private string ReWriteConfig(List<List<string>> values, string path)
+        private string properties_writeconfig(List<List<string>> values, string path)
         {
             string id = "";
             string configStream = null;
-            configStream +="<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" + "\n";
-            configStream +="<Configuration>" + "\n";
-            configStream +="\t<ExchangeItems>" + "\n";
-            
-            for(int i=0; i<=values.Count-1;i++)
+            configStream += "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" + "\n";
+            configStream += "<Configuration>" + "\n";
+            configStream += "\t<ExchangeItems>" + "\n";
+
+            for (int i = 0; i <= values.Count - 1; i++)
             {
                 //output exchange item or input exchange item
-                if (i == 0 || i==1)
+                if (i == 0 || i == 1)
                 {
                     for (int j = 0; j <= values[i].Count - 1; j++)
                     {
-                        if(i==0)
-                            configStream +="\t\t<OutputExchangeItem>" + "\n";
+                        if (i == 0)
+                            configStream += "\t\t<OutputExchangeItem>" + "\n";
                         else
-                            configStream +="\t\t<InputExchangeItem>" + "\n";
+                            configStream += "\t\t<InputExchangeItem>" + "\n";
 
-                        configStream +="\t\t\t<ElementSet>" + "\n";
-                        configStream +="\t\t\t\t<ID>" + values[i][j] + "</ID>" + "\n"; j++;
-                        configStream +="\t\t\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
+                        configStream += "\t\t\t<ElementSet>" + "\n";
+                        configStream += "\t\t\t\t<ID>" + values[i][j] + "</ID>" + "\n"; j++;
+                        configStream += "\t\t\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
 
                         //BROKEN:  File Exists is not working!!!!! It must be relatice to the OMI!!!!!
                         //check to see if a shapefile path was given
                         string currPath = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText + "//";
                         //check to see if the file exists by absolute path
                         if (File.Exists(Path.GetFullPath(values[i][j])))
-                        { configStream +="\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
+                        { configStream += "\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
                         //check to see if the file exists by relative path
-                        else if(File.Exists(Path.GetFullPath(currPath + values[i][j])))
-                        { configStream +="\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
+                        else if (File.Exists(Path.GetFullPath(currPath + values[i][j])))
+                        { configStream += "\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
 
                         configStream += "\t\t\t\t<Version>" + values[i][j] + "</Version>" + "\n"; j++;
-                        configStream +="\t\t\t</ElementSet>" + "\n";
+                        configStream += "\t\t\t</ElementSet>" + "\n";
 
-                        configStream +="\t\t\t<Quantity>" + "\n";
-                        configStream +="\t\t\t\t<ID>" + values[i][j] + "</ID>" + "\n"; j++;
-                        configStream +="\t\t\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
+                        configStream += "\t\t\t<Quantity>" + "\n";
+                        configStream += "\t\t\t\t<ID>" + values[i][j] + "</ID>" + "\n"; j++;
+                        configStream += "\t\t\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
 
-                        configStream +="\t\t\t\t<Dimensions>" + "\n";
+                        configStream += "\t\t\t\t<Dimensions>" + "\n";
                         if (values[i][j].Contains("Dimension"))
                         {
                             string dim = values[i][j].Split(':')[1];
                             for (int k = 0; k <= dim.Split(']').Length - 2; k++)
                             {
-                                
+
                                 configStream += "\t\t\t\t\t<Dimension>" + "\n";
                                 configStream += "\t\t\t\t\t\t<Base>" + dim.Split(']')[k].Split('^')[0].Replace("[", "").Replace("]", "").Trim() + "</Base>" + "\n";
-                                configStream += "\t\t\t\t\t\t<Power>" + dim.Split('^')[k+1].Split(']')[0] + "</Power>" + "\n"; 
+                                configStream += "\t\t\t\t\t\t<Power>" + dim.Split('^')[k + 1].Split(']')[0] + "</Power>" + "\n";
                                 configStream += "\t\t\t\t\t</Dimension>" + "\n";
                             }
                             j++;
                         }
 
-                        configStream +="\t\t\t\t</Dimensions>" + "\n";
+                        configStream += "\t\t\t\t</Dimensions>" + "\n";
 
-                        configStream +="\t\t\t\t<Unit>" + "\n";
-                        configStream +="\t\t\t\t\t<ID>"+ values[i][j] + "</ID>" + "\n"; j++;
-                        configStream +="\t\t\t\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
-                        configStream +="\t\t\t\t\t<ConversionFactorToSI>" + values[i][j] + "</ConversionFactorToSI>" + "\n"; j++;
-                        configStream +="\t\t\t\t\t<OffSetToSI>" + values[i][j] + "</OffSetToSI>" + "\n"; j++;
-                        configStream +="\t\t\t\t</Unit>" + "\n";
+                        configStream += "\t\t\t\t<Unit>" + "\n";
+                        configStream += "\t\t\t\t\t<ID>" + values[i][j] + "</ID>" + "\n"; j++;
+                        configStream += "\t\t\t\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
+                        configStream += "\t\t\t\t\t<ConversionFactorToSI>" + values[i][j] + "</ConversionFactorToSI>" + "\n"; j++;
+                        configStream += "\t\t\t\t\t<OffSetToSI>" + values[i][j] + "</OffSetToSI>" + "\n"; j++;
+                        configStream += "\t\t\t\t</Unit>" + "\n";
 
-                        configStream +="\t\t\t\t<ValueType>" + values[i][j] + "</ValueType>" + "\n";
+                        configStream += "\t\t\t\t<ValueType>" + values[i][j] + "</ValueType>" + "\n";
 
-                        configStream +="\t\t\t</Quantity>" + "\n";
+                        configStream += "\t\t\t</Quantity>" + "\n";
 
                         if (i == 0)
-                            configStream +="\t\t</OutputExchangeItem>" + "\n";
+                            configStream += "\t\t</OutputExchangeItem>" + "\n";
                         else
-                            configStream +="\t\t</InputExchangeItem>" + "\n";
+                            configStream += "\t\t</InputExchangeItem>" + "\n";
                     }
                 }
                 //time horizon
@@ -3655,21 +3700,21 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 {
                     for (int j = 0; j <= values[i].Count - 1; j++)
                     {
-                        configStream +="\t</ExchangeItems>" + "\n";
+                        configStream += "\t</ExchangeItems>" + "\n";
 
-                        configStream +="\t<TimeHorizon>" + "\n";
-                    
+                        configStream += "\t<TimeHorizon>" + "\n";
+
                         // Model must have a start time defined 
-                        configStream +="\t\t<StartDateTime>"+values[i][j] + "</StartDateTime>" + "\n"; j++;
+                        configStream += "\t\t<StartDateTime>" + values[i][j] + "</StartDateTime>" + "\n"; j++;
 
                         // This assumes that a if only one date-time is given, then it is the StartDateTime
                         DateTime dt;
-                        if (DateTime.TryParse(values[i][j],out dt))
-                        { configStream +="\t\t<EndDateTime>" + values[i][j] + "</EndDateTime>" + "\n"; j++; }
-                        
-                        configStream +="\t\t<TimeStepInSeconds>"+values[i][j] + "</TimeStepInSeconds>" + "\n"; j++;
+                        if (DateTime.TryParse(values[i][j], out dt))
+                        { configStream += "\t\t<EndDateTime>" + values[i][j] + "</EndDateTime>" + "\n"; j++; }
 
-                        configStream +="\t</TimeHorizon>" + "\n";
+                        configStream += "\t\t<TimeStepInSeconds>" + values[i][j] + "</TimeStepInSeconds>" + "\n"; j++;
+
+                        configStream += "\t</TimeHorizon>" + "\n";
 
                     }
 
@@ -3679,10 +3724,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 {
                     for (int j = 0; j <= values[i].Count - 1; j++)
                     {
-                        configStream +="\t<ModelInfo>" + "\n";
-                        configStream +="\t\t<ID>" + values[i][j] + "</ID>" + "\n"; id = values[i][j]; j++; 
-                        configStream +="\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
-                        configStream +="\t</ModelInfo>" + "\n";
+                        configStream += "\t<ModelInfo>" + "\n";
+                        configStream += "\t\t<ID>" + values[i][j] + "</ID>" + "\n"; id = values[i][j]; j++;
+                        configStream += "\t\t<Description>" + values[i][j] + "</Description>" + "\n"; j++;
+                        configStream += "\t</ModelInfo>" + "\n";
                     }
                 }
 
@@ -3691,13 +3736,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             return configStream;
         }
-        private void saveChanges(string filename)
+        private void properties_savechanges(string filename)
         {
-            DialogResult result = MessageBox.Show("Would you like to save the changes made to "+filename+" ?", "Important Question", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Would you like to save the changes made to " + filename + " ?", "Important Question", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)
             {
-                saveTheseChanges(filename);
+                properties_saveOmiOpr(filename);
 
                 int length = filename.Split('\\').Length;
                 //string id = ((Oatc.OpenMI.Gui.Core.UIModel)_composition.Models[0]).OmiFilename;
@@ -3705,66 +3750,77 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 //check to see if an omi file has been modified
                 if (filename.Split('\\')[length - 1].Contains(".omi"))
                 {
-                    for( int i=0; i<= _composition.Models.Count-1;i++)
+                    for (int i = 0; i <= _composition.Models.Count - 1; i++)
                     {
                         //checl to see of the edited model is loaded in the composition
-                        if(((Oatc.OpenMI.Gui.Core.UIModel)_composition.Models[i]).OmiFilename == filename)
+                        if (((Oatc.OpenMI.Gui.Core.UIModel)_composition.Models[i]).OmiFilename == filename)
                         {
-                            
-                            //--- reload the composition ---
-                            
-                            //save the currently loaded opr file path
-                            string currentOPR = _composition.FilePath;
 
-                            if (currentOPR == null)
+                            //---- reload the composition ---
+
+                            //-- get the current file path
+                            string path = _composition.FilePath;
+
+                            if (path != null)
                             {
-                                menuFileSaveAs_Click(this, new EventArgs());
-                                currentOPR = _composition.FilePath;
+
+                                //-- overwrite the original file
+                                _composition.SaveToFile(path);
+
+
+                                //-- clear the composition window
+                                this.composition_clear();
+
+                                //-- remove extra characters (in path) from the trigger
+                                StreamReader sr = new StreamReader(path);
+                                string contents = sr.ReadToEnd();
+                                sr.Close();
+
+                                if (contents.Contains("Oatc.OpenMI.Gui.Trigger"))
+                                {
+                                    int end = contents.IndexOf("Oatc.OpenMI.Gui.Trigger");
+                                    int index = end - 1;
+                                    int count = 0;
+                                    while (contents[index] != '\"')
+                                    { count++; index--; }
+                                    contents = contents.Remove(end - count, count);
+                                }
+
+                                //-- rewrite the opr with revised trigger info
+                                StreamWriter sw = new StreamWriter(path);
+                                sw.Write(contents);
+                                sw.Close();
+
+                                //-- reopen the opr file
+                                this.OpenOprFile(_composition.FilePath);
                             }
+                            else
+                            {
+                                //-- clear the composition window
+                                this.composition_clear();
 
-                            //clear the composition window
-                            this.clear();
-
-                            //reload the currentOpr
-                            this.OpenOprFile(currentOPR);
-
+                                //-- reload model component
+                                this.AddModel(filename);
+                            }
                             break;
                         }
                     }
                 }
-                
+
             }
             if (result == DialogResult.No)
             {
                 t.Visible = false;
                 _hasChanged = false;
             }
-                
-        }
-        void _Save_Click(object sender, EventArgs e)
-        {
-            string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
 
-            try
-            {
-                saveChanges(path);
-            }
-            catch (SystemException) 
-            {
-                DialogResult failed = MessageBox.Show("HydroModeler encountered an error while saving. Please make sure that the values entered are in the correct format, and file exist at the paths specified. ", "Error", MessageBoxButtons.OK);
-            }
-
-        }
-        private void tb_LostFocus(object sender, EventArgs e)
-        {
-            setProperty();
         }
         private void properties_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
             //get column index
             int index = e.ColumnIndex;
 
-            if(index == 0)
+            if (index == 0)
             {
                 //get new width for col 0
                 int Column0Width = e.NewWidth;
@@ -3780,9 +3836,73 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                 //set column 1 width
                 this.properties.Columns[1].Width = Column1Width - 4;
-                
+
             }
         }
+        private void properties_MouseWheel(object sender, MouseEventArgs e)
+        {
+            //-- check if edit textbox is visable
+            if (t.Visible == true)
+                //-- set the textbox value
+                textbox_setproperty();
+        }
+        private void properties_scroll(object sender, ScrollEventArgs e)
+        {
+            //-- check if edit textbox is visable
+            if (t.Visible == true)
+                //-- set the textbox value
+                textbox_setproperty();
+        }
+
+        //-- properties save button methods
+        private void save_click(object sender, EventArgs e)
+        {
+            string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
+
+            try
+            {
+                properties_savechanges(path);
+            }
+            catch (SystemException)
+            {
+                DialogResult failed = MessageBox.Show("HydroModeler encountered an error while saving. Please make sure that the values entered are in the correct format, and file exist at the paths specified. ", "Error", MessageBoxButtons.OK);
+            }
+
+        }
+
+        //-- textbox edit methods
+        private void textbox_lostfocus(object sender, EventArgs e)
+        {
+            textbox_setproperty();
+        }
+        private void textbox_setproperty()
+        {
+            try
+            {
+                ListViewItem.ListViewSubItem sub = _currentLvi.SubItems[1];
+                if (t.Text != _oldText)
+                {
+                    this.properties.BeginUpdate();
+                    sub.Text = t.Text;
+                    this.properties.EndUpdate();
+                    _hasChanged = true;
+                    _Save.Enabled = true;
+
+                }
+                t.Visible = false;
+                //re enable scrolling
+                this.properties.Scrollable = true;
+            }
+            catch (Exception) { }
+        }
+        private void textbox_keypress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                textbox_setproperty();
+            }
+        }
+
 
         #region Context Menu Handelers
         private void ClickModel(object sender, EventArgs e)
@@ -3807,7 +3927,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     string path = Folders[key];
 
                     //update the filelist
-                    UpdateFileList(path);
+                    filelist_update(path);
 
                     //update the ribbon textbox text
                     ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
@@ -3821,7 +3941,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     string path = Folders[key.Substring(0, 3)];
 
                     //update the filelist
-                    UpdateFileList(path);
+                    filelist_update(path);
 
                     //update the ribbon textbox text
                     ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
@@ -3847,7 +3967,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //authenticate the deletion
             DialogResult result = MessageBox.Show("Are you sure you want to permanently remove " + _currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text + "?", "Important Question", MessageBoxButtons.YesNo);
 
-            
+
             if (result == DialogResult.Yes)
             {
                 //delete file
@@ -3855,10 +3975,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                 //clear the composition window if the deleted item is currently loaded
                 if (openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text] == _composition.FilePath)
-                    clear();
+                    composition_clear();
 
                 //refresh the file browser
-                this.UpdateFileList(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+                this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             }
         }
         #endregion
@@ -3876,11 +3996,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
 
         #endregion
-
-
-        #endregion
-
-
        
     }
 
@@ -3912,5 +4027,35 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
 
     }
+
+
+    /// <summary>
+    /// This class is necessary to create and eventhandler for listview scrolling
+    /// </summary>
+    public class MyListView : ListView
+    {
+        private const int WM_HSCROLL = 0x114;
+        private const int WM_VSCROLL = 0x115;
+        public event ScrollEventHandler Scroll;
+        protected virtual void OnScroll(ScrollEventArgs e)
+        {
+            ScrollEventHandler handler = this.Scroll;
+            if (handler != null) handler(this, e);
+        }
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == WM_VSCROLL)
+            { 
+                //vertical scrolling
+                OnScroll(new ScrollEventArgs((ScrollEventType)(m.WParam.ToInt32() & 0xffff), 0));
+            }
+            else if (m.Msg == WM_HSCROLL)
+            {
+                //horizontal scrolling
+            }
+        }
+    }
+
 
 }
