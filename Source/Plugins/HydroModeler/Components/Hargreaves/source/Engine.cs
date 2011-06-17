@@ -93,8 +93,10 @@ namespace Hargreaves
             double[] mintemp = ((ScalarSet)this.GetValues(input_quantity[2], input_elementset[2])).data;
 
             //---- calculate pet for each element
-            double[] pet = new double[temp.Length];
-            for (int i = 0; i <= temp.Length - 1; i++)
+            //-- get the number of elements (assuming that they're all the same)
+            int elemcount = this.GetInputExchangeItem(0).ElementSet.ElementCount;
+            double[] pet = new double[elemcount];
+            for (int i = 0; i <= elemcount - 1; i++)
             {
                 pet[i] = CalculatePET(temp[i], mintemp[i], maxtemp[i], i);
             }
@@ -105,6 +107,9 @@ namespace Hargreaves
 
             //---- set output values
             this.SetValues(output_quantity, output_elementset, new ScalarSet(pet));
+
+            //---- advance to the next timestep
+            this.AdvanceTime();
 
             return true;
         }

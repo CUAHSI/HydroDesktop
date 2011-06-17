@@ -26,33 +26,39 @@ namespace TopModel
     {
         # region Global Variables
         //---GLOBAL VARIABLES  ----
-        double[] PPT; // Daily Precipitation Data (in)
-        double[] PET; //Daily Evaptranspiration Data
-        double[] R;//subsurface Recharge rate [L/T]
+
+        //---- model inputs
+        double R;//subsurface Recharge rate [L/T]
+        double c; //recession parameter (m)
+        double Tmax; //Average effective transmissivity of the soil when the profile is just saturated
+        double interception;//intial interciption of the watershed
+
         double[] TI;//topographic index
         double[] freq;//topographic index frequency
+
         double lamda_average;//average lamda
         double PPT_daily;
         double ET_daily;
         double q_overland;
         double q_subsurface;
         double q_infiltration;
-        bool IsFirstTimeStep = true;
         double S_average; //average saturation deficit
-        double c; //recession parameter (m)
-        double Tmax; //Average effective transmissivity of the soil when the profile is just saturated
-        double interception;//intial interciption of the watershed
-        double _dt;//get the timestep size
+
+        double _watershedArea = 0; //area of the watershed. used to convert runoff into streamflow
+
         Dictionary<DateTime, double> Precip = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> ET = new Dictionary<DateTime, double>();
         Dictionary<DateTime, double> outputValues = new Dictionary<DateTime, double>();
+
         string[] _input_elementset;
         string[] _output_elementset;
         string[] _output_quantity;
         string[] _input_quantity;
+
         ArrayList _DateTimes = new ArrayList();
         ArrayList q_outputs = new ArrayList();
         ArrayList q_infltration_outputs = new ArrayList();
+
         string outputPath = System.IO.Directory.GetCurrentDirectory() + "/output";
 
         #endregion
@@ -78,16 +84,16 @@ namespace TopModel
             swa.WriteLine("Daily Runoff....");
             DateTime start = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetTimeHorizon().Start).ModifiedJulianDay);
             DateTime end = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetTimeHorizon().End).ModifiedJulianDay);
-            swa.WriteLine("StartDate: , " + String.Format("{0:d/M/yyyy}", start));
-            swa.WriteLine("EndDate: , " + String.Format("{0:d/M/yyyy}", end));
+            swa.WriteLine("StartDate: , " + String.Format("{0:MM/dd/yyyy hh:mm:ss}", start));
+            swa.WriteLine("EndDate: , " + String.Format("{0:MM/dd/yyyy hh:mm:ss}", end));
             swa.WriteLine();
-            swa.WriteLine("Time [d:M:yyyy], Runoff");
+            swa.WriteLine("Time [0:MM/dd/yyyy hh:mm:ss], Runoff");
 
 
             foreach (KeyValuePair<DateTime, double> kvp in outputValues)
             {
 
-                string time = String.Format("{0:d/M/yyyy}", kvp.Key);
+                string time = String.Format("{0:MM/dd/yyyy hh:mm:ss}", kvp.Key);
                 swa.Write(time + ",");
 
                 swa.Write(kvp.Value.ToString() + ",");
@@ -101,11 +107,19 @@ namespace TopModel
         }
         public override void Initialize(System.Collections.Hashtable properties)
         {
-            string inputfile = null;
-            string inputfile1 = null;
 
             //Get config file path defined in sample.omi
             string configFile = (string)properties["ConfigFile"];
+
+            //read topographic input file
+            string topo_input = (string)properties["TI"];
+
+            //read model input parameters
+            c = Convert.ToDouble(properties["m"]);
+            Tmax = Convert.ToDouble(properties["Tmax"]);
+            R = Convert.ToDouble(properties["R"]);
+            interception = Convert.ToDouble(properties["Interception"]);
+            _watershedArea = Convert.ToDouble(properties["WatershedArea_SquareMeters"]);
 
             //set OpenMI internal variables
             this.SetVariablesFromConfigFile(configFile);
@@ -132,182 +146,44 @@ namespace TopModel
                 _output_quantity[i] = this.GetOutputExchangeItem(i).Quantity.ID;
             }
 
-            # region
-            //if (properties.ContainsKey("Weather"))
-            //inputfile = (string)properties["Weather"];
+            //read topographic indices from input file
+            read_topo_input(topo_input, out TI, out freq);
 
-            //if (inputfile != null)
-            //{
-            //    StreamReader sr = new StreamReader(inputfile);
-            //    string line = sr.ReadLine();
-            //    c= Convert.ToDouble(line.Split(',')[1]);
+            //---- calculate saturation deficit
+            //calculate lamda average for the watershed
+            double[] TI_freq = new double[TI.GetLength(0)];
 
-            //     line = sr.ReadLine();
-            //    Tmax = Convert.ToDouble(line.Split(',')[1]);
-
-            //    line = sr.ReadLine();
-            //    interception = Convert.ToDouble(line.Split(',')[1]);
-
-            //    line = sr.ReadLine();
-            //    int i = 0;
-            //    //reading the PPT of the basin from the input file
-
-            //    while (line != null)
-            //    {
-            //        string[] values = line.Split(',');
-            //        PPT = new double[values.Count()];
-            //        for (int j = 0; j <= PPT.Length-1; j++)
-            //        {
-            //            PPT[j] = Convert.ToDouble(values[j]);
-            //        }
-            //        //reading the PET of the basin from the input file
-
-            //        i++;
-            //        line = sr.ReadLine();
-            //        string[] valuess = line.Split(',');
-            //        PET = new double[valuess.Count()];
-            //        for (int j = 0; j <= PET.Length-1; j++)
-            //        {
-            //            PET[j] = Convert.ToDouble(valuess[j]);
-
-            //        }
-            //        //reading the R rate of the subsurface flow  from the input file
-            //        i++;
-            //        line = sr.ReadLine();
-            //        string[] values3 = line.Split(',');
-            //        R = new double[values3.Count()];
-            //        for (int j = 0; j <= R.Length-1; j++)
-            //        {
-            //            R[j] = Convert.ToDouble(values3[j]);
-
-            //        }
-            //        i++;
-            //        line = sr.ReadLine();
-            //    }
-
-            //}
-            # endregion
-
-            if (properties.ContainsKey("TI"))
-                inputfile1 = (string)properties["TI"];
-            if (inputfile1 != null)
+            for (int i = 0; i <= TI.GetLength(0) - 1; i++)
             {
-                StreamReader sr = new StreamReader(inputfile1);
-                string line = sr.ReadLine();
-                c = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                Tmax = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                interception = Convert.ToDouble(line.Split(',')[1]);
-
-                line = sr.ReadLine();
-                int i = 0;
-                //reading the TI of the basin from the input file
-
-                while (line != null)
-                {
-                    string[] values1 = line.Split(',');
-                    TI = new double[values1.Count() - 1];
-
-                    for (int j = 0; j <= TI.Length - 1; j++)
-                    {
-                        TI[j] = Convert.ToDouble(values1[j]);
-                    }
-                    //reading the freq of the basin from the input file
-
-                    i++;
-                    line = sr.ReadLine();
-
-                    string[] valuess = line.Split(',');
-                    freq = new double[valuess.Count() - 1];
-                    for (int j = 0; j <= freq.Length - 1; j++)
-                    {
-                        freq[j] = Convert.ToDouble(valuess[j]);
-
-                    }
-
-                    i++;
-                    line = sr.ReadLine();
-
-                    string[] values3 = line.Split(',');
-                    R = new double[values3.Count()];
-                    for (int j = 0; j <= R.Length - 1; j++)
-                    {
-                        R[j] = Convert.ToDouble(values3[j]);
-
-                    }
-
-                    i++;
-                    line = sr.ReadLine();
-                }
-                //Adding the PPT & PET Data to a Dictionary
-                //_dt = this.GetTimeStep() / 86400;
-                //TimeStamp time = (TimeStamp)this.GetCurrentTime();
-                // DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
-                //for (int v = 0; v <= PPT.GetLength(0) - 1; v++)
-                //{
-                //    Precip.Add(curr_time, PPT[v]);
-                //    //ET.Add(curr_time, PET[v]);
-                //     curr_time = curr_time.AddDays(_dt);
-                //}
-
+                TI_freq[i] = TI[i] * freq[i];
             }
+
+            lamda_average = TI_freq.Sum() / freq.Sum();
+
+            //catchement average saturation deficit(S_bar)
+            double S_bar = -c * ((Math.Log(R / Tmax)) + lamda_average);
+            S_average = S_bar;
 
         }
         public override bool PerformTimeStep()
         {
             //reading the appropriate value from PPT & PET dictionary 
-            TimeStamp time = (TimeStamp)this.GetCurrentTime();
-            DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
-            ScalarSet ss = (ScalarSet)this.GetValues("PET", "TopModel");
-            ScalarSet we = (ScalarSet)this.GetValues("PPT", "TopModel");
+            ScalarSet input_pet = (ScalarSet)this.GetValues(_input_quantity[1], _input_elementset[1]);  //PET
+            ScalarSet input_precip = (ScalarSet)this.GetValues(_input_quantity[0], _input_elementset[0]);  //Rainfall
 
-            for (int i = 0; i < ss.Count; i++)
+            for (int i = 0; i < input_pet.Count; i++)
             {
-                ET_daily = ss.data[i];
+                ET_daily = input_pet.data[i];
             }
-            for (int h = 0; h < we.Count; h++)
+            for (int h = 0; h < input_precip.Count; h++)
             {
-                PPT_daily = we.data[h];
+                PPT_daily = input_precip.data[h];
             }
-            # region
-            //used when reading from input csv file
-            //used it if the metrological data are readed from csv file
-            //if(Precip.ContainsKey(curr_time))
-            //{
-            //  PPT_daily = Precip[curr_time];
-            //}
-            //if (ET.ContainsKey(curr_time))
-            //{
-            //   ET_daily = ET[curr_time];
-            //}
-            # endregion
+
             //declaring the flow matrices here since they are related with the size of input matrices
-            double[] S_d = new double[R.GetLength(0)];
+            double[] S_d = new double[TI.GetLength(0)];
             double[] over_flow = new double[TI.GetLength(0)]; //Infiltration excess
             double[] reduced_ET = new double[TI.GetLength(0)];//Reduced ET due to dryness
-
-
-            if (IsFirstTimeStep)
-            {
-                //calculate lamda average for the watershed
-                double[] TI_freq = new double[TI.GetLength(0)];
-
-                for (int i = 0; i <= TI.GetLength(0) - 1; i++)
-                {
-                    TI_freq[i] = TI[i] * freq[i];
-                }
-
-                lamda_average = TI_freq.Sum() / freq.Sum();
-
-                //catchement average saturation deficit(S_bar)
-                double S_bar = -c * ((Math.Log(R[0] / Tmax)) + lamda_average);
-                S_average = S_bar;
-                IsFirstTimeStep = false;
-            }
-
 
             //calculate the saturation deficit for each TIpoint 
             double[] S = new double[TI.GetLength(0)];
@@ -356,45 +232,36 @@ namespace TopModel
             double q = q_overland + q_subsurface;
 
             //Storing values of DateTimes and surface runoff values
-            TimeStamp t = (TimeStamp)this.GetCurrentTime();
-            DateTime T = CalendarConverter.ModifiedJulian2Gregorian(t.ModifiedJulianDay);
-            _DateTimes.Add(T);
+            TimeStamp time = (TimeStamp)this.GetCurrentTime();
+            DateTime curr_time = CalendarConverter.ModifiedJulian2Gregorian(time.ModifiedJulianDay);
+            _DateTimes.Add(curr_time);
             q_outputs.Add(q);
             q_infltration_outputs.Add(q_infiltration);
             outputValues.Add(curr_time, q);
 
-            int fff = q_outputs.Count;
-            double[] Q = new double[R.GetLength(0)];
+            //save runoff
+            double[] runoff = new double[1];
+            runoff[0] = q;// *_watershedArea;
 
+            //-- calculate streamflow using watershed area
+            double[] streamflow = new double[1];
+            streamflow[0] = q * (_watershedArea) / 86400;
 
-            //create array to copy the stored runoff values for a Array list to a [] 
-            double[] te = q_outputs.ToArray(typeof(double)) as double[];
 
 
             //set the basin outflow as runoff output
             string q1 = this.GetOutputExchangeItem(0).Quantity.ID;
             string e1 = this.GetOutputExchangeItem(0).ElementSet.ID;
-            this.SetValues(q1, e1, new ScalarSet(te));
+            this.SetValues(q1, e1, new ScalarSet(runoff));
+
+            string q2 = this.GetOutputExchangeItem(1).Quantity.ID;
+            string e2 = this.GetOutputExchangeItem(1).ElementSet.ID;
+            this.SetValues(q2, e2, new ScalarSet(streamflow));
+            
 
             this.AdvanceTime();
             return true;
         }
-
-        # region intial methods
-        //public double[,] Root_Zone_Model()
-        //{
-        //    return new double[0, 0];
-        //}
-        //public double[,] Gravity_Drainage_Model()
-        //{
-        //    return new double[0, 0];
-        //}
-
-        //public double[,] SaturatedZoneModel()
-        //{
-        //    return new double[0, 0];
-        //}
-        # endregion
 
         /// <summary>
         /// Reads an input raster ascii file containing topographic index to produce topographic index and topographic frequency arrays
@@ -409,8 +276,12 @@ namespace TopModel
 
             //-- read header info
             string line = null;
-            for (int i=0; i<=5; i++)
+            for (int i=0; i<=4; i++)
                 line = sr.ReadLine();
+
+            //-- save the cellsize
+            double cellsize = Convert.ToDouble(line.Split(' ')[line.Split(' ').Length - 1]);
+            line = sr.ReadLine();
 
             //-- save the nodata value
             string nodata = line.Split(' ')[line.Split(' ').Length-1];
@@ -425,7 +296,8 @@ namespace TopModel
                 string[] vals = line.TrimEnd(' ').Split(' ');
                 for (int i = 0; i <= vals.Length - 1; i++)
                     if (vals[i] != nodata)
-                        topoList.Add(Convert.ToDouble(vals[i]));
+                        topoList.Add(Convert.ToDouble(vals[i])); _watershedArea += cellsize;
+                        
                 line = sr.ReadLine();
             }
 

@@ -374,6 +374,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 			this.panelViewer.Resize += new System.EventHandler(this.panelViewer_Resize);
 			this.panelViewer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelViewer_Paint);
 			this.panelViewer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelViewer_MouseMove); 
+            
 			// 
 			// buttonClose
 			// 
@@ -552,12 +553,25 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 			((System.ComponentModel.ISupportInitialize)(this.numericLineWidth)).EndInit();
 			this.ResumeLayout(false);
 
+
+            this.ResizeEnd += new EventHandler(ElementSetViewer_ResizeEnd);
 		}
 		#endregion
 
  
 
 		#endregion
+
+        /// <summary>
+        /// Forces the element set viewer to redraw.  This is triggered after the form has stopped moving.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ElementSetViewer_ResizeEnd(object sender, EventArgs e)
+        {
+            //refresh panelViewer
+            panelViewer.Invalidate();
+        }
 
         private void panelViewer_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
