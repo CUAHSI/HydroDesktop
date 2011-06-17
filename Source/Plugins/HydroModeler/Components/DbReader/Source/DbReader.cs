@@ -546,18 +546,38 @@ namespace CUAHSI.HIS
                 }
             }
 
-            //get database
+            //---- set database to default if dbpath is invalid
             string conn = null;
-            if (_dbPath == null)
+            //-- first check if dbpath is null
+            bool pass = true;
+            if (String.IsNullOrWhiteSpace(_dbPath))
+                pass = false;
+            //-- next, check that dbpath points to an actual file
+            else
             {
-                //conn = HydroDesktop.Database.Config.DataRepositoryConnectionString;
-                conn = Settings.Instance.DataRepositoryConnectionString;
+                string fullpath = System.IO.Path.GetFullPath(_dbPath);
+                if (!File.Exists(fullpath))
+                {
+                    pass = false;
+
+                    //-- warn the user that the database could not be found
+                    System.Windows.Forms.MessageBox.Show("The database supplied in DbReader.omi could not be found. As a result the DbReader will connect to the current HydroDesktop database." +
+                                "\n\n--- The following database could not be found --- \n" + fullpath, 
+                        "An Error Occurred While Loading Database...", 
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);               
+                }
             }
+
+            //-- set the connection string
+            if (!pass)
+                conn = Settings.Instance.DataRepositoryConnectionString;
             else
             {
                 FileInfo fi = new FileInfo(_dbPath);
                 conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
             }
+
+            //-- get the database
             _db = new DbOperations(conn, DatabaseTypes.SQLite);
  
             //----build list of output exchange items from db themes
