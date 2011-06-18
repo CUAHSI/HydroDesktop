@@ -153,6 +153,8 @@ namespace HydroDesktop.Search.Download
             }
         }
 
+        public string FileName { get; set; }
+
         #endregion
 
         #region Events

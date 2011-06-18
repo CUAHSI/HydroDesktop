@@ -30,7 +30,8 @@ namespace HydroDesktop.Search.Download
         private string _connectionString;
 
         private IFeatureSet _featureSet;
-    
+        private static readonly object _syncObject = new object();
+
         #endregion
 
         #region Constructors
@@ -141,19 +142,22 @@ namespace HydroDesktop.Search.Download
         /// </summary>
         /// <param name="wsdl">The URL of the web service main page</param>
         /// <returns>the appropriate WaterOneFlow client</returns>
-        public WaterOneFlowClient GetWsClientInstance(string wsdl)
+        private WaterOneFlowClient GetWsClientInstance(string wsdl)
         {
             WaterOneFlowClient wsClient = null;
 
-            //To Access the dynamic WSDLs
-            if (_services.ContainsKey(wsdl))
+            lock (_syncObject)
             {
-                wsClient = _services[wsdl];
-            }
-            else
-            {
-                wsClient = new WaterOneFlowClient(wsdl);
-                _services.Add(wsdl, wsClient);
+                //To Access the dynamic WSDLs
+                if (_services.ContainsKey(wsdl))
+                {
+                    wsClient = _services[wsdl];
+                }
+                else
+                {
+                    wsClient = new WaterOneFlowClient(wsdl);
+                    _services.Add(wsdl, wsClient);
+                }
             }
             return wsClient;
         }
@@ -184,13 +188,12 @@ namespace HydroDesktop.Search.Download
         /// <summary>
         /// Converts the xml file to a data series object.
         /// </summary>
-        /// <param name="xmlFile">The name of the xml file</param>
         /// <param name="dInfo">Download info</param>
         /// <returns>The data series object</returns>
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
         /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
-        public Series DataSeriesFromXml(string xmlFile, DownloadInfo dInfo)
+        public Series DataSeriesFromXml(DownloadInfo dInfo)
         {
             IList<Series> seriesList;
 
@@ -201,12 +204,12 @@ namespace HydroDesktop.Search.Download
                 if (client.ServiceInfo.Version == 1.0)
                 {
                     var parser = new WaterOneFlow10Parser();
-                    seriesList = parser.ParseGetValues(xmlFile);
+                    seriesList = parser.ParseGetValues(dInfo.FileName);
                 }
                 else
                 {
                     var parser = new WaterOneFlow11Parser();
-                    seriesList = parser.ParseGetValues(xmlFile);
+                    seriesList = parser.ParseGetValues(dInfo.FileName);
                 }
             }
             catch(Exception ex)

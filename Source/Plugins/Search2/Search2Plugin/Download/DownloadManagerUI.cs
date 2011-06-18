@@ -144,6 +144,9 @@ namespace HydroDesktop.Search.Download
                 split = message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 foreach (var mes in split)
                     lbOutput.Items.Add(mes);
+
+                if (e.Exception.InnerException != null)
+                    lbOutput.Items.Add("Inner exception: " + e.Exception.InnerException.Message);
             }
         }
 

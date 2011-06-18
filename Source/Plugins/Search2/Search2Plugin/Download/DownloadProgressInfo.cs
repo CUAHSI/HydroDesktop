@@ -8,9 +8,16 @@ namespace HydroDesktop.Search.Download
     /// </summary>
     class DownloadProgressInfo : INotifyPropertyChanged
     {
+        #region Fields
+
+        private const int INITIAL_TIME_TO_SAVE = 1;
+        private const int INITIAL_TIME_TO_DOWNLOAD = 15;
+
+        #endregion
+
         #region Properties
 
-        private int _downloadedAndSaved;
+        private volatile int _downloadedAndSaved;
         /// <summary>
         /// Number of downloaded and saved series
         /// </summary>
@@ -27,7 +34,7 @@ namespace HydroDesktop.Search.Download
             }
         }
 
-        private int _downloaded;
+        private volatile int _downloaded;
         /// <summary>
         /// Number of downloaded series
         /// </summary>
@@ -41,7 +48,7 @@ namespace HydroDesktop.Search.Download
             }
         }
 
-        private int _withError;
+        private volatile int _withError;
         /// <summary>
         /// Number of series with errors
         /// </summary>
@@ -69,8 +76,8 @@ namespace HydroDesktop.Search.Download
                 NotifyPropertyChanged("TotalSeries");
 
                 // update depended properties
-                EstimatedTimeForDownload = new TimeSpan(0, 0, _totalSeries * 15);
-                EstimatedTimeForSave = new TimeSpan(0, 0, _totalSeries * 5);
+                EstimatedTimeForDownload = new TimeSpan(0, 0, _totalSeries * INITIAL_TIME_TO_DOWNLOAD);
+                EstimatedTimeForSave = new TimeSpan(0, 0, _totalSeries * INITIAL_TIME_TO_SAVE);
                 RemainingSeries = TotalSeries;
                 WithError = 0;
                 DownloadedAndSaved = 0;
@@ -79,7 +86,7 @@ namespace HydroDesktop.Search.Download
         }
 
 
-        private int _remainingSeries;
+        private volatile int _remainingSeries;
         public int RemainingSeries
         {
             get { return _remainingSeries; }
