@@ -1,0 +1,116 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Example Configuration 3 - Bidirectional Link &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="config.xml file" href="config.html" />
+    <link rel="prev" title="Example Configuration 2 - Penman-Monteith" href="ExConfig2.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Example Configuration 3 - Bidirectional Link</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="config.html" title="config.xml file" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="ExConfig2.html" title="Example Configuration 2 - Penman-Monteith" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="example-configuration-3-bidirectional-link">
+<span id="index-0"></span><h1>Example Configuration 3 - Bidirectional Link<a class="headerlink" href="#example-configuration-3-bidirectional-link" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig100.png" src="../../_images/HM_fig100.png" />
+</div>
+<p>Example configuration 3&#8217;s primary objective is to solve for the concentration of a contaminant in a river and its riverbed by simultaneously solving for both the soil and the water concentrations using a bidirectional link.  To do this, the process is broken up into two seperate components.  The two components are the water advection and sediment diffusion models.  Advection is generally associated with the lateral movement of the contaminant and diffusion with the infiltration into the soil.  The water advection model is comprised of movement in both the x and z direction.  The sediment diffusion model is only concerned with contanimants moving in the z direction.  A clearer representation of this is given in the image below.  The flow velocity and diffusion coefficients are required to help use determine the level of contamination in the soil and water.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig101.png" src="../../_images/HM_fig101.png" />
+</div>
+<p>These two components are both derived from the equation shown below.  D represents the diffusion coefficients in the x and z directions.  u represents the velocity in the x direction and v represents the velocity in the z direction.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig102.png" src="../../_images/HM_fig102.png" />
+</div>
+<p>To obtain the equation for the water advection component, we only concern ourselves with the x and z direction since we assume that the dominate means of contaminant transportation is advection in the x direction and diffusion in the z direction.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig103.png" src="../../_images/HM_fig103.png" />
+</div>
+<p>We use similar assumptions to help us derive the sediment diffusion component.  Only concerned with the diffusion in the z direction, we can reduce the equation as follows.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig104.png" src="../../_images/HM_fig104.png" />
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Jun 17, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

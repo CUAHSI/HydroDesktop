@@ -1,0 +1,235 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial 2: Creating and Running a Model Composition &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="Tutorial 3: Creating a New Model Component" href="Tutorial03.html" />
+    <link rel="prev" title="Tutorial 1: Quick Start" href="Tutorial01.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Tutorial 2: Creating and Running a Model Composition</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="Tutorial03.html" title="Tutorial 3: Creating a New Model Component" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="Tutorial01.html" title="Tutorial 1: Quick Start" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tutorial-2-creating-and-running-a-model-composition">
+<span id="index-0"></span><h1>Tutorial 2: Creating and Running a Model Composition<a class="headerlink" href="#tutorial-2-creating-and-running-a-model-composition" title="Permalink to this headline">¶</a></h1>
+<p>The purpose of this tutorial is to show how to create a project by linking  components in HydroDesktop and how to execute and view model output through the HydroDesktop user interface.  In short, the goal of this tutorial is to create the project in example configuration 4 (watershed runoff calculation using TOPMODEL).</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component.  We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of Topographic index for every pixel in the watershed, model parameters (m, To, and canopy interception), and two input exchange items (precipitation and evapotranspiration).  In this example, we will obtain daily precipitation from a HydroDesktop database file.  These files were downloaded earlier from the HIS web services.  Daily potential evapotranspiration rate will be calculated and delivered by a Hargreaves model component. This Hargreaves component will be linked to the HydroDesktop database which will supply three input exchange items (maximum, minimum, and average daily temperature). Finally, the TOPMODEL component will be connected to a trigger to initiate the model run, and to the  DbWriter component to store the streamflow values to the HydroDesktop database. Finally, the stored streamflow can be plotted as a time series using the HydroDesktop Graph View tab and compared to observed streamflow values.</p>
+</div>
+<div class="section" id="creating-the-composition">
+<h2>Creating the Composition<a class="headerlink" href="#creating-the-composition" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Open the start menu, choose Program &#8211; CUAHSI HIS &#8211; HydroDesktop.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Hydrodesktop_start4.png" src="../../_images/Hydrodesktop_start4.png" />
+</div>
+<p>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can check that you have the latest version of HydroDesktop by comparing the version number of the CUAHSI Hydro Desktop you have and the latest available on  <a class="reference external" href="http://hydrodesktop.codeplex.com">http://hydrodesktop.codeplex.com</a>. This tutorial was written using HydroDesktop version 1.2537.0.</p>
+</div>
+<ol class="arabic simple" start="2">
+<li>Choose Create New Empty Project button.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/newproject4.png" src="../../_images/newproject4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="3">
+<li>Load the HydroModeler plugin by selecting the Orb icon in the upper left corner of the screen - Extensions - HydroModeler.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/extensions4.png" src="../../_images/extensions4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="4">
+<li>Set the current directory to <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models/TOPMODEL</em>.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/CurrentDirectory4.png" src="../../_images/CurrentDirectory4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="5">
+<li>Edit the Topmodel.omi and be sure that the TopModel.Linkable_Component&#8221; Assembly  is pointing to the TopModel.dll file. Check the path of both the input TI_raster and config.xml files, and revise the values of the input model parameters if necessary.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/TopModel.omi4.png" src="../../_images/TopModel.omi4.png" />
+</div>
+<ol class="arabic simple" start="6">
+<li>Follow the same procedures to be sure that the Hargreaves, DbReader, and Dbwriter omi files are setup correctly.</li>
+<li>Right click on the HydroModeler workspace and select Add Model.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/ModelAdding5.png" src="../../_images/ModelAdding5.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="8">
+<li>Navigate to <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models</em> and add both models (TopModel and Hargreaves),and add the DbReader and DbWriter components from <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his</em>. Now all the models should be added to the HydroModeler workspace. Right-click in the HydroModeler workspace and select Add Trigger. A Trigger starts the simulation by invoking the component communication for each time step.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Component4.png" src="../../_images/Component4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="9">
+<li>From the top bar choose table and the press change button to define the path for the SQlite database file. Navigate to <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his</em> and select the data repository.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/tables4.png" src="../../_images/tables4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="10">
+<li>Return back to the HydroModeler tab. Right-click in the HydroModeler workspace and select Add Connection. Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign it as the target component.</li>
+<li>Click on the arrow mark to open a connection properties window. Click the (+) mark for Temperature  of the Dbreader Output Exchange Items to show the three exchange items.  Check Coweeta max Temperature box and Hargreaves PET Max Temp box, and then press apply to activate the link. Repeat to link the Min Temp exchange items as well.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Dbconnection4.png" src="../../_images/Dbconnection4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="12">
+<li>Connect the DbReader to the TopModel component to supply the TopModel with the precipitation data for the Coweeta watershed. Choose DbReader as a source and TopModel as a target component.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/DbTopmodel4.png" src="../../_images/DbTopmodel4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="13">
+<li>Connect the Hargreaves PET as a source component to supply the calculated PET values to the TopModel component.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/hargreaves-TopModel4.png" src="../../_images/hargreaves-TopModel4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="14">
+<li>Link the TopModel Component as a source to the DbWriter to store the output data (streamflow).</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/DbWriter-TopModel4.png" src="../../_images/DbWriter-TopModel4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="15">
+<li>Link the TopModel as a source component to the trigger.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/TopModel-Trigger4.png" src="../../_images/TopModel-Trigger4.png" />
+</div>
+<p>.</p>
+</div>
+<div class="section" id="running-the-composition">
+<h2>Running the Composition<a class="headerlink" href="#running-the-composition" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple" start="16">
+<li>Right click in the HydroModeler workspace and select Run.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/run4.png" src="../../_images/run4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="17">
+<li>Select Set all within Events listened during calculation, click Latest overlapping to determine the simulation end time, and finally click RUN!!.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/runsetup4.png" src="../../_images/runsetup4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="18">
+<li>Simulation running.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/duringruning4.png" src="../../_images/duringruning4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="19">
+<li>Simulation finish succesfully.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/finishsuccess4.png" src="../../_images/finishsuccess4.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="20">
+<li>Go for the table tab.</li>
+</ol>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Jun 18, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
