@@ -3,9 +3,7 @@
 *.opr file
 ==========
 
-*OpenMI project file*.  After compiling and linking all the models and tools in your project, your project will be saved with the following extension.  This will be helpful to you in the future once you begin creating projects as you will not need to recreate a specific setup of components and links.  Analysis of hydrological data will more than likely require multiple iterations and having these .opr files saved will prevent you from wasting a lot of time reproducing these projects.
-
-This is what a .opr file looks like when loaded into HydroModeler.
+*OpenMI project file*.  An OpenMI project file (or *.opr file) defines a linked composition of model components.  The opr file is an xml file and can be exited with any text editor.  It can also be run using a command line utility provided by the OpenMI Technical Association.  An image of an opr file vieed within HydroModeler is below.
 
 .. figure:: ./images/KeyTerms/HM_fig2.png
    :align: center

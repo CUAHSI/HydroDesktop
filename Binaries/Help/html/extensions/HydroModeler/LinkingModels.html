@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Linking Models into Compositions &mdash; HydroDesktop Help</title>
+    <title>How to Link Models into a Composition &mdash; HydroDesktop Help</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
     <link rel="up" title="HydroModeler" href="HydroModeler.html" />
-    <link rel="next" title="Running a Model Composition" href="RunningComposition.html" />
-    <link rel="prev" title="Opening an OpenMI Project File" href="OpeningOprFile.html" />
+    <link rel="next" title="How to Run a Model Composition" href="RunningComposition.html" />
+    <link rel="prev" title="How to Open an OpenMI Project File" href="OpeningOprFile.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -34,10 +34,10 @@
 <div id="header">
         <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
         <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Linking Models into Compositions</div>
+    <div class="breadcrumb">How to Link Models into a Composition</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="RunningComposition.html" title="Running a Model Composition" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="OpeningOprFile.html" title="Opening an OpenMI Project File" accesskey="P">previous</a></div>
+	<div class="pagebutton"><a href="RunningComposition.html" title="How to Run a Model Composition" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="OpeningOprFile.html" title="How to Open an OpenMI Project File" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
@@ -77,57 +77,57 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="linking-models-into-compositions">
-<span id="index-0"></span><h1>Linking Models into Compositions<a class="headerlink" href="#linking-models-into-compositions" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="how-to-link-models-into-a-composition">
+<span id="index-0"></span><h1>How to Link Models into a Composition<a class="headerlink" href="#how-to-link-models-into-a-composition" title="Permalink to this headline">¶</a></h1>
 <p>The purpose of linking the models together is to transfer data back and forth between models so that you are able to calculate the required data for your project.  In this demonstration, we will be recreating example configuration 3.</p>
 <ol class="arabic simple">
 <li>To link models together, we first need to place a few models within the HydroModeler plugin in HydroDesktop.  Navigate to the model folder within example_configuration_03.  Inside these folders you will find the Sediment_Diff and Water_adv .omi files.  Add these to your project.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig12.png" src="../../_images/HM_fig12.png" />
+<img alt="../../_images/HM_fig19.png" src="../../_images/HM_fig19.png" />
 </div>
 <ol class="arabic simple" start="2">
 <li>Next, you will want to add a trigger.  Locate the Composition section in the main ribbon and click Add Trigger.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig22.png" src="../../_images/HM_fig22.png" />
+<img alt="../../_images/HM_fig29.png" src="../../_images/HM_fig29.png" />
 </div>
 <ol class="arabic simple" start="3">
 <li>Now that our components have been place, we can begin to link them together.  Find the Add Connection button located at the top in the main ribbon.  First click your starting model and then click again on the model you wish for your link to end.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig32.png" src="../../_images/HM_fig32.png" />
+<img alt="../../_images/HM_fig310.png" src="../../_images/HM_fig310.png" />
 </div>
 <ol class="arabic simple" start="4">
 <li>For some intances, you may have a project that needs the link to work in both directions.  You can repeat the above directions but switch the order in which you click the models.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig42.png" src="../../_images/HM_fig42.png" />
+<img alt="../../_images/HM_fig49.png" src="../../_images/HM_fig49.png" />
 </div>
 <ol class="arabic simple" start="5">
 <li>You may link as many models and in any direction as you wish but note that the trigger can only function as a terminal end to a link and only one model may be linked to it.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig51.png" src="../../_images/HM_fig51.png" />
+<img alt="../../_images/HM_fig57.png" src="../../_images/HM_fig57.png" />
 </div>
 <ol class="arabic simple" start="6">
 <li>Once the link has been made, you need to modify it to determine what information will be conveyed through the link.  To do this, click the link to access the Connection Properties.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig6.png" src="../../_images/HM_fig6.png" />
+<img alt="../../_images/HM_fig63.png" src="../../_images/HM_fig63.png" />
 </div>
 <ol class="arabic simple" start="7">
 <li>You will see two boxes, one labeled Output Exchange Items and one labeled Input Exchange Items.  Expand the desired input and output variables you would like for the model to utilize and select the appropriate location.  The location can be found as a subset of a selected variable.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig7.png" src="../../_images/HM_fig7.png" />
+<img alt="../../_images/HM_fig72.png" src="../../_images/HM_fig72.png" />
 </div>
 <ol class="arabic simple" start="8">
 <li>Note that within the location branch, there are Element Mappers.  These are built in functions to help you mediate your data if they do not overlay eachother.  More than likely, you will not need to check anything here.  To confirm that your data is appropriate, you may click the ElementSet button to display a visual representation of your data.</li>
 <li>Now click apply and notice that a link has been created in the links box.  Different links can be created and stored in the links box and you can apply or delete them as you see fit.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig8.png" src="../../_images/HM_fig8.png" />
+<img alt="../../_images/HM_fig81.png" src="../../_images/HM_fig81.png" />
 </div>
 <ol class="arabic simple" start="10">
 <li>Your have created your link and you can exit the Connection Properties dialog box by clicking close.</li>
@@ -142,7 +142,7 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Jun 17, 2011.&nbsp;
+      &nbsp;Last updated on Jun 18, 2011.&nbsp;
       &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>

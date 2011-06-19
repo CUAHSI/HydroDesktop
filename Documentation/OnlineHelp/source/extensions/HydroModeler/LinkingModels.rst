@@ -1,7 +1,7 @@
 .. index:: LinkingModels
 
-Linking Models into Compositions
-================================
+How to Link Models into a Composition
+=====================================
 
 The purpose of linking the models together is to transfer data back and forth between models so that you are able to calculate the required data for your project.  In this demonstration, we will be recreating example configuration 3.
    

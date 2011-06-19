@@ -2,48 +2,50 @@
 
 Tutorial 2: Creating and Running a Model Composition
 ====================================================
-The purpose of this tutorial is to show how to create a project by linking ready developed components in HydroDesktop, and finally extract the data that are calculated. In this demonstration, we will create example configuration 4 (watershed runoff calculation using TopModel). 
+The purpose of this tutorial is to show how to create a project by linking  components in HydroDesktop and how to execute and view model output through the HydroDesktop user interface.  In short, the goal of this tutorial is to create the project in example configuration 4 (watershed runoff calculation using TOPMODEL). 
 
-Composite structure
--------------------
-In this exercise we are interested in calculating the runoff (mm/day) using TopModel component for watershed number 18 in cowetta watershed, Asheville, NC. TopModel component needs an ascii raster of Topographic index for every pixel in the watershed, model parameter (m - To - interception), and  two input exchange items (Daily Precipitation-Daily Potential Evapotranspiration) changing with every time step. First, daily precipitation rate (mm) is obtained from the Db reader (connected to data base). Second, daily evapotranspiration rate (mm/day) is calculated and delivered by Hargreaves component. Db reader supply three input exchange items (Maximum - Minimum - Average) daily Temperature to Hargreaves component. The Db reader is connected to the stored data of watershed 18. Finally, the TopModel will be connected with a trigger to start the calculation at every time step (day), and the Db writer component to store the runoff value to data base. The stored runoff can be plotted as a time series using hydrodesktop graph.
+Overview
+--------
+In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component.  We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of Topographic index for every pixel in the watershed, model parameters (m, To, and canopy interception), and two input exchange items (precipitation and evapotranspiration).  In this example, we will obtain daily precipitation from a HydroDesktop database file.  These files were downloaded earlier from the HIS web services.  Daily potential evapotranspiration rate will be calculated and delivered by a Hargreaves model component. This Hargreaves component will be linked to the HydroDesktop database which will supply three input exchange items (maximum, minimum, and average daily temperature). Finally, the TOPMODEL component will be connected to a trigger to initiate the model run, and to the  DbWriter component to store the streamflow values to the HydroDesktop database. Finally, the stored streamflow can be plotted as a time series using the HydroDesktop Graph View tab and compared to observed streamflow values.
 
-Composite Creation
---------------
+Creating the Composition
+------------------------
 
-1. Open the start menu and from program choose the CAUHSI HIS, then press hydrodesktop icon.
+1. Open the start menu, choose Program -- CUAHSI HIS -- HydroDesktop.
 
 
 .. figure:: ./images/Tutorial02/Hydrodesktop_start.png
    :align: center
 .
 
-2. Check that you have the latest version of hydrodesktop by comparing the version number  of the CUAHSI Hydro Desktop you have and the latest available on  http://hydrodesktop.codeplex.com/releases/view/59853 (ex; Hydro Desktop version is 1.2537.0). Choose Create New Empty Project button.
+.. NOTE::
+	You can check that you have the latest version of HydroDesktop by comparing the version number of the CUAHSI Hydro Desktop you have and the latest available on  http://hydrodesktop.codeplex.com. This tutorial was written using HydroDesktop version 1.2537.0. 
+	
+2. Choose Create New Empty Project button.
   
 .. figure:: ./images/Tutorial02/newproject.png
    :align: center
 .
 
-3.	Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler.
+3.	Load the HydroModeler plugin by selecting the Orb icon in the upper left corner of the screen - Extensions - HydroModeler.
 
 .. figure:: ./images/Tutorial02/extensions.png
    :align: center
 .
 
 
-4.	Navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04-models/TOPMODEL*. 
+4.	Set the current directory to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models/TOPMODEL*. 
 
 .. figure:: ./images/Tutorial02/CurrentDirectory.png
    :align: center
 .
 
-5.	Edit the Topmodel.omi and be sure that the TopModel.Linkable_Component" Assembly  is pointing relatively toward the right TopModel.dll file of the model. check the path of both the input TI_raster,configuration file.xml, and revise the values of the input model parameters.
+5.	Edit the Topmodel.omi and be sure that the TopModel.Linkable_Component" Assembly  is pointing to the TopModel.dll file. Check the path of both the input TI_raster and config.xml files, and revise the values of the input model parameters if necessary.
 
 .. figure:: ./images/Tutorial02/TopModel.omi.png
    :align: center
 
-6.	Follow the same procedures to be sure that  the Hargreaves, Db reader, Dbwriter omi files are  pointing toward the right .dll file and DataRepository.sqlite.
-
+6.	Follow the same procedures to be sure that the Hargreaves, DbReader, and Dbwriter omi files are setup correctly.
 
 7.	Right click on the HydroModeler workspace and select Add Model.
 
@@ -51,39 +53,39 @@ Composite Creation
    :align: center
 .
 
-8.	 Navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models* and add both models (TopModel-Hargreaves),and add the DbReader and DbWriter components from *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his*. Now all the models should be added to the HydroModeler workspace. Right click in the HydroModeler workspace and select Add Trigger. A Trigger starts the simulation by invoking the action GetValues on the model at a specified time. 
+8.	 Navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models* and add both models (TopModel and Hargreaves),and add the DbReader and DbWriter components from *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his*. Now all the models should be added to the HydroModeler workspace. Right-click in the HydroModeler workspace and select Add Trigger. A Trigger starts the simulation by invoking the component communication for each time step. 
 
 .. figure:: ./images/Tutorial02/Component.png
    :align: center
 .
 
-9.	From the top bar choose table and press change button to define the path for the SQlite database file, navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his* and select weather Data repository.
+9.	From the top bar choose table and the press change button to define the path for the SQlite database file. Navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his* and select the data repository.
 
 .. figure:: ./images/Tutorial02/tables.png
    :align: center
 .
 
-10.	Return back to the HydroModeler tab. Right click in the HydroModeler workspace and select Add Connection. Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign as a target component.
+10.	Return back to the HydroModeler tab. Right-click in the HydroModeler workspace and select Add Connection. Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign it as the target component.
 
-11.	Click on the arrow mark to open a connection properties window. Define the output exchange item that will be supplied as an input exchange item.  Click the (+) mark for Temperature  of the Dbreader Output Exchange Items to show the three exchanging Temperature items,  check Coweeta max Temperature box and Hargreaves PET Max Temp box, and then press apply to activate the link. Repeat for all links. 
+11.	Click on the arrow mark to open a connection properties window. Click the (+) mark for Temperature  of the Dbreader Output Exchange Items to show the three exchange items.  Check Coweeta max Temperature box and Hargreaves PET Max Temp box, and then press apply to activate the link. Repeat to link the Min Temp exchange items as well. 
 
 .. figure:: ./images/Tutorial02/Dbconnection.png
    :align: center
 .	
 
-12.	Connect the Dbreader to the TopModel to supply the TopModel with the precipitation data of Coweeta watershed. Choose Dbreader as a source and TopModel as a target component. 
+12.	Connect the DbReader to the TopModel component to supply the TopModel with the precipitation data for the Coweeta watershed. Choose DbReader as a source and TopModel as a target component. 
 
 .. figure:: ./images/Tutorial02/DbTopmodel.png
    :align: center
 .	
 
-13.	Connect the Hargreaves PET as a source component to supply the daily calculated PET  to TopModel component. 	
+13.	Connect the Hargreaves PET as a source component to supply the calculated PET values to the TopModel component. 	
 
 .. figure:: ./images/Tutorial02/hargreaves-TopModel.png
    :align: center
 .
 
-14.	Link the TopModel Component as a source to the Db Writer to store the output data (daily runoff hydrograph).
+14.	Link the TopModel Component as a source to the DbWriter to store the output data (streamflow).
 
 .. figure:: ./images/Tutorial02/DbWriter-TopModel.png
    :align: center
@@ -94,6 +96,9 @@ Composite Creation
 .. figure:: ./images/Tutorial02/TopModel-Trigger.png
    :align: center
 .
+
+Running the Composition
+-----------------------
 
 16.	Right click in the HydroModeler workspace and select Run.	
 

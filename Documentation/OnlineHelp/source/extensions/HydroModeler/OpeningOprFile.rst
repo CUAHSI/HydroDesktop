@@ -1,7 +1,7 @@
 .. index:: OpeningOprFile
 
-Opening an OpenMI Project File
-==============================
+How to Open an OpenMI Project File
+==================================
 
 A simple model configuration can be created and executed using freely available model components provided by the HydroDesktop community.  This section describes how to access the pre-developed model components built in to HydroModeler.  If you have downloaded a stable release of HydroDesktop, a few preset example configurations will be available to you and displayed in the left hand box of the HydroModeler window. 
 Within each of these example configurations exist a "bin" folder, which contains all of the libraries needed to run the model, a "data" folder, which contains all of the necessary input files for each model component and a "models" folder, which contains files pertaining to each individual model components.

@@ -3,42 +3,45 @@
 Tutorial 1: Quick Start
 =======================
 
-The quick start tutorial will familiarize you with the HydroModeler interface as we as teach you how to open a pre existing project.
+The quick start tutorial will familiarize you with the HydroModeler interface as we as teach you how to open a pre-existing project.
    
 Starting HydroModeler
 ---------------------
 
-1. Begin by going to the start menu and, from program, choose the CAUHSI HIS, then press the hydrodesktop icon.  Click ok on the initial dialog box.  This is the HydroDesktop interface, which consists of the map and the map layers box.  With the map layers box, you are able to enable or disable a range of options that display simple base data (countries of the world, U.S states, major rivers and lakes, watersheds) to the map. The other parts are the Graph View and Table view menu. By default the map view does not contain any site with hydrological time series data.
+1. Begin by going to the start menu and, from program, choose the CUAHSI HIS, then press the HydroDesktop icon.  Click ok on the initial dialog box.  
 
 .. figure:: ./images/Tutorial01/HM_fig1.png
-   :align: center
+   :align: center 
+.
+   
+This will start HydroDesktop (shown below), which consists of the map and the map layers box.  With the map layers box, you are able to enable or disable a range of options that display simple base data (countries of the world, U.S states, major rivers and lakes, watersheds) to the map. The other parts are the Graph View and Table view menu.
 
 .. figure:: ./images/Tutorial01/HM_fig2.png
    :align: center
-
-2. Check that you have the latest version of hydrodesktop by comparing the version number  of the CUAHSI Hydro Desktop you have and the latest available on  http://hydrodesktop.codeplex.com/releases/view/59853 (ex; Hydro Desktop version is 1.2537.0).
-
-3. Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler.
+.
+   
+2. Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler.
 
 .. figure:: ./images/Tutorial01/HM_fig3.png
    :align: center
-
-4. A new screen will appear.  This is the HydroModeler plug in's interface.
+.
+   
+A new tab will appear in HydroDesktop.  This is the HydroModeler plug-in's user interface.
 
 .. figure:: ./images/Tutorial01/HM_fig4.png
    :align: center
+.
 
-   
 HydroModeler Plugin
 -------------------
 
-1. HydroModeler is a plugin application that extends the core HydroDesktop application to support hydrologic modeling.  HydroModeler makes use of the OpenMI standard to provide a "plug and play" framework.  By adopting the OpenMI standard HydroModeler is able to focus on the specific task of running integrated modeling configurations.
+HydroModeler is a plugin application that extends the core HydroDesktop application to support hydrologic modeling.  HydroModeler makes use of the OpenMI standard to provide a "plug and play" framework.  By adopting the OpenMI standard HydroModeler is able to focus on the specific task of running integrated modeling configurations.
 
-2. There are a number of tools located in the ribbon that will help you organize, navigate and create your project files.
+There are a number of tools located in the ribbon that will help you organize, navigate and create your project files.
 
 .. figure:: ./images/Tutorial01/HM_fig5.png
    :align: center
-
+.
 
 + *Open.*  This button will allow you to open any projects you may have created or downloaded by using the windows browser to navigate to the files location.
 + *Save.*  This button will allow you to save any projects currently open in the HydroModeler interface.  If an instance of the project has already been saved and you are continuing to edit it, this button will allow you to quickly resave the file under the same name and location.
@@ -58,19 +61,20 @@ Open an Existing Model
 
 A simple model configuration can be created and executed using freely available model components, provided by the HydroDesktop community.  This section describes how to utilize pre-developed model components to recreate a model simulation.  
 
-1. At the top of the page there is an area labeled Current Directory.  By default, the current directory will already be set to the pre existing example configurations that come with the HydroModeler plug in.  In the window to the left you should see the folders within the HydroModeler example configuration folder.  Double click on example_configuration_4.  The HydroModeler window should now look like this: 
+1. In the window to the left you should see the folders within the HydroModeler example configuration folder.   Double click on example_configuration_4.  The HydroModeler window should now look like this: 
 
 .. figure:: ./images/Tutorial01/HM_fig6.png
    :align: center
+.
+   
+.. NOTE::
+	At the top of the page there is an area labeled Current Directory. You can change the current directory to any path on the computer using this textbox. By default, the current directory will already be set to the pre-existing example configurations that come with the HydroModeler plug in.  If none of the example configurations are present in the left hand box, look to the top of the page and find the area labeled Current Directory.  Click the button to the right of the text box and navigate to the following directory. C:/Program Files/CUAHSI HIS/HydroDesktop/Plugins/HydroModeler/hydromodeler_example_configuration. Note that the exact location will vary slight, based on where you installed HydroDesktop.
+.
 
-2. If none of the example configurations are present in the left hand box, look to the top of the page and find the area labeled Current Directory.  Click the button to the right of the text box and navigate to the following directory.
-
-**Program Files/CUAHSI HIS/HydroDesktop/Plugins/HydroModeler/hydromodeler_example_configuration**
-*(Note that the exact location will vary slight, based on where you installed HydroDesktop)*
-
-3. Now double click the .opr file to add it to your HydroModeler interface.
+2. Double-click the OpenMI Pproject file (*.opr) to add it to your HydroModeler canvas.
 
 .. figure:: ./images/Tutorial01/HM_fig7.png
    :align: center
+.
 
-4. The project has now loaded and you can edit or run the project as you see fit.  Continue with tutorial 2 to learn how to edit and create your own components and projects.
+3. Press the Run button from the user interface to execute the project. Tutorial 2 will demonstrate how to view the output from the model, and how to constructe the model by linking components.  

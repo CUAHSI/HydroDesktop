@@ -1,7 +1,7 @@
 .. index:: RunningComposition
 
-Running a Model Composition
-===========================
+How to Run a Model Composition
+==============================
 
 This page will show you how to run your projects and extract the data that is calculated.
 

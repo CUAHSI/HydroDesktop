@@ -3,14 +3,12 @@
 Tutorial 3: Creating a New Model Component
 ==========================================
    
-The purpose of this tutorial is to show how to create a new component from scratch. In this demonstration, using Visual Studio C#. 
-
-C# is an object oriented programming language designed for building a wide variety of applications that run on the .NET Framework.  The .NET Framework is a Windows component that supports building and running of applications and Web services.  The key components of the .NET Framework are the common language runtime and the class library.  The class library is a collection of classes, interfaces, and value types that are included in the Microsoft .NET Framework.  The class library is designed to be the foundation on which the .NET Framework applications, components, and controls are built. 
+The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2.  We will use C#.Net in this demonstration. C# is an object oriented programming language designed for building a wide variety of applications that run on the .NET Framework.  W
 
 
 Hargreaves Component Structure
 ------------------------------
-Hargreaves is an Evapotranspiration model, that is simple in practical use.  It requires only two easily accessible parameters, temperature and solar energy. The total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component need three input exchange items  (Maximum - Minimum - Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration) 
+Hargreaves is a simple potential evapotranspiration model that requires only temperature and solar energy. The total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component requires three input exchange items  (Maximum - Minimum - Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration) 
 
 Getting stared with Visual C#
 ------------------------------
@@ -22,6 +20,7 @@ Getting stared with Visual C#
 .. figure:: ./images/Tutorial03/HM_fig44.png
    :align: center
 
+   
 3. If you are learning C# or need a refresher there are many tutorials available on-line that can help.  The address below will take you to Microsoft's Development Network were they have a beginners learning center.  There are several links available here for learning Visual Studio C# and Visual Studio Basic: http://msdn.microsoft.com/en-us/beginner/bb308734.aspx
 
 .. index:: 
@@ -30,9 +29,9 @@ Getting stared with Visual C#
 Sample Component
 ----------------
 
-The sample component is a shell of how code should be written to run in HydroDesktop.  This component can be used as a guide to create and run more meaningful hydrological applications.    
+The sample component we will start from is a shell of how code should be written to run in HydroDesktop.  This component can be used as a guide to create and run more meaningful hydrological applications.    
 
-1. Download the latest version of HydroDesktop http://hydrodesktop.codeplex.com/SourceControl/list/changesets.
+1. Download the latest version of HydroDesktop source code from http://hydrodesktop.codeplex.com/SourceControl/list/changesets.
 
 .. figure:: ./images/Tutorial03/Download.png
    :align: center
@@ -50,28 +49,28 @@ The sample component is a shell of how code should be written to run in HydroDes
 Create Hargreaves component using Microsoft Visual C#.
 ---------------------------------------------- 
 
-1. Open the start menu and from program choose Microsoft Visual studio, then Microsoft Visual studio.
+1. Open the start menu and from program choose Microsoft Visual Studio, then Microsoft Visual Studio.
 
 .. figure:: ./images/Tutorial03/open.png
    :align: center
 .
 
-2.Open the Visual studio C# and create a new project. choose Visual C#, Class Library, named as Hargreaves, Browse the location tab path and point to this path *C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components*.
+2.Open the Visual Studio C# and create a new project. Choose Visual C#, Class Library, and name the project as Hargreaves. Browse to the location tab path and point hto this path *C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components*.
 
 .. figure:: ./images/Tutorial03/class.png
    :align: center
 .
 
-3. Add two folders (source - data), copy class1.cs into source folder and rename it Hargreaves.cs 
+3. Add two folders (source and data), copy class1.cs into the source folder and rename it it Hargreaves.cs 
 
 .. figure:: ./images/Tutorial03/folders.png
    :align: center
 
 
 Adding References
-'''''''''''
+'''''''''''''''''
 
-A reference is a file that is required to run the code you have written.  Usually a reference identifies a dll (Dynamic Linking Library) file.  The references can be viewed by expanding the Reference option listed in the Solution Explorer window located on the upper right side of the page.  
+A reference to a library is required to run the code you have written.  Usually a reference identifies a dll (Dynamic Linking Library) file.  The references can be viewed by expanding the Reference option listed in the Solution Explorer window located on the upper right side of the page.  
 
 1. Right click on Reference and select Add Reference.
 
@@ -94,7 +93,7 @@ A reference is a file that is required to run the code you have written.  Usuall
 Namespaces
 '''''''''''
 
-Namespaces allow you a way to organize your code.  The "using" directive can be implemented as a way of accessing members of a namespace without having to type out their full name each time they are used.  When a new project is created several common namespaces are inserted. 
+Namespaces provide you a way to organize your code.  The "using" directive can be implemented as a way of accessing members of a namespace without having to type out their full name each time they are used.  When a new project is created, several common namespaces are inserted. 
 
 1. Implement the using directive to add the namespaces of the references we add.
 
@@ -106,8 +105,9 @@ Namespaces allow you a way to organize your code.  The "using" directive can be 
 
 
 Create the Linkable component
-''''''''''''''''''''''''''''
-1.Add a new class under the source folder and rename it as LinkableComponent (camel back typing). 
+'''''''''''''''''''''''''''''
+
+1.Add a new class under the source folder and rename it as LinkableComponent. 
 
 .. figure:: ./images/Tutorial03/linkablecomponent.png
    :align: center
@@ -122,10 +122,10 @@ Create the Linkable component
 .. index:: 
    single: Create the Configuration Xml
 
-Create the Configuration Xml
-''''''''''''''''''''''''''''
+Create the Configuration xml file
+'''''''''''''''''''''''''''''''''
 
-Configuration file define the exchange items (output - input) of the component, and the time horizon of the component (start - end - step) time. 
+The configuration file defines the exchange items (output and input) of the component, the time horizon of the component (start and end times), as well as the time step of the component.   
 
 1. Add a xml file to the Data folder.
 
@@ -135,15 +135,15 @@ Configuration file define the exchange items (output - input) of the component, 
    :align: center
 .
 
-3. Hargreaves component have three input exchange items, one output exchange item.
+3. Create three input exchange items and one output exchange item for the Hargreaves component.
 
-4. In output exchange item we define the Element set(ID - Description - path for output shape file, if necessary), and Quantity (ID - Dimensions - units - value type).
+4. In output exchange item, define the Element set and Quantity as shown below.
 
 .. figure:: ./images/Tutorial03/outputexchangeitem.png
    :align: center
 .
 
-5. In input exchange item we define Element set (ID - Description - path for input shape file, if necessary), and Quantity (ID - Dimensions - units - value type). Repeat for the rest of the exchange items
+5. Do the same for the input exchange items as shown below.  
 
 .. figure:: ./images/Tutorial03/inputexchangeitem.png
    :align: center
@@ -154,14 +154,14 @@ Configuration file define the exchange items (output - input) of the component, 
 
 
 Create the omi file
-''''''''''''''''''
+'''''''''''''''''''
  **omi** is defined by (Linkable component - *relative* location for component dll - path for cofiguration.xml - input & output arguments)
 
-1. Create a xml file, add it under data folder and name it as Hargreaves.
+1. Create an xml file, add it under data folder and name it as Hargreaves.
 
 2. Change the file extension to omi.
 
-3. Define the relative path for the Hargeaves.dll.
+3. Define the relative path to the Hargeaves.dll.
 
 4. Define an argument (Key - ReadOnly - Value) for the configuration file. Key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and Value points to the *relative* location of the configuration.xml.
 
@@ -175,12 +175,12 @@ Create the omi file
 .. index:: 
    single: Methods
 
-Methods
-''''''''
+Implementing the Model Methods
+''''''''''''''''''''''''''''''
 
 There are several major parts to this code:
 
-1. Defining the global variables- In this section variables are defined using specific data types such as string, integer, double, and Boolean.
+1. *Defining the global variables* In this section variables are defined using specific data types such as string, integer, double, and Boolean.
 
 
 .. figure:: ./images/Tutorial03/variable.png
@@ -188,7 +188,7 @@ There are several major parts to this code:
 .
 
 
-2. The Finish method- This section of code tells the application to write output files based on data acquired during the simulation.
+2. *The Finish method* This section of code tells the application to write output files based on data acquired during the simulation.
 
 
 .. figure:: ./images/Tutorial03/finish.png
@@ -196,7 +196,7 @@ There are several major parts to this code:
 .
 
 
-3. The Initialize method- Gives the application instructions on operations that need to be preformed prior to running the simulation.  This section locates the configuration file and sets internal variables in OpenMI.
+3. *The Initialize method* This section gives the application instructions on operations that need to be preformed prior to running the simulation.  This section locates the configuration file and sets internal variables in OpenMI.
 
 
 .. figure:: ./images/Tutorial03/start.png
@@ -204,7 +204,7 @@ There are several major parts to this code:
 .
 
 
-4. The Calculations Section- For the Sample Component, the calculation section is written so that the application simply generates random numbers. 
+4. *The Calculations Section* For the Sample Component, the calculation section is written so that the application computes PET according to the Hargreaves formula. 
 
   
 .. figure:: ./images/Tutorial03/preform.png
@@ -322,7 +322,6 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 9. In the Calculated PET() method (method created to calculate the Evapotranspiration rate)
 
 
-  
 .. figure:: ./images/Tutorial03/PET .png
    :align: center
 
