@@ -80,5 +80,11 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// for which the value is valid
         /// </summary>
         public double TimeSupport { get; set; }
+        /// <summary>
+        /// This is the concept keyword returened by HIS Central
+        /// If the variable is not registered, then an empty
+        /// keyword is returned.
+        /// </summary>
+        public string ConceptKeyword { get; set; }
     }
 }

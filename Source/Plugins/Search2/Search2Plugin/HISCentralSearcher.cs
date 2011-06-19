@@ -422,6 +422,8 @@ namespace HydroDesktop.Search
                             series.TimeUnit = r.Value;
                             break;
                         case "conceptkeyword":
+                            r.Read();
+                            series.ConceptKeyword = r.Value;
                             break;
                         case "gencategory":
                             r.Read();
@@ -430,7 +432,7 @@ namespace HydroDesktop.Search
                         case "timesupport":
                             r.Read();
                             series.TimeSupport = Convert.ToDouble(r.Value, CultureInfo.InvariantCulture);
-                            break;
+                            break;     
                     }
                 }
                 else if (r.NodeType == XmlNodeType.EndElement && nodeName == "seriesrecord")
