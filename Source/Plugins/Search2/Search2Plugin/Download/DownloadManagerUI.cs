@@ -93,12 +93,63 @@ namespace HydroDesktop.Search.Download
                 return;
             }
 
+            dpInfo.PropertyChanged += dpInfo_PropertyChanged;
+            // Set current values
+            dpInfo_PropertyChanged(this, new PropertyChangedEventArgs("DownloadedAndSaved"));
+            dpInfo_PropertyChanged(this, new PropertyChangedEventArgs("WithError"));
+            dpInfo_PropertyChanged(this, new PropertyChangedEventArgs("TotalSeries"));
+            dpInfo_PropertyChanged(this, new PropertyChangedEventArgs("RemainingSeries"));
+            dpInfo_PropertyChanged(this, new PropertyChangedEventArgs("EstimatedTime"));
+
+            // Cross thread databinding not works correct
+            /* 
             lcDownloadedAndSavedInfo.DataBindings.Add(new Binding("Text", dpInfo, "DownloadedAndSaved"));
             lcWithErrorInfo.DataBindings.Add(new Binding("Text", dpInfo, "WithError"));
             lcTotalSeriesInfo.DataBindings.Add(new Binding("Text", dpInfo, "TotalSeries"));
             lcRemainingSeriesInfo.DataBindings.Add(new Binding("Text", dpInfo, "RemainingSeries"));
             lcEstimatedTimeInfo.DataBindings.Add(new Binding("Text", dpInfo, "EstimatedTime"));
+             */
         }
+
+        void dpInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var dpInfo = _manager.DownloadProgressInfo; // to avoid long names
+            if (e.PropertyName == "DownloadedAndSaved")
+            {
+                ThreadSafeSetText(lcDownloadedAndSavedInfo, dpInfo.DownloadedAndSaved.ToString());
+            }
+            else if (e.PropertyName == "WithError")
+            {
+                ThreadSafeSetText(lcWithErrorInfo, dpInfo.WithError.ToString());
+            }
+            else if (e.PropertyName == "TotalSeries")
+            {
+                ThreadSafeSetText(lcTotalSeriesInfo, dpInfo.TotalSeries.ToString());
+            }
+            else if (e.PropertyName == "RemainingSeries")
+            {
+                ThreadSafeSetText(lcRemainingSeriesInfo, dpInfo.RemainingSeries.ToString());
+            }
+            else if (e.PropertyName == "EstimatedTime")
+            {
+                ThreadSafeSetText(lcEstimatedTimeInfo, dpInfo.EstimatedTime.ToString());
+            }
+        }
+
+        private static void ThreadSafeSetText(Label label, string value)
+        {
+            if (label.InvokeRequired)
+            {
+                label.Invoke((Action<Label, string>)SetTextToLabel, label, value);
+            }
+            else
+                SetTextToLabel(label, value);
+        }
+        private static void SetTextToLabel(Label label, string value)
+        {
+            label.Text = value;
+        }
+
 
         private void BindDownloadInfoTable()
         {
@@ -161,6 +212,8 @@ namespace HydroDesktop.Search.Download
             _manager.Completed -= _manager_Completed;
             _manager.Canceled -= _manager_Canceled;
             _manager.OnMessage -= _manager_OnMessage;
+
+            _manager.DownloadProgressInfo.PropertyChanged -= dpInfo_PropertyChanged;
 
             btnCancel.Enabled = false;
 
