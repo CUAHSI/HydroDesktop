@@ -140,7 +140,7 @@ namespace HydroDesktop.Search.Download
         {
             if (label.InvokeRequired)
             {
-                label.Invoke((Action<Label, string>)SetTextToLabel, label, value);
+                label.BeginInvoke((Action<Label, string>)SetTextToLabel, label, value);
             }
             else
                 SetTextToLabel(label, value);
