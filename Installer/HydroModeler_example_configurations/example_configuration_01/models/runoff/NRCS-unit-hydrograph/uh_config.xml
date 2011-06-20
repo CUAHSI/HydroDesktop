@@ -13,13 +13,17 @@
         <Description>Runoff</Description>
         <Dimensions>
           <Dimension>
+            <Base>Length</Base>
+            <Power>3</Power>
+          </Dimension>
+          <Dimension>
             <Base>Time</Base>
-            <Power>1</Power>
+            <Power>-1</Power>
           </Dimension>
         </Dimensions>
         <Unit>
-          <ID>cm</ID>
-          <Description>Centimeter</Description>
+          <ID>cubic meters per second</ID>
+          <Description>cubic meters per second</Description>
           <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
