@@ -1061,7 +1061,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //if pan is currently selected, disable it
             this.Ispan = false;
-            RibbonButton s = ((RibbonButton)rps[4].Items[0]);
+            RibbonButton s = ((RibbonButton)rps[3].Items[0]);
             s.Checked = false;
 
 
