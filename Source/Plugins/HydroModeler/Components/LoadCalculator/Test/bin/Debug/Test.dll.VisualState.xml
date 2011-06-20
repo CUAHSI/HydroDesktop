@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
+  <TopNode>[0-1004]C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\LoadCalculator\Test\bin\Debug\Test.dll</TopNode>
+  <SelectedNode>[0-1000]Test.Test_Class</SelectedNode>
+  <ExcludeCategories>false</ExcludeCategories>
+  <Nodes>
+    <Node UniqueName="[0-1004]C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\LoadCalculator\Test\bin\Debug\Test.dll" Expanded="true" />
+    <Node UniqueName="[0-1005]Test" Expanded="true" />
+    <Node UniqueName="[0-1000]Test.Test_Class" Expanded="true" />
+  </Nodes>
+</VisualState>
