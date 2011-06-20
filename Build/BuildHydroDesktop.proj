@@ -134,9 +134,10 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
                 ComVisible="false"
                 CLSCompliant="true"
                 Guid="5c7aa218-d015-40ed-b09e-ed92a9daf26c"
-               AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" 
+               AssemblyFileVersion="$(ReleaseVersion)" 
                 AssemblyVersion="$(Major).$(Minor).0.0" />
   </Target>
+   <!-- AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" -->
   <Target Name="Build"
   DependsOnTargets="CleanSource;Clean;VersionConfig;BuildMain;BuildCorePlugins">
   <!--  <CallTarget Targets="ConflictingDLLCheck" /> -->
