@@ -100,7 +100,7 @@ Accessing the output data
 
 Now that you have run your composition, the data calculated will be stored to your computer in a specific location.
 
-1. For this tutorial, that data can be located in */Program Files/CUAHSI HIS/HydroDesktop/Plugins/HydroModeler/hydromodeler_example_configurations/example_configuration_04/data/cuahsi-his*
+1. For this tutorial, that data can be located in *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his*
 
 
 2. Click on the Table tab located in HydroDesktop and then click Change in the Database section located in the ribbon.
