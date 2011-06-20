@@ -1,7 +1,7 @@
 <guiComposition version="1.0">
   <models>
     <model omi="data\cuahsi-his\DbReader.omi" rect_x="90" rect_y="66" rect_width="115" rect_height="75" />
-    <model omi="models\Hargreaves-Samani\Hargreaves.omi" rect_x="339" rect_y="66" rect_width="115" rect_height="75" />
+    <model omi="models\Hargreaves-PET\Hargreaves.omi" rect_x="339" rect_y="66" rect_width="115" rect_height="75" />
     <model omi="data\cuahsi-his\DbWriter.omi" rect_x="457" rect_y="270" rect_width="115" rect_height="75" />
     <model omi="models\TOPMODEL\Topmodel.omi" rect_x="190" rect_y="271" rect_width="115" rect_height="75" />
     <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="204" rect_y="436" rect_width="100" rect_height="100" />
