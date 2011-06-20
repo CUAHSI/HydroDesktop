@@ -191,3 +191,58 @@ Viewing Model Output
    :align: center
    
 |
+
+3.	You will now see all available data series.
+
+|
+ 
+.. figure:: ./images/Tutorial02/Table2.png
+   :align: center
+
+|
+
+5.	Switch to the *Graph* tab to plot the results.
+ 
+|
+
+.. figure:: ./images/Tutorial02/graph.png
+   :align: center
+
+|
+
+6.	Load the measured and calculated runoff data series for the Coweeta watershed, *Flume at watershed 18*.  We can now compare our calculated streamflow with known observation.
+
+|
+
+.. figure:: ./images/Tutorial02/graph2.png
+   :align: center
+
+|
+
+7.	To get a better view of how well our calculation matches the known observations, zoom into the simulation period by drawing a box around the data series using the mouse.
+
+|
+
+.. figure:: ./images/Tutorial02/graph4.png
+   :align: center
+   
+|
+
+.. NOTE::
+    After comparing the results, we can return back to the HydroModeler tab and change model parameters and then re-run the simulation to produce a better fit between calulated and observed streamflow. 
+
+|
+
+9.	Next, uncheck the streamflow data series and instead select precipitation to show the input precipitation data series.  This can also be done with the temperature data series.
+
+
+.. figure:: ./images/Tutorial02/graph5.png
+   :align: center
+.
+
+10.	To utilize our calculation outside of HydroDesktop, we can export it using the "Export" ribbon button located on the Table tab. 
+
+.. figure:: ./images/Tutorial02/export.png
+   :align: center
+
+
