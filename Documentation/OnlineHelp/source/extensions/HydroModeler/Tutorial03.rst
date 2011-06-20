@@ -49,7 +49,7 @@ The sample component we will start from is a shell of how code should be written
 Create Hargreaves component using Microsoft Visual C#.
 ---------------------------------------------- 
 
-1. Open the start menu and from program choose Microsoft Visual Studio, then Microsoft Visual Studio.
+1. Open the start menu-Microsoft Visual Studio- Microsoft Visual Studio.
 
 .. figure:: ./images/Tutorial03/open.png
    :align: center
@@ -97,8 +97,20 @@ Namespaces provide you a way to organize your code.  The "using" directive can b
 
 1. Implement the using directive to add the namespaces of the references we add.
 
-.. figure:: ./images/Tutorial03/system.png
-   :align: center
+.. code-block:: c#
+
+      using System;    
+      using System.Collections.Generic;
+      using System.Linq;
+      using System.Text;
+      using System.IO;
+      using Oatc.OpenMI.Sdk.Backbone;
+      using Oatc.OpenMI.Sdk.Buffer;
+      using Oatc.OpenMI.Sdk.DevelopmentSupport;
+      using Oatc.OpenMI.Sdk.Wrapper;
+      using SMW;
+
+
 
 .. index:: 
    single: Create the Linkable component
@@ -139,15 +151,73 @@ The configuration file defines the exchange items (output and input) of the comp
 
 4. In output exchange item, define the Element set and Quantity as shown below.
 
-.. figure:: ./images/Tutorial03/outputexchangeitem.png
-   :align: center
+.. code-block:: XML
+
+        <OutputExchangeItem>
+        <ElementSet>
+        <ID>Coweeta</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>PET</ID>
+        <Description>Potential Evapotranspiration</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/day</ID>
+          <Description>Millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+
 .
 
-5. Do the same for the input exchange items as shown below.  
+5. Do the same for the input exchange items as shown below. 
 
-.. figure:: ./images/Tutorial03/inputexchangeitem.png
-   :align: center
+
+.. code-block:: XML
+
+        <InputExchangeItem>
+        <ElementSet>
+        <ID>Climate Station 01</ID>
+        <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
+        <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Min Temp</ID>
+        <Description>Minimum Daily Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Temperature</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>Celsius</ID>
+          <Description>Degrees Celsius</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+
 .
+
 
 .. index:: 
    single: Create the omi file
@@ -167,8 +237,16 @@ Create the omi file
 
 5. Add an argument named Output to define the relative location of the output csv file.
 
-.. figure:: ./images/Tutorial03/omi.png
-   :align: center
+
+.. code-block:: XML
+
+        <LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\..\bin\Hargreaves.dll">
+        <Arguments>
+        <Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" />
+        <Argument Key="Output" ReadOnly="true" Value=".\Pet_Output.csv" />
+        </Arguments>
+        </LinkableComponent
+
 .
  
 
@@ -182,34 +260,185 @@ There are several major parts to this code:
 
 1. *Defining the global variables* In this section variables are defined using specific data types such as string, integer, double, and Boolean.
 
+.. code-block:: c#
+	
+        namespace Hargreaves
+        {
+        public class Engine : SMW.Wrapper
+        {
+        #region
+        public string[] input_quantity;
+        public string output_quantity;
+        public string[] input_elementset;
+        public string output_elementset;
+        Dictionary<DateTime, double[]> _output;
+        string output_path = "./hargreaves_output.txt";
 
-.. figure:: ./images/Tutorial03/variable.png
-   :align: center
+        public Engine()
+        {
+            _output = new Dictionary<DateTime,double[]>();
+        }
+        #endregion
+        }
+        }
+
 .
 
 
 2. *The Finish method* This section of code tells the application to write output files based on data acquired during the simulation.
 
+.. code-block:: c#
 
-.. figure:: ./images/Tutorial03/finish.png
-   :align: center
+        public override void Finish()
+        {
+        StreamWriter sw = new StreamWriter(output_path,false);
+
+        //write header line
+        sw.WriteLine("Simulation Time, PET[mm/day]");
+
+        //write all values
+        foreach (KeyValuePair<DateTime, double[]> kvp in _output)
+        {
+        sw.Write(String.Format("{0:MM/dd/yyyy: hh:mm tt}", kvp.Key));
+        for (int i = 0; i <= kvp.Value.Length - 1; i++)
+        sw.Write("," + kvp.Value[i]);
+        sw.Write("\n");
+        }
+
+        //close file
+        sw.Close();
+        }
+
 .
 
 
 3. *The Initialize method* This section gives the application instructions on operations that need to be preformed prior to running the simulation.  This section locates the configuration file and sets internal variables in OpenMI.
 
+.. code-block:: c#
+ 
+        public override void Initialize(System.Collections.Hashtable properties)
+        {
+            //---- get configuration data
+            string config = null;
+            if (properties.ContainsKey("ConfigFile"))
+                config = properties["ConfigFile"].ToString();
+            else
+                throw new Exception("A configuration file must be supplied for the Hargreaves component!!!");
 
-.. figure:: ./images/Tutorial03/start.png
-   :align: center
+            if (properties.ContainsKey("Output"))
+                output_path = properties["Output"].ToString();
+
+            //---- set smw parameters
+            this.SetVariablesFromConfigFile(config);
+            this.SetValuesTableFields();
+
+            //---- get exhange item attributes
+            //-- input exchange items
+            int num_inputs = this.GetInputExchangeItemCount();
+            input_elementset = new string[num_inputs];
+            input_quantity = new string[num_inputs];
+            for(int i=0; i<= num_inputs-1; i++)
+            {
+                InputExchangeItem input = this.GetInputExchangeItem(i);
+                input_elementset[i] = input.ElementSet.ID;
+                input_quantity[i] = input.Quantity.ID;
+            }
+
+            //-- output exchange items
+            int num_outputs = this.GetOutputExchangeItemCount();
+            OutputExchangeItem output = this.GetOutputExchangeItem(num_outputs - 1);
+            output_elementset = output.ElementSet.ID;
+            output_quantity = output.Quantity.ID;
+
+
+        }
+
 .
 
 
 4. *The Calculations Section* For the Sample Component, the calculation section is written so that the application computes PET according to the Hargreaves formula. 
 
-  
-.. figure:: ./images/Tutorial03/preform.png
-   :align: center
+.. code-block:: c#
+
+ public override bool PerformTimeStep()
+        {
+            //---- get input data
+            //-- temp
+            double[] temp = ((ScalarSet)this.GetValues(input_quantity[0], input_elementset[0])).data;
+            //-- max temp
+            double[] maxtemp = ((ScalarSet)this.GetValues(input_quantity[1], input_elementset[1])).data;
+            //-- min temp
+            double[] mintemp = ((ScalarSet)this.GetValues(input_quantity[2], input_elementset[2])).data;
+
+            //---- calculate pet for each element
+            //-- get the number of elements (assuming that they're all the same)
+            int elemcount = this.GetInputExchangeItem(0).ElementSet.ElementCount;
+            double[] pet = new double[elemcount];
+            for (int i = 0; i <= elemcount - 1; i++)
+            {
+                pet[i] = CalculatePET(temp[i], mintemp[i], maxtemp[i], i);
+            }
+
+            //---- save output values
+            DateTime dt = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetCurrentTime()).ModifiedJulianDay);
+            _output.Add(dt, pet);
+
+            //---- set output values
+            this.SetValues(output_quantity, output_elementset, new ScalarSet(pet));
+
+            //---- advance to the next timestep
+            this.AdvanceTime();
+
+            return true;
+        }
+
 .
+
+5.	In the PerformTimeStep we call the *CalculatePET* method, That is used to calculate the Potential Evapotranspiration using four input parameters.First, Averaged daily temperature. Second, Minimum daily temperature. Third, Maximum daily temperature.  Finally the element index parameter used to define the elementset calculated. The *CalculatedPET* returns the PET in mm/day.
+
+.. code-block:: c#
+
+        /// <summary>
+        /// Calculates the potential evapotranspiration using the Hargreaves-Samani method
+        /// </summary>
+        /// <param name="T">Averaged daily temperature</param>
+        /// <param name="Tmin">Minimum daily temperature</param>
+        /// <param name="Tmax">Maximum daily temperature</param>
+        /// <param name="e">element index</param>
+        /// <returns>PET in mm/day</returns>
+        public double CalculatePET(double T, double Tmin, double Tmax, int eid)
+        {
+
+
+            //---- calculate the relative distance between the earth and sun
+            //-- get julien day
+            TimeStamp ts = (TimeStamp)this.GetCurrentTime();
+            DateTime dt = CalendarConverter.ModifiedJulian2Gregorian(ts.ModifiedJulianDay);
+            int j = dt.DayOfYear;
+            double dr = 1 + 0.033 * Math.Cos((2 * Math.PI * j) / 365);
+
+            //---- calculate the solar declination
+            double d = 0.4093 * Math.Sin((2 * Math.PI * j) / 365 - 1.405);
+
+            //---- calculate the sunset hour angle
+            //-- get latitude in degrees
+            ElementSet es = (ElementSet)this.GetInputExchangeItem(0).ElementSet;
+            Element e = es.GetElement(eid);
+            double p = e.GetVertex(0).y * Math.PI / 180;
+            //-- calc ws
+            double ws = Math.Acos(-1 * Math.Tan(p) * Math.Tan(d));
+
+            //---- calculate the total incoming extra terrestrial solar radiation 
+            double Ra = 15.392 * dr * (ws * Math.Sin(p) * Math.Sin(d) + Math.Cos(p) * Math.Cos(d) * Math.Sin(ws));
+
+            //---- calculate PET (From Hargreaves and Samani 1985)
+            //-- calculate latent heat of vaporization (from Water Resources Engineering, David A. Chin)
+            double L = 2.501 - 0.002361 * T;
+            double PET = (0.0023 * Ra * Math.Sqrt(Tmax - Tmin) * (T + 17.8)) / L;
+
+            return PET;
+            
+        }
 
 Within the Finish method there is code telling the application where to write the output file.  This line should be changed now to specify where you would like the output file to be created.  If you choose not to change the code then by default the output text file created by HydroModeler will go up two directories from where you run HydroDesktop.  
 
@@ -295,8 +524,34 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 
   * Call the initialize method.
 
-.. figure:: ./images/Tutorial03/intialization .png
-   :align: center
+.. code-block:: c#
+       
+       [Test]
+        namespace Test
+       {
+       [TestFixture]
+       public class TestClass
+       {
+        Hargreaves.Engine hargreaves;
+
+        [TestFixtureSetUp]
+        public void Initialize()
+        {
+            //---- create instance of the hargreaves model
+            hargreaves = new Hargreaves.Engine();
+
+            //---- define input arguments
+            System.Collections.Hashtable args = new System.Collections.Hashtable();
+            args.Add("ConfigFile", "../../../data/config.xml");
+
+            //---- call the initialize method
+            hargreaves.Initialize(args);
+
+            Debug.WriteLine("Initialize has completed successfully");
+
+        }
+
+
 
 7. In the PreformTimeStep() method test.
 
@@ -310,20 +565,65 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
   * Assert that calculated values are equal to the known values of the test.
 
 
-.. figure:: ./images/Tutorial03/preformtest .png
-   :align: center
+
+.. code-block:: c#
+        
+        [Test]
+        public void PerformTimeStep()
+        {
+            Debug.WriteLine("\n\n---------------------------------------------------");
+            Debug.WriteLine("Running the 'PerformTimeStep' Test");
+            Debug.WriteLine("---------------------------------------------------");
+
+            //---- put data into IValueSets
+            IValueSet temp = new ScalarSet(new double[1] { 19 });
+            IValueSet mintemp = new ScalarSet(new double[1] { 17 });
+            IValueSet maxtemp = new ScalarSet(new double[1] { 21 });
+
+            //---- set values
+            hargreaves.SetValues("Temp", "Climate Station 01",temp);
+            hargreaves.SetValues("Min Temp", "Climate Station 01", mintemp);
+            hargreaves.SetValues("Max Temp", "Climate Station 01", maxtemp);
+
+            //---- call perform time step
+            hargreaves.PerformTimeStep();
+
+            //---- read calculated results
+            double[] pet = ((ScalarSet)hargreaves.GetValues("PET", "Coweeta")).data;
+
+            double chk = Math.Round(pet[0], 2);
+            Assert.IsTrue(chk == 1.16, "The calculated value of " + chk.ToString() + " does not equal the known value of 1.16");
+        }
 
 8. In the Finish() method test.
 
-.. figure:: ./images/Tutorial03/finishtest .png
-   :align: center
+.. code-block:: c#
+        
+        [Test]
+        public void Finish()
+        {
+            engine.Finish();
+        }
+
 
 
 9. In the Calculated PET() method (method created to calculate the Evapotranspiration rate)
 
 
-.. figure:: ./images/Tutorial03/PET .png
-   :align: center
+.. code-block:: c#
+        
+        [Test]
+        public void CalculatePET()
+        {
+            Debug.WriteLine("\n\n---------------------------------------------------");
+            Debug.WriteLine("Running the 'CalculatePET' Test");
+            Debug.WriteLine("---------------------------------------------------");
+
+            double Pet = hargreaves.CalculatePET(19, 17, 21, 0);
+
+            double chk = Math.Round(Pet,2);
+            Assert.IsTrue(chk == 1.16, "The calculated value of " + chk.ToString() + " does not equal the known value of 1.16");
+        }
 
 
 
