@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1119D6E1-5337-42C6-BBDA-3658808F319C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>EditView</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\..\Binaries\Plugins\EditView\</OutputPath>
+    <DocumentationFile>EditView.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Binaries\Plugins\EditView\</OutputPath>
+    <DocumentationFile>EditView.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\..\Binaries\Plugins\EditView\</OutputPath>
+    <DocumentationFile>EditView.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\..\Binaries\Plugins\EditView\</OutputPath>
+    <DocumentationFile>EditView.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="ZedGraph, Version=5.1.4.31904, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\DataSeriesHandling.vb" />
+    <Compile Include="Classes\QualifierHandling.vb" />
+    <Compile Include="Controls\cEditView.Designer.vb">
+      <DependentUpon>cEditView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cEditView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fVariablesTableManagement.Designer.vb">
+      <DependentUpon>fVariablesTableManagement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fVariablesTableManagement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fQualifiersTableManagement.Designer.vb">
+      <DependentUpon>fQualifiersTableManagement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fQualifiersTableManagement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fAddNewPoint.Designer.vb">
+      <DependentUpon>fAddNewPoint.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fAddNewPoint.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fChangeYValue.Designer.vb">
+      <DependentUpon>fChangeYValue.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fChangeYValue.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fQualityControlLevelTableManagement.Designer.vb">
+      <DependentUpon>fQualityControlLevelTableManagement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fQualityControlLevelTableManagement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fMethodTableManagement.Designer.vb">
+      <DependentUpon>fMethodTableManagement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fMethodTableManagement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\cTimeSeriesPlot.Designer.vb">
+      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cTimeSeriesPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\fDeriveNewDataSeries.Designer.vb">
+      <DependentUpon>fDeriveNewDataSeries.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\fDeriveNewDataSeries.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OrderChange.Designer.vb">
+      <DependentUpon>OrderChange.vb</DependentUpon>
+    </Compile>
+    <Compile Include="OrderChange.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlotOptions.vb" />
+    <Compile Include="Statistics.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\cEditView.resx">
+      <DependentUpon>cEditView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fVariablesTableManagement.resx">
+      <DependentUpon>fVariablesTableManagement.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fQualifiersTableManagement.resx">
+      <DependentUpon>fQualifiersTableManagement.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fAddNewPoint.resx">
+      <DependentUpon>fAddNewPoint.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fChangeYValue.resx">
+      <DependentUpon>fChangeYValue.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fQualityControlLevelTableManagement.resx">
+      <DependentUpon>fQualityControlLevelTableManagement.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fMethodTableManagement.resx">
+      <DependentUpon>fMethodTableManagement.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cTimeSeriesPlot.resx">
+      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\fDeriveNewDataSeries.resx">
+      <DependentUpon>fDeriveNewDataSeries.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrderChange.resx">
+      <DependentUpon>OrderChange.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\DataSources\HydroDesktop.Database.Config.datasource" />
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="References\ZedGraph.dll" />
+    <None Include="Resources\Interpolate.png" />
+    <None Include="Resources\DeriveNewSeries.png" />
+    <None Include="Resources\Edit.png" />
+    <None Include="Resources\Restore.png" />
+    <None Include="Resources\Save.png" />
+    <None Include="Resources\ChangeValue.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\Add.png" />
+    <None Include="Resources\Flag.png" />
+    <None Include="Resources\Tag.png" />
+    <None Include="Resources\EditView_icon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

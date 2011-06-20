@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Testing Green Ampt</ID>
+        <Description>Example 6.15 in Water Resources Engineering, David A. Chin</Description>
+        <ShapefilePath>..\..\..\Data\elements.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Pe  </ID>
+        <Description>Excess Precip</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm</ID>
+          <Description>millimeters</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Test</ID>
+        <Description>Example 6.15 in Water Resources Engineering, David A. Chin</Description>
+        <Version>1</Version>
+        <ShapefilePath>..\..\..\Data\elements.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>P</ID>
+        <Description>Rainfall</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/h</ID>
+          <Description>millimeters per hour</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>05/29/2009 1:00:00 </StartDateTime>
+    <EndDateTime>05/29/2009 2:00:00 </EndDateTime>
+    <TimeStepInSeconds>600</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>GreenAmpt Infiltration</ID>
+    <Description>none</Description>
+  </ModelInfo>
+</Configuration>
