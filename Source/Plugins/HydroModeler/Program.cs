@@ -113,7 +113,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             RibbonPanel dir_panel = new RibbonPanel("Current Directory", RibbonPanelFlowDirection.Bottom);
             RibbonPanel utility_panel = new RibbonPanel("Utilities", RibbonPanelFlowDirection.Bottom);
             RibbonPanel help_panel = new RibbonPanel("Help", RibbonPanelFlowDirection.Bottom);
-            RibbonPanel view_panel = new RibbonPanel("View", RibbonPanelFlowDirection.Bottom);
+            RibbonPanel view_panel = new RibbonPanel("Pan", RibbonPanelFlowDirection.Bottom);
 
             
 
@@ -253,8 +253,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             l.Add(menu_panel);
             l.Add(model_tools);
             l.Add(dir_panel);
-            l.Add(help_panel);
             l.Add(view_panel);
+            l.Add(help_panel);
 
             return l;
         }
