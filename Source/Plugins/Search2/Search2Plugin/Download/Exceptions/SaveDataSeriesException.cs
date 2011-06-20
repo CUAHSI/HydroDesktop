@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace HydroDesktop.Search.Download.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when saving data series into database.
+    /// </summary>
     class SaveDataSeriesException : Exception
     {
         private const string DEFAULT_MESSAGE = "Save Data Series Exception.";

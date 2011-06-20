@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace HydroDesktop.Search.Download.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when too much series in downloaded xml file (expected 1 series).
+    /// </summary>
     class TooMuchSeriesFromXmlException : Exception
     {
         private const string DEFAULT_MESSAGE = "Too much series in xml file. Expected: 1.";
