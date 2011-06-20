@@ -1,11 +1,11 @@
 .. index:: RunningComposition
 
-How to Run a Model Composition
+How to Run a Model Configuration
 ==============================
 
 This page will show you how to run your projects and extract the data that is calculated.
 
-1.	Begin by loading your composition into the Hydromodeler plug in.  I will be using example configuration 2 in my images.
+1.	Begin by loading your configuration into the Hydromodeler plug in.  I will be using example configuration 2 in my images.
 
 .. figure:: ./images/RunningComposition/HM_fig1.png
    :align: center

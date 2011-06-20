@@ -1,6 +1,6 @@
 .. index:: LinkingModels
 
-How to Link Models into a Composition
+How to Link Models into a Configuration
 =====================================
 
 The purpose of linking the models together is to transfer data back and forth between models so that you are able to calculate the required data for your project.  In this demonstration, we will be recreating example configuration 3.
@@ -10,7 +10,7 @@ The purpose of linking the models together is to transfer data back and forth be
 .. figure:: ./images/LinkingModels/HM_fig1.png
    :align: center
 
-2.	Next, you will want to add a trigger.  Locate the Composition section in the main ribbon and click Add Trigger.
+2.	Next, you will want to add a trigger.  Locate the Composition panel of the ribbon toolbar and click Add Trigger.
 
 .. figure:: ./images/LinkingModels/HM_fig2.png
    :align: center
