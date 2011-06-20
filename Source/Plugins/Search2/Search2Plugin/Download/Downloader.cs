@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using DotSpatial.Data;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -21,15 +19,6 @@ namespace HydroDesktop.Search.Download
 
         //to store the proxy class for each WaterOneFlow web service for re-use
         private readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
-
-        private DateTime _startDate;
-        private DateTime _endDate;
-        private string _themeName;
-        private string _themeDescription;
-        private int _numDownloadedSeries = 0;
-        private string _connectionString;
-
-        private IFeatureSet _featureSet;
         private static readonly object _syncObject = new object();
 
         #endregion
@@ -49,88 +38,10 @@ namespace HydroDesktop.Search.Download
         #region Properties
 
         /// <summary>
-        /// Gets or sets the start date of all downloaded time series
-        /// </summary>
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set { _startDate = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the end date of all downloaded  time series
-        /// </summary>
-        public DateTime EndDate
-        {
-            get { return _endDate; }
-            set { _endDate = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the theme name (name of feature set where site locations are stored)
-        /// </summary>
-        public string ThemeName
-        {
-            get { return _themeName; }
-            set { _themeName = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the theme description
-        /// </summary>
-        public string ThemeDescription
-        {
-            get { return _themeDescription; }
-            set { _themeDescription = value; }
-        }
-        /// <summary>
-        /// Gets the number of data series that were downloaded
-        /// </summary>
-        public int NumDownloadedSeries
-        {
-            get { return _numDownloadedSeries; }
-        }
-
-        public IFeatureSet ThemeFeatureSet
-        {
-            get { return _featureSet; }
-            set { _featureSet = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the database connection string
         /// </summary>
-        public string ConnectionString
-        {
-            get { return _connectionString; }
-            set { _connectionString = value; }
-        }
+        public string ConnectionString { get; set; }
 
-        #endregion
-
-        #region File I/O Methods
-        /// <summary>
-        /// Gets the temporary directory for xml files downloaded
-        /// by HydroDesktop
-        /// </summary>
-        /// <returns>the directory path</returns>
-        public string GetXmlTempDirectory()
-        {
-            //Check if we need to create a temporary folder for storing the xml file
-            string tempDirectory = Path.Combine(Path.GetTempPath(), "HydroDesktop");
-            if (Directory.Exists(tempDirectory) == false)
-            {
-                try
-                {
-                    Directory.CreateDirectory(tempDirectory);
-                }
-                catch
-                {
-                    tempDirectory = Path.GetTempPath();
-                }
-            }
-            return tempDirectory;
-        }
         #endregion
 
         #region Web Service Methods
@@ -144,7 +55,7 @@ namespace HydroDesktop.Search.Download
         /// <returns>the appropriate WaterOneFlow client</returns>
         private WaterOneFlowClient GetWsClientInstance(string wsdl)
         {
-            WaterOneFlowClient wsClient = null;
+            WaterOneFlowClient wsClient;
 
             lock (_syncObject)
             {
@@ -226,7 +137,7 @@ namespace HydroDesktop.Search.Download
         }
 
         /// <summary>
-        /// creates a new DataSeries from a xml file and saves it to database.
+        /// Creates a new DataSeries from a xml file and saves it to database.
         /// This function uses the underlying NHibernate framework to
         /// communicate with the database
         /// </summary>

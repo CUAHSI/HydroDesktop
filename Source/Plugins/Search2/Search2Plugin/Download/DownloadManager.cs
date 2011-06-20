@@ -87,6 +87,9 @@ namespace HydroDesktop.Search.Download
             DoLogInfo("Starting downloading...");
         }
 
+        /// <summary>
+        /// Cancel downloading.
+        /// </summary>
         internal void Cancel()
         {
             _worker.CancelAsync();
@@ -100,12 +103,18 @@ namespace HydroDesktop.Search.Download
             DoLogInfo("Cancelling...");
         }
 
+        /// <summary>
+        /// Show UI of download manager.
+        /// </summary>
         internal void ShowUI()
         {
             if (_downloadManagerUI == null) return;
             _downloadManagerUI.Show();
         }
 
+        /// <summary>
+        /// Hide UI of download manager.
+        /// </summary>
         internal void HideUI()
         {
             if (_downloadManagerUI == null) return;
@@ -179,15 +188,12 @@ namespace HydroDesktop.Search.Download
 
             var arg = (DownloadArgWrapper)e.Argument;
             var downloadList = arg.DownloadArg.DownloadList;
+                    
+            const int maxThreadsToDownloadCount = 4;                                    // max count of downloading threads
+            var commonInfo = new CommnonDoDownloadInfo(downloadList, new Downloader()); // common info, shared through downloading threads
 
-            var objDownloader = new Downloader();
-            var numTotalSeries = downloadList.Count;
-            
-            const int maxThreadsCount = 4;
-            var waitReset = new ManualResetEvent(false);
-            var commonInfo = new CommnonDoDownloadInfo(numTotalSeries, downloadList, waitReset, objDownloader);
-
-            for(int i = 0; i<maxThreadsCount && i <downloadList.Count; i++)
+            // Starting (if possible) maxThreadsToDownloadCount downloading threads 
+            for(int i = 0; i<maxThreadsToDownloadCount && i <downloadList.Count; i++)
             {
                 var thread = new Thread(DoDownload);
                 var dda = new DoDownloadArg(downloadList[i], commonInfo, thread);
@@ -196,9 +202,11 @@ namespace HydroDesktop.Search.Download
                 thread.Start(dda);
             }
 
+            // Starting save thread
             var saveThread = new Thread(DoSave);
             saveThread.Start(commonInfo);
 
+            // Blocking current thread until all the series will not saved, or downloading cancelled
             commonInfo.SavingWaitingEvent = new ManualResetEvent(false);
             commonInfo.SavingWaitingEvent.WaitOne();
 
@@ -422,11 +430,11 @@ finish:
         {
             private readonly ManualResetEvent _manualResetEvent;
 
-            public CommnonDoDownloadInfo(int numTotalSeries, ReadOnlyCollection<DownloadInfo> downloadList, 
-                ManualResetEvent manualResetEvent,  Downloader downloader)
+            public CommnonDoDownloadInfo(ReadOnlyCollection<DownloadInfo> downloadList, 
+                                        Downloader downloader)
             {
-                _manualResetEvent = manualResetEvent;
-                NumTotalSeries = numTotalSeries;
+                _manualResetEvent = new ManualResetEvent(false);
+                NumTotalSeries = downloadList.Count;
                 DownloadList = downloadList;
                 Downloader = downloader;
             }
