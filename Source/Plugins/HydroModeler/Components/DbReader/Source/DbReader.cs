@@ -635,7 +635,9 @@ namespace CUAHSI.HIS
                 foreach(string warning in warnings)
                     message += "\nTheme Name: "+warning;
 
-                System.Windows.Forms.MessageBox.Show(message,title,System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Warning);               
+                //TODO: write this to the output window instead of using MessageBox
+                //-- suppress the messagebox for now b/c its annoying.
+                //System.Windows.Forms.MessageBox.Show(message,title,System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Warning);               
             }
         }
 
