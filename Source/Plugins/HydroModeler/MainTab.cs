@@ -128,6 +128,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         bool _allowEdit = true;
         string opr_path;
 
+        //Dictionary<UIModel, string> _modelOmi = new Dictionary<UIModel, string>();
+        UIModel _selectedModel;
+
         #endregion
 
         /// <summary>
@@ -406,6 +409,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
 
 
+
         /// <summary>
         /// Adds one model to composition.
         /// </summary>
@@ -414,8 +418,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         {
             try
             {
+                //-- add model to composition
                 _composition.AddModel(null, fullPath);
-                
+
+                //-- save model and omi
+                //SaveModelOMI(fullPath);
             }
             catch (Exception ex)
             {
@@ -1054,7 +1061,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //if pan is currently selected, disable it
             this.Ispan = false;
-            RibbonButton s = ((RibbonButton)rps[4].Items[0]);
+            RibbonButton s = ((RibbonButton)rps[3].Items[0]);
             s.Checked = false;
 
 
@@ -1213,7 +1220,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         private void contextModelRemove_Click(object sender, System.EventArgs e)
         {
+            //-- remove model
             _composition.RemoveModel((UIModel)_contextSelectedObject);
+
+            //-- remove saved omi
+            //this.RemoveModelOMI((UIModel)_contextSelectedObject);
+
 
             //--- update ribbon controls ---
             //disable "add connection"
@@ -1380,6 +1392,22 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // Left mouse button
             if (e.Button == MouseButtons.Left)
             {
+                //-- clear listview
+                this.properties.Items.Clear();
+
+                //-- change selected model back to default color
+                if (_selectedModel != null)
+                    for(int i=0; i<=_composition.Models.Count-1;i++)
+                        if( ((UIModel)_composition.Models[i]) == _selectedModel)
+                        {
+                            ((UIModel)_composition.Models[i]).Color = System.Drawing.Color.LightGreen;
+                            _selectedModel = null;
+                            _currentFile = null;
+                            _allowEdit = false;
+                        }
+
+                    
+                    
 
                 // if adding a connection
                 if (_isAddingConnection)
@@ -1412,6 +1440,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     {
                         // no model selected
                         StopAddingConnection();
+
+                        //reset cursor
+                        compositionBox.Cursor = Cursors.Default;
                     }
 
                     actionFoundOut = true;
@@ -1431,6 +1462,23 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         model.IsMoving = true;
 
                         actionFoundOut = true;
+
+                        //-- Make sure the trigger is not selected
+                        if (model.ModelID != "Oatc.OpenMI.Gui.Trigger")
+                        {
+                            //-- populate omi properties
+                            this.properties_populate(model.OmiFilename);
+
+                            //-- highlight model
+                            model.Color = System.Drawing.Color.MediumBlue;
+
+                            //-- set selected model
+                            _selectedModel = model;
+
+                            //-- set the current file
+                            _currentFile = model.OmiFilename;
+                            _allowEdit = true;
+                        }
                     }
                     //if in pan mode
                     else if (Ispan)
@@ -2369,6 +2417,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.fileList.Refresh();
 
 
+            //-- clear selected model from memory
+            if (_selectedModel != null)
+                for (int i = 0; i <= _composition.Models.Count - 1; i++)
+                    if (((UIModel)_composition.Models[i]) == _selectedModel)
+                    {
+                        ((UIModel)_composition.Models[i]).Color = System.Drawing.Color.LightGreen;
+                        _selectedModel = null;
+                        _currentFile = null;
+                        _allowEdit = false;
+
+                        //redraw
+                        this.Refresh();
+                    }
+
 
             //make sure the item is not a folder
             if (lvi != null)
@@ -2805,6 +2867,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         //-- properties methods
         private void properties_populate(string file)
         {
+            //-- clear listview
+            this.properties.Items.Clear();
 
             //define some colors
             //Color headerColor = Color.Gray;
@@ -3622,6 +3686,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
         private string properties_writeconfig(List<List<string>> values, string path)
         {
+            //-- get shapefile path, relative to omi
+            string[] path_parts = path.Split('\\');
+            string shapePath = "";
+            for (int i = 0; i <= path_parts.Length - 2; i++)
+                shapePath += path_parts[i] + "\\";
+
             string id = "";
             string configStream = null;
             configStream += "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" + "\n";
@@ -3651,7 +3721,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         if (File.Exists(Path.GetFullPath(values[i][j])))
                         { configStream += "\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
                         //check to see if the file exists by relative path
-                        else if (File.Exists(Path.GetFullPath(currPath + values[i][j])))
+                        else if (File.Exists(Path.GetFullPath(shapePath + values[i][j])))
                         { configStream += "\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
 
                         configStream += "\t\t\t\t<Version>" + values[i][j] + "</Version>" + "\n"; j++;
@@ -3857,7 +3927,15 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         //-- properties save button methods
         private void save_click(object sender, EventArgs e)
         {
-            string path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
+            string path = null;
+            //-- get the file path
+            if (_selectedModel != null)
+                path = _selectedModel.OmiFilename; 
+            else
+                path = openmiFiles[_currentFileItem.SubItems[0].Text + "." + _currentFileItem.SubItems[2].Text];
+            
+           
+               
 
             try
             {
@@ -3996,7 +4074,29 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
 
         #endregion
-       
+
+
+        //public void SaveModelOMI(string omiPath)
+        //{
+        //    //-- loop through all models in composition
+        //    for (int i = 0; i <= _composition.Models.Count - 1; i++)
+        //    {
+        //        //-- find model that matches this omi path
+        //        if (((UIModel)_composition.Models[i]).OmiFilename == omiPath)
+        //        {
+        //            //-- save omi
+        //            _modelOmi.Add((UIModel)_composition.Models[i], omiPath);
+        //            break;
+        //        }
+        //    }
+        //}
+
+        //public void RemoveModelOMI(UIModel model)
+        //{
+        //    //-- remove omi
+        //    _modelOmi.Remove(model);
+        //} 
+
     }
 
     public class UiLink

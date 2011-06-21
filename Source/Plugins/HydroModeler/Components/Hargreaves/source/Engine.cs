@@ -18,7 +18,7 @@ namespace Hargreaves
         public string[] input_elementset;
         public string output_elementset;
         Dictionary<DateTime, double[]> _output;
-        string output_path = "./hargreaves_output.txt";
+        string output_path = System.IO.Directory.GetCurrentDirectory() + "/output";
 
         public Engine()
         {
@@ -27,7 +27,12 @@ namespace Hargreaves
 
         public override void Finish()
         {
-            StreamWriter sw = new StreamWriter(output_path,false);
+            if (!System.IO.Directory.Exists(output_path))
+            {
+                System.IO.Directory.CreateDirectory(output_path);
+            }
+
+            StreamWriter sw = new StreamWriter(output_path + "./hargreaves_output.txt", false);
 
             //write header line
             sw.WriteLine("Simulation Time, PET[mm/day]");
@@ -49,6 +54,7 @@ namespace Hargreaves
         {
             //---- get configuration data
             string config = null;
+
             if (properties.ContainsKey("ConfigFile"))
                 config = properties["ConfigFile"].ToString();
             else
