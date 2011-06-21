@@ -142,7 +142,19 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="5">
-<li>Click once on TopModel.omi to populate its attributes in the properties window.  Make sure that the &#8220;Assembly&#8221; and &#8220;Class&#8221; properties are correct.  Next, check that the correct paths are given for inputs &#8220;TI&#8221; and &#8220;ConfigFile&#8221;.</li>
+<li>To view  Coweeta watershed # 18, click on the Home tab, use the add button, and navigate to   <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/data/gis</em>  to load the shape files of  Coweeta watershed, streams, climate station, and subbasin #18.</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure align-center">
+<img alt="../../_images/coweeta.png" src="../../_images/coweeta.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="6">
+<li>Return to the HydroModelrer tab and click once on TopModel.omi to populate its attributes in the properties window.  Make sure that the &#8220;Assembly&#8221; and &#8220;Class&#8221; properties are correct.  Next, check that the correct paths are given for inputs &#8220;TI&#8221; and &#8220;ConfigFile&#8221;.</li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -153,13 +165,13 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="6">
+<ol class="arabic simple" start="7">
 <li>Follow the same procedures to be sure that the Hargreaves, DbReader, and Dbwriter omi files are setup correctly.</li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="7">
+<ol class="arabic simple" start="8">
 <li>Now that all model inputs have been verified, we can begin to construct the model configuration.  To add a model, click the &#8220;Add Component&#8221; button on the ribbon toolbar.</li>
 </ol>
 <div class="line-block">
@@ -171,7 +183,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="8">
+<ol class="arabic simple" start="9">
 <li>Navigate to <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models</em> and add both models (TOPMODEL and Hargreaves),and add the DbReader and DbWriter components from <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his</em>. Now all the models should be added to the HydroModeler workspace. Finally, click the &#8220;Add Trigger&#8221; button on the ribbon toolbar to add a trigger component to the configuration.</li>
 </ol>
 <div class="line-block">
@@ -183,13 +195,13 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="9">
+<ol class="arabic simple" start="10">
 <li>Connections must be added between components to define how data will flow during model simualation.  To add a connection, click the &#8220;Add Connection&#8221; button on the ribbon toolbar.  Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign it as the target component.</li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="10">
+<ol class="arabic simple" start="11">
 <li>Click on the link arrow to view the connection properties between the DbReader and Hargreaves components. Expand the Temperature output exchange item of the Dbreader to view the available data series. Select &#8220;Coweeta Max Temperature&#8221; as the output exchange item and &#8220;Max Temp&#8221; as the input exchange item, then press apply to activate the link. Repeat this with the &#8220;Minimum Temperature&#8221; and &#8220;Temperature&#8221; items as well.</li>
 </ol>
 <div class="line-block">
@@ -201,7 +213,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="11">
+<ol class="arabic simple" start="12">
 <li>Add a connection between the DbReader to the TOPMODEL components.  This will serve to supply input precipitation for the Coweeta watershed to the TOPMODEL component. Choose DbReader as a source and TopModel as a target component.</li>
 </ol>
 <div class="line-block">
@@ -213,7 +225,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="12">
+<ol class="arabic simple" start="13">
 <li>Connect the Hargreaves PET as a source component to supply the calculated PET values to the TOPMODEL component.</li>
 </ol>
 <div class="line-block">
@@ -225,7 +237,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="13">
+<ol class="arabic simple" start="14">
 <li>Create a connection between the TOPMODEL and DbWriter components.  This will used to save TOPMODEL output to the HydroDesktop database.</li>
 </ol>
 <div class="line-block">
@@ -237,7 +249,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<ol class="arabic simple" start="14">
+<ol class="arabic simple" start="15">
 <li>Finally, create a connection between the TOPMODEL and the Trigger.</li>
 </ol>
 <div class="line-block">
@@ -412,8 +424,8 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Jun 20, 2011.&nbsp;
-      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.3.&nbsp;
+      &nbsp;Last updated on Jun 21, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
   </body>
