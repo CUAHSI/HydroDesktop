@@ -81,14 +81,13 @@ namespace HydroDesktop.Search.Download
         /// <exception cref="DownloadXmlException">Some exception during get values from web service</exception>
         public string DownloadXmlDataValues(DownloadInfo info)
         {
-            var wsClient = GetWsClientInstance(info.Wsdl);
             try
             {
-                return wsClient.GetValuesXML(info.FullSiteCode, info.FullVariableCode, info.StartDate, info.EndDate);
+                return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode, info.StartDate, info.EndDate);
             }
             catch(Exception ex)
             {
-                throw new DownloadXmlException(ex);
+                throw new DownloadXmlException(ex.Message, ex);
             }
         }
 
@@ -125,7 +124,7 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new DataSeriesFromXmlException(ex);
+                throw new DataSeriesFromXmlException(ex.Message, ex);
             }
 
             if (seriesList == null || seriesList.Count == 0)
@@ -157,7 +156,7 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new SaveDataSeriesException(ex);
+                throw new SaveDataSeriesException(ex.Message, ex);
             }
         }
 

@@ -184,7 +184,7 @@ namespace HydroDesktop.Search.Download
             var split = e.Message.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             split[0] = DateTime.Now.ToLongTimeString() + " " + split[0];
             foreach (var mes in split)
-                lbOutput.Items.Add(mes);
+                ThreadSafeAddItemToLog(lbOutput, mes);
 
             if (e.Exception != null)
             {
@@ -194,11 +194,26 @@ namespace HydroDesktop.Search.Download
                                             e.Exception.StackTrace);
                 split = message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 foreach (var mes in split)
-                    lbOutput.Items.Add(mes);
+                    ThreadSafeAddItemToLog(lbOutput, mes);
 
                 if (e.Exception.InnerException != null)
-                    lbOutput.Items.Add("Inner exception: " + e.Exception.InnerException.Message);
+                    ThreadSafeAddItemToLog(lbOutput, "Inner exception: " + e.Exception.InnerException.Message);
             }
+        }
+
+
+        private static void ThreadSafeAddItemToLog(ListBox listBox, object value)
+        {
+            if (listBox.InvokeRequired)
+            {
+                listBox.BeginInvoke((Action<ListBox, object>)AddItemToLog, listBox, value);
+            }
+            else
+                AddItemToLog(listBox, value);
+        }
+        private static void AddItemToLog(ListBox listBox, object value)
+        {
+            listBox.Items.Add(value);
         }
 
         void _manager_Canceled(object sender, EventArgs e)
