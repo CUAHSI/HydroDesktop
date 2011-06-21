@@ -241,18 +241,28 @@ namespace HydroDesktop.Search.Download
         {
             var dda = state as DoDownloadArg;
             if (dda == null) throw new InvalidOperationException();
-            if (_worker.CancellationPending) goto finish;
 
             var di = dda.DownloadInfo;
             var objDownloader = dda.CommnonInfo.Downloader;
           
             var startTime = DateTime.Now;
+            bool hasException = true;
             try
             {
+                if (_worker.CancellationPending) return;
+
                 di.Status = DownloadInfoStatus.Downloading;
                 di.FileName = objDownloader.DownloadXmlDataValues(di);
                 di.Status = DownloadInfoStatus.Downloaded;
-                DownloadProgressInfo.Downloaded++;
+                lock (_syncObjForDownload)
+                {
+                    dda.CommnonInfo.Downloaded.Enqueue(di);
+                    DownloadProgressInfo.Downloaded++;
+                }
+
+                hasException = false;
+                
+                DoLogInfo("Downloaded series " + DownloadProgressInfo.Downloaded + " of " + DownloadProgressInfo.TotalSeries);
             }
             catch (DownloadXmlException ex)
             {
@@ -260,7 +270,6 @@ namespace HydroDesktop.Search.Download
                 di.ErrorMessage = ex.Message;
                 DoLogError(ex.Message, ex);
                 DownloadProgressInfo.WithError++;
-                goto finish;
             }
             finally
             {
@@ -274,39 +283,45 @@ namespace HydroDesktop.Search.Download
                 DownloadProgressInfo.EstimatedTimeForDownload = interval < Int32.MaxValue
                                                                     ? new TimeSpan(0, 0, (int) interval)
                                                                     : TimeSpan.MaxValue;
-            }
 
-            Debug.Assert(File.Exists(di.FileName)); // we just downloaded this file
+                // common progress
+                if (hasException)
+                {
+                    ProgressSeries();
+                }
 
-            lock (_syncObjForDownload)
-            {
-                dda.CommnonInfo.Downloaded.Enqueue(di);
-                dda.CommnonInfo.DownloadedCount++;
+                // resume saving thread
+                dda.CommnonInfo.SaveManualResetEvent.Set();
+
+                // start new thread if need
+                if (!_worker.CancellationPending &&
+                    dda.CommnonInfo.LastDownloadingIndex < DownloadProgressInfo.TotalSeries)
+                {
+                    var thread = new Thread(DoDownload);
+                    dda.CommnonInfo.AddDonwloadingThread(thread);
+                    var ld = dda.CommnonInfo.LastDownloadingIndex;
+                    dda.CommnonInfo.LastDownloadingIndex++;
+                    thread.Start(new DoDownloadArg(dda.CommnonInfo.DownloadList[ld],
+                                                   dda.CommnonInfo, thread));
+
+                }
+
+                dda.CommnonInfo.RemoveDonwloadingThread(dda.DownloadThread);
+                if (dda.CommnonInfo.DownloadingThreadsCount == 0)
+                {
+                    DownloadProgressInfo.EstimatedTimeForDownload = new TimeSpan();
+                }
             }
-            var message = "Downloaded series " + dda.CommnonInfo.DownloadedCount + " of " + dda.CommnonInfo.NumTotalSeries;
-            var percentProgress = (dda.CommnonInfo.DownloadedCount * 100) / dda.CommnonInfo.NumTotalSeries;
+        }
+
+        private void ProgressSeries()
+        {
+            var processedCount = DownloadProgressInfo.TotalSeries - DownloadProgressInfo.RemainingSeries;
+            if (processedCount == 0) return;
+
+            var message = "Processed series " + processedCount + " of " + DownloadProgressInfo.TotalSeries;
+            var percentProgress = (processedCount * 100) / DownloadProgressInfo.TotalSeries;
             _worker.ReportProgress(percentProgress, message);
-
-finish:
-            dda.CommnonInfo.SaveManualResetEvent.Set();
-
-            // start new thread if need
-            if (dda.CommnonInfo.LastDownloadingIndex < dda.CommnonInfo.NumTotalSeries)
-            {
-                var thread = new Thread(DoDownload);
-                dda.CommnonInfo.AddDonwloadingThread(thread);
-                var ld = dda.CommnonInfo.LastDownloadingIndex;
-                dda.CommnonInfo.LastDownloadingIndex++;
-                thread.Start(new DoDownloadArg(dda.CommnonInfo.DownloadList[ld],
-                                               dda.CommnonInfo, thread));
-                
-            }
-
-            dda.CommnonInfo.RemoveDonwloadingThread(dda.DownloadThread);
-            if (dda.CommnonInfo.DownloadingThreadsCount == 0)
-            {
-                DownloadProgressInfo.EstimatedTimeForDownload = new TimeSpan();
-            }
         }
 
         private void DoSave(object state)
@@ -325,6 +340,9 @@ finish:
                     commonInfo.SaveManualResetEvent.WaitOne();
                     continue;
                 }
+
+                // Common progress
+                ProgressSeries();
 
                 DownloadInfo dInfo;
                 lock (_syncObjForDownload)
@@ -365,6 +383,8 @@ finish:
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
+
+
                 Debug.Assert(series != null);
 
                 // Save series to database
@@ -405,6 +425,8 @@ finish:
                 DoLogInfo(message);
             }
 
+            ProgressSeries();
+
             DownloadProgressInfo.EstimatedTimeForSave = new TimeSpan();
             commonInfo.SavingWaitingEvent.Set();
         }
@@ -434,7 +456,6 @@ finish:
                                         Downloader downloader)
             {
                 _manualResetEvent = new ManualResetEvent(false);
-                NumTotalSeries = downloadList.Count;
                 DownloadList = downloadList;
                 Downloader = downloader;
             }
@@ -452,10 +473,8 @@ finish:
             {
                 get { return _downloaded; }
             }
-
-            public int NumTotalSeries { get; private set; }
+          
             public ReadOnlyCollection<DownloadInfo> DownloadList { get; private set; }
-            public int DownloadedCount { get; set; }
 
             private volatile int _lastDownloadingIndex;
             public int LastDownloadingIndex

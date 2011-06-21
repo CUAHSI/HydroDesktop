@@ -34,7 +34,7 @@ namespace HydroDesktop.Search.Download
             }
         }
 
-        private volatile int _downloaded;
+        private int _downloaded;
         /// <summary>
         /// Number of downloaded series
         /// </summary>
