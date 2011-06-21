@@ -215,6 +215,11 @@ Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueNam
 Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop}"; Flags: nowait postinstall skipifsilent
 
 [InstallDelete]
+Type: files; Name: "{app}\DotSpatial.Common.dll"
+Type: files; Name: "{app}\DotSpatial.Desktop.dll"
+Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
+Type: files; Name: "{app}\FluentNHibernate.dll"
+Type: files; Name: "{app}\NHibernate.dll"
 Type: files; Name: "{app}\Plugins\Search\search.*"
 Type: files; Name: "{app}\Plugins\MetadataFetcher\HIS_Database.*"
 Type: files; Name: "{app}\Plugins\DataFetcher\HIS_Database.*"
@@ -229,6 +234,11 @@ Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 
 [UninstallDelete]
+Type: files; Name: "{app}\DotSpatial.Common.dll"
+Type: files; Name: "{app}\DotSpatial.Desktop.dll"
+Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
+Type: files; Name: "{app}\FluentNHibernate.dll"
+Type: files; Name: "{app}\NHibernate.dll"
 Type: files; Name: "{app}\q_save.xml"
 ;Name: {app}\Sample Projects; Type: filesandordirs; Components:
 ;Name: {app}; Type: files; Components:
