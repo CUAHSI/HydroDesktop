@@ -60,7 +60,7 @@ namespace HydroDesktop.Main
                 schmCountries.EditorSettings.ClassificationType =
                     ClassificationType.UniqueValues;
                 schmCountries.EditorSettings.FieldName = "NAME";
-                schmCountries.EditorSettings.UseGradient = false;
+                schmCountries.EditorSettings.UseGradient = true;
                 schmCountries.CreateCategories(layCountries.DataSet.DataTable);
                 layCountries.Symbology = schmCountries;
                 baseGroup.Layers.Add(layCountries);
