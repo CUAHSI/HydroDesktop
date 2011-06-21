@@ -49,6 +49,7 @@ namespace CUAHSI.HIS
         double _relaxationFactor = -999;
         bool _exactMatch = false;
         int _range = -999;
+        string conn = null;
 
         private Dictionary<string, ElementMapper> mapper = new Dictionary<string, ElementMapper>();
 
@@ -547,7 +548,7 @@ namespace CUAHSI.HIS
             }
 
             //---- set database to default if dbpath is invalid
-            string conn = null;
+            string fullpath = "";
             //-- first check if dbpath is null
             bool pass = true;
             if (String.IsNullOrWhiteSpace(_dbPath))
@@ -555,7 +556,17 @@ namespace CUAHSI.HIS
             //-- next, check that dbpath points to an actual file
             else
             {
-                string fullpath = System.IO.Path.GetFullPath(_dbPath);
+                //-- if relative path is given
+                if (!Path.IsPathRooted(_dbPath))
+                {
+                    fullpath = System.IO.Path.GetFullPath(System.IO.Directory.GetCurrentDirectory() + _dbPath);
+                }
+                //-- if absolute path
+                else
+                {
+                    fullpath = System.IO.Path.GetFullPath(_dbPath);
+                }
+
                 if (!File.Exists(fullpath))
                 {
                     pass = false;
@@ -572,10 +583,7 @@ namespace CUAHSI.HIS
             if (!pass)
                 conn = Settings.Instance.DataRepositoryConnectionString;
             else
-            {
-                FileInfo fi = new FileInfo(_dbPath);
-                conn = @"Data Source = " + fi.FullName + ";New=False;Compress=True;Version=3";
-            }
+                conn = @"Data Source = " + fullpath + ";New=False;Compress=True;Version=3";
 
             //-- get the database
             _db = new DbOperations(conn, DatabaseTypes.SQLite);
@@ -627,7 +635,9 @@ namespace CUAHSI.HIS
                 foreach(string warning in warnings)
                     message += "\nTheme Name: "+warning;
 
-                System.Windows.Forms.MessageBox.Show(message,title,System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Warning);               
+                //TODO: write this to the output window instead of using MessageBox
+                //-- suppress the messagebox for now b/c its annoying.
+                //System.Windows.Forms.MessageBox.Show(message,title,System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Warning);               
             }
         }
 

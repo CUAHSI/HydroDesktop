@@ -30,6 +30,7 @@ namespace HydroDesktop.Search
             tab.Columns.Add(new DataColumn("VarName", typeof(string)));
             tab.Columns.Add(new DataColumn("SiteCode", typeof(string)));
             tab.Columns.Add(new DataColumn("VarCode", typeof(string)));
+            tab.Columns.Add(new DataColumn("Keyword", typeof(string)));
             tab.Columns.Add(new DataColumn("ValueCount", typeof(int)));
             tab.Columns.Add(new DataColumn("StartDate", typeof(string)));
             tab.Columns.Add(new DataColumn("EndDate", typeof(string)));
@@ -59,6 +60,7 @@ namespace HydroDesktop.Search
             row["VarName"] = series.VariableName;
             row["SiteCode"] = series.SiteCode;
             row["VarCode"] = series.VariableCode;
+            row["Keyword"] = series.ConceptKeyword;
             row["ValueCount"] = series.ValueCount;
             row["StartDate"] = series.BeginDate.ToString("yyyy-MM-dd");
             row["EndDate"] = series.EndDate.ToString("yyyy-MM-dd");
@@ -196,6 +198,7 @@ namespace HydroDesktop.Search
             tab.Columns.Add(new DataColumn("VarName", typeof(string)));
             tab.Columns.Add(new DataColumn("SiteCode", typeof(string)));
             tab.Columns.Add(new DataColumn("VarCode", typeof(string)));
+            tab.Columns.Add(new DataColumn("Keyword", typeof(string)));
             tab.Columns.Add(new DataColumn("ValueCount", typeof(int)));
             tab.Columns.Add(new DataColumn("StartDate", typeof(string)));
             tab.Columns.Add(new DataColumn("EndDate", typeof(string)));
