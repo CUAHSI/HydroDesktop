@@ -22,7 +22,13 @@ namespace HydroDesktop.Search.Download
             DataTheme = dataTheme;
         }
 
+        /// <summary>
+        /// Collection of items to be downloaded.
+        /// </summary>
         public ReadOnlyCollection<DownloadInfo> DownloadList { get; private set; }
+        /// <summary>
+        /// Data theme.
+        /// </summary>
         public Theme DataTheme { get; private set; }
     }
 }
