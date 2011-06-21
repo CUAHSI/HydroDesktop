@@ -121,6 +121,8 @@ Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Ionic.Zip.*"; DestDir: "{app}"; Flags: ignoreversion;
 
+Source: "..\Binaries\Icons\*"; DestDir: "{app}\Icons"; Flags: ignoreversion;
+
 ;Source: "..\Binaries\HydroDesktop.Configuration.*"; DestDir: "{app}";  Flags: ignoreversion;
 ;Source: "..\Binaries\HydroDesktop.Data.*"; DestDir: "{app}";  Flags: ignoreversion;
 ;Source: "..\Binaries\HydroDesktop.Help.*"; DestDir: "{app}";  Flags: ignoreversion;
