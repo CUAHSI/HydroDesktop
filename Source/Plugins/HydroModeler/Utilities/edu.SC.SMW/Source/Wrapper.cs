@@ -17,7 +17,7 @@ using SharpMap.Data;
 using SharpMap.Data.Providers;
 using SharpMap.Layers;
 using SharpMap.Geometries;
-
+using System.Text.RegularExpressions;
 
 namespace SMW
 {
@@ -189,16 +189,18 @@ namespace SMW
             XmlNode Desc = root.SelectSingleNode("ModelInfo//Description");
             _componentDescription = Desc.InnerText;
 
-            XmlNodeList outputExchangeItems = root.SelectNodes("//OutputExchangeItem"); 
+            XmlNodeList outputExchangeItems = root.SelectNodes("//OutputExchangeItem");
+            int eid = 0;
             foreach (XmlNode outputExchangeItem in outputExchangeItems)
             {
-                CreateExchangeItemsFromXMLNode(outputExchangeItem, "OutputExchangeItem");
+                CreateExchangeItemsFromXMLNode(outputExchangeItem, "OutputExchangeItem",eid);
+                eid ++;
             }
-
             XmlNodeList inputExchangeItems = root.SelectNodes("//InputExchangeItem");
             foreach (XmlNode inputExchangeItem in inputExchangeItems)
             {
-                CreateExchangeItemsFromXMLNode(inputExchangeItem, "InputExchangeItem");
+                CreateExchangeItemsFromXMLNode(inputExchangeItem, "InputExchangeItem",eid);
+                eid++;
             }
 
             XmlNode timeHorizon = root.SelectSingleNode("//TimeHorizon");
@@ -209,45 +211,67 @@ namespace SMW
             this._timeStep = Convert.ToDouble(timeHorizon["TimeStepInSeconds"].InnerText);
         }
 
-        private void CreateExchangeItemsFromXMLNode(XmlNode ExchangeItem, string Identifier)
+        private void CreateExchangeItemsFromXMLNode(XmlNode ExchangeItem, string Identifier, int eid)
         {
+            //-- get dimension child nodes
+            XmlNodeList children = ExchangeItem.ChildNodes;
+            XmlNode quantityNode = children[1]; //HACK
+            Dictionary<string, double> dims = new Dictionary<string, double>();
+            foreach (XmlNode child in quantityNode)
+            {
+                if (child.Name == "Dimensions")
+                {
+                    foreach (XmlNode dimension in child.ChildNodes)
+                    {
+                        //-- get the inner xml for the element
+                        string text = dimension.InnerXml;
+                        
+                        //-- get the start and end indices of "base" and "power"
+                        int[] indices = new int[4] {text.IndexOf("<Base>")+6,text.IndexOf("</Base>")-1,
+                            text.IndexOf("<Power>")+7,text.IndexOf("</Power>")-1};
+
+                        //-- build base
+                        string Base = "";
+                        for (int i = indices[0]; i <= indices[1]; i++)
+                            Base += text[i];
+
+                        //-- build power
+                        string power = "";
+                        for (int i = indices[2]; i <= indices[3]; i++)
+                            power += text[i];
+
+                        //-- store dimension name and power
+                        dims.Add(Base, Convert.ToDouble(power));
+                    }
+
+                    
+                }
+            }
+            
+
+            //XmlNode dims = ExchangeItem.SelectSingleNode("//Dimensions");
+
             //Create Dimensions
             Dimension omiDimensions = new Dimension();
-            XmlNodeList dimensions = ExchangeItem.SelectNodes("//Dimensions/Dimension"); // You can filter elements here using XPath
-            foreach (XmlNode dimension in dimensions)
+            //XmlNodeList dimensions = ExchangeItem.SelectNodes("//Dimensions/Dimension"); // You can filter elements here using XPath
+            foreach (KeyValuePair<string,double> dim in dims)
             {
-                if (dimension["Base"].InnerText == "Length")
-                {
-                    omiDimensions.SetPower(DimensionBase.Length, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "Time")
-                {
-                    omiDimensions.SetPower(DimensionBase.Time, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "AmountOfSubstance")
-                {
-                    omiDimensions.SetPower(DimensionBase.AmountOfSubstance, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "Currency")
-                {
-                    omiDimensions.SetPower(DimensionBase.Currency, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "ElectricCurrent")
-                {
-                    omiDimensions.SetPower(DimensionBase.ElectricCurrent, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "LuminousIntensity")
-                {
-                    omiDimensions.SetPower(DimensionBase.LuminousIntensity, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "Mass")
-                {
-                    omiDimensions.SetPower(DimensionBase.Mass, Convert.ToDouble(dimension["Power"].InnerText));
-                }
-                else if (dimension["Base"].InnerText == "Temperature")
-                {
-                    omiDimensions.SetPower(DimensionBase.Temperature, Convert.ToDouble(dimension["Power"].InnerText));
-                }
+                if (dim.Key.ToUpper() == "LENGTH")
+                    omiDimensions.SetPower(DimensionBase.Length, dim.Value);
+                else if (dim.Key.ToUpper() == "TIME")
+                    omiDimensions.SetPower(DimensionBase.Time, dim.Value);
+                else if (dim.Key.ToUpper() == "AMOUNTOFSUBSTANCE")
+                    omiDimensions.SetPower(DimensionBase.AmountOfSubstance, dim.Value);
+                else if (dim.Key.ToUpper() == "CURRENCY")
+                    omiDimensions.SetPower(DimensionBase.Currency, dim.Value);
+                else if (dim.Key.ToUpper() == "ELECTRICCURRENT")
+                    omiDimensions.SetPower(DimensionBase.ElectricCurrent, dim.Value);
+                else if (dim.Key.ToUpper() == "LUMINOUSINTENSITY")
+                    omiDimensions.SetPower(DimensionBase.LuminousIntensity, dim.Value);
+                else if (dim.Key.ToUpper() == "MASS")
+                    omiDimensions.SetPower(DimensionBase.Mass, dim.Value);
+                else if (dim.Key.ToUpper() == "TEMPERATURE")
+                    omiDimensions.SetPower(DimensionBase.Temperature, dim.Value);
             }
 
             //Create Units

@@ -12,9 +12,13 @@
         <Description>C</Description>
         <Dimensions>
           <Dimension>
-            <Base>ppm</Base>
+            <Base>Mass</Base>
             <Power>1</Power>
           </Dimension>
+		  <Dimension>
+			<Base>Length</Base>
+            <Power>-3</Power>
+			</Dimension>
         </Dimensions>
         <Unit>
           <ID>ppm</ID>
@@ -37,8 +41,12 @@
         <Description>Concentration</Description>
         <Dimensions>
           <Dimension>
+            <Base>Mass</Base>
             <Power>1</Power>
-            <Base>ppm</Base>
+          </Dimension>
+		  <Dimension>
+			<Base>Length</Base>
+            <Power>-3</Power>
           </Dimension>
         </Dimensions>
         <Unit>
@@ -58,7 +66,7 @@
     <TimeStepInSeconds>1</TimeStepInSeconds>
   </TimeHorizon>
   <ModelInfo>
-    <ID>Soil Component</ID>
-    <Description>read the Concentration values from water component</Description>
+    <ID>Sediment Diffusion</ID>
+    <Description>Calculates diffusion through soil</Description>
   </ModelInfo>
 </Configuration>

@@ -7,10 +7,10 @@
     <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="484" rect_y="206" rect_width="100" rect_height="100" />
   </models>
   <links>
-    <uilink model_providing="PET: Penman-Monteith2" model_accepting="Oatc.OpenMI.Gui.Trigger">
+    <uilink model_providing="Penman-Monteith" model_accepting="Oatc.OpenMI.Gui.Trigger">
       <link id="2" source_elementset="SC_NC Study" source_quantity="PET" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
     </uilink>
-    <uilink model_providing="DbReader" model_accepting="PET: Penman-Monteith2">
+    <uilink model_providing="DbReader" model_accepting="Penman-Monteith">
       <link id="10" source_elementset="TempDew" source_quantity="Dew Point Temperature" target_elementset="SC_NC Study" target_quantity="Dew Point Temperature" />
       <link id="11" source_elementset="TempMax" source_quantity="Maximum Temperature" target_elementset="SC_NC Study" target_quantity="Maximum Temperature" />
       <link id="12" source_elementset="TempMin" source_quantity="Minimum Temperature" target_elementset="SC_NC Study" target_quantity="Minimum Temperature" />
@@ -24,10 +24,10 @@
       <link id="7" source_elementset="TempMinNextDay" source_quantity="Minimum Temperature NextDay" target_elementset="SC_NC Study" target_quantity="Minimum Temperature in Advance" />
       <link id="8" source_elementset="MonthlyAvTempRan" source_quantity="Monthly Average Temp Range" target_elementset="SC_NC Study" target_quantity="Monthly average daily temp range" />
     </uilink>
-    <uilink model_providing="PET: Penman-Monteith2" model_accepting="DbWriter">
+    <uilink model_providing="Penman-Monteith" model_accepting="DbWriter">
       <link id="18" source_elementset="SC_NC Study" source_quantity="PET" target_elementset="any element set" target_quantity="any quantity" />
     </uilink>
-    <uilink model_providing="Solar Radiation" model_accepting="PET: Penman-Monteith2">
+    <uilink model_providing="Solar Radiation" model_accepting="Penman-Monteith">
       <link id="16" source_elementset="SC_NC Study" source_quantity="NSR" target_elementset="SC_NC Study" target_quantity="NSR" />
     </uilink>
   </links>

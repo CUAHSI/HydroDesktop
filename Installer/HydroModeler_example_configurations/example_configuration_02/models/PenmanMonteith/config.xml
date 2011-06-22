@@ -17,7 +17,7 @@
             <Power>1</Power>
           </Dimension>
           <Dimension>
-            <Base>time</Base>
+            <Base>Time</Base>
             <Power>-1</Power>
           </Dimension>
         </Dimensions>
@@ -46,7 +46,7 @@
             <Power>1</Power>
           </Dimension>
           <Dimension>
-            <Base>time</Base>
+            <Base>Time</Base>
             <Power>-1</Power>
           </Dimension>
         </Dimensions>
@@ -71,16 +71,12 @@
         <Description>net radiation</Description>
         <Dimensions>
           <Dimension>
-            <Power>1</Power>
-            <Base>Megajoule</Base>
+            <Base>Mass</Base>
+			<Power>1</Power>
           </Dimension>
           <Dimension>
-            <Power>-2</Power>
-            <Base>meter</Base>
-          </Dimension>
-          <Dimension>
-            <Power>-1</Power>
-            <Base>day</Base>
+            <Base>Time</Base>
+			<Power>-3</Power>
           </Dimension>
         </Dimensions>
         <Unit>
@@ -104,7 +100,7 @@
         <Description>Temperature</Description>
         <Dimensions>
           <Dimension>
-            <Base>Length</Base>
+            <Base>Temperature</Base>
             <Power>1</Power>
           </Dimension>
         </Dimensions>
@@ -129,7 +125,7 @@
         <Description>Dew Point Temperature</Description>
         <Dimensions>
           <Dimension>
-            <Base>Length</Base>
+            <Base>Temperature</Base>
             <Power>1</Power>
           </Dimension>
         </Dimensions>
@@ -154,7 +150,7 @@
         <Description>Maximum Temperature</Description>
         <Dimensions>
           <Dimension>
-            <Base>Length</Base>
+            <Base>Temperature</Base>
             <Power>1</Power>
           </Dimension>
         </Dimensions>
@@ -179,7 +175,7 @@
         <Description>Minimum Temperature</Description>
         <Dimensions>
           <Dimension>
-            <Base>Length</Base>
+            <Base>Temperature</Base>
             <Power>1</Power>
           </Dimension>
         </Dimensions>
@@ -228,7 +224,7 @@
     <TimeStepInSeconds>86400</TimeStepInSeconds>
   </TimeHorizon>
   <ModelInfo>
-    <ID>PET: Penman-Monteith2</ID>
+    <ID>Penman-Monteith</ID>
     <Description>This component calculates PET(potantial evapotranspiration) and ETsz(Standardized Evapotranspiration) using a variation of the Penman-Monteith algorithm, defined by ASCE</Description>
   </ModelInfo>
 </Configuration>

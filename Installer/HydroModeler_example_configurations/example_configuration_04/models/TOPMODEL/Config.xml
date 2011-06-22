@@ -13,11 +13,11 @@
 				<Description>Runoff per unit area</Description>
 				<Dimensions>
 					<Dimension>
-						<Base>L</Base>
+						<Base>Length</Base>
 						<Power>1</Power>
 					</Dimension>
 					<Dimension>
-						<Base>T</Base>
+						<Base>Time</Base>
 						<Power>-1</Power>
 					</Dimension>
 				</Dimensions>
@@ -42,11 +42,11 @@
 				<Description>Streamflow at the outlet of watershed 18</Description>
 				<Dimensions>
 					<Dimension>
-						<Base>L</Base>
+						<Base>Length</Base>
 						<Power>3</Power>
 					</Dimension>
 					<Dimension>
-						<Base>T</Base>
+						<Base>Time</Base>
 						<Power>-1</Power>
 					</Dimension>
 				</Dimensions>
@@ -71,8 +71,8 @@
 				<Description>Rainfall</Description>
 				<Dimensions>
 					<Dimension>
-						<Base>1</Base>
-						<Power>Length</Power>
+						<Base>Length</Base>
+						<Power>1</Power>
 					</Dimension>
 				</Dimensions>
 				<Unit>
@@ -96,8 +96,8 @@
 				<Description>Potential Evapotranspiration</Description>
 				<Dimensions>
 					<Dimension>
-						<Base>1</Base>
-						<Power>Length</Power>
+						<Base>Length</Base>
+						<Power>1</Power>
 					</Dimension>
 				</Dimensions>
 				<Unit>

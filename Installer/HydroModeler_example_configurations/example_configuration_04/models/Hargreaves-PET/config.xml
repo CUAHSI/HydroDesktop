@@ -17,7 +17,7 @@
             <Power>1</Power>
           </Dimension>
           <Dimension>
-            <Base>T</Base>
+            <Base>Time</Base>
             <Power>-1</Power>
           </Dimension>
         </Dimensions>

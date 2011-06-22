@@ -1,11 +1,11 @@
 <guiComposition version="1.0">
   <models>
-    <model omi="models\infiltration\NRCS-Curve-Number\CNMethod.omi" rect_x="6" rect_y="98" rect_width="100" rect_height="51" />
-    <model omi="data\cuahsi-his\DbReader.omi" rect_x="6" rect_y="5" rect_width="100" rect_height="51" />
-    <model omi="models\runoff\NRCS-unit-hydrograph\NRCS UnitHydrograph.omi" rect_x="141" rect_y="97" rect_width="100" rect_height="51" />
-    <model omi="models\routing\MuskingumDotNet\Muskingum.omi" rect_x="278" rect_y="97" rect_width="100" rect_height="51" />
-    <model omi="data\cuahsi-his\DbWriter.omi" rect_x="280" rect_y="186" rect_width="100" rect_height="51" />
-    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="410" rect_y="100" rect_width="100" rect_height="51" />
+    <model omi="models\infiltration\NRCS-Curve-Number\CNMethod.omi" rect_x="6" rect_y="126" rect_width="115" rect_height="75" />
+    <model omi="data\cuahsi-his\DbReader.omi" rect_x="6" rect_y="5" rect_width="115" rect_height="75" />
+    <model omi="models\runoff\NRCS-unit-hydrograph\NRCS UnitHydrograph.omi" rect_x="185" rect_y="126" rect_width="115" rect_height="75" />
+    <model omi="models\routing\MuskingumDotNet\Muskingum.omi" rect_x="375" rect_y="126" rect_width="115" rect_height="75" />
+    <model omi="data\cuahsi-his\DbWriter.omi" rect_x="378" rect_y="245" rect_width="115" rect_height="75" />
+    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="554" rect_y="113" rect_width="100" rect_height="100" />
   </models>
   <links>
     <uilink model_providing="DbReader" model_accepting="Curve Number Method">

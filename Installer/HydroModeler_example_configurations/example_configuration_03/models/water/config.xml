@@ -12,8 +12,12 @@
         <Description>C</Description>
         <Dimensions>
           <Dimension>
-            <Base>ppm</Base>
+			<Base>Mass</Base>
             <Power>1</Power>
+          </Dimension>
+		  <Dimension>
+			<Base>Length</Base>
+            <Power>-3</Power>
           </Dimension>
         </Dimensions>
         <Unit>
@@ -37,8 +41,12 @@
         <Description>Excess Rainfall</Description>
         <Dimensions>
           <Dimension>
+            <Base>Mass</Base>
             <Power>1</Power>
-            <Base>Length</Base>
+          </Dimension>
+		  <Dimension>
+			<Base>Length</Base>
+            <Power>-3</Power>
           </Dimension>
         </Dimensions>
         <Unit>
@@ -57,7 +65,7 @@
     <TimeStepInSeconds>1</TimeStepInSeconds>
   </TimeHorizon>
   <ModelInfo>
-    <ID>Water Component</ID>
-    <Description>read the Concentration values from sediment Component</Description>
+    <ID>Water Advection</ID>
+    <Description>Calculates advection through water</Description>
   </ModelInfo>
 </Configuration>
