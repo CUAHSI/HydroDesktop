@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using DotSpatial.Data;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -21,16 +19,8 @@ namespace HydroDesktop.Search.Download
 
         //to store the proxy class for each WaterOneFlow web service for re-use
         private readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
+        private static readonly object _syncObject = new object();
 
-        private DateTime _startDate;
-        private DateTime _endDate;
-        private string _themeName;
-        private string _themeDescription;
-        private int _numDownloadedSeries = 0;
-        private string _connectionString;
-
-        private IFeatureSet _featureSet;
-    
         #endregion
 
         #region Constructors
@@ -48,88 +38,10 @@ namespace HydroDesktop.Search.Download
         #region Properties
 
         /// <summary>
-        /// Gets or sets the start date of all downloaded time series
-        /// </summary>
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set { _startDate = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the end date of all downloaded  time series
-        /// </summary>
-        public DateTime EndDate
-        {
-            get { return _endDate; }
-            set { _endDate = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the theme name (name of feature set where site locations are stored)
-        /// </summary>
-        public string ThemeName
-        {
-            get { return _themeName; }
-            set { _themeName = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the theme description
-        /// </summary>
-        public string ThemeDescription
-        {
-            get { return _themeDescription; }
-            set { _themeDescription = value; }
-        }
-        /// <summary>
-        /// Gets the number of data series that were downloaded
-        /// </summary>
-        public int NumDownloadedSeries
-        {
-            get { return _numDownloadedSeries; }
-        }
-
-        public IFeatureSet ThemeFeatureSet
-        {
-            get { return _featureSet; }
-            set { _featureSet = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the database connection string
         /// </summary>
-        public string ConnectionString
-        {
-            get { return _connectionString; }
-            set { _connectionString = value; }
-        }
+        public string ConnectionString { get; set; }
 
-        #endregion
-
-        #region File I/O Methods
-        /// <summary>
-        /// Gets the temporary directory for xml files downloaded
-        /// by HydroDesktop
-        /// </summary>
-        /// <returns>the directory path</returns>
-        public string GetXmlTempDirectory()
-        {
-            //Check if we need to create a temporary folder for storing the xml file
-            string tempDirectory = Path.Combine(Path.GetTempPath(), "HydroDesktop");
-            if (Directory.Exists(tempDirectory) == false)
-            {
-                try
-                {
-                    Directory.CreateDirectory(tempDirectory);
-                }
-                catch
-                {
-                    tempDirectory = Path.GetTempPath();
-                }
-            }
-            return tempDirectory;
-        }
         #endregion
 
         #region Web Service Methods
@@ -141,19 +53,22 @@ namespace HydroDesktop.Search.Download
         /// </summary>
         /// <param name="wsdl">The URL of the web service main page</param>
         /// <returns>the appropriate WaterOneFlow client</returns>
-        public WaterOneFlowClient GetWsClientInstance(string wsdl)
+        private WaterOneFlowClient GetWsClientInstance(string wsdl)
         {
-            WaterOneFlowClient wsClient = null;
+            WaterOneFlowClient wsClient;
 
-            //To Access the dynamic WSDLs
-            if (_services.ContainsKey(wsdl))
+            lock (_syncObject)
             {
-                wsClient = _services[wsdl];
-            }
-            else
-            {
-                wsClient = new WaterOneFlowClient(wsdl);
-                _services.Add(wsdl, wsClient);
+                //To Access the dynamic WSDLs
+                if (_services.ContainsKey(wsdl))
+                {
+                    wsClient = _services[wsdl];
+                }
+                else
+                {
+                    wsClient = new WaterOneFlowClient(wsdl);
+                    _services.Add(wsdl, wsClient);
+                }
             }
             return wsClient;
         }
@@ -166,14 +81,13 @@ namespace HydroDesktop.Search.Download
         /// <exception cref="DownloadXmlException">Some exception during get values from web service</exception>
         public string DownloadXmlDataValues(DownloadInfo info)
         {
-            var wsClient = GetWsClientInstance(info.Wsdl);
             try
             {
-                return wsClient.GetValuesXML(info.FullSiteCode, info.FullVariableCode, info.StartDate, info.EndDate);
+                return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode, info.StartDate, info.EndDate);
             }
             catch(Exception ex)
             {
-                throw new DownloadXmlException(ex);
+                throw new DownloadXmlException(ex.Message, ex);
             }
         }
 
@@ -184,13 +98,12 @@ namespace HydroDesktop.Search.Download
         /// <summary>
         /// Converts the xml file to a data series object.
         /// </summary>
-        /// <param name="xmlFile">The name of the xml file</param>
         /// <param name="dInfo">Download info</param>
         /// <returns>The data series object</returns>
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
         /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
-        public Series DataSeriesFromXml(string xmlFile, DownloadInfo dInfo)
+        public Series DataSeriesFromXml(DownloadInfo dInfo)
         {
             IList<Series> seriesList;
 
@@ -201,17 +114,17 @@ namespace HydroDesktop.Search.Download
                 if (client.ServiceInfo.Version == 1.0)
                 {
                     var parser = new WaterOneFlow10Parser();
-                    seriesList = parser.ParseGetValues(xmlFile);
+                    seriesList = parser.ParseGetValues(dInfo.FileName);
                 }
                 else
                 {
                     var parser = new WaterOneFlow11Parser();
-                    seriesList = parser.ParseGetValues(xmlFile);
+                    seriesList = parser.ParseGetValues(dInfo.FileName);
                 }
             }
             catch(Exception ex)
             {
-                throw new DataSeriesFromXmlException(ex);
+                throw new DataSeriesFromXmlException(ex.Message, ex);
             }
 
             if (seriesList == null || seriesList.Count == 0)
@@ -223,7 +136,7 @@ namespace HydroDesktop.Search.Download
         }
 
         /// <summary>
-        /// creates a new DataSeries from a xml file and saves it to database.
+        /// Creates a new DataSeries from a xml file and saves it to database.
         /// This function uses the underlying NHibernate framework to
         /// communicate with the database
         /// </summary>
@@ -243,7 +156,7 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new SaveDataSeriesException(ex);
+                throw new SaveDataSeriesException(ex.Message, ex);
             }
         }
 

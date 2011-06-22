@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using HydroDesktop.Configuration;
+using System.Threading;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Search.Download.Exceptions;
 
@@ -16,6 +17,7 @@ namespace HydroDesktop.Search.Download
 
         private readonly BackgroundWorker _worker = new BackgroundWorker();
         private DownloadManagerUI _downloadManagerUI;
+        private static readonly object _syncObjForDownload = new object();
 
         #endregion
 
@@ -80,11 +82,14 @@ namespace HydroDesktop.Search.Download
             DownloadProgressInfo = new DownloadProgressInfo {TotalSeries = CurrentDownloadArg.DownloadList.Count};
             _downloadManagerUI = new DownloadManagerUI(this);
             ShowUI();
-            _worker.RunWorkerAsync(new DownloadArgWrapper { DownloadArg = args, DownloadManagerUI = _downloadManagerUI });
+            _worker.RunWorkerAsync(new DownloadArgWrapper { DownloadArg = args});
 
             DoLogInfo("Starting downloading...");
         }
 
+        /// <summary>
+        /// Cancel downloading.
+        /// </summary>
         internal void Cancel()
         {
             _worker.CancelAsync();
@@ -98,12 +103,18 @@ namespace HydroDesktop.Search.Download
             DoLogInfo("Cancelling...");
         }
 
+        /// <summary>
+        /// Show UI of download manager.
+        /// </summary>
         internal void ShowUI()
         {
             if (_downloadManagerUI == null) return;
             _downloadManagerUI.Show();
         }
 
+        /// <summary>
+        /// Hide UI of download manager.
+        /// </summary>
         internal void HideUI()
         {
             if (_downloadManagerUI == null) return;
@@ -148,9 +159,6 @@ namespace HydroDesktop.Search.Download
 
         void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Cancelled)
-                DoLogInfo("Cancelled.");
-
             var handler = Completed;
             if (handler != null)
             {
@@ -180,171 +188,35 @@ namespace HydroDesktop.Search.Download
 
             var arg = (DownloadArgWrapper)e.Argument;
             var downloadList = arg.DownloadArg.DownloadList;
-            var theme = arg.DownloadArg.DataTheme;
-
-            var downloadedFiles = new Dictionary<string, DownloadInfo>();
-
-            var objDownloader = new Downloader();
-            var numTotalSeries = downloadList.Count;
-            var numDownloaded = 0;
-            var downloadedCount = 0;
-
-            #region Downloading
-            
-            foreach (var di in downloadList)
-            {
-                if (_worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    goto finalLogging;
-                }
-
-                string fileName;
-                var startTime = DateTime.Now;
-                try
-                {
-                    di.Status = DownloadInfoStatus.Downloading;
-                    fileName = objDownloader.DownloadXmlDataValues(di);
-                    di.Status = DownloadInfoStatus.Downloaded;
-                    DownloadProgressInfo.Downloaded++;
-                }
-                catch (DownloadXmlException ex)
-                {
-                    di.Status = DownloadInfoStatus.Error;
-                    di.ErrorMessage = ex.Message;
-                    DoLogError(ex.Message, ex);
-                    DownloadProgressInfo.WithError++;
-                    continue;
-                }
-                finally
-                {
-                    // Calculcate estimated time
-                    var endTime = DateTime.Now;
-                    var diff = endTime.Subtract(startTime).TotalSeconds;
-                    di.DownloadTimeTaken = TimeSpan.FromSeconds(diff);
-                    var interval = diff*
-                                   (DownloadProgressInfo.TotalSeries -
-                                    (DownloadProgressInfo.WithError + DownloadProgressInfo.Downloaded))/
-                                   DownloadProgressInfo.Downloaded + 1;
-                    DownloadProgressInfo.EstimatedTimeForDownload = interval < Int32.MaxValue
-                                                             ? new TimeSpan(0, 0, (int) interval)
-                                                             : TimeSpan.MaxValue;
-                }
-
-                Debug.Assert(File.Exists(fileName)); // we just downloaded this file
-
-                //to ensure there are no duplicate file names:
-                if (!downloadedFiles.ContainsKey(fileName))
-                {
-                    downloadedFiles.Add(fileName, di);
-                    numDownloaded++;
-
-                    downloadedCount++;
-                    var message = "Downloading series " + downloadedCount + " of " + numTotalSeries;
-                    var percentProgress = (numDownloaded*100)/numTotalSeries;
-                    _worker.ReportProgress(percentProgress, message);
-                }
-            }
-
-            DownloadProgressInfo.EstimatedTimeForDownload = new TimeSpan();
-
-            #endregion
-
-            //In the next step we'll save data values to database
-            _worker.ReportProgress(0, "Saving values..");
-
-            #region Saving
-
-            var numTotalFiles = downloadedFiles.Count;
-            var numCurrentFile = 0;
-            foreach (var kp in downloadedFiles)
-            {
-                if (_worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    goto finalLogging;
-                }
-                
-                var dInfo = kp.Value;
-                Series series;
-                var startTime = DateTime.Now;
-
-                // Parsing series from xml
-                try
-                {
-                    series = objDownloader.DataSeriesFromXml(kp.Key, dInfo);
-                }
-                catch (DataSeriesFromXmlException ex)
-                {
-                    dInfo.Status = DownloadInfoStatus.Error;
-                    DownloadProgressInfo.WithError++;
-                    DoLogError(ex.Message, ex);
-                    dInfo.ErrorMessage = ex.Message;
-                    continue;
-                }catch(NoSeriesFromXmlException ex)
-                {
-                    dInfo.Status = DownloadInfoStatus.Error;
-                    DownloadProgressInfo.WithError++;
-                    DoLogError(ex.Message); // No stack trace
-                    dInfo.ErrorMessage = ex.Message;
-                    continue;
-                }
-                catch(TooMuchSeriesFromXmlException ex)
-                {
-                    dInfo.Status = DownloadInfoStatus.Error;
-                    DownloadProgressInfo.WithError++;
-                    DoLogError(ex.Message); // No stack trace
-                    dInfo.ErrorMessage = ex.Message;
-                    continue;
-                }
-                Debug.Assert(series != null);
-                
-                // Save series to database
-                int numSavedValues;
-                try
-                {
-                    numSavedValues = objDownloader.SaveDataSeries(series, theme);
-                    DownloadProgressInfo.DownloadedAndSaved++;
                     
-                    if (numSavedValues == 0)
-                    {
-                        DoLogInfo(string.Format("Warning: {0} has no data values!", series));
-                        dInfo.Status = DownloadInfoStatus.OkWithWarnings;
-                    }else
-                        dInfo.Status = DownloadInfoStatus.Ok;
-                }
-                catch (SaveDataSeriesException ex)
-                {
-                    dInfo.Status = DownloadInfoStatus.Error;
-                    DoLogError(ex.Message, ex);
-                    DownloadProgressInfo.WithError++;
-                    dInfo.ErrorMessage = ex.Message;
-                    continue;
-                }finally
-                {
-                    // Calculcate estimated time
-                    var endTime = DateTime.Now;
-                    var diff = endTime.Subtract(startTime).TotalSeconds;
-                    var interval = diff * DownloadProgressInfo.RemainingSeries / DownloadProgressInfo.DownloadedAndSaved + 1;
-                    DownloadProgressInfo.EstimatedTimeForSave = interval < Int32.MaxValue
-                                                             ? new TimeSpan(0, 0, (int)(interval))
-                                                             : TimeSpan.MaxValue;
-                }
+            const int maxThreadsToDownloadCount = 4;                                    // max count of downloading threads
+            var commonInfo = new CommnonDoDownloadInfo(downloadList, new Downloader()); // common info, shared through downloading threads
 
-                var message = "Saving " + (numCurrentFile + 1) + " series out of " + downloadedFiles.Count;
-                message += dInfo.SiteName + " - " + dInfo.VariableName +
-                               " " + numSavedValues + " values saved." + "\n";
-
-                var percentProgress = (numCurrentFile * 100) / numTotalFiles + 1;
-                _worker.ReportProgress(percentProgress, message);
-                numCurrentFile++;
+            // Starting (if possible) maxThreadsToDownloadCount downloading threads 
+            for(int i = 0; i<maxThreadsToDownloadCount && i <downloadList.Count; i++)
+            {
+                var thread = new Thread(DoDownload);
+                var dda = new DoDownloadArg(downloadList[i], commonInfo, thread);
+                commonInfo.AddDonwloadingThread(thread);
+                commonInfo.LastDownloadingIndex++;
+                thread.Start(dda);
             }
 
-            DownloadProgressInfo.EstimatedTimeForSave = new TimeSpan();
+            // Starting save thread
+            var saveThread = new Thread(DoSave);
+            saveThread.Start(commonInfo);
 
-            #endregion
+            // Blocking current thread until all the series will not saved, or downloading cancelled
+            commonInfo.SavingWaitingEvent = new ManualResetEvent(false);
+            commonInfo.SavingWaitingEvent.WaitOne();
 
-finalLogging:
+            if (_worker.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+
+            // waiting all downloading threads
+            while (commonInfo.DownloadingThreadsCount > 0) { }
 
             #region Final logging
 
@@ -362,17 +234,283 @@ finalLogging:
                
             #endregion
 
-            _worker.ReportProgress(100, "Download Complete.");
+            _worker.ReportProgress(100, e.Cancel? "Download cancelled." : "Download Complete.");
+        } 
+
+        private void DoDownload(object state)
+        {
+            var dda = state as DoDownloadArg;
+            if (dda == null) throw new InvalidOperationException();
+
+            var di = dda.DownloadInfo;
+            var objDownloader = dda.CommnonInfo.Downloader;
+          
+            var startTime = DateTime.Now;
+            bool hasException = true;
+            try
+            {
+                if (_worker.CancellationPending) return;
+
+                di.Status = DownloadInfoStatus.Downloading;
+                di.FileName = objDownloader.DownloadXmlDataValues(di);
+                di.Status = DownloadInfoStatus.Downloaded;
+                lock (_syncObjForDownload)
+                {
+                    dda.CommnonInfo.Downloaded.Enqueue(di);
+                    DownloadProgressInfo.Downloaded++;
+                }
+
+                hasException = false;
+                
+                DoLogInfo("Downloaded series " + DownloadProgressInfo.Downloaded + " of " + DownloadProgressInfo.TotalSeries);
+            }
+            catch (DownloadXmlException ex)
+            {
+                di.Status = DownloadInfoStatus.Error;
+                di.ErrorMessage = ex.Message;
+                DoLogError(ex.Message, ex);
+                DownloadProgressInfo.WithError++;
+            }
+            finally
+            {
+                // Calculcate estimated time
+                var endTime = DateTime.Now;
+                var diff = endTime.Subtract(startTime).TotalSeconds;
+                di.DownloadTimeTaken = TimeSpan.FromSeconds(diff);
+                var interval = diff*
+                               (DownloadProgressInfo.TotalSeries -
+                                (DownloadProgressInfo.WithError + DownloadProgressInfo.Downloaded))/ + 1;
+                DownloadProgressInfo.EstimatedTimeForDownload = interval < Int32.MaxValue
+                                                                    ? new TimeSpan(0, 0, (int) interval)
+                                                                    : TimeSpan.MaxValue;
+
+                // common progress
+                if (hasException)
+                {
+                    ProgressSeries();
+                }
+
+                // resume saving thread
+                dda.CommnonInfo.SaveManualResetEvent.Set();
+
+                // start new thread if need
+                if (!_worker.CancellationPending &&
+                    dda.CommnonInfo.LastDownloadingIndex < DownloadProgressInfo.TotalSeries)
+                {
+                    var thread = new Thread(DoDownload);
+                    dda.CommnonInfo.AddDonwloadingThread(thread);
+                    var ld = dda.CommnonInfo.LastDownloadingIndex;
+                    dda.CommnonInfo.LastDownloadingIndex++;
+                    thread.Start(new DoDownloadArg(dda.CommnonInfo.DownloadList[ld],
+                                                   dda.CommnonInfo, thread));
+
+                }
+
+                dda.CommnonInfo.RemoveDonwloadingThread(dda.DownloadThread);
+                if (dda.CommnonInfo.DownloadingThreadsCount == 0)
+                {
+                    DownloadProgressInfo.EstimatedTimeForDownload = new TimeSpan();
+                }
+            }
+        }
+
+        private void ProgressSeries()
+        {
+            var processedCount = DownloadProgressInfo.TotalSeries - DownloadProgressInfo.RemainingSeries;
+            if (processedCount == 0) return;
+
+            var message = "Processed series " + processedCount + " of " + DownloadProgressInfo.TotalSeries;
+            var percentProgress = (processedCount * 100) / DownloadProgressInfo.TotalSeries;
+            _worker.ReportProgress(percentProgress, message);
+        }
+
+        private void DoSave(object state)
+        {
+            var commonInfo = state as CommnonDoDownloadInfo;
+            if (commonInfo == null) throw new InvalidOperationException();
+
+            var objDownloader = commonInfo.Downloader;
+
+            while (DownloadProgressInfo.RemainingSeries > 0)
+            {
+                if (_worker.CancellationPending) break;
+
+                if (commonInfo.Downloaded.Count == 0)
+                {
+                    commonInfo.SaveManualResetEvent.WaitOne();
+                    continue;
+                }
+
+                // Common progress
+                ProgressSeries();
+
+                DownloadInfo dInfo;
+                lock (_syncObjForDownload)
+                {
+                    dInfo = commonInfo.Downloaded.Dequeue();
+                }
+                Debug.Assert(dInfo != null);
+                
+                Series series;
+                var startTime = DateTime.Now;
+
+                // Parsing series from xml
+                try
+                {
+                    series = objDownloader.DataSeriesFromXml(dInfo);
+                }
+                catch (DataSeriesFromXmlException ex)
+                {
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DownloadProgressInfo.WithError++;
+                    DoLogError(ex.Message, ex);
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }
+                catch (NoSeriesFromXmlException ex)
+                {
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DownloadProgressInfo.WithError++;
+                    DoLogError(ex.Message); // No stack trace
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }
+                catch (TooMuchSeriesFromXmlException ex)
+                {
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DownloadProgressInfo.WithError++;
+                    DoLogError(ex.Message); // No stack trace
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }
+
+
+                Debug.Assert(series != null);
+
+                // Save series to database
+                int numSavedValues;
+                try
+                {
+                    numSavedValues = objDownloader.SaveDataSeries(series, CurrentDownloadArg.DataTheme);
+                    DownloadProgressInfo.DownloadedAndSaved++;
+
+                    if (numSavedValues == 0)
+                    {
+                        DoLogInfo(string.Format("Warning: {0} has no data values!", series));
+                        dInfo.Status = DownloadInfoStatus.OkWithWarnings;
+                    }
+                    else
+                        dInfo.Status = DownloadInfoStatus.Ok;
+                }
+                catch (SaveDataSeriesException ex)
+                {
+                    dInfo.Status = DownloadInfoStatus.Error;
+                    DoLogError(ex.Message, ex);
+                    DownloadProgressInfo.WithError++;
+                    dInfo.ErrorMessage = ex.Message;
+                    continue;
+                }
+                finally
+                {
+                    // Calculcate estimated time
+                    var endTime = DateTime.Now;
+                    var diff = endTime.Subtract(startTime).TotalSeconds;
+                    var interval = diff * DownloadProgressInfo.RemainingSeries + 1;
+                    DownloadProgressInfo.EstimatedTimeForSave = interval < Int32.MaxValue
+                                                             ? new TimeSpan(0, 0, (int)(interval))
+                                                             : TimeSpan.MaxValue;
+                }
+
+                var message = dInfo.SiteName + " - " + dInfo.VariableName + " " + numSavedValues + " values saved.";
+                DoLogInfo(message);
+            }
+
+            ProgressSeries();
+
+            DownloadProgressInfo.EstimatedTimeForSave = new TimeSpan();
+            commonInfo.SavingWaitingEvent.Set();
         }
 
         #endregion
 
         #region Nested types
 
+        class DoDownloadArg
+        {
+            public DownloadInfo DownloadInfo { get; private set; }
+            public CommnonDoDownloadInfo CommnonInfo { get; private set; }
+            public Thread DownloadThread { get; private set; }
+
+            public DoDownloadArg(DownloadInfo di, CommnonDoDownloadInfo commonInfo, Thread downloadThread)
+            {
+                DownloadInfo = di;
+                CommnonInfo = commonInfo;
+                DownloadThread = downloadThread;
+            }
+        }
+        class CommnonDoDownloadInfo
+        {
+            private readonly ManualResetEvent _manualResetEvent;
+
+            public CommnonDoDownloadInfo(ReadOnlyCollection<DownloadInfo> downloadList, 
+                                        Downloader downloader)
+            {
+                _manualResetEvent = new ManualResetEvent(false);
+                DownloadList = downloadList;
+                Downloader = downloader;
+            }
+
+            public Downloader Downloader { get; private set; }
+
+            private readonly Queue<DownloadInfo> _downloaded = new Queue<DownloadInfo>();
+
+            public ManualResetEvent SaveManualResetEvent
+            {
+                get { return _manualResetEvent; }
+            }
+
+            public Queue<DownloadInfo> Downloaded
+            {
+                get { return _downloaded; }
+            }
+          
+            public ReadOnlyCollection<DownloadInfo> DownloadList { get; private set; }
+
+            private volatile int _lastDownloadingIndex;
+            public int LastDownloadingIndex
+            {
+                get { return _lastDownloadingIndex; }
+                set
+                {
+                    _lastDownloadingIndex = value;
+                }
+            }
+
+            private static readonly object _downloadingThreadsSyncObject = new object();
+            private readonly List<Thread> _downloadingThreads = new List<Thread>();
+            public void AddDonwloadingThread(Thread thread)
+            {
+                lock (_downloadingThreadsSyncObject)
+                {
+                    _downloadingThreads.Add(thread);
+                }
+            }
+            public void RemoveDonwloadingThread(Thread thread)
+            {
+                lock (_downloadingThreadsSyncObject)
+                {
+                    _downloadingThreads.Remove(thread);
+                }
+            }
+            public int DownloadingThreadsCount {get { return _downloadingThreads.Count; }}
+
+
+            public ManualResetEvent SavingWaitingEvent { get; set; }
+        }
+
         class DownloadArgWrapper
         {
             public DownloadArg DownloadArg { get; set; }
-            public DownloadManagerUI DownloadManagerUI { get; set; }
         }
 
         enum LogKind
