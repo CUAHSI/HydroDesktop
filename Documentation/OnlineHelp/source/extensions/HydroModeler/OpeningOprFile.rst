@@ -8,20 +8,28 @@ Within each of these example configurations exist a "bin" folder, which contains
 
 1.	Open Hydrodesktop and load the HydroModeler plug in.
 
-.. figure:: ./images/OpeningOprFile/HM_fig1.png
+.. figure:: ./images/OpeningOprFile/HM_fig1mm.png
    :align: center
+
+|
 
 2.	If none of the example configurations are present in the left hand box, look to the top of the page and find an area labeled Current Directory.  Click the button to the right of the text box and navigate to the following directory.
 
 **Program Files/CUAHSI HIS/HydroDesktop/Plugins/HydroModeler/hydromodeler_example_configuration**
 *(Note that the exact location will vary slight, based on where you installed HydroDesktop)*
 
-.. figure:: ./images/OpeningOprFile/HM_fig2.png
+.. figure:: ./images/OpeningOprFile/HM_fig2mm.png
    :align: center
+
+|
+
 
 3. 	Once the example configurations are displayed, you can navigate into the folders to find the .opr files for the preset configuration you are looking for.  You can double click, click and drag, or click the Add Item button to display the configuration.
 
-.. figure:: ./images/OpeningOprFile/HM_fig3.png
+.. figure:: ./images/OpeningOprFile/HM_fig3mm.png
    :align: center
+
+|
+
 
 4. 	After the configuration has been loaded, you are free to manipulate and run the configuration as you see fit.
