@@ -34,7 +34,7 @@ The config.xml file will defines key inputs for a modeling component.  This sect
 
 4.	Open the file with a text editor (a free text editor called Notepad ++ is used in the figure below).
 
-.. figure:: ./images/ChangingInputs/HM_fig5_m1.png
+.. figure:: ./images/ChangingInputs/HM_fig6_m1.png
    :align: center
 
 |
