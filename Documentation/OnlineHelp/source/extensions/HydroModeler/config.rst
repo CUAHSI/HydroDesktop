@@ -7,10 +7,13 @@ config.xml file
 
 This is a configuration file opened using Internet Explorer.
 
-.. figure:: ./images/KeyTerms/HM_fig3.png
+.. figure:: ./images/KeyTerms/HM_fig3m.png
    :align: center
+
+|
+
 
 This is a configuration file opened using Notepad++.
 
-.. figure:: ./images/KeyTerms/HM_fig4.png
+.. figure:: ./images/KeyTerms/HM_fig4m.png
    :align: center

@@ -7,10 +7,12 @@
 
 This is an example of a .shp file that has been added to a configuration file.
 
-.. figure:: ./images/KeyTerms/HM_fig5.png
+.. figure:: ./images/KeyTerms/HM_fig5m.png
    :align: center
+
+|
 
 This is an example of a .shp files resulting image, created using HydroModeler's ElementSetViewer.
 
-.. figure:: ./images/KeyTerms/HM_fig6.png
+.. figure:: ./images/KeyTerms/HM_fig6m.png
    :align: center

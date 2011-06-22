@@ -51,7 +51,16 @@ Creating the Configuration
    :align: center
 |
 
-5.	Click once on TopModel.omi to populate its attributes in the properties window.  Make sure that the "Assembly" and "Class" properties are correct.  Next, check that the correct paths are given for inputs "TI" and "ConfigFile". 
+5.	To view  Coweeta watershed # 18, click on the Home tab, use the add button, and navigate to   *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/data/gis*  to load the shape files of  Coweeta watershed, streams, climate station, and subbasin #18.
+
+|
+
+.. figure:: ./images/Tutorial02/coweeta.png
+   :align: center
+
+|
+
+6.	Return to the HydroModelrer tab and click once on TopModel.omi to populate its attributes in the properties window.  Make sure that the "Assembly" and "Class" properties are correct.  Next, check that the correct paths are given for inputs "TI" and "ConfigFile". 
 
 |
 
@@ -60,11 +69,11 @@ Creating the Configuration
    
 |
 
-6.	Follow the same procedures to be sure that the Hargreaves, DbReader, and Dbwriter omi files are setup correctly.
+7.	Follow the same procedures to be sure that the Hargreaves, DbReader, and Dbwriter omi files are setup correctly.
 
 |
 
-7.	Now that all model inputs have been verified, we can begin to construct the model configuration.  To add a model, click the "Add Component" button on the ribbon toolbar.
+8.	Now that all model inputs have been verified, we can begin to construct the model configuration.  To add a model, click the "Add Component" button on the ribbon toolbar.
 
 |
 
@@ -73,7 +82,7 @@ Creating the Configuration
    
 |
 
-8.	 Navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models* and add both models (TOPMODEL and Hargreaves),and add the DbReader and DbWriter components from *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his*. Now all the models should be added to the HydroModeler workspace. Finally, click the "Add Trigger" button on the ribbon toolbar to add a trigger component to the configuration. 
+9.	 Navigate to *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/models* and add both models (TOPMODEL and Hargreaves),and add the DbReader and DbWriter components from *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his*. Now all the models should be added to the HydroModeler workspace. Finally, click the "Add Trigger" button on the ribbon toolbar to add a trigger component to the configuration. 
 
 |
 
@@ -82,11 +91,11 @@ Creating the Configuration
    
 |
 
-9.	Connections must be added between components to define how data will flow during model simualation.  To add a connection, click the "Add Connection" button on the ribbon toolbar.  Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign it as the target component.
+10.	Connections must be added between components to define how data will flow during model simualation.  To add a connection, click the "Add Connection" button on the ribbon toolbar.  Next, click on the DbReader to assign it as the source component and then click on the Hargreaves to assign it as the target component.
 
 |
 
-10. Click on the link arrow to view the connection properties between the DbReader and Hargreaves components. Expand the Temperature output exchange item of the Dbreader to view the available data series. Select "Coweeta Max Temperature" as the output exchange item and "Max Temp" as the input exchange item, then press apply to activate the link. Repeat this with the "Minimum Temperature" and "Temperature" items as well.
+11. Click on the link arrow to view the connection properties between the DbReader and Hargreaves components. Expand the Temperature output exchange item of the Dbreader to view the available data series. Select "Coweeta Max Temperature" as the output exchange item and "Max Temp" as the input exchange item, then press apply to activate the link. Repeat this with the "Minimum Temperature" and "Temperature" items as well.
 
 |
 
@@ -94,7 +103,7 @@ Creating the Configuration
    :align: center
 |	
 
-11.	Add a connection between the DbReader to the TOPMODEL components.  This will serve to supply input precipitation for the Coweeta watershed to the TOPMODEL component. Choose DbReader as a source and TopModel as a target component.
+12.	Add a connection between the DbReader to the TOPMODEL components.  This will serve to supply input precipitation for the Coweeta watershed to the TOPMODEL component. Choose DbReader as a source and TopModel as a target component.
 
 |
 
@@ -103,7 +112,7 @@ Creating the Configuration
    
 |	
 
-12.	Connect the Hargreaves PET as a source component to supply the calculated PET values to the TOPMODEL component. 	
+13.	Connect the Hargreaves PET as a source component to supply the calculated PET values to the TOPMODEL component. 	
 
 |
 
@@ -112,7 +121,7 @@ Creating the Configuration
    
 |
 
-13.	Create a connection between the TOPMODEL and DbWriter components.  This will used to save TOPMODEL output to the HydroDesktop database.
+14.	Create a connection between the TOPMODEL and DbWriter components.  This will used to save TOPMODEL output to the HydroDesktop database.
 
 |
 
@@ -121,7 +130,7 @@ Creating the Configuration
    
 |
 
-14.	Finally, create a connection between the TOPMODEL and the Trigger.
+15.	Finally, create a connection between the TOPMODEL and the Trigger.
 
 |
 

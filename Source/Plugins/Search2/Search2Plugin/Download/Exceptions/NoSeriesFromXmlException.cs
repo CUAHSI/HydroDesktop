@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace HydroDesktop.Search.Download.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when no series found in downloaded xml file.
+    /// </summary>
     class NoSeriesFromXmlException : Exception
     {
         private const string DEFAULT_MESSAGE = "No series found in xml file.";

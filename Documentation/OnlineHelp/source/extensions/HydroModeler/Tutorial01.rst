@@ -77,4 +77,57 @@ A simple model configuration can be created and executed using freely available 
    :align: center
 .
 
-3. Press the Run button from the user interface to execute the project. Tutorial 2 will demonstrate how to view the output from the model, and how to constructe the model by linking components.  
+3. Press the Run button from the user interface and the Run Properties box will appear.
+
+.. figure:: ./images/Tutorial01/HM_fig8.png
+   :align: center
+.
+
+4. For now, just click Run and HydroModeler will output data to your screen.
+
+.. figure:: ./images/Tutorial01/HM_fig9.png
+   :align: center
+.
+
+5. Once the simulation has finished running, you can click close and decide wether you would like to keep the open composition (by selecting Yes) or clear HydroModeler (by selecting No).  Click No.
+
+.. figure:: ./images/Tutorial01/HM_fig10.png
+   :align: center
+
+
+Accessing the output data
+-------------------------
+
+Now that you have run your composition, the data calculated will be stored to your computer in a specific location.
+
+1. For this tutorial, that data can be located in *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his*
+
+
+2. Click on the Table tab located in HydroDesktop and then click Change in the Database section located in the ribbon.
+
+.. figure:: ./images/Tutorial01/HM_fig11.png
+   :align: center
+.
+
+3. From here, you can navigate to the aforementioned location and find the example4.sqlite file.  Click Open and then Ok to display your data series.  Information will appear in the left hand box.
+
+.. figure:: ./images/Tutorial01/HM_fig12.png
+   :align: center
+.
+
+4.  To show greater detail on the data, check the box next to the desired data series.  Check Precipitation.
+
+.. figure:: ./images/Tutorial01/HM_fig13.png
+   :align: center
+.
+
+5.  To export this data to an external program, click Export within the Table tab.  A dialog box appears allowing you to choose what data to export, the notation used to seperate the data, and the name and location of the output file.  When you are finished, click Ok and a text file will be created in the location you chose.
+
+.. figure:: ./images/Tutorial01/HM_fig14.png
+   :align: center
+.
+
+6. This data can also be manipulated in the Graph tab to present you with a visual representation of the data series, as shown in the image below.  This is explained further in tutorial 2.
+
+.. figure:: ./images/Tutorial01/HM_fig15.png
+   :align: center
