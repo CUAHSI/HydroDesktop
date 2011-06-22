@@ -409,7 +409,10 @@ namespace HydroDesktop.Main
 			
 			try
 			{
-				fiTemp.Delete();
+                if (!fiTemp.Name.ToLower().StartsWith("theme"))
+                {
+                    fiTemp.Delete();
+                }
 				return true;
 			}
 			catch (System.Exception ex)

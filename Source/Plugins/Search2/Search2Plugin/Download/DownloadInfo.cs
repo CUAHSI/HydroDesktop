@@ -21,6 +21,9 @@ namespace HydroDesktop.Search.Download
         #region Properties
 
         private string _wsdl;
+        /// <summary>
+        /// Service url
+        /// </summary>
         public string Wsdl
         {
             get { return _wsdl; }
@@ -32,6 +35,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private string _fullSiteCode;
+        /// <summary>
+        /// Site code
+        /// </summary>
         public string FullSiteCode
         {
             get { return _fullSiteCode; }
@@ -43,6 +49,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private string _fullVariableCode;
+        /// <summary>
+        /// Variable code
+        /// </summary>
         public string FullVariableCode
         {
             get { return _fullVariableCode; }
@@ -54,6 +63,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private string _siteName;
+        /// <summary>
+        /// Site name
+        /// </summary>
         public string SiteName
         {
             get { return _siteName; }
@@ -65,6 +77,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private string _variableName;
+        /// <summary>
+        /// Variable name
+        /// </summary>
         public string VariableName
         {
             get { return _variableName; }
@@ -76,6 +91,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private DateTime _startDate;
+        /// <summary>
+        /// Start date
+        /// </summary>
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -87,6 +105,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private DateTime _endDate;
+        /// <summary>
+        /// End date
+        /// </summary>
         public DateTime EndDate
         {
             get { return _endDate; }
@@ -98,6 +119,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private double _latitude;
+        /// <summary>
+        /// Latitude
+        /// </summary>
         public double Latitude
         {
             get { return _latitude; }
@@ -109,6 +133,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private double _longitude;
+        /// <summary>
+        /// Longitude
+        /// </summary>
         public double Longitude
         {
             get { return _longitude; }
@@ -120,6 +147,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private DownloadInfoStatus _status;
+        /// <summary>
+        /// Status of current item
+        /// </summary>
         public DownloadInfoStatus Status
         {
             get { return _status; }
@@ -131,6 +161,9 @@ namespace HydroDesktop.Search.Download
         }
 
         private TimeSpan _downloadTimeTaken;
+        /// <summary>
+        /// Time interval, taken to downloading
+        /// </summary>
         public TimeSpan DownloadTimeTaken
         {
             get { return _downloadTimeTaken; }
@@ -143,6 +176,9 @@ namespace HydroDesktop.Search.Download
 
 
         private string _errorMessage;
+        /// <summary>
+        /// Error mesage. May be not null, if Status == DownloadInfoStatus.Error
+        /// </summary>
         public string ErrorMessage
         {
             get { return _errorMessage; }
@@ -153,10 +189,18 @@ namespace HydroDesktop.Search.Download
             }
         }
 
+        /// <summary>
+        /// File name containg downloaded data series.
+        /// </summary>
+        public string FileName { get; set; }
+
         #endregion
 
         #region Events
 
+        /// <summary>
+        /// Raises when property changed.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
@@ -177,11 +221,29 @@ namespace HydroDesktop.Search.Download
     /// </summary>
     public enum DownloadInfoStatus
     {
+        /// <summary>
+        /// Pending (awaitng to downloading)
+        /// </summary>
         Pending,
+        /// <summary>
+        /// Downloading
+        /// </summary>
         Downloading,
+        /// <summary>
+        /// Downloaded
+        /// </summary>
         Downloaded,
+        /// <summary>
+        /// Some error occured during downloading or saving
+        /// </summary>
         Error,
+        /// <summary>
+        /// Downloaded and saved without errors/warnings.
+        /// </summary>
         Ok,
+        /// <summary>
+        /// Downloaded and saved with warnings.
+        /// </summary>
         OkWithWarnings
     }
 }

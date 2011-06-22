@@ -86,24 +86,24 @@
 <li>Begin by going to the start menu and, from program, choose the CUAHSI HIS, then press the HydroDesktop icon.  Click ok on the initial dialog box.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig15.png" src="../../_images/HM_fig15.png" />
+<img alt="../../_images/HM_fig113.png" src="../../_images/HM_fig113.png" />
 </div>
 <p>.</p>
 <p>This will start HydroDesktop (shown below), which consists of the map and the map layers box.  With the map layers box, you are able to enable or disable a range of options that display simple base data (countries of the world, U.S states, major rivers and lakes, watersheds) to the map. The other parts are the Graph View and Table view menu.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig25.png" src="../../_images/HM_fig25.png" />
+<img alt="../../_images/HM_fig27.png" src="../../_images/HM_fig27.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="2">
 <li>Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig35.png" src="../../_images/HM_fig35.png" />
+<img alt="../../_images/HM_fig37.png" src="../../_images/HM_fig37.png" />
 </div>
 <p>.</p>
 <p>A new tab will appear in HydroDesktop.  This is the HydroModeler plug-in&#8217;s user interface.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig44.png" src="../../_images/HM_fig44.png" />
+<img alt="../../_images/HM_fig46.png" src="../../_images/HM_fig46.png" />
 </div>
 <p>.</p>
 </div>
@@ -112,7 +112,7 @@
 <p>HydroModeler is a plugin application that extends the core HydroDesktop application to support hydrologic modeling.  HydroModeler makes use of the OpenMI standard to provide a &#8220;plug and play&#8221; framework.  By adopting the OpenMI standard HydroModeler is able to focus on the specific task of running integrated modeling configurations.</p>
 <p>There are a number of tools located in the ribbon that will help you organize, navigate and create your project files.</p>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig53.png" src="../../_images/HM_fig53.png" />
+<img alt="../../_images/HM_fig56.png" src="../../_images/HM_fig56.png" />
 </div>
 <p>.</p>
 <ul class="simple">
@@ -136,7 +136,7 @@
 <li>In the window to the left you should see the folders within the HydroModeler example configuration folder.   Double click on example_configuration_4.  The HydroModeler window should now look like this:</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig61.png" src="../../_images/HM_fig61.png" />
+<img alt="../../_images/HM_fig64.png" src="../../_images/HM_fig64.png" />
 </div>
 <p>.</p>
 <div class="admonition note">
@@ -148,12 +148,68 @@
 <li>Double-click the OpenMI Pproject file (<a href="#id1"><span class="problematic" id="id2">*</span></a>.opr) to add it to your HydroModeler canvas.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig71.png" src="../../_images/HM_fig71.png" />
+<img alt="../../_images/HM_fig73.png" src="../../_images/HM_fig73.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="3">
-<li>Press the Run button from the user interface to execute the project. Tutorial 2 will demonstrate how to view the output from the model, and how to constructe the model by linking components.</li>
+<li>Press the Run button from the user interface and the Run Properties box will appear.</li>
 </ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig83.png" src="../../_images/HM_fig83.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="4">
+<li>For now, just click Run and HydroModeler will output data to your screen.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig92.png" src="../../_images/HM_fig92.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="5">
+<li>Once the simulation has finished running, you can click close and decide wether you would like to keep the open composition (by selecting Yes) or clear HydroModeler (by selecting No).  Click No.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig102.png" src="../../_images/HM_fig102.png" />
+</div>
+</div>
+<div class="section" id="accessing-the-output-data">
+<h2>Accessing the output data<a class="headerlink" href="#accessing-the-output-data" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have run your composition, the data calculated will be stored to your computer in a specific location.</p>
+<ol class="arabic simple">
+<li>For this tutorial, that data can be located in <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/Data/cuahsi-his</em></li>
+<li>Click on the Table tab located in HydroDesktop and then click Change in the Database section located in the ribbon.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig114.png" src="../../_images/HM_fig114.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="3">
+<li>From here, you can navigate to the aforementioned location and find the example4.sqlite file.  Click Open and then Ok to display your data series.  Information will appear in the left hand box.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig122.png" src="../../_images/HM_fig122.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="4">
+<li>To show greater detail on the data, check the box next to the desired data series.  Check Precipitation.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig132.png" src="../../_images/HM_fig132.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="5">
+<li>To export this data to an external program, click Export within the Table tab.  A dialog box appears allowing you to choose what data to export, the notation used to seperate the data, and the name and location of the output file.  When you are finished, click Ok and a text file will be created in the location you chose.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig142.png" src="../../_images/HM_fig142.png" />
+</div>
+<p>.</p>
+<ol class="arabic simple" start="6">
+<li>This data can also be manipulated in the Graph tab to present you with a visual representation of the data series, as shown in the image below.  This is explained further in tutorial 2.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig152.png" src="../../_images/HM_fig152.png" />
+</div>
 </div>
 </div>
 
@@ -165,8 +221,8 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Jun 20, 2011.&nbsp;
-      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.3.&nbsp;
+      &nbsp;Last updated on Jun 22, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
   </body>
