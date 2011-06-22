@@ -82,7 +82,7 @@
 <p>The purpose of this tutorial is to show how to create a model configuration by linking components in HydroModeler, and then how to execute it and view model output.  In short, the goal of this tutorial is to create the project in example configuration 4: watershed runoff calculation using TOPMODEL.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component. We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of Topographic index for every pixel in the watershed, model parameters (m, Tmax, R, and canopy interception), and two input exchange items (precipitation and evapotranspiration). Input precipitation was obtained using the HydroDesktop search mechanism, and stored in a local database file. Daily potential evapotranspiration rate is calculated and delivered by a Hargreaves model component. The Hargreaves component is also linked to the HydroDesktop database to obtain three input exchange items (maximum, minimum, and average daily temperatures). Finally, the TOPMODEL component is connected to a trigger which mediates the model run, and to the DbWriter component to store the output streamflow values back into the HydroDesktop database. Finally, the stored streamflow is plotted using the HydroDesktop Graph View plugin and compared to observed streamflow values.</p>
+<p>In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component. We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of topographic index for every pixel in the watershed, model parameters (m, Tmax, R, and canopy interception), and two input exchange items (precipitation and evapotranspiration). Input precipitation was obtained using the HydroDesktop search mechanism, and stored in a local database file. Daily potential evapotranspiration rate is calculated and delivered by a Hargreaves model component. The Hargreaves component is also linked to the HydroDesktop database to obtain three input exchange items (maximum, minimum, and average daily temperatures). Then, the TOPMODEL component is connected to a trigger which initiates the model run, and to the DbWriter component to store the output streamflow values back into the HydroDesktop database. Finally, the stored streamflow is plotted using the HydroDesktop Graph View plugin and compared to observed streamflow values.</p>
 </div>
 <div class="section" id="creating-the-configuration">
 <h2>Creating the Configuration<a class="headerlink" href="#creating-the-configuration" title="Permalink to this headline">¶</a></h2>
@@ -93,7 +93,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/Hydrodesktop_start.png" src="../../_images/Hydrodesktop_start.png" />
+<img alt="../../_images/Hydrodesktop_start2.png" src="../../_images/Hydrodesktop_start2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -112,7 +112,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/newproject.png" src="../../_images/newproject.png" />
+<img alt="../../_images/newproject2.png" src="../../_images/newproject2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -124,7 +124,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/extensions.png" src="../../_images/extensions.png" />
+<img alt="../../_images/extensions2.png" src="../../_images/extensions2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -136,19 +136,26 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/CurrentDirectory.png" src="../../_images/CurrentDirectory.png" />
+<img alt="../../_images/CurrentDirectory2.png" src="../../_images/CurrentDirectory2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="5">
-<li>To view  Coweeta watershed # 18, click on the Home tab, use the add button, and navigate to   <em>C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/data/gis</em>  to load the shape files of  Coweeta watershed, streams, climate station, and subbasin #18.</li>
+<li>To view  Coweeta watershed # 18, click on the Home tab, use the add button, and navigate to   <em>[path to Hydrodesktop]/HydroModeler_example_configurations/example_configuration_04/data/gis</em>. Load the following shapefiles of  CoweetaWatershed.shp, streams.shp, climateStation.shp, and coweeta18.shp.</li>
 </ol>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If prompted to reproject this data, choose &#8220;Yes&#8221;.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="figure align-center">
-<img alt="../../_images/coweeta.png" src="../../_images/coweeta.png" />
+<img alt="../../_images/coweeta2.png" src="../../_images/coweeta2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -160,7 +167,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/TopModel.omi.png" src="../../_images/TopModel.omi.png" />
+<img alt="../../_images/TopModel.omi2.png" src="../../_images/TopModel.omi2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -178,7 +185,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/ModelAdding.png" src="../../_images/ModelAdding.png" />
+<img alt="../../_images/ModelAdding3.png" src="../../_images/ModelAdding3.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -190,7 +197,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/Component.png" src="../../_images/Component.png" />
+<img alt="../../_images/Component2.png" src="../../_images/Component2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -208,7 +215,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/Dbconnection.png" src="../../_images/Dbconnection.png" />
+<img alt="../../_images/Dbconnection2.png" src="../../_images/Dbconnection2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -220,7 +227,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/DbTopmodel.png" src="../../_images/DbTopmodel.png" />
+<img alt="../../_images/DbTopmodel2.png" src="../../_images/DbTopmodel2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -232,7 +239,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/hargreaves-TopModel.png" src="../../_images/hargreaves-TopModel.png" />
+<img alt="../../_images/hargreaves-TopModel2.png" src="../../_images/hargreaves-TopModel2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -244,7 +251,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/DbWriter-TopModel.png" src="../../_images/DbWriter-TopModel.png" />
+<img alt="../../_images/DbWriter-TopModel2.png" src="../../_images/DbWriter-TopModel2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -256,7 +263,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/TopModel-Trigger.png" src="../../_images/TopModel-Trigger.png" />
+<img alt="../../_images/TopModel-Trigger2.png" src="../../_images/TopModel-Trigger2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -274,7 +281,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/run.png" src="../../_images/run.png" />
+<img alt="../../_images/run2.png" src="../../_images/run2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -286,7 +293,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/runsetup.png" src="../../_images/runsetup.png" />
+<img alt="../../_images/runsetup2.png" src="../../_images/runsetup2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -298,7 +305,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/duringruning.png" src="../../_images/duringruning.png" />
+<img alt="../../_images/duringruning2.png" src="../../_images/duringruning2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -310,7 +317,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/finishsuccess.png" src="../../_images/finishsuccess.png" />
+<img alt="../../_images/finishsuccess2.png" src="../../_images/finishsuccess2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -328,7 +335,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/graphview.png" src="../../_images/graphview.png" />
+<img alt="../../_images/graphview2.png" src="../../_images/graphview2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -340,7 +347,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/changedb.png" src="../../_images/changedb.png" />
+<img alt="../../_images/changedb2.png" src="../../_images/changedb2.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -352,7 +359,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/Table2.png" src="../../_images/Table2.png" />
+<img alt="../../_images/Table22.png" src="../../_images/Table22.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -364,7 +371,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/graph.png" src="../../_images/graph.png" />
+<img alt="../../_images/graph3.png" src="../../_images/graph3.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -376,7 +383,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/graph2.png" src="../../_images/graph2.png" />
+<img alt="../../_images/graph22.png" src="../../_images/graph22.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -388,7 +395,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="figure align-center">
-<img alt="../../_images/graph4.png" src="../../_images/graph4.png" />
+<img alt="../../_images/graph42.png" src="../../_images/graph42.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -404,14 +411,14 @@
 <li>Next, uncheck the streamflow data series and instead select precipitation to show the input precipitation data series.  This can also be done with the temperature data series.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/graph5.png" src="../../_images/graph5.png" />
+<img alt="../../_images/graph52.png" src="../../_images/graph52.png" />
 </div>
 <p>.</p>
 <ol class="arabic simple" start="10">
 <li>To utilize our calculation outside of HydroDesktop, we can export it using the &#8220;Export&#8221; ribbon button located on the Table tab.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/export.png" src="../../_images/export.png" />
+<img alt="../../_images/export2.png" src="../../_images/export2.png" />
 </div>
 </div>
 </div>
