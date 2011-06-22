@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace HydroDesktop.Search.Download.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when converting data series from xml.
+    /// </summary>
     class DataSeriesFromXmlException : Exception
     {
         private const string DEFAULT_MESSAGE = "Data Series From Xml Exception.";
@@ -10,7 +13,7 @@ namespace HydroDesktop.Search.Download.Exceptions
         public DataSeriesFromXmlException()
             : this(DEFAULT_MESSAGE)
         {
-
+            
         }
         public DataSeriesFromXmlException(Exception inner)
             : this(DEFAULT_MESSAGE, inner)

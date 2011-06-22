@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace HydroDesktop.Search.Download.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when downloading series from web services.
+    /// </summary>
     class DownloadXmlException : Exception
     {
         private const string DEFAULT_MESSAGE = "Download Xml Exception.";
