@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Spatial">
+</Property><Property Name="Solution File" Value="C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Spatial.sln">
+</Property><Property Name="Date" Value="Monday, November 30, 2009">
+</Property><Property Name="Time" Value="15:41:17 PM">
+</Property><Property Name="Log Number" Value="2">
+</Property></Properties><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="Oatc.OpenMI.Sdk.Spatial.csproj" Description="Project file successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\Oatc.OpenMI.Sdk.Spatial.csproj">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="AssemblyInfo.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="DataOperation.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\DataOperation.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="ElementMapper.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\ElementMapper.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="ElementSetChecker.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\ElementSetChecker.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="XYGeometryTools.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\XYGeometryTools.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="XYLine.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\XYLine.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="XYPoint.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\XYPoint.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="XYPolygon.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\XYPolygon.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="XYPolyline.cs" Description="File successfully backed up as C:\Program Files\Oatc.OpenMI.ConfigurationEditor 1.4.0.0\Oatc.SDK_1.4.0.0\Oatc\src\csharp\Sdk\Spatial\Backup1\XYPolyline.cs">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="Oatc.OpenMI.Sdk.Spatial.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Oatc.OpenMI.Sdk.Spatial" Source="Oatc.OpenMI.Sdk.Spatial.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Oatc.OpenMI.Sdk.Spatial" Source="Oatc.OpenMI.Sdk.Spatial.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
