@@ -6,7 +6,7 @@ The purpose of this tutorial is to show how to create a model configuration by l
 
 Overview
 --------
-In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component. We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of Topographic index for every pixel in the watershed, model parameters (m, Tmax, R, and canopy interception), and two input exchange items (precipitation and evapotranspiration). Input precipitation was obtained using the HydroDesktop search mechanism, and stored in a local database file. Daily potential evapotranspiration rate is calculated and delivered by a Hargreaves model component. The Hargreaves component is also linked to the HydroDesktop database to obtain three input exchange items (maximum, minimum, and average daily temperatures). Finally, the TOPMODEL component is connected to a trigger which mediates the model run, and to the DbWriter component to store the output streamflow values back into the HydroDesktop database. Finally, the stored streamflow is plotted using the HydroDesktop Graph View plugin and compared to observed streamflow values.
+In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component. We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of topographic index for every pixel in the watershed, model parameters (m, Tmax, R, and canopy interception), and two input exchange items (precipitation and evapotranspiration). Input precipitation was obtained using the HydroDesktop search mechanism, and stored in a local database file. Daily potential evapotranspiration rate is calculated and delivered by a Hargreaves model component. The Hargreaves component is also linked to the HydroDesktop database to obtain three input exchange items (maximum, minimum, and average daily temperatures). Then, the TOPMODEL component is connected to a trigger which initiates the model run, and to the DbWriter component to store the output streamflow values back into the HydroDesktop database. Finally, the stored streamflow is plotted using the HydroDesktop Graph View plugin and compared to observed streamflow values.
 
 Creating the Configuration
 ------------------------
@@ -51,9 +51,15 @@ Creating the Configuration
    :align: center
 |
 
-5.	To view  Coweeta watershed # 18, click on the Home tab, use the add button, and navigate to   *C:/Hydrodesktop/Installer/HydroModeler_example_configurations/example_configuration_04/data/gis*  to load the shape files of  Coweeta watershed, streams, climate station, and subbasin #18.
+5.	To view  Coweeta watershed # 18, click on the Home tab, use the add button, and navigate to   *[path to Hydrodesktop]/HydroModeler_example_configurations/example_configuration_04/data/gis*. Load the following shapefiles of  CoweetaWatershed.shp, streams.shp, climateStation.shp, and coweeta18.shp.
 
 |
+
+.. NOTE::
+	If prompted to reproject this data, choose "Yes".
+
+|
+
 
 .. figure:: ./images/Tutorial02/coweeta.png
    :align: center
