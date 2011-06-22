@@ -10,25 +10,25 @@ Starting HydroModeler
 
 1. Begin by going to the start menu and, from program, choose the CUAHSI HIS, then press the HydroDesktop icon.  Click ok on the initial dialog box.  
 
-.. figure:: ./images/Tutorial01/HM_fig1.png
+.. figure:: ./images/Tutorial01/HM_fig1_m2.png
    :align: center 
 .
    
 This will start HydroDesktop (shown below), which consists of the map and the map layers box.  With the map layers box, you are able to enable or disable a range of options that display simple base data (countries of the world, U.S states, major rivers and lakes, watersheds) to the map. The other parts are the Graph View and Table view menu.
 
-.. figure:: ./images/Tutorial01/HM_fig2.png
+.. figure:: ./images/Tutorial01/HM_fig2_m2.png
    :align: center
 .
    
 2. Load the HydroModeler plugin by selecting the icon in the upper left corner of the screen - Extensions - HydroModeler.
 
-.. figure:: ./images/Tutorial01/HM_fig3.png
+.. figure:: ./images/Tutorial01/HM_fig3_m2.png
    :align: center
 .
    
 A new tab will appear in HydroDesktop.  This is the HydroModeler plug-in's user interface.
 
-.. figure:: ./images/Tutorial01/HM_fig4.png
+.. figure:: ./images/Tutorial01/HM_fig4_m2.png
    :align: center
 .
 
@@ -39,7 +39,7 @@ HydroModeler is a plugin application that extends the core HydroDesktop applicat
 
 There are a number of tools located in the ribbon that will help you organize, navigate and create your project files.
 
-.. figure:: ./images/Tutorial01/HM_fig5.png
+.. figure:: ./images/Tutorial01/HM_fig5_m2.png
    :align: center
 .
 
@@ -63,7 +63,7 @@ A simple model configuration can be created and executed using freely available 
 
 1. In the window to the left you should see the folders within the HydroModeler example configuration folder.   Double click on example_configuration_4.  The HydroModeler window should now look like this: 
 
-.. figure:: ./images/Tutorial01/HM_fig6.png
+.. figure:: ./images/Tutorial01/HM_fig6_m2.png
    :align: center
 .
    
@@ -73,25 +73,25 @@ A simple model configuration can be created and executed using freely available 
 
 2. Double-click the OpenMI Pproject file (*.opr) to add it to your HydroModeler canvas.
 
-.. figure:: ./images/Tutorial01/HM_fig7.png
+.. figure:: ./images/Tutorial01/HM_fig7_m2.png
    :align: center
 .
 
 3. Press the Run button from the user interface and the Run Properties box will appear.
 
-.. figure:: ./images/Tutorial01/HM_fig8.png
+.. figure:: ./images/Tutorial01/HM_fig8_m2.png
    :align: center
 .
 
 4. For now, just click Run and HydroModeler will output data to your screen.
 
-.. figure:: ./images/Tutorial01/HM_fig9.png
+.. figure:: ./images/Tutorial01/HM_fig9_m2.png
    :align: center
 .
 
 5. Once the simulation has finished running, you can click close and decide wether you would like to keep the open composition (by selecting Yes) or clear HydroModeler (by selecting No).  Click No.
 
-.. figure:: ./images/Tutorial01/HM_fig10.png
+.. figure:: ./images/Tutorial01/HM_fig10_m2.png
    :align: center
 
 
@@ -105,29 +105,29 @@ Now that you have run your composition, the data calculated will be stored to yo
 
 2. Click on the Table tab located in HydroDesktop and then click Change in the Database section located in the ribbon.
 
-.. figure:: ./images/Tutorial01/HM_fig11.png
+.. figure:: ./images/Tutorial01/HM_fig11_m2.png
    :align: center
 .
 
 3. From here, you can navigate to the aforementioned location and find the example4.sqlite file.  Click Open and then Ok to display your data series.  Information will appear in the left hand box.
 
-.. figure:: ./images/Tutorial01/HM_fig12.png
+.. figure:: ./images/Tutorial01/HM_fig12_m2.png
    :align: center
 .
 
 4.  To show greater detail on the data, check the box next to the desired data series.  Check Precipitation.
 
-.. figure:: ./images/Tutorial01/HM_fig13.png
+.. figure:: ./images/Tutorial01/HM_fig13_m2.png
    :align: center
 .
 
 5.  To export this data to an external program, click Export within the Table tab.  A dialog box appears allowing you to choose what data to export, the notation used to seperate the data, and the name and location of the output file.  When you are finished, click Ok and a text file will be created in the location you chose.
 
-.. figure:: ./images/Tutorial01/HM_fig14.png
+.. figure:: ./images/Tutorial01/HM_fig14_m2.png
    :align: center
 .
 
 6. This data can also be manipulated in the Graph tab to present you with a visual representation of the data series, as shown in the image below.  This is explained further in tutorial 2.
 
-.. figure:: ./images/Tutorial01/HM_fig15.png
+.. figure:: ./images/Tutorial01/HM_fig15_m2.png
    :align: center
