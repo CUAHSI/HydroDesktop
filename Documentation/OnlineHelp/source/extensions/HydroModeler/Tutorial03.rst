@@ -3,316 +3,143 @@
 Tutorial 3: Creating a New Model Component
 ==========================================
    
-The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2.  We will use C#.Net in this demonstration. C# is an object oriented programming language designed for building a wide variety of applications that run on the .NET Framework.  W
+The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2 to calculate potential evapotranspiration.  We will be using the C# programming language in this demonstration. Hargreaves is a simple potential evapotranspiration model that requires only geographic location and air temperature (daily minimum, maximum, and average) as input. 
 
+.. Note:
+	We assume that you have some knowledge of programming using C#.  For background information on programming with C#, we recommend Microsoft's Development Network: http://msdn.microsoft.com/en-us/beginner/bb308734.aspx.
 
-Hargreaves Component Structure
-------------------------------
-Hargreaves is a simple potential evapotranspiration model that requires only temperature and solar energy. The total incoming extra terrestrial solar radiation is calculated as a function in julien day. The Hargreaves component requires three input exchange items  (Maximum - Minimum - Average) daily Temperature, and gives an output exchange item (Daily Evapotranspiration) 
+|
 
-Getting stared with Visual C#
-------------------------------
+.. Note:
+	In this tutorial, we show how to create the component from scratch.  There is, however, a sample component template is available in the HydroDesktop source code that may be useful if you are creating your own components.  The sample component is available at *[Path to HydroDesktop Source]\Source\Plugins\HydroModeler\Components\SampleComponent*.  
 
-1. If you do not have access to Microsoft Visual Studio you can download Microsoft Visual C# 2010 for free from http://www.microsoft.com/express/Downloads/
+|
+
+Installing Visual Studio 
+------------------------
+
+.. Note:
+	Perform these steps only if you do not already have Microsoft Visual Studio 2010 installed on your computer.
+	
+1. Download Microsoft Visual C# 2010 for free from http://www.microsoft.com/express/Downloads/
 
 2. Choose the tab Visual Studio 2010 Express.  Then select Visual C# 2010 Express Edition.  Click Download and follow instructions to install.
 
 .. figure:: ./images/Tutorial03/HM_fig44.png
    :align: center
 
-   
-3. If you are learning C# or need a refresher there are many tutorials available on-line that can help.  The address below will take you to Microsoft's Development Network were they have a beginners learning center.  There are several links available here for learning Visual Studio C# and Visual Studio Basic: http://msdn.microsoft.com/en-us/beginner/bb308734.aspx
+|
 
-.. index:: 
-   single: Sample Component
-   
-Sample Component
-----------------
+Downloading HydroDesktop Source Code
+------------------------------------
 
-The sample component we will start from is a shell of how code should be written to run in HydroDesktop.  This component can be used as a guide to create and run more meaningful hydrological applications.    
+1. You can download the HydroDesktop source code either using the source control management system (Hg) or by going to *http://hydrodesktop.codeplex.com/SourceControl/list/changesets* and downloading the latest revision of the source control.  
 
-1. Download the latest version of HydroDesktop source code from http://hydrodesktop.codeplex.com/SourceControl/list/changesets.
+Create Hargreaves component using Microsoft Visual C#
+----------------------------------------------------- 
 
-.. figure:: ./images/Tutorial03/Download.png
-   :align: center
-.
+1. Start Microsoft Visual Studio 2010.
 
-2. The sample component is available on the HydroDesktop website (http://hydrodesktop.codeplex.com/SourceControl/changeset/view/320c9bb87767#) and in the downloaded version.
-
-.. figure:: ./images/Tutorial03/Sample.png
-   :align: center
-.
-
-.. index:: 
-   single: Create Hargreaves component using Microsoft Visual C#
-
-Create Hargreaves component using Microsoft Visual C#.
----------------------------------------------- 
-
-1. Open the start menu-Microsoft Visual Studio- Microsoft Visual Studio.
-
-.. figure:: ./images/Tutorial03/open.png
-   :align: center
-.
-
-2.Open the Visual Studio C# and create a new project. Choose Visual C#, Class Library, and name the project as Hargreaves. Browse to the location tab path and point hto this path *C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components*.
+2. Create a new C# class library project.  Name the project "Hargreaves" and save it in your working directory. 
 
 .. figure:: ./images/Tutorial03/class.png
    :align: center
-.
 
-3. Add two folders (source and data), copy class1.cs into the source folder and rename it it Hargreaves.cs 
+|
+
+3. Add two new folders (source and data) by right clicking on the project name and selecting Add --> New Folder.  Next, copy the default class "class1.cs" into the source folder and rename it Hargreaves.cs. 
 
 .. figure:: ./images/Tutorial03/folders.png
    :align: center
 
+|
 
 Adding References
 '''''''''''''''''
 
-A reference to a library is required to run the code you have written.  Usually a reference identifies a dll (Dynamic Linking Library) file.  The references can be viewed by expanding the Reference option listed in the Solution Explorer window located on the upper right side of the page.  
-
-1. Right click on Reference and select Add Reference.
+1. You can view the references that currently exist in the project by expanding the "Reference" item listed in the Solution Explorer window (located on the upper right side of the page).  Currently, this project only contains the default references.  We need to add several additional references. To do this, right click on  "References" in the Solution Explorer and select "Add New Reference". 
 
 .. figure:: ./images/Tutorial03/ref.png
    :align: center
-.
 
-2. A window will pop up. Using the tabs, browse to *C:/Hydrodesktop/Binaries/Plugins/HydroModeler*, and add (Oatc.OpenMI.Sdk.Backbone.dll - Oatc.OpenMI.Sdk.Buffer.dll - Oatc.OpenMI.Sdk.DevelopmentSupport.dll - Oatc.OpenMI.Sdk.Wrapper.dll - OpenMI.Standard.dll)
+|
 
-3. Navigate to *C:/Hydrodesktop/Binaries/Plugins/HydroModeler/example_configuration/bin* and add SMW.dll.
+2. Browse to *[Path to HydroDesktop Source Code]/Binaries/Plugins/HydroModeler/*. Add the following dll's:
+  - Oatc.OpenMI.Sdk.Backbone.dll 
+  - Oatc.OpenMI.Sdk.Buffer.dll 
+  - Oatc.OpenMI.Sdk.DevelopmentSupport.dll 
+  - Oatc.OpenMI.Sdk.Wrapper.dll 
+  - OpenMI.Standard.dll)
+
+3. Right click on "References" in the solution explorer again and browse to *[Path to HydroDesktop]/Binaries/Plugins/HydroModeler/example_configuration/bin*.  Add the following dll:
+   - SMW.dll.
 
 .. figure:: ./images/Tutorial03/referencesstructure.png
    :align: center
-.
 
-.. index:: 
-   single: Namespaces
-   
+|
 
-Namespaces
-'''''''''''
+Create the Linkable Component Class
+'''''''''''''''''''''''''''''''''''
 
-Namespaces provide you a way to organize your code.  The "using" directive can be implemented as a way of accessing members of a namespace without having to type out their full name each time they are used.  When a new project is created, several common namespaces are inserted. 
+1. Right-click on the "source" folder in the Solution Explorer and select Add --> Class. Rename the class LinkableComponent.cs. 
 
-1. Implement the using directive to add the namespaces of the references we add.
+.. figure:: ./images/Tutorial03/linkablecomponent.png
+   :align: center
+
+|
+
+2. Add the following line of code so that the LinkableComponent class inherits from the Oatc.OpenMI.Sdk.Wrapper.LinkableEngine abstract class.
+
+.. code-block:: c#
+	class SampleLinkableComponent : Oatc.OpenMI.Sdk.Wrapper.LinkableEngine
+
+.. figure:: ./images/Tutorial03/inherited.png
+   :align: center
+
+|
+
+
+Creating the Hargreaves Component using SMW
+'''''''''''''''''''''''''''''''''''''''''''
+
+1. Include the following using statements to the top of the Hargreaves.cs file.  
 
 .. code-block:: c#
 
-      using System;    
-      using System.Collections.Generic;
-      using System.Linq;
-      using System.Text;
-      using System.IO;
       using Oatc.OpenMI.Sdk.Backbone;
       using Oatc.OpenMI.Sdk.Buffer;
       using Oatc.OpenMI.Sdk.DevelopmentSupport;
       using Oatc.OpenMI.Sdk.Wrapper;
       using SMW;
 
+|
 
+2. Make the class inhert from SMW.Wrapper.
 
-.. index:: 
-   single: Create the Linkable component
-
-
-Create the Linkable component
-'''''''''''''''''''''''''''''
-
-1.Add a new class under the source folder and rename it as LinkableComponent. 
-
-.. figure:: ./images/Tutorial03/linkablecomponent.png
-   :align: center
-.
-
-2.Inherit the linkable engine class from Oatc.OpenMI.Sdk.Wrapper namespace.
-
-.. figure:: ./images/Tutorial03/inherited.png
-   :align: center
-.
-
-.. index:: 
-   single: Create the Configuration Xml
-
-Create the Configuration xml file
-'''''''''''''''''''''''''''''''''
-
-The configuration file defines the exchange items (output and input) of the component, the time horizon of the component (start and end times), as well as the time step of the component.   
-
-1. Add a xml file to the Data folder.
-
-2. Copy the configuration structure from the sample component into your config.xml.
-
-.. figure:: ./images/Tutorial03/config.png
-   :align: center
-.
-
-3. Create three input exchange items and one output exchange item for the Hargreaves component.
-
-4. In output exchange item, define the Element set and Quantity as shown below.
-
-.. code-block:: XML
-
-        <OutputExchangeItem>
-        <ElementSet>
-        <ID>Coweeta</ID>
-        <Description>Coweeta watershed, NC</Description>
-        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
-        <Version>1</Version>
-      </ElementSet>
-      <Quantity>
-        <ID>PET</ID>
-        <Description>Potential Evapotranspiration</Description>
-        <Dimensions>
-          <Dimension>
-            <Base>Length</Base>
-            <Power>1</Power>
-          </Dimension>
-          <Dimension>
-            <Base>T</Base>
-            <Power>-1</Power>
-          </Dimension>
-        </Dimensions>
-        <Unit>
-          <ID>mm/day</ID>
-          <Description>Millimeters per day</Description>
-          <ConversionFactorToSI>1</ConversionFactorToSI>
-          <OffSetToSI>0</OffSetToSI>
-        </Unit>
-        <ValueType>Scalar</ValueType>
-      </Quantity>
-    </OutputExchangeItem>
-
-.
-
-5. Do the same for the input exchange items as shown below. 
-
-
-.. code-block:: XML
-
-        <InputExchangeItem>
-        <ElementSet>
-        <ID>Climate Station 01</ID>
-        <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
-        <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
-        <Version>1</Version>
-      </ElementSet>
-      <Quantity>
-        <ID>Min Temp</ID>
-        <Description>Minimum Daily Temperature</Description>
-        <Dimensions>
-          <Dimension>
-            <Base>Temperature</Base>
-            <Power>1</Power>
-          </Dimension>
-        </Dimensions>
-        <Unit>
-          <ID>Celsius</ID>
-          <Description>Degrees Celsius</Description>
-          <ConversionFactorToSI>1</ConversionFactorToSI>
-          <OffSetToSI>0</OffSetToSI>
-        </Unit>
-        <ValueType>Scalar</ValueType>
-      </Quantity>
-    </InputExchangeItem>
-
-.
-
-
-.. index:: 
-   single: Create the omi file
-
-
-Create the omi file
-'''''''''''''''''''
- **omi** is defined by (Linkable component - *relative* location for component dll - path for cofiguration.xml - input & output arguments)
-
-1. Create an xml file, add it under data folder and name it as Hargreaves.
-
-2. Change the file extension to omi.
-
-3. Define the relative path to the Hargeaves.dll.
-
-4. Define an argument (Key - ReadOnly - Value) for the configuration file. Key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and Value points to the *relative* location of the configuration.xml.
-
-5. Add an argument named Output to define the relative location of the output csv file.
-
-
-.. code-block:: XML
-
-        <LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\..\bin\Hargreaves.dll">
-        <Arguments>
-        <Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" />
-        <Argument Key="Output" ReadOnly="true" Value=".\Pet_Output.csv" />
-        </Arguments>
-        </LinkableComponent
-
-.
- 
-
-.. index:: 
-   single: Methods
-
-Implementing the Model Methods
-''''''''''''''''''''''''''''''
-
-There are several major parts to this code:
-
-1. *Defining the global variables* In this section variables are defined using specific data types such as string, integer, double, and Boolean.
+.. code-block:: c#
+	
+        public class Engine : SMW.Wrapper
+        
+		
+3. Define the global variables for the class using the following lines of code. 
 
 .. code-block:: c#
 	
         namespace Hargreaves
         {
-        public class Engine : SMW.Wrapper
-        {
-        #region
-        public string[] input_quantity;
-        public string output_quantity;
-        public string[] input_elementset;
-        public string output_elementset;
-        Dictionary<DateTime, double[]> _output;
-        string output_path = "./hargreaves_output.txt";
+			public class Engine : SMW.Wrapper
+			{
+				public string[] input_quantity;
+				public string output_quantity;
+				public string[] input_elementset;
+				public string output_elementset;
+				Dictionary<DateTime, double[]> _output = new Dictionary<DateTime, double[]>();
+				string output_path = "./hargreaves_output.txt";
 
-        public Engine()
-        {
-            _output = new Dictionary<DateTime,double[]>();
-        }
-        #endregion
-        }
-        }
+|
 
-.
-
-
-2. *The Finish method* This section of code tells the application to write output files based on data acquired during the simulation.
-
-.. code-block:: c#
-
-        public override void Finish()
-        {
-        StreamWriter sw = new StreamWriter(output_path,false);
-
-        //write header line
-        sw.WriteLine("Simulation Time, PET[mm/day]");
-
-        //write all values
-        foreach (KeyValuePair<DateTime, double[]> kvp in _output)
-        {
-        sw.Write(String.Format("{0:MM/dd/yyyy: hh:mm tt}", kvp.Key));
-        for (int i = 0; i <= kvp.Value.Length - 1; i++)
-        sw.Write("," + kvp.Value[i]);
-        sw.Write("\n");
-        }
-
-        //close file
-        sw.Close();
-        }
-
-.
-
-
-3. *The Initialize method* This section gives the application instructions on operations that need to be preformed prior to running the simulation.  This section locates the configuration file and sets internal variables in OpenMI.
+4. Define what the component should do when a model is loaded into HydroModeler by implementing the *Initialize* method.  In the code below, the component will read input data from the configuration file and create input and output exchange items from the information included in the configuration file.
 
 .. code-block:: c#
  
@@ -349,18 +176,16 @@ There are several major parts to this code:
             OutputExchangeItem output = this.GetOutputExchangeItem(num_outputs - 1);
             output_elementset = output.ElementSet.ID;
             output_quantity = output.Quantity.ID;
-
-
         }
 
-.
+|
 
 
-4. *The Calculations Section* For the Sample Component, the calculation section is written so that the application computes PET according to the Hargreaves formula. 
+5. Define what the component should do when a model is for each iteration of the model run by implementing the *PerformTimeStep* method.  In the code below, the component will get input data from other components and then using the data to calculate PET for that time step.  Finally, it will set the PET values for other components to read.  
 
 .. code-block:: c#
 
- public override bool PerformTimeStep()
+	public override bool PerformTimeStep()
         {
             //---- get input data
             //-- temp
@@ -370,7 +195,7 @@ There are several major parts to this code:
             //-- min temp
             double[] mintemp = ((ScalarSet)this.GetValues(input_quantity[2], input_elementset[2])).data;
 
-            //---- calculate pet for each element
+            //---- calculate PET for each element
             //-- get the number of elements (assuming that they're all the same)
             int elemcount = this.GetInputExchangeItem(0).ElementSet.ElementCount;
             double[] pet = new double[elemcount];
@@ -386,15 +211,15 @@ There are several major parts to this code:
             //---- set output values
             this.SetValues(output_quantity, output_elementset, new ScalarSet(pet));
 
-            //---- advance to the next timestep
+            //---- advance the component's internal time
             this.AdvanceTime();
 
             return true;
         }
 
-.
+|
 
-5.	In the PerformTimeStep we call the *CalculatePET* method, That is used to calculate the Potential Evapotranspiration using four input parameters.First, Averaged daily temperature. Second, Minimum daily temperature. Third, Maximum daily temperature.  Finally the element index parameter used to define the elementset calculated. The *CalculatedPET* returns the PET in mm/day.
+6.	In the PerformTimeStep method we called a second method named *CalculatePET*.  We next need to implement this method which will do the actual Hargreaves calculation.  
 
 .. code-block:: c#
 
@@ -440,100 +265,211 @@ There are several major parts to this code:
             
         }
 
-Within the Finish method there is code telling the application where to write the output file.  This line should be changed now to specify where you would like the output file to be created.  If you choose not to change the code then by default the output text file created by HydroModeler will go up two directories from where you run HydroDesktop.  
+7. Define what the component should do after a model run has completed by implementing the *Finish* method.   In the code below, the component will simply write out the results to a text file.
 
-.. index:: 
-   single: Compiling
+.. code-block:: c#
+
+        public override void Finish()
+        {
+			StreamWriter sw = new StreamWriter(output_path,false);
+
+			//write header line
+			sw.WriteLine("Simulation Time, PET[mm/day]");
+
+			//write all values
+			foreach (KeyValuePair<DateTime, double[]> kvp in _output)
+			{
+				sw.Write(String.Format("{0:MM/dd/yyyy: hh:mm tt}", kvp.Key));
+				for (int i = 0; i <= kvp.Value.Length - 1; i++)
+				{
+					sw.Write("," + kvp.Value[i]);
+				}
+				sw.Write("\n");
+			}
+
+        //close file
+        sw.Close();
+        }
+
+|
 
 Compiling
 ''''''''''
 
-The next step involves compiling the application.  Compiling is the process of converting written code into an executable file that the computer can run.  
-In Visual Studio C#, select Build - Build Solution
+The next step involves compiling the application.  Compiling is the process of converting written code into an binary file that the computer can run.  
 
-1. Right click on the Hargreaves.csproj,  select properties, Debug, start external program, and navigate to HydroDesktop.exe in *C:/Hydrodesktop/Binaries/HydroDesktop.exe*.
+1.  In Visual Studio C#, select Build --> Build Solution.  If there are any errors, the Error List window at the bottom of the screen will notify you.
+   
 
-.. figure:: ./images/Tutorial03/compile.png
-   :align: center
-.
+Create the Configuration XML File
+'''''''''''''''''''''''''''''''''
 
-2. Build the solution to check for any errors.  If there are any errors, the Error List window at the bottom of the screen will notify you.
+The configuration file defines the input and output exchange items of the component, the time horizon of the component (start and end times), as well as the time step of the component.   
+
+1. Right-click on the Data folder in the Solution Explorer and select Add --> New Item.  Select to add an XML file.  Rename this file config.xml.
+
+2. Add the following lines to the config.xml file to provide the overall structure. 
+
+.. code-block:: XML
+	<Configuration>
+	  <ExchangeItems> </ExchangeItems>
+	  <TimeHorizon> </TimeHorizon>
+	  <ModelInfo> </ModelInfo>
+	</Configuration>
+
+3. Add the following output exchange item within the ExchangeItems element.  
+
+.. code-block:: XML
+	<OutputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>PET</ID>
+        <Description>Potential Evapotranspiration</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>Time</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/day</ID>
+          <Description>Millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
     
+|
 
-.. index:: 
-   single: Running a sample component in HydrDesktop
+4. Add the following input exchange item for average temperature as well. 
 
+.. code-block:: XML
 
-HydroDesktop
-'''''''''''''
+	<InputExchangeItem>
+      <ElementSet>
+        <ID>Climate Station 01</ID>
+        <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
+        <ShapefilePath>..\..\data\gis\climateStation.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Temp</ID>
+        <Description>Daily Averaged Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Temperature</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>Celsius</ID>
+          <Description>Degrees Celsius</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+
+|
+
+5. Next add two more input exchange items for minimum and maximum temperature.  You can copy the input exchange item above and just replace the Quantity ID and Description for each of the new exchange item. 
+
+Create the omi File
+'''''''''''''''''''
+
+The *omi* file defines the component properties including the path (which is recommended to be a relative path) to the component dll, the path to the component cofig.xml file, and any other arguments for the component.  
+
+1. Add a new XML file under the *Data* folder as you did previously and name it Hargreaves.omi.
+
+3. Define the relative path to the Hargeaves.dll.
+
+4. Define an argument (Key - ReadOnly - Value) for the configuration file. Key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and Value points to the *relative* location of the configuration.xml.
+
+5. Add an argument named Output to define the relative location of the output csv file.
+
+.. code-block:: XML
+
+    <LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\bin\Debug\Hargreaves.dll">
+	  <Arguments>
+        <Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" />
+      </Arguments>
+	</LinkableComponent>
+
+|
+
+.. Note ::
+	You may need to edit the paths to either the Hargreaves.dll or Config.xml files. They should be relative paths from the Hargreaves.omi file.
+    
+|
+
+Viewing the Component in HydroModeler
+'''''''''''''''''''''''''''''''''''''
+
+You have completed the steps to create the component.  Next we will show how to load the component into HydroModeler.  
 
 1. Start HydroDesktop.
 
-2. Click the icon in the upper left corner of the screen.  Then select Extensions - HydroModeler.
+2. Add the HydroModeler extension by selecting the orb button --> Extensions --> HydroModeler.
 
 .. figure:: ./images/Tutorial03/HM_fig50.png
    :align: center
 .
 
-3. Using the drop down tab next to Current Directory, change the directory to the location of your Hargreaves Component files.
-
-4. Once you have the directory pointing to the Sample Component a list of folders will appear to the left side of the screen.
-
-.. figure:: ./images/Tutorial03/HM_fig51.png
-   :align: center
-.
-
-5. To add the Sample Component Model double click on the data folder then on the sample (type = model).
-
-.. figure:: ./images/Tutorial03/ModelAdding.png
-   :align: center
-.
-
-6. Add the model and trigger
+3. Use the Add Component button from the HydroModeler ribbon control to add the Hargreaves.omi file.  If everything worked correctly, you will see the Hargreaves component added to modeling canvas.  
 
 .. figure:: ./images/Tutorial03/trigger.png
    :align: center
 
-.. index:: 
-   single: Creating a unit test case
-
-
-Creating a unit test case
+Creating a Unit Test Case
 '''''''''''''''''''''''''
-We can test the preformance of the three methods (Initialize-PerformTimeStep-Finish) implemented when building a new component, or test any other method in the Visual studio solutions using TestDriven.Net.
 
-1. Download TestDriven.Net from  http://www.testdriven.net 
+The last step is to create a unit test for your new component.  A unit test allows you to verify that the component works properly.  We will show how to create tests for each of the Initialize and PerformTimeStep methods.  You could also add a test for the Finish method using the same basic approach.  There is not need to test the CalculatePET method because this is done already within the PerformTimeStep test. 
 
-2. Open the start menu and choose Microsoft Visual studio.
+.. Note ::
 
-3. Create a new project, don't forget to choose visual C#, class Library, named Hagreaves test, and save under *C:/Hydrodesktop_May11/Source/Plugins/HydroModeler/Components/Hagreaves*. 
+	We reccomend using TestDriven.Net from  http://www.testdriven.net as a user friendly way of running the unit tests. 
 
-4. Add the nunit.framework dll to your references, Don't forget to add all the references you used in creating the component, and implement the using directive to add the Nunit.Framework namespace to your solution.
+1. In the same solution in which you created the Hargreaves component, right-click on the solution and select Add --> New Project to create a new project for the unit tests.  Choose Visual C# Class Library and name the project HagreavesTest.  
 
-5. Close the HargreavesTest project, and add it to Hargreaves project solution in order to debug any error messages that may appear if any of your tests fail.
+2. Add a references to the HargreavesTest project for the following dlls.
 
-.. figure:: ./images/Tutorial03/Test.png
-   :align: center
+	- nunit.framework.dll from *[Path to HydroDesktop Source]/Binaries/Plugins/HydroModeler/example_configuration/bin*
+	- Oatc.OpenMI.Sdk.Backbone;
+	- Oatc.OpenMI.Sdk.Buffer;
+	- Oatc.OpenMI.Sdk.DevelopmentSupport;
+	- Oatc.OpenMI.Sdk.Wrapper;
+	- SMW;
 
-6. In the Intialization() method test.
+3.  Add a project reference to the Hargreaves project by right-clicking on References and selecting Add Reference and switching to the Projects tab.  
 
-
-  * Create instance of the hargreaves model.
- 
-  * Define input arguments.
-
-  * Call the initialize method.
+6. The following lines of code are needed to setup the test class file.  
 
 .. code-block:: c#
        
-       [Test]
-        namespace Test
-       {
-       [TestFixture]
-       public class TestClass
-       {
-        Hargreaves.Engine hargreaves;
+	namespace Test
+	{
+		[TestFixture]
+		public class TestClass
+		{
+			Hargreaves.Engine hargreaves;
 
+
+5. To test the Initilize method, we will try to initialize the component using the config.xml file as shown in the lines below.  You may need to change the path to the config.xml file from what is shown below.
+
+.. code-block:: c#
+		
         [TestFixtureSetUp]
         public void Initialize()
         {
@@ -551,20 +487,7 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
 
         }
 
-
-
-7. In the PreformTimeStep() method test.
-
-
-  * Assign data into IValueSets.
- 
-  * Set input exchange items values.
-
-  * Call perform time step.
-
-  * Assert that calculated values are equal to the known values of the test.
-
-
+7. To test the PerformTimeStep method, In the PreformTimeStep() method test, we will do an example calculation for a known solution where the average temperature is 19 degrees C, the minimum temperature is 17 degrees C, and the maximum temperature is 21 degrees C.  We know that the solution for this problem is 1.16 mm/d.  If the code does not perform this calculation correctly, the test will fail.
 
 .. code-block:: c#
         
@@ -595,35 +518,8 @@ We can test the preformance of the three methods (Initialize-PerformTimeStep-Fin
             Assert.IsTrue(chk == 1.16, "The calculated value of " + chk.ToString() + " does not equal the known value of 1.16");
         }
 
-8. In the Finish() method test.
-
-.. code-block:: c#
-        
-        [Test]
-        public void Finish()
-        {
-            engine.Finish();
-        }
 
 
-
-9. In the Calculated PET() method (method created to calculate the Evapotranspiration rate)
-
-
-.. code-block:: c#
-        
-        [Test]
-        public void CalculatePET()
-        {
-            Debug.WriteLine("\n\n---------------------------------------------------");
-            Debug.WriteLine("Running the 'CalculatePET' Test");
-            Debug.WriteLine("---------------------------------------------------");
-
-            double Pet = hargreaves.CalculatePET(19, 17, 21, 0);
-
-            double chk = Math.Round(Pet,2);
-            Assert.IsTrue(chk == 1.16, "The calculated value of " + chk.ToString() + " does not equal the known value of 1.16");
-        }
 
 
 
