@@ -1,36 +1,35 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
 using System.Xml;
-using System.Drawing.Drawing2D;
-using System.Collections;
-
-using DotSpatial.Data;
-using DotSpatial.Symbology;
 using DotSpatial.Controls;
-using DotSpatial.Topology;
-using DotSpatial.Projections;
-using HydroDesktop.Database;
-using HydroDesktop.Configuration;
-using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.Interfaces;
-using HydroDesktop.Help;
-using System.Diagnostics;
 using DotSpatial.Controls.RibbonControls;
+using DotSpatial.Data;
+using DotSpatial.Projections;
+using DotSpatial.Symbology;
+using DotSpatial.Topology;
+using HydroDesktop.Configuration;
 using HydroDesktop.Controls.Themes;
+using HydroDesktop.Database;
+using HydroDesktop.Help;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Main
 {
     public partial class mainRibbonForm : Form
     {
-
         #region Variable
+
         private const string _mainHelpFile = "welcome.html";
 
         //store the map extents
@@ -40,7 +39,8 @@ namespace HydroDesktop.Main
         bool _IsManualExtentsChange = false;
 
         //indicates whether the base map data had been loaded
-        private bool _baseMapLoaded = false;
+        //
+        // private bool _baseMapLoaded = false;
 
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
@@ -76,9 +76,10 @@ namespace HydroDesktop.Main
         private string _projectFileName = null;
         private ProjectChangeTracker _projectManager = null;
 
-        #endregion
+        #endregion Variable
 
         #region Constructor
+
         /// <summary>
         /// Initialize MapView
         /// </summary>
@@ -86,20 +87,22 @@ namespace HydroDesktop.Main
         public mainRibbonForm(string[] args)
         {
             InitializeComponent();
-            
+
             //screen size
-            AdjustFormSize();         
-            
+            AdjustFormSize();
+
             this.Shown += new EventHandler(mainRibbonForm_Shown);
 
-            mainMap.MapFrame.ViewExtentsChanged +=new EventHandler<ExtentArgs>(MapFrame_ExtentsChanged);
+            mainMap.MapFrame.ViewExtentsChanged += new EventHandler<ExtentArgs>(MapFrame_ExtentsChanged);
             this.SizeChanged += new EventHandler(mainRibbonForm_SizeChanged);
             this.FormClosing += new FormClosingEventHandler(mainRibbonForm_FormClosing);
 
             #region initialize the help menu
+
             rbHelp.Image = Properties.Resources.help;
             rbHelp.SmallImage = Properties.Resources.help_16x16;
-            #endregion
+
+            #endregion initialize the help menu
 
             #region initialize the MapView Ribbon TabPage and related controls
 
@@ -217,9 +220,10 @@ namespace HydroDesktop.Main
             _rbMeasure.SmallImage = Properties.Resources.measure_16;
             _rbMeasure.Click += new EventHandler(rbMeasure_Click);
 
-            #endregion
+            #endregion initialize the MapView Ribbon TabPage and related controls
 
             #region initialize the Table Ribbon TabPage and related controls
+
             _dataTab = new RibbonTab(ribbonControl, "Table");
             _dataTab.ActiveChanged += new EventHandler(_dataTab_ActiveChanged);
             //Themes Panel
@@ -261,17 +265,20 @@ namespace HydroDesktop.Main
             _rbNewDatabase.Image = Properties.Resources.newDatabase;
             _rbNewDatabase.SmallImage = Properties.Resources.newDatabase.GetThumbnailImage(16, 16, null, IntPtr.Zero);
             _rbNewDatabase.Click += new EventHandler(rbNewDatabase_Click);
-            #endregion
+
+            #endregion initialize the Table Ribbon TabPage and related controls
 
             #region initialize the Main menu and related controls
+
             OrbNewProject.Click += new EventHandler(OrbNewProject_Click);
             orbOpenProject.Click += new EventHandler(OrbOpenProject_Click);
             orbSaveProject.Click += new EventHandler(orbSaveProject_Click);
             orbSaveProjectAs.Click += new EventHandler(orbSaveProjectAs_Click);
 
-            #endregion
+            #endregion initialize the Main menu and related controls
 
             #region initialize the project file management
+
             if (args != null)
             {
                 if (args.Length > 0)
@@ -283,15 +290,17 @@ namespace HydroDesktop.Main
                     }
                 }
             }
-            #endregion
+
+            #endregion initialize the project file management
 
             #region initialize the default map projection
+
             _wgs84Projection = new ProjectionInfo();
             _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84EsriString);
-            
+
             //_defaultProjection = KnownCoordinateSystems.Projected.World.EckertIVworld;
             _defaultProjection = new ProjectionInfo();
-            _defaultProjection.CopyProperties(KnownCoordinateSystems.Projected.World.WebMercator); 
+            _defaultProjection.CopyProperties(KnownCoordinateSystems.Projected.World.WebMercator);
             //_defaultProjection = Project.DefaultProjection;
             mainMap.MapFrame.Projection = new ProjectionInfo();
             mainMap.MapFrame.Projection.CopyProperties(_defaultProjection);
@@ -301,34 +310,38 @@ namespace HydroDesktop.Main
             {
                 Settings.Instance.CurrentProjectFile = Settings.Instance.DefaultProjectFileName;
             }
-            #endregion
+
+            #endregion initialize the default map projection
 
             #region initialize the main view panel controls
+
             this.tabContainer.SelectedIndexChanged += new EventHandler(tabContainer_SelectedIndexChanged);
-            #endregion
+
+            #endregion initialize the main view panel controls
 
             #region initialize default database connection strings
 
             SetupDatabases();
-    
-            #endregion
+
+            #endregion initialize default database connection strings
 
             #region Initialize the Project opening events
+
             applicationManager1.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
             applicationManager1.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
             _projectManager = new ProjectChangeTracker(applicationManager1);
             _projectManager.ProjectModified += new EventHandler(_projectManager_ProjectModified);
-            #endregion
+
+            #endregion Initialize the Project opening events
         }
 
-        
-
         #region Method
+
         /// <summary>
         /// Adjusts the size of the main form, if computer screen
         /// is smaller than the default size.
         /// </summary>
-        void AdjustFormSize()
+        private void AdjustFormSize()
         {
             int deskHeight = Screen.PrimaryScreen.Bounds.Height - 50;
             int deskWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -344,7 +357,7 @@ namespace HydroDesktop.Main
         /// </summary>
         public void SetupDatabases()
         {
-            // use the 'default' database path is a temporary db file 
+            // use the 'default' database path is a temporary db file
             // and only should be used when not working with a project.
             string dataRepositoryTempFile = string.Format("NewProject_{0}_{1}{2}.sqlite",
                 DateTime.Now.Date.ToString("yyyy-MM-dd"), DateTime.Now.Hour, DateTime.Now.Minute);
@@ -379,54 +392,58 @@ namespace HydroDesktop.Main
             }
         }
 
-		// fix 2011/06/06 : 
-		// issue 7216 : http://hydrodesktop.codeplex.com/workitem/7216
-		// temp files swap
-		public void SwapDatabasesOnExit(){
-			// delete all temp file under this folder
-			string tempDir = Settings.Instance.TempDirectory;
-			if (!HasWriteAccessToFolder(tempDir)) return;
-			if (!Directory.Exists(tempDir)) return;
+        // fix 2011/06/06 :
+        // issue 7216 : http://hydrodesktop.codeplex.com/workitem/7216
+        // temp files swap
+        public void SwapDatabasesOnExit()
+        {
+            // delete all temp file under this folder
+            string tempDir = Settings.Instance.TempDirectory;
+            if (!HasWriteAccessToFolder(tempDir)) return;
+            if (!Directory.Exists(tempDir)) return;
 
-			// enum and delete 
-			DirectoryInfo dirInf = new DirectoryInfo(tempDir);
-			FileInfo[] fileInfs = dirInf.GetFiles();
-			if ( fileInfs.Length == 0 ) return;
+            // enum and delete
+            DirectoryInfo dirInf = new DirectoryInfo(tempDir);
+            FileInfo[] fileInfs = dirInf.GetFiles();
+            if (fileInfs.Length == 0) return;
 
-			for (int i = 0; i < fileInfs.Length; i++ )
-			{
-				DeleteTempFile(fileInfs[i]);
-			}
-		}
+            for (int i = 0; i < fileInfs.Length; i++)
+            {
+                DeleteTempFile(fileInfs[i]);
+            }
+        }
 
-		// fixed issue 7216
-		// delete temp file pointed by fiTemp
-		protected bool DeleteTempFile(FileInfo fiTemp){
-			if (!fiTemp.Exists)
-			{ // maybe is a folder
-				return false;
-			} 
-			
-			try
-			{
+        // fixed issue 7216
+        // delete temp file pointed by fiTemp
+        protected bool DeleteTempFile(FileInfo fiTemp)
+        {
+            if (!fiTemp.Exists)
+            { // maybe is a folder
+                return false;
+            }
+
+            try
+            {
                 if (!fiTemp.Name.ToLower().StartsWith("theme"))
                 {
                     fiTemp.Delete();
                 }
-				return true;
-			}
-			catch (System.Exception ex)
-			{
-				return false;
-			}
-		}
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                // at a bare minimum we will log the reason the file couldn't be deleted.
+                Trace.WriteLine(ex.Message);
+                return false;
+            }
+        }
 
         private bool HasWriteAccessToFolder(string folderPath)
         {
             try
             {
-                // Attempt to get a list of security permissions from the folder. 
-                // This will raise an exception if the path is read only or do not have access to view the permissions. 
+                // Attempt to get a list of security permissions from the folder.
+                // This will raise an exception if the path is read only or do not have access to view the permissions.
                 System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(folderPath);
                 return true;
             }
@@ -436,28 +453,27 @@ namespace HydroDesktop.Main
             }
         }
 
-        #endregion
+        #endregion Method
 
         #region Event
 
-        void MapFrame_LayerAdded(object sender, LayerEventArgs e)
+        private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
         {
             e.Layer.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
         }
 
-
-        void _projectManager_ProjectModified(object sender, EventArgs e)
+        private void _projectManager_ProjectModified(object sender, EventArgs e)
         {
             UpdateFormCaption();
         }
 
-        void UpdateFormCaption()
+        private void UpdateFormCaption()
         {
             if (_projectManager == null)
             {
                 this.Text = "CUAHSI HydroDesktop";
             }
-            
+
             //show a 'star' indicating modification of project
             string projFileText = Path.GetFileNameWithoutExtension(Settings.Instance.CurrentProjectFile);
             if (projFileText.StartsWith("NewProject"))
@@ -479,9 +495,8 @@ namespace HydroDesktop.Main
             }
         }
 
-
         //when project is being saved
-        void SerializationManager_Serializing(object sender, SerializingEventArgs e)
+        private void SerializationManager_Serializing(object sender, SerializingEventArgs e)
         {
             //throw new NotImplementedException();
             //if (!String.IsNullOrEmpty(e.ProjectFileName))
@@ -491,7 +506,7 @@ namespace HydroDesktop.Main
         }
 
         //when project is being opened
-        void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
+        private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             //assign the correct projection
             mainMap.Projection = _defaultProjection;
@@ -504,7 +519,7 @@ namespace HydroDesktop.Main
             mainMap.ResetBuffer();
             mainMap.MapFrame.ResetExtents();
             //.ZoomToMaxExtent();
-            
+
             //Set the correct SQLite databases file path
             //TODO: use customSettings in projectFile, if available
             string dbFile = Path.ChangeExtension(Settings.Instance.CurrentProjectFile, ".sqlite");
@@ -539,9 +554,9 @@ namespace HydroDesktop.Main
             }
             foreach (IMapGroup group in mainMap.MapFrame.GetAllGroups())
             {
-                if(group.LegendText == "Themes")
+                if (group.LegendText == "Themes")
                 {
-                    group.LayerAdded +=new EventHandler<LayerEventArgs>(MapFrame_LayerAdded);
+                    group.LayerAdded += new EventHandler<LayerEventArgs>(MapFrame_LayerAdded);
                 }
             }
 
@@ -549,10 +564,10 @@ namespace HydroDesktop.Main
             _projectManager.ProjectIsSaved = true;
 
             //update caption of form
-            UpdateFormCaption();        
+            UpdateFormCaption();
         }
 
-        void RefreshTheLayers()
+        private void RefreshTheLayers()
         {
             //layers with categories need to populate their attribute
             //table to redraw successfully.
@@ -564,13 +579,13 @@ namespace HydroDesktop.Main
             foreach (IMapLayer layer in mainMap.MapFrame.GetAllLayers())
             {
                 //if (layer.GetParentItem().LegendText == "Themes") continue;
-                
+
                 IMapFeatureLayer featureLayer = layer as IMapFeatureLayer;
                 if (featureLayer != null)
                 {
                     //report progress
                     counter++;
-                    int percent = ( counter * 100 ) / numLayers;
+                    int percent = (counter * 100) / numLayers;
                     string message = String.Format("Adding Layer {0} {1}% complete.", featureLayer.LegendText, percent);
                     ReportProgress(percent, message);
 
@@ -603,20 +618,20 @@ namespace HydroDesktop.Main
         }
 
         //rename the theme name
-        void ThemeLayer_ItemChanged(object sender, EventArgs e)
+        private void ThemeLayer_ItemChanged(object sender, EventArgs e)
         {
             MapPointLayer lay = sender as MapPointLayer;
             if (lay != null)
             {
                 if (lay.GetParentItem() == null) return;
                 if (lay.GetParentItem().LegendText != "Themes") return;
-                
+
                 string newLegendText = lay.LegendText;
                 string name = lay.Name;
                 if (!string.IsNullOrEmpty(name))
                 {
                     try
-                    {        
+                    {
                         int themeID = Convert.ToInt32(name);
                         ThemeManager manager = new ThemeManager(new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite));
                         string oldName = manager.GetThemeName(themeID);
@@ -630,10 +645,11 @@ namespace HydroDesktop.Main
                 }
             }
         }
-        #endregion
+
+        #endregion Event
 
         //hide status bar when map panel is not shown
-        void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
+        private void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabContainer.SelectedTabName == "MapView")
             {
@@ -644,13 +660,13 @@ namespace HydroDesktop.Main
             {
                 statusLocation.Visible = false;
                 lblStatus.Visible = true;
-                lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString); 
+                lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
                 //applicationManager1.SerializationManager.GetCustomSetting<string>("DataRepositoryDbPath", "unknown db path");
             }
         }
 
         //Refresh map when main form is maximized
-        void mainRibbonForm_SizeChanged(object sender, EventArgs e)
+        private void mainRibbonForm_SizeChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Maximized)
             {
@@ -674,7 +690,7 @@ namespace HydroDesktop.Main
         /// <summary>
         /// When the main form is first shown
         /// </summary>
-        void mainRibbonForm_Shown(object sender, EventArgs e)
+        private void mainRibbonForm_Shown(object sender, EventArgs e)
         {
             //show the welcome screen, or open a project
             if (String.IsNullOrEmpty(_projectFileName))
@@ -687,13 +703,14 @@ namespace HydroDesktop.Main
                 Project.OpenProject(_projectFileName, applicationManager1);
             }
         }
-        #endregion
+
+        #endregion Constructor
 
         private void ShowWelcomeScreen()
         {
             _welcomeScreen = new WelcomeScreen(applicationManager1);
             _welcomeScreen.StartPosition = FormStartPosition.Manual;
-            
+
             int x = this.Location.X + this.Width / 2 - _welcomeScreen.Width / 2;
             int y = this.Location.Y + this.Height / 2 - _welcomeScreen.Height / 2;
             _welcomeScreen.Location = new System.Drawing.Point(x, y);
@@ -724,7 +741,7 @@ namespace HydroDesktop.Main
         /// <summary>
         /// Loads default data and displays them in the 'base data' group
         /// The 'recent project' file already exists at this stage.
-        /// </summary>       
+        /// </summary>
         private void LoadBasemapData()
         {
             //TODO: Remove this function (no longer used...)
@@ -786,7 +803,7 @@ namespace HydroDesktop.Main
             }
 
             //Find Default Project File trial #4:
-            //try to load  the base maps programmatically (this requires the write-access to [Program Files] 
+            //try to load  the base maps programmatically (this requires the write-access to [Program Files]
             //in order to create the SQLITE DB
             if (!projectFileExists)
             {
@@ -805,7 +822,6 @@ namespace HydroDesktop.Main
             {
                 //OpenProject(recentProject);
             }
-
         }
 
         /// <summary>
@@ -818,6 +834,7 @@ namespace HydroDesktop.Main
         }
 
         #region Map Tools Click Events
+
         /// <summary>
         /// Map Tools Click Event
         /// </summary>
@@ -842,8 +859,7 @@ namespace HydroDesktop.Main
         //    layoutFrm.Show(this);
         //}
 
-
-        void rbAdd_Click(object sender, EventArgs e)
+        private void rbAdd_Click(object sender, EventArgs e)
         {
             //add a layer to the map
             if (mainMap == null) return;
@@ -851,7 +867,7 @@ namespace HydroDesktop.Main
             mainMap.AddLayers();
         }
 
-        void rbPan_Click(object sender, EventArgs e)
+        private void rbPan_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
             {
@@ -868,7 +884,7 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.Pan;
         }
 
-        void rbSelect_Click(object sender, EventArgs e)
+        private void rbSelect_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
             {
@@ -885,7 +901,7 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.Select;
         }
 
-        void rbZoomIn_Click(object sender, EventArgs e)
+        private void rbZoomIn_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
             {
@@ -902,7 +918,7 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.ZoomIn;
         }
 
-        void rbZoomOut_Click(object sender, EventArgs e)
+        private void rbZoomOut_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
             {
@@ -919,7 +935,7 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.ZoomOut;
         }
 
-        void MapFrame_ExtentsChanged(object sender, EventArgs e)
+        private void MapFrame_ExtentsChanged(object sender, EventArgs e)
         {
             //If m_Extents Is Nothing Then Exit Sub
             if (_previousExtents == null) return;
@@ -953,7 +969,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void rbZoomToPrevious_Click(object sender, EventArgs e)
+        private void rbZoomToPrevious_Click(object sender, EventArgs e)
         {
             if ((_previousExtents.Count > 0) && (_mCurrentExtents > 0))
             {
@@ -988,7 +1004,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void rbZoomToNext_Click(object sender, EventArgs e)
+        private void rbZoomToNext_Click(object sender, EventArgs e)
         {
             //If m_CurrentExtent < m_Extents.Count - 1 Then
             //    m_CurrentExtent += 1
@@ -1019,10 +1035,9 @@ namespace HydroDesktop.Main
                 _rbZoomToNext.Checked = false;
                 _rbZoomToNext.Enabled = false;
             }
-
         }
 
-        void rbIdentifier_Click(object sender, EventArgs e)
+        private void rbIdentifier_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
             {
@@ -1046,7 +1061,7 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.Info;
         }
 
-        void rbAttribute_Click(object sender, EventArgs e)
+        private void rbAttribute_Click(object sender, EventArgs e)
         {
             //for (int i = 0; i < _mapView.Panels[1].Items.Count; i++)
             //{
@@ -1088,7 +1103,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void rbMaxExtents_Click(object sender, EventArgs e)
+        private void rbMaxExtents_Click(object sender, EventArgs e)
         {
             //for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
             //{
@@ -1122,7 +1137,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void rbMeasure_Click(object sender, EventArgs e)
+        private void rbMeasure_Click(object sender, EventArgs e)
         {
             //for (int i = 0; i < _mapView.Panels[1].Items.Count; i++)
             //{
@@ -1143,7 +1158,7 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.Measure;
         }
 
-        #endregion
+        #endregion Map Tools Click Events
 
         #region Database reconfiguration
 
@@ -1209,11 +1224,11 @@ namespace HydroDesktop.Main
             //TODO Replace config by Settings
             //TODO call SeriesSelector directly
             this.seriesView1.SeriesSelector.SetupDatabase();
-            
+
             // Originally from NewDatabase
             Settings.Instance.DataRepositoryConnectionString = connString;
             //Settings.Instance.CurrentProjectFile = mainMap.Tag.ToString();
-            
+
             //applicationManager1.Database.ConnectionString = Settings.Instance.DataRepositoryConnectionString;
             //applicationManager1.SeriesView.SeriesSelector.RefreshSelection();
             RefreshAllThemes();
@@ -1221,7 +1236,6 @@ namespace HydroDesktop.Main
             //HDProjectFileManager manager = new HDProjectFileManager();
             //manager.SaveDataRepositoryConnection(mainMap.Tag.ToString(), applicationManager1.Database.ConnectionString);
         }
-
 
         # endregion
 
@@ -1233,7 +1247,7 @@ namespace HydroDesktop.Main
         /// when calling this function in 'New Project'</param>
         /// <returns>The connection string of the new database</returns>
         private string CreateNewProjectDatabase(string newDbFileName, bool askForOverwrite)
-        { 
+        {
             try
             {
                 //bool overwrite = false;
@@ -1271,7 +1285,7 @@ namespace HydroDesktop.Main
             return string.Empty;
         }
 
-        void rbRefreshTheme_Click(object sender, EventArgs e)
+        private void rbRefreshTheme_Click(object sender, EventArgs e)
         {
             RefreshAllThemes();
             seriesView1.SeriesSelector.RefreshSelection();
@@ -1283,7 +1297,7 @@ namespace HydroDesktop.Main
             RefreshAllThemes();
         }
 
-        void rbDeleteTheme_Click(object sender, EventArgs e)
+        private void rbDeleteTheme_Click(object sender, EventArgs e)
         {
             DeleteTheme();
         }
@@ -1318,7 +1332,6 @@ namespace HydroDesktop.Main
             }
         }
 
-
         private void bntMapView_Click(object sender, EventArgs e)
         {
             tabContainer.SelectedTabName = tabContainer.TabPages[0].Text;
@@ -1332,7 +1345,6 @@ namespace HydroDesktop.Main
             }
             return null;
         }
-
 
         private bool TabContainsText(string name)
         {
@@ -1348,7 +1360,6 @@ namespace HydroDesktop.Main
             //MessageBox.Show("MouseMove");
             if (OrbExtentions.DropDownItems.Count < 1)
             {
-
                 List<PluginToken> pluginTokens = applicationManager1.PluginTokens;
                 foreach (PluginToken token in pluginTokens)
                 {
@@ -1375,10 +1386,10 @@ namespace HydroDesktop.Main
             }
         }
 
-        void item_Click(object sender, EventArgs e)
+        private void item_Click(object sender, EventArgs e)
         {
             //TODO: ensure that 'help' tab is last
-            
+
             //to close the 'orb' dropdown
             OrbExtentions.CloseDropDown();
             ribbonControl.OrbDropDown.Close();
@@ -1407,7 +1418,6 @@ namespace HydroDesktop.Main
 
             foreach (PluginToken token in pluginTokens)
             {
-
                 if (selectedTokenName == token.Name)
                 {
                     if (applicationManager1.IsActive(token))
@@ -1428,7 +1438,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void EnsureHelpTabLast()
+        private void EnsureHelpTabLast()
         {
             RibbonTab helpMenuTab = null;
             //Ribbon mainRibbon = _app.Ribbon;
@@ -1446,25 +1456,21 @@ namespace HydroDesktop.Main
             }
         }
 
-        void tabHome_ActiveChanged(object sender, EventArgs e)
+        private void tabHome_ActiveChanged(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
         }
-
 
         #region Coordinate Display
 
         private void mainMap_MouseMove(object sender, MouseEventArgs e)
         {
-
             Coordinate projCor = new Coordinate();
             System.Drawing.Point _mouseLocation = new System.Drawing.Point();
             _mouseLocation.X = e.X;
             _mouseLocation.Y = e.Y;
             projCor = mainMap.PixelToProj(_mouseLocation);
 
-
-            
             double[] xy = new double[2];
             xy[0] = projCor.X;
             xy[1] = projCor.Y;
@@ -1515,22 +1521,22 @@ namespace HydroDesktop.Main
             this.mwStatusStrip1.Items[0].Text = "Longitude: " + d[0].ToString() + "°" + m[0].ToString("00") + "'" + s[0].ToString("00") + "\"" + Long + ", Latitude: " + d[1].ToString() + "°" + m[1].ToString("00") + "'" + s[1].ToString("00") + "\"" + Lat;
         }
 
-        #endregion
-
+        #endregion Coordinate Display
 
         #region Open and Save Project
-        void OrbOpenProject_Click(object sender, EventArgs e)
+
+        private void OrbOpenProject_Click(object sender, EventArgs e)
         {
             this.ribbonControl.OrbDropDown.Close();
             // Ask to save current project
             if (!_projectManager.ProjectIsSaved)
             {
-                DialogResult saveProject = MessageBox.Show("Save Changes to current project ?", 
+                DialogResult saveProject = MessageBox.Show("Save Changes to current project ?",
                     "Save Changes", MessageBoxButtons.YesNo);
                 if (saveProject == DialogResult.Yes)
                 {
                     SaveCurrentProject();
-                }         
+                }
             }
 
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -1545,13 +1551,13 @@ namespace HydroDesktop.Main
             _isNewProject = false;
         }
 
-        void orbSaveProject_Click(object sender, EventArgs e)
+        private void orbSaveProject_Click(object sender, EventArgs e)
         {
             this.ribbonControl.OrbDropDown.Close();
             SaveCurrentProject();
         }
 
-        void OrbNewProject_Click(object sender, EventArgs e)
+        private void OrbNewProject_Click(object sender, EventArgs e)
         {
             this.ribbonControl.OrbDropDown.Close();
             //Ask user to save current project
@@ -1561,7 +1567,7 @@ namespace HydroDesktop.Main
                 if (saveProject == DialogResult.Yes)
                 {
                     SaveCurrentProject();
-                }           
+                }
             }
 
             applicationManager1.Map.Layers.Clear();
@@ -1569,10 +1575,10 @@ namespace HydroDesktop.Main
             SetupDatabases();
 
             Project.CreateNewProject("North America", applicationManager1, (Map)applicationManager1.Map);
-            UpdateFormCaption();      
+            UpdateFormCaption();
         }
 
-        void orbSaveProjectAs_Click(object sender, EventArgs e)
+        private void orbSaveProjectAs_Click(object sender, EventArgs e)
         {
             this.ribbonControl.OrbDropDown.Close();
 
@@ -1586,7 +1592,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void SaveCurrentProject()
+        private void SaveCurrentProject()
         {
             if (!_isNewProject)
             {
@@ -1602,11 +1608,11 @@ namespace HydroDesktop.Main
                 {
                     SaveProjectAs(fileDialog.FileName);
                 }
-            }   
+            }
         }
 
         //saves the current HydroDesktop *.hdprj project file to the user specified location with a new database create
-        void SaveProjectAs(string projectFileName)
+        private void SaveProjectAs(string projectFileName)
         {
             Project.SaveProjectAs(projectFileName, applicationManager1);
 
@@ -1614,12 +1620,12 @@ namespace HydroDesktop.Main
             _isNewProject = false;
         }
 
-        void ReportProgress(int percent, string message)
+        private void ReportProgress(int percent, string message)
         {
             applicationManager1.ProgressHandler.Progress(message, percent, message);
         }
 
-        #endregion
+        #endregion Open and Save Project
 
         private void _mapView_ActiveChanged(object sender, EventArgs e)
         {
@@ -1751,9 +1757,9 @@ namespace HydroDesktop.Main
             }
             catch (System.Drawing.Printing.InvalidPrinterException ex)
             {
-               MessageBox.Show(ex.Message, "Print error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "Print error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-           //mogikanin code ends
+            //mogikanin code ends
         }
 
         private void OrbAbout_Click(object sender, EventArgs e)
@@ -1786,7 +1792,7 @@ namespace HydroDesktop.Main
             {
                 return;
             }
-            
+
             ribbonControl.OrbDropDown.Close();
 
             if (_projectManager.ProjectIsSaved)
@@ -1818,4 +1824,4 @@ namespace HydroDesktop.Main
             Application.Exit();
         }
     }
-}  
+}
