@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace HydroDesktop.Configuration
 {
@@ -18,14 +18,11 @@ namespace HydroDesktop.Configuration
         private List<string> _hisCentralURLList = Properties.Settings.Default.HISCentralUrlList.Cast<string>().ToList();
         private string _downloadOption = "Append";
 
-         private string _recentProject = "";
+        private string _dataRepositoryConnectionString;
 
-         private string _dataRepositoryConnectionString;
+        private string _selectedHISCentralUrl = Properties.Settings.Default.SelectedHISCentralUrl;
 
-         private string _selectedHISCentralUrl = Properties.Settings.Default.SelectedHISCentralUrl;
-
-         private string _metadataCacheConnectionString;
-    
+        private string _metadataCacheConnectionString;
 
         /// <summary>
         /// Allocate ourselves. We have a private constructor, so no one else can.
@@ -69,7 +66,7 @@ namespace HydroDesktop.Configuration
         /// <summary>
         /// Get The default HIS Central URL
         /// </summary>
-        public  string DefaultHISCentralURL
+        public string DefaultHISCentralURL
         {
             get
             {
@@ -110,7 +107,7 @@ namespace HydroDesktop.Configuration
         public string DataRepositoryConnectionString
         {
             get { return _dataRepositoryConnectionString; }
-            set 
+            set
             {
                 string oldValue = _dataRepositoryConnectionString;
                 _dataRepositoryConnectionString = value;
@@ -144,10 +141,10 @@ namespace HydroDesktop.Configuration
         public string DownloadOption
         {
             get { return _downloadOption; }
-            set 
+            set
             {
                 string[] overwriteOptions = Properties.Settings.Default.OVERWRITE_OPTIONS.Cast<string>().ToArray();
-                
+
                 if (overwriteOptions.Contains(value))
                 {
                     _downloadOption = value;
@@ -156,8 +153,7 @@ namespace HydroDesktop.Configuration
                 {
                     throw new ArgumentException(String.Format("The DownloadOption '{0}' is not a valid option.", value));
                 }
-                _downloadOption = value; 
-            
+                _downloadOption = value;
             }
         }
 
@@ -191,13 +187,13 @@ namespace HydroDesktop.Configuration
         {
             get
             {
-                return Path.Combine(ApplicationDataDirectory, 
+                return Path.Combine(ApplicationDataDirectory,
                     Properties.Settings.Default.DefaultMetadataCacheFileName);
             }
         }
 
         /// <summary>
-        /// Gets the Current project file name 
+        /// Gets the Current project file name
         /// (the full path is returned)
         /// </summary>
         public string CurrentProjectFile
@@ -242,7 +238,7 @@ namespace HydroDesktop.Configuration
         }
 
         /// <summary>
-        /// Gets the application data directory where the 
+        /// Gets the application data directory where the
         /// 'settings.xml' file is saved
         /// </summary>
         public string ApplicationDataDirectory
@@ -250,7 +246,7 @@ namespace HydroDesktop.Configuration
             get
             {
                 return ConfigurationHelper.FindOrCreateAppDataDirectory();
-            }         
+            }
         }
 
         /// <summary>
@@ -283,7 +279,7 @@ namespace HydroDesktop.Configuration
         public void AddFileToRecentFiles(string fileName)
         {
             int maximumNumberOfRecentFiles = 10;
-            
+
             if (Properties.Settings.Default.RecentProjectFiles.Contains(fileName))
             {
                 Properties.Settings.Default.RecentProjectFiles.Remove(fileName);
@@ -299,8 +295,8 @@ namespace HydroDesktop.Configuration
             Properties.Settings.Default.Save();
         }
 
-
         #region Events
+
         /// <summary>
         /// This event occurs when the main database connection string has changed
         /// </summary>
@@ -311,17 +307,19 @@ namespace HydroDesktop.Configuration
             if (DatabaseChanged != null)
                 DatabaseChanged(this, new EventArgs());
         }
+
         /// <summary>
         /// This event occurs when the metadata cache database connection string
         /// has changed
         /// </summary>
         public event EventHandler MetadataCacheChanged;
-        
+
         private void OnMetadataCacheChanged()
         {
             if (MetadataCacheChanged != null)
                 MetadataCacheChanged(this, new EventArgs());
         }
-        #endregion
+
+        #endregion Events
     }
 }
