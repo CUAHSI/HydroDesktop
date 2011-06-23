@@ -94,9 +94,6 @@ Create the Linkable Component Class
 .. code-block:: c#
 	class SampleLinkableComponent : Oatc.OpenMI.Sdk.Wrapper.LinkableEngine
 
-.. figure:: ./images/Tutorial03/inherited.png
-   :align: center
-
 |
 
 
@@ -115,7 +112,7 @@ Creating the Hargreaves Component using SMW
 
 |
 
-2. Make the class inhert from SMW.Wrapper.
+2. Make the class inherit from SMW.Wrapper.
 
 .. code-block:: c#
 	
@@ -159,7 +156,7 @@ Creating the Hargreaves Component using SMW
             this.SetVariablesFromConfigFile(config);
             this.SetValuesTableFields();
 
-            //---- get exhange item attributes
+            //---- get exchange item attributes
             //-- input exchange items
             int num_inputs = this.GetInputExchangeItemCount();
             input_elementset = new string[num_inputs];
@@ -236,7 +233,7 @@ Creating the Hargreaves Component using SMW
 
 
             //---- calculate the relative distance between the earth and sun
-            //-- get julien day
+            //-- get Julian day
             TimeStamp ts = (TimeStamp)this.GetCurrentTime();
             DateTime dt = CalendarConverter.ModifiedJulian2Gregorian(ts.ModifiedJulianDay);
             int j = dt.DayOfYear;
@@ -269,27 +266,27 @@ Creating the Hargreaves Component using SMW
 
 .. code-block:: c#
 
-        public override void Finish()
-        {
-			StreamWriter sw = new StreamWriter(output_path,false);
-
-			//write header line
-			sw.WriteLine("Simulation Time, PET[mm/day]");
-
-			//write all values
-			foreach (KeyValuePair<DateTime, double[]> kvp in _output)
+    public override void Finish()
+    {
+		StreamWriter sw = new StreamWriter(output_path,false);
+		
+		//write header line
+		sw.WriteLine("Simulation Time, PET[mm/day]");
+		
+		//write all values
+		foreach (KeyValuePair<DateTime, double[]> kvp in _output)
+		{
+			sw.Write(String.Format("{0:MM/dd/yyyy: hh:mm tt}", kvp.Key));
+			for (int i = 0; i <= kvp.Value.Length - 1; i++)
 			{
-				sw.Write(String.Format("{0:MM/dd/yyyy: hh:mm tt}", kvp.Key));
-				for (int i = 0; i <= kvp.Value.Length - 1; i++)
-				{
-					sw.Write("," + kvp.Value[i]);
-				}
-				sw.Write("\n");
+				sw.Write("," + kvp.Value[i]);
 			}
+			sw.Write("\n");
+		}
 
-        //close file
-        sw.Close();
-        }
+	//close file
+	sw.Close();
+	}
 
 |
 
@@ -425,7 +422,8 @@ You have completed the steps to create the component.  Next we will show how to 
 
 .. figure:: ./images/Tutorial03/HM_fig50.png
    :align: center
-.
+
+|
 
 3. Use the Add Component button from the HydroModeler ribbon control to add the Hargreaves.omi file.  If everything worked correctly, you will see the Hargreaves component added to modeling canvas.  
 
@@ -439,22 +437,22 @@ The last step is to create a unit test for your new component.  A unit test allo
 
 .. Note ::
 
-	We reccomend using TestDriven.Net from  http://www.testdriven.net as a user friendly way of running the unit tests. 
+	We recommend using TestDriven.Net from  http://www.testdriven.net as a user friendly way of running the unit tests. 
 
-1. In the same solution in which you created the Hargreaves component, right-click on the solution and select Add --> New Project to create a new project for the unit tests.  Choose Visual C# Class Library and name the project HagreavesTest.  
+1. In the same solution in which you created the Hargreaves component, right-click on the solution and select Add --> New Project to create a new project for the unit tests.  Choose Visual C# Class Library and name the project HargreavesTest.  
 
 2. Add a references to the HargreavesTest project for the following dlls.
 
 	- nunit.framework.dll from *[Path to HydroDesktop Source]/Binaries/Plugins/HydroModeler/example_configuration/bin*
-	- Oatc.OpenMI.Sdk.Backbone;
-	- Oatc.OpenMI.Sdk.Buffer;
-	- Oatc.OpenMI.Sdk.DevelopmentSupport;
-	- Oatc.OpenMI.Sdk.Wrapper;
-	- SMW;
+	- Oatc.OpenMI.Sdk.Backbone
+	- Oatc.OpenMI.Sdk.Buffer
+	- Oatc.OpenMI.Sdk.DevelopmentSupport
+	- Oatc.OpenMI.Sdk.Wrapper
+	- SMW
 
 3.  Add a project reference to the Hargreaves project by right-clicking on References and selecting Add Reference and switching to the Projects tab.  
 
-6. The following lines of code are needed to setup the test class file.  
+4. The following lines of code are needed to setup the test class file.  
 
 .. code-block:: c#
        
@@ -466,7 +464,7 @@ The last step is to create a unit test for your new component.  A unit test allo
 			Hargreaves.Engine hargreaves;
 
 
-5. To test the Initilize method, we will try to initialize the component using the config.xml file as shown in the lines below.  You may need to change the path to the config.xml file from what is shown below.
+5. To test the Initialize method, we will try to initialize the component using the config.xml file as shown in the lines below.  You may need to change the path to the config.xml file from what is shown below.
 
 .. code-block:: c#
 		
@@ -487,7 +485,7 @@ The last step is to create a unit test for your new component.  A unit test allo
 
         }
 
-7. To test the PerformTimeStep method, In the PreformTimeStep() method test, we will do an example calculation for a known solution where the average temperature is 19 degrees C, the minimum temperature is 17 degrees C, and the maximum temperature is 21 degrees C.  We know that the solution for this problem is 1.16 mm/d.  If the code does not perform this calculation correctly, the test will fail.
+6. To test the PerformTimeStep method, we will do an example calculation for a known solution where the average temperature is 19 degrees C, the minimum temperature is 17 degrees C, and the maximum temperature is 21 degrees C.  We know that the solution for this problem is 1.16 mm/d.  If the code does not perform this calculation correctly, the test will fail.
 
 .. code-block:: c#
         
