@@ -93,7 +93,7 @@
 <li>Choose the tab Visual Studio 2010 Express.  Then select Visual C# 2010 Express Edition.  Click Download and follow instructions to install.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig44.png" src="../../_images/HM_fig44.png" />
+<img alt="../../_images/HM_fig441.png" src="../../_images/HM_fig441.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -112,7 +112,7 @@
 <li>Create a new C# class library project.  Name the project &#8220;Hargreaves&#8221; and save it in your working directory.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/class.png" src="../../_images/class.png" />
+<img alt="../../_images/class1.png" src="../../_images/class1.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -121,7 +121,7 @@
 <li>Add two new folders (source and data) by right clicking on the project name and selecting Add &#8211;&gt; New Folder.  Next, copy the default class &#8220;class1.cs&#8221; into the source folder and rename it Hargreaves.cs.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/folders.png" src="../../_images/folders.png" />
+<img alt="../../_images/folders1.png" src="../../_images/folders1.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -132,7 +132,7 @@
 <li>You can view the references that currently exist in the project by expanding the &#8220;Reference&#8221; item listed in the Solution Explorer window (located on the upper right side of the page).  Currently, this project only contains the default references.  We need to add several additional references. To do this, right click on  &#8220;References&#8221; in the Solution Explorer and select &#8220;Add New Reference&#8221;.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/ref.png" src="../../_images/ref.png" />
+<img alt="../../_images/ref1.png" src="../../_images/ref1.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -154,7 +154,7 @@
 - SMW.dll.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/referencesstructure.png" src="../../_images/referencesstructure.png" />
+<img alt="../../_images/referencesstructure1.png" src="../../_images/referencesstructure1.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -166,7 +166,7 @@
 <li>Right-click on the &#8220;source&#8221; folder in the Solution Explorer and select Add &#8211;&gt; Class. Rename the class LinkableComponent.cs.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/linkablecomponent.png" src="../../_images/linkablecomponent.png" />
+<img alt="../../_images/linkablecomponent1.png" src="../../_images/linkablecomponent1.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -174,9 +174,6 @@
 <ol class="arabic simple" start="2">
 <li>Add the following line of code so that the LinkableComponent class inherits from the Oatc.OpenMI.Sdk.Wrapper.LinkableEngine abstract class.</li>
 </ol>
-<div class="figure align-center">
-<img alt="../../_images/inherited.png" src="../../_images/inherited.png" />
-</div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -197,7 +194,7 @@
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="2">
-<li>Make the class inhert from SMW.Wrapper.</li>
+<li>Make the class inherit from SMW.Wrapper.</li>
 </ol>
 <div class="highlight-c#"><div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Engine</span> <span class="p">:</span> <span class="n">SMW</span><span class="p">.</span><span class="n">Wrapper</span>
 </pre></div>
@@ -239,7 +236,7 @@
     <span class="k">this</span><span class="p">.</span><span class="n">SetVariablesFromConfigFile</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="n">SetValuesTableFields</span><span class="p">();</span>
 
-    <span class="c1">//---- get exhange item attributes</span>
+    <span class="c1">//---- get exchange item attributes</span>
     <span class="c1">//-- input exchange items</span>
     <span class="kt">int</span> <span class="n">num_inputs</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetInputExchangeItemCount</span><span class="p">();</span>
     <span class="n">input_elementset</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="n">num_inputs</span><span class="p">];</span>
@@ -317,7 +314,7 @@
 
 
     <span class="c1">//---- calculate the relative distance between the earth and sun</span>
-    <span class="c1">//-- get julien day</span>
+    <span class="c1">//-- get Julian day</span>
     <span class="n">TimeStamp</span> <span class="n">ts</span> <span class="p">=</span> <span class="p">(</span><span class="n">TimeStamp</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetCurrentTime</span><span class="p">();</span>
     <span class="n">DateTime</span> <span class="n">dt</span> <span class="p">=</span> <span class="n">CalendarConverter</span><span class="p">.</span><span class="n">ModifiedJulian2Gregorian</span><span class="p">(</span><span class="n">ts</span><span class="p">.</span><span class="n">ModifiedJulianDay</span><span class="p">);</span>
     <span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="n">dt</span><span class="p">.</span><span class="n">DayOfYear</span><span class="p">;</span>
@@ -352,25 +349,25 @@
 </ol>
 <div class="highlight-c#"><div class="highlight"><pre><span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Finish</span><span class="p">()</span>
 <span class="p">{</span>
-                <span class="n">StreamWriter</span> <span class="n">sw</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StreamWriter</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="k">false</span><span class="p">);</span>
+            <span class="n">StreamWriter</span> <span class="n">sw</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StreamWriter</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="k">false</span><span class="p">);</span>
 
-                <span class="c1">//write header line</span>
-                <span class="n">sw</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Simulation Time, PET[mm/day]&quot;</span><span class="p">);</span>
+            <span class="c1">//write header line</span>
+            <span class="n">sw</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Simulation Time, PET[mm/day]&quot;</span><span class="p">);</span>
 
-                <span class="c1">//write all values</span>
-                <span class="k">foreach</span> <span class="p">(</span><span class="n">KeyValuePair</span><span class="p">&lt;</span><span class="n">DateTime</span><span class="p">,</span> <span class="kt">double</span><span class="p">[]&gt;</span> <span class="n">kvp</span> <span class="k">in</span> <span class="n">_output</span><span class="p">)</span>
-                <span class="p">{</span>
-                        <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0:MM/dd/yyyy: hh:mm tt}&quot;</span><span class="p">,</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Key</span><span class="p">));</span>
-                        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
-                        <span class="p">{</span>
-                                <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;,&quot;</span> <span class="p">+</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Value</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-                        <span class="p">}</span>
-                        <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">);</span>
-                <span class="p">}</span>
+            <span class="c1">//write all values</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="n">KeyValuePair</span><span class="p">&lt;</span><span class="n">DateTime</span><span class="p">,</span> <span class="kt">double</span><span class="p">[]&gt;</span> <span class="n">kvp</span> <span class="k">in</span> <span class="n">_output</span><span class="p">)</span>
+            <span class="p">{</span>
+                    <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0:MM/dd/yyyy: hh:mm tt}&quot;</span><span class="p">,</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Key</span><span class="p">));</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+                    <span class="p">{</span>
+                            <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;,&quot;</span> <span class="p">+</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Value</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                    <span class="p">}</span>
+                    <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
 
-<span class="c1">//close file</span>
-<span class="n">sw</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
-<span class="p">}</span>
+    <span class="c1">//close file</span>
+    <span class="n">sw</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+    <span class="p">}</span>
 </pre></div>
 </div>
 <div class="line-block">
@@ -469,14 +466,16 @@
 <li>Add the HydroModeler extension by selecting the orb button &#8211;&gt; Extensions &#8211;&gt; HydroModeler.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig50.png" src="../../_images/HM_fig50.png" />
+<img alt="../../_images/HM_fig501.png" src="../../_images/HM_fig501.png" />
 </div>
-<p>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <ol class="arabic simple" start="3">
 <li>Use the Add Component button from the HydroModeler ribbon control to add the Hargreaves.omi file.  If everything worked correctly, you will see the Hargreaves component added to modeling canvas.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/trigger.png" src="../../_images/trigger.png" />
+<img alt="../../_images/trigger1.png" src="../../_images/trigger1.png" />
 </div>
 </div>
 <div class="section" id="creating-a-unit-test-case">
@@ -484,28 +483,27 @@
 <p>The last step is to create a unit test for your new component.  A unit test allows you to verify that the component works properly.  We will show how to create tests for each of the Initialize and PerformTimeStep methods.  You could also add a test for the Finish method using the same basic approach.  There is not need to test the CalculatePET method because this is done already within the PerformTimeStep test.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We reccomend using TestDriven.Net from  <a class="reference external" href="http://www.testdriven.net">http://www.testdriven.net</a> as a user friendly way of running the unit tests.</p>
+<p class="last">We recommend using TestDriven.Net from  <a class="reference external" href="http://www.testdriven.net">http://www.testdriven.net</a> as a user friendly way of running the unit tests.</p>
 </div>
 <ol class="arabic">
-<li><p class="first">In the same solution in which you created the Hargreaves component, right-click on the solution and select Add &#8211;&gt; New Project to create a new project for the unit tests.  Choose Visual C# Class Library and name the project HagreavesTest.</p>
+<li><p class="first">In the same solution in which you created the Hargreaves component, right-click on the solution and select Add &#8211;&gt; New Project to create a new project for the unit tests.  Choose Visual C# Class Library and name the project HargreavesTest.</p>
 </li>
 <li><p class="first">Add a references to the HargreavesTest project for the following dlls.</p>
 <blockquote>
 <div><ul class="simple">
 <li>nunit.framework.dll from <em>[Path to HydroDesktop Source]/Binaries/Plugins/HydroModeler/example_configuration/bin</em></li>
-<li>Oatc.OpenMI.Sdk.Backbone;</li>
-<li>Oatc.OpenMI.Sdk.Buffer;</li>
-<li>Oatc.OpenMI.Sdk.DevelopmentSupport;</li>
-<li>Oatc.OpenMI.Sdk.Wrapper;</li>
-<li>SMW;</li>
+<li>Oatc.OpenMI.Sdk.Backbone</li>
+<li>Oatc.OpenMI.Sdk.Buffer</li>
+<li>Oatc.OpenMI.Sdk.DevelopmentSupport</li>
+<li>Oatc.OpenMI.Sdk.Wrapper</li>
+<li>SMW</li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first">Add a project reference to the Hargreaves project by right-clicking on References and selecting Add Reference and switching to the Projects tab.</p>
 </li>
-</ol>
-<ol class="arabic simple" start="6">
-<li>The following lines of code are needed to setup the test class file.</li>
+<li><p class="first">The following lines of code are needed to setup the test class file.</p>
+</li>
 </ol>
 <div class="highlight-c#"><div class="highlight"><pre><span class="k">namespace</span> <span class="nn">Test</span>
 <span class="p">{</span>
@@ -516,7 +514,7 @@
 </pre></div>
 </div>
 <ol class="arabic simple" start="5">
-<li>To test the Initilize method, we will try to initialize the component using the config.xml file as shown in the lines below.  You may need to change the path to the config.xml file from what is shown below.</li>
+<li>To test the Initialize method, we will try to initialize the component using the config.xml file as shown in the lines below.  You may need to change the path to the config.xml file from what is shown below.</li>
 </ol>
 <div class="highlight-c#"><div class="highlight"><pre><span class="na">[TestFixtureSetUp]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">Initialize</span><span class="p">()</span>
@@ -536,8 +534,8 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="7">
-<li>To test the PerformTimeStep method, In the PreformTimeStep() method test, we will do an example calculation for a known solution where the average temperature is 19 degrees C, the minimum temperature is 17 degrees C, and the maximum temperature is 21 degrees C.  We know that the solution for this problem is 1.16 mm/d.  If the code does not perform this calculation correctly, the test will fail.</li>
+<ol class="arabic simple" start="6">
+<li>To test the PerformTimeStep method, we will do an example calculation for a known solution where the average temperature is 19 degrees C, the minimum temperature is 17 degrees C, and the maximum temperature is 21 degrees C.  We know that the solution for this problem is 1.16 mm/d.  If the code does not perform this calculation correctly, the test will fail.</li>
 </ol>
 <div class="highlight-c#"><div class="highlight"><pre><span class="na">[Test]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">PerformTimeStep</span><span class="p">()</span>
