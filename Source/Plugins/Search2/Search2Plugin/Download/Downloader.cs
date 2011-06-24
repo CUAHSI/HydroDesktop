@@ -79,7 +79,7 @@ namespace HydroDesktop.Search.Download
         /// <param name="info">DownloadInfo</param>
         /// <returns>The name of the xml file</returns>
         /// <exception cref="DownloadXmlException">Some exception during get values from web service</exception>
-        public string DownloadXmlDataValues(DownloadInfo info)
+        public string DownloadXmlDataValues(OneSeriesDownloadInfo info)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace HydroDesktop.Search.Download
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
         /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
-        public Series DataSeriesFromXml(DownloadInfo dInfo)
+        public Series DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
         {
             IList<Series> seriesList;
 

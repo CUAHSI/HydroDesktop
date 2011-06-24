@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Threading;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -56,35 +54,66 @@ namespace HydroDesktop.Search.Download
             set;
         }
 
+        /// <summary>
+        /// Is GUI of download manager is visible?
+        /// </summary>
         internal bool IsUIVisible
         {
             get { return _downloadManagerUI == null ? false : _downloadManagerUI.Visible; }
         }
-
-        internal DownloadArg CurrentDownloadArg { get; private set; }
-        internal DownloadProgressInfo DownloadProgressInfo { get; private set; }
+        
+        /// <summary>
+        /// Information about current manager.
+        /// </summary>
+        internal ManagerInformation Information { get; private set; }
 
         #endregion
 
         #region Public & Internal methods
 
         /// <summary>
+        /// Start downloading with custom indeces of items to be downloaded
+        /// </summary>
+        /// <param name="indeces">Indeces of items to download</param>
+        /// <exception cref="InvalidOperationException">If downloading in progress, you must waiting while it completed.
+        /// Also it throws, when no previous downloads found.
+        /// </exception>
+        internal void SubStart(ICollection<int> indeces = null)
+        {
+            if (IsBusy)
+                throw new InvalidOperationException("Re-downloading can not be started when downloading in progress.");
+            if (Information == null)
+                throw new InvalidOperationException("No previous downloads found.");
+            
+            Information.SetSeriesToDownload(indeces);
+
+            var indecesCount = indeces == null
+                                   ? Information.StartDownloadArg.ItemsToDownload.Count
+                                   : indeces.Count;
+
+            DoLogInfo(string.Format("Re-download series ({0} of {1}) started...", indecesCount, Information.StartDownloadArg.ItemsToDownload.Count));
+            _worker.RunWorkerAsync();
+        }
+
+        /// <summary>
         /// Start downloading
         /// </summary>
-        /// <param name="args">Download args</param>
-        /// <exception cref="ArgumentNullException">args must be not null</exception>
-        internal void Start(DownloadArg args)
+        /// <param name="startDownloadArg">Download args</param>
+        /// <exception cref="ArgumentNullException">args must be not null.</exception>
+        /// <exception cref="InvalidOperationException">Throws if previous download commnad is stiil active.</exception>
+        internal void Start(StartDownloadArg startDownloadArg)
         {
-            if (args == null)
-                throw new ArgumentNullException("args");
-
-            CurrentDownloadArg = args;
-            DownloadProgressInfo = new DownloadProgressInfo {TotalSeries = CurrentDownloadArg.DownloadList.Count};
+            if (startDownloadArg == null)
+                throw new ArgumentNullException("startDownloadArg");
+            if (IsBusy)
+                throw new InvalidOperationException("The previous download command is still active.");
+            
+            Information = new ManagerInformation(startDownloadArg, this);
             _downloadManagerUI = new DownloadManagerUI(this);
             ShowUI();
-            _worker.RunWorkerAsync(new DownloadArgWrapper { DownloadArg = args});
 
             DoLogInfo("Starting downloading...");
+            _worker.RunWorkerAsync();
         }
 
         /// <summary>
@@ -92,6 +121,7 @@ namespace HydroDesktop.Search.Download
         /// </summary>
         internal void Cancel()
         {
+            DoLogInfo("Cancelling...");
             _worker.CancelAsync();
 
             var handler = Canceled;
@@ -99,8 +129,6 @@ namespace HydroDesktop.Search.Download
             {
                 handler(this, EventArgs.Empty);
             }
-
-            DoLogInfo("Cancelling...");
         }
 
         /// <summary>
@@ -130,9 +158,20 @@ namespace HydroDesktop.Search.Download
             DoLog(LogKind.Info, message, exception);
         }
 
-        private void DoLogError(string message, Exception exception = null)
+        private void DoLogError(string message, Exception exception, OneSeriesDownloadInfo di)
         {
+            if (di != null)
+                message = string.Format("Error in {0}:" + Environment.NewLine + message, di.SeriesDescription);
+            else
+                message = "Error: " + message;
+
             DoLog(LogKind.Error, message, exception);
+        }
+
+        private void DoLogWarn(string message)
+        {
+            message = "Warning: " + message;
+            DoLog(LogKind.Warn, message);
         }
 
         private void DoLog(LogKind logKind, string message, Exception exception = null)
@@ -147,6 +186,9 @@ namespace HydroDesktop.Search.Download
                     case LogKind.Info:
                         Log.Info(message, exception);
                         break;
+                    case LogKind.Warn:
+                        Log.Warn(message, exception);
+                        break;
                 }
             }
 
@@ -158,6 +200,11 @@ namespace HydroDesktop.Search.Download
         }
 
         void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            RaiseCompletedEvent(e);
+        }
+
+        private void RaiseCompletedEvent(RunWorkerCompletedEventArgs e)
         {
             var handler = Completed;
             if (handler != null)
@@ -186,20 +233,21 @@ namespace HydroDesktop.Search.Download
         {
             _worker.ReportProgress(0, "Connecting to server...");
 
-            var arg = (DownloadArgWrapper)e.Argument;
-            var downloadList = arg.DownloadArg.DownloadList;
-                    
+            var downloadList = Information.StartDownloadArg.ItemsToDownload;
+            var indeces = Information.IndecesToDownload;
             const int maxThreadsToDownloadCount = 4;                                    // max count of downloading threads
-            var commonInfo = new CommnonDoDownloadInfo(downloadList, new Downloader()); // common info, shared through downloading threads
+            var commonInfo = new CommnonDoDownloadInfo(new Downloader()); // common info, shared through downloading threads
 
             // Starting (if possible) maxThreadsToDownloadCount downloading threads 
-            for(int i = 0; i<maxThreadsToDownloadCount && i <downloadList.Count; i++)
+            for (int i = 0, startedThreadsCount = 0; startedThreadsCount < maxThreadsToDownloadCount &&
+                                                     i < indeces.Count; i++)
             {
                 var thread = new Thread(DoDownload);
-                var dda = new DoDownloadArg(downloadList[i], commonInfo, thread);
+                var dda = new DoDownloadArg(downloadList[indeces[i]], commonInfo, thread);
                 commonInfo.AddDonwloadingThread(thread);
                 commonInfo.LastDownloadingIndex++;
                 thread.Start(dda);
+                startedThreadsCount++;
             }
 
             // Starting save thread
@@ -224,8 +272,9 @@ namespace HydroDesktop.Search.Download
             sb.AppendLine("===============" );
             sb.AppendLine("Total:");
             sb.AppendLine("ServiceURL SiteCode VariableCode StartDate EndDate DownloadTime Status ErrorMessage");
-            foreach (var di in downloadList)
+            foreach (var ind in indeces)
             {
+                var di = downloadList[ind];
                 sb.AppendFormat("{0} {1} {2} {3} {4} {5} {6} {7}" + Environment.NewLine, di.Wsdl, di.FullSiteCode, di.FullVariableCode, di.StartDate,
                                 di.EndDate, di.DownloadTimeTaken, di.Status, di.ErrorMessage);
             }
@@ -257,19 +306,22 @@ namespace HydroDesktop.Search.Download
                 lock (_syncObjForDownload)
                 {
                     dda.CommnonInfo.Downloaded.Enqueue(di);
-                    DownloadProgressInfo.Downloaded++;
+                    Information.Downloaded++;
                 }
 
                 hasException = false;
-                
-                DoLogInfo("Downloaded series " + DownloadProgressInfo.Downloaded + " of " + DownloadProgressInfo.TotalSeries);
+
+                var message = string.Format("Downloaded {0} ({1} of {2}).", di.SeriesDescription,
+                                            Information.Downloaded,
+                                            Information.TotalSeries);
+                DoLogInfo(message);
             }
             catch (DownloadXmlException ex)
             {
                 di.Status = DownloadInfoStatus.Error;
                 di.ErrorMessage = ex.Message;
-                DoLogError(ex.Message, ex);
-                DownloadProgressInfo.WithError++;
+                DoLogError(ex.Message, ex, di);
+                Information.WithError++;
             }
             finally
             {
@@ -278,16 +330,16 @@ namespace HydroDesktop.Search.Download
                 var diff = endTime.Subtract(startTime).TotalSeconds;
                 di.DownloadTimeTaken = TimeSpan.FromSeconds(diff);
                 var interval = diff*
-                               (DownloadProgressInfo.TotalSeries -
-                                (DownloadProgressInfo.WithError + DownloadProgressInfo.Downloaded))/ + 1;
-                DownloadProgressInfo.EstimatedTimeForDownload = interval < Int32.MaxValue
+                               (Information.TotalSeries -
+                                (Information.WithError + Information.Downloaded))/ + 1;
+                Information.EstimatedTimeForDownload = interval < Int32.MaxValue
                                                                     ? new TimeSpan(0, 0, (int) interval)
                                                                     : TimeSpan.MaxValue;
 
                 // common progress
                 if (hasException)
                 {
-                    ProgressSeries();
+                    ProgressSeries(di);
                 }
 
                 // resume saving thread
@@ -295,13 +347,13 @@ namespace HydroDesktop.Search.Download
 
                 // start new thread if need
                 if (!_worker.CancellationPending &&
-                    dda.CommnonInfo.LastDownloadingIndex < DownloadProgressInfo.TotalSeries)
+                    dda.CommnonInfo.LastDownloadingIndex < Information.TotalSeries)
                 {
                     var thread = new Thread(DoDownload);
                     dda.CommnonInfo.AddDonwloadingThread(thread);
                     var ld = dda.CommnonInfo.LastDownloadingIndex;
                     dda.CommnonInfo.LastDownloadingIndex++;
-                    thread.Start(new DoDownloadArg(dda.CommnonInfo.DownloadList[ld],
+                    thread.Start(new DoDownloadArg(Information.StartDownloadArg.ItemsToDownload[Information.IndecesToDownload[ld]],
                                                    dda.CommnonInfo, thread));
 
                 }
@@ -309,18 +361,20 @@ namespace HydroDesktop.Search.Download
                 dda.CommnonInfo.RemoveDonwloadingThread(dda.DownloadThread);
                 if (dda.CommnonInfo.DownloadingThreadsCount == 0)
                 {
-                    DownloadProgressInfo.EstimatedTimeForDownload = new TimeSpan();
+                    Information.EstimatedTimeForDownload = new TimeSpan();
                 }
             }
         }
 
-        private void ProgressSeries()
+        private void ProgressSeries(OneSeriesDownloadInfo di)
         {
-            var processedCount = DownloadProgressInfo.TotalSeries - DownloadProgressInfo.RemainingSeries;
+            if (di == null) return;
+            var processedCount = Information.TotalSeries - Information.RemainingSeries;
             if (processedCount == 0) return;
 
-            var message = "Processed series " + processedCount + " of " + DownloadProgressInfo.TotalSeries;
-            var percentProgress = (processedCount * 100) / DownloadProgressInfo.TotalSeries;
+            var message = string.Format("Processed {0} ({1} of {2}).", di.SeriesDescription, processedCount,
+                                        Information.TotalSeries);
+            var percentProgress = (processedCount * 100) / Information.TotalSeries;
             _worker.ReportProgress(percentProgress, message);
         }
 
@@ -331,7 +385,8 @@ namespace HydroDesktop.Search.Download
 
             var objDownloader = commonInfo.Downloader;
 
-            while (DownloadProgressInfo.RemainingSeries > 0)
+            OneSeriesDownloadInfo lastProcessedInfo = null;
+            while (Information.RemainingSeries > 0)
             {
                 if (_worker.CancellationPending) break;
 
@@ -342,12 +397,13 @@ namespace HydroDesktop.Search.Download
                 }
 
                 // Common progress
-                ProgressSeries();
+                ProgressSeries(lastProcessedInfo);
 
-                DownloadInfo dInfo;
+                OneSeriesDownloadInfo dInfo;
                 lock (_syncObjForDownload)
                 {
                     dInfo = commonInfo.Downloaded.Dequeue();
+                    lastProcessedInfo = dInfo;
                 }
                 Debug.Assert(dInfo != null);
                 
@@ -362,28 +418,27 @@ namespace HydroDesktop.Search.Download
                 catch (DataSeriesFromXmlException ex)
                 {
                     dInfo.Status = DownloadInfoStatus.Error;
-                    DownloadProgressInfo.WithError++;
-                    DoLogError(ex.Message, ex);
+                    Information.WithError++;
+                    DoLogError(ex.Message, ex, dInfo);
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
                 catch (NoSeriesFromXmlException ex)
                 {
                     dInfo.Status = DownloadInfoStatus.Error;
-                    DownloadProgressInfo.WithError++;
-                    DoLogError(ex.Message); // No stack trace
+                    Information.WithError++;
+                    DoLogError(ex.Message, null, dInfo); // No stack trace
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
                 catch (TooMuchSeriesFromXmlException ex)
                 {
                     dInfo.Status = DownloadInfoStatus.Error;
-                    DownloadProgressInfo.WithError++;
-                    DoLogError(ex.Message); // No stack trace
+                    Information.WithError++;
+                    DoLogError(ex.Message, null, dInfo); // No stack trace
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
-
 
                 Debug.Assert(series != null);
 
@@ -391,12 +446,12 @@ namespace HydroDesktop.Search.Download
                 int numSavedValues;
                 try
                 {
-                    numSavedValues = objDownloader.SaveDataSeries(series, CurrentDownloadArg.DataTheme);
-                    DownloadProgressInfo.DownloadedAndSaved++;
+                    numSavedValues = objDownloader.SaveDataSeries(series, Information.StartDownloadArg.DataTheme);
+                    Information.DownloadedAndSaved++;
 
                     if (numSavedValues == 0)
                     {
-                        DoLogInfo(string.Format("Warning: {0} has no data values!", series));
+                        DoLogWarn(string.Format("{0} has no data values.", series));
                         dInfo.Status = DownloadInfoStatus.OkWithWarnings;
                     }
                     else
@@ -405,8 +460,8 @@ namespace HydroDesktop.Search.Download
                 catch (SaveDataSeriesException ex)
                 {
                     dInfo.Status = DownloadInfoStatus.Error;
-                    DoLogError(ex.Message, ex);
-                    DownloadProgressInfo.WithError++;
+                    DoLogError(ex.Message, ex, dInfo);
+                    Information.WithError++;
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
@@ -415,19 +470,19 @@ namespace HydroDesktop.Search.Download
                     // Calculcate estimated time
                     var endTime = DateTime.Now;
                     var diff = endTime.Subtract(startTime).TotalSeconds;
-                    var interval = diff * DownloadProgressInfo.RemainingSeries + 1;
-                    DownloadProgressInfo.EstimatedTimeForSave = interval < Int32.MaxValue
+                    var interval = diff * Information.RemainingSeries + 1;
+                    Information.EstimatedTimeForSave = interval < Int32.MaxValue
                                                              ? new TimeSpan(0, 0, (int)(interval))
                                                              : TimeSpan.MaxValue;
                 }
 
-                var message = dInfo.SiteName + " - " + dInfo.VariableName + " " + numSavedValues + " values saved.";
+                var message = string.Format("Saved {0}. Values: {1}.", dInfo.SeriesDescription, numSavedValues);
                 DoLogInfo(message);
             }
 
-            ProgressSeries();
+            ProgressSeries(lastProcessedInfo);
 
-            DownloadProgressInfo.EstimatedTimeForSave = new TimeSpan();
+            Information.EstimatedTimeForSave = new TimeSpan();
             commonInfo.SavingWaitingEvent.Set();
         }
 
@@ -437,11 +492,11 @@ namespace HydroDesktop.Search.Download
 
         class DoDownloadArg
         {
-            public DownloadInfo DownloadInfo { get; private set; }
+            public OneSeriesDownloadInfo DownloadInfo { get; private set; }
             public CommnonDoDownloadInfo CommnonInfo { get; private set; }
             public Thread DownloadThread { get; private set; }
 
-            public DoDownloadArg(DownloadInfo di, CommnonDoDownloadInfo commonInfo, Thread downloadThread)
+            public DoDownloadArg(OneSeriesDownloadInfo di, CommnonDoDownloadInfo commonInfo, Thread downloadThread)
             {
                 DownloadInfo = di;
                 CommnonInfo = commonInfo;
@@ -452,29 +507,25 @@ namespace HydroDesktop.Search.Download
         {
             private readonly ManualResetEvent _manualResetEvent;
 
-            public CommnonDoDownloadInfo(ReadOnlyCollection<DownloadInfo> downloadList, 
-                                        Downloader downloader)
+            public CommnonDoDownloadInfo(Downloader downloader)
             {
                 _manualResetEvent = new ManualResetEvent(false);
-                DownloadList = downloadList;
                 Downloader = downloader;
             }
 
             public Downloader Downloader { get; private set; }
 
-            private readonly Queue<DownloadInfo> _downloaded = new Queue<DownloadInfo>();
+            private readonly Queue<OneSeriesDownloadInfo> _downloaded = new Queue<OneSeriesDownloadInfo>();
 
             public ManualResetEvent SaveManualResetEvent
             {
                 get { return _manualResetEvent; }
             }
 
-            public Queue<DownloadInfo> Downloaded
+            public Queue<OneSeriesDownloadInfo> Downloaded
             {
                 get { return _downloaded; }
             }
-          
-            public ReadOnlyCollection<DownloadInfo> DownloadList { get; private set; }
 
             private volatile int _lastDownloadingIndex;
             public int LastDownloadingIndex
@@ -508,15 +559,11 @@ namespace HydroDesktop.Search.Download
             public ManualResetEvent SavingWaitingEvent { get; set; }
         }
 
-        class DownloadArgWrapper
-        {
-            public DownloadArg DownloadArg { get; set; }
-        }
-
         enum LogKind
         {
             Info,
-            Error
+            Error,
+            Warn
         }
 
         #endregion

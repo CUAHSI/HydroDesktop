@@ -7,11 +7,28 @@ namespace HydroDesktop.Search.Download
     /// This class is used to pass information required to download
     /// data values using the WaterML GetValues() call
     /// </summary>
-    public class DownloadInfo : INotifyPropertyChanged
+    public class OneSeriesDownloadInfo : INotifyPropertyChanged
     {
+        #region Consts
+
+        internal const string PROPERTY_Wsdl = "Wsdl";
+        internal const string PROPERTY_FullSiteCode = "FullSiteCode";
+        internal const string PROPERTY_FullVariableCode = "FullVariableCode";
+        internal const string PROPERTY_SiteName = "SiteName";
+        internal const string PROPERTY_VariableName = "VariableName";
+        internal const string PROPERTY_StartDate = "StartDate";
+        internal const string PROPERTY_EndDate = "EndDate";
+        internal const string PROPERTY_Latitude = "Latitude";
+        internal const string PROPERTY_Longitude = "Longitude";
+        internal const string PROPERTY_Status = "Status";
+        internal const string PROPERTY_DownloadTimeTaken = "DownloadTimeTaken";
+        internal const string PROPERTY_ErrorMessage = "ErrorMessage";
+
+        #endregion
+
         #region Constructors
 
-        public DownloadInfo()
+        public OneSeriesDownloadInfo()
         {
             Status = DownloadInfoStatus.Pending;
         }
@@ -30,7 +47,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _wsdl = value;
-                NotifyPropertyChanged("Wsdl");
+                NotifyPropertyChanged(PROPERTY_Wsdl);
             }
         }
 
@@ -44,7 +61,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _fullSiteCode = value;
-                NotifyPropertyChanged("FullSiteCode");
+                NotifyPropertyChanged(PROPERTY_FullSiteCode);
             }
         }
 
@@ -58,7 +75,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _fullVariableCode = value;
-                NotifyPropertyChanged("FullVariableCode");
+                NotifyPropertyChanged(PROPERTY_FullVariableCode);
             }
         }
 
@@ -72,7 +89,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _siteName = value;
-                NotifyPropertyChanged("SiteName");
+                NotifyPropertyChanged(PROPERTY_SiteName);
             }
         }
 
@@ -86,7 +103,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _variableName = value;
-                NotifyPropertyChanged("VariableName");
+                NotifyPropertyChanged(PROPERTY_VariableName);
             }
         }
 
@@ -100,7 +117,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _startDate = value;
-                NotifyPropertyChanged("StartDate");
+                NotifyPropertyChanged(PROPERTY_StartDate);
             }
         }
 
@@ -114,7 +131,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _endDate = value;
-                NotifyPropertyChanged("EndDate");
+                NotifyPropertyChanged(PROPERTY_EndDate);
             }
         }
 
@@ -128,7 +145,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _latitude = value;
-                NotifyPropertyChanged("Latitude");
+                NotifyPropertyChanged(PROPERTY_Latitude);
             }
         }
 
@@ -142,7 +159,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _longitude = value;
-                NotifyPropertyChanged("Longitude");
+                NotifyPropertyChanged(PROPERTY_Longitude);
             }
         }
 
@@ -156,7 +173,14 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _status = value;
-                NotifyPropertyChanged("Status");
+                NotifyPropertyChanged(PROPERTY_Status);
+
+                if (_status == DownloadInfoStatus.Pending)
+                {
+                    DownloadTimeTaken = new TimeSpan();
+                    ErrorMessage = null;
+                    FileName = null;
+                }
             }
         }
 
@@ -170,7 +194,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _downloadTimeTaken = value;
-                NotifyPropertyChanged("DownloadTimeTaken");
+                NotifyPropertyChanged(PROPERTY_DownloadTimeTaken);
             }
         }
 
@@ -185,7 +209,7 @@ namespace HydroDesktop.Search.Download
             set
             {
                 _errorMessage = value;
-                NotifyPropertyChanged("ErrorMessage");
+                NotifyPropertyChanged(PROPERTY_ErrorMessage);
             }
         }
 
@@ -193,6 +217,18 @@ namespace HydroDesktop.Search.Download
         /// File name containg downloaded data series.
         /// </summary>
         public string FileName { get; set; }
+
+
+        /// <summary>
+        /// Description of downloaded series
+        /// </summary>
+        public string SeriesDescription
+        {
+            get
+            {
+                return SiteName + "|" + VariableName;
+            }
+        }
 
         #endregion
 
