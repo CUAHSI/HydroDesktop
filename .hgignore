@@ -51,3 +51,5 @@ glob:System.Spatial.Topology/System.Spatial.Topology/ClassDiagram3.cd
 glob:Binaries/
 glob:*.ReSharper
 glob:*.orig
+*.csproj.vs10x
+*.sln.docstates
