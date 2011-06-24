@@ -5,7 +5,10 @@ using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Search.Download
 {
-    public class DownloadArg
+    /// <summary>
+    /// Class with information needed to call DownloadManager.Start()
+    /// </summary>
+    public class StartDownloadArg
     {
         /// <summary>
         /// Constructor of DownloadArg
@@ -13,19 +16,19 @@ namespace HydroDesktop.Search.Download
         /// <param name="downloadList">Collection of DownloadInfo</param>
         /// <param name="dataTheme">Data theme</param>
         /// <exception cref="ArgumentNullException">downloadList must be not null.</exception>
-        public DownloadArg(IList<DownloadInfo> downloadList, Theme dataTheme)
+        public StartDownloadArg(IList<OneSeriesDownloadInfo> downloadList, Theme dataTheme)
         {
             if (downloadList == null)
                 throw new ArgumentNullException("downloadList");
 
-            DownloadList = new ReadOnlyCollection<DownloadInfo>(downloadList);
+            ItemsToDownload = new ReadOnlyCollection<OneSeriesDownloadInfo>(downloadList);
             DataTheme = dataTheme;
         }
 
         /// <summary>
-        /// Collection of items to be downloaded.
+        /// Collection of all items to be downloaded.
         /// </summary>
-        public ReadOnlyCollection<DownloadInfo> DownloadList { get; private set; }
+        public ReadOnlyCollection<OneSeriesDownloadInfo> ItemsToDownload { get; private set; }
         /// <summary>
         /// Data theme.
         /// </summary>
