@@ -121,11 +121,17 @@
     <Compile Include="AdvancedSettingsDialog.Designer.cs">
       <DependentUpon>AdvancedSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Download\DownloadProgressInfo.cs" />
+    <Compile Include="Download\ManagerInformation.cs" />
     <Compile Include="Download\Exceptions\DataSeriesFromXmlException.cs" />
     <Compile Include="Download\Downloader.cs" />
-    <Compile Include="Download\DownloadInfo.cs" />
-    <Compile Include="Download\DownloadArg.cs" />
+    <Compile Include="Download\OneSeriesDownloadInfo.cs" />
+    <Compile Include="Download\RedownloadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Download\RedownloadControl.Designer.cs">
+      <DependentUpon>RedownloadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Download\StartDownloadArg.cs" />
     <Compile Include="Download\DownloadManager.cs" />
     <Compile Include="Download\DownloadManagerUI.cs">
       <SubType>Form</SubType>
@@ -176,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Download\DownloadManagerUI.resx">
       <DependentUpon>DownloadManagerUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Download\RedownloadControl.resx">
+      <DependentUpon>RedownloadControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

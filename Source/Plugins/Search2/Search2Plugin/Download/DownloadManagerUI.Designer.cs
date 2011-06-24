@@ -53,6 +53,8 @@
             this.paCommonButtons = new System.Windows.Forms.Panel();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.paWorkButtons = new System.Windows.Forms.Panel();
+            this.redownloadControl1 = new HydroDesktop.Search.Download.RedownloadControl();
+            this.chbAutoScroll = new System.Windows.Forms.CheckBox();
             this.btnCopyLog = new System.Windows.Forms.Button();
             this.btnSendError = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDownloadData)).BeginInit();
@@ -88,9 +90,9 @@
             // 
             this.lbOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbOutput.FormattingEnabled = true;
-            this.lbOutput.Location = new System.Drawing.Point(3, 307);
+            this.lbOutput.Location = new System.Drawing.Point(3, 312);
             this.lbOutput.Name = "lbOutput";
-            this.lbOutput.Size = new System.Drawing.Size(599, 145);
+            this.lbOutput.Size = new System.Drawing.Size(599, 140);
             this.lbOutput.TabIndex = 4;
             // 
             // lblTotalInfo
@@ -116,7 +118,7 @@
             // 
             // btnDetails
             // 
-            this.btnDetails.Location = new System.Drawing.Point(9, 3);
+            this.btnDetails.Location = new System.Drawing.Point(9, 7);
             this.btnDetails.Name = "btnDetails";
             this.btnDetails.Size = new System.Drawing.Size(75, 23);
             this.btnDetails.TabIndex = 10;
@@ -133,7 +135,7 @@
             this.dgvDownloadData.Location = new System.Drawing.Point(3, 145);
             this.dgvDownloadData.Name = "dgvDownloadData";
             this.dgvDownloadData.ReadOnly = true;
-            this.dgvDownloadData.Size = new System.Drawing.Size(599, 118);
+            this.dgvDownloadData.Size = new System.Drawing.Size(599, 115);
             this.dgvDownloadData.TabIndex = 11;
             // 
             // tableLayoutPanel1
@@ -309,25 +311,47 @@
             this.tlpMain.RowCount = 4;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 142F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.45454F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.54546F));
             this.tlpMain.Size = new System.Drawing.Size(605, 455);
             this.tlpMain.TabIndex = 13;
             // 
             // paWorkButtons
             // 
+            this.paWorkButtons.Controls.Add(this.redownloadControl1);
+            this.paWorkButtons.Controls.Add(this.chbAutoScroll);
             this.paWorkButtons.Controls.Add(this.btnCopyLog);
             this.paWorkButtons.Controls.Add(this.btnSendError);
             this.paWorkButtons.Controls.Add(this.btnDetails);
             this.paWorkButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.paWorkButtons.Location = new System.Drawing.Point(3, 269);
+            this.paWorkButtons.Location = new System.Drawing.Point(3, 266);
             this.paWorkButtons.Name = "paWorkButtons";
-            this.paWorkButtons.Size = new System.Drawing.Size(599, 32);
+            this.paWorkButtons.Size = new System.Drawing.Size(599, 40);
             this.paWorkButtons.TabIndex = 13;
+            // 
+            // redownloadControl1
+            // 
+            this.redownloadControl1.Location = new System.Drawing.Point(254, 4);
+            this.redownloadControl1.Name = "redownloadControl1";
+            this.redownloadControl1.Size = new System.Drawing.Size(234, 30);
+            this.redownloadControl1.TabIndex = 16;
+            this.redownloadControl1.DoRedownload += new System.EventHandler<HydroDesktop.Search.Download.RedownloadArgs>(this.redownloadControl1_DoRedownload);
+            // 
+            // chbAutoScroll
+            // 
+            this.chbAutoScroll.AutoSize = true;
+            this.chbAutoScroll.Checked = true;
+            this.chbAutoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbAutoScroll.Location = new System.Drawing.Point(494, 7);
+            this.chbAutoScroll.Name = "chbAutoScroll";
+            this.chbAutoScroll.Size = new System.Drawing.Size(75, 17);
+            this.chbAutoScroll.TabIndex = 15;
+            this.chbAutoScroll.Text = "Auto scroll";
+            this.chbAutoScroll.UseVisualStyleBackColor = true;
             // 
             // btnCopyLog
             // 
-            this.btnCopyLog.Location = new System.Drawing.Point(229, 3);
+            this.btnCopyLog.Location = new System.Drawing.Point(170, 7);
             this.btnCopyLog.Name = "btnCopyLog";
             this.btnCopyLog.Size = new System.Drawing.Size(78, 23);
             this.btnCopyLog.TabIndex = 13;
@@ -337,11 +361,11 @@
             // 
             // btnSendError
             // 
-            this.btnSendError.Location = new System.Drawing.Point(90, 3);
+            this.btnSendError.Location = new System.Drawing.Point(90, 7);
             this.btnSendError.Name = "btnSendError";
-            this.btnSendError.Size = new System.Drawing.Size(133, 23);
+            this.btnSendError.Size = new System.Drawing.Size(74, 23);
             this.btnSendError.TabIndex = 12;
-            this.btnSendError.Text = "Send error to CUAHSI";
+            this.btnSendError.Text = "Send error";
             this.btnSendError.UseVisualStyleBackColor = true;
             // 
             // DownloadManagerUI
@@ -367,6 +391,7 @@
             this.paCommonButtons.ResumeLayout(false);
             this.tlpMain.ResumeLayout(false);
             this.paWorkButtons.ResumeLayout(false);
+            this.paWorkButtons.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -399,5 +424,7 @@
         private System.Windows.Forms.Label lcDownloadedAndSavedInfo;
         private System.Windows.Forms.Label lcEstimatedTimeInfo;
         private System.Windows.Forms.Label lcEstimatedTime;
+        private System.Windows.Forms.CheckBox chbAutoScroll;
+        private RedownloadControl redownloadControl1;
     }
 }

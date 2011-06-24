@@ -2061,14 +2061,14 @@ namespace HydroDesktop.Search
             }
 
             //create a list of the SiteCode-VariableCode combinations for download
-            var downloadList = new List<DownloadInfo>();
+            var downloadList = new List<OneSeriesDownloadInfo>();
             var fileNameList = new List<String>(); //to ensure, that no duplicate files are 
             //downloaded..
             foreach (IFeature selFeature in searchDataGridView1.MapLayer.Selection.ToFeatureList())
             {
                 DataRow row = selFeature.DataRow;
 
-                var di = new DownloadInfo
+                var di = new OneSeriesDownloadInfo
                              {
                                  SiteName = row["SiteName"].ToString(),
                                  FullSiteCode = row["SiteCode"].ToString(),
@@ -2089,7 +2089,7 @@ namespace HydroDesktop.Search
                 }
             }
 
-            var arg = new DownloadArg(downloadList, theme);
+            var arg = new StartDownloadArg(downloadList, theme);
 
             //setup the progress bar
             panelSearch.Visible = true;
@@ -2133,51 +2133,26 @@ namespace HydroDesktop.Search
 
             if (e.Cancelled)
             {
-                MessageBox.Show(string.Format("Data download has been cancelled." + Environment.NewLine +
-                                              "{0} out of {1} series were saved to database.",
-                                              _downLoadManager.DownloadProgressInfo.DownloadedAndSaved,
-                                              _downLoadManager.DownloadProgressInfo.TotalSeries),
-                                "Cancelled", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
                 panelSearch.Visible = false;
-                btnCancel.Text = "Cancel";
                 return;
             }
-            if (e.Error != null)
-            {
-                MessageBox.Show("Error occurred during data download." + Environment.NewLine + e.Error, "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            }
-            else
-            {
-                var themeName = _downLoadManager.CurrentDownloadArg.DataTheme == null
-                                       ? string.Empty
-                                       : _downLoadManager.CurrentDownloadArg.DataTheme.Name;
+            var themeName = _downLoadManager.Information.StartDownloadArg.DataTheme == null
+                                ? string.Empty
+                                : _downLoadManager.Information.StartDownloadArg.DataTheme.Name;
 
-                //Display theme in the main map
-                AddThemeToMap(themeName);
+            //Display theme in the main map
+            AddThemeToMap(themeName);
 
-                //Change the form's appearance
-                lblSearching.Text = "Download Complete.";
+            //Change the form's appearance
+            lblSearching.Text = "Download Complete.";
 
-                //refreshing the AddExisiting theme
-                AddExistingThemes();
-                txtThemeName.Text = "";
-
-                // Report messages to the user.
-                MessageBox.Show(string.Format("Data download complete." + Environment.NewLine +
-                                              "Downloaded and saved: {0}" + Environment.NewLine +
-                                              "Failed series: {1}",
-                                              _downLoadManager.DownloadProgressInfo.DownloadedAndSaved,
-                                              _downLoadManager.DownloadProgressInfo.WithError),
-                                "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            //Change the 'cancel' button to 'close
-            btnCancel.Text = "Cancel";
+            //refreshing the AddExisiting theme
+            AddExistingThemes();
+            txtThemeName.Text = "";
+            
             //make the download progress-bar panel disappear
             panelSearch.Visible = false;
-
         }
 
         void _downLoadManager_ProgressChanged(object sender, ProgressChangedEventArgs e)
