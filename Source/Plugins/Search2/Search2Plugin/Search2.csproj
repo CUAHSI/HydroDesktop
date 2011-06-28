@@ -76,23 +76,23 @@
     </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HydroDesktop.Controls">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HydroDesktop.Data">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HydroDesktop.Interfaces">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HydroDesktop.WebServices">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
