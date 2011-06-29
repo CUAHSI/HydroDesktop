@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{31AA4F21-4E7E-413D-ACCF-0D0B78DC3764}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroDesktop.Main</RootNamespace>
     <AssemblyName>HydroDesktop</AssemblyName>
@@ -38,7 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Application Extensions\Hydrodesktop.Main\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -58,75 +58,95 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="DotSpatial.Analysis, Version=1.0.2011.4, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=x86">
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Analysis.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Compatibility, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=094c8fdea7f4a002, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Compatibility.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Controls, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Data.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=c90293dbec1f136e, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Modeling.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Modeling.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Positioning, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Positioning.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Positioning.Design, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=b4b0b185210c9dae, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Positioning.Design.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Positioning.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=3a45fedac1c4cdab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Positioning.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections.Forms, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Projections.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Serialization, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Serialization.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Symbology.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Topology, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\DotSpatial.Topology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial_x86.1.0.371\lib\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AddIn" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -150,6 +170,7 @@
     <Compile Include="ConfigurationForm.Designer.cs">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainPlugin.cs" />
     <Compile Include="NorthAmericaProjectTemplate.cs" />
     <Compile Include="DeleteThemeForm.cs">
       <SubType>Form</SubType>
@@ -181,7 +202,6 @@
     <Compile Include="mainRibbonForm.Designer.cs">
       <DependentUpon>mainRibbonForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="PredefinedTemplate.cs" />
     <Compile Include="ProjectChangeTracker.cs" />
@@ -314,27 +334,27 @@
     <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Controls\HydroDesktop.Controls.csproj">
       <Project>{2D745DC4-9B59-4AA2-94DC-2370F1EE2991}</Project>
       <Name>HydroDesktop.Controls</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
       <Name>HydroDesktop.Data</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help\HydroDesktop.Help.csproj">
       <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
       <Name>HydroDesktop.Help</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
       <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
       <Name>HydroDesktop.Interfaces</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
