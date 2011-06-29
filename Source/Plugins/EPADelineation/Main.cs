@@ -19,7 +19,7 @@ using DotSpatial.Topology;
 
 namespace EPADelineation
 {
-    [Plugin("EPA Delineation", Author = "Jingqi Dong", UniqueName = "mw_EPADelineation_1", Version = "1")]
+    [System.AddIn.AddIn("EPA Delineation", Publisher = "Jingqi Dong", Version = "1")]
     public class Main : Extension, IMapPlugin
     {
         #region Variables

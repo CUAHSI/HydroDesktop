@@ -18,7 +18,7 @@ using MWPoint = DotSpatial.Topology.Point;
 
 namespace FetchBasemap
 {
-    [Plugin("Fetch Basemap", Author = "James Seppi", UniqueName = "mw_FetchBasemap_1", Version = "1")]
+    [System.AddIn.AddIn("Fetch Basemap", Version = "1", Publisher = "James Seppi")]
     public class Main : Extension, IMapPlugin
     {
         private const string STR_KeyServiceDropDown = "kServiceDropDown";

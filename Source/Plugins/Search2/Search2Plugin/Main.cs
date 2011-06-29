@@ -12,7 +12,7 @@ using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Search
 {
-    [Plugin("Search V2", Author = "ISU", UniqueName = "mw_Search_2", Version = "2")]
+    [System.AddIn.AddIn("Search V2", Version = "2", Publisher = "HydroDesktop Team")]
     public class Main : Extension, IMapPlugin
     {
         #region Variables
