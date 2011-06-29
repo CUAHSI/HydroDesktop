@@ -32,9 +32,9 @@ namespace HydroDesktop.Main
                 "Metadata Fetcher",
                 "Data Export"
             };
-            
-            
-            
+
+
+
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
 
             SetMapExtent(mainMap);
@@ -121,7 +121,7 @@ namespace HydroDesktop.Main
                 MapPolygonLayer layCounties = new MapPolygonLayer(fsCounties);
                 layCounties.LegendText = "U.S. Counties";
                 layCounties.IsVisible = false;
-                layCounties.Symbolizer = new PolygonSymbolizer(Color.FromArgb(120, Color.Beige),Color.LightGray);
+                layCounties.Symbolizer = new PolygonSymbolizer(Color.FromArgb(120, Color.Beige), Color.LightGray);
                 //PolygonScheme schmCounties = new PolygonScheme();
 
                 //schmCounties.EditorSettings.StartColor = Color.LemonChiffon;
@@ -212,17 +212,17 @@ namespace HydroDesktop.Main
             }
             catch { }
 
-            Project.ActivatePlugins(applicationManager1, _corePlugins);
+            // Project.ActivatePlugins(applicationManager1, _corePlugins);
 
             SetMapExtent(mainMap);
-            
+
             return true;
         }
 
         private static void SetMapExtent(Map map)
         {
             Extent defaultMapExtent = new Extent(-130, 5, -70, 60);
-            
+
             double[] xy = new double[4];
             xy[0] = defaultMapExtent.MinX;
             xy[1] = defaultMapExtent.MinY;

@@ -20,7 +20,7 @@ namespace HydroDesktop.Main
     public partial class WelcomeScreen : Form
     {
         #region Private Variables
-        
+
         private List<ProjectFileInfo> _recentProjectFiles;
         private AppManager _app;
         private bool _newProjectCreated = false;
@@ -39,7 +39,7 @@ namespace HydroDesktop.Main
         };
 
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
-        
+
         #endregion
 
         #region Constructor
@@ -49,7 +49,7 @@ namespace HydroDesktop.Main
             InitializeComponent();
 
             lblProductVersion.Text = "CUAHSI HydroDesktop " + Application.ProductVersion;
-            
+
             _app = app;
             _recentProjectFiles = new List<ProjectFileInfo>();
             bsRecentFiles = new BindingSource(RecentProjectFiles, null);
@@ -60,7 +60,7 @@ namespace HydroDesktop.Main
 
             //set the place for progress reporting ...
             //_app.ProgressHandler = spatialStatusStrip1;
-            
+
             //lblCreateNewProject.Click += new EventHandler(lblCreateNewProject_Click);
             //rbNewProject.DoubleClick += new EventHandler(rbNewProject_DoubleClick);
             //lstRecentProjects.DisplayMember = "Name";
@@ -71,8 +71,8 @@ namespace HydroDesktop.Main
             }
         }
 
-        
-       
+
+
         #endregion
 
         #region Properties
@@ -88,7 +88,7 @@ namespace HydroDesktop.Main
         /// Returns true, if a new project was created
         /// using template or using empty project
         /// </summary>
-        public bool NewProjectCreated 
+        public bool NewProjectCreated
         {
             get { return _newProjectCreated; }
         }
@@ -111,7 +111,7 @@ namespace HydroDesktop.Main
                 {
                     lblProgress.Text = "Creating new Project.. ";
                     this.Cursor = Cursors.WaitCursor;
-                    
+
                     panelStatus.Visible = true;
                     Project.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
 
@@ -122,7 +122,7 @@ namespace HydroDesktop.Main
                     _newProjectCreated = true;
 
                     this.DialogResult = DialogResult.OK;
-                    
+
                     this.Close();
                 }
             }
@@ -249,12 +249,12 @@ namespace HydroDesktop.Main
 
             _app.Map.ViewExtents = new Extent(xy);
         }
-        
+
         private void FindRecentProjectFiles()
         {
             this.RecentProjectFiles.Clear();
-            
-            foreach(string recentFile in Settings.Instance.RecentProjectFiles)
+
+            foreach (string recentFile in Settings.Instance.RecentProjectFiles)
             {
                 if (File.Exists(recentFile))
                 {
@@ -267,8 +267,8 @@ namespace HydroDesktop.Main
         }
         #endregion
 
-        
-    } 
+
+    }
 
     public class ProjectFileInfo
     {
@@ -278,7 +278,7 @@ namespace HydroDesktop.Main
         }
 
         public string FullPath { get; private set; }
-        public string Name 
+        public string Name
         {
             get
             {
