@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
@@ -2242,6 +2244,32 @@ namespace HydroDesktop.Search
 
             //set the search result layer as selected
             SelectLayerInLegend(SEARCH_RESULT_LAYER_NAME);
+
+            // Set up labels in search results layer
+            SetUpLabeling(laySearchResult);
+        }
+
+        private void SetUpLabeling(IFeatureLayer layer)
+        {
+            Debug.Assert(layer != null);
+
+            const string attributeName = "SiteName";
+
+            var symb = new LabelSymbolizer
+                           {
+                               FontColor = Color.Black, 
+                               FontSize = 8,
+                               FontFamily = "Arial Unicode MS",
+                               PreventCollisions = true,
+                               HaloEnabled = true,
+                               HaloColor = Color.White,
+                               Orientation = ContentAlignment.MiddleRight,
+                               OffsetX = 0.0f,
+                               OffsetY = 0.0f,
+                           };
+
+            _mapArgs.Map.AddLabels(layer, string.Format("[{0}]", attributeName), string.Empty, symb, "Category Default");
+            _mapArgs.Map.Refresh();
         }
 
         //private void ZoomToLayerEx(IFeatureSet fs)
