@@ -2268,7 +2268,9 @@ namespace HydroDesktop.Search
                                OffsetY = 0.0f,
                            };
 
-            _mapArgs.Map.AddLabels(layer, string.Format("[{0}]", attributeName), string.Empty, symb, "Category Default");
+            _mapArgs.Map.AddLabels(layer, string.Format("[{0}]", attributeName),
+                                          string.Format("[ValueCount] > {0}", 10),
+                                          symb, "Category Default");
             _mapArgs.Map.Refresh();
         }
 
