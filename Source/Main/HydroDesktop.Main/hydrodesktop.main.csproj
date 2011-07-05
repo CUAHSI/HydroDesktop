@@ -170,7 +170,7 @@
     <Compile Include="ConfigurationForm.Designer.cs">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainPlugin.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="NorthAmericaProjectTemplate.cs" />
     <Compile Include="DeleteThemeForm.cs">
       <SubType>Form</SubType>
