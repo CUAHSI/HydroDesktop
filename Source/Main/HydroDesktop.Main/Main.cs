@@ -25,7 +25,7 @@ namespace HydroDesktop.Main
             if (IsRunningOnMono())
             {
                 //running on Mac or Linux
-                MessageBox.Show("The Mac or Linux platform is not supported in this version of HydroDesktop.");
+                MessageBox.Show("Neither the Mac or Linux platform is supported in this version of HydroDesktop.");
             }
             else
             {
