@@ -97,6 +97,8 @@ namespace HydroDesktop.Main
             this.SizeChanged += new EventHandler(mainRibbonForm_SizeChanged);
             this.FormClosing += new FormClosingEventHandler(mainRibbonForm_FormClosing);
 
+            this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
+
             #region initialize the help menu
 
             rbHelp.Image = Properties.Resources.help;
