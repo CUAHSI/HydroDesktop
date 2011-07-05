@@ -143,6 +143,7 @@
     <Compile Include="Download\Exceptions\NoSeriesFromXmlException.cs" />
     <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
     <Compile Include="Download\Exceptions\TooMuchSeriesFromXmlException.cs" />
+    <Compile Include="LayerInformation\SearchInformer.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />
     <Compile Include="WebServicesList.cs" />

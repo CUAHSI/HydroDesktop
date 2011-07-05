@@ -19,6 +19,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Search.LayerInformation;
 using log4net;
 using HydroDesktop.Search.Download;
 
@@ -49,6 +50,7 @@ namespace HydroDesktop.Search
         private RectangleDrawing _rectangleDrawing;
 
         private readonly DownloadManager _downLoadManager;
+        private SearchInformer searchInformer;
 
         #endregion
 
@@ -61,7 +63,7 @@ namespace HydroDesktop.Search
             _mapArgs = mapArgs;
 
             //set the main map
-            mapMain = _mapArgs.Map as Map;
+            mapMain = (Map)_mapArgs.Map; //TODO: hack
 
             // this manages the former webservices.xml
             _webServicesList = new WebServicesList();
@@ -2188,22 +2190,28 @@ namespace HydroDesktop.Search
         //remove the 'Data Series' layer from the map
         private void RemoveDataSeriesLayer()
         {
-            IMapFeatureLayer layerToRemove = null;
-            foreach (ILayer lay in _mapArgs.Map.Layers)
-            {
-                if (lay.LegendText.ToLower() == SEARCH_RESULT_LAYER_NAME.ToLower())
-                {
-                    layerToRemove = lay as IMapFeatureLayer;
-                    break;
-                }
-            }
+            var layerToRemove = GetSearchResultLayer();
             if (layerToRemove != null)
             {
                 _mapArgs.Map.Layers.Remove(layerToRemove);
-                layerToRemove = null;
             }
         }
 
+        private IMapFeatureLayer GetSearchResultLayer()
+        {
+            //TODO: need another mechanizm to identify search layer (we can rename existing layer)
+
+            IMapFeatureLayer layer = null;
+            foreach (var lay in _mapArgs.Map.Layers)
+            {
+                if (lay.LegendText.ToLower() == SEARCH_RESULT_LAYER_NAME.ToLower())
+                {
+                    layer = lay as IMapFeatureLayer;
+                    break;
+                }
+            }
+            return layer;
+        }
 
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
@@ -2212,15 +2220,16 @@ namespace HydroDesktop.Search
         private void ShowSearchResults(IFeatureSet fs)
         {
             //assign projection
-            //fs.Projection = _mapArgs.Map.Projection;
+            //fs.Proje2ction = _mapArgs.Map.Projection;
 
             //remove the 'Data Series' layer
             RemoveDataSeriesLayer();
 
             //try to save the search result layer and re-add it
             string hdProjectPath = Settings.Instance.CurrentProjectDirectory;
-           
-            string filename =Path.Combine( hdProjectPath, HydroDesktop.Search.Properties.Settings.Default.SearchResultName);
+
+            string filename = Path.Combine(hdProjectPath,
+                                           HydroDesktop.Search.Properties.Settings.Default.SearchResultName);
             fs.Filename = filename;
             fs.Save();
             fs = null;
@@ -2235,7 +2244,7 @@ namespace HydroDesktop.Search
 
             //assign the projection again
             fs.Reproject(_mapArgs.Map.Projection);
-           
+
             _mapArgs.Map.Layers.Add(laySearchResult);
             searchDataGridView1.SetDataSource(laySearchResult);
 
@@ -2247,6 +2256,12 @@ namespace HydroDesktop.Search
 
             // Set up labels in search results layer
             SetUpLabeling(laySearchResult);
+
+            if (searchInformer == null)
+            {
+                searchInformer = new SearchInformer();
+            }
+            searchInformer.Start(mapMain, laySearchResult);
         }
 
         private void SetUpLabeling(IFeatureLayer layer)
@@ -2273,6 +2288,8 @@ namespace HydroDesktop.Search
                                           symb, "Category Default");
             _mapArgs.Map.Refresh();
         }
+
+
 
         //private void ZoomToLayerEx(IFeatureSet fs)
         //{
