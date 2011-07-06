@@ -38,7 +38,3 @@ using DotSpatial.Controls;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-// It is necessary to set the PluginAssembly attribute so that the assembly is
-// properly recognized by HydroDesktop as a plugin
-[assembly: PluginAssembly]
