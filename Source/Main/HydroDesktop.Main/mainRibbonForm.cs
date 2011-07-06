@@ -23,6 +23,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Help;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace HydroDesktop.Main
 {
@@ -76,6 +77,7 @@ namespace HydroDesktop.Main
         private string _projectFileName = null;
         private ProjectChangeTracker _projectManager = null;
 
+        private DockPanel dockManager = new WeifenLuo.WinFormsUI.Docking.DockPanel();
         #endregion Variable
 
         #region Constructor
@@ -98,6 +100,18 @@ namespace HydroDesktop.Main
             this.FormClosing += new FormClosingEventHandler(mainRibbonForm_FormClosing);
 
             this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
+
+            // setup docking...
+            dockManager.Parent = this;
+            this.applicationManager1.DockManager = new DockingManager(dockManager);
+
+            // display panelContainer front and center
+            panelContainer.Dock = DockStyle.Fill;
+
+            DockContent content = new DockContent();
+            content.ShowHint = DockState.Document;
+            content.Controls.Add(panelContainer);
+            content.Show(dockManager);
 
             #region initialize the help menu
 
@@ -1711,7 +1725,7 @@ namespace HydroDesktop.Main
 
         private void tabSearch_ActiveChanged(object sender, EventArgs e)
         {
-            if (tabHome.Active == true)
+            if (tabHome.Active == true && tabContainer.TabPages.Count > 0)
             {
                 tabContainer.SelectedTab = tabContainer.TabPages[0];
                 //mwStatusStrip1.Visible = true;
