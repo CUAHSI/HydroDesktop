@@ -99,6 +99,7 @@ namespace HydroDesktop.Main
             this.SizeChanged += new EventHandler(mainRibbonForm_SizeChanged);
             this.FormClosing += new FormClosingEventHandler(mainRibbonForm_FormClosing);
 
+            this.ribbonControl.Tabs[0].Tag = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
             this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
 
             // setup docking...
