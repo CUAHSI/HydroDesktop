@@ -10,11 +10,11 @@ using DotSpatial.Controls;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EPADelineation")]
+[assembly: AssemblyTitle("TRMM Precipitation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EPADelineation")]
+[assembly: AssemblyProduct("TRMM Precipitation")]
 [assembly: AssemblyCopyright("Copyright ©  2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -39,8 +39,3 @@ using DotSpatial.Controls;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-// It is necessary to set the PluginAssembly attribute so that the assembly is
-// properly recognized by HydroDesktop as a plugin
-[assembly: PluginAssembly]
-
