@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using HydroDesktop.Interfaces;
 using HydroDesktop.Search;
 using Moq;
 using NUnit.Framework;
-using System.Windows.Forms;
-using HydroDesktop.Interfaces;
 
 namespace SearchUnitTests
 {
-
-
     [TestFixture()]
     public class SearchWithFailoverTest
     {
@@ -20,7 +18,7 @@ namespace SearchUnitTests
 
         private DoWorkEventArgs workEventsWorks;
         private DoWorkEventArgs workEventsFails;
-        private DoWorkEventArgs workEventsFailWork;
+        //private DoWorkEventArgs workEventsFailWork;
 
         private Mock<BackgroundWorker> backgroundWorker;
 
@@ -28,6 +26,7 @@ namespace SearchUnitTests
         private List<int> serviceIds;
 
         private BackgroundSearchWithFailover _search;
+
         [SetUp]
         public void setup()
         {
@@ -38,7 +37,6 @@ namespace SearchUnitTests
 
             keywords = new List<string> { "aa" };
             serviceIds = new List<int> { 1 };
-
         }
 
         [Test()]
@@ -52,18 +50,16 @@ namespace SearchUnitTests
             SearchCriteria worksCriteria = new SearchCriteria
                                                {
                                                    areaParameter =
-                                                       new SearchCriteria.AreaRectangle
-                                                           {xMax = 1, xMin = 1, yMax = 1, yMin = 1},
+                                                       new SearchCriteria.AreaRectangle { xMax = 1, xMin = 1, yMax = 1, yMin = 1 },
                                                    BoundinBoxSearch = true,
                                                    hisCentralURL = "http://example.com",
                                                    startDate = DateTime.Now.AddDays(-1),
                                                    endDate = DateTime.Now
                                                };
-        
 
-        worksCriteria.keywords.AddRange(keywords);
-                worksCriteria.serviceIDs.AddRange(serviceIds);
-            
+            worksCriteria.keywords.AddRange(keywords);
+            worksCriteria.serviceIDs.AddRange(serviceIds);
+
             workEventsWorks = new DoWorkEventArgs(worksCriteria);
 
             _search = new BackgroundSearchWithFailover();
@@ -72,7 +68,6 @@ namespace SearchUnitTests
             _search.HISCentralSearchWithFailover(workEventsWorks,
                urls,
                 backgroundWorker.Object);
-
         }
 
         [Test()]
@@ -94,10 +89,11 @@ namespace SearchUnitTests
                 BoundinBoxSearch = true,
                 hisCentralURL = "http://example.com",
                 startDate = DateTime.Now.AddDays(-1),
-                endDate = DateTime.Now};
-                failsCriteria.keywords.AddRange(keywords);
+                endDate = DateTime.Now
+            };
+            failsCriteria.keywords.AddRange(keywords);
             failsCriteria.serviceIDs.AddRange(serviceIds);
-            
+
             workEventsFails = new DoWorkEventArgs(failsCriteria);
             _search = new BackgroundSearchWithFailover();
             _search.Searcher = HisCentralSearcher.Object;
@@ -107,11 +103,10 @@ namespace SearchUnitTests
                     _search.HISCentralSearchWithFailover(workEventsFails,
                          new List<string> { "http://example.com" },
                         backgroundWorker.Object);
-
                 }
                     );
 
-            /* The method is void, so there is no way to set a 
+            /* The method is void, so there is no way to set a
          * .Return(void).Callback(throw Exception)
          * Tried .Callback(c => {if (counter >0) { return new mock<>.setup().Throws() }
          * else {return new mock.setup() }
@@ -127,8 +122,6 @@ namespace SearchUnitTests
             //                                                           It.IsAny<int[]>(),
             //                                                           It.IsAny<BackgroundWorker>(),
             //                                                           It.IsAny<DoWorkEventArgs>()));
-
-
 
             //    SearchCriteria failWorksCriteria = new SearchCriteria
             //    {
