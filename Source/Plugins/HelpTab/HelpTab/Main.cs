@@ -99,7 +99,7 @@ namespace HelpTab
 
             // Initialize the Ribbon controls in the "Help" ribbon tab
             const string HelpTabKey = "kHelp";
-            args.AppManager.HeaderControl.Add(new RootItem(HelpTabKey, _helpTabName));
+            args.AppManager.HeaderControl.Add(new RootItem(HelpTabKey, _helpTabName) { SortOrder = 200 });
 
             // no such feature, presently.
             //helpPanel.Image = Resources.help_32x32;
@@ -166,8 +166,6 @@ namespace HelpTab
             aboutButton.SimpleToolTip = "Open the HydroDesktop About dialog.";
             aboutButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(aboutButton);
-
-            // todo: To ensure, that HelpTab is the last tab
         }
 
 
