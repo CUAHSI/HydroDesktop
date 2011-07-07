@@ -23,15 +23,17 @@ namespace HydroDesktop.Main
 
         public void Add(string key, System.Windows.Forms.Control panel, System.Windows.Forms.DockStyle dockStyle)
         {
-            panel.Dock = DockStyle.Fill;
+            // make an attempt to start the pane off at the right width.
+            if (dockStyle == DockStyle.Right)
+                dockManager.DockRightPortion = (double)panel.Width / dockManager.Width;
 
             DockContent content = new DockContent();
             content.ShowHint = ConvertToDockState(dockStyle);
             content.Controls.Add(panel);
-            content.Show(dockManager);
 
+            content.Show(dockManager);
         }
-        
+
         public void Remove(string key)
         {
             //todo:
@@ -59,6 +61,6 @@ namespace HydroDesktop.Main
             }
 
         }
-        
+
     }
 }
