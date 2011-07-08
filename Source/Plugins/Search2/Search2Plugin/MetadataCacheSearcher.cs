@@ -61,6 +61,16 @@ namespace HydroDesktop.Search
         }
 
         /// <summary>
+        /// Get web service registered in the metadata cache database
+        /// </summary>
+        /// <param name="serviceURL">Service Url</param>
+        /// <returns>Web service</returns>
+        public DataServiceInfo GetWebServiceByServiceURL(string serviceURL)
+        {
+            return _db.GetServiceByServiceUrl(serviceURL);
+        }
+
+        /// <summary>
         /// Gets all data series within the geographic bounding box that match the
         /// specified criteria
         /// </summary>

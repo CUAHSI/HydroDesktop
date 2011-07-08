@@ -119,7 +119,19 @@ namespace HydroDesktop.Database
             return services;
 		}
 
-		#endregion
+        /// <summary>
+        /// Get data service by serviceUrl
+        /// </summary>
+        /// <param name="serviceURL">ServiceUrl</param>
+        /// <returns>Data service or null (if not found)</returns>
+        public DataServiceInfo GetServiceByServiceUrl(string serviceURL)
+        {
+            var sql = string.Format("SELECT * FROM DataServices where ServiceID = '{0}'", serviceURL);
+            var tbl = _db.LoadTable("services", sql);
+            return tbl.Rows.Count == 1 ? ServiceFromDataRow(tbl.Rows[0]) : null;
+        }
+
+	    #endregion
 
 		public void GetSitesInBox ( double xMin, double xMax, double yMin, double yMax )
 		{
