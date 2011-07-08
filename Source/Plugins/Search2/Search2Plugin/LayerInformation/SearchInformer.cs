@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 
@@ -11,6 +10,13 @@ namespace HydroDesktop.Search.LayerInformation
     {
         private Map _map;
         private IMapFeatureLayer _layer;
+        private CustomToolTip _toolTip;
+        private readonly MetadataCacheSearcher metaDataSearcher = new MetadataCacheSearcher();
+
+        private CustomToolTip ToolTip
+        {
+            get { return _toolTip ?? (_toolTip = new CustomToolTip()); }
+        }
 
         public void Stop()
         {
@@ -35,29 +41,44 @@ namespace HydroDesktop.Search.LayerInformation
             _map.Layers.LayerRemoved += Layers_LayerRemoved;
         }
 
+        private void HideToolTip()
+        {
+            if (ToolTip.IsVisible)
+            {
+                ToolTip.Hide(_map);
+            }
+        }
+
         void _map_GeoMouseMove(object sender, GeoMouseArgs e)
         {
-            if (!_layer.IsVisible) return;
+            if (!_layer.IsVisible)
+            {
+                HideToolTip();
+                return;
+            }
 
             var rtol = new Rectangle(e.X - 8, e.Y - 8, 0x10, 0x10);
             var tolerant = e.Map.PixelToProj(rtol);
 
             var pInfo = Identify(_layer, tolerant);
-            if (pInfo == null) return;
-            var info = pInfo.ToString();
-            if (string.IsNullOrEmpty(info)) return;
-
-            var toolTip = new ToolTip
+            if (pInfo == null)
             {
-                IsBalloon = true,
-                UseAnimation = false,
-                ShowAlways = false,
-            };
+                HideToolTip();
+                return;
+            }
+            var info = pInfo.ToString();
+            if (string.IsNullOrEmpty(info))
+            {
+                HideToolTip();
+                return;
+            }
 
-            toolTip.Show(info, _map, e.Location, 1000);
+            if (ToolTip.IsVisible && info == ToolTip.GetToolTip(_map)) return;
+            
+            ToolTip.Show(info, _map, e.Location);
         }
-
-        private static PointInfo Identify(IMapFeatureLayer layer, Extent tolerant)
+     
+        private PointInfo Identify(IMapFeatureLayer layer, Extent tolerant)
         {
             Debug.Assert(layer != null);
 
@@ -85,6 +106,13 @@ namespace HydroDesktop.Search.LayerInformation
                         case "ValueCount":
                             pInfo.ValueCount = getColumnValue(fld.ColumnName);
                             break;
+                        case "ServiceURL":
+                            var webService = metaDataSearcher.GetWebServiceByServiceURL(getColumnValue(fld.ColumnName));
+                            if (webService != null)
+                            {
+                                pInfo.ServiceDesciptionUrl = webService.DescriptionURL;
+                            }
+                            break;
                     }
                 }
                 return pInfo;
@@ -108,14 +136,17 @@ namespace HydroDesktop.Search.LayerInformation
             public string DataSource { private get; set; }
             public string SiteName { private get; set; }
             public string ValueCount { private get; set; }
+            public string ServiceDesciptionUrl { private get; set; }
 
             public override string ToString()
             {
-                return (
-                           DataSource + Environment.NewLine +
-                           SiteName + Environment.NewLine +
-                           ValueCount
-                       ).Trim();
+                const string unknown = "Unknown";
+                return string.Format("{1}{0}{2}{0}{3}{0}{4}",
+                                     Environment.NewLine,
+                                     string.IsNullOrWhiteSpace(DataSource) ? unknown + "DataSource" : DataSource,
+                                     string.IsNullOrWhiteSpace(SiteName) ? unknown + "SiteName" : SiteName,
+                                     string.IsNullOrWhiteSpace(ValueCount) ? unknown + " ValueCount" : ValueCount + " values",
+                                     string.IsNullOrWhiteSpace(ServiceDesciptionUrl) ? unknown + " ServiceURL" : ServiceDesciptionUrl);
             }
         }
 
