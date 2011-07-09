@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
@@ -38,10 +36,6 @@ namespace HydroDesktop.Search
 
         //the main MapWindow map
         private Map mapMain = null;
-
-        //the name of the 'Search Results' map layer
-        // This can be internationalized. It's a reference to a resource
-        readonly string SEARCH_RESULT_LAYER_NAME = Resources.SEARCH_RESULT_LAYER_NAME;
 
         // this handles the list of webservices
         private WebServicesList _webServicesList;
@@ -1681,7 +1675,7 @@ namespace HydroDesktop.Search
             }
 
             //get the HIS Central URL
-            searchCritria.hisCentralURL = GetHISCentralURL();
+            searchCritria.hisCentralURL = Global.GetHISCentralURL();
 
             //get the selected polygons from the active layer or the rectangle
             GetSearchArea(searchCritria);
@@ -1760,12 +1754,6 @@ namespace HydroDesktop.Search
             {
                 return false;
             }
-        }
-
-        //get the URL of HIS Central from the radio button
-        string GetHISCentralURL()
-        {
-            return Settings.Instance.SelectedHISCentralURL;
         }
 
         #endregion TabControl button management
@@ -2204,7 +2192,7 @@ namespace HydroDesktop.Search
             IMapFeatureLayer layer = null;
             foreach (var lay in _mapArgs.Map.Layers)
             {
-                if (lay.LegendText.ToLower() == SEARCH_RESULT_LAYER_NAME.ToLower())
+                if (lay.LegendText.ToLower() == Global.SEARCH_RESULT_LAYER_NAME.ToLower())
                 {
                     layer = lay as IMapFeatureLayer;
                     break;
@@ -2216,12 +2204,8 @@ namespace HydroDesktop.Search
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
         /// </summary>
-        /// <param name="criteria"></param>
         private void ShowSearchResults(IFeatureSet fs)
         {
-            //assign projection
-            //fs.Proje2ction = _mapArgs.Map.Projection;
-
             //remove the 'Data Series' layer
             RemoveDataSeriesLayer();
 
@@ -2232,15 +2216,10 @@ namespace HydroDesktop.Search
                                            HydroDesktop.Search.Properties.Settings.Default.SearchResultName);
             fs.Filename = filename;
             fs.Save();
-            fs = null;
-
             fs = FeatureSet.OpenFile(filename);
 
-            //create the new 'Data Series' layer and add it to the map
-            string hisCentralURL = GetHISCentralURL();
-            var creator = new HydroDesktop.Controls.Themes.SymbologyCreator(hisCentralURL);
-            IMapPointLayer laySearchResult = creator.CreateSearchResultLayer(fs);
-            laySearchResult.LegendText = SEARCH_RESULT_LAYER_NAME;
+            var searchLayerCreator = new SearchLayerCreator(_mapArgs.Map, fs);
+            var laySearchResult = searchLayerCreator.Create();
 
             //assign the projection again
             fs.Reproject(_mapArgs.Map.Projection);
@@ -2252,56 +2231,15 @@ namespace HydroDesktop.Search
             searchDataGridView1.ClearSelection();
 
             //set the search result layer as selected
-            SelectLayerInLegend(SEARCH_RESULT_LAYER_NAME);
-
-            // Set up labels in search results layer
-            SetUpLabeling(laySearchResult);
-
+            SelectLayerInLegend(Global.SEARCH_RESULT_LAYER_NAME);
+            
+            // Starting information bubble engine
             if (searchInformer == null)
             {
                 searchInformer = new SearchInformer();
             }
             searchInformer.Start(mapMain, laySearchResult);
         }
-
-        private void SetUpLabeling(IFeatureLayer layer)
-        {
-            Debug.Assert(layer != null);
-
-            const string attributeName = "SiteName";
-
-            var symb = new LabelSymbolizer
-                           {
-                               FontColor = Color.Black, 
-                               FontSize = 8,
-                               FontFamily = "Arial Unicode MS",
-                               PreventCollisions = true,
-                               HaloEnabled = true,
-                               HaloColor = Color.White,
-                               Orientation = ContentAlignment.MiddleRight,
-                               OffsetX = 0.0f,
-                               OffsetY = 0.0f,
-                           };
-
-            _mapArgs.Map.AddLabels(layer, string.Format("[{0}]", attributeName),
-                                          string.Format("[ValueCount] > {0}", 10),
-                                          symb, "Category Default");
-            _mapArgs.Map.Refresh();
-        }
-
-
-
-        //private void ZoomToLayerEx(IFeatureSet fs)
-        //{
-        //    //zoom slightly out
-        //    Extent ext = fs.Extent;
-        //    double marginX = ext.Width / 10.0;
-        //    double marginY = ext.Height / 10.0;
-        //    Coordinate newMinimum = new Coordinate(ext.MinX - marginX, ext.MinY - marginY);
-        //    Coordinate newMaximum = new Coordinate(ext.MaxX + marginX, ext.MaxY + marginY);
-        //    Extent largerExt = new Extent(newMinimum.X, newMinimum.Y, newMaximum.X, newMaximum.Y);
-        //    _mapArgs.Map.ViewExtents = largerExt;
-        //}
 
         #endregion
 
@@ -2625,14 +2563,7 @@ namespace HydroDesktop.Search
         {
             foreach (IMapLayer lay in _mapArgs.Map.MapFrame.GetAllLayers())
             {
-                if (lay.LegendText == legendText)
-                {
-                    lay.IsSelected = true;
-                }
-                else
-                {
-                    lay.IsSelected = false;
-                }
+                lay.IsSelected = lay.LegendText == legendText;
             }
         }
 
