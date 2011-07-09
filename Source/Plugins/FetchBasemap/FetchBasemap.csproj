@@ -106,6 +106,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Services.settings</DependentUpon>
     </Compile>
+    <Compile Include="ServiceProvider.cs" />
     <Compile Include="Tiling\Tile.cs" />
     <Compile Include="Tiling\TileCache.cs" />
     <Compile Include="Tiling\TileCalculator.cs" />

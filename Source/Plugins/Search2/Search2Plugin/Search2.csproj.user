@@ -11,4 +11,7 @@
     <StartProgram>..\..\..\Binaries\HydroDesktop.exe</StartProgram>
     <StartAction>Program</StartAction>
   </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>C:\dev\DotSpatial\Debug\x86\</ReferencePath>
+  </PropertyGroup>
 </Project>
