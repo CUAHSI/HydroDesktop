@@ -106,8 +106,8 @@ namespace HydroDesktop.Search
             
             //to add the menu with one submenu item
             mnuSearch = new ToolStripMenuItem("Search (V2)");
-            ToolStripMenuItem mnuHISCentral = new ToolStripMenuItem("HIS Central", Resources.OpenSearch);
-            ToolStripMenuItem mnuMetadataCache = new ToolStripMenuItem("Metadata Cache", Resources.OpenSearch_1);
+            var mnuHISCentral = new ToolStripMenuItem("HIS Central", Resources.OpenSearch);
+            var mnuMetadataCache = new ToolStripMenuItem("Metadata Cache", Resources.OpenSearch_1);
             mnuSearch.DropDownItems.Add(mnuHISCentral);
             mnuSearch.DropDownItems.Add(mnuMetadataCache);
 
@@ -330,11 +330,7 @@ namespace HydroDesktop.Search
         void _rbtnAdvancedSettings_Click(object sender, EventArgs e)
         {
             _searchRibbonButton.CloseDropDown();
-            
-            //to set the advanced option
-           AdvancedSettingsDialog dialog = new AdvancedSettingsDialog(ucSearch);
-
-            dialog.ShowDialog();
+           new AdvancedSettingsDialog(ucSearch).ShowDialog();
         }
 
 
