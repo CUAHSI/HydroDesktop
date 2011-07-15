@@ -1,29 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using HydroDesktop.WebServices;
-using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Configuration;
 using System.IO;
 using System.Reflection;
-using System.Xml;
 
 namespace HydroDesktop.Search
 {
     public partial class AdvancedSettingsDialog : Form
     {
 		#region Private Member Variables
-
-		//private readonly string SERVICES_XML_NAME = Properties.Settings.Default.SERVICES_XML_NAME;
+		
 		private static readonly string _ontologyFilename = Properties.Settings.Default.ontologyFilename;
 
-        private SearchControl _searchControl = null;
+        private readonly SearchControl _searchControl;
 
         private const string HISCENTRAL_URL_1 = "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
         private const string HISCENTRAL_URL_2 = "http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx";
@@ -44,13 +35,11 @@ namespace HydroDesktop.Search
             if (url == HISCENTRAL_URL_1)
             {
                 rbHisCentral1.Checked = true;
-                //lblHisCentralURL.Text = url;
                 txtCustomUrl.Enabled = false;
             }
             else if (url == HISCENTRAL_URL_2)
             {
                 rbHisCentral2.Checked = true;
-                //lblHisCentralURL.Text = url;
                 txtCustomUrl.Enabled = false;
             }
             else
@@ -83,7 +72,7 @@ namespace HydroDesktop.Search
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            string hisCentralURL = HISCENTRAL_URL_1;
+            string hisCentralURL;
             
             if (rbHisCentral1.Checked)
             {
@@ -139,7 +128,7 @@ namespace HydroDesktop.Search
 
 
             //refresh the services in search control
-            HISCentralSearcher searcher = new HISCentralSearcher(txtCustomUrl.Text);
+            var searcher = new HISCentralSearcher(txtCustomUrl.Text);
             string webServicesXmlPath = Path.Combine(Settings.Instance.ApplicationDataDirectory, 
                 Properties.Settings.Default.WebServicesFileName);
 
@@ -149,7 +138,7 @@ namespace HydroDesktop.Search
             }
             catch (Exception ex)
             {
-                string error = "Error refreshing web services from HIS Central. Using existing list of web services.";
+                const string error = "Error refreshing web services from HIS Central. Using existing list of web services.";
                 MessageBox.Show(error + " " + ex.Message);
             }
 
@@ -159,9 +148,9 @@ namespace HydroDesktop.Search
             }
         }
 
-        private void btnRefreshKeywords_Click(object sender, EventArgs e)
+        private static void btnRefreshKeywords_Click(object sender, EventArgs e)
         {
-            HISCentralSearcher searcher = new HISCentralSearcher(Settings.Instance.SelectedHISCentralURL);
+            var searcher = new HISCentralSearcher(Settings.Instance.SelectedHISCentralURL);
             string pluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			string xmlFileName = Path.Combine ( pluginPath, _ontologyFilename );
             searcher.GetOntologyTreeXml(xmlFileName);
