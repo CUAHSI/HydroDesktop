@@ -1923,7 +1923,7 @@
         private System.Windows.Forms.Label lblServerName;
         public System.Windows.Forms.Label lblDateValue;
         public System.Windows.Forms.Label lblServerValue;
-        public System.Windows.Forms.Label Label3;
+        private System.Windows.Forms.Label Label3;
         public System.Windows.Forms.DateTimePicker dateTimePickEnd;
         public System.Windows.Forms.DateTimePicker dateTimePickStart;
         private SearchDataGridView searchDataGridView1;

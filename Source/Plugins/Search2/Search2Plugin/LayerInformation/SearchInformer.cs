@@ -8,10 +8,25 @@ namespace HydroDesktop.Search.LayerInformation
 {
     class SearchInformer
     {
+        #region Fields
+
+        private readonly IServiceInfoExtractor _serviceInfoExtractor;
         private Map _map;
         private IMapFeatureLayer _layer;
         private CustomToolTip _toolTip;
-        private readonly MetadataCacheSearcher metaDataSearcher = new MetadataCacheSearcher();
+
+        #endregion
+
+        /// <summary>
+        /// Constuctor of <see cref="SearchInformer"/>
+        /// </summary>
+        /// <param name="serviceInfoExtractor">Instance of IServiceInfoExtractor</param>
+        /// <exception cref="ArgumentNullException">serviceInfoExtractor must be not null.</exception>
+        public SearchInformer(IServiceInfoExtractor serviceInfoExtractor)
+        {
+            if (serviceInfoExtractor == null) throw new ArgumentNullException("serviceInfoExtractor");
+            _serviceInfoExtractor = serviceInfoExtractor;
+        }
 
         private CustomToolTip ToolTip
         {
@@ -107,11 +122,8 @@ namespace HydroDesktop.Search.LayerInformation
                             pInfo.ValueCount = getColumnValue(fld.ColumnName);
                             break;
                         case "ServiceURL":
-                            var webService = metaDataSearcher.GetWebServiceByServiceURL(getColumnValue(fld.ColumnName));
-                            if (webService != null)
-                            {
-                                pInfo.ServiceDesciptionUrl = webService.DescriptionURL;
-                            }
+                            pInfo.ServiceDesciptionUrl =
+                                _serviceInfoExtractor.GetServiceDesciptionUrlByServiceUrl(getColumnValue(fld.ColumnName));
                             break;
                     }
                 }

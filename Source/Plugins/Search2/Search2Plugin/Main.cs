@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 using DotSpatial.Data;
 using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
-using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using HydroDesktop.Interfaces;
-using HydroDesktop.Configuration;
+using HydroDesktop.Search.Extensions;
 
 
 namespace HydroDesktop.Search
@@ -192,7 +189,7 @@ namespace HydroDesktop.Search
         {
             spcSearch.Panel2Collapsed = false;
             //ucSearch.MainImage = Resources.OpenSearch;
-            ucSearch.SearchMode = "HIS Central";
+            ucSearch.SearchMode = SearchMode.HISCentral;
             RefreshTheMap();
         }
 
@@ -200,8 +197,7 @@ namespace HydroDesktop.Search
         void mnuMetadataCache_Click(object sender, EventArgs e)
         {
             spcSearch.Panel2Collapsed = false;
-            //ucSearch.MainImage = Resources.OpenSearch_1;
-            ucSearch.SearchMode = "Local Metadata Cache";
+            ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
             RefreshTheMap();
         }
 
@@ -211,8 +207,7 @@ namespace HydroDesktop.Search
             ReportProgress(70, "Loading Search Plugin");
             
             spcSearch.Panel2Collapsed = false;
-            //ucSearch.MainImage = Resources.OpenSearch;
-            ucSearch.SearchMode = "HIS Central";
+            ucSearch.SearchMode = SearchMode.HISCentral;
             RefreshTheMap();
         }
 
@@ -309,8 +304,8 @@ namespace HydroDesktop.Search
         {
             spcSearch.Panel2Collapsed = false;
             //ucSearch.MainImage = Resources.OpenSearch_1;
-            ucSearch.SearchMode = "Local Metadata Cache";
-            ucSearch.lblServerValue.Text = ucSearch.Label3.Text;
+            ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
+            ucSearch.lblServerValue.Text = ucSearch.SearchMode.Description();
             //moved to search control load
             ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
             ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
@@ -322,8 +317,8 @@ namespace HydroDesktop.Search
         {
             spcSearch.Panel2Collapsed = false;
             //ucSearch.MainImage = Resources.OpenSearch;
-            ucSearch.SearchMode = "HIS Central";
-            ucSearch.lblServerValue.Text = ucSearch.Label3.Text;
+            ucSearch.SearchMode = SearchMode.HISCentral;
+            ucSearch.lblServerValue.Text = ucSearch.SearchMode.Description();
             //moved to search control load
             ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
             ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
@@ -376,5 +371,15 @@ namespace HydroDesktop.Search
 
 
         #endregion
+    }
+
+    public enum SearchMode
+    {
+        //TODO: implement localizable attribute if need
+
+        [Description("HIS Central")]
+        HISCentral,
+        [Description("Local Metadata Cache")]
+        LocalMetaDataCache
     }
 }

@@ -143,10 +143,14 @@
     <Compile Include="Download\Exceptions\NoSeriesFromXmlException.cs" />
     <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
     <Compile Include="Download\Exceptions\TooMuchSeriesFromXmlException.cs" />
+    <Compile Include="Extensions\EnumHelper.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="LayerInformation\CustomToolTip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="LayerInformation\HISCentralServiceInfoExtractor.cs" />
+    <Compile Include="LayerInformation\IServiceInfoExtractor.cs" />
+    <Compile Include="LayerInformation\LocalMetaDataCacheServiceInfoExtractor.cs" />
     <Compile Include="LayerInformation\SearchInformer.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />

@@ -17,6 +17,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Search.Extensions;
 using HydroDesktop.Search.LayerInformation;
 using log4net;
 using HydroDesktop.Search.Download;
@@ -75,27 +76,27 @@ namespace HydroDesktop.Search
             _rectangleDrawing = null;
 
             //Layer added event that helps capturing the polygon layers
-            _mapArgs.Map.MapFrame.LayerAdded += new EventHandler<DotSpatial.Symbology.LayerEventArgs>(MapFrame_LayerAdded);
+            _mapArgs.Map.MapFrame.LayerAdded += MapFrame_LayerAdded;
             //Layer removed event
-            _mapArgs.Map.MapFrame.LayerRemoved += new EventHandler<DotSpatial.Symbology.LayerEventArgs>(MapFrame_LayerRemoved);
+            _mapArgs.Map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
 
             //listBox4.MouseUp += new MouseEventHandler(listBox4_MouseUp);
-            dgvSearch.Click += new EventHandler(dataGridView1_Click);
-            dgvSearch.SelectionChanged += new EventHandler(dataGridView1_SelectionChanged);
+            dgvSearch.Click += dataGridView1_Click;
+            dgvSearch.SelectionChanged += dataGridView1_SelectionChanged;
 
-            treeViewWebServices.MouseUp += new MouseEventHandler(treeView1_MouseUp);
+            treeViewWebServices.MouseUp += treeView1_MouseUp;
 
             // mouse up on list should ensure radiobutton existing themes get selected
-            lstThemes.MouseUp += new MouseEventHandler(lstThemes_MouseUp);
+            lstThemes.MouseUp += lstThemes_MouseUp;
 
             //project opening event to ensure refreshing of layers
-            _mapArgs.AppManager.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
+            _mapArgs.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
         
             //set the default search mode
-            SearchMode = Resources.SearchMode_HISCentral;
+            SearchMode = SearchMode.HISCentral;
 
             //set the series selected event
-            searchDataGridView1.SelectionChanged += new EventHandler(searchDataGridView1_SelectionChanged);
+            searchDataGridView1.SelectionChanged += searchDataGridView1_SelectionChanged;
 
 
             _downLoadManager = new DownloadManager {Log = log};
@@ -105,6 +106,7 @@ namespace HydroDesktop.Search
 
 
         #region Properties
+
         /// <summary>
         /// The main image that is shown in the top-left corner
         /// </summary>
@@ -115,43 +117,33 @@ namespace HydroDesktop.Search
         //    set { PictureBox2.Image = value; }
         //}
 
-        /// <summary>
-        /// The title text ("HIS Central" or "Metadata Cache")
-        /// </summary>
-        public string SearchMode
+
+        private SearchMode _searchMode;
+        public SearchMode SearchMode
         {
-            get { return this.Label3.Text; }
-            set 
+            get { return _searchMode; }
+            set
             {
-                string oldSearchMode = Label3.Text;
-                
-                Label3.Text = value;
+                var oldSearchMode = Label3.Text;
+                Label3.Text = value.Description();
+                _searchMode = value;
+                if (oldSearchMode == Label3.Text)
+                    return;
  
                 //if search mode is set to metadata cache -
                 //change the list of web services and keywords
                 //accordingly
-                if (value == Resources.SearchMode_MetadataCache && value != oldSearchMode)
+                if (value == SearchMode.LocalMetaDataCache)
                 {
                     FillWebServicesFromDB();
                     FillKeywordsFromDB();
                     rbList.PerformClick();
                     cboShowWebServicesPanel.Checked = true;
-                    //button2_Click(null, null);
                 }
 
-                else if (value == Resources.SearchMode_HISCentral && value != oldSearchMode)
+                else if (value == SearchMode.HISCentral)
                 {
                     button10_Click(null, null);
-                    //try
-                    //{
-                    //    treeviewOntology.Nodes.Clear();
-                    //    var tmpxmldoc = HdSearchOntologyHelper.ReadOntologyXmlFile();
-                    //    FillTree(tmpxmldoc.DocumentElement, treeviewOntology.Nodes);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    tboTypeKeyword.Text = ex.Message;
-                    //}
                 }
             }
         }
@@ -771,7 +763,7 @@ namespace HydroDesktop.Search
                     lblKeywordRelation.Text = tnode.FullPath;
                     
                     //special case for 'hydrosphere when search mode is metadata cache
-                    if (SearchMode == Properties.Settings.Default.SearchMethod_MetadataCache)
+                    if (SearchMode == SearchMode.LocalMetaDataCache)
                     {
                         if (strNode.ToLower() == "hydrosphere") return;
                     }
@@ -788,7 +780,7 @@ namespace HydroDesktop.Search
             string strNode = lbKeywords.Items[keyIndex].ToString();
             //check for synonym
             //only check for synonym when Search mode is HIS Central
-            if (SearchMode == Resources.SearchMode_HISCentral)
+            if (SearchMode == SearchMode.HISCentral)
             {
                 //doc.Load(Application.StartupPath + "\\Synonyms.xml");
                 var doc = HdSearchOntologyHelper.ReadOntologySymbologyXmlFile();
@@ -815,7 +807,7 @@ namespace HydroDesktop.Search
         //click btnAddKeyword
         private void button12_Click(object sender, EventArgs e)
         {
-            if (SearchMode == Resources.SearchMode_HISCentral)
+            if (SearchMode == SearchMode.HISCentral)
             {
 
                 if (lbSelectedKeywords.Items.Count < 1)
@@ -901,7 +893,7 @@ namespace HydroDesktop.Search
                     }
                 }
             }
-            else if (SearchMode == "Local Metadata Cache")
+            else if (SearchMode == SearchMode.LocalMetaDataCache)
             {
                 if (lbKeywords.SelectedIndex == -1)
                 {
@@ -1031,24 +1023,16 @@ namespace HydroDesktop.Search
                 lblWebServValue.Text = "";
                 return;
             }
-            else
-                for (int j = 0; j < lbSelectedWebServices.Items.Count; j++)
+            for (int j = 0; j < lbSelectedWebServices.Items.Count; j++)
+            {
+                if (j == 0)
                 {
-                    if (j == 0)
-                    {
-                        sValue = lbSelectedWebServices.Items[j].ToString();
-                    }
-                    else
-                        sValue = sValue + " ::: " + lbSelectedWebServices.Items[j].ToString();
+                    sValue = lbSelectedWebServices.Items[j].ToString();
                 }
-            if (sCount == treeViewWebServices.Nodes.Count)
-            {
-                lblWebServValue.Text = "All Webservices selected";
+                else
+                    sValue = sValue + " ::: " + lbSelectedWebServices.Items[j].ToString();
             }
-            else
-            {
-                lblWebServValue.Text = sValue;
-            }
+            lblWebServValue.Text = sCount == treeViewWebServices.Nodes.Count ? "All Webservices selected" : sValue;
         }
 
 
@@ -1091,20 +1075,18 @@ namespace HydroDesktop.Search
         {
             try
             {
+                treeViewWebServices.Nodes.Clear();
+
                 //different method for HIS Central vs. Metadata Cache
-                if (SearchMode == Resources.SearchMode_HISCentral)
+
+                if (SearchMode == SearchMode.HISCentral)
                 {
-
-                    treeViewWebServices.Nodes.Clear();
-                    XmlDocument getWebServ = _webServicesList.GetWebServicesList(forceRefresh, showMessage);
-                    //_webServicesList.UpdateServiceIcons();
-
+                    var getWebServ = _webServicesList.GetWebServicesList(forceRefresh, showMessage);
                     FillWebTree(getWebServ.DocumentElement, treeViewWebServices.Nodes);
                     treeViewWebServices.Sort();
                 }
                 else
                 {
-                    treeViewWebServices.Nodes.Clear();
                     FillWebServicesFromDB();
                 }
 
@@ -1116,56 +1098,53 @@ namespace HydroDesktop.Search
             }
         }
 
+
+
         //to check all web services (default)    
         private void CheckAllWebServices()
-        {                      
-            if (treeViewWebServices.Nodes.Count > 0)
+        {
+            if (treeViewWebServices.Nodes.Count <= 0) return;
+            foreach (TreeNode tnode in treeViewWebServices.Nodes)
             {
-                foreach (TreeNode tnode in treeViewWebServices.Nodes)
-                {
-                    tnode.Checked = true;
-                }
-                fillWebservicesXml();
+                tnode.Checked = true;
             }
+            fillWebservicesXml();
         }
 
-        private void FillWebTree(XmlNode node, TreeNodeCollection parentNode)
+        private static void FillWebTree(XmlNode node, TreeNodeCollection parentNode)
         {
             foreach (XmlNode childNode1 in node.ChildNodes)
             {
-                if (childNode1.Name == "ServiceInfo")
+                if (childNode1.Name != "ServiceInfo") continue;
+                var treeNode1 = new TreeNode();
+                foreach (XmlNode childNode2 in childNode1.ChildNodes)
                 {
-
-                    TreeNode treeNode1 = new TreeNode();
-                    foreach (XmlNode childNode2 in childNode1.ChildNodes)
+                    if (childNode2.Name == "Title")
                     {
-                        if (childNode2.Name == "Title")
-                        {
-                            treeNode1.Text = childNode2.InnerText;
-                        }
-                        else if (childNode2.Name == "ServiceID")
-                        {
-                            //set the name of the tree node to the ServiceID
-                            treeNode1.Name = childNode2.InnerText;
-
-                            TreeNode treeNode2 = new TreeNode(childNode2.Name);
-                            treeNode1.Nodes.Add(treeNode2);
-
-                            TreeNode treeNode3 = new TreeNode(childNode2.InnerText);
-                            treeNode2.Nodes.Add(treeNode3);
-                        }
-                        else
-                        {
-                            TreeNode treeNode2 = new TreeNode(childNode2.Name);
-                            treeNode1.Nodes.Add(treeNode2);
-
-                            TreeNode treeNode3 = new TreeNode(childNode2.InnerText);
-                            treeNode2.Nodes.Add(treeNode3);
-                        }
+                        treeNode1.Text = childNode2.InnerText;
                     }
-                    //add the 'Web Service' tree node to tree view
-                    parentNode.Add(treeNode1);
+                    else if (childNode2.Name == "ServiceID")
+                    {
+                        //set the name of the tree node to the ServiceID
+                        treeNode1.Name = childNode2.InnerText;
+
+                        var treeNode2 = new TreeNode(childNode2.Name);
+                        treeNode1.Nodes.Add(treeNode2);
+
+                        var treeNode3 = new TreeNode(childNode2.InnerText);
+                        treeNode2.Nodes.Add(treeNode3);
+                    }
+                    else
+                    {
+                        var treeNode2 = new TreeNode(childNode2.Name) { Name = childNode2.Name };
+                        treeNode1.Nodes.Add(treeNode2);
+
+                        var treeNode3 = new TreeNode(childNode2.InnerText){Name = "Value"};
+                        treeNode2.Nodes.Add(treeNode3);
+                    }
                 }
+                //add the 'Web Service' tree node to tree view
+                parentNode.Add(treeNode1);
             }
         }
 
@@ -1639,7 +1618,7 @@ namespace HydroDesktop.Search
             //string ontologyFilePath = GetOntologyFilePath ();
             //XmlDocument ontologyXml = new XmlDocument ();
             //ontologyXml.Load ( ontologyFilePath );
-            if (SearchMode == Properties.Settings.Default.SearchMethod_HISCentral)
+            if (SearchMode == SearchMode.HISCentral)
             {
                 var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
                 var ontologyHelper = new HdSearchOntologyHelper();
@@ -1794,7 +1773,7 @@ namespace HydroDesktop.Search
             try
             {
                 //separate search method is used for HIS Central and for Metadata Cache
-                if (parameters.SearchMethod == Properties.Settings.Default.SearchMethod_HISCentral)
+                if (parameters.SearchMethod == SearchMode.HISCentral)
                 {
                     searcher.HISCentralSearchWithFailover(e, Settings.Instance.HISCentralURLList, bgWorker);
                 }
@@ -2236,7 +2215,19 @@ namespace HydroDesktop.Search
             // Starting information bubble engine
             if (searchInformer == null)
             {
-                searchInformer = new SearchInformer();
+                IServiceInfoExtractor extractor;
+                switch(SearchMode)
+                {
+                    case SearchMode.HISCentral:
+                        extractor = new HISCentralServiceInfoExtractor(treeViewWebServices.Nodes);
+                        break;
+                    case SearchMode.LocalMetaDataCache:
+                        extractor = new LocalMetaDataCacheServiceInfoExtractor();
+                        break;
+                    default:
+                        goto case SearchMode.HISCentral;
+                }
+                searchInformer = new SearchInformer(extractor);
             }
             searchInformer.Start(mapMain, laySearchResult);
         }
