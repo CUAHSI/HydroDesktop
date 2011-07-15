@@ -51,7 +51,6 @@
             this.GroupBox1 = new System.Windows.Forms.GroupBox();
             this.label47 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.dgvSearch = new SearchDataGridView();
             this.label5 = new System.Windows.Forms.Label();
             this.cboActiveLayer = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -71,7 +70,6 @@
             this.btnWebServSelectNone = new System.Windows.Forms.Button();
             this.btnWebserSelectAll = new System.Windows.Forms.Button();
             this.lbSelectedWebServices = new System.Windows.Forms.ListBox();
-            this.lblSelWebservices = new System.Windows.Forms.Label();
             this.treeViewWebServices = new System.Windows.Forms.TreeView();
             this.cboShowWebServicesPanel = new System.Windows.Forms.CheckBox();
             this.label41 = new System.Windows.Forms.Label();
@@ -83,6 +81,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
+            this.PictureBox3 = new System.Windows.Forms.PictureBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.btnRemoveKeyword = new System.Windows.Forms.Button();
             this.btnAddKeyword = new System.Windows.Forms.Button();
@@ -117,10 +116,10 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.progBarSearch2 = new System.Windows.Forms.ProgressBar();
             this.lblSearching = new System.Windows.Forms.Label();
-            this.searchDataGridView1 = new SearchDataGridView();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.radioButton13 = new System.Windows.Forms.RadioButton();
             this.radioButton12 = new System.Windows.Forms.RadioButton();
+            this.PictureBox4 = new System.Windows.Forms.PictureBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupRestoreSearch = new System.Windows.Forms.GroupBox();
             this.lblSelectRestore = new System.Windows.Forms.Label();
@@ -144,6 +143,7 @@
             this.groupSaveSearch = new System.Windows.Forms.GroupBox();
             this.lblSearchName = new System.Windows.Forms.Label();
             this.tboSearchName = new System.Windows.Forms.TextBox();
+            this.PictureBox5 = new System.Windows.Forms.PictureBox();
             this.gbSearchSummary = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.lblServerValue = new System.Windows.Forms.Label();
@@ -161,6 +161,8 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.dgvSearch = new SearchDataGridView();
+            this.searchDataGridView1 = new SearchDataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.spcHor1)).BeginInit();
             this.spcHor1.Panel1.SuspendLayout();
             this.spcHor1.Panel2.SuspendLayout();
@@ -168,11 +170,11 @@
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.GroupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupboxWebservices.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox3)).BeginInit();
             this.tabPage6.SuspendLayout();
             this.groupboxKeywordDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spcKey)).BeginInit();
@@ -182,13 +184,16 @@
             this.tabPage5.SuspendLayout();
             this.groupResults.SuspendLayout();
             this.panelSearch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).BeginInit();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox4)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.groupRestoreSearch.SuspendLayout();
             this.groupPreview.SuspendLayout();
             this.groupSaveSearch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox5)).BeginInit();
             this.gbSearchSummary.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // rbAppend
@@ -242,6 +247,7 @@
             // 
             // btnSelectArea
             // 
+            this.btnSelectArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSelectArea.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSelectArea.BackgroundImage")));
             this.btnSelectArea.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectArea.Location = new System.Drawing.Point(272, 9);
@@ -254,6 +260,7 @@
             // 
             // btnSelectRectangle
             // 
+            this.btnSelectRectangle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSelectRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSelectRectangle.BackgroundImage")));
             this.btnSelectRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectRectangle.Location = new System.Drawing.Point(300, 9);
@@ -326,6 +333,7 @@
             this.spcHor1.Panel1.Controls.Add(this.btnRunSearchMain);
             this.spcHor1.Panel1.Controls.Add(this.checkSummary);
             this.spcHor1.Panel1.Controls.Add(this.tabControl2);
+            this.spcHor1.Panel1.Controls.Add(this.PictureBox5);
             // 
             // spcHor1.Panel2
             // 
@@ -362,9 +370,9 @@
             // 
             // tabControl2
             // 
-            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage6);
@@ -412,9 +420,9 @@
             // 
             // GroupBox1
             // 
-            this.GroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox1.Controls.Add(this.label47);
             this.GroupBox1.Controls.Add(this.label32);
             this.GroupBox1.Controls.Add(this.btnSelectArea);
@@ -452,29 +460,8 @@
             this.label32.Text = "Point1: Coordinates (Lon/Lat)";
             this.label32.Visible = false;
             // 
-            // dgvSearch
-            // 
-            this.dgvSearch.AllowUserToAddRows = false;
-            this.dgvSearch.AllowUserToDeleteRows = false;
-            this.dgvSearch.AllowUserToResizeColumns = false;
-            this.dgvSearch.AllowUserToResizeRows = false;
-            this.dgvSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSearch.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.dgvSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSearch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvSearch.Location = new System.Drawing.Point(159, 49);
-            this.dgvSearch.Name = "dgvSearch";
-            this.dgvSearch.RowHeadersWidth = 25;
-            this.dgvSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSearch.Size = new System.Drawing.Size(161, 237);
-            this.dgvSearch.TabIndex = 20;
-            this.dgvSearch.ZoomToSelected = true;
-            // 
             // label5
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 14);
             this.label5.Name = "label5";
@@ -484,7 +471,8 @@
             // 
             // cboActiveLayer
             // 
-            this.cboActiveLayer.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cboActiveLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cboActiveLayer.FormattingEnabled = true;
             this.cboActiveLayer.Location = new System.Drawing.Point(78, 11);
             this.cboActiveLayer.Name = "cboActiveLayer";
@@ -494,7 +482,6 @@
             // 
             // label15
             // 
-            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(156, 33);
             this.label15.Name = "label15";
@@ -522,8 +509,8 @@
             // 
             // lbFieldsActiveLayer
             // 
-            this.lbFieldsActiveLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbFieldsActiveLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lbFieldsActiveLayer.FormattingEnabled = true;
             this.lbFieldsActiveLayer.Location = new System.Drawing.Point(9, 49);
             this.lbFieldsActiveLayer.Name = "lbFieldsActiveLayer";
@@ -607,6 +594,7 @@
             this.tabPage4.Controls.Add(this.button1);
             this.tabPage4.Controls.Add(this.label4);
             this.tabPage4.Controls.Add(this.button5);
+            this.tabPage4.Controls.Add(this.PictureBox3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -617,15 +605,14 @@
             // 
             // groupboxWebservices
             // 
-            this.groupboxWebservices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupboxWebservices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupboxWebservices.Controls.Add(this.btnRefresh);
             this.groupboxWebservices.Controls.Add(this.lbWebservicesSupport);
             this.groupboxWebservices.Controls.Add(this.btnWebServSelectNone);
             this.groupboxWebservices.Controls.Add(this.btnWebserSelectAll);
             this.groupboxWebservices.Controls.Add(this.lbSelectedWebServices);
-            this.groupboxWebservices.Controls.Add(this.lblSelWebservices);
             this.groupboxWebservices.Controls.Add(this.treeViewWebServices);
             this.groupboxWebservices.Location = new System.Drawing.Point(6, 72);
             this.groupboxWebservices.Name = "groupboxWebservices";
@@ -683,30 +670,21 @@
             this.lbSelectedWebServices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbSelectedWebServices.ForeColor = System.Drawing.Color.Gray;
             this.lbSelectedWebServices.FormattingEnabled = true;
-            this.lbSelectedWebServices.Location = new System.Drawing.Point(7, 152);
+            this.lbSelectedWebServices.Location = new System.Drawing.Point(7, 197);
             this.lbSelectedWebServices.Name = "lbSelectedWebServices";
-            this.lbSelectedWebServices.Size = new System.Drawing.Size(317, 69);
+            this.lbSelectedWebServices.Size = new System.Drawing.Size(118, 17);
             this.lbSelectedWebServices.TabIndex = 42;
-            // 
-            // lblSelWebservices
-            // 
-            this.lblSelWebservices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblSelWebservices.AutoSize = true;
-            this.lblSelWebservices.Location = new System.Drawing.Point(6, 136);
-            this.lblSelWebservices.Name = "lblSelWebservices";
-            this.lblSelWebservices.Size = new System.Drawing.Size(119, 13);
-            this.lblSelWebservices.TabIndex = 43;
-            this.lblSelWebservices.Text = "Selected Web Services";
+            this.lbSelectedWebServices.Visible = false;
             // 
             // treeViewWebServices
             // 
-            this.treeViewWebServices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeViewWebServices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.treeViewWebServices.CheckBoxes = true;
             this.treeViewWebServices.Location = new System.Drawing.Point(8, 48);
             this.treeViewWebServices.Name = "treeViewWebServices";
-            this.treeViewWebServices.Size = new System.Drawing.Size(316, 85);
+            this.treeViewWebServices.Size = new System.Drawing.Size(316, 166);
             this.treeViewWebServices.TabIndex = 39;
             // 
             // cboShowWebServicesPanel
@@ -818,6 +796,20 @@
             this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // PictureBox3
+            // 
+            this.PictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.PictureBox3.InitialImage = null;
+            this.PictureBox3.Location = new System.Drawing.Point(3, 285);
+            this.PictureBox3.Name = "PictureBox3";
+            this.PictureBox3.Size = new System.Drawing.Size(18, 16);
+            this.PictureBox3.TabIndex = 23;
+            this.PictureBox3.TabStop = false;
+            this.PictureBox3.Tag = "dddd";
+            this.PictureBox3.Visible = false;
+            this.PictureBox3.Click += new System.EventHandler(this.PictureBox3_Click);
+            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.btnRemoveKeyword);
@@ -922,9 +914,9 @@
             // 
             // spcKey
             // 
-            this.spcKey.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spcKey.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.spcKey.Location = new System.Drawing.Point(4, 64);
             this.spcKey.Name = "spcKey";
             // 
@@ -1012,8 +1004,8 @@
             // 
             // lbSelectedKeywords
             // 
-            this.lbSelectedKeywords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbSelectedKeywords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lbSelectedKeywords.ForeColor = System.Drawing.Color.Gray;
             this.lbSelectedKeywords.FormattingEnabled = true;
             this.lbSelectedKeywords.Location = new System.Drawing.Point(3, 231);
@@ -1055,6 +1047,7 @@
             this.tabPage5.Controls.Add(this.panelSearch);
             this.tabPage5.Controls.Add(this.searchDataGridView1);
             this.tabPage5.Controls.Add(this.groupBox6);
+            this.tabPage5.Controls.Add(this.PictureBox4);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Size = new System.Drawing.Size(342, 305);
@@ -1097,8 +1090,8 @@
             // 
             // groupResults
             // 
-            this.groupResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupResults.Controls.Add(this.lblThemeDescription);
             this.groupResults.Controls.Add(this.txtThemeDescription);
             this.groupResults.Controls.Add(this.txtThemeName);
@@ -1205,24 +1198,6 @@
             this.lblSearching.TabIndex = 25;
             this.lblSearching.Text = "Searching..";
             // 
-            // searchDataGridView1
-            // 
-            this.searchDataGridView1.AllowUserToAddRows = false;
-            this.searchDataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchDataGridView1.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.searchDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.searchDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.searchDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.searchDataGridView1.Location = new System.Drawing.Point(3, 60);
-            this.searchDataGridView1.Name = "searchDataGridView1";
-            this.searchDataGridView1.RowHeadersWidth = 25;
-            this.searchDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.searchDataGridView1.Size = new System.Drawing.Size(333, 100);
-            this.searchDataGridView1.TabIndex = 31;
-            this.searchDataGridView1.ZoomToSelected = false;
-            // 
             // groupBox6
             // 
             this.groupBox6.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -1258,6 +1233,20 @@
             this.radioButton12.Text = "Fill";
             this.radioButton12.UseVisualStyleBackColor = true;
             // 
+            // PictureBox4
+            // 
+            this.PictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.PictureBox4.InitialImage = null;
+            this.PictureBox4.Location = new System.Drawing.Point(3, 287);
+            this.PictureBox4.Name = "PictureBox4";
+            this.PictureBox4.Size = new System.Drawing.Size(18, 16);
+            this.PictureBox4.TabIndex = 24;
+            this.PictureBox4.TabStop = false;
+            this.PictureBox4.Tag = "dddd";
+            this.PictureBox4.Visible = false;
+            this.PictureBox4.Click += new System.EventHandler(this.PictureBox4_Click);
+            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.groupRestoreSearch);
@@ -1272,9 +1261,9 @@
             // 
             // groupRestoreSearch
             // 
-            this.groupRestoreSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupRestoreSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupRestoreSearch.Controls.Add(this.lblSelectRestore);
             this.groupRestoreSearch.Controls.Add(this.lboRestoreSearch);
             this.groupRestoreSearch.Controls.Add(this.btnRestoreSearch);
@@ -1309,9 +1298,9 @@
             // 
             // groupPreview
             // 
-            this.groupPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupPreview.Controls.Add(this.lblRestoreFieldName);
             this.groupPreview.Controls.Add(this.lblRestoreServer);
             this.groupPreview.Controls.Add(this.lblRestoreSName);
@@ -1384,8 +1373,8 @@
             // 
             // label31
             // 
-            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.label31.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label31.ForeColor = System.Drawing.Color.DarkGoldenrod;
             this.label31.Location = new System.Drawing.Point(10, 161);
@@ -1508,8 +1497,8 @@
             // 
             // groupSaveSearch
             // 
-            this.groupSaveSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupSaveSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupSaveSearch.Controls.Add(this.lblSearchName);
             this.groupSaveSearch.Controls.Add(this.tboSearchName);
             this.groupSaveSearch.Controls.Add(this.btnSaveSearch);
@@ -1537,6 +1526,19 @@
             this.tboSearchName.Name = "tboSearchName";
             this.tboSearchName.Size = new System.Drawing.Size(135, 20);
             this.tboSearchName.TabIndex = 0;
+            // 
+            // PictureBox5
+            // 
+            this.PictureBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.PictureBox5.InitialImage = null;
+            this.PictureBox5.Location = new System.Drawing.Point(331, 1);
+            this.PictureBox5.Name = "PictureBox5";
+            this.PictureBox5.Size = new System.Drawing.Size(18, 16);
+            this.PictureBox5.TabIndex = 38;
+            this.PictureBox5.TabStop = false;
+            this.PictureBox5.Tag = "dddd";
+            this.PictureBox5.Click += new System.EventHandler(this.PictureBox5_Click_1);
             // 
             // gbSearchSummary
             // 
@@ -1596,8 +1598,8 @@
             // 
             // btnRunSearchFinal
             // 
-            this.btnRunSearchFinal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunSearchFinal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRunSearchFinal.BackColor = System.Drawing.Color.Transparent;
             this.btnRunSearchFinal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRunSearchFinal.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -1640,8 +1642,8 @@
             // 
             // lblKeywordsValue
             // 
-            this.lblKeywordsValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblKeywordsValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lblKeywordsValue.BackColor = System.Drawing.Color.White;
             this.lblKeywordsValue.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblKeywordsValue.ForeColor = System.Drawing.Color.DodgerBlue;
@@ -1663,8 +1665,8 @@
             // 
             // lblDateValue
             // 
-            this.lblDateValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDateValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDateValue.AutoSize = true;
             this.lblDateValue.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDateValue.Location = new System.Drawing.Point(192, 104);
@@ -1686,8 +1688,8 @@
             // 
             // lblDateRange
             // 
-            this.lblDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDateRange.AutoSize = true;
             this.lblDateRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDateRange.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -1699,8 +1701,8 @@
             // 
             // lblKeywordsName
             // 
-            this.lblKeywordsName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblKeywordsName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lblKeywordsName.AutoSize = true;
             this.lblKeywordsName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblKeywordsName.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -1746,6 +1748,45 @@
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.Visible = false;
             // 
+            // dgvSearch
+            // 
+            this.dgvSearch.AllowUserToAddRows = false;
+            this.dgvSearch.AllowUserToDeleteRows = false;
+            this.dgvSearch.AllowUserToResizeColumns = false;
+            this.dgvSearch.AllowUserToResizeRows = false;
+            this.dgvSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSearch.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dgvSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSearch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvSearch.Location = new System.Drawing.Point(159, 49);
+            this.dgvSearch.Name = "dgvSearch";
+            this.dgvSearch.RowHeadersWidth = 25;
+            this.dgvSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSearch.Size = new System.Drawing.Size(161, 237);
+            this.dgvSearch.TabIndex = 20;
+            this.dgvSearch.ZoomToSelected = true;
+            // 
+            // searchDataGridView1
+            // 
+            this.searchDataGridView1.AllowUserToAddRows = false;
+            this.searchDataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchDataGridView1.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.searchDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.searchDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.searchDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.searchDataGridView1.Location = new System.Drawing.Point(3, 60);
+            this.searchDataGridView1.Name = "searchDataGridView1";
+            this.searchDataGridView1.RowHeadersWidth = 25;
+            this.searchDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.searchDataGridView1.Size = new System.Drawing.Size(333, 100);
+            this.searchDataGridView1.TabIndex = 31;
+            this.searchDataGridView1.ZoomToSelected = false;
+            // 
             // SearchControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1765,15 +1806,14 @@
             this.tabPage3.PerformLayout();
             this.GroupBox1.ResumeLayout(false);
             this.GroupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.groupboxWebservices.ResumeLayout(false);
-            this.groupboxWebservices.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox3)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             this.groupboxKeywordDisplay.ResumeLayout(false);
@@ -1788,9 +1828,9 @@
             this.groupResults.PerformLayout();
             this.panelSearch.ResumeLayout(false);
             this.panelSearch.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox4)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.groupRestoreSearch.ResumeLayout(false);
             this.groupRestoreSearch.PerformLayout();
@@ -1798,8 +1838,11 @@
             this.groupPreview.PerformLayout();
             this.groupSaveSearch.ResumeLayout(false);
             this.groupSaveSearch.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox5)).EndInit();
             this.gbSearchSummary.ResumeLayout(false);
             this.gbSearchSummary.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1819,8 +1862,10 @@
         internal System.Windows.Forms.Button button5;
         internal System.Windows.Forms.Label lblEndDate;
         internal System.Windows.Forms.Label lblStartDate;
+        internal System.Windows.Forms.PictureBox PictureBox3;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage tabPage5;
+        internal System.Windows.Forms.PictureBox PictureBox4;
         internal System.Windows.Forms.GroupBox gbSearchSummary;
         internal System.Windows.Forms.Button btnSelectRectangle;
         private System.Windows.Forms.Label lblSelectedKeywords;
@@ -1832,6 +1877,7 @@
         private System.Windows.Forms.TextBox tboTypeKeyword;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.TreeView treeviewOntology;
+        internal System.Windows.Forms.PictureBox PictureBox5;
         internal System.Windows.Forms.Button Button7;
         private System.Windows.Forms.Label lblAreaName;
         private System.Windows.Forms.Label lblWebserv;
@@ -1869,7 +1915,6 @@
         public System.Windows.Forms.DateTimePicker dateTimePickStart;
         private SearchDataGridView searchDataGridView1;
         private System.Windows.Forms.ListBox lbSelectedWebServices;
-        internal System.Windows.Forms.Label lblSelWebservices;
         private System.Windows.Forms.ListBox lbWebservicesSupport;
         private System.Windows.Forms.RadioButton radioButton7;
         private System.Windows.Forms.RadioButton radioButton4;
@@ -1920,6 +1965,7 @@
         private System.Windows.Forms.Button btnWebserSelectAll;
         private System.Windows.Forms.CheckBox cboShowWebServicesPanel;
         private System.Windows.Forms.GroupBox groupboxWebservices;
+
         public System.Windows.Forms.SplitContainer spcHor1;
         private System.Windows.Forms.Label lblKeywords;
         internal System.Windows.Forms.TextBox textBox3;
