@@ -1,0 +1,66 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydroDesktop.Configuration.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TempDirectoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HydroDesktop</Value>
+    </Setting>
+    <Setting Name="AppDataDirectoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HydroDesktop</Value>
+    </Setting>
+    <Setting Name="NewDataRepositoryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">new1.sqlite</Value>
+    </Setting>
+    <Setting Name="NewMetadataCacheName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">new1_metadatacache.sqlite</Value>
+    </Setting>
+    <Setting Name="HISCentralUrlList" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;http://hiscentral.cuahsi.org/webservices/hiscentral.asmx&lt;/string&gt;
+  &lt;string&gt;http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx&lt;/string&gt;
+  &lt;string&gt;http://132.249.69.104/hiscentral/webservices/hiscentral.asmx&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="DefaultHISCentralUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral.asmx</Value>
+    </Setting>
+    <Setting Name="SelectedHISCentralUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral.asmx</Value>
+    </Setting>
+    <Setting Name="NewProjectFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">new1.dspx</Value>
+    </Setting>
+    <Setting Name="RecentProjectFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
+    </Setting>
+    <Setting Name="DownloadOption" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Append</Value>
+    </Setting>
+    <Setting Name="OVERWRITE_OPTIONS" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;Append&lt;/string&gt;
+  &lt;string&gt;Overwrite&lt;/string&gt;
+  &lt;string&gt;Fill&lt;/string&gt;
+  &lt;string&gt;Copy&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="SampleProjectsDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Sample Projects</Value>
+    </Setting>
+    <Setting Name="DefaultProjectFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">projects\default\default.hdprj</Value>
+    </Setting>
+    <Setting Name="DefaultDatabaseFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">projects\default\default.sqlite</Value>
+    </Setting>
+    <Setting Name="DefaultBaseMapDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Maps\BaseData</Value>
+    </Setting>
+    <Setting Name="DefaultMetadataCacheFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MetadataCache.sqlite</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
