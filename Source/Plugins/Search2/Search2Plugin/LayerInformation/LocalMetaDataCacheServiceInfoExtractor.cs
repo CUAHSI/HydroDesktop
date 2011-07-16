@@ -1,4 +1,6 @@
-﻿namespace HydroDesktop.Search.LayerInformation
+﻿using System;
+
+namespace HydroDesktop.Search.LayerInformation
 {
     class LocalMetaDataCacheServiceInfoExtractor : IServiceInfoExtractor
     {
