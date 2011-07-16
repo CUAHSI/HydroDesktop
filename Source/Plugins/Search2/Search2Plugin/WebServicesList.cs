@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml;
 using log4net;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Net;
 
 namespace HydroDesktop.Search
 {
     public class WebServicesList
     {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 
         private readonly string SERVICES_XML_NAME = Properties.Settings.Default.WebServicesFileName;
         private IHISCentralSearcher _searcher;
@@ -29,7 +28,9 @@ namespace HydroDesktop.Search
         /// Time Period between updates
         /// </summary>
         public static TimeSpan UpdateTime { get { return _UpdatePeriod; } set { _UpdatePeriod = value; } }
+
         public static DateTime LastUpdated { get; set; }
+
         public static string WebServicesFilename { get; set; }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace HydroDesktop.Search
         private XmlDocument GetDefaultWebServiceList()
         {
             Assembly asm = Assembly.GetAssembly(typeof(HydroDesktop.Search.WebServicesList));
-            
+
             using (System.IO.Stream stream = (asm.GetManifestResourceStream("HydroDesktop.Search.default_web_services.xml")))
             {
                 XmlDocument xmldoc = new XmlDocument();
@@ -77,7 +78,7 @@ namespace HydroDesktop.Search
             //get the icons directory
             string iconDirectory = Path.Combine(HydroDesktop.Configuration.Settings.Instance.TempDirectory, "ServiceIcons");
             if (!Directory.Exists(iconDirectory)) Directory.CreateDirectory(iconDirectory);
-            
+
             string url = HydroDesktop.Configuration.Settings.Instance.SelectedHISCentralURL;
             string baseUrl = url.ToLower().Replace(@"webservices/hiscentral.asmx", String.Empty);
 
@@ -113,7 +114,7 @@ namespace HydroDesktop.Search
             }
         }
 
-        //gets the 'WebServices' xml file 
+        //gets the 'WebServices' xml file
         //if ForceRefresh is true, then always try to connect to HIS Central
         //otherwise, try to use the web services file first
         public XmlDocument GetWebServicesList(bool forceRefresh, bool showErrorMessage)
@@ -139,7 +140,7 @@ namespace HydroDesktop.Search
                     var centralList = HydroDesktop.Configuration.Settings.Instance.HISCentralURLList;
                     return GetWebServicesFromHISCentral(centralList);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (showErrorMessage)
                     {
@@ -181,8 +182,8 @@ namespace HydroDesktop.Search
         //                 try
         //                 {
         //                     SaveFile(WebServicesFilename, servList);
-        //                 } 
-                     
+        //                 }
+
         //                 catch
         //                 {
         //                     log.Error("Could not write WebServices.xml");
@@ -200,15 +201,13 @@ namespace HydroDesktop.Search
         //}
         public void SaveFile(string webServicesFilename, XmlDocument servList)
         {
-            
             if (String.IsNullOrEmpty(webServicesFilename))
             {
                 throw new FileNotFoundException("Webservices file not found");
             }
-          var outputFile =  File.Create(webServicesFilename);
+            var outputFile = File.Create(webServicesFilename);
             var writer = XmlWriter.Create(outputFile);
             servList.WriteContentTo(writer);
-           
         }
 
         public XmlDocument ReadFile(string webServicesFilename)
@@ -226,7 +225,7 @@ namespace HydroDesktop.Search
         private XmlDocument GetWebServicesFromHISCentral(IList<string> hisCentralUrl)
         {
             WebException myWebException = null;
-            
+
             foreach (var url in hisCentralUrl)
             {
                 try
@@ -244,7 +243,7 @@ namespace HydroDesktop.Search
                     }
                     catch (FileNotFoundException ex)
                     {
-                        log.Error("HIS central GetWebServices Fail to write a file" + url);
+                        log.Error("HIS central GetWebServices Fail to write a file" + url + " " + ex.Message);
                     }
                     if (File.Exists(WebServicesFilename))
                     {
@@ -257,7 +256,7 @@ namespace HydroDesktop.Search
                     continue;
                 }
             }
-            
+
             //if connecting all servers failed: throw exception
             String error = "Error refreshing web services from HIS Central. Using the existing list of web services.";
             if (myWebException != null)
@@ -274,14 +273,13 @@ namespace HydroDesktop.Search
         }
 
         #region mock
+
         public WebServicesList(String fileName, IHISCentralSearcher searcher)
         {
-
             WebServicesFilename = fileName;
             _searcher = searcher;
         }
 
-        #endregion
-
+        #endregion mock
     }
 }
