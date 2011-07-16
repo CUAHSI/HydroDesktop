@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.IO;
-using System.Windows.Forms;
+using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web.Services;
-
-using DotSpatial.Data;
-using DotSpatial.Topology;
-using DotSpatial.Symbology;
+using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
 using DotSpatial.Controls.RibbonControls;
+using DotSpatial.Data;
 using DotSpatial.Projections;
-
+using DotSpatial.Symbology;
+using DotSpatial.Topology;
 
 namespace EPADelineation
 {
@@ -27,12 +26,9 @@ namespace EPADelineation
 
         //reference to the main application and its UI items
         private IMapPluginArgs _mapArgs;
+        private bool isActive;
 
-        private RibbonPanel _rPanelEPADelineation;
-
-        private RibbonButton _btstartDelineate;
-
-        #endregion
+        #endregion Variables
 
         #region IExtension Members
 
@@ -41,14 +37,7 @@ namespace EPADelineation
         /// </summary>
         protected override void OnDeactivate()
         {
-            for (int i = 0; i < _mapArgs.Ribbon.Tabs[0].Panels.Count; i++)
-            {
-                if (_mapArgs.Ribbon.Tabs[0].Panels[i].Text == "EPA Tool")
-                {
-                    _mapArgs.Ribbon.Tabs[0].Panels[i].Items.Remove(_btstartDelineate);
-                    _mapArgs.Ribbon.Tabs[0].Panels.Remove(_rPanelEPADelineation);
-                }
-            }
+            _mapArgs.AppManager.HeaderControl.RemoveItems();
 
             // This line ensures that "Enabled" is set to false.
             base.OnDeactivate();
@@ -62,67 +51,51 @@ namespace EPADelineation
             base.OnActivate();
         }
 
-        #endregion
+        #endregion IExtension Members
 
         #region IPlugin Members
 
         /// <summary>
-        /// Initialize the DotSpatial 6 plugin
+        /// Initialize the DotSpatial plugin
         /// </summary>
         /// <param name="args">The plugin arguments to access the main application</param>
         public void Initialize(IMapPluginArgs args)
         {
             _mapArgs = args;
 
-            //Setup the Panel and Add it to the MapView tab
-            _rPanelEPADelineation = new RibbonPanel("EPA Tool", RibbonPanelFlowDirection.Bottom);
-            _rPanelEPADelineation.ButtonMoreEnabled = false;
-            _rPanelEPADelineation.ButtonMoreVisible = false;
-            _mapArgs.Ribbon.Tabs[0].Panels.Add(_rPanelEPADelineation);
-
-            //Setup Delineation Button
-            _btstartDelineate = new RibbonButton("Delineate");
-            _btstartDelineate.ToolTip = "Using EPA Web Services to Delineate Catchments";
-            _btstartDelineate.Image = Properties.Resources.Delineation_icon_32;
-            _btstartDelineate.SmallImage = Properties.Resources.Delineation_icon_32.GetThumbnailImage(16, 16, null, IntPtr.Zero);
-            _btstartDelineate.CheckOnClick = true;
-            _btstartDelineate.Click += new EventHandler(_startDelineate_Click);
-
-            //Add it into the panel
-            _rPanelEPADelineation.Items.Add(_btstartDelineate);
-
+            SimpleActionItem action = new SimpleActionItem("Delineate", _startDelineate_Click);
+            action.GroupCaption = "EPA Tool";
+            action.SimpleToolTip = "Using EPA Web Services to Delineate Catchments";
+            action.SmallImage = Properties.Resources.Delineation_icon_32.GetThumbnailImage(16, 16, null, IntPtr.Zero);
+            action.LargeImage = Properties.Resources.Delineation_icon_32;
+            action.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
+            action.ToggleGroupKey = "tDelineateEpaTool";
+            args.AppManager.HeaderControl.Add(action);
         }
 
         # endregion
 
         #region Click Events
 
-        void _startDelineate_Click(object sender, EventArgs e)
+        private void _startDelineate_Click(object sender, EventArgs e)
         {
-
-            if (_btstartDelineate.Checked == false)
+            if (isActive)
             {
+                isActive = false;
                 _mapArgs.Map.Cursor = Cursors.Default;
             }
-
             else
             {
+                isActive = true;
                 //Check if any other Map Tools are checked
-                for (int i = 0; i < _mapArgs.Ribbon.Tabs[0].Panels[1].Items.Count; i++)
-                {
-                    if (_mapArgs.Ribbon.Tabs[0].Panels[1].Items[i].Checked == true)
-                    {
-                        _mapArgs.Ribbon.Tabs[0].Panels[1].Items[i].Checked = false;
-                        _mapArgs.Map.FunctionMode = FunctionMode.None;
-                    }
-                }
+                _mapArgs.Map.FunctionMode = FunctionMode.None;
 
                 //Active the Save Watershed Form
-                SaveWatershed saveWS = new SaveWatershed(_mapArgs, _btstartDelineate);
+                SaveWatershed saveWS = new SaveWatershed(_mapArgs);
                 saveWS.ShowDialog();
             }
         }
 
-        #endregion
+        #endregion Click Events
     }
 }
