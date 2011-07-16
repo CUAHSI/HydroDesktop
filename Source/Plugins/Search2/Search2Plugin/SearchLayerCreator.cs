@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Data;
-using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using HydroDesktop.Controls.Themes;
 
 namespace HydroDesktop.Search
 {
-    class SearchLayerCreator : SymbologyCreator
+    class SearchLayerCreator
     {
         #region Fields
 
@@ -28,7 +26,6 @@ namespace HydroDesktop.Search
         /// <param name="map">Map</param>
         /// <param name="searchResult">Search result</param>
         public SearchLayerCreator(IMap map, SearchResult searchResult)
-            : base(Global.GetHISCentralURL())
         {
             if (map == null) throw new ArgumentNullException("map");
             if (searchResult == null) throw new ArgumentNullException("searchResult");
@@ -48,32 +45,12 @@ namespace HydroDesktop.Search
         public MapGroup Create()
         {
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, Global.SEARCH_RESULT_LAYER_NAME);
-
-            //var creator = new SymbologyCreator(Global.GetHISCentralURL());
+            
             foreach(var item in _searchResult.Features)
             {
-                var subResultLayer = CreateSearchResultLayer(item.Key, item.Value);
-                //SetUpLabeling(subResultLayer);
-
-                // Set up symbology
-                //SetUpSymbology(laySearchResult);
-
-                subResultLayer.LegendText = item.Key;
-
+                var subResultLayer = CreateSearchResultLayer(item.Key, item.Value, item.Key);
                 root.Add(subResultLayer);
-
-                /*
-                var subResultLayer = creator.CreateSearchResultLayer(item.Value);
-                SetUpLabeling(subResultLayer);
-
-                // Set up symbology
-                //SetUpSymbology(laySearchResult);
-
-                subResultLayer.LegendText = item.Key;
-
-                root.Add(subResultLayer);*/
             }
-            //_map.Invalidate();
             _map.Refresh();
 
             return root;
@@ -83,65 +60,80 @@ namespace HydroDesktop.Search
 
         #region Private methods
 
-        private MapPointLayer CreateSearchResultLayer(string servCode, IFeatureSet fs)
+        private MapPointLayer CreateSearchResultLayer(string servCode, IFeatureSet featureSet, string legendName)
         {
-            var myLayer = new MapPointLayer(fs) {LegendText = "data series"};
-
-            var scheme = new PointScheme();
-            scheme.ClearCategories();
-
-            //TODO: implement me
-            var settings = scheme.EditorSettings;
-            settings.ClassificationType = ClassificationType.Quantities;
-            settings.FieldName = "ValueCount";
-            settings.UseSizeRange = true;
-            settings.StartSize = 5.0;
-            settings.EndSize = 25.0;
-            settings.RampColors = false;
-            scheme.CreateCategories(fs.DataTable);
-            var myImage = GetImageForService(servCode);
-            foreach(var categorie in scheme.Categories)
-            {
-                categorie.Symbolizer = new PointSymbolizer(myImage, categorie.Symbolizer.GetSize().Height);
-                categorie.SelectionSymbolizer.SetFillColor(Color.Yellow);
-            }
-            myLayer.Symbology = scheme;
-
-            //VALUECOUNT] > 415 AND [VALUECOUNT] <= 571
-
-            /*
-            //assign the categories (could be done with 'editorSettings')
-            foreach (var servCode in serviceCodes)
-            {
-                string filterEx = "[ServiceCode] = '" + servCode + "'";
-                var myImage = GetImageForService(servCode);
-                var mySymbolizer = new PointSymbolizer(myImage, 14.0);
-                var myCategory = new PointCategory(mySymbolizer)
-                                     {
-                                         FilterExpression = filterEx,
-                                         LegendText = servCode,
-                                         SelectionSymbolizer = new PointSymbolizer(myImage, 16.0)
-                                     };
-                myCategory.SelectionSymbolizer.SetFillColor(Color.Yellow);
-                myScheme.AddCategory(myCategory);
-            }
-            myLayer.Symbology = myScheme;
-             */ 
-
+            var myLayer = new MapPointLayer(featureSet);
+            myLayer.LegendText = legendName;
+            myLayer.Symbology = CreateSymbology(servCode, featureSet);
             SetUpLabeling(myLayer);
 
             return myLayer;
         }
 
-
-        /// <summary>
-        /// Create the 'Search Results' layer with image symbology
-        /// </summary>
-        /// <param name="fs"></param>
-        /// <returns></returns>
-        public override MapPointLayer CreateSearchResultLayer(IFeatureSet fs)
+        private IPointScheme CreateSymbology(string servCode, IFeatureSet featureSet)
         {
-            return base.CreateSearchResultLayer(fs);
+            var scheme = new PointScheme();
+            scheme.ClearCategories();
+
+            var settings = scheme.EditorSettings;
+            settings.ClassificationType = ClassificationType.Custom;
+
+            const string valueField = "ValueCount";
+
+            // Find min/max value in valueField 
+            var minValue = int.MaxValue;
+            var maxValue = int.MinValue;
+            //foreach (var feature in featureSet.Features)
+            foreach (DataRow row in featureSet.DataTable.Rows)
+            {
+                int value;
+                try
+                {
+                    value = (int)row[valueField];
+                }
+                catch
+                {
+                    value = 0;
+                }
+                if (value < minValue)
+                    minValue = value;
+                if (value > maxValue)
+                    maxValue = value;
+            }
+            if (minValue == int.MaxValue) minValue = 0;
+            if (maxValue == int.MinValue) maxValue = 0;
+
+            const int categoriesCount = 3;                        // number of categories
+            var categorieStep = (maxValue - minValue) / 3 + 1;    // value step in filter
+            const int imageStep = 5;
+            var imageSize = 5;
+
+            var symbCreator = new  SymbologyCreator(Global.GetHISCentralURL()); // we need it only to get image
+            var image = symbCreator.GetImageForService(servCode);
+            for (int i = 0; i < categoriesCount; i++)
+            {
+                var min = minValue - 1;
+                var max = minValue + categorieStep;
+                if (max > maxValue)
+                    max = maxValue;
+                minValue = max + 1;
+
+                imageSize += imageStep;
+
+                var filterEx = string.Format("[{0}] > {1} and [{0}] <= {2}", valueField, min, max);
+                var legendText = string.Format("({0}, {1}]", min, max);
+                var mySymbolizer = new PointSymbolizer(image, imageSize);
+                var myCategory = new PointCategory(mySymbolizer)
+                {
+                    FilterExpression = filterEx,
+                    LegendText = legendText,
+                    SelectionSymbolizer = new PointSymbolizer(image, imageSize + 2)
+                };
+                myCategory.SelectionSymbolizer.SetFillColor(Color.Yellow);
+                scheme.AddCategory(myCategory);
+            }
+
+            return scheme;
         }
 
         private void SetUpLabeling(IFeatureLayer layer)
@@ -166,29 +158,6 @@ namespace HydroDesktop.Search
             _map.AddLabels(layer, string.Format("[{0}]", attributeName),
                                           string.Format("[ValueCount] > {0}", 10),
                                           symb, "Category Default");
-        }
-
-        private static void SetUpSymbology(IFeatureLayer layer)
-        {
-            Debug.Assert(layer != null);
-
-            var _original = layer.Symbology;
-            _original.SuspendEvents();
-
-            var scheme = _original.Copy();
-
-            var settings = scheme.EditorSettings;
-            settings.ClassificationType = ClassificationType.Quantities;
-            settings.FieldName = "ValueCount";
-            settings.UseSizeRange = true;
-            settings.StartSize = 5.0;
-            settings.EndSize = 25.0;
-            settings.RampColors = true;
-            scheme.CreateCategories(layer.DataSet.DataTable);
-            //---
-
-            _original.CopyProperties(scheme);
-            _original.ResumeEvents();
         }
 
         private MapGroup GetSearchResultLayerGroup()
