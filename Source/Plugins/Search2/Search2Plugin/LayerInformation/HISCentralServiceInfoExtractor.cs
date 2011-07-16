@@ -12,7 +12,8 @@ namespace HydroDesktop.Search.LayerInformation
             if (nodesToSearch == null) throw new ArgumentNullException("nodesToSearch");
             _nodesToSearch = nodesToSearch;
         }
-
+/*
+      // used in version with sub-nodes
         public string GetServiceDesciptionUrlByServiceUrl(string serviceUrl)
         {
             var getValue = (Func<TreeNode, string>) (n =>
@@ -29,6 +30,21 @@ namespace HydroDesktop.Search.LayerInformation
 
                 var serviceDescriptionNode = node.Nodes["ServiceDescriptionURL"];
                 return serviceDescriptionNode == null ? null : getValue(serviceDescriptionNode);
+            }
+
+            return null;
+        }
+        */
+        public string GetServiceDesciptionUrlByServiceUrl(string serviceUrl)
+        {
+            foreach (TreeNode node in _nodesToSearch)
+            {
+                var nodeInfo = node.Tag as SearchControl.NodeInfo;
+                if (nodeInfo == null ||
+                    nodeInfo.ServiceUrl != serviceUrl
+                    ) continue;
+
+                return nodeInfo.DescritionUrl;
             }
 
             return null;

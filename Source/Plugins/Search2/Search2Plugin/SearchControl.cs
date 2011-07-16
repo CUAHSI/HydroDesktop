@@ -1102,18 +1102,16 @@ namespace HydroDesktop.Search
             {
                 treeViewWebServices.Nodes.Clear();
 
-					// fix: 8198
-					if (bUseTreeWithLink)
-					{
-						FillWebTree2(getWebServ.DocumentElement, treeViewWebServices.Nodes);
-					}else
-						FillWebTree(getWebServ.DocumentElement, treeViewWebServices.Nodes);
-                    treeViewWebServices.Sort();
+                var getWebServ = _webServicesList.GetWebServicesList(forceRefresh, showMessage);
+                // fix: 8198
+                if (bUseTreeWithLink)
+                {
+                    FillWebTree2(getWebServ.DocumentElement, treeViewWebServices.Nodes);
                 }
                 else
-                {
-                    FillWebServicesFromDB();
-                }
+                    FillWebTree(getWebServ.DocumentElement, treeViewWebServices.Nodes);
+                treeViewWebServices.Sort();
+
 
                 CheckAllWebServices();
             }
@@ -1122,7 +1120,6 @@ namespace HydroDesktop.Search
                 label4.Text = ex.Message;
             }
         }
-
 
 
         //to check all web services (default)    
@@ -1148,7 +1145,7 @@ namespace HydroDesktop.Search
 					TreeNode treeNode1 = new TreeNode();
 					treeNode1.ForeColor = clrBule;
 					//treeNode1.NodeFont.Underline = true; 
-
+                    var nodeInfo = new NodeInfo();
 					foreach (XmlNode childNode2 in childNode1.ChildNodes)
 					{
 						if (childNode2.Name == "Title")
@@ -1167,10 +1164,13 @@ namespace HydroDesktop.Search
 							treeNode2.Nodes.Add(treeNode3);*/
 						}else if(childNode2.Name == "ServiceDescriptionURL")
 						{
-							StringBuilder strUrl = new StringBuilder(childNode2.InnerText);
-							treeNode1.Tag = strUrl.ToString();
+						    nodeInfo.DescritionUrl = childNode2.InnerText;
 						}
-						else
+                        else if (childNode2.Name == "servURL")
+                        {
+                            nodeInfo.ServiceUrl = childNode2.InnerText;
+                        }
+                        else
 						{
 							/*TreeNode treeNode2 = new TreeNode(childNode2.Name);
 							treeNode1.Nodes.Add(treeNode2);
@@ -1179,11 +1179,13 @@ namespace HydroDesktop.Search
 							treeNode2.Nodes.Add(treeNode3);*/
 						}
 					}
-					//add the 'Web Service' tree node to tree view
+
+				    treeNode1.Tag = nodeInfo;
 					parentNode.Add(treeNode1);
 				}
 			}
 		}
+        private void FillWebTree(XmlNode node, TreeNodeCollection parentNode)
         {
             foreach (XmlNode childNode1 in node.ChildNodes)
             {
@@ -1227,7 +1229,7 @@ namespace HydroDesktop.Search
             {
                 treeViewWebServices.Nodes.Clear();
 
-                MetadataCacheSearcher searcher = new MetadataCacheSearcher();
+                var searcher = new MetadataCacheSearcher();
                 List<DataServiceInfo> serviceList = searcher.GetWebServices();
                 
                 foreach (DataServiceInfo service in serviceList)
@@ -1238,7 +1240,13 @@ namespace HydroDesktop.Search
 
 					// fix : 8198
 					// need to add ServiceDescriptionURL attr
-					treeNode1.Tag = service.DescriptionURL;
+
+                    var nodeInfo = new NodeInfo
+                                       {
+                                           ServiceUrl = service.EndpointURL,
+                                           DescritionUrl = service.DescriptionURL
+                                       };
+                    treeNode1.Tag = nodeInfo;
 
 					treeViewWebServices.Nodes.Add(treeNode1);
                 }
@@ -1824,7 +1832,8 @@ namespace HydroDesktop.Search
 			TreeNodeMouseClickEventArgs e)
 		{
 			TreeNode node = e.Node;
-			if (node.Tag == null)
+		    var nodeInfo = node.Tag as NodeInfo;
+            if (nodeInfo == null || nodeInfo.DescritionUrl == null)
 			{
 				MessageBox.Show("The node [" + node.Text + "] don't have any ServiceDescriptionURL attribute.");
 				return;
@@ -1832,9 +1841,9 @@ namespace HydroDesktop.Search
 
 			try
 			{
-				string url = (string)node.Tag;
+			    string url = nodeInfo.DescritionUrl;
 				// only use for ie
-				System.Diagnostics.Process.Start( url);
+                System.Diagnostics.Process.Start(url);
 			}
 			catch(System.Exception ex ){
 				MessageBox.Show("Can't open url . exception:" + ex.Message);
@@ -2298,7 +2307,8 @@ namespace HydroDesktop.Search
                     extractor = new HISCentralServiceInfoExtractor(treeViewWebServices.Nodes);
                     break;
                 case SearchMode.LocalMetaDataCache:
-                    extractor = new LocalMetaDataCacheServiceInfoExtractor();
+                    goto case SearchMode.HISCentral;
+                    //extractor = new LocalMetaDataCacheServiceInfoExtractor();
                     break;
                 default:
                     goto case SearchMode.HISCentral;
@@ -2644,6 +2654,12 @@ namespace HydroDesktop.Search
             {
                 lay.IsSelected = lay.LegendText == legendText;
             }
+        }
+
+        public class NodeInfo
+        {
+            public String DescritionUrl { get; set; }
+            public String ServiceUrl { get; set; }
         }
 
         //#region Ontology Utilities

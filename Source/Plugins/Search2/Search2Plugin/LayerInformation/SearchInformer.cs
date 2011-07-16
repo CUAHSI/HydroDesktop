@@ -142,6 +142,10 @@ namespace HydroDesktop.Search.LayerInformation
                             pInfo.ServiceDesciptionUrl =
                                 _serviceInfoExtractor.GetServiceDesciptionUrlByServiceUrl(getColumnValue(fld.ColumnName));
                             break;
+                        /*case "ServiceID":
+                            pInfo.ServiceDesciptionUrl =
+                                _serviceInfoExtractor.GetServiceDescriptionUrlByServiceID(getColumnValue(fld.ColumnName));
+                            break;*/
                     }
                 }
                 return pInfo;

@@ -3,9 +3,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Controls.RibbonControls;
+using DotSpatial.Data;
 using HydroDesktop.Search.Extensions;
-using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Search
 {
