@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.Search.Extensions;
 using HydroDesktop.WebServices;
 using System.ComponentModel;
 using DotSpatial.Data;
@@ -463,15 +464,7 @@ namespace HydroDesktop.Search
         /// <returns>A list of data series matching the specified criteria</returns>
         public void GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string[] keywords, DateTime startDate, DateTime endDate, int[] networkIDs, System.ComponentModel.BackgroundWorker bgWorker, System.ComponentModel.DoWorkEventArgs e)
         {
-            // Check for cancel
-            if (bgWorker != null && e != null)
-            {
-                if (bgWorker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    e.Result = "Operation Cancelled";
-                }
-            }           
+            bgWorker.CheckForCancel(e);
             
             //first implementation: use the existing implementation by dividing in 1x1 deg.
             
@@ -482,21 +475,11 @@ namespace HydroDesktop.Search
             IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
 
             int numTiles = tiles.Count;
-            List<SeriesMetadata> fullSeriesList = new List<SeriesMetadata>();
+            var fullSeriesList = new List<SeriesMetadata>();
 
             for (int i = 0; i < numTiles; i++)
             {
-                Box tile = tiles[i];
-
-                // Check for cancel
-                if (bgWorker != null && e != null)
-                {
-                    if (bgWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        e.Result = "Operation Cancelled";
-                    }
-                }
+                bgWorker.CheckForCancel(e);
                 
                 // Do the web service call
                 IList<SeriesMetadata> tileSeriesList = new List<SeriesMetadata>();
@@ -518,16 +501,7 @@ namespace HydroDesktop.Search
             // Service queries finished - Background worker updates
             if (bgWorker != null)
             {
-                // Check for cancel
-                // Check for cancel
-                if (bgWorker != null && e != null)
-                {
-                    if (bgWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        e.Result = "Operation Cancelled";
-                    }
-                }
+                bgWorker.CheckForCancel(e);
 
                 // Report progress
                 if (bgWorker.WorkerReportsProgress == true)
@@ -569,19 +543,10 @@ namespace HydroDesktop.Search
                 }
             }
 
-            // Check for cancel
-            if (bgWorker != null && e != null)
-            {
-                if (bgWorker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    e.Result = "Operation Cancelled";
-                }
-            }
-
+            bgWorker.CheckForCancel(e);
 
             //get the list of series
-            List<SeriesDataCart> fullSeriesList = new List<SeriesDataCart>();
+            var fullSeriesList = new List<SeriesDataCart>();
             
             //Split the polygon area bounding box into 1x1 decimal degree tiles
  
@@ -593,15 +558,7 @@ namespace HydroDesktop.Search
             {
                 Box tile = tiles[i];
 
-                // Check for cancel
-                if (bgWorker != null && e != null)
-                {
-                    if (bgWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        e.Result = "Operation Cancelled";
-                    }
-                }
+                bgWorker.CheckForCancel(e);
 
                 // Do the web service call
                 //IList<SeriesDataCart> tileSeriesList = new List<SeriesMetadata>();
@@ -631,26 +588,17 @@ namespace HydroDesktop.Search
             
 
             //(4) Create the Feature Set
-            IFeatureSet resultFs = null;
-            if (fullSeriesList.Count > 0 & useWorker == true)
+            SearchResult resultFs = null;
+            if (fullSeriesList.Count > 0 & useWorker)
             {
                 bgWorker.ReportProgress(0, "Calculating Points");
-
-                resultFs = SearchHelper.ToFeatureSet(fullSeriesList);
+                resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
             }
 
             // (5) Final Background worker updates
-            if (useWorker == true && e != null)
+            if (useWorker && e != null)
             {
-                // Check for cancel
-                if (bgWorker != null && e != null)
-                {
-                    if (bgWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        e.Result = "Operation Cancelled";
-                    }
-                }
+                bgWorker.CheckForCancel(e);
 
                 // Report progress
                 bgWorker.ReportProgress(100, "Search Finished");
@@ -696,14 +644,7 @@ namespace HydroDesktop.Search
             }
 
             // Check for cancel
-            if (bgWorker != null && e != null)
-            {
-                if (bgWorker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    e.Result = "Operation Cancelled";
-                }
-            }
+            bgWorker.CheckForCancel(e);
 
             if (polygons.Count > 1 & useWorker == true)
             {
@@ -711,7 +652,7 @@ namespace HydroDesktop.Search
             }
 
             //get the list of series
-            List<SeriesDataCart> fullSeriesList = new List<SeriesDataCart>();
+            var fullSeriesList = new List<SeriesDataCart>();
 
             foreach (IFeature polygon in polygons)
             {
@@ -726,15 +667,7 @@ namespace HydroDesktop.Search
                 {
                     Box tile = tiles[i];
 
-                    // Check for cancel
-                    if (bgWorker != null && e != null)
-                    {
-                        if (bgWorker.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            e.Result = "Operation Cancelled";
-                        }
-                    }
+                    bgWorker.CheckForCancel(e);
 
                     // Do the web service call
                     IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
@@ -766,26 +699,17 @@ namespace HydroDesktop.Search
             }
 
             //(4) Create the Feature Set
-            IFeatureSet resultFs = null;
+            SearchResult resultFs = null;
             if (fullSeriesList.Count > 0 & useWorker == true)
             {
                 bgWorker.ReportProgress(0, "Calculating Points");
-
-                resultFs = SearchHelper.ToFeatureSet(fullSeriesList);
+                resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
             }
 
             // (5) Final Background worker updates
-            if (useWorker == true && e != null)
+            if (useWorker && e != null)
             {
-                // Check for cancel
-                if (bgWorker != null && e != null)
-                {
-                    if (bgWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        e.Result = "Operation Cancelled";
-                    }
-                }
+                bgWorker.CheckForCancel(e);
 
                 // Report progress
                 bgWorker.ReportProgress(100, "Search Finished");

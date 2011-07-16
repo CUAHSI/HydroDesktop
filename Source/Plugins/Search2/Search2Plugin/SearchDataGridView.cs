@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Symbology;
 using System.Data;
 
-
+namespace HydroDesktop.Search
+{
     /// <summary>
     /// Specialized DataGridView for GIS attribute table selection and 
     /// searching. The table is linked to the map layer. When a row is
@@ -86,15 +83,21 @@ using System.Data;
         /// <param name="sourceLayer">The source map feature layer</param>
         public void SetDataSource(IMapFeatureLayer sourceLayer)
         {
+            if (sourceLayer == null)
+            {
+                DataSource = null;
+                return;
+            }
+
             _layer = sourceLayer;
             _layer.SelectionEnabled = true;
             _layer.IsSelected = true;
-
+            
             //set the map
             _mapFrame = _layer.MapFrame as IMapFrame;
 
             //Changed by Jiri - Use a copy of table to fix the AttributeTable editor bug
-            DataTable newTable = CopyDataTable(_layer.DataSet.DataTable);
+            var newTable = CopyDataTable(_layer.DataSet.DataTable);
 
             //add the 'fid' column
             int lastColumn = newTable.Columns.Count;
@@ -115,21 +118,15 @@ using System.Data;
             }
 
             _dataSourceChanged = true;
-
             
-            this.DataSource = newTable;
-            //if (this.Columns.Contains("mw_fid"))
-            //{
-            //    this.Columns["mw_fid"].Visible = false;
-            //}
-
-            _layer.SelectionChanged += new EventHandler(layer_SelectionChanged);
+            DataSource = newTable;
+            _layer.SelectionChanged += layer_SelectionChanged;
         }
 
         //Creates an in-memory copy of the DataTable which is not linked to the original table
         private DataTable CopyDataTable(DataTable originalTable)
         {
-            DataTable newTable = new DataTable();
+            var newTable = new DataTable();
             foreach (DataColumn col in originalTable.Columns)
             {
                 newTable.Columns.Add(new DataColumn(col.ColumnName, col.DataType));
@@ -188,12 +185,12 @@ using System.Data;
         {
             base.OnDataBindingComplete(e);
 
-            if (_dataSourceChanged == true)
+            if (_dataSourceChanged)
             {
                 _dataBindingEventCount++;
             }
 
-            if (_dataBindingEventCount >= 2 && _dataSourceChanged == true)
+            if (_dataBindingEventCount >= 2 && _dataSourceChanged)
             {
                 _dataSourceChanged = false;
                 _dataBindingEventCount = 0;
@@ -211,8 +208,6 @@ using System.Data;
                     _ignoreMapSelection = false;
                 }
             }
-            DataGridView dgv = new DataGridView();
-
         }
 
         //to select all when pressing CTRL+A
@@ -234,7 +229,7 @@ using System.Data;
                 ////zoom to selected features
                 if (ZoomToSelected == true)
                 {
-                   _layer.ZoomToSelectedFeatures();
+                    _layer.ZoomToSelectedFeatures();
                 }
             }
         }
@@ -290,4 +285,5 @@ using System.Data;
             //_cellMouseUp = false;
         }
     }
+}
 

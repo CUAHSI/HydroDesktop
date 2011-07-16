@@ -40,6 +40,11 @@ namespace HydroDesktop.Search.LayerInformation
                 _map.GeoMouseMove -= _map_GeoMouseMove;
                 _map.Layers.LayerRemoved -= Layers_LayerRemoved;
             }
+
+            if (_layer != null)
+            {
+                _layer.VisibleChanged -= layer_VisibleChanged;
+            }
         }
 
         public void Start(Map map, IMapFeatureLayer layer)
@@ -51,9 +56,22 @@ namespace HydroDesktop.Search.LayerInformation
 
             _map = map;
             _layer = layer;
-
-            _map.GeoMouseMove += _map_GeoMouseMove;
+            
             _map.Layers.LayerRemoved += Layers_LayerRemoved;
+            layer.VisibleChanged += layer_VisibleChanged;
+            layer_VisibleChanged(layer, EventArgs.Empty);
+        }
+
+        void layer_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!_layer.IsVisible)
+            {
+                HideToolTip();
+                _map.GeoMouseMove -= _map_GeoMouseMove;
+                return;
+            }
+            _map.GeoMouseMove -= _map_GeoMouseMove;
+            _map.GeoMouseMove += _map_GeoMouseMove;
         }
 
         private void HideToolTip()
@@ -68,7 +86,6 @@ namespace HydroDesktop.Search.LayerInformation
         {
             if (!_layer.IsVisible)
             {
-                HideToolTip();
                 return;
             }
 
