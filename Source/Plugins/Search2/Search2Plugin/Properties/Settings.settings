@@ -23,5 +23,8 @@
     <Setting Name="WebServicesFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">WebServices.xml</Value>
     </Setting>
+    <Setting Name="SearchResultNameMask" Type="System.String" Scope="User">
+      <Value Profile="(Default)">searchresult_{0}.shp</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

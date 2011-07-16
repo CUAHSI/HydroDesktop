@@ -45,7 +45,6 @@ namespace HydroDesktop.Search
         private RectangleDrawing _rectangleDrawing;
 
         private readonly DownloadManager _downLoadManager;
-        private SearchInformer searchInformer;
 
         #endregion
 
@@ -79,6 +78,7 @@ namespace HydroDesktop.Search
             _mapArgs.Map.MapFrame.LayerAdded += MapFrame_LayerAdded;
             //Layer removed event
             _mapArgs.Map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
+            _mapArgs.Map.Layers.LayerRemoved += Layers_LayerRemoved;
 
             //listBox4.MouseUp += new MouseEventHandler(listBox4_MouseUp);
             dgvSearch.Click += dataGridView1_Click;
@@ -100,6 +100,12 @@ namespace HydroDesktop.Search
 
 
             _downLoadManager = new DownloadManager {Log = log};
+        }
+
+        void Layers_LayerRemoved(object sender, LayerEventArgs e)
+        {
+            e.Layer.IsVisible = false;
+            e.Layer.VisibleChanged -= SearchControl_VisibleChanged;
         }
 
         #endregion
@@ -1272,40 +1278,39 @@ namespace HydroDesktop.Search
         void MapFrame_LayerRemoved(object sender, DotSpatial.Symbology.LayerEventArgs e)
         {
             // See if the layer is a polygon layer or a group layer containing polygon layers.
-            if (e.Layer is IMapLayer)
+            if (!(e.Layer is IMapLayer)) return;
+
+            List<IMapPolygonLayer> polygonLayerList = GetListOfPolygonLayers();
+
+            if (polygonLayerList.Count > 0)
             {
-                List<IMapPolygonLayer> polygonLayerList = GetListOfPolygonLayers();
+                // Polygon layer removed.  We need to update the combo box of layers. 
 
-                if (polygonLayerList.Count > 0)
+                // Keep track of the currently selected layer, if any.
+                string selectedLayerName = "";
+                if (cboActiveLayer.SelectedItem != null)
                 {
-                    // Polygon layer removed.  We need to update the combo box of layers. 
+                    selectedLayerName = cboActiveLayer.SelectedItem.ToString();
+                }
 
-                    // Keep track of the currently selected layer, if any.
-                    string selectedLayerName = "";
-                    if (cboActiveLayer.SelectedItem != null)
-                    {
-                        selectedLayerName = cboActiveLayer.SelectedItem.ToString();
-                    }
+                // Repopulate items in the combo box.  !!! Really we should just be adding the new items in the right order.
+                cboActiveLayer.BeginUpdate();
+                cboActiveLayer.Items.Clear();
+                AddPolygonLayers();
+                cboActiveLayer.EndUpdate();
 
-                    // Repopulate items in the combo box.  !!! Really we should just be adding the new items in the right order.
-                    cboActiveLayer.BeginUpdate();
-                    cboActiveLayer.Items.Clear();
-                    AddPolygonLayers();
-                    cboActiveLayer.EndUpdate();
+                // Reselect the previously selected layer name, if present.
+                int index = cboActiveLayer.FindString(selectedLayerName);
+                if (index != -1)
+                {
+                    // Turn off the event handler.  We don't need to fire events for reselecting the same layer that we had selected before.
+                    cboActiveLayer.SelectedIndexChanged -= cboActiveLayer_SelectedIndexChanged;
 
-                    // Reselect the previously selected layer name, if present.
-                    int index = cboActiveLayer.FindString(selectedLayerName);
-                    if (index != -1)
-                    {
-                        // Turn off the event handler.  We don't need to fire events for reselecting the same layer that we had selected before.
-                        cboActiveLayer.SelectedIndexChanged -= new System.EventHandler(this.cboActiveLayer_SelectedIndexChanged);
+                    // Select the layer name.
+                    cboActiveLayer.SelectedIndex = index;
 
-                        // Select the layer name.
-                        cboActiveLayer.SelectedIndex = index;
-
-                        // Turn on the event handler.
-                        cboActiveLayer.SelectedIndexChanged += new System.EventHandler(this.cboActiveLayer_SelectedIndexChanged);
-                    }
+                    // Turn on the event handler.
+                    cboActiveLayer.SelectedIndexChanged += cboActiveLayer_SelectedIndexChanged;
                 }
             }
         }
@@ -1839,7 +1844,7 @@ namespace HydroDesktop.Search
                 tabControl2.SelectedIndex = 2;
                 return;
             }
-            else if (e.Result.ToString() == "Operation Cancelled")
+            else if (e.Result.ToString() == BackgroundWorkerHelper.OPERATION_CANCELLED)
             {
                 //check for user cancel
                 MessageBox.Show("The search was cancelled.");
@@ -1849,9 +1854,8 @@ namespace HydroDesktop.Search
             else
             {
                 //The search process returns a point FeatureSet.
-
-                //MessageBox.Show("Search is complete.");
-                IFeatureSet result = e.Result as IFeatureSet;
+                
+                var result = e.Result as SearchResult;
                 if (result == null)
                 {
                     groupResults.Enabled = false;
@@ -1859,7 +1863,7 @@ namespace HydroDesktop.Search
                     btnReset.Enabled = false;
                     MessageBox.Show("No data series were found. Please change the search criteria.");
                 }
-                else if (result.Features.Count == 0)
+                else if (result.IsEmpty())
                 {
                     groupResults.Enabled = false;
                     btnDownload.Enabled = false;
@@ -1870,7 +1874,8 @@ namespace HydroDesktop.Search
                 {
                     //We need to reproject the Search results from WGS84 to the projection of the map.
                     ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
-                    result.Projection = wgs84;
+                    foreach(var item in result.Features)
+                        item.Value.Projection = wgs84;
                     
                     ShowSearchResults(result);
                     this.Cursor = Cursors.Default;
@@ -2138,7 +2143,7 @@ namespace HydroDesktop.Search
             {
                 //to refresh the series selector control
                 //TODO: need other way to send this message
-                IHydroAppManager mainApplication = _mapArgs.AppManager as IHydroAppManager;
+                var mainApplication = _mapArgs.AppManager as IHydroAppManager;
                 if (mainApplication != null)
                 {
                     mainApplication.SeriesView.SeriesSelector.RefreshSelection();
@@ -2153,83 +2158,71 @@ namespace HydroDesktop.Search
             catch { }
         }
 
-        //If there is a 'Data Series' layer present in the map,
-        //remove the 'Data Series' layer from the map
-        private void RemoveDataSeriesLayer()
-        {
-            var layerToRemove = GetSearchResultLayer();
-            if (layerToRemove != null)
-            {
-                _mapArgs.Map.Layers.Remove(layerToRemove);
-            }
-        }
-
-        private IMapFeatureLayer GetSearchResultLayer()
-        {
-            //TODO: need another mechanizm to identify search layer (we can rename existing layer)
-
-            IMapFeatureLayer layer = null;
-            foreach (var lay in _mapArgs.Map.Layers)
-            {
-                if (lay.LegendText.ToLower() == Global.SEARCH_RESULT_LAYER_NAME.ToLower())
-                {
-                    layer = lay as IMapFeatureLayer;
-                    break;
-                }
-            }
-            return layer;
-        }
-
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
         /// </summary>
-        private void ShowSearchResults(IFeatureSet fs)
+        private void ShowSearchResults(SearchResult searchResult)
         {
-            //remove the 'Data Series' layer
-            RemoveDataSeriesLayer();
-
             //try to save the search result layer and re-add it
-            string hdProjectPath = Settings.Instance.CurrentProjectDirectory;
+            var hdProjectPath = Settings.Instance.CurrentProjectDirectory;
 
-            string filename = Path.Combine(hdProjectPath,
-                                           HydroDesktop.Search.Properties.Settings.Default.SearchResultName);
-            fs.Filename = filename;
-            fs.Save();
-            fs = FeatureSet.OpenFile(filename);
+            var loadedFeatures = new Dictionary<string, IFeatureSet>(searchResult.Features.Count);
+            foreach (var key in searchResult.Features.Keys)
+            {
+                var fs = searchResult.Features[key];
+                var filename = Path.Combine(hdProjectPath,
+                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key));
+                fs.Filename = filename;
+                fs.Save();
+                loadedFeatures.Add(key, FeatureSet.OpenFile(filename));
+            }
 
-            var searchLayerCreator = new SearchLayerCreator(_mapArgs.Map, fs);
+            var searchLayerCreator = new SearchLayerCreator(_mapArgs.Map, new SearchResult(loadedFeatures));
             var laySearchResult = searchLayerCreator.Create();
 
             //assign the projection again
-            fs.Reproject(_mapArgs.Map.Projection);
+            foreach (var item in loadedFeatures)
+                item.Value.Reproject(_mapArgs.Map.Projection);
 
-            _mapArgs.Map.Layers.Add(laySearchResult);
-            searchDataGridView1.SetDataSource(laySearchResult);
+            // select first layer in the group 
+            var layers = laySearchResult.GetLayers();
+            for (int i = 0; i < layers.Count; i++)
+            {
+                layers[i].VisibleChanged += SearchControl_VisibleChanged;
+                layers[i].IsVisible = false; //to raise event (DotSpatial wrong behavior)
+                layers[i].IsVisible = i == 0;
+            }
 
             //to prevent the first row of data grid view from becoming selected
             searchDataGridView1.ClearSelection();
 
-            //set the search result layer as selected
-            SelectLayerInLegend(Global.SEARCH_RESULT_LAYER_NAME);
-            
             // Starting information bubble engine
-            if (searchInformer == null)
+            IServiceInfoExtractor extractor;
+            switch (SearchMode)
             {
-                IServiceInfoExtractor extractor;
-                switch(SearchMode)
-                {
-                    case SearchMode.HISCentral:
-                        extractor = new HISCentralServiceInfoExtractor(treeViewWebServices.Nodes);
-                        break;
-                    case SearchMode.LocalMetaDataCache:
-                        extractor = new LocalMetaDataCacheServiceInfoExtractor();
-                        break;
-                    default:
-                        goto case SearchMode.HISCentral;
-                }
-                searchInformer = new SearchInformer(extractor);
+                case SearchMode.HISCentral:
+                    extractor = new HISCentralServiceInfoExtractor(treeViewWebServices.Nodes);
+                    break;
+                case SearchMode.LocalMetaDataCache:
+                    extractor = new LocalMetaDataCacheServiceInfoExtractor();
+                    break;
+                default:
+                    goto case SearchMode.HISCentral;
             }
-            searchInformer.Start(mapMain, laySearchResult);
+            foreach (IMapFeatureLayer layer in laySearchResult.GetLayers())
+            {
+                var searchInformer = new SearchInformer(extractor);
+                searchInformer.Start(mapMain, layer);
+            }
+        }
+
+        void SearchControl_VisibleChanged(object sender, EventArgs e)
+        {
+            var mapLayer = sender as IMapFeatureLayer;
+            if (mapLayer == null)
+                return;
+
+            searchDataGridView1.SetDataSource(!mapLayer.IsVisible ? null : mapLayer);
         }
 
         #endregion
