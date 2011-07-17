@@ -2292,7 +2292,7 @@ namespace HydroDesktop.Search
             for (int i = 0; i < layers.Count; i++)
             {
                 layers[i].VisibleChanged += SearchControl_VisibleChanged;
-                layers[i].IsVisible = false; //to raise event (DotSpatial wrong behavior)
+                layers[i].IsVisible = false; //to raise event (DotSpatial has wrong behavior)
                 layers[i].IsVisible = i == 0;
             }
 
@@ -2304,18 +2304,18 @@ namespace HydroDesktop.Search
             switch (SearchMode)
             {
                 case SearchMode.HISCentral:
-                    extractor = new HISCentralServiceInfoExtractor(treeViewWebServices.Nodes);
+                    extractor = new HISCentralInfoExtractor(treeViewWebServices.Nodes);
                     break;
                 case SearchMode.LocalMetaDataCache:
-                    goto case SearchMode.HISCentral;
-                    //extractor = new LocalMetaDataCacheServiceInfoExtractor();
+                    extractor = new HISCentralInfoExtractor(treeViewWebServices.Nodes);
+                        //new LocalInfoExtractor();
                     break;
                 default:
                     goto case SearchMode.HISCentral;
             }
             foreach (IMapFeatureLayer layer in laySearchResult.GetLayers())
             {
-                var searchInformer = new SearchInformer(extractor);
+                var searchInformer = new SearchLayerInformer(extractor);
                 searchInformer.Start(mapMain, layer);
             }
         }

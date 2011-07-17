@@ -7,7 +7,10 @@ using HydroDesktop.Search.LayerInformation.PopupControl;
 
 namespace HydroDesktop.Search.LayerInformation
 {
-    class SearchInformer
+    /// <summary>
+    /// Provides access to services in search layer
+    /// </summary>
+    class SearchLayerInformer
     {
         #region Fields
 
@@ -19,28 +22,32 @@ namespace HydroDesktop.Search.LayerInformation
 
         #endregion
 
+        #region Constructors
+
         /// <summary>
-        /// Constuctor of <see cref="SearchInformer"/>
+        /// Create instance of <see cref="SearchLayerInformer"/>
         /// </summary>
         /// <param name="serviceInfoExtractor">Instance of IServiceInfoExtractor</param>
         /// <exception cref="ArgumentNullException">serviceInfoExtractor must be not null.</exception>
-        public SearchInformer(IServiceInfoExtractor serviceInfoExtractor)
+        public SearchLayerInformer(IServiceInfoExtractor serviceInfoExtractor)
         {
             if (serviceInfoExtractor == null) throw new ArgumentNullException("serviceInfoExtractor");
             _serviceInfoExtractor = serviceInfoExtractor;
 
             toolTip = new Popup(customToolTip = new CustomToolTipControl());
             customToolTip.Popup = toolTip;
-            toolTip.AutoClose = true;
+            toolTip.AutoClose = false;
             toolTip.FocusOnOpen = false;
             toolTip.ShowingAnimation = toolTip.HidingAnimation = PopupAnimations.Blend;
         }
 
-        private Popup ToolTip
-        {
-            get { return toolTip; }
-        }
- 
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Stop engine
+        /// </summary>
         public void Stop()
         {
             if (_map != null)
@@ -55,6 +62,12 @@ namespace HydroDesktop.Search.LayerInformation
             }
         }
 
+        /// <summary>
+        /// Start engine
+        /// </summary>
+        /// <param name="map">Map to process</param>
+        /// <param name="layer">Layer to process</param>
+        /// <exception cref="ArgumentNullException"><para>map</para>, <para>layer</para> must be not null.</exception>
         public void Start(Map map, IMapFeatureLayer layer)
         {
             if (map == null) throw new ArgumentNullException("map");
@@ -69,6 +82,10 @@ namespace HydroDesktop.Search.LayerInformation
             layer.VisibleChanged += layer_VisibleChanged;
             layer_VisibleChanged(layer, EventArgs.Empty);
         }
+
+        #endregion
+
+        #region Private methods
 
         void layer_VisibleChanged(object sender, EventArgs e)
         {
@@ -100,8 +117,8 @@ namespace HydroDesktop.Search.LayerInformation
             }
 
             // If already visible same tooltip, not show again
-            var toolTipPointInfo = ((CustomToolTipControl)ToolTip.Content).PointInfo;
-            if (ToolTip.Visible && toolTipPointInfo.Equals(pInfo))
+            var toolTipPointInfo = ((CustomToolTipControl)toolTip.Content).PointInfo;
+            if (toolTip.Visible && toolTipPointInfo.Equals(pInfo))
                 return;
 
             HideToolTip();
@@ -111,15 +128,15 @@ namespace HydroDesktop.Search.LayerInformation
             toolTipPointInfo.ValueCount = pInfo.ValueCount;
             toolTipPointInfo.ServiceDesciptionUrl = pInfo.ServiceDesciptionUrl;
             
-            ToolTip.Show(_map, e.Location);   
+            toolTip.Show(_map, e.Location);
         }
 
         private void HideToolTip()
         {
-            ToolTip.Close();
+            toolTip.Close();
         }
      
-        private PointInfo Identify(IMapFeatureLayer layer, Extent tolerant)
+        private ServiceInfo Identify(IMapFeatureLayer layer, Extent tolerant)
         {
             Debug.Assert(layer != null);
 
@@ -133,7 +150,7 @@ namespace HydroDesktop.Search.LayerInformation
                 IFeature feature1 = feature;
                 var getColumnValue = (Func<string, string>)(column => (feature1.DataRow[column].ToString()));
 
-                var pInfo = new PointInfo();
+                var pInfo = new ServiceInfo();
                 foreach (var fld in feature.ParentFeatureSet.GetColumns())
                 {
                     switch (fld.ColumnName)
@@ -151,12 +168,8 @@ namespace HydroDesktop.Search.LayerInformation
                             break;
                         case "ServiceURL":
                             pInfo.ServiceDesciptionUrl =
-                                _serviceInfoExtractor.GetServiceDesciptionUrlByServiceUrl(getColumnValue(fld.ColumnName));
+                                _serviceInfoExtractor.GetServiceDesciptionUrl(getColumnValue(fld.ColumnName));
                             break;
-                        /*case "ServiceID":
-                            pInfo.ServiceDesciptionUrl =
-                                _serviceInfoExtractor.GetServiceDescriptionUrlByServiceID(getColumnValue(fld.ColumnName));
-                            break;*/
                     }
                 }
                 return pInfo;
@@ -172,5 +185,7 @@ namespace HydroDesktop.Search.LayerInformation
                 Stop();
             }
         }
+
+        #endregion
     }
 }

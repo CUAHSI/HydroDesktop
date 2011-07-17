@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace HydroDesktop.Search.LayerInformation
+﻿namespace HydroDesktop.Search.LayerInformation
 {
-    class LocalMetaDataCacheServiceInfoExtractor : IServiceInfoExtractor
+    class LocalInfoExtractor : IServiceInfoExtractor
     {
         private readonly MetadataCacheSearcher metaDataSearcher = new MetadataCacheSearcher();
 
-        public string GetServiceDesciptionUrlByServiceUrl(string serviceUrl)
+        public string GetServiceDesciptionUrl(string serviceUrl)
         {
             var webService = metaDataSearcher.GetWebServiceByServiceURL(serviceUrl);
             if (webService != null)

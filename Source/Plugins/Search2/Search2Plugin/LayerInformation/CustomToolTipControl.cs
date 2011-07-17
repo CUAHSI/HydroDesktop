@@ -24,7 +24,7 @@ namespace HydroDesktop.Search.LayerInformation
 
             SizeChanged += CustomToolTipControl_SizeChanged;
 
-            PointInfo = new PointInfo();
+            PointInfo = new ServiceInfo();
 
             PointInfo.PropertyChanged += PointInfo_PropertyChanged;
 
@@ -62,7 +62,7 @@ namespace HydroDesktop.Search.LayerInformation
 
         #region Properties
 
-        public PointInfo PointInfo { get; private set; }
+        public ServiceInfo PointInfo { get; private set; }
         public Popup Popup { get; set; }
 
         #endregion
@@ -139,96 +139,5 @@ namespace HydroDesktop.Search.LayerInformation
         }
 
         #endregion
-    }
-
-    public class PointInfo : INotifyPropertyChanged
-    {
-        const string unknown = "Unknown";
-
-        private static readonly PointInfo Unknown = new PointInfo();
-
-        public PointInfo()
-        {
-            DataSource = unknown;
-            SiteName = unknown;
-            ValueCount = null;
-            ServiceDesciptionUrl = unknown;
-        }
-
-        private string _dataSource;
-        public string DataSource
-        {
-            get { return _dataSource; }
-            set
-            {
-                _dataSource = value;
-                NotifyPropertyChanged("DataSource");
-            }
-        }
-
-        private string _siteName;
-        public string SiteName
-        {
-            get { return _siteName; }
-            set
-            {
-                _siteName = value;
-                NotifyPropertyChanged("SiteName");
-            }
-        }
-
-        private int? _valueCount;
-        public int? ValueCount
-        {
-            get { return _valueCount; }
-            set
-            {
-                _valueCount = value;
-                NotifyPropertyChanged("ValueCount");
-                NotifyPropertyChanged("ValueCountAsString");
-            }
-        }
-
-        private string _serviceDesciptionUrl;
-        public string ServiceDesciptionUrl
-        {
-            get { return _serviceDesciptionUrl; }
-            set
-            {
-                _serviceDesciptionUrl = value;
-                NotifyPropertyChanged("ServiceDesciptionUrl");
-            }
-        }
-
-        public string ValueCountAsString
-        {
-            get { return ValueCount.HasValue ? string.Format("{0} values", ValueCount) : unknown; }
-        }
-
-        public bool IsEmpty { get { return Equals(Unknown); } }
-
-        public override bool Equals(object obj)
-        {
-            var pi = obj as PointInfo;
-            if (pi == null) return false;
-
-            return pi.DataSource == DataSource &&
-                   pi.SiteName == SiteName &&
-                   pi.ValueCount == ValueCount &&
-                   pi.ServiceDesciptionUrl == ServiceDesciptionUrl;
-        }
-        public override int GetHashCode()
-        {
-            return DataSource.GetHashCode() ^ SiteName.GetHashCode() ^
-                   ValueCount.GetHashCode() ^ ServiceDesciptionUrl.GetHashCode();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
     }
 }
