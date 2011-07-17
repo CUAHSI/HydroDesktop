@@ -3,18 +3,18 @@ using System.Windows.Forms;
 
 namespace HydroDesktop.Search.LayerInformation
 {
-    class HISCentralServiceInfoExtractor : IServiceInfoExtractor
+    class HISCentralInfoExtractor : IServiceInfoExtractor
     {
         private readonly TreeNodeCollection _nodesToSearch;
 
-        public HISCentralServiceInfoExtractor(TreeNodeCollection nodesToSearch)
+        public HISCentralInfoExtractor(TreeNodeCollection nodesToSearch)
         {
             if (nodesToSearch == null) throw new ArgumentNullException("nodesToSearch");
             _nodesToSearch = nodesToSearch;
         }
 /*
       // used in version with sub-nodes
-        public string GetServiceDesciptionUrlByServiceUrl(string serviceUrl)
+        public string GetServiceDesciption(string serviceUrl)
         {
             var getValue = (Func<TreeNode, string>) (n =>
                                                          {
@@ -35,7 +35,7 @@ namespace HydroDesktop.Search.LayerInformation
             return null;
         }
         */
-        public string GetServiceDesciptionUrlByServiceUrl(string serviceUrl)
+        public string GetServiceDesciptionUrl(string serviceUrl)
         {
             foreach (TreeNode node in _nodesToSearch)
             {

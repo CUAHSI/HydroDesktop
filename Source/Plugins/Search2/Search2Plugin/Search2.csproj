@@ -155,15 +155,10 @@
     <Compile Include="LayerInformation\CustomToolTipControl.Designer.cs">
       <DependentUpon>CustomToolTipControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="LayerInformation\HISCentralServiceInfoExtractor.cs" />
+    <Compile Include="LayerInformation\HISCentralInfoExtractor.cs" />
     <Compile Include="LayerInformation\IServiceInfoExtractor.cs" />
-    <Compile Include="LayerInformation\LocalMetaDataCacheServiceInfoExtractor.cs" />
-    <Compile Include="LayerInformation\PopupControl\ComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="LayerInformation\PopupControl\ComboBox.Designer.cs">
-      <DependentUpon>ComboBox.cs</DependentUpon>
-    </Compile>
+    <Compile Include="LayerInformation\LocalInfoExtractor.cs" />
+    <Compile Include="LayerInformation\ServiceInfo.cs" />
     <Compile Include="LayerInformation\PopupControl\GripBounds.cs" />
     <Compile Include="LayerInformation\PopupControl\NativeMethods.cs" />
     <Compile Include="LayerInformation\PopupControl\Popup.cs">
@@ -173,13 +168,7 @@
       <DependentUpon>Popup.cs</DependentUpon>
     </Compile>
     <Compile Include="LayerInformation\PopupControl\PopupAnimations.cs" />
-    <Compile Include="LayerInformation\PopupControl\PopupComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="LayerInformation\PopupControl\PopupComboBox.Designer.cs">
-      <DependentUpon>PopupComboBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LayerInformation\SearchInformer.cs" />
+    <Compile Include="LayerInformation\SearchLayerInformer.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />
     <Compile Include="SearchLayerCreator.cs" />
@@ -289,9 +278,7 @@
     </Content>
     <EmbeddedResource Include="default_web_services.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServiceIcons\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
