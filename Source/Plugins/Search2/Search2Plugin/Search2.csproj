@@ -149,12 +149,36 @@
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="LayerInformation\CustomToolTip.cs">
-      <SubType>Component</SubType>
+    <Compile Include="LayerInformation\CustomToolTipControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\CustomToolTipControl.Designer.cs">
+      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
     </Compile>
     <Compile Include="LayerInformation\HISCentralServiceInfoExtractor.cs" />
     <Compile Include="LayerInformation\IServiceInfoExtractor.cs" />
     <Compile Include="LayerInformation\LocalMetaDataCacheServiceInfoExtractor.cs" />
+    <Compile Include="LayerInformation\PopupControl\ComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\ComboBox.Designer.cs">
+      <DependentUpon>ComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\GripBounds.cs" />
+    <Compile Include="LayerInformation\PopupControl\NativeMethods.cs" />
+    <Compile Include="LayerInformation\PopupControl\Popup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\Popup.Designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\PopupAnimations.cs" />
+    <Compile Include="LayerInformation\PopupControl\PopupComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\PopupComboBox.Designer.cs">
+      <DependentUpon>PopupComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerInformation\SearchInformer.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />
@@ -200,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Download\RedownloadControl.resx">
       <DependentUpon>RedownloadControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerInformation\CustomToolTipControl.resx">
+      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
