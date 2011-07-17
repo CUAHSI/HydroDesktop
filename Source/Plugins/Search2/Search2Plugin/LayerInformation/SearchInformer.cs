@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using HydroDesktop.Search.LayerInformation.PopupControl;
 
 namespace HydroDesktop.Search.LayerInformation
 {
@@ -13,7 +14,8 @@ namespace HydroDesktop.Search.LayerInformation
         private readonly IServiceInfoExtractor _serviceInfoExtractor;
         private Map _map;
         private IMapFeatureLayer _layer;
-        private CustomToolTip _toolTip;
+        private readonly Popup toolTip;
+        private readonly CustomToolTipControl customToolTip;
 
         #endregion
 
@@ -26,18 +28,24 @@ namespace HydroDesktop.Search.LayerInformation
         {
             if (serviceInfoExtractor == null) throw new ArgumentNullException("serviceInfoExtractor");
             _serviceInfoExtractor = serviceInfoExtractor;
+
+            toolTip = new Popup(customToolTip = new CustomToolTipControl());
+            customToolTip.Popup = toolTip;
+            toolTip.AutoClose = true;
+            toolTip.FocusOnOpen = false;
+            toolTip.ShowingAnimation = toolTip.HidingAnimation = PopupAnimations.Blend;
         }
 
-        private CustomToolTip ToolTip
+        private Popup ToolTip
         {
-            get { return _toolTip ?? (_toolTip = new CustomToolTip()); }
+            get { return toolTip; }
         }
-
+ 
         public void Stop()
         {
             if (_map != null)
             {
-                _map.GeoMouseMove -= _map_GeoMouseMove;
+                _map.MouseMove -= _map_MouseMove;
                 _map.Layers.LayerRemoved -= Layers_LayerRemoved;
             }
 
@@ -67,22 +75,14 @@ namespace HydroDesktop.Search.LayerInformation
             if (!_layer.IsVisible)
             {
                 HideToolTip();
-                _map.GeoMouseMove -= _map_GeoMouseMove;
+                _map.MouseMove -= _map_MouseMove;
                 return;
             }
-            _map.GeoMouseMove -= _map_GeoMouseMove;
-            _map.GeoMouseMove += _map_GeoMouseMove;
+            _map.MouseMove -= _map_MouseMove;
+            _map.MouseMove += _map_MouseMove;
         }
 
-        private void HideToolTip()
-        {
-            if (ToolTip.IsVisible)
-            {
-                ToolTip.Hide(_map);
-            }
-        }
-
-        void _map_GeoMouseMove(object sender, GeoMouseArgs e)
+        void _map_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (!_layer.IsVisible)
             {
@@ -90,24 +90,33 @@ namespace HydroDesktop.Search.LayerInformation
             }
 
             var rtol = new Rectangle(e.X - 8, e.Y - 8, 0x10, 0x10);
-            var tolerant = e.Map.PixelToProj(rtol);
+            var tolerant = _map.PixelToProj(rtol);
 
             var pInfo = Identify(_layer, tolerant);
-            if (pInfo == null)
-            {
-                HideToolTip();
-                return;
-            }
-            var info = pInfo.ToString();
-            if (string.IsNullOrEmpty(info))
+            if (pInfo == null || pInfo.IsEmpty)
             {
                 HideToolTip();
                 return;
             }
 
-            if (ToolTip.IsVisible && info == ToolTip.GetToolTip(_map)) return;
+            // If already visible same tooltip, not show again
+            var toolTipPointInfo = ((CustomToolTipControl)ToolTip.Content).PointInfo;
+            if (ToolTip.Visible && toolTipPointInfo.Equals(pInfo))
+                return;
+
+            HideToolTip();
+
+            toolTipPointInfo.DataSource = pInfo.DataSource;
+            toolTipPointInfo.SiteName = pInfo.SiteName;
+            toolTipPointInfo.ValueCount = pInfo.ValueCount;
+            toolTipPointInfo.ServiceDesciptionUrl = pInfo.ServiceDesciptionUrl;
             
-            ToolTip.Show(info, _map, e.Location);
+            ToolTip.Show(_map, e.Location);   
+        }
+
+        private void HideToolTip()
+        {
+            ToolTip.Close();
         }
      
         private PointInfo Identify(IMapFeatureLayer layer, Extent tolerant)
@@ -136,7 +145,9 @@ namespace HydroDesktop.Search.LayerInformation
                             pInfo.SiteName = getColumnValue(fld.ColumnName);
                             break;
                         case "ValueCount":
-                            pInfo.ValueCount = getColumnValue(fld.ColumnName);
+                            var value = getColumnValue(fld.ColumnName);
+                            int val;
+                            pInfo.ValueCount = !Int32.TryParse(value, out val) ? (int?) null : val;
                             break;
                         case "ServiceURL":
                             pInfo.ServiceDesciptionUrl =
@@ -161,28 +172,5 @@ namespace HydroDesktop.Search.LayerInformation
                 Stop();
             }
         }
-
-        #region Nested types
-
-        class PointInfo
-        {
-            public string DataSource { private get; set; }
-            public string SiteName { private get; set; }
-            public string ValueCount { private get; set; }
-            public string ServiceDesciptionUrl { private get; set; }
-
-            public override string ToString()
-            {
-                const string unknown = "Unknown";
-                return string.Format("{1}{0}{2}{0}{3}{0}{4}",
-                                     Environment.NewLine,
-                                     string.IsNullOrWhiteSpace(DataSource) ? unknown + "DataSource" : DataSource,
-                                     string.IsNullOrWhiteSpace(SiteName) ? unknown + "SiteName" : SiteName,
-                                     string.IsNullOrWhiteSpace(ValueCount) ? unknown + " ValueCount" : ValueCount + " values",
-                                     string.IsNullOrWhiteSpace(ServiceDesciptionUrl) ? unknown + " ServiceURL" : ServiceDesciptionUrl);
-            }
-        }
-
-        #endregion
     }
 }
