@@ -62,8 +62,16 @@
       <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Controls">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -91,11 +99,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeDatabaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeDatabaseForm.designer.cs">
+      <DependentUpon>ChangeDatabaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="cTableView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="cTableView.Designer.cs">
       <DependentUpon>cTableView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteThemeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeleteThemeForm.designer.cs">
+      <DependentUpon>DeleteThemeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,8 +126,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChangeDatabaseForm.resx">
+      <DependentUpon>ChangeDatabaseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="cTableView.resx">
       <DependentUpon>cTableView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteThemeForm.resx">
+      <DependentUpon>DeleteThemeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -119,6 +145,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\tableView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refreshTheme.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refreshTheme_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\changeDatabase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\newDatabase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\changeDatabase_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\newDatabase_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

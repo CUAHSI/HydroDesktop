@@ -12,7 +12,7 @@ using DotSpatial.Controls;
 [assembly: AssemblyTitle("TableView")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Idaho State University")]
 [assembly: AssemblyProduct("TableView")]
 [assembly: AssemblyCopyright("Copyright ©  2009")]
 [assembly: AssemblyTrademark("")]
@@ -41,5 +41,5 @@ using DotSpatial.Controls;
 
 // It is necessary to set the PluginAssembly attribute so that the assembly is
 // properly recognized by the main HydroDesktop application as a plugin
-[assembly: PluginAssembly]
+//[assembly: PluginAssembly]
 
