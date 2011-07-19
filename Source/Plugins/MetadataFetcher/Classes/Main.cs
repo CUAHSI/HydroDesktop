@@ -10,30 +10,20 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
 using System.Drawing;
 using HydroDesktop.Database;
+using DotSpatial.Controls.Header;
 
 #endregion
 
 namespace HydroDesktop.MetadataFetcher
 {
-	[Plugin ( "Metadata Fetcher", Author = "MapWindow", UniqueName = "mw_DataFetcher_1", Version = "1" )]
 	class Main : Extension, IMapPlugin
 	{
 		#region Variables
 
-		// Reference to the main application and its UI items
+        public const string TableTabKey = "kTable";
+        
+        // Reference to the main application and its UI items
 		private IMapPluginArgs _mapArgs;
-
-		private RibbonPanel _rPanelMetadataFetcher;
-
-		private RibbonButton _rBtnDownloadMetadata;
-
-		private RibbonButton _rBtnAddServices;
-
-		// Toolbar button added by the plugin
-		//private ToolStripButton btnMetadataFetcher;
-
-		// Menu for the Metadata Fetcher
-		//private ToolStripMenuItem mnuMetadataFetcher;
 
 		private MainForm _mainForm = null;
 		private AddServicesForm _addServicesForm = null;
@@ -47,7 +37,11 @@ namespace HydroDesktop.MetadataFetcher
 		/// </summary>
 		protected override void OnDeactivate ()
 		{
-			_mapArgs.Ribbon.Tabs[1].Panels.Remove ( _rPanelMetadataFetcher );
+            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            
+            //_mapArgs.AppManager.HeaderControl.RemoveItem("kDownloadMetadata");
+            //_mapArgs.AppManager.HeaderControl.RemoveItem("kAddServices");
+            //_mapArgs.Ribbon.Tabs[1].Panels.Remove ( _rPanelMetadataFetcher );
 
 			//necessary in plugin deactivation
 			base.OnDeactivate ();
@@ -65,68 +59,35 @@ namespace HydroDesktop.MetadataFetcher
 		{
 			_mapArgs = args;
 
-			// Create a new Panel and add it to the "Data" Tab.
-			_rPanelMetadataFetcher = new RibbonPanel ( "Metadata", RibbonPanelFlowDirection.Bottom );
-			_rPanelMetadataFetcher.ButtonMoreVisible = false;
-			_rPanelMetadataFetcher.Image = Properties.Resources.Metadata_Fetcher_32;
-			_mapArgs.Ribbon.Tabs[1].Panels.Add ( _rPanelMetadataFetcher );
+            //// Create a new Panel and add it to the "Table" Tab.
+            //_rPanelMetadataFetcher = new RibbonPanel ( "Metadata", RibbonPanelFlowDirection.Bottom );
+            //_rPanelMetadataFetcher.ButtonMoreVisible = false;
+            //_rPanelMetadataFetcher.Image = Properties.Resources.Metadata_Fetcher_32;
+            //_mapArgs.Ribbon.Tabs[1].Panels.Add ( _rPanelMetadataFetcher );
 
 			// Add button to manage metadata.
-			_rBtnDownloadMetadata = new RibbonButton ( "Manage" );
-			_rBtnDownloadMetadata.Image = Properties.Resources.Metadata_Fetcher_32;
-			_rBtnDownloadMetadata.SmallImage = Properties.Resources.Metadata_Fetcher_16;
-			_rBtnDownloadMetadata.ToolTipTitle = "Manage";
-			_rBtnDownloadMetadata.ToolTip = "Manage the contents of the local metadata catalog.";
-			_rBtnDownloadMetadata.Click += new EventHandler ( mnuDownloadMetadata_Click );
-
-			_rPanelMetadataFetcher.Items.Add ( _rBtnDownloadMetadata );
-
+            var btnDownloadMetadata = new SimpleActionItem("Manage", mnuDownloadMetadata_Click);
+            //btnDownloadMetadata.Key = "kDownloadMetadata";
+            btnDownloadMetadata.RootKey = TableTabKey;
+			btnDownloadMetadata.LargeImage = Properties.Resources.Metadata_Fetcher_32;
+			btnDownloadMetadata.SmallImage = Properties.Resources.Metadata_Fetcher_16;
+			//ToolTipTitle is not supported in HeaderControl
+            //btnDownloadMetadata.ToolTipTitle = "Manage";
+			btnDownloadMetadata.SimpleToolTip = "Manage the contents of the local metadata catalog.";
+            btnDownloadMetadata.GroupCaption = "Metadata";
+            args.AppManager.HeaderControl.Add(btnDownloadMetadata);
 
 			// Add button to add more services to the list of services for metadata harvesting.
-			_rBtnAddServices = new RibbonButton ( "Add" );
-			_rBtnAddServices.Image = Properties.Resources.Metadata_Fetcher_Add_32;
-			_rBtnAddServices.SmallImage = Properties.Resources.Metadata_Fetcher_Add_16;
-			_rBtnAddServices.ToolTipTitle = "Add";
-			_rBtnAddServices.ToolTip = "Add services to the list of services that can be harvested in metadata catalog.";
-			_rBtnAddServices.Click += new EventHandler ( mnuAddServices_Click );
-
-			_rPanelMetadataFetcher.Items.Add ( _rBtnAddServices );
-
-			//btnMetadataFetcher = new ToolStripButton ();
-
-			// Add UI features
-			//btnMetadataFetcher.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			//btnMetadataFetcher.Image = Properties.Resources.Database.ToBitmap ();
-			//btnMetadataFetcher.Name = "btnMetadataFetcher";
-			//btnMetadataFetcher.ToolTipText = "Metadata Fetcher";
-			//btnMetadataFetcher.Size = new System.Drawing.Size ( 23, 69 );
-			//btnMetadataFetcher.Click += new EventHandler ( btnMetadataFetcher_Click );
-
-			//if ( _mapArgs.ToolStripContainer != null )
-			//{
-			//	_mapArgs.MainToolStrip.Items.Add ( btnMetadataFetcher );
-			//}
-
-			//Add ToolStrip Menu for this plugin
-			//mnuMetadataFetcher = new ToolStripMenuItem("Metadata Fetcher");
-
-			//Add entries to the plugin menu
-			//ToolStripMenuItem mnuDownloadMetadata = new ToolStripMenuItem("Download Metadata");
-			//mnuMetadataFetcher.DropDown.Items.Add(mnuDownloadMetadata);
-
-			//ToolStripMenuItem mnuAddServices = new ToolStripMenuItem("Add Services");
-			//mnuMetadataFetcher.DropDown.Items.Add(mnuAddServices);
-
-			//ToolStripMenuItem mnuRemoveServices = new ToolStripMenuItem("Remove Services");
-			//mnuMetadataFetcher.DropDown.Items.Add(mnuRemoveServices);
-
-			//if (_mapArgs.MainMenu != null)
-			//{
-			//    _mapArgs.MainMenu.Items.Add(mnuMetadataFetcher);
-			//    mnuDownloadMetadata.Click += new EventHandler(mnuDownloadMetadata_Click);
-			//    mnuAddServices.Click +=new EventHandler(mnuAddServices_Click);
-			//}
-
+			var btnAddServices = new SimpleActionItem ( "Add", mnuAddServices_Click );
+            //btnAddServices.Key = "kAddServices";
+            btnAddServices.RootKey = TableTabKey;
+			btnAddServices.LargeImage = Properties.Resources.Metadata_Fetcher_Add_32;
+			btnAddServices.SmallImage = Properties.Resources.Metadata_Fetcher_Add_16;
+            //ToolTipTitle is not supported in HeaderControl
+            //btnAddServices.ToolTipTitle = "Add";
+			btnAddServices.SimpleToolTip = "Add services to the list of services that can be harvested in metadata catalog.";
+            btnAddServices.GroupCaption = "Metadata";
+			args.AppManager.HeaderControl.Add ( btnAddServices );
 		}
 
 		#endregion
@@ -163,26 +124,6 @@ namespace HydroDesktop.MetadataFetcher
 				_mainForm.SelectNewServices ();
 			}
 		}
-
-
-		//TODO: Maybe Change this Icon to something about downloading metadata
-		//void btnMetadataFetcher_Click(object sender, EventArgs e)
-		//{
-		//    // Initialize the main form
-		//    if ( _mainForm == null )
-		//    {
-		//        _mainForm = new MainForm ();
-		//    }
-
-		//    // Show the form
-		//    if ( _mainForm.Visible == false )
-		//    {
-		//        _mainForm.Show ();
-		//    }
-
-		//    //_mainForm.RefreshServiceList(); //This is already called on the mainForm_Load event method
-		//    _mainForm.Focus();
-		//}
 
 		#endregion
 

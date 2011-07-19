@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.Main
+﻿namespace TableView
 {
     partial class DeleteThemeForm
     {

@@ -45,15 +45,12 @@
             this.lstProjectTemplates = new System.Windows.Forms.ListBox();
             this.rbNewProjectTemplate = new System.Windows.Forms.RadioButton();
             this.btnOK = new System.Windows.Forms.Button();
-            this.spatialStatusStrip1 = new DotSpatial.Controls.SpatialStatusStrip();
             this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.panelStatus = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
-            this.spatialStatusStrip1.SuspendLayout();
-            this.panelStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -150,7 +147,7 @@
             // 
             this.btnBrowseProject.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseProject.Image")));
             this.btnBrowseProject.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBrowseProject.Location = new System.Drawing.Point(138, 99);
+            this.btnBrowseProject.Location = new System.Drawing.Point(138, 97);
             this.btnBrowseProject.Name = "btnBrowseProject";
             this.btnBrowseProject.Size = new System.Drawing.Size(78, 22);
             this.btnBrowseProject.TabIndex = 16;
@@ -162,7 +159,7 @@
             // rbOpenExistingProject
             // 
             this.rbOpenExistingProject.AutoSize = true;
-            this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 102);
+            this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 100);
             this.rbOpenExistingProject.Name = "rbOpenExistingProject";
             this.rbOpenExistingProject.Size = new System.Drawing.Size(126, 17);
             this.rbOpenExistingProject.TabIndex = 15;
@@ -212,21 +209,6 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // spatialStatusStrip1
-            // 
-            this.spatialStatusStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spatialStatusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblProgress,
-            this.toolStripProgressBar1});
-            this.spatialStatusStrip1.Location = new System.Drawing.Point(0, 0);
-            this.spatialStatusStrip1.Name = "spatialStatusStrip1";
-            this.spatialStatusStrip1.ProgressBar = this.toolStripProgressBar1;
-            this.spatialStatusStrip1.ProgressLabel = this.lblProgress;
-            this.spatialStatusStrip1.Size = new System.Drawing.Size(393, 23);
-            this.spatialStatusStrip1.SizingGrip = false;
-            this.spatialStatusStrip1.TabIndex = 16;
-            this.spatialStatusStrip1.Text = "spatialStatusStrip1";
-            // 
             // lblProgress
             // 
             this.lblProgress.Name = "lblProgress";
@@ -244,7 +226,6 @@
             // 
             this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelStatus.Controls.Add(this.spatialStatusStrip1);
             this.panelStatus.Location = new System.Drawing.Point(8, 243);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(393, 23);
@@ -277,10 +258,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).EndInit();
             this.groupBoxProject.ResumeLayout(false);
             this.groupBoxProject.PerformLayout();
-            this.spatialStatusStrip1.ResumeLayout(false);
-            this.spatialStatusStrip1.PerformLayout();
-            this.panelStatus.ResumeLayout(false);
-            this.panelStatus.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

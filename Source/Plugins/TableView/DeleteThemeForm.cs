@@ -10,7 +10,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces;
 
-namespace HydroDesktop.Main
+namespace TableView
 {
     public partial class DeleteThemeForm : Form
     {

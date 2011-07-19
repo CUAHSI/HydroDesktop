@@ -6,15 +6,14 @@ using DotSpatial.Controls;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HIS_Database")]
+[assembly: AssemblyTitle("Metadata Fetcher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HIS_Database")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
+[assembly: AssemblyCompany("Tim Whiteaker")]
+[assembly: AssemblyProduct("Metadata Fetcher")]
+[assembly: AssemblyCopyright("Copyright © CUAHSI 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: PluginAssembly]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

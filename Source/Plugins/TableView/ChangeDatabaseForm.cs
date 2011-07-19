@@ -13,7 +13,7 @@ using HydroDesktop.Interfaces;
 using System.IO;
 using HydroDesktop.Controls.Themes;
 
-namespace HydroDesktop.Main
+namespace TableView
 {
     public partial class ChangeDatabaseForm : Form
     {
