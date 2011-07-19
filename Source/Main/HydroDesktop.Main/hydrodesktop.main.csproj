@@ -61,58 +61,59 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="DotSpatial.Analysis, Version=1.0.2011.4, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Analysis.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Analysis.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Analysis.Tests">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Analysis.Tests.dll</HintPath>
+    <Reference Include="DotSpatial.Analysis.Tests, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Analysis.Tests.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Compatibility, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=094c8fdea7f4a002, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Compatibility.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Compatibility.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Data.Forms.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Rasters.GdalExtension">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Data.Rasters.GdalExtension.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=c90293dbec1f136e, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Modeling.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Modeling.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Modeling.Forms.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Modeling.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Positioning, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Positioning.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Positioning.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Positioning.Design, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=b4b0b185210c9dae, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Positioning.Design.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Positioning.Design.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Positioning.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=3a45fedac1c4cdab, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Positioning.Forms.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Positioning.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Projections, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Projections.dll</HintPath>
-    </Reference>
+    <Reference Include="DotSpatial.Projections, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=x86" />
     <Reference Include="DotSpatial.Projections.Forms, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Projections.Forms.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Projections.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Serialization, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Serialization.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Symbology.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Symbology.Forms.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Symbology.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=x86">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\DotSpatial.Topology.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Topology.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial_x86.1.0.482\lib\Ionic.Zip.dll</HintPath>
+      <HintPath>..\packages\DotSpatial_x861.0.522\lib\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
