@@ -62,6 +62,9 @@
       <HintPath>..\..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
