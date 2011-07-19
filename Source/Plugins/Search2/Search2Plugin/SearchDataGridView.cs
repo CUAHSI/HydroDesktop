@@ -88,11 +88,11 @@ public class SearchDataGridView : DataGridView
     /// <param name="sourceLayer">The source map feature layer</param>
     public void SetDataSource(IMapFeatureLayer sourceLayer)
     {
-            if (sourceLayer == null)
-            {
-                DataSource = null;
-                return;
-            }
+        if (sourceLayer == null)
+        {
+            DataSource = null;
+            return;
+        }
 
         _layer = sourceLayer;
         _layer.SelectionEnabled = true;
