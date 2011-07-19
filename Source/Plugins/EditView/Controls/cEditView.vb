@@ -49,7 +49,9 @@ Public Class cEditView
 
     Public Sub RefreshSelection()
         pTimeSeriesPlot.Clear()
-        'SeriesSelector.RefreshSelection()
+
+        connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
+        dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
     End Sub
 
     Private Sub SettingColor()
@@ -169,7 +171,7 @@ Public Class cEditView
 
         data.Dispose()
 
-        ckbShowLegend_CheckedChanged()
+        'ckbShowLegend_CheckedChanged()
 
         colorcount += 1
     End Sub
@@ -442,16 +444,29 @@ Public Class cEditView
     '    'selectedSeriesIdList.Clear()
     'End Sub
 
-    Public Sub ckbShowLegend_CheckedChanged()
+    Public Sub ckbShowLegend_Click()
         If ShowLegend Then
-            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = True
+
+            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
+            ShowLegend = False
+
         Else
-            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
-        End If
-        If pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count <= 1 Then
-            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
+
+            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = True
+            ShowLegend = True
+
         End If
         pTimeSeriesPlot.Refreshing()
+
+        'If ShowLegend Then
+        '    pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = True
+        'Else
+        '    pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
+        'End If
+        'If pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count <= 1 Then
+        '    pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
+        'End If
+        'pTimeSeriesPlot.Refreshing()
     End Sub
 
     Private Sub EditingReminder(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs)

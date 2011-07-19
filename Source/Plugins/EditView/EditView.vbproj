@@ -266,10 +266,8 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="References\ZedGraph.dll" />
+    <None Include="Resources\Legend.png" />
     <None Include="Resources\Interpolate.png" />
     <None Include="Resources\DeriveNewSeries.png" />
     <None Include="Resources\Edit.png" />
