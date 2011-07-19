@@ -109,10 +109,6 @@ namespace HydroDesktop.Search
             //set the default search mode
             SearchMode = SearchMode.HISCentral;
 
-            //set the series selected event
-            searchDataGridView1.SelectionChanged += searchDataGridView1_SelectionChanged;
-
-
             _downLoadManager = new DownloadManager {Log = log};
         }
 
@@ -1995,9 +1991,8 @@ namespace HydroDesktop.Search
                 AddExistingThemes();
                 //once download is complete, set panelsearch visibility to false
                 panelSearch.Visible = false;
-                //enable the groupbox5/btndownloa
-                //check if searchdatagridview1 has >0 rows enable the label
-                lblDataSeries.Visible = true;
+
+                searchResultsControl.Visible = true;
             }
         }
 
@@ -2050,15 +2045,6 @@ namespace HydroDesktop.Search
 
         #endregion
 
-        /// <summary>
-        /// When user selects some series for download
-        /// </summary>
-        void searchDataGridView1_SelectionChanged(object sender, EventArgs e)
-        {
-            int numSelected = searchDataGridView1.SelectedRows.Count;
-            lblDataSeries.Text = String.Format("{0} out of {1} series selected", numSelected, searchDataGridView1.RowCount);
-        }
-
         private void AddExistingThemes()
         {
             lstThemes.Items.Clear();
@@ -2081,8 +2067,7 @@ namespace HydroDesktop.Search
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            //search datagrid view for selection of data series
-            if (searchDataGridView1.SelectedRows.Count < 1)
+            if (searchResultsControl.SelectedRowsCount < 1)
             {
                 MessageBox.Show("Please Select at least single data-series row to download.");
                 return;
@@ -2140,34 +2125,8 @@ namespace HydroDesktop.Search
             }
 
             //create a list of the SiteCode-VariableCode combinations for download
-            var downloadList = new List<OneSeriesDownloadInfo>();
-            var fileNameList = new List<String>(); //to ensure, that no duplicate files are 
-            //downloaded..
-            foreach (IFeature selFeature in searchDataGridView1.MapLayer.Selection.ToFeatureList())
-            {
-                DataRow row = selFeature.DataRow;
-
-                var di = new OneSeriesDownloadInfo
-                             {
-                                 SiteName = row["SiteName"].ToString(),
-                                 FullSiteCode = row["SiteCode"].ToString(),
-                                 FullVariableCode = row["VarCode"].ToString(),
-                                 Wsdl = row["ServiceURL"].ToString(),
-                                 StartDate = dateTimePickStart.Value,
-                                 EndDate = dateTimePickEnd.Value,
-                                 VariableName = row["VarName"].ToString(),
-                                 Latitude = Convert.ToDouble(row["Latitude"]),
-                                 Longitude = Convert.ToDouble(row["Longitude"])
-                             };
-
-                string fileBaseName = di.FullSiteCode + "|" + di.FullVariableCode;
-                if (!fileNameList.Contains(fileBaseName))
-                {
-                    fileNameList.Add(fileBaseName);
-                    downloadList.Add(di);
-                }
-            }
-
+            var downloadList = searchResultsControl.GetSelectedSeriesAsDownloadInfo(dateTimePickStart.Value,
+                                                                                    dateTimePickEnd.Value);
             var arg = new StartDownloadArg(downloadList, theme);
 
             //setup the progress bar
@@ -2297,7 +2256,7 @@ namespace HydroDesktop.Search
             }
 
             //to prevent the first row of data grid view from becoming selected
-            searchDataGridView1.ClearSelection();
+            searchResultsControl.ClearSelectionInGridView();
 
             // Starting information bubble engine
             IServiceInfoExtractor extractor;
@@ -2324,7 +2283,8 @@ namespace HydroDesktop.Search
             var mapLayer = sender as IMapFeatureLayer;
             if (mapLayer == null)
                 return;
-            searchDataGridView1.SetDataSource(!mapLayer.IsVisible ? null : mapLayer);
+
+            searchResultsControl.SetDataSource(!mapLayer.IsVisible ? null : mapLayer);
         }
 
         #endregion
@@ -2347,14 +2307,14 @@ namespace HydroDesktop.Search
                 groupResults.Enabled = false;
                 btnDownload.Enabled = false;
                 btnReset.Enabled = false;
-                searchDataGridView1.DataSource = null;
+                searchResultsControl.SetDataSource(null);
                 tabControl2.SelectedIndex = 0;
                 panelSearch.Visible = true;
                 listBox4.Items.Clear();
                 lbSelectedKeywords.Items.Clear();
                 fillXml();
                 fillAreaXml();
-                lblDataSeries.Visible = false;
+                searchResultsControl.Visible = false;
             }
             else
             {
@@ -2524,8 +2484,9 @@ namespace HydroDesktop.Search
             if (rectSelectMode == false) dataGridView1_Click(null, null);
 
             //setting the datagrid view to null before next search results come in
-            searchDataGridView1.DataSource = null;
-            lblDataSeries.Visible = false;
+            searchResultsControl.SetDataSource(null);
+            searchResultsControl.Visible = false;
+            
             groupResults.Enabled = false;
             btnDownload.Enabled = false;
             btnReset.Enabled = false;
