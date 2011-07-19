@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FetchBasemap", "FetchBasemap.csproj", "{0CB88ED9-E1DE-424B-8F49-547306F489ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Debug|Any CPU.ActiveCfg = Release|x86
+		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Debug|Any CPU.Build.0 = Release|x86
+		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

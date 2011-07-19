@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2D745DC4-9B59-4AA2-94DC-2370F1EE2991}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Controls</RootNamespace>
+    <AssemblyName>HydroDesktop.Controls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Analysis, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Analysis.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Compatibility, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=094c8fdea7f4a002, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Compatibility.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Controls, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=c90293dbec1f136e, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Modeling.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Modeling.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning">
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Positioning.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning.Design">
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Positioning.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning.Forms">
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Positioning.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology, Version=1.0.2011.3, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\DotSpatial.Topology.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial_x86.1.0.511\lib\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FilterDataSeries.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilterDataSeries.Designer.cs">
+      <DependentUpon>FilterDataSeries.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmComplexSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmComplexSelection.Designer.cs">
+      <DependentUpon>frmComplexSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProperty.Designer.cs">
+      <DependentUpon>frmProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HydroApplicationManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HydroDatabase.cs" />
+    <Compile Include="NewTheme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewTheme.Designer.cs">
+      <DependentUpon>NewTheme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SeriesSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SeriesSelector3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SeriesSelector3.Designer.cs">
+      <DependentUpon>SeriesSelector3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SeriesView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SeriesView.Designer.cs">
+      <DependentUpon>SeriesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Themes\SymbologyCreator.cs" />
+    <Compile Include="Themes\ThemeManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FilterDataSeries.resx">
+      <DependentUpon>FilterDataSeries.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmComplexSelection.resx">
+      <DependentUpon>frmComplexSelection.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProperty.resx">
+      <DependentUpon>frmProperty.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewTheme.resx">
+      <DependentUpon>NewTheme.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SeriesSelector.resx">
+      <DependentUpon>SeriesSelector.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SeriesSelector3.resx">
+      <DependentUpon>SeriesSelector3.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SeriesView.resx">
+      <DependentUpon>SeriesView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
+      <Name>HydroDesktop.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\defaulticon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AmeriFlux.gif" />
+    <None Include="Resources\BaltimoreGW.gif" />
+    <None Include="Resources\BaltPrecip.gif" />
+    <None Include="Resources\Benthic.gif" />
+    <None Include="Resources\BESOD.gif" />
+    <None Include="Resources\BESSoil.gif" />
+    <None Include="Resources\CIMS.gif" />
+    <None Include="Resources\COTCsnow.gif" />
+    <None Include="Resources\czo_ariz.gif" />
+    <None Include="Resources\czo_boulder.gif" />
+    <None Include="Resources\czo_catalina.gif" />
+    <None Include="Resources\czo_luquillo.gif" />
+    <None Include="Resources\czo_merced.gif" />
+    <None Include="Resources\czo_psu.gif" />
+    <None Include="Resources\czo_udel.gif" />
+    <None Include="Resources\CZSNW.gif" />
+    <None Include="Resources\EPA.gif" />
+    <None Include="Resources\GlacialRidge.gif" />
+    <None Include="Resources\GW_Edwards.gif" />
+    <None Include="Resources\HermineFlood.gif" />
+    <None Include="Resources\HydroNEXRAD.gif" />
+    <None Include="Resources\IIHRTippingB.gif" />
+    <None Include="Resources\IIHRWQ.gif" />
+    <None Include="Resources\LBL.gif" />
+    <None Include="Resources\LittleBearRiver.gif" />
+    <None Include="Resources\LoganRiver.gif" />
+    <None Include="Resources\MAST.gif" />
+    <None Include="Resources\MPE.gif" />
+    <None Include="Resources\MuddyRiver.gif" />
+    <None Include="Resources\MudLake.gif" />
+    <None Include="Resources\NADP.gif" />
+    <None Include="Resources\NCDCISH.gif" />
+    <None Include="Resources\NLDAS_MOS0125_H.gif" />
+    <None Include="Resources\NPCA.gif" />
+    <None Include="Resources\NWISDV.gif" />
+    <None Include="Resources\NWISGW.gif" />
+    <None Include="Resources\NWISIID.gif" />
+    <None Include="Resources\NWISUV.gif" />
+    <None Include="Resources\NWS-WGRFC MPE.gif" />
+    <None Include="Resources\NWS-WGRFC_Daily_MPE.gif" />
+    <None Include="Resources\NWS-WGRFC_Daily_MPE_Recent_Values.gif" />
+    <None Include="Resources\NWS-WGRFC_Hourly_MPE.gif" />
+    <None Include="Resources\NWS-WGRFC_Hourly_MPE_Recent_Values.gif" />
+    <None Include="Resources\NWS_WGRFC_Daily_MPE_Recent_Values.gif" />
+    <None Include="Resources\ODMDCEW2.gif" />
+    <None Include="Resources\ODMPMRW2.gif" />
+    <None Include="Resources\ODMRCEW2.gif" />
+    <None Include="Resources\ParadiseCreek.gif" />
+    <None Include="Resources\PWP.gif" />
+    <None Include="Resources\RIMP.gif" />
+    <None Include="Resources\RioGrandeET.gif" />
+    <None Include="Resources\RiverGages.gif" />
+    <None Include="Resources\SantaFe-RainDlySRWMD.gif" />
+    <None Include="Resources\SDRPF.gif" />
+    <None Include="Resources\SFe-FLStoret.gif" />
+    <None Include="Resources\SFe-SRGWL.gif" />
+    <None Include="Resources\SFe_CTDSondes.gif" />
+    <None Include="Resources\SFe_GWL_USGS.gif" />
+    <None Include="Resources\SFe_MICROWAVECITRA.gif" />
+    <None Include="Resources\SFe_SRWMD_SurfWater.gif" />
+    <None Include="Resources\SFe_Storet.gif" />
+    <None Include="Resources\SFe_SWFGWL.gif" />
+    <None Include="Resources\SRBHOS.gif" />
+    <None Include="Resources\TCEQ SWQM.gif" />
+    <None Include="Resources\TIFP_LowerSabine.gif" />
+    <None Include="Resources\TIFP_LowerSanAntonio.gif" />
+    <None Include="Resources\TWDB_Sondes.gif" />
+    <None Include="Resources\TWDB_Wind.gif" />
+    <None Include="Resources\WFO_FWD_Hourly_MPE_Recent_Values.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call $(SolutionDir)nuget.bat $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
