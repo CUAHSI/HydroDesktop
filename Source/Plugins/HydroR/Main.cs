@@ -9,9 +9,9 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
+using DotSpatial.Controls.Header;
 namespace HydroR
 {
-    [Plugin("HydroR", Author = "Utah State University", UniqueName = "HydroR_1", Version = "1.0")]
     public class Main : Extension, IMapPlugin
     {
         #region Variables
@@ -22,12 +22,9 @@ namespace HydroR
         private ISeriesView _seriesView;
 
         private string _panelName = "HydroR";
-
-        private RibbonTab _ribbonTab;
+        private const string _tabKey = "kHydroR";
 
         private cRCommandView _hydroRControl;
-
-        private RibbonButton _ribbonBnt;
 
         #endregion
 
@@ -38,17 +35,9 @@ namespace HydroR
         /// </summary>
         protected override void OnDeactivate()
         {
-            // Remove ribbon tab
-
-            if (_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
-            {
-                _mapArgs.Ribbon.Tabs.Remove(_ribbonTab);
-            }
-            // Remove ribbon button in view panel
-            _mapArgs.Ribbon.Tabs[0].Panels[0].Items.Remove(_ribbonBnt);
+            _mapArgs.AppManager.HeaderControl.RemoveItems();
+ 
             // Remove Work Page
-
-            //remove the plugin panel
             if (_seriesView != null)
             {
                 _seriesView.RemovePanel(_panelName);
@@ -78,7 +67,6 @@ namespace HydroR
         {
             _mapArgs = args;
 
-
             // Add panel to the SeriesView
             IHydroAppManager manager = _mapArgs.AppManager as IHydroAppManager;
             if (manager != null)
@@ -87,76 +75,70 @@ namespace HydroR
                 _hydroRControl = new cRCommandView(_seriesView.SeriesSelector);
                 manager.SeriesView.AddPanel(_panelName, _hydroRControl);
 
-                // Initialize the Ribbon controls in the "Ribbon" ribbon tab
-                _ribbonTab = new RibbonTab(_mapArgs.Ribbon, _panelName);
+                //Add a HydroR root item
+                args.AppManager.HeaderControl.Add(new RootItem(_tabKey, _panelName));
 
-                // Create the Ribbon Button with a ribbon panel
-                RibbonPanel rp = new RibbonPanel(_panelName + " Tools", RibbonPanelFlowDirection.Bottom);
-                rp.ButtonMoreVisible = false;
-                _ribbonTab.Panels.Add(rp);
+                string rGroupCaption = _panelName + " Tools";
+                string rScriptCaption = "Script";
 
-                RibbonPanel pnlScript = new RibbonPanel("Script", RibbonPanelFlowDirection.Bottom);
-                pnlScript.ButtonMoreVisible = false;
-                _ribbonTab.Panels.Add(pnlScript);
+                var btnStartR = new SimpleActionItem("StartR", _hydroRControl.btnR_Click);
+                btnStartR.RootKey = _tabKey;
+                btnStartR.LargeImage = Properties.Resources.Ricon;
+                btnStartR.GroupCaption = rGroupCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnStartR);
 
+                var btnGenR = new SimpleActionItem("Generate R Code", _hydroRControl.txtGenR_Click);
+                btnGenR.RootKey = _tabKey;
+                btnGenR.LargeImage = Properties.Resources.GenerateR;
+                btnGenR.GroupCaption = rGroupCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnGenR);
 
-                _ribbonBnt = new RibbonButton("Start R");
-                _ribbonBnt.Image = Properties.Resources.Ricon;
-                //ribbonBnt.Click += new EventHandler(ribbonBnt_Click);
-                _ribbonBnt.Click += new EventHandler(_hydroRControl.btnR_Click);
-                rp.Items.Add(_ribbonBnt);
+                var btnSendLine = new SimpleActionItem("Send Line", _hydroRControl.btnSend_Click);
+                btnSendLine.RootKey = _tabKey;
+                btnSendLine.LargeImage = Properties.Resources.SendLine;
+                btnSendLine.GroupCaption = rGroupCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnSendLine);
 
-                RibbonButton btnGenR = new RibbonButton("Generate R Code");
-                btnGenR.Image = Properties.Resources.GenerateR;
-                btnGenR.Click += new EventHandler(_hydroRControl.txtGenR_Click);
-                rp.Items.Add(btnGenR);
+                var btnSendSel = new SimpleActionItem("Send Selection", _hydroRControl.btnSendSel_Click);
+                btnSendSel.RootKey = _tabKey;
+                btnSendSel.LargeImage = Properties.Resources.SendSelection;
+                btnSendSel.GroupCaption = rGroupCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnSendSel);
 
-                RibbonButton btnSendLine = new RibbonButton("Send Line");
-                btnSendLine.Image = Properties.Resources.SendLine;
-                btnSendLine.Click += new EventHandler(_hydroRControl.btnSend_Click);
-                rp.Items.Add(btnSendLine);
+                var btnSendAll = new SimpleActionItem("Send All", _hydroRControl.btnSendAll_Click);
+                btnSendAll.RootKey = _tabKey;
+                btnSendAll.LargeImage = Properties.Resources.SendScript;
+                btnSendAll.GroupCaption = rGroupCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnSendAll);
 
-                RibbonButton btnSendSel = new RibbonButton("Send Selection");
-                btnSendSel.Image = Properties.Resources.SendSelection;
-                btnSendSel.Click += new EventHandler(_hydroRControl.btnSendSel_Click);
-                rp.Items.Add(btnSendSel);
+                var btnOpen = new SimpleActionItem("Open Script", _hydroRControl.btnOpen_Click);
+                btnOpen.RootKey = _tabKey;
+                btnOpen.LargeImage = Properties.Resources.OpenFile;
+                btnOpen.GroupCaption = rScriptCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnOpen);
 
-                RibbonButton btnSendAll = new RibbonButton("Send All");
-                btnSendAll.Image = Properties.Resources.SendScript;
-                btnSendAll.Click += new EventHandler(_hydroRControl.btnSendAll_Click);
-                rp.Items.Add(btnSendAll);
+                var btnSave = new SimpleActionItem("Save Script", _hydroRControl.btnSave_Click);
+                btnSave.RootKey = _tabKey;
+                btnSave.LargeImage = Properties.Resources.SaveFile;
+                btnSave.GroupCaption = rScriptCaption;
+                _mapArgs.AppManager.HeaderControl.Add(btnSave);
 
-                RibbonButton btnOpen = new RibbonButton("Open Script");
-                btnOpen.Image = Properties.Resources.OpenFile;
-                btnOpen.Click += new EventHandler(_hydroRControl.btnOpen_Click);
-                pnlScript.Items.Add(btnOpen);
-
-                RibbonButton btnSave = new RibbonButton("Save Script");
-                btnSave.Image = Properties.Resources.SaveFile;
-                btnSave.Click += new EventHandler(_hydroRControl.btnSave_Click);
-                pnlScript.Items.Add(btnSave);
-
-                if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
-                {
-                    _mapArgs.Ribbon.Tabs.Add(_ribbonTab);
-                }
-
-                _ribbonTab.ActiveChanged += new EventHandler(_ribbonSampleTab_ActiveChanged);
+                //workaround - handle the ribbon tab active changed event
+                _mapArgs.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
             }
         }
 
-        // When the ribbon tab is changed, the Series view panel is changed
-        void _ribbonSampleTab_ActiveChanged(object sender, EventArgs e)
+        //workaround method - changing the ribbon tab changes the main content
+        void Ribbon_ActiveTabChanged(object sender, EventArgs e)
         {
-            if (_ribbonTab.Active)
+            RibbonTab myTab = _mapArgs.Ribbon.Tabs.Find(t => t.Text == _panelName);
+
+            if (myTab.Active)
             {
                 if (_mapArgs.PanelManager != null)
                 {
                     _mapArgs.PanelManager.SelectedTabName = "Series View";
-                    if (_seriesView != null)
-                    {
-                        _seriesView.VisiblePanelName = _panelName;
-                    }
+                    _seriesView.VisiblePanelName = _panelName;
                 }
             }
         }
@@ -166,14 +148,23 @@ namespace HydroR
         #region Event Handlers
 
 
-
+        //TODO: need to add a method to HeaderControl to change the text of a SimpleActionItem
         private void ribbonBnt_TextChanged(EventArgs e)
         {
+            RibbonButton btnR = FindBtnR();
+            
             if (_hydroRControl.RIsRunning)
-                _ribbonBnt.Text = "Close R";
+                btnR.Text = "Close R";
             else
-                _ribbonBnt.Text = "Start R";
+                btnR.Text = "Start R";
+        }
 
+        //Workaround method to find the corresponding StartR ribbon button
+        private RibbonButton FindBtnR()
+        {
+            RibbonTab hydroRTab = _mapArgs.Ribbon.Tabs.Find(t => t.Text == _panelName);
+            RibbonButton btnR = hydroRTab.Panels[0].Items[0] as RibbonButton;
+            return btnR;
         }
 
         #endregion
