@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31AA4F21-4E7E-413D-ACCF-0D0B78DC3764}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Main</RootNamespace>
+    <AssemblyName>HydroDesktop</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>CuahsiLogo128.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="DotSpatial.Analysis, Version=1.0.2011.4, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Analysis.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Analysis.Tests, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Analysis.Tests.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Compatibility, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=094c8fdea7f4a002, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Compatibility.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Controls, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Rasters.GdalExtension">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Data.Rasters.GdalExtension.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=c90293dbec1f136e, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Modeling.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Modeling.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Positioning.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning.Design, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=b4b0b185210c9dae, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Positioning.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=3a45fedac1c4cdab, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Positioning.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=x86" />
+    <Reference Include="DotSpatial.Projections.Forms, Version=1.0.2011.52, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=x86">
+      <HintPath>..\packages\DotSpatial_x86.1.0.522\lib\DotSpatial.Topology.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial_x861.0.522\lib\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\..\..\SupportFiles\DockPanel\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationForm.Designer.cs">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockingManager.cs" />
+    <Compile Include="NorthAmericaProjectTemplate.cs" />
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditPluginsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditPluginsForm.Designer.cs">
+      <DependentUpon>EditPluginsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="hdSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="hdSplash.Designer.cs">
+      <DependentUpon>hdSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mainRibbonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainRibbonForm.Designer.cs">
+      <DependentUpon>mainRibbonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="PredefinedTemplate.cs" />
+    <Compile Include="ProjectChangeTracker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemplateManager.cs" />
+    <Compile Include="WelcomeScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WelcomeScreen.Designer.cs">
+      <DependentUpon>WelcomeScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WorldProjectTemplate.cs" />
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationForm.resx">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditPluginsForm.resx">
+      <DependentUpon>EditPluginsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="hdSplash.resx">
+      <DependentUpon>hdSplash.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainRibbonForm.resx">
+      <DependentUpon>mainRibbonForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="WelcomeScreen.resx">
+      <DependentUpon>WelcomeScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Database.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Database32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\globe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\graph.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mapView32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CuahsiLogo128.ico" />
+    <None Include="Resources\info_32x32.png" />
+    <None Include="Resources\info_16x16.png" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\CuahsiLogo38.png" />
+    <None Include="Resources\add_16.png" />
+    <None Include="Resources\attribute_table_16.png" />
+    <Content Include="Resources\cuahsi_logo1.GIF" />
+    <None Include="Resources\zoom_to_next_16.png" />
+    <None Include="Resources\zoom_out_16.png" />
+    <None Include="Resources\zoom_in_16.png" />
+    <None Include="Resources\select_16.png" />
+    <None Include="Resources\pan_16.png" />
+    <None Include="Resources\measure_16.png" />
+    <None Include="Resources\identifier_16.png" />
+    <None Include="Resources\full_extent_16.png" />
+    <None Include="Resources\zoom_to_previous_16.png" />
+    <EmbeddedResource Include="Resources\defaultProject.xml" />
+    <EmbeddedResource Include="Resources\defaultDatabase.sqlite" />
+    <None Include="Resources\help_16x16.png" />
+    <None Include="Resources\save_as.png" />
+    <None Include="Resources\settings.png" />
+    <None Include="Resources\extensions32.png" />
+    <None Include="Resources\new_file.png" />
+    <None Include="Resources\open_file.png" />
+    <None Include="Resources\zoom_to_next.png" />
+    <None Include="Resources\zoom_to_previous.png" />
+    <None Include="Resources\extensions.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\Metadata_Fetcher_161.png" />
+    <None Include="Resources\MetadataFetcher_16.png" />
+    <None Include="Resources\exit.png" />
+    <None Include="Resources\tableView.png" />
+    <None Include="Resources\graphView.png" />
+    <None Include="Resources\orb32.png" />
+    <None Include="Resources\Logo_Medium.png" />
+    <None Include="Resources\Logo-Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Controls\HydroDesktop.Controls.csproj">
+      <Project>{2D745DC4-9B59-4AA2-94DC-2370F1EE2991}</Project>
+      <Name>HydroDesktop.Controls</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
+      <Name>HydroDesktop.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help\HydroDesktop.Help.csproj">
+      <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
+      <Name>HydroDesktop.Help</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call $(SolutionDir)nuget.bat $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
