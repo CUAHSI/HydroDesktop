@@ -45,7 +45,6 @@ namespace HydroDesktop.Search
         public MapGroup Create()
         {
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, Global.SEARCH_RESULT_LAYER_NAME);
-            
             foreach(var item in _searchResult.Features)
             {
                 var subResultLayer = CreateSearchResultLayer(item.Key, item.Value, item.Key);

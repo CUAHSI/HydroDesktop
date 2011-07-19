@@ -86,7 +86,6 @@ namespace HydroDesktop.Search
             _mapArgs.Map.MapFrame.LayerAdded += MapFrame_LayerAdded;
             //Layer removed event
             _mapArgs.Map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
-            _mapArgs.Map.Layers.LayerRemoved += Layers_LayerRemoved;
 
             //listBox4.MouseUp += new MouseEventHandler(listBox4_MouseUp);
             dgvSearch.Click += dataGridView1_Click;
@@ -111,13 +110,7 @@ namespace HydroDesktop.Search
 
             _downLoadManager = new DownloadManager {Log = log};
         }
-
-        void Layers_LayerRemoved(object sender, LayerEventArgs e)
-        {
-            e.Layer.IsVisible = false;
-            e.Layer.VisibleChanged -= SearchControl_VisibleChanged;
-        }
-
+     
         #endregion
 
 
@@ -2245,18 +2238,11 @@ namespace HydroDesktop.Search
             //assign the projection again
             foreach (var item in loadedFeatures)
                 item.Value.Reproject(_mapArgs.Map.Projection);
-           
-            // select first layer in the group 
-            var layers = laySearchResult.GetLayers();
-            for (int i = 0; i < layers.Count; i++)
-            {
-                layers[i].VisibleChanged += SearchControl_VisibleChanged;
-                layers[i].IsVisible = false; //to raise event (DotSpatial has wrong behavior)
-                layers[i].IsVisible = i == 0;
-            }
 
             //to prevent the first row of data grid view from becoming selected
             searchResultsControl.ClearSelectionInGridView();
+            // add result layer into  searchResultsControl
+            searchResultsControl.SetLayerSearchResult(mapMain, laySearchResult);
 
             // Starting information bubble engine
             IServiceInfoExtractor extractor;
@@ -2277,14 +2263,6 @@ namespace HydroDesktop.Search
                 var searchInformer = new SearchLayerInformer(extractor);
                 searchInformer.Start(mapMain, layer);
             }
-        }
-        void SearchControl_VisibleChanged(object sender, EventArgs e)
-        {
-            var mapLayer = sender as IMapFeatureLayer;
-            if (mapLayer == null)
-                return;
-
-            searchResultsControl.SetDataSource(!mapLayer.IsVisible ? null : mapLayer);
         }
 
         #endregion

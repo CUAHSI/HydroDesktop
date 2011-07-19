@@ -125,6 +125,7 @@ public class SearchDataGridView : DataGridView
         _dataSourceChanged = true;
             
         DataSource = newTable;
+        _layer.SelectionChanged -= layer_SelectionChanged;
         _layer.SelectionChanged += layer_SelectionChanged;
     }
 
