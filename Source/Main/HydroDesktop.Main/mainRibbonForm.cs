@@ -39,10 +39,6 @@ namespace HydroDesktop.Main
         private int _mCurrentExtents = 0;
         bool _IsManualExtentsChange = false;
 
-        //indicates whether the base map data had been loaded
-        //
-        // private bool _baseMapLoaded = false;
-
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
         //the default projection of the map - changed to 'Web Mercator Auxiliary Sphere'
@@ -64,19 +60,13 @@ namespace HydroDesktop.Main
         private RibbonButton _rbZoomToPrevious;
         private RibbonButton _rbZoomToNext;
 
-        //Table Ribbon TabPage and related controls
-        private RibbonTab _dataTab;
-        //private RibbonPanel _database;
-        private RibbonButton _rbChangeDatabase;
-        private RibbonButton _rbNewDatabase;
-        private RibbonButton _rbRefreshTheme;
-        private RibbonButton _rbDeleteTheme;
-
+        //project file related indicators
         private bool _isNewProject = false;
         private WelcomeScreen _welcomeScreen = null;
         private string _projectFileName = null;
         private ProjectChangeTracker _projectManager = null;
 
+        //docking
         private DockPanel dockManager = new WeifenLuo.WinFormsUI.Docking.DockPanel();
         #endregion Variable
 
@@ -123,7 +113,6 @@ namespace HydroDesktop.Main
 
             #region initialize the MapView Ribbon TabPage and related controls
 
-            //_mapView = new RibbonTab(ribbonControl, "Map");
             _mapView = this.ribbonControl.Tabs[0];
             _mapView.ActiveChanged += new EventHandler(_mapView_ActiveChanged);
             RibbonPanel rpMapTools = new RibbonPanel("Map Tools", RibbonPanelFlowDirection.Bottom);
@@ -238,53 +227,7 @@ namespace HydroDesktop.Main
             _rbMeasure.Click += new EventHandler(rbMeasure_Click);
 
             #endregion initialize the MapView Ribbon TabPage and related controls
-
-            #region initialize the Table Ribbon TabPage and related controls
-
-            _dataTab = new RibbonTab(ribbonControl, "Table");
-            _dataTab.ActiveChanged += new EventHandler(_dataTab_ActiveChanged);
-            //Themes Panel
-            RibbonPanel rpThemes = new RibbonPanel("Themes", RibbonPanelFlowDirection.Bottom);
-            rpThemes.Image = Properties.Resources.refreshTheme;
-            rpThemes.ButtonMoreVisible = false;
-            _dataTab.Panels.Add(rpThemes);
-            //RefreshTheme
-            _rbRefreshTheme = new RibbonButton("Refresh");
-            _rbRefreshTheme.ToolTip = "Refresh the Table";
-            rpThemes.Items.Add(_rbRefreshTheme);
-            _rbRefreshTheme.Image = Properties.Resources.refreshTheme;
-            _rbRefreshTheme.SmallImage = Properties.Resources.refreshTheme.GetThumbnailImage(16, 16, null, IntPtr.Zero);
-            _rbRefreshTheme.Click += new EventHandler(rbRefreshTheme_Click);
-            //DeleteTheme
-            _rbDeleteTheme = new RibbonButton("Delete");
-            _rbDeleteTheme.ToolTip = "Delete Theme from Database";
-            rpThemes.Items.Add(_rbDeleteTheme);
-            _rbDeleteTheme.Image = Properties.Resources.delete;
-            _rbDeleteTheme.SmallImage = Properties.Resources.delete.GetThumbnailImage(16, 16, null, IntPtr.Zero);
-            _rbDeleteTheme.Click += new EventHandler(rbDeleteTheme_Click);
-            //Connection Panel
-            RibbonPanel rpDatabase = new RibbonPanel("Database", RibbonPanelFlowDirection.Bottom);
-            rpDatabase.Image = Properties.Resources.changeDatabase;
-            rpDatabase.ButtonMoreVisible = false;
-            _dataTab.Panels.Add(rpDatabase);
-            //Change Database
-            _rbChangeDatabase = new RibbonButton("Change");
-            _rbChangeDatabase.ToolTip = "Change Database";
-            rpDatabase.Items.Add(_rbChangeDatabase);
-            _rbChangeDatabase.Image = Properties.Resources.changeDatabase;
-            _rbChangeDatabase.SmallImage = Properties.Resources.changeDatabase.GetThumbnailImage(16, 16, null, IntPtr.Zero);
-            _rbChangeDatabase.MinSizeMode = RibbonElementSizeMode.Compact;
-            _rbChangeDatabase.Click += new EventHandler(rbChangeDatabase_Click);
-            //Change Database
-            _rbNewDatabase = new RibbonButton("New");
-            _rbNewDatabase.ToolTip = "Create New Database";
-            rpDatabase.Items.Add(_rbNewDatabase);
-            _rbNewDatabase.Image = Properties.Resources.newDatabase;
-            _rbNewDatabase.SmallImage = Properties.Resources.newDatabase.GetThumbnailImage(16, 16, null, IntPtr.Zero);
-            _rbNewDatabase.Click += new EventHandler(rbNewDatabase_Click);
-
-            #endregion initialize the Table Ribbon TabPage and related controls
-
+            
             #region initialize the Main menu and related controls
 
             OrbNewProject.Click += new EventHandler(OrbNewProject_Click);
@@ -315,14 +258,12 @@ namespace HydroDesktop.Main
             _wgs84Projection = new ProjectionInfo();
             _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84EsriString);
 
-            //_defaultProjection = KnownCoordinateSystems.Projected.World.EckertIVworld;
             _defaultProjection = new ProjectionInfo();
             _defaultProjection.CopyProperties(KnownCoordinateSystems.Projected.World.WebMercator);
-            //_defaultProjection = Project.DefaultProjection;
             mainMap.MapFrame.Projection = new ProjectionInfo();
             mainMap.MapFrame.Projection.CopyProperties(_defaultProjection);
-            //mainMap.Projection = _defaultProjection;
 
+            //handles the default (new) project
             if (String.IsNullOrEmpty(_projectFileName))
             {
                 Settings.Instance.CurrentProjectFile = Settings.Instance.DefaultProjectFileName;
@@ -586,8 +527,7 @@ namespace HydroDesktop.Main
 
         private void RefreshTheLayers()
         {
-            //layers with categories need to populate their attribute
-            //table to redraw successfully.
+            //layers with categories need to populate their attribute table to redraw successfully.
             //this function also handles the reprojection.
             List<ILayer> layerList = mainMap.MapFrame.GetAllLayers();
             List<IMapFeatureLayer> emptyLayers = new List<IMapFeatureLayer>();
@@ -595,8 +535,6 @@ namespace HydroDesktop.Main
             int counter = 0;
             foreach (IMapLayer layer in mainMap.MapFrame.GetAllLayers())
             {
-                //if (layer.GetParentItem().LegendText == "Themes") continue;
-
                 IMapFeatureLayer featureLayer = layer as IMapFeatureLayer;
                 if (featureLayer != null)
                 {
@@ -698,7 +636,6 @@ namespace HydroDesktop.Main
             this.tabContainer.Appearance = TabAppearance.FlatButtons;
             this.tabContainer.ItemSize = new Size(0, 1);
             this.tabContainer.SizeMode = TabSizeMode.Fixed;
-            this.ribbonControl.Tabs.Add(_dataTab);
 
             //Set Initial Map Projection
             mainMap.Projection = _defaultProjection;
@@ -753,92 +690,6 @@ namespace HydroDesktop.Main
             Reproject.ReprojectPoints(xy, z, wgs84, mainMap.Projection, 0, 2);
 
             mainMap.ViewExtents = new Extent(xy);
-        }
-
-        /// <summary>
-        /// Loads default data and displays them in the 'base data' group
-        /// The 'recent project' file already exists at this stage.
-        /// </summary>
-        private void LoadBasemapData()
-        {
-            //TODO: Remove this function (no longer used...)
-            SetDefaultMapExtents();
-
-            //Find Default Project File trial #1:
-            //try to get the recent project file name from settings.xml
-            string recentProject = String.Empty;
-            bool projectFileExists = false;
-            try
-            {
-                //this gets the recent project file name from the settings. if it doesn't exist,
-                //the new project file and database file are created
-                recentProject = Settings.Instance.CurrentProjectFile;
-                string recentDB = Path.ChangeExtension(recentProject, ".sqlite");
-                projectFileExists = (File.Exists(recentProject) && Project.DatabaseExists(recentDB));
-            }
-            catch
-            {
-                projectFileExists = false;
-            }
-
-            //Find Default Project File trial #2:
-            //try to retrieve the project file from the application data folder
-            if (!projectFileExists)
-            {
-                try
-                {
-                    //try to get the recent project from the hydrodesktop\projects\default\default.hdprj file
-                    //in the [AppData] folder
-                    recentProject = Path.Combine(Settings.Instance.ApplicationDataDirectory, @"projects\default\default.hdprj");
-                    string recentDB = Path.ChangeExtension(recentProject, ".sqlite");
-                    projectFileExists = (File.Exists(recentProject) && Project.DatabaseExists(recentDB));
-                }
-                catch (Exception ex)
-                {
-                    projectFileExists = false;
-                    Debug.WriteLine("Failed to open project from " + recentProject + ". Exception: " + ex.Message +
-                        @" try to use [Program Files]\Cuahsi HIS\HydroDesktop\Projects\default\default.hdprj instead.");
-                }
-            }
-
-            //Find Default Project File trial #3:
-            //try to retrieve the project file from the [Program Files] folder
-            if (!projectFileExists)
-            {
-                try
-                {
-                    //try to get the recent project from the [Program Files]\Cuahsi HIS\HydroDesktop\Projects\default\default.hdprj file
-                    //in the [AppData] folder
-                    recentProject = Path.Combine(Application.StartupPath, @"projects\default\default.hdprj");
-                    string recentDB = Path.ChangeExtension(recentProject, ".sqlite");
-                    projectFileExists = (File.Exists(recentProject) && Project.DatabaseExists(recentDB));
-                }
-                catch
-                {
-                    projectFileExists = false;
-                }
-            }
-
-            //Find Default Project File trial #4:
-            //try to load  the base maps programmatically (this requires the write-access to [Program Files]
-            //in order to create the SQLITE DB
-            if (!projectFileExists)
-            {
-                try
-                {
-                    //Project.LoadBaseMaps(applicationManager1, mainMap);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error Opening the default.hdprj project file. Please load the map shapefiles from the " +
-                    Path.Combine(Application.StartupPath, @"maps\BaseData-MercatorSphere folder and activate the extensions.") +
-                    " (Error Details: " + ex.Message);
-                }
-            }
-            else
-            {
-                //OpenProject(recentProject);
-            }
         }
 
         /// <summary>
@@ -1177,170 +1028,6 @@ namespace HydroDesktop.Main
 
         #endregion Map Tools Click Events
 
-        #region Database reconfiguration
-
-        private void rbChangeDatabase_Click(object sender, EventArgs e)
-        {
-            ChangeDatabase();
-            RefreshAllThemes();
-        }
-
-        /// <summary>
-        /// Change the default database used by HydroDesktop
-        /// </summary>
-        /// <returns></returns>
-        private void ChangeDatabase()
-        {
-            //TODO move this functionality to 'DATABASE' plugin
-            //This changes the Settings.Instance.DataRepositoryConnectionString.
-
-            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(applicationManager1);
-            frmChangeDatabase.Owner = this;
-            frmChangeDatabase.ShowDialog();
-        }
-
-        private void rbNewDatabase_Click(object sender, EventArgs e)
-        {
-            CreateNewDatabase();
-        }
-
-        /// <summary>
-        /// Creates a new database to be used by the HydroDesktop application
-        /// </summary>
-        private void CreateNewDatabase()
-        {
-            SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.Filter = "SQLite Database|*.sqlite";
-            if (saveDialog.ShowDialog() == DialogResult.OK)
-            {
-                string newDbFileName = saveDialog.FileName;
-                try
-                {
-                    if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
-                    {
-                        string connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
-                        DatabaseHasChanged(connString);
-
-                        MessageBox.Show("New database has been created successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Unable to create new database. " +
-                        ex.Message);
-                }
-            }
-        }
-
-        /// <summary>
-        /// When setting up a new database, this reconfigures the managers
-        /// </summary>
-        /// <param name="connString"></param>
-        private void DatabaseHasChanged(string connString)
-        {
-            //TODO Replace config by Settings
-            //TODO call SeriesSelector directly
-            this.seriesView1.SeriesSelector.SetupDatabase();
-
-            // Originally from NewDatabase
-            Settings.Instance.DataRepositoryConnectionString = connString;
-            //Settings.Instance.CurrentProjectFile = mainMap.Tag.ToString();
-
-            //applicationManager1.Database.ConnectionString = Settings.Instance.DataRepositoryConnectionString;
-            //applicationManager1.SeriesView.SeriesSelector.RefreshSelection();
-            RefreshAllThemes();
-            //to save new db info to current project file --> do this in the 'Save Project' stage..
-            //HDProjectFileManager manager = new HDProjectFileManager();
-            //manager.SaveDataRepositoryConnection(mainMap.Tag.ToString(), applicationManager1.Database.ConnectionString);
-        }
-
-        # endregion
-
-        /// <summary>
-        /// Create the SQLite database for the new project
-        /// </summary>
-        /// <param name="newDbFileName">the file name of the new sqlite database file</param>
-        /// <param name="askForOverwrite">ask for overwriting of existing database. set this to false
-        /// when calling this function in 'New Project'</param>
-        /// <returns>The connection string of the new database</returns>
-        private string CreateNewProjectDatabase(string newDbFileName, bool askForOverwrite)
-        {
-            try
-            {
-                //bool overwrite = false;
-                if (askForOverwrite == true)
-                {
-                    if (SQLiteHelper.DatabaseExists(newDbFileName))
-                    {
-                        DialogResult overwrite = MessageBox.Show("A database with the name " + newDbFileName + " already exists. Do you want to overwrite it?",
-                            "Overwrite Existing Database", MessageBoxButtons.YesNo);
-                        if (overwrite == DialogResult.No)
-                        {
-                            return SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
-                        }
-                    }
-                }
-
-                //otherwise, create the database file in the new location and overwrite existing file
-                if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
-                {
-                    string connStringNewDb = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
-
-                    return connStringNewDb;
-                }
-                else
-                {
-                    MessageBox.Show("Unable to create new database " + newDbFileName);
-                    return string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to create new project in the specified location. " +
-                    ex.Message);
-            }
-            return string.Empty;
-        }
-
-        private void rbRefreshTheme_Click(object sender, EventArgs e)
-        {
-            RefreshAllThemes();
-            seriesView1.SeriesSelector.RefreshSelection();
-            this.tabContainer.SelectedIndex = 1;
-        }
-
-        private void bntRefreshTheme_Click(object sender, EventArgs e)
-        {
-            RefreshAllThemes();
-        }
-
-        private void rbDeleteTheme_Click(object sender, EventArgs e)
-        {
-            DeleteTheme();
-        }
-
-        private void bntDeleteTheme_Click(object sender, EventArgs e)
-        {
-            DeleteTheme();
-        }
-
-        /// <summary>
-        /// Delete the theme and all related records in the database.
-        /// </summary>
-        /// <param name="themeId"></param>
-        private void DeleteTheme()
-        {
-            //TODO replace by ThemeManager - DeleteTheme
-            DbOperations db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            DeleteThemeForm frm = new DeleteThemeForm(db);
-            frm.ShowDialog();
-            if (frm.DialogResult == DialogResult.OK)
-            {
-                applicationManager1.SeriesView.SeriesSelector.RefreshSelection();
-                RefreshAllThemes();
-            }
-        }
-
         private void RemoveTab(string name)
         {
             if (ribbonControl.Tabs.Contains(_mapView))
@@ -1397,7 +1084,6 @@ namespace HydroDesktop.Main
                     }
                     OrbExtentions.DropDownItems.Add(item);
                     item.CheckOnClick = true;
-                    //item.Click += new EventHandler(item_Click);
                     item.MouseDown += new MouseEventHandler(item_Click);
                 }
             }
@@ -1405,8 +1091,6 @@ namespace HydroDesktop.Main
 
         private void item_Click(object sender, EventArgs e)
         {
-            //TODO: ensure that 'help' tab is last
-
             //to close the 'orb' dropdown
             OrbExtentions.CloseDropDown();
             ribbonControl.OrbDropDown.Close();
@@ -1447,9 +1131,6 @@ namespace HydroDesktop.Main
                     {
                         applicationManager1.ActivateToken(token);
                         ribbonControl.Tabs.Add(newTab);
-
-                        //ensure that help ribbon tab remains last
-                        //EnsureHelpTabLast();
                     }
                 }
             }
@@ -1458,7 +1139,6 @@ namespace HydroDesktop.Main
         private void EnsureHelpTabLast()
         {
             RibbonTab helpMenuTab = null;
-            //Ribbon mainRibbon = _app.Ribbon;
             foreach (RibbonTab tab in ribbonControl.Tabs)
             {
                 if (tab.Text == "Help")
@@ -1730,19 +1410,6 @@ namespace HydroDesktop.Main
             {
                 tabContainer.SelectedTab = tabContainer.TabPages[0];
                 //mwStatusStrip1.Visible = true;
-            }
-        }
-
-        private void _dataTab_ActiveChanged(object sender, EventArgs e)
-        {
-            if (_dataTab.Active == true)
-            {
-                if (tabContainer.TabCount > 0)
-                {
-                    //_t.ShowTab("Table View");
-                    tabContainer.SelectedTabName = "Table View";
-                    //mwStatusStrip1.Visible = false;
-                }
             }
         }
 

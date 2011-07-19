@@ -130,12 +130,6 @@
   <data name="identifier" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\identifier.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="newDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\newDatabase.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="graphView" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\graphView.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -144,9 +138,6 @@
   </data>
   <data name="Metadata_Fetcher_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Metadata_Fetcher_32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="changeDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\changeDatabase.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="orb32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\orb32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -189,9 +180,6 @@
   </data>
   <data name="new_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\new_file.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="refreshTheme" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refreshTheme.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="zoom_in" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zoom_in.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
