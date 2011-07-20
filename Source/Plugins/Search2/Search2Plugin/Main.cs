@@ -5,6 +5,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using HydroDesktop.Search.Extensions;
+using System.Collections.Generic;
 
 namespace HydroDesktop.Search
 {
@@ -76,8 +77,15 @@ namespace HydroDesktop.Search
                 //execute the HIS CentralClick event
                 mnuHISCentral_Click(null, null);
                 _mapArgs.Map.ViewExtents = _initialExtent;
+
+                ReportProgress(0, String.Empty);
+
+                //handle project saving event
+                _mapArgs.AppManager.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
             }
         }
+
+        
 
         private void _searchRibbonButton_Click(object sender, EventArgs e)
         {
@@ -189,6 +197,39 @@ namespace HydroDesktop.Search
         }
 
         #endregion Ribbon
+
+        #region Saving Project
+        void SerializationManager_Serializing(object sender, SerializingEventArgs e)
+        {
+            //move the search result layer to the correct folder
+            string newDirectory = _mapArgs.AppManager.SerializationManager.CurrentProjectDirectory;
+            //check if there are search results layers
+            string searchGroupName = Global.SEARCH_RESULT_LAYER_NAME;
+            //find the search result group
+            IMapGroup grp = _mapArgs.Map.MapFrame.GetAllGroups().Find(p => p.LegendText == searchGroupName);
+            if (grp == null) return; //no search result groups
+            foreach (IMapLayer layer in grp.Layers)
+            {
+                IFeatureSet fs = layer.DataSet as IFeatureSet;
+                if (fs != null)
+                {
+                    try
+                    {
+                        if (System.IO.File.Exists(fs.Filename))
+                        {
+                            fs.Filename = System.IO.Path.Combine(newDirectory, System.IO.Path.GetFileName(fs.Filename));
+                            fs.Save();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //todo log the error
+                        string msg = ex.Message;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 
     public enum SearchMode
