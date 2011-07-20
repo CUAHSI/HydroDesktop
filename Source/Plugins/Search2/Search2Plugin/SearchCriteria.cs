@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.Search
 {
@@ -43,11 +41,7 @@ namespace HydroDesktop.Search
             set { _boundingBoxSearch = value; }
         }
 
-        public string SearchMethod
-        {
-            get { return _searchMethod; }
-            set { _searchMethod = value; }
-        }
+        public SearchMode SearchMethod { get; set; }
 
         public class AreaRectangle
         {

@@ -225,7 +225,7 @@
             this.btnRefreshKeywords.TabIndex = 36;
             this.btnRefreshKeywords.Text = "Refresh Keywords";
             this.btnRefreshKeywords.UseVisualStyleBackColor = true;
-            this.btnRefreshKeywords.Click += new System.EventHandler(this.btnRefreshKeywords_Click);
+            this.btnRefreshKeywords.Click += new System.EventHandler(btnRefreshKeywords_Click);
             // 
             // AdvancedSettingsDialog
             // 

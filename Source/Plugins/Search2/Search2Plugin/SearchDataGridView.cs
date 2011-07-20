@@ -1,279 +1,142 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Symbology;
-
-/// <summary>
-/// Specialized DataGridView for GIS attribute table selection and
-/// searching. The table is linked to the map layer. When a row is
-/// selected in the table, the corresponding feature is selected in the map.
-/// When a feature is selected in the map, the corresponding row is selected
-/// in the attribute table.
-/// </summary>
-public class SearchDataGridView : DataGridView
+namespace HydroDesktop.Search
 {
-    #region Variables
-
-    //indicates that the data source has been changed
-    private bool _dataSourceChanged = false;
-    private int _dataBindingEventCount = 0;
-
-    private IMapFrame _mapFrame = null;
-    private IMapFeatureLayer _layer = null;
-
-    private bool _ignoreMapSelection = false;
-
-    private bool _sorting = false;
-
-    #endregion Variables
-
-    #region Constructor
-
-    public SearchDataGridView()
-    {
-        this.AllowUserToAddRows = false;
-        this.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        this.EditMode = DataGridViewEditMode.EditProgrammatically;
-        //mogikanin <<trial check by dg>> dated 6/6/2011
-        CellFormatting += SearchDataGridView_CellFormatting;
-    }
-
-    // mogikanin <<trial check by dg>>
-    private void SearchDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-    {
-        if (Columns[e.ColumnIndex].Name != "ValueCount") return;
-
-        int oldValue;
-        if (!Int32.TryParse(e.Value.ToString(), out oldValue)) return;
-
-        if (oldValue == 0)
-        {
-            e.Value = "unknown";
-            e.FormattingApplied = true;
-        }
-    }
-
-    //mogikanin trial ends dated 6/6/2011
-
-    #endregion Constructor
-
-    #region Properties
-
     /// <summary>
-    /// If set to true, the map is automatically zoomed to
-    /// the features corresponding to selected rows in the table
+    /// Specialized DataGridView for GIS attribute table selection and
+    /// searching. The table is linked to the map layer. When a row is
+    /// selected in the table, the corresponding feature is selected in the map.
+    /// When a feature is selected in the map, the corresponding row is selected
+    /// in the attribute table.
     /// </summary>
-    public bool ZoomToSelected
+    public class SearchDataGridView : DataGridView
     {
-        get;
-        set;
-    }
+        #region Variables
 
-    /// <summary>
-    /// Gets the map layer that is linked with the table in the data grid view
-    /// </summary>
-    public IMapFeatureLayer MapLayer
-    {
-        get { return _layer; }
-    }
+        //indicates that the data source has been changed
+        private bool _dataSourceChanged = false;
+        private int _dataBindingEventCount = 0;
 
-    #endregion Properties
+        private IMapFrame _mapFrame = null;
+        private IMapFeatureLayer _layer = null;
 
-    #region Methods
+        private bool _ignoreMapSelection = false;
 
-    /// <summary>
-    /// Set the data source of the data grid view
-    /// </summary>
-    /// <param name="sourceLayer">The source map feature layer</param>
-    public void SetDataSource(IMapFeatureLayer sourceLayer)
-    {
-        _layer = sourceLayer;
-        _layer.SelectionEnabled = true;
-        _layer.IsSelected = true;
+        private bool _sorting = false;
+        private bool _dataSourceChanging;
 
-        //set the map
-        _mapFrame = _layer.MapFrame as IMapFrame;
+        #endregion Variables
 
-        //Changed by Jiri - Use a copy of table to fix the AttributeTable editor bug
-        DataTable newTable = CopyDataTable(_layer.DataSet.DataTable);
+        #region Constructor
 
-        //add the 'fid' column
-        int lastColumn = newTable.Columns.Count;
-        if (newTable.Columns.Contains("mw_fid"))
+        public SearchDataGridView()
         {
-            lastColumn = newTable.Columns.IndexOf("mw_fid");
-        }
-        else
-        {
-            newTable.Columns.Add("mw_fid", typeof(Int32));
-        }
-        int rowIndex = 0;
-
-        foreach (DataRow row in newTable.Rows)
-        {
-            row[lastColumn] = rowIndex;
-            rowIndex++;
+            this.AllowUserToAddRows = false;
+            this.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.EditMode = DataGridViewEditMode.EditProgrammatically;
+            
+            CellFormatting += SearchDataGridView_CellFormatting;
         }
 
-        _dataSourceChanged = true;
+        #endregion Constructor
 
-        this.DataSource = newTable;
-        //if (this.Columns.Contains("mw_fid"))
-        //{
-        //    this.Columns["mw_fid"].Visible = false;
-        //}
+        #region Properties
 
-        _layer.SelectionChanged += new EventHandler(layer_SelectionChanged);
-    }
+        /// <summary>
+        /// If set to true, the map is automatically zoomed to
+        /// the features corresponding to selected rows in the table
+        /// </summary>
+        public bool ZoomToSelected { get; set; }
 
-    //Creates an in-memory copy of the DataTable which is not linked to the original table
-    private DataTable CopyDataTable(DataTable originalTable)
-    {
-        DataTable newTable = new DataTable();
-        foreach (DataColumn col in originalTable.Columns)
+        /// <summary>
+        /// Gets the map layer that is linked with the table in the data grid view
+        /// </summary>
+        public IMapFeatureLayer MapLayer
         {
-            newTable.Columns.Add(new DataColumn(col.ColumnName, col.DataType));
+            get { return _layer; }
         }
 
-        // Use the ImportRow method to copy from Products table to its clone.
-        for (int i = 0; i < originalTable.Rows.Count; i++)
+        public new object DataSource
         {
-            newTable.ImportRow(originalTable.Rows[i]);
-        }
-        return newTable;
-    }
-
-    /// <summary>
-    /// To refresh the map selection (similar as in MouseUp event)
-    /// </summary>
-    public void RefreshMapSelection()
-    {
-        _ignoreMapSelection = true;
-
-        foreach (DataGridViewRow dgr in this.Rows)
-        {
-            int fid = (int)dgr.Cells["mw_fid"].Value;
-            _layer.DrawnStates[fid].Selected = dgr.Selected;
-        }
-        //to force to refresh the map
-        _mapFrame.ResetBuffer();
-        //zoom to selected features
-        if (ZoomToSelected == true)
-        {
-            _layer.ZoomToSelectedFeatures();
-        }
-
-        _ignoreMapSelection = false;
-    }
-
-    private void layer_SelectionChanged(object sender, EventArgs e)
-    {
-        if (_ignoreMapSelection == false)
-        {
-            foreach (DataGridViewRow dgr in this.Rows)
+            get { return base.DataSource; }
+            set
             {
-                int fid = (int)dgr.Cells["mw_fid"].Value;
-                dgr.Selected = _layer.DrawnStates[fid].Selected;
+                _dataSourceChanging = true;
+                base.DataSource = value;
+                _dataSourceChanging = false;
+
+                OnSelectionChanged(EventArgs.Empty);
             }
         }
-    }
 
-    #endregion Methods
-
-    /// <summary>
-    /// to ensure that no rows are selected by default
-    /// </summary>
-    /// <param name="e"></param>
-    protected override void OnDataBindingComplete(DataGridViewBindingCompleteEventArgs e)
-    {
-        base.OnDataBindingComplete(e);
-
-        if (_dataSourceChanged == true)
+        public new int RowCount
         {
-            _dataBindingEventCount++;
+            get { return DataSource == null ? 0 : ((DataTable)DataSource).Rows.Count; }
         }
 
-        if (_dataBindingEventCount >= 2 && _dataSourceChanged == true)
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Set the data source of the data grid view
+        /// </summary>
+        /// <param name="sourceLayer">The source map feature layer</param>
+        public void SetDataSource(IMapFeatureLayer sourceLayer)
         {
-            _dataSourceChanged = false;
-            _dataBindingEventCount = 0;
-            this.ClearSelection();
-
-            //to select rows corresponding to selected features in the layer
-            if (_layer.Selection.Count > 0)
+            if (sourceLayer == null)
             {
-                _ignoreMapSelection = true;
-                foreach (DataGridViewRow dgr in this.Rows)
-                {
-                    int fid = (int)dgr.Cells["mw_fid"].Value;
-                    dgr.Selected = _layer.DrawnStates[fid].Selected;
-                }
-                _ignoreMapSelection = false;
+                DataSource = null;
+                return;
             }
-        }
-        DataGridView dgv = new DataGridView();
-    }
 
-    //to select all when pressing CTRL+A
-    protected override void OnSelectionChanged(EventArgs e)
-    {
-        base.OnSelectionChanged(e);
-
-        if (_layer.DataSet.Features.Count != this.RowCount) return;
-
-        if (!_sorting && this.SelectedRows.Count == RowCount)
-        {
-            foreach (DataGridViewRow dgr in this.Rows)
+            if (_layer != null)
             {
-                int fid = (int)dgr.Cells["mw_fid"].Value;
-                _layer.DrawnStates[fid].Selected = dgr.Selected;
+                _layer.SelectionChanged -= layer_SelectionChanged;
             }
-            ////to force to refresh the map
-            _mapFrame.ResetBuffer();
-            ////zoom to selected features
-            if (ZoomToSelected == true)
+
+            _layer = sourceLayer;
+            _layer.SelectionEnabled = true;
+            _layer.IsSelected = true;
+
+            //set the map
+            _mapFrame = _layer.MapFrame as IMapFrame;
+
+            //Changed by Jiri - Use a copy of table to fix the AttributeTable editor bug
+            var newTable = CopyDataTable(_layer.DataSet.DataTable);
+
+            //add the 'fid' column
+            int lastColumn = newTable.Columns.Count;
+            if (newTable.Columns.Contains("mw_fid"))
             {
-                _layer.ZoomToSelectedFeatures();
-            }
-        }
-    }
-
-    //this event is used for sorting
-    protected override void OnCellMouseUp(DataGridViewCellMouseEventArgs e)
-    {
-        //_cellMouseUp = true;
-
-        base.OnCellMouseUp(e);
-
-        _ignoreMapSelection = true;
-
-        if (e.RowIndex < 0)
-        {
-            _sorting = true;
-
-            //mouse up on the column header means sorting
-            if (_layer.Selection.Count == 0)
-            {
-                this.ClearSelection();
+                lastColumn = newTable.Columns.IndexOf("mw_fid");
             }
             else
             {
-                foreach (DataGridViewRow dgr in this.Rows)
-                {
-                    int fid = (int)dgr.Cells["mw_fid"].Value;
-                    dgr.Selected = _layer.DrawnStates[fid].Selected;
-                }
-                this.Refresh();
+                newTable.Columns.Add("mw_fid", typeof(Int32));
+            }
+            int rowIndex = 0;
+
+            foreach (DataRow row in newTable.Rows)
+            {
+                row[lastColumn] = rowIndex;
+                rowIndex++;
             }
 
-            _sorting = false;
+            _layer.SelectionChanged += layer_SelectionChanged;
+           
+             DataSource = newTable;
         }
-        else
+       
+        /// <summary>
+        /// To refresh the map selection (similar as in MouseUp event)
+        /// </summary>
+        public void RefreshMapSelection()
         {
+            _ignoreMapSelection = true;
+
             foreach (DataGridViewRow dgr in this.Rows)
             {
                 int fid = (int)dgr.Cells["mw_fid"].Value;
@@ -282,13 +145,169 @@ public class SearchDataGridView : DataGridView
             //to force to refresh the map
             _mapFrame.ResetBuffer();
             //zoom to selected features
-            if (ZoomToSelected == true)
+            if (ZoomToSelected)
             {
                 _layer.ZoomToSelectedFeatures();
             }
+
+            _ignoreMapSelection = false;
+        }
+        
+        #endregion Private methods
+
+        private void layer_SelectionChanged(object sender, EventArgs e)
+        {
+            if (_ignoreMapSelection == false)
+            {
+                foreach (DataGridViewRow dgr in this.Rows)
+                {
+                    int fid = (int)dgr.Cells["mw_fid"].Value;
+                    dgr.Selected = _layer.DrawnStates[fid].Selected;
+                }
+            }
         }
 
-        _ignoreMapSelection = false;
-        //_cellMouseUp = false;
+        /// <summary>
+        /// Creates an in-memory copy of the DataTable which is not linked to the original table
+        /// </summary>
+        /// <param name="originalTable">Source table</param>
+        /// <returns>Copy of source table</returns>
+        private static DataTable CopyDataTable(DataTable originalTable)
+        {
+            var newTable = new DataTable();
+            foreach (DataColumn col in originalTable.Columns)
+            {
+                newTable.Columns.Add(new DataColumn(col.ColumnName, col.DataType));
+            }
+
+            // Use the ImportRow method to copy from Products table to its clone.
+            for (int i = 0; i < originalTable.Rows.Count; i++)
+            {
+                newTable.ImportRow(originalTable.Rows[i]);
+            }
+            return newTable;
+        }
+        
+        private void SearchDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (Columns[e.ColumnIndex].Name != "ValueCount") return;
+
+            int oldValue;
+            if (!Int32.TryParse(e.Value.ToString(), out oldValue)) return;
+
+            if (oldValue == 0)
+            {
+                e.Value = "unknown";
+                e.FormattingApplied = true;
+            }
+        }
+
+        /// <summary>
+        /// to ensure that no rows are selected by default
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnDataBindingComplete(DataGridViewBindingCompleteEventArgs e)
+        {
+            base.OnDataBindingComplete(e);
+
+            if (_dataSourceChanged)
+            {
+                _dataBindingEventCount++;
+            }
+
+            if (_dataBindingEventCount >= 2 && _dataSourceChanged)
+            {
+                _dataSourceChanged = false;
+                _dataBindingEventCount = 0;
+                this.ClearSelection();
+
+                //to select rows corresponding to selected features in the layer
+                if (_layer.Selection.Count > 0)
+                {
+                    _ignoreMapSelection = true;
+                    foreach (DataGridViewRow dgr in this.Rows)
+                    {
+                        int fid = (int)dgr.Cells["mw_fid"].Value;
+                        dgr.Selected = _layer.DrawnStates[fid].Selected;
+                    }
+                    _ignoreMapSelection = false;
+                }
+            }
+        }
+
+        //to select all when pressing CTRL+A
+        protected override void OnSelectionChanged(EventArgs e)
+        {
+            if (_dataSourceChanging) return;
+
+            base.OnSelectionChanged(e);
+
+            if (_layer == null) return;
+            if (!_sorting && SelectedRows.Count == RowCount)
+            {
+                foreach (DataGridViewRow dgr in Rows)
+                {
+                    int fid = (int)dgr.Cells["mw_fid"].Value;
+                    _layer.DrawnStates[fid].Selected = dgr.Selected;
+                }
+                //to force to refresh the map
+                _mapFrame.ResetBuffer();
+                //zoom to selected features
+                if (ZoomToSelected)
+                {
+                    _layer.ZoomToSelectedFeatures();
+                }
+            }
+        }
+
+        //this event is used for sorting
+        protected override void OnCellMouseUp(DataGridViewCellMouseEventArgs e)
+        {
+            //_cellMouseUp = true;
+
+            base.OnCellMouseUp(e);
+
+            _ignoreMapSelection = true;
+
+            if (e.RowIndex < 0)
+            {
+                _sorting = true;
+
+                //mouse up on the column header means sorting
+                if (_layer.Selection.Count == 0)
+                {
+                    this.ClearSelection();
+                }
+                else
+                {
+                    foreach (DataGridViewRow dgr in this.Rows)
+                    {
+                        int fid = (int)dgr.Cells["mw_fid"].Value;
+                        dgr.Selected = _layer.DrawnStates[fid].Selected;
+                    }
+                    this.Refresh();
+                }
+
+                _sorting = false;
+            }
+            else
+            {
+                foreach (DataGridViewRow dgr in this.Rows)
+                {
+                    int fid = (int)dgr.Cells["mw_fid"].Value;
+                    _layer.DrawnStates[fid].Selected = dgr.Selected;
+                }
+                //to force to refresh the map
+                _mapFrame.ResetBuffer();
+                //zoom to selected features
+                if (ZoomToSelected == true)
+                {
+                    _layer.ZoomToSelectedFeatures();
+                }
+            }
+
+            _ignoreMapSelection = false;
+            //_cellMouseUp = false;
+        }
     }
 }
