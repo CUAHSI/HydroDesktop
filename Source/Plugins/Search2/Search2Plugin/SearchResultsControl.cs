@@ -47,11 +47,6 @@ namespace HydroDesktop.Search
             searchDataGridView.SetDataSource(dataSource);
         }
 
-        public void ClearSelectionInGridView()
-        {
-            searchDataGridView.ClearSelection();
-        }
-
         public IList<OneSeriesDownloadInfo> GetSelectedSeriesAsDownloadInfo(DateTime startDate, DateTime endDate)
         {
             var downloadList = new List<OneSeriesDownloadInfo>();
@@ -85,6 +80,9 @@ namespace HydroDesktop.Search
         
         public void SetLayerSearchResult(Map map, MapGroup laySearchResult)
         {
+            //to prevent the first row of data grid view from becoming selected
+            searchDataGridView.ClearSelection();
+
             _map = map;
 
             // UnAttach previous layer

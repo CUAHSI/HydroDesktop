@@ -2238,9 +2238,7 @@ namespace HydroDesktop.Search
             //assign the projection again
             foreach (var item in loadedFeatures)
                 item.Value.Reproject(_mapArgs.Map.Projection);
-
-            //to prevent the first row of data grid view from becoming selected
-            searchResultsControl.ClearSelectionInGridView();
+            
             // add result layer into  searchResultsControl
             searchResultsControl.SetLayerSearchResult(mapMain, laySearchResult);
 
