@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data;
 using DotSpatial.Data;
 using DotSpatial.Topology;
@@ -136,7 +135,7 @@ namespace HydroDesktop.Search
 		/// latitude in decimal degrees.
 		/// </summary>
 		/// <returns></returns>
-		public static FeatureSet ToFeatureSet ( IList<SeriesDataCart> seriesList )
+		private static FeatureSet ToFeatureSet ( IList<SeriesDataCart> seriesList )
 		{
 			//display sites on the map
             FeatureSet fs = CreateEmptyFeatureSet();
@@ -146,7 +145,27 @@ namespace HydroDesktop.Search
 			return fs;
 		}
 
-		/// <summary>
+        public static SearchResult ToFeatureSetsByDataSource(IEnumerable<SeriesDataCart> seriesList)
+        {
+            if (seriesList == null) throw new ArgumentNullException("seriesList");
+
+            var result = new Dictionary<string, IFeatureSet>();
+            foreach(var dataCart in seriesList)
+            {
+                IFeatureSet featureSet;
+                if (!result.TryGetValue(dataCart.ServCode, out featureSet))
+                {
+                    featureSet =  CreateEmptyFeatureSet();
+                    result.Add(dataCart.ServCode, featureSet);
+                }
+
+                AddToFeatureSet(dataCart, featureSet);
+            }
+
+            return new SearchResult(result);
+        }
+
+	    /// <summary>
 		/// Creates a new point feature set from the list of data series
 		/// info items. The coordinates of points are longitude and
 		/// latitude in decimal degrees.
@@ -169,7 +188,7 @@ namespace HydroDesktop.Search
         /// <returns>a new list of series metadata that is only within the polygon</returns>
         public static IList<SeriesDataCart> ClipByPolygon(IList<SeriesDataCart> fullSeriesList, IFeature polygon)
         {
-            List<SeriesDataCart> newList = new List<SeriesDataCart>();
+            var newList = new List<SeriesDataCart>();
             
             foreach (SeriesDataCart series in fullSeriesList)
             {
@@ -188,11 +207,11 @@ namespace HydroDesktop.Search
         /// Adds the necessary attribute columns to the featureSet's attribute table
         /// </summary>
         /// <param name="fs"></param>
-        private static FeatureSet CreateEmptyFeatureSet()
+        public static FeatureSet CreateEmptyFeatureSet()
         {
-            FeatureSet fs = new FeatureSet(FeatureType.Point);
+            var fs = new FeatureSet(FeatureType.Point);
             
-            DataTable tab = fs.DataTable;
+            var tab = fs.DataTable;
             tab.Columns.Add(new DataColumn("DataSource", typeof(string)));           
             tab.Columns.Add(new DataColumn("SiteName", typeof(string)));
             tab.Columns.Add(new DataColumn("VarName", typeof(string)));
@@ -218,24 +237,35 @@ namespace HydroDesktop.Search
 		/// Adds sites from the list of data series
 		/// to an existing feature set
 		/// </summary>
-		/// <param name="fs"></param>
 		public static void AddToFeatureSet ( IList<SeriesDataCart> seriesList, IFeatureSet fs )
 		{
-			foreach ( SeriesDataCart series in seriesList )
-			{
-				double lat = series.Latitude;
-				double lon = series.Longitude;
-				Coordinate coord = new Coordinate ( lon, lat );
+		    if (seriesList == null) throw new ArgumentNullException("seriesList");
 
-                Feature f = new Feature(FeatureType.Point, new Coordinate[] { coord });
-                fs.Features.Add(f);
-
-                DataRow row = f.DataRow;
-                PopulateDataRow(series, row);
+		    foreach (var series in seriesList )
+		    {
+		        AddToFeatureSet(series, fs);
 			}
 		}
 
-		/// <summary>
+	    /// <summary>
+	    /// Adds series to an existing feature set
+	    /// </summary>
+	    /// <param name="series">Series</param>
+	    /// <param name="fs">Feature set</param>
+	    public static void AddToFeatureSet(SeriesDataCart series, IFeatureSet fs)
+        {
+            double lat = series.Latitude;
+            double lon = series.Longitude;
+            var coord = new Coordinate(lon, lat);
+
+            var f = new Feature(FeatureType.Point, new[] {coord});
+            fs.Features.Add(f);
+
+            var row = f.DataRow;
+            PopulateDataRow(series, row);
+        }
+
+	    /// <summary>
 		/// Adds sites from the list of data series which are inside the polygons 
 		/// to an existing feature set
 		/// <param name="seriesList"></param>
@@ -254,12 +284,12 @@ namespace HydroDesktop.Search
 			{
 				double lat = series.Latitude;
 				double lon = series.Longitude;
-				Coordinate coord = new Coordinate ( lon, lat );
+				var coord = new Coordinate ( lon, lat );
 
 				if ( TestPointInPolygons ( coord, polygons ) == true )
 				{
 
-					Feature f = new Feature ( FeatureType.Point, new Coordinate[] { coord } );
+					var f = new Feature ( FeatureType.Point, new Coordinate[] { coord } );
 					fs.Features.Add ( f );
 
 					DataRow row = f.DataRow;
@@ -270,15 +300,8 @@ namespace HydroDesktop.Search
 
 		private static bool TestPointInPolygons ( Coordinate coord, IList<IFeature> polygons )
 		{
-			Point pt = new Point ( coord );
-			foreach ( IFeature poly in polygons )
-			{
-				if ( poly.Intersects ( pt ) )
-				{
-					return true;
-				}
-			}
-			return false;
+			var pt = new Point ( coord );
+		    return polygons.Any(poly => poly.Intersects(pt));
 		}
 	}
 }

@@ -34,10 +34,10 @@ namespace HydroDesktop.Controls.Themes
             LoadIcons();
         }
 
-        string _hisCentralUrl;
+        readonly string _hisCentralUrl;
         string _defaultIconUrl;
 
-        private Dictionary<string, Image> _serviceIcons = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Image> _serviceIcons = new Dictionary<string, Image>();
 
         private void LoadIcons()
         {
@@ -47,7 +47,7 @@ namespace HydroDesktop.Controls.Themes
 
             foreach(DictionaryEntry entry in rs)
             {
-                Image entryImage = entry.Value as Image;
+                var entryImage = entry.Value as Image;
                 if (entryImage != null)
                 {
                     _serviceIcons.Add(entry.Key.ToString(), entryImage);
@@ -126,10 +126,10 @@ namespace HydroDesktop.Controls.Themes
         /// </summary>
         /// <param name="fs"></param>
         /// <returns></returns>
-        public MapPointLayer CreateSearchResultLayer(IFeatureSet fs)
+        public virtual MapPointLayer CreateSearchResultLayer(IFeatureSet fs)
         {
             //get the unique "service code" values
-            List<string> serviceCodes = new List<string>();
+            var serviceCodes = new List<string>();
             foreach (DataRow row in fs.DataTable.Rows)
             {
                 string servCode = Convert.ToString(row["ServiceCode"]);
@@ -140,10 +140,10 @@ namespace HydroDesktop.Controls.Themes
             }
             serviceCodes.Sort();
             
-            MapPointLayer myLayer = new MapPointLayer(fs);
+            var myLayer = new MapPointLayer(fs);
             myLayer.LegendText = "data series";
 
-            PointScheme myScheme = new PointScheme();
+            var myScheme = new PointScheme();
             myScheme.ClearCategories();
 
             //assign the categories (could be done with 'editorSettings')

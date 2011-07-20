@@ -51,6 +51,7 @@
             this.GroupBox1 = new System.Windows.Forms.GroupBox();
             this.label47 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
+            this.dgvSearch = new HydroDesktop.Search.SearchDataGridView();
             this.label5 = new System.Windows.Forms.Label();
             this.cboActiveLayer = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -102,7 +103,7 @@
             this.Button7 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.lblDataSeries = new System.Windows.Forms.Label();
+            this.searchResultsControl = new HydroDesktop.Search.SearchResultsControl();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
             this.groupResults = new System.Windows.Forms.GroupBox();
@@ -161,8 +162,6 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.dgvSearch = new SearchDataGridView();
-            this.searchDataGridView1 = new SearchDataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.spcHor1)).BeginInit();
             this.spcHor1.Panel1.SuspendLayout();
             this.spcHor1.Panel2.SuspendLayout();
@@ -170,6 +169,7 @@
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.GroupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupboxWebservices.SuspendLayout();
@@ -192,8 +192,6 @@
             this.groupSaveSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox5)).BeginInit();
             this.gbSearchSummary.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // rbAppend
@@ -460,6 +458,27 @@
             this.label32.Text = "Point1: Coordinates (Lon/Lat)";
             this.label32.Visible = false;
             // 
+            // dgvSearch
+            // 
+            this.dgvSearch.AllowUserToAddRows = false;
+            this.dgvSearch.AllowUserToDeleteRows = false;
+            this.dgvSearch.AllowUserToResizeColumns = false;
+            this.dgvSearch.AllowUserToResizeRows = false;
+            this.dgvSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSearch.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dgvSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSearch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvSearch.Location = new System.Drawing.Point(159, 49);
+            this.dgvSearch.Name = "dgvSearch";
+            this.dgvSearch.RowHeadersWidth = 25;
+            this.dgvSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSearch.Size = new System.Drawing.Size(161, 237);
+            this.dgvSearch.TabIndex = 20;
+            this.dgvSearch.ZoomToSelected = true;
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -701,11 +720,11 @@
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Castellar", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label41.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label41.Location = new System.Drawing.Point(320, 6);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(18, 19);
+            this.label41.Size = new System.Drawing.Size(19, 20);
             this.label41.TabIndex = 46;
             this.label41.Text = "2";
             this.label41.Visible = false;
@@ -985,18 +1004,18 @@
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Font = new System.Drawing.Font("Castellar", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label42.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label42.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label42.Location = new System.Drawing.Point(320, 6);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(18, 19);
+            this.label42.Size = new System.Drawing.Size(19, 20);
             this.label42.TabIndex = 50;
             this.label42.Text = "3";
             this.label42.Visible = false;
             // 
             // lblKeywordRelation
             // 
-            this.lblKeywordRelation.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKeywordRelation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblKeywordRelation.Location = new System.Drawing.Point(9, 32);
             this.lblKeywordRelation.Name = "lblKeywordRelation";
             this.lblKeywordRelation.Size = new System.Drawing.Size(327, 31);
@@ -1040,12 +1059,11 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.lblDataSeries);
+            this.tabPage5.Controls.Add(this.searchResultsControl);
             this.tabPage5.Controls.Add(this.btnReset);
             this.tabPage5.Controls.Add(this.btnDownload);
             this.tabPage5.Controls.Add(this.groupResults);
             this.tabPage5.Controls.Add(this.panelSearch);
-            this.tabPage5.Controls.Add(this.searchDataGridView1);
             this.tabPage5.Controls.Add(this.groupBox6);
             this.tabPage5.Controls.Add(this.PictureBox4);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
@@ -1055,15 +1073,14 @@
             this.tabPage5.Text = "Results";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // lblDataSeries
+            // searchResultsControl
             // 
-            this.lblDataSeries.AutoSize = true;
-            this.lblDataSeries.Location = new System.Drawing.Point(5, 43);
-            this.lblDataSeries.Name = "lblDataSeries";
-            this.lblDataSeries.Size = new System.Drawing.Size(191, 13);
-            this.lblDataSeries.TabIndex = 37;
-            this.lblDataSeries.Text = "Select specific data series to download";
-            this.lblDataSeries.Visible = false;
+            this.searchResultsControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchResultsControl.Location = new System.Drawing.Point(0, 41);
+            this.searchResultsControl.Name = "searchResultsControl";
+            this.searchResultsControl.Size = new System.Drawing.Size(342, 125);
+            this.searchResultsControl.TabIndex = 37;
+            this.searchResultsControl.Visible = false;
             // 
             // btnReset
             // 
@@ -1090,18 +1107,17 @@
             // 
             // groupResults
             // 
-            this.groupResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupResults.Controls.Add(this.lblThemeDescription);
             this.groupResults.Controls.Add(this.txtThemeDescription);
             this.groupResults.Controls.Add(this.txtThemeName);
             this.groupResults.Controls.Add(this.lstThemes);
             this.groupResults.Controls.Add(this.rbExistingTheme);
             this.groupResults.Controls.Add(this.rbNewTheme);
+            this.groupResults.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupResults.Enabled = false;
-            this.groupResults.Location = new System.Drawing.Point(6, 166);
+            this.groupResults.Location = new System.Drawing.Point(0, 166);
             this.groupResults.Name = "groupResults";
-            this.groupResults.Size = new System.Drawing.Size(326, 106);
+            this.groupResults.Size = new System.Drawing.Size(342, 139);
             this.groupResults.TabIndex = 33;
             this.groupResults.TabStop = false;
             this.groupResults.Text = "Save data to...";
@@ -1748,45 +1764,6 @@
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.Visible = false;
             // 
-            // dgvSearch
-            // 
-            this.dgvSearch.AllowUserToAddRows = false;
-            this.dgvSearch.AllowUserToDeleteRows = false;
-            this.dgvSearch.AllowUserToResizeColumns = false;
-            this.dgvSearch.AllowUserToResizeRows = false;
-            this.dgvSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSearch.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.dgvSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSearch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvSearch.Location = new System.Drawing.Point(159, 49);
-            this.dgvSearch.Name = "dgvSearch";
-            this.dgvSearch.RowHeadersWidth = 25;
-            this.dgvSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSearch.Size = new System.Drawing.Size(161, 237);
-            this.dgvSearch.TabIndex = 20;
-            this.dgvSearch.ZoomToSelected = true;
-            // 
-            // searchDataGridView1
-            // 
-            this.searchDataGridView1.AllowUserToAddRows = false;
-            this.searchDataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchDataGridView1.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.searchDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.searchDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.searchDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.searchDataGridView1.Location = new System.Drawing.Point(3, 60);
-            this.searchDataGridView1.Name = "searchDataGridView1";
-            this.searchDataGridView1.RowHeadersWidth = 25;
-            this.searchDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.searchDataGridView1.Size = new System.Drawing.Size(333, 100);
-            this.searchDataGridView1.TabIndex = 31;
-            this.searchDataGridView1.ZoomToSelected = false;
-            // 
             // SearchControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1806,6 +1783,7 @@
             this.tabPage3.PerformLayout();
             this.GroupBox1.ResumeLayout(false);
             this.GroupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
@@ -1823,7 +1801,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.spcKey)).EndInit();
             this.spcKey.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
             this.groupResults.ResumeLayout(false);
             this.groupResults.PerformLayout();
             this.panelSearch.ResumeLayout(false);
@@ -1841,8 +1818,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox5)).EndInit();
             this.gbSearchSummary.ResumeLayout(false);
             this.gbSearchSummary.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1910,10 +1885,9 @@
         private System.Windows.Forms.Label lblServerName;
         public System.Windows.Forms.Label lblDateValue;
         public System.Windows.Forms.Label lblServerValue;
-        public System.Windows.Forms.Label Label3;
+        private System.Windows.Forms.Label Label3;
         public System.Windows.Forms.DateTimePicker dateTimePickEnd;
         public System.Windows.Forms.DateTimePicker dateTimePickStart;
-        private SearchDataGridView searchDataGridView1;
         private System.Windows.Forms.ListBox lbSelectedWebServices;
         private System.Windows.Forms.ListBox lbWebservicesSupport;
         private System.Windows.Forms.RadioButton radioButton7;
@@ -1969,7 +1943,6 @@
         public System.Windows.Forms.SplitContainer spcHor1;
         private System.Windows.Forms.Label lblKeywords;
         internal System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label lblDataSeries;
         private System.Windows.Forms.ListBox lboKeywordSupport;
         private System.Windows.Forms.CheckBox checkSummary;
         private System.Windows.Forms.Button btnRunSearchMain;
@@ -1985,6 +1958,7 @@
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.GroupBox groupPreview;
         private System.Windows.Forms.GroupBox groupRestoreSearch;
+        private SearchResultsControl searchResultsControl;
 
     }
 }

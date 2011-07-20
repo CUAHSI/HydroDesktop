@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Controls.RibbonControls;
 using DotSpatial.Data;
-using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using HydroDesktop.Configuration;
-using HydroDesktop.Interfaces;
+using HydroDesktop.Search.Extensions;
 
 namespace HydroDesktop.Search
 {
@@ -62,6 +58,8 @@ namespace HydroDesktop.Search
             //add the ribbon panels and buttons
             AddRibbonItems();
 
+            var mnuHISCentral = new ToolStripMenuItem("HIS Central", Resources.OpenSearch);
+            var mnuMetadataCache = new ToolStripMenuItem("Metadata Cache", Resources.OpenSearch_1);
             //add the search UI to the main application
             if (_mapArgs.Map != null)
             {
@@ -83,14 +81,14 @@ namespace HydroDesktop.Search
 
         private void _searchRibbonButton_Click(object sender, EventArgs e)
         {
-            ucSearch.SearchMode = "HIS Central";
+            ucSearch.SearchMode = SearchMode.HISCentral;
             RefreshTheMap();
         }
 
         //click - HIS Central Search button
         private void mnuMetadataCache_Click(object sender, EventArgs e)
         {
-            ucSearch.SearchMode = "Local Metadata Cache";
+            ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
             RefreshTheMap();
         }
 
@@ -99,7 +97,7 @@ namespace HydroDesktop.Search
         {
             ReportProgress(70, "Loading Search Plugin");
 
-            ucSearch.SearchMode = "HIS Central";
+            ucSearch.SearchMode = SearchMode.HISCentral;
             RefreshTheMap();
         }
 
@@ -146,8 +144,8 @@ namespace HydroDesktop.Search
         private void rbtnMetadataCache_Click(object sender, EventArgs e)
         {
             //ucSearch.MainImage = Resources.OpenSearch_1;
-            ucSearch.SearchMode = "Local Metadata Cache";
-            ucSearch.lblServerValue.Text = ucSearch.Label3.Text;
+            ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
+            ucSearch.lblServerValue.Text = ucSearch.SearchMode.Description();
             //moved to search control load
             ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
             ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
@@ -159,8 +157,8 @@ namespace HydroDesktop.Search
         private void rbtnHISCentral_Click(object sender, EventArgs e)
         {
             //ucSearch.MainImage = Resources.OpenSearch;
-            ucSearch.SearchMode = "HIS Central";
-            ucSearch.lblServerValue.Text = ucSearch.Label3.Text;
+            ucSearch.SearchMode = SearchMode.HISCentral;
+            ucSearch.lblServerValue.Text = ucSearch.SearchMode.Description();
             //moved to search control load
             ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
             ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
@@ -171,9 +169,7 @@ namespace HydroDesktop.Search
         //advanced options
         private void _rbtnAdvancedSettings_Click(object sender, EventArgs e)
         {
-            //to set the advanced option
-            AdvancedSettingsDialog dialog = new AdvancedSettingsDialog(ucSearch);
-            dialog.ShowDialog();
+           new AdvancedSettingsDialog(ucSearch).ShowDialog();
         }
 
         //force  the map to redraw
@@ -193,5 +189,15 @@ namespace HydroDesktop.Search
         }
 
         #endregion Ribbon
+    }
+
+    public enum SearchMode
+    {
+        //TODO: implement localizable attribute if need
+
+        [Description("HIS Central")]
+        HISCentral,
+        [Description("Local Metadata Cache")]
+        LocalMetaDataCache
     }
 }
