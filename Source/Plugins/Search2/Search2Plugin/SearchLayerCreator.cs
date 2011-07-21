@@ -102,8 +102,17 @@ namespace HydroDesktop.Search
             if (minValue == int.MaxValue) minValue = 0;
             if (maxValue == int.MinValue) maxValue = 0;
 
-            const int categoriesCount = 3;                        // number of categories
-            var categorieStep = (maxValue - minValue) / 3 + 1;    // value step in filter
+            // Calculate number of categories
+            int categoriesCount; 
+            var length = maxValue - minValue;
+            if (length < 50)
+                categoriesCount = 1;
+            else if (length < 100)
+                categoriesCount = 2;
+            else
+                categoriesCount = 3;
+
+            var categorieStep = (maxValue - minValue) / categoriesCount + 1;    // value step in filter
             const int imageStep = 5;
             var imageSize = 5;
 
