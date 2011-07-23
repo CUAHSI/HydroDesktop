@@ -49,10 +49,10 @@ namespace HydroDesktop.Search
 
         private readonly DownloadManager _downLoadManager;
 
-		// fix : 8198
-		// 1. del WS-selection listbox
-		// 2. update ws Treeview and add ws treeview with url link
-		protected bool bUseTreeWithLink = true;
+        // fix : 8198
+        // 1. del WS-selection listbox
+        // 2. update ws Treeview and add ws treeview with url link
+        protected bool bUseTreeWithLink = true;
 
         #endregion
 
@@ -90,27 +90,27 @@ namespace HydroDesktop.Search
             //listBox4.MouseUp += new MouseEventHandler(listBox4_MouseUp);
             dgvSearch.Click += dataGridView1_Click;
             dgvSearch.SelectionChanged += dataGridView1_SelectionChanged;
-			
-			// fix: 8198
-			if (bUseTreeWithLink)
-			{// double click to open ws in ie.
-				treeViewWebServices.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(treeViewWebServices_DbClick);
-			}
-			// update invisible data container
-			treeViewWebServices.MouseUp += new MouseEventHandler(treeView1_MouseUp);
+
+            // fix: 8198
+            if (bUseTreeWithLink)
+            {// click to open ws in ie.
+                treeViewWebServices.NodeMouseClick += new TreeNodeMouseClickEventHandler(treeViewWebServices_OpenUrl);
+            }
+            // update invisible data container
+            treeViewWebServices.MouseUp += new MouseEventHandler(treeView1_MouseUp);
 
             // mouse up on list should ensure radiobutton existing themes get selected
             lstThemes.MouseUp += lstThemes_MouseUp;
 
             //project opening event to ensure refreshing of layers
             _mapArgs.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
-        
+
             //set the default search mode
             SearchMode = SearchMode.HISCentral;
 
-            _downLoadManager = new DownloadManager {Log = log};
+            _downLoadManager = new DownloadManager { Log = log };
         }
-     
+
         #endregion
 
 
@@ -131,14 +131,14 @@ namespace HydroDesktop.Search
         public SearchMode SearchMode
         {
             get { return _searchMode; }
-            set 
+            set
             {
                 var oldSearchMode = Label3.Text;
                 Label3.Text = value.Description();
                 _searchMode = value;
                 if (oldSearchMode == Label3.Text)
                     return;
- 
+
                 //if search mode is set to metadata cache -
                 //change the list of web services and keywords
                 //accordingly
@@ -465,7 +465,7 @@ namespace HydroDesktop.Search
                         double minLat = Convert.ToDouble(areaLineArray[2], CultureInfo.InvariantCulture);
                         double maxLon = Convert.ToDouble(areaLineArray[3], CultureInfo.InvariantCulture);
                         double maxLat = Convert.ToDouble(areaLineArray[4], CultureInfo.InvariantCulture);
-                        
+
                         _rectangleDrawing.RestoreSearchRectangle(minLon, minLat, maxLon, maxLat);
                     }
                 }
@@ -578,7 +578,7 @@ namespace HydroDesktop.Search
         {
             tboTypeKeyword.Clear();
             lblKeywordRelation.Text = "";
-            
+
             lbKeywords.Items.Clear();
             MetadataCacheSearcher searcher = new MetadataCacheSearcher();
             List<string> keywords = searcher.GetKeywords();
@@ -601,7 +601,7 @@ namespace HydroDesktop.Search
                 }
             }
 
-            
+
 
         }
         #endregion ontology keywords - from metadata cache db
@@ -673,7 +673,7 @@ namespace HydroDesktop.Search
                     lbKeywords.Items.Add(elem.InnerText);
                 }
             }
-            
+
         }
 
         private void FillTree(XmlNode node, TreeNodeCollection parentnode)
@@ -770,7 +770,7 @@ namespace HydroDesktop.Search
                 {
                     tnode.TreeView.SelectedNode = tnode;
                     lblKeywordRelation.Text = tnode.FullPath;
-                    
+
                     //special case for 'hydrosphere when search mode is metadata cache
                     if (SearchMode == SearchMode.LocalMetaDataCache)
                     {
@@ -984,7 +984,7 @@ namespace HydroDesktop.Search
         private void fillAreaXml()
         {
             string sValue = String.Empty;
-            
+
             //separate handling for rectnagle area
             if (_rectangleDrawing != null)
             {
@@ -1009,12 +1009,12 @@ namespace HydroDesktop.Search
 
         //filling webservices from a treeview
 
-		// fix : 8198
-		// lbSelectedWebServices has not been added into plugin frameWnd
-		// lbWebservicesSupport is invisible .
-		// so the content of those ctrls is hidden , them are only data contaioner ,
-		//   and no ui element in the win. this function is reserved.       
-		private void fillWebservicesXml()
+        // fix : 8198
+        // lbSelectedWebServices has not been added into plugin frameWnd
+        // lbWebservicesSupport is invisible .
+        // so the content of those ctrls is hidden , them are only data contaioner ,
+        //   and no ui element in the win. this function is reserved.       
+        private void fillWebservicesXml()
         {
             string sValue = "";
             int sCount = 0;
@@ -1113,7 +1113,7 @@ namespace HydroDesktop.Search
 
         //to check all web services (default)    
         private void CheckAllWebServices()
-        {                      
+        {
             if (treeViewWebServices.Nodes.Count <= 0) return;
             foreach (TreeNode tnode in treeViewWebServices.Nodes)
             {
@@ -1122,58 +1122,67 @@ namespace HydroDesktop.Search
             fillWebservicesXml();
         }
 
-		// fix : 8198
-		// only add ws node, and not to add child node under ws node
-		private void FillWebTree2(XmlNode node, TreeNodeCollection parentNode)
-		{
-			Color clrBule = Color.FromKnownColor(KnownColor.Blue);
-			foreach (XmlNode childNode1 in node.ChildNodes)
-			{
-				if (childNode1.Name == "ServiceInfo")
-				{
-					TreeNode treeNode1 = new TreeNode();
-					treeNode1.ForeColor = clrBule;
-					//treeNode1.NodeFont.Underline = true; 
+        // fix : 8198
+        // only add ws node, and not to add child node under ws node
+        private void FillWebTree2(XmlNode node, TreeNodeCollection parentNode)
+        {
+            Color clrBule = Color.FromKnownColor(KnownColor.Blue);
+            Font ftUrl = null;
+            foreach (XmlNode childNode1 in node.ChildNodes)
+            {
+                if (childNode1.Name == "ServiceInfo")
+                {
+                    TreeNode treeNode1 = new TreeNode();
+
+                    // bule font with undeline
+                    treeNode1.ForeColor = clrBule;
+                    if (ftUrl == null)
+                    {
+                        ftUrl = new Font(treeNode1.NodeFont, FontStyle.Underline);
+                    }
+                    treeNode1.NodeFont = ftUrl;
+
                     var nodeInfo = new NodeInfo();
-					foreach (XmlNode childNode2 in childNode1.ChildNodes)
-					{
-						if (childNode2.Name == "Title")
-						{
-							treeNode1.Text = childNode2.InnerText;
-						}
-						else if (childNode2.Name == "ServiceID")
-						{
-							//set the name of the tree node to the ServiceID
-							treeNode1.Name = childNode2.InnerText;
+                    foreach (XmlNode childNode2 in childNode1.ChildNodes)
+                    {
+                        if (childNode2.Name == "Title")
+                        {
+                            treeNode1.Text = childNode2.InnerText;
+                        }
+                        else if (childNode2.Name == "ServiceID")
+                        {
+                            //set the name of the tree node to the ServiceID
+                            treeNode1.Name = childNode2.InnerText;
 
-							/*TreeNode treeNode2 = new TreeNode(childNode2.Name);
-							treeNode1.Nodes.Add(treeNode2);
+                            /*TreeNode treeNode2 = new TreeNode(childNode2.Name);
+                            treeNode1.Nodes.Add(treeNode2);
 
-							TreeNode treeNode3 = new TreeNode(childNode2.InnerText);
-							treeNode2.Nodes.Add(treeNode3);*/
-						}else if(childNode2.Name == "ServiceDescriptionURL")
-						{
-						    nodeInfo.DescritionUrl = childNode2.InnerText;
-						}
+                            TreeNode treeNode3 = new TreeNode(childNode2.InnerText);
+                            treeNode2.Nodes.Add(treeNode3);*/
+                        }
+                        else if (childNode2.Name == "ServiceDescriptionURL")
+                        {
+                            nodeInfo.DescritionUrl = childNode2.InnerText;
+                        }
                         else if (childNode2.Name == "servURL")
                         {
                             nodeInfo.ServiceUrl = childNode2.InnerText;
                         }
                         else
-						{
-							/*TreeNode treeNode2 = new TreeNode(childNode2.Name);
-							treeNode1.Nodes.Add(treeNode2);
+                        {
+                            /*TreeNode treeNode2 = new TreeNode(childNode2.Name);
+                            treeNode1.Nodes.Add(treeNode2);
 
-							TreeNode treeNode3 = new TreeNode(childNode2.InnerText);
-							treeNode2.Nodes.Add(treeNode3);*/
-						}
-					}
+                            TreeNode treeNode3 = new TreeNode(childNode2.InnerText);
+                            treeNode2.Nodes.Add(treeNode3);*/
+                        }
+                    }
 
-				    treeNode1.Tag = nodeInfo;
-					parentNode.Add(treeNode1);
-				}
-			}
-		}
+                    treeNode1.Tag = nodeInfo;
+                    parentNode.Add(treeNode1);
+                }
+            }
+        }
         private void FillWebTree(XmlNode node, TreeNodeCollection parentNode)
         {
             foreach (XmlNode childNode1 in node.ChildNodes)
@@ -1202,7 +1211,7 @@ namespace HydroDesktop.Search
                         var treeNode2 = new TreeNode(childNode2.Name) { Name = childNode2.Name };
                         treeNode1.Nodes.Add(treeNode2);
 
-                        var treeNode3 = new TreeNode(childNode2.InnerText){Name = "Value"};
+                        var treeNode3 = new TreeNode(childNode2.InnerText) { Name = "Value" };
                         treeNode2.Nodes.Add(treeNode3);
                     }
                 }
@@ -1220,24 +1229,24 @@ namespace HydroDesktop.Search
 
                 var searcher = new MetadataCacheSearcher();
                 List<DataServiceInfo> serviceList = searcher.GetWebServices();
-                
+
                 foreach (DataServiceInfo service in serviceList)
                 {
                     TreeNode treeNode1 = new TreeNode();
                     treeNode1.Text = service.ServiceTitle;
                     treeNode1.Name = service.Id.ToString();
 
-					// fix : 8198
-					// need to add ServiceDescriptionURL attr
+                    // fix : 8198
+                    // need to add ServiceDescriptionURL attr
 
                     var nodeInfo = new NodeInfo
-                                       {
-                                           ServiceUrl = service.EndpointURL,
-                                           DescritionUrl = service.DescriptionURL
-                                       };
+                    {
+                        ServiceUrl = service.EndpointURL,
+                        DescritionUrl = service.DescriptionURL
+                    };
                     treeNode1.Tag = nodeInfo;
 
-					treeViewWebServices.Nodes.Add(treeNode1);
+                    treeViewWebServices.Nodes.Add(treeNode1);
                 }
                 treeViewWebServices.Sort();
 
@@ -1393,7 +1402,7 @@ namespace HydroDesktop.Search
             }
         }
 
-        
+
 
         /// <summary>
         /// Finds polygon layers  in the map
@@ -1425,7 +1434,7 @@ namespace HydroDesktop.Search
         private void cboActiveLayer_SelectedIndexChanged(object sender, EventArgs e)
         {
             //lbFieldsActiveLayer.SelectedIndexChanged -= this.lbFieldsActiveLayer_SelectedIndexChanged;
-            
+
             lbFieldsActiveLayer.Items.Clear();
             listBox4.Items.Clear();
             selectPolygonLayer();
@@ -1471,7 +1480,7 @@ namespace HydroDesktop.Search
                         lbFieldsActiveLayer.Items.Clear();
                         for (int i = 0; i <= pg_s.DataSet.DataTable.Columns.Count - 1; i++)
                         {
-                            lbFieldsActiveLayer.Items.Add(pg_s.DataSet.DataTable.Columns[i].ColumnName); 
+                            lbFieldsActiveLayer.Items.Add(pg_s.DataSet.DataTable.Columns[i].ColumnName);
                         }
                         dgvSearch.SetDataSource(pg_s);
                         //try to select Aruba
@@ -1587,8 +1596,8 @@ namespace HydroDesktop.Search
             if (_rectangleDrawing == null)
             {
                 _rectangleDrawing = new RectangleDrawing(_mapArgs.Map);
-                _rectangleDrawing.RectangleCreated +=new EventHandler(rectangleDrawing_RectangleCreated);
-                
+                _rectangleDrawing.RectangleCreated += new EventHandler(rectangleDrawing_RectangleCreated);
+
             }
             _rectangleDrawing.Activate();
 
@@ -1617,8 +1626,8 @@ namespace HydroDesktop.Search
             double xMax = _rectangleDrawing.RectangleExtent.MaxX;
             double yMax = _rectangleDrawing.RectangleExtent.MaxY;
 
-            double[] xy = new double[] {xMin, yMin, xMax, yMax};
-            
+            double[] xy = new double[] { xMin, yMin, xMax, yMax };
+
             string esri = Resources.wgs_84_esri_string;
             ProjectionInfo wgs84 = new ProjectionInfo();
             wgs84.ReadEsriString(esri);
@@ -1634,7 +1643,7 @@ namespace HydroDesktop.Search
             fillAreaXml();
 
             //label17.Text = "rectangle:" + " Lat: " + yMin.ToString("N3") + " :: " +yMax.ToString("N3") +
-             //  " Lon: " + xMin.ToString("N3") + " :: " + xMax.ToString("N3");
+            //  " Lon: " + xMin.ToString("N3") + " :: " + xMax.ToString("N3");
         }
 
         private RectangleFunction GetRectangleFunction()
@@ -1661,7 +1670,7 @@ namespace HydroDesktop.Search
             {
                 _rectangleDrawing.Deactivate();
             }
-            
+
             //RectangleFunction function = GetRectangleFunction();
             //if (function != null)
             //{
@@ -1669,7 +1678,7 @@ namespace HydroDesktop.Search
             //}
         }
 
-       
+
         #endregion
 
 
@@ -1777,16 +1786,16 @@ namespace HydroDesktop.Search
 
                 //ArrayList rectangleCoordinates = new ArrayList();
                 var bBox = new SearchCriteria.AreaRectangle
-                               {
-                                   xMin = Convert.ToDouble(listBox4.Items[0], CultureInfo.InvariantCulture),
-                                   xMax = Convert.ToDouble(listBox4.Items[2], CultureInfo.InvariantCulture),
-                                   yMin = Convert.ToDouble(listBox4.Items[1], CultureInfo.InvariantCulture),
-                                   yMax = Convert.ToDouble(listBox4.Items[3], CultureInfo.InvariantCulture),
-                                   /* as determined from
-                                    *             searcher.GetSeriesCatalogInRectangle(
-                                                               (double)coords[0], (double)coords[2], (double)coords[1], (double)coords[3],
-                                   */
-                               };
+                {
+                    xMin = Convert.ToDouble(listBox4.Items[0], CultureInfo.InvariantCulture),
+                    xMax = Convert.ToDouble(listBox4.Items[2], CultureInfo.InvariantCulture),
+                    yMin = Convert.ToDouble(listBox4.Items[1], CultureInfo.InvariantCulture),
+                    yMax = Convert.ToDouble(listBox4.Items[3], CultureInfo.InvariantCulture),
+                    /* as determined from
+                     *             searcher.GetSeriesCatalogInRectangle(
+                                                (double)coords[0], (double)coords[2], (double)coords[1], (double)coords[3],
+                    */
+                };
                 areaParameter = bBox;
             }
 
@@ -1810,34 +1819,35 @@ namespace HydroDesktop.Search
 
         #endregion TabControl button management
 
-		void treeView1_MouseUp(object sender, MouseEventArgs e)
-		{
-			fillWebservicesXml();
-		}
-		// fix: 8198
-		// open url of ServiceDescriptionURL
-		public void treeViewWebServices_DbClick (
-			Object sender,
-			TreeNodeMouseClickEventArgs e)
-		{
-			TreeNode node = e.Node;
-		    var nodeInfo = node.Tag as NodeInfo;
+        void treeView1_MouseUp(object sender, MouseEventArgs e)
+        {
+            fillWebservicesXml();
+        }
+        // fix: 8198
+        // open url of ServiceDescriptionURL
+        public void treeViewWebServices_OpenUrl(
+            Object sender,
+            TreeNodeMouseClickEventArgs e)
+        {
+            TreeNode node = e.Node;
+            var nodeInfo = node.Tag as NodeInfo;
             if (nodeInfo == null || nodeInfo.DescritionUrl == null)
-			{
-				MessageBox.Show("The node [" + node.Text + "] don't have any ServiceDescriptionURL attribute.");
-				return;
-			}
+            {
+                MessageBox.Show("The node [" + node.Text + "] don't have any ServiceDescriptionURL attribute.");
+                return;
+            }
 
-			try
-			{
-			    string url = nodeInfo.DescritionUrl;
-				// only use for ie
+            try
+            {
+                string url = nodeInfo.DescritionUrl;
+                // only use for ie
                 System.Diagnostics.Process.Start(url);
-			}
-			catch(System.Exception ex ){
-				MessageBox.Show("Can't open url . exception:" + ex.Message);
-			}
-		}
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("Can't open url . exception:" + ex.Message);
+            }
+        }
 
         #region Search Background Worker
 
@@ -1910,7 +1920,7 @@ namespace HydroDesktop.Search
             {
                 _rectangleDrawing.Deactivate();
             }
-            
+
             //restore the controls to regular state
             progBarSearch2.Value = 0;
             lblSearching.Text = "";
@@ -1946,7 +1956,7 @@ namespace HydroDesktop.Search
             else
             {
                 //The search process returns a point FeatureSet.
-                
+
                 var result = e.Result as SearchResult;
                 if (result == null)
                 {
@@ -1966,9 +1976,9 @@ namespace HydroDesktop.Search
                 {
                     //We need to reproject the Search results from WGS84 to the projection of the map.
                     ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
-                    foreach(var item in result.Features)
+                    foreach (var item in result.Features)
                         item.Value.Projection = wgs84;
-                    
+
                     ShowSearchResults(result);
                     this.Cursor = Cursors.Default;
                     groupResults.Enabled = true;
@@ -2181,7 +2191,7 @@ namespace HydroDesktop.Search
             //refreshing the AddExisiting theme
             AddExistingThemes();
             txtThemeName.Text = "";
-            
+
             //make the download progress-bar panel disappear
             panelSearch.Visible = false;
         }
@@ -2189,7 +2199,7 @@ namespace HydroDesktop.Search
         void _downLoadManager_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progBarSearch2.Value = e.ProgressPercentage;
-            lblSearching.Text = e.UserState != null? e.UserState.ToString() : string.Empty;
+            lblSearching.Text = e.UserState != null ? e.UserState.ToString() : string.Empty;
         }
 
         private void AddThemeToMap(string themeName)
@@ -2205,7 +2215,7 @@ namespace HydroDesktop.Search
                 }
 
                 var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-				var manager = new Controls.Themes.ThemeManager(db);
+                var manager = new Controls.Themes.ThemeManager(db);
                 IFeatureSet fs = manager.GetFeatureSet(themeName, _mapArgs.Map.Projection);
                 manager.AddThemeToMap(fs, themeName, _mapArgs.Map as DotSpatial.Controls.Map);
                 //_mapArgs.Map.MapFrame.ResetBuffer();
@@ -2238,7 +2248,7 @@ namespace HydroDesktop.Search
             //assign the projection again
             foreach (var item in loadedFeatures)
                 item.Value.Reproject(_mapArgs.Map.Projection);
-            
+
             // add result layer into  searchResultsControl
             searchResultsControl.SetLayerSearchResult(mapMain, laySearchResult);
 
@@ -2251,7 +2261,7 @@ namespace HydroDesktop.Search
                     break;
                 case SearchMode.LocalMetaDataCache:
                     extractor = new HISCentralInfoExtractor(treeViewWebServices.Nodes);
-                        //new LocalInfoExtractor();
+                    //new LocalInfoExtractor();
                     break;
                 default:
                     goto case SearchMode.HISCentral;
@@ -2462,7 +2472,7 @@ namespace HydroDesktop.Search
             //setting the datagrid view to null before next search results come in
             searchResultsControl.SetDataSource(null);
             searchResultsControl.Visible = false;
-            
+
             groupResults.Enabled = false;
             btnDownload.Enabled = false;
             btnReset.Enabled = false;
@@ -2480,9 +2490,9 @@ namespace HydroDesktop.Search
             {
                 MessageBox.Show("Please provide at least one Web Service for search.");
 
-				// fix : 8198
-                if(!bUseTreeWithLink)
-					lbSelectedWebServices.Focus();
+                // fix : 8198
+                if (!bUseTreeWithLink)
+                    lbSelectedWebServices.Focus();
                 tabControl2.SelectedIndex = 1;
                 return;
             }
