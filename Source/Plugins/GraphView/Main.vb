@@ -6,7 +6,6 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 
 Namespace TSA
-    <Plugin("Graph", Author:="Utah State University", UniqueName:="ODM_Tools_Visualization", Version:="1.0")> _
     Public Class Main
         Inherits Extension
         Implements IMapPlugin
@@ -508,9 +507,6 @@ Namespace TSA
         End Sub
 
 #End Region
-
-
-
 
     End Class
 End Namespace
