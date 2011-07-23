@@ -1138,7 +1138,8 @@ namespace HydroDesktop.Search
                     treeNode1.ForeColor = clrBule;
                     if (ftUrl == null)
                     {
-                        ftUrl = new Font(treeNode1.NodeFont, FontStyle.Underline);
+                        var prototype = treeViewWebServices.Font;
+                        ftUrl = new Font(prototype, FontStyle.Underline);
                     }
                     treeNode1.NodeFont = ftUrl;
 
