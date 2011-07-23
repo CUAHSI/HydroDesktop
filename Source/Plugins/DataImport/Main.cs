@@ -21,7 +21,6 @@ namespace ImportFromWaterML
         private const string TableTabKey = "kTable";     
         #endregion
 
-
         #region IExtension Members
 
         protected override void OnDeactivate()

@@ -83,7 +83,7 @@ namespace TableView
             refreshThemeButton.RootKey = TableTabKey;
             refreshThemeButton.LargeImage = Properties.Resources.refreshTheme;
             refreshThemeButton.SmallImage = Properties.Resources.refreshTheme_16x16;
-            refreshThemeButton.SimpleToolTip = "Refresh Themes";
+            refreshThemeButton.ToolTipText = "Refresh Themes";
             refreshThemeButton.GroupCaption = _tablePanelName;
             args.AppManager.HeaderControl.Add(refreshThemeButton);
 
@@ -92,14 +92,14 @@ namespace TableView
             deleteThemeButton.RootKey = TableTabKey;        
             deleteThemeButton.LargeImage = Properties.Resources.delete;
             deleteThemeButton.SmallImage = Properties.Resources.delete_16x16;
-            deleteThemeButton.SimpleToolTip = "Delete Theme from Database";
+            deleteThemeButton.ToolTipText = "Delete Theme from Database";
             deleteThemeButton.GroupCaption = _tablePanelName;
             args.AppManager.HeaderControl.Add(deleteThemeButton);
 
             //Change Database
             var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click);
             changeDatabaseButton.RootKey = TableTabKey;
-            changeDatabaseButton.SimpleToolTip = "Change Database";
+            changeDatabaseButton.ToolTipText = "Change Database";
             changeDatabaseButton.LargeImage = Properties.Resources.changeDatabase;
             changeDatabaseButton.SmallImage = Properties.Resources.changeDatabase_16x16;
             changeDatabaseButton.GroupCaption = "Database";
@@ -108,7 +108,7 @@ namespace TableView
             //New Database
             var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
             newDatabaseButton.RootKey = TableTabKey;
-            newDatabaseButton.SimpleToolTip = "Create New Database";
+            newDatabaseButton.ToolTipText = "Create New Database";
             newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
             newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
             newDatabaseButton.GroupCaption = "Database";

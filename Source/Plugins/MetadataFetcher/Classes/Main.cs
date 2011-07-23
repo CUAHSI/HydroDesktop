@@ -73,7 +73,7 @@ namespace HydroDesktop.MetadataFetcher
 			btnDownloadMetadata.SmallImage = Properties.Resources.Metadata_Fetcher_16;
 			//ToolTipTitle is not supported in HeaderControl
             //btnDownloadMetadata.ToolTipTitle = "Manage";
-			btnDownloadMetadata.SimpleToolTip = "Manage the contents of the local metadata catalog.";
+			btnDownloadMetadata.ToolTipText = "Manage the contents of the local metadata catalog.";
             btnDownloadMetadata.GroupCaption = "Metadata";
             args.AppManager.HeaderControl.Add(btnDownloadMetadata);
 
@@ -85,7 +85,7 @@ namespace HydroDesktop.MetadataFetcher
 			btnAddServices.SmallImage = Properties.Resources.Metadata_Fetcher_Add_16;
             //ToolTipTitle is not supported in HeaderControl
             //btnAddServices.ToolTipTitle = "Add";
-			btnAddServices.SimpleToolTip = "Add services to the list of services that can be harvested in metadata catalog.";
+			btnAddServices.ToolTipText = "Add services to the list of services that can be harvested in metadata catalog.";
             btnAddServices.GroupCaption = "Metadata";
 			args.AppManager.HeaderControl.Add ( btnAddServices );
 		}

@@ -64,7 +64,7 @@ namespace EPADelineation
 
             SimpleActionItem action = new SimpleActionItem("Delineate", _startDelineate_Click);
             action.GroupCaption = "EPA Tool";
-            action.SimpleToolTip = "Using EPA Web Services to Delineate Catchments";
+            action.ToolTipText = "Using EPA Web Services to Delineate Catchments";
             action.SmallImage = Properties.Resources.Delineation_icon_32.GetThumbnailImage(16, 16, null, IntPtr.Zero);
             action.LargeImage = Properties.Resources.Delineation_icon_32;
             action.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
