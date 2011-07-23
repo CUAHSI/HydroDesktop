@@ -18,11 +18,14 @@ using MWPoint = DotSpatial.Topology.Point;
 
 namespace FetchBasemap
 {
-    [Plugin("Fetch Basemap", Author = "James Seppi", UniqueName = "mw_FetchBasemap_1", Version = "1")]
     public class Main : Extension, IMapPlugin
     {
         private const string STR_KeyServiceDropDown = "kServiceDropDown";
         private const string STR_KeyOpacityDropDown = "kOpacityDropDown";
+
+        private DropDownActionItem _serviceDropDown;
+        private DropDownActionItem _opacityDropDown;
+
         public const string HomeTabKey = "kHome";
 
         #region Variables
@@ -79,7 +82,8 @@ namespace FetchBasemap
                 _mapPluginArgs.AppManager.SerializationManager.GetCustomSetting(PluginName + "_BasemapName",
                                                                                         resources.None);
             //Set opacity
-            _mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyOpacityDropDown, opacity);
+            _opacityDropDown.SelectedItem = opacity;
+
 
             _baseMapLayer = (MapImageLayer)_mapPluginArgs.Map.MapFrame.GetAllLayers().Where(
                 layer => layer.LegendText == resources.Legend_Title).FirstOrDefault();
@@ -90,14 +94,14 @@ namespace FetchBasemap
                 {
                     DisableBasemapLayer();
                     _provider = _emptyProvider;
-                    _mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyServiceDropDown, _provider);
+                    _serviceDropDown.SelectedItem = _provider;
                 }
             }
             else
             {
                 //hack: need to set provider to original object, not a new one.
                 _provider = ServiceProvider.GetDefaultServiceProviders().Where(p => p.Name == basemapName).FirstOrDefault();
-                _mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyServiceDropDown, _provider);
+                _serviceDropDown.SelectedItem = _provider;
                 EnableBasemapFetching(_provider.Name, _provider.Url);
             }
         }
@@ -124,35 +128,36 @@ namespace FetchBasemap
 
         private void AddServiceDropDown(IHeaderControl header)
         {
-            DropDownActionItem serviceDropDown = new DropDownActionItem();
-            serviceDropDown.Key = STR_KeyServiceDropDown;
+            _serviceDropDown = new DropDownActionItem();
+            _serviceDropDown.Key = STR_KeyServiceDropDown;
 
             //Create "None" Option
             _emptyProvider = new ServiceProvider(resources.None, null);
-            serviceDropDown.Items.Add(_emptyProvider);
+            _serviceDropDown.Items.Add(_emptyProvider);
 
             // no option presently for group image.
             // Image = resources.AddOnlineBasemap.GetThumbnailImage(32, 32, null, IntPtr.Zero),
 
-            serviceDropDown.Width = 145;
-            serviceDropDown.AllowEditingText = false;
-            serviceDropDown.SimpleToolTip = resources.Service_Box_ToolTip;
-            serviceDropDown.SelectedValueChanged += ServiceSelected;
-            serviceDropDown.GroupCaption = resources.Panel_Name;
-            serviceDropDown.Items.AddRange(ServiceProvider.GetDefaultServiceProviders());
-            serviceDropDown.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
+            _serviceDropDown.Width = 145;
+            _serviceDropDown.AllowEditingText = false;
+            _serviceDropDown.ToolTipText = resources.Service_Box_ToolTip;
+            _serviceDropDown.SelectedValueChanged += ServiceSelected;
+            _serviceDropDown.GroupCaption = resources.Panel_Name;
+            _serviceDropDown.Items.AddRange(ServiceProvider.GetDefaultServiceProviders());
+            _serviceDropDown.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
 
             //Add it to the Header
-            header.Add(serviceDropDown);
-            header.SetSelectedItem(STR_KeyServiceDropDown, _emptyProvider);
+            header.Add(_serviceDropDown);
+         
+            _serviceDropDown.SelectedItem = _emptyProvider;
         }
         private void AddOpaticyDropDown(IHeaderControl header)
         {
-            DropDownActionItem opacityDropDown = new DropDownActionItem()
+            _opacityDropDown = new DropDownActionItem()
                         {
                             AllowEditingText = true,
                             Caption = resources.Opacity_Box_Text,
-                            SimpleToolTip = resources.Opacity_Box_ToolTip,
+                            ToolTipText = resources.Opacity_Box_ToolTip,
                             Width = 40,
                             Key = STR_KeyOpacityDropDown
                         };
@@ -165,17 +170,17 @@ namespace FetchBasemap
                 {
                     _defaultOpacity = opacity;
                 }
-                opacityDropDown.Items.Add(opacity);
+                _opacityDropDown.Items.Add(opacity);
 
             }
 
-            opacityDropDown.GroupCaption = resources.Panel_Name;
-            opacityDropDown.SelectedValueChanged += OpacitySelected;
-            opacityDropDown.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
+            _opacityDropDown.GroupCaption = resources.Panel_Name;
+            _opacityDropDown.SelectedValueChanged += OpacitySelected;
+            _opacityDropDown.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
 
             //Add it to the Header
-            header.Add(opacityDropDown);
-            header.SetSelectedItem(STR_KeyOpacityDropDown, _defaultOpacity);
+            header.Add(_opacityDropDown);
+            _opacityDropDown.SelectedItem = _defaultOpacity;
         }
         #endregion Setup Ribbon or Menu
 
@@ -192,7 +197,7 @@ namespace FetchBasemap
             if (!Int16.TryParse(e.SelectedItem as string, out opacityInt) || opacityInt > 100 || opacityInt < 0)
             {
                 opacityInt = 100;
-                _mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyServiceDropDown, "100");
+                _opacityDropDown.SelectedItem = opacityInt;
             }
             _opacity = opacityInt;
             ChangeBasemapOpacity(opacityInt);
@@ -216,7 +221,8 @@ namespace FetchBasemap
         private void BaseMapLayerRemoveItem(object sender, EventArgs e)
         {
             _baseMapLayer = null;
-            _mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyServiceDropDown, _emptyProvider);
+            //_mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyServiceDropDown, _emptyProvider);
+            _serviceDropDown.SelectedItem = _emptyProvider;
             _mapPluginArgs.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
         }
 

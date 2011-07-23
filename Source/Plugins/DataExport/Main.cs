@@ -64,7 +64,7 @@ namespace HydroDesktop.ExportToCSV
             dataExportBtn.RootKey = TableTabKey;
             dataExportBtn.LargeImage = Properties.Resources.archive;
             dataExportBtn.SmallImage = Properties.Resources.archive_16;
-            dataExportBtn.SimpleToolTip = "Export Time Series Data";
+            dataExportBtn.ToolTipText = "Export Time Series Data";
             dataExportBtn.GroupCaption = _panelName;
             _mapArgs.AppManager.HeaderControl.Add(dataExportBtn);
         }

@@ -109,7 +109,7 @@ namespace HelpTab
             userGuideButton.RootKey = HelpTabKey;
             userGuideButton.LargeImage = Resources.help_32x32;
             userGuideButton.SmallImage = Resources.help_16x16;
-            userGuideButton.SimpleToolTip = "Open the help documentation.";
+            userGuideButton.ToolTipText = "Open the help documentation.";
             userGuideButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(userGuideButton);
 
@@ -121,7 +121,7 @@ namespace HelpTab
             discussionButton.RootKey = HelpTabKey;
             discussionButton.LargeImage = Resources.discuss_32x32;
             discussionButton.SmallImage = Resources.discuss_16x16;
-            discussionButton.SimpleToolTip = "Open the HydroDesktop online discussion forum.";
+            discussionButton.ToolTipText = "Open the HydroDesktop online discussion forum.";
             discussionButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(discussionButton);
 
@@ -130,7 +130,7 @@ namespace HelpTab
             issueTrackerButton.RootKey = HelpTabKey;
             issueTrackerButton.LargeImage = Resources.onebit_bug_32x32;
             issueTrackerButton.SmallImage = Resources.onebit_bug_16x16;
-            issueTrackerButton.SimpleToolTip = "Report a bug or feature request on the online HydroDesktop issue tracker.";
+            issueTrackerButton.ToolTipText = "Report a bug or feature request on the online HydroDesktop issue tracker.";
             issueTrackerButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(issueTrackerButton);
 
@@ -142,7 +142,7 @@ namespace HelpTab
             submitEmailButton.RootKey = HelpTabKey;
             submitEmailButton.LargeImage = Resources.email_32x32;
             submitEmailButton.SmallImage = Resources.email_16x16;
-            submitEmailButton.SimpleToolTip = "Send an e-mail to HydroDesktop User Support using your default e-mail program.";
+            submitEmailButton.ToolTipText = "Send an e-mail to HydroDesktop User Support using your default e-mail program.";
             submitEmailButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(submitEmailButton);
 
@@ -151,7 +151,7 @@ namespace HelpTab
             submitCommentButton.RootKey = HelpTabKey;
             submitCommentButton.LargeImage = Resources.comment_32x32;
             submitCommentButton.SmallImage = Resources.comment_16x16;
-            submitCommentButton.SimpleToolTip = "Submit a comment using the online HIS contact form.";
+            submitCommentButton.ToolTipText = "Submit a comment using the online HIS contact form.";
             submitCommentButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(submitCommentButton);
 
@@ -163,7 +163,7 @@ namespace HelpTab
             aboutButton.RootKey = HelpTabKey;
             aboutButton.LargeImage = Resources.info_32x32;
             aboutButton.SmallImage = Resources.info_16x16;
-            aboutButton.SimpleToolTip = "Open the HydroDesktop About dialog.";
+            aboutButton.ToolTipText = "Open the HydroDesktop About dialog.";
             aboutButton.GroupCaption = _helpPanelName;
             args.AppManager.HeaderControl.Add(aboutButton);
         }

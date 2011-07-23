@@ -176,20 +176,13 @@ Namespace EditView
             _mainControl.ShowLegend = False
 
             'disable buttons by default
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnAddNewPoint.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnApplyToDatabase.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnChangeYValue.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnDeletePoint.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnFlag.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnInterpolate.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnRestoreData.Key)
-            'rbAddNewPoint.Enabled = False
-            'rbApplyToDatabase.Enabled = False
-            'rbChangeYValue.Enabled = False
-            'rbDeletePoint.Enabled = False
-            'rbFlag.Enabled = False
-            'rbInterpolate.Enabled = False
-            'rbRestoreData.Enabled = False
+            btnAddNewPoint.Enabled = False
+            btnApplyToDatabase.Enabled = False
+            btnChangeYValue.Enabled = False
+            btnDeletePoint.Enabled = False
+            btnFlag.Enabled = False
+            btnInterpolate.Enabled = False
+            btnRestoreData.Enabled = False
 
         End Sub
 
@@ -224,13 +217,14 @@ Namespace EditView
             _mainControl.Canceled = False
             _mainControl.newseriesID = 0
             _mainControl.gboxDataFilter.Enabled = False
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnAddNewPoint.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnApplyToDatabase.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnChangeYValue.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnDeletePoint.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnFlag.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnInterpolate.Key)
-            _mapArgs.AppManager.HeaderControl.DisableItem(btnRestoreData.Key)
+            btnAddNewPoint.Enabled = False
+            btnApplyToDatabase.Enabled = False
+            btnChangeYValue.Enabled = False
+            btnDeletePoint.Enabled = False
+            btnFlag.Enabled = False
+            btnInterpolate.Enabled = False
+            btnRestoreData.Enabled = False
+
 
             'TODO allow changing of button caption
             btnSelectSeries.Caption = "Edit Series"
@@ -312,13 +306,13 @@ Namespace EditView
                     btnSelectSeries.Caption = "Stop Editing"
                     _mainControl.gboxDataFilter.Enabled = True
 
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnAddNewPoint.Key)
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnApplyToDatabase.Key)
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnChangeYValue.Key)
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnDeletePoint.Key)
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnFlag.Key)
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnInterpolate.Key)
-                    _mapArgs.AppManager.HeaderControl.EnableItem(btnRestoreData.Key)
+                    btnAddNewPoint.Enabled = True
+                    btnApplyToDatabase.Enabled = True
+                    btnChangeYValue.Enabled = True
+                    btnDeletePoint.Enabled = True
+                    btnFlag.Enabled = True
+                    btnInterpolate.Enabled = True
+                    btnRestoreData.Enabled = True
                 End If
             Else
                 If _mainControl.Editing Then
@@ -330,13 +324,13 @@ Namespace EditView
                     End If
                 End If
 
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnAddNewPoint.Key)
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnApplyToDatabase.Key)
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnChangeYValue.Key)
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnDeletePoint.Key)
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnFlag.Key)
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnInterpolate.Key)
-                _mapArgs.AppManager.HeaderControl.DisableItem(btnRestoreData.Key)
+                btnAddNewPoint.Enabled = False
+                btnApplyToDatabase.Enabled = False
+                btnChangeYValue.Enabled = False
+                btnDeletePoint.Enabled = False
+                btnFlag.Enabled = False
+                btnInterpolate.Enabled = False
+                btnRestoreData.Enabled = False
                 _mainControl.gboxDataFilter.Enabled = False
 
                 'Change caption back to Edit Series (TODO support changing of caption)
