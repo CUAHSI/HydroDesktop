@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox", "Toolbox\Toolbox.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "trmm", "TRMM\trmm.csproj", "{9F2A3CF1-7A4A-449A-95B2-5268CB985F25}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TSA", "TSA\TSA.vbproj", "{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToCSV", "DataExport\ExportToCSV.csproj", "{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataImport", "DataImport\DataImport.csproj", "{9181CDE5-AD24-473D-A524-C3775563C902}"
@@ -36,6 +34,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonSampleCsharp", "RibbonSampleCSharp\RibbonSampleCSharp\RibbonSampleCsharp.csproj", "{A54040C6-DC52-4381-93A5-BEAD2F036D6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroModeler", "HydroModeler\HydroModeler.csproj", "{D26B704D-1FC9-4040-A29D-21FB8707ECE1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GraphView", "GraphView\GraphView.vbproj", "{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,18 +191,6 @@ Global
 		{9F2A3CF1-7A4A-449A-95B2-5268CB985F25}.Release|Mixed Platforms.Build.0 = Release|x86
 		{9F2A3CF1-7A4A-449A-95B2-5268CB985F25}.Release|x86.ActiveCfg = Release|x86
 		{9F2A3CF1-7A4A-449A-95B2-5268CB985F25}.Release|x86.Build.0 = Release|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|x86.ActiveCfg = Debug|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|x86.Build.0 = Debug|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Any CPU.ActiveCfg = Release|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Any CPU.Build.0 = Release|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Mixed Platforms.Build.0 = Release|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|x86.ActiveCfg = Release|x86
-		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|x86.Build.0 = Release|x86
 		{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
@@ -249,6 +237,18 @@ Global
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|x86.ActiveCfg = Debug|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Debug|x86.Build.0 = Debug|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|Mixed Platforms.Build.0 = Release|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|x86.ActiveCfg = Release|x86
+		{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

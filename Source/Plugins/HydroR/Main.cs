@@ -24,6 +24,8 @@ namespace HydroR
         private string _panelName = "HydroR";
         private const string _tabKey = "kHydroR";
 
+        private SimpleActionItem _btnR;
+
         private cRCommandView _hydroRControl;
 
         #endregion
@@ -81,11 +83,12 @@ namespace HydroR
                 string rGroupCaption = _panelName + " Tools";
                 string rScriptCaption = "Script";
 
-                var btnStartR = new SimpleActionItem("StartR", _hydroRControl.btnR_Click);
-                btnStartR.RootKey = _tabKey;
-                btnStartR.LargeImage = Properties.Resources.Ricon;
-                btnStartR.GroupCaption = rGroupCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnStartR);
+                _btnR = new SimpleActionItem("StartR", _hydroRControl.btnR_Click);
+                _btnR.Key = "kBtnR";
+                _btnR.RootKey = _tabKey;
+                _btnR.LargeImage = Properties.Resources.Ricon;
+                _btnR.GroupCaption = rGroupCaption;
+                _mapArgs.AppManager.HeaderControl.Add(_btnR);
 
                 var btnGenR = new SimpleActionItem("Generate R Code", _hydroRControl.txtGenR_Click);
                 btnGenR.RootKey = _tabKey;
@@ -147,16 +150,12 @@ namespace HydroR
 
         #region Event Handlers
 
-
-        //TODO: need to add a method to HeaderControl to change the text of a SimpleActionItem
         private void ribbonBnt_TextChanged(EventArgs e)
         {
-            RibbonButton btnR = FindBtnR();
-            
             if (_hydroRControl.RIsRunning)
-                btnR.Text = "Close R";
+                _btnR.Caption = "Close R";
             else
-                btnR.Text = "Start R";
+                _btnR.Caption = "Start R";
         }
 
         //Workaround method to find the corresponding StartR ribbon button
