@@ -4,71 +4,72 @@ Imports DotSpatial.Controls
 Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
+Imports DotSpatial.Controls.Header
 
-Namespace TSA
+Namespace GraphView
     Public Class Main
         Inherits Extension
         Implements IMapPlugin
 
 #Region "Variables"
 
+        Private Const kGraph As String = "kHydroGraph"
+
         Private _mapArgs As IMapPluginArgs
         Private appSeriesView As ISeriesView
 
-        '//the tab page which will be added to the tab control by the plugin
-        Private _tabPage As TabPage = Nothing
         Private _mainControl As cTSA
 
-
-        '//reference to the main application and it's UI items
-
-        'Private _t As ITabManager
+        'reference to the main application and it's UI items
         Private Const _pluginName As String = "Graph"
+        Private Const kSeriesViewPanelName As String = "Series View"
 
-        'Private _ribbonButton1 As RibbonButton
-        Private tabGraph As RibbonTab
+        Private tabGraph As RootItem
 
+        Private rpPlots As String = "Plots"
+        Private kTogglePlots As String = "kHydroPlotsGroup"
 
-        Private rpPlots As New RibbonPanel("Plots")
-        Private rbTSA As New RibbonButton("Time Series")
-        Private rbProbability As New RibbonButton("Probability")
-        Private rbHistogram As New RibbonButton("Histogram")
-        Private rbBoxWhisker As New RibbonButton("Box/Whisker")
-        Private rbSummary As New RibbonButton("Summary")
+        Private rbTSA As SimpleActionItem 'Time Series
+        Private rbProbability As SimpleActionItem 'Probability
+        Private rbHistogram As SimpleActionItem 'Histogram
+        Private rbBoxWhisker As SimpleActionItem 'Box/Whisker
+        Private rbSummary As SimpleActionItem 'Summary
 
-        Private rpTSAOption As New RibbonPanel("TSA & Probability Plot Options")
-        Private rbTSPType As New RibbonButton("Plot Type")
-        Private rbLine As New RibbonButton("Line")
-        Private rbPoint As New RibbonButton("Point")
-        Private rbBoth As New RibbonButton("Both")
-        Private rbColorSetting As New RibbonButton("Color Setting")
-        Private rbShowLegend As New RibbonButton("Close Legend")
+        Private rpPlotOption As String = "TSA & Probability Plot Options"
+        Const PlotOptionsMenuKey = "kHydroPlotOptions"
+        Private rbPlotType As MenuContainerItem 'Plot Type
+        Private rbLine As SimpleActionItem 'Line
+        Private rbPoint As SimpleActionItem 'Point
+        Private rbBoth As SimpleActionItem 'Both
+        Private rbColorSetting As SimpleActionItem 'Color Setting
+        Private rbShowLegend As SimpleActionItem 'Close Legend
 
-        Private rpHistogramOption As New RibbonPanel("Histogram Plot Options")
-        Private rbHistogramType As New RibbonButton("Histogram Type")
-        Private rbhtCount As New RibbonButton("Count")
-        Private rbhtProbability As New RibbonButton("Probability Density")
-        Private rbhtRelative As New RibbonButton("Relative Frequencies")
-        Private rbAlgorithms As New RibbonButton("Binning Algorithms")
-        Private rbhaScott As New RibbonButton("Scott's")
-        Private rbhaSturges As New RibbonButton("Sturges'")
-        Private rbhaFreedman As New RibbonButton("Freedman-Diaconis’")
+        Private rpHistogramOption As String = "Histogram Plot Options"
+        Const kHistogramType = "kHistogramType"
+        Private rbHistogramType As MenuContainerItem 'Histogram Type
+        Private rbhtCount As SimpleActionItem 'Count
+        Private rbhtProbability As SimpleActionItem 'Probability Density
+        Private rbhtRelative As SimpleActionItem 'Relative Frequencies
+        Const kHistogramAlgorithm = "kHistogramAlgorithm"
+        Private rbAlgorithms As MenuContainerItem 'Binning Algorithms
+        Private rbhaScott As SimpleActionItem 'Scott's
+        Private rbhaSturges As SimpleActionItem 'Sturges'
+        Private rbhaFreedman As SimpleActionItem 'Freedman-Diaconis’
 
-        Private rpBoxWhiskerOption As New RibbonPanel("Box Whisker Plot Option")
-        Private rbBoxWhiskerType As New RibbonButton("Box Whisker Type")
-        Private rbbtMonthly As New RibbonButton("Monthly")
-        Private rbbtSeasonal As New RibbonButton("Seasonal")
-        Private rbbtYearly As New RibbonButton("Yearly")
-        Private rbbtOverall As New RibbonButton("Overall")
+        Private rpBoxWhiskerOption As String = "Box Whisker Plot Option"
+        Const kBoxWhiskerType = "kBoxWhiskerType"
+        Private rbBoxWhiskerType As MenuContainerItem 'Box Whisker Type
+        Private rbbtMonthly As SimpleActionItem 'Monthly
+        Private rbbtSeasonal As SimpleActionItem 'Seasonal
+        Private rbbtYearly As SimpleActionItem 'Yearly
+        Private rbbtOverall As SimpleActionItem 'Overall
 
-        Private rpOtherOptions As New RibbonPanel("Date & Time")
-        Private rbDateTimeSetting As New RibbonButton("Date Setting")
-        Public rlblStratDate As New RibbonLabel
-        Public rlblEndDate As New RibbonLabel
-        Private rckbDisplayFullDateRange As New RibbonCheckBox
-        Private rtxttest As New RibbonComboBox
-
-
+        Private rpOtherOptions As String = "Date & Time"
+        Private rbDateTimeSetting As SimpleActionItem 'Date Setting
+        Public rlblStratDate As New RibbonLabel 'TODO: move to main graph area
+        Public rlblEndDate As New RibbonLabel   'TODO: move to main graph area
+        Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
+        Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
 #End Region
 
 #Region "IExtension Members"
@@ -89,44 +90,23 @@ Namespace TSA
             _mapArgs = args
 
             'To Add Items to the ribbon menu
+            tabGraph = New RootItem(kGraph, _pluginName)
+            args.AppManager.HeaderControl.Add(tabGraph)
+
             If Not _mapArgs.Ribbon Is Nothing Then
-                'The main application has by default theree ribbon tabs: Home, Map View and Data.
-                'Home is always the first ribbon Tab. 'Views' is always the first ribbon panel in
-                'the Home ribbon tab.
 
-                tabGraph = New RibbonTab(args.Ribbon, _pluginName)
-                _mapArgs.Ribbon.Tabs.Add(tabGraph)
-                AddHandler tabGraph.ActiveChanged, AddressOf ribbonButton1_Click
+                AddHandler args.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveTabChanged
 
-                'To add a ribbon panel with a dropDown and regular button
-                'To add a new View to the main application window
-                If Not _mapArgs.PanelManager Is Nothing Then
-
-                    Dim manager As IHydroAppManager = TryCast(_mapArgs.AppManager, IHydroAppManager)
-                    If Not manager Is Nothing Then
-                        appSeriesView = manager.SeriesView
-                        _mainControl = New cTSA(appSeriesView.SeriesSelector)
-                        appSeriesView.AddPanel(_pluginName, _mainControl)
-                    End If
-
-                    'add the event when the main view is changed
-                    AddHandler _mapArgs.PanelManager.SelectedIndexChanged, AddressOf panelManager_SelectedIndexChanged
-
-                    InitializeRibbonButtons()
-
+                Dim manager As IHydroAppManager = TryCast(_mapArgs.AppManager, IHydroAppManager)
+                If Not manager Is Nothing Then
+                    appSeriesView = manager.SeriesView
+                    _mainControl = New cTSA(appSeriesView.SeriesSelector)
+                    appSeriesView.AddPanel(_pluginName, _mainControl)
                 End If
-            Else
 
-                '    //add some items to the newly created tab control
-                If Not (_tabPage Is Nothing) Then
-                    Dim plots As New cTSA(_mapArgs)
-                    _tabPage.Controls.Add(plots)
-                    plots.Dock = DockStyle.Fill
-                End If
+                InitializeRibbonButtons()
+
             End If
-
-
-
 
         End Sub
 
@@ -138,50 +118,15 @@ Namespace TSA
         'when the plug-in is deactivated
         Public Overloads Sub Deactivate() Implements IMapPlugin.Deactivate
 
-            'If Not _mapArgs.Ribbon Is Nothing Then
-            '_mapArgs.Ribbon.Tabs(0).Panels(0).Items.Remove(_ribbonButton1)
-            '_mapArgs.Ribbon.Tabs.Remove(tabGraph)
-            'If _t.Contains(_pluginName) Then
-            '    _t.RemoveTab(_pluginName)
-            'End If
-
-            '_mapArgs.SeriesView.RemovePanel(_pluginName)
-
-            ''important line to deactivate the plugin
-            'MyBase.OnDeactivate()
-
-            'Else
-            'MyBase.Deactivate()
-            'If Not _tabPage Is Nothing Then
-            '    '_mainTabControl.TabPages.Remove(_tabPage)
-            '    'RemoveHandler _mainTabControl.TabIndexChanged, AddressOf TabChanged
-            'End If
-            'End If
-
-            If Not _mapArgs.Ribbon Is Nothing Then
-                _mapArgs.PanelManager.RemoveTab(_pluginName)
-                _mapArgs.Ribbon.Tabs.Remove(tabGraph)
-                If Not appSeriesView Is Nothing Then
-                    appSeriesView.RemovePanel(_pluginName)
-                End If
-                rpPlots.Items.Clear()
-                rpTSAOption.Items.Clear()
-                rpHistogramOption.Items.Clear()
-                rpBoxWhiskerOption.Items.Clear()
-                rpOtherOptions.Items.Clear()
-
-                '_mapArgs.Ribbon.Tabs(0).Panels(0).Items.Remove(_ribbonButton1)
-
-                'important line to deactivate the plugin
-                MyBase.OnDeactivate()
-
-            Else
-                'MyBase.Deactivate()
-                'If Not _tabPage Is Nothing Then
-                '    _mainTabControl.TabPages.Remove(_tabPage)
-                '    RemoveHandler _mainTabControl.TabIndexChanged, AddressOf TabChanged
-                'End If
+            If Not appSeriesView Is Nothing Then
+                appSeriesView.RemovePanel(_pluginName)
             End If
+
+            'auto-remove all ribbon items
+            _mapArgs.AppManager.HeaderControl.RemoveItems()
+
+            'important line to deactivate the plugin
+            MyBase.OnDeactivate()
 
         End Sub
 
@@ -196,129 +141,167 @@ Namespace TSA
 
         Private Sub InitializeRibbonButtons()
 
+            Dim header As HeaderControl = _mapArgs.AppManager.HeaderControl
+
             'Plot choosing Panel
-            rpPlots.ButtonMoreVisible = False
-            'rpPlots.ButtonMoreEnabled = False
+            'Time Series Plot
+            rbTSA = New SimpleActionItem("TimeSeries", AddressOf rbTSA_Click)
+            rbTSA.RootKey = kGraph
+            rbTSA.LargeImage = My.Resources.TSA
+            rbTSA.GroupCaption = rpPlots
+            rbTSA.ToggleGroupKey = kTogglePlots
+            header.Add(rbTSA)
 
-            rbTSA.Image = My.Resources.TSA
-            'rbTSA.CheckOnClick = True
-            'rbTSA.Checked = True
-            AddHandler rbTSA.Click, AddressOf rbTSA_Click
-            rpPlots.Items.Add(rbTSA)
+            'Probability Plot
+            rbProbability = New SimpleActionItem("Probability", AddressOf rbProbability_Click)
+            rbProbability.RootKey = kGraph
+            rbProbability.LargeImage = My.Resources.Probability
+            rbProbability.GroupCaption = rpPlots
+            rbProbability.ToggleGroupKey = kTogglePlots
+            header.Add(rbProbability)
 
-            rbProbability.Image = My.Resources.Probability
-            'rbProbability.CheckOnClick = True
-            AddHandler rbProbability.Click, AddressOf rbProbability_Click
-            rpPlots.Items.Add(rbProbability)
+            'Histogram Plot
+            rbHistogram = New SimpleActionItem("Histogram", AddressOf rbHistogram_Click)
+            rbHistogram.RootKey = kGraph
+            rbHistogram.LargeImage = My.Resources.Histogram
+            rbHistogram.GroupCaption = rpPlots
+            rbHistogram.ToggleGroupKey = kTogglePlots
+            header.Add(rbHistogram)
 
-            rbHistogram.Image = My.Resources.Histogram
-            'rbHistogram.CheckOnClick = True
-            AddHandler rbHistogram.Click, AddressOf rbHistogram_Click
-            rpPlots.Items.Add(rbHistogram)
+            'Box/Whisker Plot
+            rbBoxWhisker = New SimpleActionItem("Box/Whisker", AddressOf rbBoxWhisker_Click)
+            rbBoxWhisker.RootKey = kGraph
+            rbBoxWhisker.LargeImage = My.Resources.BoxWisker
+            rbBoxWhisker.GroupCaption = rpPlots
+            rbBoxWhisker.ToggleGroupKey = kTogglePlots
+            header.Add(rbBoxWhisker)
 
-            rbBoxWhisker.Image = My.Resources.BoxWisker
-            'rbBoxWhisker.CheckOnClick = True
-            AddHandler rbBoxWhisker.Click, AddressOf rbBoxWhisker_Click
-            rpPlots.Items.Add(rbBoxWhisker)
-
-            rbSummary.Image = My.Resources.Summary
-            'rbSummary.CheckOnClick = True
-            AddHandler rbSummary.Click, AddressOf rbSummary_Click
-            rpPlots.Items.Add(rbSummary)
+            'Summary Plot
+            rbSummary = New SimpleActionItem("Summary", AddressOf rbSummary_Click)
+            rbSummary.RootKey = kGraph
+            rbSummary.LargeImage = My.Resources.Summary
+            rbSummary.GroupCaption = rpPlots
+            rbSummary.ToggleGroupKey = kTogglePlots
+            header.Add(rbSummary)
 
             'Option Panel for TSA and Probability
-            rpTSAOption.ButtonMoreVisible = False
-            'rpTSAOption.ButtonMoreEnabled = False
+            rbPlotType = New MenuContainerItem(kGraph, PlotOptionsMenuKey, "Plot Type")
+            rbPlotType.LargeImage = My.Resources.PlotType
+            rbPlotType.GroupCaption = rpPlotOption
+            header.Add(rbPlotType)
 
+            'Line
+            rbLine = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Line", AddressOf rbLine_Click)
+            rbLine.GroupCaption = rpPlotOption
+            header.Add(rbLine)
+            'Point
+            rbPoint = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Point", AddressOf rbPoint_Click)
+            rbPoint.GroupCaption = rpPlotOption
+            header.Add(rbPoint)
+            'Both
+            rbBoth = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Both", AddressOf rbBoth_Click)
+            rbBoth.GroupCaption = rpPlotOption
+            header.Add(rbBoth)
 
-            rbTSPType.Image = My.Resources.PlotType
-            rbTSPType.Style = RibbonButtonStyle.DropDown
-            rbTSPType.DropDownItems.Add(rbLine)
-            rbTSPType.DropDownItems.Add(rbPoint)
-            rbTSPType.DropDownItems.Add(rbBoth)
-            AddHandler rbLine.Click, AddressOf rbLine_Click
-            AddHandler rbPoint.Click, AddressOf rbPoint_Click
-            AddHandler rbBoth.Click, AddressOf rbBoth_Click
-            rpTSAOption.Items.Add(rbTSPType)
+            'Color Setting
+            rbColorSetting = New SimpleActionItem("Color Setting", AddressOf rbColorSetting_Click)
+            rbColorSetting.RootKey = kGraph
+            rbColorSetting.LargeImage = My.Resources.ColorSetting
+            rbColorSetting.GroupCaption = rpPlotOption
+            header.Add(rbColorSetting)
 
-            rbColorSetting.Image = My.Resources.ColorSetting
-            AddHandler rbColorSetting.Click, AddressOf rbColorSetting_Click
-            rpTSAOption.Items.Add(rbColorSetting)
-
-            rbShowLegend.Image = My.Resources.Legend
-            AddHandler rbShowLegend.Click, AddressOf rbShowLegend_Click
-            rpTSAOption.Items.Add(rbShowLegend)
+            'Show Legend
+            rbShowLegend = New SimpleActionItem("Show Legend", AddressOf rbShowLegend_Click)
+            rbShowLegend.RootKey = kGraph
+            rbShowLegend.LargeImage = My.Resources.Legend
+            rbShowLegend.GroupCaption = rpPlotOption
+            header.Add(rbShowLegend)
 
             'Histogram Plot Option Panel
-            rpHistogramOption.ButtonMoreVisible = False
-            'rpHistogramOption.ButtonMoreEnabled = False
-            'rpHistogramOption.Visible = False
+            'Histogram Type Menu
+            rbHistogramType = New MenuContainerItem(kGraph, kHistogramType, "Histogram Type")
+            rbHistogramType.LargeImage = My.Resources.HisType
+            rbHistogramType.GroupCaption = rpHistogramOption
+            header.Add(rbHistogramType)
 
-            rbHistogramType.Image = My.Resources.HisType
-            rbHistogramType.Style = RibbonButtonStyle.DropDown
-            rbHistogramType.DropDownItems.Add(rbhtCount)
-            rbHistogramType.DropDownItems.Add(rbhtProbability)
-            rbHistogramType.DropDownItems.Add(rbhtRelative)
-            AddHandler rbhtCount.Click, AddressOf rbhtCount_Click
-            AddHandler rbhtProbability.Click, AddressOf rbhtProbability_Click
-            AddHandler rbhtRelative.Click, AddressOf rbhtRelative_Click
-            rpHistogramOption.Items.Add(rbHistogramType)
+            'Count
+            rbhtCount = New SimpleActionItem(kGraph, kHistogramType, "Count", AddressOf rbhtCount_Click)
+            rbhtCount.GroupCaption = rpHistogramOption
+            header.Add(rbhtCount)
+            'Probability Density
+            rbhtProbability = New SimpleActionItem(kGraph, kHistogramType, "Probability Density", AddressOf rbhtProbability_Click)
+            rbhtProbability.GroupCaption = rpHistogramOption
+            header.Add(rbhtProbability)
+            'Relative Frequencies
+            rbhtRelative = New SimpleActionItem(kGraph, kHistogramType, "Relative Frequencies", AddressOf rbhtRelative_Click)
+            rbhtRelative.GroupCaption = rpHistogramOption
+            header.Add(rbhtRelative)
+ 
+            'Histogram Algorithm Menu
+            rbAlgorithms = New MenuContainerItem(kGraph, kHistogramAlgorithm, "Binning Algorithms")
+            rbAlgorithms.LargeImage = My.Resources.Binning
+            rbAlgorithms.GroupCaption = rpHistogramOption
+            header.Add(rbAlgorithms)
 
-            rbAlgorithms.Image = My.Resources.Binning
-            rbAlgorithms.Style = RibbonButtonStyle.DropDown
-            rbAlgorithms.DropDownItems.Add(rbhaSturges)
-            rbAlgorithms.DropDownItems.Add(rbhaScott)
-            rbAlgorithms.DropDownItems.Add(rbhaFreedman)
-            AddHandler rbhaSturges.Click, AddressOf rbhaSturges_Click
-            AddHandler rbhaScott.Click, AddressOf rbhaScott_Click
-            AddHandler rbhaFreedman.Click, AddressOf rbhaFreedman_Click
-            rpHistogramOption.Items.Add(rbAlgorithms)
+            'Scott's
+            rbhaScott = New SimpleActionItem(kGraph, kHistogramAlgorithm, "Scott's", AddressOf rbhaScott_Click)
+            rbhaScott.GroupCaption = rpHistogramOption
+            header.Add(rbhaScott)
+            'Sturges
+            rbhaSturges = New SimpleActionItem(kGraph, kHistogramAlgorithm, "Sturges", AddressOf rbhaSturges_Click)
+            rbhaSturges.GroupCaption = rpHistogramOption
+            header.Add(rbhaSturges)
+            'Freedman-Diaconis
+            rbhaFreedman = New SimpleActionItem(kGraph, kHistogramAlgorithm, "Freedman-Diaconis", AddressOf rbhaFreedman_Click)
+            rbhaFreedman.GroupCaption = rpHistogramOption
+            header.Add(rbhaFreedman)
 
             'Box Whisker Plot Option Panel
-            rpBoxWhiskerOption.ButtonMoreVisible = False
-            'rpBoxWhiskerOption.ButtonMoreEnabled = False
-            'rpBoxWhiskerOption.Visible = False
-
-            rbBoxWhiskerType.Image = My.Resources.BoxWhiskerType
-            rbBoxWhiskerType.Style = RibbonButtonStyle.DropDown
-            rbBoxWhiskerType.DropDownItems.Add(rbbtMonthly)
-            rbBoxWhiskerType.DropDownItems.Add(rbbtSeasonal)
-            rbBoxWhiskerType.DropDownItems.Add(rbbtYearly)
-            rbBoxWhiskerType.DropDownItems.Add(rbbtOverall)
-            AddHandler rbbtMonthly.Click, AddressOf rbbtMonthly_Click
-            AddHandler rbbtSeasonal.Click, AddressOf rbbtSeasonal_Click
-            AddHandler rbbtYearly.Click, AddressOf rbbtYearly_Click
-            AddHandler rbbtOverall.Click, AddressOf rbbtOverall_Click
-            rpBoxWhiskerOption.Items.Add(rbBoxWhiskerType)
+            rbBoxWhiskerType = New MenuContainerItem(kGraph, kBoxWhiskerType, "Box Whisker Type")
+            rbBoxWhiskerType.LargeImage = My.Resources.BoxWhiskerType
+            rbBoxWhiskerType.GroupCaption = rpBoxWhiskerOption
+            header.Add(rbBoxWhiskerType)
+            'Monthly
+            rbbtMonthly = New SimpleActionItem(kGraph, kBoxWhiskerType, "Monthly", AddressOf rbbtMonthly_Click)
+            rbbtMonthly.GroupCaption = rpBoxWhiskerOption
+            header.Add(rbbtMonthly)
+            'Seasonal
+            rbbtSeasonal = New SimpleActionItem(kGraph, kBoxWhiskerType, "Seasonal", AddressOf rbbtSeasonal_Click)
+            rbbtSeasonal.GroupCaption = rpBoxWhiskerOption
+            header.Add(rbbtSeasonal)
+            'Yearly
+            rbbtYearly = New SimpleActionItem(kGraph, kBoxWhiskerType, "Yearly", AddressOf rbbtYearly_Click)
+            rbbtYearly.GroupCaption = rpBoxWhiskerOption
+            header.Add(rbbtYearly)
+            'Overall
+            rbbtOverall = New SimpleActionItem(kGraph, kBoxWhiskerType, "Overall", AddressOf rbbtOverall_Click)
+            rbbtOverall.GroupCaption = rpBoxWhiskerOption
+            header.Add(rbbtOverall)
 
             'Others
-            rpOtherOptions.ButtonMoreVisible = False
-            'rpOtherOptions.ButtonMoreEnabled = False
+            'Date Setting
+            rbDateTimeSetting = New SimpleActionItem("Date Setting", AddressOf rbDateTimeSetting_Click)
+            rbDateTimeSetting.RootKey = kGraph
+            rbDateTimeSetting.LargeImage = My.Resources.DateSetting
+            rbDateTimeSetting.GroupCaption = rpOtherOptions
+            header.Add(rbDateTimeSetting)
 
-            rbDateTimeSetting.Image = My.Resources.DateSetting
-            AddHandler rbDateTimeSetting.Click, AddressOf rbDateTimeSetting_Click
-            rpOtherOptions.Items.Add(rbDateTimeSetting)
-
+            'TODO: Start and end date labels: Add to a different place!
             rlblStratDate.Text = "Start Date:"
             rlblEndDate.Text = "End Date:"
-            rpOtherOptions.Items.Add(rlblStratDate)
-            rpOtherOptions.Items.Add(rlblEndDate)
+            'rpOtherOptions.Items.Add(rlblStratDate)
+            'rpOtherOptions.Items.Add(rlblEndDate)
             _mainControl.rlblStratDate = rlblStratDate
             _mainControl.rlblEndDate = rlblEndDate
 
-            rckbDisplayFullDateRange.Text = "Display Full Date Range"
-            rckbDisplayFullDateRange.Checked = True
-            AddHandler rckbDisplayFullDateRange.CheckBoxCheckChanged, AddressOf rckbDisplayFullDateRange_CheckBoxCheckChanged
-            rpOtherOptions.Items.Add(rckbDisplayFullDateRange)
+            'Display Full Date Range toggle button
+            rbDisplayFullDateRange = New SimpleActionItem("Display Full Date Range", AddressOf rbDisplayFullDateRange_Click)
+            rbDisplayFullDateRange.RootKey = kGraph
+            rbDisplayFullDateRange.ToggleGroupKey = "tkFullDateRange"
+            rbDisplayFullDateRange.GroupCaption = rpOtherOptions
+            header.Add(rbDisplayFullDateRange)
 
-
-            tabGraph.Panels.Add(rpPlots)
-            tabGraph.Panels.Add(rpTSAOption)
-            tabGraph.Panels.Add(rpHistogramOption)
-            tabGraph.Panels.Add(rpBoxWhiskerOption)
-            tabGraph.Panels.Add(rpOtherOptions)
-
-
+            'The button should initially be checked
             rbTSA_Click()
 
         End Sub
@@ -326,45 +309,63 @@ Namespace TSA
 #End Region
 
 #Region "Event Handlers"
-
+        'Click Time Series
         Sub rbTSA_Click()
-            UncheckOtherPlotButtons(rbTSA)
+            'UncheckOtherPlotButtons(rbTSA)
             _mainControl.TabControl2.SelectTab(0)
-            rpTSAOption.Visible = True
-            rpHistogramOption.Visible = False
-            rpBoxWhiskerOption.Visible = False
+            rbPlotType.Visible = True
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = False
+            
         End Sub
 
         Sub rbProbability_Click()
-            UncheckOtherPlotButtons(rbProbability)
+            'UncheckOtherPlotButtons(rbProbability)
             _mainControl.TabControl2.SelectTab(1)
-            rpTSAOption.Visible = True
-            rpHistogramOption.Visible = False
-            rpBoxWhiskerOption.Visible = False
+            rbPlotType.Visible = True
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = False
+            'rpPlotType.Visible = True
+            'rpHistogramOption.Visible = False
+            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbHistogram_Click()
-            UncheckOtherPlotButtons(rbHistogram)
+            'UncheckOtherPlotButtons(rbHistogram)
             _mainControl.TabControl2.SelectTab(2)
-            rpTSAOption.Visible = False
-            rpHistogramOption.Visible = True
-            rpBoxWhiskerOption.Visible = False
+            rbPlotType.Visible = False
+            rbHistogramType.Visible = True
+            rbAlgorithms.Visible = True
+            rbBoxWhiskerType.Visible = False
+            'rpPlotOption.Visible = False
+            'rpHistogramOption.Visible = True
+            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbBoxWhisker_Click()
-            UncheckOtherPlotButtons(rbBoxWhisker)
+            'UncheckOtherPlotButtons(rbBoxWhisker)
             _mainControl.TabControl2.SelectTab(3)
-            rpTSAOption.Visible = False
-            rpHistogramOption.Visible = False
-            rpBoxWhiskerOption.Visible = True
+            rbPlotType.Visible = False
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = True
+            'rpPlotOption.Visible = False
+            'rpHistogramOption.Visible = False
+            'rpBoxWhiskerOption.Visible = True
         End Sub
 
         Sub rbSummary_Click()
-            UncheckOtherPlotButtons(rbSummary)
+            'UncheckOtherPlotButtons(rbSummary)
             _mainControl.TabControl2.SelectTab(4)
-            rpTSAOption.Visible = False
-            rpHistogramOption.Visible = False
-            rpBoxWhiskerOption.Visible = False
+            rbPlotType.Visible = False
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = False
+            'rpPlotOption.Visible = False
+            'rpHistogramOption.Visible = False
+            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbLine_Click()
@@ -381,14 +382,14 @@ Namespace TSA
         End Sub
 
         Sub rbShowLegend_Click()
-            If rbShowLegend.Text = "Close Legend" Then
+            If rbShowLegend.Caption = "Close Legend" Then
                 _mainControl.CPlotOptions1.IsShowLegend = False
                 _mainControl.ApplyOptions()
-                rbShowLegend.Text = "Show Legend"
+                rbShowLegend.Caption = "Show Legend"
             Else
                 _mainControl.CPlotOptions1.IsShowLegend = True
                 _mainControl.ApplyOptions()
-                rbShowLegend.Text = "Close Legend"
+                rbShowLegend.Caption = "Close Legend"
             End If
         End Sub
 
@@ -451,7 +452,7 @@ Namespace TSA
                 Return 'Leave without doing anything else.
             End If
 
-            rckbDisplayFullDateRange.Checked = False
+            'rckbDisplayFullDateRange.Checked = False
             _mainControl.IsDisplayFullDate = False
             Dim frmDateTimeSetting = New fDateTimeSetting
             frmDateTimeSetting._CTSA = _mainControl
@@ -459,52 +460,50 @@ Namespace TSA
             frmDateTimeSetting.ShowDialog()
         End Sub
 
-        Sub rckbDisplayFullDateRange_CheckBoxCheckChanged()
-            If rckbDisplayFullDateRange.Checked Then
+        'Display full date range toggle button is clicked
+        Sub rbDisplayFullDateRange_Click()
+            If _mainControl.IsDisplayFullDate Then
+                _mainControl.IsDisplayFullDate = False
+            Else
                 _mainControl.IsDisplayFullDate = True
                 _mainControl.ApplyOptions()
-            Else
-                _mainControl.IsDisplayFullDate = False
             End If
+            'If rckbDisplayFullDateRange.Checked Then
+            '    _mainControl.IsDisplayFullDate = True
+            '    _mainControl.ApplyOptions()
+            'Else
+            '    _mainControl.IsDisplayFullDate = False
+            'End If
         End Sub
 
 
         'when the 'VB.NET sample' button is clicked, select the RibbonSamplePlugin view
-        Sub ribbonButton1_Click()
+        Sub Ribbon_ActiveTabChanged()
 
-            'Set main view to 'SeriesView'
-            _mapArgs.PanelManager.SelectedTabName = "Series View"
+            Dim myTab As RibbonTab = _mapArgs.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
+            Dim homeTab As RibbonTab = _mapArgs.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
 
-            'Set the seriesPanel to 'VB.NET sample plugin'
-            If Not appSeriesView Is Nothing Then
-                appSeriesView.VisiblePanelName = _pluginName
-            End If
-        End Sub
+            If myTab.Active Then
+                _mapArgs.PanelManager.SelectedTabName = kSeriesViewPanelName
 
-        'when the selected view is changed, refresh the series selector control by
-        'calling the Initialize method of the main user control
-        Sub panelManager_SelectedIndexChanged()
-            '_mapArgs.PanelManager.SelectedTabName = "Series View"
-            'If _t.SelectedTabName = _pluginName Then
-            '    _mainControl.initialize()
-            '    _mainControl.RefreshView()
-
-            'End If
-            '_mapArgs.SeriesView.VisiblePanelName = _pluginName
-        End Sub
-
-        Public Sub TabChanged(ByVal sender As Object, ByVal e As EventArgs)
-            'If _mainTabControl Is Nothing Then Exit Sub
-            If _tabPage Is Nothing Then Exit Sub
-        End Sub
-
-        Sub UncheckOtherPlotButtons(ByRef PlotButton As RibbonItem)
-            For Each rbi As RibbonItem In rpPlots.Items
-                If TypeOf rbi Is RibbonButton And Not rbi.Equals(PlotButton) Then
-                    rbi.Checked = False
+                If Not appSeriesView Is Nothing Then
+                    appSeriesView.VisiblePanelName = _pluginName
                 End If
-            Next
+
+            ElseIf homeTab.Active Then
+                _mapArgs.PanelManager.SelectedTabName = "Map View"
+            End If
+
         End Sub
+
+        'this is replaced by toggle buttons
+        'Sub UncheckOtherPlotButtons(ByRef PlotButton As RibbonItem)
+        '    For Each rbi As RibbonItem In rpPlots.Items
+        '        If TypeOf rbi Is RibbonButton And Not rbi.Equals(PlotButton) Then
+        '            rbi.Checked = False
+        '        End If
+        '    Next
+        'End Sub
 
 #End Region
 
