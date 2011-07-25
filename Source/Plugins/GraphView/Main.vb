@@ -313,22 +313,20 @@ Namespace GraphView
         Sub rbTSA_Click()
             'UncheckOtherPlotButtons(rbTSA)
             _mainControl.TabControl2.SelectTab(0)
-            rbPlotType.Enabled = True
-            rbHistogramType.Enabled = False
-            rbAlgorithms.Enabled = False
-            rbBoxWhiskerType.Enabled = False
-            'rpPlotType.Visible = True
-            'rpHistogramOption.Visible = False
-            'rpBoxWhiskerOption.Visible = False
+            rbPlotType.Visible = True
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = False
+            
         End Sub
 
         Sub rbProbability_Click()
             'UncheckOtherPlotButtons(rbProbability)
             _mainControl.TabControl2.SelectTab(1)
-            rbPlotType.Enabled = True
-            rbHistogramType.Enabled = False
-            rbAlgorithms.Enabled = False
-            rbBoxWhiskerType.Enabled = False
+            rbPlotType.Visible = True
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = False
             'rpPlotType.Visible = True
             'rpHistogramOption.Visible = False
             'rpBoxWhiskerOption.Visible = False
@@ -337,10 +335,10 @@ Namespace GraphView
         Sub rbHistogram_Click()
             'UncheckOtherPlotButtons(rbHistogram)
             _mainControl.TabControl2.SelectTab(2)
-            rbPlotType.Enabled = False
-            rbHistogramType.Enabled = True
-            rbAlgorithms.Enabled = True
-            rbBoxWhiskerType.Enabled = False
+            rbPlotType.Visible = False
+            rbHistogramType.Visible = True
+            rbAlgorithms.Visible = True
+            rbBoxWhiskerType.Visible = False
             'rpPlotOption.Visible = False
             'rpHistogramOption.Visible = True
             'rpBoxWhiskerOption.Visible = False
@@ -349,10 +347,10 @@ Namespace GraphView
         Sub rbBoxWhisker_Click()
             'UncheckOtherPlotButtons(rbBoxWhisker)
             _mainControl.TabControl2.SelectTab(3)
-            rbPlotType.Enabled = False
-            rbHistogramType.Enabled = False
-            rbAlgorithms.Enabled = False
-            rbBoxWhiskerType.Enabled = True
+            rbPlotType.Visible = False
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = True
             'rpPlotOption.Visible = False
             'rpHistogramOption.Visible = False
             'rpBoxWhiskerOption.Visible = True
@@ -361,10 +359,10 @@ Namespace GraphView
         Sub rbSummary_Click()
             'UncheckOtherPlotButtons(rbSummary)
             _mainControl.TabControl2.SelectTab(4)
-            rbPlotType.Enabled = False
-            rbHistogramType.Enabled = False
-            rbAlgorithms.Enabled = False
-            rbBoxWhiskerType.Enabled = False
+            rbPlotType.Visible = False
+            rbHistogramType.Visible = False
+            rbAlgorithms.Visible = False
+            rbBoxWhiskerType.Visible = False
             'rpPlotOption.Visible = False
             'rpHistogramOption.Visible = False
             'rpBoxWhiskerOption.Visible = False
