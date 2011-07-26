@@ -2270,7 +2270,7 @@ namespace HydroDesktop.Search
             foreach (IMapFeatureLayer layer in laySearchResult.GetLayers())
             {
                 var searchInformer = new SearchLayerInformer(extractor);
-                searchInformer.Start(mapMain, layer);
+               // searchInformer.Start(mapMain, layer);
             }
         }
 
