@@ -63,8 +63,8 @@ namespace HydroDesktop.Search
         {
             var myLayer = new MapPointLayer(featureSet);
             myLayer.LegendText = legendName;
-            myLayer.Symbology = CreateSymbology(servCode, featureSet);
-            SetUpLabeling(myLayer);
+           // myLayer.Symbology = CreateSymbology(servCode, featureSet);
+           // SetUpLabeling(myLayer);
 
             return myLayer;
         }

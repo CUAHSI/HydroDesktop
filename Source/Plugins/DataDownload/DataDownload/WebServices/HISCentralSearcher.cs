@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.Search.Extensions;
-using HydroDesktop.WebServices;
 using System.ComponentModel;
+using System.Web;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using System.Net;
 using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
-using System.Web;
 using System.Xml;
 using HydroDesktop.Configuration;
+using HydroDesktop.DataDownload.Extensions;
+using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices;
 using log4net;
 
-namespace HydroDesktop.Search
+namespace HydroDesktop.DataDownload.WebServices
 {
     public interface IHISCentralSearcher
     {
@@ -37,9 +37,8 @@ namespace HydroDesktop.Search
         /// <returns>A list of data series matching the specified criteria</returns>
         void GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
                                                        DateTime endDate, int[] serviceIDs, BackgroundWorker bgWorker, DoWorkEventArgs e);
-    //    void GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string[] keywords, DateTime startDate, DateTime endDate, int[] networkIDs, BackgroundWorker bgWorker, DoWorkEventArgs e);
+    
         void GetSeriesCatalogInRectangle(double xMin, double xMax, double yMin, double yMax, string[] keywords, DateTime startDate, DateTime endDate, int[] serviceIDs, BackgroundWorker bgWorker, DoWorkEventArgs e);
-
         void GetWebServicesXml(string xmlFileName);
     }
 
