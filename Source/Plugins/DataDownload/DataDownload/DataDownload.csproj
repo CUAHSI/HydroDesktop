@@ -8,7 +8,7 @@
     <ProjectGuid>{CBC247A5-F50E-41ED-807C-94DE7E970DB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataDownload</RootNamespace>
+    <RootNamespace>HydroDesktop.DataDownload</RootNamespace>
     <AssemblyName>DataDownload</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,8 +43,34 @@
       <HintPath>..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Controls">
+      <HintPath>..\..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.WebServices">
+      <HintPath>..\..\..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\Binaries\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,8 +79,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="LayerInformation\CustomToolTipControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\CustomToolTipControl.Designer.cs">
+      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerInformation\HISCentralInfoExtractor.cs" />
+    <Compile Include="LayerInformation\PopupControl\GripBounds.cs" />
+    <Compile Include="LayerInformation\PopupControl\NativeMethods.cs" />
+    <Compile Include="LayerInformation\PopupControl\Popup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\Popup.Designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\PopupAnimations.cs" />
+    <Compile Include="LayerInformation\SearchLayerInformer.cs" />
+    <Compile Include="LayerInformation\ServiceInfo.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SearchResultsLayerHelper.cs" />
+    <Compile Include="WebServices\HISCentralSearcher.cs" />
+    <Compile Include="WebServices\SearchHelper.cs" />
+    <Compile Include="WebServices\SearchResult.cs" />
+    <Compile Include="WebServices\WebServicesList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LayerInformation\CustomToolTipControl.resx">
+      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="default_web_services.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
