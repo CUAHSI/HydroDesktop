@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 
-namespace DataDownload
+namespace HydroDesktop.DataDownload
 {
     public class Main : Extension, IMapPlugin
     {
@@ -29,6 +27,7 @@ namespace DataDownload
 
             // Subscribe to events
             _mapArgs.Map.LayerAdded += Map_LayerAdded;
+            args.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
         }
        
         /// <summary>
@@ -43,44 +42,39 @@ namespace DataDownload
             base.OnDeactivate();
         }
 
+
+        void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
+        {
+            CheckLayers();
+        }
+
+        protected override void OnActivate()
+        {
+            CheckLayers();
+            base.OnActivate();
+        }
+
+        private void CheckLayers()
+        {
+            foreach (var layer in _mapArgs.Map.MapFrame.GetAllLayers().Where(SearchResultsLayerHelper.IsSearchLayer))
+                SearchResultsLayerHelper.AddCustomFeaturesToSearchLayer((IFeatureLayer)layer, (Map)_mapArgs.Map);
+        }
+
         void Map_LayerAdded(object sender, LayerEventArgs e)
         {
-            if (IsSearchLayer(e.Layer))
+            if (SearchResultsLayerHelper.IsSearchLayer(e.Layer))
+                SearchResultsLayerHelper.AddCustomFeaturesToSearchLayer((IFeatureLayer)e.Layer, (Map)_mapArgs.Map);
+
+            if (e.Layer is IGroup)
             {
-                MessageBox.Show("OK");
+                var group = (IGroup) e.Layer;
+                group.LayerAdded += Map_LayerAdded; // TODO: unsubscribe from event when layer removed
             }
         }
 
         private void DoDownload(object sender, EventArgs args)
         {
-            MessageBox.Show("Download");
-        }
-
-        /// <summary>
-        /// Check layer for search attributes
-        /// </summary>
-        /// <param name="layer">Layer to check</param>
-        /// <returns>True - layer is search layer, otherwise - false.</returns>
-        private bool IsSearchLayer(ILayer layer)
-        {
-            Debug.Assert(layer != null);
-
-            var featureLayer = layer as IFeatureLayer;
-            if (featureLayer == null) return false;
-
-            if (featureLayer is PointLayer) return true;
-
-            var searchColumns = new[]
-                                    {"ServCode", "ServUrl", "SiteCode", "VarCode", "StartDate", "EndDate", "ValueCount"};
-            var layerColumns = featureLayer.DataSet.GetColumns();
-
-            foreach (var sColumn in searchColumns)
-            {
-                var hasColumn = layerColumns.Any(dataColumn => dataColumn.ColumnName == sColumn);
-                if (!hasColumn)
-                    return false;
-            }
-            return true;
+            //Todo: implement download button
         }
     }
 }
