@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
-namespace DataDownload.LayerInformation
+namespace HydroDesktop.DataDownload.LayerInformation
 {
     /// <summary>
     /// Class with information about service on the map
@@ -9,7 +10,7 @@ namespace DataDownload.LayerInformation
     {
         #region Fields
 
-        const string unknown = "Unknown";
+        private const string unknown = "Unknown";
         private static readonly ServiceInfo Unknown = new ServiceInfo();
 
         #endregion
@@ -27,6 +28,7 @@ namespace DataDownload.LayerInformation
         #endregion
 
         private string _dataSource;
+
         /// <summary>
         /// DataSource
         /// </summary>
@@ -41,6 +43,7 @@ namespace DataDownload.LayerInformation
         }
 
         private string _siteName;
+
         /// <summary>
         /// SiteName
         /// </summary>
@@ -55,6 +58,7 @@ namespace DataDownload.LayerInformation
         }
 
         private int? _valueCount;
+
         /// <summary>
         /// ValueCount
         /// </summary>
@@ -70,6 +74,7 @@ namespace DataDownload.LayerInformation
         }
 
         private string _serviceDesciptionUrl;
+
         /// <summary>
         /// ServiceDesciptionUrl
         /// </summary>
@@ -91,7 +96,26 @@ namespace DataDownload.LayerInformation
         /// <summary>
         /// Shows that at least one property has not default value
         /// </summary>
-        public bool IsEmpty { get { return Equals(Unknown); } }
+        public bool IsEmpty
+        {
+            get { return Equals(Unknown); }
+        }
+
+        public string SiteCode { get; set; }
+
+        public string VarCode { get; set; }
+
+        public string ServiceUrl { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public string VarName { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -110,12 +134,16 @@ namespace DataDownload.LayerInformation
                    ValueCount.GetHashCode() ^ ServiceDesciptionUrl.GetHashCode();
         }
 
+        #region INotifyPropertyChanged implementation
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void NotifyPropertyChanged(string name)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
+        #endregion
     }
 }

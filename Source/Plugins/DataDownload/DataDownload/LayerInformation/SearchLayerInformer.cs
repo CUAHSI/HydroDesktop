@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using DataDownload.LayerInformation;
-using DataDownload.LayerInformation.PopupControl;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
@@ -129,6 +127,14 @@ namespace HydroDesktop.DataDownload.LayerInformation
             toolTipPointInfo.SiteName = pInfo.SiteName;
             toolTipPointInfo.ValueCount = pInfo.ValueCount;
             toolTipPointInfo.ServiceDesciptionUrl = pInfo.ServiceDesciptionUrl;
+            toolTipPointInfo.EndDate = pInfo.EndDate;
+            toolTipPointInfo.Latitude = pInfo.Latitude;
+            toolTipPointInfo.Longitude = pInfo.Longitude;
+            toolTipPointInfo.ServiceUrl = pInfo.ServiceUrl;
+            toolTipPointInfo.SiteCode = pInfo.SiteCode;
+            toolTipPointInfo.StartDate = pInfo.StartDate;
+            toolTipPointInfo.VarCode = pInfo.VarCode;
+            toolTipPointInfo.VarName = pInfo.VarName;
             
             toolTip.Show(_map, e.Location);
         }
@@ -137,7 +143,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         {
             toolTip.Close();
         }
-     
+
         private ServiceInfo Identify(IMapFeatureLayer layer, Extent tolerant)
         {
             Debug.Assert(layer != null);
@@ -150,28 +156,66 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 }
 
                 IFeature feature1 = feature;
-                var getColumnValue = (Func<string, string>)(column => (feature1.DataRow[column].ToString()));
+                var getColumnValue = (Func<string, string>) (column => (feature1.DataRow[column].ToString()));
 
                 var pInfo = new ServiceInfo();
                 foreach (var fld in feature.ParentFeatureSet.GetColumns())
                 {
+                    var strValue = getColumnValue(fld.ColumnName);
+
                     switch (fld.ColumnName)
                     {
                         case "DataSource":
-                            pInfo.DataSource = getColumnValue(fld.ColumnName);
+                            pInfo.DataSource = strValue;
                             break;
                         case "SiteName":
-                            pInfo.SiteName = getColumnValue(fld.ColumnName);
+                            pInfo.SiteName = strValue;
+                            break;
+                        case "SiteCode":
+                            pInfo.SiteCode = strValue;
+                            break;
+                        case "VarCode":
+                            pInfo.VarCode = strValue;
                             break;
                         case "ValueCount":
-                            var value = getColumnValue(fld.ColumnName);
-                            int val;
-                            pInfo.ValueCount = !Int32.TryParse(value, out val) ? (int?) null : val;
+                            {
+                                int val;
+                                pInfo.ValueCount = !Int32.TryParse(strValue, out val) ? (int?) null : val;
+                            }
                             break;
                         case "ServiceURL":
+                            pInfo.ServiceUrl = strValue;
                             pInfo.ServiceDesciptionUrl =
-                                _serviceInfoExtractor.GetServiceDesciptionUrl(getColumnValue(fld.ColumnName));
+                                _serviceInfoExtractor.GetServiceDesciptionUrl(pInfo.ServiceUrl);
                             break;
+                        case "StartDate":
+                            {
+                                DateTime val;
+                                pInfo.StartDate = !DateTime.TryParse(strValue, out val) ? DateTime.MinValue : val;
+                            }
+                            break;
+                        case "EndDate":
+                            {
+                                DateTime val;
+                                pInfo.EndDate = !DateTime.TryParse(strValue, out val) ? DateTime.MinValue : val;
+                            }
+                            break;
+                        case "VarName":
+                            pInfo.VarName = strValue;
+                            break;
+                        case "Latitude":
+                            {
+                                double val;
+                                pInfo.Latitude = !Double.TryParse(strValue, out val) ? 0 : val;
+                            }
+                            break;
+                        case "Longitude":
+                            {
+                                double val;
+                                pInfo.Longitude = !Double.TryParse(strValue, out val) ? 0 : val;
+                            }
+                            break;
+
                     }
                 }
                 return pInfo;

@@ -39,6 +39,14 @@
       <HintPath>..\..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
@@ -53,6 +61,10 @@
     </Reference>
     <Reference Include="HydroDesktop.Controls">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Interfaces">
@@ -79,6 +91,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Download\Downloader.cs" />
+    <Compile Include="Download\DownloadManager.cs" />
+    <Compile Include="Download\DownloadManagerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Download\DownloadManagerUI.Designer.cs">
+      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Download\Exceptions\DataSeriesFromXmlException.cs" />
+    <Compile Include="Download\Exceptions\DownloadXmlException.cs" />
+    <Compile Include="Download\Exceptions\NoSeriesFromXmlException.cs" />
+    <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
+    <Compile Include="Download\Exceptions\TooMuchSeriesFromXmlException.cs" />
+    <Compile Include="Download\ManagerInformation.cs" />
+    <Compile Include="Download\OneSeriesDownloadInfo.cs" />
+    <Compile Include="Download\RedownloadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Download\RedownloadControl.Designer.cs">
+      <DependentUpon>RedownloadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Download\StartDownloadArg.cs" />
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="LayerInformation\CustomToolTipControl.cs">
@@ -116,6 +150,12 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Download\DownloadManagerUI.resx">
+      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Download\RedownloadControl.resx">
+      <DependentUpon>RedownloadControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LayerInformation\CustomToolTipControl.resx">
       <DependentUpon>CustomToolTipControl.cs</DependentUpon>
     </EmbeddedResource>

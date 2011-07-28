@@ -8,5 +8,7 @@ namespace HydroDesktop.DataDownload
         {
             return Settings.Instance.SelectedHISCentralURL;
         }
+
+        public static Main PluginEntryPoint { get; set; }
     }
 }

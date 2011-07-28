@@ -187,7 +187,7 @@ namespace HydroDesktop.DataDownload.WebServices
                 }
                 finally
                 {
-                    response.Close();
+                    if (response != null) response.Close();
                 }
             }
             else

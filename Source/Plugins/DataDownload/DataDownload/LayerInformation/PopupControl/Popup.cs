@@ -24,13 +24,12 @@ using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using HydroDesktop.DataDownload.LayerInformation.PopupControl;
 
 /*
 <li>Base class for custom tooltips.</li>
 <li>Office-2007-like tooltip class.</li>
 */
-namespace DataDownload.LayerInformation.PopupControl
+namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
 {
     /// <summary>
     /// Represents a pop-up window.
@@ -83,7 +82,7 @@ namespace DataDownload.LayerInformation.PopupControl
         private bool _isChildPopupOpened;
         private bool _resizable;
         /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.Search.LayerInformation.PopupControl.Popup" /> is resizable.
+        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.DataDownload.LayerInformation.PopupControl.Popup" /> is resizable.
         /// </summary>
         /// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
         public bool Resizable
@@ -94,7 +93,7 @@ namespace DataDownload.LayerInformation.PopupControl
 
         private bool _nonInteractive;
         /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.Search.LayerInformation.PopupControl.Popup"></see> acts like a transparent windows (so it cannot be clicked).
+        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.DataDownload.LayerInformation.PopupControl.Popup"></see> acts like a transparent windows (so it cannot be clicked).
         /// </summary>
         /// <value>
         /// <c>true</c> if the popup is noninteractive; otherwise, <c>false</c>.</value>
