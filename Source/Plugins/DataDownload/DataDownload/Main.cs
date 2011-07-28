@@ -15,10 +15,16 @@ namespace HydroDesktop.DataDownload
 
         #endregion
 
+        public IMapPluginArgs MapArgs
+        {
+            get { return _mapArgs; }
+            private set { _mapArgs = value; }
+        }
+
         public void Initialize(IMapPluginArgs args)
         {
             if (args == null) throw new ArgumentNullException("args");
-            _mapArgs = args;
+            MapArgs = args;
 
             // Initialize menu
             var btnDownload = new SimpleActionItem("Download", DoDownload)
@@ -26,8 +32,11 @@ namespace HydroDesktop.DataDownload
             args.AppManager.HeaderControl.Add(btnDownload);
 
             // Subscribe to events
-            _mapArgs.Map.LayerAdded += Map_LayerAdded;
+            MapArgs.Map.LayerAdded += Map_LayerAdded;
             args.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            //----
+
+            Global.PluginEntryPoint = this;
         }
        
         /// <summary>
@@ -35,8 +44,9 @@ namespace HydroDesktop.DataDownload
         /// </summary>
         protected override void OnDeactivate()
         {
-            _mapArgs.Map.LayerAdded -= Map_LayerAdded;
-            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            MapArgs.Map.LayerAdded -= Map_LayerAdded;
+            MapArgs.AppManager.HeaderControl.RemoveItems();
+            Global.PluginEntryPoint = null;
 
             // This line ensures that "Enabled" is set to false.
             base.OnDeactivate();
@@ -56,14 +66,14 @@ namespace HydroDesktop.DataDownload
 
         private void CheckLayers()
         {
-            foreach (var layer in _mapArgs.Map.MapFrame.GetAllLayers().Where(SearchResultsLayerHelper.IsSearchLayer))
-                SearchResultsLayerHelper.AddCustomFeaturesToSearchLayer((IFeatureLayer)layer, (Map)_mapArgs.Map);
+            foreach (var layer in MapArgs.Map.MapFrame.GetAllLayers().Where(SearchResultsLayerHelper.IsSearchLayer))
+                SearchResultsLayerHelper.AddCustomFeaturesToSearchLayer((IFeatureLayer)layer, (Map)MapArgs.Map);
         }
 
         void Map_LayerAdded(object sender, LayerEventArgs e)
         {
             if (SearchResultsLayerHelper.IsSearchLayer(e.Layer))
-                SearchResultsLayerHelper.AddCustomFeaturesToSearchLayer((IFeatureLayer)e.Layer, (Map)_mapArgs.Map);
+                SearchResultsLayerHelper.AddCustomFeaturesToSearchLayer((IFeatureLayer)e.Layer, (Map)MapArgs.Map);
 
             if (e.Layer is IGroup)
             {

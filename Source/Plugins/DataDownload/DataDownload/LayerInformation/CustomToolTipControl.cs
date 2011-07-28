@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using DataDownload.LayerInformation.PopupControl;
+using DotSpatial.Data.Forms;
+using HydroDesktop.DataDownload.Download;
+using HydroDesktop.DataDownload.LayerInformation.PopupControl;
 
-namespace DataDownload.LayerInformation
+namespace HydroDesktop.DataDownload.LayerInformation
 {
     public partial class CustomToolTipControl : UserControl
     {
@@ -72,7 +75,38 @@ namespace DataDownload.LayerInformation
 
         void lblDownloadData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //TODO: implement data downloading for one service
+            //TODO: Need logic related with dataTheme
+            string dataThemeName;
+            using(var inputBox = new InputBox("Input name of theme"))
+            {
+                if (inputBox.ShowDialog() != DialogResult.OK) return;
+                dataThemeName = inputBox.Result;
+            }
+
+            if (Popup != null)
+            {
+                Popup.Close();
+            }
+
+            var oneSeries = new OneSeriesDownloadInfo
+                                {
+                                    SiteName = PointInfo.SiteName,
+                                    FullSiteCode = PointInfo.SiteCode,
+                                    FullVariableCode = PointInfo.VarCode,
+                                    Wsdl = PointInfo.ServiceUrl,
+                                    StartDate = PointInfo.StartDate,
+                                    EndDate = PointInfo.EndDate,
+                                    VariableName = PointInfo.VarName,
+                                    Latitude = PointInfo.Latitude,
+                                    Longitude = PointInfo.Longitude
+                                };
+
+
+            var startArgs = new StartDownloadArg(new List<OneSeriesDownloadInfo> {oneSeries},
+                                                 new Interfaces.ObjectModel.Theme(dataThemeName));
+
+            var downloadManager = new DownloadManager();
+            downloadManager.Start(startArgs);
         }
 
         void lblServiceDesciptionUrl_TextChanged(object sender, EventArgs e)
