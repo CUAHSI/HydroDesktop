@@ -1,14 +1,10 @@
-﻿using HydroDesktop.Configuration;
-
-namespace HydroDesktop.DataDownload
+﻿namespace HydroDesktop.DataDownload
 {
-    class Global
+    static class Global
     {
-        public static string GetHISCentralURL()
-        {
-            return Settings.Instance.SelectedHISCentralURL;
-        }
-
+        /// <summary>
+        /// Reference to plug-in entry point
+        /// </summary>
         public static Main PluginEntryPoint { get; set; }
     }
 }

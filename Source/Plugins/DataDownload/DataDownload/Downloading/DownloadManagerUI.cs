@@ -10,7 +10,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 
-namespace HydroDesktop.DataDownload.Download
+namespace HydroDesktop.DataDownload.Downloading
 {
     /// <summary>
     /// DownloadManager UI implementation

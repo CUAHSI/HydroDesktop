@@ -4,12 +4,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using HydroDesktop.DataDownload.Download.Exceptions;
+using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.DataDownload.Download
+namespace HydroDesktop.DataDownload.Downloading
 {
-    class DownloadManager
+    public class DownloadManager
     {
         #region Fields
 
@@ -21,13 +21,37 @@ namespace HydroDesktop.DataDownload.Download
 
         #region Constructors
 
-        public DownloadManager()
+        private DownloadManager()
         {
             _worker.DoWork += _worker_DoWork;
             _worker.ProgressChanged += _worker_ProgressChanged;
             _worker.RunWorkerCompleted += _worker_RunWorkerCompleted;
             _worker.WorkerReportsProgress = true;
             _worker.WorkerSupportsCancellation = true;
+        }
+
+        #endregion
+
+        #region Singleton implementation
+
+        private static readonly object _syncRoot = new object();
+        private static DownloadManager _instance;
+        public static DownloadManager Instance
+        {
+            get
+            {   
+                if (_instance == null)
+                {
+                    lock(_syncRoot)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new DownloadManager();
+                        }
+                    }
+                }
+                return _instance;
+            }
         }
 
         #endregion
@@ -569,7 +593,7 @@ namespace HydroDesktop.DataDownload.Download
         #endregion
     }
 
-    class LogMessageEventArgs : EventArgs
+    public class LogMessageEventArgs : EventArgs
     {
         public string Message {get;private set;}
         public Exception Exception { get; private set; }

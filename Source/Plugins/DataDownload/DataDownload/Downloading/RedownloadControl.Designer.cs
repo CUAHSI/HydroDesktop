@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.DataDownload.Download
+﻿namespace HydroDesktop.DataDownload.Downloading
 {
     partial class RedownloadControl
     {

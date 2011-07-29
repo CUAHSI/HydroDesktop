@@ -8,13 +8,18 @@ using System.Xml;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using HydroDesktop.Configuration;
 using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.LayerInformation;
-using HydroDesktop.DataDownload.WebServices;
 
-namespace HydroDesktop.DataDownload
+namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
-    static class SearchResultsLayerHelper
+    /// <summary>
+    /// Class can modify search results layer by adding to them some features:
+    /// 1. Custom symbolizing
+    /// 2. Popup-bubble with information
+    /// </summary>
+    class SearchLayersPostProcessor
     {
         #region Fields
 
@@ -31,11 +36,12 @@ namespace HydroDesktop.DataDownload
         /// <param name="layer">Layer to check</param>
         /// <returns>True - layer is search layer, otherwise - false.</returns>
         /// <exception cref="ArgumentNullException"><para>layer</para> must be not null.</exception>
-        public static bool IsSearchLayer(ILayer layer)
+        /// <remarks>If layer is search layer, it can be casted at least to IFeatureLayer</remarks>
+        public bool IsSearchLayer(ILayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
 
-            var featureLayer = layer as IMapFeatureLayer;
+            var featureLayer = layer as IFeatureLayer;
             if (featureLayer == null) return false;
 
             if (featureLayer is PointLayer) return true;
@@ -53,18 +59,20 @@ namespace HydroDesktop.DataDownload
         }
 
         /// <summary>
-        /// Add some specific features to search results layer 
+        /// Add some specific features to layer, if this layer is search results layer
         /// </summary>
-        /// <param name="layer">Search results layer</param>
+        /// <param name="layer">Layer</param>
         /// <param name="map">Map</param>
         /// <exception cref="ArgumentNullException"><para>layer</para>, <para>map</para> must be not null.</exception>
-        public static void AddCustomFeaturesToSearchLayer(IFeatureLayer layer, Map map)
+        public void AddCustomFeaturesToSearchLayer(ILayer layer, Map map)
         {
             if (layer == null) throw new ArgumentNullException("layer");
             if (map == null) throw new ArgumentNullException("map");
 
-            UpdateSymbolizing(layer, map);
-            AttachPopup(layer, map);
+            if (!IsSearchLayer(layer)) return;
+
+            UpdateSymbolizing((IFeatureLayer)layer, map);
+            AttachPopup((IFeatureLayer)layer, map);
         }
 
         #endregion
@@ -88,7 +96,7 @@ namespace HydroDesktop.DataDownload
         {
             var extractor = new HISCentralInfoExtractor(Services);
             var searchInformer = new SearchLayerInformer(extractor);
-            searchInformer.Start(map, (IMapFeatureLayer)layer);
+            searchInformer.Start(map, layer);
         }
 
         private static Dictionary<string, string> GetServices(XmlNode node)
@@ -212,7 +220,7 @@ namespace HydroDesktop.DataDownload
             const int imageStep = 5;
             var imageSize = 5;
 
-            var symbCreator = new SymbologyCreator(Global.GetHISCentralURL()); // we need it only to get image
+            var symbCreator = new SymbologyCreator(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
             var image = symbCreator.GetImageForService(servCode);
             for (int i = 0; i < categoriesCount; i++)
             {

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Xml;
 using log4net;
 
-namespace HydroDesktop.DataDownload.WebServices
+namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
     public class WebServicesList
     {
@@ -116,7 +116,10 @@ namespace HydroDesktop.DataDownload.WebServices
                     //this method also tries to save the default list
                     xmldoc.Save(WebServicesFilename);
                 }
-                catch { }
+                catch
+                {
+                    //todo: exceptions logging
+                }
 
                 return xmldoc;
             }
@@ -143,7 +146,7 @@ namespace HydroDesktop.DataDownload.WebServices
                 try
                 {
                     _searcher = _searcher ?? new HISCentralSearcher(url);
-                    RefreshListFromHisCentral(_searcher);
+                    _searcher.GetWebServicesXml(WebServicesFilename); // refresh webservices
                     var document = new XmlDocument();
                     try
                     {
@@ -170,15 +173,10 @@ namespace HydroDesktop.DataDownload.WebServices
             }
 
             //if connecting all servers failed: throw exception
-            String error = "Error refreshing web services from HIS Central. Using the existing list of web services.";
+            const string error = "Error refreshing web services from HIS Central. Using the existing list of web services.";
             if (myWebException != null)
                 throw new WebException(error, myWebException);
             throw new WebException(error);
-        }
-
-        private void RefreshListFromHisCentral(IHISCentralSearcher searcher)
-        {
-            searcher.GetWebServicesXml(WebServicesFilename);
         }
 
         #endregion

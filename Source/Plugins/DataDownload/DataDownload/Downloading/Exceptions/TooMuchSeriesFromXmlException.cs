@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace HydroDesktop.DataDownload.Download.Exceptions
+namespace HydroDesktop.DataDownload.Downloading.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when too much series in downloaded xml file (expected 1 series).
