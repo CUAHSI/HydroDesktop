@@ -117,9 +117,11 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Ionic.Zip.*"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\Icons\*"; DestDir: "{app}\Icons"; Flags: ignoreversion;
 

@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<EurekaLogOptions xmlns="EurekaLogOptions">
+  <ActivateHandle>True</ActivateHandle>
+  <ActivateLog>False</ActivateLog>
+  <AppendLogs>True</AppendLogs>
+  <AttachedFiles></AttachedFiles>
+  <AutoCloseDialogSecs>0</AutoCloseDialogSecs>
+  <AutoCrashMinutes>0</AutoCrashMinutes>
+  <AutoCrashNumber>0</AutoCrashNumber>
+  <AutoCrashOperation>tbRestart</AutoCrashOperation>
+  <CommonSendOptions>sndShowSendDialog, sndSendScreenshot</CommonSendOptions>
+  <EMailAddresses></EMailAddresses>
+  <EMailMessage></EMailMessage>
+  <EMailSendMode>esmNoSend</EMailSendMode>
+  <EMailSubject></EMailSubject>
+  <ErrorsNumberToSave>32</ErrorsNumberToSave>
+  <ErrorsNumberToShowTerminateBtn>3</ErrorsNumberToShowTerminateBtn>
+  <ExceptionDialogOptions>edoSendErrorReportChecked, edoAttachScreenshotChecked, edoShowCopyToClipOption, edoShowDetailsButton, edoShowSendErrorReportOption, edoShowAttachScreenshotOption</ExceptionDialogOptions>
+  <ExceptionDialogType>edtMSClassic</ExceptionDialogType>
+  <ForegroundTab>ftGeneral</ForegroundTab>
+  <LogOptions>loSaveModulesAndProcessesSections</LogOptions>
+  <OutputPath></OutputPath>
+  <ProxyPassword></ProxyPassword>
+  <ProxyPort>8080</ProxyPort>
+  <ProxyURL></ProxyURL>
+  <ProxyUserID></ProxyUserID>
+  <SaveLogFile>True</SaveLogFile>
+  <ShowOptions>18446744073709551615</ShowOptions>
+  <SMTPFrom>eurekalog@gmail.com</SMTPFrom>
+  <SMTPHost></SMTPHost>
+  <SMTPPassword></SMTPPassword>
+  <SMTPPort>25</SMTPPort>
+  <SMTPUserID></SMTPUserID>
+  <SupportURL></SupportURL>
+  <TerminateBtnOperation>tbRestart</TerminateBtnOperation>
+  <TextsCollection>(none)</TextsCollection>
+  <TrakerAssignTo></TrakerAssignTo>
+  <TrakerCategory></TrakerCategory>
+  <TrakerPassword></TrakerPassword>
+  <TrakerProject></TrakerProject>
+  <TrakerTrialID></TrakerTrialID>
+  <TrakerUserID></TrakerUserID>
+  <WebPassword></WebPassword>
+  <WebPort>0</WebPort>
+  <WebSendMode>wsmNoSend</WebSendMode>
+  <WebURL></WebURL>
+  <WebUserID></WebUserID>
+  <ZipPassword></ZipPassword>
+  <HtmlLayout>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body TopMargin=10 LeftMargin=10&gt;
+    &lt;table width=&quot;100%&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td nowrap&gt;
+          &lt;font face=&quot;Lucida Console, Courier&quot; size=&quot;2&quot;&gt;
+            &lt;%HTML_TAG%&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</HtmlLayout>
+  <CustomizedTexts>
+    <mtInformationMsgCaption>Information.</mtInformationMsgCaption>
+    <mtQuestionMsgCaption>Question.</mtQuestionMsgCaption>
+    <mtErrorMsgCaption>Error.</mtErrorMsgCaption>
+    <mtDialog_Caption>Error occurred</mtDialog_Caption>
+    <mtDialog_ErrorMsgCaption>An error has occurred during program execution.
+Please read the following information for further details.</mtDialog_ErrorMsgCaption>
+    <mtDialog_GeneralCaption>General</mtDialog_GeneralCaption>
+    <mtDialog_GeneralHeader>General Information</mtDialog_GeneralHeader>
+    <mtDialog_CallStackCaption>Call Stack</mtDialog_CallStackCaption>
+    <mtDialog_CallStackHeader>Call Stack Information</mtDialog_CallStackHeader>
+    <mtDialog_ModulesCaption>Modules</mtDialog_ModulesCaption>
+    <mtDialog_ModulesHeader>Modules Information</mtDialog_ModulesHeader>
+    <mtDialog_ProcessesCaption>Processes</mtDialog_ProcessesCaption>
+    <mtDialog_ProcessesHeader>Processes Information</mtDialog_ProcessesHeader>
+    <mtDialog_AsmCaption>Assembler</mtDialog_AsmCaption>
+    <mtDialog_AsmHeader>Assembler Information</mtDialog_AsmHeader>
+    <mtDialog_CPUCaption>CPU</mtDialog_CPUCaption>
+    <mtDialog_CPUHeader>CPU Information</mtDialog_CPUHeader>
+    <mtDialog_OKButtonCaption>&amp;OK</mtDialog_OKButtonCaption>
+    <mtDialog_TerminateButtonCaption>&amp;Terminate</mtDialog_TerminateButtonCaption>
+    <mtDialog_RestartButtonCaption>&amp;Restart</mtDialog_RestartButtonCaption>
+    <mtDialog_DetailsButtonCaption>&amp;Details</mtDialog_DetailsButtonCaption>
+    <mtDialog_CustomButtonCaption>&amp;Help</mtDialog_CustomButtonCaption>
+    <mtDialog_SendMessage>&amp;Send this error via Internet</mtDialog_SendMessage>
+    <mtDialog_ScreenshotMessage>&amp;Attach a Screenshot image</mtDialog_ScreenshotMessage>
+    <mtDialog_CopyMessage>&amp;Copy to Clipboad</mtDialog_CopyMessage>
+    <mtDialog_SupportMessage>&amp;Go to the Support Page</mtDialog_SupportMessage>
+    <mtMSDialog_ErrorMsgCaption>The application has encountered a problem. We are sorry for the inconvenience.</mtMSDialog_ErrorMsgCaption>
+    <mtMSDialog_RestartCaption>Restart application.</mtMSDialog_RestartCaption>
+    <mtMSDialog_TerminateCaption>Terminate application</mtMSDialog_TerminateCaption>
+    <mtMSDialog_PleaseCaption>Please tell us about this problem.</mtMSDialog_PleaseCaption>
+    <mtMSDialog_DescriptionCaption>We have created an error report that you can send to us. We will treat this report as confidential and anonymous.</mtMSDialog_DescriptionCaption>
+    <mtMSDialog_SeeDetailsCaption>To see what data the error report contains, </mtMSDialog_SeeDetailsCaption>
+    <mtMSDialog_SeeClickCaption>click here</mtMSDialog_SeeClickCaption>
+    <mtMSDialog_HowToReproduceCaption>What were you doing when the problem happened (optional)?</mtMSDialog_HowToReproduceCaption>
+    <mtMSDialog_EmailCaption>Email address (optional):</mtMSDialog_EmailCaption>
+    <mtMSDialog_SendButtonCaption>&amp;Send Error Report</mtMSDialog_SendButtonCaption>
+    <mtMSDialog_NoSendButtonCaption>&amp;Don&#39;t Send</mtMSDialog_NoSendButtonCaption>
+    <mtSendDialog_Caption>Send.</mtSendDialog_Caption>
+    <mtSendDialog_Message>Message</mtSendDialog_Message>
+    <mtSendDialog_Resolving>Revolving DNS...</mtSendDialog_Resolving>
+    <mtSendDialog_Login>Login...</mtSendDialog_Login>
+    <mtSendDialog_Connecting>Connecting with server...</mtSendDialog_Connecting>
+    <mtSendDialog_Connected>Connected with server.</mtSendDialog_Connected>
+    <mtSendDialog_Sending>Sending Message...</mtSendDialog_Sending>
+    <mtSendDialog_Sent>Message Send</mtSendDialog_Sent>
+    <mtSendDialog_SelectProject>Select project...</mtSendDialog_SelectProject>
+    <mtSendDialog_Searching>Searching...</mtSendDialog_Searching>
+    <mtSendDialog_Modifying>Modifying...</mtSendDialog_Modifying>
+    <mtSendDialog_Disconnecting>Disconnecting...</mtSendDialog_Disconnecting>
+    <mtSendDialog_Disconnected>Disconnected.</mtSendDialog_Disconnected>
+    <mtReproduceDialog_Caption>Request</mtReproduceDialog_Caption>
+    <mtReproduceDialog_Request>Please describe the steps to reproduce the error:</mtReproduceDialog_Request>
+    <mtReproduceDialog_OKButtonCaption>&amp;OK</mtReproduceDialog_OKButtonCaption>
+    <mtLog_AppHeader>Application</mtLog_AppHeader>
+    <mtLog_AppStartDate>Start Date</mtLog_AppStartDate>
+    <mtLog_AppName>Name/Description</mtLog_AppName>
+    <mtLog_AppVersionNumber>Version Number</mtLog_AppVersionNumber>
+    <mtLog_AppParameters>Parameters</mtLog_AppParameters>
+    <mtLog_AppCompilationDate>Compilation Date</mtLog_AppCompilationDate>
+    <mtLog_AppUpTime>Up Time</mtLog_AppUpTime>
+    <mtLog_ExcHeader>Exception</mtLog_ExcHeader>
+    <mtLog_ExcDate>Date</mtLog_ExcDate>
+    <mtLog_ExcAddress>Address</mtLog_ExcAddress>
+    <mtLog_ExcModuleName>Module Name</mtLog_ExcModuleName>
+    <mtLog_ExcModuleVersion>Module Version</mtLog_ExcModuleVersion>
+    <mtLog_ExcType>Type</mtLog_ExcType>
+    <mtLog_ExcMessage>Message</mtLog_ExcMessage>
+    <mtLog_ExcID>ID</mtLog_ExcID>
+    <mtLog_ExcCount>Count</mtLog_ExcCount>
+    <mtLog_ExcStatus>Status</mtLog_ExcStatus>
+    <mtLog_ExcNote>Note</mtLog_ExcNote>
+    <mtLog_UserHeader>User</mtLog_UserHeader>
+    <mtLog_UserID>ID</mtLog_UserID>
+    <mtLog_UserName>Name</mtLog_UserName>
+    <mtLog_UserEmail>Email</mtLog_UserEmail>
+    <mtLog_UserCompany>Company</mtLog_UserCompany>
+    <mtLog_UserPrivileges>Privileges</mtLog_UserPrivileges>
+    <mtLog_ActCtrlsHeader>Active Controls</mtLog_ActCtrlsHeader>
+    <mtLog_ActCtrlsFormClass>Form Class</mtLog_ActCtrlsFormClass>
+    <mtLog_ActCtrlsFormText>Form Text</mtLog_ActCtrlsFormText>
+    <mtLog_ActCtrlsControlClass>Control Class</mtLog_ActCtrlsControlClass>
+    <mtLog_ActCtrlsControlText>Control Text</mtLog_ActCtrlsControlText>
+    <mtLog_CmpHeader>Computer</mtLog_CmpHeader>
+    <mtLog_CmpName>Name</mtLog_CmpName>
+    <mtLog_CmpTotalMemory>Total Memory</mtLog_CmpTotalMemory>
+    <mtLog_CmpFreeMemory>Free Memory</mtLog_CmpFreeMemory>
+    <mtLog_CmpTotalDisk>Total Disk</mtLog_CmpTotalDisk>
+    <mtLog_CmpFreeDisk>Free Disk</mtLog_CmpFreeDisk>
+    <mtLog_CmpSystemUpTime>System Up Time</mtLog_CmpSystemUpTime>
+    <mtLog_CmpProcessor>Processor</mtLog_CmpProcessor>
+    <mtLog_CmpDisplayMode>Display Mode</mtLog_CmpDisplayMode>
+    <mtLog_CmpDisplayDPI>Display DPI</mtLog_CmpDisplayDPI>
+    <mtLog_CmpVideoCard>Video Card</mtLog_CmpVideoCard>
+    <mtLog_CmpPrinter>Printer</mtLog_CmpPrinter>
+    <mtLog_OSHeader>Operating System</mtLog_OSHeader>
+    <mtLog_OSType>Type</mtLog_OSType>
+    <mtLog_OSBuildN>Build #</mtLog_OSBuildN>
+    <mtLog_OSUpdate>Update</mtLog_OSUpdate>
+    <mtLog_OSLanguage>Language</mtLog_OSLanguage>
+    <mtLog_OSCharset>Charset</mtLog_OSCharset>
+    <mtLog_NetHeader>Network</mtLog_NetHeader>
+    <mtLog_NetIP>IP Address</mtLog_NetIP>
+    <mtLog_NetSubmask>Submask</mtLog_NetSubmask>
+    <mtLog_NetGateway>Gateway</mtLog_NetGateway>
+    <mtLog_NetDNS1>DNS 1</mtLog_NetDNS1>
+    <mtLog_NetDNS2>DNS 2</mtLog_NetDNS2>
+    <mtLog_NetDHCP>DHCP</mtLog_NetDHCP>
+    <mtLog_CustInfoHeader>Custom Information</mtLog_CustInfoHeader>
+    <mtCallStack_Address>Address</mtCallStack_Address>
+    <mtCallStack_Name>Module</mtCallStack_Name>
+    <mtCallStack_Unit>Unit</mtCallStack_Unit>
+    <mtCallStack_Class>Class</mtCallStack_Class>
+    <mtCallStack_Procedure>Procedure/Method</mtCallStack_Procedure>
+    <mtCallStack_Line>Line</mtCallStack_Line>
+    <mtCallStack_MainThread>Main</mtCallStack_MainThread>
+    <mtCallStack_ExceptionThread>Exception Thread</mtCallStack_ExceptionThread>
+    <mtCallStack_RunningThread>Running Thread</mtCallStack_RunningThread>
+    <mtCallStack_CallingThread>Calling Thread</mtCallStack_CallingThread>
+    <mtCallStack_ThreadID>ID</mtCallStack_ThreadID>
+    <mtCallStack_ThreadPriority>Priority</mtCallStack_ThreadPriority>
+    <mtCallStack_ThreadClass>Class</mtCallStack_ThreadClass>
+    <mtCallStack_LeakCaption>Memory Leak</mtCallStack_LeakCaption>
+    <mtCallStack_LeakData>Data</mtCallStack_LeakData>
+    <mtCallStack_LeakType>Type</mtCallStack_LeakType>
+    <mtCallStack_LeakSize>Size</mtCallStack_LeakSize>
+    <mtCallStack_LeakCount>Count</mtCallStack_LeakCount>
+    <mtModules_Handle>Handle</mtModules_Handle>
+    <mtModules_Name>Name</mtModules_Name>
+    <mtModules_Description>Description</mtModules_Description>
+    <mtModules_Version>Version</mtModules_Version>
+    <mtModules_Size>Size</mtModules_Size>
+    <mtModules_LastModified>Modified</mtModules_LastModified>
+    <mtModules_Path>Path</mtModules_Path>
+    <mtProcesses_ID>ID</mtProcesses_ID>
+    <mtProcesses_Name>Name</mtProcesses_Name>
+    <mtProcesses_Description>Description</mtProcesses_Description>
+    <mtProcesses_Version>Version</mtProcesses_Version>
+    <mtProcesses_Memory>Memory</mtProcesses_Memory>
+    <mtProcesses_Priority>Priority</mtProcesses_Priority>
+    <mtProcesses_Threads>Threads</mtProcesses_Threads>
+    <mtProcesses_Path>Path</mtProcesses_Path>
+    <mtCPU_Registers>Registers</mtCPU_Registers>
+    <mtCPU_Stack>Stack</mtCPU_Stack>
+    <mtCPU_MemoryDump>Memory Dump</mtCPU_MemoryDump>
+    <mtSend_SuccessMsg>The message was sent successfully</mtSend_SuccessMsg>
+    <mtSend_FailureMsg>Sorry, sending the message didn&#39;t work.</mtSend_FailureMsg>
+    <mtSend_BugClosedMsg>These BUG is just closed.
+Contact the program support to obtain an update.</mtSend_BugClosedMsg>
+    <mtSend_UnknownErrorMsg>Unknown error.</mtSend_UnknownErrorMsg>
+    <mtSend_InvalidLoginMsg>Invalid login request.</mtSend_InvalidLoginMsg>
+    <mtSend_InvalidSearchMsg>Invalid search request.</mtSend_InvalidSearchMsg>
+    <mtSend_InvalidSelectionMsg>Invalid selection request.</mtSend_InvalidSelectionMsg>
+    <mtSend_InvalidInsertMsg>Invalid insert request.</mtSend_InvalidInsertMsg>
+    <mtSend_InvalidModifyMsg>Invalid modify request.</mtSend_InvalidModifyMsg>
+    <mtFileCrackedMsg>This file is cracked.
+The application will be closed.</mtFileCrackedMsg>
+    <mtException_LeakMultiFree>Multi Free memory leak.</mtException_LeakMultiFree>
+    <mtException_LeakMemoryOverrun>Memory Overrun leak.</mtException_LeakMemoryOverrun>
+    <mtException_AntiFreeze>The application seems to be frozen.</mtException_AntiFreeze>
+    <mtInvalidEmailMsg>Invalid email.</mtInvalidEmailMsg>
+  </CustomizedTexts>
+  <ExceptionFilters>
+  </ExceptionFilters>
+</EurekaLogOptions>
