@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace HydroDesktop.DataDownload.Download
+namespace HydroDesktop.DataDownload.Downloading
 {
     /// <summary>
     /// Information about download progress

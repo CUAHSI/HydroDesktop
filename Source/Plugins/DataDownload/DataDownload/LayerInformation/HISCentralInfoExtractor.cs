@@ -28,6 +28,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         public string GetServiceDesciptionUrl(string serviceUrl)
         {
+            if (serviceUrl == null) return null;
             string res;
             return _services.TryGetValue(serviceUrl, out res) ? res : null;
         }

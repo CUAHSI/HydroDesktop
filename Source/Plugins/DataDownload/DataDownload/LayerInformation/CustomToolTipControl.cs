@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Data.Forms;
-using HydroDesktop.DataDownload.Download;
+using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
 
 namespace HydroDesktop.DataDownload.LayerInformation
@@ -28,7 +28,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
             SizeChanged += CustomToolTipControl_SizeChanged;
 
             PointInfo = new ServiceInfo();
-
             PointInfo.PropertyChanged += PointInfo_PropertyChanged;
 
             lblServiceDesciptionUrl.TextChanged += lblServiceDesciptionUrl_TextChanged;
@@ -42,10 +41,21 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             Load += CustomToolTipControl_Load;
         }
+       
+        #endregion
+
+        #region Properties
+
+        public ServiceInfo PointInfo { get; private set; }
+        public Popup Popup { get; set; }
+
+        #endregion
+
+        #region Private methods
 
         void PointInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "DataSource":
                     lblDataSource.Text = PointInfo.DataSource;
@@ -61,17 +71,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
                     break;
             }
         }
-       
-        #endregion
-
-        #region Properties
-
-        public ServiceInfo PointInfo { get; private set; }
-        public Popup Popup { get; set; }
-
-        #endregion
-
-        #region Private methods
 
         void lblDownloadData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -88,24 +87,16 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 Popup.Close();
             }
 
-            var oneSeries = new OneSeriesDownloadInfo
-                                {
-                                    SiteName = PointInfo.SiteName,
-                                    FullSiteCode = PointInfo.SiteCode,
-                                    FullVariableCode = PointInfo.VarCode,
-                                    Wsdl = PointInfo.ServiceUrl,
-                                    StartDate = PointInfo.StartDate,
-                                    EndDate = PointInfo.EndDate,
-                                    VariableName = PointInfo.VarName,
-                                    Latitude = PointInfo.Latitude,
-                                    Longitude = PointInfo.Longitude
-                                };
-
-
+            var oneSeries = ClassConvertor.ServiceInfoToOneSeriesDownloadInfo(PointInfo);
             var startArgs = new StartDownloadArg(new List<OneSeriesDownloadInfo> {oneSeries},
                                                  new Interfaces.ObjectModel.Theme(dataThemeName));
 
-            var downloadManager = new DownloadManager();
+            var downloadManager = Global.PluginEntryPoint.DownloadManager;
+            if (downloadManager.IsBusy)
+            {
+                //todo: inform user about busy?
+                return;
+            }
             downloadManager.Start(startArgs);
         }
 

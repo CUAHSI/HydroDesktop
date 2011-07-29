@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.DataDownload.Download
+namespace HydroDesktop.DataDownload.Downloading
 {
     /// <summary>
     /// Class with information needed to call DownloadManager.Start()

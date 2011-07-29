@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace HydroDesktop.DataDownload.Download
+namespace HydroDesktop.DataDownload.Downloading
 {
     /// <summary>
     /// This class is used to pass information required to download

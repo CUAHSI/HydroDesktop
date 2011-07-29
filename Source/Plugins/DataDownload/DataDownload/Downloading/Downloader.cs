@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using HydroDesktop.DataDownload.Download.Exceptions;
+using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Configuration;
 using HydroDesktop.WebServices.WaterOneFlow;
 
-namespace HydroDesktop.DataDownload.Download
+namespace HydroDesktop.DataDownload.Downloading
 {
     /// <summary>
     /// Methods to download observation data from WaterML web services and save them to 

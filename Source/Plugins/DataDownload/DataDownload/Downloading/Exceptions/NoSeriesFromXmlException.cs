@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace HydroDesktop.DataDownload.Download.Exceptions
+namespace HydroDesktop.DataDownload.Downloading.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when no series found in downloaded xml file.

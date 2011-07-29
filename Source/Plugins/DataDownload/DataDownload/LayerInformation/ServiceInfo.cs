@@ -27,6 +27,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         #endregion
 
+        #region Properties
+
         private string _dataSource;
 
         /// <summary>
@@ -117,6 +119,30 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         public double Longitude { get; set; }
 
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Create deep copy into current instance from source
+        /// </summary>
+        /// <param name="source">Source to copy</param>
+        public void Copy(ServiceInfo source)
+        {
+            DataSource = source.DataSource;
+            SiteName = source.SiteName;
+            ValueCount = source.ValueCount;
+            ServiceDesciptionUrl = source.ServiceDesciptionUrl;
+            EndDate = source.EndDate;
+            Latitude = source.Latitude;
+            Longitude = source.Longitude;
+            ServiceUrl = source.ServiceUrl;
+            SiteCode = source.SiteCode;
+            StartDate = source.StartDate;
+            VarCode = source.VarCode;
+            VarName = source.VarName;
+        }
+
         public override bool Equals(object obj)
         {
             var pi = obj as ServiceInfo;
@@ -133,6 +159,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
             return DataSource.GetHashCode() ^ SiteName.GetHashCode() ^
                    ValueCount.GetHashCode() ^ ServiceDesciptionUrl.GetHashCode();
         }
+
+        #endregion
 
         #region INotifyPropertyChanged implementation
 

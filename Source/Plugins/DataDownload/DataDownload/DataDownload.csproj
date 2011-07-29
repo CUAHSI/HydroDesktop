@@ -91,28 +91,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Download\Downloader.cs" />
-    <Compile Include="Download\DownloadManager.cs" />
-    <Compile Include="Download\DownloadManagerUI.cs">
+    <Compile Include="ClassConvertor.cs" />
+    <Compile Include="Downloading\Downloader.cs" />
+    <Compile Include="Downloading\DownloadManager.cs" />
+    <Compile Include="Downloading\DownloadManagerUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Download\DownloadManagerUI.Designer.cs">
+    <Compile Include="Downloading\DownloadManagerUI.Designer.cs">
       <DependentUpon>DownloadManagerUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Download\Exceptions\DataSeriesFromXmlException.cs" />
-    <Compile Include="Download\Exceptions\DownloadXmlException.cs" />
-    <Compile Include="Download\Exceptions\NoSeriesFromXmlException.cs" />
-    <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
-    <Compile Include="Download\Exceptions\TooMuchSeriesFromXmlException.cs" />
-    <Compile Include="Download\ManagerInformation.cs" />
-    <Compile Include="Download\OneSeriesDownloadInfo.cs" />
-    <Compile Include="Download\RedownloadControl.cs">
+    <Compile Include="Downloading\Exceptions\DataSeriesFromXmlException.cs" />
+    <Compile Include="Downloading\Exceptions\DownloadXmlException.cs" />
+    <Compile Include="Downloading\Exceptions\NoSeriesFromXmlException.cs" />
+    <Compile Include="Downloading\Exceptions\SaveDataSeriesException.cs" />
+    <Compile Include="Downloading\Exceptions\TooMuchSeriesFromXmlException.cs" />
+    <Compile Include="Downloading\ManagerInformation.cs" />
+    <Compile Include="Downloading\OneSeriesDownloadInfo.cs" />
+    <Compile Include="Downloading\RedownloadControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Download\RedownloadControl.Designer.cs">
+    <Compile Include="Downloading\RedownloadControl.Designer.cs">
       <DependentUpon>RedownloadControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Download\StartDownloadArg.cs" />
+    <Compile Include="Downloading\StartDownloadArg.cs" />
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="LayerInformation\CustomToolTipControl.cs">
@@ -140,20 +141,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SearchResultsLayerHelper.cs" />
-    <Compile Include="WebServices\HISCentralSearcher.cs" />
-    <Compile Include="WebServices\SearchHelper.cs" />
-    <Compile Include="WebServices\SearchResult.cs" />
-    <Compile Include="WebServices\WebServicesList.cs" />
+    <Compile Include="SearchLayersProcessing\SearchLayersPostProcessor.cs" />
+    <Compile Include="SearchLayersProcessing\HISCentralSearcher.cs" />
+    <Compile Include="SearchLayersProcessing\WebServicesList.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Download\DownloadManagerUI.resx">
+    <EmbeddedResource Include="Downloading\DownloadManagerUI.resx">
       <DependentUpon>DownloadManagerUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Download\RedownloadControl.resx">
+    <EmbeddedResource Include="Downloading\RedownloadControl.resx">
       <DependentUpon>RedownloadControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerInformation\CustomToolTipControl.resx">
