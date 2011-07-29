@@ -12,6 +12,8 @@ namespace HydroDesktop.Main
         [STAThread]
         static void Main(string[] args)
         {
+            EurekaLogSystem.ExceptionHandler.Activate();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
