@@ -124,8 +124,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Packages\DotSpatial_x86.1.0.549\lib\DotSpatial.Topology.dll</HintPath>
     </Reference>
-    <Reference Include="EurekaLog, Version=6.5.9.0, Culture=neutral, PublicKeyToken=c07f3a4a477a2e90, processorArchitecture=MSIL" />
- <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="EurekaLog">
+      <HintPath>..\..\..\SupportFiles\EurekaLog\EurekaLog.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
