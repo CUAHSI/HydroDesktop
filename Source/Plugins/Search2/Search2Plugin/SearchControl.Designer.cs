@@ -31,8 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchControl));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.rbAppend = new System.Windows.Forms.RadioButton();
-            this.rbOverwrite = new System.Windows.Forms.RadioButton();
             this.btnShowSearchSummary = new System.Windows.Forms.Button();
             this.btnHideSearchSummary = new System.Windows.Forms.Button();
             this.btnSelectArea = new System.Windows.Forms.Button();
@@ -103,23 +101,11 @@
             this.Button7 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.searchResultsControl = new HydroDesktop.Search.SearchResultsControl();
             this.btnReset = new System.Windows.Forms.Button();
-            this.btnDownload = new System.Windows.Forms.Button();
-            this.groupResults = new System.Windows.Forms.GroupBox();
-            this.lblThemeDescription = new System.Windows.Forms.Label();
-            this.txtThemeDescription = new System.Windows.Forms.TextBox();
-            this.txtThemeName = new System.Windows.Forms.TextBox();
-            this.lstThemes = new System.Windows.Forms.ListBox();
-            this.rbExistingTheme = new System.Windows.Forms.RadioButton();
-            this.rbNewTheme = new System.Windows.Forms.RadioButton();
             this.panelSearch = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.progBarSearch2 = new System.Windows.Forms.ProgressBar();
             this.lblSearching = new System.Windows.Forms.Label();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.radioButton13 = new System.Windows.Forms.RadioButton();
-            this.radioButton12 = new System.Windows.Forms.RadioButton();
             this.PictureBox4 = new System.Windows.Forms.PictureBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupRestoreSearch = new System.Windows.Forms.GroupBox();
@@ -182,9 +168,7 @@
             this.spcKey.Panel2.SuspendLayout();
             this.spcKey.SuspendLayout();
             this.tabPage5.SuspendLayout();
-            this.groupResults.SuspendLayout();
             this.panelSearch.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox4)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.groupRestoreSearch.SuspendLayout();
@@ -193,30 +177,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox5)).BeginInit();
             this.gbSearchSummary.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // rbAppend
-            // 
-            this.rbAppend.AutoSize = true;
-            this.rbAppend.Checked = true;
-            this.rbAppend.Location = new System.Drawing.Point(6, 16);
-            this.rbAppend.Name = "rbAppend";
-            this.rbAppend.Size = new System.Drawing.Size(62, 17);
-            this.rbAppend.TabIndex = 26;
-            this.rbAppend.TabStop = true;
-            this.rbAppend.Text = "Append";
-            this.toolTip1.SetToolTip(this.rbAppend, "Append duplicate to existing list");
-            this.rbAppend.UseVisualStyleBackColor = true;
-            // 
-            // rbOverwrite
-            // 
-            this.rbOverwrite.AutoSize = true;
-            this.rbOverwrite.Location = new System.Drawing.Point(73, 16);
-            this.rbOverwrite.Name = "rbOverwrite";
-            this.rbOverwrite.Size = new System.Drawing.Size(70, 17);
-            this.rbOverwrite.TabIndex = 25;
-            this.rbOverwrite.Text = "Overwrite";
-            this.toolTip1.SetToolTip(this.rbOverwrite, "Overwrite new data series over existing list");
-            this.rbOverwrite.UseVisualStyleBackColor = true;
             // 
             // btnShowSearchSummary
             // 
@@ -1059,12 +1019,8 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.searchResultsControl);
             this.tabPage5.Controls.Add(this.btnReset);
-            this.tabPage5.Controls.Add(this.btnDownload);
-            this.tabPage5.Controls.Add(this.groupResults);
             this.tabPage5.Controls.Add(this.panelSearch);
-            this.tabPage5.Controls.Add(this.groupBox6);
             this.tabPage5.Controls.Add(this.PictureBox4);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
@@ -1073,107 +1029,16 @@
             this.tabPage5.Text = "Results";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // searchResultsControl
-            // 
-            this.searchResultsControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.searchResultsControl.Location = new System.Drawing.Point(0, 41);
-            this.searchResultsControl.Name = "searchResultsControl";
-            this.searchResultsControl.Size = new System.Drawing.Size(342, 125);
-            this.searchResultsControl.TabIndex = 37;
-            this.searchResultsControl.Visible = false;
-            // 
             // btnReset
             // 
             this.btnReset.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnReset.Location = new System.Drawing.Point(176, 278);
+            this.btnReset.Location = new System.Drawing.Point(120, 130);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(62, 24);
             this.btnReset.TabIndex = 36;
             this.btnReset.Text = "Re&set";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
-            // btnDownload
-            // 
-            this.btnDownload.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnDownload.Enabled = false;
-            this.btnDownload.Location = new System.Drawing.Point(244, 278);
-            this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(92, 24);
-            this.btnDownload.TabIndex = 35;
-            this.btnDownload.Text = "&Download Data";
-            this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
-            // 
-            // groupResults
-            // 
-            this.groupResults.Controls.Add(this.lblThemeDescription);
-            this.groupResults.Controls.Add(this.txtThemeDescription);
-            this.groupResults.Controls.Add(this.txtThemeName);
-            this.groupResults.Controls.Add(this.lstThemes);
-            this.groupResults.Controls.Add(this.rbExistingTheme);
-            this.groupResults.Controls.Add(this.rbNewTheme);
-            this.groupResults.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupResults.Enabled = false;
-            this.groupResults.Location = new System.Drawing.Point(0, 166);
-            this.groupResults.Name = "groupResults";
-            this.groupResults.Size = new System.Drawing.Size(342, 139);
-            this.groupResults.TabIndex = 33;
-            this.groupResults.TabStop = false;
-            this.groupResults.Text = "Save data to...";
-            // 
-            // lblThemeDescription
-            // 
-            this.lblThemeDescription.AutoSize = true;
-            this.lblThemeDescription.Location = new System.Drawing.Point(6, 64);
-            this.lblThemeDescription.Name = "lblThemeDescription";
-            this.lblThemeDescription.Size = new System.Drawing.Size(96, 13);
-            this.lblThemeDescription.TabIndex = 6;
-            this.lblThemeDescription.Text = "Theme Description";
-            // 
-            // txtThemeDescription
-            // 
-            this.txtThemeDescription.Location = new System.Drawing.Point(6, 80);
-            this.txtThemeDescription.Name = "txtThemeDescription";
-            this.txtThemeDescription.Size = new System.Drawing.Size(159, 20);
-            this.txtThemeDescription.TabIndex = 4;
-            // 
-            // txtThemeName
-            // 
-            this.txtThemeName.Location = new System.Drawing.Point(6, 29);
-            this.txtThemeName.Name = "txtThemeName";
-            this.txtThemeName.Size = new System.Drawing.Size(159, 20);
-            this.txtThemeName.TabIndex = 3;
-            // 
-            // lstThemes
-            // 
-            this.lstThemes.FormattingEnabled = true;
-            this.lstThemes.Location = new System.Drawing.Point(181, 29);
-            this.lstThemes.Name = "lstThemes";
-            this.lstThemes.Size = new System.Drawing.Size(139, 69);
-            this.lstThemes.TabIndex = 2;
-            // 
-            // rbExistingTheme
-            // 
-            this.rbExistingTheme.AutoSize = true;
-            this.rbExistingTheme.Location = new System.Drawing.Point(181, 11);
-            this.rbExistingTheme.Name = "rbExistingTheme";
-            this.rbExistingTheme.Size = new System.Drawing.Size(97, 17);
-            this.rbExistingTheme.TabIndex = 1;
-            this.rbExistingTheme.Text = "Existing Theme";
-            this.rbExistingTheme.UseVisualStyleBackColor = true;
-            // 
-            // rbNewTheme
-            // 
-            this.rbNewTheme.AutoSize = true;
-            this.rbNewTheme.Checked = true;
-            this.rbNewTheme.Location = new System.Drawing.Point(6, 11);
-            this.rbNewTheme.Name = "rbNewTheme";
-            this.rbNewTheme.Size = new System.Drawing.Size(83, 17);
-            this.rbNewTheme.TabIndex = 0;
-            this.rbNewTheme.TabStop = true;
-            this.rbNewTheme.Text = "New Theme";
-            this.rbNewTheme.UseVisualStyleBackColor = true;
             // 
             // panelSearch
             // 
@@ -1203,7 +1068,6 @@
             this.progBarSearch2.Name = "progBarSearch2";
             this.progBarSearch2.Size = new System.Drawing.Size(264, 17);
             this.progBarSearch2.TabIndex = 26;
-            this.progBarSearch2.Click += new System.EventHandler(this.progBarSearch2_Click);
             // 
             // lblSearching
             // 
@@ -1213,41 +1077,6 @@
             this.lblSearching.Size = new System.Drawing.Size(61, 13);
             this.lblSearching.TabIndex = 25;
             this.lblSearching.Text = "Searching..";
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.groupBox6.Controls.Add(this.radioButton13);
-            this.groupBox6.Controls.Add(this.radioButton12);
-            this.groupBox6.Controls.Add(this.rbAppend);
-            this.groupBox6.Controls.Add(this.rbOverwrite);
-            this.groupBox6.Location = new System.Drawing.Point(58, 254);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(175, 35);
-            this.groupBox6.TabIndex = 34;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Handle Duplicate Data Values";
-            this.groupBox6.Visible = false;
-            // 
-            // radioButton13
-            // 
-            this.radioButton13.AutoSize = true;
-            this.radioButton13.Location = new System.Drawing.Point(6, 33);
-            this.radioButton13.Name = "radioButton13";
-            this.radioButton13.Size = new System.Drawing.Size(49, 17);
-            this.radioButton13.TabIndex = 28;
-            this.radioButton13.Text = "Copy";
-            this.radioButton13.UseVisualStyleBackColor = true;
-            // 
-            // radioButton12
-            // 
-            this.radioButton12.AutoSize = true;
-            this.radioButton12.Location = new System.Drawing.Point(108, 33);
-            this.radioButton12.Name = "radioButton12";
-            this.radioButton12.Size = new System.Drawing.Size(37, 17);
-            this.radioButton12.TabIndex = 27;
-            this.radioButton12.Text = "Fill";
-            this.radioButton12.UseVisualStyleBackColor = true;
             // 
             // PictureBox4
             // 
@@ -1801,12 +1630,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.spcKey)).EndInit();
             this.spcKey.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
-            this.groupResults.ResumeLayout(false);
-            this.groupResults.PerformLayout();
             this.panelSearch.ResumeLayout(false);
             this.panelSearch.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox4)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.groupRestoreSearch.ResumeLayout(false);
@@ -1899,20 +1724,7 @@
         private System.Windows.Forms.ProgressBar progBarSearch2;
         private System.Windows.Forms.Label lblSearching;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.GroupBox groupResults;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label lblThemeDescription;
-        private System.Windows.Forms.TextBox txtThemeDescription;
-        private System.Windows.Forms.TextBox txtThemeName;
-        private System.Windows.Forms.ListBox lstThemes;
-        private System.Windows.Forms.RadioButton rbExistingTheme;
-        private System.Windows.Forms.RadioButton rbNewTheme;
         private System.Windows.Forms.Button btnReset;
-        private System.Windows.Forms.Button btnDownload;
-        private System.Windows.Forms.RadioButton radioButton13;
-        private System.Windows.Forms.RadioButton radioButton12;
-        private System.Windows.Forms.RadioButton rbAppend;
-        private System.Windows.Forms.RadioButton rbOverwrite;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label31;
         public System.Windows.Forms.Label lblRestoreDates;
@@ -1958,7 +1770,5 @@
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.GroupBox groupPreview;
         private System.Windows.Forms.GroupBox groupRestoreSearch;
-        private SearchResultsControl searchResultsControl;
-
     }
 }

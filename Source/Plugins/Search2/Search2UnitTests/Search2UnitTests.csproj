@@ -100,12 +100,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Download\OneSeriesDownloadInfoTest.cs" />
     <Compile Include="SearchWithFailoverNoMock.cs" />
     <Compile Include="SearchCriteriaTest.cs" />
     <Compile Include="SearchWithFailover.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Search2Plugin\Search2.csproj">
