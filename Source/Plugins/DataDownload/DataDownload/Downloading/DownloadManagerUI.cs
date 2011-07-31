@@ -103,15 +103,15 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private ICollection<int> GetAllSelectedRows(DownloadInfoStatus status)
         {
-            return GetAllSelectedRows().Where(ind => _manager.Information.StartDownloadArg.ItemsToDownload[ind].Status == status).ToList();
+            return GetAllSelectedRows().Where(ind => _manager.Information.StartArgs.ItemsToDownload[ind].Status == status).ToList();
         }
 
         private ICollection<int> GetAllRows(DownloadInfoStatus status)
         {
             var result = new List<int>();
-            for(int i = 0; i< _manager.Information.StartDownloadArg.ItemsToDownload.Count; i++)
+            for(int i = 0; i< _manager.Information.StartArgs.ItemsToDownload.Count; i++)
             {
-                if (_manager.Information.StartDownloadArg.ItemsToDownload[i].Status == status)
+                if (_manager.Information.StartArgs.ItemsToDownload[i].Status == status)
                     result.Add(i);
             }
             return result;
@@ -294,7 +294,7 @@ namespace HydroDesktop.DataDownload.Downloading
         }
         private void BindDownloadInfoTable()
         {
-            dgvDownloadData.DataSource = new BindingList<OneSeriesDownloadInfo>(_manager.Information.StartDownloadArg.ItemsToDownload);
+            dgvDownloadData.DataSource = new BindingList<OneSeriesDownloadInfo>(_manager.Information.StartArgs.ItemsToDownload);
         }
 
         void _manager_OnMessage(object sender, LogMessageEventArgs e)
@@ -376,43 +376,13 @@ namespace HydroDesktop.DataDownload.Downloading
                                                   _manager.Information.DownloadedAndSaved,
                                                   _manager.Information.WithError),
                                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    //-----
-                    var themeName = _manager.Information.StartDownloadArg.DataTheme == null
-                                        ? string.Empty
-                                        : _manager.Information.StartDownloadArg.DataTheme.Name;
-
-                    //Display theme in the main map
-                    AddThemeToMap(themeName);
                 }
             }
 
             if (_closeAfterCompleted)
                 Close();
         }
-
-        private void AddThemeToMap(string themeName)
-        {
-            try
-            {
-                var _mapArgs = Global.PluginEntryPoint.MapArgs;
-
-                //to refresh the series selector control
-                //TODO: need other way to send this message
-                var mainApplication = _mapArgs.AppManager as IHydroAppManager;
-                if (mainApplication != null)
-                {
-                    mainApplication.SeriesView.SeriesSelector.RefreshSelection();
-                }
-
-                var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-                var manager = new Controls.Themes.ThemeManager(db);
-                var fs = manager.GetFeatureSet(themeName, _mapArgs.Map.Projection);
-                manager.AddThemeToMap(fs, themeName, _mapArgs.Map as DotSpatial.Controls.Map);
-            }
-            catch { }
-        }
-
+      
         void _manager_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pbTotal.Value = e.ProgressPercentage;

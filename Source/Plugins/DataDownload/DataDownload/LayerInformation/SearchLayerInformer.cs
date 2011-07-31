@@ -142,7 +142,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 {
                     feature.ParentFeatureSet.FillAttributes();
                 }
-                var pInfo = ClassConvertor.IFeatureToServiceInfo(feature);
+                var pInfo = ClassConvertor.IFeatureToServiceInfo(feature, layer);
                 pInfo.ServiceDesciptionUrl = _serviceInfoExtractor.GetServiceDesciptionUrl(pInfo.ServiceUrl);
                 return pInfo;
             }

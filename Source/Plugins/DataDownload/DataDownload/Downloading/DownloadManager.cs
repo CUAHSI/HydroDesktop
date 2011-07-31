@@ -16,6 +16,7 @@ namespace HydroDesktop.DataDownload.Downloading
         private readonly BackgroundWorker _worker = new BackgroundWorker();
         private DownloadManagerUI _downloadManagerUI;
         private static readonly object _syncObjForDownload = new object();
+        private readonly List<OneSeriesDownloadInfo> _savedData = new List<OneSeriesDownloadInfo>();
 
         #endregion
 
@@ -33,24 +34,13 @@ namespace HydroDesktop.DataDownload.Downloading
         #endregion
 
         #region Singleton implementation
-
-        private static readonly object _syncRoot = new object();
-        private static DownloadManager _instance;
+        
+        private static readonly Lazy<DownloadManager> _instance = new Lazy<DownloadManager>(() => new DownloadManager(), true);
         public static DownloadManager Instance
         {
             get
-            {   
-                if (_instance == null)
-                {
-                    lock(_syncRoot)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new DownloadManager();
-                        }
-                    }
-                }
-                return _instance;
+            {  
+                return _instance.Value;
             }
         }
 
@@ -87,9 +77,18 @@ namespace HydroDesktop.DataDownload.Downloading
         }
         
         /// <summary>
-        /// Information about current manager.
+        /// Information about manager.
         /// </summary>
         internal ManagerInformation Information { get; private set; }
+
+        /// <summary>
+        /// Get collection of saved data
+        /// </summary>
+        /// <returns>Saved series</returns>
+        public IEnumerable<OneSeriesDownloadInfo> GetSavedData()
+        {
+            return _savedData.AsReadOnly();
+        }
 
         #endregion
 
@@ -112,10 +111,10 @@ namespace HydroDesktop.DataDownload.Downloading
             Information.SetSeriesToDownload(indeces);
 
             var indecesCount = indeces == null
-                                   ? Information.StartDownloadArg.ItemsToDownload.Count
+                                   ? Information.StartArgs.ItemsToDownload.Count
                                    : indeces.Count;
 
-            DoLogInfo(string.Format("Re-download series ({0} of {1}) started...", indecesCount, Information.StartDownloadArg.ItemsToDownload.Count));
+            DoLogInfo(string.Format("Re-download series ({0} of {1}) started...", indecesCount, Information.StartArgs.ItemsToDownload.Count));
             _worker.RunWorkerAsync();
         }
 
@@ -257,7 +256,10 @@ namespace HydroDesktop.DataDownload.Downloading
         {
             _worker.ReportProgress(0, "Connecting to server...");
 
-            var downloadList = Information.StartDownloadArg.ItemsToDownload;
+            _savedData.Clear();
+            _savedData.Capacity = Information.StartArgs.ItemsToDownload.Count;
+
+            var downloadList = Information.StartArgs.ItemsToDownload;
             var indeces = Information.IndecesToDownload;
             const int maxThreadsToDownloadCount = 4;                                    // max count of downloading threads
             var commonInfo = new CommnonDoDownloadInfo(new Downloader()); // common info, shared through downloading threads
@@ -377,7 +379,7 @@ namespace HydroDesktop.DataDownload.Downloading
                     dda.CommnonInfo.AddDonwloadingThread(thread);
                     var ld = dda.CommnonInfo.LastDownloadingIndex;
                     dda.CommnonInfo.LastDownloadingIndex++;
-                    thread.Start(new DoDownloadArg(Information.StartDownloadArg.ItemsToDownload[Information.IndecesToDownload[ld]],
+                    thread.Start(new DoDownloadArg(Information.StartArgs.ItemsToDownload[Information.IndecesToDownload[ld]],
                                                    dda.CommnonInfo, thread));
 
                 }
@@ -470,12 +472,15 @@ namespace HydroDesktop.DataDownload.Downloading
                 int numSavedValues;
                 try
                 {
-                    numSavedValues = objDownloader.SaveDataSeries(series, Information.StartDownloadArg.DataTheme);
+                    numSavedValues = objDownloader.SaveDataSeries(series, Information.StartArgs.DataTheme, dInfo.OverwriteOption);
                     Information.DownloadedAndSaved++;
+
+                    dInfo.ResultSeries = series;
+                    _savedData.Add(dInfo);
 
                     if (numSavedValues == 0)
                     {
-                        DoLogWarn(string.Format("{0} has no data values.", series));
+                        DoLogWarn(string.Format("In {0} saved 0 values.", series));
                         dInfo.Status = DownloadInfoStatus.OkWithWarnings;
                     }
                     else

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using DotSpatial.Data;
+using DotSpatial.Symbology;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -119,6 +121,51 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         public double Longitude { get; set; }
 
+        private IFeatureLayer _layer;
+        public IFeatureLayer Layer
+        {
+            get { return _layer; }
+            set
+            {
+                _layer = value;
+                UodateIsDownloaded();
+            }
+        }
+
+        private IFeature _sourceFeature;
+        public IFeature SourceFeature
+        {
+            get { return _sourceFeature; }
+            set
+            {
+                _sourceFeature = value;
+                UodateIsDownloaded();
+            }
+        }
+
+        private bool _isDownloaded;
+        public bool IsDownloaded
+        {
+            get { return _isDownloaded; }
+            set
+            {
+                _isDownloaded = value;
+                NotifyPropertyChanged("IsDownloaded");
+            }
+        }
+
+        private void UodateIsDownloaded()
+        {
+            if (Layer == null || SourceFeature == null)
+            {
+                IsDownloaded = false;
+                return;
+            }
+
+            IsDownloaded = Layer.DataSet.DataTable.Columns.Contains("SeriesID") &&
+                           SourceFeature.DataRow["SeriesID"] != DBNull.Value;
+        }
+
         #endregion
 
         #region Public methods
@@ -129,6 +176,9 @@ namespace HydroDesktop.DataDownload.LayerInformation
         /// <param name="source">Source to copy</param>
         public void Copy(ServiceInfo source)
         {
+            Layer = source.Layer;
+            SourceFeature = source.SourceFeature;
+
             DataSource = source.DataSource;
             SiteName = source.SiteName;
             ValueCount = source.ValueCount;

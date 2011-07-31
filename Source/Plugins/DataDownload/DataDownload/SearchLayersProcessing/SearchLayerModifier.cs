@@ -10,16 +10,12 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Configuration;
 using HydroDesktop.Controls.Themes;
+using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
-    /// <summary>
-    /// Class can modify search results layer by adding to them some features:
-    /// 1. Custom symbolizing
-    /// 2. Popup-bubble with information
-    /// </summary>
-    class SearchLayersPostProcessor
+    class SearchLayerModifier
     {
         #region Fields
 
@@ -71,13 +67,77 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
             if (!IsSearchLayer(layer)) return;
 
-            UpdateSymbolizing((IFeatureLayer)layer, map);
+            SetUpLabeling((IFeatureLayer)layer, map);
+            UpdateSymbolizing((IFeatureLayer)layer);
             AttachPopup((IFeatureLayer)layer, map);
+        }
+
+        public void UpdateSearchLayerAfterDownloading(IFeatureLayer searchLayer, MapPointLayer mapLayer, 
+                                                      DownloadManager downloadManager)
+        {
+            if (searchLayer == null) throw new ArgumentNullException("searchLayer");
+            if (mapLayer == null) throw new ArgumentNullException("mapLayer");
+            if (downloadManager == null) throw new ArgumentNullException("downloadManager");
+
+            UpdateDataTable(searchLayer, mapLayer, downloadManager);
+            UpdateSymbolizing(searchLayer);
+        }
+
+        public void RemoveCustomFeaturesFromLayer(ILayer layer)
+        {
+            if (layer == null) throw new ArgumentNullException("layer");
+            if (!IsSearchLayer(layer)) return;
+
+            var feature = (IFeatureLayer) layer;
+            SearchLayerInformer infrormer;
+            if (_searchInformersPerLayes.TryGetValue(feature, out infrormer))
+            {
+                infrormer.Stop();
+                _searchInformersPerLayes.Remove(feature);
+            }
         }
 
         #endregion
 
         #region Private methods
+
+        private void UpdateDataTable(IFeatureLayer searchLayer, MapPointLayer mapLayer, DownloadManager downloadManager)
+        {
+            // Add all columns from mapLayer, wich not exists in searchLayer
+            foreach (DataColumn column in mapLayer.DataSet.DataTable.Columns)
+            {
+                if (!searchLayer.DataSet.DataTable.Columns.Contains(column.ColumnName))
+                {
+                    var copy = new DataColumn(column.ColumnName, column.DataType);
+                    searchLayer.DataSet.DataTable.Columns.Add(copy);
+                }
+            }
+
+            // Update values in search layer to corresponding from downloaded features
+            foreach (var dInfo in downloadManager.GetSavedData())
+            {
+                var searchFeature = dInfo.SourceFeature;
+                var series = dInfo.ResultSeries;
+
+                // Find downloaded feature
+                var downloadedFeature = mapLayer.DataSet.Features.FirstOrDefault(feature =>
+                                    (string)feature.DataRow["SiteCode"] == series.Site.Code &&
+                                    (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
+                                    (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
+                                    (string)feature.DataRow["DataType"] == series.Variable.DataType &&
+                                    (string)feature.DataRow["Method"] == series.Method.Description &&
+                                    (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition);
+
+
+                if (downloadedFeature == null) continue;
+
+                // updating...
+                foreach (DataColumn column in mapLayer.DataSet.DataTable.Columns)
+                {
+                    searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
+                }
+            }
+        }
 
         private static Dictionary<string, string> _services;
         private static Dictionary<string, string> Services
@@ -92,11 +152,14 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             }
         }
 
-        private static void AttachPopup(IFeatureLayer layer, Map map)
+        private readonly Dictionary<IFeatureLayer, SearchLayerInformer> _searchInformersPerLayes = new Dictionary<IFeatureLayer, SearchLayerInformer>();
+
+        private void AttachPopup(IFeatureLayer layer, Map map)
         {
             var extractor = new HISCentralInfoExtractor(Services);
             var searchInformer = new SearchLayerInformer(extractor);
             searchInformer.Start(map, layer);
+            _searchInformersPerLayes.Add(layer, searchInformer);
         }
 
         private static Dictionary<string, string> GetServices(XmlNode node)
@@ -130,12 +193,9 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             return res;
         }
 
-        private static void UpdateSymbolizing(IFeatureLayer layer, IMap map)
+        private static void UpdateSymbolizing(IFeatureLayer layer)
         {
             Debug.Assert(layer != null);
-            Debug.Assert(map != null);
-
-            SetUpLabeling(layer, map);
             
             if (layer.DataSet.NumRows() > 0 && 
                 layer.DataSet.GetColumn("DataSource") != null)
@@ -182,7 +242,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             settings.ClassificationType = ClassificationType.Custom;
 
             const string valueField = "ValueCount";
-
             // Find min/max value in valueField 
             var minValue = int.MaxValue;
             var maxValue = int.MinValue;
@@ -222,6 +281,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
             var symbCreator = new SymbologyCreator(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
             var image = symbCreator.GetImageForService(servCode);
+
+            const string seriesID = "SeriesID";
+            var needDownloadedCategories = featureSet.DataTable.Columns.Contains(seriesID);
+
             for (int i = 0; i < categoriesCount; i++)
             {
                 var min = minValue - 1;
@@ -232,7 +295,12 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
                 imageSize += imageStep;
 
-                var filterEx = string.Format("[{0}] > {1} and [{0}] <= {2}", valueField, min, max);
+                var baseFilter = string.Format("[{0}] > {1} and [{0}] <= {2}", valueField, min, max);
+
+                var filterEx = needDownloadedCategories
+                                   ? baseFilter + string.Format(" AND ([{0}] is null)", seriesID)
+                                   : baseFilter;
+                    
                 var legendText = string.Format("({0}, {1}]", min, max);
                 var mySymbolizer = new PointSymbolizer(image, imageSize);
                 var myCategory = new PointCategory(mySymbolizer)
@@ -243,6 +311,24 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 };
                 myCategory.SelectionSymbolizer.SetFillColor(Color.Yellow);
                 scheme.AddCategory(myCategory);
+
+                // add categorie for downloaded
+                if (needDownloadedCategories)
+                {
+                    mySymbolizer = new PointSymbolizer(image, imageSize);
+                    mySymbolizer.SetOutline(Color.Green, 3);
+
+                    filterEx = string.Format("{0} AND not([{1}] is null)", baseFilter, seriesID);
+                    legendText = myCategory.LegendText + " (downloaded)";
+                    var categorieForDownload = new PointCategory(mySymbolizer)
+                    {
+                        FilterExpression = filterEx,
+                        LegendText = legendText,
+                        SelectionSymbolizer = new PointSymbolizer(image, imageSize + 2)
+                    };
+                    categorieForDownload.SelectionSymbolizer.SetFillColor(Color.Yellow);
+                    scheme.AddCategory(categorieForDownload);
+                }
             }
 
             return scheme;
