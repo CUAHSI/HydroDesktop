@@ -6,9 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using HydroDesktop.Configuration;
-using HydroDesktop.Database;
-using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
