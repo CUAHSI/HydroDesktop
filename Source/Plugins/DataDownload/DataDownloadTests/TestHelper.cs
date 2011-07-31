@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using NUnit.Framework;
 
-namespace HydroDesktop.Search.SearchUnitTests
+namespace HydroDesktop.DataDownloadTests
 {
     static class TestHelper
     {

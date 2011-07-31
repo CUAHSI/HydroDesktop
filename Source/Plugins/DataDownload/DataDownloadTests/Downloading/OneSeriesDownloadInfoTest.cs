@@ -1,12 +1,11 @@
-﻿using HydroDesktop.Search.Download;
+﻿using HydroDesktop.DataDownload.Downloading;
 using NUnit.Framework;
 
-namespace HydroDesktop.Search.SearchUnitTests.Download
+namespace HydroDesktop.DataDownloadTests.Downloading
 {
     [TestFixture]
     class OneSeriesDownloadInfoTest
     {
-
         [Test]
         public void PropertiesExists()
         {
