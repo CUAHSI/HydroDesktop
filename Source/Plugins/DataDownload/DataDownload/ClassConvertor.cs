@@ -1,5 +1,6 @@
 ﻿using System;
 using DotSpatial.Data;
+using DotSpatial.Symbology;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
 
@@ -27,11 +28,14 @@ namespace HydroDesktop.DataDownload
                 FullVariableCode = serviceInfo.VarCode,
                 Wsdl = serviceInfo.ServiceUrl,
                 StartDate = serviceInfo.StartDate,
-                EndDate = serviceInfo.EndDate,
+                EndDate = !serviceInfo.IsDownloaded? serviceInfo.EndDate : DateTime.Now,
                 VariableName = serviceInfo.VarName,
                 Latitude = serviceInfo.Latitude,
-                Longitude = serviceInfo.Longitude
+                Longitude = serviceInfo.Longitude,
+                SourceFeature = serviceInfo.SourceFeature,
             };
+            if (serviceInfo.IsDownloaded)
+                oneSeries.OverwriteOption = Interfaces.OverwriteOptions.Overwrite;
 
             return oneSeries;
         }
@@ -40,14 +44,15 @@ namespace HydroDesktop.DataDownload
         /// Converts instance of IFeature into ServiceInfo
         /// </summary>
         /// <param name="feature">Instance of IFeature</param>
+        /// <param name="layer">Layer</param>
         /// <returns>Instance of ServiceInfo</returns>
         /// <exception cref="ArgumentNullException"><para>feature</para> must be not null.</exception>
-        public static ServiceInfo IFeatureToServiceInfo(IFeature feature)
+        public static ServiceInfo IFeatureToServiceInfo(IFeature feature, IFeatureLayer layer)
         {
             if (feature == null) throw new ArgumentNullException("feature");
 
             var getColumnValue = (Func<string, string>)(column => (feature.DataRow[column].ToString()));
-            var pInfo = new ServiceInfo();
+            var pInfo = new ServiceInfo{SourceFeature = feature, Layer = layer};
             foreach (var fld in feature.ParentFeatureSet.GetColumns())
             {
                 var strValue = getColumnValue(fld.ColumnName);
@@ -113,13 +118,14 @@ namespace HydroDesktop.DataDownload
         /// Converts instance of IFeature into OneSeriesDownloadInfo
         /// </summary>
         /// <param name="feature">Instance of IFeature</param>
+        /// <param name="layer">Layer</param>
         /// <returns>Instance of OneSeriesDownloadInfo</returns>
         /// <exception cref="ArgumentNullException"><para>feature</para> must be not null.</exception>
-        public static OneSeriesDownloadInfo IFeatureToOneSeriesDownloadInfo(IFeature feature)
+        public static OneSeriesDownloadInfo IFeatureToOneSeriesDownloadInfo(IFeature feature, IFeatureLayer layer)
         {
             if (feature == null) throw new ArgumentNullException("feature");
 
-            return ServiceInfoToOneSeriesDownloadInfo(IFeatureToServiceInfo(feature));
+            return ServiceInfoToOneSeriesDownloadInfo(IFeatureToServiceInfo(feature, layer));
         }
     }
 }

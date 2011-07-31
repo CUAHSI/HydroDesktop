@@ -47,6 +47,10 @@
       <HintPath>..\..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\..\..\..\Binaries\DotSpatial.Serialization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
@@ -141,7 +145,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SearchLayersProcessing\SearchLayersPostProcessor.cs" />
+    <Compile Include="SearchLayersProcessing\SearchLayerModifier.cs" />
     <Compile Include="SearchLayersProcessing\HISCentralSearcher.cs" />
     <Compile Include="SearchLayersProcessing\WebServicesList.cs" />
   </ItemGroup>

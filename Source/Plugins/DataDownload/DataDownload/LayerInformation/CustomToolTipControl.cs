@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using DotSpatial.Data.Forms;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
 
@@ -64,23 +63,23 @@ namespace HydroDesktop.DataDownload.LayerInformation
                     lblSiteName.Text = PointInfo.SiteName;
                     break;
                 case "ValueCountAsString":
-                    lblValueCount.Text = string.Format("{0} (estimated)", PointInfo.ValueCountAsString);
+                    lblValueCount.Text = string.Format("{0}{1}",
+                        PointInfo.ValueCountAsString,
+                        PointInfo.IsDownloaded ? string.Empty : " (estimated)");
                     break;
                 case "ServiceDesciptionUrl":
                     lblServiceDesciptionUrl.Text = PointInfo.ServiceDesciptionUrl;
+                    break;
+                case "IsDownloaded":
+                    lblDownloadData.Text = PointInfo.IsDownloaded ? "Download Updated Data" : "Download Data";
                     break;
             }
         }
 
         void lblDownloadData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //TODO: Need logic related with dataTheme
-            string dataThemeName;
-            using(var inputBox = new InputBox("Input name of theme"))
-            {
-                if (inputBox.ShowDialog() != DialogResult.OK) return;
-                dataThemeName = inputBox.Result;
-            }
+            var dataThemeName = Global.PluginEntryPoint.GetThemeToDownload();
+            if (string.IsNullOrEmpty(dataThemeName)) return;
 
             if (Popup != null)
             {
@@ -88,16 +87,9 @@ namespace HydroDesktop.DataDownload.LayerInformation
             }
 
             var oneSeries = ClassConvertor.ServiceInfoToOneSeriesDownloadInfo(PointInfo);
-            var startArgs = new StartDownloadArg(new List<OneSeriesDownloadInfo> {oneSeries},
-                                                 new Interfaces.ObjectModel.Theme(dataThemeName));
+            var startArgs = new StartDownloadArg(new List<OneSeriesDownloadInfo> {oneSeries}, dataThemeName);
 
-            var downloadManager = Global.PluginEntryPoint.DownloadManager;
-            if (downloadManager.IsBusy)
-            {
-                //todo: inform user about busy?
-                return;
-            }
-            downloadManager.Start(startArgs);
+            Global.PluginEntryPoint.StartDownloading(startArgs, PointInfo.Layer);
         }
 
         void lblServiceDesciptionUrl_TextChanged(object sender, EventArgs e)
@@ -162,11 +154,18 @@ namespace HydroDesktop.DataDownload.LayerInformation
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.TranslateTransform(-1, -1);
-            using (var p = new Pen(SystemColors.WindowFrame, 2))
+            using (var p = GetBorderPen())
             {
                 e.Graphics.DrawPath(p, graphicsPath);
             }
             e.Graphics.ResetTransform();
+        }
+
+        private Pen GetBorderPen()
+        {
+            return PointInfo.IsDownloaded
+                       ? new Pen(Color.Green, 5)
+                       : new Pen(SystemColors.WindowFrame, 2);
         }
 
         #endregion

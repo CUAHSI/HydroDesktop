@@ -15,14 +15,25 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         /// <param name="downloadList">Collection of DownloadInfo</param>
         /// <param name="dataTheme">Data theme</param>
-        /// <exception cref="ArgumentNullException">downloadList must be not null.</exception>
+        /// <exception cref="ArgumentNullException">downloadList, dataTheme must be not null.</exception>
         public StartDownloadArg(IList<OneSeriesDownloadInfo> downloadList, Theme dataTheme)
         {
-            if (downloadList == null)
-                throw new ArgumentNullException("downloadList");
+            if (downloadList == null) throw new ArgumentNullException("downloadList");
+            if (dataTheme == null) throw new ArgumentNullException("dataTheme");
 
             ItemsToDownload = new ReadOnlyCollection<OneSeriesDownloadInfo>(downloadList);
             DataTheme = dataTheme;
+        }
+
+        /// <summary>
+        /// Constructor of DownloadArg
+        /// </summary>
+        /// <param name="downloadList">Collection of DownloadInfo</param>
+        /// <param name="dataThemeName">Data theme name</param>
+        /// <exception cref="ArgumentNullException">downloadList, dataThemeName must be not null.</exception>
+        public StartDownloadArg(IList<OneSeriesDownloadInfo> downloadList, string dataThemeName): 
+            this(downloadList, new Theme(dataThemeName))
+        {
         }
 
         /// <summary>
@@ -33,5 +44,10 @@ namespace HydroDesktop.DataDownload.Downloading
         /// Data theme.
         /// </summary>
         public Theme DataTheme { get; private set; }
+
+        /// <summary>
+        /// Gets or sets object that contains additional data about StartDownloadArg
+        /// </summary>
+        public object Tag { get; set; }
     }
 }

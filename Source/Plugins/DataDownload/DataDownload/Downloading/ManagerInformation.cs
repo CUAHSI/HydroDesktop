@@ -36,7 +36,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
             _parent = parent;
 
-            StartDownloadArg = startDownloadArg;
+            StartArgs = startDownloadArg;
             SetSeriesToDownload(); // by default all series from initial list should be downloaded
         }
 
@@ -59,7 +59,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
             if (indecesToDownload == null)
             {
-                var allIndeces = new List<int>(StartDownloadArg.ItemsToDownload.Count);
+                var allIndeces = new List<int>(StartArgs.ItemsToDownload.Count);
                 for (int i = 0; i < allIndeces.Capacity; i++)
                     allIndeces.Add(i);
                 indecesToDownload = allIndeces;
@@ -69,7 +69,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
             // change status
             foreach (var ind in _indecesToDownload)
-                StartDownloadArg.ItemsToDownload[ind].Status = DownloadInfoStatus.Pending;
+                StartArgs.ItemsToDownload[ind].Status = DownloadInfoStatus.Pending;
             
             IndecesToDownload = new ReadOnlyCollection<int>(new List<int>(_indecesToDownload));
             TotalSeries = _indecesToDownload.Count;
@@ -80,7 +80,7 @@ namespace HydroDesktop.DataDownload.Downloading
         #region Properties
 
         internal ReadOnlyCollection<int> IndecesToDownload { get; private set; }
-        public StartDownloadArg StartDownloadArg { get; private set; }
+        public StartDownloadArg StartArgs { get; private set; }
 
         private volatile int _downloadedAndSaved;
         /// <summary>

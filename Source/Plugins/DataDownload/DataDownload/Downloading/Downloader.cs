@@ -20,6 +20,7 @@ namespace HydroDesktop.DataDownload.Downloading
         //to store the proxy class for each WaterOneFlow web service for re-use
         private readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
         private static readonly object _syncObject = new object();
+        private readonly RepositoryManagerSQL _repositoryManager;
 
         #endregion
 
@@ -31,6 +32,7 @@ namespace HydroDesktop.DataDownload.Downloading
         public Downloader()
         {
             ConnectionString = Settings.Instance.DataRepositoryConnectionString;
+            _repositoryManager = new RepositoryManagerSQL(DatabaseTypes.SQLite, ConnectionString);
         }
 
         #endregion
@@ -40,7 +42,7 @@ namespace HydroDesktop.DataDownload.Downloading
         /// <summary>
         /// Gets or sets the database connection string
         /// </summary>
-        public string ConnectionString { get; set; }
+        private string ConnectionString { get; set; }
 
         #endregion
 
@@ -142,17 +144,16 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         /// <param name="series">The data series to be saved</param>
         /// <param name="theme">The theme associated with this data series</param>
+        /// <param name="overwriteOption">Option to how save series</param>
         /// <returns>The number of saved data values</returns>
         /// <exception cref="SaveDataSeriesException">Something wrong during SaveDataSeries</exception>
-        public int SaveDataSeries(Series series, Theme theme)
+        public int SaveDataSeries(Series series, Theme theme, OverwriteOptions overwriteOption)
         {
             if (series.GetValueCount() == 0) return 0;
 
             try
             {
-                var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, ConnectionString);
-                var overwriteOption = (OverwriteOptions)Enum.Parse(typeof(OverwriteOptions),Settings.Instance.DownloadOption);
-                return manager.SaveSeries(series, theme, overwriteOption);
+                return _repositoryManager.SaveSeries(series, theme, overwriteOption);
             }
             catch(Exception ex)
             {

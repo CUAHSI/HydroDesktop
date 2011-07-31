@@ -1,5 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using DotSpatial.Data;
+using HydroDesktop.Configuration;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
@@ -23,6 +27,7 @@ namespace HydroDesktop.DataDownload.Downloading
         internal const string PROPERTY_Status = "Status";
         internal const string PROPERTY_DownloadTimeTaken = "DownloadTimeTaken";
         internal const string PROPERTY_ErrorMessage = "ErrorMessage";
+        internal const string PROPERTY_OverwriteOption = "OverwriteOption";
 
         #endregion
 
@@ -36,6 +41,9 @@ namespace HydroDesktop.DataDownload.Downloading
         #endregion
 
         #region Properties
+
+        public IFeature SourceFeature { get; set; }
+        public Series ResultSeries { get; set; }
 
         private string _wsdl;
         /// <summary>
@@ -227,6 +235,18 @@ namespace HydroDesktop.DataDownload.Downloading
             get
             {
                 return SiteName + "|" + VariableName;
+            }
+        }
+
+        private OverwriteOptions _overwriteOption = (OverwriteOptions)Enum.Parse(typeof(OverwriteOptions), Settings.Instance.DownloadOption);
+
+        public OverwriteOptions OverwriteOption
+        {
+            get { return _overwriteOption; }
+            set
+            {
+                _overwriteOption = value;
+                NotifyPropertyChanged(PROPERTY_OverwriteOption);
             }
         }
 
