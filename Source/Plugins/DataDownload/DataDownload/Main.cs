@@ -203,26 +203,11 @@ namespace HydroDesktop.DataDownload
 
             var dManager = DownloadManager;
             var themeName = dManager.Information.StartArgs.DataTheme.Name;
+            var featureSet = _themeManager.GetFeatureSet(themeName);
+            featureSet.FillAttributes();
 
-            var mapLayer = AddThemeToMap(themeName);
             var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
-            _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, mapLayer, DownloadManager);
-        }
-
-        private MapPointLayer AddThemeToMap(string themeName)
-        {
-            var _mapArgs = MapArgs;
-
-            //to refresh the series selector control
-            //TODO: need other way to send this message
-            var mainApplication = _mapArgs.AppManager as IHydroAppManager;
-            if (mainApplication != null)
-            {
-                mainApplication.SeriesView.SeriesSelector.RefreshSelection();
-            }
-
-            var fs = _themeManager.GetFeatureSet(themeName, _mapArgs.Map.Projection);
-            return _themeManager.AddThemeToMap(fs, themeName, _mapArgs.Map as Map);
+            _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
         }
 
     #endregion
