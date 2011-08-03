@@ -78,15 +78,12 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         void lblDownloadData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var dataThemeName = Global.PluginEntryPoint.GetThemeToDownload();
-            if (string.IsNullOrEmpty(dataThemeName)) return;
-
             if (Popup != null)
             {
                 Popup.Close();
             }
-
             var oneSeries = ClassConvertor.ServiceInfoToOneSeriesDownloadInfo(PointInfo);
+            var dataThemeName = PointInfo.Layer.LegendText;
             var startArgs = new StartDownloadArg(new List<OneSeriesDownloadInfo> {oneSeries}, dataThemeName);
 
             Global.PluginEntryPoint.StartDownloading(startArgs, PointInfo.Layer);
