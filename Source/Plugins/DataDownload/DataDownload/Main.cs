@@ -68,22 +68,6 @@ namespace HydroDesktop.DataDownload
             downloadManager.Start(startArgs);
         }
 
-        /// <summary>
-        /// Get theme name to download series into it
-        /// </summary>
-        /// <returns>Theme name, or null</returns>
-        public string GetThemeToDownload()
-        {
-            //TODO: Need logic related with dataTheme
-            string dataThemeName;
-            using (var inputBox = new InputBox("Input name of theme"))
-            {
-                if (inputBox.ShowDialog() != DialogResult.OK) return null;
-                dataThemeName = inputBox.Result;
-            }
-            return dataThemeName;
-        }
-
         #endregion
 
         #region Plugin operations
@@ -187,16 +171,16 @@ namespace HydroDesktop.DataDownload
 
         private void DoDownload(object sender, EventArgs args)
         {
+            var hasPointsToDownload = false;
             foreach (var layer in MapArgs.Map.MapFrame.GetAllLayers())
             {
                 if (!layer.Checked || !_searchLayerModifier.IsSearchLayer(layer)) continue;
 
                 var featureLayer = (IFeatureLayer) layer;
                 if (featureLayer.Selection.Count == 0) continue;
+                hasPointsToDownload = true;
 
-                var dataThemeName = GetThemeToDownload();
-                if (string.IsNullOrEmpty(dataThemeName)) return;
-
+                var dataThemeName = featureLayer.LegendText;
                 var oneSeriesList = new List<OneSeriesDownloadInfo>(featureLayer.Selection.Count);
                 oneSeriesList.AddRange(
                     featureLayer.Selection.ToFeatureList().Select(
@@ -204,6 +188,12 @@ namespace HydroDesktop.DataDownload
                 var startArgs = new StartDownloadArg(oneSeriesList, dataThemeName);
                 StartDownloading(startArgs, featureLayer);
                 break; // todo: what we must do if several layers are selected?
+            }
+
+            if (!hasPointsToDownload)
+            {
+                MessageBox.Show("No sites are selected. Please select sites for downloading data in the map.",
+                                "No selected sites", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
