@@ -95,7 +95,11 @@ namespace HydroDesktop.DataDownload
 
             // Initialize menu
             var btnDownload = new SimpleActionItem("Download", DoDownload)
-                                  {RootKey = TableTabKey, GroupCaption = "Search"};
+                                  {
+                                      RootKey = TableTabKey,
+                                      GroupCaption = "Search",
+                                      LargeImage = Properties.Resources.download32
+                                  };
             args.AppManager.HeaderControl.Add(btnDownload);
 
             // Subscribe to events
