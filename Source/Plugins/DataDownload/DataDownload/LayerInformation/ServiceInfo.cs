@@ -94,7 +94,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         public string ValueCountAsString
         {
-            get { return ValueCount.HasValue ? string.Format("{0} values", ValueCount) : unknown; }
+            get { return ValueCount.HasValue ? string.Format("{0} Values", ValueCount) : unknown; }
         }
 
         /// <summary>
@@ -181,8 +181,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             DataSource = source.DataSource;
             SiteName = source.SiteName;
-            ValueCount = source.ValueCount;
-            ServiceDesciptionUrl = source.ServiceDesciptionUrl;
             EndDate = source.EndDate;
             Latitude = source.Latitude;
             Longitude = source.Longitude;
@@ -191,6 +189,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
             StartDate = source.StartDate;
             VarCode = source.VarCode;
             VarName = source.VarName;
+            ValueCount = source.ValueCount;
+            ServiceDesciptionUrl = source.ServiceDesciptionUrl;
         }
 
         public override bool Equals(object obj)
