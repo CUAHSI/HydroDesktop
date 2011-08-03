@@ -56,6 +56,25 @@ Example Configurations
 
    ExConfig4
 
+Components and Methods
+----------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   Concentration
+
+   Evapotranspiration
+
+   Infiltration
+
+   Routing
+
+   Runoff
+
+   Solar Radiation
+
+   Tools
 
 Glossary
 --------
