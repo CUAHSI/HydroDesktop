@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Search.Extensions;
 using HydroDesktop.WebServices;
@@ -673,7 +671,7 @@ namespace HydroDesktop.Search
                     IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
 
                     // Clip the points by polygon
-                    IList<SeriesDataCart> seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
+                    IEnumerable<SeriesDataCart> seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
                     
                     fullSeriesList.AddRange(seriesInPolygon);
 
