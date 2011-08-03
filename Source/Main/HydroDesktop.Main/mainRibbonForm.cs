@@ -415,10 +415,10 @@ namespace HydroDesktop.Main
 
         #region Event
 
-        private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
-        {
-            e.Layer.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
-        }
+        //private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
+        //{
+        //    e.Layer.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
+        //}
 
         private void _projectManager_ProjectModified(object sender, EventArgs e)
         {
@@ -499,24 +499,24 @@ namespace HydroDesktop.Main
                 SQLiteHelper.CreateMetadataCacheDb(metadataCacheDbFile);
             }
 
-            //to refresh all themes
-            RefreshAllThemes();
+            //to refresh all themes - no longer needed (themes are combined with search results
+            //RefreshAllThemes();
 
-            //event for changing theme name
-            foreach (ILayer item in mainMap.MapFrame.GetAllLayers())
-            {
-                if (item.GetParentItem().LegendText == "Themes")
-                {
-                    item.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
-                }
-            }
-            foreach (IMapGroup group in mainMap.MapFrame.GetAllGroups())
-            {
-                if (group.LegendText == "Themes")
-                {
-                    group.LayerAdded += new EventHandler<LayerEventArgs>(MapFrame_LayerAdded);
-                }
-            }
+            //event for changing theme name - no longer needed
+            //foreach (ILayer item in mainMap.MapFrame.GetAllLayers())
+            //{
+            //    if (item.GetParentItem().LegendText == "Themes")
+            //    {
+            //        item.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
+            //    }
+            //}
+            //foreach (IMapGroup group in mainMap.MapFrame.GetAllGroups())
+            //{
+            //    if (group.LegendText == "Themes")
+            //    {
+            //        group.LayerAdded += new EventHandler<LayerEventArgs>(MapFrame_LayerAdded);
+            //    }
+            //}
 
             //set the project change tracker
             _projectManager.ProjectIsSaved = true;
@@ -572,34 +572,34 @@ namespace HydroDesktop.Main
             //emptyLayers.Clear();
         }
 
-        //rename the theme name
-        private void ThemeLayer_ItemChanged(object sender, EventArgs e)
-        {
-            MapPointLayer lay = sender as MapPointLayer;
-            if (lay != null)
-            {
-                if (lay.GetParentItem() == null) return;
-                if (lay.GetParentItem().LegendText != "Themes") return;
+        //rename the theme name - no longer needed
+        //private void ThemeLayer_ItemChanged(object sender, EventArgs e)
+        //{
+        //    MapPointLayer lay = sender as MapPointLayer;
+        //    if (lay != null)
+        //    {
+        //        if (lay.GetParentItem() == null) return;
+        //        if (lay.GetParentItem().LegendText != "Themes") return;
 
-                string newLegendText = lay.LegendText;
-                string name = lay.Name;
-                if (!string.IsNullOrEmpty(name))
-                {
-                    try
-                    {
-                        int themeID = Convert.ToInt32(name);
-                        ThemeManager manager = new ThemeManager(new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite));
-                        string oldName = manager.GetThemeName(themeID);
-                        if (newLegendText != oldName)
-                        {
-                            manager.RenameTheme(themeID, newLegendText);
-                            applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
-                        }
-                    }
-                    catch { }
-                }
-            }
-        }
+        //        string newLegendText = lay.LegendText;
+        //        string name = lay.Name;
+        //        if (!string.IsNullOrEmpty(name))
+        //        {
+        //            try
+        //            {
+        //                int themeID = Convert.ToInt32(name);
+        //                ThemeManager manager = new ThemeManager(new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite));
+        //                string oldName = manager.GetThemeName(themeID);
+        //                if (newLegendText != oldName)
+        //                {
+        //                    manager.RenameTheme(themeID, newLegendText);
+        //                    applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
+        //                }
+        //            }
+        //            catch { }
+        //        }
+        //    }
+        //}
 
         #endregion Event
 
@@ -697,8 +697,9 @@ namespace HydroDesktop.Main
         /// </summary>
         public void RefreshAllThemes()
         {
-            ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
-            manager.RefreshAllThemes(mainMap);
+            //TODO: refresh the 'search results' shapefile instead (only if DB themes are different)
+            //ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
+            //manager.RefreshAllThemes(mainMap);
         }
 
         #region Map Tools Click Events
