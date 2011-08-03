@@ -63,7 +63,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
                     lblSiteName.Text = PointInfo.SiteName;
                     break;
                 case "ValueCountAsString":
-                    lblValueCount.Text = string.Format("{0}{1}",
+                    lblValueCount.Text = string.Format("{0} - {1}{2}",
+                        PointInfo.VarName,
                         PointInfo.ValueCountAsString,
                         PointInfo.IsDownloaded ? string.Empty : " (estimated)");
                     break;
