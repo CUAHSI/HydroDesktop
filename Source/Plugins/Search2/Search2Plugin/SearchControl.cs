@@ -2014,10 +2014,6 @@ namespace HydroDesktop.Search
 
             var searchLayerCreator = new SearchLayerCreator(_mapArgs.Map, new SearchResult(loadedFeatures));
             searchLayerCreator.Create();
-
-            //assign the projection again
-            foreach (var item in loadedFeatures)
-                item.Value.Reproject(_mapArgs.Map.Projection);
         }
 
         #endregion
