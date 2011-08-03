@@ -140,6 +140,12 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                     searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
                 }
             }
+
+            // Save update data into file
+            if (!string.IsNullOrEmpty(searchLayer.DataSet.Filename))
+            {
+                searchLayer.DataSet.Save();
+            }
         }
 
         private static Dictionary<string, string> _services;
@@ -161,6 +167,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         {
             var extractor = new HISCentralInfoExtractor(Services);
             var searchInformer = new SearchLayerInformer(extractor);
+            if (_searchInformersPerLayes.ContainsKey(layer)) return;
+
             searchInformer.Start(map, layer);
             _searchInformersPerLayes.Add(layer, searchInformer);
         }
@@ -254,7 +262,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 int value;
                 try
                 {
-                    value = (int)row[valueField];
+                    value = Convert.ToInt32(row[valueField]);
                 }
                 catch
                 {
