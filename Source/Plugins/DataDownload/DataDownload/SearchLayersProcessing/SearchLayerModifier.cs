@@ -15,6 +15,9 @@ using HydroDesktop.DataDownload.LayerInformation;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
+    /// <summary>
+    /// Class conatains methods for modifing "search layer"
+    /// </summary>
     class SearchLayerModifier
     {
         #region Fields
@@ -72,14 +75,14 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             AttachPopup((IFeatureLayer)layer, map);
         }
 
-        public void UpdateSearchLayerAfterDownloading(IFeatureLayer searchLayer, MapPointLayer mapLayer, 
+        public void UpdateSearchLayerAfterDownloading(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, 
                                                       DownloadManager downloadManager)
         {
             if (searchLayer == null) throw new ArgumentNullException("searchLayer");
-            if (mapLayer == null) throw new ArgumentNullException("mapLayer");
+            if (downloadedFeatureSet == null) throw new ArgumentNullException("downloadedFeatureSet");
             if (downloadManager == null) throw new ArgumentNullException("downloadManager");
 
-            UpdateDataTable(searchLayer, mapLayer, downloadManager);
+            UpdateDataTable(searchLayer, downloadedFeatureSet, downloadManager);
             UpdateSymbolizing(searchLayer);
         }
 
@@ -101,10 +104,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
         #region Private methods
 
-        private void UpdateDataTable(IFeatureLayer searchLayer, MapPointLayer mapLayer, DownloadManager downloadManager)
+        private void UpdateDataTable(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, DownloadManager downloadManager)
         {
-            // Add all columns from mapLayer, wich not exists in searchLayer
-            foreach (DataColumn column in mapLayer.DataSet.DataTable.Columns)
+            // Add all columns from downloadedFeatureSet, wich not exists in searchLayer
+            foreach (DataColumn column in downloadedFeatureSet.DataTable.Columns)
             {
                 if (!searchLayer.DataSet.DataTable.Columns.Contains(column.ColumnName))
                 {
@@ -120,7 +123,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 var series = dInfo.ResultSeries;
 
                 // Find downloaded feature
-                var downloadedFeature = mapLayer.DataSet.Features.FirstOrDefault(feature =>
+                var downloadedFeature = downloadedFeatureSet.Features.FirstOrDefault(feature =>
                                     (string)feature.DataRow["SiteCode"] == series.Site.Code &&
                                     (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
                                     (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
@@ -132,7 +135,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 if (downloadedFeature == null) continue;
 
                 // updating...
-                foreach (DataColumn column in mapLayer.DataSet.DataTable.Columns)
+                foreach (DataColumn column in downloadedFeatureSet.DataTable.Columns)
                 {
                     searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
                 }
