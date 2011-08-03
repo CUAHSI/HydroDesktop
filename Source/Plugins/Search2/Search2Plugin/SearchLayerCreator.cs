@@ -69,6 +69,8 @@ namespace HydroDesktop.Search
                     layer.Checked = state;
                 }
             }
+
+            _map.Refresh();
         }
 
         #endregion
