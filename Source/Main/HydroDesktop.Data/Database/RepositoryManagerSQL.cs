@@ -2769,7 +2769,8 @@ namespace HydroDesktop.Database
                             cmdDeleteValues.Parameters.Add(_db.CreateParameter(DbType.Int32, seriesID));
                             cmdDeleteValues.Parameters.Add(_db.CreateParameter(DbType.DateTime, series.BeginDateTime));
                             cmdDeleteValues.Parameters.Add(_db.CreateParameter(DbType.DateTime, series.EndDateTime));
-                            cmdDeleteValues.ExecuteNonQuery();
+                            var deletedCount = cmdDeleteValues.ExecuteNonQuery();
+                            valueCountDb -= deletedCount; // Correct valueCount
                         }
                     }
                     else
