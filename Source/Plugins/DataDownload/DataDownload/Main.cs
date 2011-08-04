@@ -75,16 +75,17 @@ namespace HydroDesktop.DataDownload
                                       GroupCaption = "Search",
                                       LargeImage = Properties.Resources.download32
                                   };
-            args.AppManager.HeaderControl.Add(btnDownload);
+            MapArgs.AppManager.HeaderControl.Add(btnDownload);
+
+
+            Global.PluginEntryPoint = this;
 
             // Subscribe to events
             MapArgs.Map.LayerAdded += Map_LayerAdded;
             MapArgs.Map.Layers.LayerRemoved += Layers_LayerRemoved;
-            args.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
-            //----
-
-            Global.PluginEntryPoint = this;
+            MapArgs.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
             DownloadManager.Completed += DownloadManager_Completed;
+            //----
         }
 
         /// <summary>
@@ -92,14 +93,17 @@ namespace HydroDesktop.DataDownload
         /// </summary>
         protected override void OnDeactivate()
         {
+            MapArgs.AppManager.HeaderControl.RemoveItems();
+
             MapArgs.Map.LayerAdded -= Map_LayerAdded;
             MapArgs.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
-            MapArgs.AppManager.HeaderControl.RemoveItems();
-            Global.PluginEntryPoint = null;
+            MapArgs.AppManager.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
 
-            foreach (var layer in MapArgs.Map.MapFrame.GetAllLayers())
-                _searchLayerModifier.RemoveCustomFeaturesFromLayer(layer);
+            foreach (var layer in MapArgs.Map.MapFrame.Layers)
+                UnattachLayerFromPlugin(layer);
+
+            Global.PluginEntryPoint = null;
 
             // This line ensures that "Enabled" is set to false.
             base.OnDeactivate();
@@ -111,52 +115,57 @@ namespace HydroDesktop.DataDownload
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
-            CheckLayers();
+            AttachToAllLayers();
         }
 
         protected override void OnActivate()
         {
-            CheckLayers();
+            AttachToAllLayers();
             base.OnActivate();
         }
 
-        private void CheckLayers()
+        private void AttachToAllLayers()
         {
-            foreach (var layer in MapArgs.Map.MapFrame.GetAllLayers())
-                _searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map) MapArgs.Map);
+            foreach (var layer in MapArgs.Map.MapFrame.Layers)
+                AttachLayerToPlugin(layer);
         }
 
         private void Map_LayerAdded(object sender, LayerEventArgs e)
         {
-            _searchLayerModifier.AddCustomFeaturesToSearchLayer(e.Layer, (Map) MapArgs.Map);
-
-            if (e.Layer is IGroup)
-            {
-                var group = (IGroup) e.Layer;
-                group.LayerAdded += Map_LayerAdded;
-                group.LayerRemoved += group_LayerRemoved;
-            }
+            AttachLayerToPlugin(e.Layer);
         }
-
-        void group_LayerRemoved(object sender, LayerEventArgs e)
-        {
-            _searchLayerModifier.RemoveCustomFeaturesFromLayer(e.Layer);
-            if (e.Layer is IGroup)
-            {
-                var group = (IGroup)e.Layer;
-                group.LayerAdded -= Map_LayerAdded;
-                group.LayerRemoved -= group_LayerRemoved;
-            }
-        }
-
         void Layers_LayerRemoved(object sender, LayerEventArgs e)
         {
-            _searchLayerModifier.RemoveCustomFeaturesFromLayer(e.Layer);
-            if (e.Layer is IGroup)
+            UnattachLayerFromPlugin(e.Layer);
+        }
+
+        private void AttachLayerToPlugin(ILayer layer)
+        {
+            _searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map)MapArgs.Map);
+
+            var group = layer as IGroup;
+            if (group != null)
             {
-                var group = (IGroup)e.Layer;
+                group.LayerAdded += Map_LayerAdded;
+                group.LayerRemoved += Layers_LayerRemoved;
+
+                foreach (var child in group.GetLayers())
+                    AttachLayerToPlugin(child);
+            }
+        }
+
+        private void UnattachLayerFromPlugin(ILayer layer)
+        {
+            _searchLayerModifier.RemoveCustomFeaturesFromLayer(layer);
+
+            var group = layer as IGroup;
+            if (group != null)
+            {
                 group.LayerAdded -= Map_LayerAdded;
-                group.LayerRemoved -= group_LayerRemoved;
+                group.LayerRemoved -= Layers_LayerRemoved;
+
+                foreach (var child in group.GetLayers())
+                    UnattachLayerFromPlugin(child);
             }
         }
 
@@ -202,7 +211,7 @@ namespace HydroDesktop.DataDownload
             var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
             _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
 
-            //Refresh list of the time series in the table and graph in the main form
+            // Refresh list of the time series in the table and graph in the main form
             ((IHydroAppManager) MapArgs.AppManager).SeriesView.SeriesSelector.RefreshSelection();
         }
 
