@@ -4,13 +4,10 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Data.Forms;
 using DotSpatial.Symbology;
-using HydroDesktop.Configuration;
 using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
-using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.DataDownload
@@ -21,12 +18,6 @@ namespace HydroDesktop.DataDownload
 
         private const string TableTabKey = "kHome";
         private readonly SearchLayerModifier _searchLayerModifier = new SearchLayerModifier();
-
-        private static readonly DbOperations dbOperations =
-            new DbOperations(Settings.Instance.DataRepositoryConnectionString,
-                             DatabaseTypes.SQLite);
-
-        private readonly ThemeManager _themeManager = new ThemeManager(dbOperations);
 
         #endregion
 
@@ -203,6 +194,8 @@ namespace HydroDesktop.DataDownload
 
             var dManager = DownloadManager;
             var themeName = dManager.Information.StartArgs.DataTheme.Name;
+
+            var _themeManager = new ThemeManager(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
             var featureSet = _themeManager.GetFeatureSet(themeName);
             featureSet.FillAttributes();
 
