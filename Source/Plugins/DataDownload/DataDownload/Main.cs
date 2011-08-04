@@ -208,6 +208,9 @@ namespace HydroDesktop.DataDownload
 
             var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
             _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
+
+            //Refresh list of the time series in the table and graph in the main form
+            ((IHydroAppManager) MapArgs.AppManager).SeriesView.SeriesSelector.RefreshSelection();
         }
 
     #endregion
