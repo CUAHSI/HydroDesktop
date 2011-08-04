@@ -31,18 +31,8 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         public Downloader()
         {
-            ConnectionString = Settings.Instance.DataRepositoryConnectionString;
-            _repositoryManager = new RepositoryManagerSQL(DatabaseTypes.SQLite, ConnectionString);
+            _repositoryManager = new RepositoryManagerSQL(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the database connection string
-        /// </summary>
-        private string ConnectionString { get; set; }
 
         #endregion
 
