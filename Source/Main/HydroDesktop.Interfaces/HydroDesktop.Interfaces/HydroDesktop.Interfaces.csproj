@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Interfaces</RootNamespace>
+    <AssemblyName>HydroDesktop.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseChangedEventArgs.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="FilterTypes.cs" />
+    <Compile Include="IHydroAppManager.cs" />
+    <Compile Include="IHydroDatabase.cs" />
+    <Compile Include="IHydroDbOperations.cs" />
+    <Compile Include="IMetadataCacheManager.cs" />
+    <Compile Include="IRepositoryManager.cs" />
+    <Compile Include="ISeriesSelector.cs" />
+    <Compile Include="ISeriesView.cs" />
+    <Compile Include="ObjectModel\BaseEntity.cs" />
+    <Compile Include="ObjectModel\Constants.cs" />
+    <Compile Include="ObjectModel\DataFile.cs" />
+    <Compile Include="ObjectModel\DataServiceInfo.cs" />
+    <Compile Include="ObjectModel\DataValue.cs" />
+    <Compile Include="ObjectModel\ISOMetadata.cs" />
+    <Compile Include="ObjectModel\LabMethod.cs" />
+    <Compile Include="ObjectModel\Method.cs" />
+    <Compile Include="ObjectModel\OffsetType.cs" />
+    <Compile Include="ObjectModel\Qualifier.cs" />
+    <Compile Include="ObjectModel\QualityControlLevel.cs" />
+    <Compile Include="ObjectModel\QueryInfo.cs" />
+    <Compile Include="ObjectModel\RuleViolation.cs" />
+    <Compile Include="ObjectModel\Sample.cs" />
+    <Compile Include="ObjectModel\Series.cs" />
+    <Compile Include="ObjectModel\SeriesDataCart.cs" />
+    <Compile Include="ObjectModel\SeriesMetadata.cs" />
+    <Compile Include="ObjectModel\Site.cs" />
+    <Compile Include="ObjectModel\Source.cs" />
+    <Compile Include="ObjectModel\SpatialReference.cs" />
+    <Compile Include="ObjectModel\Theme.cs" />
+    <Compile Include="ObjectModel\Unit.cs" />
+    <Compile Include="ObjectModel\Variable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeriesEventArgs.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
