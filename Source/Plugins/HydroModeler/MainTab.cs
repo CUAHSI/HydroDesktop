@@ -98,7 +98,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         CompositionManager _composition;
         ConnectionDialog _connectionDialog;
         Cursor _sourceCursor, _targetCursor, _panCursor;
-        private IMapPluginArgs _mapArgs;
+        private AppManager _mapArgs;
         ModelDialog _modelDialog;
         Point _prevMouse;
         Point _compositionBoxPositionInArea;
@@ -136,13 +136,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// <summary>
         /// Creates a new instance of <see cref="mainTab">mainTab</see> window.
         /// </summary>
-        public mainTab(IMapPluginArgs args, List<RibbonPanel> rp, string currentDirectory)
+        public mainTab(AppManager app, List<RibbonPanel> rp, string currentDirectory)
         {
             //get ribbon panel object
             rps = rp;
 
             //set mapwindow args
-            _mapArgs = args;
+            _mapArgs = app;
 
             _compositionBoxPositionInArea = new Point(0, 0);
 

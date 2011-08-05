@@ -104,6 +104,8 @@ namespace HydroDesktop.Main
             content.Controls.Add(panelContainer);
             content.Show(dockManager);
 
+            
+
             #region initialize the help menu
 
             rbHelp.Image = Properties.Resources.help;
@@ -291,6 +293,10 @@ namespace HydroDesktop.Main
             _projectManager.ProjectModified += new EventHandler(_projectManager_ProjectModified);
 
             #endregion Initialize the Project opening events
+
+            #region Load Plugins
+            //applicationManager1.LoadExtensions();
+            #endregion
         }
 
         #region Method
@@ -342,7 +348,7 @@ namespace HydroDesktop.Main
                 Settings.Instance.MetadataCacheConnectionString = conString2;
 
                 //allow plugins to access the SeriesView and SeriesSelector
-                applicationManager1.SeriesView = this.seriesView1;
+                //applicationManager1.SeriesView = this.seriesView1;
 
                 //setup db property of SeriesSelector
                 //this code will fail if DataRepositoryConnectionString is not set
@@ -484,7 +490,7 @@ namespace HydroDesktop.Main
             if (SQLiteHelper.DatabaseExists(dbFile))
             {
                 Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(dbFile);
-                applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
+                //applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
             }
 
             //Set the correct SQLite file path for metadata cache DB
@@ -656,6 +662,8 @@ namespace HydroDesktop.Main
                 //MessageBox.Show("Opening Project as File association:" + _projectFileName);
                 Project.OpenProject(_projectFileName, applicationManager1);
             }
+
+            applicationManager1.LoadExtensions();
         }
 
         #endregion Constructor
@@ -1065,24 +1073,19 @@ namespace HydroDesktop.Main
             //MessageBox.Show("MouseMove");
             if (OrbExtentions.DropDownItems.Count < 1)
             {
-                List<PluginToken> pluginTokens = applicationManager1.PluginTokens;
-                foreach (PluginToken token in pluginTokens)
+                foreach (IExtension ext in applicationManager1.Extensions)
                 {
                     RibbonButton item = new RibbonButton();
 
                     //RibbonDescriptionMenuItem item = new RibbonDescriptionMenuItem();
-                    item.Text = token.Name;
+                    item.Text = ext.Name;
 
                     //added by JK
                     item.MaxSizeMode = RibbonElementSizeMode.DropDown;
                     item.Style = RibbonButtonStyle.DropDownListItem;
 
-                    item.Checked = applicationManager1.IsActive(token);
-                    if (item.Text == "Table View")
-                    {
-                        //item.Image = Properties.Resources.tableView;
-                        //item.Description = "Author:" + token.Author + "; " + "PluginType:" + token.PluginType + "; " + "Version:" + token.Version;
-                    }
+                    item.Checked = ext.IsActive;
+
                     OrbExtentions.DropDownItems.Add(item);
                     item.CheckOnClick = true;
                     item.MouseDown += new MouseEventHandler(item_Click);
@@ -1113,25 +1116,20 @@ namespace HydroDesktop.Main
                 }
             }
 
-            List<PluginToken> pluginTokens = applicationManager1.PluginTokens;
-
             //we need to refresh the ribbon
             RibbonTab newTab = new RibbonTab();
 
-            foreach (PluginToken token in pluginTokens)
+            foreach (IExtension ext in applicationManager1.Extensions)
             {
-                if (selectedTokenName == token.Name)
+                if (selectedTokenName == ext.Name)
                 {
-                    if (applicationManager1.IsActive(token))
+                    if (ext.IsActive)
                     {
-                        applicationManager1.DeactivateToken(token);
-                        ribbonControl.Tabs.Remove(newTab);
-                        ribbonControl.ActiveTab = tabHome;
+                        ext.Deactivate();
                     }
                     else
                     {
-                        applicationManager1.ActivateToken(token);
-                        ribbonControl.Tabs.Add(newTab);
+                        ext.Activate();
                     }
                 }
             }

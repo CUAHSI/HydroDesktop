@@ -24,13 +24,9 @@ using HydroDesktop.Interfaces;
 
 namespace trmm
 {
-    [Plugin("TRMM Precipitation", Author = "Jiri Kadlec", UniqueName = "jk_trmm_01", Version = "1")]
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region Variables
-
-        //reference to the main application and its UI items
-        private IMapPluginArgs _mapArgs;
 
         private RibbonTab _rtSatellite;
 
@@ -60,37 +56,18 @@ namespace trmm
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
             _rtSatellite.Panels[0].Items.Remove(_btMap);
             _rtSatellite.Panels[0].Items.Remove(_btSeries);
             _rtSatellite.Panels.Remove(_rPanelSatellite);
-            //_mapArgs.Ribbon.Tabs.Remove(_rtSatellite);
 
-            // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        protected override void OnActivate()
+        public override void Activate()
         {
             // Handle code for switching the page content
-
-            // This line ensures that "Enabled" is set to true.
-            base.OnActivate();
-        }
-
-        #endregion
-
-        #region IPlugin Members
-
-        /// <summary>
-        /// Initialize the DotSpatial 6 plugin
-        /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
-        {
-            _mapArgs = args;
-
             //Setup background worker
             _bgw = new BackgroundWorker();
             _bgw.WorkerSupportsCancellation = false;
@@ -99,7 +76,7 @@ namespace trmm
             _bgw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bgw_RunWorkerCompleted);
 
             //Setup the Ribbon TAB
-            _rtSatellite = _mapArgs.Ribbon.Tabs[0];
+            _rtSatellite = App.Ribbon.Tabs[0];
 
             _defaultProjection = KnownCoordinateSystems.Projected.World.WebMercator;
 
@@ -144,7 +121,7 @@ namespace trmm
             //Setup the start date dateTimePicker
             _rhEndDate = new RibbonHost();
             _rhEndDate.Text = "End Date:";
-            
+
             _dpEnd = new DateTimePicker();
             _dpEnd.Format = DateTimePickerFormat.Short;
             _dpEnd.Value = new DateTime(2010, 9, 1);
@@ -152,9 +129,15 @@ namespace trmm
             _rhEndDate.ToolTip = "End Date";
             _rhEndDate.HostedControl = _dpEnd;
             _rPanelSatellite.Items.Add(_rhEndDate);
-            
 
+
+            // This line ensures that "Enabled" is set to true.
+            base.Activate();
         }
+
+        #endregion
+
+        #region IPlugin Members
 
         # endregion
 
@@ -182,7 +165,7 @@ namespace trmm
                 Coordinate coor = objRes[1] as Coordinate;
                 resultForm.ClickedLat = Convert.ToDouble(coor.Y);
                 resultForm.ClickedLon = Convert.ToDouble(coor.X);
-                resultForm.PluginArgs = _mapArgs;
+                resultForm.App = App;
 
                 resultForm.ShowDialog();
                 
@@ -201,7 +184,7 @@ namespace trmm
                 //}
 
                 //AddEPAShapes(result);
-                _mapArgs.Map.Cursor = Cursors.Default;
+                App.Map.Cursor = Cursors.Default;
                 //_btstartDelineate.Checked = false;
             }
         }
@@ -221,17 +204,17 @@ namespace trmm
 
         void series_Click(object sender, EventArgs e)
         {
-            Map map = _mapArgs.Map as Map;
+            Map map = App.Map as Map;
 
             if (_btSeries.Checked)
             {
                 //Check if any other Map Tools are checked
-                for (int i = 0; i < _mapArgs.Ribbon.Tabs[0].Panels[1].Items.Count; i++)
+                for (int i = 0; i < App.Ribbon.Tabs[0].Panels[1].Items.Count; i++)
                 {
-                    if (_mapArgs.Ribbon.Tabs[0].Panels[1].Items[i].Checked == true)
+                    if (App.Ribbon.Tabs[0].Panels[1].Items[i].Checked == true)
                     {
-                        _mapArgs.Ribbon.Tabs[0].Panels[1].Items[i].Checked = false;
-                        _mapArgs.Map.FunctionMode = FunctionMode.None;
+                        App.Ribbon.Tabs[0].Panels[1].Items[i].Checked = false;
+                        App.Map.FunctionMode = FunctionMode.None;
                     }
                 }
             }
@@ -245,7 +228,7 @@ namespace trmm
             catch (Exception ex)
             {
                 if (ex == null)
-                    _mapArgs.Map.Cursor = Cursors.Default;
+                    App.Map.Cursor = Cursors.Default;
             }
             
             
@@ -279,22 +262,19 @@ namespace trmm
             MouseButtons click = e.Button;
             Coordinate projCor = new Coordinate();
 
-            Map _mainMap = _mapArgs.Map as Map;
+            Map _mainMap = App.Map as Map;
 
-            
-
-            //Must satisfy these three prerequisites to do delineation
-            if ((click == MouseButtons.Left) && (_mapArgs.Map.Cursor == Cursors.Cross) && (_btSeries.Checked == true))
+            if ((click == MouseButtons.Left) && (App.Map.Cursor == Cursors.Cross) && (_btSeries.Checked == true))
             {
                 try
                 {
-                    _mapArgs.Map.Cursor = Cursors.WaitCursor;
+                    App.Map.Cursor = Cursors.WaitCursor;
 
                     System.Drawing.Point _mouseLocation = new System.Drawing.Point();
                     _mouseLocation.X = e.X;
                     _mouseLocation.Y = e.Y;
 
-                    projCor = _mapArgs.Map.PixelToProj(_mouseLocation);
+                    projCor = App.Map.PixelToProj(_mouseLocation);
 
                     double[] xy = new double[2];
                     xy[0] = projCor.X;
@@ -327,7 +307,7 @@ namespace trmm
 
         Coordinate Pixel2LonLat(System.Drawing.Point pixel)
         {
-            Coordinate projC = _mapArgs.Map.PixelToProj(pixel);
+            Coordinate projC = App.Map.PixelToProj(pixel);
 
             double[] xy = new double[2];
             xy[0] = projC.X;
@@ -349,24 +329,24 @@ namespace trmm
 
             if (_btMap.Checked == false)
             {
-                _mapArgs.Map.Cursor = Cursors.Default;
+                App.Map.Cursor = Cursors.Default;
             }
 
             else
             {
                 //Check if any other Map Tools are checked
-                for (int i = 0; i < _mapArgs.Ribbon.Tabs[0].Panels[1].Items.Count; i++)
+                for (int i = 0; i < App.Ribbon.Tabs[0].Panels[1].Items.Count; i++)
                 {
-                    if (_mapArgs.Ribbon.Tabs[0].Panels[1].Items[i].Checked == true)
+                    if (App.Ribbon.Tabs[0].Panels[1].Items[i].Checked == true)
                     {
-                        _mapArgs.Ribbon.Tabs[0].Panels[1].Items[i].Checked = false;
-                        _mapArgs.Map.FunctionMode = FunctionMode.None;
+                        App.Ribbon.Tabs[0].Panels[1].Items[i].Checked = false;
+                        App.Map.FunctionMode = FunctionMode.None;
                     }
                 }
 
                 //get the map corner coordinates
-                System.Drawing.Point corner1 = new System.Drawing.Point(_mapArgs.Map.Left, _mapArgs.Map.Top + _mapArgs.Map.Height);
-                System.Drawing.Point corner2 = new System.Drawing.Point(_mapArgs.Map.Left + _mapArgs.Map.Width, _mapArgs.Map.Top);
+                System.Drawing.Point corner1 = new System.Drawing.Point(App.Map.Left, App.Map.Top + App.Map.Height);
+                System.Drawing.Point corner2 = new System.Drawing.Point(App.Map.Left + App.Map.Width, App.Map.Top);
 
                 Coordinate c1 = Pixel2LonLat(corner1);
                 Coordinate c2 = Pixel2LonLat(corner2);
@@ -383,7 +363,7 @@ namespace trmm
                 string hdProjectPath = Settings.Instance.CurrentProjectDirectory;
                 string filename = Path.Combine(hdProjectPath, "precipitation.shp");
                 fs.Filename = filename;
-                fs.Projection = _mapArgs.Map.Projection;
+                fs.Projection = App.Map.Projection;
                 fs.FillAttributes();
                 //fs.Save();
                 //fs = null;
@@ -400,7 +380,7 @@ namespace trmm
                 PointScheme sym = lay.Symbology as PointScheme;
                 sym.EditorSettings.ClassificationType = ClassificationType.Quantities;
                 
-                _mapArgs.Map.Layers.Add(lay);
+                App.Map.Layers.Add(lay);
 
                 //MessageBox.Show("Satellite Map!");
             }

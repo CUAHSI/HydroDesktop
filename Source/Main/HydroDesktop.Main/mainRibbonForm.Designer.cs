@@ -75,7 +75,7 @@ namespace HydroDesktop.Main
             this.ribbonOrbOptionButton_Exit = new DotSpatial.Controls.RibbonControls.RibbonOrbOptionButton();
             this.rbHelp = new DotSpatial.Controls.RibbonControls.RibbonButton();
             this.bntTableView = new DotSpatial.Controls.RibbonControls.RibbonButton();
-            this.applicationManager1 = new HydroDesktop.Controls.HydroAppManager();
+            this.applicationManager1 = new DotSpatial.Controls.AppManager();
             this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.tabSeriesView = new System.Windows.Forms.TabPage();
             this.seriesView1 = new HydroDesktop.Controls.SeriesView();
@@ -426,7 +426,7 @@ namespace HydroDesktop.Main
             // 
             // applicationManager1
             // 
-            this.applicationManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
+            this.applicationManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.None;
             this.applicationManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("applicationManager1.DataManager.DataProviderDirectories")));
             this.applicationManager1.DataManager.LoadInRam = true;
             this.applicationManager1.DataManager.ProgressHandler = null;
@@ -435,12 +435,10 @@ namespace HydroDesktop.Main
             this.applicationManager1.HeaderControl = null;
             this.applicationManager1.LayoutControl = null;
             this.applicationManager1.Legend = this.mainLegend;
-            this.applicationManager1.MainMenu = null;
-            this.applicationManager1.MainToolStrip = null;
             this.applicationManager1.Map = this.mainMap;
             this.applicationManager1.ProgressHandler = this.mwStatusStrip1;
             this.applicationManager1.Ribbon = this.ribbonControl;
-            this.applicationManager1.SeriesView = null;
+            //this.applicationManager1.SeriesView = null;
             this.applicationManager1.TabManager = this.tabContainer;
             this.applicationManager1.ToolManager = null;
             this.applicationManager1.ToolStripContainer = null;
@@ -659,7 +657,7 @@ namespace HydroDesktop.Main
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private DotSpatial.Controls.RibbonControls.RibbonButton rbHelp;
         private DotSpatial.Controls.RibbonControls.RibbonOrbMenuItem OrbAbout;
-        internal HydroDesktop.Controls.HydroAppManager applicationManager1;
+        internal DotSpatial.Controls.AppManager applicationManager1;
         private DotSpatial.Controls.RibbonControls.RibbonSeparator ribbonSeparator1;
         private DotSpatial.Controls.RibbonControls.RibbonSeparator ribbonSeparator2;
         private DotSpatial.Controls.RibbonControls.RibbonSeparator ribbonSeparator3;

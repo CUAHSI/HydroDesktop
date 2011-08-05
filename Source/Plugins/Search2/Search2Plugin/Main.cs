@@ -9,14 +9,10 @@ using System.Collections.Generic;
 
 namespace HydroDesktop.Search
 {
-    [Plugin("Search V2", Author = "ISU", UniqueName = "mw_Search_2", Version = "2")]
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
 
         #region Variables
-
-        //reference to the main application and it's UI items
-        private IMapPluginArgs _mapArgs;
 
         //the Search user control
         private SearchControl ucSearch = null;
@@ -30,16 +26,16 @@ namespace HydroDesktop.Search
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
             //Remove the Search Ribbon Items
-            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
 
             //to refresh the map
             RefreshTheMap();
 
             //necessary for plugin deactivation
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
         #endregion IExtension Members
@@ -50,11 +46,9 @@ namespace HydroDesktop.Search
         /// Initialize the plugin
         /// </summary>
         /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            _mapArgs = args;
-
-            _initialExtent = (Extent)_mapArgs.Map.ViewExtents.Clone();
+            _initialExtent = (Extent)App.Map.ViewExtents.Clone();
 
             //add the ribbon panels and buttons
             AddRibbonItems();
@@ -62,27 +56,29 @@ namespace HydroDesktop.Search
             var mnuHISCentral = new ToolStripMenuItem("HIS Central", Resources.OpenSearch);
             var mnuMetadataCache = new ToolStripMenuItem("Metadata Cache", Resources.OpenSearch_1);
             //add the search UI to the main application
-            if (_mapArgs.Map != null)
+            if (App.Map != null)
             {
                 //report progress
                 ReportProgress(0, "Loading Search Plugin..");
 
                 //Set the Search control
-                ucSearch = new SearchControl(_mapArgs);
+                ucSearch = new SearchControl(App);
                 ucSearch.Dock = DockStyle.Fill;
-                _mapArgs.AppManager.DockManager.Add("SearchControl", ucSearch, DockStyle.Right);
+                App.DockManager.Add("SearchControl", ucSearch, DockStyle.Right);
 
                 ReportProgress(50, "Loading Search Plugin..");
 
                 //execute the HIS CentralClick event
                 mnuHISCentral_Click(null, null);
-                _mapArgs.Map.ViewExtents = _initialExtent;
+                App.Map.ViewExtents = _initialExtent;
 
                 ReportProgress(0, String.Empty);
 
                 //handle project saving event
-                _mapArgs.AppManager.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
+                App.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
             }
+
+            base.Activate();
         }
 
         
@@ -115,9 +111,9 @@ namespace HydroDesktop.Search
 
         private void ReportProgress(int percent, string message)
         {
-            if (_mapArgs.ProgressHandler != null)
+            if (App.ProgressHandler != null)
             {
-                _mapArgs.ProgressHandler.Progress(message, percent, message);
+                App.ProgressHandler.Progress(message, percent, message);
             }
         }
 
@@ -128,9 +124,9 @@ namespace HydroDesktop.Search
         //to add the ribbon panel and ribbon buttons
         private void AddRibbonItems()
         {
-            if (_mapArgs.AppManager.HeaderControl != null)
+            if (App.HeaderControl != null)
             {
-                var header = _mapArgs.AppManager.HeaderControl;
+                var header = App.HeaderControl;
 
                 const string KHydroSearch = "kHome";
                 const string SearchMenuKey = "kSearch";
@@ -140,12 +136,6 @@ namespace HydroDesktop.Search
                 header.Add(new SimpleActionItem(KHydroSearch, SearchMenuKey, "Metadata Cache", rbtnMetadataCache_Click) { GroupCaption = "Search", SmallImage = Resources.OpenSearch_1 });
                 header.Add(new SimpleActionItem(KHydroSearch, SearchMenuKey, "Advanced Settings", _rbtnAdvancedSettings_Click) { GroupCaption = "Search" });
             }
-
-            //RibbonTab searchRibbonTab = _mapArgs.Ribbon.Tabs[0];
-            //if (searchRibbonTab != null)
-            //{
-            //    searchRibbonTab.ActiveChanged += new EventHandler(searchRibbonTab_ActiveChanged);
-            //}
         }
 
         //metadata cache ribbon dropdown click event
@@ -183,16 +173,16 @@ namespace HydroDesktop.Search
         //force  the map to redraw
         private void RefreshTheMap()
         {
-            if (_mapArgs.PanelManager != null)
-            {
-                if (_mapArgs.PanelManager.SelectedTabName != "MapView")
-                {
-                    _mapArgs.PanelManager.SelectedTabName = "MapView";
-                }
-            }
+            //if (App.PanelManager != null)
+            //{
+            //    if (_mapArgs.PanelManager.SelectedTabName != "MapView")
+            //    {
+            //        _mapArgs.PanelManager.SelectedTabName = "MapView";
+            //    }
+            //}
 
-            _mapArgs.Map.MapFrame.ResetExtents();
-            _mapArgs.Map.Invalidate();
+            App.Map.MapFrame.ResetExtents();
+            App.Map.Invalidate();
             //_mapArgs.Map.ViewExtents = _initialExtent;
         }
 
@@ -202,11 +192,11 @@ namespace HydroDesktop.Search
         void SerializationManager_Serializing(object sender, SerializingEventArgs e)
         {
             //move the search result layer to the correct folder
-            string newDirectory = _mapArgs.AppManager.SerializationManager.CurrentProjectDirectory;
+            string newDirectory = App.SerializationManager.CurrentProjectDirectory;
             //check if there are search results layers
             string searchGroupName = Global.SEARCH_RESULT_LAYER_NAME;
             //find the search result group
-            IMapGroup grp = _mapArgs.Map.MapFrame.GetAllGroups().Find(p => p.LegendText == searchGroupName);
+            IMapGroup grp = App.Map.MapFrame.GetAllGroups().Find(p => p.LegendText == searchGroupName);
             if (grp == null) return; //no search result groups
             foreach (IMapLayer layer in grp.Layers)
             {

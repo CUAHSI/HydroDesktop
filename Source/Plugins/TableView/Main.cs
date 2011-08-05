@@ -16,15 +16,11 @@ using HydroDesktop.Configuration;
 
 namespace TableView
 {
-    //[Plugin("Table View", Author = "ISU", UniqueName = "TableView_1", Version = "1")]
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region IMapPlugin Members
 
         #region Variables
-
-        //this is the reference to the main map and application
-        private IMapPluginArgs _mapArgs;
 
         //the seriesView component
         private ISeriesView _seriesView;
@@ -35,34 +31,28 @@ namespace TableView
 
         private const string _tablePanelName = "Table";
 
-        public const string TableTabKey = "kTable";
+        public const string TableTabKey = "kHydroTable";
 
         //private RibbonButton ribbonBnt;
 
         #endregion
 
-        protected override void OnActivate()
-        {
-            // This line ensures that "Enabled" is set to true.
-            base.OnActivate();
-        }
-
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
             ////remove the plugin panel
             try
             {
                 _seriesView.RemovePanel(_tablePanelName);
+                App.HeaderControl.RemoveItems();
             }
             catch { }
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            _mapArgs = args;
-            HydroAppManager manager = _mapArgs.AppManager as HydroAppManager;
+            HydroAppManager manager = App as HydroAppManager;
             if (manager == null) return;
 
             _seriesView = manager.SeriesView;
@@ -72,10 +62,10 @@ namespace TableView
             IHeaderControl header = manager.HeaderControl;
             
             //Table Tab
-            args.AppManager.HeaderControl.Add(new RootItem(TableTabKey, _tablePanelName));
+            App.HeaderControl.Add(new RootItem(TableTabKey, _tablePanelName));
             
             //Workaround - when the selected ribbon tab is changed
-            args.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
+            App.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
 
 
             //RefreshTheme
@@ -85,7 +75,7 @@ namespace TableView
             refreshThemeButton.SmallImage = Properties.Resources.refreshTheme_16x16;
             refreshThemeButton.ToolTipText = "Refresh Themes";
             refreshThemeButton.GroupCaption = _tablePanelName;
-            args.AppManager.HeaderControl.Add(refreshThemeButton);
+            App.HeaderControl.Add(refreshThemeButton);
 
             //DeleteTheme
             var deleteThemeButton = new SimpleActionItem("Delete", rbDeleteTheme_Click);
@@ -94,7 +84,7 @@ namespace TableView
             deleteThemeButton.SmallImage = Properties.Resources.delete_16x16;
             deleteThemeButton.ToolTipText = "Delete Theme from Database";
             deleteThemeButton.GroupCaption = _tablePanelName;
-            args.AppManager.HeaderControl.Add(deleteThemeButton);
+            App.HeaderControl.Add(deleteThemeButton);
 
             //Change Database
             var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click);
@@ -103,7 +93,7 @@ namespace TableView
             changeDatabaseButton.LargeImage = Properties.Resources.changeDatabase;
             changeDatabaseButton.SmallImage = Properties.Resources.changeDatabase_16x16;
             changeDatabaseButton.GroupCaption = "Database";
-            args.AppManager.HeaderControl.Add(changeDatabaseButton);
+            App.HeaderControl.Add(changeDatabaseButton);
 
             //New Database
             var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
@@ -112,25 +102,27 @@ namespace TableView
             newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
             newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
             newDatabaseButton.GroupCaption = "Database";
-            args.AppManager.HeaderControl.Add(newDatabaseButton);
+            App.HeaderControl.Add(newDatabaseButton);
 
             #endregion initialize the Table Ribbon TabPage and related controls
 
             // Add "Table View Plugin" panel to the SeriesView
             cTableView tableViewControl = new cTableView(_seriesView.SeriesSelector);
-            _seriesView.AddPanel(_tablePanelName, tableViewControl);    
+            _seriesView.AddPanel(_tablePanelName, tableViewControl);
+
+            base.Activate();
         }
 
         //workaround method - changing the ribbon tab changes the main content
         void Ribbon_ActiveTabChanged(object sender, EventArgs e)
         {
-            RibbonTab myTab = _mapArgs.Ribbon.Tabs.Find(t => t.Text == _tablePanelName);
+            RibbonTab myTab = App.Ribbon.Tabs.Find(t => t.Text == _tablePanelName);
             
             if (myTab.Active)
             {
-                if (_mapArgs.PanelManager != null)
+                if (App.TabManager != null)
                 {
-                    _mapArgs.PanelManager.SelectedTabName = "Series View";
+                    App.TabManager.SelectedTabName = "Series View";
                     _seriesView.VisiblePanelName = _tablePanelName;
                 }
             }
@@ -154,7 +146,7 @@ namespace TableView
         public void RefreshAllThemes()
         {
             ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
-            manager.RefreshAllThemes(_mapArgs.Map as Map);
+            manager.RefreshAllThemes(App.Map as Map);
         }
 
         /// <summary>
@@ -189,7 +181,7 @@ namespace TableView
         /// <returns></returns>
         private void ChangeDatabase()
         {
-            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(_mapArgs.AppManager as IHydroAppManager);
+            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(App as IHydroAppManager);
             //frmChangeDatabase.Owner = this;
             frmChangeDatabase.ShowDialog();
         }

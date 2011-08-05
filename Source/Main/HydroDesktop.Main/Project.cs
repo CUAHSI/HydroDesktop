@@ -125,12 +125,13 @@ namespace HydroDesktop.Main
             //activate all listed plugins
             foreach (string pluginName in pluginNames)
             {
-                foreach (PluginToken token in app.PluginTokens)
+                foreach (IExtension token in app.Extensions)
                 {
-                    if (!app.IsActive(token) && token.Name == pluginName)
+                    if (!token.IsActive && token.Name == pluginName)
                     {
-                        app.ActivateToken(token);
-                        token.Enabled = true;
+                        token.Activate();
+                        //app.ActivateToken(token);
+                        //token.Enabled = true;
                     }
                 }
             }

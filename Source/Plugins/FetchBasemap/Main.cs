@@ -18,7 +18,7 @@ using MWPoint = DotSpatial.Topology.Point;
 
 namespace FetchBasemap
 {
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         private const string STR_KeyServiceDropDown = "kServiceDropDown";
         private const string STR_KeyOpacityDropDown = "kOpacityDropDown";
@@ -33,7 +33,6 @@ namespace FetchBasemap
         //reference to the main application and its UI items
         private MapImageLayer _baseMapLayer;
         private BackgroundWorker _bw;
-        private IMapPluginArgs _mapPluginArgs;
 
         private Bitmap _originalBasemapImage;
         private TileManager _tileManager;
@@ -51,11 +50,8 @@ namespace FetchBasemap
         /// <summary>
         /// Initialize the DotSpatial plugin
         /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            _mapPluginArgs = args;
-
             // Add Menu or Ribbon buttons.
             AddButtons();
 
@@ -63,29 +59,31 @@ namespace FetchBasemap
             _tileManager = new TileManager();
 
             //Add handlers for saving/restoring settings
-            _mapPluginArgs.AppManager.SerializationManager.Serializing += SerializationManagerSerializing;
-            _mapPluginArgs.AppManager.SerializationManager.Deserializing += SerializationManagerDeserializing;
+            App.SerializationManager.Serializing += SerializationManagerSerializing;
+            App.SerializationManager.Deserializing += SerializationManagerDeserializing;
 
             //Setup the background worker
             _bw = new BackgroundWorker { WorkerSupportsCancellation = true, WorkerReportsProgress = true };
             _bw.DoWork += BwDoWork;
             _bw.RunWorkerCompleted += BwRunWorkerCompleted;
             _bw.ProgressChanged += new ProgressChangedEventHandler(BwProgressChanged);
+
+            base.Activate();
         }
 
         private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
         {
             var opacity =
-               _mapPluginArgs.AppManager.SerializationManager.GetCustomSetting(PluginName + "_Opacity",
+               App.SerializationManager.GetCustomSetting(PluginName + "_Opacity",
                                                                                        "100");
             var basemapName =
-                _mapPluginArgs.AppManager.SerializationManager.GetCustomSetting(PluginName + "_BasemapName",
+                App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName",
                                                                                         resources.None);
             //Set opacity
             _opacityDropDown.SelectedItem = opacity;
 
 
-            _baseMapLayer = (MapImageLayer)_mapPluginArgs.Map.MapFrame.GetAllLayers().Where(
+            _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().Where(
                 layer => layer.LegendText == resources.Legend_Title).FirstOrDefault();
 
             if (basemapName == "None")
@@ -108,8 +106,8 @@ namespace FetchBasemap
 
         private void SerializationManagerSerializing(object sender, SerializingEventArgs e)
         {
-            _mapPluginArgs.AppManager.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", _provider.Name);
-            _mapPluginArgs.AppManager.SerializationManager.SetCustomSetting(PluginName + "_Opacity", _opacity.ToString());
+            App.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", _provider.Name);
+            App.SerializationManager.SetCustomSetting(PluginName + "_Opacity", _opacity.ToString());
         }
 
         #endregion IMapPlugin Members
@@ -118,10 +116,10 @@ namespace FetchBasemap
 
         private void AddButtons()
         {
-            if (_mapPluginArgs.AppManager == null || _mapPluginArgs.AppManager.HeaderControl == null)
+            if (App.HeaderControl == null)
                 return;
 
-            var header = _mapPluginArgs.AppManager.HeaderControl;
+            var header = App.HeaderControl;
             AddServiceDropDown(header);
             AddOpaticyDropDown(header);
         }
@@ -221,9 +219,8 @@ namespace FetchBasemap
         private void BaseMapLayerRemoveItem(object sender, EventArgs e)
         {
             _baseMapLayer = null;
-            //_mapPluginArgs.AppManager.HeaderControl.SetSelectedItem(STR_KeyServiceDropDown, _emptyProvider);
             _serviceDropDown.SelectedItem = _emptyProvider;
-            _mapPluginArgs.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
+            App.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
         }
 
         private void EnableBasemapFetching(string tileServerName, string tileServerUrl)
@@ -279,14 +276,14 @@ namespace FetchBasemap
         /// <param name="e"></param>
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var map = _mapPluginArgs.Map as Map;
+            var map = App.Map as Map;
             if (map != null) map.MapFrame.Invalidate();
-            _mapPluginArgs.ProgressHandler.Progress(String.Empty, 0, String.Empty);
+            App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
         }
 
         private void BwProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            _mapPluginArgs.ProgressHandler.Progress("Loading Basemap ...", 50, "Loading Basemap ...");
+            App.ProgressHandler.Progress("Loading Basemap ...", 50, "Loading Basemap ...");
         }
 
         #endregion Event Handlers
@@ -294,11 +291,11 @@ namespace FetchBasemap
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
-            if (_mapPluginArgs.AppManager.HeaderControl != null)
+            if (App.HeaderControl != null)
             {
-                _mapPluginArgs.AppManager.HeaderControl.RemoveItems();
+                App.HeaderControl.RemoveItems();
             }
 
             RemoveBasemapLayer();
@@ -307,7 +304,7 @@ namespace FetchBasemap
             _originalBasemapImage = null;
 
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
         /// <summary>
@@ -315,7 +312,7 @@ namespace FetchBasemap
         /// </summary>
         private void UpdateStichedBasemap()
         {
-            var map = _mapPluginArgs.Map as Map;
+            var map = App.Map as Map;
             if (map != null)
             {
                 var rectangle = map.Bounds;
@@ -400,7 +397,7 @@ namespace FetchBasemap
 
                 _baseMapLayer = new MapImageLayer(tempImageData)
                 {
-                    Projection = _mapPluginArgs.Map.Projection,
+                    Projection = App.Map.Projection,
                     LegendText = resources.Legend_Title
                 };
 
@@ -409,7 +406,7 @@ namespace FetchBasemap
                 AddBasemapLayerToMap();
             }
 
-            _mapPluginArgs.Map.MapFrame.ViewExtentsChanged += MapFrameExtentsChanged;
+            App.Map.MapFrame.ViewExtentsChanged += MapFrameExtentsChanged;
         }
 
         /// <summary>
@@ -422,8 +419,7 @@ namespace FetchBasemap
             _baseMapLayer = null;
             _originalBasemapImage = null;
 
-            if (_mapPluginArgs != null)
-                _mapPluginArgs.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
+            App.Map.MapFrame.ViewExtentsChanged -= MapFrameExtentsChanged;
         }
 
         /// <summary>
@@ -433,25 +429,25 @@ namespace FetchBasemap
         {
             //check all top-level map layers or groups
 
-            for (var i = 0; i < _mapPluginArgs.Map.Layers.Count; i++)
+            for (var i = 0; i < App.Map.Layers.Count; i++)
             {
                 //test if there is a 'group' in the map layers
-                var grp = _mapPluginArgs.Map.Layers[i] as IMapGroup;
+                var grp = App.Map.Layers[i] as IMapGroup;
 
                 //test if the type of the map layer is 'Group'
-                if (grp != null && grp.LegendText == "Themes")
+                if (grp != null && grp.LegendText == "Data Sites")
                 {
-                    var viewExtents = _mapPluginArgs.Map.ViewExtents;
+                    var viewExtents = App.Map.ViewExtents;
 
-                    _mapPluginArgs.Map.Layers.Insert(i, _baseMapLayer);
+                    App.Map.Layers.Insert(i, _baseMapLayer);
 
-                    _mapPluginArgs.Map.ViewExtents = viewExtents;
+                    App.Map.ViewExtents = viewExtents;
                     return;
                 }
             }
             //otherwise, no 'Themes' group is found.
             //insert the basemap as the topmost layer.
-            _mapPluginArgs.Map.Layers.Add(_baseMapLayer);
+            App.Map.Layers.Add(_baseMapLayer);
         }
 
         /// <summary>
@@ -460,10 +456,10 @@ namespace FetchBasemap
         private void RemoveBasemapLayer()
         {
             //attempt to remove from the top-level
-            if (_mapPluginArgs.Map.Layers.Remove(_baseMapLayer)) return;
+            if (App.Map.Layers.Remove(_baseMapLayer)) return;
 
             //Remove from other groups if the user has moved it
-            _mapPluginArgs.Map.Layers.OfType<IMapGroup>().Any(grp => grp.Remove(_baseMapLayer));
+            App.Map.Layers.OfType<IMapGroup>().Any(grp => grp.Remove(_baseMapLayer));
         }
 
         /// <summary>
@@ -508,7 +504,7 @@ namespace FetchBasemap
         {
             Bitmap newBasemapImage = GetTransparentBasemapImage(_originalBasemapImage, opacity);
             _baseMapLayer.Image.SetBitmap(newBasemapImage);
-            _mapPluginArgs.Map.MapFrame.Invalidate();
+            App.Map.MapFrame.Invalidate();
         }
     }
 }

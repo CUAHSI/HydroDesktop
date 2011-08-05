@@ -12,12 +12,9 @@ using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
 namespace HydroR
 {
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region Variables
-
-        //reference to the main application and it's UI items
-        private IMapPluginArgs _mapArgs;
 
         private ISeriesView _seriesView;
 
@@ -35,9 +32,9 @@ namespace HydroR
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
-            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
  
             // Remove Work Page
             if (_seriesView != null)
@@ -45,32 +42,16 @@ namespace HydroR
                 _seriesView.RemovePanel(_panelName);
             }
 
-            // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        protected override void OnActivate()
+        public override void Activate()
         {
             // Handle code for switching the page content
             _hydroRControl.RChanged += new cRCommandView.REventHandler(ribbonBnt_TextChanged);
-            // This line ensures that "Enabled" is set to true.
-            base.OnActivate();
-        }
-
-        #endregion
-
-        #region IPlugin Members
-
-        /// <summary>
-        /// Initialize the mapWindow 6 plugin
-        /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
-        {
-            _mapArgs = args;
 
             // Add panel to the SeriesView
-            IHydroAppManager manager = _mapArgs.AppManager as IHydroAppManager;
+            IHydroAppManager manager = App as IHydroAppManager;
             if (manager != null)
             {
                 _seriesView = manager.SeriesView;
@@ -78,7 +59,7 @@ namespace HydroR
                 manager.SeriesView.AddPanel(_panelName, _hydroRControl);
 
                 //Add a HydroR root item
-                args.AppManager.HeaderControl.Add(new RootItem(_tabKey, _panelName));
+                App.HeaderControl.Add(new RootItem(_tabKey, _panelName));
 
                 string rGroupCaption = _panelName + " Tools";
                 string rScriptCaption = "Script";
@@ -88,65 +69,69 @@ namespace HydroR
                 _btnR.RootKey = _tabKey;
                 _btnR.LargeImage = Properties.Resources.Ricon;
                 _btnR.GroupCaption = rGroupCaption;
-                _mapArgs.AppManager.HeaderControl.Add(_btnR);
+                App.HeaderControl.Add(_btnR);
 
                 var btnGenR = new SimpleActionItem("Generate R Code", _hydroRControl.txtGenR_Click);
                 btnGenR.RootKey = _tabKey;
                 btnGenR.LargeImage = Properties.Resources.GenerateR;
                 btnGenR.GroupCaption = rGroupCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnGenR);
+                App.HeaderControl.Add(btnGenR);
 
                 var btnSendLine = new SimpleActionItem("Send Line", _hydroRControl.btnSend_Click);
                 btnSendLine.RootKey = _tabKey;
                 btnSendLine.LargeImage = Properties.Resources.SendLine;
                 btnSendLine.GroupCaption = rGroupCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnSendLine);
+                App.HeaderControl.Add(btnSendLine);
 
                 var btnSendSel = new SimpleActionItem("Send Selection", _hydroRControl.btnSendSel_Click);
                 btnSendSel.RootKey = _tabKey;
                 btnSendSel.LargeImage = Properties.Resources.SendSelection;
                 btnSendSel.GroupCaption = rGroupCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnSendSel);
+                App.HeaderControl.Add(btnSendSel);
 
                 var btnSendAll = new SimpleActionItem("Send All", _hydroRControl.btnSendAll_Click);
                 btnSendAll.RootKey = _tabKey;
                 btnSendAll.LargeImage = Properties.Resources.SendScript;
                 btnSendAll.GroupCaption = rGroupCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnSendAll);
+                App.HeaderControl.Add(btnSendAll);
 
                 var btnOpen = new SimpleActionItem("Open Script", _hydroRControl.btnOpen_Click);
                 btnOpen.RootKey = _tabKey;
                 btnOpen.LargeImage = Properties.Resources.OpenFile;
                 btnOpen.GroupCaption = rScriptCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnOpen);
+                App.HeaderControl.Add(btnOpen);
 
                 var btnSave = new SimpleActionItem("Save Script", _hydroRControl.btnSave_Click);
                 btnSave.RootKey = _tabKey;
                 btnSave.LargeImage = Properties.Resources.SaveFile;
                 btnSave.GroupCaption = rScriptCaption;
-                _mapArgs.AppManager.HeaderControl.Add(btnSave);
+                App.HeaderControl.Add(btnSave);
 
                 //workaround - handle the ribbon tab active changed event
-                _mapArgs.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
+                App.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
             }
+
+            base.Activate();
         }
+
+        #endregion
+
+
 
         //workaround method - changing the ribbon tab changes the main content
         void Ribbon_ActiveTabChanged(object sender, EventArgs e)
         {
-            RibbonTab myTab = _mapArgs.Ribbon.Tabs.Find(t => t.Text == _panelName);
+            RibbonTab myTab = App.Ribbon.Tabs.Find(t => t.Text == _panelName);
 
             if (myTab.Active)
             {
-                if (_mapArgs.PanelManager != null)
+                if (App.TabManager != null)
                 {
-                    _mapArgs.PanelManager.SelectedTabName = "Series View";
+                    App.TabManager.SelectedTabName = "Series View";
                     _seriesView.VisiblePanelName = _panelName;
                 }
             }
         }
-
-        #endregion
 
         #region Event Handlers
 
@@ -161,7 +146,7 @@ namespace HydroR
         //Workaround method to find the corresponding StartR ribbon button
         private RibbonButton FindBtnR()
         {
-            RibbonTab hydroRTab = _mapArgs.Ribbon.Tabs.Find(t => t.Text == _panelName);
+            RibbonTab hydroRTab = App.Ribbon.Tabs.Find(t => t.Text == _panelName);
             RibbonButton btnR = hydroRTab.Panels[0].Items[0] as RibbonButton;
             return btnR;
         }

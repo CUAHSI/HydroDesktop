@@ -32,8 +32,8 @@ namespace HydroDesktop.Search
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Private Member Variables
-        //the _mapArgs class level variable for accessing the map
-        private IMapPluginArgs _mapArgs;
+        //the app class level variable for accessing the map
+        private AppManager app;
 
         //the parent split container
         private SplitContainer spcSearch = null;
@@ -57,15 +57,15 @@ namespace HydroDesktop.Search
         #endregion
 
         #region Constructor
-        public SearchControl(IMapPluginArgs mapArgs)
+        public SearchControl(AppManager mapArgs)
         {
             InitializeComponent();
 
             //set the mapwindow variable
-            _mapArgs = mapArgs;
+            app = mapArgs;
 
             //set the main map
-            mapMain = (Map)_mapArgs.Map; //TODO: hack
+            mapMain = (Map)app.Map; //TODO: hack
 
             // this manages the former webservices.xml
             _webServicesList = new WebServicesList();
@@ -83,9 +83,9 @@ namespace HydroDesktop.Search
             _rectangleDrawing = null;
 
             //Layer added event that helps capturing the polygon layers
-            _mapArgs.Map.MapFrame.LayerAdded += MapFrame_LayerAdded;
+            app.Map.MapFrame.LayerAdded += MapFrame_LayerAdded;
             //Layer removed event
-            _mapArgs.Map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
+            app.Map.MapFrame.LayerRemoved += MapFrame_LayerRemoved;
 
             //listBox4.MouseUp += new MouseEventHandler(listBox4_MouseUp);
             dgvSearch.Click += dataGridView1_Click;
@@ -103,7 +103,7 @@ namespace HydroDesktop.Search
             lstThemes.MouseUp += lstThemes_MouseUp;
 
             //project opening event to ensure refreshing of layers
-            _mapArgs.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            app.SerializationManager.Deserializing += SerializationManager_Deserializing;
 
             //set the default search mode
             SearchMode = SearchMode.HISCentral;
@@ -1071,7 +1071,7 @@ namespace HydroDesktop.Search
         private void CloseSearchPanel()
         {
             spcSearch.Panel2Collapsed = true;
-            _mapArgs.Map.MapFrame.ResetExtents();
+            app.Map.MapFrame.ResetExtents();
         }
         /////trial subpart ends.....
 
@@ -1285,7 +1285,7 @@ namespace HydroDesktop.Search
                     if (layer.LegendText == cboActiveLayer.SelectedItem.ToString())
                     {
                         layer.Select(0);
-                        //_mapArgs.Map.MapFrame.ResetBuffer();
+                        //app.Map.MapFrame.ResetBuffer();
                     }
                 }
                 //HACK ends
@@ -1410,7 +1410,7 @@ namespace HydroDesktop.Search
         /// </summary>
         private List<IMapPolygonLayer> GetListOfPolygonLayers()
         {
-            Map map1 = _mapArgs.Map as Map;
+            Map map1 = app.Map as Map;
             List<IMapPolygonLayer> polygonLayers = new List<IMapPolygonLayer>();
             List<ILayer> allLayers = map1.GetAllLayers();
             foreach (ILayer lay in allLayers)
@@ -1461,12 +1461,12 @@ namespace HydroDesktop.Search
 
         private void selectPolygonLayer()
         {
-            _mapArgs.Map.MapFrame.IsSelected = false;
-            foreach (IMapGroup grp in _mapArgs.Map.MapFrame.GetAllGroups())
+            app.Map.MapFrame.IsSelected = false;
+            foreach (IMapGroup grp in app.Map.MapFrame.GetAllGroups())
             {
                 grp.IsSelected = false;
             }
-            foreach (IMapLayer lay in _mapArgs.Map.MapFrame.GetAllLayers())
+            foreach (IMapLayer lay in app.Map.MapFrame.GetAllLayers())
             {
                 lay.IsSelected = false;
                 IMapPolygonLayer pg_s = lay as IMapPolygonLayer;
@@ -1477,7 +1477,7 @@ namespace HydroDesktop.Search
                         pg_s.IsSelected = true;
                         pg_s.IsVisible = true;
 
-                        _mapArgs.Legend.RefreshNodes();
+                        app.Legend.RefreshNodes();
                         lbFieldsActiveLayer.Items.Clear();
                         for (int i = 0; i <= pg_s.DataSet.DataTable.Columns.Count - 1; i++)
                         {
@@ -1596,7 +1596,7 @@ namespace HydroDesktop.Search
 
             if (_rectangleDrawing == null)
             {
-                _rectangleDrawing = new RectangleDrawing(_mapArgs.Map);
+                _rectangleDrawing = new RectangleDrawing(app.Map);
                 _rectangleDrawing.RectangleCreated += new EventHandler(rectangleDrawing_RectangleCreated);
 
             }
@@ -1633,7 +1633,7 @@ namespace HydroDesktop.Search
             ProjectionInfo wgs84 = new ProjectionInfo();
             wgs84.ReadEsriString(esri);
 
-            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, _mapArgs.Map.Projection, wgs84, 0, 2);
+            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, app.Map.Projection, wgs84, 0, 2);
             //populate the listbox
             listBox4.Items.Clear();
             listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[0]));
@@ -1650,7 +1650,7 @@ namespace HydroDesktop.Search
         private RectangleFunction GetRectangleFunction()
         {
             RectangleFunction rf = null;
-            foreach (MapFunction fun in _mapArgs.Map.MapFunctions)
+            foreach (MapFunction fun in app.Map.MapFunctions)
             {
                 rf = fun as RectangleFunction;
                 if (rf != null)
@@ -1763,7 +1763,7 @@ namespace HydroDesktop.Search
                         polyFs.Features.Add(f);
                     }
 
-                    polyFs.Projection = _mapArgs.Map.Projection;
+                    polyFs.Projection = app.Map.Projection;
 
                     string esri = Resources.wgs_84_esri_string;
                     ProjectionInfo wgs84 = new ProjectionInfo();
@@ -2053,7 +2053,7 @@ namespace HydroDesktop.Search
         {
             lstThemes.Items.Clear();
             //show available data themes - from map legend
-            foreach (IMapLayer layer in _mapArgs.Map.Layers)
+            foreach (IMapLayer layer in app.Map.Layers)
             {
                 if (layer.LegendText.ToLower() == "themes")
                 {
@@ -2209,7 +2209,7 @@ namespace HydroDesktop.Search
             {
                 //to refresh the series selector control
                 //TODO: need other way to send this message
-                var mainApplication = _mapArgs.AppManager as IHydroAppManager;
+                var mainApplication = app as IHydroAppManager;
                 if (mainApplication != null)
                 {
                     mainApplication.SeriesView.SeriesSelector.RefreshSelection();
@@ -2217,9 +2217,9 @@ namespace HydroDesktop.Search
 
                 var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
                 var manager = new Controls.Themes.ThemeManager(db);
-                IFeatureSet fs = manager.GetFeatureSet(themeName, _mapArgs.Map.Projection);
-                manager.AddThemeToMap(fs, themeName, _mapArgs.Map as DotSpatial.Controls.Map);
-                //_mapArgs.Map.MapFrame.ResetBuffer();
+                IFeatureSet fs = manager.GetFeatureSet(themeName, app.Map.Projection);
+                manager.AddThemeToMap(fs, themeName, app.Map as DotSpatial.Controls.Map);
+                //app.Map.MapFrame.ResetBuffer();
             }
             catch { }
         }
@@ -2243,12 +2243,12 @@ namespace HydroDesktop.Search
                 loadedFeatures.Add(key, FeatureSet.OpenFile(filename));
             }
 
-            var searchLayerCreator = new SearchLayerCreator(_mapArgs.Map, new SearchResult(loadedFeatures));
+            var searchLayerCreator = new SearchLayerCreator(app.Map, new SearchResult(loadedFeatures));
             var laySearchResult = searchLayerCreator.Create();
 
             //assign the projection again
             foreach (var item in loadedFeatures)
-                item.Value.Reproject(_mapArgs.Map.Projection);
+                item.Value.Reproject(app.Map.Projection);
 
             // add result layer into  searchResultsControl
             searchResultsControl.SetLayerSearchResult(mapMain, laySearchResult);
@@ -2587,7 +2587,7 @@ namespace HydroDesktop.Search
             label16.Visible = true;
             fillAreaXml();
             //activate the Area Selection Mode
-            _mapArgs.Map.FunctionMode = FunctionMode.Select;
+            app.Map.FunctionMode = FunctionMode.Select;
 
             //select the correct layer in the legend
             if (!String.IsNullOrEmpty(cboActiveLayer.SelectedItem.ToString()))
@@ -2598,7 +2598,7 @@ namespace HydroDesktop.Search
 
         private void SelectLayerInLegend(string legendText)
         {
-            foreach (IMapLayer lay in _mapArgs.Map.MapFrame.GetAllLayers())
+            foreach (IMapLayer lay in app.Map.MapFrame.GetAllLayers())
             {
                 lay.IsSelected = lay.LegendText == legendText;
             }

@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 namespace Toolbox
 {
-    [Plugin("Toolbox", Author = "MapWindow", UniqueName = "mw_Toolbox_1", Version = "1")]
     public class Main: Extension, IMapPlugin
     {
         private IMapPluginArgs _mapWin;

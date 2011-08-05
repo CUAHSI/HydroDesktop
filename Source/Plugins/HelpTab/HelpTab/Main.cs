@@ -11,7 +11,7 @@ using DotSpatial.Controls.Header;
 
 namespace HelpTab
 {
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region Private Member Variables
 
@@ -25,8 +25,6 @@ namespace HelpTab
         private readonly string _issueTrackerUri = Properties.Settings.Default.issueTrackerUri;
         private readonly string _commentMailtoLink = Properties.Settings.Default.commentMailtoLink;
         private readonly string _hisCommentUri = Properties.Settings.Default.hisCommentUri;
-
-        private IMapPluginArgs _pluginArgs;
 
         #endregion
 
@@ -71,35 +69,19 @@ namespace HelpTab
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
             // Remove ribbon tab
-            _pluginArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
 
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        protected override void OnActivate()
+        public override void Activate()
         {
-            // This line ensures that "Enabled" is set to true
-            base.OnActivate();
-        }
-
-        #endregion
-
-        #region IPlugin Members
-
-        /// <summary>
-        /// Initialize the plugin
-        /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
-        {
-            _pluginArgs = args;
-
             // Initialize the Ribbon controls in the "Help" ribbon tab
             const string HelpTabKey = "kHelp";
-            args.AppManager.HeaderControl.Add(new RootItem(HelpTabKey, _helpTabName) { SortOrder = 200 });
+            App.HeaderControl.Add(new RootItem(HelpTabKey, _helpTabName) { SortOrder = 200 });
 
             // no such feature, presently.
             //helpPanel.Image = Resources.help_32x32;
@@ -111,10 +93,10 @@ namespace HelpTab
             userGuideButton.SmallImage = Resources.help_16x16;
             userGuideButton.ToolTipText = "Open the help documentation.";
             userGuideButton.GroupCaption = _helpPanelName;
-            args.AppManager.HeaderControl.Add(userGuideButton);
+            App.HeaderControl.Add(userGuideButton);
 
             //Separator
-            args.AppManager.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
+            App.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
 
             // Add a button to open the discussion forums
             var discussionButton = new SimpleActionItem("Forum", discussionButton_Click);
@@ -123,7 +105,7 @@ namespace HelpTab
             discussionButton.SmallImage = Resources.discuss_16x16;
             discussionButton.ToolTipText = "Open the HydroDesktop online discussion forum.";
             discussionButton.GroupCaption = _helpPanelName;
-            args.AppManager.HeaderControl.Add(discussionButton);
+            App.HeaderControl.Add(discussionButton);
 
             // Add a button to open the issue tracker
             var issueTrackerButton = new SimpleActionItem("Issues", issueTrackerButton_Click);
@@ -132,10 +114,10 @@ namespace HelpTab
             issueTrackerButton.SmallImage = Resources.onebit_bug_16x16;
             issueTrackerButton.ToolTipText = "Report a bug or feature request on the online HydroDesktop issue tracker.";
             issueTrackerButton.GroupCaption = _helpPanelName;
-            args.AppManager.HeaderControl.Add(issueTrackerButton);
+            App.HeaderControl.Add(issueTrackerButton);
 
             //Separator
-            args.AppManager.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
+            App.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
 
             // Add a button to send email to the user support specialist
             var submitEmailButton = new SimpleActionItem("Contact Support\n", submitEmailButton_Click); // !!! \n gets around a bug where the "t" in "Support" is wrapped to a new line
@@ -144,7 +126,7 @@ namespace HelpTab
             submitEmailButton.SmallImage = Resources.email_16x16;
             submitEmailButton.ToolTipText = "Send an e-mail to HydroDesktop User Support using your default e-mail program.";
             submitEmailButton.GroupCaption = _helpPanelName;
-            args.AppManager.HeaderControl.Add(submitEmailButton);
+            App.HeaderControl.Add(submitEmailButton);
 
             // Add a button to leave a comment
             var submitCommentButton = new SimpleActionItem("Submit Comment", submitCommentButton_Click);
@@ -153,10 +135,10 @@ namespace HelpTab
             submitCommentButton.SmallImage = Resources.comment_16x16;
             submitCommentButton.ToolTipText = "Submit a comment using the online HIS contact form.";
             submitCommentButton.GroupCaption = _helpPanelName;
-            args.AppManager.HeaderControl.Add(submitCommentButton);
+            App.HeaderControl.Add(submitCommentButton);
 
             //Separator
-            args.AppManager.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
+            App.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
 
             // Add a button to show the About dialog
             var aboutButton = new SimpleActionItem("About", aboutButton_Click);
@@ -165,9 +147,11 @@ namespace HelpTab
             aboutButton.SmallImage = Resources.info_16x16;
             aboutButton.ToolTipText = "Open the HydroDesktop About dialog.";
             aboutButton.GroupCaption = _helpPanelName;
-            args.AppManager.HeaderControl.Add(aboutButton);
+            App.HeaderControl.Add(aboutButton);
+            
+            // This line ensures that "Enabled" is set to true
+            base.Activate();
         }
-
 
         #endregion
 

@@ -10,14 +10,10 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 namespace RibbonSamplePlugin
 {
-    //the plugin attribute: modify the plugin name, author, unique name and version
-    [Plugin("RibbonSamplePlugin", Author = "CUAHSI", UniqueName = "mw_RibbonSamplePlugin_1", Version = "1")]
-    public class Main : Extension, IMapPlugin
+
+    public class Main : Extension
     {
         #region Variables
-
-        //reference to the main application and it's UI items
-        private IMapPluginArgs _mapArgs;
 
         //reference to the main series view panel
         private ISeriesView _seriesView;
@@ -42,48 +38,30 @@ namespace RibbonSamplePlugin
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
             // Remove ribbon tab
             
-            if (_mapArgs.Ribbon.Tabs.Contains(_ribbonSampleTab))
+            if (App.Ribbon.Tabs.Contains(_ribbonSampleTab))
             {
-                _mapArgs.Ribbon.Tabs.Remove(_ribbonSampleTab);
+                App.Ribbon.Tabs.Remove(_ribbonSampleTab);
             }
             // Remove ribbon button in view panel
-            _mapArgs.Ribbon.Tabs[0].Panels[0].Items.Remove(_ribbonBtn);
+            App.Ribbon.Tabs[0].Panels[0].Items.Remove(_ribbonBtn);
             // Remove Work Page
             
             //remove the plugin panel           
             _seriesView.RemovePanel(_pluginName);          
             
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        protected override void OnActivate()
+        public override void Activate()
         {
-            // Handle code for switching the page content
-
-            // This line ensures that "Enabled" is set to true.
-            base.OnActivate();
-        }
-
-        #endregion
-
-        #region IPlugin Members
-
-        /// <summary>
-        /// Initialize the mapWindow 6 plugin
-        /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
-        {
-            _mapArgs = args;
-
             // Add "Ribbon" button to the "View" Panel in "Home" ribbon tab
             _ribbonBtn = new RibbonButton("Ribbon");
-            args.Ribbon.Tabs[0].Panels[0].Items.Add(_ribbonBtn);
+            App.Ribbon.Tabs[0].Panels[0].Items.Add(_ribbonBtn);
             Bitmap bmp = new Bitmap(32, 32);
             Graphics g = Graphics.FromImage(bmp);
             g.FillEllipse(Brushes.Blue, new Rectangle(0, 0, 32, 32));
@@ -92,7 +70,7 @@ namespace RibbonSamplePlugin
             _ribbonBtn.Click += new EventHandler(ribbonButton_Click);
 
             // Add "Ribbon Sample Plugin" panel to the SeriesView
-            IHydroAppManager manager = _mapArgs.AppManager as IHydroAppManager;
+            IHydroAppManager manager = App as IHydroAppManager;
             if (manager != null)
             {
                 _seriesView = manager.SeriesView;
@@ -101,8 +79,8 @@ namespace RibbonSamplePlugin
             }
 
             // Add a new ribbon tab
-            _ribbonSampleTab = new RibbonTab(_mapArgs.Ribbon, _pluginName);
-            
+            _ribbonSampleTab = new RibbonTab(App.Ribbon, _pluginName);
+
             // Create the Ribbon Button with a ribbon panel on the new ribbon tab
             RibbonPanel rp = new RibbonPanel();
             rp.Text = "ribbon panel";
@@ -127,7 +105,7 @@ namespace RibbonSamplePlugin
             _rcb.MaxSizeMode = RibbonElementSizeMode.Compact;
 
             _rcb.MouseDown += new MouseEventHandler(rcb_MouseDown);
-            
+
             RibbonButton svcBtn = new RibbonButton();
             svcBtn.Text = "item 1";
             svcBtn.ToolTip = "item 1";
@@ -153,7 +131,7 @@ namespace RibbonSamplePlugin
 
             RibbonItemGroup grp = new RibbonItemGroup();
             rp2.Items.Add(grp);
-            grp.Items.Add(_rcb);         
+            grp.Items.Add(_rcb);
 
             //Add a ribbon host
             RibbonHost host = new RibbonHost();
@@ -182,7 +160,7 @@ namespace RibbonSamplePlugin
             lstBx.Items.Add("kravo");
             lstBx.Items.Add("klokan");
             lstBx.Items.Add("zajic");
-            host2.HostedControl  = lstBx;
+            host2.HostedControl = lstBx;
             rp4.Items.Add(host2);
 
             RibbonPanel rp5 = new RibbonPanel();
@@ -196,29 +174,38 @@ namespace RibbonSamplePlugin
 
             _rtxt.Text = "Enter Custom Setting:";
             rp5.Items.Add(_rtxt);
-            
 
-            if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonSampleTab))
+
+            if (!App.Ribbon.Tabs.Contains(_ribbonSampleTab))
             {
-                _mapArgs.Ribbon.Tabs.Add(_ribbonSampleTab);
+                App.Ribbon.Tabs.Add(_ribbonSampleTab);
             }
 
             _ribbonSampleTab.ActiveChanged += new EventHandler(_ribbonSampleTab_ActiveChanged);
 
             //assign the project saving and project loading Events
-            _mapArgs.AppManager.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
-            _mapArgs.AppManager.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
+            App.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
+            App.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
+
+            // This line ensures that "Enabled" is set to true.
+            base.Activate();
         }
+
+        #endregion
+
+        #region IPlugin Members
+
+        
 
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
-            string customSettingValue = _mapArgs.AppManager.SerializationManager.GetCustomSetting<string>(_pluginName + "_Setting1","Enter Custom Setting:");
+            string customSettingValue = App.SerializationManager.GetCustomSetting<string>(_pluginName + "_Setting1","Enter Custom Setting:");
             _rtxt.TextBoxText = customSettingValue;
         }
 
         void SerializationManager_Serializing(object sender, SerializingEventArgs e)
         {
-            _mapArgs.AppManager.SerializationManager.SetCustomSetting(_pluginName + "_Setting1", _rtxt.TextBoxText);
+            App.SerializationManager.SetCustomSetting(_pluginName + "_Setting1", _rtxt.TextBoxText);
         }
 
         void rcb_MouseDown(object sender, MouseEventArgs e)
@@ -231,9 +218,9 @@ namespace RibbonSamplePlugin
         {
             if (_ribbonSampleTab.Active)
             {
-                if (_mapArgs.PanelManager != null)
+                if (App.TabManager != null)
                 {
-                    _mapArgs.PanelManager.SelectedTabName = "MapView";
+                    App.TabManager.SelectedTabName = "MapView";
                     if (_seriesView != null)
                     {
                         _seriesView.VisiblePanelName = "MapView";
@@ -249,7 +236,7 @@ namespace RibbonSamplePlugin
         //when user clicks the second ribbon button
         void ribbonButton_Click(object sender, EventArgs e)
         {
-            if (_mapArgs.PanelManager.TabCount > 0)
+            if (App.TabManager.TabCount > 0)
             {
                 MessageBox.Show("Connection String Is: " + 
                     HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, _pluginName);
