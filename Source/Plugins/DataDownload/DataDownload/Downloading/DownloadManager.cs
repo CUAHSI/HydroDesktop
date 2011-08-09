@@ -327,7 +327,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 if (_worker.CancellationPending) return;
 
                 di.Status = DownloadInfoStatus.Downloading;
-                di.FileName = objDownloader.DownloadXmlDataValues(di);
+                di.FilesWithData = objDownloader.DownloadXmlDataValues(di);
                 di.Status = DownloadInfoStatus.Downloaded;
                 lock (_syncObjForDownload)
                 {
@@ -433,7 +433,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 }
                 Debug.Assert(dInfo != null);
                 
-                Series series;
+                IEnumerable<Series> series;
                 var startTime = DateTime.Now;
 
                 // Parsing series from xml

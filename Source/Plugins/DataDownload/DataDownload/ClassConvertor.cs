@@ -9,7 +9,7 @@ namespace HydroDesktop.DataDownload
     /// <summary>
     /// Converts classes from one type to another
     /// </summary>
-    class ClassConvertor
+    static class ClassConvertor
     {
         /// <summary>
         /// Converts instance of ServiceInfo into OneSeriesDownloadInfo
@@ -36,6 +36,8 @@ namespace HydroDesktop.DataDownload
             };
             if (serviceInfo.IsDownloaded)
                 oneSeries.OverwriteOption = Interfaces.OverwriteOptions.Overwrite;
+            if (serviceInfo.ValueCount.HasValue)
+                oneSeries.EstimatedValuesCount = serviceInfo.ValueCount.Value;
 
             return oneSeries;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using DotSpatial.Data;
 using HydroDesktop.Configuration;
@@ -36,6 +37,7 @@ namespace HydroDesktop.DataDownload.Downloading
         public OneSeriesDownloadInfo()
         {
             Status = DownloadInfoStatus.Pending;
+            EstimatedValuesCount = -1;
         }
 
         #endregion
@@ -43,7 +45,7 @@ namespace HydroDesktop.DataDownload.Downloading
         #region Properties
 
         public IFeature SourceFeature { get; set; }
-        public Series ResultSeries { get; set; }
+        public IEnumerable<Series> ResultSeries { get; set; }
 
         private string _wsdl;
         /// <summary>
@@ -187,7 +189,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 {
                     DownloadTimeTaken = new TimeSpan();
                     ErrorMessage = null;
-                    FileName = null;
+                    FilesWithData = null;
                 }
             }
         }
@@ -222,9 +224,14 @@ namespace HydroDesktop.DataDownload.Downloading
         }
 
         /// <summary>
-        /// File name containg downloaded data series.
+        /// Collection of files with downloaded data series.
         /// </summary>
-        public string FileName { get; set; }
+        public IEnumerable<string> FilesWithData { get; set; }
+
+        /// <summary>
+        /// Estimated count of values
+        /// </summary>
+        public int EstimatedValuesCount { get; set; }
 
 
         /// <summary>
