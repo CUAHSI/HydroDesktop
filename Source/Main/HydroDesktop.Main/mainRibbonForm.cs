@@ -96,15 +96,18 @@ namespace HydroDesktop.Main
             dockManager.Parent = this;
             this.applicationManager1.DockManager = new DockingManager(dockManager);
 
-            // display panelContainer front and center
-            panelContainer.Dock = DockStyle.Fill;
+            //dock the map to fill
+            mainMap.Dock = DockStyle.Fill;
+            //panelContainer.Dock = DockStyle.Fill;
 
             DockContent content = new DockContent();
             content.ShowHint = DockState.Document;
-            content.Controls.Add(panelContainer);
+            content.Controls.Add(mainMap);
             content.Show(dockManager);
 
-            
+            //add the legend
+            mainLegend.Dock = DockStyle.Fill;
+            applicationManager1.DockManager.Add("kLegend", mainLegend, DockStyle.Left);
 
             #region initialize the help menu
 
@@ -275,7 +278,7 @@ namespace HydroDesktop.Main
 
             #region initialize the main view panel controls
 
-            this.tabContainer.SelectedIndexChanged += new EventHandler(tabContainer_SelectedIndexChanged);
+            //this.tabContainer.SelectedIndexChanged += new EventHandler(tabContainer_SelectedIndexChanged);
 
             #endregion initialize the main view panel controls
 
@@ -352,7 +355,7 @@ namespace HydroDesktop.Main
 
                 //setup db property of SeriesSelector
                 //this code will fail if DataRepositoryConnectionString is not set
-                seriesView1.SeriesSelector.SetupDatabase();
+                //seriesView1.SeriesSelector.SetupDatabase();
             }
         }
 
@@ -610,21 +613,21 @@ namespace HydroDesktop.Main
         #endregion Event
 
         //hide status bar when map panel is not shown
-        private void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabContainer.SelectedTabName == "MapView")
-            {
-                statusLocation.Visible = true;
-                lblStatus.Visible = false;
-            }
-            else
-            {
-                statusLocation.Visible = false;
-                lblStatus.Visible = true;
-                lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
-                //applicationManager1.SerializationManager.GetCustomSetting<string>("DataRepositoryDbPath", "unknown db path");
-            }
-        }
+        //private void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (tabContainer.SelectedTabName == "MapView")
+        //    {
+        //        statusLocation.Visible = true;
+        //        lblStatus.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        statusLocation.Visible = false;
+        //        lblStatus.Visible = true;
+        //        lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
+        //        //applicationManager1.SerializationManager.GetCustomSetting<string>("DataRepositoryDbPath", "unknown db path");
+        //    }
+        //}
 
         //Refresh map when main form is maximized
         private void mainRibbonForm_SizeChanged(object sender, EventArgs e)
@@ -639,9 +642,9 @@ namespace HydroDesktop.Main
         private void mainRibbonForm_Load(object sender, EventArgs e)
         {
             //to add the 'data' main view tab
-            this.tabContainer.Appearance = TabAppearance.FlatButtons;
-            this.tabContainer.ItemSize = new Size(0, 1);
-            this.tabContainer.SizeMode = TabSizeMode.Fixed;
+            //this.tabContainer.Appearance = TabAppearance.FlatButtons;
+            //this.tabContainer.ItemSize = new Size(0, 1);
+            //this.tabContainer.SizeMode = TabSizeMode.Fixed;
 
             //Set Initial Map Projection
             mainMap.Projection = _defaultProjection;
@@ -1047,7 +1050,7 @@ namespace HydroDesktop.Main
 
         private void bntMapView_Click(object sender, EventArgs e)
         {
-            tabContainer.SelectedTabName = tabContainer.TabPages[0].Text;
+            //tabContainer.SelectedTabName = tabContainer.TabPages[0].Text;
         }
 
         private RibbonTab FindText(string name)
@@ -1327,7 +1330,7 @@ namespace HydroDesktop.Main
         {
             if (_mapView.Active == true)
             {
-                tabContainer.SelectedTab = tabContainer.TabPages[0];
+                //tabContainer.SelectedTab = tabContainer.TabPages[0];
                 //mwStatusStrip1.Visible = true;
             }
 
@@ -1403,14 +1406,14 @@ namespace HydroDesktop.Main
         //    mainMap.AddLayer();
         //}
 
-        private void tabSearch_ActiveChanged(object sender, EventArgs e)
-        {
-            if (tabHome.Active == true && tabContainer.TabPages.Count > 0)
-            {
-                tabContainer.SelectedTab = tabContainer.TabPages[0];
-                //mwStatusStrip1.Visible = true;
-            }
-        }
+        //private void tabSearch_ActiveChanged(object sender, EventArgs e)
+        //{
+        //    if (tabHome.Active == true && tabContainer.TabPages.Count > 0)
+        //    {
+        //        tabContainer.SelectedTab = tabContainer.TabPages[0];
+        //        //mwStatusStrip1.Visible = true;
+        //    }
+        //}
 
         //exit
         private void OrbExit_Click(object sender, EventArgs e)

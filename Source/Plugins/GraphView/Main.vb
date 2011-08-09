@@ -5,6 +5,7 @@ Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
+Imports System.ComponentModel.Composition
 
 Namespace GraphView
     Public Class Main
@@ -13,6 +14,8 @@ Namespace GraphView
 #Region "Variables"
 
         Private Const kGraph As String = "kHydroGraph"
+
+        <Import(GetType(ISeriesView))>
         Private appSeriesView As ISeriesView
 
         Private _mainControl As cTSA
@@ -80,18 +83,31 @@ Namespace GraphView
             tabGraph = New RootItem(kGraph, _pluginName)
             App.HeaderControl.Add(tabGraph)
 
-            If Not App.Ribbon Is Nothing Then
+            'If Not App.Ribbon Is Nothing Then
 
-                'TODO replace by Docking
-                AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveTabChanged
+            'TODO replace by Docking
+            'AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveTabChanged
 
-                Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
-                If Not manager Is Nothing Then
-                    appSeriesView = manager.SeriesView
-                    _mainControl = New cTSA(appSeriesView.SeriesSelector)
-                    appSeriesView.AddPanel(_pluginName, _mainControl)
-                End If
+            'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
+            'If Not manager Is Nothing Then
+            '    appSeriesView = manager.SeriesView
+            '    _mainControl = New cTSA(appSeriesView.SeriesSelector)
+            '    appSeriesView.AddPanel(_pluginName, _mainControl)
+            'Else
+            '    _mainControl = New cTSA
+            '    _mainControl.Dock = DockStyle.Fill
+            '    App.DockManager.Add("kGraphView", _mainControl, DockStyle.Fill)
+
+            'End If
+            'End If
+
+            If Not appSeriesView Is Nothing Then
+                _mainControl = New cTSA(appSeriesView.SeriesSelector)
+            Else
+                _mainControl = New cTSA()
             End If
+            _mainControl.Dock = DockStyle.Fill
+            App.DockManager.Add("kGraphView", _mainControl, DockStyle.Fill)
 
             InitializeRibbonButtons()
 
@@ -265,8 +281,8 @@ Namespace GraphView
             rlblEndDate.Text = "End Date:"
             'rpOtherOptions.Items.Add(rlblStratDate)
             'rpOtherOptions.Items.Add(rlblEndDate)
-            _mainControl.rlblStratDate = rlblStratDate
-            _mainControl.rlblEndDate = rlblEndDate
+            '_mainControl.rlblStratDate = rlblStratDate
+            '_mainControl.rlblEndDate = rlblEndDate
 
             'Display Full Date Range toggle button
             rbDisplayFullDateRange = New SimpleActionItem("Display Full Date Range", AddressOf rbDisplayFullDateRange_Click)
@@ -458,14 +474,14 @@ Namespace GraphView
             Dim homeTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
 
             If myTab.Active Then
-                App.TabManager.SelectedTabName = kSeriesViewPanelName
+                'TabManager.SelectedTabName = kSeriesViewPanelName
 
                 If Not appSeriesView Is Nothing Then
                     appSeriesView.VisiblePanelName = _pluginName
                 End If
 
             ElseIf homeTab.Active Then
-                App.TabManager.SelectedTabName = "Map View"
+                'TabManager.SelectedTabName = "Map View"
             End If
 
         End Sub

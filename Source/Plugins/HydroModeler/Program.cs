@@ -88,6 +88,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //specify tab window
             hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             //_t.AddTab(_panelName, hydroModelerControl, bmp);
+            hydroModelerControl.Dock = DockStyle.Fill;
             App.DockManager.Add("kHydroModeler", hydroModelerControl, DockStyle.Fill);
             
             //activate tab

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
@@ -10,5 +10,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <StartProgram>..\..\..\Binaries\HydroDesktop.exe</StartProgram>
     <StartAction>Program</StartAction>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>C:\dev\HydroDesktop\Source\Main\Packages\DotSpatial_x86.1.0.579\lib\</ReferencePath>
   </PropertyGroup>
 </Project>

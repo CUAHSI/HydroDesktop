@@ -9,10 +9,12 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
-using HydroDesktop.Controls;
+//using HydroDesktop.Controls;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Controls.Themes;
 using HydroDesktop.Configuration;
+using System.ComponentModel.Composition;
+using SeriesView;
 
 namespace TableView
 {
@@ -23,11 +25,8 @@ namespace TableView
         #region Variables
 
         //the seriesView component
-        private ISeriesView _seriesView;
-
-        //this is the tab page which will be added to the main
-        //tab control by the table view plug-in
-        private RibbonTab _tableViewTabPage ;
+        [Import]
+        internal SeriesViewControl SeriesControl { get; private set; }
 
         private const string _tablePanelName = "Table";
 
@@ -42,7 +41,6 @@ namespace TableView
             ////remove the plugin panel
             try
             {
-                _seriesView.RemovePanel(_tablePanelName);
                 App.HeaderControl.RemoveItems();
             }
             catch { }
@@ -52,20 +50,21 @@ namespace TableView
 
         public override void Activate()
         {
-            HydroAppManager manager = App as HydroAppManager;
-            if (manager == null) return;
-
-            _seriesView = manager.SeriesView;
+            if (SeriesControl == null)
+            {
+                MessageBox.Show("Cannot activate the TableView plugin. SeriesView not found.");
+                return;
+            }
 
             #region initialize the Table Ribbon TabPage and related controls
 
-            IHeaderControl header = manager.HeaderControl;
+            IHeaderControl header = App.HeaderControl;
             
             //Table Tab
             App.HeaderControl.Add(new RootItem(TableTabKey, _tablePanelName));
             
             //Workaround - when the selected ribbon tab is changed
-            App.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
+            //App.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
 
 
             //RefreshTheme
@@ -107,8 +106,9 @@ namespace TableView
             #endregion initialize the Table Ribbon TabPage and related controls
 
             // Add "Table View Plugin" panel to the SeriesView
-            cTableView tableViewControl = new cTableView(_seriesView.SeriesSelector);
-            _seriesView.AddPanel(_tablePanelName, tableViewControl);
+            cTableView tableViewControl = new cTableView(SeriesControl.SeriesSelector);
+            tableViewControl.Dock = DockStyle.Fill;
+            App.DockManager.Add("kTableViewPanel", tableViewControl, DockStyle.Fill);
 
             base.Activate();
         }
@@ -118,20 +118,13 @@ namespace TableView
         {
             RibbonTab myTab = App.Ribbon.Tabs.Find(t => t.Text == _tablePanelName);
             
-            if (myTab.Active)
-            {
-                if (App.TabManager != null)
-                {
-                    App.TabManager.SelectedTabName = "Series View";
-                    _seriesView.VisiblePanelName = _tablePanelName;
-                }
-            }
+            
         }
 
         private void rbRefreshTheme_Click(object sender, EventArgs e)
         {
             RefreshAllThemes();
-            _seriesView.SeriesSelector.RefreshSelection();
+            SeriesControl.SeriesSelector.RefreshSelection();
             //this.tabContainer.SelectedIndex = 1;
         }
 
@@ -160,7 +153,7 @@ namespace TableView
             frm.ShowDialog();
             if (frm.DialogResult == DialogResult.OK)
             {
-                _seriesView.SeriesSelector.RefreshSelection();
+                SeriesControl.SeriesSelector.RefreshSelection();
                 RefreshAllThemes();
             }
         }
@@ -181,7 +174,7 @@ namespace TableView
         /// <returns></returns>
         private void ChangeDatabase()
         {
-            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(App as IHydroAppManager);
+            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map);
             //frmChangeDatabase.Owner = this;
             frmChangeDatabase.ShowDialog();
         }
@@ -226,7 +219,7 @@ namespace TableView
         private void DatabaseHasChanged(string connString)
         {
             //TODO call SeriesSelector directly
-            _seriesView.SeriesSelector.SetupDatabase();
+            SeriesControl.SeriesSelector.RefreshSelection();
 
             // Originally from NewDatabase
             Settings.Instance.DataRepositoryConnectionString = connString;

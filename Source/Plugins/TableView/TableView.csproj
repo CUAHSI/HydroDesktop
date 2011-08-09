@@ -72,7 +72,6 @@
     </Reference>
     <Reference Include="HydroDesktop.Controls">
       <HintPath>..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,7 +82,12 @@
       <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SeriesView">
+      <HintPath>..\..\..\Binaries\Plugins\SeriesView\SeriesView.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>

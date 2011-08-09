@@ -2184,7 +2184,7 @@ namespace HydroDesktop.Search
                                 : _downLoadManager.Information.StartDownloadArg.DataTheme.Name;
 
             //Display theme in the main map
-            AddThemeToMap(themeName);
+            //AddThemeToMap(themeName);
 
             //Change the form's appearance
             lblSearching.Text = "Download Complete.";
@@ -2203,26 +2203,27 @@ namespace HydroDesktop.Search
             lblSearching.Text = e.UserState != null ? e.UserState.ToString() : string.Empty;
         }
 
-        private void AddThemeToMap(string themeName)
-        {
-            try
-            {
-                //to refresh the series selector control
-                //TODO: need other way to send this message
-                var mainApplication = app as IHydroAppManager;
-                if (mainApplication != null)
-                {
-                    mainApplication.SeriesView.SeriesSelector.RefreshSelection();
-                }
+        //no longer needed (moved to DownloadPlugin)
+        //private void AddThemeToMap(string themeName)
+        //{
+        //    try
+        //    {
+        //        //to refresh the series selector control
+        //        //TODO: need other way to send this message
+        //        var mainApplication = app as IHydroAppManager;
+        //        if (mainApplication != null)
+        //        {
+        //            mainApplication.SeriesView.SeriesSelector.RefreshSelection();
+        //        }
 
-                var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-                var manager = new Controls.Themes.ThemeManager(db);
-                IFeatureSet fs = manager.GetFeatureSet(themeName, app.Map.Projection);
-                manager.AddThemeToMap(fs, themeName, app.Map as DotSpatial.Controls.Map);
-                //app.Map.MapFrame.ResetBuffer();
-            }
-            catch { }
-        }
+        //        var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+        //        var manager = new Controls.Themes.ThemeManager(db);
+        //        IFeatureSet fs = manager.GetFeatureSet(themeName, app.Map.Projection);
+        //        manager.AddThemeToMap(fs, themeName, app.Map as DotSpatial.Controls.Map);
+        //        //app.Map.MapFrame.ResetBuffer();
+        //    }
+        //    catch { }
+        //}
 
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
