@@ -138,90 +138,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FilterDataSeries.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FilterDataSeries.Designer.cs">
-      <DependentUpon>FilterDataSeries.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmComplexSelection.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmComplexSelection.Designer.cs">
-      <DependentUpon>frmComplexSelection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmProperty.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmProperty.Designer.cs">
-      <DependentUpon>frmProperty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HydroApplicationManager.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="HydroDatabase.cs" />
-    <Compile Include="NewTheme.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NewTheme.Designer.cs">
-      <DependentUpon>NewTheme.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SeriesSelector.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SeriesSelector3.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SeriesSelector3.Designer.cs">
-      <DependentUpon>SeriesSelector3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SeriesView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SeriesView.Designer.cs">
-      <DependentUpon>SeriesView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Themes\SymbologyCreator.cs" />
     <Compile Include="Themes\ThemeManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FilterDataSeries.resx">
-      <DependentUpon>FilterDataSeries.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmComplexSelection.resx">
-      <DependentUpon>frmComplexSelection.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmProperty.resx">
-      <DependentUpon>frmProperty.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NewTheme.resx">
-      <DependentUpon>NewTheme.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SeriesSelector.resx">
-      <DependentUpon>SeriesSelector.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SeriesSelector3.resx">
-      <DependentUpon>SeriesSelector3.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SeriesView.resx">
-      <DependentUpon>SeriesView.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

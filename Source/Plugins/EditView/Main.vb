@@ -4,6 +4,7 @@ Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
+Imports System.ComponentModel.Composition
 
 Namespace EditView
 
@@ -12,6 +13,7 @@ Namespace EditView
 
 #Region "Variables"
 
+        <Import(GetType(ISeriesView))>
         Private _seriesView As ISeriesView = Nothing
 
         Private _mainControl As cEditView
@@ -55,21 +57,30 @@ Namespace EditView
 
             'TODO handle this using DockManager
             'AddHandler _EditView.ActiveChanged, AddressOf EditViewTab_ActiveChanged
-            AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveChanged
+            'AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveChanged
 
             '**************************************************************************************
 
             'To add a new main panel View to the main application window
-            If Not App.TabManager Is Nothing Then
-
-                Dim manager As IHydroAppManager = CType(App, IHydroAppManager)
-                If Not manager Is Nothing Then
-
-                    _seriesView = manager.SeriesView
-                    _mainControl = New cEditView(_seriesView.SeriesSelector)
-                    _seriesView.AddPanel(_pluginName, _mainControl)
-                End If
+            If Not _seriesView Is Nothing Then
+                _mainControl = New cEditView(_seriesView.SeriesSelector)
+            Else
+                _mainControl = New cEditView()
             End If
+            _mainControl.Dock = DockStyle.Fill
+            App.DockManager.Add("kEditViewPanel", _mainControl, DockStyle.Fill)
+
+            'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
+            'If Not manager Is Nothing Then
+
+            '    _seriesView = manager.SeriesView
+            '    _mainControl = New cEditView(_seriesView.SeriesSelector)
+            '    _seriesView.AddPanel(_pluginName, _mainControl)
+            'Else
+            '    _mainControl = New cEditView()
+            '    _mainControl.Dock = DockStyle.Fill
+            '    App.DockManager.Add("kEditView", _mainControl, DockStyle.Fill)
+            'End If
 
             InitializeRibbonButtons()
 
@@ -204,10 +215,10 @@ Namespace EditView
             Dim homeTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
 
             If myTab.Active Then
-                App.TabManager.SelectedTabName = "Series View"
+                'TabManager.SelectedTabName = "Series View"
                 _seriesView.VisiblePanelName = _pluginName
             ElseIf homeTab.Active Then
-                App.TabManager.SelectedTabName = "Map View"
+                'TabManager.SelectedTabName = "Map View"
             Else
                 LeavingEditView()
             End If

@@ -23,14 +23,16 @@ namespace TableView
         private string _oldMetadataCacheConnString;
         private string _newMetadataCacheConnString;
 
-        private IHydroAppManager _appManager;
+        private ISeriesView _seriesView;
+        private Map _mainMap;
 
-        public ChangeDatabaseForm(IHydroAppManager appManager)
+        public ChangeDatabaseForm(ISeriesView seriesView, Map mainMap)
         {
             InitializeComponent();
             LoadSettings();
 
-            _appManager = appManager;
+            _seriesView = seriesView;
+            _mainMap = mainMap;
         }
 
         private void LoadSettings()
@@ -76,16 +78,14 @@ namespace TableView
             Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newMetadataCachePath);
 
             //(3) Refresh 'SeriesSelector' control
-            _appManager.SeriesView.SeriesSelector.SetupDatabase();
-            _appManager.SeriesView.SeriesSelector.RefreshSelection();
+            _seriesView.SeriesSelector.SetupDatabase();
+            //_seriesView.SeriesSelector.RefreshSelection();
 
-            ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
-            AppManager dotSpatialManager = (AppManager)_appManager;
-            Map mainMap = dotSpatialManager.Map as Map;
-            if (mainMap != null)
-            {
-                manager.RefreshAllThemes(mainMap);
-            }
+            //ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
+            //if (_mainMap != null)
+            //{
+            //    manager.RefreshAllThemes(_mainMap);
+            //}
 
             DialogResult = DialogResult.OK;
             Close();

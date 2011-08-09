@@ -65,7 +65,6 @@
     <Compile Include="DatabaseChangedEventArgs.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FilterTypes.cs" />
-    <Compile Include="IHydroAppManager.cs" />
     <Compile Include="IHydroDatabase.cs" />
     <Compile Include="IHydroDbOperations.cs" />
     <Compile Include="IMetadataCacheManager.cs" />

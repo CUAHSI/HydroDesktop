@@ -68,6 +68,16 @@ Public Class cEditView
         ccList0.Add(System.Drawing.Color.FromArgb(166, 206, 227))
     End Sub
 
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
+
     Public Sub New(ByVal seriesSelector As ISeriesSelector)
         'InitializeComponent()
 
