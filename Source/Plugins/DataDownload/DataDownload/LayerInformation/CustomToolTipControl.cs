@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
@@ -14,7 +15,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
         #region Fields
 
         private GraphicsPath graphicsPath;
-        private readonly Label[] labels;
+        private ServiceInfoGroup _serviceInfo = new ServiceInfoGroup();
+
+        const int CONTROLS_START_X = 13;
+        const int CONSTROLS_START_Y = 11;
+        const int VERTICAL_PADDING = 3;
 
         #endregion
 
@@ -25,19 +30,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
             InitializeComponent();
 
             SizeChanged += CustomToolTipControl_SizeChanged;
-
-            PointInfo = new ServiceInfo();
-            PointInfo.PropertyChanged += PointInfo_PropertyChanged;
-
-            lblServiceDesciptionUrl.TextChanged += lblServiceDesciptionUrl_TextChanged;
-            lblServiceDesciptionUrl.LinkClicked += lblServiceDesciptionUrl_LinkClicked;
-            lblDownloadData.LinkClicked += lblDownloadData_LinkClicked;
-
-            labels = new[] { lblDataSource, lblSiteName, lblValueCount, lblServiceDesciptionUrl, lblDownloadData };
-
-            foreach (var lbl in labels)
-                lbl.SizeChanged += lbl_SizeChanged;
-
             Load += CustomToolTipControl_Load;
         }
        
@@ -45,54 +37,115 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         #region Properties
 
-        public ServiceInfo PointInfo { get; private set; }
         public Popup Popup { get; set; }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Is info already setted on current tooltip
+        /// </summary>
+        /// <param name="info">Info to check</param>
+        /// <returns>True - setted, false - otherwise</returns>
+        public bool IsInfoAlreadySetted(ServiceInfoGroup info)
+        {
+            return _serviceInfo.Equals(info);
+        }
+
+        /// <summary>
+        /// Set info to current tooltip
+        /// </summary>
+        /// <param name="info">Info to set</param>
+        /// <exception cref="ArgumentNullException"><paramref name="info"/>must be not null</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="info"/> must be non-empty (IsEmpty = false)</exception>
+        public void SetInfo(ServiceInfoGroup info)
+        {
+            if (info == null) throw new ArgumentNullException("info");
+            if (info.IsEmpty) throw new ArgumentOutOfRangeException("info", "info must be non-empty");
+
+            _serviceInfo = info;
+            
+            SuspendLayout();
+
+            Controls.Clear();
+            
+            var thisWidth = 0;
+            var startX = CONTROLS_START_X;
+            var startY = CONSTROLS_START_Y;
+
+            var itemForCommonParts = info.GetItems().First();
+
+            // Data Source label
+            var lbDataSource = new LinkLabel {AutoSize = true, Location = new Point(startX, startY)};
+            lbDataSource.LinkClicked += lblServiceDesciptionUrl_LinkClicked;
+            AddControl(lbDataSource, ref startY);
+            lbDataSource.Text = itemForCommonParts.DataSource;
+            lbDataSource.Links[0].LinkData = itemForCommonParts.ServiceDesciptionUrl;
+            if (lbDataSource.Width > thisWidth) thisWidth = lbDataSource.Width;
+
+            // Site Name label
+            startY += 2;
+            var lbSiteName = new Label {AutoSize = true, Location = new Point(startX, startY)};
+            AddControl(lbSiteName, ref startY);
+            lbSiteName.Text = itemForCommonParts.SiteName;
+            if (lbSiteName.Width > thisWidth) thisWidth = lbSiteName.Width;
+
+            foreach(var item in info.GetItems())
+            {
+                // Variable label
+                var lbVariable = new Label {AutoSize = true, Location = new Point(startX, startY)};
+                AddControl(lbVariable, ref startY);
+                lbVariable.Text = string.Format("{0}{1} - {2}{3}",
+                                                item.VarName,
+                                                info.ItemsCount <= 1? string.Empty : ", " + item.DataType,
+                                                item.ValueCountAsString,
+                                                item.IsDownloaded ? string.Empty : " (estimated)");
+                if (lbVariable.Width > thisWidth) thisWidth = lbVariable.Width;
+            }
+            
+            // Download data label
+            startY += 2;
+            var lbDowloadData = new LinkLabel {AutoSize = true, Location = new Point(startX, startY)};
+            lbDowloadData.LinkClicked += lblDownloadData_LinkClicked;
+            AddControl(lbDowloadData, ref startY);
+            lbDowloadData.Text = "Download data";
+            if (lbDowloadData.Width > thisWidth) thisWidth = lbDowloadData.Width;
+            lbDowloadData.Location = new Point(thisWidth - lbDowloadData.Width + 10, lbDowloadData.Location.Y);
+
+            Popup.Width = thisWidth + 20;
+            Popup.Height = startY + CONSTROLS_START_Y;
+
+            ResumeLayout(true);
+            CustomToolTipControl_SizeChanged(this, EventArgs.Empty);
+        }
+
+        private void AddControl(Control cntrl, ref int startY)
+        {
+            Controls.Add(cntrl);
+            startY += cntrl.Size.Height + VERTICAL_PADDING;
+        }
 
         #endregion
 
         #region Private methods
 
-        void PointInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "DataSource":
-                    lblDataSource.Text = PointInfo.DataSource;
-                    break;
-                case "SiteName":
-                    lblSiteName.Text = PointInfo.SiteName;
-                    break;
-                case "ValueCountAsString":
-                    lblValueCount.Text = string.Format("{0} - {1}{2}",
-                        PointInfo.VarName,
-                        PointInfo.ValueCountAsString,
-                        PointInfo.IsDownloaded ? string.Empty : " (estimated)");
-                    break;
-                case "ServiceDesciptionUrl":
-                    lblServiceDesciptionUrl.Text = PointInfo.ServiceDesciptionUrl;
-                    break;
-                case "IsDownloaded":
-                    lblDownloadData.Text = PointInfo.IsDownloaded ? "Download Updated Data" : "Download Data";
-                    break;
-            }
-        }
-
         void lblDownloadData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            Debug.Assert(!_serviceInfo.IsEmpty);
+
             if (Popup != null)
             {
                 Popup.Close();
             }
-            var oneSeries = ClassConvertor.ServiceInfoToOneSeriesDownloadInfo(PointInfo);
-            var dataThemeName = PointInfo.Layer.LegendText;
-            var startArgs = new StartDownloadArg(new List<OneSeriesDownloadInfo> {oneSeries}, dataThemeName);
 
-            Global.PluginEntryPoint.StartDownloading(startArgs, PointInfo.Layer);
-        }
+            var seriesList = new List<OneSeriesDownloadInfo>(_serviceInfo.ItemsCount);
+            seriesList.AddRange(_serviceInfo.GetItems().Select(ClassConvertor.ServiceInfoToOneSeriesDownloadInfo));
+            var layer = _serviceInfo.GetItems().First().Layer; // we have at least one element
 
-        void lblServiceDesciptionUrl_TextChanged(object sender, EventArgs e)
-        {
-            lblServiceDesciptionUrl.Links[0].LinkData = lblServiceDesciptionUrl.Text;
+            var dataThemeName = layer.LegendText;
+            var startArgs = new StartDownloadArg(seriesList, dataThemeName);
+            Global.PluginEntryPoint.StartDownloading(startArgs, layer);
         }
 
         void lblServiceDesciptionUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -104,7 +157,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 // If the value looks like a URL, navigate to it.
                 if (null != target && (target.StartsWith("http") || target.StartsWith("www")))
                 {
-                    System.Diagnostics.Process.Start(target);
+                    Process.Start(target);
                 }
 
             }
@@ -113,18 +166,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
         void CustomToolTipControl_SizeChanged(object sender, EventArgs e)
         {
             Region = new Region(graphicsPath = CreateRoundRectangle(Width - 1, Height - 1, 6));
-        }
-
-        void lbl_SizeChanged(object sender, EventArgs e)
-        {
-            if (Popup == null) return;
-
-            var width = 0;
-            foreach (var lbl in labels)
-                if (lbl.Size.Width > width)
-                    width = lbl.Size.Width;
-
-            Popup.Size = new Size(width + 20, Height);
         }
 
         void CustomToolTipControl_Load(object sender, EventArgs e)
@@ -161,7 +202,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         private Pen GetBorderPen()
         {
-            return PointInfo.IsDownloaded
+            var isDowloaded = !_serviceInfo.IsEmpty && _serviceInfo.GetItems().All(item => item.IsDownloaded);
+            return    isDowloaded
                        ? new Pen(Color.Green, 5)
                        : new Pen(SystemColors.WindowFrame, 2);
         }

@@ -116,6 +116,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         public DateTime EndDate { get; set; }
 
         public string VarName { get; set; }
+        public string DataType { get; set; }
 
         public double Latitude { get; set; }
 
@@ -189,6 +190,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             StartDate = source.StartDate;
             VarCode = source.VarCode;
             VarName = source.VarName;
+            DataType = source.DataType;
             ValueCount = source.ValueCount;
             ServiceDesciptionUrl = source.ServiceDesciptionUrl;
         }
@@ -201,13 +203,15 @@ namespace HydroDesktop.DataDownload.LayerInformation
             return pi.DataSource == DataSource &&
                    pi.SiteName == SiteName &&
                    pi.ValueCount == ValueCount &&
-                   pi.ServiceDesciptionUrl == ServiceDesciptionUrl;
+                   pi.ServiceDesciptionUrl == ServiceDesciptionUrl &&
+                   pi.VarCode == VarCode;
         }
 
         public override int GetHashCode()
         {
             return DataSource.GetHashCode() ^ SiteName.GetHashCode() ^
-                   ValueCount.GetHashCode() ^ ServiceDesciptionUrl.GetHashCode();
+                   ValueCount.GetHashCode() ^ ServiceDesciptionUrl.GetHashCode() ^ 
+                   VarCode.GetHashCode();
         }
 
         #endregion

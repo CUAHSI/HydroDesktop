@@ -128,6 +128,7 @@
       <DependentUpon>CustomToolTipControl.cs</DependentUpon>
     </Compile>
     <Compile Include="LayerInformation\HISCentralInfoExtractor.cs" />
+    <Compile Include="LayerInformation\ServiceInfoGroup.cs" />
     <Compile Include="LayerInformation\PopupControl\GripBounds.cs" />
     <Compile Include="LayerInformation\PopupControl\NativeMethods.cs" />
     <Compile Include="LayerInformation\PopupControl\Popup.cs">
