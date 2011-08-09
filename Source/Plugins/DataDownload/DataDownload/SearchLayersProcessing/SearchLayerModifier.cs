@@ -120,7 +120,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             foreach (var dInfo in downloadManager.GetSavedData())
             {
                 var searchFeature = dInfo.SourceFeature;
-                var series = dInfo.ResultSeries;
+                var series = dInfo.ResultSeries.First();
 
                 // Find downloaded feature
                 var downloadedFeature = downloadedFeatureSet.Features.FirstOrDefault(feature =>

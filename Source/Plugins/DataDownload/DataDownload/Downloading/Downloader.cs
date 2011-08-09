@@ -69,15 +69,16 @@ namespace HydroDesktop.DataDownload.Downloading
         /// This function is used to get the Values in XML Format based on the selected sites in the layer
         /// </summary>
         /// <param name="info">DownloadInfo</param>
-        /// <returns>The name of the xml file</returns>
+        /// <returns>Collection of of the xml files with values</returns>
         /// <exception cref="DownloadXmlException">Some exception during get values from web service</exception>
-        public string DownloadXmlDataValues(OneSeriesDownloadInfo info)
+        public IEnumerable<string> DownloadXmlDataValues(OneSeriesDownloadInfo info)
         {
             try
             {
-                return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode, info.StartDate, info.EndDate);
+                return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode,
+                                                                   info.StartDate, info.EndDate, info.EstimatedValuesCount);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DownloadXmlException(ex.Message, ex);
             }
@@ -91,28 +92,33 @@ namespace HydroDesktop.DataDownload.Downloading
         /// Converts the xml file to a data series object.
         /// </summary>
         /// <param name="dInfo">Download info</param>
-        /// <returns>The data series object</returns>
+        /// <returns>Collectiob of the data series objects</returns>
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
         /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
-        public Series DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
+        public IEnumerable<Series> DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
+        {
+            var client = GetWsClientInstance(dInfo.Wsdl);
+            var parser = client.ServiceInfo.Version == 1.0
+                                             ? (IWaterOneFlowParser) new WaterOneFlow10Parser()
+                                             : new WaterOneFlow11Parser();
+
+            var result = new List<Series>();
+            foreach (var xmlFile in dInfo.FilesWithData)
+            {
+                result.Add(GetDataSeriesFromXml(xmlFile, parser));
+            }
+            return result;
+        }
+
+
+        private Series GetDataSeriesFromXml(string xmlFileName, IWaterOneFlowParser parser)
         {
             IList<Series> seriesList;
 
             try
             {
-                //get the service version
-                WaterOneFlowClient client = GetWsClientInstance(dInfo.Wsdl);
-                if (client.ServiceInfo.Version == 1.0)
-                {
-                    var parser = new WaterOneFlow10Parser();
-                    seriesList = parser.ParseGetValues(dInfo.FileName);
-                }
-                else
-                {
-                    var parser = new WaterOneFlow11Parser();
-                    seriesList = parser.ParseGetValues(dInfo.FileName);
-                }
+                seriesList = parser.ParseGetValues(xmlFileName);
             }
             catch(Exception ex)
             {
@@ -126,6 +132,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
             return seriesList[0];
         }
+        
 
         /// <summary>
         /// Creates a new DataSeries from a xml file and saves it to database.
@@ -150,6 +157,18 @@ namespace HydroDesktop.DataDownload.Downloading
                 throw new SaveDataSeriesException(ex.Message, ex);
             }
         }
+
+        public int SaveDataSeries(IEnumerable<Series> series, Theme theme, OverwriteOptions overwriteOption)
+        {
+            var result = 0;
+            var enumerator = series.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                result += SaveDataSeries(enumerator.Current, theme, overwriteOption);
+            }
+            return result;
+        }
+
 
         #endregion
     }
