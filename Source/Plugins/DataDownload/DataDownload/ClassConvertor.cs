@@ -71,6 +71,9 @@ namespace HydroDesktop.DataDownload
                     case "VarCode":
                         pInfo.VarCode = strValue;
                         break;
+                    case "DataType":
+                        pInfo.DataType = strValue;
+                        break;
                     case "ValueCount":
                         {
                             int val;

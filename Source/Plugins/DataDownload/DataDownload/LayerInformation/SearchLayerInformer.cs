@@ -118,12 +118,12 @@ namespace HydroDesktop.DataDownload.LayerInformation
             }
 
             // If already visible same tooltip, not show again
-            var toolTipPointInfo = ((CustomToolTipControl) toolTip.Content).PointInfo;
-            if (toolTip.Visible && toolTipPointInfo.Equals(pInfo))
+            var control = (CustomToolTipControl) toolTip.Content;
+            if (toolTip.Visible && control.IsInfoAlreadySetted(pInfo))
                 return;
 
             HideToolTip();
-            toolTipPointInfo.Copy(pInfo);
+            control.SetInfo(pInfo);
             toolTip.Show(_map, e.Location);
         }
 
@@ -132,10 +132,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
             toolTip.Close();
         }
 
-        private ServiceInfo Identify(IFeatureLayer layer, Extent tolerant)
+        private ServiceInfoGroup Identify(IFeatureLayer layer, Extent tolerant)
         {
             Debug.Assert(layer != null);
 
+            var group = new ServiceInfoGroup();
             foreach (var feature in layer.DataSet.Select(tolerant))
             {
                 if (feature.DataRow == null)
@@ -144,10 +145,10 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 }
                 var pInfo = ClassConvertor.IFeatureToServiceInfo(feature, layer);
                 pInfo.ServiceDesciptionUrl = _serviceInfoExtractor.GetServiceDesciptionUrl(pInfo.ServiceUrl);
-                return pInfo;
+                group.AddOverlappedServiceInfo(pInfo);
             }
 
-            return null;
+            return group;
         }
 
         void Layers_LayerRemoved(object sender, LayerEventArgs e)
