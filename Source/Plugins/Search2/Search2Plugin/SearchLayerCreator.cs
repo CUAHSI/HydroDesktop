@@ -41,8 +41,7 @@ namespace HydroDesktop.Search
         /// <summary>
         /// Create search layer
         /// </summary>
-        /// <returns>Search layer</returns>
-        public MapGroup Create()
+        public void Create()
         {
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, Global.SEARCH_RESULT_LAYER_NAME);
             foreach(var item in _searchResult.Features)
@@ -52,7 +51,26 @@ namespace HydroDesktop.Search
             }
             _map.Refresh();
 
-            return root;
+            //assign the projection again
+            foreach (var item in _searchResult.Features)
+                item.Value.Reproject(_map.Projection);
+
+            for (int i = 0; i < root.Layers.Count; i++)
+            {
+                var layer = root[i];
+                var state = i == 0;
+                var rendItem = layer as IRenderableLegendItem;
+                if (rendItem != null)
+                {
+                    rendItem.IsVisible = state; // force a re-draw in the case where we are talking about layers.
+                }
+                else
+                {
+                    layer.Checked = state;
+                }
+            }
+
+            _map.Refresh();
         }
 
         #endregion
@@ -63,8 +81,8 @@ namespace HydroDesktop.Search
         {
             var myLayer = new MapPointLayer(featureSet);
             myLayer.LegendText = legendName;
-            myLayer.Symbology = CreateSymbology(servCode, featureSet);
-            SetUpLabeling(myLayer);
+           // myLayer.Symbology = CreateSymbology(servCode, featureSet);
+           // SetUpLabeling(myLayer);
 
             return myLayer;
         }

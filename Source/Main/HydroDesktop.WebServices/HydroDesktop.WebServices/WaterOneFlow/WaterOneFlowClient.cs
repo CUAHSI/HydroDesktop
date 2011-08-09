@@ -177,7 +177,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			string xmlFile = GetSitesXML ( westLongitude, southLatitude, eastLongitude, northLatitude );
 			return _parser.ParseGetSitesXml ( xmlFile );
 		}
-
+        
 		/// <summary>
 		/// Get the data values for the specific site, variable and time range as a XML document
 		/// in the WaterML format
@@ -189,31 +189,89 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <returns>the downloaded xml file name</returns>
 		public string GetValuesXML ( string siteCode, string variableCode, DateTime startTime, DateTime endTime )
 		{
-			//the web method parameters
-			object[] param = new object[5];
-			param[0] = siteCode;
-			param[1] = variableCode;
-			param[2] = startTime.ToString ( "yyyy-MM-dd" );
-			param[3] = endTime.ToString ( "yyyy-MM-dd" );
-			param[4] = ""; //authentication token is not specified
-
-			Object result = null;
-
-			result = CallWebMethod ( "GetValues", param );
-
-			//generate the file name
-			string timeStamp = GenerateTimeStampString ();
-			string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
-			fileName = fileName.Replace ( ":", "-" );
-			fileName = fileName.Replace ( "=", "-" );
-			fileName = fileName.Replace ( "/", "-" );
-
-			fileName = Path.Combine ( DownloadDirectory, fileName );
-			WriteLinesToFile ( fileName, result.ToString () );
-			return fileName;
+		    return GetValuesXML(siteCode, variableCode, startTime, endTime, -1).First();
 		}
 
-		/// <summary>
+	    /// <summary>
+	    /// Get the data values for the specific site, variable and time range as a XML document
+	    /// in the WaterML format
+	    /// </summary>
+	    /// <param name="siteCode">the full site code (networkPrefix:siteCode)</param>
+	    /// <param name="variableCode">the full variable code (vocabularyPrefix:variableCode)</param>
+	    /// <param name="startTime">the start date/time</param>
+	    /// <param name="endTime">the end date/time</param>
+	    /// <param name="estimatedValuesCount">Estimated values count. 
+	    /// If this value less then zero, the result collection will necessarily contains only 1 file,
+	    /// otherwise number of file depends from this value.</param>
+	    /// <returns>Collection of the downloaded xml file names</returns>
+        public IEnumerable<string> GetValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime, int estimatedValuesCount)
+	    {
+	        const int valuesPerReq = 5000;
+
+	        int intervalsCount;
+            if (estimatedValuesCount <= 0 || estimatedValuesCount <= valuesPerReq)
+                intervalsCount = 1;
+            else
+                intervalsCount = estimatedValuesCount%valuesPerReq == 0
+                                     ? estimatedValuesCount/valuesPerReq
+                                     : estimatedValuesCount/valuesPerReq + 1;
+                
+	        var datesDiff = endTime.Subtract(startTime);
+	        var daysPerInteval = datesDiff.Days/intervalsCount;
+
+	        var loopStartDate = startTime;
+            var loopEndDate = loopStartDate.AddDays(daysPerInteval);
+
+	        var savedFiles = new List<string>(intervalsCount);
+            for(int i = 0; i< intervalsCount; i++)
+            {
+                if (i == intervalsCount - 1)
+                {
+                    loopEndDate = endTime;
+                }
+
+                var xmlFile = GetAndSavesValuesXML(siteCode, variableCode, loopStartDate, loopEndDate);
+                savedFiles.Add(xmlFile);
+
+                // Set loop dates to next interval
+                loopStartDate = loopEndDate.AddDays(1);
+                loopEndDate = loopStartDate.AddDays(daysPerInteval);
+            }
+
+            return savedFiles.AsEnumerable();
+	    }
+
+        private string GetAndSavesValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
+        {
+            //the web method parameters
+            var param = new object[5];
+            param[0] = siteCode;
+            param[1] = variableCode;
+            param[2] = startTime.ToString("yyyy-MM-dd");
+            param[3] = endTime.ToString("yyyy-MM-dd");
+            param[4] = ""; //authentication token is not specified
+
+            var result = CallWebMethod("GetValues", param);
+
+            //generate the file name
+            var fileName = SaveWebMethodResut(result, siteCode, variableCode);
+            return fileName;
+        }
+        private string SaveWebMethodResut(object result, string siteCode, string variableCode)
+        {
+            //generate the file name
+            string timeStamp = GenerateTimeStampString();
+            string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
+            fileName = fileName.Replace(":", "-");
+            fileName = fileName.Replace("=", "-");
+            fileName = fileName.Replace("/", "-");
+
+            fileName = Path.Combine(DownloadDirectory, fileName);
+            WriteLinesToFile(fileName, result.ToString());
+            return fileName;
+        }
+
+	    /// <summary>
 		/// Gets the information about all sites in the web service as a XML document in the WaterML format
 		/// </summary>
 		/// <returns>The downloaded XML file name</returns>

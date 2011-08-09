@@ -118,55 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="close_the_search" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\close_the_search.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="OpenSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\OpenSearch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="OpenSearch_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\OpenSearch_1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Restore_query" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Restore_query.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Save_query" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Save_query.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SelByPoly" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\SelByPoly.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SelByRect" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\SelByRect.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Select_sp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Select_sp.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\search_16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search2_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\search2_2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search2_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\search2_3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search2_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\search2_4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SEARCH_RESULT_LAYER_NAME" xml:space="preserve">
-    <value>"Data Sites"</value>
-  </data>
-  <data name="wgs_84_esri_string" xml:space="preserve">
-    <value>GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223562997]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]]</value>
-  </data>
-  <data name="RectangleLayerName" xml:space="preserve">
-    <value>Search Rectangle</value>
-  </data>
-  <data name="SearchMode_HISCentral" xml:space="preserve">
-    <value>HIS Central</value>
-  </data>
-  <data name="SearchMode_MetadataCache" xml:space="preserve">
-    <value>Local Metadata Cache</value>
+  <data name="download32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\download32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
