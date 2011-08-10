@@ -393,6 +393,7 @@ namespace HydroDesktop.Controls.Themes
         /// </summary>
         /// <param name="themeName"></param>
         /// <returns>The theme in the 'WGS84' projection</returns>
+        /// <exception cref="ArgumentException">Throws when such theme not found in the database</exception>
         public IFeatureSet GetFeatureSet(string themeName)
         {
             string sql = "SELECT ThemeID from DataThemeDescriptions WHERE ThemeName =?";
