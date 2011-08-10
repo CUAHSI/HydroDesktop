@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
@@ -261,7 +262,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
             var downloadList = Information.StartArgs.ItemsToDownload;
             var indeces = Information.IndecesToDownload;
-            const int maxThreadsToDownloadCount = 4;                                    // max count of downloading threads
+            const int maxThreadsToDownloadCount = 16;                     // max count of downloading threads
             var commonInfo = new CommnonDoDownloadInfo(new Downloader()); // common info, shared through downloading threads
 
             // Starting (if possible) maxThreadsToDownloadCount downloading threads 
@@ -320,14 +321,15 @@ namespace HydroDesktop.DataDownload.Downloading
             var di = dda.DownloadInfo;
             var objDownloader = dda.CommnonInfo.Downloader;
           
-            var startTime = DateTime.Now;
-            bool hasException = true;
+            var hasException = true;
             try
             {
                 if (_worker.CancellationPending) return;
 
                 di.Status = DownloadInfoStatus.Downloading;
-                di.FilesWithData = objDownloader.DownloadXmlDataValues(di);
+                var progressHandler = new GetValueProgressHandler(this, di);
+                di.FilesWithData = objDownloader.DownloadXmlDataValues(di, progressHandler);
+                if (_worker.CancellationPending) return;
                 di.Status = DownloadInfoStatus.Downloaded;
                 lock (_syncObjForDownload)
                 {
@@ -351,16 +353,9 @@ namespace HydroDesktop.DataDownload.Downloading
             }
             finally
             {
-                // Calculcate estimated time
-                var endTime = DateTime.Now;
-                var diff = endTime.Subtract(startTime).TotalSeconds;
-                di.DownloadTimeTaken = TimeSpan.FromSeconds(diff);
-                var interval = diff*
-                               (Information.TotalSeries -
-                                (Information.WithError + Information.Downloaded))/ + 1;
-                Information.EstimatedTimeForDownload = interval < Int32.MaxValue
-                                                                    ? new TimeSpan(0, 0, (int) interval)
-                                                                    : TimeSpan.MaxValue;
+                //Update estimated times
+                Information.AddTimeTaken(di.DownloadTimeTaken);
+                Information.RefreshEstimatedTimeForDownload(); 
 
                 // common progress
                 if (hasException)
@@ -387,7 +382,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 dda.CommnonInfo.RemoveDonwloadingThread(dda.DownloadThread);
                 if (dda.CommnonInfo.DownloadingThreadsCount == 0)
                 {
-                    Information.EstimatedTimeForDownload = new TimeSpan();
+                    Information.RefreshEstimatedTimeForDownload();
                 }
             }
         }
@@ -593,6 +588,36 @@ namespace HydroDesktop.DataDownload.Downloading
             Info,
             Error,
             Warn
+        }
+
+        private class GetValueProgressHandler : IGetValuesProgressHandler
+        {
+            private readonly DownloadManager _manager;
+            private readonly OneSeriesDownloadInfo _di;
+            private double _totalTime;
+
+            public GetValueProgressHandler(DownloadManager manager, OneSeriesDownloadInfo di)
+            {
+                _manager = manager;
+                _di = di;
+            }
+
+            public void Progress(int intervalNumber, int totalIntervalsCount, double timeTaken)
+            {
+                _totalTime += timeTaken;
+                _di.EstimatedTimeToDownload = timeTaken*(totalIntervalsCount - (intervalNumber + 1)) + 1;
+                _manager.Information.RefreshEstimatedTimeForDownload();
+
+                if (intervalNumber == totalIntervalsCount - 1)
+                {
+                    _di.DownloadTimeTaken = new TimeSpan(0, 0, (int) _totalTime);
+                }
+            }
+
+            public bool CancellationPending
+            {
+                get { return _manager._worker.CancellationPending; }
+            }
         }
 
         #endregion

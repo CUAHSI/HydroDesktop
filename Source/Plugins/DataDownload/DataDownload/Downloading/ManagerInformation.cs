@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
@@ -17,7 +18,6 @@ namespace HydroDesktop.DataDownload.Downloading
         private ICollection<int> _indecesToDownload;
 
         private const int INITIAL_TIME_TO_SAVE = 1;
-        private const int INITIAL_TIME_TO_DOWNLOAD = 15;
 
         #endregion
 
@@ -145,6 +145,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 WithError = 0;
                 DownloadedAndSaved = 0;
                 Downloaded = 0;
+                TimeTakenForDownloading = new TimeSpan();
             }
         }
 
@@ -159,7 +160,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 NotifyPropertyChanged("RemainingSeries");
 
                 // update depended properties
-                EstimatedTimeForDownload = new TimeSpan(0, 0, RemainingSeries * INITIAL_TIME_TO_DOWNLOAD);
+                RefreshEstimatedTimeForDownload();
                 EstimatedTimeForSave = new TimeSpan(0, 0, RemainingSeries * INITIAL_TIME_TO_SAVE);
             }
         }
@@ -179,7 +180,7 @@ namespace HydroDesktop.DataDownload.Downloading
         public TimeSpan EstimatedTimeForDownload
         {
             get { return _estimatedTimeForDownload; }
-            set
+            private set
             {
                 _estimatedTimeForDownload = value;
                 NotifyPropertyChanged("EstimatedTimeForDownload");
@@ -199,6 +200,31 @@ namespace HydroDesktop.DataDownload.Downloading
 
                 EstimatedTime = EstimatedTimeForDownload.Add(EstimatedTimeForSave);
             }
+        }
+
+        private TimeSpan TimeTakenForDownloading { get; set; }
+        public void AddTimeTaken(TimeSpan timeSpan)
+        {
+            TimeTakenForDownloading = TimeTakenForDownloading.Add(timeSpan);
+        }
+     
+        public void RefreshEstimatedTimeForDownload()
+        {
+            double avgTimeToSeries = 0;
+            if (TotalSeries != RemainingSeries)
+                avgTimeToSeries = TimeTakenForDownloading.TotalSeconds / (TotalSeries - RemainingSeries);
+            
+            double remaingTime = 0;
+            foreach (var item in StartArgs.ItemsToDownload)
+            {
+                if (item.Status == DownloadInfoStatus.Pending && avgTimeToSeries > 0)
+                    item.EstimatedTimeToDownload = avgTimeToSeries;
+
+                if (item.Status == DownloadInfoStatus.Downloading || item.Status == DownloadInfoStatus.Pending) 
+                    remaingTime += item.EstimatedTimeToDownload;
+            }
+
+            EstimatedTimeForDownload = new TimeSpan(0, 0, (int)remaingTime);
         }
 
         #endregion
