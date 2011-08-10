@@ -203,8 +203,11 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 	    /// <param name="estimatedValuesCount">Estimated values count. 
 	    /// If this value less then zero, the result collection will necessarily contains only 1 file,
 	    /// otherwise number of file depends from this value.</param>
+	    /// <param name="progressHandler">Progress handler, may be null.</param>
 	    /// <returns>Collection of the downloaded xml file names</returns>
-        public IEnumerable<string> GetValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime, int estimatedValuesCount)
+	    public IEnumerable<string> GetValuesXML(string siteCode, string variableCode, 
+                                                DateTime startTime, DateTime endTime, 
+                                                int estimatedValuesCount, IGetValuesProgressHandler progressHandler = null)
 	    {
 	        const int valuesPerReq = 5000;
 
@@ -225,13 +228,28 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 	        var savedFiles = new List<string>(intervalsCount);
             for(int i = 0; i< intervalsCount; i++)
             {
+                if (progressHandler != null &&
+                    progressHandler.CancellationPending) break;
+
                 if (i == intervalsCount - 1)
                 {
                     loopEndDate = endTime;
                 }
 
-                var xmlFile = GetAndSavesValuesXML(siteCode, variableCode, loopStartDate, loopEndDate);
-                savedFiles.Add(xmlFile);
+                var startGetTime = DateTime.Now;
+                try
+                {
+                    var xmlFile = GetAndSavesValuesXML(siteCode, variableCode, loopStartDate, loopEndDate);
+                    savedFiles.Add(xmlFile);
+                }finally
+                {
+                    var endGetTime = DateTime.Now;
+                    var timeTaken = endGetTime.Subtract(startGetTime).TotalSeconds;
+                    if (progressHandler != null)
+                    {
+                        progressHandler.Progress(i, intervalsCount, timeTaken);
+                    }
+                }
 
                 // Set loop dates to next interval
                 loopStartDate = loopEndDate.AddDays(1);
@@ -504,4 +522,21 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 		#endregion
 	}
+
+    public interface IGetValuesProgressHandler
+    {
+        /// <summary>
+        /// Report progress 
+        /// </summary>
+        /// <param name="intervalNumber">Number of downloaded interval</param>
+        /// <param name="totalIntervalsCount">Total intervals count</param>
+        /// <param name="timeTaken">Time taken to download current interval (in seconds)</param>
+        void Progress(int intervalNumber, int totalIntervalsCount, double timeTaken);
+        /// <summary>
+        /// Shows that current opeation should be cancelled
+        /// </summary>
+        bool CancellationPending { get;}
+    }
+    
 }
+

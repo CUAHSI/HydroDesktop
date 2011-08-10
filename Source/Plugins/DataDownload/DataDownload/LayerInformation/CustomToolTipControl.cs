@@ -206,7 +206,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         private Pen GetBorderPen()
         {
-            var isDowloaded = !_serviceInfo.IsEmpty && _serviceInfo.GetItems().All(item => item.IsDownloaded);
+            var isDowloaded = !_serviceInfo.IsEmpty && _serviceInfo.GetItems().Any(item => item.IsDownloaded);
             return    isDowloaded
                        ? new Pen(Color.Green, 5)
                        : new Pen(SystemColors.WindowFrame, 2);

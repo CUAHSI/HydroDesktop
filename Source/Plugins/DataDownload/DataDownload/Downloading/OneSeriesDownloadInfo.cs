@@ -30,6 +30,8 @@ namespace HydroDesktop.DataDownload.Downloading
         internal const string PROPERTY_ErrorMessage = "ErrorMessage";
         internal const string PROPERTY_OverwriteOption = "OverwriteOption";
 
+        private const int INITIAL_TIME_TO_DOWNLOAD = 15;
+
         #endregion
 
         #region Constructors
@@ -190,6 +192,7 @@ namespace HydroDesktop.DataDownload.Downloading
                     DownloadTimeTaken = new TimeSpan();
                     ErrorMessage = null;
                     FilesWithData = null;
+                    EstimatedTimeToDownload = INITIAL_TIME_TO_DOWNLOAD;
                 }
             }
         }
@@ -256,6 +259,8 @@ namespace HydroDesktop.DataDownload.Downloading
                 NotifyPropertyChanged(PROPERTY_OverwriteOption);
             }
         }
+
+        public double EstimatedTimeToDownload { get; set; }
 
         #endregion
 

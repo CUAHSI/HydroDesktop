@@ -69,14 +69,16 @@ namespace HydroDesktop.DataDownload.Downloading
         /// This function is used to get the Values in XML Format based on the selected sites in the layer
         /// </summary>
         /// <param name="info">DownloadInfo</param>
+        /// <param name="getValueProgressHandler">Progress handler</param>
         /// <returns>Collection of of the xml files with values</returns>
         /// <exception cref="DownloadXmlException">Some exception during get values from web service</exception>
-        public IEnumerable<string> DownloadXmlDataValues(OneSeriesDownloadInfo info)
+        public IEnumerable<string> DownloadXmlDataValues(OneSeriesDownloadInfo info, IGetValuesProgressHandler getValueProgressHandler)
         {
             try
             {
                 return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode,
-                                                                   info.StartDate, info.EndDate, info.EstimatedValuesCount);
+                                                                   info.StartDate, info.EndDate, info.EstimatedValuesCount, 
+                                                                   getValueProgressHandler);
             }
             catch (Exception ex)
             {
