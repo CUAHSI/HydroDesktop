@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.Downloading;
@@ -205,7 +206,27 @@ namespace HydroDesktop.DataDownload
             var themeName = dManager.Information.StartArgs.DataTheme.Name;
 
             var _themeManager = new ThemeManager(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
-            var featureSet = _themeManager.GetFeatureSet(themeName);
+            IFeatureSet featureSet;
+            try
+            {
+                featureSet = _themeManager.GetFeatureSet(themeName);
+            }
+            catch (ArgumentException)
+            {
+                // No such theme in the database
+                featureSet = null;
+            }
+            if (featureSet == null)
+            {
+                // in theory this condition always will be false  
+                if (dManager.Information.WithError != dManager.Information.TotalSeries)
+                {
+                    MessageBox.Show("Theme not found, but some series was saved!", "Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+                return;
+            }
+
             featureSet.FillAttributes();
 
             var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
@@ -215,7 +236,7 @@ namespace HydroDesktop.DataDownload
             ((IHydroAppManager) MapArgs.AppManager).SeriesView.SeriesSelector.RefreshSelection();
         }
 
-    #endregion
+        #endregion
     }
 }
 
