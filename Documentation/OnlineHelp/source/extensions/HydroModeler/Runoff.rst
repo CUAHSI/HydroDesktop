@@ -1,5 +1,15 @@
 .. index:: Runoff
 
+
+.. role:: raw-latex(raw)
+    :format: latex html
+
+.. raw:: html
+
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+
+
+
 Runoff
 ======
 
@@ -12,12 +22,26 @@ These components are designed to predict the tendencies and characteristics of s
 
 This component was created to estimate surface runoff.  It is designed off of the Saint-Venant momentum equation, which uses multiple terms to predict surface runoff.  Diffusive Wave ignores terms for the local and convective acceleration and only includes the pressure, gravity and friction forces.  The pressue force is dependant of the water depth along the channel.  The gravity force is dependant upon the slope of the channel bed.  The frictional force is dependant on the friction slope.  Kinematic wave is a simpler model, which does not include the pressure force term, where as dynamic wave considers all terms of the Saint-Venant momentum equation, including the local and convective acceleration.
 
+.. raw:: latex html
+
+	\[g\frac{\partial y}{\partial x}-g(S_0-S_f) = 0\]
+
 Unit Hydrograph
 ---------------
 
 This component was designed to approximate the watershed response to excess rainfall.  It is based off of the synthetic Soil Conservation Service (SCS) Unitless Hydrograph.  Using excess precipitation as inputs, this method can determine the streamflow at an outlet to a subbasin.  This component also uses the time of peak flow, the peak flow rate and the subbasin lag time as supporting data.  By using this data, the component can build a unit hydrograph that represents one inch of uniform runoff from a watershed in a set amount of time.  This unit hydrograph is then used to approximate the total runoff values.
 
+This is the Unit Hydrograph equation.
+
+.. raw:: latex html
+
+	\[Q_n = \sum_{m=1}^{n\le M}P_{e,m}U_{n-m+1}\]
+
 TOPMODEL
 --------
 
 This component is design around the concept that the topography can determine flow routing through upland catchments.  The component relies on the conservation of mass equation, to deteremine the inflow, outflow and change in storage, as well as Darcy's law, to determine the water flow rate through soil.  The Topographic Intdex (TI) is used to determine the index of hydrological similarity so that TOPMODEL can predict the hydrological responses.  From a Digital Elevation Model (DEM), tools referred to as Terrain Analysis Using Digital Elevation Models (TauDEM), are used to obtain hydrological information.  From here, we are able to analyse the watershed topography to derive an appropriate TI.
+
+.. raw:: latex html
+
+	\[q_{total} = q_{subsurface}+q_{overland}\]
