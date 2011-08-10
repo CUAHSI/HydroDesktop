@@ -26,6 +26,7 @@ namespace HydroDesktop.DataDownload.Downloading
         internal const string PROPERTY_Latitude = "Latitude";
         internal const string PROPERTY_Longitude = "Longitude";
         internal const string PROPERTY_Status = "Status";
+        internal const string PROPERTY_StatusAsString = "StatusAsString";
         internal const string PROPERTY_DownloadTimeTaken = "DownloadTimeTaken";
         internal const string PROPERTY_ErrorMessage = "ErrorMessage";
         internal const string PROPERTY_OverwriteOption = "OverwriteOption";
@@ -186,6 +187,7 @@ namespace HydroDesktop.DataDownload.Downloading
             {
                 _status = value;
                 NotifyPropertyChanged(PROPERTY_Status);
+                NotifyPropertyChanged(PROPERTY_StatusAsString);
 
                 if (_status == DownloadInfoStatus.Pending)
                 {
@@ -193,7 +195,18 @@ namespace HydroDesktop.DataDownload.Downloading
                     ErrorMessage = null;
                     FilesWithData = null;
                     EstimatedTimeToDownload = INITIAL_TIME_TO_DOWNLOAD;
+                    DownloadedChunksPercent = 0;
                 }
+            }
+        }
+        
+        public string StatusAsString
+        {
+            get
+            {
+                return Status != DownloadInfoStatus.Downloading
+                           ? Status.ToString()
+                           : string.Format("{0} ({1}%)", Status, (int)DownloadedChunksPercent);
             }
         }
 
@@ -261,6 +274,41 @@ namespace HydroDesktop.DataDownload.Downloading
         }
 
         public double EstimatedTimeToDownload { get; set; }
+        public double Progress
+        {
+            get
+            {
+                const int savePart = 5;
+
+                switch (Status)
+                {
+                   case DownloadInfoStatus.Pending:
+                        return 0;
+                    case DownloadInfoStatus.Error:
+                    case DownloadInfoStatus.OkWithWarnings:
+                    case DownloadInfoStatus.Ok:
+                        return 100;
+                    case DownloadInfoStatus.Downloaded:
+                        return 100 - savePart;
+                    case DownloadInfoStatus.Downloading:
+                        return DownloadedChunksPercent *((100.0 - savePart)/100.0);
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        private double _downloadedChunksPercent;
+        public double DownloadedChunksPercent
+        {
+            get { return _downloadedChunksPercent; }
+            set
+            {
+                _downloadedChunksPercent = value;
+
+                NotifyPropertyChanged(PROPERTY_StatusAsString);
+            }
+        }
 
         #endregion
 

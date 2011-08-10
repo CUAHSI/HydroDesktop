@@ -227,6 +227,11 @@ namespace HydroDesktop.DataDownload.Downloading
             EstimatedTimeForDownload = new TimeSpan(0, 0, (int)remaingTime);
         }
 
+        public double GetTotalProgress()
+        {
+            return StartArgs.ItemsToDownload.Sum(item => item.Progress)/StartArgs.ItemsToDownload.Count;
+        }
+
         #endregion
 
         #region Events

@@ -194,7 +194,7 @@ namespace HydroDesktop.DataDownload.Downloading
         void dgvDownloadData_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.RowIndex < 0 ||
-                dgvDownloadData.Columns[e.ColumnIndex].DataPropertyName != "Status") return;
+                dgvDownloadData.Columns[e.ColumnIndex].DataPropertyName != OneSeriesDownloadInfo.PROPERTY_StatusAsString) return;
 
             var blist = (BindingList<OneSeriesDownloadInfo>)dgvDownloadData.DataSource;
             var dInfo = blist[e.RowIndex];
@@ -279,7 +279,7 @@ namespace HydroDesktop.DataDownload.Downloading
             var fullVariableCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = OneSeriesDownloadInfo.PROPERTY_FullVariableCode, HeaderText = "VariableCode" };
             var siteNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = OneSeriesDownloadInfo.PROPERTY_SiteName, HeaderText = "SiteName" };
             var variableNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = OneSeriesDownloadInfo.PROPERTY_VariableName, HeaderText = "VariableName" };
-            var statusColumn = new DataGridViewTextBoxColumn { DataPropertyName = OneSeriesDownloadInfo.PROPERTY_Status, HeaderText = "Status" };
+            var statusColumn = new DataGridViewTextBoxColumn { DataPropertyName = OneSeriesDownloadInfo.PROPERTY_StatusAsString, HeaderText = "Status" };
 
             dgvDownloadData.Columns.Clear();
             dgvDownloadData.Columns.Add(serviceUrlColumn);
