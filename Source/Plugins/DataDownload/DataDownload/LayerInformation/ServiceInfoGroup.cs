@@ -31,8 +31,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
 
-            return first.ServiceUrl == second.ServiceUrl &&
-                   first.VarName == second.VarName &&
+            return first.SiteCode == second.SiteCode && 
                    first.VarCode != second.VarCode;
         }
 

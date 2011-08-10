@@ -90,7 +90,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
             AddControl(lbSiteName, ref startY);
             lbSiteName.Text = itemForCommonParts.SiteName;
             if (lbSiteName.Width > thisWidth) thisWidth = lbSiteName.Width;
-
+            
+            var sameVarName = info.GetItems().All(item => itemForCommonParts.VarName == item.VarName);
+            var sameType = info.GetItems().All(item => itemForCommonParts.DataType == item.DataType);
+            var showDataType = info.ItemsCount > 1 &&
+                               (!sameType || sameVarName);
             foreach(var item in info.GetItems())
             {
                 // Variable label
@@ -98,7 +102,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 AddControl(lbVariable, ref startY);
                 lbVariable.Text = string.Format("{0}{1} - {2}{3}",
                                                 item.VarName,
-                                                info.ItemsCount <= 1? string.Empty : ", " + item.DataType,
+                                                !showDataType ? string.Empty : ", " + item.DataType,
                                                 item.ValueCountAsString,
                                                 item.IsDownloaded ? string.Empty : " (estimated)");
                 if (lbVariable.Width > thisWidth) thisWidth = lbVariable.Width;
