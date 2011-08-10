@@ -11,7 +11,7 @@
   <CommonSendOptions>sndShowSendDialog, sndSendXMLLogCopy, sndSendScreenshot, sndUseOnlyActiveWindow</CommonSendOptions>
   <EMailAddresses>hydrodesktop@gmail.com</EMailAddresses>
   <EMailMessage></EMailMessage>
-  <EMailSendMode>esmSMTPServer</EMailSendMode>
+  <EMailSendMode>esmSMTPSSLClient</EMailSendMode>
   <EMailSubject>Hydrodesktop Error</EMailSubject>
   <ErrorsNumberToSave>32</ErrorsNumberToSave>
   <ErrorsNumberToShowTerminateBtn>3</ErrorsNumberToShowTerminateBtn>
@@ -27,10 +27,10 @@
   <SaveLogFile>True</SaveLogFile>
   <ShowOptions>soAppStartDate, soAppName, soAppVersionNumber, soAppParameters, soAppCompilationDate, soAppUpTime, soExcDate, soExcAddress, soExcModuleName, soExcModuleVersion, soExcType, soExcMessage, soExcID, soExcCount, soExcStatus, soExcNote, soUserID, soUserName, soUserEmail, soUserPrivileges, soUserCompany, soActCtlsFormClass, soActCtlsFormText, soActCtlsControlClass, soActCtlsControlText, soCmpName, soCmpTotalMemory, soCmpFreeMemory, soCmpTotalDisk, soCmpFreeDisk, soCmpSysUpTime, soCmpProcessor, soCmpDisplayMode, soCmpDisplayDPI, soCmpVideoCard, soCmpPrinter, soOSType, soOSBuildN, soOSUpdate, soOSLanguage, soOSCharset, soNetIP, soNetSubmask, soNetGateway, soNetDNS1, soNetDNS2, soNetDHCP, soCustomData</ShowOptions>
   <SMTPFrom>hydrodesktop@gmail.com</SMTPFrom>
-  <SMTPHost></SMTPHost>
-  <SMTPPassword></SMTPPassword>
-  <SMTPPort>25</SMTPPort>
-  <SMTPUserID></SMTPUserID>
+  <SMTPHost>smtp.gmail.com</SMTPHost>
+  <SMTPPassword>x4/YHVcHCtbu2TDYUxRZ8g==</SMTPPassword>
+  <SMTPPort>465</SMTPPort>
+  <SMTPUserID>hydrodesktop</SMTPUserID>
   <SupportURL></SupportURL>
   <TerminateBtnOperation>tbRestart</TerminateBtnOperation>
   <TextsCollection>(none)</TextsCollection>
