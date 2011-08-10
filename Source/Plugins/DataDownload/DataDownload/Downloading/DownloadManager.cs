@@ -360,7 +360,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 // common progress
                 if (hasException)
                 {
-                    ProgressSeries(di);
+                    ProgressSeries();
                 }
 
                 // resume saving thread
@@ -387,16 +387,9 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
 
-        private void ProgressSeries(OneSeriesDownloadInfo di)
+        private void ProgressSeries()
         {
-            if (di == null) return;
-            var processedCount = Information.TotalSeries - Information.RemainingSeries;
-            if (processedCount == 0) return;
-
-            var message = string.Format("Processed {0} ({1} of {2}).", di.SeriesDescription, processedCount,
-                                        Information.TotalSeries);
-            var percentProgress = (processedCount * 100) / Information.TotalSeries;
-            _worker.ReportProgress(percentProgress, message);
+            _worker.ReportProgress((int)Information.GetTotalProgress(), "Downloading...");
         }
 
         private void DoSave(object state)
@@ -405,8 +398,7 @@ namespace HydroDesktop.DataDownload.Downloading
             if (commonInfo == null) throw new InvalidOperationException();
 
             var objDownloader = commonInfo.Downloader;
-
-            OneSeriesDownloadInfo lastProcessedInfo = null;
+           
             while (Information.RemainingSeries > 0)
             {
                 if (_worker.CancellationPending) break;
@@ -418,13 +410,12 @@ namespace HydroDesktop.DataDownload.Downloading
                 }
 
                 // Common progress
-                ProgressSeries(lastProcessedInfo);
+                ProgressSeries();
 
                 OneSeriesDownloadInfo dInfo;
                 lock (_syncObjForDownload)
                 {
                     dInfo = commonInfo.Downloaded.Dequeue();
-                    lastProcessedInfo = dInfo;
                 }
                 Debug.Assert(dInfo != null);
                 
@@ -504,7 +495,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 DoLogInfo(message);
             }
 
-            ProgressSeries(lastProcessedInfo);
+            ProgressSeries();
 
             Information.EstimatedTimeForSave = new TimeSpan();
             commonInfo.SavingWaitingEvent.Set();
@@ -606,12 +597,15 @@ namespace HydroDesktop.DataDownload.Downloading
             {
                 _totalTime += timeTaken;
                 _di.EstimatedTimeToDownload = timeTaken*(totalIntervalsCount - (intervalNumber + 1)) + 1;
+                _di.DownloadedChunksPercent = (intervalNumber + 1)*1.0/totalIntervalsCount*100.0;
                 _manager.Information.RefreshEstimatedTimeForDownload();
 
                 if (intervalNumber == totalIntervalsCount - 1)
                 {
                     _di.DownloadTimeTaken = new TimeSpan(0, 0, (int) _totalTime);
                 }
+
+                _manager.ProgressSeries();
             }
 
             public bool CancellationPending
