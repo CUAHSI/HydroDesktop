@@ -176,6 +176,7 @@ Source: "..\Binaries\Plugins\Search2\*"; DestDir: "{app}\Plugins\Search2"; Flags
 Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\TSA\*"; DestDir: "{app}\Plugins\TSA"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 
 ;Source: "..\Binaries\Plugins\Search\*"; DestDir: "{app}\Plugins\Search"; Flags: ignoreversion;
 ;Source: "..\Binaries\Plugins\ImportFromWaterML\*"; DestDir: "{app}\Plugins\ImportFromWaterML"; Flags: ignoreversion;

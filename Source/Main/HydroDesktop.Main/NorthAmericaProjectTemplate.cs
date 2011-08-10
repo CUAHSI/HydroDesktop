@@ -22,7 +22,7 @@ namespace HydroDesktop.Main
         {
             string[] _corePlugins = new string[]
             {
-                "Search V2",
+
                 "Table View",
                 "Graph",
                 "Edit",
@@ -30,7 +30,9 @@ namespace HydroDesktop.Main
                 "Fetch Basemap",
                 "Help Tab",
                 "Metadata Fetcher",
-                "Data Export"
+                "Data Export",
+                "Search2",
+                "DataDownload"
             };
             
             
