@@ -113,7 +113,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             var lbDowloadData = new LinkLabel {AutoSize = true, Location = new Point(startX, startY)};
             lbDowloadData.LinkClicked += lblDownloadData_LinkClicked;
             AddControl(lbDowloadData, ref startY);
-            lbDowloadData.Text = "Download data";
+            lbDowloadData.Text = info.GetItems().Any(item => item.IsDownloaded)? "Download updated data" : "Download data";
             if (lbDowloadData.Width > thisWidth) thisWidth = lbDowloadData.Width;
             lbDowloadData.Location = new Point(thisWidth - lbDowloadData.Width + 10, lbDowloadData.Location.Y);
 
