@@ -6,6 +6,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports SeriesView
 
 Namespace GraphView
     Public Class Main
@@ -15,8 +16,13 @@ Namespace GraphView
 
         Private Const kGraph As String = "kHydroGraph"
 
-        <Import(GetType(ISeriesView))>
-        Private appSeriesView As ISeriesView
+        '<Import(GetType(ISeriesView))>
+        'Private appSeriesView As ISeriesView
+
+        <Import("SeriesViewControl")>
+        Private appSeriesView As SeriesViewControl
+
+
 
         Private _mainControl As cTSA
 
@@ -107,7 +113,7 @@ Namespace GraphView
                 _mainControl = New cTSA()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add("kGraphView", _mainControl, DockStyle.Fill)
+            App.DockManager.Add("kGraphView", "graph", _mainControl, DockStyle.Fill)
 
             InitializeRibbonButtons()
 

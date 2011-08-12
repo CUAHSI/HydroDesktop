@@ -64,7 +64,7 @@ namespace HydroDesktop.Search
                 //Set the Search control
                 ucSearch = new SearchControl(App);
                 ucSearch.Dock = DockStyle.Fill;
-                App.DockManager.Add("SearchControl", ucSearch, DockStyle.Right);
+                App.DockManager.Add("SearchControl", "search", ucSearch, DockStyle.Right);
 
                 ReportProgress(50, "Loading Search Plugin..");
 
