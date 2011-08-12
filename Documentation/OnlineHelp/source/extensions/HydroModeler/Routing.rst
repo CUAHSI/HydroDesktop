@@ -27,7 +27,7 @@ The following equation is used to obtain the total water storage in a channel.
 
 .. Note::
 
-	Where :raw-latex:`\((S)\)` is the total storage at times :raw-latex:`\(j\)` and :raw-latex:`\(j+1\)`, :raw-latex:`\((I)\)` is the inflow at times :raw-latex:`\(j\)` and :raw-latex:`\(j+1\)`, and :raw-latex:`\((Q)\)` is the outflow at times :raw-latex:`\(j\)` and :raw-latex:`\(j+1\)`
+	Where :raw-latex:`\((S)\)` is the total storage at times :raw-latex:`\(j\)` and :raw-latex:`\(j+1\)`, :raw-latex:`\((I)\)` is the inflow at times :raw-latex:`\(j\)` and :raw-latex:`\(j+1\)`, and :raw-latex:`\((Q)\)` is the outflow at times :raw-latex:`\(j\)` and :raw-latex:`\(j+1\)`.
 
 By assuming that the storage can be expressed as a function of the weighting factor and proportionality coefficient, the equation can be reduced as follows.
 
