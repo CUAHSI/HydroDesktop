@@ -25,6 +25,9 @@ This is the Green Ampt equation.
 
 	\[F(t) = Kt+\psi\Delta\theta ln\left(1+\frac{F(t)}{\psi\Delta\theta}\right)\]
 
+.. Note::
+
+	Where :raw-latex:`\((K)\)` is the hydraulic conductivity, and :raw-latex:`\((\psi)\)` is the wetting front soil suction head.
 
 Curve Number Method
 -------------------
@@ -37,5 +40,36 @@ Excess precipitation can be obtained using the Curve Numbers equation.
 
 	\[P_e = P-I_a-F_a\]
 
+.. Note::
+
+	Where :raw-latex:`\((P_e)\)` is the excess precipitation, :raw-latex:`\((P)\)` is the precipitation, :raw-latex:`\((I_a)\)` is the initial abstraction, and :raw-latex:`\((F_a)\)` is the continuing abstraction.
+
 The following equation is a conceptual model used to approximate the continuing abstraction.
 
+.. raw:: latex html
+
+	\[F_a = \frac{S(P-I_a)}{P-I_a+S}\]
+
+.. Note::
+
+	Where :raw-latex:`\((F_a)\)` is the continuing abstraction, :raw-latex:`\((S)\)` is soil water storage, :raw-latex:`\((P)\)` is the precipitation, and :raw-latex:`\((I_a)\)` is the initial abstraction.
+
+The following equation is an empirical formula for soil water storage.
+
+.. raw:: latex html
+
+	\[S = \frac{1000}{CN}-10\]
+
+.. Note::
+
+	Where :raw-latex:`\((S)\)` is the soil water storage, and :raw-latex:`\((CN)\)` is the curve number parameter.
+
+The following equation is an estimation of the initial abstraction using an empirically derived relationship.
+
+.. raw:: latex html
+
+	\[I_a = 0.2S\]
+
+.. Note::
+
+	Where :raw-latex:`\((I_a)\)` is the initial abstraction, and :raw-latex:`\((S)\)` is the soil water storage.
