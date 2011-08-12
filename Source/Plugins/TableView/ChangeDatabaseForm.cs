@@ -11,7 +11,6 @@ using HydroDesktop.Database;
 using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces;
 using System.IO;
-using HydroDesktop.Controls.Themes;
 
 namespace TableView
 {

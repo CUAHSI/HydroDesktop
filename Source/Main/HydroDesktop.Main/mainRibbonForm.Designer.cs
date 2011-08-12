@@ -156,7 +156,7 @@ namespace HydroDesktop.Main
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(706, 17);
             this.lblStatus.Spring = true;
-            this.lblStatus.Text = "loading...";
+            this.lblStatus.Text = "";
             // 
             // toolStripStatusLabel1
             // 

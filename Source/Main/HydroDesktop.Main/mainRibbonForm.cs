@@ -66,8 +66,10 @@ namespace HydroDesktop.Main
         private string _projectFileName = null;
         private ProjectChangeTracker _projectManager = null;
 
-        //docking
-        private DockPanel dockManager = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+        //parent container for docking
+        public static ContainerControl Shell;
+
+        //private DockPanel mainDockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
         #endregion Variable
 
         #region Constructor
@@ -79,6 +81,9 @@ namespace HydroDesktop.Main
         public mainRibbonForm(string[] args)
         {
             InitializeComponent();
+
+            //set the Shell Container control static variable
+            Shell = this;
 
             //screen size
             AdjustFormSize();
@@ -93,21 +98,14 @@ namespace HydroDesktop.Main
             this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
 
             // setup docking...
-            dockManager.Parent = this;
-            this.applicationManager1.DockManager = new DockingManager(dockManager);
+            //DockPanel mainDockPanel = new DockPanel();
+            //mainDockPanel.Parent = Shell;
+            //this.applicationManager1.DockManager = new DockingManager(mainDockPanel);
+            this.applicationManager1.DockManager = new DockingManager();
 
-            //dock the map to fill
+            //dock the map and legend to fill
             mainMap.Dock = DockStyle.Fill;
-            //panelContainer.Dock = DockStyle.Fill;
-
-            DockContent content = new DockContent();
-            content.ShowHint = DockState.Document;
-            content.Controls.Add(mainMap);
-            content.Show(dockManager);
-
-            //add the legend
             mainLegend.Dock = DockStyle.Fill;
-            applicationManager1.DockManager.Add("kLegend", mainLegend, DockStyle.Left);
 
             #region initialize the help menu
 
@@ -641,11 +639,6 @@ namespace HydroDesktop.Main
         //Load Form
         private void mainRibbonForm_Load(object sender, EventArgs e)
         {
-            //to add the 'data' main view tab
-            //this.tabContainer.Appearance = TabAppearance.FlatButtons;
-            //this.tabContainer.ItemSize = new Size(0, 1);
-            //this.tabContainer.SizeMode = TabSizeMode.Fixed;
-
             //Set Initial Map Projection
             mainMap.Projection = _defaultProjection;
         }
@@ -662,11 +655,14 @@ namespace HydroDesktop.Main
             }
             else
             {
-                //MessageBox.Show("Opening Project as File association:" + _projectFileName);
                 Project.OpenProject(_projectFileName, applicationManager1);
             }
 
             applicationManager1.LoadExtensions();
+
+            //add the legend and map dock panels
+            applicationManager1.DockManager.Add("kMainMap", "map", mainMap, DockStyle.Fill);
+            applicationManager1.DockManager.Add("kLegend", "legend", mainLegend, DockStyle.Left);
         }
 
         #endregion Constructor

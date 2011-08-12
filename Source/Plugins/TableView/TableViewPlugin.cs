@@ -9,41 +9,34 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
-//using HydroDesktop.Controls;
 using DotSpatial.Controls.Header;
-using HydroDesktop.Controls.Themes;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using SeriesView;
+using HydroDesktop.Controls.Themes;
 
 namespace TableView
 {
-    public class Main : Extension
+    public class TableViewPlugin : Extension
     {
         #region IMapPlugin Members
 
         #region Variables
 
         //the seriesView component
-        [Import]
+        [Import("SeriesViewControl")]
         internal SeriesViewControl SeriesControl { get; private set; }
 
         private const string _tablePanelName = "Table";
 
         public const string TableTabKey = "kHydroTable";
 
-        //private RibbonButton ribbonBnt;
-
         #endregion
 
         public override void Deactivate()
         {
-            ////remove the plugin panel
-            try
-            {
-                App.HeaderControl.RemoveItems();
-            }
-            catch { }
+            App.HeaderControl.RemoveItems();
+
             // This line ensures that "Enabled" is set to false.
             base.Deactivate();
         }
@@ -108,7 +101,7 @@ namespace TableView
             // Add "Table View Plugin" panel to the SeriesView
             cTableView tableViewControl = new cTableView(SeriesControl.SeriesSelector);
             tableViewControl.Dock = DockStyle.Fill;
-            App.DockManager.Add("kTableViewPanel", tableViewControl, DockStyle.Fill);
+            App.DockManager.Add("kTableViewPanel", "table", tableViewControl, DockStyle.Fill);
 
             base.Activate();
         }

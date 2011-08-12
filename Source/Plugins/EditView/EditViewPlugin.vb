@@ -8,13 +8,13 @@ Imports System.ComponentModel.Composition
 
 Namespace EditView
 
-    Public Class Main
+    Public Class EditViewPlugin
         Inherits Extension
 
 #Region "Variables"
 
-        <Import(GetType(ISeriesView))>
-        Private _seriesView As ISeriesView = Nothing
+        <Import("SeriesViewControl")>
+        Private _seriesView As SeriesView.SeriesViewControl
 
         Private _mainControl As cEditView
 
@@ -68,7 +68,7 @@ Namespace EditView
                 _mainControl = New cEditView()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add("kEditViewPanel", _mainControl, DockStyle.Fill)
+            App.DockManager.Add("kEditViewPanel", "edit", _mainControl, DockStyle.Fill)
 
             'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
             'If Not manager Is Nothing Then

@@ -15,7 +15,7 @@
     {
         public const string SeriesViewKey = "kHydroSeriesView";
 
-        [Export]
+        [Export("SeriesViewControl")]
         private SeriesViewControl mySeriesViewControl = new SeriesViewControl();
         
         public override void Activate()
@@ -26,7 +26,7 @@
             {
                 svc.Dock = DockStyle.Fill;
 
-                App.DockManager.Add(SeriesViewKey, svc, DockStyle.Left);
+                App.DockManager.Add(SeriesViewKey, "time series", svc, DockStyle.Left);
             }
             
             base.Activate();

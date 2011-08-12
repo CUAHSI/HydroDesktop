@@ -10,28 +10,41 @@ namespace HydroDesktop.Main
 {
     public class DockingManager : IDockManager
     {
-        private DockPanel dockManager;
+        public DockPanel MainDockPanel { get; set; }
 
-        public DockingManager(DockPanel dockManager)
+        /// <summary>
+        /// Create the default docking manager using the main form as container
+        /// </summary>
+        public DockingManager()
         {
-            dockManager.Dock = DockStyle.Fill;
-            dockManager.BringToFront();
-            dockManager.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
-
-            this.dockManager = dockManager;
+            MainDockPanel = new DockPanel();
+            MainDockPanel.Parent = mainRibbonForm.Shell; //using the static variable
+            MainDockPanel.Dock = DockStyle.Fill;
+            MainDockPanel.BringToFront();
+            MainDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
+        }
+        
+        public DockingManager(DockPanel rootDockPanel)
+        {
+            MainDockPanel = rootDockPanel;
+            MainDockPanel.Dock = DockStyle.Fill;
+            MainDockPanel.BringToFront();
+            MainDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
         }
 
-        public void Add(string key, System.Windows.Forms.Control panel, System.Windows.Forms.DockStyle dockStyle)
+        public void Add(string key, string caption, System.Windows.Forms.Control panel, System.Windows.Forms.DockStyle dockStyle)
         {
             // make an attempt to start the pane off at the right width.
             if (dockStyle == DockStyle.Right)
-                dockManager.DockRightPortion = (double)panel.Width / dockManager.Width;
+                MainDockPanel.DockRightPortion = (double)panel.Width / MainDockPanel.Width;
 
             DockContent content = new DockContent();
             content.ShowHint = ConvertToDockState(dockStyle);
             content.Controls.Add(panel);
 
-            content.Show(dockManager);
+            content.TabText = caption;
+
+            content.Show(MainDockPanel);
         }
 
         public void Remove(string key)
