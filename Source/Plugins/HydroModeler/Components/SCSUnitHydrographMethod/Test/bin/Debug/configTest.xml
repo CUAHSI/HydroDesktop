@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Smith Branch</ID>
+        <Description>Smith Branch Watershed, Columbia SC</Description>
+        <ShapefilePath>..\..\..\Data\SubWatersheds_Test.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Runoff</ID>
+        <Description>Runoff</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Time</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>cm</ID>
+          <Description>Centimeter</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Smith Branch</ID>
+        <Description>Smith Branch Watershed, Columbia SC</Description>
+        <Version>1</Version>
+        <ShapefilePath>..\..\..\Data\SubWatersheds_Test.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>Excess Rainfall</ID>
+        <Description>Rainfall Event</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>cm</ID>
+          <Description>Centimeters</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>08/20/2009 00:00:00 AM</StartDateTime>
+    <EndDateTime>08/20/2009 12:00:00 PM</EndDateTime>
+      <TimeStepInSeconds>300</TimeStepInSeconds> 
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>UnitHydrograph Routing</ID>
+    <Description>Calculates the streamflow at watershed outlet</Description>
+  </ModelInfo>
+</Configuration> 
