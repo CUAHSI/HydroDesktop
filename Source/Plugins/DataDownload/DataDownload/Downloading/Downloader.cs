@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
@@ -77,12 +78,20 @@ namespace HydroDesktop.DataDownload.Downloading
             try
             {
                 return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode,
-                                                                   info.StartDate, info.EndDate, info.EstimatedValuesCount, 
+                                                                   info.StartDate, info.EndDate,
+                                                                   info.EstimatedValuesCount,
                                                                    getValueProgressHandler);
             }
             catch (Exception ex)
             {
-                throw new DownloadXmlException(ex.Message, ex);
+                Exception exToWrap;
+                if (ex is TargetInvocationException &&
+                    ex.InnerException != null)
+                    exToWrap = ex.InnerException;
+                else
+                    exToWrap = ex;
+
+                throw new DownloadXmlException(exToWrap.Message, exToWrap);
             }
         }
 
