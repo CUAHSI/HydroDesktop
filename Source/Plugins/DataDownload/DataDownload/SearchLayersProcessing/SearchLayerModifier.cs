@@ -209,10 +209,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             Debug.Assert(layer != null);
             
             if (layer.DataSet.NumRows() > 0 && 
-                layer.DataSet.GetColumn("DataSource") != null)
+                layer.DataSet.GetColumn("ServiceCode") != null)
             {
                 // assume that layer has same data source in all rows
-                var servCode = layer.DataSet.GetFeature(0).DataRow["DataSource"].ToString();
+                var servCode = layer.DataSet.GetFeature(0).DataRow["ServiceCode"].ToString();
                 layer.Symbology = CreateSymbology(servCode, layer.DataSet);
             }
         }
