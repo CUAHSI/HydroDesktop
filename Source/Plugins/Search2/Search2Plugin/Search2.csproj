@@ -44,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <DocumentationFile>..\..\..\..\Binaries\Plugins\Search2\Search2.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\..\..\..\Binaries\Plugins\Search2\</OutputPath>
@@ -127,61 +128,13 @@
     <Compile Include="AdvancedSettingsDialog.Designer.cs">
       <DependentUpon>AdvancedSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Download\ManagerInformation.cs" />
-    <Compile Include="Download\Exceptions\DataSeriesFromXmlException.cs" />
-    <Compile Include="Download\Downloader.cs" />
-    <Compile Include="Download\OneSeriesDownloadInfo.cs" />
-    <Compile Include="Download\RedownloadControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Download\RedownloadControl.Designer.cs">
-      <DependentUpon>RedownloadControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Download\StartDownloadArg.cs" />
-    <Compile Include="Download\DownloadManager.cs" />
-    <Compile Include="Download\DownloadManagerUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Download\DownloadManagerUI.Designer.cs">
-      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Download\Exceptions\DownloadXmlException.cs" />
-    <Compile Include="Download\Exceptions\NoSeriesFromXmlException.cs" />
-    <Compile Include="Download\Exceptions\SaveDataSeriesException.cs" />
-    <Compile Include="Download\Exceptions\TooMuchSeriesFromXmlException.cs" />
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="LayerInformation\CustomToolTipControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="LayerInformation\CustomToolTipControl.Designer.cs">
-      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LayerInformation\HISCentralInfoExtractor.cs" />
-    <Compile Include="LayerInformation\IServiceInfoExtractor.cs" />
-    <Compile Include="LayerInformation\LocalInfoExtractor.cs" />
-    <Compile Include="LayerInformation\ServiceInfo.cs" />
-    <Compile Include="LayerInformation\PopupControl\GripBounds.cs" />
-    <Compile Include="LayerInformation\PopupControl\NativeMethods.cs" />
-    <Compile Include="LayerInformation\PopupControl\Popup.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="LayerInformation\PopupControl\Popup.Designer.cs">
-      <DependentUpon>Popup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LayerInformation\PopupControl\PopupAnimations.cs" />
-    <Compile Include="LayerInformation\SearchLayerInformer.cs" />
     <Compile Include="MetadataCacheSearcher.cs" />
     <Compile Include="RectangleDrawing.cs" />
     <Compile Include="SearchLayerCreator.cs" />
     <Compile Include="SearchResult.cs" />
-    <Compile Include="SearchResultsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SearchResultsControl.Designer.cs">
-      <DependentUpon>SearchResultsControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="WebServicesList.cs" />
     <Compile Include="HdSearchOntologyHelper.cs" />
     <Compile Include="HISCentralSearcher.cs" />
@@ -217,15 +170,6 @@
       <DependentUpon>AdvancedSettingsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Download\DownloadManagerUI.resx">
-      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Download\RedownloadControl.resx">
-      <DependentUpon>RedownloadControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LayerInformation\CustomToolTipControl.resx">
-      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -234,9 +178,6 @@
     <EmbeddedResource Include="SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SearchResultsControl.resx">
-      <DependentUpon>SearchResultsControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

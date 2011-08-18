@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Remoting;
 using System.Text;
-using System.Windows.Forms;
 using DotSpatial.Data;
 using log4net;
 

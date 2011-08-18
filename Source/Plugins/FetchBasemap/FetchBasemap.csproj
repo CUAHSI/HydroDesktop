@@ -42,6 +42,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>..\..\..\Binaries\Plugins\FetchBasemap\FetchBasemap.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\..\..\Binaries\Plugins\FetchBasemap\</OutputPath>

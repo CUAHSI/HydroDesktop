@@ -393,6 +393,7 @@ namespace HydroDesktop.Controls.Themes
         /// </summary>
         /// <param name="themeName"></param>
         /// <returns>The theme in the 'WGS84' projection</returns>
+        /// <exception cref="ArgumentException">Throws when such theme not found in the database</exception>
         public IFeatureSet GetFeatureSet(string themeName)
         {
             string sql = "SELECT ThemeID from DataThemeDescriptions WHERE ThemeName =?";
@@ -600,7 +601,8 @@ namespace HydroDesktop.Controls.Themes
         /// <param name="fs">The theme feature set (this can be an in-memory feature set)</param>
         /// <param name="themeName">The theme name (this will appear as legend text)</param>
         /// <param name="mainMap">The main map</param>
-        public void AddThemeToMap(IFeatureSet fs, string themeName, DotSpatial.Controls.Map mainMap)
+        /// <returns>Created map point layer</returns>
+        public MapPointLayer AddThemeToMap(IFeatureSet fs, string themeName, DotSpatial.Controls.Map mainMap)
         {
             //the url to get the icons
             string hisCentralUrl = Settings.Instance.SelectedHISCentralURL;
@@ -636,6 +638,8 @@ namespace HydroDesktop.Controls.Themes
             lay.SetParentItem(themeGroup);
             lay.MapFrame = mainMap.MapFrame;
             //lay.MapFrame = themeGroup.ParentMapFrame;
+
+            return lay;
         }
 
         /// <summary>
