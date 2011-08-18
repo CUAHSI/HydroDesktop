@@ -46,7 +46,6 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <DocumentationFile>..\..\..\Binaries\Plugins\TableView\TableView.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\..\..\Binaries\Plugins\TableView\</OutputPath>
@@ -84,7 +83,12 @@
       <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SeriesView">
+      <HintPath>..\..\..\Binaries\Plugins\1_SeriesView\SeriesView.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -118,7 +122,7 @@
     <Compile Include="DeleteThemeForm.designer.cs">
       <DependentUpon>DeleteThemeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs" />
+    <Compile Include="TableViewPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

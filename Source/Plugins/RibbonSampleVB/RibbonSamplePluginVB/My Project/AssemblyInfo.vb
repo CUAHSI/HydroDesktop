@@ -1,7 +1,6 @@
 ﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
-Imports DotSpatial.Controls
 
 ' General Information about an assembly is controlled through the following 
 ' set of attributes. Change these attribute values to modify the information
@@ -11,7 +10,7 @@ Imports DotSpatial.Controls
 
 <Assembly: AssemblyTitle("RibbonSamplePluginVB")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
+<Assembly: AssemblyCompany("ISU")> 
 <Assembly: AssemblyProduct("RibbonSamplePluginVB")> 
 <Assembly: AssemblyCopyright("Copyright © Microsoft 2010")> 
 <Assembly: AssemblyTrademark("")> 
@@ -35,4 +34,3 @@ Imports DotSpatial.Controls
 <Assembly: AssemblyVersion("1.0.0.0")> 
 <Assembly: AssemblyFileVersion("1.0.0.0")> 
 
-<Assembly: PluginAssembly()> 

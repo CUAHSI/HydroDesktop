@@ -85,7 +85,12 @@
       <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SeriesView">
+      <HintPath>..\..\..\Binaries\Plugins\1_SeriesView\SeriesView.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -174,7 +179,7 @@
     <Compile Include="Controls\fDeriveNewDataSeries.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.vb" />
+    <Compile Include="EditViewPlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

@@ -66,8 +66,10 @@ namespace HydroDesktop.Main
         private string _projectFileName = null;
         private ProjectChangeTracker _projectManager = null;
 
-        //docking
-        private DockPanel dockManager = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+        //parent container for docking
+        public static ContainerControl Shell;
+
+        //private DockPanel mainDockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
         #endregion Variable
 
         #region Constructor
@@ -79,6 +81,9 @@ namespace HydroDesktop.Main
         public mainRibbonForm(string[] args)
         {
             InitializeComponent();
+
+            //set the Shell Container control static variable
+            Shell = this;
 
             //screen size
             AdjustFormSize();
@@ -93,16 +98,14 @@ namespace HydroDesktop.Main
             this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
 
             // setup docking...
-            dockManager.Parent = this;
-            this.applicationManager1.DockManager = new DockingManager(dockManager);
+            //DockPanel mainDockPanel = new DockPanel();
+            //mainDockPanel.Parent = Shell;
+            //this.applicationManager1.DockManager = new DockingManager(mainDockPanel);
+            this.applicationManager1.DockManager = new DockingManager();
 
-            // display panelContainer front and center
-            panelContainer.Dock = DockStyle.Fill;
-
-            DockContent content = new DockContent();
-            content.ShowHint = DockState.Document;
-            content.Controls.Add(panelContainer);
-            content.Show(dockManager);
+            //dock the map and legend to fill
+            mainMap.Dock = DockStyle.Fill;
+            mainLegend.Dock = DockStyle.Fill;
 
             #region initialize the help menu
 
@@ -273,7 +276,7 @@ namespace HydroDesktop.Main
 
             #region initialize the main view panel controls
 
-            this.tabContainer.SelectedIndexChanged += new EventHandler(tabContainer_SelectedIndexChanged);
+            //this.tabContainer.SelectedIndexChanged += new EventHandler(tabContainer_SelectedIndexChanged);
 
             #endregion initialize the main view panel controls
 
@@ -291,6 +294,10 @@ namespace HydroDesktop.Main
             _projectManager.ProjectModified += new EventHandler(_projectManager_ProjectModified);
 
             #endregion Initialize the Project opening events
+
+            #region Load Plugins
+            //applicationManager1.LoadExtensions();
+            #endregion
         }
 
         #region Method
@@ -342,11 +349,11 @@ namespace HydroDesktop.Main
                 Settings.Instance.MetadataCacheConnectionString = conString2;
 
                 //allow plugins to access the SeriesView and SeriesSelector
-                applicationManager1.SeriesView = this.seriesView1;
+                //applicationManager1.SeriesView = this.seriesView1;
 
                 //setup db property of SeriesSelector
                 //this code will fail if DataRepositoryConnectionString is not set
-                seriesView1.SeriesSelector.SetupDatabase();
+                //seriesView1.SeriesSelector.SetupDatabase();
             }
         }
 
@@ -484,7 +491,7 @@ namespace HydroDesktop.Main
             if (SQLiteHelper.DatabaseExists(dbFile))
             {
                 Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(dbFile);
-                applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
+                //applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
             }
 
             //Set the correct SQLite file path for metadata cache DB
@@ -604,21 +611,21 @@ namespace HydroDesktop.Main
         #endregion Event
 
         //hide status bar when map panel is not shown
-        private void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabContainer.SelectedTabName == "MapView")
-            {
-                statusLocation.Visible = true;
-                lblStatus.Visible = false;
-            }
-            else
-            {
-                statusLocation.Visible = false;
-                lblStatus.Visible = true;
-                lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
-                //applicationManager1.SerializationManager.GetCustomSetting<string>("DataRepositoryDbPath", "unknown db path");
-            }
-        }
+        //private void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (tabContainer.SelectedTabName == "MapView")
+        //    {
+        //        statusLocation.Visible = true;
+        //        lblStatus.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        statusLocation.Visible = false;
+        //        lblStatus.Visible = true;
+        //        lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
+        //        //applicationManager1.SerializationManager.GetCustomSetting<string>("DataRepositoryDbPath", "unknown db path");
+        //    }
+        //}
 
         //Refresh map when main form is maximized
         private void mainRibbonForm_SizeChanged(object sender, EventArgs e)
@@ -632,11 +639,6 @@ namespace HydroDesktop.Main
         //Load Form
         private void mainRibbonForm_Load(object sender, EventArgs e)
         {
-            //to add the 'data' main view tab
-            this.tabContainer.Appearance = TabAppearance.FlatButtons;
-            this.tabContainer.ItemSize = new Size(0, 1);
-            this.tabContainer.SizeMode = TabSizeMode.Fixed;
-
             //Set Initial Map Projection
             mainMap.Projection = _defaultProjection;
         }
@@ -653,9 +655,14 @@ namespace HydroDesktop.Main
             }
             else
             {
-                //MessageBox.Show("Opening Project as File association:" + _projectFileName);
                 Project.OpenProject(_projectFileName, applicationManager1);
             }
+
+            applicationManager1.LoadExtensions();
+
+            //add the legend and map dock panels
+            applicationManager1.DockManager.Add("kMainMap", "map", mainMap, DockStyle.Fill);
+            applicationManager1.DockManager.Add("kLegend", "legend", mainLegend, DockStyle.Left);
         }
 
         #endregion Constructor
@@ -1039,7 +1046,7 @@ namespace HydroDesktop.Main
 
         private void bntMapView_Click(object sender, EventArgs e)
         {
-            tabContainer.SelectedTabName = tabContainer.TabPages[0].Text;
+            //tabContainer.SelectedTabName = tabContainer.TabPages[0].Text;
         }
 
         private RibbonTab FindText(string name)
@@ -1065,24 +1072,19 @@ namespace HydroDesktop.Main
             //MessageBox.Show("MouseMove");
             if (OrbExtentions.DropDownItems.Count < 1)
             {
-                List<PluginToken> pluginTokens = applicationManager1.PluginTokens;
-                foreach (PluginToken token in pluginTokens)
+                foreach (IExtension ext in applicationManager1.Extensions)
                 {
                     RibbonButton item = new RibbonButton();
 
                     //RibbonDescriptionMenuItem item = new RibbonDescriptionMenuItem();
-                    item.Text = token.Name;
+                    item.Text = ext.Name;
 
                     //added by JK
                     item.MaxSizeMode = RibbonElementSizeMode.DropDown;
                     item.Style = RibbonButtonStyle.DropDownListItem;
 
-                    item.Checked = applicationManager1.IsActive(token);
-                    if (item.Text == "Table View")
-                    {
-                        //item.Image = Properties.Resources.tableView;
-                        //item.Description = "Author:" + token.Author + "; " + "PluginType:" + token.PluginType + "; " + "Version:" + token.Version;
-                    }
+                    item.Checked = ext.IsActive;
+
                     OrbExtentions.DropDownItems.Add(item);
                     item.CheckOnClick = true;
                     item.MouseDown += new MouseEventHandler(item_Click);
@@ -1113,25 +1115,20 @@ namespace HydroDesktop.Main
                 }
             }
 
-            List<PluginToken> pluginTokens = applicationManager1.PluginTokens;
-
             //we need to refresh the ribbon
             RibbonTab newTab = new RibbonTab();
 
-            foreach (PluginToken token in pluginTokens)
+            foreach (IExtension ext in applicationManager1.Extensions)
             {
-                if (selectedTokenName == token.Name)
+                if (selectedTokenName == ext.Name)
                 {
-                    if (applicationManager1.IsActive(token))
+                    if (ext.IsActive)
                     {
-                        applicationManager1.DeactivateToken(token);
-                        ribbonControl.Tabs.Remove(newTab);
-                        ribbonControl.ActiveTab = tabHome;
+                        ext.Deactivate();
                     }
                     else
                     {
-                        applicationManager1.ActivateToken(token);
-                        ribbonControl.Tabs.Add(newTab);
+                        ext.Activate();
                     }
                 }
             }
@@ -1329,7 +1326,7 @@ namespace HydroDesktop.Main
         {
             if (_mapView.Active == true)
             {
-                tabContainer.SelectedTab = tabContainer.TabPages[0];
+                //tabContainer.SelectedTab = tabContainer.TabPages[0];
                 //mwStatusStrip1.Visible = true;
             }
 
@@ -1405,14 +1402,14 @@ namespace HydroDesktop.Main
         //    mainMap.AddLayer();
         //}
 
-        private void tabSearch_ActiveChanged(object sender, EventArgs e)
-        {
-            if (tabHome.Active == true && tabContainer.TabPages.Count > 0)
-            {
-                tabContainer.SelectedTab = tabContainer.TabPages[0];
-                //mwStatusStrip1.Visible = true;
-            }
-        }
+        //private void tabSearch_ActiveChanged(object sender, EventArgs e)
+        //{
+        //    if (tabHome.Active == true && tabContainer.TabPages.Count > 0)
+        //    {
+        //        tabContainer.SelectedTab = tabContainer.TabPages[0];
+        //        //mwStatusStrip1.Visible = true;
+        //    }
+        //}
 
         //exit
         private void OrbExit_Click(object sender, EventArgs e)

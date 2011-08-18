@@ -15,16 +15,15 @@ using HydroDesktop.Help;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
-    [Plugin("HydroModeler", Author= "University of South Carolina", UniqueName="mw_HydroModeler_1",Version="1.4")]
-    public class Program :Extension, IMapPlugin 
+    public class Program :Extension 
     {
         #region Variables
 
         //reference to the main application and it's UI items
-        private IMapPluginArgs _mapArgs;
+        private AppManager _mapArgs;
         public RibbonTab _ribbonTab;
         public RibbonButton _ribbonBtn;
-        private ITabManager _t;
+        //private ITabManager _t;
         public string _panelName = "HydroModeler";
         mainTab hydroModelerControl;
         Bitmap bmp;
@@ -38,7 +37,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         #region IExtension Members
 
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
 
             // Remove ribbon tab
@@ -51,11 +50,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             _mapArgs.Ribbon.Tabs[0].Panels[0].Items.Remove(_ribbonBtn);
 
             // Remove Work Page
-            if (_t.Contains(_panelName))
-                _t.RemoveTab(_panelName);
+            //if (_t.Contains(_panelName))
+            //    _t.RemoveTab(_panelName);
+            App.DockManager.Remove("kHydroModeler");
 
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
 
         }
         #endregion
@@ -68,10 +68,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         #region IMapPlugin Members
 
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
             //set map args
-            _mapArgs = args;
+            _mapArgs = App;
 
             // Initialize the Ribbon controls in the "Ribbon" ribbon tab
             _ribbonTab = new RibbonTab(_mapArgs.Ribbon, _panelName);
@@ -83,11 +83,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 _ribbonTab.Panels.Add(rp);
 
              //Add TabPage to the MwTabControl
-            _t = _mapArgs.PanelManager;
+            //_t = _mapArgs.TabManager;
 
             //specify tab window
-            hydroModelerControl = new mainTab(args, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
-            _t.AddTab(_panelName, hydroModelerControl, bmp);
+            hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            //_t.AddTab(_panelName, hydroModelerControl, bmp);
+            hydroModelerControl.Dock = DockStyle.Fill;
+            App.DockManager.Add("kHydroModeler", "HydroModeler", hydroModelerControl, DockStyle.Fill);
             
             //activate tab
             _ribbonBtn_Click(this, EventArgs.Empty);
@@ -98,6 +100,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //set pan mouse image
             hydroModelerControl.Image_Path = ImagePath;
+
+            base.Activate();
         }
 
         #endregion
@@ -320,31 +324,32 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
         void _ribbonBtn_Click(object sender, EventArgs e)
         {   
-            if (_t.SelectedTabName == _panelName)
-            {
-                if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
-                {
-                    _mapArgs.Ribbon.Tabs.Add(_ribbonTab);
-                    _t.SelectedTabName = _panelName;
-                    _mapArgs.Ribbon.ActiveTab = _mapArgs.Ribbon.Tabs[tabID];
-                }
-            }
-            else
-            {
-                if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
-                {
-                    _mapArgs.Ribbon.Tabs.Add(_ribbonTab);
-                    tabID = _mapArgs.Ribbon.Tabs.Count - 1;
-                    _t.SelectedTabName = _panelName;
-                    _mapArgs.Ribbon.ActiveTab = _mapArgs.Ribbon.Tabs[tabID];
-                }
-                else
-                {
-                    hydroModelerControl.mainTab_KeyPress(this,new KeyPressEventArgs((char)System.Windows.Forms.Keys.LButton));
-                    _t.SelectedTabName = _panelName;
-                    _mapArgs.Ribbon.ActiveTab = _mapArgs.Ribbon.Tabs[tabID];
-                }
-            } 
+            //TODO change selected dock panel
+            //if (_t.SelectedTabName == _panelName)
+            //{
+            //    if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
+            //    {
+            //        _mapArgs.Ribbon.Tabs.Add(_ribbonTab);
+            //        _t.SelectedTabName = _panelName;
+            //        _mapArgs.Ribbon.ActiveTab = _mapArgs.Ribbon.Tabs[tabID];
+            //    }
+            //}
+            //else
+            //{
+            //    if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
+            //    {
+            //        _mapArgs.Ribbon.Tabs.Add(_ribbonTab);
+            //        tabID = _mapArgs.Ribbon.Tabs.Count - 1;
+            //        _t.SelectedTabName = _panelName;
+            //        _mapArgs.Ribbon.ActiveTab = _mapArgs.Ribbon.Tabs[tabID];
+            //    }
+            //    else
+            //    {
+            //        hydroModelerControl.mainTab_KeyPress(this,new KeyPressEventArgs((char)System.Windows.Forms.Keys.LButton));
+            //        _t.SelectedTabName = _panelName;
+            //        _mapArgs.Ribbon.ActiveTab = _mapArgs.Ribbon.Tabs[tabID];
+            //    }
+            //} 
         }
         void keypressed(Object o, KeyPressEventArgs e)
         {

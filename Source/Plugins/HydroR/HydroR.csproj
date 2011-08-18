@@ -45,7 +45,6 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-    <DocumentationFile>..\..\..\Binaries\Plugins\HydroR\HydroR.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\..\..\Binaries\Plugins\HydroR\</OutputPath>
@@ -76,7 +75,12 @@
       <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SeriesView">
+      <HintPath>..\..\..\Binaries\Plugins\1_SeriesView\SeriesView.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -110,7 +114,7 @@
     <Compile Include="Forms\frmInstallR.Designer.cs">
       <DependentUpon>frmInstallR.cs</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs" />
+    <Compile Include="HydroRPlugin.cs" />
     <Compile Include="Controls\cRCommandView.cs">
       <SubType>UserControl</SubType>
     </Compile>

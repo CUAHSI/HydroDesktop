@@ -28,7 +28,7 @@ namespace EPADelineation
         public static string _wshed = "";
         public static string _stream = "";
 
-        private IMapPluginArgs _mapArgs;
+        private AppManager _mapArgs;
 
         private BackgroundWorker _bgw;
 
@@ -44,7 +44,7 @@ namespace EPADelineation
 
         #region Constructor
 
-        public SaveWatershed(IMapPluginArgs mapArgs)
+        public SaveWatershed(AppManager mapArgs)
         {
             InitializeComponent();
             _mapArgs = mapArgs;
@@ -609,8 +609,7 @@ namespace EPADelineation
                             //fsset.Reproject(_mapArgs.Map.Projection);
                             fsset.SaveAs(file, true);
 
-                            FeatureSet polyfs = new FeatureSet();
-                            polyfs.Open(file);
+                            IFeatureSet polyfs = FeatureSet.Open(file);
 
                             polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
                             polyfs.Reproject(_mapArgs.Map.Projection);

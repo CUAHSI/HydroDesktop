@@ -12,37 +12,35 @@ using DotSpatial.Controls.Header;
 //using HydroDesktop.Database.Model;
 namespace ImportFromWaterML
 {
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region Variables
-        //reference to the main application and it's UI items
-        private IMapPluginArgs _mapArgs;
         //refers to the 'Table' root key
-        private const string TableTabKey = "kTable";     
+        private const string TableTabKey = "kHydroTable";     
         #endregion
 
         #region IExtension Members
 
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
-            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
 
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
         #endregion
 
         #region IPlugin Members
 
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            _mapArgs = args;
-
             var btnWaterML = new SimpleActionItem("WaterML", menu_Click);
             btnWaterML.RootKey = TableTabKey;
             btnWaterML.LargeImage = Resources.waterml_import1;
             btnWaterML.GroupCaption = "Data Import";
-            _mapArgs.AppManager.HeaderControl.Add(btnWaterML);
+            App.HeaderControl.Add(btnWaterML);
+
+            base.Activate();
         }
 
         #endregion

@@ -18,14 +18,12 @@ using DotSpatial.Controls.Header;
 
 namespace HydroDesktop.ExportToCSV
 {
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region Variables
 
         //reference to the main application and it's UI items
-        public const string TableTabKey = "kTable";
-
-        private IMapPluginArgs _mapArgs;
+        public const string TableTabKey = "kHydroTable";
         private string _panelName = "Data Export";
                 
         #endregion
@@ -35,16 +33,11 @@ namespace HydroDesktop.ExportToCSV
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
-            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
 
-            base.OnDeactivate();
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
+            base.Deactivate();
         }
 
         #endregion
@@ -55,10 +48,8 @@ namespace HydroDesktop.ExportToCSV
         /// Initialize the DotSpatial 6 plugin
         /// </summary>
         /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            _mapArgs = args;
-
             //Add "DataExport" button to the new "Data Export" Panel in "Data" ribbon tab
             var dataExportBtn = new SimpleActionItem("Export", dataExportBtn_Click);
             dataExportBtn.RootKey = TableTabKey;
@@ -66,7 +57,9 @@ namespace HydroDesktop.ExportToCSV
             dataExportBtn.SmallImage = Properties.Resources.archive_16;
             dataExportBtn.ToolTipText = "Export Time Series Data";
             dataExportBtn.GroupCaption = _panelName;
-            _mapArgs.AppManager.HeaderControl.Add(dataExportBtn);
+            App.HeaderControl.Add(dataExportBtn);
+
+            base.Activate();
         }
 
         #endregion

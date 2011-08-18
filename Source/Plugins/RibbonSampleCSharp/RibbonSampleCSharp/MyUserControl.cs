@@ -13,8 +13,6 @@ namespace RibbonSamplePlugin
 {
     public partial class MyUserControl : UserControl
     {
-        private IMapPluginArgs _args;
-
         //the series selection control
         private ISeriesSelector _seriesSelector;
 

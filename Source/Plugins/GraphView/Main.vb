@@ -5,18 +5,24 @@ Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
+Imports System.ComponentModel.Composition
+Imports SeriesView
 
 Namespace GraphView
     Public Class Main
         Inherits Extension
-        Implements IMapPlugin
 
 #Region "Variables"
 
         Private Const kGraph As String = "kHydroGraph"
 
-        Private _mapArgs As IMapPluginArgs
-        Private appSeriesView As ISeriesView
+        '<Import(GetType(ISeriesView))>
+        'Private appSeriesView As ISeriesView
+
+        <Import("SeriesViewControl")>
+        Private appSeriesView As SeriesViewControl
+
+
 
         Private _mainControl As cTSA
 
@@ -72,76 +78,66 @@ Namespace GraphView
         Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
 #End Region
 
+
 #Region "IExtension Members"
-
-        'Fires when the plugin should become inactive
-        Protected Overrides Sub OnDeactivate()
-
-        End Sub
-#End Region
-
-#Region "IMapPlugin Members"
 
 
         'When the plugin is initialized
-        Public Sub Initialize(ByVal args As IMapPluginArgs) Implements IMapPlugin.Initialize
-
-            'Assign the variable for accessing map and main application
-            _mapArgs = args
+        Public Overrides Sub Activate()
 
             'To Add Items to the ribbon menu
             tabGraph = New RootItem(kGraph, _pluginName)
-            args.AppManager.HeaderControl.Add(tabGraph)
+            App.HeaderControl.Add(tabGraph)
 
-            If Not _mapArgs.Ribbon Is Nothing Then
+            'If Not App.Ribbon Is Nothing Then
 
-                AddHandler args.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveTabChanged
+            'TODO replace by Docking
+            'AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveTabChanged
 
-                Dim manager As IHydroAppManager = TryCast(_mapArgs.AppManager, IHydroAppManager)
-                If Not manager Is Nothing Then
-                    appSeriesView = manager.SeriesView
-                    _mainControl = New cTSA(appSeriesView.SeriesSelector)
-                    appSeriesView.AddPanel(_pluginName, _mainControl)
-                End If
+            'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
+            'If Not manager Is Nothing Then
+            '    appSeriesView = manager.SeriesView
+            '    _mainControl = New cTSA(appSeriesView.SeriesSelector)
+            '    appSeriesView.AddPanel(_pluginName, _mainControl)
+            'Else
+            '    _mainControl = New cTSA
+            '    _mainControl.Dock = DockStyle.Fill
+            '    App.DockManager.Add("kGraphView", _mainControl, DockStyle.Fill)
 
-                InitializeRibbonButtons()
+            'End If
+            'End If
 
+            If Not appSeriesView Is Nothing Then
+                _mainControl = New cTSA(appSeriesView.SeriesSelector)
+            Else
+                _mainControl = New cTSA()
             End If
+            _mainControl.Dock = DockStyle.Fill
+            App.DockManager.Add("kGraphView", "graph", _mainControl, DockStyle.Fill)
 
-        End Sub
+            InitializeRibbonButtons()
 
-        Public Overloads Sub Activate() Implements IMapPlugin.Activate
-            'MyBase.Activate()
-            MyBase.OnActivate()
+            MyBase.Activate()
         End Sub
 
         'when the plug-in is deactivated
-        Public Overloads Sub Deactivate() Implements IMapPlugin.Deactivate
+        Public Overrides Sub Deactivate()
 
             If Not appSeriesView Is Nothing Then
                 appSeriesView.RemovePanel(_pluginName)
             End If
 
             'auto-remove all ribbon items
-            _mapArgs.AppManager.HeaderControl.RemoveItems()
+            App.HeaderControl.RemoveItems()
 
             'important line to deactivate the plugin
-            MyBase.OnDeactivate()
+            MyBase.Deactivate()
 
         End Sub
 
-        Public Overloads Property IsEnabled() As Boolean Implements IMapPlugin.IsEnabled
-            Get
-                Return MyBase.IsEnabled
-            End Get
-            Set(ByVal value As Boolean)
-                MyBase.IsEnabled = value
-            End Set
-        End Property
-
         Private Sub InitializeRibbonButtons()
 
-            Dim header As HeaderControl = _mapArgs.AppManager.HeaderControl
+            Dim header As HeaderControl = App.HeaderControl
 
             'Plot choosing Panel
             'Time Series Plot
@@ -236,7 +232,7 @@ Namespace GraphView
             rbhtRelative = New SimpleActionItem(kGraph, kHistogramType, "Relative Frequencies", AddressOf rbhtRelative_Click)
             rbhtRelative.GroupCaption = rpHistogramOption
             header.Add(rbhtRelative)
- 
+
             'Histogram Algorithm Menu
             rbAlgorithms = New MenuContainerItem(kGraph, kHistogramAlgorithm, "Binning Algorithms")
             rbAlgorithms.LargeImage = My.Resources.Binning
@@ -291,8 +287,8 @@ Namespace GraphView
             rlblEndDate.Text = "End Date:"
             'rpOtherOptions.Items.Add(rlblStratDate)
             'rpOtherOptions.Items.Add(rlblEndDate)
-            _mainControl.rlblStratDate = rlblStratDate
-            _mainControl.rlblEndDate = rlblEndDate
+            '_mainControl.rlblStratDate = rlblStratDate
+            '_mainControl.rlblEndDate = rlblEndDate
 
             'Display Full Date Range toggle button
             rbDisplayFullDateRange = New SimpleActionItem("Display Full Date Range", AddressOf rbDisplayFullDateRange_Click)
@@ -480,18 +476,18 @@ Namespace GraphView
         'when the 'VB.NET sample' button is clicked, select the RibbonSamplePlugin view
         Sub Ribbon_ActiveTabChanged()
 
-            Dim myTab As RibbonTab = _mapArgs.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
-            Dim homeTab As RibbonTab = _mapArgs.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
+            Dim myTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
+            Dim homeTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
 
             If myTab.Active Then
-                _mapArgs.PanelManager.SelectedTabName = kSeriesViewPanelName
+                'TabManager.SelectedTabName = kSeriesViewPanelName
 
                 If Not appSeriesView Is Nothing Then
                     appSeriesView.VisiblePanelName = _pluginName
                 End If
 
             ElseIf homeTab.Active Then
-                _mapArgs.PanelManager.SelectedTabName = "Map View"
+                'TabManager.SelectedTabName = "Map View"
             End If
 
         End Sub

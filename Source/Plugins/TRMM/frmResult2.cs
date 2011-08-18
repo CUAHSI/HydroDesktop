@@ -15,8 +15,8 @@ namespace trmm
 {
     public partial class frmResult2 : Form
     {
-        private IMapPluginArgs _args;
-        
+        private AppManager _app;
+
         public frmResult2()
         {
             InitializeComponent();
@@ -30,10 +30,10 @@ namespace trmm
             set { dataGridView1.DataSource = value; }
         }
 
-        public IMapPluginArgs PluginArgs
+        public AppManager App
         {
-            get { return _args; }
-            set { _args = value; }
+            get { return _app; }
+            set { _app = value; }
         }
 
         public double ClickedLat { get; set; }
@@ -86,7 +86,7 @@ namespace trmm
                 HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
             manager.SaveSeries(s,new Theme("satellite precipitation"),OverwriteOptions.Append);
 
-            var hydroManager = _args.AppManager as IHydroAppManager;
+            var hydroManager = _app as IHydroAppManager;
             if (hydroManager != null)
             {
                 hydroManager.SeriesView.SeriesSelector.RefreshSelection();

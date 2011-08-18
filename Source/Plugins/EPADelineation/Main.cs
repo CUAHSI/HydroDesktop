@@ -19,12 +19,9 @@ using DotSpatial.Topology;
 
 namespace EPADelineation
 {
-    public class Main : Extension, IMapPlugin
+    public class Main : Extension
     {
         #region Variables
-
-        //reference to the main application and its UI items
-        private IMapPluginArgs _mapArgs;
         private bool isActive;
 
         #endregion Variables
@@ -34,34 +31,21 @@ namespace EPADelineation
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
-            _mapArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
 
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        protected override void OnActivate()
-        {
-            // Handle code for switching the page content
-
-            // This line ensures that "Enabled" is set to true.
-            base.OnActivate();
-        }
-
-        #endregion IExtension Members
-
-        #region IPlugin Members
 
         /// <summary>
         /// Initialize the DotSpatial plugin
         /// </summary>
         /// <param name="args">The plugin arguments to access the main application</param>
-        public void Initialize(IMapPluginArgs args)
+        public override void  Activate()
         {
-            _mapArgs = args;
-
             SimpleActionItem action = new SimpleActionItem("Delineate", _startDelineate_Click);
             action.GroupCaption = "EPA Tool";
             action.ToolTipText = "Using EPA Web Services to Delineate Catchments";
@@ -69,7 +53,9 @@ namespace EPADelineation
             action.LargeImage = Properties.Resources.Delineation_icon_32;
             action.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
             action.ToggleGroupKey = "tDelineateEpaTool";
-            args.AppManager.HeaderControl.Add(action);
+            App.HeaderControl.Add(action);
+
+            base.Activate();
         }
 
         # endregion
@@ -81,16 +67,16 @@ namespace EPADelineation
             if (isActive)
             {
                 isActive = false;
-                _mapArgs.Map.Cursor = Cursors.Default;
+                App.Map.Cursor = Cursors.Default;
             }
             else
             {
                 isActive = true;
                 //Check if any other Map Tools are checked
-                _mapArgs.Map.FunctionMode = FunctionMode.None;
+                App.Map.FunctionMode = FunctionMode.None;
 
                 //Active the Save Watershed Form
-                SaveWatershed saveWS = new SaveWatershed(_mapArgs);
+                SaveWatershed saveWS = new SaveWatershed(App);
                 saveWS.ShowDialog();
             }
         }

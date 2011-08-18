@@ -9,73 +9,55 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
-using HydroDesktop.Controls;
 using DotSpatial.Controls.Header;
-using HydroDesktop.Controls.Themes;
 using HydroDesktop.Configuration;
+using System.ComponentModel.Composition;
+using SeriesView;
+using HydroDesktop.Controls.Themes;
 
 namespace TableView
 {
-    //[Plugin("Table View", Author = "ISU", UniqueName = "TableView_1", Version = "1")]
-    public class Main : Extension, IMapPlugin
+    public class TableViewPlugin : Extension
     {
         #region IMapPlugin Members
 
         #region Variables
 
-        //this is the reference to the main map and application
-        private IMapPluginArgs _mapArgs;
-
         //the seriesView component
-        private ISeriesView _seriesView;
-
-        //this is the tab page which will be added to the main
-        //tab control by the table view plug-in
-        private RibbonTab _tableViewTabPage ;
+        [Import("SeriesViewControl")]
+        internal SeriesViewControl SeriesControl { get; private set; }
 
         private const string _tablePanelName = "Table";
 
-        public const string TableTabKey = "kTable";
-
-        //private RibbonButton ribbonBnt;
+        public const string TableTabKey = "kHydroTable";
 
         #endregion
 
-        protected override void OnActivate()
+        public override void Deactivate()
         {
-            // This line ensures that "Enabled" is set to true.
-            base.OnActivate();
-        }
+            App.HeaderControl.RemoveItems();
 
-        protected override void OnDeactivate()
-        {
-            ////remove the plugin panel
-            try
-            {
-                _seriesView.RemovePanel(_tablePanelName);
-            }
-            catch { }
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            _mapArgs = args;
-            HydroAppManager manager = _mapArgs.AppManager as HydroAppManager;
-            if (manager == null) return;
-
-            _seriesView = manager.SeriesView;
+            if (SeriesControl == null)
+            {
+                MessageBox.Show("Cannot activate the TableView plugin. SeriesView not found.");
+                return;
+            }
 
             #region initialize the Table Ribbon TabPage and related controls
 
-            IHeaderControl header = manager.HeaderControl;
+            IHeaderControl header = App.HeaderControl;
             
             //Table Tab
-            args.AppManager.HeaderControl.Add(new RootItem(TableTabKey, _tablePanelName));
+            App.HeaderControl.Add(new RootItem(TableTabKey, _tablePanelName));
             
             //Workaround - when the selected ribbon tab is changed
-            args.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
+            //App.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
 
 
             //RefreshTheme
@@ -85,7 +67,7 @@ namespace TableView
             refreshThemeButton.SmallImage = Properties.Resources.refreshTheme_16x16;
             refreshThemeButton.ToolTipText = "Refresh Themes";
             refreshThemeButton.GroupCaption = _tablePanelName;
-            args.AppManager.HeaderControl.Add(refreshThemeButton);
+            App.HeaderControl.Add(refreshThemeButton);
 
             //DeleteTheme
             var deleteThemeButton = new SimpleActionItem("Delete", rbDeleteTheme_Click);
@@ -94,7 +76,7 @@ namespace TableView
             deleteThemeButton.SmallImage = Properties.Resources.delete_16x16;
             deleteThemeButton.ToolTipText = "Delete Theme from Database";
             deleteThemeButton.GroupCaption = _tablePanelName;
-            args.AppManager.HeaderControl.Add(deleteThemeButton);
+            App.HeaderControl.Add(deleteThemeButton);
 
             //Change Database
             var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click);
@@ -103,7 +85,7 @@ namespace TableView
             changeDatabaseButton.LargeImage = Properties.Resources.changeDatabase;
             changeDatabaseButton.SmallImage = Properties.Resources.changeDatabase_16x16;
             changeDatabaseButton.GroupCaption = "Database";
-            args.AppManager.HeaderControl.Add(changeDatabaseButton);
+            App.HeaderControl.Add(changeDatabaseButton);
 
             //New Database
             var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
@@ -112,34 +94,30 @@ namespace TableView
             newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
             newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
             newDatabaseButton.GroupCaption = "Database";
-            args.AppManager.HeaderControl.Add(newDatabaseButton);
+            App.HeaderControl.Add(newDatabaseButton);
 
             #endregion initialize the Table Ribbon TabPage and related controls
 
             // Add "Table View Plugin" panel to the SeriesView
-            cTableView tableViewControl = new cTableView(_seriesView.SeriesSelector);
-            _seriesView.AddPanel(_tablePanelName, tableViewControl);    
+            cTableView tableViewControl = new cTableView(SeriesControl.SeriesSelector);
+            tableViewControl.Dock = DockStyle.Fill;
+            App.DockManager.Add("kTableViewPanel", "table", tableViewControl, DockStyle.Fill);
+
+            base.Activate();
         }
 
         //workaround method - changing the ribbon tab changes the main content
         void Ribbon_ActiveTabChanged(object sender, EventArgs e)
         {
-            RibbonTab myTab = _mapArgs.Ribbon.Tabs.Find(t => t.Text == _tablePanelName);
+            RibbonTab myTab = App.Ribbon.Tabs.Find(t => t.Text == _tablePanelName);
             
-            if (myTab.Active)
-            {
-                if (_mapArgs.PanelManager != null)
-                {
-                    _mapArgs.PanelManager.SelectedTabName = "Series View";
-                    _seriesView.VisiblePanelName = _tablePanelName;
-                }
-            }
+            
         }
 
         private void rbRefreshTheme_Click(object sender, EventArgs e)
         {
             RefreshAllThemes();
-            _seriesView.SeriesSelector.RefreshSelection();
+            SeriesControl.SeriesSelector.RefreshSelection();
             //this.tabContainer.SelectedIndex = 1;
         }
 
@@ -154,7 +132,7 @@ namespace TableView
         public void RefreshAllThemes()
         {
             ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
-            manager.RefreshAllThemes(_mapArgs.Map as Map);
+            manager.RefreshAllThemes(App.Map as Map);
         }
 
         /// <summary>
@@ -168,7 +146,7 @@ namespace TableView
             frm.ShowDialog();
             if (frm.DialogResult == DialogResult.OK)
             {
-                _seriesView.SeriesSelector.RefreshSelection();
+                SeriesControl.SeriesSelector.RefreshSelection();
                 RefreshAllThemes();
             }
         }
@@ -189,7 +167,7 @@ namespace TableView
         /// <returns></returns>
         private void ChangeDatabase()
         {
-            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(_mapArgs.AppManager as IHydroAppManager);
+            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map);
             //frmChangeDatabase.Owner = this;
             frmChangeDatabase.ShowDialog();
         }
@@ -234,7 +212,7 @@ namespace TableView
         private void DatabaseHasChanged(string connString)
         {
             //TODO call SeriesSelector directly
-            _seriesView.SeriesSelector.SetupDatabase();
+            SeriesControl.SeriesSelector.RefreshSelection();
 
             // Originally from NewDatabase
             Settings.Instance.DataRepositoryConnectionString = connString;

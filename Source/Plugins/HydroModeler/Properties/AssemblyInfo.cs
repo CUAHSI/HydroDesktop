@@ -9,7 +9,7 @@ using DotSpatial.Controls;
 [assembly: AssemblyTitle("HydroModeler")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Department of Civil Engineering")]
+[assembly: AssemblyCompany("University of South Carolina, Department of Civil Engineering")]
 [assembly: AssemblyProduct("HydroModeler")]
 [assembly: AssemblyCopyright("Copyright © Department of Civil Engineering 2009")]
 [assembly: AssemblyTrademark("")]
@@ -35,4 +35,3 @@ using DotSpatial.Controls;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: PluginAssembly]

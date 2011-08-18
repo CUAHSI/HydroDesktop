@@ -4,29 +4,23 @@ Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
+Imports System.ComponentModel.Composition
 
 Namespace EditView
 
-    Public Class Main
+    Public Class EditViewPlugin
         Inherits Extension
-        Implements IMapPlugin
 
 #Region "Variables"
 
-        'reference to the main application and it's UI items
-        Private _mapArgs As IMapPluginArgs
-
-        'the tab page which will be added to the tab control by the plugin
-        'Private _tabPage As TabPage = Nothing
-
-        Private _seriesView As ISeriesView = Nothing
+        <Import("SeriesViewControl")>
+        Private _seriesView As SeriesView.SeriesViewControl
 
         Private _mainControl As cEditView
 
         Private Const _pluginName As String = "Edit"
         Private Const _editTabKey As String = "kEdit"
 
-        'Private _EditView As RibbonTab
         Private _EditView As New RootItem(_editTabKey, _pluginName)
 
         Private btnSelectSeries As SimpleActionItem
@@ -37,7 +31,6 @@ Namespace EditView
 
         Private btnApplyToDatabase As SimpleActionItem
 
-        'TODO add support for checkbox
         Private ckbShowLegend As SimpleActionItem
 
         Private btnChangeYValue As SimpleActionItem
@@ -52,51 +45,47 @@ Namespace EditView
 #End Region
 
 #Region "IExtension Members"
-        ''' <summary>
-        ''' Fires when the plugin should become inactive
-        ''' </summary>
-        Protected Overrides Sub OnDeactivate()
-
-        End Sub
-#End Region
-
-#Region "IMapPlugin Members"
 
         ''' <summary>
         ''' Initialize the  plugin
         ''' </summary>
-        ''' <param name="args">The plugin arguments to access the main application</param>
-        Public Sub Initialize(ByVal args As IMapPluginArgs) Implements IMapPlugin.Initialize
-            _mapArgs = args
-
-
+        Public Overrides Sub Activate()
 
             '**************************************************************************************
             'Adding the tab
-            _mapArgs.AppManager.HeaderControl.Add(_EditView)
+            App.HeaderControl.Add(_EditView)
 
             'TODO handle this using DockManager
             'AddHandler _EditView.ActiveChanged, AddressOf EditViewTab_ActiveChanged
-            AddHandler _mapArgs.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveChanged
+            'AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveChanged
 
             '**************************************************************************************
 
             'To add a new main panel View to the main application window
-            If Not _mapArgs.PanelManager Is Nothing Then
-
-                Dim manager As IHydroAppManager = CType(_mapArgs.AppManager, IHydroAppManager)
-                If Not manager Is Nothing Then
-
-                    _seriesView = manager.SeriesView
-                    _mainControl = New cEditView(_seriesView.SeriesSelector)
-                    _seriesView.AddPanel(_pluginName, _mainControl)
-                End If
+            If Not _seriesView Is Nothing Then
+                _mainControl = New cEditView(_seriesView.SeriesSelector)
+            Else
+                _mainControl = New cEditView()
             End If
+            _mainControl.Dock = DockStyle.Fill
+            App.DockManager.Add("kEditViewPanel", "edit", _mainControl, DockStyle.Fill)
+
+            'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
+            'If Not manager Is Nothing Then
+
+            '    _seriesView = manager.SeriesView
+            '    _mainControl = New cEditView(_seriesView.SeriesSelector)
+            '    _seriesView.AddPanel(_pluginName, _mainControl)
+            'Else
+            '    _mainControl = New cEditView()
+            '    _mainControl.Dock = DockStyle.Fill
+            '    App.DockManager.Add("kEditView", _mainControl, DockStyle.Fill)
+            'End If
 
             InitializeRibbonButtons()
 
             'opening project event
-            AddHandler _mapArgs.AppManager.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
+            AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
 
         End Sub
 
@@ -110,25 +99,25 @@ Namespace EditView
             btnSelectSeries.RootKey = _editTabKey
             btnSelectSeries.LargeImage = My.Resources.Edit
             btnSelectSeries.GroupCaption = mainFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnSelectSeries)
+            App.HeaderControl.Add(btnSelectSeries)
 
             btnDeriveNewDataSeries = New SimpleActionItem("Derive Series", AddressOf _mainControl.btnDeriveNewDataSeries_Click)
             btnDeriveNewDataSeries.RootKey = _editTabKey
             btnDeriveNewDataSeries.LargeImage = My.Resources.DeriveNewSeries
             btnDeriveNewDataSeries.GroupCaption = mainFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnDeriveNewDataSeries)
+            App.HeaderControl.Add(btnDeriveNewDataSeries)
 
             btnRestoreData = New SimpleActionItem("Restore Data", AddressOf _mainControl.btnRestoreData_Click)
             btnRestoreData.RootKey = _editTabKey
             btnRestoreData.LargeImage = My.Resources.Restore
             btnRestoreData.GroupCaption = mainFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnRestoreData)
+            App.HeaderControl.Add(btnRestoreData)
 
             btnApplyToDatabase = New SimpleActionItem("Save To Database", AddressOf _mainControl.btnApplyToDatabase_Click)
             btnApplyToDatabase.RootKey = _editTabKey
             btnApplyToDatabase.LargeImage = My.Resources.Save
             btnApplyToDatabase.GroupCaption = mainFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnApplyToDatabase)
+            App.HeaderControl.Add(btnApplyToDatabase)
 
             'Plot Function Panel
             Dim editFunctionGroup As String = "Edit Functions"
@@ -137,31 +126,31 @@ Namespace EditView
             btnChangeYValue.RootKey = _editTabKey
             btnChangeYValue.LargeImage = My.Resources.ChangeValue
             btnChangeYValue.GroupCaption = editFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnChangeYValue)
+            App.HeaderControl.Add(btnChangeYValue)
 
             btnInterpolate = New SimpleActionItem("Interpolate", AddressOf _mainControl.btnInterpolate_Click)
             btnInterpolate.RootKey = _editTabKey
             btnInterpolate.LargeImage = My.Resources.Interpolate
             btnInterpolate.GroupCaption = editFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnInterpolate)
+            App.HeaderControl.Add(btnInterpolate)
 
             btnFlag = New SimpleActionItem("Flag", AddressOf _mainControl.btnFlag_Click)
             btnFlag.RootKey = _editTabKey
             btnFlag.LargeImage = My.Resources.Flag
             btnFlag.GroupCaption = editFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnFlag)
+            App.HeaderControl.Add(btnFlag)
 
             btnAddNewPoint = New SimpleActionItem("Add Point", AddressOf _mainControl.btnAddNewPoint_Click)
             btnAddNewPoint.RootKey = _editTabKey
             btnAddNewPoint.LargeImage = My.Resources.Add
             btnAddNewPoint.GroupCaption = editFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnAddNewPoint)
+            App.HeaderControl.Add(btnAddNewPoint)
 
             btnDeletePoint = New SimpleActionItem("Delete Point", AddressOf _mainControl.btnDeletePoint_Click)
             btnDeletePoint.RootKey = _editTabKey
             btnDeletePoint.LargeImage = My.Resources.Delete
             btnDeletePoint.GroupCaption = editFunctionGroup
-            _mapArgs.AppManager.HeaderControl.Add(btnDeletePoint)
+            App.HeaderControl.Add(btnDeletePoint)
 
             'Main Function Panel
             Dim plotFunctionGroup As String = "Plot Function"
@@ -171,7 +160,7 @@ Namespace EditView
             ckbShowLegend.LargeImage = My.Resources.Legend
             ckbShowLegend.GroupCaption = plotFunctionGroup
             ckbShowLegend.ToggleGroupKey = "kEditLegend"
-            _mapArgs.AppManager.HeaderControl.Add(ckbShowLegend)
+            App.HeaderControl.Add(ckbShowLegend)
 
             _mainControl.ShowLegend = False
 
@@ -184,31 +173,17 @@ Namespace EditView
             btnInterpolate.Enabled = False
             btnRestoreData.Enabled = False
 
-        End Sub
-
-        Public Overloads Sub Activate() Implements IMapPlugin.Activate
-            MyBase.OnActivate()
-        End Sub
-
-        'added by Jiri - remove the 'graph view' tab control when the plug-in
-        'is deactivated
-        Public Overloads Sub Deactivate() Implements IMapPlugin.Deactivate
-
-            _mapArgs.AppManager.HeaderControl.RemoveItems()
-
-            'important line to deactivate the plugin
-            MyBase.OnDeactivate()
+            MyBase.Activate()
 
         End Sub
 
-        Public Overloads Property IsEnabled() As Boolean Implements IMapPlugin.IsEnabled
-            Get
-                Return MyBase.IsEnabled
-            End Get
-            Set(ByVal value As Boolean)
-                MyBase.IsEnabled = value
-            End Set
-        End Property
+        Public Overrides Sub Deactivate()
+
+            App.HeaderControl.RemoveItems()
+
+            MyBase.Deactivate()
+
+        End Sub
 
         Private Sub LeavingEditView()
             _mainControl.pTimeSeriesPlot.Clear()
@@ -236,14 +211,14 @@ Namespace EditView
 
         Sub Ribbon_ActiveChanged()
 
-            Dim myTab As RibbonTab = _mapArgs.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
-            Dim homeTab As RibbonTab = _mapArgs.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
+            Dim myTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
+            Dim homeTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
 
             If myTab.Active Then
-                _mapArgs.PanelManager.SelectedTabName = "Series View"
+                'TabManager.SelectedTabName = "Series View"
                 _seriesView.VisiblePanelName = _pluginName
             ElseIf homeTab.Active Then
-                _mapArgs.PanelManager.SelectedTabName = "Map View"
+                'TabManager.SelectedTabName = "Map View"
             Else
                 LeavingEditView()
             End If

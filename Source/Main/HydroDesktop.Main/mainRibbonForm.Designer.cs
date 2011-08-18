@@ -53,10 +53,6 @@ namespace HydroDesktop.Main
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient6 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             this.tabHome = new DotSpatial.Controls.RibbonControls.RibbonTab();
-            this.panelContainer = new System.Windows.Forms.Panel();
-            this.tabContainer = new DotSpatial.Controls.SpatialTabControl();
-            this.tabMapView = new System.Windows.Forms.TabPage();
-            this.splitConMap = new System.Windows.Forms.SplitContainer();
             this.mainLegend = new DotSpatial.Controls.Legend();
             this.mainMap = new DotSpatial.Controls.Map();
             this.mwStatusStrip1 = new DotSpatial.Controls.SpatialStatusStrip();
@@ -64,8 +60,6 @@ namespace HydroDesktop.Main
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.tabSeriesView = new System.Windows.Forms.TabPage();
-            this.seriesView1 = new HydroDesktop.Controls.SeriesView();
             this.ribbonControl = new DotSpatial.Controls.RibbonControls.Ribbon();
             this.OrbNewProject = new DotSpatial.Controls.RibbonControls.RibbonOrbMenuItem();
             this.orbOpenProject = new DotSpatial.Controls.RibbonControls.RibbonOrbMenuItem();
@@ -82,89 +76,25 @@ namespace HydroDesktop.Main
             this.ribbonOrbOptionButton_Exit = new DotSpatial.Controls.RibbonControls.RibbonOrbOptionButton();
             this.rbHelp = new DotSpatial.Controls.RibbonControls.RibbonButton();
             this.bntTableView = new DotSpatial.Controls.RibbonControls.RibbonButton();
-            this.applicationManager1 = new HydroDesktop.Controls.HydroAppManager();
+            this.applicationManager1 = new DotSpatial.Controls.AppManager();
             this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.panelContainer.SuspendLayout();
-            this.tabContainer.SuspendLayout();
-            this.tabMapView.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitConMap)).BeginInit();
-            this.splitConMap.Panel1.SuspendLayout();
-            this.splitConMap.Panel2.SuspendLayout();
-            this.splitConMap.SuspendLayout();
             this.mwStatusStrip1.SuspendLayout();
-            this.tabSeriesView.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabHome
             // 
             this.tabHome.Tag = null;
             this.tabHome.Text = "Home";
-            this.tabHome.ActiveChanged += new System.EventHandler(this.tabSearch_ActiveChanged);
-            // 
-            // panelContainer
-            // 
-            this.panelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelContainer.Controls.Add(this.tabContainer);
-            this.panelContainer.Location = new System.Drawing.Point(29, 160);
-            this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(593, 175);
-            this.panelContainer.TabIndex = 2;
-            // 
-            // tabContainer
-            // 
-            this.tabContainer.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabContainer.Controls.Add(this.tabMapView);
-            this.tabContainer.Controls.Add(this.tabSeriesView);
-            this.tabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabContainer.ItemSize = new System.Drawing.Size(0, 1);
-            this.tabContainer.Location = new System.Drawing.Point(0, 0);
-            this.tabContainer.Name = "tabContainer";
-            this.tabContainer.SelectedIndex = 0;
-            this.tabContainer.Size = new System.Drawing.Size(593, 175);
-            this.tabContainer.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabContainer.TabIndex = 2;
-            // 
-            // tabMapView
-            // 
-            this.tabMapView.Controls.Add(this.splitConMap);
-            this.tabMapView.Location = new System.Drawing.Point(4, 5);
-            this.tabMapView.Name = "tabMapView";
-            this.tabMapView.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMapView.Size = new System.Drawing.Size(585, 166);
-            this.tabMapView.TabIndex = 0;
-            this.tabMapView.Text = "MapView";
-            this.tabMapView.UseVisualStyleBackColor = true;
-            // 
-            // splitConMap
-            // 
-            this.splitConMap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitConMap.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitConMap.Location = new System.Drawing.Point(3, 3);
-            this.splitConMap.Name = "splitConMap";
-            // 
-            // splitConMap.Panel1
-            // 
-            this.splitConMap.Panel1.Controls.Add(this.mainLegend);
-            // 
-            // splitConMap.Panel2
-            // 
-            this.splitConMap.Panel2.Controls.Add(this.mainMap);
-            this.splitConMap.Size = new System.Drawing.Size(579, 160);
-            this.splitConMap.SplitterDistance = 201;
-            this.splitConMap.TabIndex = 0;
             // 
             // mainLegend
             // 
             this.mainLegend.BackColor = System.Drawing.Color.White;
             this.mainLegend.ControlRectangle = new System.Drawing.Rectangle(0, 0, 201, 160);
-            this.mainLegend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainLegend.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 35, 20);
             this.mainLegend.HorizontalScrollEnabled = true;
             this.mainLegend.Indentation = 30;
             this.mainLegend.IsInitialized = false;
-            this.mainLegend.Location = new System.Drawing.Point(0, 0);
+            this.mainLegend.Location = new System.Drawing.Point(48, 204);
             this.mainLegend.MinimumSize = new System.Drawing.Size(5, 5);
             this.mainLegend.Name = "mainLegend";
             this.mainLegend.ProgressHandler = null;
@@ -182,12 +112,11 @@ namespace HydroDesktop.Main
             this.mainMap.BackColor = System.Drawing.Color.White;
             this.mainMap.CollectAfterDraw = false;
             this.mainMap.CollisionDetection = true;
-            this.mainMap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainMap.ExtendBuffer = false;
             this.mainMap.FunctionMode = DotSpatial.Controls.FunctionMode.None;
             this.mainMap.IsBusy = false;
             this.mainMap.Legend = this.mainLegend;
-            this.mainMap.Location = new System.Drawing.Point(0, 0);
+            this.mainMap.Location = new System.Drawing.Point(362, 204);
             this.mainMap.Name = "mainMap";
             this.mainMap.ProgressHandler = this.mwStatusStrip1;
             this.mainMap.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
@@ -227,7 +156,7 @@ namespace HydroDesktop.Main
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(706, 17);
             this.lblStatus.Spring = true;
-            this.lblStatus.Text = "loading...";
+            this.lblStatus.Text = "";
             // 
             // toolStripStatusLabel1
             // 
@@ -239,24 +168,6 @@ namespace HydroDesktop.Main
             // 
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
-            // 
-            // tabSeriesView
-            // 
-            this.tabSeriesView.Controls.Add(this.seriesView1);
-            this.tabSeriesView.Location = new System.Drawing.Point(4, 5);
-            this.tabSeriesView.Name = "tabSeriesView";
-            this.tabSeriesView.Size = new System.Drawing.Size(585, 166);
-            this.tabSeriesView.TabIndex = 1;
-            this.tabSeriesView.Text = "Series View";
-            this.tabSeriesView.UseVisualStyleBackColor = true;
-            // 
-            // seriesView1
-            // 
-            this.seriesView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.seriesView1.Location = new System.Drawing.Point(0, 0);
-            this.seriesView1.Name = "seriesView1";
-            this.seriesView1.Size = new System.Drawing.Size(991, 557);
-            this.seriesView1.TabIndex = 0;
             // 
             // ribbonControl
             // 
@@ -530,7 +441,6 @@ namespace HydroDesktop.Main
             // 
             // applicationManager1
             // 
-            this.applicationManager1.AppEnableMethod = DotSpatial.Controls.AppEnableMethod.None;
             this.applicationManager1.DataManager.DataProviderDirectories = ((System.Collections.Generic.List<string>)(resources.GetObject("applicationManager1.DataManager.DataProviderDirectories")));
             this.applicationManager1.DataManager.LoadInRam = true;
             this.applicationManager1.DataManager.ProgressHandler = null;
@@ -539,15 +449,10 @@ namespace HydroDesktop.Main
             this.applicationManager1.HeaderControl = null;
             this.applicationManager1.LayoutControl = null;
             this.applicationManager1.Legend = this.mainLegend;
-            this.applicationManager1.MainMenu = null;
-            this.applicationManager1.MainToolStrip = null;
             this.applicationManager1.Map = this.mainMap;
             this.applicationManager1.ProgressHandler = this.mwStatusStrip1;
-            this.applicationManager1.Ribbon = this.ribbonControl;
-            this.applicationManager1.SeriesView = null;
-            this.applicationManager1.TabManager = this.tabContainer;
+            this.applicationManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.None;
             this.applicationManager1.ToolManager = null;
-            this.applicationManager1.ToolStripContainer = null;
             // 
             // dockPanel1
             // 
@@ -611,7 +516,8 @@ namespace HydroDesktop.Main
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1008, 730);
-            this.Controls.Add(this.panelContainer);
+            this.Controls.Add(this.mainLegend);
+            this.Controls.Add(this.mainMap);
             this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.mwStatusStrip1);
             this.Controls.Add(this.ribbonControl);
@@ -619,16 +525,8 @@ namespace HydroDesktop.Main
             this.Name = "mainRibbonForm";
             this.Text = "CUAHSI HydroDesktop";
             this.Load += new System.EventHandler(this.mainRibbonForm_Load);
-            this.panelContainer.ResumeLayout(false);
-            this.tabContainer.ResumeLayout(false);
-            this.tabMapView.ResumeLayout(false);
-            this.splitConMap.Panel1.ResumeLayout(false);
-            this.splitConMap.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitConMap)).EndInit();
-            this.splitConMap.ResumeLayout(false);
             this.mwStatusStrip1.ResumeLayout(false);
             this.mwStatusStrip1.PerformLayout();
-            this.tabSeriesView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -644,7 +542,6 @@ namespace HydroDesktop.Main
         private DotSpatial.Controls.RibbonControls.Ribbon ribbonControl;
         private DotSpatial.Controls.RibbonControls.RibbonTab tabHome;
         private DotSpatial.Controls.RibbonControls.RibbonOrbMenuItem OrbNewProject;
-        private System.Windows.Forms.Panel panelContainer;
         private DotSpatial.Controls.RibbonControls.RibbonButton bntTableView;
         private DotSpatial.Controls.SpatialStatusStrip mwStatusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLocation;
@@ -659,7 +556,7 @@ namespace HydroDesktop.Main
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private DotSpatial.Controls.RibbonControls.RibbonButton rbHelp;
         private DotSpatial.Controls.RibbonControls.RibbonOrbMenuItem OrbAbout;
-        internal HydroDesktop.Controls.HydroAppManager applicationManager1;
+        internal DotSpatial.Controls.AppManager applicationManager1;
         private DotSpatial.Controls.RibbonControls.RibbonSeparator ribbonSeparator1;
         private DotSpatial.Controls.RibbonControls.RibbonSeparator ribbonSeparator2;
         private DotSpatial.Controls.RibbonControls.RibbonSeparator ribbonSeparator3;
@@ -667,13 +564,8 @@ namespace HydroDesktop.Main
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
-        private DotSpatial.Controls.SpatialTabControl tabContainer;
-        private System.Windows.Forms.TabPage tabMapView;
-        private System.Windows.Forms.SplitContainer splitConMap;
         private DotSpatial.Controls.Legend mainLegend;
         private DotSpatial.Controls.Map mainMap;
-        private System.Windows.Forms.TabPage tabSeriesView;
-        private Controls.SeriesView seriesView1;
         
     }
 }
