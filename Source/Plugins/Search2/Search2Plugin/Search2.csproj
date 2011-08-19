@@ -65,6 +65,7 @@
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
@@ -72,6 +73,7 @@
     </Reference>
     <Reference Include="DotSpatial.Serialization">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Serialization.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>

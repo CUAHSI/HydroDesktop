@@ -5,6 +5,6 @@
         /// <summary>
         /// Reference to plug-in entry point
         /// </summary>
-        public static Main PluginEntryPoint { get; set; }
+        public static DataDownloadPlugin PluginEntryPoint { get; set; }
     }
 }

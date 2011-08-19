@@ -1,5 +1,8 @@
 ﻿namespace RibbonSamplePlugin
 {
+    /// <summary>
+    /// The user control added by the plug-in
+    /// </summary>
     partial class MyUserControl
     {
         /// <summary> 
