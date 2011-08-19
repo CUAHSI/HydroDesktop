@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.ComponentModel.Composition;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
@@ -10,10 +11,12 @@ using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
+using SeriesView;
+
 
 namespace HydroDesktop.DataDownload
 {
-    public class Main : Extension, IMapPlugin
+    public class DataDownloadPlugin : Extension
     {
         #region Fields
 
@@ -25,9 +28,10 @@ namespace HydroDesktop.DataDownload
         #region Properties
 
         /// <summary>
-        /// Args with wich this plug-in was activated
+        /// Series View
         /// </summary>
-        private IMapPluginArgs MapArgs { get; set; }
+        [Import("SeriesViewControl", typeof(SeriesViewControl))]
+        private SeriesViewControl SeriesView { get; set; }
 
         /// <summary>
         /// Download manager
@@ -64,10 +68,9 @@ namespace HydroDesktop.DataDownload
 
         #region Plugin operations
 
-        public void Initialize(IMapPluginArgs args)
+        public override void Activate()
         {
-            if (args == null) throw new ArgumentNullException("args");
-            MapArgs = args;
+            if (App == null) throw new ArgumentNullException("App");
 
             // Initialize menu
             var btnDownload = new SimpleActionItem("Download", DoDownload)
@@ -76,58 +79,54 @@ namespace HydroDesktop.DataDownload
                                       GroupCaption = "Search",
                                       LargeImage = Properties.Resources.download32
                                   };
-            MapArgs.AppManager.HeaderControl.Add(btnDownload);
+            App.HeaderControl.Add(btnDownload);
 
 
             Global.PluginEntryPoint = this;
 
             // Subscribe to events
-            MapArgs.Map.LayerAdded += Map_LayerAdded;
-            MapArgs.Map.Layers.LayerRemoved += Layers_LayerRemoved;
-            MapArgs.AppManager.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            App.Map.LayerAdded += Map_LayerAdded;
+            App.Map.Layers.LayerRemoved += Layers_LayerRemoved;
+            App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             DownloadManager.Completed += DownloadManager_Completed;
             //----
+
+            base.Activate();
         }
 
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
-        protected override void OnDeactivate()
+        public override void Deactivate()
         {
-            MapArgs.AppManager.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveItems();
 
-            MapArgs.Map.LayerAdded -= Map_LayerAdded;
-            MapArgs.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
-            MapArgs.AppManager.SerializationManager.Deserializing -= SerializationManager_Deserializing;
+            App.Map.LayerAdded -= Map_LayerAdded;
+            App.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
+            App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
 
-            foreach (var layer in MapArgs.Map.MapFrame.Layers)
+            foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
 
             Global.PluginEntryPoint = null;
 
             // This line ensures that "Enabled" is set to false.
-            base.OnDeactivate();
+            base.Deactivate();
         }
 
         #endregion
 
-        #region Private mergods
+        #region Private methods
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             AttachToAllLayers();
         }
 
-        protected override void OnActivate()
-        {
-            AttachToAllLayers();
-            base.OnActivate();
-        }
-
         private void AttachToAllLayers()
         {
-            foreach (var layer in MapArgs.Map.MapFrame.Layers)
+            foreach (var layer in App.Map.MapFrame.Layers)
                 AttachLayerToPlugin(layer);
         }
 
@@ -142,7 +141,7 @@ namespace HydroDesktop.DataDownload
 
         private void AttachLayerToPlugin(ILayer layer)
         {
-            _searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map)MapArgs.Map);
+            _searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map)App.Map);
 
             var group = layer as IGroup;
             if (group != null)
@@ -173,7 +172,7 @@ namespace HydroDesktop.DataDownload
         private void DoDownload(object sender, EventArgs args)
         {
             var hasPointsToDownload = false;
-            foreach (var layer in MapArgs.Map.MapFrame.GetAllLayers())
+            foreach (var layer in App.Map.MapFrame.GetAllLayers())
             {
                 if (!layer.Checked || !_searchLayerModifier.IsSearchLayer(layer)) continue;
 
@@ -233,7 +232,7 @@ namespace HydroDesktop.DataDownload
             _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
 
             // Refresh list of the time series in the table and graph in the main form
-            ((IHydroAppManager) MapArgs.AppManager).SeriesView.SeriesSelector.RefreshSelection();
+            SeriesView.SeriesSelector.RefreshSelection();
         }
 
         #endregion

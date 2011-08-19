@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
@@ -13,16 +12,11 @@ using System.IO;
 using HydroDesktop.Configuration;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
-using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Search.Extensions;
-using HydroDesktop.Search.LayerInformation;
 using log4net;
-using HydroDesktop.Search.Download;
 using System.Drawing;
-using System.Text;
 
 
 namespace HydroDesktop.Search
@@ -32,14 +26,9 @@ namespace HydroDesktop.Search
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Private Member Variables
-        //the app class level variable for accessing the map
-        private AppManager app;
 
         //the parent split container
         private SplitContainer spcSearch = null;
-
-        //the main MapWindow map
-        private Map mapMain = null;
 
         // this handles the list of webservices
         private WebServicesList _webServicesList;
@@ -47,25 +36,26 @@ namespace HydroDesktop.Search
         // this handles the rectangle drawing
         private RectangleDrawing _rectangleDrawing;
 
-        private readonly DownloadManager _downLoadManager;
-
         // fix : 8198
         // 1. del WS-selection listbox
         // 2. update ws Treeview and add ws treeview with url link
         protected bool bUseTreeWithLink = true;
 
+        private AppManager app;
+
         #endregion
 
         #region Constructor
-        public SearchControl(AppManager mapArgs)
+        /// <summary>
+        /// Initializes the search control
+        /// </summary>
+        /// <param name="manager">the main app reference</param>
+        public SearchControl(AppManager manager)
         {
             InitializeComponent();
 
-            //set the mapwindow variable
-            app = mapArgs;
-
             //set the main map
-            mapMain = (Map)app.Map; //TODO: hack
+            app = manager;
 
             // this manages the former webservices.xml
             _webServicesList = new WebServicesList();
@@ -99,16 +89,11 @@ namespace HydroDesktop.Search
             // update invisible data container
             treeViewWebServices.MouseUp += new MouseEventHandler(treeView1_MouseUp);
 
-            // mouse up on list should ensure radiobutton existing themes get selected
-            lstThemes.MouseUp += lstThemes_MouseUp;
-
             //project opening event to ensure refreshing of layers
             app.SerializationManager.Deserializing += SerializationManager_Deserializing;
 
             //set the default search mode
             SearchMode = SearchMode.HISCentral;
-
-            _downLoadManager = new DownloadManager { Log = log };
         }
 
         #endregion
@@ -168,10 +153,6 @@ namespace HydroDesktop.Search
             }
         }
 
-        void lstThemes_MouseUp(object sender, MouseEventArgs e)
-        {
-            rbExistingTheme.Checked = true;
-        }
         private void btnSaveSearch_Click(object sender, EventArgs e)
         {
             try
@@ -614,7 +595,7 @@ namespace HydroDesktop.Search
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            mapMain.FunctionMode = FunctionMode.Select;
+            app.Map.FunctionMode = FunctionMode.Select;
         }
 
         private void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
@@ -1285,7 +1266,7 @@ namespace HydroDesktop.Search
                     if (layer.LegendText == cboActiveLayer.SelectedItem.ToString())
                     {
                         layer.Select(0);
-                        //app.Map.MapFrame.ResetBuffer();
+                        //_mapArgs.Map.MapFrame.ResetBuffer();
                     }
                 }
                 //HACK ends
@@ -1410,9 +1391,9 @@ namespace HydroDesktop.Search
         /// </summary>
         private List<IMapPolygonLayer> GetListOfPolygonLayers()
         {
-            Map map1 = app.Map as Map;
+            IMap map1 = app.Map;// as Map;
             List<IMapPolygonLayer> polygonLayers = new List<IMapPolygonLayer>();
-            List<ILayer> allLayers = map1.GetAllLayers();
+            List<ILayer> allLayers = map1.MapFrame.GetAllLayers();
             foreach (ILayer lay in allLayers)
             {
                 IMapPolygonLayer polyLay = lay as IMapPolygonLayer;
@@ -1447,11 +1428,11 @@ namespace HydroDesktop.Search
             {
                 dataGridView1_Click(null, null);
                 ClearRectangle();
-                mapMain.FunctionMode = FunctionMode.Select;
+                app.Map.FunctionMode = FunctionMode.Select;
             }
             else
             {
-                mapMain.FunctionMode = FunctionMode.None;
+                app.Map.FunctionMode = FunctionMode.None;
             }
 
             //lbFieldsActiveLayer.SelectedIndexChanged += this.lbFieldsActiveLayer_SelectedIndexChanged;
@@ -1961,15 +1942,11 @@ namespace HydroDesktop.Search
                 var result = e.Result as SearchResult;
                 if (result == null)
                 {
-                    groupResults.Enabled = false;
-                    btnDownload.Enabled = false;
                     btnReset.Enabled = false;
                     MessageBox.Show("No data series were found. Please change the search criteria.");
                 }
                 else if (result.IsEmpty())
                 {
-                    groupResults.Enabled = false;
-                    btnDownload.Enabled = false;
                     btnReset.Enabled = false;
                     MessageBox.Show("No data series were found. Please change the search criteria.");
                 }
@@ -1982,46 +1959,15 @@ namespace HydroDesktop.Search
 
                     ShowSearchResults(result);
                     this.Cursor = Cursors.Default;
-                    groupResults.Enabled = true;
-                    btnDownload.Enabled = true;
                     btnReset.Enabled = true;
-
-                    //to control the height of datagrid for results
-                    //panelSearch.Height = 0;
-
                 }
-
-                //populate the listbox 'Existing theme'.
-                AddExistingThemes();
+            
                 //once download is complete, set panelsearch visibility to false
                 panelSearch.Visible = false;
-
-                searchResultsControl.Visible = true;
             }
         }
 
         #region Cancel Events
-
-        /// <summary>
-        /// Call "Cancel_worker" when button click happens.
-        /// </summary>
-        private void pgsCancel_Click(object sender, EventArgs e)
-        {
-            Cancel_worker();
-        }
-
-        /// <summary>
-        /// When Export Form is closed, BackgroundWorker has to stop.
-        /// </summary>
-        private void SearchForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (backgroundWorker1.IsBusy)
-            {
-                Cancel_worker();
-                e.Cancel = true;
-                return;
-            }
-        }
 
         /// <summary>
         /// Close the form if Cancel button is clicked before or after an export event.
@@ -2030,11 +1976,6 @@ namespace HydroDesktop.Search
         {
             //is search is in progress, cancel the search
             Cancel_worker();
-
-            //if download is in progress, cancel the download
-
-            //TODO: remove it
-            _downLoadManager.Cancel();
         }
 
         /// <summary>
@@ -2048,182 +1989,7 @@ namespace HydroDesktop.Search
         }
 
         #endregion
-
-        private void AddExistingThemes()
-        {
-            lstThemes.Items.Clear();
-            //show available data themes - from map legend
-            foreach (IMapLayer layer in app.Map.Layers)
-            {
-                if (layer.LegendText.ToLower() == "themes")
-                {
-                    IMapGroup themeGroup = layer as IMapGroup;
-                    if (themeGroup != null)
-                    {
-                        foreach (IMapLayer themeLayer in themeGroup.Layers)
-                        {
-                            lstThemes.Items.Add(themeLayer.LegendText);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void btnDownload_Click(object sender, EventArgs e)
-        {
-            if (searchResultsControl.SelectedRowsCount < 1)
-            {
-                MessageBox.Show("Please Select at least single data-series row to download.");
-                return;
-            }
-
-            //the associated theme: either use a new theme or add
-            //data to an existing theme
-            Theme theme = null;
-            if (rbNewTheme.Checked == true)
-            {
-                if (txtThemeName.Text == "")
-                {
-                    MessageBox.Show("Please write a valid theme name.");
-                    return;
-                }
-                if (lstThemes.Items.Count <= 0)
-                {
-                    theme = new Theme(txtThemeName.Text, txtThemeDescription.Text);
-                }
-                else
-                {
-                    for (int i = 0; i < lstThemes.Items.Count; i++)
-                    {
-                        if (txtThemeName.Text == "")
-                        {
-                            MessageBox.Show("Please write a vaild theme name.");
-                            return;
-                        }
-                        else if (txtThemeName.Text.ToLower() == lstThemes.Items[i].ToString().ToLower())
-                        {
-                            MessageBox.Show("The theme-name " + txtThemeName.Text + " already exists, Please change the theme name and try again!");
-                            return;
-                        }
-                        else
-                        {
-                            theme = new Theme(txtThemeName.Text, txtThemeDescription.Text);
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                if (lstThemes.SelectedIndex != -1)
-                {
-                    //theme = lstThemes.SelectedItem as Theme;
-                    theme = new Theme(lstThemes.SelectedItem.ToString());
-                }
-                else
-                {
-                    MessageBox.Show("Please ensure that a a valid theme is selected");
-                    return;
-                }
-
-            }
-
-            //create a list of the SiteCode-VariableCode combinations for download
-            var downloadList = searchResultsControl.GetSelectedSeriesAsDownloadInfo(dateTimePickStart.Value,
-                                                                                    dateTimePickEnd.Value);
-            var arg = new StartDownloadArg(downloadList, theme);
-
-            //setup the progress bar
-            panelSearch.Visible = true;
-            lblSearching.Visible = true;
-            progBarSearch2.Visible = true;
-
-            this.lblSearching.Text = "Downloading ..";
-            //this.lblTitleDownload.Text = "Downloading .. Please wait";
-            //this.txtBoxStatus.Clear();
-
-            //this will ensure that cancel button is enabled as next download can also be cancelled by user at any time.
-            this.btnCancel.Enabled = true;
-            //Download the data in a background process
-            if (_downLoadManager.IsBusy)
-            {
-                MessageBox.Show("The previous download command is still active, wait....");
-                return;
-            }
-
-            _downLoadManager.ProgressChanged += _downLoadManager_ProgressChanged;
-            _downLoadManager.Completed += _downLoadManager_Completed;
-            _downLoadManager.Start(arg);
-        }
-
-        private void progBarSearch2_Click(object sender, EventArgs e)
-        {
-            if (_downLoadManager.IsUIVisible)
-                _downLoadManager.HideUI();
-            else
-                _downLoadManager.ShowUI();
-        }
-
-        void _downLoadManager_Completed(object sender, RunWorkerCompletedEventArgs e)
-        {
-            // Unsubscribe from events
-            _downLoadManager.Completed -= _downLoadManager_Completed;
-            _downLoadManager.ProgressChanged -= _downLoadManager_ProgressChanged;
-
-            //reset the progress bar
-            progBarSearch2.Value = 0;
-
-            if (e.Cancelled)
-            {
-                panelSearch.Visible = false;
-                return;
-            }
-
-            var themeName = _downLoadManager.Information.StartDownloadArg.DataTheme == null
-                                ? string.Empty
-                                : _downLoadManager.Information.StartDownloadArg.DataTheme.Name;
-
-            //Display theme in the main map
-            //AddThemeToMap(themeName);
-
-            //Change the form's appearance
-            lblSearching.Text = "Download Complete.";
-
-            //refreshing the AddExisiting theme
-            AddExistingThemes();
-            txtThemeName.Text = "";
-
-            //make the download progress-bar panel disappear
-            panelSearch.Visible = false;
-        }
-
-        void _downLoadManager_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progBarSearch2.Value = e.ProgressPercentage;
-            lblSearching.Text = e.UserState != null ? e.UserState.ToString() : string.Empty;
-        }
-
-        //no longer needed (moved to DownloadPlugin)
-        //private void AddThemeToMap(string themeName)
-        //{
-        //    try
-        //    {
-        //        //to refresh the series selector control
-        //        //TODO: need other way to send this message
-        //        var mainApplication = app as IHydroAppManager;
-        //        if (mainApplication != null)
-        //        {
-        //            mainApplication.SeriesView.SeriesSelector.RefreshSelection();
-        //        }
-
-        //        var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-        //        var manager = new Controls.Themes.ThemeManager(db);
-        //        IFeatureSet fs = manager.GetFeatureSet(themeName, app.Map.Projection);
-        //        manager.AddThemeToMap(fs, themeName, app.Map as DotSpatial.Controls.Map);
-        //        //app.Map.MapFrame.ResetBuffer();
-        //    }
-        //    catch { }
-        //}
+     
 
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
@@ -2245,64 +2011,33 @@ namespace HydroDesktop.Search
             }
 
             var searchLayerCreator = new SearchLayerCreator(app.Map, new SearchResult(loadedFeatures));
-            var laySearchResult = searchLayerCreator.Create();
-
-            //assign the projection again
-            foreach (var item in loadedFeatures)
-                item.Value.Reproject(app.Map.Projection);
-
-            // add result layer into  searchResultsControl
-            searchResultsControl.SetLayerSearchResult(mapMain, laySearchResult);
-
-            // Starting information bubble engine
-            IServiceInfoExtractor extractor;
-            switch (SearchMode)
-            {
-                case SearchMode.HISCentral:
-                    extractor = new HISCentralInfoExtractor(treeViewWebServices.Nodes);
-                    break;
-                case SearchMode.LocalMetaDataCache:
-                    extractor = new HISCentralInfoExtractor(treeViewWebServices.Nodes);
-                    //new LocalInfoExtractor();
-                    break;
-                default:
-                    goto case SearchMode.HISCentral;
-            }
-            foreach (IMapFeatureLayer layer in laySearchResult.GetLayers())
-            {
-                var searchInformer = new SearchLayerInformer(extractor);
-                searchInformer.Start(mapMain, layer);
-            }
+            searchLayerCreator.Create();
         }
 
         #endregion
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = MessageBox.Show("Are you sure you want to discontinue the Search/download?",
+            DialogResult result3 = MessageBox.Show("Are you sure you want to discontinue the Search?",
                   "Reset",
                   MessageBoxButtons.YesNo,
                   MessageBoxIcon.Question,
                   MessageBoxDefaultButton.Button2);
             if (result3 == DialogResult.Yes)
             {
-                if (backgroundWorker1.IsBusy || _downLoadManager.IsBusy)
+                if (backgroundWorker1.IsBusy)
                 {
-                    MessageBox.Show("Background search/download is active. Please wait.");
+                    MessageBox.Show("Background search is active. Please wait.");
                     return;
                 }
                 //set the groupbox
-                groupResults.Enabled = false;
-                btnDownload.Enabled = false;
                 btnReset.Enabled = false;
-                searchResultsControl.SetDataSource(null);
                 tabControl2.SelectedIndex = 0;
                 panelSearch.Visible = true;
                 listBox4.Items.Clear();
                 lbSelectedKeywords.Items.Clear();
                 fillXml();
                 fillAreaXml();
-                searchResultsControl.Visible = false;
             }
             else
             {
@@ -2433,10 +2168,6 @@ namespace HydroDesktop.Search
                 groupboxWebservices.Visible = false;
             }
         }
-        private void btnSearchCancel_Click(object sender, EventArgs e)
-        {
-            Cancel_worker();
-        }
 
         private void checkSummary_CheckedChanged(object sender, EventArgs e)
         {
@@ -2462,21 +2193,14 @@ namespace HydroDesktop.Search
 
         private void RunSearchBackgroundWorker()
         {
-            // TODO: Why check backgroundWorker2? Isn't that one used only for time series download?
-            if (_downLoadManager.IsBusy || backgroundWorker1.IsBusy)
+            if (backgroundWorker1.IsBusy)
             {
                 MessageBox.Show("A previous search is still executing.  Please try again later.");
                 return;
             }
             //check for rectangle select mode
             if (rectSelectMode == false) dataGridView1_Click(null, null);
-
-            //setting the datagrid view to null before next search results come in
-            searchResultsControl.SetDataSource(null);
-            searchResultsControl.Visible = false;
-
-            groupResults.Enabled = false;
-            btnDownload.Enabled = false;
+            
             btnReset.Enabled = false;
             //show label searching = searching
             lblSearching.Text = "Searching..";
