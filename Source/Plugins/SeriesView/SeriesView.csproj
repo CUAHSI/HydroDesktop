@@ -32,11 +32,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>..\..\..\Binaries\Plugins\1_SeriesView\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Application Extensions\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Application Extensions\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Symbology.Forms, Version=1.0.2011.5, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=x86">
@@ -94,12 +94,6 @@
     <Compile Include="SeriesSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SeriesViewControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SeriesViewControl.designer.cs">
-      <DependentUpon>SeriesViewControl.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
@@ -119,9 +113,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="FilterDataSeries.resx">
       <DependentUpon>FilterDataSeries.cs</DependentUpon>
     </EmbeddedResource>
@@ -133,9 +124,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SeriesSelector.resx">
       <DependentUpon>SeriesSelector.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SeriesViewControl.resx">
-      <DependentUpon>SeriesViewControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

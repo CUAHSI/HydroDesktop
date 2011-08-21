@@ -6,7 +6,6 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
-Imports SeriesView
 
 Namespace GraphView
     Public Class Main
@@ -15,12 +14,13 @@ Namespace GraphView
 #Region "Variables"
 
         Private Const kGraph As String = "kHydroGraph"
+        Private Const kGraphDock As String = "kHydroGraphDock"
 
         '<Import(GetType(ISeriesView))>
         'Private appSeriesView As ISeriesView
 
-        <Import("SeriesViewControl")>
-        Private appSeriesView As SeriesViewControl
+        <Import("SeriesSelector", GetType(ISeriesSelector))>
+        Private appSeriesView As ISeriesSelector
 
 
 
@@ -108,12 +108,12 @@ Namespace GraphView
             'End If
 
             If Not appSeriesView Is Nothing Then
-                _mainControl = New cTSA(appSeriesView.SeriesSelector)
+                _mainControl = New cTSA(appSeriesView)
             Else
                 _mainControl = New cTSA()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add("kGraphView", "graph", _mainControl, DockStyle.Fill)
+            App.DockManager.Add(kGraphDock, "graph", _mainControl, DockStyle.Fill)
 
             InitializeRibbonButtons()
 
@@ -123,12 +123,11 @@ Namespace GraphView
         'when the plug-in is deactivated
         Public Overrides Sub Deactivate()
 
-            If Not appSeriesView Is Nothing Then
-                appSeriesView.RemovePanel(_pluginName)
-            End If
-
             'auto-remove all ribbon items
             App.HeaderControl.RemoveItems()
+
+            'remove the dock panel
+            App.DockManager.Remove(kGraphDock)
 
             'important line to deactivate the plugin
             MyBase.Deactivate()
@@ -472,25 +471,6 @@ Namespace GraphView
             'End If
         End Sub
 
-
-        'when the 'VB.NET sample' button is clicked, select the RibbonSamplePlugin view
-        Sub Ribbon_ActiveTabChanged()
-
-            Dim myTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
-            Dim homeTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
-
-            If myTab.Active Then
-                'TabManager.SelectedTabName = kSeriesViewPanelName
-
-                If Not appSeriesView Is Nothing Then
-                    appSeriesView.VisiblePanelName = _pluginName
-                End If
-
-            ElseIf homeTab.Active Then
-                'TabManager.SelectedTabName = "Map View"
-            End If
-
-        End Sub
 
         'this is replaced by toggle buttons
         'Sub UncheckOtherPlotButtons(ByRef PlotButton As RibbonItem)

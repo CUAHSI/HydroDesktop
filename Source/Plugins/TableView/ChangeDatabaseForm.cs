@@ -22,10 +22,10 @@ namespace TableView
         private string _oldMetadataCacheConnString;
         private string _newMetadataCacheConnString;
 
-        private ISeriesView _seriesView;
+        private ISeriesSelector _seriesView;
         private Map _mainMap;
 
-        public ChangeDatabaseForm(ISeriesView seriesView, Map mainMap)
+        public ChangeDatabaseForm(ISeriesSelector seriesView, Map mainMap)
         {
             InitializeComponent();
             LoadSettings();
@@ -77,7 +77,7 @@ namespace TableView
             Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newMetadataCachePath);
 
             //(3) Refresh 'SeriesSelector' control
-            _seriesView.SeriesSelector.SetupDatabase();
+            _seriesView.SetupDatabase();
             //_seriesView.SeriesSelector.RefreshSelection();
 
             //ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);

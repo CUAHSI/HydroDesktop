@@ -98,9 +98,6 @@ namespace HydroDesktop.Main
             this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
 
             // setup docking...
-            //DockPanel mainDockPanel = new DockPanel();
-            //mainDockPanel.Parent = Shell;
-            //this.applicationManager1.DockManager = new DockingManager(mainDockPanel);
             this.applicationManager1.DockManager = new DockingManager();
 
             //dock the map and legend to fill
@@ -609,23 +606,6 @@ namespace HydroDesktop.Main
         //}
 
         #endregion Event
-
-        //hide status bar when map panel is not shown
-        //private void tabContainer_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (tabContainer.SelectedTabName == "MapView")
-        //    {
-        //        statusLocation.Visible = true;
-        //        lblStatus.Visible = false;
-        //    }
-        //    else
-        //    {
-        //        statusLocation.Visible = false;
-        //        lblStatus.Visible = true;
-        //        lblStatus.Text = "Database: " + SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
-        //        //applicationManager1.SerializationManager.GetCustomSetting<string>("DataRepositoryDbPath", "unknown db path");
-        //    }
-        //}
 
         //Refresh map when main form is maximized
         private void mainRibbonForm_SizeChanged(object sender, EventArgs e)

@@ -562,8 +562,8 @@
   <data name="OrbApplicationSettings.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAeuQAA
-        HrkBw/4oAQAABoRJREFUWEe9V2tQlFUYFi85jbeGmhwnJy/jL8sm60dWM0hOjlZajVkz/cnLmKEIIkg2
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAeuAAA
+        HrgBEbnK5QAABoRJREFUWEe9V2tQlFUYFi85jbeGmhwnJy/jL8sm60dWM0hOjlZajVkz/cnLmKEIIkg2
         WUo0CLsgl2VZEmWRi9xWYQ0EFpBAcAXkVjBDMOyqyHJZua5GwBBP73vYxd1lcakf7sy7l+97z3me87zP
         eb+zc+ZYvQDMs/791L8TAZenDjoTIJHJNRgMyMvLQ3JSkvjU6XR0+f+RpHEvUiye1QIp8YWqqioEBwfD
         YOiA0dhD4G1QKpUo1GgwMTHBRJ5lMo7CHoRyNur0OoyMjvC45U5JUJKr0WiEVCrF/fZ2PHr0EAP9veIz
@@ -597,8 +597,8 @@
   <data name="OrbApplicationSettings.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAeuQAA
-        HrkBw/4oAQAABoRJREFUWEe9V2tQlFUYFi85jbeGmhwnJy/jL8sm60dWM0hOjlZajVkz/cnLmKEIIkg2
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAeuAAA
+        HrgBEbnK5QAABoRJREFUWEe9V2tQlFUYFi85jbeGmhwnJy/jL8sm60dWM0hOjlZajVkz/cnLmKEIIkg2
         WUo0CLsgl2VZEmWRi9xWYQ0EFpBAcAXkVjBDMOyqyHJZua5GwBBP73vYxd1lcakf7sy7l+97z3me87zP
         eb+zc+ZYvQDMs/791L8TAZenDjoTIJHJNRgMyMvLQ3JSkvjU6XR0+f+RpHEvUiye1QIp8YWqqioEBwfD
         YOiA0dhD4G1QKpUo1GgwMTHBRJ5lMo7CHoRyNur0OoyMjvC45U5JUJKr0WiEVCrF/fZ2PHr0EAP9veIz
@@ -776,8 +776,8 @@
   <data name="ribbonOrbOptionButton_Exit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOuwAA
-        DrsBx/jUNgAAAuBJREFUOE91kmtIU2EcxreclNhnvxWZgtJFkxK1jEzMC5QFkUQKQl9G0AfNLC/dL5h4
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOugAA
+        DroBFb820gAAAuBJREFUOE91kmtIU2EcxreclNhnvxWZgtJFkxK1jEzMC5QFkUQKQl9G0AfNLC/dL5h4
         qSw0y8vKpU6tTM2KagpJJNOmeJm76S5nuk3XznSbux2fziRtOnvhgZf3vP/f/zn/52UwPBYAJq1Nnmee
         +3nn0pYhE8X833dGj8py6bvecXSjCzOL1GaB0cUbIKl6oYnybvJGbc9p1TjAUTlIrtIV44b8dcScs1P+
         /Dkn97PBAf6sE/2/XWshXVPmvBKxhcoeMyNXZMFTuYNsUbviaIAfYaX8urXOxhdqGy6LLbg3ZUWTyg7x
@@ -795,8 +795,8 @@
   <data name="ribbonOrbOptionButton_Exit.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOuwAA
-        DrsBx/jUNgAAAuBJREFUOE91kmtIU2EcxreclNhnvxWZgtJFkxK1jEzMC5QFkUQKQl9G0AfNLC/dL5h4
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOugAA
+        DroBFb820gAAAuBJREFUOE91kmtIU2EcxreclNhnvxWZgtJFkxK1jEzMC5QFkUQKQl9G0AfNLC/dL5h4
         qSw0y8vKpU6tTM2KagpJJNOmeJm76S5nuk3XznSbux2fziRtOnvhgZf3vP/f/zn/52UwPBYAJq1Nnmee
         +3nn0pYhE8X833dGj8py6bvecXSjCzOL1GaB0cUbIKl6oYnybvJGbc9p1TjAUTlIrtIV44b8dcScs1P+
         /Dkn97PBAf6sE/2/XWshXVPmvBKxhcoeMyNXZMFTuYNsUbviaIAfYaX8urXOxhdqGy6LLbg3ZUWTyg7x
@@ -925,7 +925,8 @@
         AAEAAAD/////AQAAAAAAAAAEAQAAAH9TeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW1N5
         c3RlbS5TdHJpbmcsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVi
         bGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OV1dAwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24GAAAI
-        CAkCAAAAAQAAAAEAAAARAgAAAAQAAAAGAwAAAAdQbHVnaW5zDQML
+        CAkCAAAAAgAAAAcAAAARAgAAAAQAAAAGAwAAAAdQbHVnaW5zBgQAAAAWQXBwbGljYXRpb24gRXh0ZW5z
+        aW9ucw0CCw==
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

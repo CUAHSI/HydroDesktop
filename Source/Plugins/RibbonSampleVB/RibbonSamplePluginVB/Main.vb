@@ -4,7 +4,6 @@ Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
-Imports SeriesView
 Imports System.ComponentModel.Composition
 
 Namespace HydroDesktop.SamplePluginVB
@@ -14,47 +13,42 @@ Namespace HydroDesktop.SamplePluginVB
 
 #Region "Variables"
 
-        <Import("SeriesViewControl")>
-        Private _seriesView As ISeriesView
+        <Import("SeriesSelector", GetType(ISeriesSelector))>
+        Private _seriesView As ISeriesSelector
 
         Private _mainControl As MyUserControl
 
-        Private Const _pluginName As String = "VB Sample Plugin"
+        Private Const _pluginName As String = "VB_Sample"
+        Private Const kHydroSampleVBDock As String = "kHydroSampleVBDock"
 
 #End Region
 
 #Region "IMapPlugin Members"
 
-
         'When the plugin is initialized
         Public Overrides Sub Activate()
 
             'To add a ribbon button to the 'Home' RibbonTab
-            Dim button1 As New SimpleActionItem(_pluginName, AddressOf ribbonButton1_Click)
+            Dim button1 As New SimpleActionItem(_pluginName, AddressOf button1_Click)
             button1.LargeImage = My.Resources.vb_icon_32
             App.HeaderControl.Add(button1)
 
             If Not _seriesView Is Nothing Then
-                _mainControl = New MyUserControl(_seriesView.SeriesSelector)
+                _mainControl = New MyUserControl(_seriesView)
                 _mainControl.Dock = DockStyle.Fill
-                App.DockManager.Add("kSamplePluginVBPanel", "sample plugin", _mainControl, DockStyle.Fill)
+                App.DockManager.Add(kHydroSampleVBDock, _pluginName, _mainControl, DockStyle.Fill)
             End If
-
 
             MyBase.Activate()
         End Sub
 
         'when the plug-in is deactivated
-        Public Overloads Sub Deactivate()
+        Public Overrides Sub Deactivate()
 
             App.HeaderControl.RemoveItems()
 
-            If _seriesView.PanelNames.Contains(_pluginName) Then
-                _seriesView.RemovePanel(_pluginName)
-            End If
+            App.DockManager.Remove(kHydroSampleVBDock)
 
-
-            'important line to deactivate the plugin
             MyBase.Deactivate()
 
         End Sub
@@ -63,14 +57,8 @@ Namespace HydroDesktop.SamplePluginVB
 
 #Region "Event Handlers"
 
-        'when the 'VB.NET sample' button is clicked, select the RibbonSamplePlugin view
-        Sub ribbonButton1_Click()
-            'Set main view to 'SeriesView'
+        Sub button1_Click()
 
-            'Set the seriesPanel to 'VB.NET sample plugin'
-            If Not _seriesView Is Nothing Then
-                _seriesView.VisiblePanelName = _pluginName
-            End If
         End Sub
 
 #End Region

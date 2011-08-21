@@ -13,6 +13,11 @@ namespace HydroDesktop.Main
         public DockPanel MainDockPanel { get; set; }
 
         /// <summary>
+        /// The lookup list of dock panels (for keeping track of existing panels)
+        /// </summary>
+        private Dictionary<string, DockContent> dockContents = new Dictionary<string,DockContent>();
+
+        /// <summary>
         /// Create the default docking manager using the main form as container
         /// </summary>
         public DockingManager()
@@ -45,12 +50,22 @@ namespace HydroDesktop.Main
             content.TabText = caption;
 
             content.Show(MainDockPanel);
+
+            if (!dockContents.ContainsKey(key))
+            {
+                dockContents.Add(key, content);
+            }
         }
 
         public void Remove(string key)
         {
-            //todo:
-            throw new NotImplementedException();
+            if (dockContents.ContainsKey(key))
+            {
+                DockContent content = dockContents[key];
+                content.Close();
+                content.Dispose();
+                dockContents.Remove(key);
+            }
         }
         public static WeifenLuo.WinFormsUI.Docking.DockState ConvertToDockState(System.Windows.Forms.DockStyle dockStyle)
         {

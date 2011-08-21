@@ -156,7 +156,6 @@ namespace HydroDesktop.Main
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(706, 17);
             this.lblStatus.Spring = true;
-            this.lblStatus.Text = "";
             // 
             // toolStripStatusLabel1
             // 
@@ -447,7 +446,6 @@ namespace HydroDesktop.Main
             this.applicationManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("applicationManager1.Directories")));
             this.applicationManager1.DockManager = null;
             this.applicationManager1.HeaderControl = null;
-            this.applicationManager1.LayoutControl = null;
             this.applicationManager1.Legend = this.mainLegend;
             this.applicationManager1.Map = this.mainMap;
             this.applicationManager1.ProgressHandler = this.mwStatusStrip1;
