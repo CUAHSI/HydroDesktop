@@ -10,7 +10,6 @@ using DotSpatial.Controls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
-using SeriesView;
 
 namespace HydroR
 {
@@ -18,8 +17,8 @@ namespace HydroR
     {
         #region Variables
 
-        [Import("SeriesControl", typeof(SeriesSelector))]
-        private SeriesSelector _seriesSelector;
+        [Import("SeriesControl", typeof(ISeriesSelector))]
+        private ISeriesSelector _seriesSelector;
 
         private string _panelName = "HydroR";
         private const string _tabKey = "kHydroR";
