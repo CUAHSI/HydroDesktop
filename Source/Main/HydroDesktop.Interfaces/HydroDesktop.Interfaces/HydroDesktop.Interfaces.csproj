@@ -70,7 +70,6 @@
     <Compile Include="IMetadataCacheManager.cs" />
     <Compile Include="IRepositoryManager.cs" />
     <Compile Include="ISeriesSelector.cs" />
-    <Compile Include="ISeriesView.cs" />
     <Compile Include="ObjectModel\BaseEntity.cs" />
     <Compile Include="ObjectModel\Constants.cs" />
     <Compile Include="ObjectModel\DataFile.cs" />

@@ -8,7 +8,6 @@ using DotSpatial.Controls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using System.ComponentModel.Composition;
-using SeriesView;
 using DotSpatial.Controls.Header;
 
 namespace RibbonSamplePlugin
@@ -21,12 +20,12 @@ namespace RibbonSamplePlugin
         #region Variables
 
         //reference to the main series view panel
-        [Import("SeriesViewControl", typeof(SeriesViewControl))]
-        private SeriesViewControl _seriesView;
+        [Import("SeriesSelector", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesView { get; private set; }
 
         //the name of the plugin displayed in the ribbon tab
         private const string _pluginName = "Ribbon Sample Plugin";
-        private const string HydroCsharpDockKey = "kDockRibbonSampleCsharp";
+        private const string kHydroCSharpDock = "kDockRibbonSampleCsharp";
         private const string KHydroCSharp = "kRootRibbonSampleCsharp";
 
         #endregion
@@ -42,7 +41,7 @@ namespace RibbonSamplePlugin
             App.HeaderControl.RemoveItems();
             
             //remove the plugin panel           
-            _seriesView.RemovePanel(_pluginName);          
+            App.DockManager.Remove(kHydroCSharpDock);    
             
             // This line ensures that "Enabled" is set to false.
             base.Deactivate();
@@ -63,8 +62,8 @@ namespace RibbonSamplePlugin
 
 
             // Add a dockable panel
-            MyUserControl uc = new MyUserControl(_seriesView.SeriesSelector);
-            App.DockManager.Add(HydroCsharpDockKey, _pluginName, uc, DockStyle.Fill);
+            MyUserControl uc = new MyUserControl(SeriesView);
+            App.DockManager.Add(kHydroCSharpDock, _pluginName, uc, DockStyle.Fill);
 
             // Create the Ribbon Button with a ribbon panel on the new ribbon tab        
             var simpleButton2 = new SimpleActionItem("ribbon button", this.rb_Click);

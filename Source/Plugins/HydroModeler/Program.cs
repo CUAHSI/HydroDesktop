@@ -25,6 +25,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         public RibbonButton _ribbonBtn;
         //private ITabManager _t;
         public string _panelName = "HydroModeler";
+        private const string kHydroModelerDock = "kHydroModelerDock";
         mainTab hydroModelerControl;
         Bitmap bmp;
         List<RibbonPanel> rps;
@@ -50,13 +51,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             _mapArgs.Ribbon.Tabs[0].Panels[0].Items.Remove(_ribbonBtn);
 
             // Remove Work Page
-            //if (_t.Contains(_panelName))
-            //    _t.RemoveTab(_panelName);
-            App.DockManager.Remove("kHydroModeler");
+            App.DockManager.Remove(kHydroModelerDock);
 
-            // This line ensures that "Enabled" is set to false.
             base.Deactivate();
-
         }
         #endregion
 
@@ -68,6 +65,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         #region IMapPlugin Members
 
+        /// <summary>
+        /// Occurs when the HydroModeler plugin is loaded
+        /// </summary>
         public override void Activate()
         {
             //set map args
@@ -89,7 +89,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             //_t.AddTab(_panelName, hydroModelerControl, bmp);
             hydroModelerControl.Dock = DockStyle.Fill;
-            App.DockManager.Add("kHydroModeler", "HydroModeler", hydroModelerControl, DockStyle.Fill);
+            App.DockManager.Add(kHydroModelerDock, "HydroModeler", hydroModelerControl, DockStyle.Fill);
             
             //activate tab
             _ribbonBtn_Click(this, EventArgs.Empty);

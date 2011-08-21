@@ -14,6 +14,8 @@ namespace HydroDesktop.Search
 
         #region Variables
 
+        private const string kSearchDock = "kHydroSearchDock";
+        
         //the Search user control
         private SearchControl ucSearch = null;
 
@@ -30,6 +32,8 @@ namespace HydroDesktop.Search
         {
             //Remove the Search Ribbon Items
             App.HeaderControl.RemoveItems();
+
+            App.DockManager.Remove(kSearchDock);
 
             //to refresh the map
             RefreshTheMap();
@@ -64,7 +68,7 @@ namespace HydroDesktop.Search
                 //Set the Search control
                 ucSearch = new SearchControl(App);
                 ucSearch.Dock = DockStyle.Fill;
-                App.DockManager.Add("SearchControl", "search", ucSearch, DockStyle.Right);
+                App.DockManager.Add(kSearchDock, "search", ucSearch, DockStyle.Right);
 
                 ReportProgress(50, "Loading Search Plugin..");
 

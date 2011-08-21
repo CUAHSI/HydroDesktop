@@ -13,13 +13,14 @@ Namespace EditView
 
 #Region "Variables"
 
-        <Import("SeriesViewControl")>
-        Private _seriesView As SeriesView.SeriesViewControl
+        <Import("SeriesSelector", GetType(ISeriesSelector))>
+        Private _seriesSelector As ISeriesSelector
 
         Private _mainControl As cEditView
 
         Private Const _pluginName As String = "Edit"
         Private Const _editTabKey As String = "kEdit"
+        Private Const kEditViewDock As String = "kHydroEditViewDock"
 
         Private _EditView As New RootItem(_editTabKey, _pluginName)
 
@@ -62,25 +63,13 @@ Namespace EditView
             '**************************************************************************************
 
             'To add a new main panel View to the main application window
-            If Not _seriesView Is Nothing Then
-                _mainControl = New cEditView(_seriesView.SeriesSelector)
+            If Not _seriesSelector Is Nothing Then
+                _mainControl = New cEditView(_seriesSelector)
             Else
                 _mainControl = New cEditView()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add("kEditViewPanel", "edit", _mainControl, DockStyle.Fill)
-
-            'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
-            'If Not manager Is Nothing Then
-
-            '    _seriesView = manager.SeriesView
-            '    _mainControl = New cEditView(_seriesView.SeriesSelector)
-            '    _seriesView.AddPanel(_pluginName, _mainControl)
-            'Else
-            '    _mainControl = New cEditView()
-            '    _mainControl.Dock = DockStyle.Fill
-            '    App.DockManager.Add("kEditView", _mainControl, DockStyle.Fill)
-            'End If
+            App.DockManager.Add(kEditViewDock, "edit", _mainControl, DockStyle.Fill)
 
             InitializeRibbonButtons()
 
@@ -181,6 +170,8 @@ Namespace EditView
 
             App.HeaderControl.RemoveItems()
 
+            App.DockManager.Remove(kEditViewDock)
+
             MyBase.Deactivate()
 
         End Sub
@@ -200,46 +191,12 @@ Namespace EditView
             btnInterpolate.Enabled = False
             btnRestoreData.Enabled = False
 
-
-            'TODO allow changing of button caption
             btnSelectSeries.Caption = "Edit Series"
         End Sub
 
 #End Region
 
 #Region "Event Handlers"
-
-        Sub Ribbon_ActiveChanged()
-
-            Dim myTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = _pluginName)
-            Dim homeTab As RibbonTab = App.Ribbon.Tabs.Find(Function(t) t.Text = "Home")
-
-            If myTab.Active Then
-                'TabManager.SelectedTabName = "Series View"
-                _seriesView.VisiblePanelName = _pluginName
-            ElseIf homeTab.Active Then
-                'TabManager.SelectedTabName = "Map View"
-            Else
-                LeavingEditView()
-            End If
-
-
-
-            'If Not _mainControl.Editing Then
-            '    If Not _seriesView Is Nothing Then
-            '        _seriesView.VisiblePanelName = _pluginName
-            '    End If
-            'Else
-            '    _mapArgs.PanelManager.SelectedTabName = "MapView"
-            '    If _mainControl.Canceled Then
-            '        _mainControl.Canceled = False
-            '        _mapArgs.PanelManager.SelectedTabName = "Series View"
-            '    Else
-            '        LeavingEditView()
-            '    End If
-            'End If
-
-        End Sub
 
         'old code from Ribbon_ActiveChanged..
         'If Not _mainControl.Editing Then
@@ -274,7 +231,7 @@ Namespace EditView
 
         Sub btnSelectSeries_Click()
             If Not _mainControl.Editing Then
-                If Not _seriesView.SeriesSelector.SelectedSeriesID = 0 Then
+                If Not _seriesSelector.SelectedSeriesID = 0 Then
                     _mainControl.btnSelectSeries_Click()
 
                     'TODO : allow to change button caption

@@ -165,6 +165,7 @@ Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignorevers
 ;Source: "..\Binaries\Source.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 ;Source: "..\Binaries\Target.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 
+Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
@@ -174,7 +175,7 @@ Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: 
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\Search2\*"; DestDir: "{app}\Plugins\Search2"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\TSA\*"; DestDir: "{app}\Plugins\TSA"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 
@@ -225,6 +226,8 @@ Type: files; Name: "{app}\DotSpatial.Desktop.dll"
 Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
 Type: files; Name: "{app}\FluentNHibernate.dll"
 Type: files; Name: "{app}\NHibernate.dll"
+Type: files; Name: "{app}\Plugins\TSA.*"
+Type: files; Name: "{app}\Plugins\Toolbox.*"
 Type: files; Name: "{app}\Plugins\Search\search.*"
 Type: files; Name: "{app}\Plugins\MetadataFetcher\HIS_Database.*"
 Type: files; Name: "{app}\Plugins\DataFetcher\HIS_Database.*"
@@ -239,6 +242,8 @@ Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 
 [UninstallDelete]
+Type: files; Name: "{app}\Plugins\TSA.*"
+Type: files; Name: "{app}\Plugins\Toolbox.*"
 Type: files; Name: "{app}\DotSpatial.Common.dll"
 Type: files; Name: "{app}\DotSpatial.Desktop.dll"
 Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"

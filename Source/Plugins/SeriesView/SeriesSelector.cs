@@ -76,8 +76,6 @@ namespace SeriesView
 
             dgvSeries.CellValueChanged += new DataGridViewCellEventHandler(dgvSeries_CellValueChanged);
 
-            //dgvSeries.SelectionChanged += new EventHandler(dgvSeries_SelectionChanged);
-
             btnUncheckAll.Click += new EventHandler(btnUncheckAll_Click);
 
             //filter option events

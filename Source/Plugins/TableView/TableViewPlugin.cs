@@ -12,7 +12,6 @@ using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
-using SeriesView;
 using HydroDesktop.Controls.Themes;
 
 namespace TableView
@@ -24,12 +23,13 @@ namespace TableView
         #region Variables
 
         //the seriesView component
-        [Import("SeriesViewControl")]
-        internal SeriesViewControl SeriesControl { get; private set; }
+        [Import("SeriesSelector", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
 
         private const string _tablePanelName = "Table";
 
         public const string TableTabKey = "kHydroTable";
+        private const string kTableViewDock = "kHydroTableViewDock";
 
         #endregion
 
@@ -37,7 +37,8 @@ namespace TableView
         {
             App.HeaderControl.RemoveItems();
 
-            // This line ensures that "Enabled" is set to false.
+            App.DockManager.Remove(kTableViewDock);
+
             base.Deactivate();
         }
 
@@ -99,9 +100,9 @@ namespace TableView
             #endregion initialize the Table Ribbon TabPage and related controls
 
             // Add "Table View Plugin" panel to the SeriesView
-            cTableView tableViewControl = new cTableView(SeriesControl.SeriesSelector);
+            cTableView tableViewControl = new cTableView(SeriesControl);
             tableViewControl.Dock = DockStyle.Fill;
-            App.DockManager.Add("kTableViewPanel", "table", tableViewControl, DockStyle.Fill);
+            App.DockManager.Add(kTableViewDock, "table", tableViewControl, DockStyle.Fill);
 
             base.Activate();
         }
@@ -117,7 +118,7 @@ namespace TableView
         private void rbRefreshTheme_Click(object sender, EventArgs e)
         {
             RefreshAllThemes();
-            SeriesControl.SeriesSelector.RefreshSelection();
+            SeriesControl.RefreshSelection();
             //this.tabContainer.SelectedIndex = 1;
         }
 
@@ -146,7 +147,7 @@ namespace TableView
             frm.ShowDialog();
             if (frm.DialogResult == DialogResult.OK)
             {
-                SeriesControl.SeriesSelector.RefreshSelection();
+                SeriesControl.RefreshSelection();
                 RefreshAllThemes();
             }
         }
@@ -212,7 +213,7 @@ namespace TableView
         private void DatabaseHasChanged(string connString)
         {
             //TODO call SeriesSelector directly
-            SeriesControl.SeriesSelector.RefreshSelection();
+            SeriesControl.RefreshSelection();
 
             // Originally from NewDatabase
             Settings.Instance.DataRepositoryConnectionString = connString;

@@ -8,8 +8,8 @@ using System.ComponentModel.Composition;
 
 using DotSpatial.Controls;
 using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
-using SeriesView;
 
 namespace HydroR
 {
@@ -17,11 +17,12 @@ namespace HydroR
     {
         #region Variables
 
-        [Import("SeriesViewControl", typeof(SeriesViewControl))]
-        private SeriesView.SeriesViewControl _seriesView;
+        [Import("SeriesSelector", typeof(ISeriesSelector))]
+        private ISeriesSelector _seriesSelector;
 
         private string _panelName = "HydroR";
         private const string _tabKey = "kHydroR";
+        private const string kHydroRDock = "kHydroRDock";
 
         private SimpleActionItem _btnR;
 
@@ -37,6 +38,8 @@ namespace HydroR
         public override void Deactivate()
         {
             App.HeaderControl.RemoveItems();
+
+            App.DockManager.Remove(kHydroRDock);
  
             base.Deactivate();
         }
@@ -47,8 +50,8 @@ namespace HydroR
             //_hydroRControl.RChanged += new cRCommandView.REventHandler(ribbonBnt_TextChanged);
 
             // Add panel to the docking manager
-            _hydroRControl = new cRCommandView(_seriesView.SeriesSelector);
-            App.DockManager.Add("kDockPanelHydroR", "HydroR", _hydroRControl, DockStyle.Fill);
+            _hydroRControl = new cRCommandView(_seriesSelector);
+            App.DockManager.Add(kHydroRDock, "HydroR", _hydroRControl, DockStyle.Fill);
 
             //Add a HydroR root item
             App.HeaderControl.Add(new RootItem(_tabKey, _panelName));
