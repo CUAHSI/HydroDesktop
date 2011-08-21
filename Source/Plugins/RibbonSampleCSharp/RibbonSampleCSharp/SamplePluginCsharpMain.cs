@@ -9,6 +9,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using System.ComponentModel.Composition;
 using DotSpatial.Controls.Header;
+using SeriesView;
 
 namespace RibbonSamplePlugin
 {
@@ -20,8 +21,8 @@ namespace RibbonSamplePlugin
         #region Variables
 
         //reference to the main series view panel
-        [Import("SeriesSelector", typeof(ISeriesSelector))]
-        internal ISeriesSelector SeriesView { get; private set; }
+        [Import("SeriesSelector")]
+        internal SeriesSelector SeriesControl { get; private set; }
 
         //the name of the plugin displayed in the ribbon tab
         private const string _pluginName = "Ribbon Sample Plugin";
@@ -62,8 +63,11 @@ namespace RibbonSamplePlugin
 
 
             // Add a dockable panel
-            MyUserControl uc = new MyUserControl(SeriesView);
-            App.DockManager.Add(kHydroCSharpDock, _pluginName, uc, DockStyle.Fill);
+            if (SeriesControl != null)
+            {
+                MyUserControl uc = new MyUserControl(SeriesControl);
+                App.DockManager.Add(kHydroCSharpDock, _pluginName, uc, DockStyle.Fill);
+            }
 
             // Create the Ribbon Button with a ribbon panel on the new ribbon tab        
             var simpleButton2 = new SimpleActionItem("ribbon button", this.rb_Click);

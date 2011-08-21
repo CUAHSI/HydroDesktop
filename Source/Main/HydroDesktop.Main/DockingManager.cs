@@ -47,6 +47,7 @@ namespace HydroDesktop.Main
             content.ShowHint = ConvertToDockState(dockStyle);
             content.Controls.Add(panel);
 
+            content.Text = caption;
             content.TabText = caption;
 
             content.Show(MainDockPanel);

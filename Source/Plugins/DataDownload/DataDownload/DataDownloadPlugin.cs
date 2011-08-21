@@ -11,6 +11,7 @@ using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
+using SeriesView;
 
 
 namespace HydroDesktop.DataDownload
@@ -29,8 +30,8 @@ namespace HydroDesktop.DataDownload
         /// <summary>
         /// Series View
         /// </summary>
-        [Import("SeriesViewControl", typeof(ISeriesSelector))]
-        internal ISeriesSelector SeriesView { get; private set; }
+        [Import("SeriesControl", typeof(SeriesSelector))]
+        internal SeriesSelector SeriesControl { get; private set; }
 
         /// <summary>
         /// Download manager
@@ -231,7 +232,7 @@ namespace HydroDesktop.DataDownload
             _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
 
             // Refresh list of the time series in the table and graph in the main form
-            SeriesView.RefreshSelection();
+            SeriesControl.RefreshSelection();
         }
 
         #endregion

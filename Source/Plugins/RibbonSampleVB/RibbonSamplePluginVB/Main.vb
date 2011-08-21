@@ -5,6 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports SeriesView
 
 Namespace HydroDesktop.SamplePluginVB
 
@@ -13,8 +14,8 @@ Namespace HydroDesktop.SamplePluginVB
 
 #Region "Variables"
 
-        <Import("SeriesSelector", GetType(ISeriesSelector))>
-        Private _seriesView As ISeriesSelector
+        <Import("SeriesControl", GetType(SeriesSelector))>
+        Private SeriesControl As SeriesSelector
 
         Private _mainControl As MyUserControl
 
@@ -33,8 +34,8 @@ Namespace HydroDesktop.SamplePluginVB
             button1.LargeImage = My.Resources.vb_icon_32
             App.HeaderControl.Add(button1)
 
-            If Not _seriesView Is Nothing Then
-                _mainControl = New MyUserControl(_seriesView)
+            If Not SeriesControl Is Nothing Then
+                _mainControl = New MyUserControl(SeriesControl)
                 _mainControl.Dock = DockStyle.Fill
                 App.DockManager.Add(kHydroSampleVBDock, _pluginName, _mainControl, DockStyle.Fill)
             End If

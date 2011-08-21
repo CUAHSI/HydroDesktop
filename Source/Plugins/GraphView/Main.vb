@@ -6,6 +6,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports SeriesView
 
 Namespace GraphView
     Public Class Main
@@ -19,8 +20,8 @@ Namespace GraphView
         '<Import(GetType(ISeriesView))>
         'Private appSeriesView As ISeriesView
 
-        <Import("SeriesSelector", GetType(ISeriesSelector))>
-        Private appSeriesView As ISeriesSelector
+        <Import("SeriesControl", GetType(SeriesSelector))>
+        Private appSeriesView As SeriesSelector
 
 
 

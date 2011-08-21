@@ -10,6 +10,7 @@ using DotSpatial.Controls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
+using SeriesView;
 
 namespace HydroR
 {
@@ -17,8 +18,8 @@ namespace HydroR
     {
         #region Variables
 
-        [Import("SeriesSelector", typeof(ISeriesSelector))]
-        private ISeriesSelector _seriesSelector;
+        [Import("SeriesControl", typeof(SeriesSelector))]
+        private SeriesSelector _seriesSelector;
 
         private string _panelName = "HydroR";
         private const string _tabKey = "kHydroR";
@@ -50,57 +51,60 @@ namespace HydroR
             //_hydroRControl.RChanged += new cRCommandView.REventHandler(ribbonBnt_TextChanged);
 
             // Add panel to the docking manager
-            _hydroRControl = new cRCommandView(_seriesSelector);
-            App.DockManager.Add(kHydroRDock, "HydroR", _hydroRControl, DockStyle.Fill);
+            if (_seriesSelector != null)
+            {
+                _hydroRControl = new cRCommandView(_seriesSelector);
+                App.DockManager.Add(kHydroRDock, "HydroR", _hydroRControl, DockStyle.Fill);
 
-            //Add a HydroR root item
-            App.HeaderControl.Add(new RootItem(_tabKey, _panelName));
+                //Add a HydroR root item
+                App.HeaderControl.Add(new RootItem(_tabKey, _panelName));
 
-            string rGroupCaption = _panelName + " Tools";
-            string rScriptCaption = "Script";
+                string rGroupCaption = _panelName + " Tools";
+                string rScriptCaption = "Script";
 
-            _btnR = new SimpleActionItem("StartR", _hydroRControl.btnR_Click);
-            _btnR.Key = "kBtnR";
-            _btnR.RootKey = _tabKey;
-            _btnR.LargeImage = Properties.Resources.Ricon;
-            _btnR.GroupCaption = rGroupCaption;
-            App.HeaderControl.Add(_btnR);
+                _btnR = new SimpleActionItem("StartR", _hydroRControl.btnR_Click);
+                _btnR.Key = "kBtnR";
+                _btnR.RootKey = _tabKey;
+                _btnR.LargeImage = Properties.Resources.Ricon;
+                _btnR.GroupCaption = rGroupCaption;
+                App.HeaderControl.Add(_btnR);
 
-            var btnGenR = new SimpleActionItem("Generate R Code", _hydroRControl.txtGenR_Click);
-            btnGenR.RootKey = _tabKey;
-            btnGenR.LargeImage = Properties.Resources.GenerateR;
-            btnGenR.GroupCaption = rGroupCaption;
-            App.HeaderControl.Add(btnGenR);
+                var btnGenR = new SimpleActionItem("Generate R Code", _hydroRControl.txtGenR_Click);
+                btnGenR.RootKey = _tabKey;
+                btnGenR.LargeImage = Properties.Resources.GenerateR;
+                btnGenR.GroupCaption = rGroupCaption;
+                App.HeaderControl.Add(btnGenR);
 
-            var btnSendLine = new SimpleActionItem("Send Line", _hydroRControl.btnSend_Click);
-            btnSendLine.RootKey = _tabKey;
-            btnSendLine.LargeImage = Properties.Resources.SendLine;
-            btnSendLine.GroupCaption = rGroupCaption;
-            App.HeaderControl.Add(btnSendLine);
+                var btnSendLine = new SimpleActionItem("Send Line", _hydroRControl.btnSend_Click);
+                btnSendLine.RootKey = _tabKey;
+                btnSendLine.LargeImage = Properties.Resources.SendLine;
+                btnSendLine.GroupCaption = rGroupCaption;
+                App.HeaderControl.Add(btnSendLine);
 
-            var btnSendSel = new SimpleActionItem("Send Selection", _hydroRControl.btnSendSel_Click);
-            btnSendSel.RootKey = _tabKey;
-            btnSendSel.LargeImage = Properties.Resources.SendSelection;
-            btnSendSel.GroupCaption = rGroupCaption;
-            App.HeaderControl.Add(btnSendSel);
+                var btnSendSel = new SimpleActionItem("Send Selection", _hydroRControl.btnSendSel_Click);
+                btnSendSel.RootKey = _tabKey;
+                btnSendSel.LargeImage = Properties.Resources.SendSelection;
+                btnSendSel.GroupCaption = rGroupCaption;
+                App.HeaderControl.Add(btnSendSel);
 
-            var btnSendAll = new SimpleActionItem("Send All", _hydroRControl.btnSendAll_Click);
-            btnSendAll.RootKey = _tabKey;
-            btnSendAll.LargeImage = Properties.Resources.SendScript;
-            btnSendAll.GroupCaption = rGroupCaption;
-            App.HeaderControl.Add(btnSendAll);
+                var btnSendAll = new SimpleActionItem("Send All", _hydroRControl.btnSendAll_Click);
+                btnSendAll.RootKey = _tabKey;
+                btnSendAll.LargeImage = Properties.Resources.SendScript;
+                btnSendAll.GroupCaption = rGroupCaption;
+                App.HeaderControl.Add(btnSendAll);
 
-            var btnOpen = new SimpleActionItem("Open Script", _hydroRControl.btnOpen_Click);
-            btnOpen.RootKey = _tabKey;
-            btnOpen.LargeImage = Properties.Resources.OpenFile;
-            btnOpen.GroupCaption = rScriptCaption;
-            App.HeaderControl.Add(btnOpen);
+                var btnOpen = new SimpleActionItem("Open Script", _hydroRControl.btnOpen_Click);
+                btnOpen.RootKey = _tabKey;
+                btnOpen.LargeImage = Properties.Resources.OpenFile;
+                btnOpen.GroupCaption = rScriptCaption;
+                App.HeaderControl.Add(btnOpen);
 
-            var btnSave = new SimpleActionItem("Save Script", _hydroRControl.btnSave_Click);
-            btnSave.RootKey = _tabKey;
-            btnSave.LargeImage = Properties.Resources.SaveFile;
-            btnSave.GroupCaption = rScriptCaption;
-            App.HeaderControl.Add(btnSave);
+                var btnSave = new SimpleActionItem("Save Script", _hydroRControl.btnSave_Click);
+                btnSave.RootKey = _tabKey;
+                btnSave.LargeImage = Properties.Resources.SaveFile;
+                btnSave.GroupCaption = rScriptCaption;
+                App.HeaderControl.Add(btnSave);
+            }
 
             base.Activate();
         }

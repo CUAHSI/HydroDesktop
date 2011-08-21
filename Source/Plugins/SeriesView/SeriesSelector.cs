@@ -488,6 +488,8 @@ namespace SeriesView
             AddSimpleFilterOptions();
 
             _dataView.RowFilter = "";
+
+            OnSelectionRefreshed();
         }
 
 

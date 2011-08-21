@@ -20,9 +20,7 @@ Public Class cEditView
     'Inherits UserControl
 
 #Region "privateDeclaration"
-    'Private sriesList As New ArrayList()
-    'private int rbSequenceTime = new Int32();
-
+    
     Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
     Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
     Private CurveEditingColor As Drawing.Color = Color.Black
@@ -52,6 +50,7 @@ Public Class cEditView
 
         connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
         dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
+
     End Sub
 
     Private Sub SettingColor()
@@ -89,6 +88,7 @@ Public Class cEditView
 
         'assign the events
         AddHandler _seriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+        AddHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
         'AddHandler _args.SeriesView.SeriesSelector.SeriesSelected, AddressOf SeriesSelector_SeriesSelected
 
         'SeriesSelector.MultipleCheck = True
@@ -266,6 +266,17 @@ Public Class cEditView
             Return If((SystemFonts.MessageBoxFont.Name = "Segoe UI"), DataGridViewHeaderBorderStyle.None, DataGridViewHeaderBorderStyle.Raised)
         End Get
     End Property
+
+    Private Sub SeriesSelector_Refreshed()
+
+        connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
+        dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
+
+        pTimeSeriesPlot.Clear()
+        selectedSeriesIdList.Clear()
+
+    End Sub
+
 
     Private Sub SeriesSelector_SeriesCheck()
         'Declaring all variables
