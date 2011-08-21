@@ -5,6 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports SeriesView
 
 Namespace EditView
 
@@ -13,8 +14,8 @@ Namespace EditView
 
 #Region "Variables"
 
-        <Import("SeriesSelector", GetType(ISeriesSelector))>
-        Private _seriesSelector As ISeriesSelector
+        <Import("SeriesControl", GetType(SeriesSelector))>
+        Private _seriesSelector As SeriesSelector
 
         Private _mainControl As cEditView
 
@@ -63,18 +64,15 @@ Namespace EditView
             '**************************************************************************************
 
             'To add a new main panel View to the main application window
-            If Not _seriesSelector Is Nothing Then
                 _mainControl = New cEditView(_seriesSelector)
-            Else
-                _mainControl = New cEditView()
-            End If
-            _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add(kEditViewDock, "edit", _mainControl, DockStyle.Fill)
 
-            InitializeRibbonButtons()
+                _mainControl.Dock = DockStyle.Fill
+                App.DockManager.Add(kEditViewDock, "edit", _mainControl, DockStyle.Fill)
 
-            'opening project event
-            AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
+                InitializeRibbonButtons()
+
+                'opening project event
+                AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
 
         End Sub
 

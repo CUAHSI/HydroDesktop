@@ -15,16 +15,15 @@
     {
         public const string SeriesViewKey = "kHydroSeriesView";
 
-        [Export("SeriesSelector", typeof(ISeriesSelector))]
-        private SeriesSelector mySeriesSelector = new SeriesSelector();
+        [Export("SeriesControl")]
+        private SeriesSelector MainSeriesSelector = new SeriesSelector();
         
         public override void Activate()
         {
             //add the series selector
-            
-            mySeriesSelector.Dock = DockStyle.Fill;
+            MainSeriesSelector.Dock = DockStyle.Fill;
 
-            App.DockManager.Add(SeriesViewKey, "time series", mySeriesSelector, DockStyle.Left);
+            App.DockManager.Add(SeriesViewKey, "time series", MainSeriesSelector, DockStyle.Left);
 
             
             base.Activate();

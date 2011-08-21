@@ -165,7 +165,7 @@ Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignorevers
 ;Source: "..\Binaries\Source.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 ;Source: "..\Binaries\Target.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 
-Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;

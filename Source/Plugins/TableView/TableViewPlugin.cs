@@ -13,6 +13,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using HydroDesktop.Controls.Themes;
+using SeriesView;
 
 namespace TableView
 {
@@ -23,8 +24,8 @@ namespace TableView
         #region Variables
 
         //the seriesView component
-        [Import("SeriesSelector", typeof(ISeriesSelector))]
-        internal ISeriesSelector SeriesControl { get; private set; }
+        [Import("SeriesControl", typeof(SeriesSelector))]
+        internal SeriesSelector SeriesControl { get; set; }
 
         private const string _tablePanelName = "Table";
 
