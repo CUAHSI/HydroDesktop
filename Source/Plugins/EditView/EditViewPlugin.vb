@@ -5,7 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
-Imports SeriesView
+
 
 Namespace EditView
 
@@ -14,8 +14,8 @@ Namespace EditView
 
 #Region "Variables"
 
-        <Import("SeriesControl", GetType(SeriesSelector))>
-        Private _seriesSelector As SeriesSelector
+        <Import("SeriesControl", GetType(ISeriesSelector))>
+        Private _seriesSelector As ISeriesSelector
 
         Private _mainControl As cEditView
 

@@ -68,6 +68,7 @@ Public Class cTSA
 
         'assign the events
         AddHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+        AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
         'AddHandler _seriesMenu.SeriesView.SeriesSelector.SeriesSelected, AddressOf SeriesSelector_SeriesSelected
 
         SetColorCollections()
@@ -132,6 +133,14 @@ Public Class cTSA
         For i = 0 To 9
             pointcolorlist.Add(ccList0(i))
         Next
+    End Sub
+
+    Private Sub SeriesSelector_Refreshed()
+        pTimeSeries.Clear()
+        pBoxWhisker.Clear()
+        pProbability.Clear()
+        selectedSeriesIdList.Clear()
+
     End Sub
 
     'when a series is checked in the series selector control

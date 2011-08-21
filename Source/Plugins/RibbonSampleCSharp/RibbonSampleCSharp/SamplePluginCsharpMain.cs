@@ -9,7 +9,6 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using System.ComponentModel.Composition;
 using DotSpatial.Controls.Header;
-using SeriesView;
 
 namespace RibbonSamplePlugin
 {
@@ -21,8 +20,8 @@ namespace RibbonSamplePlugin
         #region Variables
 
         //reference to the main series view panel
-        [Import("SeriesSelector")]
-        internal SeriesSelector SeriesControl { get; private set; }
+        [Import("SeriesSelector", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
 
         //the name of the plugin displayed in the ribbon tab
         private const string _pluginName = "Ribbon Sample Plugin";

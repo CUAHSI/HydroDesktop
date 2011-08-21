@@ -11,7 +11,6 @@ using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
-using SeriesView;
 
 
 namespace HydroDesktop.DataDownload
@@ -30,8 +29,8 @@ namespace HydroDesktop.DataDownload
         /// <summary>
         /// Series View
         /// </summary>
-        [Import("SeriesControl", typeof(SeriesSelector))]
-        internal SeriesSelector SeriesControl { get; private set; }
+        [Import("SeriesControl", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
 
         /// <summary>
         /// Download manager

@@ -5,7 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
-Imports SeriesView
+
 
 Namespace HydroDesktop.SamplePluginVB
 
@@ -14,8 +14,8 @@ Namespace HydroDesktop.SamplePluginVB
 
 #Region "Variables"
 
-        <Import("SeriesControl", GetType(SeriesSelector))>
-        Private SeriesControl As SeriesSelector
+        <Import("SeriesControl", GetType(ISeriesSelector))>
+        Private SeriesControl As ISeriesSelector
 
         Private _mainControl As MyUserControl
 

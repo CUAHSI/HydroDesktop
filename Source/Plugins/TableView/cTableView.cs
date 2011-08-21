@@ -44,7 +44,10 @@ namespace TableView
 
             //the SeriesChecked event
             _seriesSelector.SeriesCheck += new SeriesEventHandler(SeriesSelector_SeriesCheck);
+            _seriesSelector.Refreshed += new EventHandler(_seriesSelector_Refreshed);
         }
+
+        
         #endregion
 
         #region Method
@@ -445,6 +448,11 @@ namespace TableView
                 
             //    ShowJustValuesinParallel();
             //}
+        }
+
+        void _seriesSelector_Refreshed(object sender, EventArgs e)
+        {
+            SetupValuesTable();
         }
 
         private void rbSequence_Click(object sender, EventArgs e)
