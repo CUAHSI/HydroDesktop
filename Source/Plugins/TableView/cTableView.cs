@@ -453,6 +453,9 @@ namespace TableView
         void _seriesSelector_Refreshed(object sender, EventArgs e)
         {
             SetupValuesTable();
+
+            bindingSource1.DataSource = _dataValuesTable;
+            dataViewSeries.DataSource = bindingSource1;
         }
 
         private void rbSequence_Click(object sender, EventArgs e)
