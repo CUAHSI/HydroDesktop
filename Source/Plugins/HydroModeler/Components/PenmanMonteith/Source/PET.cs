@@ -24,18 +24,20 @@ namespace Evptrnsprtion
     {
         public DataTable _elementValues = new DataTable();
 
-        public string input_quantity0;
-        public string input_quantity1;
-        public string input_quantity2;
-        public string input_quantity3;
-        public string input_quantity4;
-        public string input_quantity5;
-        public string input_elementset0;
-        public string input_elementset1;
-        public string input_elementset2;
-        public string input_elementset3;
-        public string input_elementset4;
-        public string input_elementset5;
+        List<InputExchangeItem> inputs = new List<InputExchangeItem>();
+        //TODO - commented for pending change
+        //public string input_quantity0;
+        //public string input_quantity1;
+        //public string input_quantity2;
+        //public string input_quantity3;
+        //public string input_quantity4;
+        //public string input_quantity5;
+        //public string input_elementset0;
+        //public string input_elementset1;
+        //public string input_elementset2;
+        //public string input_elementset3;
+        //public string input_elementset4;
+        //public string input_elementset5;
 
         public string output_elementset0;
         public string output_elementset1;
@@ -150,24 +152,29 @@ namespace Evptrnsprtion
 
             //get input exchange item attributes
             int num_inputs = this.GetInputExchangeItemCount();
-            InputExchangeItem input0 = this.GetInputExchangeItem(num_inputs - 6);
-            input_elementset0 = input0.ElementSet.ID;
-            input_quantity0 = input0.Quantity.ID;
-            InputExchangeItem input1 = this.GetInputExchangeItem(num_inputs - 5);
-            input_elementset1 = input1.ElementSet.ID;
-            input_quantity1 = input1.Quantity.ID;
-            InputExchangeItem input2 = this.GetInputExchangeItem(num_inputs - 4);
-            input_elementset2 = input2.ElementSet.ID;
-            input_quantity2 = input2.Quantity.ID;
-            InputExchangeItem input3 = this.GetInputExchangeItem(num_inputs - 3);
-            input_elementset3 = input3.ElementSet.ID;
-            input_quantity3 = input3.Quantity.ID;
-            InputExchangeItem input4 = this.GetInputExchangeItem(num_inputs - 2);
-            input_elementset4 = input4.ElementSet.ID;
-            input_quantity4 = input4.Quantity.ID;
-            InputExchangeItem input5 = this.GetInputExchangeItem(num_inputs - 1);
-            input_elementset5 = input5.ElementSet.ID;
-            input_quantity5 = input5.Quantity.ID;
+            for (int i = 0; i < num_inputs; i++)
+            {
+                inputs.Add(this.GetInputExchangeItem(i));
+            }
+            //TODO - commented for pending change
+            //InputExchangeItem input0 = this.GetInputExchangeItem(num_inputs - 6);
+            //input_elementset0 = input0.ElementSet.ID;
+            //input_quantity0 = input0.Quantity.ID;
+            //InputExchangeItem input1 = this.GetInputExchangeItem(num_inputs - 5);
+            //input_elementset1 = input1.ElementSet.ID;
+            //input_quantity1 = input1.Quantity.ID;
+            //InputExchangeItem input2 = this.GetInputExchangeItem(num_inputs - 4);
+            //input_elementset2 = input2.ElementSet.ID;
+            //input_quantity2 = input2.Quantity.ID;
+            //InputExchangeItem input3 = this.GetInputExchangeItem(num_inputs - 3);
+            //input_elementset3 = input3.ElementSet.ID;
+            //input_quantity3 = input3.Quantity.ID;
+            //InputExchangeItem input4 = this.GetInputExchangeItem(num_inputs - 2);
+            //input_elementset4 = input4.ElementSet.ID;
+            //input_quantity4 = input4.Quantity.ID;
+            //InputExchangeItem input5 = this.GetInputExchangeItem(num_inputs - 1);
+            //input_elementset5 = input5.ElementSet.ID;
+            //input_quantity5 = input5.Quantity.ID;
 
             //get output exchange item attributes
             int num_outputs = this.GetOutputExchangeItemCount();
@@ -242,18 +249,31 @@ namespace Evptrnsprtion
         {
 
             //Retrieve values from another component
-            ScalarSet _NetRadiation = (ScalarSet)this.GetValues(input_quantity0, input_elementset0);
+            ScalarSet _NetRadiation = (ScalarSet)this.GetValues(inputs[0].Quantity.ID, inputs[0].ElementSet.ID);
             Net_Radiation = _NetRadiation.data;
-            ScalarSet _Temprtr = (ScalarSet)this.GetValues(input_quantity1, input_elementset1);
+            ScalarSet _Temprtr = (ScalarSet)this.GetValues(inputs[1].Quantity.ID, inputs[1].ElementSet.ID);
             Temprtr = _Temprtr.data;
-            ScalarSet _TemprtrDew = (ScalarSet)this.GetValues(input_quantity2, input_elementset2);
+            ScalarSet _TemprtrDew = (ScalarSet)this.GetValues(inputs[2].Quantity.ID, inputs[2].ElementSet.ID);
             TemprtrDew = _TemprtrDew.data;
-            ScalarSet _TemprtrMax = (ScalarSet)this.GetValues(input_quantity3, input_elementset3);
+            ScalarSet _TemprtrMax = (ScalarSet)this.GetValues(inputs[3].Quantity.ID, inputs[3].ElementSet.ID);
             TemprtrMax = _TemprtrMax.data;
-            ScalarSet _TemprtrMin = (ScalarSet)this.GetValues(input_quantity4, input_elementset4);
+            ScalarSet _TemprtrMin = (ScalarSet)this.GetValues(inputs[4].Quantity.ID, inputs[4].ElementSet.ID);
             TemprtrMin = _TemprtrMin.data;
-            ScalarSet _WindSpeed = (ScalarSet)this.GetValues(input_quantity5, input_elementset5);
+            ScalarSet _WindSpeed = (ScalarSet)this.GetValues(inputs[5].Quantity.ID, inputs[5].ElementSet.ID);
             WindSpeed = _WindSpeed.data;
+            //TODO - commented for pending change
+            //ScalarSet _NetRadiation = (ScalarSet)this.GetValues(input_quantity0, input_elementset0);
+            //Net_Radiation = _NetRadiation.data;
+            //ScalarSet _Temprtr = (ScalarSet)this.GetValues(input_quantity1, input_elementset1);
+            //Temprtr = _Temprtr.data;
+            //ScalarSet _TemprtrDew = (ScalarSet)this.GetValues(input_quantity2, input_elementset2);
+            //TemprtrDew = _TemprtrDew.data;
+            //ScalarSet _TemprtrMax = (ScalarSet)this.GetValues(input_quantity3, input_elementset3);
+            //TemprtrMax = _TemprtrMax.data;
+            //ScalarSet _TemprtrMin = (ScalarSet)this.GetValues(input_quantity4, input_elementset4);
+            //TemprtrMin = _TemprtrMin.data;
+            //ScalarSet _WindSpeed = (ScalarSet)this.GetValues(input_quantity5, input_elementset5);
+            //WindSpeed = _WindSpeed.data;
 
 
 
