@@ -5,7 +5,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>Potantial Evapotranspiration</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
@@ -34,7 +34,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>Standardized Reference Evapotranspiration(ASCE-Penman-Monteith)</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
@@ -64,7 +64,7 @@
         <ID>SC_NC Study</ID>
         <Description>NetRadiation</Description>
         <Version>1</Version>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
       </ElementSet>
       <Quantity>
         <ID>NSR</ID>
@@ -96,7 +96,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>Temperature of the gauge</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
@@ -121,7 +121,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>Dew Point Temperature of the gauge</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
@@ -146,7 +146,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>Maximum Temperature of the gauge</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
@@ -171,7 +171,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>Minimum Temperature of the gauge</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
@@ -196,7 +196,7 @@
       <ElementSet>
         <ID>SC_NC Study</ID>
         <Description>wind speed of the gauge</Description>
-        <ShapefilePath>C:/Documents and Settings/ercanm/Desktop/PenmanMonteith/data/PeTgauges.shp</ShapefilePath>
+        <ShapefilePath>../../../data/PeTgauges.shp</ShapefilePath>
         <Version>1</Version>
       </ElementSet>
       <Quantity>
