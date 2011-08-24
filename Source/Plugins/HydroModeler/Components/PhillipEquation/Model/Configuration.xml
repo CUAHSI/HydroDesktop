@@ -111,31 +111,6 @@
     <InputExchangeItem>
       <ElementSet>
         <ID>Coweeta</ID>
-        <Description>Coweeta watershed in NC</Description>
-        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
-        <Version>1</Version>
-      </ElementSet>
-      <Quantity>
-        <ID>m_z</ID>
-        <Description>Deacy factor of conductivity with depth</Description>
-        <Dimensions>
-          <Dimension>
-            <Power>1</Power>
-            <Base>Length</Base>
-          </Dimension>
-        </Dimensions>
-        <Unit>
-          <ID>m</ID>
-          <Description>meters</Description>
-          <ConversionFactorToSI>1</ConversionFactorToSI>
-          <OffSetToSI>0</OffSetToSI>
-        </Unit>
-        <ValueType>Scalar</ValueType>
-      </Quantity>
-    </InputExchangeItem>
-    <InputExchangeItem>
-      <ElementSet>
-        <ID>Coweeta</ID>
         <Description>Coweeta watershed,NC</Description>
         <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
         <Version>1</Version>
@@ -152,31 +127,6 @@
         <Unit>
           <ID>unitless</ID>
           <Description>unitless</Description>
-          <ConversionFactorToSI>1</ConversionFactorToSI>
-          <OffSetToSI>0</OffSetToSI>
-        </Unit>
-        <ValueType>Scalar</ValueType>
-      </Quantity>
-    </InputExchangeItem>
-    <InputExchangeItem>
-      <ElementSet>
-        <ID>Coweeta</ID>
-        <Description>Coweeta watershed in NC</Description>
-        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
-        <Version>1</Version>
-      </ElementSet>
-      <Quantity>
-        <ID>P_z</ID>
-        <Description>Deacy factor of porosity with depth</Description>
-        <Dimensions>
-          <Dimension>
-            <Power>1</Power>
-            <Base>Length</Base>
-          </Dimension>
-        </Dimensions>
-        <Unit>
-          <ID>m</ID>
-          <Description>meters</Description>
           <ConversionFactorToSI>1</ConversionFactorToSI>
           <OffSetToSI>0</OffSetToSI>
         </Unit>
