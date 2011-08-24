@@ -15,15 +15,9 @@ Namespace GraphView
 #Region "Variables"
 
         Private Const kGraph As String = "kHydroGraph"
-        Private Const kGraphDock As String = "kHydroGraphDock"
-
-        '<Import(GetType(ISeriesView))>
-        'Private appSeriesView As ISeriesView
 
         <Import("SeriesControl", GetType(ISeriesSelector))>
         Private appSeriesView As ISeriesSelector
-
-
 
         Private _mainControl As cTSA
 
@@ -82,7 +76,6 @@ Namespace GraphView
 
 #Region "IExtension Members"
 
-
         'When the plugin is initialized
         Public Overrides Sub Activate()
 
@@ -90,33 +83,19 @@ Namespace GraphView
             tabGraph = New RootItem(kGraph, _pluginName)
             App.HeaderControl.Add(tabGraph)
 
-            'If Not App.Ribbon Is Nothing Then
-
-            'TODO replace by Docking
-            'AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveTabChanged
-
-            'Dim manager As IHydroAppManager = TryCast(App, IHydroAppManager)
-            'If Not manager Is Nothing Then
-            '    appSeriesView = manager.SeriesView
-            '    _mainControl = New cTSA(appSeriesView.SeriesSelector)
-            '    appSeriesView.AddPanel(_pluginName, _mainControl)
-            'Else
-            '    _mainControl = New cTSA
-            '    _mainControl.Dock = DockStyle.Fill
-            '    App.DockManager.Add("kGraphView", _mainControl, DockStyle.Fill)
-
-            'End If
-            'End If
-
             If Not appSeriesView Is Nothing Then
                 _mainControl = New cTSA(appSeriesView)
             Else
                 _mainControl = New cTSA()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add(kGraphDock, "graph", _mainControl, DockStyle.Fill)
+            App.DockManager.Add(kGraph, _pluginName, _mainControl, DockStyle.Fill)
 
             InitializeRibbonButtons()
+
+            'when the graph dock panel is activated:
+            'show graph ribbon tab and series view
+            AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
 
             MyBase.Activate()
         End Sub
@@ -128,7 +107,7 @@ Namespace GraphView
             App.HeaderControl.RemoveItems()
 
             'remove the dock panel
-            App.DockManager.Remove(kGraphDock)
+            App.DockManager.Remove(kGraph)
 
             'important line to deactivate the plugin
             MyBase.Deactivate()
@@ -481,6 +460,16 @@ Namespace GraphView
         '        End If
         '    Next
         'End Sub
+
+        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.ActivePanelChangedEventArgs)
+
+            'activate the graph ribbon tab and the series view panel
+            If e.ActivePanelKey = kGraph Then
+                App.HeaderControl.SelectRoot(tabGraph)
+                App.DockManager.SelectPanel("kHydroSeriesView")
+            End If
+
+        End Sub
 
 #End Region
 

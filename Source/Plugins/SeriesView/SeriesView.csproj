@@ -54,9 +54,6 @@
     <Reference Include="DotSpatial.Data.Forms">
       <HintPath>..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Data.Rasters.GdalExtension">
-      <HintPath>..\..\..\Binaries\DotSpatial.Data.Rasters.GdalExtension.dll</HintPath>
-    </Reference>
     <Reference Include="DotSpatial.Modeling">
       <HintPath>..\..\..\Binaries\DotSpatial.Modeling.dll</HintPath>
     </Reference>
@@ -86,9 +83,6 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\..\..\Binaries\DotSpatial.Symbology.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Tools">
-      <HintPath>..\..\..\Binaries\DotSpatial.Tools.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>

@@ -20,10 +20,10 @@ Namespace EditView
         Private _mainControl As cEditView
 
         Private Const _pluginName As String = "Edit"
-        Private Const _editTabKey As String = "kEdit"
-        Private Const kEditViewDock As String = "kHydroEditViewDock"
+        'Private Const kEditView As String = "kHydroEditView"
+        Private Const kEditView As String = "kHydroEditView"
 
-        Private _EditView As New RootItem(_editTabKey, _pluginName)
+        Private _EditView As New RootItem(kEditView, _pluginName)
 
         Private btnSelectSeries As SimpleActionItem
 
@@ -54,25 +54,24 @@ Namespace EditView
         Public Overrides Sub Activate()
 
             '**************************************************************************************
-            'Adding the tab
+            'Adding the ribbon tab
             App.HeaderControl.Add(_EditView)
-
-            'TODO handle this using DockManager
-            'AddHandler _EditView.ActiveChanged, AddressOf EditViewTab_ActiveChanged
-            'AddHandler App.Ribbon.ActiveTabChanged, AddressOf Ribbon_ActiveChanged
 
             '**************************************************************************************
 
-            'To add a new main panel View to the main application window
-                _mainControl = New cEditView(_seriesSelector)
+            'To add a new edit view dockable panel to the main application window
+            _mainControl = New cEditView(_seriesSelector)
 
-                _mainControl.Dock = DockStyle.Fill
-                App.DockManager.Add(kEditViewDock, "edit", _mainControl, DockStyle.Fill)
+            _mainControl.Dock = DockStyle.Fill
+            App.DockManager.Add(kEditView, _pluginName, _mainControl, DockStyle.Fill)
 
-                InitializeRibbonButtons()
+            'when the edit view panel is activated, select the Edit ribbon tab
+            AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
 
-                'opening project event
-                AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
+            InitializeRibbonButtons()
+
+            'opening project event
+            AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
 
         End Sub
 
@@ -83,25 +82,25 @@ Namespace EditView
             Dim mainFunctionGroup As String = "Main Functions"
 
             btnSelectSeries = New SimpleActionItem("Edit Series", AddressOf btnSelectSeries_Click)
-            btnSelectSeries.RootKey = _editTabKey
+            btnSelectSeries.RootKey = kEditView
             btnSelectSeries.LargeImage = My.Resources.Edit
             btnSelectSeries.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnSelectSeries)
 
             btnDeriveNewDataSeries = New SimpleActionItem("Derive Series", AddressOf _mainControl.btnDeriveNewDataSeries_Click)
-            btnDeriveNewDataSeries.RootKey = _editTabKey
+            btnDeriveNewDataSeries.RootKey = kEditView
             btnDeriveNewDataSeries.LargeImage = My.Resources.DeriveNewSeries
             btnDeriveNewDataSeries.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnDeriveNewDataSeries)
 
             btnRestoreData = New SimpleActionItem("Restore Data", AddressOf _mainControl.btnRestoreData_Click)
-            btnRestoreData.RootKey = _editTabKey
+            btnRestoreData.RootKey = kEditView
             btnRestoreData.LargeImage = My.Resources.Restore
             btnRestoreData.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnRestoreData)
 
             btnApplyToDatabase = New SimpleActionItem("Save To Database", AddressOf _mainControl.btnApplyToDatabase_Click)
-            btnApplyToDatabase.RootKey = _editTabKey
+            btnApplyToDatabase.RootKey = kEditView
             btnApplyToDatabase.LargeImage = My.Resources.Save
             btnApplyToDatabase.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnApplyToDatabase)
@@ -110,31 +109,31 @@ Namespace EditView
             Dim editFunctionGroup As String = "Edit Functions"
 
             btnChangeYValue = New SimpleActionItem("Change Value", AddressOf _mainControl.btnChangeYValue_Click)
-            btnChangeYValue.RootKey = _editTabKey
+            btnChangeYValue.RootKey = kEditView
             btnChangeYValue.LargeImage = My.Resources.ChangeValue
             btnChangeYValue.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnChangeYValue)
 
             btnInterpolate = New SimpleActionItem("Interpolate", AddressOf _mainControl.btnInterpolate_Click)
-            btnInterpolate.RootKey = _editTabKey
+            btnInterpolate.RootKey = kEditView
             btnInterpolate.LargeImage = My.Resources.Interpolate
             btnInterpolate.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnInterpolate)
 
             btnFlag = New SimpleActionItem("Flag", AddressOf _mainControl.btnFlag_Click)
-            btnFlag.RootKey = _editTabKey
+            btnFlag.RootKey = kEditView
             btnFlag.LargeImage = My.Resources.Flag
             btnFlag.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnFlag)
 
             btnAddNewPoint = New SimpleActionItem("Add Point", AddressOf _mainControl.btnAddNewPoint_Click)
-            btnAddNewPoint.RootKey = _editTabKey
+            btnAddNewPoint.RootKey = kEditView
             btnAddNewPoint.LargeImage = My.Resources.Add
             btnAddNewPoint.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnAddNewPoint)
 
             btnDeletePoint = New SimpleActionItem("Delete Point", AddressOf _mainControl.btnDeletePoint_Click)
-            btnDeletePoint.RootKey = _editTabKey
+            btnDeletePoint.RootKey = kEditView
             btnDeletePoint.LargeImage = My.Resources.Delete
             btnDeletePoint.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnDeletePoint)
@@ -143,7 +142,7 @@ Namespace EditView
             Dim plotFunctionGroup As String = "Plot Function"
 
             ckbShowLegend = New SimpleActionItem("Show Legend", AddressOf _mainControl.ckbShowLegend_Click)
-            ckbShowLegend.RootKey = _editTabKey
+            ckbShowLegend.RootKey = kEditView
             ckbShowLegend.LargeImage = My.Resources.Legend
             ckbShowLegend.GroupCaption = plotFunctionGroup
             ckbShowLegend.ToggleGroupKey = "kEditLegend"
@@ -168,7 +167,7 @@ Namespace EditView
 
             App.HeaderControl.RemoveItems()
 
-            App.DockManager.Remove(kEditViewDock)
+            App.DockManager.Remove(kEditView)
 
             MyBase.Deactivate()
 
@@ -195,6 +194,17 @@ Namespace EditView
 #End Region
 
 #Region "Event Handlers"
+
+        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.ActivePanelChangedEventArgs)
+
+            'activate the Edit ribbon tab and the series view panel
+            If e.ActivePanelKey = kEditView Then
+                App.HeaderControl.SelectRoot(_EditView)
+                App.DockManager.SelectPanel("kHydroSeriesView")
+            End If
+
+        End Sub
+
 
         'old code from Ribbon_ActiveChanged..
         'If Not _mainControl.Editing Then

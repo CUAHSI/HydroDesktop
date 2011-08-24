@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.Drawing;
 
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
@@ -27,9 +26,9 @@ namespace TableView
         internal ISeriesSelector SeriesControl { get; set; }
 
         private const string _tablePanelName = "Table";
+        private const string kTableView = "kHydroTableView";
 
-        public const string TableTabKey = "kHydroTable";
-        private const string kTableViewDock = "kHydroTableViewDock";
+        private RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
 
         #endregion
 
@@ -37,7 +36,7 @@ namespace TableView
         {
             App.HeaderControl.RemoveItems();
 
-            App.DockManager.Remove(kTableViewDock);
+            App.DockManager.Remove(kTableView);
 
             base.Deactivate();
         }
@@ -55,15 +54,11 @@ namespace TableView
             IHeaderControl header = App.HeaderControl;
             
             //Table Tab
-            App.HeaderControl.Add(new RootItem(TableTabKey, _tablePanelName));
-            
-            //Workaround - when the selected ribbon tab is changed
-            //App.Ribbon.ActiveTabChanged += new EventHandler(Ribbon_ActiveTabChanged);
-
+            App.HeaderControl.Add(_tableViewRoot);
 
             //RefreshTheme
             var refreshThemeButton = new SimpleActionItem("Refresh", rbRefreshTheme_Click);
-            refreshThemeButton.RootKey = TableTabKey;
+            refreshThemeButton.RootKey = kTableView;
             refreshThemeButton.LargeImage = Properties.Resources.refreshTheme;
             refreshThemeButton.SmallImage = Properties.Resources.refreshTheme_16x16;
             refreshThemeButton.ToolTipText = "Refresh Themes";
@@ -72,7 +67,7 @@ namespace TableView
 
             //DeleteTheme
             var deleteThemeButton = new SimpleActionItem("Delete", rbDeleteTheme_Click);
-            deleteThemeButton.RootKey = TableTabKey;        
+            deleteThemeButton.RootKey = kTableView;        
             deleteThemeButton.LargeImage = Properties.Resources.delete;
             deleteThemeButton.SmallImage = Properties.Resources.delete_16x16;
             deleteThemeButton.ToolTipText = "Delete Theme from Database";
@@ -81,7 +76,7 @@ namespace TableView
 
             //Change Database
             var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click);
-            changeDatabaseButton.RootKey = TableTabKey;
+            changeDatabaseButton.RootKey = kTableView;
             changeDatabaseButton.ToolTipText = "Change Database";
             changeDatabaseButton.LargeImage = Properties.Resources.changeDatabase;
             changeDatabaseButton.SmallImage = Properties.Resources.changeDatabase_16x16;
@@ -90,7 +85,7 @@ namespace TableView
 
             //New Database
             var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
-            newDatabaseButton.RootKey = TableTabKey;
+            newDatabaseButton.RootKey = kTableView;
             newDatabaseButton.ToolTipText = "Create New Database";
             newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
             newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
@@ -99,20 +94,22 @@ namespace TableView
 
             #endregion initialize the Table Ribbon TabPage and related controls
 
-            // Add "Table View Plugin" panel to the SeriesView
+            // Add "Table View Plugin" dock panel to the SeriesView
             cTableView tableViewControl = new cTableView(SeriesControl);
             tableViewControl.Dock = DockStyle.Fill;
-            App.DockManager.Add(kTableViewDock, "table", tableViewControl, DockStyle.Fill);
+            App.DockManager.Add(kTableView, _tablePanelName, tableViewControl, DockStyle.Fill);
+            App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
 
             base.Activate();
         }
 
-        //workaround method - changing the ribbon tab changes the main content
-        void Ribbon_ActiveTabChanged(object sender, EventArgs e)
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
         {
-            RibbonTab myTab = App.Ribbon.Tabs.Find(t => t.Text == _tablePanelName);
-            
-            
+            if (e.ActivePanelKey == kTableView)
+            {
+                App.DockManager.SelectPanel("kHydroSeriesView");
+                App.HeaderControl.SelectRoot(_tableViewRoot);
+            }
         }
 
         private void rbRefreshTheme_Click(object sender, EventArgs e)

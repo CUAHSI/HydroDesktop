@@ -12,6 +12,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
 using DotSpatial.Controls.RibbonControls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
@@ -32,6 +33,10 @@ namespace HydroDesktop.Main
         #region Variable
 
         private const string _mainHelpFile = "welcome.html";
+        private string kHomeRoot = HeaderControl.HomeRootItemKey;
+
+        //the map tools toggle group key
+        private const string kHydroMapTools = "kHydroMapTools"; 
 
         //store the map extents
         private List<Extent> _previousExtents = new List<Extent>();
@@ -46,19 +51,18 @@ namespace HydroDesktop.Main
         private ProjectionInfo _wgs84Projection;
 
         //MapView Ribbon TabPage and its related controls
-        private RibbonTab _mapView;
-        //private RibbonButton _rbPrint;
-        private RibbonButton _rbAdd;
-        private RibbonButton _rbPan;
-        private RibbonButton _rbSelect;
-        private RibbonButton _rbZoomIn;
-        private RibbonButton _rbZoomOut;
-        private RibbonButton _rbIdentifier;
-        private RibbonButton _rbAttribute;
-        private RibbonButton _rbMaxExtents;
-        private RibbonButton _rbMeasure;
-        private RibbonButton _rbZoomToPrevious;
-        private RibbonButton _rbZoomToNext;
+        private RootItem _mapView;
+        private SimpleActionItem _rbAdd;
+        private SimpleActionItem _rbPan;
+        private SimpleActionItem _rbSelect;
+        private SimpleActionItem _rbZoomIn;
+        private SimpleActionItem _rbZoomOut;
+        private SimpleActionItem _rbIdentifier;
+        private SimpleActionItem _rbAttribute;
+        private SimpleActionItem _rbMaxExtents;
+        private SimpleActionItem _rbMeasure;
+        private SimpleActionItem _rbZoomToPrevious;
+        private SimpleActionItem _rbZoomToNext;
 
         //project file related indicators
         private bool _isNewProject = false;
@@ -69,7 +73,6 @@ namespace HydroDesktop.Main
         //parent container for docking
         public static ContainerControl Shell;
 
-        //private DockPanel mainDockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
         #endregion Variable
 
         #region Constructor
@@ -88,14 +91,15 @@ namespace HydroDesktop.Main
             //screen size
             AdjustFormSize();
 
+            //when the form is shown (occurs after closing welcome screen)
             this.Shown += new EventHandler(mainRibbonForm_Shown);
 
             mainMap.MapFrame.ViewExtentsChanged += new EventHandler<ExtentArgs>(MapFrame_ExtentsChanged);
             this.SizeChanged += new EventHandler(mainRibbonForm_SizeChanged);
             this.FormClosing += new FormClosingEventHandler(mainRibbonForm_FormClosing);
 
-            this.ribbonControl.Tabs[0].Tag = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
-            this.applicationManager1.HeaderControl = new RibbonHeaderControl(this.ribbonControl);
+            // setup the header control
+            this.applicationManager1.HeaderControl = new DotSpatial.Controls.RibbonControls.RibbonHeaderControl(this.ribbonControl);
 
             // setup docking...
             this.applicationManager1.DockManager = new DockingManager();
@@ -106,125 +110,132 @@ namespace HydroDesktop.Main
 
             #region initialize the help menu
 
+            //setup the help quick access button
             rbHelp.Image = Properties.Resources.help;
             rbHelp.SmallImage = Properties.Resources.help_16x16;
 
             #endregion initialize the help menu
 
             #region initialize the MapView Ribbon TabPage and related controls
+            
+            //TODO make this localizable
+            _mapView = new RootItem(kHomeRoot, "Home");
+            applicationManager1.HeaderControl.Add(_mapView);
 
-            _mapView = this.ribbonControl.Tabs[0];
-            _mapView.ActiveChanged += new EventHandler(_mapView_ActiveChanged);
-            RibbonPanel rpMapTools = new RibbonPanel("Map Tools", RibbonPanelFlowDirection.Bottom);
-            rpMapTools.ButtonMoreVisible = false;
-            _mapView.Panels.Add(rpMapTools);
+            //_mapView = this.ribbonControl.Tabs[0];
+
+            //TODO this could be used as a workaround for ribbon / dock interaction
+            //_mapView.ActiveChanged += new EventHandler(_mapView_ActiveChanged);
+
+            string rpMapTools = "Map Tools";
 
             //Pan
-            _rbPan = new RibbonButton("Pan");
-            rpMapTools.Items.Add(_rbPan);
-            _rbPan.Image = Properties.Resources.pan;
+            _rbPan = new SimpleActionItem(kHomeRoot, "Pan", rbPan_Click);
+            _rbPan.GroupCaption = rpMapTools;
+            _rbPan.LargeImage = Properties.Resources.pan;
             _rbPan.SmallImage = Properties.Resources.pan_16;
-            _rbPan.ToolTip = "Pan - Move the Map";
-            _rbPan.Click += new EventHandler(rbPan_Click);
+            _rbPan.ToolTipText = "Pan - Move the Map";
+            _rbPan.ToggleGroupKey = kHydroMapTools;
+            applicationManager1.HeaderControl.Add(_rbPan);
 
             //ZoomIn
-            _rbZoomIn = new RibbonButton("Zoom In");
-            _rbZoomIn.ToolTip = "Zoom In";
-            rpMapTools.Items.Add(_rbZoomIn);
-            _rbZoomIn.Image = Properties.Resources.zoom_in;
+            _rbZoomIn = new SimpleActionItem(kHomeRoot, "Zoom In", rbZoomIn_Click);
+            _rbZoomIn.ToolTipText = "Zoom In";
+            _rbZoomIn.GroupCaption = rpMapTools;
+            _rbZoomIn.LargeImage = Properties.Resources.zoom_in;
             _rbZoomIn.SmallImage = Properties.Resources.zoom_in_16;
-            _rbZoomIn.Click += new EventHandler(rbZoomIn_Click);
+            _rbZoomIn.ToggleGroupKey = kHydroMapTools;
+            applicationManager1.HeaderControl.Add(_rbZoomIn);
 
             //ZoomOut
-            _rbZoomOut = new RibbonButton("Zoom Out");
-            _rbZoomOut.ToolTip = "Zoom Out";
-            rpMapTools.Items.Add(_rbZoomOut);
-            _rbZoomOut.Image = Properties.Resources.zoom_out;
+            _rbZoomOut = new SimpleActionItem(kHomeRoot, "Zoom Out", rbZoomOut_Click);
+            _rbZoomOut.ToolTipText = "Zoom Out";
+            _rbZoomOut.GroupCaption = rpMapTools;
+            _rbZoomOut.LargeImage = Properties.Resources.zoom_out;
             _rbZoomOut.SmallImage = Properties.Resources.zoom_out_16;
-            _rbZoomOut.Click += new EventHandler(rbZoomOut_Click);
+            _rbZoomOut.ToggleGroupKey = kHydroMapTools;
+            applicationManager1.HeaderControl.Add(_rbZoomOut);
 
             //ZoomToFullExtent
-            _rbMaxExtents = new RibbonButton("MaxExtents");
-            _rbMaxExtents.ToolTip = "Maximum Extents";
-            rpMapTools.Items.Add(_rbMaxExtents);
-            _rbMaxExtents.Image = Properties.Resources.full_extent;
+            _rbMaxExtents = new SimpleActionItem(kHomeRoot, "MaxExtents", rbMaxExtents_Click);
+            _rbMaxExtents.ToolTipText = "Maximum Extents";
+            _rbMaxExtents.GroupCaption = rpMapTools;
+            _rbMaxExtents.LargeImage = Properties.Resources.full_extent;
             _rbMaxExtents.SmallImage = Properties.Resources.full_extent_16;
-            _rbMaxExtents.Click += new EventHandler(rbMaxExtents_Click);
+            applicationManager1.HeaderControl.Add(_rbMaxExtents);
 
             //ZoomToPrevious
-            _rbZoomToPrevious = new RibbonButton("Previous");
-            _rbZoomToPrevious.ToolTip = "Go To Previous Map Extent";
-            rpMapTools.Items.Add(_rbZoomToPrevious);
-            _rbZoomToPrevious.Image = Properties.Resources.zoom_to_previous;
+            _rbZoomToPrevious = new SimpleActionItem(kHomeRoot, "Previous", rbZoomToPrevious_Click);
+            _rbZoomToPrevious.ToolTipText = "Go To Previous Map Extent";
+            _rbZoomToPrevious.GroupCaption = rpMapTools;
+            _rbZoomToPrevious.LargeImage = Properties.Resources.zoom_to_previous;
             _rbZoomToPrevious.SmallImage = Properties.Resources.full_extent_16;
+            applicationManager1.HeaderControl.Add(_rbZoomToPrevious);
 
             if (_previousExtents.Count == 0)
                 _rbZoomToPrevious.Enabled = false;
 
-            _rbZoomToPrevious.Click += new EventHandler(rbZoomToPrevious_Click);
-
             //ZoomToNext
-            _rbZoomToNext = new RibbonButton("Next");
-            _rbZoomToNext.ToolTip = "Go To Next Map Extent";
-            rpMapTools.Items.Add(_rbZoomToNext);
-            _rbZoomToNext.Image = Properties.Resources.zoom_to_next;
+            _rbZoomToNext = new SimpleActionItem(kHomeRoot, "Next", rbZoomToNext_Click);
+            _rbZoomToNext.ToolTipText = "Go To Next Map Extent";
+            _rbZoomToNext.GroupCaption = rpMapTools;
+            _rbZoomToNext.LargeImage = Properties.Resources.zoom_to_next;
             _rbZoomToNext.SmallImage = Properties.Resources.zoom_to_next_16;
+            applicationManager1.HeaderControl.Add(_rbZoomToNext);
 
             if ((_mCurrentExtents < _previousExtents.Count - 1) != true)
                 _rbZoomToNext.Enabled = false;
 
             _rbZoomToNext.Click += new EventHandler(rbZoomToNext_Click);
 
-            ////Print
-            //_rbPrint = new RibbonButton("Print");
-            //rpMapTools.Items.Add(_rbPrint);
-            //_rbPrint.Image = Properties.Resources.print;
-            //_rbPrint.Click += new EventHandler(rbPrint_Click);
-            ////_mapView.Panels[0].Items.Add(new RibbonButton("Print"));
-
             //Separator
-            RibbonSeparator mapTools = new RibbonSeparator();
-            rpMapTools.Items.Add(mapTools);
+            var mapTools = new SeparatorItem();
+            mapTools.GroupCaption = rpMapTools;
+            mapTools.RootKey = kHomeRoot;
+            applicationManager1.HeaderControl.Add(mapTools);
 
             //Add
-            _rbAdd = new RibbonButton("Add");
-            _rbAdd.ToolTip = "Add Layer To The Map";
-            rpMapTools.Items.Add(_rbAdd);
-            _rbAdd.Image = Properties.Resources.add;
+            _rbAdd = new SimpleActionItem(kHomeRoot, "Add", rbAdd_Click);
+            _rbAdd.ToolTipText = "Add Layer To The Map";
+            _rbAdd.GroupCaption = rpMapTools;
+            _rbAdd.LargeImage = Properties.Resources.add;
             _rbAdd.SmallImage = Properties.Resources.add_16;
-            _rbAdd.Click += new EventHandler(rbAdd_Click);
+            applicationManager1.HeaderControl.Add(_rbAdd);            
 
             //Identifier
-            _rbIdentifier = new RibbonButton("Identify");
-            _rbIdentifier.ToolTip = "Identify";
+            _rbIdentifier = new SimpleActionItem(kHomeRoot, "Identify", rbIdentifier_Click);
+            _rbIdentifier.ToolTipText = "Identify";
             _rbIdentifier.SmallImage = Properties.Resources.identifier_16;
-            rpMapTools.Items.Add(_rbIdentifier);
-            _rbIdentifier.Image = Properties.Resources.identifier;
-            _rbIdentifier.Click += new EventHandler(rbIdentifier_Click);
+            _rbIdentifier.GroupCaption = rpMapTools;
+            _rbIdentifier.LargeImage = Properties.Resources.identifier;
+            _rbIdentifier.ToggleGroupKey = kHydroMapTools;
+            applicationManager1.HeaderControl.Add(_rbIdentifier);
 
             //Select
-            _rbSelect = new RibbonButton("Select");
-            _rbSelect.ToolTip = "Select";
-            rpMapTools.Items.Add(_rbSelect);
-            _rbSelect.Image = Properties.Resources.select;
+            _rbSelect = new SimpleActionItem(kHomeRoot, "Select", rbSelect_Click);
+            _rbSelect.ToolTipText = "Select";
+            _rbSelect.GroupCaption = rpMapTools;
+            _rbSelect.LargeImage = Properties.Resources.select;
             _rbSelect.SmallImage = Properties.Resources.select_16;
-            _rbSelect.Click += new EventHandler(rbSelect_Click);
+            _rbSelect.ToggleGroupKey = kHydroMapTools;
+            applicationManager1.HeaderControl.Add(_rbSelect);
 
             //AttributeTable
-            _rbAttribute = new RibbonButton("Attribute");
-            _rbAttribute.ToolTip = "Attribute Table";
-            rpMapTools.Items.Add(_rbAttribute);
-            _rbAttribute.Image = Properties.Resources.attribute_table;
+            _rbAttribute = new SimpleActionItem(kHomeRoot, "Attribute", rbAttribute_Click);
+            _rbAttribute.ToolTipText = "Attribute Table";
+            _rbAttribute.GroupCaption = rpMapTools;
+            _rbAttribute.LargeImage = Properties.Resources.attribute_table;
             _rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
-            _rbAttribute.Click += new EventHandler(rbAttribute_Click);
+            applicationManager1.HeaderControl.Add(_rbAttribute);
 
             //Measure
-            _rbMeasure = new RibbonButton("Measure");
-            _rbMeasure.ToolTip = "Measure Distance or Area";
-            rpMapTools.Items.Add(_rbMeasure);
-            _rbMeasure.Image = Properties.Resources.measure;
+            _rbMeasure = new SimpleActionItem(kHomeRoot, "Measure", rbMeasure_Click);
+            _rbMeasure.ToolTipText = "Measure Distance or Area";
+            _rbMeasure.GroupCaption = rpMapTools;
+            _rbMeasure.LargeImage = Properties.Resources.measure;
             _rbMeasure.SmallImage = Properties.Resources.measure_16;
-            _rbMeasure.Click += new EventHandler(rbMeasure_Click);
+            _rbMeasure.ToggleGroupKey = kHydroMapTools;
+            applicationManager1.HeaderControl.Add(_rbMeasure);
 
             #endregion initialize the MapView Ribbon TabPage and related controls
             
@@ -270,12 +281,6 @@ namespace HydroDesktop.Main
             }
 
             #endregion initialize the default map projection
-
-            #region initialize the main view panel controls
-
-            //this.tabContainer.SelectedIndexChanged += new EventHandler(tabContainer_SelectedIndexChanged);
-
-            #endregion initialize the main view panel controls
 
             #region initialize default database connection strings
 
@@ -344,13 +349,6 @@ namespace HydroDesktop.Main
                 SQLiteHelper.CreateMetadataCacheDb(metadataCachePath);
                 string conString2 = SQLiteHelper.GetSQLiteConnectionString(metadataCachePath);
                 Settings.Instance.MetadataCacheConnectionString = conString2;
-
-                //allow plugins to access the SeriesView and SeriesSelector
-                //applicationManager1.SeriesView = this.seriesView1;
-
-                //setup db property of SeriesSelector
-                //this code will fail if DataRepositoryConnectionString is not set
-                //seriesView1.SeriesSelector.SetupDatabase();
             }
         }
 
@@ -418,11 +416,6 @@ namespace HydroDesktop.Main
         #endregion Method
 
         #region Event
-
-        //private void MapFrame_LayerAdded(object sender, LayerEventArgs e)
-        //{
-        //    e.Layer.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
-        //}
 
         private void _projectManager_ProjectModified(object sender, EventArgs e)
         {
@@ -576,37 +569,6 @@ namespace HydroDesktop.Main
             //emptyLayers.Clear();
         }
 
-        //rename the theme name - no longer needed
-        //private void ThemeLayer_ItemChanged(object sender, EventArgs e)
-        //{
-        //    MapPointLayer lay = sender as MapPointLayer;
-        //    if (lay != null)
-        //    {
-        //        if (lay.GetParentItem() == null) return;
-        //        if (lay.GetParentItem().LegendText != "Themes") return;
-
-        //        string newLegendText = lay.LegendText;
-        //        string name = lay.Name;
-        //        if (!string.IsNullOrEmpty(name))
-        //        {
-        //            try
-        //            {
-        //                int themeID = Convert.ToInt32(name);
-        //                ThemeManager manager = new ThemeManager(new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite));
-        //                string oldName = manager.GetThemeName(themeID);
-        //                if (newLegendText != oldName)
-        //                {
-        //                    manager.RenameTheme(themeID, newLegendText);
-        //                    applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
-        //                }
-        //            }
-        //            catch { }
-        //        }
-        //    }
-        //}
-
-        #endregion Event
-
         //Refresh map when main form is maximized
         private void mainRibbonForm_SizeChanged(object sender, EventArgs e)
         {
@@ -641,9 +603,25 @@ namespace HydroDesktop.Main
             applicationManager1.LoadExtensions();
 
             //add the legend and map dock panels
-            applicationManager1.DockManager.Add("kMainMap", "map", mainMap, DockStyle.Fill);
-            applicationManager1.DockManager.Add("kLegend", "legend", mainLegend, DockStyle.Left);
+            applicationManager1.DockManager.Add(kHomeRoot, "map", mainMap, DockStyle.Fill);
+            applicationManager1.DockManager.Add("kHydroLegend", "legend", mainLegend, DockStyle.Left);
+
+            //map activated event
+            applicationManager1.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
         }
+
+        // when the map dock panel is activated:
+        // activate legend and select home ribbon tab
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
+        {
+            if (e.ActivePanelKey == kHomeRoot)
+            {
+                applicationManager1.DockManager.SelectPanel("kHydroLegend");
+                applicationManager1.HeaderControl.SelectRoot(_mapView);
+            }
+        }
+
+        #endregion Event
 
         #endregion Constructor
 
@@ -725,69 +703,21 @@ namespace HydroDesktop.Main
 
         private void rbPan_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                if (_mapView.Panels[0].Items[i] == _rbPan)
-                {
-                    _rbPan.Checked = true;
-                }
-                else
-                {
-                    _mapView.Panels[0].Items[i].Checked = false;
-                }
-            }
-
             mainMap.FunctionMode = FunctionMode.Pan;
         }
 
         private void rbSelect_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                if (_mapView.Panels[0].Items[i] == _rbSelect)
-                {
-                    _rbSelect.Checked = true;
-                }
-                else
-                {
-                    _mapView.Panels[0].Items[i].Checked = false;
-                }
-            }
-
             mainMap.FunctionMode = FunctionMode.Select;
         }
 
         private void rbZoomIn_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                if (_mapView.Panels[0].Items[i] == _rbZoomIn)
-                {
-                    _rbZoomIn.Checked = true;
-                }
-                else
-                {
-                    _mapView.Panels[0].Items[i].Checked = false;
-                }
-            }
-
             mainMap.FunctionMode = FunctionMode.ZoomIn;
         }
 
         private void rbZoomOut_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                if (_mapView.Panels[0].Items[i] == _rbZoomOut)
-                {
-                    _rbZoomOut.Checked = true;
-                }
-                else
-                {
-                    _mapView.Panels[0].Items[i].Checked = false;
-                }
-            }
-
             mainMap.FunctionMode = FunctionMode.ZoomOut;
         }
 
@@ -855,7 +785,6 @@ namespace HydroDesktop.Main
             }
             else
             {
-                _rbZoomToPrevious.Checked = false;
                 _rbZoomToPrevious.Enabled = false;
             }
         }
@@ -888,56 +817,17 @@ namespace HydroDesktop.Main
             }
             else
             {
-                _rbZoomToNext.Checked = false;
                 _rbZoomToNext.Enabled = false;
             }
         }
 
         private void rbIdentifier_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                if (_mapView.Panels[0].Items[i] == _rbIdentifier)
-                {
-                    _rbIdentifier.Checked = true;
-                }
-                else
-                {
-                    _mapView.Panels[0].Items[i].Checked = false;
-                }
-            }
-            //for (int i = 0; i < _mapView.Panels[1].Items.Count; i++)
-            //{
-            //    //if (_mapView.Panels[0].Items[i] != _rbMaxExtents)
-            //    //{
-            //    _mapView.Panels[1].Items[i].Checked = false;
-            //    //}
-            //}
-
             mainMap.FunctionMode = FunctionMode.Info;
         }
 
         private void rbAttribute_Click(object sender, EventArgs e)
         {
-            //for (int i = 0; i < _mapView.Panels[1].Items.Count; i++)
-            //{
-            //    if (_mapView.Panels[1].Items[i] == _rbAttribute)
-            //    {
-            //        _rbAttribute.Checked = true;
-            //    }
-            //    else
-            //    {
-            //        _mapView.Panels[1].Items[i].Checked = false;
-            //    }
-            //}
-            //for (int i = 0; i < _mapView.Panels[1].Items.Count; i++)
-            //{
-            //    //if (_mapView.Panels[0].Items[i] != _rbMaxExtents)
-            //    //{
-            //    _mapView.Panels[1].Items[i].Checked = false;
-            //    //}
-            //}
-
             bool featureLayerIsSelected = false;
 
             foreach (ILayer lay in mainMap.GetAllLayers())
@@ -961,24 +851,6 @@ namespace HydroDesktop.Main
 
         private void rbMaxExtents_Click(object sender, EventArgs e)
         {
-            //for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            //{
-            //    if (_mapView.Panels[0].Items[i] == _rbMaxExtents)
-            //    {
-            //        _rbMaxExtents.Checked = true;
-            //    }
-            //    else
-            //    {
-            //        _mapView.Panels[0].Items[i].Checked = false;
-            //    }
-            //}
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                //if (_mapView.Panels[0].Items[i] != _rbMaxExtents)
-                //{
-                _mapView.Panels[0].Items[i].Checked = false;
-                //}
-            }
             mainMap.ZoomToMaxExtent();
             mainMap.FunctionMode = FunctionMode.None;
 
@@ -995,57 +867,10 @@ namespace HydroDesktop.Main
 
         private void rbMeasure_Click(object sender, EventArgs e)
         {
-            //for (int i = 0; i < _mapView.Panels[1].Items.Count; i++)
-            //{
-            //    if (_mapView.Panels[1].Items[i] == _rbMeasure)
-            //    {
-            //        _rbMeasure.Checked = true;
-            //    }
-            //    else
-            //    {
-            //        _mapView.Panels[1].Items[i].Checked = false;
-            //    }
-            //}
-            for (int i = 0; i < _mapView.Panels[0].Items.Count; i++)
-            {
-                _mapView.Panels[0].Items[i].Checked = false;
-            }
-
             mainMap.FunctionMode = FunctionMode.Measure;
         }
 
         #endregion Map Tools Click Events
-
-        private void RemoveTab(string name)
-        {
-            if (ribbonControl.Tabs.Contains(_mapView))
-            {
-                ribbonControl.Tabs.Remove(_mapView);
-            }
-        }
-
-        private void bntMapView_Click(object sender, EventArgs e)
-        {
-            //tabContainer.SelectedTabName = tabContainer.TabPages[0].Text;
-        }
-
-        private RibbonTab FindText(string name)
-        {
-            foreach (RibbonTab tb in this.ribbonControl.Tabs)
-            {
-                if (tb.Text == name) return tb;
-            }
-            return null;
-        }
-
-        private bool TabContainsText(string name)
-        {
-            foreach (RibbonTab tb in this.ribbonControl.Tabs)
-            {
-                if (tb.Text == name) return true;
-            }
-            return false;
-        }
 
         private void OrbExtentions_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1129,11 +954,6 @@ namespace HydroDesktop.Main
                 ribbonControl.Tabs.Remove(helpMenuTab);
                 ribbonControl.Tabs.Add(helpMenuTab);
             }
-        }
-
-        private void tabHome_ActiveChanged(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
         }
 
         #region Coordinate Display
@@ -1301,95 +1121,6 @@ namespace HydroDesktop.Main
         }
 
         #endregion Open and Save Project
-
-        private void _mapView_ActiveChanged(object sender, EventArgs e)
-        {
-            if (_mapView.Active == true)
-            {
-                //tabContainer.SelectedTab = tabContainer.TabPages[0];
-                //mwStatusStrip1.Visible = true;
-            }
-
-            string dir = HydroDesktop.Configuration.Settings.Instance.ApplicationDataDirectory;
-        }
-
-        //private void rbMapPan_Click(object sender, EventArgs e)
-        //{
-        //    foreach (RibbonButton rb in this.ribbonControl.Tabs[0].Panels[0].Items)
-        //    {
-        //        if (rb == rbMapPan)
-        //        {
-        //            rb.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            rb.Checked = false;
-        //        }
-        //    }
-
-        //    mainMap.FunctionMode = FunctionModes.Pan;
-        //}
-
-        //private void rbMapZoomIn_Click(object sender, EventArgs e)
-        //{
-        //    foreach (RibbonButton rb in this.ribbonControl.Tabs[0].Panels[0].Items)
-        //    {
-        //        if (rb == rbMapZoomIn)
-        //        {
-        //            rb.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            rb.Checked = false;
-        //        }
-        //    }
-
-        //    mainMap.FunctionMode = FunctionModes.ZoomIn;
-        //}
-
-        //private void rbMapZoomOut_Click(object sender, EventArgs e)
-        //{
-        //    foreach (RibbonButton rb in this.ribbonControl.Tabs[0].Panels[0].Items)
-        //    {
-        //        if (rb == rbMapZoomOut)
-        //        {
-        //            rb.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            rb.Checked = false;
-        //        }
-        //    }
-
-        //    mainMap.FunctionMode = FunctionModes.ZoomOut;
-        //}
-
-        //private void rbMapAdd_Click(object sender, EventArgs e)
-        //{
-        //    foreach (RibbonButton rb in this.ribbonControl.Tabs[0].Panels[0].Items)
-        //    {
-        //        if (rb == rbMapAdd)
-        //        {
-        //            rb.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            rb.Checked = false;
-        //        }
-        //    }
-
-        //    if (mainMap == null) return;
-        //    mainMap.AddLayer();
-        //}
-
-        //private void tabSearch_ActiveChanged(object sender, EventArgs e)
-        //{
-        //    if (tabHome.Active == true && tabContainer.TabPages.Count > 0)
-        //    {
-        //        tabContainer.SelectedTab = tabContainer.TabPages[0];
-        //        //mwStatusStrip1.Visible = true;
-        //    }
-        //}
 
         //exit
         private void OrbExit_Click(object sender, EventArgs e)

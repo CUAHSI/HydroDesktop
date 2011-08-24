@@ -20,7 +20,7 @@ namespace RibbonSamplePlugin
         #region Variables
 
         //reference to the main series view panel
-        [Import("SeriesSelector", typeof(ISeriesSelector))]
+        [Import("SeriesControl", typeof(ISeriesSelector))]
         internal ISeriesSelector SeriesControl { get; private set; }
 
         //the name of the plugin displayed in the ribbon tab

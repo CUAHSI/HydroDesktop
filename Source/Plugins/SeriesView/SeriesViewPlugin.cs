@@ -25,7 +25,6 @@
 
             App.DockManager.Add(SeriesViewKey, "time series", (SeriesSelector)MainSeriesSelector, DockStyle.Left);
 
-            
             base.Activate();
         }
 
@@ -36,8 +35,5 @@
             
             base.Deactivate();
         }
-
-        void btn_Click(object sender, EventArgs e) { }
-       
     }
 }

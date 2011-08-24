@@ -17,6 +17,9 @@ namespace HydroDesktop.Main
         /// </summary>
         private Dictionary<string, DockContent> dockContents = new Dictionary<string,DockContent>();
 
+        /// <summary>The active panel key</summary>
+        private string ActivePanelKey { get; set; }
+
         /// <summary>
         /// Create the default docking manager using the main form as container
         /// </summary>
@@ -27,6 +30,9 @@ namespace HydroDesktop.Main
             MainDockPanel.Dock = DockStyle.Fill;
             MainDockPanel.BringToFront();
             MainDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
+
+            //setup the events
+            MainDockPanel.ActiveDocumentChanged += new EventHandler(MainDockPanel_ActiveDocumentChanged);
         }
         
         public DockingManager(DockPanel rootDockPanel)
@@ -35,6 +41,9 @@ namespace HydroDesktop.Main
             MainDockPanel.Dock = DockStyle.Fill;
             MainDockPanel.BringToFront();
             MainDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
+
+            //setup the events
+            MainDockPanel.ActiveDocumentChanged += new EventHandler(MainDockPanel_ActiveDocumentChanged);
         }
 
         public void Add(string key, string caption, System.Windows.Forms.Control panel, System.Windows.Forms.DockStyle dockStyle)
@@ -49,20 +58,36 @@ namespace HydroDesktop.Main
 
             content.Text = caption;
             content.TabText = caption;
+            content.Tag = key;
+            panel.Tag = key;
 
             content.Show(MainDockPanel);
+
+            //the tag is used by the ActivePanelChanged event
+            content.Pane.Tag = key;
 
             if (!dockContents.ContainsKey(key))
             {
                 dockContents.Add(key, content);
             }
+
+            content.Activated += new EventHandler(content_Activated);
         }
+
+        
+        void content_Activated(object sender, EventArgs e)
+        {
+            
+        }
+
+        
 
         public void Remove(string key)
         {
             if (dockContents.ContainsKey(key))
             {
                 DockContent content = dockContents[key];
+                content.Activated -= content_Activated;
                 content.Close();
                 content.Dispose();
                 dockContents.Remove(key);
@@ -91,5 +116,39 @@ namespace HydroDesktop.Main
 
         }
 
+        public event EventHandler<ActivePanelChangedEventArgs> ActivePanelChanged;
+
+        public void SelectPanel(string key)
+        {
+            if (dockContents.ContainsKey(key))
+            {
+                dockContents[key].Activate();
+            }
+        }
+
+        /// <summary>
+        /// Raises the ActivePanelChanged event
+        /// </summary>
+        void MainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
+        {
+            if (MainDockPanel.ActiveContent == null) return;
+            if (MainDockPanel.ActiveContent.DockHandler == null) return;
+            if (MainDockPanel.ActiveContent.DockHandler.Content == null) return;
+            
+            DockContent activeContent = MainDockPanel.ActiveContent.DockHandler.Content as DockContent;
+            if (activeContent == null) return;
+            if (activeContent.Tag == null) return;
+
+            string activePanelKey = activeContent.Tag.ToString();
+            OnActivePanelChanged(activePanelKey);
+        }
+
+        protected void OnActivePanelChanged(string newActivePanelKey)
+        {
+            if (ActivePanelChanged != null)
+            {
+                ActivePanelChanged(this, new ActivePanelChangedEventArgs(newActivePanelKey));
+            }
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace HydroDesktop.Main
             WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient3 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient6 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            this.tabHome = new DotSpatial.Controls.RibbonControls.RibbonTab();
+            //this.tabHome = new DotSpatial.Controls.RibbonControls.RibbonTab();
             this.mainLegend = new DotSpatial.Controls.Legend();
             this.mainMap = new DotSpatial.Controls.Map();
             this.mwStatusStrip1 = new DotSpatial.Controls.SpatialStatusStrip();
@@ -83,8 +83,8 @@ namespace HydroDesktop.Main
             // 
             // tabHome
             // 
-            this.tabHome.Tag = null;
-            this.tabHome.Text = "Home";
+            //this.tabHome.Tag = null;
+            //this.tabHome.Text = "Home";
             // 
             // mainLegend
             // 
@@ -212,7 +212,6 @@ namespace HydroDesktop.Main
             this.ribbonControl.QuickAcessToolbar.Value = null;
             this.ribbonControl.Size = new System.Drawing.Size(1008, 141);
             this.ribbonControl.TabIndex = 0;
-            this.ribbonControl.Tabs.Add(this.tabHome);
             this.ribbonControl.TabsMargin = new System.Windows.Forms.Padding(12, 26, 20, 0);
             this.ribbonControl.TabSpacing = 6;
             this.ribbonControl.Text = "ribbonControl";
@@ -538,7 +537,7 @@ namespace HydroDesktop.Main
         #endregion
 
         private DotSpatial.Controls.RibbonControls.Ribbon ribbonControl;
-        private DotSpatial.Controls.RibbonControls.RibbonTab tabHome;
+        //private DotSpatial.Controls.RibbonControls.RibbonTab tabHome;
         private DotSpatial.Controls.RibbonControls.RibbonOrbMenuItem OrbNewProject;
         private DotSpatial.Controls.RibbonControls.RibbonButton bntTableView;
         private DotSpatial.Controls.SpatialStatusStrip mwStatusStrip1;
