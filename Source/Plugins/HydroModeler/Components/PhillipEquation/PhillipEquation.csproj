@@ -70,8 +70,12 @@
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\Configuration.xml" />
-    <None Include="Model\PhillipEquation.omi" />
+    <Content Include="Model\Configuration.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Model\PhillipEquation.omi">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
