@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="PhillipEquation.LinkableComponent" Assembly="..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\PhillipEquation.dll">
+  <Arguments>
+    <Argument Key="ConfigFile" ReadOnly="true" Value=".\Configuration.xml" />
+    <Argument Key="PPT" ReadOnly="true" Value="..\Data\PPT.csv" />
+    <Argument Key="m_z" ReadOnly="true" Value="180" />
+    <Argument Key="Pa_entry" ReadOnly="true" Value="180" />
+    <Argument Key="Z" ReadOnly="true" Value="180" />
+    
+  </Arguments>
+</LinkableComponent>
