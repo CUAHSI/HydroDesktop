@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Data;
 using System.Text;
@@ -18,12 +19,12 @@ namespace TableView
         private ArrayList sriesList = new ArrayList();
         private bool sequenceSwitch = true;
 
-        private bool _seriesCheckState = false;
-        private int _checkedSeriesId = 0;
-        private ISeriesSelector _seriesSelector;
+        private readonly ISeriesSelector _seriesSelector;
 
         //the table of data values
         private DataTable _dataValuesTable = new DataTable();
+        private bool _seriesCheckState;
+
         #endregion
 
         #region Constructor
@@ -33,79 +34,68 @@ namespace TableView
             //to access the map and database elements
             _seriesSelector = seriesSelector;
 
-            SetupValuesTable();
+            ShowAllFieldsinSequence();
             
-            bindingSource1.DataSource = _dataValuesTable;
-            dataViewSeries.DataSource = bindingSource1;
+           // bindingSource1.DataSource = _dataValuesTable;
+           // dataViewSeries.DataSource = bindingSource1;
+
+            dataGridViewNavigator1.PageChanged += dataGridViewNavigator1_PageChanged;
 
             //the SeriesChecked event
-            _seriesSelector.SeriesCheck += new SeriesEventHandler(SeriesSelector_SeriesCheck);
-            _seriesSelector.Refreshed += new EventHandler(_seriesSelector_Refreshed);
+            _seriesSelector.SeriesCheck += SeriesSelector_SeriesCheck;
+            _seriesSelector.Refreshed += _seriesSelector_Refreshed;
         }
-
         
         #endregion
 
-        #region Method
+        #region Methods
 
-        private void SetupValuesTable()
+        void dataGridViewNavigator1_PageChanged(object sender, PageChangedEventArgs e)
         {
-            DbOperations db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            _dataValuesTable = db.LoadTable("SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE 1 = 0");
+            dataViewSeries.DataSource = e.DataTable;
         }
 
+        private static DbOperations GetDbOperations()
+        {
+            return new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+        }
 
         private void ShowAllFieldsinSequence()
         {
-            dataViewSeries.DataSource = bindingSource1;
-
-            if (_seriesCheckState)
+            string whereClause;
+            if (_seriesSelector.CheckedIDList.Length == 0)
             {
-
-                if (_seriesSelector.CheckedIDList.Length == 0)
-                {
-                    bindingSource1.RaiseListChangedEvents = false;
-                    _dataValuesTable.Rows.Clear();
-                    bindingSource1.RaiseListChangedEvents = true;
-                }
-
-                var dbTools = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-
-                string SQLString = "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE SeriesID = " + _checkedSeriesId;
-
-                dataViewSeries.SuspendLayout();
-
-                bindingSource1.RaiseListChangedEvents = false;
-
-                dbTools.LoadTable(SQLString, _dataValuesTable);
-
-                bindingSource1.RaiseListChangedEvents = true;
-                bindingSource1.ResetBindings(false);
-
-                dataViewSeries.ResumeLayout();
+                whereClause = "1 = 0";
             }
             else
             {
-                //unchecked - just remove rows from data table
-                bindingSource1.RaiseListChangedEvents = false;
-                DataRow[] rowsToRemove = _dataValuesTable.Select("SeriesID=" + _checkedSeriesId);
-                foreach (DataRow row in rowsToRemove)
-                {
-                    _dataValuesTable.Rows.Remove(row);
-                }
-                bindingSource1.RaiseListChangedEvents = true;
-                bindingSource1.ResetBindings(false);
+                var sb = new StringBuilder("SeriesID in (");
+                foreach (var id in _seriesSelector.CheckedIDList)
+                    sb.AppendFormat(" {0},", id);
+                sb.Remove(sb.Length - 1, 1);
+                sb.Append(")");
+                whereClause = sb.ToString();
             }
+
+            var dbTools = GetDbOperations();
+            var dataQuery = "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE " + whereClause;
+            var countQuery = "select count(*) from DataValues WHERE " + whereClause;
+            dataGridViewNavigator1.Initialize(dbTools, dataQuery, countQuery);
         }
 
         private void ShowJustValuesinParallel()
         {
-            ///Judge whether switch from ShowAllFieldsinSequence Option or not
-            //not switch from ShowAllFieldsinSequence Option
+            bindingSource1.DataSource = _dataValuesTable;
+            dataViewSeries.DataSource = bindingSource1;
+
+            //var sequenceSwitch = rbSequence.Checked;
+
+            // Judge whether switch from ShowAllFieldsinSequence Option or not
+            // not switch from ShowAllFieldsinSequence Option
             if (sequenceSwitch == false)
             {
                 //If UnChecked, Delete the Series
-                if (_seriesCheckState == false)
+                if (_seriesCheckState == false) // max
                 {
                     DbOperations dbTools = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
                     string sqlQuery = "SELECT UnitsName, SiteName, VariableName FROM DataSeries " +
@@ -427,37 +417,23 @@ namespace TableView
         /// <param name="e"></param>
         void SeriesSelector_SeriesCheck(object sender, SeriesEventArgs e)
         {
-            _seriesCheckState = e.IsChecked;
-            _checkedSeriesId = e.SeriesID;
-
             ShowAllFieldsinSequence();
 
-            //if (rbSequence.Checked == true)
-            //{
-            //    dataViewSeries.DataSource = null; 
-                
-            //    ShowAllFieldsinSequence();
-            //}
-            //else
-            //{
-            //    dataViewSeries.DataSource = null;
-                
-            //    ShowJustValuesinParallel();
-            //}
+            _seriesCheckState = e.IsChecked;
         }
 
         void _seriesSelector_Refreshed(object sender, EventArgs e)
         {
-            SetupValuesTable();
+            ShowAllFieldsinSequence();
 
-            bindingSource1.DataSource = _dataValuesTable;
-            dataViewSeries.DataSource = bindingSource1;
+            //bindingSource1.DataSource = _dataValuesTable;
+            //dataViewSeries.DataSource = bindingSource1;
         }
 
         private void rbSequence_Click(object sender, EventArgs e)
         {
-            dataViewSeries.DataSource = null;
-            dataViewSeries.Columns.Clear();
+            //dataViewSeries.DataSource = null;
+           // dataViewSeries.Columns.Clear();
             ShowAllFieldsinSequence();
             sequenceSwitch = true;
         }

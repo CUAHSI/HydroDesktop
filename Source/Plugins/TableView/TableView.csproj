@@ -112,6 +112,12 @@
     <Compile Include="cTableView.Designer.cs">
       <DependentUpon>cTableView.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataGridViewNavigator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataGridViewNavigator.Designer.cs">
+      <DependentUpon>DataGridViewNavigator.cs</DependentUpon>
+    </Compile>
     <Compile Include="DeleteThemeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="cTableView.resx">
       <DependentUpon>cTableView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridViewNavigator.resx">
+      <DependentUpon>DataGridViewNavigator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeleteThemeForm.resx">
       <DependentUpon>DeleteThemeForm.cs</DependentUpon>
