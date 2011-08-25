@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -37,12 +36,10 @@
             this.dataViewSeries = new System.Windows.Forms.DataGridView();
             this.lblDatabase = new System.Windows.Forms.Label();
             this.paOptions = new System.Windows.Forms.Panel();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewNavigator1 = new TableView.DataGridViewNavigator();
             ((System.ComponentModel.ISupportInitialize)(this.dataViewSeries)).BeginInit();
             this.paOptions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,7 +53,6 @@
             this.rbParallel.TabStop = true;
             this.rbParallel.Text = "Show Just Values in Parallel";
             this.rbParallel.UseVisualStyleBackColor = true;
-            this.rbParallel.Click += new System.EventHandler(this.rbParallel_Click);
             // 
             // rbSequence
             // 
@@ -68,7 +64,6 @@
             this.rbSequence.TabStop = true;
             this.rbSequence.Text = "Show All Fields in Sequence";
             this.rbSequence.UseVisualStyleBackColor = true;
-            this.rbSequence.Click += new System.EventHandler(this.rbSequence_Click);
             // 
             // dataViewSeries
             // 
@@ -112,17 +107,18 @@
             this.dataViewSeries.ShowCellToolTips = false;
             this.dataViewSeries.ShowEditingIcon = false;
             this.dataViewSeries.ShowRowErrors = false;
-            this.dataViewSeries.Size = new System.Drawing.Size(619, 481);
+            this.dataViewSeries.Size = new System.Drawing.Size(472, 481);
             this.dataViewSeries.TabIndex = 7;
             // 
             // lblDatabase
             // 
-            this.lblDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDatabase.BackColor = System.Drawing.Color.LightGray;
             this.lblDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDatabase.Location = new System.Drawing.Point(310, 8);
+            this.lblDatabase.Location = new System.Drawing.Point(334, 8);
             this.lblDatabase.Name = "lblDatabase";
-            this.lblDatabase.Size = new System.Drawing.Size(301, 17);
+            this.lblDatabase.Size = new System.Drawing.Size(130, 17);
             this.lblDatabase.TabIndex = 8;
             this.lblDatabase.Text = "Database: ";
             this.lblDatabase.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -135,7 +131,7 @@
             this.paOptions.Dock = System.Windows.Forms.DockStyle.Top;
             this.paOptions.Location = new System.Drawing.Point(0, 0);
             this.paOptions.Name = "paOptions";
-            this.paOptions.Size = new System.Drawing.Size(619, 31);
+            this.paOptions.Size = new System.Drawing.Size(472, 31);
             this.paOptions.TabIndex = 9;
             // 
             // tableLayoutPanel1
@@ -150,7 +146,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 36);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(472, 36);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // dataGridViewNavigator1
@@ -173,12 +169,11 @@
             this.Controls.Add(this.paOptions);
             this.Controls.Add(this.dataViewSeries);
             this.Name = "cTableView";
-            this.Size = new System.Drawing.Size(619, 552);
+            this.Size = new System.Drawing.Size(472, 552);
             this.Load += new System.EventHandler(this.cTableView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataViewSeries)).EndInit();
             this.paOptions.ResumeLayout(false);
             this.paOptions.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -190,7 +185,6 @@
         private System.Windows.Forms.RadioButton rbSequence;
         private System.Windows.Forms.DataGridView dataViewSeries;
         private System.Windows.Forms.Label lblDatabase;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Panel paOptions;
         private DataGridViewNavigator dataGridViewNavigator1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
