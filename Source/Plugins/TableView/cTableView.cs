@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Collections;
@@ -11,7 +8,6 @@ using System.Collections;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Database;
 using HydroDesktop.Configuration;
-using DotSpatial.Controls;
 
 namespace TableView
 {
@@ -61,7 +57,9 @@ namespace TableView
 
         private void ShowAllFieldsinSequence()
         {
-            if (_seriesCheckState == true)
+            dataViewSeries.DataSource = bindingSource1;
+
+            if (_seriesCheckState)
             {
 
                 if (_seriesSelector.CheckedIDList.Length == 0)
@@ -71,9 +69,7 @@ namespace TableView
                     bindingSource1.RaiseListChangedEvents = true;
                 }
 
-                DbOperations dbTools =
-                     new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-                DataTable tblSeries = new DataTable();
+                var dbTools = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
 
                 string SQLString = "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE SeriesID = " + _checkedSeriesId;
 
