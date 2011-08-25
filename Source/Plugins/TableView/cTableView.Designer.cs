@@ -70,7 +70,6 @@
             this.dataViewSeries.AllowDrop = true;
             this.dataViewSeries.AllowUserToAddRows = false;
             this.dataViewSeries.AllowUserToDeleteRows = false;
-            this.dataViewSeries.AllowUserToResizeColumns = false;
             this.dataViewSeries.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
             this.dataViewSeries.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
