@@ -32,8 +32,12 @@ namespace TableView
         public override void Deactivate()
         {
             App.HeaderControl.RemoveItems();
-
             App.DockManager.Remove(kTableView);
+
+            if (SeriesControl != null)
+            {
+                SeriesControl.Refreshed -= SeriesControl_Refreshed;
+            }
 
             base.Deactivate();
         }
@@ -108,7 +112,20 @@ namespace TableView
 
             dropDownOptions.SelectedItem = dropDownOptions.Items[0];
 
+            SeriesControl.Refreshed += SeriesControl_Refreshed;
+
             base.Activate();
+        }
+
+        void SeriesControl_Refreshed(object sender, EventArgs e)
+        {
+            RefreshDatabasePath();
+        }
+
+        private void Refresh()
+        {
+            RefreshAllThemes();
+            SeriesControl.RefreshSelection();
         }
 
         void dropDown_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
@@ -137,8 +154,7 @@ namespace TableView
 
         private void rbRefreshTheme_Click(object sender, EventArgs e)
         {
-            RefreshAllThemes();
-            SeriesControl.RefreshSelection();
+            Refresh();
         }
 
         private void rbDeleteTheme_Click(object sender, EventArgs e)
@@ -149,7 +165,7 @@ namespace TableView
         /// <summary>
         /// Reads all themes from the database and displays them on the map
         /// </summary>
-        public void RefreshAllThemes()
+        private void RefreshAllThemes()
         {
             var manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
             manager.RefreshAllThemes(App.Map as Map);
@@ -161,8 +177,7 @@ namespace TableView
             using (var frm = new DeleteThemeForm(db))
             {
                 if (frm.ShowDialog() != DialogResult.OK) return;
-                SeriesControl.RefreshSelection();
-                RefreshAllThemes();
+                Refresh();
             }
         }
 
@@ -175,8 +190,7 @@ namespace TableView
             using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map))
             {
                 if (frmChangeDatabase.ShowDialog() != DialogResult.OK) return;
-                RefreshAllThemes();
-                RefreshDatabasePath();
+                Refresh();
             }
         }
 
@@ -199,17 +213,12 @@ namespace TableView
                 {
                     var connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
                     Settings.Instance.DataRepositoryConnectionString = connString;
-                    SeriesControl.RefreshSelection();
-                    RefreshAllThemes();
-                    RefreshDatabasePath();
-
-                    MessageBox.Show("New database has been created successfully.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to create new database. " +
-                                ex.Message);
+                MessageBox.Show("Unable to create new database." + Environment.NewLine +
+                                ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
