@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
@@ -29,15 +30,51 @@ namespace TableView
 
             dataGridViewNavigator1.PageChanged += dataGridViewNavigator1_PageChanged;
 
-            _seriesSelector.SeriesCheck += rb_CheckedChanged;
-            _seriesSelector.Refreshed += rb_CheckedChanged;
-            rbSequence.CheckedChanged += rb_CheckedChanged;
-            rbParallel.CheckedChanged += rb_CheckedChanged;
+            _seriesSelector.SeriesCheck += seriesSelector_Refreshed;
+            _seriesSelector.Refreshed += seriesSelector_Refreshed;
         }
 
         #endregion
 
+        #region Properties
+
+        private TableViewMode _viewMode;
+        public TableViewMode ViewMode
+        {
+            get { return _viewMode; }
+            set
+            {
+                _viewMode = value;
+                UpdateViewMode();
+            }
+        }
+
+        /// <summary>
+        /// Path to current database
+        /// </summary>
+        public string DatabasePath { get; private set; }
+
+        #endregion
+
         #region Private methods
+
+        private void UpdateViewMode()
+        {
+            switch (ViewMode)
+            {
+                case TableViewMode.SequenceView:
+                    ShowAllFieldsinSequence();
+                    break;
+                case TableViewMode.JustValuesInParallel:
+                    ShowJustValuesinParallel();
+                    break;
+            }
+        }
+
+        private void UpdateDatabasePath()
+        {
+            DatabasePath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
+        }
 
         private void dataGridViewNavigator1_PageChanged(object sender, PageChangedEventArgs e)
         {
@@ -140,30 +177,19 @@ namespace TableView
             }
         }
 
-        private void rb_CheckedChanged(object sender, EventArgs e)
+        private void seriesSelector_Refreshed(object sender, EventArgs e)
         {
-            if (rbSequence.Checked)
-            {
-                ShowAllFieldsinSequence();
-            }
-            else if (rbParallel.Checked)
-            {
-                ShowJustValuesinParallel();
-            }
+            UpdateViewMode();
+            UpdateDatabasePath();
         }
 
         private void cTableView_Load(object sender, EventArgs e)
         {
             dataViewSeries.ColumnHeadersVisible = true;
             dataViewSeries.ColumnHeadersBorderStyle = ProperColumnHeadersBorderStyle;
-            lblDatabase.Text = GetSQLitePath(Settings.Instance.DataRepositoryConnectionString);
-
-            rbSequence.Checked = true;
-        }
-
-        private string GetSQLitePath(string sqliteConnString)
-        {
-            return SQLiteHelper.GetSQLiteFileName(sqliteConnString);
+           
+            ViewMode = TableViewMode.SequenceView;
+            UpdateDatabasePath();
         }
 
         /// <summary>
@@ -181,5 +207,13 @@ namespace TableView
         }
 
         #endregion
+    }
+
+    public enum TableViewMode
+    {
+        [Description("Show All Fields in Sequence")]
+        SequenceView,
+        [Description("Show Just Values in Parallel")]
+        JustValuesInParallel
     }
 }
