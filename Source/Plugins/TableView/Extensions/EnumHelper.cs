@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace HydroDesktop.Search.Extensions
+namespace TableView.Extensions
 {
     static class EnumHelper
     {
         public static string Description(this Enum enumValue)
         {
             var descriptions =
-                (DescriptionAttribute[])enumValue.GetType().GetField(enumValue.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
+                (DescriptionAttribute[]) enumValue.GetType().GetField(enumValue.ToString()).GetCustomAttributes(typeof (DescriptionAttribute), false);
             if (descriptions.Length == 0)
             {
                 return Enum.GetName(enumValue.GetType(), enumValue);
