@@ -87,10 +87,25 @@ namespace SeriesView
 
             cbBoxCriterion.SelectedIndexChanged +=new EventHandler(cbBoxCriterion_SelectedIndexChanged);
             cbBoxContent.SelectedIndexChanged +=new EventHandler(cbBoxContent_SelectedIndexChanged);
+
+            Settings.Instance.DatabaseChanged += Instance_DatabaseChanged;
+            Disposed += SeriesSelector_Disposed;
         }
+       
         #endregion 
 
         #region Event Handlers
+
+        void SeriesSelector_Disposed(object sender, EventArgs e)
+        {
+            Settings.Instance.DatabaseChanged -= Instance_DatabaseChanged;
+        }
+
+        void Instance_DatabaseChanged(object sender, EventArgs e)
+        {
+            RefreshSelection();
+        }
+
         void dgvSeries_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex >= 0)

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using HydroDesktop.Database;
@@ -69,7 +63,15 @@ namespace TableView
 
             if (!SQLiteHelper.DatabaseExists(newMetadataCachePath))
             {
-                SQLiteHelper.CreateSQLiteDatabase(newMetadataCachePath);
+                SQLiteHelper.CreateMetadataCacheDb(newMetadataCachePath);
+            }
+
+            // Check databases schema
+            if (!CheckDatabaseSchema(newDataRepositoryPath, DatabaseType.DefaulDatabase) ||
+                !CheckDatabaseSchema(newMetadataCachePath, DatabaseType.MetadataCacheDatabase))
+            {
+                DialogResult = DialogResult.None;
+                return;
             }
 
             //(2) Set the global settings
@@ -88,6 +90,24 @@ namespace TableView
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private static bool CheckDatabaseSchema(string dataBasePath, DatabaseType databaseType)
+        {
+            try
+            {
+                SQLiteHelper.CheckDatabaseSchema(dataBasePath, databaseType);
+            }
+            catch (InvalidDatabaseSchemaException ex)
+            {
+                MessageBox.Show(
+                    string.Format("The selected database ({0}) has incorrect schema:", Path.GetFileName(dataBasePath)) +
+                    Environment.NewLine + Environment.NewLine +
+                    ex.Message, "Incorrect schema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
         }
 
         private void btnRestoreDefault_Click(object sender, EventArgs e)

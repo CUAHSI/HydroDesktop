@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Drawing;
-
 using DotSpatial.Controls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
@@ -12,6 +7,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using HydroDesktop.Controls.Themes;
+using TableView.Extensions;
 
 namespace TableView
 {
@@ -28,15 +24,20 @@ namespace TableView
         private const string _tablePanelName = "Table";
         private const string kTableView = "kHydroTableView";
 
-        private RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
+        private readonly RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
+        private cTableView tableViewControl;
 
         #endregion
 
         public override void Deactivate()
         {
             App.HeaderControl.RemoveItems();
-
             App.DockManager.Remove(kTableView);
+
+            if (SeriesControl != null)
+            {
+                SeriesControl.Refreshed -= SeriesControl_Refreshed;
+            }
 
             base.Deactivate();
         }
@@ -50,8 +51,6 @@ namespace TableView
             }
 
             #region initialize the Table Ribbon TabPage and related controls
-
-            IHeaderControl header = App.HeaderControl;
             
             //Table Tab
             App.HeaderControl.Add(_tableViewRoot);
@@ -92,15 +91,47 @@ namespace TableView
             newDatabaseButton.GroupCaption = "Database";
             App.HeaderControl.Add(newDatabaseButton);
 
+            // Options
+            var dropDownOptions = new DropDownActionItem("kHydroTableViewDropDown", "Mode");
+            dropDownOptions.AllowEditingText = false;
+            dropDownOptions.Width = 200;
+            dropDownOptions.RootKey = kTableView;
+            dropDownOptions.GroupCaption = "Options";
+            dropDownOptions.Items.Add(new EnumWrapper(TableViewMode.SequenceView));
+            dropDownOptions.Items.Add(new EnumWrapper(TableViewMode.JustValuesInParallel));
+            dropDownOptions.SelectedValueChanged += dropDown_SelectedValueChanged;
+            App.HeaderControl.Add(dropDownOptions);
+
             #endregion initialize the Table Ribbon TabPage and related controls
 
             // Add "Table View Plugin" dock panel to the SeriesView
-            cTableView tableViewControl = new cTableView(SeriesControl);
+            tableViewControl = new cTableView(SeriesControl);
             tableViewControl.Dock = DockStyle.Fill;
             App.DockManager.Add(kTableView, _tablePanelName, tableViewControl, DockStyle.Fill);
-            App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
+
+            dropDownOptions.SelectedItem = dropDownOptions.Items[0];
+
+            SeriesControl.Refreshed += SeriesControl_Refreshed;
 
             base.Activate();
+        }
+
+        void SeriesControl_Refreshed(object sender, EventArgs e)
+        {
+            RefreshDatabasePath();
+        }
+
+        private void Refresh()
+        {
+            RefreshAllThemes();
+            SeriesControl.RefreshSelection();
+        }
+
+        void dropDown_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
+        {
+            if (tableViewControl == null) return;
+            tableViewControl.ViewMode = (TableViewMode) ((EnumWrapper) e.SelectedItem).Value;
         }
 
         void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
@@ -109,14 +140,21 @@ namespace TableView
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(_tableViewRoot);
+                RefreshDatabasePath();
+            }
+        }
+
+        private void RefreshDatabasePath()
+        {
+            if (tableViewControl != null)
+            {
+                App.ProgressHandler.Progress(string.Empty, 0, string.Format("Database: {0}", tableViewControl.DatabasePath));
             }
         }
 
         private void rbRefreshTheme_Click(object sender, EventArgs e)
         {
-            RefreshAllThemes();
-            SeriesControl.RefreshSelection();
-            //this.tabContainer.SelectedIndex = 1;
+            Refresh();
         }
 
         private void rbDeleteTheme_Click(object sender, EventArgs e)
@@ -127,25 +165,19 @@ namespace TableView
         /// <summary>
         /// Reads all themes from the database and displays them on the map
         /// </summary>
-        public void RefreshAllThemes()
+        private void RefreshAllThemes()
         {
-            ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
+            var manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
             manager.RefreshAllThemes(App.Map as Map);
         }
 
-        /// <summary>
-        /// Delete the theme and all related records in the database.
-        /// </summar y>
-        /// <param name="themeId"></param>
         private void DeleteTheme()
         {
-            DbOperations db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            DeleteThemeForm frm = new DeleteThemeForm(db);
-            frm.ShowDialog();
-            if (frm.DialogResult == DialogResult.OK)
+            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+            using (var frm = new DeleteThemeForm(db))
             {
-                SeriesControl.RefreshSelection();
-                RefreshAllThemes();
+                if (frm.ShowDialog() != DialogResult.OK) return;
+                Refresh();
             }
         }
 
@@ -155,19 +187,11 @@ namespace TableView
 
         private void rbChangeDatabase_Click(object sender, EventArgs e)
         {
-            ChangeDatabase();
-            RefreshAllThemes();
-        }
-
-        /// <summary>
-        /// Change the default database used by HydroDesktop
-        /// </summary>
-        /// <returns></returns>
-        private void ChangeDatabase()
-        {
-            ChangeDatabaseForm frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map);
-            //frmChangeDatabase.Owner = this;
-            frmChangeDatabase.ShowDialog();
+            using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map))
+            {
+                if (frmChangeDatabase.ShowDialog() != DialogResult.OK) return;
+                Refresh();
+            }
         }
 
         private void rbNewDatabase_Click(object sender, EventArgs e)
@@ -180,45 +204,44 @@ namespace TableView
         /// </summary>
         private void CreateNewDatabase()
         {
-            SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.Filter = "SQLite Database|*.sqlite";
-            if (saveDialog.ShowDialog() == DialogResult.OK)
+            var saveDialog = new SaveFileDialog {Filter = "SQLite Database|*.sqlite"};
+            if (saveDialog.ShowDialog() != DialogResult.OK) return;
+            var newDbFileName = saveDialog.FileName;
+            try
             {
-                string newDbFileName = saveDialog.FileName;
-                try
+                if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
                 {
-                    if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
-                    {
-                        string connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
-                        DatabaseHasChanged(connString);
-
-                        MessageBox.Show("New database has been created successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Unable to create new database. " +
-                        ex.Message);
+                    var connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
+                    Settings.Instance.DataRepositoryConnectionString = connString;
                 }
             }
-        }
-
-        /// <summary>
-        /// When setting up a new database, this reconfigures the managers
-        /// </summary>
-        /// <param name="connString"></param>
-        private void DatabaseHasChanged(string connString)
-        {
-            //TODO call SeriesSelector directly
-            SeriesControl.RefreshSelection();
-
-            // Originally from NewDatabase
-            Settings.Instance.DataRepositoryConnectionString = connString;
-
-            RefreshAllThemes();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to create new database." + Environment.NewLine +
+                                ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         # endregion
 
+
+        #region Helpers
+
+        private class EnumWrapper
+        {
+            public EnumWrapper(Enum value)
+            {
+                Value = value;
+            }
+
+            public Enum Value { get; private set; }
+
+            public override string ToString()
+            {
+                return Value.Description();
+            }
+        }
+
+        #endregion
     }
 }
