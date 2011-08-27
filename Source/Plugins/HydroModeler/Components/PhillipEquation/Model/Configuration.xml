@@ -29,6 +29,34 @@
         <ValueType>scalar</ValueType>
       </Quantity>
     </OutputExchangeItem>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta runoff</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\weir18.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>runoff rate</ID>
+        <Description>runoff rate in the watershed</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>L</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/day</ID>
+          <Description>millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
     <InputExchangeItem>
       <ElementSet>
         <ID>Coweeta water table</ID>
