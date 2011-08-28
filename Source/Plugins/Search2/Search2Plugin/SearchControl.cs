@@ -84,7 +84,8 @@ namespace HydroDesktop.Search
             // fix: 8198
             if (bUseTreeWithLink)
             {// click to open ws in ie.
-                treeViewWebServices.NodeMouseClick += new TreeNodeMouseClickEventHandler(treeViewWebServices_OpenUrl);
+                treeViewWebServices.NodeMouseClick += treeViewWebServices_OpenUrl;
+                
             }
             // update invisible data container
             treeViewWebServices.MouseUp += new MouseEventHandler(treeView1_MouseUp);
@@ -95,7 +96,6 @@ namespace HydroDesktop.Search
             //set the default search mode
             SearchMode = SearchMode.HISCentral;
         }
-
         #endregion
 
 
@@ -1805,12 +1805,13 @@ namespace HydroDesktop.Search
         {
             fillWebservicesXml();
         }
+
         // fix: 8198
         // open url of ServiceDescriptionURL
-        public void treeViewWebServices_OpenUrl(
-            Object sender,
-            TreeNodeMouseClickEventArgs e)
+        public void treeViewWebServices_OpenUrl(Object sender, TreeNodeMouseClickEventArgs e)
         {
+            if (!e.Node.Bounds.Contains(e.Location)) return;
+
             TreeNode node = e.Node;
             var nodeInfo = node.Tag as NodeInfo;
             if (nodeInfo == null || nodeInfo.DescritionUrl == null)
