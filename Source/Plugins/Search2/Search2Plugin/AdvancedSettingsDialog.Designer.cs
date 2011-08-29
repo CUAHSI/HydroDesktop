@@ -70,7 +70,6 @@
             this.txtCustomUrl.Name = "txtCustomUrl";
             this.txtCustomUrl.Size = new System.Drawing.Size(314, 13);
             this.txtCustomUrl.TabIndex = 31;
-            this.txtCustomUrl.Text = "Type-in the Custom URL here...";
             // 
             // radioButton7
             // 
@@ -243,6 +242,7 @@
             this.Name = "AdvancedSettingsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Advanced Settings";
+            this.Load += new System.EventHandler(this.AdvancedSettingsDialog_Load);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);

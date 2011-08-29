@@ -1804,7 +1804,15 @@ namespace HydroDesktop.Search
                 //separate search method is used for HIS Central and for Metadata Cache
                 if (parameters.SearchMethod == Properties.Settings.Default.SearchMethod_HISCentral)
                 {
-                    searcher.HISCentralSearchWithFailover(e, Settings.Instance.HISCentralURLList, bgWorker);
+                    //re-order the URL list
+                    List<string> urlList = new List<string>();
+                    urlList.Add(Settings.Instance.SelectedHISCentralURL);
+                    foreach (string url in Settings.Instance.HISCentralURLList)
+                    {
+                        if (!urlList.Contains(url)) urlList.Add(url);
+                    }
+                    
+                    searcher.HISCentralSearchWithFailover(e, urlList, bgWorker);
                 }
                 else
                 {

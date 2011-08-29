@@ -8,7 +8,7 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartProgram>..\..\..\Binaries\HydroDesktop.exe</StartProgram>
+    <StartProgram>C:\dev\HydroDesktop12\Binaries\HydroDesktop.exe</StartProgram>
     <StartAction>Program</StartAction>
   </PropertyGroup>
 </Project>

@@ -19,7 +19,6 @@
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;http://hiscentral.cuahsi.org/webservices/hiscentral.asmx&lt;/string&gt;
   &lt;string&gt;http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx&lt;/string&gt;
-  &lt;string&gt;http://132.249.69.104/hiscentral/webservices/hiscentral.asmx&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="DefaultHISCentralUrl" Type="System.String" Scope="User">
