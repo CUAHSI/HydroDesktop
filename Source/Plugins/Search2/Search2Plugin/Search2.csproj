@@ -87,10 +87,6 @@
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Controls">
-      <HintPath>..\..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HydroDesktop.Data">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
       <Private>False</Private>
