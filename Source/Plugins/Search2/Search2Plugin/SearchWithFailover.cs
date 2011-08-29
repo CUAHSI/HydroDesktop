@@ -41,11 +41,8 @@ namespace HydroDesktop.Search
 			{
 				parameters = (SearchCriteria)e.Argument;
 			}
-			
-			var randomEndpoints = endpoints.OrderBy ( v => Guid.NewGuid () );
-
 			StringBuilder errorStack = new StringBuilder ("HIS Central Search Error\n\n");
-			foreach ( var url in randomEndpoints )
+			foreach ( var url in endpoints )
 			{
 				try
 				{

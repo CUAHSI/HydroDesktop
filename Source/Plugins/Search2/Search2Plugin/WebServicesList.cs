@@ -222,16 +222,27 @@ namespace HydroDesktop.Search
             return getWebServ;
         }
 
-        //gets the 'WebServices' xml file from HIS Central
+        //gets the 'WebServices' xml file from HIS Central.
+        //Should use the SelectedHISCentralURL first.
         private XmlDocument GetWebServicesFromHISCentral(IList<string> hisCentralUrl)
         {
             WebException myWebException = null;
+
+            //(1) ensure ordering of list
+            List<string> urlList = new List<string>();
+            urlList.Add(HydroDesktop.Configuration.Settings.Instance.SelectedHISCentralURL);
+            foreach (string url2 in hisCentralUrl)
+            {
+                if (!urlList.Contains(url2)) urlList.Add(url2);
+            }
             
-            foreach (var url in hisCentralUrl)
+            foreach (var url in urlList)
             {
                 try
                 {
-                    _searcher = _searcher ?? new HISCentralSearcher(url);
+                    //_searcher = _searcher ?? new HISCentralSearcher(url);
+                    _searcher = new HISCentralSearcher(url);
+
                     RefreshListFromHisCentral(_searcher);
                     var document = new XmlDocument();
                     try

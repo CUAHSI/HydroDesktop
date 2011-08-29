@@ -36,54 +36,13 @@ namespace HydroDesktop.Search
 
             _searchControl = ucSearch;
 
-            //to get the URL
-            string url = Settings.Instance.SelectedHISCentralURL;
-
-            //to restore the settings:
             
-            if (url == HISCENTRAL_URL_1)
-            {
-                rbHisCentral1.Checked = true;
-                //lblHisCentralURL.Text = url;
-                txtCustomUrl.Enabled = false;
-            }
-            else if (url == HISCENTRAL_URL_2)
-            {
-                rbHisCentral2.Checked = true;
-                //lblHisCentralURL.Text = url;
-                txtCustomUrl.Enabled = false;
-            }
-            else
-            {
-                radioButton7.Checked = true;
-                txtCustomUrl.Enabled = true;
-                txtCustomUrl.Text = url;
-            }
-            if (url.StartsWith("http"))
-            {
-                txtCustomUrl.Text = url;
-            }
-
-            //to restore download options settings
-            
-            switch (Settings.Instance.DownloadOption)
-            {
-                case "Append":
-                case "Fill":
-                    rbAppend.Checked = true;
-                    break;
-                case "Copy":
-                    rbCopy.Checked = true;
-                    break;
-                case "Overwrite":
-                    rbOverwrite.Checked = true;
-                    break;
-            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             string hisCentralURL = HISCENTRAL_URL_1;
+            string oldHisCentralURL = Settings.Instance.SelectedHISCentralURL;
             
             if (rbHisCentral1.Checked)
             {
@@ -123,6 +82,12 @@ namespace HydroDesktop.Search
             else if (rbOverwrite.Checked)
             {
                 Settings.Instance.DownloadOption = OverwriteOptions.Overwrite.ToString();
+            }
+
+            //refresh web services
+            if (Settings.Instance.SelectedHISCentralURL != oldHisCentralURL)
+            {
+                _searchControl.RefreshWebServices(true, true);
             }
         }
 
@@ -187,16 +152,64 @@ namespace HydroDesktop.Search
 
         private void radioButton7_CheckedChanged(object sender, EventArgs e)
         {
-            if (HISCENTRAL_URL_1 == Settings.Instance.SelectedHISCentralURL || Settings.Instance.SelectedHISCentralURL == HISCENTRAL_URL_2)
+            if (radioButton7.Checked)
             {
-                txtCustomUrl.Text = "Type-in the Custom URL here...";
+                if (Settings.Instance.SelectedHISCentralURL == HISCENTRAL_URL_1 || Settings.Instance.SelectedHISCentralURL == HISCENTRAL_URL_2)
+                {
+                    txtCustomUrl.Text = "Type-in the Custom URL here...";
+                }
+                else
+                {
+                    txtCustomUrl.Text = Settings.Instance.SelectedHISCentralURL;
+                }
+                txtCustomUrl.Enabled = true;
+                txtCustomUrl.Focus();
+            }
+        }
+
+        //when this dialog is loaded
+        private void AdvancedSettingsDialog_Load(object sender, EventArgs e)
+        {
+            //to get the URL
+            string url = Settings.Instance.SelectedHISCentralURL;
+            if (!url.StartsWith("http://"))
+                url = "http://" + url;
+
+            //to restore the settings:
+
+            if (url == HISCENTRAL_URL_1)
+            {
+                rbHisCentral1.Checked = true;
+                lblHisCentralURL.Text = url;
+                txtCustomUrl.Enabled = false;
+            }
+            else if (url == HISCENTRAL_URL_2)
+            {
+                rbHisCentral2.Checked = true;
+                lblHisCentralURL.Text = url;
+                txtCustomUrl.Enabled = false;
             }
             else
             {
-                txtCustomUrl.Text = Settings.Instance.SelectedHISCentralURL;
+                radioButton7.Checked = true;
+                txtCustomUrl.Enabled = true;
+                txtCustomUrl.Text = url;
             }
-            txtCustomUrl.Enabled = true;
-            txtCustomUrl.Focus();
+
+            //to restore download options settings
+            switch (Settings.Instance.DownloadOption)
+            {
+                case "Append":
+                case "Fill":
+                    rbAppend.Checked = true;
+                    break;
+                case "Copy":
+                    rbCopy.Checked = true;
+                    break;
+                case "Overwrite":
+                    rbOverwrite.Checked = true;
+                    break;
+            }
         }
     }
 }
