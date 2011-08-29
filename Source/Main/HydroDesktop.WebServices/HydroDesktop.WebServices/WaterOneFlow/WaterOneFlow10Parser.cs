@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
-using System.IO;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
@@ -16,6 +14,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     {
         #region Variables
 
+        private static readonly XmlReaderSettings _readerSettings = new XmlReaderSettings {IgnoreWhitespace = true,};
+
         #endregion
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         public IList<Site> ParseGetSitesXml(string xmlFile)
         {
             IList<Site> siteList = new List<Site>();
-            
-            using (XmlTextReader reader = new XmlTextReader(xmlFile))
+
+            using (var reader = XmlReader.Create(xmlFile, _readerSettings))
             {
                 while (reader.Read())
                 {
@@ -61,7 +61,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             IList<SeriesMetadata> seriesList = new List<SeriesMetadata>();
             Site site = null;
 
-            using (XmlTextReader reader = new XmlTextReader(xmlFile))
+            using (var reader = XmlReader.Create(xmlFile, _readerSettings))
             {
                 while (reader.Read())
                 {
@@ -97,8 +97,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             Site site = null;
             Variable varInfo = null;
             IList<Series> seriesList = null;
-            
-            using (XmlTextReader reader = new XmlTextReader(xmlFile))
+
+            using (var reader =  XmlReader.Create(xmlFile, _readerSettings))
             {
                 while (reader.Read())
                 {
@@ -168,7 +168,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads the QueryInfo section
         /// </summary>
-        private QueryInfo ReadQueryInfo(XmlTextReader r)
+        private QueryInfo ReadQueryInfo(XmlReader r)
         {
             QueryInfo query = new QueryInfo();
             while (r.Read())
@@ -209,7 +209,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads information about site from the WaterML returned by GetValues
         /// </summary>
-        private Site ReadSite(XmlTextReader r)
+        private Site ReadSite(XmlReader r)
         {
             Site site = new Site();
             while (r.Read())
@@ -297,7 +297,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads information about variable
         /// </summary>
-        private Variable ReadVariable(XmlTextReader r)
+        private Variable ReadVariable(XmlReader r)
         {
             Variable varInfo = new Variable();
             Unit timeUnit = Unit.Unknown;
@@ -432,7 +432,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return varInfo;
         }
 
-        private SeriesMetadata ReadSeriesFromSiteInfo(XmlTextReader r, Site site)
+        private SeriesMetadata ReadSeriesFromSiteInfo(XmlReader r, Site site)
         {
             SeriesMetadata series = new SeriesMetadata();
             series.Site = site;
@@ -490,7 +490,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads the DataValues section
         /// </summary>
-        private IList<Series> ReadDataValues(XmlTextReader r)
+        private IList<Series> ReadDataValues(XmlReader r)
         {
             IList<DataValue> lst = new List<DataValue>();
 
