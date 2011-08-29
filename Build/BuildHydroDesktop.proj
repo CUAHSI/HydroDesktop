@@ -43,7 +43,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectName>hydrodesktop</ProjectName>
 	<MajorVersion Condition="'$(MajorVersion)' == ''">1</MajorVersion>
-	<MinorVersion Condition="'$(MinorVersion)' == ''">2</MinorVersion>
+	<MinorVersion Condition="'$(MinorVersion)' == ''">3</MinorVersion>
 	<!--<ReleaseVersion Condition="'$(ReleaseVersion)' == ''">Unknown</ReleaseVersion> --><!--hopefully populated by target VersionConfig -->
     <ReleaseName Condition="'$(ReleaseName)' == ''">Beta</ReleaseName><!-- really release type -->
     <IsDefaultRelease Condition="'$(IsDefaultRelease)' == ''">false</IsDefaultRelease>
