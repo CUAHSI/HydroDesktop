@@ -871,12 +871,13 @@ namespace HydroDesktop.Search
                                 {
                                     lbSelectedKeywords.Items.Add(node.NextSibling.InnerText);
                                     fillXml();
+                                    break; //to prevent adding duplicate keywords
                                 }
                             }
                         }
                     }
                 }
-                else
+                else //searching metadata cache
                 {
                     if (lbKeywords.SelectedIndex == -1)
                     {
@@ -918,6 +919,7 @@ namespace HydroDesktop.Search
                                 }
                                 else lbSelectedKeywords.Items.Add(node.NextSibling.InnerText);
                                 fillXml();
+                                break;
                             }
                         }
                     }
