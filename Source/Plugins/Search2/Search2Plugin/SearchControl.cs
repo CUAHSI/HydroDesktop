@@ -764,22 +764,42 @@ namespace HydroDesktop.Search
 
         private void FindInTreeView(TreeNodeCollection tncoll, string strNode)
         {
+            bool keywordFound = false;
 
             foreach (TreeNode tnode in tncoll)
             {
                 if (tnode.Text.ToLower() == strNode.ToLower())
                 {
-                    tnode.TreeView.SelectedNode = tnode;
-                    lblKeywordRelation.Text = tnode.FullPath;
-                    
-                    //special case for 'hydrosphere when search mode is metadata cache
-                    if (SearchMode == Properties.Settings.Default.SearchMethod_MetadataCache)
+                    if (tnode.TreeView.SelectedNode == null)
                     {
-                        if (strNode.ToLower() == "hydrosphere") return;
+                        tnode.TreeView.SelectedNode = tnode;
+                        lblKeywordRelation.Text = tnode.FullPath;
+
+                        //special case for 'hydrosphere when search mode is metadata cache
+                        if (SearchMode == Properties.Settings.Default.SearchMethod_MetadataCache)
+                        {
+                            if (strNode.ToLower() == "hydrosphere") return;
+                        }
+                        keywordFound = true;
+                    }         
+                    else if (tnode.TreeView.SelectedNode.Text.ToLower() != tnode.Text.ToLower())
+                    {
+                        tnode.TreeView.SelectedNode = tnode;
+                        lblKeywordRelation.Text = tnode.FullPath;
+
+                        //special case for 'hydrosphere when search mode is metadata cache
+                        if (SearchMode == Properties.Settings.Default.SearchMethod_MetadataCache)
+                        {
+                            if (strNode.ToLower() == "hydrosphere") return;
+                        }
+                        keywordFound = true;
                     }
                 }
 
-                FindInTreeView(tnode.Nodes, strNode);
+                if (!keywordFound)
+                {
+                    FindInTreeView(tnode.Nodes, strNode);
+                }
             }
         }
 
