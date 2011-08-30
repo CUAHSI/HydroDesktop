@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<LinkableComponent Type="CUAHSI.HIS.DbWriter" Assembly="..\..\bin\DbWriter.dll">
+  <Arguments>
+    <Argument Key="IgnoreValue" ReadOnly="true" Value="-1" />
+  </Arguments>
+</LinkableComponent>

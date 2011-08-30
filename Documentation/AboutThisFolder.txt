@@ -1,0 +1,1 @@
+- This area is used to collaboratively update and work on documentation before it is made available through the Download page on CodePlex.
