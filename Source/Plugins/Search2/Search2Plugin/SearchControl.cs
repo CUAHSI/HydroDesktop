@@ -1285,48 +1285,90 @@ namespace HydroDesktop.Search
         /// <param name="e"></param>
         void MapFrame_LayerAdded(object sender, DotSpatial.Symbology.LayerEventArgs e)
         {
+            //if it's a group: add the event handler
+            if (e.Layer is IMapGroup)
+            {
+                IMapGroup grp = e.Layer as IMapGroup;
+                grp.LayerAdded +=new EventHandler<LayerEventArgs>(MapFrame_LayerAdded);
+                grp.LayerRemoved += new EventHandler<LayerEventArgs>(MapFrame_LayerRemoved);
+
+                //for selection of layers
+                //grp.LayerSelected += new EventHandler<LayerSelectedEventArgs>(MapFrame_LayerSelected);
+                return;
+            }
+            
             // See if the layer is a polygon layer or a group layer containing polygon layers.
-            if (e.Layer is IMapLayer)
+            if (e.Layer is IMapPolygonLayer)
             {
                 List<IMapPolygonLayer> polygonLayerList = GetListOfPolygonLayers();
+
+                IMapPolygonLayer polyLayer = e.Layer as IMapPolygonLayer;
+
+                //add layer name to the combo box
+                if (!String.IsNullOrEmpty(polyLayer.LegendText))
+                {
+                    cboActiveLayer.Items.Add(polyLayer.LegendText);
+                }
+
+                //if there is one layer - populate the other controls
+                if (polygonLayerList.Count == 1)
+                {
+                    cboActiveLayer.SelectedIndex = 0;
+                    //cboActiveLayer_SelectedIndexChanged(null, null);
+                }
+
+
                 //GetListOfPolygonLayers(e.Layer as IMapLayer, polygonLayerList);
 
-                if (polygonLayerList.Count > 0)
-                {
-                    // Polygon layer added.  We need to update the combo box of layers. 
+                //if (polygonLayerList.Count > 0)
+                //{
+                //    // Polygon layer added.  We need to update the combo box of layers. 
 
-                    // Keep track of the currently selected layer, if any.
-                    string selectedLayerName = "";
-                    if (cboActiveLayer.SelectedItem != null)
-                    {
-                        selectedLayerName = cboActiveLayer.SelectedItem.ToString();
-                    }
+                //    // Keep track of the currently selected layer, if any.
+                //    string selectedLayerName = "";
+                //    if (cboActiveLayer.SelectedItem != null)
+                //    {
+                //        selectedLayerName = cboActiveLayer.SelectedItem.ToString();
+                //    }
 
-                    // Repopulate items in the combo box.  !!! Really we should just be adding the new items in the right order.
-                    if (!String.IsNullOrEmpty(e.Layer.LegendText))
-                    {
-                        cboActiveLayer.BeginUpdate();
-                        //cboActiveLayer.Items.Clear();
-                        //AddPolygonLayers();
-                        cboActiveLayer.Items.Add(e.Layer.LegendText);
-                        cboActiveLayer.EndUpdate();
-                    }
+                //    // Repopulate items in the combo box.  !!! Really we should just be adding the new items in the right order.
+                //    if (!String.IsNullOrEmpty(e.Layer.LegendText))
+                //    {
+                //        cboActiveLayer.BeginUpdate();
+                //        //cboActiveLayer.Items.Clear();
+                //        //AddPolygonLayers();
+                //        cboActiveLayer.Items.Add(e.Layer.LegendText);
+                //        cboActiveLayer.EndUpdate();
+                //    }
 
-                    // Reselect the previously selected layer name, if present.
-                    int index = cboActiveLayer.FindString(selectedLayerName);
-                    if (index != -1)
-                    {
-                        // Turn off the event handler.  We don't need to fire events for reselecting the same layer that we had selected before.
-                        cboActiveLayer.SelectedIndexChanged -= new System.EventHandler(this.cboActiveLayer_SelectedIndexChanged);
+                //    // Reselect the previously selected layer name, if present.
+                //    int index = cboActiveLayer.FindString(selectedLayerName);
+                //    if (index != -1)
+                //    {
+                //        // Turn off the event handler.  We don't need to fire events for reselecting the same layer that we had selected before.
+                //        cboActiveLayer.SelectedIndexChanged -= new System.EventHandler(this.cboActiveLayer_SelectedIndexChanged);
 
-                        // Select the layer name.
-                        cboActiveLayer.SelectedIndex = index;
+                //        // Select the layer name.
+                //        cboActiveLayer.SelectedIndex = index;
 
-                        // Turn on the event handler.
-                        cboActiveLayer.SelectedIndexChanged += new System.EventHandler(this.cboActiveLayer_SelectedIndexChanged);
-                    }
-                }
+                //        // Turn on the event handler.
+                //        cboActiveLayer.SelectedIndexChanged += new System.EventHandler(this.cboActiveLayer_SelectedIndexChanged);
+                //    }
+                //}
             }
+        }
+
+
+        void MapFrame_LayerSelected(object sender, LayerSelectedEventArgs e)
+        {
+            if (!(e.Layer is IMapPolygonLayer)) return;
+
+            IMapPolygonLayer polyLayer = e.Layer as IMapPolygonLayer;
+            
+            //select item in search control
+            cboActiveLayer.SelectedItem = e.Layer.LegendText;
+            //dgvSearch.SetDataSource(polyLayer);
+
         }
 
         /// <summary>
@@ -1336,8 +1378,15 @@ namespace HydroDesktop.Search
         /// <param name="e"></param>
         void MapFrame_LayerRemoved(object sender, DotSpatial.Symbology.LayerEventArgs e)
         {
+            //detach layerRemoved event
+            if (e.Layer is IMapGroup)
+            {
+                ((IMapGroup)e.Layer).LayerRemoved -= MapFrame_LayerRemoved;
+                return;
+            }
+            
             // See if the layer is a polygon layer or a group layer containing polygon layers.
-            if (!(e.Layer is IMapLayer)) return;
+            if (!(e.Layer is IMapPolygonLayer)) return;
 
             List<IMapPolygonLayer> polygonLayerList = GetListOfPolygonLayers();
 

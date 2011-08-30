@@ -25,6 +25,7 @@ using HydroDesktop.Help;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using WeifenLuo.WinFormsUI.Docking;
+using System.ComponentModel.Composition;
 
 namespace HydroDesktop.Main
 {
@@ -71,6 +72,7 @@ namespace HydroDesktop.Main
         private ProjectChangeTracker _projectManager = null;
 
         //parent container for docking
+        [Export("Shell", typeof(ContainerControl))]
         public static ContainerControl Shell;
 
         #endregion Variable
@@ -101,9 +103,6 @@ namespace HydroDesktop.Main
             // setup the header control
             this.applicationManager1.HeaderControl = new DotSpatial.Controls.RibbonControls.RibbonHeaderControl(this.ribbonControl);
 
-            // setup docking...
-            this.applicationManager1.DockManager = new DockingManager();
-
             //dock the map and legend to fill
             mainMap.Dock = DockStyle.Fill;
             mainLegend.Dock = DockStyle.Fill;
@@ -121,11 +120,6 @@ namespace HydroDesktop.Main
             //TODO make this localizable
             _mapView = new RootItem(kHomeRoot, "Home");
             applicationManager1.HeaderControl.Add(_mapView);
-
-            //_mapView = this.ribbonControl.Tabs[0];
-
-            //TODO this could be used as a workaround for ribbon / dock interaction
-            //_mapView.ActiveChanged += new EventHandler(_mapView_ActiveChanged);
 
             string rpMapTools = "Map Tools";
 
@@ -298,7 +292,14 @@ namespace HydroDesktop.Main
             #endregion Initialize the Project opening events
 
             #region Load Plugins
-            //applicationManager1.LoadExtensions();
+            applicationManager1.LoadExtensions();
+
+            //add the legend and map dock panels
+            applicationManager1.DockManager.Add(kHomeRoot, "map", mainMap, DockStyle.Fill);
+            applicationManager1.DockManager.Add("kHydroLegend", "legend", mainLegend, DockStyle.Left);
+
+            //map activated event
+            applicationManager1.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
             #endregion
         }
 
@@ -600,14 +601,7 @@ namespace HydroDesktop.Main
                 Project.OpenProject(_projectFileName, applicationManager1);
             }
 
-            applicationManager1.LoadExtensions();
-
-            //add the legend and map dock panels
-            applicationManager1.DockManager.Add(kHomeRoot, "map", mainMap, DockStyle.Fill);
-            applicationManager1.DockManager.Add("kHydroLegend", "legend", mainLegend, DockStyle.Left);
-
-            //map activated event
-            applicationManager1.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
+            
         }
 
         // when the map dock panel is activated:
