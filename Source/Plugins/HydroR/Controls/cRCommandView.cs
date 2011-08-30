@@ -550,13 +550,17 @@ namespace HydroR
                     //get the begin and end dates from the database for the current series
                     DateTime begin = (DateTime)dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
                     DateTime end = (DateTime)dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
+                    if (fileLoc.Contains(" "))
+                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
 
-
-                    rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n"
-                        + "\tseriesID=" + _seriesSelector.CheckedIDList[i] + "," + "\n"
-                        + "\tSQLite=TRUE," + "\n"
-                        + "\tstartDate= \"" + begin.ToString("yyyy-MM-dd") + "\"," + "\n"
-                        + "\tendDate=\"" + end.ToString("yyyy-MM-dd") + "\")" + "\n");
+                    else
+                    {
+                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");                        
+                    }
+                    rtCommands.AppendText("\tseriesID=" + _seriesSelector.CheckedIDList[i] + "," + "\n"
+                                            + "\tSQLite=TRUE," + "\n"
+                                            + "\tstartDate= \"" + begin.ToString("yyyy-MM-dd") + "\"," + "\n"
+                                            + "\tendDate=\"" + end.ToString("yyyy-MM-dd") + "\")" + "\n");
                     //set the current line to the start of the DB request
                     rtCommands.Line = rtCommands.Lines.Length - 6;
                     rtCommands.TextChange(rtCommands.Line, rtCommands.Line + 6);
