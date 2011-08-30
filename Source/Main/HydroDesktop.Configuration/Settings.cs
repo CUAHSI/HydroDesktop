@@ -13,7 +13,7 @@ namespace HydroDesktop.Configuration
     public class Settings
     {
         readonly string _defaultHISCentralURL = //Properties.Settings.Default.DefaultHISCentralUrl;
-        "hiscentral.cuahsi.org/webservices/hiscentral.asmx";
+        "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
 
         private List<string> _hisCentralURLList = Properties.Settings.Default.HISCentralUrlList.Cast<string>().ToList();
         private string _downloadOption = "Append";

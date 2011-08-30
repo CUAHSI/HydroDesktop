@@ -20,20 +20,11 @@ namespace HydroDesktop.Main
         /// </summary>
         public static Boolean LoadBaseMaps(AppManager applicationManager1, Map mainMap)
         {
-            string[] _corePlugins = new string[] { };
-            //{
-            //    "Search V2",
-            //    "Table View",
-            //    "Graph",
-            //    "Edit",
-            //    "EPA Delineation",
-            //    "Fetch Basemap",
-            //    "Help Tab",
-            //    "Metadata Fetcher",
-            //    "Data Export"
-            //};
-            
-            
+            //set the projection of main map
+            if (mainMap.Projection == null)
+            {
+                mainMap.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+            }
             
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
 
