@@ -65,8 +65,14 @@ Public Class cTimeSeriesPlot
 
     Public Sub Clear()
         Try
+            If zgTimeSeries Is Nothing Then Return
+            If zgTimeSeries.GraphPane Is Nothing Then Return
+
             Dim gPane As GraphPane = zgTimeSeries.GraphPane
-            'm_Data.Clear()
+
+            If gPane.CurveList Is Nothing Then Return
+            If gPane.GraphObjList Is Nothing Then Return
+
             gPane.CurveList.Clear()
             gPane.Title.Text = "No Data To Plot"
             gPane.XAxis.IsVisible = False
