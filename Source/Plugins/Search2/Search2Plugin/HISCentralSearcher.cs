@@ -222,30 +222,27 @@ namespace HydroDesktop.Search
         /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
         /// If set to null, results will not be filtered by web service.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
-        public IList<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string[] keywords,
+        private IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string[] keywords,
             DateTime startDate, DateTime endDate, int[] networkIDs)
         {
             if (keywords == null)
             {
                 return GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, String.Empty, startDate, endDate, networkIDs);
             }
-            else if (keywords.Length == 0)
+            if (keywords.Length == 0)
             {
                 return GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, String.Empty, startDate, endDate, networkIDs);
             }
-            else if (keywords.Length == 1)
+            if (keywords.Length == 1)
             {
                 return GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, keywords[0], startDate, endDate, networkIDs);
             }
-            else
+            var lst = new List<SeriesDataCart>();
+            foreach (string keyword in keywords)
             {
-                List<SeriesDataCart> lst = new List<SeriesDataCart>();
-                foreach (string keyword in keywords)
-                {
-                    lst.AddRange(GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, keyword, startDate, endDate, networkIDs));
-                }
-                return lst;
+                lst.AddRange(GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, keyword, startDate, endDate, networkIDs));
             }
+            return lst;
         }
 
         /// <summary>
@@ -263,16 +260,13 @@ namespace HydroDesktop.Search
         /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
         /// If set to null, results will not be filtered by web service.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
-        public IList<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string keyword,
+        private IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string keyword,
             DateTime startDate, DateTime endDate, int[] networkIDs)
         {
             //call the web service dynamically, using WebClient
-            string tempDir = Path.Combine(Path.GetTempPath(), "HydroDesktop");
-            string tempPath = Path.Combine(tempDir, "SearchResult.xml");
+            var usaFormat = new CultureInfo("en-US");
 
-            CultureInfo usaFormat = new CultureInfo("en-US");
-
-            StringBuilder url = new StringBuilder();
+            var url = new StringBuilder();
             url.Append(HISCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
@@ -295,7 +289,7 @@ namespace HydroDesktop.Search
             url.Append("&networkIDs=");
             if (networkIDs != null)
             {
-                StringBuilder serviceParam = new StringBuilder();
+                var serviceParam = new StringBuilder();
                 for (int i = 0; i < networkIDs.Length - 1; i++)
                 {
                     serviceParam.Append(networkIDs[i]);
@@ -318,8 +312,8 @@ namespace HydroDesktop.Search
             string finalURL = url.ToString();
 
             //to read the xml stream
-            List<SeriesDataCart> seriesList = new List<SeriesDataCart>();
-            using(XmlReader reader = XmlReader.Create(finalURL))
+            var seriesList = new List<SeriesDataCart>();
+            using(var reader = XmlReader.Create(finalURL))
             {
                 while (reader.Read())
                 {
@@ -328,9 +322,28 @@ namespace HydroDesktop.Search
                         if (reader.Name == "SeriesRecord")
                         {
                             //Read the site information
-                            SeriesDataCart series = ReadSeriesFromHISCentral(reader);
+                            var series = ReadSeriesFromHISCentral(reader);
                             if (series != null)
                             {
+                                // Update BeginDate/EndDate/ValueCount to the user-specified range
+                                var seriesStartDate = series.BeginDate < startDate ? startDate : series.BeginDate;
+                                var seriesEndDate = series.EndDate > endDate ? endDate : series.EndDate;
+
+                                var serverDateRange = series.EndDate.Subtract(series.BeginDate);
+                                var userDateRange = seriesEndDate.Subtract(seriesStartDate);
+
+                                var userFromServerPercentage = serverDateRange.TotalDays > 0
+                                                                   ? userDateRange.TotalDays/serverDateRange.TotalDays
+                                                                   : 1.0;
+                                if (userFromServerPercentage > 1.0) 
+                                    userFromServerPercentage = 1.0;
+                                var esimatedValueCount = (int) (series.ValueCount*userFromServerPercentage);
+
+                                series.ValueCount = esimatedValueCount;
+                                series.BeginDate = seriesStartDate;
+                                series.EndDate = seriesEndDate;
+                                //---
+
                                 seriesList.Add(series);
                             }
                         }
@@ -348,9 +361,9 @@ namespace HydroDesktop.Search
         /// <returns>the list of intermediate 'SeriesDataCart' objects</returns>
         private SeriesDataCart ReadSeriesFromHISCentral(XmlReader r)
         {
-            CultureInfo usaCulture = new CultureInfo("en-US");
+            var usaCulture = new CultureInfo("en-US");
             
-            SeriesDataCart series = new SeriesDataCart();
+            var series = new SeriesDataCart();
             while (r.Read())
             {
                 string nodeName = r.Name.ToLower();
@@ -444,73 +457,6 @@ namespace HydroDesktop.Search
         }
 
         /// <summary>
-        /// Gets all data series withing the geographic bounding box that match the
-        /// specified criteria
-        /// </summary>
-        /// <param name="xMin">minimum x (longitude)</param>
-        /// <param name="xMax">maximum x (longitude)</param>
-        /// <param name="yMin">minimum y (latitude)</param>
-        /// <param name="yMax">maximum y (latitude)</param>
-        /// <param name="keywords">array of keywords. If set to null,
-        /// results will not be filtered by keyword.</param>
-        /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
-        /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
-        /// <param name="worker">The background worker (may be null) for reporting progress</param>
-        /// <param name="e">The results of the search (convert to DataTable)</param>
-        /// If set to null, results will not be filtered by web service.</param>
-        /// <returns>A list of data series matching the specified criteria</returns>
-        public void GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string[] keywords, DateTime startDate, DateTime endDate, int[] networkIDs, System.ComponentModel.BackgroundWorker bgWorker, System.ComponentModel.DoWorkEventArgs e)
-        {
-            bgWorker.CheckForCancel(e);
-            
-            //first implementation: use the existing implementation by dividing in 1x1 deg.
-            
-            double tileWidth = 1.0; //the initial tile width is set to 1 degree
-            double tileHeight = 1.0; //the initial tile height is set to 1 degree
-
-            Box extentBox = new Box(xMin, xMax, yMin, yMax);
-            IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-
-            int numTiles = tiles.Count;
-            var fullSeriesList = new List<SeriesMetadata>();
-
-            for (int i = 0; i < numTiles; i++)
-            {
-                bgWorker.CheckForCancel(e);
-                
-                // Do the web service call
-                IList<SeriesMetadata> tileSeriesList = new List<SeriesMetadata>();
-                //IList<SeriesMetadata> tileSeriesList = _wsClient.GetSeriesCatalogForBox(tile, keywords, startDate, endDate, networkIDs);
-                fullSeriesList.AddRange(tileSeriesList);
-
-                // Report progress
-                if (bgWorker != null)
-                {
-                    if (bgWorker.WorkerReportsProgress)
-                    {
-                        string message = fullSeriesList.Count.ToString();
-                        int percentProgress = (i * 100) / numTiles + 1;
-                        bgWorker.ReportProgress(percentProgress, message);
-                    }
-                }
-            } //End of FOR loop
-
-            // Service queries finished - Background worker updates
-            if (bgWorker != null)
-            {
-                bgWorker.CheckForCancel(e);
-
-                // Report progress
-                if (bgWorker.WorkerReportsProgress == true)
-                {
-                    e.Result = fullSeriesList;
-                    bgWorker.ReportProgress(100, fullSeriesList.Count.ToString());
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets all search result that match the
         /// specified criteria and are within the specific rectangle
         /// </summary>
@@ -560,7 +506,7 @@ namespace HydroDesktop.Search
 
                 // Do the web service call
                 //IList<SeriesDataCart> tileSeriesList = new List<SeriesMetadata>();
-                IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
+                IEnumerable<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
 
                 fullSeriesList.AddRange(tileSeriesList);
 
@@ -668,7 +614,7 @@ namespace HydroDesktop.Search
                     bgWorker.CheckForCancel(e);
 
                     // Do the web service call
-                    IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
+                    IEnumerable<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
 
                     // Clip the points by polygon
                     IEnumerable<SeriesDataCart> seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
