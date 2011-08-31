@@ -103,7 +103,7 @@ namespace HydroDesktop.Search.Download
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
         /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
-        public Series DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
+        public IList<Series> DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
         {
             IList<Series> seriesList;
 
@@ -129,10 +129,10 @@ namespace HydroDesktop.Search.Download
 
             if (seriesList == null || seriesList.Count == 0)
                 throw new NoSeriesFromXmlException();
-            if (seriesList.Count > 1)
-                throw new TooMuchSeriesFromXmlException();
+            //if (seriesList.Count > 1)
+            //    throw new TooMuchSeriesFromXmlException();
 
-            return seriesList[0];
+            return seriesList;
         }
 
         /// <summary>

@@ -407,13 +407,13 @@ namespace HydroDesktop.Search.Download
                 }
                 Debug.Assert(dInfo != null);
                 
-                Series series;
+                IList<Series> seriesList;
                 var startTime = DateTime.Now;
 
                 // Parsing series from xml
                 try
                 {
-                    series = objDownloader.DataSeriesFromXml(dInfo);
+                    seriesList = objDownloader.DataSeriesFromXml(dInfo);
                 }
                 catch (DataSeriesFromXmlException ex)
                 {
@@ -431,27 +431,31 @@ namespace HydroDesktop.Search.Download
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
-                catch (TooMuchSeriesFromXmlException ex)
-                {
-                    dInfo.Status = DownloadInfoStatus.Error;
-                    Information.WithError++;
-                    DoLogError(ex.Message, null, dInfo); // No stack trace
-                    dInfo.ErrorMessage = ex.Message;
-                    continue;
-                }
+                //catch (TooMuchSeriesFromXmlException ex)
+                //{
+                //    dInfo.Status = DownloadInfoStatus.Error;
+                //    Information.WithError++;
+                //    DoLogError(ex.Message, null, dInfo); // No stack trace
+                //    dInfo.ErrorMessage = ex.Message;
+                //    continue;
+                //}
 
-                Debug.Assert(series != null);
+                Debug.Assert(seriesList != null);
+                Debug.Assert(seriesList.Count > 0);
 
                 // Save series to database
-                int numSavedValues;
+                int numSavedValues = 0;
                 try
                 {
-                    numSavedValues = objDownloader.SaveDataSeries(series, Information.StartDownloadArg.DataTheme);
-                    Information.DownloadedAndSaved++;
+                    foreach (Series series in seriesList)
+                    {
+                        numSavedValues += objDownloader.SaveDataSeries(series, Information.StartDownloadArg.DataTheme);
+                        Information.DownloadedAndSaved++;
+                    }
 
                     if (numSavedValues == 0)
                     {
-                        DoLogWarn(string.Format("{0} has no data values.", series));
+                        DoLogWarn(string.Format("{0} has no data values.", seriesList[0]));
                         dInfo.Status = DownloadInfoStatus.OkWithWarnings;
                     }
                     else
