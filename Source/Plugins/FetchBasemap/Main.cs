@@ -80,7 +80,15 @@ namespace FetchBasemap
                 App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName",
                                                                                         resources.None);
             //Set opacity
-            _opacityDropDown.SelectedItem = opacity;
+            try
+            {
+                _opacityDropDown.SelectedItem = opacity;
+            }
+            catch (NullReferenceException)
+            {
+                System.Diagnostics.Debug.WriteLine("NullReferenceException opening project in FetchBasemap");
+            }
+
 
 
             _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().Where(
@@ -92,14 +100,24 @@ namespace FetchBasemap
                 {
                     DisableBasemapLayer();
                     _provider = _emptyProvider;
-                    _serviceDropDown.SelectedItem = _provider;
+
+                    try
+                    {
+                        _serviceDropDown.SelectedItem = _provider;
+                    }
+                    catch (NullReferenceException) { }
                 }
             }
             else
             {
                 //hack: need to set provider to original object, not a new one.
                 _provider = ServiceProvider.GetDefaultServiceProviders().Where(p => p.Name == basemapName).FirstOrDefault();
-                _serviceDropDown.SelectedItem = _provider;
+
+                try
+                {
+                    _serviceDropDown.SelectedItem = _provider;
+                }
+                catch (NullReferenceException) { }
                 EnableBasemapFetching(_provider.Name, _provider.Url);
             }
         }
@@ -295,7 +313,7 @@ namespace FetchBasemap
         {
             if (App.HeaderControl != null)
             {
-                App.HeaderControl.RemoveItems();
+                App.HeaderControl.RemoveAll();
             }
 
             RemoveBasemapLayer();

@@ -35,7 +35,7 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         public override void Deactivate()
         {
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
             base.Deactivate();
         }

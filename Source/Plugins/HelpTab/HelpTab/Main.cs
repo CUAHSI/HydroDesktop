@@ -72,7 +72,7 @@ namespace HelpTab
         public override void Deactivate()
         {
             // Remove ribbon tab
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
             base.Deactivate();
         }

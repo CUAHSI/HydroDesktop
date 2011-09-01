@@ -90,8 +90,10 @@ Public Class cTimeSeriesPlot
     Public Sub Clear()
         Try
             Dim gPane As GraphPane = zgTimeSeries.GraphPane
+            If gPane Is Nothing Then Return
+            If gPane.CurveList Is Nothing Then Return
             'm_Data.Clear()
-            zgTimeSeries.GraphPane.CurveList.Clear()
+            gPane.CurveList.Clear()
             gPane.XAxis.IsVisible = False
             gPane.YAxis.IsVisible = False
             zgTimeSeries.IsShowVScrollBar = False

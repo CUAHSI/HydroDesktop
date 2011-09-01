@@ -6,6 +6,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using HydroDesktop.Search.Extensions;
 using System.Collections.Generic;
+using DotSpatial.Controls.Docking;
 
 namespace HydroDesktop.Search
 {
@@ -19,6 +20,9 @@ namespace HydroDesktop.Search
         //the Search user control
         private SearchControl ucSearch = null;
 
+        //the search dockable panel
+        //DockablePanel searchPanel = null;
+
         Extent _initialExtent = null;
 
         #endregion Variables
@@ -31,7 +35,7 @@ namespace HydroDesktop.Search
         public override void Deactivate()
         {
             //Remove the Search Ribbon Items
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
             App.DockManager.Remove(kSearchDock);
 
@@ -68,7 +72,8 @@ namespace HydroDesktop.Search
                 //Set the Search control
                 ucSearch = new SearchControl(App);
                 ucSearch.Dock = DockStyle.Fill;
-                App.DockManager.Add(kSearchDock, "search", ucSearch, DockStyle.Right);
+                var searchPanel = new DockablePanel(kSearchDock, "search", ucSearch, DockStyle.Right);
+                App.DockManager.Add(searchPanel);
 
                 ReportProgress(50, "Loading Search Plugin..");
 

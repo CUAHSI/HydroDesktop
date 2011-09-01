@@ -10,6 +10,7 @@
     using DotSpatial.Controls.Header;
     using System.ComponentModel.Composition;
     using HydroDesktop.Interfaces;
+    using DotSpatial.Controls.Docking;
 
     public class SeriesViewPlugin : Extension
     {
@@ -23,14 +24,14 @@
             //add the series selector
             ((SeriesSelector)MainSeriesSelector).Dock = DockStyle.Fill;
 
-            App.DockManager.Add(SeriesViewKey, "time series", (SeriesSelector)MainSeriesSelector, DockStyle.Left);
+            App.DockManager.Add(new DockablePanel(SeriesViewKey, "time series", (SeriesSelector)MainSeriesSelector, DockStyle.Left));
 
             base.Activate();
         }
 
         public override void  Deactivate()
         {
- 	        App.HeaderControl.RemoveItems();
+ 	        App.HeaderControl.RemoveAll();
             App.DockManager.Remove(SeriesViewKey);
             
             base.Deactivate();

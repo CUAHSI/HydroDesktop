@@ -101,25 +101,191 @@ namespace HydroDesktop.Main
             this.FormClosing += new FormClosingEventHandler(mainRibbonForm_FormClosing);
 
             // setup the header control
-            this.applicationManager1.HeaderControl = new DotSpatial.Controls.RibbonControls.RibbonHeaderControl(this.ribbonControl);
-
-            //dock the map and legend to fill
-            mainMap.Dock = DockStyle.Fill;
-            mainLegend.Dock = DockStyle.Fill;
+            //this.applicationManager1.HeaderControl = new DotSpatial.Controls.RibbonControls.RibbonHeaderControl(this.ribbonControl);
 
             #region initialize the help menu
 
-            //setup the help quick access button
-            rbHelp.Image = Properties.Resources.help;
-            rbHelp.SmallImage = Properties.Resources.help_16x16;
+            ////setup the help quick access button
+            //rbHelp.Image = Properties.Resources.help;
+            //rbHelp.SmallImage = Properties.Resources.help_16x16;
 
             #endregion initialize the help menu
-
-            #region initialize the MapView Ribbon TabPage and related controls
             
+            #region initialize the project file management
+
+            if (args != null)
+            {
+                if (args.Length > 0)
+                {
+                    string projectFile = args[0];
+                    if (File.Exists(projectFile))
+                    {
+                        _projectFileName = projectFile;
+                    }
+                }
+            }
+
+            #endregion initialize the project file management
+
+            #region initialize the default map projection
+
+            _wgs84Projection = new ProjectionInfo();
+            _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84EsriString);
+
+            _defaultProjection = new ProjectionInfo();
+            _defaultProjection.CopyProperties(KnownCoordinateSystems.Projected.World.WebMercator);
+            mainMap.MapFrame.Projection = new ProjectionInfo();
+            mainMap.MapFrame.Projection.CopyProperties(_defaultProjection);
+
+            //handles the default (new) project
+            if (String.IsNullOrEmpty(_projectFileName))
+            {
+                Settings.Instance.CurrentProjectFile = Settings.Instance.DefaultProjectFileName;
+            }
+
+            #endregion initialize the default map projection
+
+            #region initialize default database connection strings
+
+            SetupDatabases();
+
+            #endregion initialize default database connection strings
+
+            #region Initialize the Project opening events
+
+            applicationManager1.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
+            applicationManager1.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
+
+            #endregion Initialize the Project opening events
+
+            #region Load Plugins
+
+            //activate remaining extensions
+            applicationManager1.LoadExtensions();  
+
+            //initialize  the menu bar
+            AddRibbonButtons();
+            AddApplicationMenu();
+
+            //add the legend and map dock panels
+            mainMap.Dock = DockStyle.Fill;
+            mainLegend.Dock = DockStyle.Fill;
+            applicationManager1.DockManager.Add(new DotSpatial.Controls.Docking.DockablePanel(kHomeRoot, "Map", mainMap, DockStyle.Fill));
+            applicationManager1.DockManager.Add(new DotSpatial.Controls.Docking.DockablePanel("kHydroLegend", "Legend", mainLegend, DockStyle.Left));
+       
+
+            //to reset the original dock layout
+            applicationManager1.DockManager.ResetLayout();
+            applicationManager1.DockManager.SelectPanel(kHomeRoot);
+
+            //map activated event
+            applicationManager1.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
+            #endregion
+
+            //project change tracking
+            _projectManager = new ProjectChangeTracker(applicationManager1);
+            _projectManager.ProjectModified += new EventHandler(_projectManager_ProjectModified);
+        }
+
+        #region Method
+
+        #region initialize the MapView Ribbon TabPage and related controls
+
+        private void AddApplicationMenu()
+        {
+            var header = applicationManager1.HeaderControl;
+
+            string rootCaption = "BackStage";
+            string FileMenuKey = "kFile";
+            header.Add(new RootItem(FileMenuKey, rootCaption));
+
+            // NewProject
+            header.Add(new SimpleActionItem(FileMenuKey, "New Project", OrbNewProject_Click) 
+            { 
+                GroupCaption = rootCaption, 
+                SmallImage = Properties.Resources.new_file, 
+                LargeImage = Properties.Resources.new_file 
+            });
+            // Open Project
+            header.Add(new SimpleActionItem(FileMenuKey, "Open Project", OrbOpenProject_Click) 
+            { 
+                GroupCaption = rootCaption, 
+                SmallImage = Properties.Resources.new_file, 
+                LargeImage = Properties.Resources.new_file 
+            });
+            // Save Project
+            header.Add(new SimpleActionItem(FileMenuKey, "Save Project", orbSaveProject_Click) 
+            { 
+                GroupCaption = rootCaption, 
+                SmallImage = Properties.Resources.save_project_16, 
+                LargeImage = Properties.Resources.save_project 
+            });
+            // Save Project As
+            header.Add(new SimpleActionItem(FileMenuKey, "Save Project As", orbSaveProjectAs_Click) 
+            { 
+                GroupCaption = rootCaption, 
+                SmallImage = Properties.Resources.save_project_as_16, 
+                LargeImage = Properties.Resources.save_project_as 
+            });
+            // Print
+            header.Add(new SimpleActionItem(FileMenuKey, "Print", OrbPrint_Click)
+            {
+                GroupCaption = rootCaption,
+                SmallImage = Properties.Resources.print_16,
+                LargeImage = Properties.Resources.print_32
+            });
+            // Separator 1
+            header.Add(new SeparatorItem(FileMenuKey, rootCaption));
+
+            // Extensions
+            header.Add(new SimpleActionItem(FileMenuKey, "Extensions", OrbExtensions_Click)
+            {
+                GroupCaption = rootCaption,
+                SmallImage = Properties.Resources.extensions_16,
+                LargeImage = Properties.Resources.extensions32
+            });
+            // Application Settings
+            header.Add(new SimpleActionItem(FileMenuKey, "Application Settings", OrbApplicationSettings_Click)
+            {
+                GroupCaption = rootCaption,
+                SmallImage = Properties.Resources.settings_16,
+                LargeImage = Properties.Resources.settings
+            });
+            // Separator 2
+            header.Add(new SeparatorItem(FileMenuKey, rootCaption));
+            // Help
+            header.Add(new SimpleActionItem(FileMenuKey, "Help", OrbHelp_Click)
+            {
+                GroupCaption = rootCaption,
+                SmallImage = Properties.Resources.help_16,
+                LargeImage = Properties.Resources.help_32
+            });
+            // About
+            header.Add(new SimpleActionItem(FileMenuKey, "About", OrbAbout_Click)
+            {
+                GroupCaption = rootCaption,
+                SmallImage = Properties.Resources.about_16,
+                LargeImage = Properties.Resources.about
+            });
+            // Separator 3
+            header.Add(new SeparatorItem(FileMenuKey, rootCaption));
+            //Exit
+            header.Add(new SimpleActionItem(FileMenuKey, "Exit", OrbExit_Click)
+            {
+                GroupCaption = rootCaption,
+                SmallImage = Properties.Resources.exit_16,
+                LargeImage = Properties.Resources.exit
+            });
+        }
+        
+        private void AddRibbonButtons()
+        {
             //TODO make this localizable
-            _mapView = new RootItem(kHomeRoot, "Home");
+            _mapView = new RootItem(kHomeRoot, "Home") { SortOrder = -200 };
             applicationManager1.HeaderControl.Add(_mapView);
+
+            //add the empty "table" tab
+            applicationManager1.HeaderControl.Add(new RootItem("kHydroTable", "Table"));
 
             string rpMapTools = "Map Tools";
 
@@ -194,7 +360,7 @@ namespace HydroDesktop.Main
             _rbAdd.GroupCaption = rpMapTools;
             _rbAdd.LargeImage = Properties.Resources.add;
             _rbAdd.SmallImage = Properties.Resources.add_16;
-            applicationManager1.HeaderControl.Add(_rbAdd);            
+            applicationManager1.HeaderControl.Add(_rbAdd);
 
             //Identifier
             _rbIdentifier = new SimpleActionItem(kHomeRoot, "Identify", rbIdentifier_Click);
@@ -231,79 +397,15 @@ namespace HydroDesktop.Main
             _rbMeasure.ToggleGroupKey = kHydroMapTools;
             applicationManager1.HeaderControl.Add(_rbMeasure);
 
-            #endregion initialize the MapView Ribbon TabPage and related controls
-            
-            #region initialize the Main menu and related controls
-
-            OrbNewProject.Click += new EventHandler(OrbNewProject_Click);
-            orbOpenProject.Click += new EventHandler(OrbOpenProject_Click);
-            orbSaveProject.Click += new EventHandler(orbSaveProject_Click);
-            orbSaveProjectAs.Click += new EventHandler(orbSaveProjectAs_Click);
-
-            #endregion initialize the Main menu and related controls
-
-            #region initialize the project file management
-
-            if (args != null)
-            {
-                if (args.Length > 0)
-                {
-                    string projectFile = args[0];
-                    if (File.Exists(projectFile))
-                    {
-                        _projectFileName = projectFile;
-                    }
-                }
-            }
-
-            #endregion initialize the project file management
-
-            #region initialize the default map projection
-
-            _wgs84Projection = new ProjectionInfo();
-            _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84EsriString);
-
-            _defaultProjection = new ProjectionInfo();
-            _defaultProjection.CopyProperties(KnownCoordinateSystems.Projected.World.WebMercator);
-            mainMap.MapFrame.Projection = new ProjectionInfo();
-            mainMap.MapFrame.Projection.CopyProperties(_defaultProjection);
-
-            //handles the default (new) project
-            if (String.IsNullOrEmpty(_projectFileName))
-            {
-                Settings.Instance.CurrentProjectFile = Settings.Instance.DefaultProjectFileName;
-            }
-
-            #endregion initialize the default map projection
-
-            #region initialize default database connection strings
-
-            SetupDatabases();
-
-            #endregion initialize default database connection strings
-
-            #region Initialize the Project opening events
-
-            applicationManager1.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
-            applicationManager1.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
-            _projectManager = new ProjectChangeTracker(applicationManager1);
-            _projectManager.ProjectModified += new EventHandler(_projectManager_ProjectModified);
-
-            #endregion Initialize the Project opening events
-
-            #region Load Plugins
-            applicationManager1.LoadExtensions();
-
-            //add the legend and map dock panels
-            applicationManager1.DockManager.Add(kHomeRoot, "map", mainMap, DockStyle.Fill);
-            applicationManager1.DockManager.Add("kHydroLegend", "legend", mainLegend, DockStyle.Left);
-
-            //map activated event
-            applicationManager1.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
-            #endregion
+            //View
+            var rbRestore = new SimpleActionItem(kHomeRoot, "Restore Layout", this.rbRestore_Click);
+            rbRestore.ToolTipText = "Restore Layout";
+            rbRestore.GroupCaption = "View";
+            var separat = new SeparatorItem();
+            applicationManager1.HeaderControl.Add(rbRestore);
         }
+        #endregion initialize the MapView Ribbon TabPage and related controls
 
-        #region Method
 
         /// <summary>
         /// Adjusts the size of the main form, if computer screen
@@ -470,19 +572,16 @@ namespace HydroDesktop.Main
             //set the 'current project' default property
             Settings.Instance.CurrentProjectFile = applicationManager1.SerializationManager.CurrentProjectFile;
 
+            //resetting of the map (necessary with reprojection)
             RefreshTheLayers();
-
             mainMap.ResetBuffer();
             mainMap.MapFrame.ResetExtents();
-            //.ZoomToMaxExtent();
 
             //Set the correct SQLite databases file path
-            //TODO: use customSettings in projectFile, if available
             string dbFile = Path.ChangeExtension(Settings.Instance.CurrentProjectFile, ".sqlite");
             if (SQLiteHelper.DatabaseExists(dbFile))
             {
                 Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(dbFile);
-                //applicationManager1.SeriesView.SeriesSelector.SetupDatabase();
             }
 
             //Set the correct SQLite file path for metadata cache DB
@@ -496,25 +595,6 @@ namespace HydroDesktop.Main
                 //if metadata cache db file is not found, create it.
                 SQLiteHelper.CreateMetadataCacheDb(metadataCacheDbFile);
             }
-
-            //to refresh all themes - no longer needed (themes are combined with search results
-            //RefreshAllThemes();
-
-            //event for changing theme name - no longer needed
-            //foreach (ILayer item in mainMap.MapFrame.GetAllLayers())
-            //{
-            //    if (item.GetParentItem().LegendText == "Themes")
-            //    {
-            //        item.ItemChanged += new EventHandler(ThemeLayer_ItemChanged);
-            //    }
-            //}
-            //foreach (IMapGroup group in mainMap.MapFrame.GetAllGroups())
-            //{
-            //    if (group.LegendText == "Themes")
-            //    {
-            //        group.LayerAdded += new EventHandler<LayerEventArgs>(MapFrame_LayerAdded);
-            //    }
-            //}
 
             //set the project change tracker
             _projectManager.ProjectIsSaved = true;
@@ -557,17 +637,6 @@ namespace HydroDesktop.Main
                     }
                 }
             }
-
-            //remove any empty layers of layers with invalid dataset
-            //foreach (IMapFeatureLayer layer in emptyLayers)
-            //{
-            //    mainMap.Layers.Remove(layer);
-            //    foreach (IMapGroup group in mainMap.GetAllGroups())
-            //    {
-            //        group.Remove(layer);
-            //    }
-            //}
-            //emptyLayers.Clear();
         }
 
         //Refresh map when main form is maximized
@@ -587,7 +656,7 @@ namespace HydroDesktop.Main
         }
 
         /// <summary>
-        /// When the main form is first shown
+        /// When the main form is first shown, display welcome screen
         /// </summary>
         private void mainRibbonForm_Shown(object sender, EventArgs e)
         {
@@ -599,9 +668,7 @@ namespace HydroDesktop.Main
             else
             {
                 Project.OpenProject(_projectFileName, applicationManager1);
-            }
-
-            
+            }     
         }
 
         // when the map dock panel is activated:
@@ -619,6 +686,7 @@ namespace HydroDesktop.Main
 
         #endregion Constructor
 
+        //show the welcome screen
         private void ShowWelcomeScreen()
         {
             _welcomeScreen = new WelcomeScreen(applicationManager1);
@@ -662,30 +730,6 @@ namespace HydroDesktop.Main
         }
 
         #region Map Tools Click Events
-
-        /// <summary>
-        /// Map Tools Click Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //void rbPrint_Click(object sender, EventArgs e)
-        //{
-        //    foreach (RibbonButton rb in _mapView.Panels[0].Items)
-        //    {
-        //        if (rb == _rbPrint)
-        //        {
-        //            _rbPrint.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            rb.Checked = false;
-        //        }
-        //    }
-
-        //    DotSpatial.Forms.LayoutForm layoutFrm = new DotSpatial.Forms.LayoutForm();
-        //    layoutFrm.MapControl = mainMap;
-        //    layoutFrm.Show(this);
-        //}
 
         private void rbAdd_Click(object sender, EventArgs e)
         {
@@ -864,91 +908,23 @@ namespace HydroDesktop.Main
             mainMap.FunctionMode = FunctionMode.Measure;
         }
 
+        private void rbRestore_Click(object sender, EventArgs e)
+        {
+            applicationManager1.DockManager.ResetLayout();
+        }
+
+
         #endregion Map Tools Click Events
 
-        private void OrbExtentions_MouseMove(object sender, MouseEventArgs e)
+
+        #region Extensions Menu
+        private void OrbExtensions_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("MouseMove");
-            if (OrbExtentions.DropDownItems.Count < 1)
-            {
-                foreach (IExtension ext in applicationManager1.Extensions)
-                {
-                    RibbonButton item = new RibbonButton();
-
-                    //RibbonDescriptionMenuItem item = new RibbonDescriptionMenuItem();
-                    item.Text = ext.Name;
-
-                    //added by JK
-                    item.MaxSizeMode = RibbonElementSizeMode.DropDown;
-                    item.Style = RibbonButtonStyle.DropDownListItem;
-
-                    item.Checked = ext.IsActive;
-
-                    OrbExtentions.DropDownItems.Add(item);
-                    item.CheckOnClick = true;
-                    item.MouseDown += new MouseEventHandler(item_Click);
-                }
-            }
+            var dialog = new AppDialog(applicationManager1);
+            dialog.Show();
         }
-
-        private void item_Click(object sender, EventArgs e)
-        {
-            //to close the 'orb' dropdown
-            OrbExtentions.CloseDropDown();
-            ribbonControl.OrbDropDown.Close();
-
-            string selectedTokenName = "";
-            for (int i = 0; i < this.OrbExtentions.DropDownItems.Count; i++)
-            {
-                if (this.OrbExtentions.DropDownItems[i].Selected == true)
-                {
-                    if (this.OrbExtentions.DropDownItems[i].Checked == false)
-                    {
-                        OrbExtentions.DropDownItems[i].Checked = true;
-                    }
-                    else
-                    {
-                        OrbExtentions.DropDownItems[i].Checked = false;
-                    }
-                    selectedTokenName = this.OrbExtentions.DropDownItems[i].Text;
-                }
-            }
-
-            //we need to refresh the ribbon
-            RibbonTab newTab = new RibbonTab();
-
-            foreach (IExtension ext in applicationManager1.Extensions)
-            {
-                if (selectedTokenName == ext.Name)
-                {
-                    if (ext.IsActive)
-                    {
-                        ext.Deactivate();
-                    }
-                    else
-                    {
-                        ext.Activate();
-                    }
-                }
-            }
-        }
-
-        private void EnsureHelpTabLast()
-        {
-            RibbonTab helpMenuTab = null;
-            foreach (RibbonTab tab in ribbonControl.Tabs)
-            {
-                if (tab.Text == "Help")
-                {
-                    helpMenuTab = tab;
-                }
-            }
-            if (helpMenuTab != null)
-            {
-                ribbonControl.Tabs.Remove(helpMenuTab);
-                ribbonControl.Tabs.Add(helpMenuTab);
-            }
-        }
+        
+        #endregion
 
         #region Coordinate Display
 
@@ -1016,7 +992,6 @@ namespace HydroDesktop.Main
 
         private void OrbOpenProject_Click(object sender, EventArgs e)
         {
-            this.ribbonControl.OrbDropDown.Close();
             // Ask to save current project
             if (!_projectManager.ProjectIsSaved)
             {
@@ -1042,13 +1017,11 @@ namespace HydroDesktop.Main
 
         private void orbSaveProject_Click(object sender, EventArgs e)
         {
-            this.ribbonControl.OrbDropDown.Close();
             SaveCurrentProject();
         }
 
         private void OrbNewProject_Click(object sender, EventArgs e)
         {
-            this.ribbonControl.OrbDropDown.Close();
             //Ask user to save current project
             if (!_projectManager.ProjectIsSaved)
             {
@@ -1060,7 +1033,7 @@ namespace HydroDesktop.Main
             }
 
             applicationManager1.Map.Layers.Clear();
-            //setup new project names
+
             SetupDatabases();
 
             Project.CreateNewProject("North America", applicationManager1, (Map)applicationManager1.Map);
@@ -1069,8 +1042,6 @@ namespace HydroDesktop.Main
 
         private void orbSaveProjectAs_Click(object sender, EventArgs e)
         {
-            this.ribbonControl.OrbDropDown.Close();
-
             SaveFileDialog fileDialog = new SaveFileDialog();
             fileDialog.Filter = "HydroDesktop Projects|*.dspx";
             fileDialog.Title = "Save Project As";
@@ -1100,7 +1071,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        //saves the current HydroDesktop *.hdprj project file to the user specified location with a new database create
+        //saves the current HydroDesktop *.dspx project file to the user specified location with a new database create
         private void SaveProjectAs(string projectFileName)
         {
             Project.SaveProjectAs(projectFileName, applicationManager1);
@@ -1168,47 +1139,33 @@ namespace HydroDesktop.Main
             int y = this.Location.Y + this.Height / 2;
             ConfigurationForm frm = new ConfigurationForm(x, y, applicationManager1);
 
-            this.ribbonControl.OrbDropDown.Close();
-
             frm.ShowDialog();
         }
 
         private void mainRibbonForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (ribbonControl == null)
-            {
-                return;
-            }
+            //TODO re-implement save project warning
+            
+            //if (_projectManager.ProjectIsSaved)
+            //{
+            //    this.Close();
+            //    Application.Exit();
+            //}
 
-            ribbonControl.OrbDropDown.Close();
+            //DialogResult result = MessageBox.Show("Save changes to current project?",
+            //    "Exit",
+            //    MessageBoxButtons.YesNo,
+            //    MessageBoxIcon.Question,
+            //    MessageBoxDefaultButton.Button1);
+            //// Test the result
+            //if (result == DialogResult.Yes)
+            //{
+            //    //save current project if required
+            //    SaveCurrentProject();
+            //}
 
-            if (_projectManager.ProjectIsSaved)
-            {
-                ribbonControl.Dispose();
-                ribbonControl = null;
-                this.Close();
-                Application.Exit();
-            }
-
-            DialogResult result = MessageBox.Show("Save changes to current project?",
-                "Exit",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button1);
-            // Test the result
-            if (result == DialogResult.Yes)
-            {
-                //save current project if required
-                SaveCurrentProject();
-            }
-            try
-            {
-                ribbonControl.Dispose();
-                ribbonControl = null;
-            }
-            catch { }
-            this.Close();
-            Application.Exit();
+            //this.Close();
+            //Application.Exit();
         }
     }
 }

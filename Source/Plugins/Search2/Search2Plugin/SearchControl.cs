@@ -145,12 +145,11 @@ namespace HydroDesktop.Search
 
         //when the current project is being opened
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
-        {
-            AddPolygonLayers();
-            if (cboActiveLayer.Items.Count > 0)
-            {
-                cboActiveLayer.SelectedIndex = 0;
-            }
+        {         
+            //if (cboActiveLayer.Items.Count > 0)
+            //{
+            //    cboActiveLayer.SelectedIndex = 0;
+            //}
         }
 
         private void btnSaveSearch_Click(object sender, EventArgs e)
@@ -1575,7 +1574,11 @@ namespace HydroDesktop.Search
 
                     //Order the column selected in the "Select Field" by alphabet
                     ListSortDirection direction = ListSortDirection.Ascending;
-                    dgvSearch.Sort(Column, direction);
+                    try
+                    {
+                        dgvSearch.Sort(Column, direction);
+                    }
+                    catch (Exception ex) { }
                 }
             }
 

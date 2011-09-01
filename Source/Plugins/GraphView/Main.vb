@@ -6,6 +6,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports DotSpatial.Controls.Docking
 
 
 Namespace GraphView
@@ -89,7 +90,7 @@ Namespace GraphView
                 _mainControl = New cTSA()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add(kGraph, _pluginName, _mainControl, DockStyle.Fill)
+            App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
 
             InitializeRibbonButtons()
 
@@ -104,7 +105,7 @@ Namespace GraphView
         Public Overrides Sub Deactivate()
 
             'auto-remove all ribbon items
-            App.HeaderControl.RemoveItems()
+            App.HeaderControl.RemoveAll()
 
             'remove the dock panel
             App.DockManager.Remove(kGraph)
@@ -292,7 +293,7 @@ Namespace GraphView
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
-            
+
         End Sub
 
         Sub rbProbability_Click()

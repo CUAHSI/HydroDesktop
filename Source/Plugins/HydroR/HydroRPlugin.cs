@@ -10,6 +10,7 @@ using DotSpatial.Controls;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
+using DotSpatial.Controls.Docking;
 
 namespace HydroR
 {
@@ -38,7 +39,7 @@ namespace HydroR
         /// </summary>
         public override void Deactivate()
         {
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
             App.DockManager.Remove(kHydroR);
  
@@ -54,7 +55,7 @@ namespace HydroR
             if (_seriesSelector != null)
             {
                 _hydroRControl = new cRCommandView(_seriesSelector);
-                App.DockManager.Add(kHydroR, _panelName, _hydroRControl, DockStyle.Fill);
+                App.DockManager.Add(new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill));
 
                 //Add a HydroR root item
                 App.HeaderControl.Add(_hydroRTab);

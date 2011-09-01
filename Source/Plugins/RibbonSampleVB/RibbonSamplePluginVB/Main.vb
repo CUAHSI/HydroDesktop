@@ -5,6 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports DotSpatial.Controls.Docking
 
 
 Namespace HydroDesktop.SamplePluginVB
@@ -37,7 +38,7 @@ Namespace HydroDesktop.SamplePluginVB
             If Not SeriesControl Is Nothing Then
                 _mainControl = New MyUserControl(SeriesControl)
                 _mainControl.Dock = DockStyle.Fill
-                App.DockManager.Add(kHydroSampleVBDock, _pluginName, _mainControl, DockStyle.Fill)
+                App.DockManager.Add(New DockablePanel(kHydroSampleVBDock, _pluginName, _mainControl, DockStyle.Fill))
             End If
 
             MyBase.Activate()
@@ -46,7 +47,7 @@ Namespace HydroDesktop.SamplePluginVB
         'when the plug-in is deactivated
         Public Overrides Sub Deactivate()
 
-            App.HeaderControl.RemoveItems()
+            App.HeaderControl.RemoveAll()
 
             App.DockManager.Remove(kHydroSampleVBDock)
 

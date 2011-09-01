@@ -33,7 +33,7 @@ namespace EPADelineation
         /// </summary>
         public override void Deactivate()
         {
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
             // This line ensures that "Enabled" is set to false.
             base.Deactivate();

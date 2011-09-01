@@ -34,7 +34,7 @@ namespace HydroDesktop.MetadataFetcher
 		/// </summary>
 		public override void Deactivate ()
 		{
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
 			//necessary in plugin deactivation
 			base.Deactivate ();

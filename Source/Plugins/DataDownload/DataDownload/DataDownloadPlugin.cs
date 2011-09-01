@@ -98,7 +98,7 @@ namespace HydroDesktop.DataDownload
         /// </summary>
         public override void Deactivate()
         {
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
 
             App.Map.LayerAdded -= Map_LayerAdded;
             App.Map.Layers.LayerRemoved -= Layers_LayerRemoved;

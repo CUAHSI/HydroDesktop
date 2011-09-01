@@ -5,6 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
+Imports DotSpatial.Controls.Docking
 
 
 Namespace EditView
@@ -63,7 +64,7 @@ Namespace EditView
             _mainControl = New cEditView(_seriesSelector)
 
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add(kEditView, _pluginName, _mainControl, DockStyle.Fill)
+            App.DockManager.Add(New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill))
 
             'when the edit view panel is activated, select the Edit ribbon tab
             AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
@@ -165,7 +166,7 @@ Namespace EditView
 
         Public Overrides Sub Deactivate()
 
-            App.HeaderControl.RemoveItems()
+            App.HeaderControl.RemoveAll()
 
             App.DockManager.Remove(kEditView)
 

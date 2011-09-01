@@ -8,6 +8,7 @@ using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using HydroDesktop.Controls.Themes;
 using TableView.Extensions;
+using DotSpatial.Controls.Docking;
 
 namespace TableView
 {
@@ -22,16 +23,16 @@ namespace TableView
         internal ISeriesSelector SeriesControl { get; set; }
 
         private const string _tablePanelName = "Table";
-        private const string kTableView = "kHydroTableView";
+        private const string kTableView = "kHydroTable";
 
-        private readonly RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
+        //private readonly RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
         private cTableView tableViewControl;
 
         #endregion
 
         public override void Deactivate()
         {
-            App.HeaderControl.RemoveItems();
+            App.HeaderControl.RemoveAll();
             App.DockManager.Remove(kTableView);
 
             if (SeriesControl != null)
@@ -53,7 +54,7 @@ namespace TableView
             #region initialize the Table Ribbon TabPage and related controls
             
             //Table Tab
-            App.HeaderControl.Add(_tableViewRoot);
+            //App.HeaderControl.Add(_tableViewRoot);
 
             //RefreshTheme
             var refreshThemeButton = new SimpleActionItem("Refresh", rbRefreshTheme_Click);
@@ -107,7 +108,7 @@ namespace TableView
             // Add "Table View Plugin" dock panel to the SeriesView
             tableViewControl = new cTableView(SeriesControl);
             tableViewControl.Dock = DockStyle.Fill;
-            App.DockManager.Add(kTableView, _tablePanelName, tableViewControl, DockStyle.Fill);
+            App.DockManager.Add(new DockablePanel(kTableView, _tablePanelName, tableViewControl, DockStyle.Fill));
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
 
             dropDownOptions.SelectedItem = dropDownOptions.Items[0];
@@ -139,7 +140,7 @@ namespace TableView
             if (e.ActivePanelKey == kTableView)
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
-                App.HeaderControl.SelectRoot(_tableViewRoot);
+                //App.HeaderControl.SelectRoot(_tableViewRoot);
                 RefreshDatabasePath();
             }
         }
