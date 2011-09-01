@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDownload", "DataDownloa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDownloadTests", "DataDownload\DataDownloadTests\DataDownloadTests.csproj", "{FAF8AF84-237F-42C8-A376-1E13BD5AD426}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatialPlugins", "WebMap1\DotSpatialPlugins.csproj", "{8129558E-6D5E-41B7-91BB-5A14DA591D7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatialPlugins", "DotSpatialPlugins\DotSpatialPlugins.csproj", "{8129558E-6D5E-41B7-91BB-5A14DA591D7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
