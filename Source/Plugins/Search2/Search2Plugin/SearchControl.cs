@@ -145,11 +145,12 @@ namespace HydroDesktop.Search
 
         //when the current project is being opened
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
-        {         
-            //if (cboActiveLayer.Items.Count > 0)
-            //{
-            //    cboActiveLayer.SelectedIndex = 0;
-            //}
+        {
+            AddPolygonLayers();
+            if (cboActiveLayer.Items.Count > 0)
+            {
+                cboActiveLayer.SelectedIndex = 0;
+            }
         }
 
         private void btnSaveSearch_Click(object sender, EventArgs e)
@@ -1029,23 +1030,11 @@ namespace HydroDesktop.Search
             lblWebServValue.Text = sCount == treeViewWebServices.Nodes.Count ? "All Webservices selected" : sValue;
         }
 
-
-
-
-        public void dataChange()
+        private void DateTimePickers_ValueChanged(object sender, EventArgs e)
         {
             lblDateValue.Text = dateTimePickStart.Value.ToShortDateString() + " ::: " + dateTimePickEnd.Value.ToShortDateString();
         }
-
-        private void DateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-            dataChange();
-        }
-
-        private void DateTimePicker2_ValueChanged(object sender, EventArgs e)
-        {
-            dataChange();
-        }
+    
 
         //to close the search panel
         private void CloseSearchPanel()
@@ -1574,11 +1563,7 @@ namespace HydroDesktop.Search
 
                     //Order the column selected in the "Select Field" by alphabet
                     ListSortDirection direction = ListSortDirection.Ascending;
-                    try
-                    {
-                        dgvSearch.Sort(Column, direction);
-                    }
-                    catch (Exception ex) { }
+                    dgvSearch.Sort(Column, direction);
                 }
             }
 
