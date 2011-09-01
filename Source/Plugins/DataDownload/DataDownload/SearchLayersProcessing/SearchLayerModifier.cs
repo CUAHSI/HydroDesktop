@@ -40,12 +40,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         {
             if (layer == null) throw new ArgumentNullException("layer");
 
-            var featureLayer = layer as IFeatureLayer;
+            var featureLayer = layer as PointLayer;
             if (featureLayer == null) return false;
 
-            if (featureLayer is PointLayer) return true;
-
-            var searchColumns = new[] { "DataSource", "ServiceURL", "SiteCode", "VarCode", "StartDate", "EndDate", "ValueCount" };
+            var searchColumns = new[] { "SiteCode", "VarCode", "ServiceCode", "ServiceURL", "StartDate", "EndDate", "ValueCount" };
             var layerColumns = featureLayer.DataSet.GetColumns();
             
             foreach (var sColumn in searchColumns)
