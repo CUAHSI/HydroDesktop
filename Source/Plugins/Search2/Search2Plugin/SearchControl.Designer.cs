@@ -719,7 +719,7 @@
             this.dateTimePickEnd.Size = new System.Drawing.Size(99, 20);
             this.dateTimePickEnd.TabIndex = 32;
             this.dateTimePickEnd.Value = new System.DateTime(2010, 6, 28, 11, 47, 24, 0);
-            this.dateTimePickEnd.ValueChanged += new System.EventHandler(this.DateTimePicker2_ValueChanged);
+            this.dateTimePickEnd.ValueChanged += new System.EventHandler(this.DateTimePickers_ValueChanged);
             // 
             // dateTimePickStart
             // 
@@ -730,7 +730,7 @@
             this.dateTimePickStart.Size = new System.Drawing.Size(99, 20);
             this.dateTimePickStart.TabIndex = 30;
             this.dateTimePickStart.Value = new System.DateTime(2010, 6, 28, 0, 0, 0, 0);
-            this.dateTimePickStart.ValueChanged += new System.EventHandler(this.DateTimePicker1_ValueChanged);
+            this.dateTimePickStart.ValueChanged += new System.EventHandler(this.DateTimePickers_ValueChanged);
             // 
             // lblStartDate
             // 
