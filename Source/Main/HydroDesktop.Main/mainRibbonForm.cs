@@ -52,7 +52,7 @@ namespace HydroDesktop.Main
         private ProjectionInfo _wgs84Projection;
 
         //MapView Ribbon TabPage and its related controls
-        private RootItem _mapView;
+        //private RootItem _mapView;
         private SimpleActionItem _rbAdd;
         private SimpleActionItem _rbPan;
         private SimpleActionItem _rbSelect;
@@ -160,8 +160,10 @@ namespace HydroDesktop.Main
 
             #region Load Plugins
 
-            //activate remaining extensions
-            applicationManager1.LoadExtensions();  
+            //initialize the home ribbon tab
+            applicationManager1.Initialize();
+
+             
 
             //initialize  the menu bar
             AddRibbonButtons();
@@ -172,7 +174,9 @@ namespace HydroDesktop.Main
             mainLegend.Dock = DockStyle.Fill;
             applicationManager1.DockManager.Add(new DotSpatial.Controls.Docking.DockablePanel(kHomeRoot, "Map", mainMap, DockStyle.Fill));
             applicationManager1.DockManager.Add(new DotSpatial.Controls.Docking.DockablePanel("kHydroLegend", "Legend", mainLegend, DockStyle.Left));
-       
+            
+            //activate remaining extensions
+            applicationManager1.LoadExtensions(); 
 
             //to reset the original dock layout
             applicationManager1.DockManager.ResetLayout();
@@ -281,8 +285,9 @@ namespace HydroDesktop.Main
         private void AddRibbonButtons()
         {
             //TODO make this localizable
-            _mapView = new RootItem(kHomeRoot, "Home") { SortOrder = -200 };
-            applicationManager1.HeaderControl.Add(_mapView);
+            
+            var homeRoot = new RootItem(kHomeRoot, "Home") { SortOrder = -200 };
+            applicationManager1.HeaderControl.Add(homeRoot);
 
             //add the empty "table" tab
             applicationManager1.HeaderControl.Add(new RootItem("kHydroTable", "Table"));
@@ -677,8 +682,12 @@ namespace HydroDesktop.Main
         {
             if (e.ActivePanelKey == kHomeRoot)
             {
+                applicationManager1.HeaderControl.SelectRoot(kHomeRoot);
                 applicationManager1.DockManager.SelectPanel("kHydroLegend");
-                applicationManager1.HeaderControl.SelectRoot(_mapView);
+                
+                applicationManager1.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
+                applicationManager1.DockManager.SelectPanel(e.ActivePanelKey);
+                applicationManager1.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             }
         }
 

@@ -200,7 +200,7 @@ Namespace EditView
 
             'activate the Edit ribbon tab and the series view panel
             If e.ActivePanelKey = kEditView Then
-                App.HeaderControl.SelectRoot(_EditView)
+                App.HeaderControl.SelectRoot(kEditView)
                 App.DockManager.SelectPanel("kHydroSeriesView")
             End If
 

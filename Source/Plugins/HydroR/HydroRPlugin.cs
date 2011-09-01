@@ -111,7 +111,7 @@ namespace HydroR
             if (e.ActivePanelKey == kHydroR)
             {
                 App.DockManager.SelectPanel("kHydroR");
-                App.HeaderControl.SelectRoot(_hydroRTab);
+                App.HeaderControl.SelectRoot(kHydroR);
             }
         }
 

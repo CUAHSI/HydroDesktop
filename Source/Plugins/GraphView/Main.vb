@@ -466,7 +466,7 @@ Namespace GraphView
 
             'activate the graph ribbon tab and the series view panel
             If e.ActivePanelKey = kGraph Then
-                App.HeaderControl.SelectRoot(tabGraph)
+                App.HeaderControl.SelectRoot(kGraph)
                 App.DockManager.SelectPanel("kHydroSeriesView")
             End If
 
