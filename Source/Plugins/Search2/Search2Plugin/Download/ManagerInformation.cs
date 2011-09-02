@@ -99,6 +99,18 @@ namespace HydroDesktop.Search.Download
             }
         }
 
+        /// <summary>
+        /// Additional information about downloaded and saved series
+        /// This is used instead of DownloadedAndSaved if some requests
+        /// return more than one series.
+        /// </summary>
+        public int DownloadedAndSaved2
+        {
+            get;
+            set;
+        }
+           
+
         private int _downloaded;
         /// <summary>
         /// Number of downloaded series

@@ -447,11 +447,13 @@ namespace HydroDesktop.Search.Download
                 int numSavedValues = 0;
                 try
                 {
+                    // in case of multiple series in one file
                     foreach (Series series in seriesList)
                     {
                         numSavedValues += objDownloader.SaveDataSeries(series, Information.StartDownloadArg.DataTheme);
-                        Information.DownloadedAndSaved++;
+                        if (numSavedValues > 0) Information.DownloadedAndSaved2++;
                     }
+                    Information.DownloadedAndSaved++;
 
                     if (numSavedValues == 0)
                     {
