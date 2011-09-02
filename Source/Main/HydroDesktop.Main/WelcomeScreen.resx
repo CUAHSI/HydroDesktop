@@ -125,14 +125,11 @@
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAA8AAAANCAYAAAB2HjRBAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAF1JREFUOE9j/P//PwMItLa2QhhIoLq6mhFdDIUP0tzS0vL//fu9GBgkDpLHhXFqhBkG
-        MgAbBruYkOnYbAXpATof4mSQAmzOxiU2qnnAAgxXQsAnDo5naNqGRDqJGACIdhhmOFr5LgAAAABJRU5E
-        rkJggg==
+        CwwBP0AiyAAAAFxJREFUOE9j+P//PwMIt7S0/EfHMDlcNFzj+/d7/6NjkGH4DADbiE0jTAybi2CGgjUT
+        ch66PEgPAwMDxK8gSXy2Y/POqGYs8YwrEKkX2rgSAj5xcFSB4hjMIAMDAAQVPAHYUzkhAAAAAElFTkSu
+        QmCC
 </value>
   </data>
-  <metadata name="spatialStatusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>142, 17</value>
-  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAgBAAAAAAAAAAAAAAAAAAAAAA

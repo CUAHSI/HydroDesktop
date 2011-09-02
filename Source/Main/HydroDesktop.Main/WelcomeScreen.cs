@@ -11,6 +11,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
+using HydroDesktop.Help;
 
 namespace HydroDesktop.Main
 {
@@ -109,13 +110,13 @@ namespace HydroDesktop.Main
                 }
                 else
                 {
-                    lblProgress.Text = "Creating new Project.. ";
+                    //lblProgress.Text = "Creating new Project.. ";
                     this.Cursor = Cursors.WaitCursor;
                     
-                    panelStatus.Visible = true;
+                    //panelStatus.Visible = true;
                     Project.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
 
-                    lblProgress.Text = "Loading Plugins...";
+                    //lblProgress.Text = "Loading Plugins...";
 
                     this.Cursor = Cursors.Default;
 
@@ -133,9 +134,9 @@ namespace HydroDesktop.Main
         /// </summary>
         private void CreateEmptyProject()
         {
-            panelStatus.Visible = true;
+            //panelStatus.Visible = true;
             Project.CreateEmptyProject(_app.Map);
-            lblProgress.Text = "Loading Plugins...";
+            //lblProgress.Text = "Loading Plugins...";
             Project.ActivatePlugins(_app, _corePlugins);
 
             SetDefaultMapExtents();
@@ -173,7 +174,7 @@ namespace HydroDesktop.Main
             {
                 OpenProject();
             }
-            panelStatus.Visible = true;
+            //panelStatus.Visible = true;
             //_app.ProgressHandler.
         }
 
@@ -218,14 +219,14 @@ namespace HydroDesktop.Main
             ProjectFileInfo selected = lstRecentProjects.SelectedValue as ProjectFileInfo;
             if (selected != null)
             {
-                panelStatus.Visible = true;
+                //panelStatus.Visible = true;
                 OpenExistingProject(selected.FullPath);
             }
         }
 
         private void OpenExistingProject(string projectFileName)
         {
-            lblProgress.Text = "Opening Project " + Path.GetFileNameWithoutExtension(projectFileName).ToString() + "...";
+            //lblProgress.Text = "Opening Project " + Path.GetFileNameWithoutExtension(projectFileName).ToString() + "...";
             this.Cursor = Cursors.WaitCursor;
             //Project.ActivatePlugins(_app, _corePlugins);
             Project.OpenProject(projectFileName, _app);
@@ -266,6 +267,16 @@ namespace HydroDesktop.Main
             lstRecentProjects.SelectedIndex = -1;
         }
         #endregion
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
+        private void linkLabelHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LocalHelp.OpenHelpFile("welcome.html");
+        }
 
         
     } 
