@@ -360,7 +360,7 @@ namespace HydroDesktop.Search.Download
                 {
                     MessageBox.Show(string.Format("Data download has been cancelled." + Environment.NewLine +
                                                   "{0} out of {1} series were saved to database.",
-                                                  _manager.Information.DownloadedAndSaved,
+                                                  _manager.Information.DownloadedAndSaved2,
                                                   _manager.Information.TotalSeries),
                                     "Cancelled", MessageBoxButtons.OK,
                                     MessageBoxIcon.Information);
@@ -370,7 +370,7 @@ namespace HydroDesktop.Search.Download
                     MessageBox.Show(string.Format("Data download complete." + Environment.NewLine +
                                                   "Downloaded and saved: {0}" + Environment.NewLine +
                                                   "Failed series: {1}",
-                                                  _manager.Information.DownloadedAndSaved,
+                                                  _manager.Information.DownloadedAndSaved2,
                                                   _manager.Information.WithError),
                                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
