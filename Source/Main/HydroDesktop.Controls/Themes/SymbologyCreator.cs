@@ -34,10 +34,10 @@ namespace HydroDesktop.Controls.Themes
             LoadIcons();
         }
 
-        string _hisCentralUrl;
+        readonly string _hisCentralUrl;
         string _defaultIconUrl;
 
-        private Dictionary<string, Image> _serviceIcons = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Image> _serviceIcons = new Dictionary<string, Image>();
 
         private void LoadIcons()
         {
@@ -45,9 +45,9 @@ namespace HydroDesktop.Controls.Themes
 
             ResourceSet rs = rm.GetResourceSet(new CultureInfo("en-US"), true, true);
 
-            foreach(DictionaryEntry entry in rs)
+            foreach (DictionaryEntry entry in rs)
             {
-                Image entryImage = entry.Value as Image;
+                var entryImage = entry.Value as Image;
                 if (entryImage != null)
                 {
                     _serviceIcons.Add(entry.Key.ToString(), entryImage);
@@ -88,48 +88,53 @@ namespace HydroDesktop.Controls.Themes
 
         public Image GetImageForService(string serviceCode)
         {
-            if (_serviceIcons.ContainsKey(serviceCode))
+            if (!_serviceIcons.ContainsKey(serviceCode))
             {
-                return _serviceIcons[serviceCode];
+                Image webImage = GetImageFromHISCentral(serviceCode);
+                _serviceIcons.Add(serviceCode, webImage);
             }
-            else
+
+            return _serviceIcons[serviceCode];
+        }
+
+        private Image GetImageFromHISCentral(string serviceCode)
+        {
+            int requestTimeout = 2000;
+
+            try
             {
+                string url = String.Format("{0}/getIcon.aspx?name={1}", _hisCentralUrl, serviceCode);
+                System.Net.HttpWebRequest req = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(url);
+                req.Timeout = requestTimeout;
+                // Request response:
+                System.Net.WebResponse webResponse = req.GetResponse();
+
+                // Open data stream:
+                System.IO.Stream webStream = webResponse.GetResponseStream();
+
+                // convert webstream to image
+                System.Drawing.Image tmpImage = System.Drawing.Image.FromStream(webStream);
+
+                // Cleanup
+                webResponse.Close();
+                return tmpImage;
+            }
+            catch (WebException)
+            {
+                //if the icon is not available on the web
                 return Properties.Resources.defaulticon;
             }
-            
-            //try
-            //{
-            //    string url = _hisCentralUrl + "/getIcon.aspx?name=" + serviceCode;
-            //    System.Net.HttpWebRequest req = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(url);
-
-            //    // Request response:
-            //    System.Net.WebResponse webResponse = req.GetResponse();
-
-            //    // Open data stream:
-            //    System.IO.Stream webStream = webResponse.GetResponseStream();
-
-            //    // convert webstream to image
-            //    System.Drawing.Image tmpImage = System.Drawing.Image.FromStream(webStream);
-
-            //    // Cleanup
-            //    webResponse.Close();
-            //    return tmpImage;
-            //}
-            //catch (WebException)
-            //{
-            //    return Properties.Resources.defaulticon;
-            //}
         }
-        
+
         /// <summary>
         /// Create the 'Search Results' layer with image symbology
         /// </summary>
         /// <param name="fs"></param>
         /// <returns></returns>
-        public MapPointLayer CreateSearchResultLayer(IFeatureSet fs)
+        public virtual MapPointLayer CreateSearchResultLayer(IFeatureSet fs)
         {
             //get the unique "service code" values
-            List<string> serviceCodes = new List<string>();
+            var serviceCodes = new List<string>();
             foreach (DataRow row in fs.DataTable.Rows)
             {
                 string servCode = Convert.ToString(row["ServiceCode"]);
@@ -139,11 +144,11 @@ namespace HydroDesktop.Controls.Themes
                 }
             }
             serviceCodes.Sort();
-            
-            MapPointLayer myLayer = new MapPointLayer(fs);
+
+            var myLayer = new MapPointLayer(fs);
             myLayer.LegendText = "data series";
 
-            PointScheme myScheme = new PointScheme();
+            var myScheme = new PointScheme();
             myScheme.ClearCategories();
 
             //assign the categories (could be done with 'editorSettings')
