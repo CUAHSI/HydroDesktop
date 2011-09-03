@@ -45,7 +45,6 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.listBox7 = new System.Windows.Forms.ListBox();
-            this.Label3 = new System.Windows.Forms.Label();
             this.GroupBox1 = new System.Windows.Forms.GroupBox();
             this.label47 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
@@ -57,11 +56,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.lbFieldsActiveLayer = new System.Windows.Forms.ListBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupboxWebservices = new System.Windows.Forms.GroupBox();
             this.btnRefresh = new System.Windows.Forms.Button();
@@ -156,7 +150,6 @@
             this.tabPage3.SuspendLayout();
             this.GroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupboxWebservices.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -345,10 +338,8 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.listBox7);
-            this.tabPage3.Controls.Add(this.Label3);
             this.tabPage3.Controls.Add(this.GroupBox1);
             this.tabPage3.Controls.Add(this.radioButton6);
-            this.tabPage3.Controls.Add(this.groupBox3);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -365,16 +356,6 @@
             this.listBox7.Size = new System.Drawing.Size(106, 17);
             this.listBox7.TabIndex = 29;
             this.listBox7.Visible = false;
-            // 
-            // Label3
-            // 
-            this.Label3.AutoSize = true;
-            this.Label3.Location = new System.Drawing.Point(28, 3);
-            this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(39, 13);
-            this.Label3.TabIndex = 22;
-            this.Label3.Text = "Label3";
-            this.Label3.Visible = false;
             // 
             // GroupBox1
             // 
@@ -507,62 +488,6 @@
             this.radioButton6.Text = "Country";
             this.radioButton6.UseVisualStyleBackColor = true;
             this.radioButton6.Visible = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.textBox3);
-            this.groupBox3.Controls.Add(this.radioButton7);
-            this.groupBox3.Controls.Add(this.radioButton4);
-            this.groupBox3.Controls.Add(this.radioButton3);
-            this.groupBox3.Location = new System.Drawing.Point(8, 18);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(321, 46);
-            this.groupBox3.TabIndex = 28;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Visible = false;
-            // 
-            // textBox3
-            // 
-            this.textBox3.BackColor = System.Drawing.Color.Gainsboro;
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.ForeColor = System.Drawing.Color.Gray;
-            this.textBox3.Location = new System.Drawing.Point(3, 28);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(314, 13);
-            this.textBox3.TabIndex = 31;
-            this.textBox3.Text = "http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx";
-            // 
-            // radioButton7
-            // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(187, 7);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(60, 17);
-            this.radioButton7.TabIndex = 30;
-            this.radioButton7.Text = "Custom";
-            this.radioButton7.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(96, 7);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(84, 17);
-            this.radioButton4.TabIndex = 29;
-            this.radioButton4.Text = "HIS central2";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Checked = true;
-            this.radioButton3.Location = new System.Drawing.Point(5, 7);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(85, 17);
-            this.radioButton3.TabIndex = 28;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "HIS Central1";
-            this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
@@ -1613,8 +1538,6 @@
             this.GroupBox1.ResumeLayout(false);
             this.GroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.groupboxWebservices.ResumeLayout(false);
@@ -1651,23 +1574,21 @@
 
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage3;
-        internal System.Windows.Forms.GroupBox groupSaveSearch;
-        internal System.Windows.Forms.Button btnRestoreSearch;
-        internal System.Windows.Forms.TextBox tboSearchName;
-		internal System.Windows.Forms.Button btnSaveSearch;
-        //internal System.Windows.Forms.PictureBox PictureBox2;
-        //internal System.Windows.Forms.PictureBox PictureBox1;
-        internal System.Windows.Forms.GroupBox GroupBox1;
+        private System.Windows.Forms.GroupBox groupSaveSearch;
+        private System.Windows.Forms.Button btnRestoreSearch;
+        private System.Windows.Forms.TextBox tboSearchName;
+        private System.Windows.Forms.Button btnSaveSearch;
+        private System.Windows.Forms.GroupBox GroupBox1;
         private System.Windows.Forms.TabPage tabPage4;
-        internal System.Windows.Forms.Button button5;
-        internal System.Windows.Forms.Label lblEndDate;
-        internal System.Windows.Forms.Label lblStartDate;
-        internal System.Windows.Forms.PictureBox PictureBox3;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label lblEndDate;
+        private System.Windows.Forms.Label lblStartDate;
+        private System.Windows.Forms.PictureBox PictureBox3;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage tabPage5;
-        internal System.Windows.Forms.PictureBox PictureBox4;
-        internal System.Windows.Forms.GroupBox gbSearchSummary;
-        internal System.Windows.Forms.Button btnSelectRectangle;
+        private System.Windows.Forms.PictureBox PictureBox4;
+        private System.Windows.Forms.GroupBox gbSearchSummary;
+        private System.Windows.Forms.Button btnSelectRectangle;
         private System.Windows.Forms.Label lblSelectedKeywords;
         private System.Windows.Forms.Label lblKeywordRelation;
         private System.Windows.Forms.Button btnRemoveKeyword;
@@ -1677,8 +1598,8 @@
         private System.Windows.Forms.TextBox tboTypeKeyword;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.TreeView treeviewOntology;
-        internal System.Windows.Forms.PictureBox PictureBox5;
-        internal System.Windows.Forms.Button Button7;
+        private System.Windows.Forms.PictureBox PictureBox5;
+        private System.Windows.Forms.Button Button7;
         private System.Windows.Forms.Label lblAreaName;
         private System.Windows.Forms.Label lblWebserv;
         private System.Windows.Forms.Label lblDateRange;
@@ -1703,22 +1624,17 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label lblAreaPara;
         private System.Windows.Forms.Label lblWebServValue;
-        internal System.Windows.Forms.Button button1;
-        internal System.Windows.Forms.Button btnRunSearchFinal;
-        internal System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRunSearchFinal;
+        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label lblServerName;
-        public System.Windows.Forms.Label lblDateValue;
-        public System.Windows.Forms.Label lblServerValue;
-        private System.Windows.Forms.Label Label3;
-        public System.Windows.Forms.DateTimePicker dateTimePickEnd;
-        public System.Windows.Forms.DateTimePicker dateTimePickStart;
+        private System.Windows.Forms.Label lblDateValue;
+        private System.Windows.Forms.Label lblServerValue;
+        private System.Windows.Forms.DateTimePicker dateTimePickEnd;
+        private System.Windows.Forms.DateTimePicker dateTimePickStart;
         private System.Windows.Forms.ListBox lbSelectedWebServices;
         private System.Windows.Forms.ListBox lbWebservicesSupport;
-        private System.Windows.Forms.RadioButton radioButton7;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        public System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Panel panelSearch;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ProgressBar progBarSearch2;
@@ -1727,10 +1643,10 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label31;
-        public System.Windows.Forms.Label lblRestoreDates;
+        private System.Windows.Forms.Label lblRestoreDates;
         private System.Windows.Forms.Label lblRestoreWSValues;
         private System.Windows.Forms.Label lblRestoreParameters;
-        public System.Windows.Forms.Label lblRestoreSName;
+        private System.Windows.Forms.Label lblRestoreSName;
         private System.Windows.Forms.Label lblRestoreServer;
         private System.Windows.Forms.Label lblRestoreArea;
         private System.Windows.Forms.Label lblRestoreWebServices;
@@ -1739,8 +1655,8 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Label lblRestoreFieldName;
         private System.Windows.Forms.Label lblRestoreActiveLayer;
-        public System.Windows.Forms.Label lblRestoreFName;
-        public System.Windows.Forms.Label lblRestoreALayer;
+        private System.Windows.Forms.Label lblRestoreFName;
+        private System.Windows.Forms.Label lblRestoreALayer;
         private System.Windows.Forms.ListBox listBox7;
         private System.Windows.Forms.ListBox lboRestoreSearch;
         private System.Windows.Forms.Label lblSelectRestore;
@@ -1752,9 +1668,8 @@
         private System.Windows.Forms.CheckBox cboShowWebServicesPanel;
         private System.Windows.Forms.GroupBox groupboxWebservices;
 
-        public System.Windows.Forms.SplitContainer spcHor1;
+        private System.Windows.Forms.SplitContainer spcHor1;
         private System.Windows.Forms.Label lblKeywords;
-        internal System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.ListBox lboKeywordSupport;
         private System.Windows.Forms.CheckBox checkSummary;
         private System.Windows.Forms.Button btnRunSearchMain;
@@ -1765,7 +1680,7 @@
         private System.Windows.Forms.RadioButton rbBoth;
         private System.Windows.Forms.RadioButton rbTree;
         private System.Windows.Forms.RadioButton rbList;
-        internal System.Windows.Forms.Button btnSelectArea;
+        private System.Windows.Forms.Button btnSelectArea;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.GroupBox groupPreview;
