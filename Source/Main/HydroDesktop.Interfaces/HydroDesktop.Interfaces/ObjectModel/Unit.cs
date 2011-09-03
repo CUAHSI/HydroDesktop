@@ -8,20 +8,39 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class Unit : BaseEntity
     {
+        /// <summary>
+        /// Creates a new default instance of the unit object
+        /// </summary>
         public Unit()
         { }
-        
+        /// <summary>
+        /// Creates an instance of a unit object
+        /// </summary>
+        /// <param name="name">The unit name (for example, "centimeter")</param>
+        /// <param name="type">The unit type (for example, "length")</param>
+        /// <param name="abbreviation">The unit abbreviation (for example, "cm")</param>
         public Unit(string name, string type, string abbreviation)
         {
             Name = name;
             UnitsType = type;
             Abbreviation = abbreviation;
         }
-        
+        /// <summary>
+        /// The unit name (for example "centimeter")
+        /// </summary>
         public virtual string Name { get; set; }
+        /// <summary>
+        /// The unit type ("length", "time")
+        /// </summary>
         public virtual string UnitsType { get; set; }
+        /// <summary>
+        /// The unit abbreviation
+        /// </summary>
         public virtual string Abbreviation { get; set; }
-
+        /// <summary>
+        /// Converts the unit to string
+        /// </summary>
+        /// <returns>The unit abbreviation</returns>
         public override string ToString()
         {
             return Abbreviation;
@@ -60,6 +79,11 @@ namespace HydroDesktop.Interfaces.ObjectModel
         }
 
         #region Equality
+        /// <summary>
+        /// Two units are considered equal, if they have the same name, abbreviation and unit type
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public override bool Equals(BaseEntity other)
         {
             if (other is Unit)
@@ -71,7 +95,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
             return base.Equals(other);
         }
-
+        /// <summary>
+        /// Returns an unique hash code of the unit object
+        /// </summary>
+        /// <returns>Code in form Name|UnitType|Abbreviation</returns>
         public override int GetHashCode()
         {
             return (Name + "|" + UnitsType + "|" + Abbreviation).GetHashCode();

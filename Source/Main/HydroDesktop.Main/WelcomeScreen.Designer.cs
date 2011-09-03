@@ -282,7 +282,6 @@
         private System.Windows.Forms.RadioButton rbNewProjectTemplate;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnBrowseProject;
-        private DotSpatial.Controls.SpatialStatusStrip spatialStatusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblProgress;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Panel panelStatus;

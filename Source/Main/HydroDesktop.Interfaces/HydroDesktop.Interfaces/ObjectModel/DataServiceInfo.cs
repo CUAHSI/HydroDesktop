@@ -8,6 +8,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class DataServiceInfo : BaseEntity
     {
+        /// <summary>
+        /// Creates a new default data service info object
+        /// </summary>
         public DataServiceInfo()
         {
             EndpointURL = Constants.Unknown;
@@ -203,7 +206,8 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             return new DataServiceInfo(this);
         }
-        
+
+        /// <inheritDoc />
         public override bool Equals(BaseEntity other)
         {
             DataServiceInfo otherService = other as DataServiceInfo;
@@ -216,7 +220,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
                 return EndpointURL.Equals(otherService.EndpointURL);
             }
         }
-
+        /// <inheritDoc />
         public override int GetHashCode()
         {
             return EndpointURL.GetHashCode();
