@@ -1,6 +1,5 @@
 ﻿Imports System.Windows.Forms
 Imports DotSpatial.Controls
-Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header

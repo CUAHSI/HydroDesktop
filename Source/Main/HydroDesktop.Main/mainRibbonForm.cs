@@ -929,8 +929,9 @@ namespace HydroDesktop.Main
         #region Extensions Menu
         private void OrbExtensions_Click(object sender, EventArgs e)
         {
-            var dialog = new AppDialog(applicationManager1);
-            dialog.Show();
+            //TODO fix AppDialog
+            //var dialog = new AppDialog(applicationManager1);
+            //dialog.Show();
         }
         
         #endregion

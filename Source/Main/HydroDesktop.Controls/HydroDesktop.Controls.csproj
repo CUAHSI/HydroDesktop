@@ -59,52 +59,40 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Analysis">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Analysis.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Compatibility">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Compatibility.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Analysis.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Data.Forms.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Data.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Modeling.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Modeling.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Modeling.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Positioning">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Positioning.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Positioning.Design">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Positioning.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Positioning.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Positioning.Forms.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Modeling.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Projections.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Projections.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Projections.Forms.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Projections.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Serialization.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Symbology.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Symbology.Forms.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Symbology.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.630\lib\DotSpatial.Topology.dll</HintPath>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.634\lib\DotSpatial.Topology.dll</HintPath>
     </Reference>
     <Reference Include="HydroDesktop.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
