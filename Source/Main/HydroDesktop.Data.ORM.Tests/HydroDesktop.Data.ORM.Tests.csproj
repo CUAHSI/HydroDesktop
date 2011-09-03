@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{157DAFF4-77B2-49F7-8FB8-8ED3BE8471D3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Data.ORM.Tests</RootNamespace>
+    <AssemblyName>HydroDesktop.Data.ORM.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SupportFiles\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataManagerTest.cs" />
+    <Compile Include="MappingTests\DataRepository\DataFileTest.cs" />
+    <Compile Include="MappingTests\DataRepository\DataSeriesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\DataServiceTest.cs" />
+    <Compile Include="MappingTests\DataRepository\DataValuesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\FixtureBase.cs" />
+    <Compile Include="MappingTests\DataRepository\MethodsTest.cs" />
+    <Compile Include="MappingTests\DataRepository\OffsetTypeTest.cs" />
+    <Compile Include="MappingTests\DataRepository\QualifiersTest.cs" />
+    <Compile Include="MappingTests\DataRepository\QualityControlLevelsTest.cs" />
+    <Compile Include="MappingTests\DataRepository\QueryInfoTest.cs" />
+    <Compile Include="MappingTests\DataRepository\SamplesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\SeriesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\SitesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\SourcesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\SpatialReferenceTest.cs" />
+    <Compile Include="MappingTests\DataRepository\TestModel.cs" />
+    <Compile Include="MappingTests\DataRepository\ThemesTest.cs" />
+    <Compile Include="MappingTests\DataRepository\UnitsTest.cs" />
+    <Compile Include="MappingTests\DataRepository\VariableTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\DataServiceTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\FixtureBase.cs" />
+    <Compile Include="MappingTests\MetadataCache\MethodsTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\QualityControlLevelsTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\SeriesTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\SitesTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\SourcesTest.cs" />
+    <Compile Include="MappingTests\MetadataCache\TestModel2.cs" />
+    <Compile Include="MappingTests\MetadataCache\VariableTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeriesRepositoryTest.cs" />
+    <Compile Include="TestConfig.cs" />
+    <Compile Include="TestHelpers.cs" />
+    <Compile Include="ThemeDAOTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
+      <Name>HydroDesktop.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
