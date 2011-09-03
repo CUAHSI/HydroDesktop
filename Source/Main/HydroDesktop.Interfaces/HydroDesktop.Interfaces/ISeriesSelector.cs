@@ -8,6 +8,10 @@ using System.ComponentModel;
 
 namespace HydroDesktop.Interfaces
 {
+    /// <summary>
+    /// Provides methods for selecting and unselecting data series in the series selector control
+    /// and interacting with the HydroDesktop database
+    /// </summary>
     public interface ISeriesSelector
     {
         /// <summary>
@@ -60,7 +64,10 @@ namespace HydroDesktop.Interfaces
         /// called when the data repository database is changed by a different application
         /// </summary>
         void RefreshSelection();
-
+        /// <summary>
+        /// Sets up the database (populates the series selector control by data series from the current
+        /// database)
+        /// </summary>
         void SetupDatabase();
 
         /// <summary>

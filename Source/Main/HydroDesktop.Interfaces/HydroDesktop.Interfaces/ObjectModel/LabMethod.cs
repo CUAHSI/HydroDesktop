@@ -8,10 +8,25 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class LabMethod : BaseEntity
     {
+        /// <summary>
+        /// Lab name
+        /// </summary>
         public virtual string LabName { get; set; }
+        /// <summary>
+        /// Lab Organization
+        /// </summary>
         public virtual string LabOrganization { get; set; }
+        /// <summary>
+        /// Lab Method name
+        /// </summary>
         public virtual string LabMethodName { get; set; }
+        /// <summary>
+        /// Lab method description
+        /// </summary>
         public virtual string LabMethodDescription { get; set; }
+        /// <summary>
+        /// Lab method link
+        /// </summary>
         public virtual string LabMethodLink { get; set; }
 
         /// <summary>
