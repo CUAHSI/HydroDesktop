@@ -152,11 +152,6 @@ namespace HydroDesktop.Search
         {
             //ucSearch.MainImage = Resources.OpenSearch_1;
             ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
-            ucSearch.lblServerValue.Text = ucSearch.SearchMode.Description();
-            //moved to search control load
-            ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
-            ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
-            ucSearch.groupBox3.Visible = false;
             RefreshTheMap();
         }
 
@@ -165,11 +160,6 @@ namespace HydroDesktop.Search
         {
             //ucSearch.MainImage = Resources.OpenSearch;
             ucSearch.SearchMode = SearchMode.HISCentral;
-            ucSearch.lblServerValue.Text = ucSearch.SearchMode.Description();
-            //moved to search control load
-            ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
-            ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
-            ucSearch.groupBox3.Visible = true;
             RefreshTheMap();
         }
 
