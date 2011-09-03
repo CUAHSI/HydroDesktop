@@ -141,6 +141,11 @@ namespace HydroDesktop.Search
         public void GetWebServicesXml(string xmlFileName)
         {
             bool useTimeout = true;
+            if (HISCentralUrl.Contains("hiscentralsb"))
+            {
+                useTimeout = false; //don't use timeout with HIS Central sandbox URL
+            }
+
             if (useTimeout)
             {
 
@@ -156,7 +161,7 @@ namespace HydroDesktop.Search
                     request.Credentials = CredentialCache.DefaultCredentials;
                     request.ContentType = "text/xml";
 
-                    request.Timeout = 5000;
+                    request.Timeout = 10000;
 
                     // send the request and get the response
                     response = (HttpWebResponse)request.GetResponse();
@@ -194,7 +199,6 @@ namespace HydroDesktop.Search
             }
             else
             {
-
                 WebClient client = new WebClient();
                 try
                 {

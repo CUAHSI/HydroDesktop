@@ -85,10 +85,12 @@ namespace HydroDesktop.Search
             }
 
             //refresh web services
+            this.Cursor = Cursors.WaitCursor;
             if (Settings.Instance.SelectedHISCentralURL != oldHisCentralURL)
             {
                 _searchControl.RefreshWebServices(true, true);
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void btnRefreshServices_Click(object sender, EventArgs e)
