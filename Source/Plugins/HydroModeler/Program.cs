@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using HydroDesktop.Help;
+using DotSpatial.Controls.Docking;
 
 
 
@@ -42,13 +43,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         {
 
             // Remove ribbon tab
-            if (_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
-            {
-                _mapArgs.Ribbon.Tabs.Remove(_ribbonTab);
-            }
-
-            // Remove ribbon button in view panel
-            _mapArgs.Ribbon.Tabs[0].Panels[0].Items.Remove(_ribbonBtn);
+            App.HeaderControl.RemoveAll();
 
             // Remove Work Page
             App.DockManager.Remove(kHydroModelerDock);
@@ -74,7 +69,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             _mapArgs = App;
 
             // Initialize the Ribbon controls in the "Ribbon" ribbon tab
-            _ribbonTab = new RibbonTab(_mapArgs.Ribbon, _panelName);
+            //_ribbonTab = new RibbonTab(_mapArgs.Ribbon, _panelName);
+            _ribbonTab = new RibbonTab();
             _ribbonTab.ActiveChanged +=new EventHandler(_ribbonTab_ActiveChanged);
 
             //Add Buttons to the Ribbon Panel
@@ -89,7 +85,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             //_t.AddTab(_panelName, hydroModelerControl, bmp);
             hydroModelerControl.Dock = DockStyle.Fill;
-            App.DockManager.Add(kHydroModelerDock, "HydroModeler", hydroModelerControl, DockStyle.Fill);
+            App.DockManager.Add(new DockablePanel(kHydroModelerDock, "HydroModeler", hydroModelerControl, DockStyle.Fill));
             
             //activate tab
             _ribbonBtn_Click(this, EventArgs.Empty);

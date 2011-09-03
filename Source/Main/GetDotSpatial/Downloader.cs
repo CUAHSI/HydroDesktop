@@ -296,23 +296,23 @@ namespace GetDotSpatial
             // check if the Dll's are already present. If all dll's are found, don't unzip the files.
             string[] requiredAssemblies = new string[] 
             {
-                "DotSpatial.Analysis.dll",
-                "DotSpatial.Controls.dll",
-                "DotSpatial.Data.dll",
-                "DotSpatial.Data.Forms.dll",
-                "DotSpatial.Modeling.dll",
-                "DotSpatial.Modeling.Forms.dll",
-                "DotSpatial.Projections.dll",
-                "DotSpatial.Projections.Forms.dll",
-                "DotSpatial.Serialization.dll",
-                "DotSpatial.Symbology.dll",
-                "DotSpatial.Symbology.Forms.dll",
-                "DotSpatial.Topology.dll"
+                "DotSpatial.Analysis",
+                "DotSpatial.Controls",
+                "DotSpatial.Data",
+                "DotSpatial.Data.Forms",
+                "DotSpatial.Modeling",
+                "DotSpatial.Modeling.Forms",
+                "DotSpatial.Projections",
+                "DotSpatial.Projections.Forms",
+                "DotSpatial.Serialization",
+                "DotSpatial.Symbology",
+                "DotSpatial.Symbology.Forms",
+                "DotSpatial.Topology"
             };
             bool assembliesExist = true;
             foreach (string assemblyName in requiredAssemblies)
             {
-                string fullPath = Path.Combine(targetFolder, assemblyName);
+                string fullPath = Path.Combine(targetFolder, assemblyName + ".dll");
                 if (!File.Exists(fullPath))
                 {
                     assembliesExist = false;
@@ -340,8 +340,14 @@ namespace GetDotSpatial
                 foreach (ZipStorer.ZipFileEntry entry in dir)
                 {
                     path = Path.Combine(targetFolder, Path.GetFileName(entry.FilenameInZip));
-                    result = zip.ExtractFile(entry, path);
-                    Console.WriteLine(path + (result ? "" : " (error)"));
+
+                    //only extract required assemblies
+                    string fileNameWithoutExt = Path.GetFileNameWithoutExtension(path);
+                    if (requiredAssemblies.Contains(fileNameWithoutExt))
+                    {
+                        result = zip.ExtractFile(entry, path);
+                        Console.WriteLine(path + (result ? "" : " (error)"));
+                    }
                 }
                 zip.Close();
 

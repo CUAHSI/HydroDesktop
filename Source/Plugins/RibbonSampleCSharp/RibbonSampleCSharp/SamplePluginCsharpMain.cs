@@ -9,6 +9,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using System.ComponentModel.Composition;
 using DotSpatial.Controls.Header;
+using DotSpatial.Controls.Docking;
 
 namespace RibbonSamplePlugin
 {
@@ -65,7 +66,7 @@ namespace RibbonSamplePlugin
             if (SeriesControl != null)
             {
                 MyUserControl uc = new MyUserControl(SeriesControl);
-                App.DockManager.Add(kHydroCSharpDock, _pluginName, uc, DockStyle.Fill);
+                App.DockManager.Add(new DockablePanel(kHydroCSharpDock, _pluginName, uc, DockStyle.Fill));
             }
 
             // Create the Ribbon Button with a ribbon panel on the new ribbon tab        
