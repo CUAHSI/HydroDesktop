@@ -5,6 +5,9 @@ using System.Text;
 
 namespace HydroDesktop.Interfaces
 {
+    /// <summary>
+    /// information about the changed database
+    /// </summary>
     public class DatabaseChangedEventArgs : EventArgs
     {
         public string ConnectionString;
