@@ -1826,12 +1826,16 @@ namespace HydroDesktop.Search
                 //separate search method is used for HIS Central and for Metadata Cache
                 if (parameters.SearchMethod == Properties.Settings.Default.SearchMethod_HISCentral)
                 {
-                    //re-order the URL list
+                    //re-order the URL list. The selected URL should always be first.
                     List<string> urlList = new List<string>();
                     urlList.Add(Settings.Instance.SelectedHISCentralURL);
-                    foreach (string url in Settings.Instance.HISCentralURLList)
+
+                    if (!urlList[0].Contains("hiscentralsb"))
                     {
-                        if (!urlList.Contains(url)) urlList.Add(url);
+                        foreach (string url in Settings.Instance.HISCentralURLList)
+                        {
+                            if (!urlList.Contains(url)) urlList.Add(url);
+                        }
                     }
                     
                     searcher.HISCentralSearchWithFailover(e, urlList, bgWorker);
