@@ -66,9 +66,6 @@ namespace HydroDesktop.Search
             //spcSearch.Panel2Collapsed = true;
             Populate_xmlcombo();
 
-            dateTimePickStart.Value = DateTime.Now.Date.AddYears(-1);
-            dateTimePickEnd.Value = DateTime.Now;
-
             //Rectangle drawing initialization
             _rectangleDrawing = null;
 
@@ -118,10 +115,10 @@ namespace HydroDesktop.Search
             get { return _searchMode; }
             set
             {
-                var oldSearchMode = Label3.Text;
-                Label3.Text = value.Description();
+                var oldSearchMode = lblServerValue.Text;
+                lblServerValue.Text = value.Description();
                 _searchMode = value;
-                if (oldSearchMode == Label3.Text)
+                if (oldSearchMode == lblServerValue.Text)
                     return;
 
                 //if search mode is set to metadata cache -
@@ -1258,12 +1255,14 @@ namespace HydroDesktop.Search
                     }
                 }
                 //HACK ends
-                //date time picker moved from Main (ribbon-click to form load)
-                dateTimePickStart.Value = DateTime.Now.Date.AddYears(-5);//change suggested by Dan (range 5 years)
-                dateTimePickEnd.Value = DateTime.Now.Date;
             }
             //re-setting datagrid row selection
+
+            // Set-up initial date range
+            dateTimePickEnd.Value = DateTime.Now.Date;
+            dateTimePickStart.Value = dateTimePickEnd.Value.AddYears(-5);
         }
+
         #region Layer Added for Area Search
 
         /// <summary>
@@ -1735,10 +1734,8 @@ namespace HydroDesktop.Search
             }
             /* this region to be refactored /*/
 
-            //get the start date
+            //get the start date & end date
             searchCritria.startDate = dateTimePickStart.Value;
-
-            //get the end date
             searchCritria.endDate = dateTimePickEnd.Value;
 
             //if all webservices are selected, pass an empty array
