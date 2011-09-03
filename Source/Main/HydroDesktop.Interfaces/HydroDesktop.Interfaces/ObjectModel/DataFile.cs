@@ -5,7 +5,7 @@ using System.Text;
 namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>
-    /// represents either a WaterML data file returned
+    // represents either a WaterML data file returned
     // by the WaterOneFlow service or a source file used
     // for importing data into HydroDesktop.
     /// </summary>

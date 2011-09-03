@@ -1,0 +1,5 @@
+C:\dev\HydroDesktop\Source\Main\GetDotSpatial\bin\Debug\GetDotSpatial.exe
+C:\dev\HydroDesktop\Source\Main\GetDotSpatial\bin\Debug\GetDotSpatial.pdb
+C:\dev\HydroDesktop\Source\Main\GetDotSpatial\obj\Debug\ResolveAssemblyReference.cache
+C:\dev\HydroDesktop\Source\Main\GetDotSpatial\obj\Debug\GetDotSpatial.exe
+C:\dev\HydroDesktop\Source\Main\GetDotSpatial\obj\Debug\GetDotSpatial.pdb

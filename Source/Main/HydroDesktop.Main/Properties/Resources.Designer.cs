@@ -445,13 +445,6 @@ namespace HydroDesktop.Main.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap tableView1 {
-            get {
-                object obj = ResourceManager.GetObject("tableView1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         /// <summary>
         ///   Looks up a localized string similar to GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;D_WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137,298.257223562997]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]].
         /// </summary>

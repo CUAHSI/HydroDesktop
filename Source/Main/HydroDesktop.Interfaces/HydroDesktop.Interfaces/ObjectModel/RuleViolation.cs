@@ -5,6 +5,9 @@ using System.Text;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
+    /// <summary>
+    /// Information about violation of rules
+    /// </summary>
     public class RuleViolation
     {
         public string ErrorMessage { get; private set; }

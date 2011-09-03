@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
+    /// <summary>
+    /// The variable (observed property)
+    /// </summary>
     public class Variable : BaseEntity
     { 
         public virtual string Code { get; set; }

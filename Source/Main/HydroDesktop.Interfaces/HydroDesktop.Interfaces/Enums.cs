@@ -4,6 +4,10 @@ using System.Text;
 
 namespace HydroDesktop.Interfaces
 {
+    /// <summary>
+    /// The database types supported by HydroDesktop.
+    /// Currently, only SQLite is supported.
+    /// </summary>
     public enum DatabaseTypes
     {
         SQLite,
