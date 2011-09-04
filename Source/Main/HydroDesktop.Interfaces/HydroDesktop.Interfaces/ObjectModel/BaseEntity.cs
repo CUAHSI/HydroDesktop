@@ -14,8 +14,15 @@ namespace HydroDesktop.Interfaces.ObjectModel
     [Serializable]
     public class BaseEntity : IEquatable<BaseEntity>
     {
+        /// <summary>
+        /// Id (primary key) of the entity
+        /// </summary>
         public virtual long Id { get; set; }
-
+        /// <summary>
+        /// Two entities are considered equal if they have the same Id
+        /// </summary>
+        /// <param name="other">other entity</param>
+        /// <returns>true if the entities are considered equal</returns>
         public virtual bool Equals(BaseEntity other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -24,7 +31,13 @@ namespace HydroDesktop.Interfaces.ObjectModel
             if (Id == 0 || other.Id == 0) return false;
             return other.Id == Id;
         }
-
+        /// <summary>
+        /// a base entity and another object are considered equal
+        /// only if they represent a reference to the same object
+        /// instance
+        /// </summary>
+        /// <param name="obj">the compared object</param>
+        /// <returns>true if the objects are considered equal</returns>
         public override bool Equals(object obj)
         {
             if (obj.Equals(DBNull.Value)) return false;
@@ -35,6 +48,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
             return Equals((BaseEntity)obj);
         }
 
+        /// <summary>
+        /// Creates a hash code identifier using the Id
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             if (Id == 0)
@@ -47,11 +64,23 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
         }
 
+        /// <summary>
+        /// equals operator for comparing two base entities
+        /// </summary>
+        /// <param name="left">left side of the operator</param>
+        /// <param name="right">right side of the operator</param>
+        /// <returns>true if entities are considered equal</returns>
         public static bool operator ==(BaseEntity left, BaseEntity right)
         {
             return Equals(left, right);
         }
 
+        /// <summary>
+        /// not equals operator for comparing two base entities
+        /// </summary>
+        /// <param name="left">left side of != operator</param>
+        /// <param name="right">right side of != operator</param>
+        /// <returns>true if entities are considered equal</returns>
         public static bool operator !=(BaseEntity left, BaseEntity right)
         {
             return !Equals(left, right);
@@ -71,11 +100,18 @@ namespace HydroDesktop.Interfaces.ObjectModel
          * so that all rules can be enforced
          * */
 
+        /// <summary>
+        /// return true if the object is valid
+        /// </summary>
         public virtual bool IsValid
         {
             get { return (GetRuleViolations().Count() == 0); }
         }
 
+        /// <summary>
+        /// show all rule violations
+        /// </summary>
+        /// <returns>rule violations</returns>
         public virtual IEnumerable<RuleViolation> GetRuleViolations()
         {
             

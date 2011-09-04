@@ -10,7 +10,14 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class Sample : BaseEntity
     {
+        /// <summary>
+        /// Type of the sample
+        /// </summary>
         public virtual string SampleType { get; set; }
+        
+        /// <summary>
+        /// Sample code assigned by the laboratory
+        /// </summary>
         public virtual string LabSampleCode { get; set; }
 
         /// <summary>

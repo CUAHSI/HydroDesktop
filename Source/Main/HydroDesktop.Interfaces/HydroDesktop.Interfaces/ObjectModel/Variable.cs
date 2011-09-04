@@ -106,7 +106,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
             return base.Equals(other);
         }
-
+        /// <summary>
+        /// Get the unique hash code of this variable
+        /// </summary>
+        /// <returns>hash code</returns>
         public override int GetHashCode()
         {
             return Code.GetHashCode();

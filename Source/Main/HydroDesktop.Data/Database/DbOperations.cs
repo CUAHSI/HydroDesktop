@@ -60,7 +60,9 @@ namespace HydroDesktop.Database
         {
             get { return _connectionString; }
         }
-
+        /// <summary>
+        /// Database type (supported type is SQLite)
+        /// </summary>
         public DatabaseTypes DatabaseType
         {
             get 
@@ -265,7 +267,7 @@ namespace HydroDesktop.Database
         /// marked as '?'. Number of parameters needs to be the same as the parameterValues[][]
         /// 2d-array row length
         /// </summary>
-        /// <param name="sql">the sql insert statement(should use parameters)</param>
+        /// <param name="sqlString">the sql insert statement(should use parameters)</param>
         /// <param name="parameterValues">the values of sql parameters</param>
         /// <returns>The array of new primary keys</returns>
         private void ExecuteBatchSQL(string sqlString, object[][] parameterValues)
@@ -312,7 +314,6 @@ namespace HydroDesktop.Database
         /// </summary>
         /// <param name="sqlString">the sql string (should be an insert or an update command)</param>
         /// <param name="rowIndices">the indices of data rows to be inserted or updated</param>
-        /// <param name="columnIndices">the indices of the columns that contain parameter values</param>
         /// <param name="primaryKey">the primary key column name</param>
         /// <param name="table">the local copy of the data table</param>
         private void ExecuteBatchSQL(string sqlString, IList<int> rowIndices, string primaryKey, DataTable table)
@@ -456,7 +457,13 @@ namespace HydroDesktop.Database
 
             return sqlUpdate;
         }
-
+        /// <summary>
+        /// Creates an unique query command object
+        /// </summary>
+        /// <param name="tableName">table name</param>
+        /// <param name="primaryKeyName">primary key name</param>
+        /// <param name="uniqueFields">list of unique columnhs</param>
+        /// <returns>the DB command object that can be used for running the query</returns>
         public string GenerateUniqueQueryCommand(string tableName, string primaryKeyName, string[] uniqueFields)
         {         
             string uniqueSQL = "select " + primaryKeyName + " from " + tableName + " where ";
@@ -476,6 +483,7 @@ namespace HydroDesktop.Database
         /// the unique fields, then an update is done instead of an insert. The primary key (ID) values are modified
         /// to reflect their values in the database
         /// </summary>
+        /// <param name="tableName">name of the DataTable</param>
         /// <param name="primaryKey">the name of the primary key column</param>
         /// <param name="table">In-memory Datatable. This table must have exactly same structure as the database table</param>
         /// <param name="uniqueFields">an array of all field names that define an unique key ('business key')</param>

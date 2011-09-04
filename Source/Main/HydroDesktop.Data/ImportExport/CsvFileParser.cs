@@ -8,7 +8,10 @@ using System.IO;
 
 namespace HydroDesktop.ImportExport
 {
-	public class CsvFileParser
+	/// <summary>
+	/// Helper class for CSV file parsing
+	/// </summary>
+    public class CsvFileParser
 	{
 		#region Private Members
 

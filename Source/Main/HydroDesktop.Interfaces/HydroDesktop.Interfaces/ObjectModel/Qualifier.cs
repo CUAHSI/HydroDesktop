@@ -10,16 +10,28 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class Qualifier : BaseEntity
     {
+        /// <summary>
+        /// creates a new qualifier object
+        /// </summary>
         public Qualifier()
         { }
-
+        /// <summary>
+        /// Creates a qualifier with the code and description
+        /// </summary>
+        /// <param name="code">qualifier code</param>
+        /// <param name="description">qualifier description</param>
         public Qualifier(string code, string description)
         {
             this.Code = code;
             this.Description = description;
         }
-        
+        /// <summary>
+        /// qualifier code (for example "P" or "Ice")
+        /// </summary>
         public virtual string Code { get; set; }
+        /// <summary>
+        /// More detailed qualifier description
+        /// </summary>
         public virtual string Description { get; set; }
 
         /// <summary>
@@ -33,7 +45,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
                 return (Code.IndexOf(",") >= 0);
             }
         }
-
+        /// <summary>
+        /// String representation of the qualifier
+        /// </summary>
+        /// <returns>the qualifier code</returns>
         public override string ToString()
         {
             return Code;
@@ -50,6 +65,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
             return Code.Equals(other.Code);
         }
 
+        /// <summary>
+        /// The hash code (uses the qualifier code)
+        /// </summary>
+        /// <returns>the hash code of the qualifier code</returns>
         public override int GetHashCode()
         {
             if (string.IsNullOrEmpty(Code)) return base.GetHashCode();

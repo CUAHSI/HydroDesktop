@@ -13,6 +13,12 @@ namespace HydroDesktop.Interfaces
         private int _seriesID;
         private bool _isChecked;
 
+        /// <summary>
+        /// Creates a new instance of the series EventArgs
+        /// </summary>
+        /// <param name="seriesID">Series ID</param>
+        /// <param name="isChecked">True if new staus is checked, 
+        /// false if new status is unchecked</param>
         public SeriesEventArgs(int seriesID, bool isChecked)
         {
             _seriesID = seriesID;
@@ -37,6 +43,11 @@ namespace HydroDesktop.Interfaces
     }
 
     #region Delegates
+    /// <summary>
+    /// Series checked event handler
+    /// </summary>
+    /// <param name="sender">sender object</param>
+    /// <param name="e">information about checked or unchecked series</param>
     public delegate void SeriesEventHandler(object sender, SeriesEventArgs e);
     #endregion
         

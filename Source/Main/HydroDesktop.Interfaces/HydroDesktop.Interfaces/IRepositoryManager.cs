@@ -75,7 +75,7 @@ namespace HydroDesktop.Interfaces
         /// <summary>
         /// Returns a detailed table for all series that match the attributes
         /// </summary>
-        /// <param name="seriesIDs">The list of series IDs</param>
+        /// <param name="listOfSeriesID">The list of series IDs</param>
         /// <returns>the data table</returns>
         DataTable GetSeriesTable(IEnumerable<int> listOfSeriesID);
         
@@ -107,12 +107,12 @@ namespace HydroDesktop.Interfaces
         /// <summary>
         /// Simplified version of SaveSeries (for HydroForecaster)
         /// </summary>
-        /// <param name="siteID"></param>
-        /// <param name="variableID"></param>
-        /// <param name="methodName"></param>
-        /// <param name="themeName"></param>
+        /// <param name="siteID">site ID</param>
+        /// <param name="variableID">variable ID</param>
+        /// <param name="methodDescription">Method description</param>
+        /// <param name="themeName">theme name</param>
         /// <param name="dataValues">The table with data values. First column must be DateTime and second column must be Double.</param>
-        /// <returns></returns>
+        /// <returns>number of saved data values</returns>
         int SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues);
 
 

@@ -14,10 +14,24 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual int OriginId { get; set; }    
         
+        /// <summary>
+        /// Quality control level code specified by the web service
+        /// </summary>
         public virtual string Code { get; set; }
+        /// <summary>
+        /// Quality control level definition specified
+        /// </summary>
         public virtual string Definition { get; set; }
+
+        /// <summary>
+        /// Quality control level explanation
+        /// </summary>
         public virtual string Explanation { get; set; }
 
+        /// <summary>
+        /// Returns a string representation of the quality control level
+        /// </summary>
+        /// <returns>quality control level definition string</returns>
         public override string ToString()
         {
             return Definition;

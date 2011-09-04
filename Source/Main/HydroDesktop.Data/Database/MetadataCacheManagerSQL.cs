@@ -40,7 +40,10 @@ namespace HydroDesktop.Database
 		{
             _db = new DbOperations(connectionString, dbType);
 		}
-
+        /// <summary>
+        /// Creates a new instance of the manager using a DbOperations object
+        /// </summary>
+        /// <param name="db">The dbOperations object</param>
         public MetadataCacheManagerSQL(DbOperations db)
         {
             _db = db;
@@ -132,12 +135,25 @@ namespace HydroDesktop.Database
         }
 
 	    #endregion
-
+        /// <summary>
+        /// Gets all sites in box (not implemented)
+        /// </summary>
+        /// <param name="xMin">minimum x (longitude)</param>
+        /// <param name="xMax">maximum x (lognitude)</param>
+        /// <param name="yMin">minimum y (latitude)</param>
+        /// <param name="yMax">maximum y (latitude)</param>
 		public void GetSitesInBox ( double xMin, double xMax, double yMin, double yMax )
 		{
 			throw new System.NotImplementedException ();
 		}
-
+        /// <summary>
+        /// Gets a list of all services within the bounding box
+        /// </summary>
+        /// <param name="xMin">minimum x (longitude)</param>
+        /// <param name="xMax">maximum x (lognitude)</param>
+        /// <param name="yMin">minimum y (latitude)</param>
+        /// <param name="yMax">maximum y (latitude)</param>
+        /// <returns>the list of serviceInfo objects matching the criteria</returns>
 		public IList<DataServiceInfo> GetServicesInBox ( double xMin, double xMax, double yMin, double yMax )
 		{
 			//IList<DataServiceInfo> services = null;
@@ -305,7 +321,14 @@ namespace HydroDesktop.Database
 
             return result;
         }
-
+        /// <summary>
+        /// Gets a list of all data series within the bounding box
+        /// </summary>
+        /// <param name="xMin">minimum X (longitude)</param>
+        /// <param name="xMax">maximum X (longitude)</param>
+        /// <param name="yMin">minimum Y (latitude)</param>
+        /// <param name="yMax">maximum Y (latitude)</param>
+        /// <returns>the list of data series metadata matching the search criteria</returns>
 		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax )
 		{
             string sql1 = DetailedSeriesSQLQuery();
@@ -324,7 +347,18 @@ namespace HydroDesktop.Database
 
             return lst;
 		}
-
+        /// <summary>
+        /// Gets a list of all data series within the bounding box
+        /// </summary>
+        /// <param name="xMin">minimum X (longitude)</param>
+        /// <param name="xMax">maximum X (longitude)</param>
+        /// <param name="yMin">minimum Y (latitude)</param>
+        /// <param name="yMax">maximum Y (latitude)</param>
+        /// <param name="conceptCodes">array of Concept keywords</param>
+        /// <param name="startDate">start date</param>
+        /// <param name="endDate">end date</param>
+        /// <param name="networkIDs">larray of service codes</param>
+        /// <returns>the list of data series metadata matching the search criteria</returns>
 		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs )
 		{
             string sql1 = DetailedSeriesSQLQuery();
@@ -479,7 +513,7 @@ namespace HydroDesktop.Database
 		/// Saves a new data service object to the database. If an entry with the same
 		/// web service URL already exists in the database, update it.
 		/// </summary>
-		/// <param name="service"></param>
+		/// <param name="service">the ServiceInfo object to be saved to the DB</param>
 		public void SaveDataService ( DataServiceInfo service )
 		{
             string sqlInsert =
@@ -528,6 +562,7 @@ namespace HydroDesktop.Database
 		/// Deletes all entries in the metadata cache database that were
 		/// added by the data service
 		/// </summary>
+        /// <param name="service">The serviceInfo object to be deleted</param>
 		/// <param name="deleteService">Set to true if the record in the DataServices
 		/// table should also be deleted. Set to false if the record in the DataServices
 		/// table should be kept</param>
@@ -565,16 +600,6 @@ namespace HydroDesktop.Database
 
             }
             return 0;
-            
-            //DataTable seriesTable = _db.LoadTable(sql);
-            //int numDeleted = 0;
-            //foreach (DataRow row in seriesTable.Rows)
-            //{
-            //    int seriesID = Convert.ToInt32(row[0]);
-            //    DeleteSeries(seriesID);
-            //    numDeleted++;
-            //}
-            //return numDeleted;
 		}
 
 
@@ -744,6 +769,7 @@ namespace HydroDesktop.Database
 		/// </summary>
 		/// <param name="seriesToCheck">the series to be checked</param>
 		/// <returns>The series from the db, or NULL if it doesn't exist</returns>
+        /// <remarks>Not implemented</remarks>
 		private SeriesMetadata CheckIfSeriesExists ( SeriesMetadata seriesToCheck )
 		{
             throw new NotImplementedException();
@@ -1073,7 +1099,7 @@ namespace HydroDesktop.Database
         /// EastLatitude
         /// WestLatitude
         /// </summary>
-        /// <param name="serviceInfo"></param>
+        /// <param name="serviceInfo">the corresponding ServiceInfo</param>
         public void UpdateDataRow(DataServiceInfo serviceInfo)
         {
             string sql = "UPDATE DataServices SET " +

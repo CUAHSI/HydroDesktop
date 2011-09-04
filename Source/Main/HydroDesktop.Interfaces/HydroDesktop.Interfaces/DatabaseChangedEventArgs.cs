@@ -10,7 +10,14 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public class DatabaseChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Connection string of the new database
+        /// </summary>
         public string ConnectionString;
+
+        /// <summary>
+        /// Database type of the new database
+        /// </summary>
         public DatabaseTypes DatabaseType;
     }
 }

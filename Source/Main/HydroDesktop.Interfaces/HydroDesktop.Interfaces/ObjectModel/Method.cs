@@ -10,22 +10,32 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class Method : BaseEntity
     {
+        /// <summary>
+        /// Creates a new unknown method object
+        /// </summary>
         public Method()
         {
             Code = 0;
-            Description = "unknown";
-            Link = "unknown";
+            Description = Constants.Unknown;
+            Link = Constants.Unknown;
         }
         
         /// <summary>
         /// The code of the method (optional)
         /// </summary>
         public virtual int Code { get; set; }
-
+        /// <summary>
+        /// Method description
+        /// </summary>
         public virtual string Description { get; set; }
-
+        /// <summary>
+        /// Method link (web address)
+        /// </summary>
         public virtual string Link { get; set; }
-
+        /// <summary>
+        /// Shows the method description
+        /// </summary>
+        /// <returns>Method description</returns>
         public override string ToString()
         {
             return Description;

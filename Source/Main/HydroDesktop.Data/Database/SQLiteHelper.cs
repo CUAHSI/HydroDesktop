@@ -255,31 +255,55 @@ namespace HydroDesktop.Database
             }
         }
     }
-
+    /// <summary>
+    /// The type of SQLite database (data repositor or metadata cache)
+    /// </summary>
     public enum DatabaseType
     {
+        /// <summary>
+        /// Data repository sqlite database
+        /// </summary>
         DefaulDatabase,
+        /// <summary>
+        /// Metadata cache SQLite database
+        /// </summary>
         MetadataCacheDatabase
     }
-
+    /// <summary>
+    /// This exception occurs in case of invalid database schema
+    /// </summary>
     public class InvalidDatabaseSchemaException : Exception
     {
+        /// <summary>
+        /// new instance of invalid database schema exception
+        /// </summary>
         public InvalidDatabaseSchemaException()
         {
         }
-
+        /// <summary>
+        /// invalid database schema exception with message
+        /// </summary>
+        /// <param name="message">the error message</param>
         public InvalidDatabaseSchemaException(string message)
             : this(message, null)
         {
 
         }
-
+        /// <summary>
+        /// invalid database schema exception with message and inner exception
+        /// </summary>
+        /// <param name="message">the error messsage</param>
+        /// <param name="inner">the inner exception</param>
         public InvalidDatabaseSchemaException(string message, Exception inner)
             : base(message, inner)
         {
 
         }
-
+        /// <summary>
+        /// invalid database schema exception with serialization info and streaming context
+        /// </summary>
+        /// <param name="info">serialization info</param>
+        /// <param name="context">streaming context</param>
         protected InvalidDatabaseSchemaException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

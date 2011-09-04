@@ -9,10 +9,22 @@ using System.Data;
 
 namespace HydroDesktop.ImportExport
 {
-	public enum BackgroundWorkerReportingOptions
+	/// <summary>
+	/// background worker progress report information
+	/// </summary>
+    public enum BackgroundWorkerReportingOptions
 	{
-		UserStateAndProgress,
+		/// <summary>
+		/// report both user state and progress
+		/// </summary>
+        UserStateAndProgress,
+        /// <summary>
+        /// only report progress
+        /// </summary>
 		ProgressOnly,
+        /// <summary>
+        /// report none
+        /// </summary>
 		None
 	}
 
@@ -111,7 +123,9 @@ namespace HydroDesktop.ImportExport
 		#endregion
 
 		#region Destructor
-
+        /// <summary>
+        /// dispose the delimited text writer
+        /// </summary>
 		~DelimitedTextWriter ()
 		{
 			//Indicate that the GC called Dispose, not the user
@@ -545,13 +559,18 @@ namespace HydroDesktop.ImportExport
 		#endregion
 
 		#region IDisposable Members
-
+        /// <summary>
+        /// supresses the GC when disposing object
+        /// </summary>
 		public void Dispose ()
 		{
 			Dispose ( true );
 			GC.SuppressFinalize ( this );
 		}
-
+        /// <summary>
+        /// Dispose the writer object
+        /// </summary>
+        /// <param name="disposing">true if disposing is in progress</param>
 		protected void Dispose ( bool disposing )
 		{
 			if ( _isDisposed == false )

@@ -61,7 +61,9 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Properties
-
+        /// <summary>
+        /// Creates a new instance of the SQL repository database manager
+        /// </summary>
         public IHydroDbOperations DbOperations
         {
             get { return _db; }
@@ -449,7 +451,7 @@ namespace HydroDesktop.Database
         /// <summary>
         /// Returns a detailed table for all series that match the attributes
         /// </summary>
-        /// <param name="seriesIDs">The list of series IDs</param>
+        /// <param name="listOfSeriesID">The list of series IDs</param>
         /// <returns>the data table</returns>
         public DataTable GetSeriesTable(IEnumerable<int> listOfSeriesID)
         {
@@ -468,7 +470,13 @@ namespace HydroDesktop.Database
             DataTable table = _db.LoadTable("SeriesListTable", sql);
             return table;
         }
-        
+        /// <summary>
+        /// Given a Series ID, finds corresponding series in the database
+        /// </summary>
+        /// <param name="seriesID">the series ID</param>
+        /// <returns>The Series object</returns>
+        /// <remarks>This method only returns the series metadata. It doesn't return the full list of data
+        /// values to save memory space.</remarks>
         public Series GetSeriesByID(int seriesID)
         {
             Series series = new Series();
@@ -551,12 +559,12 @@ namespace HydroDesktop.Database
         /// <summary>
         /// Simplified version of SaveSeries (for HydroForecaster)
         /// </summary>
-        /// <param name="siteID"></param>
-        /// <param name="variableID"></param>
-        /// <param name="methodName"></param>
-        /// <param name="themeName"></param>
+        /// <param name="siteID">site ID</param>
+        /// <param name="variableID">variable ID</param>
+        /// <param name="methodDescription">description of method</param>
+        /// <param name="themeName">theme name</param>
         /// <param name="dataValues">The table with data values. First column must be DateTime and second column must be Double.</param>
-        /// <returns></returns>
+        /// <returns>number of saved data values</returns>
         public int SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues)
         { 
             string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
@@ -4198,23 +4206,39 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Events
+        /// <summary>
+        /// Event occurs when a theme is saved
+        /// </summary>
         public event EventHandler ThemeSaved;
+        /// <summary>
+        /// Event occurs when a theme is deleted
+        /// </summary>
         public event EventHandler ThemeDeleted;
+        /// <summary>
+        /// Event occurs when a series is added to database
+        /// </summary>
         public event EventHandler SeriesAdded;
         #endregion
 
 
         #region Protected Methods
+        /// <summary>
+        /// When a theme is saved to database
+        /// </summary>
         protected void OnThemeSaved()
         {
             if (ThemeSaved != null) ThemeSaved(this, null);
         }
-
+        /// <summary>
+        /// When a series is added to a theme
+        /// </summary>
         protected void OnSeriesAdded()
         {
             if (SeriesAdded != null) SeriesAdded(this, null);
         }
-
+        /// <summary>
+        /// When a theme is deleted from the database
+        /// </summary>
         protected void OnThemeDeleted()
         {
             if (ThemeDeleted != null) ThemeDeleted(this, null);

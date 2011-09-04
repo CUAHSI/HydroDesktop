@@ -18,7 +18,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
             Description = Constants.Unknown;
             Unit = Unit.Unknown;
         }
-        
+        /// <summary>
+        /// Offset type description
+        /// </summary>
         public virtual string Description { get; set; }
 
         /// <summary>
