@@ -9,6 +9,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>   
     public class Source : BaseEntity
     {
+        /// <summary>
+        /// Creates a new default source (the source is unknown)
+        /// </summary>
         public Source()
         {
             Organization = Constants.Unknown;
@@ -42,19 +45,53 @@ namespace HydroDesktop.Interfaces.ObjectModel
         //    Citation = Constants.Unknown;
         //    ISOMetadata = ISOMetadata.Unknown;
         //}
-        
+        /// <summary>
+        /// The original indentifier used in the WaterML
+        /// </summary>
         public virtual int OriginId { get; set; }
-        
+        /// <summary>
+        /// The source organization
+        /// </summary>
         public virtual string Organization { get; set; }
+        /// <summary>
+        /// The source description
+        /// </summary>
         public virtual string Description { get; set; }
+        /// <summary>
+        /// source link
+        /// </summary>
         public virtual string Link { get; set; }
+        /// <summary>
+        /// contact name
+        /// </summary>
         public virtual string ContactName { get; set; }
+        /// <summary>
+        /// contact phone number
+        /// </summary>
         public virtual string Phone { get; set; }
+        /// <summary>
+        /// contact email
+        /// </summary>
         public virtual string Email { get; set; }
+        /// <summary>
+        /// contact address (street and number)
+        /// </summary>
         public virtual string Address { get; set; }
+        /// <summary>
+        /// contact address city
+        /// </summary>
         public virtual string City { get; set; }
+        /// <summary>
+        /// contact address state
+        /// </summary>
         public virtual string State { get; set; }
+        /// <summary>
+        /// contact address zip code
+        /// </summary>
         public virtual int ZipCode { get; set; }
+        /// <summary>
+        /// source citation
+        /// </summary>
         public virtual string Citation { get; set; }
 
         // <summary>
@@ -67,7 +104,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The ISO Metadata information
         /// </summary>
         public virtual ISOMetadata ISOMetadata { get; set; }
-
+        /// <summary>
+        /// shows the organization name
+        /// </summary>
+        /// <returns>name of organization</returns>
         public override string ToString()
         {
             return Organization;
