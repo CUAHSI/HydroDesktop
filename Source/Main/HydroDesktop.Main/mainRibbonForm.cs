@@ -180,10 +180,13 @@ namespace HydroDesktop.Main
 
             //to reset the original dock layout
             applicationManager1.DockManager.ResetLayout();
-            applicationManager1.DockManager.SelectPanel(kHomeRoot);
+            
 
             //map activated event
             applicationManager1.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
+
+            applicationManager1.DockManager.SelectPanel(kHomeRoot);
+
             #endregion
 
             //project change tracking
@@ -673,7 +676,9 @@ namespace HydroDesktop.Main
             else
             {
                 Project.OpenProject(_projectFileName, applicationManager1);
-            }     
+            }
+
+            //applicationManager1.DockManager.SelectPanel(kHomeRoot);
         }
 
         // when the map dock panel is activated:
