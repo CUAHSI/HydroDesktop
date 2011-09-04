@@ -9,6 +9,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class OffsetType : BaseEntity
     {
+        /// <summary>
+        /// Creates a new default vertical offset type
+        /// (offset is unknown
+        /// </summary>
         public OffsetType()
         {
             Description = Constants.Unknown;
@@ -21,7 +25,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The distance units of the vertical offset
         /// </summary>
         public virtual Unit Unit { get; set; }
-
+        /// <summary>
+        /// Shows the description of the offset type
+        /// </summary>
+        /// <returns>offset type description string</returns>
         public override string ToString()
         {
             return Description;

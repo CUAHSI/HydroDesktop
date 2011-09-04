@@ -10,8 +10,17 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public enum DatabaseTypes
     {
+        /// <summary>
+        /// The database type is SQLite
+        /// </summary>
         SQLite,
+        /// <summary>
+        /// The db type is SQL server
+        /// </summary>
         SQLServer,
+        /// <summary>
+        /// The db type is unknown
+        /// </summary>
         Unknown
     }
 

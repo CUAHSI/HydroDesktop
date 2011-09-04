@@ -11,8 +11,17 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public enum FilterTypes
     {
+        /// <summary>
+        /// Show all series
+        /// </summary>
         All,
+        /// <summary>
+        /// Simple filter
+        /// </summary>
         Simple,
+        /// <summary>
+        /// Complex filter
+        /// </summary>
         Complex
     }
 }
