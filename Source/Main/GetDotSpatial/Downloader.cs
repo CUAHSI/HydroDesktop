@@ -228,7 +228,7 @@ namespace GetDotSpatial
                     {
                         path = Path.Combine(targetFolder, Path.GetFileName(entry.FilenameInZip));
                         string ext = Path.GetExtension(path).ToLower();
-                        if (ext == ".dll" || ext == ".pdb")
+                        if (entry.FilenameInZip.StartsWith("lib"))
                         {
                             result = zip.ExtractFile(entry, path);
                             Console.WriteLine(path + (result ? "" : " (error)"));
