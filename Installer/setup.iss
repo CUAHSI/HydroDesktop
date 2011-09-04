@@ -162,16 +162,11 @@ Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignorevers
 ;Source: "default.hdprj"; DestDir: "{userdocs}\HydroDesktop\default"; Flags: ignoreversion; Permissions: everyone-modify;
 ;Source: "..\Binaries\projects\default\default.hdprj"; DestDir: "{app}\projects\default"; Flags: ignoreversion; Permissions: everyone-modify;
 
-;Source: "..\Binaries\Source.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-;Source: "..\Binaries\Target.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-
-;Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-
 Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Plugins\1_SeriesView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\FetchBasemap\*"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\WebMap\*"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
 Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
