@@ -657,7 +657,7 @@ namespace HydroDesktop.Database
         /// Based on a SQL query, returns a data table with all rows that
         /// match the query results
         /// </summary>
-        /// <param name="tableName">name of the resulting data table</param>
+        /// <param name="sqlQuery">the SQL query string</param>
         /// <returns>The resulting data table</returns>
         public DataTable LoadTable(string sqlQuery)
         {

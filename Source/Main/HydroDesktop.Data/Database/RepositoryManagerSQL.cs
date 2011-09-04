@@ -11,6 +11,10 @@ using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Database
 {
+    /// <summary>
+    /// Helper class for reading and writing HydroDesktop objects to
+    /// and from the HydroDesktop data repository SQLite database
+    /// </summary>
     public class RepositoryManagerSQL : IRepositoryManager
     {
         #region Variables
