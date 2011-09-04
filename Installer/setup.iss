@@ -117,10 +117,10 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.*"; DestDir: "{app}"; Flags: ignoreversion;
+;Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\Ionic.Zip.*"; DestDir: "{app}"; Flags: ignoreversion;
+;Source: "..\Binaries\Ionic.Zip.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\Icons\*"; DestDir: "{app}\Icons"; Flags: ignoreversion;
@@ -165,11 +165,13 @@ Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignorevers
 ;Source: "..\Binaries\Source.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 ;Source: "..\Binaries\Target.cur"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 
-Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+;Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+
+Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Plugins\1_SeriesView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\FetchBasemap\*"; DestDir: "{app}\Plugins\FetchBasemap"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\FetchBasemap\*"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
 Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
@@ -178,6 +180,8 @@ Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; F
 Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
+
+Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;Source: "..\Binaries\Plugins\Search\*"; DestDir: "{app}\Plugins\Search"; Flags: ignoreversion;
 ;Source: "..\Binaries\Plugins\ImportFromWaterML\*"; DestDir: "{app}\Plugins\ImportFromWaterML"; Flags: ignoreversion;
