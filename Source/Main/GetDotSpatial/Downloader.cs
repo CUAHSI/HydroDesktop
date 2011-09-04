@@ -16,6 +16,9 @@ namespace GetDotSpatial
     {
         private const string packageXmlFile = "packages.config";
         private const string versionNumberTextFile = "dotspatial_version.txt";
+
+        private const string defaultPackageSource = @"http://packages.nuget.org/v1";
+        private const string defaultPackageTarget = "Packages";
         
         static void Main(string[] args)
         {
@@ -27,6 +30,8 @@ namespace GetDotSpatial
             UpdateDotSpatial();
             UpdatePackages();
         }
+
+        
 
         public static void UpdatePackages()
         {
@@ -41,10 +46,18 @@ namespace GetDotSpatial
 
                 foreach (XmlElement child in root.ChildNodes)
                 {
-                    string packageId = child.GetAttribute("id");
-                    string packageVersion = child.GetAttribute("version");
+                    string id = child.GetAttribute("id");
+                    string version = child.GetAttribute("version");
+                    string source = defaultPackageSource;
+                    string target = defaultPackageTarget;
 
-                    DownloadNugetPackage(packageId, packageVersion);
+                    if (child.HasAttribute("source") && child.HasAttribute("target"))
+                    {
+                        source = child.GetAttribute("source");
+                        target = child.GetAttribute("target");
+                    }
+                    DownloadNugetPackage(id, version, source, target);
+
                 }
 
             }
@@ -54,25 +67,64 @@ namespace GetDotSpatial
             }
         }
 
+        private static string FindTargetFolder(string packageTarget)
+        {
+            string baseFolder = AppDomain.CurrentDomain.BaseDirectory; //hydroDesktop/Source/Main
+            
+            if (baseFolder.EndsWith("/") || baseFolder.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                baseFolder = (Directory.GetParent(baseFolder)).FullName;
+            }
+            string[] parts = packageTarget.Split(new char[] { '/' });
+            StringBuilder newPath = new StringBuilder();
+            foreach (string part in parts)
+            {
+                if (part == "..")
+                {
+                    DirectoryInfo parent = Directory.GetParent(baseFolder);
+                    baseFolder = parent.FullName;
+                }
+                else
+                {
+                    newPath.Append(part);
+                    newPath.Append("/");
+                }
+            }
+            string fullPath = (Path.Combine(baseFolder, newPath.ToString())).Replace('/', Path.DirectorySeparatorChar);
+            return fullPath;     
+        }
+
         /// <summary>
         /// Downloads a NUGET package from the official NUGET website
         /// </summary>
         /// <param name="packageId">the package id</param>
         /// <param name="packageVersion">the package version</param>
-        public static void DownloadNugetPackage(string packageId, string packageVersion)
+        public static void DownloadNugetPackage(string packageId, string packageVersion, string packageSource, string packageTarget)
         {
-            string nugetBaseUrl = @"http://packages.nuget.org/v1";
+            string targetFolder; //target folder where files will be copied
             
-            string packageUrl = String.Format("{0}/Package/Download/{1}/{2}", nugetBaseUrl, packageId, packageVersion);
-
             //find the 'Packages' folder
-            string packagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Packages");
+            string packagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, defaultPackageTarget);
+            //string packagesFolder = FindPackagesFolder(packageTarget);
 
             //generate name of the .nupkg zip file
+            string packageUrl;
+
             string zipFileToDownload = Path.Combine(packagesFolder, String.Format("{0}.{1}{2}{0}.{1}.nupkg", packageId, packageVersion, Path.DirectorySeparatorChar));
 
+            if (packageTarget == defaultPackageTarget)
+            {
+                packageUrl = String.Format("{0}/Package/Download/{1}/{2}", packageSource, packageId, packageVersion);
+                targetFolder = Path.GetDirectoryName(zipFileToDownload);
+            }
+            else
+            {
+                packageUrl = String.Format("{0}/{1}/{2}", packageSource, packageId, packageVersion);
+                targetFolder = FindTargetFolder(packageTarget);
+            }
+
             //check if the package file already exists
-            if (File.Exists(zipFileToDownload))
+            if (File.Exists(zipFileToDownload) && Directory.Exists(targetFolder))
             {
                 Console.WriteLine(String.Format("package file {0} already downloaded.", zipFileToDownload));
                 return;
@@ -109,13 +161,23 @@ namespace GetDotSpatial
                 throw new WebException("Access denied to folder " + Path.GetDirectoryName(zipFileToDownload) + " - " + ex2.Message);
             }
 
-            UnzipNugetPackage(zipFileToDownload);
+            UnzipNugetPackage(zipFileToDownload, targetFolder);
+
         }
 
-        private static void UnzipNugetPackage(string zipFile)
+        private static void UnzipNugetPackage(string zipFile, string targetFolder)
         {
-            // Create DotSpatial Packages folder
-            string targetFolder = Path.Combine(Path.GetDirectoryName(zipFile), "lib");
+            if (!targetFolder.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                targetFolder += Path.DirectorySeparatorChar.ToString();
+            }
+            string packageFolder = Path.GetDirectoryName(zipFile);
+            if (!packageFolder.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                packageFolder += Path.DirectorySeparatorChar.ToString();
+            }
+            bool copyToBinaries = (targetFolder != packageFolder);
+            
             if (!Directory.Exists(targetFolder))
             {
                 try
@@ -162,9 +224,22 @@ namespace GetDotSpatial
                 bool result;
                 foreach (ZipStorer.ZipFileEntry entry in dir)
                 {
-                    path = Path.Combine(targetFolder, Path.GetFileName(entry.FilenameInZip));
-                    result = zip.ExtractFile(entry, path);
-                    Console.WriteLine(path + (result ? "" : " (error)"));
+                    if (copyToBinaries) //only copy dll, pdb and xml to binaries
+                    {
+                        path = Path.Combine(targetFolder, Path.GetFileName(entry.FilenameInZip));
+                        string ext = Path.GetExtension(path).ToLower();
+                        if (ext == ".dll" || ext == ".pdb")
+                        {
+                            result = zip.ExtractFile(entry, path);
+                            Console.WriteLine(path + (result ? "" : " (error)"));
+                        }
+                    }
+                    else
+                    {
+                        path = (Path.Combine(targetFolder, entry.FilenameInZip)).Replace('/', Path.DirectorySeparatorChar);
+                        result = zip.ExtractFile(entry, path);
+                        Console.WriteLine(path + (result ? "" : " (error)"));
+                    }
                 }
                 zip.Close();
 
