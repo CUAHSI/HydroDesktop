@@ -92,10 +92,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual TimeZoneInfo DefaultTimeZone { get; set; }
 
-        /// <summary>
-        /// Information about data service that was used to 
-        /// retrieve this site
-        /// </summary>
+        ///// <summary>
+        ///// Information about data service that was used to 
+        ///// retrieve this site
+        ///// </summary>
         //public virtual DataServiceInfo DataService { get; set; }
 
         /// <nheritdoc />
