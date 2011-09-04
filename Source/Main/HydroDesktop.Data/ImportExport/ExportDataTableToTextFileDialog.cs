@@ -31,7 +31,7 @@ namespace HydroDesktop.ImportExport
         /// <summary>
         /// Initialize the RightClickExport form, and pass the users' datatable to the form
         /// </summary>
-        /// <param name="dataToExport"> DataTable used to pass data from the users' datatable.</param>
+        /// <param name="originalDataTable"> DataTable used to pass data from the users' datatable.</param>
         public ExportDataTableToTextFileDialog(DataTable originalDataTable)
         {
             if (originalDataTable.Columns.Count == 0)
@@ -75,7 +75,7 @@ namespace HydroDesktop.ImportExport
         /// <summary>
         /// BackgroundWorker method used to create a datatable including data queried from Databasein in all the fields selected.
         /// </summary>
-        /// <param name="filename"> BackgroundWorker argument passed from Export Button Click Event</param>
+        /// <param name="parameters"> BackgroundWorker argument passed from Export Button Click Event</param>
         /// <param name="exportdlg_worker"> BackgroundWorker (may be null), in order to show progress</param>
         /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
         /// <returns>Return the BackgroundWorker result.</returns>

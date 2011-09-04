@@ -12,6 +12,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     public class Theme : BaseEntity
     {
+        /// <summary>
+        /// Creates a default theme object with an empty series list
+        /// </summary>
         public Theme()
         {
             this.DateCreated = DateTime.Now;
@@ -32,17 +35,25 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// Creates a new theme with the specified name and 
         /// description
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
+        /// <param name="name">theme name</param>
+        /// <param name="description">theme description</param>
         public Theme(string name, string description)
         {
             this.Name = name;
             this.Description = description;
             this.DateCreated = DateTime.Now;
         }
-        
+        /// <summary>
+        /// Theme name
+        /// </summary>
         public virtual string Name { get; set; }
+        /// <summary>
+        /// Theme description
+        /// </summary>
         public virtual string Description { get; set; }
+        /// <summary>
+        /// Date when the theme was created
+        /// </summary>
         public virtual DateTime DateCreated { get; set; }
 
         /// <summary>

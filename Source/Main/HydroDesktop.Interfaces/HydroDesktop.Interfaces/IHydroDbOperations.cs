@@ -127,6 +127,7 @@ namespace HydroDesktop.Interfaces
         /// the unique fields, then an update is done instead of an insert. The primary key (ID) values are modified
         /// to reflect their values in the database
         /// </summary>
+        /// <param name="tableName">name of the table in the database</param>
         /// <param name="primaryKey">the name of the primary key column</param>
         /// <param name="table">In-memory Datatable. This table must have exactly same structure as the database table</param>
         /// <param name="uniqueFields">an array of all field names that define an unique key ('business key')</param>
@@ -152,7 +153,7 @@ namespace HydroDesktop.Interfaces
         /// Based on a SQL query, returns a data table with all rows that
         /// match the query results
         /// </summary>
-        /// <param name="tableName">name of the resulting data table</param>
+        /// <param name="sqlQuery">the sql query statement</param>
         /// <returns>The resulting data table</returns>
         DataTable LoadTable(string sqlQuery);
 
@@ -160,6 +161,8 @@ namespace HydroDesktop.Interfaces
         /// Updates the existing in-memory data table object by 
         /// the results of the SQL query
         /// </summary>
+        /// <param name="existingTable">the existing table</param>
+        /// <param name="sqlQuery">the SQL query</param>
         DataTable LoadTable(string sqlQuery, DataTable existingTable);
 
 

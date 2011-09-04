@@ -21,8 +21,18 @@ namespace HydroDesktop.ImportExport
         #region Variables
 
         // These variables are read by the client after closing the dialog
+        /// <summary>
+        /// List of fields (columns) to export
+        /// </summary>
         public List<string> FieldsToExport { get; set; }
+
+        /// <summary>
+        /// Delimiter string
+        /// </summary>
         public string Delimiter { get; set; }
+        /// <summary>
+        /// Output file name
+        /// </summary>
         public string OutputFilename { get; set; }
 
         private DataTable _dataToExport;

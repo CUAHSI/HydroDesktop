@@ -71,7 +71,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\HydroDatabase.cs" />
     <Compile Include="Database\MetadataCacheManagerSQL.cs">
       <SubType>Code</SubType>
     </Compile>

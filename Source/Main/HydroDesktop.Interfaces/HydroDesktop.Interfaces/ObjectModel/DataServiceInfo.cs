@@ -37,7 +37,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// Creates a copy of the data service object with the same
         /// properties as the original
         /// </summary>
-        /// <param name="originalService">The original dataServiceInfo object</param>
+        /// <param name="original">The original dataServiceInfo object</param>
         public DataServiceInfo(DataServiceInfo original)
         {
             ServiceTitle = original.ServiceTitle;

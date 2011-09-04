@@ -64,6 +64,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// control level. The new series does not belong to any data theme.
         /// </summary>
         /// <param name="original">The original series</param>
+        /// <param name="copyDataValues">if set to true, then all data values are copied</param>
         public Series(Series original, bool copyDataValues)
         {
             //TODO: need to include series provenance information
@@ -104,12 +105,17 @@ namespace HydroDesktop.Interfaces.ObjectModel
         #endregion
 
         #region Properties
-
+        /// <summary>
+        /// True if the series has data values in the data value list
+        /// </summary>
         public virtual bool HasDataValues
         {
             get { return (ValueCount > 0); }
         }
 
+        /// <summary>
+        /// True if the series represents categorical data
+        /// </summary>
         public virtual bool IsCategorical { get; set; }
 
         /// <summary>
@@ -119,12 +125,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             get
             {
-                if (DataValueList == null) return _beginDateTime;
-                
-                //if (DataValueList.Count > 0)
-                //{
-                //    _beginDateTime = DataValueList[0].LocalDateTime;
-                //}
                 return _beginDateTime;
             }
             set
@@ -140,12 +140,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             get
             {
-                if (DataValueList == null) return _endDateTime;
-
-                //if (DataValueList.Count > 0)
-                //{
-                //    _endDateTime = DataValueList[DataValueList.Count - 1].LocalDateTime;
-                //}
                 return _endDateTime;
             }
             set
@@ -154,17 +148,13 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the begin date time of series in UTC
+        /// </summary>
         public virtual DateTime BeginDateTimeUTC 
         {
             get
             {
-                if (DataValueList == null) return _beginDateTimeUTC;
-
-                //if (DataValueList.Count > 0)
-                //{
-                //    _beginDateTimeUTC = DataValueList[0].DateTimeUTC;
-                //}
                 return _beginDateTimeUTC;
             }
             set
@@ -173,17 +163,13 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the end date time of the series in UTC
+        /// </summary>
         public virtual DateTime EndDateTimeUTC 
         {
             get
             {
-                if (DataValueList == null) return _endDateTimeUTC;
-
-                //if (DataValueList.Count > 0)
-                //{
-                //    _endDateTimeUTC = DataValueList[DataValueList.Count - 1].DateTimeUTC;
-                //}
                 return _endDateTimeUTC;
             }
             set
@@ -191,30 +177,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
                 _endDateTimeUTC = value;
             }       
         }
-
-        
-        ///// <summary>
-        ///// The number of data values in this series
-        ///// </summary>
-        //public virtual int ValueCount 
-        //{ 
-        //    get
-        //    {
-        //        if (DataValueList.Count > 0)
-        //        {
-        //            _valueCount = DataValueList.Count;
-        //        } else
-        //        {
-        //            return 0;
-        //        }
-        //        return _valueCount;
-        //    }
-
-        //    set
-        //    {
-        //        _valueCount = value;
-        //    }
-        //}
 
         /// <summary>
         /// The number of data values in this series
@@ -258,6 +220,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The time when this data series was last updated (its data values were changed)
         /// </summary>
         public virtual DateTime UpdateDateTime { get; set; }
+        
+        /// <summary>
+        /// Time when this series was last checked
+        /// </summary>
         public virtual DateTime LastCheckedDateTime { get; set; }
 
         /// <summary>
@@ -270,10 +236,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual Variable Variable { get; set; }
 
-        /// <summary>
-        /// Optional specification of the data service that was used to retrieve
-        /// this series
-        /// </summary>
+        ///// <summary>
+        ///// Optional specification of the data service that was used to retrieve
+        ///// this series
+        ///// </summary>
         //public virtual DataServiceInfo DataService { get; set; }
 
         /// <summary>
@@ -309,15 +275,13 @@ namespace HydroDesktop.Interfaces.ObjectModel
             return (Site != null) ? Site.DefaultTimeZone : null;
         }
 
-        /// <summary>
-        /// Shortcut method to obtain 'No Data Value' information
-        /// </summary>
-        
-
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// String representation of the series
+        /// <returns>SiteName | VariableName | DataType</returns>
+        /// </summary>
         public override string ToString()
         {
             return Site.Name + "|" + Variable.Name + "|" + Variable.DataType;

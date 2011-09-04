@@ -15,6 +15,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
         private DateTime _dateTimeUTC = DateTime.MinValue;
         private double _utcOffset = 0.0;
         
+        /// <summary>
+        /// Creates a new empty data value
+        /// </summary>
         public DataValue()
         {
             CensorCode = "nc";
@@ -25,7 +28,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// be specified.
         /// </summary>
         /// <param name="localDateTime">The local time</param>
-        /// <param name="DateTimeUTC">The time in UTC</param>
+        /// <param name="dateTimeUTC">The time in UTC</param>
         /// <param name="value">the data value</param>
         public DataValue(double value, DateTime localDateTime, DateTime dateTimeUTC)
         {
@@ -58,7 +61,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// original data value. The new copy is not associated
         /// with any series or data file.
         /// </summary>
-        /// <param name="originalDataValue"></param>
+        /// <param name="original"></param>
         public DataValue(DataValue original)
         {   
             CensorCode = original.CensorCode;
@@ -220,7 +223,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             return new DataValue(this);
         }
-
+        /// <summary>
+        /// String representation of the data value in Time|Value format
+        /// </summary>
+        /// <returns>String representation of the data value in Time|Value format</returns>
         public override string ToString()
         {
             return LocalDateTime.ToString() + "|" + Value.ToString();

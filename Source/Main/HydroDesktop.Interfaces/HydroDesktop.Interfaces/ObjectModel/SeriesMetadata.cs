@@ -98,7 +98,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
         #endregion
 
         #region Properties
-
+        /// <summary>
+        /// True if the series represents categorical values, false otherwise
+        /// </summary>
         public virtual bool IsCategorical { get; set; }
 
         /// <summary>
@@ -131,7 +133,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
         }
 
-
+        /// <summary>
+        /// Begin time of the series in UTC
+        /// </summary>
         public virtual DateTime BeginDateTimeUTC 
         {
             get
@@ -144,7 +148,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
             }
         }
 
-
+        /// <summary>
+        /// End time of the series in UTC
+        /// </summary>
         public virtual DateTime EndDateTimeUTC 
         {
             get
@@ -189,6 +195,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The time when this data series was last updated (its data values were changed)
         /// </summary>
         public virtual DateTime UpdateDateTime { get; set; }
+        /// <summary>
+        /// Thime when the series was last checked for updates
+        /// </summary>
         public virtual DateTime LastCheckedDateTime { get; set; }
 
         /// <summary>
@@ -229,16 +238,15 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             return (Site != null) ? Site.DefaultTimeZone : null;
         }
-
-        /// <summary>
-        /// Shortcut method to obtain 'No Data Value' information
-        /// </summary>
         
 
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// String representation of the series metadata
+        /// </summary>
+        /// <returns>Site.Name | Variable.Name | Variable.DataType</returns>
         public override string ToString()
         {
             return Site.Name + "|" + Variable.Name + "|" + Variable.DataType;
@@ -248,7 +256,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// A shortcut method to obtain the 'no data' value used by the variable
         /// of this series
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the no data value of the variable in this series</returns>
         public virtual double GetNoDataValue()
         {
             return (Variable != null) ? Variable.NoDataValue : 0;
