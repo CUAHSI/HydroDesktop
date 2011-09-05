@@ -61,9 +61,25 @@ namespace HydroDesktop.Docking
         }
 
         #endregion
-        
-        public void Add(string key, string caption, System.Windows.Forms.Control innerControl, System.Windows.Forms.DockStyle dockStyle)
+
+
+        public void ResetLayout()
         {
+            //not implemented
+            //TODO: check MW4 implementation
+        }
+
+        /// <summary>
+        /// Add a dockable panel
+        /// </summary>
+        /// <param name="panel">The dockable panel</param>
+        public void Add(DockablePanel panel)
+        {
+            string key = panel.Key;
+            string caption = panel.Caption;
+            Control innerControl = panel.InnerControl;
+            DockStyle dockStyle = panel.Dock;          
+ 
             //set dock style of the inner control to Fill
             innerControl.Dock = DockStyle.Fill;
             
@@ -158,7 +174,5 @@ namespace HydroDesktop.Docking
                 ActivePanelChanged(this, new ActivePanelChangedEventArgs(newActivePanelKey));
             }
         }
-
-        
     }
 }
