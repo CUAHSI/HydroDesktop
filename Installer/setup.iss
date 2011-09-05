@@ -117,56 +117,18 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\Ionic.Zip.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
 
-Source: "..\Binaries\Icons\*"; DestDir: "{app}\Icons"; Flags: ignoreversion;
-
-;Source: "..\Binaries\HydroDesktop.Configuration.*"; DestDir: "{app}";  Flags: ignoreversion;
-;Source: "..\Binaries\HydroDesktop.Data.*"; DestDir: "{app}";  Flags: ignoreversion;
-;Source: "..\Binaries\HydroDesktop.Help.*"; DestDir: "{app}";  Flags: ignoreversion;
-;Source: "..\Binaries\System.Windows.Forms.Ribbon35.*"; DestDir: "{app}";  Flags: ignoreversion;
-
-;Source: "..\Binaries\DotSpatial.Analysis.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Controls.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Compatibility.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Data.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Data.Forms.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Modeling.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Modeling.Forms.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Projections.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Projections.Forms.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Serialization.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Symbology.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Symbology.Forms.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\DotSpatial.Topology.*"; DestDir: "{app}"; Flags: ignoreversion;
-
-;Source: "..\Binaries\nunit.framework.*"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\nunit.core.*"; DestDir: "{app}"; Flags: ignoreversion;
-
-;Source: "..\Binaries\ZedGraph.*"; DestDir: "{app}"; Flags: ignoreversion;
-
-;Source: "..\Binaries\getOntologyTree.xml"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-;Source: "..\Binaries\Synonyms.xml"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-;Source: "..\Binaries\q_save.xml"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 
-;Source: "..\Binaries\WebServices.xml"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-
-;Source: "..\Binaries\settings.xml"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-;Source: "default.hdprj"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-modify;
-; not yet capable of doing good relative paths from a folder
-;Source: "default.hdprj"; DestDir: "{userdocs}\HydroDesktop\default"; Flags: ignoreversion; Permissions: everyone-modify;
-;Source: "..\Binaries\projects\default\default.hdprj"; DestDir: "{app}\projects\default"; Flags: ignoreversion; Permissions: everyone-modify;
-
+;Source: "..\Binaries\Plugins\WebMap\*"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Plugins\1_SeriesView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\WebMap\*"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\FetchBasemap\*"; DestDir: "{app}\Plugins\FetchBasemap"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
 Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
@@ -178,21 +140,12 @@ Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; 
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
-;Source: "..\Binaries\Plugins\Search\*"; DestDir: "{app}\Plugins\Search"; Flags: ignoreversion;
-;Source: "..\Binaries\Plugins\ImportFromWaterML\*"; DestDir: "{app}\Plugins\ImportFromWaterML"; Flags: ignoreversion;
-;Source: "..\Binaries\Plugins\HydroModeler2.0\*"; DestDir: "{app}\Plugins\HydroModeler2.0"; Flags: ignoreversion;
-;Source: "..\Binaries\Plugins\Toolbox\*"; DestDir: "{app}\Plugins\Toolbox"; Flags: ignoreversion;
-;Source: "..\Binaries\Tools\*"; DestDir: "{app}\Tools"; Flags: ignoreversion;
-
-
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsIA64;
 
-;Source: "Databases\*"; DestDir: "{app}\Databases"; Permissions: everyone-modify;
 Source: "..\Binaries\Maps\*"; DestDir: "{app}\Maps"; Permissions: everyone-modify; Flags: recursesubdirs
-;Source: "..\Maps\BaseData-MercatorSphere\*"; DestDir: "{app}\Maps\BaseData"; Permissions: everyone-modify
 
 ;Example Configurations for HydroModeler
 ;Uncomment following line after HydroModeler is ready for V 1.2
@@ -220,6 +173,7 @@ Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueNam
 Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop}"; Flags: nowait postinstall skipifsilent
 
 [InstallDelete]
+Type: files; Name: "{app}\Application Extensions\DotSpatial.Plugins.DockManager.dll"
 Type: files; Name: "{app}\DotSpatial.Common.dll"
 Type: files; Name: "{app}\DotSpatial.Desktop.dll"
 Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
