@@ -140,6 +140,8 @@ Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; 
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
+Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; DestName: "WeifenLuo.WinFormsUI.Docking.dll"; Flags: ignoreversion;
+
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
