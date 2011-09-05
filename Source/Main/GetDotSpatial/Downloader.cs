@@ -16,12 +16,14 @@ namespace GetDotSpatial
     {
         private const string packageXmlFile = "packages.config";
         private const string versionNumberTextFile = "dotspatial_version.txt";
+        private const string deleteFilesTextFile = "delete_files.txt";
 
         private const string defaultPackageSource = @"http://packages.nuget.org/v1";
         private const string defaultPackageTarget = "Packages";
         
         static void Main(string[] args)
         {
+            DeleteOldAssemblies();          
             UpdateExternalFiles();
         }
 
@@ -31,7 +33,56 @@ namespace GetDotSpatial
             UpdatePackages();
         }
 
-        
+        /// <summary>
+        /// Deletes any old assemblies to prevent composition error conflicts
+        /// </summary>
+        public static void DeleteOldAssemblies()
+        {
+            try
+            {
+                //open file delete_files.txt
+                string[] filesToDelete = ReadListOfFilesToDelete();
+
+                foreach (string fileToDelete in filesToDelete)
+                {
+                    string fullPath = FindTargetFolder(fileToDelete);
+                    if (fullPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                        fullPath = fullPath.Substring(0, fullPath.Length - 1);
+
+                    if (fullPath.EndsWith("*"))
+                    {
+                        DeleteFilesInDirectory(fullPath.Substring(0, fullPath.Length - 1));
+                    }
+                    else if (Directory.Exists(Path.GetDirectoryName(fullPath)))
+                    {
+                        try
+                        {
+                            //* means delete all files in the directory
+                            if (fullPath.EndsWith("*"))
+                            
+                            File.Delete(fullPath);
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            Console.WriteLine("Cannot delete file " + fullPath);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DeleteOldAssemblies - " + ex.Message);
+            }
+        }
+        private static void DeleteFilesInDirectory(string dir)
+        {
+            if (!Directory.Exists(dir)) return;
+            
+            foreach (string fileToDelete in Directory.GetFiles(dir))
+            {
+                File.Delete(fileToDelete);
+            }
+        }
 
         public static void UpdatePackages()
         {
@@ -44,8 +95,11 @@ namespace GetDotSpatial
                 if (root.Name != "packages")
                     throw new XmlException("The name of root element in packages.config must be 'packages'.");
 
-                foreach (XmlElement child in root.ChildNodes)
+                foreach (XmlNode childNode in root.ChildNodes)
                 {
+                    XmlElement child = childNode as XmlElement;
+                    if (child == null) continue;
+                    
                     string id = child.GetAttribute("id");
                     string version = child.GetAttribute("version");
                     string source = defaultPackageSource;
@@ -290,6 +344,26 @@ namespace GetDotSpatial
                 string line = r.ReadLine();
                 return line;
             }
+        }
+
+        public static string[] ReadListOfFilesToDelete()
+        {
+            string deleteFilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, deleteFilesTextFile);
+
+            if (!File.Exists(deleteFilesPath)) throw new FileNotFoundException(Path.Combine("The file {0} doesn't exist.", deleteFilesPath));
+
+            List<string> lines = new List<string>();
+            using (StreamReader r = new StreamReader(deleteFilesPath))
+            {
+                // Use while != null pattern for loop
+                string line;
+                while ((line = r.ReadLine()) != null)
+                {
+                    // "line" is a line in the file. Add it to our List.
+                    lines.Add(line);
+                }
+            }
+            return lines.ToArray();
         }
 
         /// <summary>

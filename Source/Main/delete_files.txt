@@ -1,0 +1,6 @@
+../../Binaries/Application Extensions/DotSpatial.Plugins.DockManager.dll
+../../Binaries/Plugins/TSA/*
+../../Binaries/Plugins/Toolbox/*
+../../Binaries/Plugins/TRMM/*
+../../Binaries/Plugins/WebMap/*
+../../Binaries/Icons/*
