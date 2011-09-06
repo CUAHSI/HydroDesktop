@@ -7,7 +7,6 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using HydroDesktop.Controls.Themes;
-using TableView.Extensions;
 using DotSpatial.Controls.Docking;
 
 namespace TableView
@@ -24,6 +23,10 @@ namespace TableView
 
         private const string _tablePanelName = "Table";
         private const string kTableView = "kHydroTable";
+        private const string _optionsGroupCaption = "Options";
+        private const string _optionsToggleGroupButtonKey = "kTableViewModeOptions";
+        private const string _optionsParallelMode = "Parallel";
+        private const string _optionsSequenceMode = "Sequence";
 
         //private readonly RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
         private cTableView tableViewControl;
@@ -92,17 +95,26 @@ namespace TableView
             newDatabaseButton.GroupCaption = "Database";
             App.HeaderControl.Add(newDatabaseButton);
 
-            // Options
-            var dropDownOptions = new DropDownActionItem("kHydroTableViewDropDown", "Mode");
-            dropDownOptions.AllowEditingText = false;
-            dropDownOptions.Width = 200;
-            dropDownOptions.RootKey = kTableView;
-            dropDownOptions.GroupCaption = "Options";
-            dropDownOptions.Items.Add(new EnumWrapper(TableViewMode.SequenceView));
-            dropDownOptions.Items.Add(new EnumWrapper(TableViewMode.JustValuesInParallel));
-            dropDownOptions.SelectedValueChanged += dropDown_SelectedValueChanged;
-            App.HeaderControl.Add(dropDownOptions);
+            // Options buttons
+            var sequenceModeAction = new SimpleActionItem(_optionsSequenceMode, TableViewModeChanged);
+            sequenceModeAction.RootKey = kTableView;
+            sequenceModeAction.ToolTipText = "Show all fields in sequence";
+            sequenceModeAction.LargeImage = Properties.Resources.series_sequence_32;
+            sequenceModeAction.SmallImage = Properties.Resources.series_sequence_32;
+            sequenceModeAction.GroupCaption = _optionsGroupCaption;
+            sequenceModeAction.ToggleGroupKey = _optionsToggleGroupButtonKey;
+            App.HeaderControl.Add(sequenceModeAction);
 
+            var parallelModeAction = new SimpleActionItem(_optionsParallelMode, TableViewModeChanged);
+            parallelModeAction.RootKey = kTableView;
+            parallelModeAction.ToolTipText = "Show just values in parallel";
+            parallelModeAction.LargeImage = Properties.Resources.series_parallel_32;
+            parallelModeAction.SmallImage = Properties.Resources.series_parallel_32;
+            parallelModeAction.GroupCaption = _optionsGroupCaption;
+            parallelModeAction.ToggleGroupKey = _optionsToggleGroupButtonKey;
+            App.HeaderControl.Add(parallelModeAction);
+            //-----
+             
             #endregion initialize the Table Ribbon TabPage and related controls
 
             // Add "Table View Plugin" dock panel to the SeriesView
@@ -110,12 +122,26 @@ namespace TableView
             tableViewControl.Dock = DockStyle.Fill;
             App.DockManager.Add(new DockablePanel(kTableView, _tablePanelName, tableViewControl, DockStyle.Fill));
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
-
-            dropDownOptions.SelectedItem = dropDownOptions.Items[0];
-
+            
             SeriesControl.Refreshed += SeriesControl_Refreshed;
 
             base.Activate();
+        }
+
+        private void TableViewModeChanged(object sender, EventArgs e)
+        {
+            var actionItem = sender as SimpleActionItem;
+            if (actionItem == null) return;
+
+            switch(actionItem.Caption)
+            {
+                case _optionsSequenceMode:
+                    tableViewControl.ViewMode = TableViewMode.SequenceView;
+                    break;
+                case _optionsParallelMode:
+                    tableViewControl.ViewMode = TableViewMode.JustValuesInParallel;
+                    break;
+            }
         }
 
         void SeriesControl_Refreshed(object sender, EventArgs e)
@@ -127,12 +153,6 @@ namespace TableView
         {
             RefreshAllThemes();
             SeriesControl.RefreshSelection();
-        }
-
-        void dropDown_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
-        {
-            if (tableViewControl == null) return;
-            tableViewControl.ViewMode = (TableViewMode) ((EnumWrapper) e.SelectedItem).Value;
         }
 
         void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
@@ -224,25 +244,5 @@ namespace TableView
         }
 
         # endregion
-
-
-        #region Helpers
-
-        private class EnumWrapper
-        {
-            public EnumWrapper(Enum value)
-            {
-                Value = value;
-            }
-
-            public Enum Value { get; private set; }
-
-            public override string ToString()
-            {
-                return Value.Description();
-            }
-        }
-
-        #endregion
     }
 }

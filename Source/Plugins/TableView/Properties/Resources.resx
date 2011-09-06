@@ -142,6 +142,12 @@
   <data name="refreshTheme_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refreshTheme_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="series_parallel_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\series_parallel_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="series_sequence_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\series_sequence_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="tableView" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tableView.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
