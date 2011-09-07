@@ -158,8 +158,9 @@
     <Reference Include="Oatc.OpenMI.Gui.Controls">
       <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Oatc.OpenMI.Gui.Core">
-      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Core.dll</HintPath>
+    <Reference Include="Oatc.OpenMI.Gui.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Gui.Core.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
       <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>

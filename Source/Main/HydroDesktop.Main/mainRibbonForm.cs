@@ -161,6 +161,7 @@ namespace HydroDesktop.Main
             #region Load Plugins
 
             //initialize the home ribbon tab
+            applicationManager1.ShowExtensionsDialog = ShowExtensionsDialog.Default;
             applicationManager1.Initialize();
 
              

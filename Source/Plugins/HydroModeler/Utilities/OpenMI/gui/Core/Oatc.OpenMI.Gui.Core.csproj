@@ -109,7 +109,7 @@
       <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Modeling.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Modeling.Forms">
+    <Reference Include="DotSpatial.Modeling.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=x86">
       <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>

@@ -124,7 +124,6 @@ Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 
 ;Source: "..\Binaries\Plugins\WebMap\*"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\1_SeriesView\*"; DestDir: "{app}\Plugins\1_SeriesView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
@@ -181,6 +180,7 @@ Type: files; Name: "{app}\DotSpatial.Desktop.dll"
 Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
 Type: files; Name: "{app}\FluentNHibernate.dll"
 Type: files; Name: "{app}\NHibernate.dll"
+Type: files; Name: "{app}\Plugins\1_SeriesView.*"
 Type: files; Name: "{app}\Plugins\TSA.*"
 Type: files; Name: "{app}\Plugins\Toolbox.*"
 Type: files; Name: "{app}\Plugins\Search\search.*"
@@ -197,6 +197,7 @@ Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 
 [UninstallDelete]
+Type: files; Name: "{app}\Plugins\1_SeriesView.*"
 Type: files; Name: "{app}\Plugins\TSA.*"
 Type: files; Name: "{app}\Plugins\Toolbox.*"
 Type: files; Name: "{app}\DotSpatial.Common.dll"
