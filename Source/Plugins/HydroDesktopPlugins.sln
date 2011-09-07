@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docking", "Docking\Docking.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FetchBasemap", "FetchBasemap\FetchBasemap.csproj", "{0CB88ED9-E1DE-424B-8F49-547306F489ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search3", "Search3\Search3.csproj", "{FB01F6EE-89C0-4A64-B023-C8CC566FF803}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -282,6 +284,16 @@ Global
 		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Release|x86.ActiveCfg = Release|x86
 		{0CB88ED9-E1DE-424B-8F49-547306F489ED}.Release|x86.Build.0 = Release|x86
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
