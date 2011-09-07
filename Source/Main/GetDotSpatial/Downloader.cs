@@ -177,8 +177,8 @@ namespace GetDotSpatial
                 targetFolder = FindTargetFolder(packageTarget);
             }
 
-            //check if the package file already exists
-            if (File.Exists(zipFileToDownload) && Directory.Exists(targetFolder))
+            //check if the package file already exists - this also checks the version
+            if (File.Exists(zipFileToDownload))
             {
                 Console.WriteLine(String.Format("package file {0} already downloaded.", zipFileToDownload));
                 return;
@@ -259,7 +259,7 @@ namespace GetDotSpatial
 
             //checking if directory already contains unzipped files
             string[] files = Directory.GetFiles(targetFolder, "*.dll");
-            if (files.Length > 0)
+            if (files.Length > 0 && !(targetFolder.Contains("Application Extensions")))
             {
                 Console.WriteLine(String.Format("The package {0} is already unzipped.", zipFile));
                 return;
