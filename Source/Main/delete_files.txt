@@ -3,5 +3,5 @@
 ../../Binaries/Plugins/TSA/*
 ../../Binaries/Plugins/Toolbox/*
 ../../Binaries/Plugins/TRMM/*
-../../Binaries/Plugins/WebMap/*
+../../Binaries/Plugins/FetchBasemap/*
 ../../Binaries/Icons/*
