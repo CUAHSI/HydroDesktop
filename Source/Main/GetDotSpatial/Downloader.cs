@@ -181,6 +181,7 @@ namespace GetDotSpatial
             if (File.Exists(zipFileToDownload))
             {
                 Console.WriteLine(String.Format("package file {0} already downloaded.", zipFileToDownload));
+                UnzipNugetPackage(zipFileToDownload, targetFolder, packageId, packageVersion);
                 return;
             }
 
@@ -215,11 +216,11 @@ namespace GetDotSpatial
                 throw new WebException("Access denied to folder " + Path.GetDirectoryName(zipFileToDownload) + " - " + ex2.Message);
             }
 
-            UnzipNugetPackage(zipFileToDownload, targetFolder);
-
+            //also try to unzip the package already downloaded
+            UnzipNugetPackage(zipFileToDownload, targetFolder, packageId, packageVersion);
         }
 
-        private static void UnzipNugetPackage(string zipFile, string targetFolder)
+        private static void UnzipNugetPackage(string zipFile, string targetFolder, string packageId, string packageVersion)
         {
             if (!targetFolder.EndsWith(Path.DirectorySeparatorChar.ToString()))
             {
@@ -258,8 +259,7 @@ namespace GetDotSpatial
                 throw new IOException(String.Format("Directory {0} doesn't exist.", targetFolder));
 
             //checking if directory already contains unzipped files
-            string[] files = Directory.GetFiles(targetFolder, "*.dll");
-            if (files.Length > 0 && !(targetFolder.Contains("Application Extensions")))
+            if (IsCorrectVersionUnzipped(targetFolder, packageId, packageVersion))
             {
                 Console.WriteLine(String.Format("The package {0} is already unzipped.", zipFile));
                 return;
@@ -297,15 +297,72 @@ namespace GetDotSpatial
                 }
                 zip.Close();
 
-                Console.WriteLine("Unzip DotSpatial - Source file processed with success.");
+                //add the version.txt file
+                string versionFilePath = Path.Combine(targetFolder, String.Format("{0}-version.txt", packageId));
+                CreateTextFile(versionFilePath, packageVersion);
+
+                Console.WriteLine("Unzip Nuget Package - Source file processed with success.");
             }
             catch (InvalidDataException)
             {
-                Console.WriteLine("Unzip DotSpatial Error: Invalid or not supported Zip file.");
+                Console.WriteLine("Unzip Package Error: Invalid or not supported Zip file.");
             }
             catch
             {
-                Console.WriteLine("Unzip DotSpatial Error while processing source file.");
+                Console.WriteLine("Unzip Package Error while processing source file.");
+            }
+        }
+
+        /// <summary>
+        /// Creates a text file containing the string
+        /// </summary>
+        /// <param name="str">the content of the text file</param>
+        private static void CreateTextFile(string versionFilePath, string versionNumber)
+        {
+            try
+            {
+                using (StreamWriter sr = new StreamWriter(versionFilePath, false))
+                {
+                    sr.WriteLine(versionNumber);
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("unable to create file: " + versionFilePath);
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("unable to create file: " + versionFilePath);
+            }
+        }
+
+        /// <summary>
+        /// Check if the correct version of the NUGET package has been unzipped
+        /// </summary>
+        /// <param name="targetFolder">the target folder</param>
+        /// <param name="version">the version number</param>
+        /// <returns></returns>
+        private static bool IsCorrectVersionUnzipped(string targetFolder, string packageId, string version)
+        {
+            if (!Directory.Exists(targetFolder)) return false;
+            
+            string versionTextFile = Path.Combine(targetFolder, String.Format("{0}-version.txt", packageId, version));
+            
+            if (!File.Exists(versionTextFile)) return false;
+
+            try
+            {
+                using (StreamReader r = new StreamReader(versionTextFile))
+                {
+                    string line = r.ReadLine();
+                    if (line.ToLower().Trim() == version) return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error reading version.txt text file. " + ex.Message);
+                return false;
             }
         }
 
