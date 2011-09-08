@@ -1,8 +1,0 @@
-E:\dev\HydroDesktop\Binaries\Plugins\Search3\Search3.dll
-E:\dev\HydroDesktop\Binaries\Plugins\Search3\Search3.pdb
-E:\dev\HydroDesktop\Source\Plugins\Search3\obj\Debug\ResolveAssemblyReference.cache
-E:\dev\HydroDesktop\Source\Plugins\Search3\obj\Debug\Search3.Properties.Resources.resources
-E:\dev\HydroDesktop\Source\Plugins\Search3\obj\Debug\GenerateResource.read.1.tlog
-E:\dev\HydroDesktop\Source\Plugins\Search3\obj\Debug\GenerateResource.write.1.tlog
-E:\dev\HydroDesktop\Source\Plugins\Search3\obj\Debug\Search3.dll
-E:\dev\HydroDesktop\Source\Plugins\Search3\obj\Debug\Search3.pdb
