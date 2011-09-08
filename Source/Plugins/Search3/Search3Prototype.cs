@@ -20,8 +20,6 @@ namespace Search3
         public override void Activate()
         {
             AddSearchRibbon();
-
-            //?? also add a search summary dock panel??
             
             base.Activate(); 
         }
@@ -29,6 +27,8 @@ namespace Search3
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
+
+            App.DockManager.Remove("kFacetedSearch");
             
             base.Deactivate();
         }
@@ -37,13 +37,15 @@ namespace Search3
         {
             var head = App.HeaderControl;
             
-            //Search ribbon tab??
+            //Search ribbon tab
             RootItem root = new RootItem(kHydroSearch3, "Search");
             root.SortOrder = -100;
             head.Add(root);
 
             //Area group
             string grpArea = "Area";
+
+            //Draw Box
             var rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.draw_box_32_a;
             rbDrawBox.SmallImage = Resources.draw_box_32_a1;
@@ -53,78 +55,84 @@ namespace Search3
             head.Add(rbDrawBox);
 
             //Select
-            var _rbSelect = new SimpleActionItem(kHydroSearch3, "Select Shape", rbSelect_Click);
-            _rbSelect.ToolTipText = "Select";
-            _rbSelect.GroupCaption = grpArea;
-            _rbSelect.LargeImage = Properties.Resources.select;
-            _rbSelect.SmallImage = Properties.Resources.select_16;
-            _rbSelect.ToggleGroupKey = grpArea;
-            head.Add(_rbSelect);
-
-            //Select Layer
-            var rbSelectLayer = new DropDownActionItem("kSearch3LayerDropDown", "Layer");
-            rbSelectLayer.GroupCaption = grpArea;
-            rbSelectLayer.AllowEditingText = true;
-            rbSelectLayer.Items.Add("Countries");
-            rbSelectLayer.Items.Add("U.S. States");
-            rbSelectLayer.Items.Add("u.S. HUC");
-            rbSelectLayer.Width = 120;
-            rbSelectLayer.RootKey = kHydroSearch3;
-            head.Add(rbSelectLayer);
-
-            //Select Field
-            var rbSelectField = new DropDownActionItem("kSearch3FieldDropDown", "Field_");
-            rbSelectField.GroupCaption = grpArea;
-            rbSelectField.AllowEditingText = true;
-            rbSelectField.Items.Add("Name");
-            rbSelectField.Items.Add("Population");
-            rbSelectField.Items.Add("FIPS");
-            rbSelectField.Width = 120;
-            //rbSelectLayer.SelectedItem = "Countries";
-            rbSelectField.RootKey = kHydroSearch3;
-            head.Add(rbSelectField);
-
-            //Select Value
-            var rbSelectVal = new DropDownActionItem("kSearch3ValueDropDown", "Value ");
-            rbSelectVal.GroupCaption = grpArea;
-            rbSelectVal.AllowEditingText = true;
-            rbSelectVal.Items.Add("Afghanistan");
-            rbSelectVal.Items.Add("Australia");
-            rbSelectVal.Items.Add("Austria");
-            rbSelectVal.Width = 120;
-            //rbSelectLayer.SelectedItem = "Countries";
-            rbSelectVal.RootKey = kHydroSearch3;
-            head.Add(rbSelectVal);
-
-            rbSelectLayer.SelectedItem = "Countries";
-            rbSelectField.SelectedItem = "Name";
+            var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
+            rbSelect.ToolTipText = "Select Region";
+            rbSelect.GroupCaption = grpArea;
+            rbSelect.LargeImage = Properties.Resources.select;
+            rbSelect.SmallImage = Properties.Resources.select_16;
+            rbSelect.ToggleGroupKey = grpArea;
+            head.Add(rbSelect);
 
             //AttributeTable
-            var _rbAttribute = new SimpleActionItem(kHydroSearch3, "Attribute", rbAttribute_Click);
-            _rbAttribute.ToolTipText = "Attribute Table";
-            _rbAttribute.GroupCaption = grpArea;
-            _rbAttribute.LargeImage = Properties.Resources.attribute_table;
-            _rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
-            head.Add(_rbAttribute);
+            var rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
+            rbAttribute.ToolTipText = "Select by Attribute";
+            rbAttribute.GroupCaption = grpArea;
+            rbAttribute.LargeImage = Properties.Resources.attribute_table;
+            rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
+            head.Add(rbAttribute);
 
+            
+
+            //do not implement these for now - use attribute table selection instead
+
+            ////Select Layer
+            //var rbSelectLayer = new DropDownActionItem("kSearch3LayerDropDown", "Layer");
+            //rbSelectLayer.GroupCaption = grpArea;
+            //rbSelectLayer.AllowEditingText = true;
+            //rbSelectLayer.Items.Add("Countries");
+            //rbSelectLayer.Items.Add("U.S. States");
+            //rbSelectLayer.Items.Add("u.S. HUC");
+            //rbSelectLayer.Width = 120;
+            //rbSelectLayer.RootKey = kHydroSearch3;
+            //head.Add(rbSelectLayer);
+
+            ////Select Field
+            //var rbSelectField = new DropDownActionItem("kSearch3FieldDropDown", "Field_");
+            //rbSelectField.GroupCaption = grpArea;
+            //rbSelectField.AllowEditingText = true;
+            //rbSelectField.Items.Add("Name");
+            //rbSelectField.Items.Add("Population");
+            //rbSelectField.Items.Add("FIPS");
+            //rbSelectField.Width = 120;
+            ////rbSelectLayer.SelectedItem = "Countries";
+            //rbSelectField.RootKey = kHydroSearch3;
+            //head.Add(rbSelectField);
+
+            ////Select Value
+            //var rbSelectVal = new DropDownActionItem("kSearch3ValueDropDown", "Value ");
+            //rbSelectVal.GroupCaption = grpArea;
+            //rbSelectVal.AllowEditingText = true;
+            //rbSelectVal.Items.Add("Afghanistan");
+            //rbSelectVal.Items.Add("Australia");
+            //rbSelectVal.Items.Add("Austria");
+            //rbSelectVal.Width = 120;
+            ////rbSelectLayer.SelectedItem = "Countries";
+            //rbSelectVal.RootKey = kHydroSearch3;
+            //head.Add(rbSelectVal);
+
+            //rbSelectLayer.SelectedItem = "Countries";
+            //rbSelectField.SelectedItem = "Name";
+
+            
 
             //Keyword Group
+            //Keyword text entry
             string grpKeyword = "Keyword";
             var rbKeyword = new TextEntryActionItem();
             rbKeyword.GroupCaption = grpKeyword;
-            rbKeyword.Text = "All Keywords";
+            
             rbKeyword.RootKey = kHydroSearch3;
             rbKeyword.Width = 150;
             head.Add(rbKeyword);
+            rbKeyword.Text = "Type-in a Keyword";
 
-            var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click)
-            {
-                LargeImage = Resources.keyword_v2_32,
-                SmallImage = Resources.keyword_v2_16,
-                GroupCaption = grpKeyword,
-                ToolTipText = "Show Keyword Ontology Tree",
-                RootKey = kHydroSearch3
-            };
+            //Keyword more options
+            var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
+            rbKeyword2.LargeImage = Resources.keyword_v2_32;
+            rbKeyword2.SmallImage = Resources.keyword_v2_16;
+            rbKeyword2.GroupCaption = grpKeyword;
+            rbKeyword2.ToolTipText = "Show Keyword Ontology Tree";
+            rbKeyword2.RootKey = kHydroSearch3;
             head.Add(rbKeyword2);
 
             //Dates group
@@ -147,6 +155,13 @@ namespace Search3
 
             rbStartDate.Text = "9/7/2010";
             rbEndDate.Text = "9/7/2011";
+
+            var rbDate = new SimpleActionItem("Select Dates", rbDate_Click);
+            rbDate.GroupCaption = grpDates;
+            rbDate.RootKey = kHydroSearch3;
+            rbDate.LargeImage = Resources.select_date_v1_32;
+            rbDate.SmallImage = Resources.select_date_v1_16;
+            head.Add(rbDate);
 
             //Web Services group
             string grpServices = "Web Services";
@@ -233,6 +248,9 @@ namespace Search3
             _rbMaxExtents.SmallImage = Properties.Resources.full_extent_16;
             head.Add(_rbMaxExtents);
 
+            
+
+
             ////ZoomToPrevious
             //_rbZoomToPrevious = new SimpleActionItem(kHomeRoot, "Previous", rbZoomToPrevious_Click);
             //_rbZoomToPrevious.ToolTipText = "Go To Previous Map Extent";
@@ -291,6 +309,7 @@ namespace Search3
             //head.Add(_rbAttribute);
         }
 
+        #region event handlers
 
         void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -304,7 +323,7 @@ namespace Search3
 
 
 
-        #region event handlers
+        
         void rbPan_Click(object sender, EventArgs e) { }
         void rbZoomIn_Click(object sender, EventArgs e) { }
         void rbZoomOut_Click(object sender, EventArgs e) { }
@@ -324,6 +343,9 @@ namespace Search3
         {
 
         }
+
+        void rbDate_Click(object Sender, EventArgs e) { }
+
         void rbServices_Click(object Sender, EventArgs e)
         {
             rbServices.Caption = "Little Bear River..";
