@@ -245,13 +245,6 @@ namespace HydroDesktop.Main
             // Separator 1
             header.Add(new SeparatorItem(FileMenuKey, rootCaption));
 
-            // Extensions
-            header.Add(new SimpleActionItem(FileMenuKey, "Extensions", OrbExtensions_Click)
-            {
-                GroupCaption = rootCaption,
-                SmallImage = Properties.Resources.extensions_16,
-                LargeImage = Properties.Resources.extensions32
-            });
             // Application Settings
             header.Add(new SimpleActionItem(FileMenuKey, "Application Settings", OrbApplicationSettings_Click)
             {
