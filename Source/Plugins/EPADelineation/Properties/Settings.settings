@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EPADelineation.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="EPADelineation_gov_epa_iaspub_OWServices" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://iaspub.epa.gov/WATERSWebServices/OWServices</Value>
-    </Setting>
     <Setting Name="localHelpUri" Type="System.String" Scope="User">
       <Value Profile="(Default)">EPA-Delineation.html</Value>
     </Setting>
