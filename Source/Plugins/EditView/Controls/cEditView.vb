@@ -79,6 +79,9 @@ Public Class cEditView
         AddHandler _seriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
         'AddHandler _args.SeriesView.SeriesSelector.SeriesSelected, AddressOf SeriesSelector_SeriesSelected
 
+        'this is used for the open existing project events
+        AddHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
+
         'SeriesSelector.MultipleCheck = True
         gboxDataFilter.Enabled = False
         ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
@@ -234,6 +237,14 @@ Public Class cEditView
 #End Region
 
 #Region "Event"
+
+    'refreshes the view when the database changes
+    Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
+
+        Me.connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
+        Me.dbTools = New DbOperations(Me.connString, DatabaseTypes.SQLite)
+
+    End Sub
 
     Private Sub cEditView_Load(ByVal sender As Object, ByVal e As EventArgs)
         'populate the series selector control
@@ -1078,7 +1089,7 @@ Public Class cEditView
                     If Not datavalue = dgvDataValues.Rows(i).Cells("DataValue").Value Then
                         SQLstring = "UPDATE DataValues SET DataValue = "
                         SQLstring += Editdt.Rows(i)("DataValue").ToString + ", QualifierID = "
-                        SQLstring += GetQualifierID(Editdt.Rows(i)("QualifierCode")).ToString
+                        SQLstring += GetQualifierID(ReadQualifierCode(Editdt.Rows(i)("QualifierCode"))).ToString
                         SQLstring += " WHERE ValueID = "
                         SQLstring += ValueID.ToString + "; "
 
@@ -1124,6 +1135,14 @@ Public Class cEditView
         lblstatus.Text = "Ready"
 
     End Sub
+
+    Private Function ReadQualifierCode(ByVal rowValue As Object)
+        If IsDBNull(rowValue) Then
+            Return String.Empty
+        Else
+            Return rowValue.ToString()
+        End If
+    End Function
 
     'Count the rows of a series
     Public Function SeriesRowsCount(ByVal SeriesID As Integer) As Integer
