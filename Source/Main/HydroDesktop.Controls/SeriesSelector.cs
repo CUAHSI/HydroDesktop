@@ -453,6 +453,7 @@ namespace HydroDesktop.Controls
             foreach (DataRow row in tbl.Rows)
             {
                 row["Checked"] = false;
+                //OnSeriesCheck(Convert.ToInt32(row["SeriesID"]), false); //to inform plugins about unchecking
             }
 
 

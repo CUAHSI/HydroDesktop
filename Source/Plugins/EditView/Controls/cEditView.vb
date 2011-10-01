@@ -244,6 +244,19 @@ Public Class cEditView
         Me.connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
         Me.dbTools = New DbOperations(Me.connString, DatabaseTypes.SQLite)
 
+        'to clear all values
+        Originaldt = Nothing
+        Editdt = Nothing
+        newseriesID = 0
+        Editing = False
+        selectedSeriesIdList.Clear()
+        nodataseriescount = 0
+        colorcount = 0
+        ShowLegend = False
+        Canceled = False
+        pTimeSeriesPlot.Clear()
+        pTimeSeriesPlot.Refreshing()
+
     End Sub
 
     Private Sub cEditView_Load(ByVal sender As Object, ByVal e As EventArgs)
