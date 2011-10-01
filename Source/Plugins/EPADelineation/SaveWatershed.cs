@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.IO;
-using System.Windows.Forms;
+using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web.Services;
-
-using DotSpatial.Data;
-using DotSpatial.Topology;
-using DotSpatial.Symbology;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.RibbonControls;
+using DotSpatial.Data;
 using DotSpatial.Projections;
+using DotSpatial.Symbology;
+using DotSpatial.Topology;
 using HydroDesktop.Configuration;
-
 using HydroDesktop.Help;
 
 namespace EPADelineation
@@ -32,9 +30,9 @@ namespace EPADelineation
 
         private IMapPluginArgs _mapArgs;
 
-        private RibbonButton _btstartDelineate;
-
         private BackgroundWorker _bgw;
+
+        private bool isActive;
 
         private ProjectionInfo _defaultProjection;
 
@@ -42,15 +40,14 @@ namespace EPADelineation
 
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
 
-        #endregion
+        #endregion Variables
 
         #region Constructor
 
-        public SaveWatershed(IMapPluginArgs mapArgs, RibbonButton btstartDelineate)
+        public SaveWatershed(IMapPluginArgs mapArgs, RibbonButton btStartDelineate)
         {
             InitializeComponent();
             _mapArgs = mapArgs;
-            _btstartDelineate = btstartDelineate;
 
             //Setup background worker
             _bgw = new BackgroundWorker();
@@ -60,11 +57,11 @@ namespace EPADelineation
             _bgw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bgw_RunWorkerCompleted);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region BackgroundWorker Methods
 
-        void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)
             {
@@ -73,7 +70,8 @@ namespace EPADelineation
 
             else if (e.Result == null)
             {
-                MessageBox.Show("No Watershed Polygon is added.");
+                _mapArgs.Map.Cursor = Cursors.Default;
+                return;
             }
 
             else
@@ -91,7 +89,7 @@ namespace EPADelineation
                     _mapArgs.Map.Cursor = Cursors.Default;
                     return;
                 }
-                
+
                 _defaultProjection = _mapArgs.Map.Projection;
 
                 DotSpatial.Projections.GeographicCategories.World world = new DotSpatial.Projections.GeographicCategories.World();
@@ -101,6 +99,7 @@ namespace EPADelineation
                 foreach (IFeatureSet fs in result)
                 {
                     fs.Projection = world.WGS1984;
+                    //fs.Reproject(_mapArgs.Map.Projection);
                     fs.Reproject(projWorld.WebMercator);
                 }
 
@@ -108,7 +107,7 @@ namespace EPADelineation
                 {
                     AddEPAShapes(result);
                     _mapArgs.Map.Cursor = Cursors.Default;
-                    _btstartDelineate.Checked = false;
+                    isActive = false;
                 }
 
                 catch (Exception ex)
@@ -118,7 +117,7 @@ namespace EPADelineation
             }
         }
 
-        void _bgw_DoWork(object sender, DoWorkEventArgs e)
+        private void _bgw_DoWork(object sender, DoWorkEventArgs e)
         {
             object[] param = e.Argument as object[];
 
@@ -184,7 +183,7 @@ namespace EPADelineation
                 _mapArgs.Map.Cursor = Cursors.Cross;
                 ((Map)_mapArgs.Map).MouseClick += new MouseEventHandler(Mouse_Click);
                 this.Close();
-                _btstartDelineate.Checked = true;
+                isActive = true;
             }
 
             catch (Exception ex)
@@ -194,7 +193,7 @@ namespace EPADelineation
                     MessageBox.Show(ex.Message);
                 }
 
-                else 
+                else
                     _mapArgs.Map.Cursor = Cursors.Default;
             }
         }
@@ -203,12 +202,12 @@ namespace EPADelineation
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-            _btstartDelineate.Checked = false;
+            isActive = false;
         }
 
         private void SaveDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _btstartDelineate.Checked = false;
+            isActive = false;
         }
 
         /// <summary>
@@ -237,11 +236,11 @@ namespace EPADelineation
         private void Mouse_Click(object sender, MouseEventArgs e)
         {
             // Make sure we aren't still working on a previous task
-            if(_bgw.IsBusy == true)
-			{
-				MessageBox.Show ( "The background worker is busy now. Please try later." );
-				return;
-			}
+            if (_bgw.IsBusy == true)
+            {
+                MessageBox.Show("The background worker is busy now. Please try later.");
+                return;
+            }
 
             MouseButtons click = e.Button;
             Coordinate projCor = new Coordinate();
@@ -251,7 +250,7 @@ namespace EPADelineation
             _defaultProjection = KnownCoordinateSystems.Projected.World.WebMercator;
 
             //Must satisfy these three prerequisites to trig the delineation
-            if ((click == MouseButtons.Left) && (_mapArgs.Map.Cursor == Cursors.Cross) && (_btstartDelineate.Checked == true))
+            if ((click == MouseButtons.Left) && (_mapArgs.Map.Cursor == Cursors.Cross) && isActive)
             {
                 try
                 {
@@ -292,7 +291,7 @@ namespace EPADelineation
             }
         }
 
-        #endregion        
+        #endregion Click_Events
 
         #region Methods
 
@@ -323,6 +322,7 @@ namespace EPADelineation
             if (startpt == null)
             {
                 progress.closeForm();
+                return null;
             }
 
             if (progress._isworking == false)
@@ -335,8 +335,27 @@ namespace EPADelineation
             IFeatureSet fsCatchment = new FeatureSet();
 
             WshedObj = trigger.GetWsheds(startpt);
+
+            if (WshedObj == null)
+            {
+
+                try
+                {
+                    progress.closeForm();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine(ex.Message);
+                    //MessageBox.Show(ex.Message);
+                    //progress.closeForm();
+                    //return;
+                }
+
+                return null;
+            }
+
             IFeatureSet fsWshed = new FeatureSet();
- 
+
             //Delete small marginal polygons if any
             try
             {
@@ -359,9 +378,10 @@ namespace EPADelineation
 
             catch (Exception ex)
             {
-
+                // As a bare minimum we should probably log these errors
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
-            
+
             //Get Upstream flowlines
             object[] StreamObj = new object[4];
             IFeatureSet fsStream = new FeatureSet();
@@ -379,7 +399,7 @@ namespace EPADelineation
             IFeatureSet fsPoint = new FeatureSet();
             fsPoint = new FeatureSet(point.FeatureType);
             fsPoint.AddFeature(point);
-            
+
             IList<IFeatureSet> EPAShapes = new List<IFeatureSet>();
             EPAShapes.Add(fsWshed);
             EPAShapes.Add(fsStream);
@@ -393,6 +413,7 @@ namespace EPADelineation
                 }
                 catch (Exception ex)
                 {
+                    System.Diagnostics.Trace.WriteLine(ex.Message);
                     //MessageBox.Show(ex.Message);
                     //progress.closeForm();
                     //return;
@@ -410,7 +431,7 @@ namespace EPADelineation
         public IFeatureSet SetAttribute(object[] attri)
         {
             if (attri == null) return null;
-            
+
             IFeatureSet Ifs = new FeatureSet();
 
             Ifs = attri[0] as IFeatureSet;
@@ -440,7 +461,7 @@ namespace EPADelineation
                     fs.Features[i].DataRow["Comid"] = comid[i];
                     fs.Features[i].DataRow["ReachCode"] = reachcode[i];
                     fs.Features[i].DataRow["Length(km)"] = totdist[i];
-                }                
+                }
             }
 
             else
@@ -474,7 +495,7 @@ namespace EPADelineation
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
-                    }   
+                    }
 
                     fs.Features[0].DataRow["Id"] = 1;
                     fs.Features[0].DataRow["Area(sq_km)"] = wshedarea;
@@ -539,66 +560,10 @@ namespace EPADelineation
                             string message = ex.Message + " /n Failed to add the streamline.";
                             MessageBox.Show(message);
                         }
-
-                        #region Previous Save Code
-                        //    string folderpath = Settings.Instance.ApplicationDataDirectory;
-                        //    string delineationpath = Path.Combine(folderpath, "Delineation");
-                        //    string filename = _stream + ".shp";
-
-                        //    if (!Directory.Exists(delineationpath))
-                        //    {
-                        //        Directory.CreateDirectory(delineationpath);
-                        //    }
-
-                        //    fsset.Filename = Path.Combine(delineationpath, filename);
-
-                        //    if (File.Exists(fsset.Filename) == true)
-                        //    {
-                        //        string message = "File " + fsset.Filename + " already exists.\nWould you like to replace it?";
-
-                        //        DialogResult replace = MessageBox.Show(message, "Save Watersheds", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        //        if (replace == DialogResult.No)
-                        //            return;
-                        //        else
-                        //        {
-                        //            File.Delete(fsset.Filename);
-                        //            fsset.Save();
-                        //        }
-                        //    }
-                        # endregion
                     }
 
                     if (fsset.FeatureType == FeatureType.Polygon)
                     {
-                        #region Previous Projection code
-                        // Different methods to display polygon/multipolygon features on the Map
-                        // This first method has problems in displaying multipolygon features
-                        //if (fsset.Features.Count == 1)
-                        //{
-                        //    //fsset.Reproject(_mapArgs.Map.Projection);
-                        //    IMapPolygonLayer polyfl = new MapPolygonLayer(fsset);
-
-                        //    polyfl.LegendText = _wshed;
-
-                        //    _mapArgs.Map.Layers.Add(polyfl);
-
-                        //    string folderpath = Settings.Instance.ApplicationDataDirectory;
-                        //    string delineationpath = Path.Combine(folderpath, "Delineation");
-                        //    string filename = _wshed + ".shp";
-
-                        //    if (!Directory.Exists(delineationpath))
-                        //    {
-                        //        Directory.CreateDirectory(delineationpath);
-                        //    }
-
-                        //    fsset.Filename = Path.Combine(delineationpath, filename);
-                        //    fsset.Save();
-                        //}
-
-                        //// This second method sometimes still rises projection problem
-                        //else if (fsset.Features.Count > 1)
-                        //{
-                        #endregion
                         try
                         {
                             //Effective in solving projection problem to display polygon
@@ -606,14 +571,13 @@ namespace EPADelineation
                             //fsset.Reproject(_mapArgs.Map.Projection);
                             fsset.SaveAs(file, true);
 
-                            FeatureSet polyfs = new FeatureSet();
-                            polyfs.Open(file);
+                            IFeatureSet polyfs = FeatureSet.OpenFile(file);
 
                             polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
                             polyfs.Reproject(_mapArgs.Map.Projection);
 
                             PolygonSymbolizer polysymbol = new PolygonSymbolizer(Color.LightBlue.ToTransparent((float)0.7), Color.DarkBlue);
-                            
+
                             IMapPolygonLayer poly = new MapPolygonLayer(polyfs);
                             poly.Symbolizer = polysymbol;
 

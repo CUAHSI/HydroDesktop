@@ -141,32 +141,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Web References\gov.epa.iaspub\OWServices.wsdl" />
-    <None Include="Web References\gov.epa.iaspub\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_IdentifyServiceOutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_NamesrvOutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_NhdIndexingOutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_NhdPointIndexingOutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_TotalWatersServiceOutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_UpdnObjnavigationoutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\gov.epa.iaspub\waters_waters_UpdnObjoutputUser.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -178,30 +152,6 @@
     <Compile Include="SaveWatershed.Designer.cs">
       <DependentUpon>SaveWatershed.cs</DependentUpon>
     </Compile>
-    <Compile Include="Web References\gov.epa.iaspub\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://iaspub.epa.gov/WATERSWebServices/OWServices%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\gov.epa.iaspub\</RelPath>
-      <UpdateFromURL>http://iaspub.epa.gov/WATERSWebServices/OWServices%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EPADelineation_gov_epa_iaspub_OWServices</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Delineation_icon_32.png" />
