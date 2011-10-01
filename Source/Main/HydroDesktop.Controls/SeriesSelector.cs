@@ -489,6 +489,9 @@ namespace HydroDesktop.Controls
             AddSimpleFilterOptions();
 
             _dataView.RowFilter = "";
+
+            //to trigger the 'refreshed' event
+            OnSelectionRefreshed();
         }
 
 

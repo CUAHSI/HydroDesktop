@@ -109,36 +109,6 @@ Namespace EditView
                 If Not helpTab Is Nothing Then
                     _mapArgs.Ribbon.Tabs.Add(helpTab)
                 End If
-            Else
-                '**********************************************************************************
-                'Code for the main view (not ribbon)
-
-
-
-                'If Not (_mapArgs.ToolStripContainer Is Nothing) Then
-
-                '    '// Add the 'Added by plugin' tab control
-                '    For Each control As Control In _mapArgs.ToolStripContainer.ContentPanel.Controls
-                '        If (TypeOf (control) Is TabControl) Then
-                '            _mainTabControl = CType(control, TabControl)
-                '            _tabPage = New TabPage("Data Editing View")
-                '            _tabPage.Name = "Edit"
-                '            _mainTabControl.TabPages.Add(_tabPage)
-
-                '            'Added by Jiri - to ensure that the series selector is re-initialized
-                '            AddHandler _mainTabControl.SelectedIndexChanged, AddressOf TabChanged
-                '            Exit For
-                '        End If
-                '    Next
-                'End If
-
-                ''    //add some items to the newly created tab control
-                'If Not (_tabPage Is Nothing) Then
-                '    Dim plots As New cEditView(_mapArgs)
-                '    _tabPage.Controls.Add(plots)
-                '    plots.Dock = DockStyle.Fill
-                '    plots.initialize()
-                'End If
             End If
 
         End Sub
