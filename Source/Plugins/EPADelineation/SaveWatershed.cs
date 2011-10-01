@@ -70,7 +70,9 @@ namespace EPADelineation
 
             else if (e.Result == null)
             {
-                MessageBox.Show("No Watershed Polygon is added.");
+                //MessageBox.Show("No Watershed Polygon is added.");
+                _mapArgs.Map.Cursor = Cursors.Default;
+                return;
             }
 
             else
@@ -98,7 +100,8 @@ namespace EPADelineation
                 foreach (IFeatureSet fs in result)
                 {
                     fs.Projection = world.WGS1984;
-                    fs.Reproject(projWorld.WebMercator);
+                    fs.Reproject(_mapArgs.Map.Projection);
+                    //fs.ReprojectPoint(projWorld.WebMercator)
                 }
 
                 try
@@ -320,6 +323,7 @@ namespace EPADelineation
             if (startpt == null)
             {
                 progress.closeForm();
+                return null;
             }
 
             if (progress._isworking == false)
@@ -332,6 +336,25 @@ namespace EPADelineation
             IFeatureSet fsCatchment = new FeatureSet();
 
             WshedObj = trigger.GetWsheds(startpt);
+
+            if (WshedObj == null)
+            {
+
+                try
+                {
+                    progress.closeForm();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine(ex.Message);
+                    //MessageBox.Show(ex.Message);
+                    //progress.closeForm();
+                    //return;
+                }
+
+                return null;
+            }
+
             IFeatureSet fsWshed = new FeatureSet();
 
             //Delete small marginal polygons if any
@@ -538,70 +561,10 @@ namespace EPADelineation
                             string message = ex.Message + " /n Failed to add the streamline.";
                             MessageBox.Show(message);
                         }
-
-                        #region Previous Save Code
-
-                        //    string folderpath = Settings.Instance.ApplicationDataDirectory;
-                        //    string delineationpath = Path.Combine(folderpath, "Delineation");
-                        //    string filename = _stream + ".shp";
-
-                        //    if (!Directory.Exists(delineationpath))
-                        //    {
-                        //        Directory.CreateDirectory(delineationpath);
-                        //    }
-
-                        //    fsset.Filename = Path.Combine(delineationpath, filename);
-
-                        //    if (File.Exists(fsset.Filename) == true)
-                        //    {
-                        //        string message = "File " + fsset.Filename + " already exists.\nWould you like to replace it?";
-
-                        //        DialogResult replace = MessageBox.Show(message, "Save Watersheds", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        //        if (replace == DialogResult.No)
-                        //            return;
-                        //        else
-                        //        {
-                        //            File.Delete(fsset.Filename);
-                        //            fsset.Save();
-                        //        }
-                        //    }
-                        # endregion
                     }
 
                     if (fsset.FeatureType == FeatureType.Polygon)
                     {
-                        #region Previous Projection code
-
-                        // Different methods to display polygon/multipolygon features on the Map
-                        // This first method has problems in displaying multipolygon features
-                        //if (fsset.Features.Count == 1)
-                        //{
-                        //    //fsset.Reproject(_mapArgs.Map.Projection);
-                        //    IMapPolygonLayer polyfl = new MapPolygonLayer(fsset);
-
-                        //    polyfl.LegendText = _wshed;
-
-                        //    _mapArgs.Map.Layers.Add(polyfl);
-
-                        //    string folderpath = Settings.Instance.ApplicationDataDirectory;
-                        //    string delineationpath = Path.Combine(folderpath, "Delineation");
-                        //    string filename = _wshed + ".shp";
-
-                        //    if (!Directory.Exists(delineationpath))
-                        //    {
-                        //        Directory.CreateDirectory(delineationpath);
-                        //    }
-
-                        //    fsset.Filename = Path.Combine(delineationpath, filename);
-                        //    fsset.Save();
-                        //}
-
-                        //// This second method sometimes still rises projection problem
-                        //else if (fsset.Features.Count > 1)
-                        //{
-
-                        #endregion Previous Projection code
-
                         try
                         {
                             //Effective in solving projection problem to display polygon

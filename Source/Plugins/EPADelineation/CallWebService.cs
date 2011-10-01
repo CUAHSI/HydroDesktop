@@ -18,6 +18,8 @@ using DotSpatial.Controls;
 using DotSpatial.Projections;
 
 using EPADelineation.gov.epa.iaspub;
+using System.Xml;
+using System.IO;
 
 namespace EPADelineation
 {
@@ -28,6 +30,8 @@ namespace EPADelineation
         private Coordinate _stPoint;
         
         private OWServices _EPAClient = null;
+
+        private string _PointIndexingUrl = "http://iaspub.epa.gov/WATERSWebServices/OWServices";
         
         private string _DelineationUrl = "http://iaspub.epa.gov/waters10/waters_services.navigationDelineationService";
 
@@ -57,8 +61,10 @@ namespace EPADelineation
         /// <returns>Returns an object[] of the start point</returns>
         public object[] GetStartPoint()
         {
-            object[] startpt = new object[2];
-            startpt = GetPointInput();
+            string[] startpt = new string[2];
+            //startpt = GetPointInput();
+
+            startpt = GetPointInputREST();
 
             return startpt;
         }
@@ -129,7 +135,74 @@ namespace EPADelineation
         #endregion 
         
         #region Private Methods
-        
+
+        /// <summary>
+        /// Gets inputs for point indexing service and call the service methods.
+        /// This uses the HTTP GET version of the request
+        /// </summary>
+        /// <returns>Returns Start Comid and Measure</returns>
+        private string[] GetPointInputREST()
+        {
+            int comid = 0;
+            double measure = 0;
+            
+            //create the input parameters
+            string pointUri = GetPointQueryUri(_stPoint);
+
+            //Declare a WebClient instance to get the Watershed Delineation response string
+            WebClient delineate = new WebClient();
+
+            string response = delineate.DownloadString(pointUri);
+            using (XmlTextReader reader = new XmlTextReader(new StringReader(response)))
+            {
+                while(reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "comid")
+                    {
+                        string comidStr = reader.ReadInnerXml();
+                        comid = Convert.ToInt32(comidStr);
+                    }
+                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "fmeasure")
+                    {
+                        string measureStr = reader.ReadInnerXml();
+                        measure = Convert.ToDouble(measureStr);
+                        break;
+                    }
+                }
+            }
+
+            if (comid > 0 && measure > 0)
+            {
+
+                string[] startpt = new string[2];
+                startpt[0] = comid.ToString();
+                startpt[1] = measure.ToString();
+
+                return startpt;
+            }
+            else
+            {
+                MessageBox.Show("No point returned. Please select a different point.");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the point query Uri
+        /// </summary>
+        /// <param name="stPoint">the point (longitude, latitude coordinates)</param>
+        /// <returns>the uri</returns>
+        private string GetPointQueryUri(Coordinate stPoint)
+        {
+            // The Max Distance is set as 100km. Non-limited distance could cause timeout.
+            string uri = String.Format("{0}?invoke=pointIndexingServiceSimple&pInputGeometry=POINT({1}+{2})" +
+                "&pInputGeometrySrid=8265&pReachresolution=3&pPointIndexingMethod=Distance" +
+                "&pPointIndexingFcodeAllow=&pPointIndexingFcodeDeny=&pPointIndexingMaxDist=100" +
+                "&pPointIndexingRaindropDist=100&pOutputPathFlag=&pTolerance=5",
+                _PointIndexingUrl, stPoint.X, stPoint.Y);
+            return uri;
+        }
+
         /// <summary>
         /// Get inputs for PointIndexing Service and call the service methods
         /// </summary>
@@ -427,10 +500,15 @@ namespace EPADelineation
 
                 return watersheds;
             }
-
-            catch (Exception ex)
+            catch (NullReferenceException)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Watershed not found. Please try a different point.");
+                return null;
+            }
+
+            catch (Exception ex2)
+            {
+                MessageBox.Show("Error searching for watershed. " + ex2.Message);
                 return null;
             }
         }

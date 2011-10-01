@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docking", "Docking\Docking.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search3", "Search3\Search3.csproj", "{FB01F6EE-89C0-4A64-B023-C8CC566FF803}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPADelineationTests", "EPADelineationTests\EPADelineationTests.csproj", "{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -280,6 +282,16 @@ Global
 		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FB01F6EE-89C0-4A64-B023-C8CC566FF803}.Release|x86.ActiveCfg = Release|Any CPU
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Debug|x86.ActiveCfg = Debug|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Debug|x86.Build.0 = Debug|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Release|Any CPU.ActiveCfg = Release|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Release|x86.ActiveCfg = Release|x86
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
