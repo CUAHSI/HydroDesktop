@@ -152,23 +152,32 @@ namespace EPADelineation
             //Declare a WebClient instance to get the Watershed Delineation response string
             WebClient delineate = new WebClient();
 
-            string response = delineate.DownloadString(pointUri);
-            using (XmlTextReader reader = new XmlTextReader(new StringReader(response)))
+            try
             {
-                while(reader.Read())
+
+                string response = delineate.DownloadString(pointUri);
+                using (XmlTextReader reader = new XmlTextReader(new StringReader(response)))
                 {
-                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "comid")
+                    while (reader.Read())
                     {
-                        string comidStr = reader.ReadInnerXml();
-                        comid = Convert.ToInt32(comidStr);
-                    }
-                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "fmeasure")
-                    {
-                        string measureStr = reader.ReadInnerXml();
-                        measure = Convert.ToDouble(measureStr);
-                        break;
+                        if (reader.NodeType == XmlNodeType.Element && reader.Name == "comid")
+                        {
+                            string comidStr = reader.ReadInnerXml();
+                            comid = Convert.ToInt32(comidStr);
+                        }
+                        if (reader.NodeType == XmlNodeType.Element && reader.Name == "fmeasure")
+                        {
+                            string measureStr = reader.ReadInnerXml();
+                            measure = Convert.ToDouble(measureStr);
+                            break;
+                        }
                     }
                 }
+            }
+            catch (WebException ex)
+            {
+                MessageBox.Show("Error calling Delineation web service. " + ex.Message);
+                return null;
             }
 
             if (comid > 0 && measure > 0)
