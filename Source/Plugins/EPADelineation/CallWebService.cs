@@ -8,6 +8,8 @@ using System.Text;
 using System.Net;
 using System.Windows.Forms;
 using System.Web.Services;
+using System.Xml;
+using System.IO;
 
 using Jayrock.Json;
 using Jayrock.Json.Conversion;
@@ -17,10 +19,6 @@ using DotSpatial.Topology;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
 
-using EPADelineation.gov.epa.iaspub;
-using System.Xml;
-using System.IO;
-
 namespace EPADelineation
 {
     class CallWebService
@@ -28,8 +26,6 @@ namespace EPADelineation
         # region Variables
 
         private Coordinate _stPoint;
-        
-        private OWServices _EPAClient = null;
 
         private string _PointIndexingUrl = "http://iaspub.epa.gov/WATERSWebServices/OWServices";
         
@@ -47,9 +43,6 @@ namespace EPADelineation
         {
             //This is a three dimensional coordinate with z=0
             _stPoint = stPoint;
-
-            //Declare an instance for OWServices
-            _EPAClient = new OWServices();
         }
         #endregion
 
@@ -62,7 +55,6 @@ namespace EPADelineation
         public object[] GetStartPoint()
         {
             string[] startpt = new string[2];
-            //startpt = GetPointInput();
 
             startpt = GetPointInputREST();
 
@@ -154,7 +146,6 @@ namespace EPADelineation
 
             try
             {
-
                 string response = delineate.DownloadString(pointUri);
                 using (XmlTextReader reader = new XmlTextReader(new StringReader(response)))
                 {
@@ -210,97 +201,6 @@ namespace EPADelineation
                 "&pPointIndexingRaindropDist=100&pOutputPathFlag=&pTolerance=5",
                 _PointIndexingUrl, stPoint.X, stPoint.Y);
             return uri;
-        }
-
-        /// <summary>
-        /// Get inputs for PointIndexing Service and call the service methods
-        /// </summary>
-        /// <returns>Returns Start Comid and Measure</returns>
-        private object[] GetPointInput()
-        {
-            //Create input parameters required for PointIndexingService
-            object[] param = new object[8];
-
-            //Critical point!!! Cannot initialize as null, since PointIndexingService rises problem if this array is null!!!!!
-            waters_waters_OwNumberVry fCode = new waters_waters_OwNumberVry();
-
-            param[0] = "POINT(" + _stPoint.X.ToString() + " " + _stPoint.Y.ToString() + ")";
-            param[1] = (decimal)8265;
-            param[2] = (decimal)3;
-            param[3] = "Distance";
-            param[4] = fCode;
-            param[5] = (decimal)5;
-            param[6] = "TRUE";
-            param[7] = (decimal)1;
-
-            //Get results from PointIndexingService
-            waters_waters_NhdPointIndexingOutputUser request = new waters_waters_NhdPointIndexingOutputUser();
-            request = IndexPoint(param);
-
-            //Declare flowline elements for delineation
-            waters_waters_WatersGmlFlowlineList flowlineList = new waters_waters_WatersGmlFlowlineList();
-            string Comid = "";
-            string Measure = "";
-
-            if (request != null)
-            {
-                flowlineList = request.aryFlowlines;
-
-                if (flowlineList == null)
-                {
-                    MessageBox.Show("No point returned. ");
-                    return null;
-                }
-
-                if (flowlineList.array != null)
-                {
-                    foreach (waters_waters_WatersGmlFlowlineUser flowline in flowlineList.array)
-                    {
-                        Comid = flowline.comid.ToString();
-                        Measure = flowline.fmeasure.ToString();
-                    }
-                }
-
-                object[] startpt = new object[2];
-                startpt[0] = Comid as object;
-                startpt[1] = Measure as object;
-
-                return startpt;
-            }
-
-            else
-            {
-                MessageBox.Show("No point returned.");
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Get the output from PointIndexing Service
-        /// </summary>
-        /// <param name="parameters">Input parmeters</param>
-        /// <returns>Returns a waters_waters_NhdPointIndexingOutputUser object</returns>
-        private waters_waters_NhdPointIndexingOutputUser IndexPoint(object[] parameters)
-        {
-            string point = (string)parameters[0];
-            decimal Srid = (decimal)parameters[1];
-            decimal resolution = (decimal)parameters[2];
-            string method = (string)parameters[3];
-            waters_waters_OwNumberVry fCode = (waters_waters_OwNumberVry)parameters[4];
-            decimal distance = (decimal)parameters[5];
-            string flag = (string)parameters[6];
-            decimal tol = (decimal)parameters[7];
-
-            try
-            {
-                return _EPAClient.pointIndexingService(point, Srid, resolution, method, fCode, fCode, distance, distance, flag, tol);
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
         }
 
         /// <summary>
@@ -414,9 +314,6 @@ namespace EPADelineation
 
                                         double[] z = new double[1];
 
-                                        //Try to project for each coordinate <-- Unecessary&Wrong
-                                        //Reproject.ReprojectPoints(xy, z, wgs84, _defaultProjection, 0, 1);
-
                                         coord.X = xy[0];
                                         coord.Y = xy[1];
 
@@ -473,9 +370,6 @@ namespace EPADelineation
                                 xy[1] = coord.Y;
 
                                 double[] z = new double[1];
-
-                                //ry to project for each coordinate <-- Unecessary&Wrong
-                                //Reproject.ReprojectPoints(xy, z, _defaultProjection, wgs84, 0, 1);
 
                                 coord.X = xy[0];
                                 coord.Y = xy[1];
@@ -567,8 +461,6 @@ namespace EPADelineation
                 //for (int i = 0; i < lineObj.Count; i++)
                 foreach (JsonObject flowObj in lineObj)
                 {
-                    //JsonObject flowObj = lineObj[i] as JsonObject;
-
                     shapeObj = flowObj["shape"] as JsonObject;
 
                     string id = flowObj["comid"].ToString();

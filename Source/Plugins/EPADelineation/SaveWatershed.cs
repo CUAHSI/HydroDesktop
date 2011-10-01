@@ -70,7 +70,6 @@ namespace EPADelineation
 
             else if (e.Result == null)
             {
-                //MessageBox.Show("No Watershed Polygon is added.");
                 _mapArgs.Map.Cursor = Cursors.Default;
                 return;
             }
@@ -100,8 +99,8 @@ namespace EPADelineation
                 foreach (IFeatureSet fs in result)
                 {
                     fs.Projection = world.WGS1984;
-                    fs.Reproject(_mapArgs.Map.Projection);
-                    //fs.ReprojectPoint(projWorld.WebMercator)
+                    //fs.Reproject(_mapArgs.Map.Projection);
+                    fs.Reproject(projWorld.WebMercator);
                 }
 
                 try
