@@ -100,6 +100,8 @@ Namespace EditView
                         _mainControl = New cEditView(_seriesView.SeriesSelector)
                         _seriesView.AddPanel(_pluginName, _mainControl)
 
+                        AddHandler _seriesView.SeriesSelector.Refreshed, AddressOf SeriesView_Refreshed
+
                     End If
                 End If
 
@@ -249,6 +251,10 @@ Namespace EditView
 #End Region
 
 #Region "Event Handlers"
+
+        Sub SeriesView_Refreshed()
+            LeavingEditView()
+        End Sub
 
         Sub EditViewTab_ActiveChanged()
             _mapArgs.PanelManager.SelectedTabName = "Series View"
