@@ -44,6 +44,20 @@ namespace TableView
 
             //the SeriesChecked event
             _seriesSelector.SeriesCheck += new SeriesEventHandler(SeriesSelector_SeriesCheck);
+
+            //refreshed method
+            _seriesSelector.Refreshed += new EventHandler(_seriesSelector_Refreshed);
+        }
+
+        //this occurs when db or project is changed
+        void _seriesSelector_Refreshed(object sender, EventArgs e)
+        {
+            try
+            {
+                dataViewSeries.Rows.Clear();
+            }
+            catch { }
+            //SetupValuesTable();
         }
         #endregion
 
