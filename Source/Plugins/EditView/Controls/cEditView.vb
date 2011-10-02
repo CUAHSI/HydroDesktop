@@ -1098,17 +1098,19 @@ Public Class cEditView
 
                     'updating point
                 ElseIf Editdt.Rows(i)("Other") = 2 Then
-                    'Update 
-                    If Not datavalue = dgvDataValues.Rows(i).Cells("DataValue").Value Then
-                        SQLstring = "UPDATE DataValues SET DataValue = "
-                        SQLstring += Editdt.Rows(i)("DataValue").ToString + ", QualifierID = "
-                        SQLstring += GetQualifierID(ReadQualifierCode(Editdt.Rows(i)("QualifierCode"))).ToString
-                        SQLstring += " WHERE ValueID = "
-                        SQLstring += ValueID.ToString + "; "
+                    'Update
+                    'This is comparing dataValue to zero. in some cases, we do want to
+                    'allow changing data value to zero..
+                    'If Not datavalue = dgvDataValues.Rows(i).Cells("DataValue").Value Then
+                    SQLstring = "UPDATE DataValues SET DataValue = "
+                    SQLstring += Editdt.Rows(i)("DataValue").ToString + ", QualifierID = "
+                    SQLstring += GetQualifierID(ReadQualifierCode(Editdt.Rows(i)("QualifierCode"))).ToString
+                    SQLstring += " WHERE ValueID = "
+                    SQLstring += ValueID.ToString + "; "
 
-                        SQLstring2 += SQLstring
+                    SQLstring2 += SQLstring
 
-                    End If
+                    'End If
                 End If
             End If
 
