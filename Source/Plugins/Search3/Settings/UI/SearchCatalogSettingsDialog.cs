@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using Search3.Settings;
 
-namespace Search3
+namespace Search3.Settings.UI
 {
     public partial class SearchCatalogSettingsDialog : Form
     {

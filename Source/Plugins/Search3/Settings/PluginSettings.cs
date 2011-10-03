@@ -36,6 +36,12 @@ namespace Search3.Settings
             }
         }
 
+        private readonly Lazy<DateSettings> _dateSettings = new Lazy<DateSettings>(() => new DateSettings());
+        public DateSettings DateSettings
+        {
+            get { return _dateSettings.Value; }
+        }
+
         void _catalogSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
