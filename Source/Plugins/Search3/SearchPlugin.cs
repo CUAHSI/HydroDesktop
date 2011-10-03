@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using Search3.Extensions;
 using Search3.Properties;
 
 namespace Search3
 {
-    public class Search3Prototype: Extension
+    public class SearchPlugin: Extension
     {
         //constants
         //root key
@@ -48,7 +49,7 @@ namespace Search3
             //Draw Box
             var rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.draw_box_32_a;
-            rbDrawBox.SmallImage = Resources.draw_box_32_a1;
+            rbDrawBox.SmallImage = Resources.draw_box_16_a;
             rbDrawBox.GroupCaption = grpArea;
             rbDrawBox.ToggleGroupKey = grpArea;
             rbDrawBox.RootKey = kHydroSearch3;
@@ -182,6 +183,7 @@ namespace Search3
             rbCatalog.GroupCaption = grpCatalog;
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
+            UpdateCatalogCaption();
 
             //search and download buttons
             string grpSearch = "Search";
@@ -320,9 +322,6 @@ namespace Search3
         {
             //throw new NotImplementedException();
         }
-
-
-
         
         void rbPan_Click(object sender, EventArgs e) { }
         void rbZoomIn_Click(object sender, EventArgs e) { }
@@ -350,12 +349,16 @@ namespace Search3
         {
             rbServices.Caption = "Little Bear River..";
         }
+
         void rbCatalog_Click(object Sender, EventArgs e)
         {
-            if (rbCatalog.Caption == "HIS Central")
-                rbCatalog.Caption = "Metadata Cache";
-            else
-                rbCatalog.Caption = "HIS Central";
+            SearchCatalogSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.CatalogSettings);
+            UpdateCatalogCaption();
+        }
+
+        private void UpdateCatalogCaption()
+        {
+            rbCatalog.Caption = Settings.PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
 
         #endregion
