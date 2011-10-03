@@ -1,4 +1,4 @@
-﻿namespace Search3
+﻿namespace Search3.Settings.UI
 {
     partial class SearchCatalogSettingsDialog
     {

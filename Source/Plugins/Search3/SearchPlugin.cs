@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using Search3.Extensions;
 using Search3.Properties;
+using Search3.Settings.UI;
 
 namespace Search3
 {
@@ -15,9 +17,11 @@ namespace Search3
         //root key
         const string kHydroSearch3 = "kHydroSearchV3";
 
-        SimpleActionItem rbServices;
-        SimpleActionItem rbCatalog;
-        
+        private SimpleActionItem rbServices;
+        private SimpleActionItem rbCatalog;
+        private TextEntryActionItem rbStartDate;
+        private TextEntryActionItem rbEndDate;
+
         public override void Activate()
         {
             AddSearchRibbon();
@@ -138,24 +142,22 @@ namespace Search3
 
             //Dates group
             string grpDates = "Time Range";
-            var rbStartDate = new TextEntryActionItem();
+            rbStartDate = new TextEntryActionItem();
             rbStartDate.Caption = "Start";
             rbStartDate.GroupCaption = grpDates;
             rbStartDate.RootKey = kHydroSearch3;
             rbStartDate.Width = 60;
-            rbStartDate.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(rbStartDate_PropertyChanged);
+            rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
             head.Add(rbStartDate);        
 
-            var rbEndDate = new TextEntryActionItem();
-            rbEndDate.Caption = "_End";
+            rbEndDate = new TextEntryActionItem();
+            rbEndDate.Caption = " End";
             rbEndDate.GroupCaption = grpDates;
             rbEndDate.RootKey = kHydroSearch3;
             rbEndDate.Width = 60;
             head.Add(rbEndDate);
-            rbEndDate.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(rbEndDate_PropertyChanged);
-
-            rbStartDate.Text = "9/7/2010";
-            rbEndDate.Text = "9/7/2011";
+            rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
+            UpdateDatesCaption();
 
             var rbDate = new SimpleActionItem("Select Dates", rbDate_Click);
             rbDate.GroupCaption = grpDates;
@@ -206,7 +208,6 @@ namespace Search3
             //map buttons
             AddMapButtons();
         }
-
 
         void AddMapButtons()
         {
@@ -312,16 +313,6 @@ namespace Search3
         }
 
         #region event handlers
-
-        void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
         
         void rbPan_Click(object sender, EventArgs e) { }
         void rbZoomIn_Click(object sender, EventArgs e) { }
@@ -342,12 +333,38 @@ namespace Search3
         {
 
         }
-
-        void rbDate_Click(object Sender, EventArgs e) { }
-
         void rbServices_Click(object Sender, EventArgs e)
         {
             rbServices.Caption = "Little Bear River..";
+        }
+
+
+
+        private void UpdateDatesCaption()
+        {
+            rbStartDate.Text = Settings.PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
+            rbEndDate.Text = Settings.PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
+        }
+        void rbDate_Click(object Sender, EventArgs e)
+        {
+            DateSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.DateSettings);
+            UpdateDatesCaption();
+        }
+        void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Text") return;
+
+            DateTime result;
+            if (DateTime.TryParse(rbEndDate.Text, out result))
+                Settings.PluginSettings.Instance.DateSettings.EndDate = result;
+        }
+        void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Text") return;
+
+            DateTime result;
+            if (DateTime.TryParse(rbStartDate.Text, out result))
+                Settings.PluginSettings.Instance.DateSettings.StartDate = result;
         }
 
         void rbCatalog_Click(object Sender, EventArgs e)
@@ -355,7 +372,6 @@ namespace Search3
             SearchCatalogSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.CatalogSettings);
             UpdateCatalogCaption();
         }
-
         private void UpdateCatalogCaption()
         {
             rbCatalog.Caption = Settings.PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
