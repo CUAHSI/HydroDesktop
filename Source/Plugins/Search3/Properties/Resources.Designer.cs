@@ -88,16 +88,16 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap draw_box_32_a {
+        internal static System.Drawing.Bitmap draw_box_16_a {
             get {
-                object obj = ResourceManager.GetObject("draw_box_32_a", resourceCulture);
+                object obj = ResourceManager.GetObject("draw_box_16_a", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap draw_box_32_a1 {
+        internal static System.Drawing.Bitmap draw_box_32_a {
             get {
-                object obj = ResourceManager.GetObject("draw_box_32_a1", resourceCulture);
+                object obj = ResourceManager.GetObject("draw_box_32_a", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

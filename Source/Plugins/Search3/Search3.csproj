@@ -35,6 +35,9 @@
       <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -46,24 +49,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SearchCatalogSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchCatalogSettingsDialog.Designer.cs">
+      <DependentUpon>SearchCatalogSettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\EnumHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Search3Prototype.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SearchPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\CatalogSettings.cs" />
+    <Compile Include="Settings\PluginSettings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SearchCatalogSettingsDialog.resx">
+      <DependentUpon>SearchCatalogSettingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="draw_box_32_a.png" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\keyword_v2_32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +150,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\select_date_v1_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\draw_box_16_a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\draw_box_32_a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\getOntologyTree.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
