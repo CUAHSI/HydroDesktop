@@ -34,5 +34,17 @@ namespace Search3.Properties {
                 this["TypeOfCatalog"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WebServices.xml")]
+        public string WebServicesFileName {
+            get {
+                return ((string)(this["WebServicesFileName"]));
+            }
+            set {
+                this["WebServicesFileName"] = value;
+            }
+        }
     }
 }
