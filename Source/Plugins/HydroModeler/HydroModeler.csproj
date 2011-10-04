@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D26B704D-1FC9-4040-A29D-21FB8707ECE1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroModeler</RootNamespace>
+    <AssemblyName>HydroModeler</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroModeler\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\Binaries\Plugins\HydroModeler\HydroModeler.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroModeler\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RunBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RunProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainTab.Designer.cs">
+      <DependentUpon>MainTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionDialog.resx">
+      <DependentUpon>ConnectionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainTab.resx">
+      <DependentUpon>MainTab.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelDialog.resx">
+      <DependentUpon>ModelDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunBox.resx">
+      <DependentUpon>RunBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunProperties.resx">
+      <DependentUpon>RunProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HelpPage.htm" />
+    <Content Include="OmiEd.ico" />
+    <None Include="Resources\component_image.ico" />
+    <None Include="Resources\model_image.ico" />
+    <None Include="Resources\pan.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\add_connection.png" />
+    <None Include="Resources\add_model.png" />
+    <None Include="Resources\change_dir.png" />
+    <None Include="Resources\component_image.bmp" />
+    <None Include="Resources\delete_icon.png" />
+    <None Include="Resources\Folder.ico" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\HydroModelerLogo.png" />
+    <None Include="Resources\model_image.bmp" />
+    <None Include="Resources\open.png" />
+    <None Include="Resources\pan.png" />
+    <None Include="Resources\run.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\saveas.png" />
+    <None Include="Resources\Source.cur" />
+    <None Include="Resources\Target.cur" />
+    <None Include="Resources\trigger.png" />
+    <None Include="Resources\xml_icon.png" />
+    <None Include="Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Help">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Help.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Gui.Controls">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Gui.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Gui.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Backbone">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Buffer">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Spatial">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMI.Standard">
+      <HintPath>Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

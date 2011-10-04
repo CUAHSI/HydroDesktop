@@ -1,0 +1,366 @@
+﻿<!-- Created with Liquid XML Studio Developer Edition (Education) 8.1.4.2482 (http://www.liquid-technologies.com) -->
+<Project DefaultTargets="Build"
+xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Semi-Automated Build Script,
+@Date:June 2010,
+@Author: valentine
+@instructions CLEAN BUILD:
+* Create a new directory, eg C:\HydrodesktopBuilds
+* check out\export "hydrodektop\trunk\Build\trunk" Directory from subversion
+* start a "visual studio command prompt"
+** Program Files>Microsoft Visual Studio 2008>Visual Studio Tools>visual studio command prompt
+* cd C:\HydrodesktopBuilds
+* msbuild BuildHydroDesktop.proj
+* wait...
+* See: http://hydrodesktop.codeplex.com/wikipage?action=Edit&title=HydroDesktop%20Building%20and%20Testing&version=15&referringTitle=Developer%20Documentation
+@notes:
+* checkout failures often occur... just start again.
+* Build Failures occur, especially if someone did not fully check-in.
+** If a file is not checked in, fail
+-->
+  <!-- ====================================
+   Imports for external tasks 
+    ====================== -->
+  <PropertyGroup>
+    <!-- hack to make MsBuild.ExtensionPack work. This is set in MsBuild.ExtensionPack.tasks -->
+    <ExtensionTasksPath>./</ExtensionTasksPath>
+	<MSBuildExtensionsPath>./</MSBuildExtensionsPath>
+	<MSBuildCommunityTasksPath>./</MSBuildCommunityTasksPath>
+	<MSBuildMercurialPath>./</MSBuildMercurialPath>
+  </PropertyGroup>
+ <!-- <Import Project="MSBuildExtensionPackBinaries3.5.6.0\MSBuild.ExtensionPack.tasks" /> -->
+ <Import Project="MSBuild.ExtensionPack.Binaries4.0.1.0\MSBuild.ExtensionPack.tasks" /> 
+  <Import Project="MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+  <Import Project="MSBuild.Mercurial\MSBuild.Mercurial.tasks"/>
+  <UsingTask TaskName="CreateRelease"
+  AssemblyFile="CodeplexTasks/CodePlex.WebServices.Client.dll" />
+  <UsingTask TaskName="UploadFiles"
+  AssemblyFile="CodeplexTasks/CodePlex.WebServices.Client.dll" />
+  <!-- ====================================
+  Properties.  USER CONFIGURABLE
+   ====================== -->
+  <!-- Properties for Codeplex Releases -->
+  <PropertyGroup>
+    <ProjectName>hydrodesktop</ProjectName>
+	<MajorVersion Condition="'$(MajorVersion)' == ''">1</MajorVersion>
+	<MinorVersion Condition="'$(MinorVersion)' == ''">3</MinorVersion>
+	<!--<ReleaseVersion Condition="'$(ReleaseVersion)' == ''">Unknown</ReleaseVersion> --><!--hopefully populated by target VersionConfig -->
+    <ReleaseName Condition="'$(ReleaseName)' == ''">Beta</ReleaseName><!-- really release type -->
+    <IsDefaultRelease Condition="'$(IsDefaultRelease)' == ''">false</IsDefaultRelease>
+    <ShowToPublic Condition="'$(ShowToPublic)' == ''">false</ShowToPublic>
+    <ShowOnHomePage Condition="'$(ShowOnHomePage)' == ''">false</ShowOnHomePage>
+    <Description Condition="'$(Description)' == ''">Hydrodesktop Release AutoBuild</Description>
+    <!-- <ReleaseDate>1/1/2007</ReleaseDate> -->
+    <ReleaseStatus>Planned</ReleaseStatus>
+  </PropertyGroup>
+ 
+  
+  <!-- ====================================
+  Properties.  FIXED. Most likely users will not change them
+   ====================== -->
+   
+  <!-- List of solutions. Now explict build files for solutions -->
+  <ItemGroup>
+    <MainSln Include="$(SourceDirectory)\Source\Main\hydrodesktop.sln"/>
+    <PlugInSln Include="$(SourceDirectory)\Source\Plugins\HydroDesktopPlugins.sln"
+    Exclude="@(excludedSolution)" />
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <twitterUser Condition="'$(twitterUser)' == ''">cuahsihisdev</twitterUser>
+    <twitterPassword Condition="'$(twitterPassword)' == ''">hisdevelopers</twitterPassword>
+    <SourceDirectory Condition="'$(SourceDirectory)' == ''">$(MSBuildProjectDirectory)/../</SourceDirectory>
+   <InnoSetupPath Condition="'$(InnoSetupPath)' == ''">$(ProgramFiles)\Inno Setup 5</InnoSetupPath>
+	<HgBase Condition="'$(HgBase)' == ''">https://hydrodesktop.svn.codeplex.com/svn</HgBase>
+	<HgMaps Condition="'$(HgMaps)' == ''">$(HgBase)/Maps</HgMaps>
+	<HgTag Condition="'$(HgTag)' == ''">default</HgTag>
+	
+    <SvnRoot Condition="'$(SvnRoot)' == ''">$(HgBase)/hydrodesktop/trunk</SvnRoot>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'==''">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+ 
+
+  <!-- ====================================
+   Cleanup tasks
+   ====================== -->
+  <Target Name="CleanSource">
+    <!-- Clean, then rebuild entire solution -->
+	<RemoveDir Directories="HydrodesktopInstaller" />
+  </Target>
+  <Target Name="Clean">
+    <PropertyGroup>
+      <errMessage>Clean</errMessage>
+    </PropertyGroup>
+    <!-- Clean, then rebuild entire solution -->
+    <!-- Does not do all solutions. -->
+    <MSBuild Projects="@(MainSln);@(PlugInSln)"
+    Targets="Clean" StopOnFirstFailure="false"
+    Properties="Configuration=$(Configuration)" />
+	
+<!--	<HgUpdate LocalPath=".." Clean="true"
+               Timeout="5000"/>
+	-->		   
+	<OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  <!-- ========= ===========================
+   BUILD tasks
+   ====================== -->
+  <Target Name="VersionConfig">
+   <MSBuild.Community.Tasks.Version BuildType="Automatic" RevisionType="BuildIncrement" Major="$(MajorVersion)" Minor="$(MinorVersion)" 
+   StartDate="01/01/2010" VersionFile="HdBuildVersion.txt">
+                <Output TaskParameter="Major" PropertyName="Major" />
+                <Output TaskParameter="Minor" PropertyName="Minor" />
+                <Output TaskParameter="Build" PropertyName="Build" />
+                <Output TaskParameter="Revision" PropertyName="Revision" />
+            </MSBuild.Community.Tasks.Version>
+            <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
+
+
+<PropertyGroup>
+<ReleaseVersion Condition="'$(ReleaseVersion)' == ''">$(Major).$(Minor).$(Build).$(Revision)</ReleaseVersion>
+</PropertyGroup>
+			  <MSBuild.Community.Tasks.AssemblyInfo CodeLanguage="CS"  
+                OutputFile="$(SourceDirectory)\Source\Main\HydroDesktop.Main\Properties\AssemblyInfo.cs" 
+                AssemblyTitle="HydroDesktop" 
+                AssemblyDescription="Hydrodesktop Main Application"
+                AssemblyConfiguration=""
+                AssemblyCompany="CUAHSI"
+                AssemblyProduct="HydroDesktop"
+                AssemblyCopyright="Copyright ©  2010-2011"
+                AssemblyTrademark=""
+                ComVisible="false"
+                CLSCompliant="true"
+                Guid="5c7aa218-d015-40ed-b09e-ed92a9daf26c"
+               AssemblyFileVersion="$(ReleaseVersion)" 
+                AssemblyVersion="$(Major).$(Minor).0.0" />
+  </Target>
+   <!-- AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" -->
+  <Target Name="Build"
+  DependsOnTargets="CleanSource;Clean;VersionConfig;BuildMain;BuildCorePlugins">
+  <!--  <CallTarget Targets="ConflictingDLLCheck" /> -->
+    <CallTarget Targets="Installer" />
+    <!-- Installer configured with no dependency. Nice to be able to call it separately -->
+    <CallTarget Targets="MessageSuccessHandler" />
+    <OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  <Target Name="ReBuild"
+  DependsOnTargets="Clean;VersionConfig;BuildMain;BuildCorePlugins">
+
+    <CallTarget Targets="Installer" />
+    <!-- Installer configured with no dependency. Nice to be able to call it separately -->
+    <CallTarget Targets="MessageSuccessHandler" />
+    <OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  <!-- ====================================
+   sub BUILD tasks
+   ====================== -->
+  <Target Name="BuildMain" DependsOnTargets="VersionConfig">
+    <PropertyGroup>
+      <errMessage>BuildMain</errMessage>
+    </PropertyGroup>
+    <!-- Clean, then rebuild entire solution -->
+    <MSBuild Projects="@(MainSln)" Targets="Build"
+    Properties="Configuration=$(Configuration)" />
+    <OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  <!-- BUILD PLUGINS -->
+  <Target Name="BuildCorePlugins" DependsOnTargets="BuildMain">
+    <PropertyGroup>
+      <errMessage>BuildCorePlugins</errMessage>
+    </PropertyGroup>
+    <MSBuild Projects="@(PlugInSln)"
+    Properties="Configuration=$(Configuration)" Targets="Build" />
+    <OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  
+  
+  <!-- HydroModeler needs to be built before it's components -->
+  <Target Name="BuildHydroModelerComponents" DependsOnTargets="BuildCorePlugins">
+    <PropertyGroup>
+      <errMessage>BuildCorePlugins</errMessage>
+    </PropertyGroup>
+    <MSBuild Projects="@(HydroModelerSln)"
+    Properties="Configuration=$(Configuration)" Targets="Build" />
+    <OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  
+ 
+  
+  <!-- =========================================
+  Post Build Checks 
+  =========================================== -->
+  
+  <Target Name="ConflictingDLLCheck">
+   
+  <ItemGroup>
+    <CoreDll Include="$(SourceDirectory)\Binaries\**\HydroDesktop.Data.dll"
+    Exclude="$(SourceDirectory)\Binaries\HydroDesktop.Data.dll" />
+    <CoreDll Include="$(SourceDirectory)\Binaries\**\HydroDesktop.Controls.dll"
+    Exclude="$(SourceDirectory)\Binaries\HydroDesktop.Controls.dll" />
+  <CoreDll Include="$(SourceDirectory)\Binaries\**\DotSpatial.*.dll"
+    Exclude="$(SourceDirectory)\Binaries\DotSpatial\DotSpatial.*.dll" />
+<!-- RootDotSpatialDll DotSpatial dlls in the root. A warning -->
+<RootDotSpatialDll Include="$(SourceDirectory)\Binaries\DotSpatial.*.dll" />
+  </ItemGroup>
+  <!-- Warning if there are DotSpatial Dlls at the root level -->
+  		 <MSBuild.ExtensionPack.Framework.MsBuildHelper TaskAction="GetItemCount" InputItems1="@(RootDotSpatialDll)">
+            <Output TaskParameter="ItemCount" PropertyName="RootDotSpatialCount"/>
+        </MSBuild.ExtensionPack.Framework.MsBuildHelper>
+		<Warning
+            Text="$(RootDotSpatialCount) DotSpatial DLL's found at the root. Look for soluntion file where the DotSpatial Dll's copy local = true.
+ @(RootDotSpatialDll.FullPath) "
+            Condition="$(RootDotSpatialCount)>0" />
+
+			<!-- Error if there are Core DLL's beblow the root -->
+		 <MSBuild.ExtensionPack.Framework.MsBuildHelper TaskAction="GetItemCount" InputItems1="@(CoreDll)">
+            <Output TaskParameter="ItemCount" PropertyName="MyCount"/>
+        </MSBuild.ExtensionPack.Framework.MsBuildHelper>
+		
+		<Message text="
+============================ 
+$(MyCount) Conflicintg DLLS Found Directories Please remove them.
+===========================================" Importance="high"  Condition="$(MyCount)>0" />
+		<Message text=" %(CoreDll.FullPath)" Importance="high" Condition="$(MyCount)>0" />
+		<Message text="
+============================ 
+Conflicintg DLLS Found Directories Please remove above files.
+===========================================" Importance="high"  Condition="$(MyCount)>0" />
+		<Error
+            Text="$(MyCount) Conflicting DLL's found in plug-in directories. Please remove them.
+ @(CoreDll.FullPath) "
+            Condition="$(MyCount)>0" />
+
+  </Target>
+  <!-- =================================
+          INSTALLER
+          =================================== -->
+  <!-- Innosetup in msbuild tasks not working. -->
+  <!-- <Target Name="Installer" DependsOnTargets="VersionConfig">
+  <MakeDir Directories="$(MSBuildProjectDirectory)\HydrodesktopInstaller" />
+  <InnoSetup
+                   ScriptFile="$(SourceDirectory)\Installer\setup.iss"
+                   OutputFileName="HydroDesktopSetup.exe"
+                   OutputPath="$(MSBuildProjectDirectory)\HydrodesktopInstaller"
+                   Quiet="True" />
+
+     <OnError ExecuteTargets="MessageErrorHandler" />
+         </Target>
+   -->
+  <!-- Innosetup command. May need to setup InnoSetupPath -->
+  <Target Name="Installer">
+    <PropertyGroup>
+      <errMessage>Installer</errMessage>
+      <installerFolder>$(MSBuildProjectDirectory)\..\Installer</installerFolder>
+      <installerOutput>$(MSBuildProjectDirectory)\HydrodesktopInstaller</installerOutput>
+      <outputFilename>HydroDesktop_Installer_$(ReleaseName)_$(ReleaseVersion)</outputFilename>
+    </PropertyGroup>
+    <MakeDir Directories="$(installerOutput)" />
+    <Exec Command="cd &quot;$(SourceDirectory)\Installer\&quot; &amp;&amp; &quot;$(InnoSetupPath)/iscc.exe&quot; /Q /O&quot;$(installerOutput)&quot; /F&quot;$(outputFilename)&quot; setup.iss" />
+    <OnError ExecuteTargets="MessageErrorHandler" />
+  </Target>
+  <!-- =================================
+          RELEASE AND RELEASE PACKAGING
+          =================================== -->
+  <Target Name="ZipSource" DependsOnTargets="Clean">
+    <PropertyGroup>
+      <errMessage>Zip Source</errMessage>
+    </PropertyGroup>
+    <ItemGroup>
+      <ZipFiles Include="$(SourceDirectory)\Source\**\*.*"
+      Exclude="$(SourceDirectory)\Source\Testing\**\*.*" />
+    </ItemGroup>
+    <MSBuild.Community.Tasks.Zip Files="@(ZipFiles)"
+    WorkingDirectory="$(SourceDirectory)"
+    ZipFileName="$(MSBuildProjectDirectory)/HydrodesktopSource-$(ReleaseName)-$(ReleaseVersion).zip" />
+    <OnError ExecuteTargets="ReleaseErrorHandler" />
+  </Target>
+  <Target Name="CreateRelease">
+    <!--   <CallTarget Targets="UpdateSourceRepository" />  -->
+    <CallTarget Targets="ZipSource" />
+    <PropertyGroup>
+      <errMessage>Create Release</errMessage>
+    </PropertyGroup>
+    <Time Format="yyyy-MM-dd">
+      <Output TaskParameter="FormattedTime"
+      PropertyName="ReleaseDate" />
+    </Time>
+    <CreateRelease ProjectName="$(ProjectName)"
+    ReleaseName="$(ReleaseName)"
+    IsDefaultRelease="$(IsDefaultRelease)"
+    ShowToPublic="$(ShowToPublic)"
+    ShowOnHomePage="$(ShowOnHomePage)" Description="$(Description)"
+    ReleaseDate="$(ReleaseDate)" ReleaseStatus="$(ReleaseStatus)"
+    UserName="$(User)" Password="$(Password)"></CreateRelease>
+    <CallTarget Targets="UploadToCodePlex" />
+    <OnError ExecuteTargets="ReleaseErrorHandler" />
+  </Target>
+  <Target Name="UploadToCodePlex">
+    <PropertyGroup>
+      <errMessage>Upload Files To Codeplex</errMessage>
+      <installerOutput>$(MSBuildProjectDirectory)\HydrodesktopInstaller</installerOutput>
+      <outputFilename>HydroDesktop_$(ReleaseName)_Installer</outputFilename>
+    </PropertyGroup>
+    <ItemGroup>
+      <ReleaseFile Include="$(MSBuildProjectDirectory)\$(installerOutput)\$(outputFilename)">
+
+        <FileType>RuntimeBinary</FileType>
+      </ReleaseFile>
+      <ReleaseFile Include="$(MSBuildProjectDirectory)\HydrodesktopSource-$(ReleaseName).zip">
+
+        <FileType>SourceCode</FileType>
+      </ReleaseFile>
+    </ItemGroup>
+    <UploadFiles ProjectName="$(ProjectName)"
+    ReleaseName="$(ReleaseName)" ReleaseFiles="@(ReleaseFile)"
+    UserName="$(User)" Password="$(Password)"></UploadFiles>
+    <OnError ExecuteTargets="ReleaseErrorHandler" />
+  </Target>
+    <!-- =================================
+          Messaging Handlers
+		  configure with .rsp file
+		  msbuild @{NAME_OF_RSP_FILE.rsp}
+          =================================== -->
+  <Target Name="MessageSuccessHandler"
+  Condition="Exists($(SendEmail))">
+    <Message Text="Build HydroDesktop_$(ReleaseName) Succeded" />
+    <MSBuild.Community.Tasks.Mail Condition="$(SendEmail)"
+    SmtpServer="$(EmailServer)" EnableSsl="$(EmailEnableSSL)"
+    To="$(EmailTo)" From="$(EmailFrom)"
+    Username="$(EmailServerUserName)" Password="$(EmailPassword)"
+    Subject="Build HydroDesktop_$(ReleaseName) Succeded"
+    Body="Build HydroDesktop_$(ReleaseName) Succeded" />
+  </Target>
+  <Target Name="MessageErrorHandler"
+  Condition="Exists($(SendEmail))">
+    <Message Text="Build Failed: @(Error-&gt;'%(Code)')" />
+    <Message Text="Build HydroDesktop_$(ReleaseName) Failed" />
+    <MSBuild.Community.Tasks.Mail Condition="$(SendEmail)"
+    SmtpServer="$(EmailServer)" EnableSsl="$(EmailEnableSSL)"
+    To="$(EmailTo)" From="$(EmailFrom)"
+    Username="$(EmailServerUserName)" Password="$(EmailPassword)"
+    Subject="Test Mail Task"
+    Body="Build Failed: @(Error-&gt;'%(Code)')" />
+  </Target>
+  <Target Name="ReleaseSuccessHandler"
+  Condition="Exists($(SendEmail))">
+    <MSBuild.Community.Tasks.Mail Condition="$(SendEmail)"
+    SmtpServer="$(EmailServer)" EnableSsl="$(EmailEnableSSL)"
+    To="$(EmailTo)" From="$(EmailFrom)"
+    Username="$(EmailServerUserName)" Password="$(EmailPassword)"
+    Subject="Test Mail Task"
+    Body="Build Failed: @(Error-&gt;'%(Code)')" />
+  </Target>
+  <Target Name="ReleaseErrorHandler"
+  Condition="Exists($(SendEmail))">
+    <Message Text="Build Failed: @(Error-&gt;'%(Code)')" />
+    <MSBuild.Community.Tasks.Mail Condition="$(SendEmail)"
+    SmtpServer="$(EmailServer)" EnableSsl="$(EmailEnableSSL)"
+    To="$(EmailTo)" From="$(EmailFrom)"
+    Username="$(EmailServerUserName)" Password="$(EmailPassword)"
+    Subject="Test Mail Task"
+    Body="Build Failed: @(Error-&gt;'%(Code)')" />
+  </Target>
+</Project>
