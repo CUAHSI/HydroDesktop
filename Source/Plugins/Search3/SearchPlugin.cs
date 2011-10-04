@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,6 @@ namespace Search3
         public override void Activate()
         {
             AddSearchRibbon();
-            
             base.Activate(); 
         }
 
@@ -175,13 +175,13 @@ namespace Search3
             rbServices.GroupCaption = grpServices;
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
+            UpdateWebServicesCaption();
 
             //Catalog group
             string grpCatalog = "Catalog";
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
             rbCatalog.LargeImage = Resources.catalog_v2_32;
             rbCatalog.SmallImage = Resources.catalog_v2_32;
-            rbCatalog.ToolTipText = "Select web services (All Services selected)";
             rbCatalog.GroupCaption = grpCatalog;
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
@@ -333,23 +333,59 @@ namespace Search3
         {
 
         }
+
+        #region WebServices
+
         void rbServices_Click(object Sender, EventArgs e)
         {
-            rbServices.Caption = "Little Bear River..";
+            WebServicesDialog.ShowDialog(Settings.PluginSettings.Instance.WebServicesSettings);
+            UpdateWebServicesCaption();
         }
 
+        private void UpdateWebServicesCaption()
+        {
+            var webWServicesSettings = Settings.PluginSettings.Instance.WebServicesSettings;
+            var checkedCount = webWServicesSettings.CheckedCount;
+            var totalCount = webWServicesSettings.TotalCount;
 
+            string caption;
+            if (checkedCount == totalCount)
+            {
+                caption = "All services";
+            }else if (checkedCount == 1)
+            {
+                // Get single checked item
+                var items = webWServicesSettings.WebServices.Where((w) => w.Checked).ToList();
+                Debug.Assert(items.Count == 1);
+                caption = items[0].Title;
+                // todo: Change button icon
+            }
+            else
+            {
+                caption = string.Format("{0} services selected", checkedCount);
+            }
+
+            rbServices.Caption = caption;
+            // Uncomment next line when will be fixed http://dotspatial.codeplex.com/workitem/351
+            // rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
+        }
+
+        #endregion
+
+        #region Dates
 
         private void UpdateDatesCaption()
         {
             rbStartDate.Text = Settings.PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
             rbEndDate.Text = Settings.PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
         }
+
         void rbDate_Click(object Sender, EventArgs e)
         {
             DateSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.DateSettings);
             UpdateDatesCaption();
         }
+
         void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
@@ -358,6 +394,7 @@ namespace Search3
             if (DateTime.TryParse(rbEndDate.Text, out result))
                 Settings.PluginSettings.Instance.DateSettings.EndDate = result;
         }
+
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
@@ -367,15 +404,22 @@ namespace Search3
                 Settings.PluginSettings.Instance.DateSettings.StartDate = result;
         }
 
+        #endregion
+
+        #region Catalog
+
         void rbCatalog_Click(object Sender, EventArgs e)
         {
             SearchCatalogSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.CatalogSettings);
             UpdateCatalogCaption();
         }
+
         private void UpdateCatalogCaption()
         {
             rbCatalog.Caption = Settings.PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
+
+        #endregion
 
         #endregion
     }

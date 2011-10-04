@@ -35,12 +35,28 @@
       <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
+    </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroDesktop.WebServices">
+      <HintPath>..\..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\Binaries\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,6 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
+    <Compile Include="HISCentralSearcher.cs" />
+    <Compile Include="SearchHelper.cs" />
+    <Compile Include="SearchResult.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +97,20 @@
     <Compile Include="Settings\CatalogSettings.cs" />
     <Compile Include="Settings\DateSettings.cs" />
     <Compile Include="Settings\PluginSettings.cs" />
+    <Compile Include="Settings\UI\WebServicesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\WebServicesDialog.Designer.cs">
+      <DependentUpon>WebServicesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\WebServicesSettings.cs" />
+    <Compile Include="WebServicesList.cs" />
+    <Compile Include="Settings\UI\WebServicesUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\WebServicesUserControl.Designer.cs">
+      <DependentUpon>WebServicesUserControl.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Settings\UI\DateSettingsDialog.resx">
@@ -89,6 +123,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\WebServicesDialog.resx">
+      <DependentUpon>WebServicesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\WebServicesUserControl.resx">
+      <DependentUpon>WebServicesUserControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

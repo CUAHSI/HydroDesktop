@@ -42,6 +42,18 @@ namespace Search3.Settings
             get { return _dateSettings.Value; }
         }
 
+        public string WebServicesXmlFileName
+        {
+            get { return Properties.Settings.Default.WebServicesFileName; }
+        }
+
+
+        private readonly Lazy<WebServicesSettings> _webServicesSettings = new Lazy<WebServicesSettings>(() => new WebServicesSettings(), true);
+        public WebServicesSettings WebServicesSettings
+        {
+            get { return _webServicesSettings.Value; }
+        }
+
         void _catalogSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
