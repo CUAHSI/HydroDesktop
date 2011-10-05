@@ -279,11 +279,12 @@ Public Class cTSA
 
         End If
         pDataSummary.StatTableStyling()
-        pTimeSeries.Refreshing()
-        pProbability.Refreshing()
-        pHistogram.Refreshing()
-        pBoxWhisker.Refreshing()
-
+        If selectedSeriesIdList.Count > 0 Then
+            pTimeSeries.Refreshing()
+            pProbability.Refreshing()
+            pHistogram.Refreshing()
+            pBoxWhisker.Refreshing()
+        End If
 
         ProgressBar.Visible = False
 
