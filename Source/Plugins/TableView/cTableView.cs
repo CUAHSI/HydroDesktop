@@ -28,6 +28,8 @@ namespace TableView
 
         //the table of data values
         private DataTable _dataValuesTable = new DataTable();
+
+        private string TableViewMode = "sequence";
         #endregion
 
         #region Constructor
@@ -54,7 +56,8 @@ namespace TableView
         {
             try
             {
-                dataViewSeries.Rows.Clear();
+                //dataViewSeries.Rows.Clear();
+                _dataValuesTable.Rows.Clear();
             }
             catch { }
             //SetupValuesTable();
@@ -72,6 +75,16 @@ namespace TableView
 
         private void ShowAllFieldsinSequence()
         {
+            //clearing values and re-setting the table when switching from parallel back to sequence mode
+            if (TableViewMode != "sequence")
+            {
+                _dataValuesTable = null;
+                SetupValuesTable();
+                bindingSource1.DataSource = _dataValuesTable;
+                dataViewSeries.DataSource = bindingSource1;
+                TableViewMode = "sequence";
+            }
+            
             if (_seriesCheckState == true)
             {
 
@@ -115,6 +128,11 @@ namespace TableView
 
         private void ShowJustValuesinParallel()
         {
+            TableViewMode = "parallel";
+            
+            //allow widening of columns
+            dataViewSeries.AllowUserToResizeColumns = true;
+
             ///Judge whether switch from ShowAllFieldsinSequence Option or not
             //not switch from ShowAllFieldsinSequence Option
             if (sequenceSwitch == false)
@@ -445,7 +463,14 @@ namespace TableView
             _seriesCheckState = e.IsChecked;
             _checkedSeriesId = e.SeriesID;
 
-            ShowAllFieldsinSequence();
+            if (rbSequence.Checked)
+            {
+                ShowAllFieldsinSequence();
+            }
+            else
+            {
+                ShowJustValuesinParallel();
+            }
 
             //if (rbSequence.Checked == true)
             //{

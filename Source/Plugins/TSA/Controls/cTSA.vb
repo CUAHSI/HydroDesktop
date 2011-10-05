@@ -53,6 +53,9 @@ Public Class cTSA
         AddHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
         'AddHandler _seriesMenu.SeriesView.SeriesSelector.SeriesSelected, AddressOf SeriesSelector_SeriesSelected
 
+        'add handler for refreshed event
+        AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
+
         SetColorCollections()
         selectedSeriesIdList.Clear()
         pTimeSeries.Clear()
@@ -94,6 +97,32 @@ Public Class cTSA
     '    'SeriesSelector.RefreshSelection()
 
     'End Sub
+
+    Private Sub SeriesSelector_Refreshed()
+        'clear all plots.
+        ClearPlots()
+    End Sub
+
+    'clears all plots in the graph
+    Public Sub ClearPlots()
+        selectedSeriesIdList.Clear()
+        'Clear the graph and replot the whole graph
+        Summary.ClearStatistics()
+        pDataSummary.ClearStatTables()
+        'pSummaryPlot.Clear()
+        pTimeSeries.Remove(0)
+        pProbability.Remove(0)
+        pTimeSeries.Clear()
+        pBoxWhisker.Clear()
+        pHistogram.Clear()
+        pProbability.Clear()
+        colorcount = 0
+        rlblStratDate.Text = "Start Date: "
+        rlblEndDate.Text = "End Date:   "
+        StartDateLimit = Today.AddYears(-150)
+        EndDateLimit = Today
+    End Sub
+
 
     Private Sub SetColorCollections()
         'Setting of color collections

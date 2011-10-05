@@ -75,6 +75,7 @@ Public Class cTimeSeriesPlot
             zgTimeSeries.IsShowVScrollBar = False
             zgTimeSeries.IsShowHScrollBar = False
             'Graph()
+            gPane.Y2AxisList.Clear()
 
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGTimeSeries.Clear" & vbCrLf & ex.Message)

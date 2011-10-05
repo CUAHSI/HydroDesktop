@@ -187,6 +187,7 @@
     <Compile Include="SeriesView.Designer.cs">
       <DependentUpon>SeriesView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Themes\ServiceCodeLookup.cs" />
     <Compile Include="Themes\SymbologyCreator.cs" />
     <Compile Include="Themes\ThemeManager.cs" />
   </ItemGroup>
