@@ -6,6 +6,7 @@ using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Configuration;
 using HydroDesktop.Search.Download.Exceptions;
 using HydroDesktop.WebServices.WaterOneFlow;
+using System.Reflection;
 
 namespace HydroDesktop.Search.Download
 {
@@ -87,7 +88,17 @@ namespace HydroDesktop.Search.Download
             }
             catch(Exception ex)
             {
-                throw new DownloadXmlException(ex.Message, ex);
+                //throw new DownloadXmlException(ex.Message, ex);
+
+                //showing InnerException
+                Exception exToWrap;
+                if (ex is TargetInvocationException &&
+                    ex.InnerException != null)
+                    exToWrap = ex.InnerException;
+                else
+                    exToWrap = ex;
+
+                throw new DownloadXmlException(exToWrap.Message, exToWrap);
             }
         }
 
