@@ -22,7 +22,7 @@ using System.Security.AccessControl;
 using HydroDesktop.Controls;
 using HydroDesktop.Controls.Themes;
 
-namespace HydroDesktop.MainPlugin
+namespace HydroDesktop.Main
 {
     public class Project
     {

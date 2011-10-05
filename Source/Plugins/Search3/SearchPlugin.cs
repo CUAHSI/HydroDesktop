@@ -44,7 +44,7 @@ namespace Search3
             
             //Search ribbon tab
             RootItem root = new RootItem(kHydroSearch3, "Search");
-            root.SortOrder = -100;
+            root.SortOrder = -5; //this should display to the right of Home
             head.Add(root);
 
             //Area group

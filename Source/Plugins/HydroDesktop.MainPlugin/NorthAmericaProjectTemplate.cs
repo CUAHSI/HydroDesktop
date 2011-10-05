@@ -10,7 +10,7 @@ using DotSpatial.Controls;
 using HydroDesktop.Configuration;
 using DotSpatial.Projections;
 
-namespace HydroDesktop.MainPlugin
+namespace HydroDesktop.Main
 {
     internal class NorthAmericaProjectTemplate
     {
