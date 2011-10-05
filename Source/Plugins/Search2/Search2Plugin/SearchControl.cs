@@ -70,7 +70,7 @@ namespace HydroDesktop.Search
             spcSearch.Panel2Collapsed = true;
             Populate_xmlcombo();
 
-            dateTimePickStart.Value = DateTime.Now.Date.AddYears(-1);
+            dateTimePickStart.Value = DateTime.Now.Date.AddYears(-5);
             dateTimePickEnd.Value = DateTime.Now;
 
             //Rectangle drawing initialization
@@ -101,7 +101,12 @@ namespace HydroDesktop.Search
 
 
             _downLoadManager = new DownloadManager {Log = log};
+
+            //selected index changed event on TabControl2
+            tabControl2.SelectedIndexChanged += new EventHandler(tabControl2_SelectedIndexChanged);
         }
+
+        
 
         #endregion
 
@@ -158,6 +163,18 @@ namespace HydroDesktop.Search
             }
         }
         #endregion
+
+        //when the Options tab is selected - refresh web services tree if it's empty
+        void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl2.SelectedIndex == 1)
+            {
+                if (treeViewWebServices.GetNodeCount(false) == 0)
+                {
+                    RefreshWebServices(false, false);
+                }
+            }
+        }
 
         //when the current project is being opened
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
@@ -656,7 +673,9 @@ namespace HydroDesktop.Search
                 //tmpxmldoc.Load ( Path.Combine(Application.StartupPath,_ontologyFilename ));
 
                 var tmpxmldoc = HdSearchOntologyHelper.ReadOntologyXmlFile();
+                treeviewOntology.SuspendLayout();
                 FillTree(tmpxmldoc.DocumentElement, treeviewOntology.Nodes);
+                treeviewOntology.ResumeLayout();
 
             }
             catch (Exception ex)
@@ -1123,13 +1142,17 @@ namespace HydroDesktop.Search
                     XmlDocument getWebServ = _webServicesList.GetWebServicesList(forceRefresh, showMessage);
                     //_webServicesList.UpdateServiceIcons();
 
+                    treeViewWebServices.SuspendLayout();
                     FillWebTree(getWebServ.DocumentElement, treeViewWebServices.Nodes);
                     treeViewWebServices.Sort();
+                    treeViewWebServices.ResumeLayout();
                 }
-                else
+                else if (SearchMode == Resources.SearchMode_MetadataCache)
                 {
+                    //if the search mode is Metadata cache, then refresh the web services and the keywords
                     treeViewWebServices.Nodes.Clear();
                     FillWebServicesFromDB();
+                    FillKeywordsFromDB();
                 }
 
                 CheckAllWebServices();
@@ -1209,6 +1232,9 @@ namespace HydroDesktop.Search
                     treeNode1.Text = service.ServiceTitle;
                     treeNode1.Name = service.Id.ToString();
                     treeViewWebServices.Nodes.Add(treeNode1);
+
+                    //make the tree node checked
+                    treeNode1.Checked = true;
                 }
                 treeViewWebServices.Sort();
 
