@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.MainPlugin
+﻿namespace HydroDesktop.Main
 {
     partial class WelcomeScreen
     {
@@ -88,7 +88,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::HydroDesktop.MainPlugin.Properties.Resources.CuahsiLogo38;
+            this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.CuahsiLogo38;
             this.pictureBox1.Location = new System.Drawing.Point(8, 13);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(194, 155);

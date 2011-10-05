@@ -8,7 +8,7 @@
     <ProjectGuid>{2FAAF21B-10DD-4430-87DC-54E981495485}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroDesktop.MainPlugin</RootNamespace>
+    <RootNamespace>HydroDesktop.Main</RootNamespace>
     <AssemblyName>HydroDesktop.MainPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

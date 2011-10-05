@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace HydroDesktop.MainPlugin
+namespace HydroDesktop.Main
 {
     /// <summary>
     /// The pre-defined HydroDesktop Project Templates

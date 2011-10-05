@@ -11,7 +11,7 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 
-namespace HydroDesktop.MainPlugin
+namespace HydroDesktop.Main
 {
     /// <summary>
     /// The welcome screen form shown on program startup
