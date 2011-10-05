@@ -158,8 +158,8 @@ Public Class cTimeSeriesPlot
                 Next row
 
 
-
-                Dim curve As LineItem = gPane.AddCurve(m_Site, pointList, m_Options.GetLineColor, SymbolType.Circle)
+                'showing both site and variable
+                Dim curve As LineItem = gPane.AddCurve(m_Site & " - " & m_Var, pointList, m_Options.GetLineColor, SymbolType.Circle)
                 curve.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
                 curve.Symbol.Fill.RangeMin = 0
                 curve.Symbol.Fill.RangeMax = 1

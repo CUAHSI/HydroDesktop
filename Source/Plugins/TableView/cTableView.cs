@@ -39,6 +39,8 @@ namespace TableView
             //to access the map and database elements
             _seriesSelector = seriesSelector;
 
+            rbSequence.Checked = true;
+
             SetupValuesTable();
             
             bindingSource1.DataSource = _dataValuesTable;
