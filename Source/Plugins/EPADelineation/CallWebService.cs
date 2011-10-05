@@ -194,10 +194,10 @@ namespace EPADelineation
         /// <returns>the uri</returns>
         private string GetPointQueryUri(Coordinate stPoint)
         {
-            // The Max Distance is set as 100km. Non-limited distance could cause timeout.
+            // The Max Distance is set as 50km. Non-limited distance could cause timeout.
             string uri = String.Format("{0}?invoke=pointIndexingServiceSimple&pInputGeometry=POINT({1}+{2})" +
                 "&pInputGeometrySrid=8265&pReachresolution=3&pPointIndexingMethod=Distance" +
-                "&pPointIndexingFcodeAllow=&pPointIndexingFcodeDeny=&pPointIndexingMaxDist=100" +
+                "&pPointIndexingFcodeAllow=&pPointIndexingFcodeDeny=&pPointIndexingMaxDist=50" +
                 "&pPointIndexingRaindropDist=100&pOutputPathFlag=&pTolerance=5",
                 _PointIndexingUrl, stPoint.X, stPoint.Y);
             return uri;
@@ -211,9 +211,9 @@ namespace EPADelineation
         /// <returns>Returns the query url</returns>
         private string GetWshedQueryUri(string qcomid, string qmeasure)
         {
-            // The Max Distance is set as 100km. Non-limited distance could cause timeout.
+            // The Max Distance is set as 50km. Non-limited distance could cause timeout.
             string uri = _DelineationUrl + "?pNavigationType=UT&pStartComid=" + qcomid + "&pStartMeasure=" + qmeasure + 
-                "&pMaxDistance=100&pMaxTime=&pAggregationFlag=true&pOutputFlag=FEATURE&pFeatureType=CATCHMENT_TOPO" +
+                "&pMaxDistance=50&pMaxTime=&pAggregationFlag=true&pOutputFlag=FEATURE&pFeatureType=CATCHMENT_TOPO" +
                 "&optCache=1269303461090&optOutGeomFormat=GEOJSON&optJSONPCallback=success";
             return uri;
         }
@@ -226,9 +226,9 @@ namespace EPADelineation
         /// <returns>Returns the query url</returns>
         private string GetStreamQueryUri(string qcomid, string qmeasure)
         {
-            // The Max Distance is set as 100km. Non-limited distance could cause timeout.
+            // The Max Distance is set as 50km. Non-limited distance could cause timeout.
             string uri = _StreamlineUrl + "?pNavigationType=UT&pStartComid=" + qcomid + "&pStartMeasure=" + qmeasure +
-                "&pStopDistancekm=100&pStopTimeOfTravel=&pFlowlinelist=true&pTraversalSummary=true" +
+                "&pStopDistancekm=50&pStopTimeOfTravel=&pFlowlinelist=true&pTraversalSummary=true" +
                 "&optCache=1269303461090&optOutGeomFormat=GEOJSON&optJSONPCallback=success";
 
             return uri;
