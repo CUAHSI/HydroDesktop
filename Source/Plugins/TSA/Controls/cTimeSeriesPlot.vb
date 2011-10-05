@@ -26,6 +26,7 @@ Public Class cTimeSeriesPlot
     ' Public Shared m_DataSet As Data.DataSet
     Public Shared m_Site As String
     Public Shared m_Var As String
+    Public Shared m_Var1 As String
     Public Shared m_Options As PlotOptions
     Public Shared m_SeriesID As Integer
 
@@ -45,6 +46,7 @@ Public Class cTimeSeriesPlot
             m_Data = objDataTable.Copy
             m_Site = strSiteName
             m_Var = strVariableName & " - " & strVariableUnits
+            m_Var1 = strVariableName
             m_Options = objOptions
             m_SeriesID = intSeriesID
             Graph()
@@ -159,7 +161,7 @@ Public Class cTimeSeriesPlot
 
 
                 'showing both site and variable
-                Dim curve As LineItem = gPane.AddCurve(m_Site & " - " & m_Var, pointList, m_Options.GetLineColor, SymbolType.Circle)
+                Dim curve As LineItem = gPane.AddCurve(m_Site & " - " & m_Var1, pointList, m_Options.GetLineColor, SymbolType.Circle)
                 curve.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
                 curve.Symbol.Fill.RangeMin = 0
                 curve.Symbol.Fill.RangeMax = 1

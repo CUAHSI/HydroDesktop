@@ -8,6 +8,7 @@ Public Class cProbabilityPlot
     Public Shared m_Data As Data.DataTable
     Public Shared m_Site As String
     Public Shared m_Var As String
+    Public Shared m_Var1 As String
     Public Shared m_Units As String
     Public Shared m_VarList As New List(Of String)
     Public Shared m_Options As PlotOptions
@@ -39,6 +40,7 @@ Public Class cProbabilityPlot
             'm_DataRows = objDataTable.Select("", "DataValue ASC")
             m_Site = strSiteName
             m_Var = strVariableName & " - " & strVariableUnits
+            m_Var1 = strVariableName
             m_Options = objOptions
             m_Units = strVariableUnits
             m_SeriesID = intSeriesID
@@ -50,7 +52,7 @@ Public Class cProbabilityPlot
             Else
                 m_StdDev = e_StdDev
             End If
-            PlotProbability(m_Site, m_Var, m_Units)
+            PlotProbability(m_Site, m_Var, m_Var1, m_Units)
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGProbability.Plot" & vbCrLf & ex.Message)
         End Try
@@ -59,7 +61,7 @@ Public Class cProbabilityPlot
     Public Sub Replot(ByVal options As PlotOptions)
         Try
             m_Options = options
-            PlotProbability(m_Site, m_Var, m_Units)
+            PlotProbability(m_Site, m_Var, m_Var1, m_Units)
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGProbability.Replot" & vbCrLf & ex.Message)
         End Try
@@ -91,7 +93,7 @@ Public Class cProbabilityPlot
 
 #Region " Probability "
 
-    Private Sub PlotProbability(ByVal site As String, ByVal variable As String, ByVal varUnits As String)
+    Private Sub PlotProbability(ByVal site As String, ByVal variable As String, ByVal variableShortName As String, ByVal varUnits As String)
         Dim i As Integer 'counter
         Dim gPane As ZedGraph.GraphPane 'GraphPane of the zgProbability plot object -> used to set data and characteristics
         'Dim g As Drawing.Graphics 'graphics object of the zgProbability plot object -> used to redraw/update the plot
@@ -246,7 +248,7 @@ Public Class cProbabilityPlot
             '7. Plot the Data
             'create the points
             'probLine = New ZedGraph.LineItem("ProbCurve")
-            probLine = gPane.AddCurve(site, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
+            probLine = gPane.AddCurve(site & " - " & variableShortName, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
             probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
             probLine.Symbol.Fill.RangeMin = 0
             probLine.Symbol.Fill.RangeMax = 1

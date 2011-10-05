@@ -6,10 +6,11 @@
         InitializeComponent()
     End Sub
 
-    Public Sub CreateStatTable(ByVal site As String, ByVal seriesId As Integer, ByVal data As DataTable, ByVal options As PlotOptions)
+    Public Sub CreateStatTable(ByVal site As String, ByVal variable As String, ByVal seriesId As Integer, ByVal data As DataTable, ByVal options As PlotOptions)
 
         If options.UseCensoredData = True Then
             dgvStatSummary.Rows.Add(site, "ID " + seriesId.ToString)
+            dgvStatSummary.Rows.Add("Variable", variable)
             dgvStatSummary.Rows.Add("# Of Observations", Statistics.Count(data))
             dgvStatSummary.Rows.Add("# Of Censored Obs.", Statistics.CountCensored(data))
             dgvStatSummary.Rows.Add("Arithmetic Mean", Statistics.ArithmeticMean(data))
@@ -38,6 +39,7 @@
             End If
             If temp.Rows.Count > 0 Then
                 dgvStatSummary.Rows.Add(site, "ID " + seriesId.ToString)
+                dgvStatSummary.Rows.Add("Variable", variable)
                 dgvStatSummary.Rows.Add("# Of Observations", Statistics.Count(temp))
                 dgvStatSummary.Rows.Add("# Of Censored Obs.", Statistics.CountCensored(temp))
                 dgvStatSummary.Rows.Add("Arithmetic Mean", Statistics.ArithmeticMean(temp))
@@ -71,11 +73,11 @@
         Next
         For Each i In dgvStatSummary.Rows
             dgvStatSummary.Rows(count).Cells(0).Style.BackColor = Drawing.Color.Yellow
-            If (count Mod 15 = 0) And Not (count = sizecount) Then
+            If (count Mod 16 = 0) And Not (count = sizecount) Then
                 dgvStatSummary.Rows(count).Cells(0).Style.BackColor = Drawing.Color.Aqua
                 dgvStatSummary.Rows(count).Cells(1).Style.BackColor = Drawing.Color.Aqua
             End If
-            If count Mod 15 = 14 Then
+            If count Mod 16 = 15 Then
                 dgvStatSummary.Rows(count).Cells(0).Style.BackColor = Drawing.Color.White
             End If
             count += 1
