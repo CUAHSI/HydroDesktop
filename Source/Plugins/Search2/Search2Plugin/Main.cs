@@ -312,10 +312,13 @@ namespace HydroDesktop.Search
             ucSearch.SearchMode = "Local Metadata Cache";
             ucSearch.lblServerValue.Text = ucSearch.Label3.Text;
             //moved to search control load
-            ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
+            ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-5);//change suggested by Dan (range 5 years)
             ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
             ucSearch.groupBox3.Visible = false;
             RefreshTheMap();
+
+            //also refresh web services
+            ucSearch.RefreshWebServices(false, false);
         }
         //his central ribbon dropdown click event
         void rbtnHISCentral_Click(object sender, EventArgs e)
@@ -325,10 +328,13 @@ namespace HydroDesktop.Search
             ucSearch.SearchMode = "HIS Central";
             ucSearch.lblServerValue.Text = ucSearch.Label3.Text;
             //moved to search control load
-            ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-100);//change suggested by Dan (range 100 years)
+            ucSearch.dateTimePickStart.Value = DateTime.Now.Date.AddYears(-5);//change suggested by Dan (range 5 years)
             ucSearch.dateTimePickEnd.Value = DateTime.Now.Date;
             ucSearch.groupBox3.Visible = true;
             RefreshTheMap();
+
+            //also refresh web services
+            ucSearch.RefreshWebServices(false, false);
         }
 
         //advanced options
