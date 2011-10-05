@@ -24,12 +24,12 @@ Partial Class fDateTimeSetting
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.dtpStartDate = New System.Windows.Forms.MonthCalendar
-        Me.dtpEndDate = New System.Windows.Forms.MonthCalendar
-        Me.lblStartDate = New System.Windows.Forms.Label
-        Me.lblEndDate = New System.Windows.Forms.Label
-        Me.btnApply = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
+        Me.dtpStartDate = New System.Windows.Forms.MonthCalendar()
+        Me.dtpEndDate = New System.Windows.Forms.MonthCalendar()
+        Me.lblStartDate = New System.Windows.Forms.Label()
+        Me.lblEndDate = New System.Windows.Forms.Label()
+        Me.btnApply = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'dtpStartDate
@@ -65,6 +65,7 @@ Partial Class fDateTimeSetting
         '
         'btnApply
         '
+        Me.btnApply.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnApply.Location = New System.Drawing.Point(12, 222)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(380, 23)
@@ -74,6 +75,7 @@ Partial Class fDateTimeSetting
         '
         'btnCancel
         '
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(12, 251)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(380, 23)

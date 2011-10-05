@@ -457,7 +457,12 @@ Namespace TSA
             Dim frmDateTimeSetting = New fDateTimeSetting
             frmDateTimeSetting._CTSA = _mainControl
             frmDateTimeSetting.initialize()
-            frmDateTimeSetting.ShowDialog()
+
+            'also changing dates in the ribbon
+            If frmDateTimeSetting.ShowDialog() = DialogResult.OK Then
+                rlblStratDate.Text = "Start Date: " & _mainControl.StartDateTime.ToString()
+                rlblEndDate.Text = "End Date: " & _mainControl.EndDateTime.ToString()
+            End If
         End Sub
 
         Sub rckbDisplayFullDateRange_CheckBoxCheckChanged()
