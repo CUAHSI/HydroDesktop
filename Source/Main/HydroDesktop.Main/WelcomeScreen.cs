@@ -261,8 +261,21 @@ namespace HydroDesktop.Main
                 {
                     this.RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
                 }
-
             }
+
+            //also add the project files from hd_sample_projects folder
+            string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "hydrodesktop_sample_projects");
+            if (Directory.Exists(projDir))
+            {
+                string[] projFiles = Directory.GetFiles(projDir, "*.dspx",SearchOption.AllDirectories);
+                foreach(string projFile in projFiles)
+                {
+                    ProjectFileInfo projFileInfo = new ProjectFileInfo(projFile);
+                    if (!RecentProjectFiles.Contains(projFileInfo))
+                        RecentProjectFiles.Add(projFileInfo);
+                }
+            }
+
             bsRecentFiles.ResetBindings(false);
             lstRecentProjects.SelectedIndex = -1;
         }
@@ -300,6 +313,16 @@ namespace HydroDesktop.Main
         public override string ToString()
         {
             return Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ProjectFileInfo)
+            {
+                return ((ProjectFileInfo)obj).FullPath.Equals(FullPath);
+            }
+            
+            return base.Equals(obj);
         }
     }
 }

@@ -199,7 +199,8 @@ Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroMo
 ;Source: "hydromodeler_example_configurations\example_configuration_02"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_02"; Permissions: everyone-modify
 ;Source: "hydromodeler_example_configurations\example_configuration_03"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_03"; Permissions: everyone-modify
 
-
+;Sample Projects for testing & getting started
+Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Permissions: everyone-modify; Flags: recursesubdirs
 
 [Icons]
 Name: "{group}\HydroDesktop"; Filename: "{app}\HydroDesktop.exe"
