@@ -90,11 +90,11 @@
 
         Do Until (row > dgvStatSummary.RowCount - 1)
             If dgvStatSummary.Rows(row).Cells(1).Value = "ID " + SeriesID.ToString Then
-                For i = 0 To 14
+                For i = 0 To 15
                     dgvStatSummary.Rows.Remove(dgvStatSummary.Rows(row))
                 Next
             Else
-                row += 15
+                row += 16
             End If
 
         Loop
