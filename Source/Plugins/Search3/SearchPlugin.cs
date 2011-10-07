@@ -4,8 +4,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using DotSpatial.Projections;
+using DotSpatial.Symbology;
+using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
 using Search3.Settings.UI;
@@ -22,6 +26,7 @@ namespace Search3
         private SimpleActionItem rbCatalog;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
+        private RectangleDrawing _rectangleDrawing;
 
         public override void Activate()
         {
@@ -43,12 +48,13 @@ namespace Search3
             var head = App.HeaderControl;
             
             //Search ribbon tab
-            RootItem root = new RootItem(kHydroSearch3, "Search");
+            var root = new RootItem(kHydroSearch3, "Search");
             root.SortOrder = -100;
             head.Add(root);
 
-            //Area group
-            string grpArea = "Area";
+            #region Area group
+
+            const string grpArea = "Area";
 
             //Draw Box
             var rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
@@ -63,8 +69,8 @@ namespace Search3
             var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
             rbSelect.ToolTipText = "Select Region";
             rbSelect.GroupCaption = grpArea;
-            rbSelect.LargeImage = Properties.Resources.select;
-            rbSelect.SmallImage = Properties.Resources.select_16;
+            rbSelect.LargeImage = Resources.select;
+            rbSelect.SmallImage = Resources.select_16;
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
 
@@ -72,11 +78,12 @@ namespace Search3
             var rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
             rbAttribute.ToolTipText = "Select by Attribute";
             rbAttribute.GroupCaption = grpArea;
-            rbAttribute.LargeImage = Properties.Resources.attribute_table;
-            rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
+            rbAttribute.LargeImage = Resources.attribute_table;
+            rbAttribute.SmallImage = Resources.attribute_table_16;
             head.Add(rbAttribute);
 
-            
+            #endregion
+
 
             //do not implement these for now - use attribute table selection instead
 
@@ -212,7 +219,7 @@ namespace Search3
             {
                 RootKey = kHydroSearch3,
                 GroupCaption = grpSearch,
-                LargeImage = Properties.Resources.download32
+                LargeImage = Resources.download32
             };
             App.HeaderControl.Add(btnDownload);
 
@@ -329,11 +336,77 @@ namespace Search3
         void rbZoomIn_Click(object sender, EventArgs e) { }
         void rbZoomOut_Click(object sender, EventArgs e) { }
         void rbFullExtent_Click(object sender, EventArgs e) { }
-        void rbSelect_Click(object sender, EventArgs e) { }
-        void rbAttribute_Click(object sender, EventArgs e) { }
         void rbSearch_Click(object sender, EventArgs e) { }
         void rbDownload_Click(object sender, EventArgs e) { }
-        void rbDrawBox_Click(object Sender, EventArgs e){}
+
+        #region  Area group
+
+        void rbDrawBox_Click(object Sender, EventArgs e)
+        {
+            if (_rectangleDrawing == null)
+            {
+                _rectangleDrawing = new RectangleDrawing(App.Map);
+                _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
+            }
+
+            _rectangleDrawing.Activate();
+        }
+
+        void rectangleDrawing_RectangleCreated(object sender, EventArgs e)
+        {
+            if (_rectangleDrawing == null) return;
+
+            var xMin = _rectangleDrawing.RectangleExtent.MinX;
+            var yMin = _rectangleDrawing.RectangleExtent.MinY;
+            var xMax = _rectangleDrawing.RectangleExtent.MaxX;
+            var yMax = _rectangleDrawing.RectangleExtent.MaxY;
+
+            var xy = new[] { xMin, yMin, xMax, yMax };
+
+            string esri = Resources.wgs_84_esri_string;
+            var wgs84 = new ProjectionInfo();
+            wgs84.ReadEsriString(esri);
+
+            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, wgs84, 0, 2);
+
+            //todo: save/show selected rectangle coords
+            /*listBox4.Items.Clear();
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[0]));
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[1]));
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[2]));
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[3]));
+             */ 
+        }
+
+        void rbSelect_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Select;
+        }
+
+        void rbAttribute_Click(object sender, EventArgs e)
+        {
+            var featureLayerIsSelected = false;
+
+            foreach (var lay in ((Map)App.Map).GetAllLayers())
+            {
+                var ori_fl = lay as IMapFeatureLayer;
+                if (ori_fl == null) continue;
+                if (ori_fl.IsSelected)
+                {
+                    featureLayerIsSelected = true;
+                    App.Map.FunctionMode = FunctionMode.Select;
+                    ori_fl.ShowAttributes();
+                }
+            }
+            //if no layer is selected, inform the user
+            if (!featureLayerIsSelected)
+            {
+                MessageBox.Show("Please select a layer in the legend.", "Information", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+            }
+        }
+
+        #endregion
 
         #region Keywords
 
