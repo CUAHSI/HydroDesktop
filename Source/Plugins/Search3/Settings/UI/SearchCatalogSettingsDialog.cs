@@ -60,7 +60,7 @@ namespace Search3.Settings.UI
 
         #endregion
 
-        public static void ShowDialog(CatalogSettings catalogSettings)
+        public static DialogResult ShowDialog(CatalogSettings catalogSettings)
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
 
@@ -72,11 +72,13 @@ namespace Search3.Settings.UI
                     if (false)
                     {
                         form.DialogResult = DialogResult.None;
-                        return;
+                        return DialogResult.None;
                     }
 
                     catalogSettings.Copy(form._catalogSettings);
                 }
+
+                return form.DialogResult;
             }
         }
 

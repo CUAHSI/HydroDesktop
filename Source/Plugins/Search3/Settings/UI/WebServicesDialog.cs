@@ -12,7 +12,7 @@ namespace Search3.Settings.UI
             webServicesUserControl1.SetWebServices(settings.WebServices);
         }
 
-        public static void ShowDialog(WebServicesSettings settings)
+        public static DialogResult ShowDialog(WebServicesSettings settings)
         {
             if (settings == null) throw new ArgumentNullException("settings");
 
@@ -20,8 +20,12 @@ namespace Search3.Settings.UI
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    settings.WebServices = form.webServicesUserControl1.GetWebServices();
+                    settings.WebServices =
+                        new System.Collections.ObjectModel.ReadOnlyCollection<WebServiceNode>(
+                            form.webServicesUserControl1.GetWebServices());
                 }
+
+                return form.DialogResult;
             }
         }
 

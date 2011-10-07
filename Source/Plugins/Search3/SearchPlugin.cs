@@ -12,6 +12,7 @@ using DotSpatial.Symbology;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
+using Search3.Settings;
 using Search3.Settings.UI;
 
 namespace Search3
@@ -136,7 +137,6 @@ namespace Search3
             rbKeyword.Width = 150;
             head.Add(rbKeyword);
             rbKeyword.Text = "Type-in a Keyword";
-            UpdateKeywordsCaption();
 
             //Keyword more options
             var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
@@ -188,7 +188,6 @@ namespace Search3
             rbServices.GroupCaption = grpServices;
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
-            UpdateWebServicesCaption();
 
             #endregion
 
@@ -410,21 +409,23 @@ namespace Search3
 
         #region Keywords
 
-        private void UpdateKeywordsCaption()
-        {
-            //todo: Implememnt me
-        }
-
         void rbKeyword_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
             //todo: implement tooltip with keyword mathcing
         }
 
+        private void UpdateKeywordsCaption()
+        {
+            //todo: Implememnt me
+        }
+
         void rbKeyword_Click(object Sender, EventArgs e)
         {
-            KeywordsDialog.ShowDialog(Settings.PluginSettings.Instance.KeywordsSettings);
-            UpdateKeywordsCaption();
+            if (KeywordsDialog.ShowDialog(PluginSettings.Instance.KeywordsSettings) == DialogResult.OK)
+            {
+                UpdateKeywordsCaption();
+            }
         }
 
         #endregion
@@ -433,13 +434,15 @@ namespace Search3
 
         void rbServices_Click(object Sender, EventArgs e)
         {
-            WebServicesDialog.ShowDialog(Settings.PluginSettings.Instance.WebServicesSettings);
-            UpdateWebServicesCaption();
+            if (WebServicesDialog.ShowDialog(PluginSettings.Instance.WebServicesSettings) == DialogResult.OK)
+            {
+                UpdateWebServicesCaption();
+            }
         }
 
         private void UpdateWebServicesCaption()
         {
-            var webWServicesSettings = Settings.PluginSettings.Instance.WebServicesSettings;
+            var webWServicesSettings = PluginSettings.Instance.WebServicesSettings;
             var checkedCount = webWServicesSettings.CheckedCount;
             var totalCount = webWServicesSettings.TotalCount;
 
@@ -471,14 +474,16 @@ namespace Search3
 
         private void UpdateDatesCaption()
         {
-            rbStartDate.Text = Settings.PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
-            rbEndDate.Text = Settings.PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
+            rbStartDate.Text = PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
+            rbEndDate.Text = PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
         }
 
         void rbDate_Click(object Sender, EventArgs e)
         {
-            DateSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.DateSettings);
-            UpdateDatesCaption();
+            if (DateSettingsDialog.ShowDialog(PluginSettings.Instance.DateSettings) == DialogResult.OK)
+            {
+                UpdateDatesCaption();
+            }
         }
 
         void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -487,7 +492,7 @@ namespace Search3
 
             DateTime result;
             if (DateTime.TryParse(rbEndDate.Text, out result))
-                Settings.PluginSettings.Instance.DateSettings.EndDate = result;
+                PluginSettings.Instance.DateSettings.EndDate = result;
         }
 
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -496,7 +501,7 @@ namespace Search3
 
             DateTime result;
             if (DateTime.TryParse(rbStartDate.Text, out result))
-                Settings.PluginSettings.Instance.DateSettings.StartDate = result;
+                PluginSettings.Instance.DateSettings.StartDate = result;
         }
 
         #endregion
@@ -505,13 +510,15 @@ namespace Search3
 
         void rbCatalog_Click(object Sender, EventArgs e)
         {
-            SearchCatalogSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.CatalogSettings);
-            UpdateCatalogCaption();
+            if (SearchCatalogSettingsDialog.ShowDialog(PluginSettings.Instance.CatalogSettings) == DialogResult.OK)
+            {
+                UpdateCatalogCaption();
+            }
         }
 
         private void UpdateCatalogCaption()
         {
-            rbCatalog.Caption = Settings.PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
+            rbCatalog.Caption = PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
 
         #endregion

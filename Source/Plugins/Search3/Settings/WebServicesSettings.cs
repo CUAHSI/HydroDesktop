@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using Search3.Settings.UI;
 
 namespace Search3.Settings
 {
     public class WebServicesSettings
     {
-        private IEnumerable<WebServiceNode> _webServices;
-        public IEnumerable<WebServiceNode> WebServices
+        private IList<WebServiceNode> _webServices;
+        public ReadOnlyCollection<WebServiceNode> WebServices
         {
-            get { return _webServices ?? (_webServices = new WebServicesList().GetWebServicesCollection()); }
+            get
+            {
+                if (_webServices == null)
+                {
+                    _webServices = new WebServicesList().GetWebServicesCollection().ToList();
+                }
+                return new ReadOnlyCollection<WebServiceNode>(_webServices);
+            }
             set
             {
                 Debug.Assert(value != null);
@@ -38,11 +45,10 @@ namespace Search3.Settings
             var result = new WebServicesSettings();
             result.Copy(this);
             return result;
-
         }
 
         /// <summary>
-        /// Create deep from source into current instance.
+        /// Create deep copy from source into current instance.
         /// </summary>
         /// <param name="source">Source.</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>must be not null.</exception>
@@ -52,7 +58,7 @@ namespace Search3.Settings
 
             var list = new List<WebServiceNode>(source.WebServices.Count());
             list.AddRange(source.WebServices.Select(webNode => webNode.Copy()));
-            WebServices = list;
+            WebServices = new ReadOnlyCollection<WebServiceNode>(list);
         }
     }
 }
