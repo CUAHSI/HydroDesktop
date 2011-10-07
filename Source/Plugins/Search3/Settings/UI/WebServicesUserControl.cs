@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using Search3.WebServices;
 
 namespace Search3.Settings.UI
 {
@@ -95,7 +96,7 @@ namespace Search3.Settings.UI
         /// </summary>
         public void RefreshWebServices()
         {
-            RefreshWebServices(new WebServicesList().GetWebServicesCollection());
+            RefreshWebServices(new WebServicesList().GetWebServices());
         }
 
 
