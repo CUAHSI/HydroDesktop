@@ -101,6 +101,10 @@ Public Class cTSA
     Private Sub SeriesSelector_Refreshed()
         'clear all plots.
         ClearPlots()
+
+        'set the TimeSeriesPlot seriesSelector
+        pTimeSeries.SeriesSelector = _seriesMenu
+
     End Sub
 
     'clears all plots in the graph
