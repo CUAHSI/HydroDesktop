@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using Search3.WebServices;
 
 namespace Search3.Settings
 {
@@ -15,7 +16,7 @@ namespace Search3.Settings
             {
                 if (_webServices == null)
                 {
-                    _webServices = new WebServicesList().GetWebServicesCollection().ToList();
+                    _webServices = new WebServicesList().GetWebServices().ToList();
                 }
                 return new ReadOnlyCollection<WebServiceNode>(_webServices);
             }
