@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Search3.Settings.UI
@@ -27,7 +21,7 @@ namespace Search3.Settings.UI
 
         #region Public methods
 
-        public static void ShowDialog(KeywordsSettings settings)
+        public static DialogResult ShowDialog(KeywordsSettings settings)
         {
             if (settings == null) throw new ArgumentNullException("settings");
 
@@ -37,6 +31,8 @@ namespace Search3.Settings.UI
                 {
                     settings.SelectedKeywords = form.keywordsUserControl1.GetSelectedKeywords();
                 }
+
+                return form.DialogResult;
             }
         }
 

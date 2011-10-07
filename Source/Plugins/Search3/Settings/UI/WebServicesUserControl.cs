@@ -113,10 +113,10 @@ namespace Search3.Settings.UI
         }
 
         /// <summary>
-        /// Get all web services as IEnumerable.
+        /// Get all web services.
         /// </summary>
         /// <returns>Collection of all web services.</returns>
-        public IEnumerable<WebServiceNode> GetWebServices()
+        public IList<WebServiceNode> GetWebServices()
         {
             var list = new List<WebServiceNode>(treeViewWebServices.Nodes.Count);
             list.AddRange(from TreeNode tnode in treeViewWebServices.Nodes select (WebServiceNode) tnode.Tag);

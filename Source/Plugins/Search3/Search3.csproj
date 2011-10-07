@@ -95,6 +95,8 @@
     <Compile Include="Searchers\SearchHelper.cs" />
     <Compile Include="Searchers\SearchResult.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
+    <Compile Include="Settings\OntologyNode.cs" />
+    <Compile Include="Settings\OntologyTree.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -56,7 +56,7 @@ namespace Search3.Settings.UI
             }
         }
 
-        public static void ShowDialog(DateSettings dateSettings)
+        public static DialogResult ShowDialog(DateSettings dateSettings)
         {
             if (dateSettings == null) throw new ArgumentNullException("dateSettings");
 
@@ -66,6 +66,8 @@ namespace Search3.Settings.UI
                 {
                     dateSettings.Copy(form._dateSettings);
                 }
+
+                return form.DialogResult;
             }
         }
 
