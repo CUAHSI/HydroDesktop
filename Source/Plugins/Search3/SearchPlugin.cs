@@ -118,18 +118,18 @@ namespace Search3
             //rbSelectLayer.SelectedItem = "Countries";
             //rbSelectField.SelectedItem = "Name";
 
-            
+            #region Keyword Group
 
-            //Keyword Group
             //Keyword text entry
-            string grpKeyword = "Keyword";
+            const string grpKeyword = "Keyword";
             var rbKeyword = new TextEntryActionItem();
+            rbKeyword.PropertyChanged += rbKeyword_PropertyChanged;
             rbKeyword.GroupCaption = grpKeyword;
-            
             rbKeyword.RootKey = kHydroSearch3;
             rbKeyword.Width = 150;
             head.Add(rbKeyword);
             rbKeyword.Text = "Type-in a Keyword";
+            UpdateKeywordsCaption();
 
             //Keyword more options
             var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
@@ -140,8 +140,11 @@ namespace Search3
             rbKeyword2.RootKey = kHydroSearch3;
             head.Add(rbKeyword2);
 
-            //Dates group
-            string grpDates = "Time Range";
+            #endregion
+
+            #region Dates group
+
+            const string grpDates = "Time Range";
             rbStartDate = new TextEntryActionItem();
             rbStartDate.Caption = "Start";
             rbStartDate.GroupCaption = grpDates;
@@ -166,8 +169,11 @@ namespace Search3
             rbDate.SmallImage = Resources.select_date_v1_16;
             head.Add(rbDate);
 
-            //Web Services group
-            string grpServices = "Web Services";
+            #endregion
+
+            #region Web Services group
+
+            const string grpServices = "Web Services";
             rbServices = new SimpleActionItem("All Services", rbServices_Click);
             rbServices.LargeImage = Resources.web_services_v1_32;
             rbServices.SmallImage = Resources.web_services_v1_16;
@@ -177,8 +183,11 @@ namespace Search3
             head.Add(rbServices);
             UpdateWebServicesCaption();
 
-            //Catalog group
-            string grpCatalog = "Catalog";
+            #endregion
+
+            #region Catalog group
+
+            const string grpCatalog = "Catalog";
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
             rbCatalog.LargeImage = Resources.catalog_v2_32;
             rbCatalog.SmallImage = Resources.catalog_v2_32;
@@ -186,6 +195,8 @@ namespace Search3
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
             UpdateCatalogCaption();
+
+            #endregion
 
             //search and download buttons
             string grpSearch = "Search";
@@ -208,7 +219,7 @@ namespace Search3
             //map buttons
             AddMapButtons();
         }
-
+      
         void AddMapButtons()
         {
             string kHomeRoot = kHydroSearch3;
@@ -320,19 +331,30 @@ namespace Search3
         void rbFullExtent_Click(object sender, EventArgs e) { }
         void rbSelect_Click(object sender, EventArgs e) { }
         void rbAttribute_Click(object sender, EventArgs e) { }
-        
         void rbSearch_Click(object sender, EventArgs e) { }
         void rbDownload_Click(object sender, EventArgs e) { }
+        void rbDrawBox_Click(object Sender, EventArgs e){}
 
+        #region Keywords
 
-        void rbDrawBox_Click(object Sender, EventArgs e)
+        private void UpdateKeywordsCaption()
         {
-
+            //todo: Implememnt me
         }
+
+        void rbKeyword_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Text") return;
+            //todo: implement tooltip with keyword mathcing
+        }
+
         void rbKeyword_Click(object Sender, EventArgs e)
         {
-
+            KeywordsDialog.ShowDialog(Settings.PluginSettings.Instance.KeywordsSettings);
+            UpdateKeywordsCaption();
         }
+
+        #endregion
 
         #region WebServices
 
@@ -366,7 +388,7 @@ namespace Search3
             }
 
             rbServices.Caption = caption;
-            // Uncomment next line when will be fixed http://dotspatial.codeplex.com/workitem/351
+            // todo: Uncomment next line when will be fixed http://dotspatial.codeplex.com/workitem/351
             // rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
         }
 

@@ -46,5 +46,29 @@ namespace Search3.Properties {
                 this["WebServicesFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\Synonyms.xml")]
+        public string SynonymsFilename {
+            get {
+                return ((string)(this["SynonymsFilename"]));
+            }
+            set {
+                this["SynonymsFilename"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\\\OntologyTree.xml")]
+        public string OntologyFilename {
+            get {
+                return ((string)(this["OntologyFilename"]));
+            }
+            set {
+                this["OntologyFilename"] = value;
+            }
+        }
     }
 }
