@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Search3.Searchers;
 using Search3.Settings;
-using Search3.Settings.UI;
 using log4net;
 
 namespace Search3

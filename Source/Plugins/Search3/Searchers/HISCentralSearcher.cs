@@ -15,7 +15,7 @@ using System.Xml;
 using Search3.Extensions;
 using log4net;
 
-namespace Search3
+namespace Search3.Searchers
 {
     public interface IHISCentralSearcher
     {
@@ -138,70 +138,47 @@ namespace Search3
 
         public void GetWebServicesXml(string xmlFileName)
         {
-            bool useTimeout = true;
-            if (useTimeout)
+            HttpWebResponse response = null;
+            int bytesRead = 0;
+            try
             {
+                string url = HISCentralUrl + "/GetWaterOneFlowServiceInfo";
 
-                HttpWebResponse response = null;
-                int bytesRead = 0;
-                try
+                var request = (HttpWebRequest) WebRequest.Create(url);
+                //Endpoint is the URL to which u are making the request.
+                request.Method = "GET";
+                request.Credentials = CredentialCache.DefaultCredentials;
+                request.ContentType = "text/xml";
+
+                request.Timeout = 5000;
+
+                // send the request and get the response
+                response = (HttpWebResponse) request.GetResponse();
+
+                using (var responseStream = response.GetResponseStream())
                 {
-                    string url = HISCentralUrl + "/GetWaterOneFlowServiceInfo";
-
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    //Endpoint is the URL to which u are making the request.
-                    request.Method = "GET";
-                    request.Credentials = CredentialCache.DefaultCredentials;
-                    request.ContentType = "text/xml";
-
-                    request.Timeout = 5000;
-
-                    // send the request and get the response
-                    response = (HttpWebResponse)request.GetResponse();
-
-                    if (response == null)
+                    using (var localFileStream = new FileStream(xmlFileName, FileMode.Create))
                     {
+                        byte[] buffer = new byte[255];
+                        double totalBytesRead = 0;
 
-                        //MessageBox.Show("Get web services from his cetral taking too long to respond.");
-                        return;
-                    }
-
-                    using (Stream responseStream = response.GetResponseStream())
-                    {
-                        using (FileStream localFileStream = new FileStream(xmlFileName, FileMode.Create))
+                        while ((bytesRead = responseStream.Read(buffer, 0, buffer.Length)) > 0)
                         {
-                            byte[] buffer = new byte[255];
-                            double totalBytesRead = 0;
-
-                            while ((bytesRead = responseStream.Read(buffer, 0, buffer.Length)) > 0)
-                            {
-                                totalBytesRead += bytesRead;
-                                localFileStream.Write(buffer, 0, bytesRead);
-                            }
+                            totalBytesRead += bytesRead;
+                            localFileStream.Write(buffer, 0, bytesRead);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    string str = ex.Message;
-                }
-                finally
+            }
+            catch (Exception ex)
+            {
+                //todo: log me   
+            }
+            finally
+            {
+                if (response != null)
                 {
                     response.Close();
-                }
-            }
-            else
-            {
-
-                WebClient client = new WebClient();
-                try
-                {
-                    string url = HISCentralUrl + "/GetWaterOneFlowServiceInfo";
-                    client.DownloadFile(url, xmlFileName);
-                }
-                finally
-                {
-                    client.Dispose();
                 }
             }
         }

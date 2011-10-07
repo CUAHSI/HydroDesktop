@@ -42,6 +42,12 @@ namespace Search3.Settings
             get { return _dateSettings.Value; }
         }
 
+        private readonly Lazy<KeywordsSettings> _keywordsSettings = new Lazy<KeywordsSettings>(() => new KeywordsSettings());
+        public KeywordsSettings KeywordsSettings
+        {
+            get { return _keywordsSettings.Value; }
+        }
+
         public string WebServicesXmlFileName
         {
             get { return Properties.Settings.Default.WebServicesFileName; }

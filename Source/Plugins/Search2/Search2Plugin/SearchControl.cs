@@ -552,6 +552,7 @@ namespace HydroDesktop.Search
         #endregion xml driven restore search
 
         #region Ontology keywords - from metadata cache DB
+
         private void FillKeywordsFromDB()
         {
             tboTypeKeyword.Clear();
@@ -582,6 +583,7 @@ namespace HydroDesktop.Search
 
 
         }
+
         #endregion ontology keywords - from metadata cache db
 
         private void button1_Click(object sender, EventArgs e)
@@ -675,8 +677,7 @@ namespace HydroDesktop.Search
                 }
             }
         }
-        private TreeNodeCollection
-        AddNodeToTree(XmlNode node, TreeNodeCollection parentnode)
+        private TreeNodeCollection AddNodeToTree(XmlNode node, TreeNodeCollection parentnode)
         {
             TreeNode newchildnode = CreateTreeNodeFromXmlNode(node);
             // if nothing to add, return the parent item
@@ -796,6 +797,7 @@ namespace HydroDesktop.Search
         {
             if (SearchMode == SearchMode.HISCentral)
             {
+                #region HisCentralMode
 
                 if (lbSelectedKeywords.Items.Count < 1)
                 {
@@ -879,9 +881,13 @@ namespace HydroDesktop.Search
                         }
                     }
                 }
+
+                #endregion
             }
             else if (SearchMode == SearchMode.LocalMetaDataCache)
             {
+                #region LocalMetaDataCache
+
                 if (lbKeywords.SelectedIndex == -1)
                 {
                     MessageBox.Show("Please select a valid Keyword.");
@@ -899,6 +905,7 @@ namespace HydroDesktop.Search
                 lbSelectedKeywords.Items.Add(lbKeywords.SelectedItem);
                 fillXml();
 
+                #endregion
             }
         }
 
