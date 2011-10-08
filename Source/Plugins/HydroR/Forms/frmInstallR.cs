@@ -57,6 +57,12 @@ namespace HydroR
             PathToR = Path.GetDirectoryName(ofdGetPath.FileName);
         }
 
+        private void txtPathToR_TextChanged(object sender, EventArgs e)
+        {
+            if (File.Exists(txtPathToR.Text))
+                PathToR = Path.GetDirectoryName(txtPathToR.Text);
+        }
+
        
 
    

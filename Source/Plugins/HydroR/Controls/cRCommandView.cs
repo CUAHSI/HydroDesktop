@@ -120,7 +120,7 @@ namespace HydroR
          */
         private string changeSlash(string input)
         {
-            input = input.Replace(@"\", @"/");
+            input = input.Replace(@"\", @"\\");
             return input;
         }
 
@@ -550,13 +550,26 @@ namespace HydroR
                     //get the begin and end dates from the database for the current series
                     DateTime begin = (DateTime)dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
                     DateTime end = (DateTime)dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
-                    if (fileLoc.Contains(" "))
-                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
+                    
+                    //if (fileLoc.Contains(" "))
+                    //    rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
 
+                    //else
+                    //{
+                    //    rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");                        
+                    //}
+
+                    //modified by Jiri Kadlec..
+                    if (fileLoc.Contains(" "))
+                    {
+                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
+                    }
                     else
                     {
-                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");                        
+                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
                     }
+
+
                     rtCommands.AppendText("\tseriesID=" + _seriesSelector.CheckedIDList[i] + "," + "\n"
                                             + "\tSQLite=TRUE," + "\n"
                                             + "\tstartDate= \"" + begin.ToString("yyyy-MM-dd") + "\"," + "\n"
