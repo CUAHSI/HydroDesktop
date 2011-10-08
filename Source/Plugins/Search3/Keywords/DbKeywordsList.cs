@@ -7,13 +7,13 @@ namespace Search3.Keywords
 {
     class DbKeywordsList : IKeywordsList
     {
-        public void GetKeywordsAndOntology(out IEnumerable<string> keywords, out OntologyTree ontoloyTree)
+        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree)
         {
             // Keywords
             var searcher = new MetadataCacheSearcher();
             var keywordsList = searcher.GetKeywords();
             keywordsList.Add("Hydrosphere");
-            keywordsList.Sort();
+            var sortedKeywords = new SortedSet<string>(keywordsList);
 
             // Ontology tree
             var tree = new OntologyTree();
@@ -25,7 +25,7 @@ namespace Search3.Keywords
             tree.Nodes.Add(parentNode);
 
             //------
-            keywords = keywordsList;
+            keywords = sortedKeywords;
             ontoloyTree = tree;
         }
     }

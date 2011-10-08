@@ -83,8 +83,7 @@ namespace Search3
 
             #endregion
 
-
-            //do not implement these for now - use attribute table selection instead
+            #region do not implement these for now - use attribute table selection instead
 
             ////Select Layer
             //var rbSelectLayer = new DropDownActionItem("kSearch3LayerDropDown", "Layer");
@@ -123,6 +122,8 @@ namespace Search3
 
             //rbSelectLayer.SelectedItem = "Countries";
             //rbSelectField.SelectedItem = "Name";
+
+            #endregion
 
             #region Keyword Group
 
@@ -417,7 +418,7 @@ namespace Search3
         {
             var keywords = PluginSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
             var sbKeywords = new StringBuilder();
-            const string separator = ";";
+            const string separator = "; ";
             foreach(var key in keywords)
             {
                 sbKeywords.Append(key + separator);
@@ -425,7 +426,7 @@ namespace Search3
             // Remove last separator
             if (sbKeywords.Length > 0)
             {
-                sbKeywords.Remove(sbKeywords.Length - 1, separator.Length);
+                sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
             }
             rbKeyword.Text = sbKeywords.ToString();
         }

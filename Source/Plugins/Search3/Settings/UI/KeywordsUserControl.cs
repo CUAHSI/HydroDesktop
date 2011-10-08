@@ -10,7 +10,7 @@ namespace Search3.Settings.UI
     {
         #region Fields
 
-        private IEnumerable<string> _keywords;
+        private SortedSet<string> _keywords;
 
         #endregion
 
@@ -32,7 +32,13 @@ namespace Search3.Settings.UI
 
         #region Public methods
 
-        public void SetData(IEnumerable<string> keywords, OntologyTree ontologyTree)
+        /// <summary>
+        /// Set data into control.
+        /// </summary>
+        /// <param name="keywords">Keywords.</param>
+        /// <param name="ontologyTree">Ontology tree.</param>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="keywords"/> or <paramref name="ontologyTree"/> is null.</exception>
+        public void BindKeywordsAndOntologyTree(SortedSet<string> keywords, OntologyTree ontologyTree)
         {
             if (keywords == null) throw new ArgumentNullException("keywords");
             if (ontologyTree == null) throw new ArgumentNullException("ontologyTree");
@@ -41,29 +47,42 @@ namespace Search3.Settings.UI
 
             tboTypeKeyword.Clear();
             lblKeywordRelation.Text = "";
-            lbKeywords.Items.Clear();
-            treeviewOntology.Nodes.Clear();
 
-            foreach (var keyword in keywords.Where(keyword => !lbKeywords.Items.Contains(keyword)))
+            // Keywords
+            lbKeywords.BeginUpdate();
+            lbKeywords.Items.Clear();
+            foreach (var keyword in keywords)
             {
                 lbKeywords.Items.Add(keyword);
             }
+            lbKeywords.EndUpdate();
+
+            // Ontology tree
+            treeviewOntology.BeginUpdate();
+            treeviewOntology.Nodes.Clear();
             FillTreeviewOntology(treeviewOntology.Nodes, ontologyTree.Nodes);
+            treeviewOntology.EndUpdate();
         }
 
+        /// <summary>
+        /// Add selected keywords.
+        /// </summary>
+        /// <param name="keywords">Keywords to add.</param>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="keywords"/> is null.</exception>
         public void AddSelectedKeywords(IEnumerable<string> keywords)
         {
             if (keywords == null) throw new ArgumentNullException("keywords");
 
-            foreach(var keyword in keywords)
+            foreach (var keyword in keywords.Where(keyword => !lbSelectedKeywords.Items.Contains(keyword)))
             {
-                if (!lbSelectedKeywords.Items.Contains(keyword))
-                {
-                    lbSelectedKeywords.Items.Add(keyword);
-                }
+                lbSelectedKeywords.Items.Add(keyword);
             }
         }
 
+        /// <summary>
+        /// Remove selected keywords.
+        /// </summary>
+        /// <param name="keywords">Keywords to remove. If parameter is null - removes all selected keywords.</param>
         public void RemoveSelectedKeywords(IEnumerable<string> keywords = null)
         {
             if (keywords == null)
@@ -79,6 +98,10 @@ namespace Search3.Settings.UI
             }
         }
 
+        /// <summary>
+        /// Get selected keywords.
+        /// </summary>
+        /// <returns>Selected keywords.</returns>
         public IEnumerable<string> GetSelectedKeywords()
         {
             var res = new List<string>(lbSelectedKeywords.Items.Count);
@@ -118,7 +141,7 @@ namespace Search3.Settings.UI
             spcKey.Panel1Collapsed = displayMode == DisplayMode.Tree;
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
+        private void tboTypeKeyword_TextChanged(object sender, EventArgs e)
         {
             //control display if user is in treeview mode
             if (rbTree.Checked)
@@ -150,21 +173,18 @@ namespace Search3.Settings.UI
             }
         }
 
-        private void listBox1_MouseUp(object sender, MouseEventArgs e)
+        private void lbKeywords_MouseUp(object sender, MouseEventArgs e)
         {
             var keyIndex = lbKeywords.IndexFromPoint(e.Location);
             if (keyIndex < 0) return;
 
-            tboTypeKeyword.Text = "";
+            tboTypeKeyword.Text = string.Empty;
             var strNode = lbKeywords.Items[keyIndex].ToString();
 
-            foreach (var str in _keywords)
+            foreach (var str in _keywords.Where(str => str.ToLower() == strNode.ToLower()))
             {
-                if (str.ToLower() == strNode.ToLower())
-                {
-                    tboTypeKeyword.Text = str;
-                    FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
-                }
+                tboTypeKeyword.Text = str;
+                FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
             }
 
             //check ends

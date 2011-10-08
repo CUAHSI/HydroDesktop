@@ -63,7 +63,7 @@
             this.tboTypeKeyword.Name = "tboTypeKeyword";
             this.tboTypeKeyword.Size = new System.Drawing.Size(174, 20);
             this.tboTypeKeyword.TabIndex = 52;
-            this.tboTypeKeyword.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
+            this.tboTypeKeyword.TextChanged += new System.EventHandler(this.tboTypeKeyword_TextChanged);
             // 
             // lblKeywords
             // 
@@ -182,7 +182,7 @@
             this.lbKeywords.Size = new System.Drawing.Size(95, 179);
             this.lbKeywords.Sorted = true;
             this.lbKeywords.TabIndex = 42;
-            this.lbKeywords.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseUp);
+            this.lbKeywords.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lbKeywords_MouseUp);
             // 
             // treeviewOntology
             // 
