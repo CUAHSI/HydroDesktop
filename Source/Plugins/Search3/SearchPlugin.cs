@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Projections;
-using DotSpatial.Symbology;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
@@ -28,6 +25,7 @@ namespace Search3
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
         private RectangleDrawing _rectangleDrawing;
+        private TextEntryActionItem rbKeyword;
 
         public override void Activate()
         {
@@ -130,7 +128,7 @@ namespace Search3
 
             //Keyword text entry
             const string grpKeyword = "Keyword";
-            var rbKeyword = new TextEntryActionItem();
+            rbKeyword = new TextEntryActionItem();
             rbKeyword.PropertyChanged += rbKeyword_PropertyChanged;
             rbKeyword.GroupCaption = grpKeyword;
             rbKeyword.RootKey = kHydroSearch3;
@@ -417,7 +415,19 @@ namespace Search3
 
         private void UpdateKeywordsCaption()
         {
-            //todo: Implememnt me
+            var keywords = PluginSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
+            var sbKeywords = new StringBuilder();
+            const string separator = ";";
+            foreach(var key in keywords)
+            {
+                sbKeywords.Append(key + separator);
+            }
+            // Remove last separator
+            if (sbKeywords.Length > 0)
+            {
+                sbKeywords.Remove(sbKeywords.Length - 1, separator.Length);
+            }
+            rbKeyword.Text = sbKeywords.ToString();
         }
 
         void rbKeyword_Click(object Sender, EventArgs e)

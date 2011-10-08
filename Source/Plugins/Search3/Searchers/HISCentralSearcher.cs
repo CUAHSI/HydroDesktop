@@ -172,7 +172,7 @@ namespace Search3.Searchers
             }
             catch (Exception ex)
             {
-                //todo: log me   
+                log.Error(ex);
             }
             finally
             {
