@@ -12,7 +12,7 @@
       <Value Profile="(Default)">Resources\Synonyms.xml</Value>
     </Setting>
     <Setting Name="OntologyFilename" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Resources\\OntologyTree.xml</Value>
+      <Value Profile="(Default)">Resources\OntologyTree.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

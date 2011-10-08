@@ -19,8 +19,8 @@ namespace Search3.Settings
             }
         }
 
-        private IEnumerable<string> _keywords;
-        public IEnumerable<string> Keywords
+        private SortedSet<string> _keywords;
+        public SortedSet<string> Keywords
         {
             get
             {
@@ -51,7 +51,7 @@ namespace Search3.Settings
 
         public void UpdateKeywordsAndOntology()
         {
-            IEnumerable<string> keywords;
+            SortedSet<string> keywords;
             OntologyTree ontologyTree;
             new KeywordsList().GetKeywordsAndOntology(out keywords, out ontologyTree);
 

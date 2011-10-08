@@ -61,7 +61,7 @@ namespace Search3.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\\\OntologyTree.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\OntologyTree.xml")]
         public string OntologyFilename {
             get {
                 return ((string)(this["OntologyFilename"]));

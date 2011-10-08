@@ -12,7 +12,7 @@ namespace Search3.Settings.UI
             InitializeComponent();
             Load += delegate
                         {
-                            keywordsUserControl1.SetData(settings.Keywords, settings.OntologyTree);
+                            keywordsUserControl1.BindKeywordsAndOntologyTree(settings.Keywords, settings.OntologyTree);
                             keywordsUserControl1.AddSelectedKeywords(settings.SelectedKeywords);
                         };
         }

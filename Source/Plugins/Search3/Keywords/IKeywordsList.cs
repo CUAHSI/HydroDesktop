@@ -5,6 +5,6 @@ namespace Search3.Keywords
 {
     interface IKeywordsList
     {
-        void GetKeywordsAndOntology(out IEnumerable<string> keywords, out OntologyTree ontoloyTree);
+        void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree);
     }
 }

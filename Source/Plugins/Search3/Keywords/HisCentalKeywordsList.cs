@@ -7,14 +7,14 @@ namespace Search3.Keywords
 {
     class HisCentalKeywordsList : IKeywordsList
     {
-        private List<string> keywordsList;
+        private SortedSet<string> keywordsList;
 
-        public void GetKeywordsAndOntology(out IEnumerable<string> keywords, out OntologyTree ontoloyTree)
+        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree)
         {
             // Keywords
             var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySymbologyXmlFile();
             var nList = tmpsyndoc.GetElementsByTagName("SearchableKeyword");
-            keywordsList = new List<string>(nList.Count);
+            keywordsList = new SortedSet<string>();
             foreach (var elem in nList.Cast<XmlElement>().Where(elem => !keywordsList.Contains(elem.InnerText)))
             {
                 keywordsList.Add(elem.InnerText);

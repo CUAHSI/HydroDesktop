@@ -6,7 +6,7 @@ namespace Search3.Keywords
 {
     class KeywordsList : IKeywordsList
     {
-        public void GetKeywordsAndOntology(out IEnumerable<string> keywords, out OntologyTree ontoloyTree)
+        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree)
         {
             var catalogSettings = PluginSettings.Instance.CatalogSettings;
             IKeywordsList concreteList;
