@@ -75,6 +75,7 @@
             this.txtPathToR.Name = "txtPathToR";
             this.txtPathToR.Size = new System.Drawing.Size(380, 20);
             this.txtPathToR.TabIndex = 3;
+            this.txtPathToR.TextChanged += new System.EventHandler(this.txtPathToR_TextChanged);
             // 
             // label2
             // 
@@ -92,9 +93,9 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(12, 93);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(414, 96);
+            this.label3.Size = new System.Drawing.Size(419, 96);
             this.label3.TabIndex = 6;
-            this.label3.Text ="If you have R installed pelase enter the path to R.exe.The moste likely\n path to your R.exe is C:\\ProgramFiles\\R\\R-2.10.1\\bin\\R.exe.\nHowever, if you have installed R in a different location\n you will need to find R.exe in the bin folder uner your R installation.\nIf you are running the most recent version of R the default path is\nC:\\ProgramFiles\\R\\R-2.12.1\\bin\\i386\\R.exe.";
+            this.label3.Text = resources.GetString("label3.Text");
             // 
             // frmInstallR
             // 
