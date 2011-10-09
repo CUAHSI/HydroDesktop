@@ -55,6 +55,7 @@ namespace HydroDesktop.Main
             _recentProjectFiles = new List<ProjectFileInfo>();
             bsRecentFiles = new BindingSource(RecentProjectFiles, null);
             lstRecentProjects.DataSource = bsRecentFiles;
+            lstRecentProjects.Click += new EventHandler(lstRecentProjects_Click);
             lstRecentProjects.DoubleClick += new EventHandler(lstRecentProjects_DoubleClick);
 
             lstProjectTemplates.DoubleClick += new EventHandler(lstProjectTemplates_DoubleClick);
@@ -73,7 +74,6 @@ namespace HydroDesktop.Main
         }
 
         
-       
         #endregion
 
         #region Properties
@@ -177,6 +177,13 @@ namespace HydroDesktop.Main
             //panelStatus.Visible = true;
             //_app.ProgressHandler.
         }
+
+
+        void lstRecentProjects_Click(object sender, EventArgs e)
+        {
+            rbOpenExistingProject.Checked = true;
+        }
+
 
         private void WelcomeScreen_Load(object sender, EventArgs e)
         {
