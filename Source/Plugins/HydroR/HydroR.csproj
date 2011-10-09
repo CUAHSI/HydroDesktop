@@ -156,8 +156,10 @@
   <ItemGroup>
     <None Include="Icons\GenerateR.png" />
     <None Include="Icons\OpenFile.png" />
-    <None Include="Icons\Remove.png" />
     <Content Include="Icons\Ricon.png" />
+    <None Include="Icons\RSettings.png" />
+    <None Include="Icons\RSettings_16.png" />
+    <None Include="Icons\RSettings_1.png" />
     <Content Include="Icons\RSymbol.PNG" />
     <None Include="Icons\SaveFile.png" />
     <Content Include="Icons\selectLineSmall.png" />

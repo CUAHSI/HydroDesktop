@@ -124,11 +124,11 @@ If you have not installed R go to the R website, http://www.r-project.org/.
 You must Download and Install R before you can begin. </value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>If you have R installed please enter the path to R.exe.The moste likely
+    <value>If you have R installed please enter the path to R.exe.The most likely
  path to your R.exe is C:\Program Files\R\R-2.10.1\bin\R.exe.
 However, if you have installed R in a different location
  you will need to find R.exe in the bin folder uner your R installation.
 If you are running the most recent version of R the default path is
-C:\Program Files\R\R-2.13.1\bin\i386\R.exe.</value>
+C:\Program Files\R\R-2.13.2\bin\i386\R.exe.</value>
   </data>
 </root>
