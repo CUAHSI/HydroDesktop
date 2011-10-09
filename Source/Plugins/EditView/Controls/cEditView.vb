@@ -846,6 +846,7 @@ Public Class cEditView
             If dgvDataValues.SelectedRows.Count >= 1 Then
                 Dim QualifiersTableManagement As New fQualifiersTableManagement()
                 QualifiersTableManagement._cEditView = Me
+                QualifiersTableManagement.initialize()
                 QualifiersTableManagement.ShowDialog()
                 QualifiersTableManagement = Nothing
             Else
