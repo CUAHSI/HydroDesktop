@@ -120,7 +120,7 @@ namespace HydroR
          */
         private string changeSlash(string input)
         {
-            input = input.Replace(@"\", @"\\");
+            input = input.Replace(@"\", @"/");
             return input;
         }
 
@@ -481,6 +481,23 @@ namespace HydroR
             }
         }
 
+        //this will launch the R settings
+        public void btnSettings_Click(object sender, EventArgs e)
+        {
+            frmInstallR frmR = new frmInstallR(true);
+            frmR.getPathToR = pathToR;
+            frmR.ShowDialog(this);
+            if (frmR.getRPathResult == HydroR.frmInstallR.buttonType.OK)
+            {
+                string newPathToR = frmR.getPathToR;
+                if (newPathToR != pathToR)
+                {
+                    pathToR = newPathToR;
+                    //startR();
+                }
+            }
+        }
+
         //if the process has exited resize the panels so the text box takes up the entire screen
         private void p_Exited(object sender, EventArgs e)
         {
@@ -550,26 +567,13 @@ namespace HydroR
                     //get the begin and end dates from the database for the current series
                     DateTime begin = (DateTime)dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
                     DateTime end = (DateTime)dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
-                    
-                    //if (fileLoc.Contains(" "))
-                    //    rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
-
-                    //else
-                    //{
-                    //    rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");                        
-                    //}
-
-                    //modified by Jiri Kadlec..
                     if (fileLoc.Contains(" "))
-                    {
                         rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
-                    }
+
                     else
                     {
-                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
+                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");                        
                     }
-
-
                     rtCommands.AppendText("\tseriesID=" + _seriesSelector.CheckedIDList[i] + "," + "\n"
                                             + "\tSQLite=TRUE," + "\n"
                                             + "\tstartDate= \"" + begin.ToString("yyyy-MM-dd") + "\"," + "\n"

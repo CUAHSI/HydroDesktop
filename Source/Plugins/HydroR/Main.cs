@@ -29,6 +29,8 @@ namespace HydroR
 
         private RibbonButton _ribbonBnt;
 
+        private RibbonButton _btnRSettings;
+
         #endregion
 
         #region IExtension Members
@@ -99,6 +101,10 @@ namespace HydroR
                 pnlScript.ButtonMoreVisible = false;
                 _ribbonTab.Panels.Add(pnlScript);
 
+                RibbonPanel pnlSettings = new RibbonPanel("Settings", RibbonPanelFlowDirection.Bottom);
+                pnlSettings.ButtonMoreVisible = false;
+                _ribbonTab.Panels.Add(pnlSettings);
+
 
                 _ribbonBnt = new RibbonButton("Start R");
                 _ribbonBnt.Image = Properties.Resources.Ricon;
@@ -136,6 +142,11 @@ namespace HydroR
                 btnSave.Click += new EventHandler(_hydroRControl.btnSave_Click);
                 pnlScript.Items.Add(btnSave);
 
+                _btnRSettings = new RibbonButton("Path to R");
+                _btnRSettings.Image = Properties.Resources.RSettings_1;
+                _btnRSettings.Click += new EventHandler(_hydroRControl.btnSettings_Click);
+                pnlSettings.Items.Add(_btnRSettings);
+
                 if (!_mapArgs.Ribbon.Tabs.Contains(_ribbonTab))
                 {
                     _mapArgs.Ribbon.Tabs.Add(_ribbonTab);
@@ -170,9 +181,15 @@ namespace HydroR
         private void ribbonBnt_TextChanged(EventArgs e)
         {
             if (_hydroRControl.RIsRunning)
+            {
                 _ribbonBnt.Text = "Close R";
+                _btnRSettings.Enabled = false;
+            }
             else
+            {
                 _ribbonBnt.Text = "Start R";
+                _btnRSettings.Enabled = true;
+            }
 
         }
 
