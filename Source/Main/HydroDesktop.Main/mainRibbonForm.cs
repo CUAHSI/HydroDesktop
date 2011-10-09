@@ -1633,10 +1633,14 @@ namespace HydroDesktop.Main
             {
                 tabContainer.SelectedTab = tabContainer.TabPages[0];
                 //mwStatusStrip1.Visible = true;
+
+                //CloseHangingDropdowns();
             }
 
             string dir = HydroDesktop.Configuration.Settings.Instance.ApplicationDataDirectory;
         }
+
+        
 
         //private void rbMapPan_Click(object sender, EventArgs e)
         //{

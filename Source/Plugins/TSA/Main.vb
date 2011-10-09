@@ -485,6 +485,8 @@ Namespace TSA
             If Not appSeriesView Is Nothing Then
                 appSeriesView.VisiblePanelName = _pluginName
             End If
+
+            CloseHangingDropDowns()
         End Sub
 
         'when the selected view is changed, refresh the series selector control by
@@ -515,7 +517,12 @@ Namespace TSA
 #End Region
 
 
+        'closes any 'hanging' ribbon drop-down items
+        Private Sub CloseHangingDropdowns()
+            rbAlgorithms.CloseDropDown()
+            rbHistogramType.CloseDropDown()
 
+        End Sub
 
     End Class
 End Namespace
