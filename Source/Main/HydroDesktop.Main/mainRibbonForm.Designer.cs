@@ -132,7 +132,6 @@ namespace HydroDesktop.Main
             this.applicationManager1.HeaderControl = null;
             this.applicationManager1.Legend = this.mainLegend;
             this.applicationManager1.Map = this.mainMap;
-            this.applicationManager1.ProgressHandler = this.mwStatusStrip1;
             this.applicationManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.None;
             this.applicationManager1.ToolManager = null;
             // 

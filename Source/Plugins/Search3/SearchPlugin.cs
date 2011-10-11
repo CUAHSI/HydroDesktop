@@ -362,8 +362,7 @@ namespace Search3
             var xy = new[] { xMin, yMin, xMax, yMax };
 
             string esri = Resources.wgs_84_esri_string;
-            var wgs84 = new ProjectionInfo();
-            wgs84.ReadEsriString(esri);
+            var wgs84 = ProjectionInfo.FromEsriString(esri);
 
             Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, wgs84, 0, 2);
 

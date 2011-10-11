@@ -194,8 +194,7 @@ namespace Search3.Area
                 array[6] = maxLon1;
                 array[7] = minLat1;
 
-                ProjectionInfo wgs84 = new ProjectionInfo();
-                wgs84.ReadEsriString(Properties.Resources.wgs_84_esri_string);
+                ProjectionInfo wgs84 = ProjectionInfo.FromEsriString(Properties.Resources.wgs_84_esri_string);
                 Reproject.ReprojectPoints(array, new double[] { 0, 0, 0, 0 }, wgs84, _mainMap.Projection, 0, numPoints);
 
                 //form the coordinate array and add rectangle feature

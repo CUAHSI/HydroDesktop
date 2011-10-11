@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Help;
 using HydroDesktop;
 using HydroDesktop.Main;

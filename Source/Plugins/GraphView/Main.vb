@@ -68,8 +68,6 @@ Namespace GraphView
 
         Private rpOtherOptions As String = "Date & Time"
         Private rbDateTimeSetting As SimpleActionItem 'Date Setting
-        Public rlblStratDate As New RibbonLabel 'TODO: move to main graph area
-        Public rlblEndDate As New RibbonLabel   'TODO: move to main graph area
         Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
         Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
 #End Region
@@ -263,8 +261,8 @@ Namespace GraphView
             header.Add(rbDateTimeSetting)
 
             'TODO: Start and end date labels: Add to a different place!
-            rlblStratDate.Text = "Start Date:"
-            rlblEndDate.Text = "End Date:"
+            'rlblStratDate.Text = "Start Date:"
+            'rlblEndDate.Text = "End Date:"
             'rpOtherOptions.Items.Add(rlblStratDate)
             'rpOtherOptions.Items.Add(rlblEndDate)
             '_mainControl.rlblStratDate = rlblStratDate
