@@ -5,9 +5,7 @@ using System.Linq;
 using System.Text;
 using HydroDesktop.MetadataFetcher.Forms;
 using System.Windows.Forms;
-
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
 using System.Drawing;
 using HydroDesktop.Database;
 using DotSpatial.Controls.Header;
