@@ -26,6 +26,8 @@
 
             App.DockManager.Add(new DockablePanel(SeriesViewKey, "time series", (SeriesSelector)MainSeriesSelector, DockStyle.Left));
 
+            App.HeaderControl.Add(new RootItem("kHydroTable", "Table"));
+
             base.Activate();
         }
 

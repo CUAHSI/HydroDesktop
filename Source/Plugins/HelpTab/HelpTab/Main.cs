@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using HydroDesktop.Help;
 using HydroDesktop;
-using HydroDesktop.Main;
+//using HydroDesktop.Main;
 using DotSpatial.Controls.Header;
 
 namespace HelpTab
@@ -203,10 +203,10 @@ namespace HelpTab
 
         void aboutButton_Click(object sender, EventArgs e)
         {
-            AboutBox frm = new AboutBox();
+            //AboutBox frm = new AboutBox();
 
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.Show();
+            //frm.StartPosition = FormStartPosition.CenterScreen;
+            //frm.Show();
         }
 
         #endregion
