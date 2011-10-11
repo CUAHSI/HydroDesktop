@@ -9,8 +9,8 @@ Imports HydroDesktop.Configuration
 
 Public Class cTSA
 
-    Public rlblStratDate As New RibbonLabel
-    Public rlblEndDate As New RibbonLabel
+    'Public rlblStratDate As New RibbonLabel
+    'Public rlblEndDate As New RibbonLabel
 
     'Inherits Windows.Forms.UserControl
     Private Const db_outFld_ValDTMonth As String = "DateMonth"
@@ -202,8 +202,8 @@ Public Class cTSA
                 pProbability.Clear()
                 colorcount = 0
                 count = 0
-                rlblStratDate.Text = "Start Date: "
-                rlblEndDate.Text = "End Date:   "
+                'rlblStratDate.Text = "Start Date: "
+                'rlblEndDate.Text = "End Date:   "
                 StartDateLimit = Today.AddYears(-150)
                 EndDateLimit = Today
             Else
@@ -398,8 +398,8 @@ Public Class cTSA
         If IsDisplayFullDate Then
             StartDateTime = StartDateLimit
             EndDateTime = EndDateLimit
-            rlblStratDate.Text = "Start Date: " + StartDateTime.ToString
-            rlblEndDate.Text = "End Date:   " + EndDateTime.ToString
+            'rlblStratDate.Text = "Start Date: " + StartDateTime.ToString
+            'rlblEndDate.Text = "End Date:   " + EndDateTime.ToString
         End If
 
     End Sub
@@ -430,8 +430,8 @@ Public Class cTSA
             If IsDisplayFullDate Then
                 StartDateTime = StartDateLimit
                 EndDateTime = EndDateLimit
-                rlblStratDate.Text = "Start Date: " + StartDateTime.ToString
-                rlblEndDate.Text = "End Date:   " + EndDateTime.ToString
+                'rlblStratDate.Text = "Start Date: " + StartDateTime.ToString
+                'rlblEndDate.Text = "End Date:   " + EndDateTime.ToString
             End If
         Next
     End Sub

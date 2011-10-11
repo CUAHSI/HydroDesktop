@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using DotSpatial.Projections;
+using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
+using Search3.Settings;
 using Search3.Settings.UI;
 
 namespace Search3
@@ -21,11 +24,12 @@ namespace Search3
         private SimpleActionItem rbCatalog;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
+        private RectangleDrawing _rectangleDrawing;
+        private TextEntryActionItem rbKeyword;
 
         public override void Activate()
         {
             AddSearchRibbon();
-            
             base.Activate(); 
         }
 
@@ -43,12 +47,13 @@ namespace Search3
             var head = App.HeaderControl;
             
             //Search ribbon tab
-            RootItem root = new RootItem(kHydroSearch3, "Search");
-            root.SortOrder = -5; //this should display to the right of Home
+            var root = new RootItem(kHydroSearch3, "Search");
+            root.SortOrder = -100;
             head.Add(root);
 
-            //Area group
-            string grpArea = "Area";
+            #region Area group
+
+            const string grpArea = "Area";
 
             //Draw Box
             var rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
@@ -63,8 +68,8 @@ namespace Search3
             var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
             rbSelect.ToolTipText = "Select Region";
             rbSelect.GroupCaption = grpArea;
-            rbSelect.LargeImage = Properties.Resources.select;
-            rbSelect.SmallImage = Properties.Resources.select_16;
+            rbSelect.LargeImage = Resources.select;
+            rbSelect.SmallImage = Resources.select_16;
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
 
@@ -72,13 +77,13 @@ namespace Search3
             var rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
             rbAttribute.ToolTipText = "Select by Attribute";
             rbAttribute.GroupCaption = grpArea;
-            rbAttribute.LargeImage = Properties.Resources.attribute_table;
-            rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
+            rbAttribute.LargeImage = Resources.attribute_table;
+            rbAttribute.SmallImage = Resources.attribute_table_16;
             head.Add(rbAttribute);
 
-            
+            #endregion
 
-            //do not implement these for now - use attribute table selection instead
+            #region do not implement these for now - use attribute table selection instead
 
             ////Select Layer
             //var rbSelectLayer = new DropDownActionItem("kSearch3LayerDropDown", "Layer");
@@ -118,14 +123,15 @@ namespace Search3
             //rbSelectLayer.SelectedItem = "Countries";
             //rbSelectField.SelectedItem = "Name";
 
-            
+            #endregion
 
-            //Keyword Group
+            #region Keyword Group
+
             //Keyword text entry
-            string grpKeyword = "Keyword";
-            var rbKeyword = new TextEntryActionItem();
+            const string grpKeyword = "Keyword";
+            rbKeyword = new TextEntryActionItem();
+            rbKeyword.PropertyChanged += rbKeyword_PropertyChanged;
             rbKeyword.GroupCaption = grpKeyword;
-            
             rbKeyword.RootKey = kHydroSearch3;
             rbKeyword.Width = 150;
             head.Add(rbKeyword);
@@ -140,8 +146,11 @@ namespace Search3
             rbKeyword2.RootKey = kHydroSearch3;
             head.Add(rbKeyword2);
 
-            //Dates group
-            string grpDates = "Time Range";
+            #endregion
+
+            #region Dates group
+
+            const string grpDates = "Time Range";
             rbStartDate = new TextEntryActionItem();
             rbStartDate.Caption = "Start";
             rbStartDate.GroupCaption = grpDates;
@@ -166,8 +175,11 @@ namespace Search3
             rbDate.SmallImage = Resources.select_date_v1_16;
             head.Add(rbDate);
 
-            //Web Services group
-            string grpServices = "Web Services";
+            #endregion
+
+            #region Web Services group
+
+            const string grpServices = "Web Services";
             rbServices = new SimpleActionItem("All Services", rbServices_Click);
             rbServices.LargeImage = Resources.web_services_v1_32;
             rbServices.SmallImage = Resources.web_services_v1_16;
@@ -176,16 +188,20 @@ namespace Search3
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
 
-            //Catalog group
-            string grpCatalog = "Catalog";
+            #endregion
+
+            #region Catalog group
+
+            const string grpCatalog = "Catalog";
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
             rbCatalog.LargeImage = Resources.catalog_v2_32;
             rbCatalog.SmallImage = Resources.catalog_v2_32;
-            rbCatalog.ToolTipText = "Select web services (All Services selected)";
             rbCatalog.GroupCaption = grpCatalog;
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
             UpdateCatalogCaption();
+
+            #endregion
 
             //search and download buttons
             string grpSearch = "Search";
@@ -201,14 +217,14 @@ namespace Search3
             {
                 RootKey = kHydroSearch3,
                 GroupCaption = grpSearch,
-                LargeImage = Properties.Resources.download32
+                LargeImage = Resources.download32
             };
             App.HeaderControl.Add(btnDownload);
 
             //map buttons
             AddMapButtons();
         }
-
+      
         void AddMapButtons()
         {
             string kHomeRoot = kHydroSearch3;
@@ -318,64 +334,204 @@ namespace Search3
         void rbZoomIn_Click(object sender, EventArgs e) { }
         void rbZoomOut_Click(object sender, EventArgs e) { }
         void rbFullExtent_Click(object sender, EventArgs e) { }
-        void rbSelect_Click(object sender, EventArgs e) { }
-        void rbAttribute_Click(object sender, EventArgs e) { }
-        
         void rbSearch_Click(object sender, EventArgs e) { }
         void rbDownload_Click(object sender, EventArgs e) { }
 
+        #region  Area group
 
         void rbDrawBox_Click(object Sender, EventArgs e)
         {
+            if (_rectangleDrawing == null)
+            {
+                _rectangleDrawing = new RectangleDrawing(App.Map);
+                _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
+            }
 
+            _rectangleDrawing.Activate();
         }
+
+        void rectangleDrawing_RectangleCreated(object sender, EventArgs e)
+        {
+            if (_rectangleDrawing == null) return;
+
+            var xMin = _rectangleDrawing.RectangleExtent.MinX;
+            var yMin = _rectangleDrawing.RectangleExtent.MinY;
+            var xMax = _rectangleDrawing.RectangleExtent.MaxX;
+            var yMax = _rectangleDrawing.RectangleExtent.MaxY;
+
+            var xy = new[] { xMin, yMin, xMax, yMax };
+
+            string esri = Resources.wgs_84_esri_string;
+            var wgs84 = ProjectionInfo.FromEsriString(esri);
+
+            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, wgs84, 0, 2);
+
+            //todo: save/show selected rectangle coords
+            /*listBox4.Items.Clear();
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[0]));
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[1]));
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[2]));
+            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[3]));
+             */ 
+        }
+
+        void rbSelect_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Select;
+        }
+
+        void rbAttribute_Click(object sender, EventArgs e)
+        {
+            var featureLayerIsSelected = false;
+
+            foreach (var lay in ((Map)App.Map).GetAllLayers())
+            {
+                var ori_fl = lay as IMapFeatureLayer;
+                if (ori_fl == null) continue;
+                if (ori_fl.IsSelected)
+                {
+                    featureLayerIsSelected = true;
+                    App.Map.FunctionMode = FunctionMode.Select;
+                    ori_fl.ShowAttributes();
+                }
+            }
+            //if no layer is selected, inform the user
+            if (!featureLayerIsSelected)
+            {
+                MessageBox.Show("Please select a layer in the legend.", "Information", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+            }
+        }
+
+        #endregion
+
+        #region Keywords
+
+        void rbKeyword_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Text") return;
+            //todo: implement tooltip with keyword mathcing
+        }
+
+        private void UpdateKeywordsCaption()
+        {
+            var keywords = PluginSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
+            var sbKeywords = new StringBuilder();
+            const string separator = "; ";
+            foreach(var key in keywords)
+            {
+                sbKeywords.Append(key + separator);
+            }
+            // Remove last separator
+            if (sbKeywords.Length > 0)
+            {
+                sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
+            }
+            rbKeyword.Text = sbKeywords.ToString();
+        }
+
         void rbKeyword_Click(object Sender, EventArgs e)
         {
-
+            if (KeywordsDialog.ShowDialog(PluginSettings.Instance.KeywordsSettings) == DialogResult.OK)
+            {
+                UpdateKeywordsCaption();
+            }
         }
+
+        #endregion
+
+        #region WebServices
+
         void rbServices_Click(object Sender, EventArgs e)
         {
-            rbServices.Caption = "Little Bear River..";
+            if (WebServicesDialog.ShowDialog(PluginSettings.Instance.WebServicesSettings) == DialogResult.OK)
+            {
+                UpdateWebServicesCaption();
+            }
         }
 
+        private void UpdateWebServicesCaption()
+        {
+            var webWServicesSettings = PluginSettings.Instance.WebServicesSettings;
+            var checkedCount = webWServicesSettings.CheckedCount;
+            var totalCount = webWServicesSettings.TotalCount;
 
+            string caption;
+            if (checkedCount == totalCount)
+            {
+                caption = "All services";
+            }else if (checkedCount == 1)
+            {
+                // Get single checked item
+                var items = webWServicesSettings.WebServices.Where((w) => w.Checked).ToList();
+                Debug.Assert(items.Count == 1);
+                caption = items[0].Title;
+                // todo: Change button icon
+            }
+            else
+            {
+                caption = string.Format("{0} services selected", checkedCount);
+            }
+
+            rbServices.Caption = caption;
+            // todo: Uncomment next line when will be fixed http://dotspatial.codeplex.com/workitem/351
+            // rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
+        }
+
+        #endregion
+
+        #region Dates
 
         private void UpdateDatesCaption()
         {
-            rbStartDate.Text = Settings.PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
-            rbEndDate.Text = Settings.PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
+            rbStartDate.Text = PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
+            rbEndDate.Text = PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
         }
+
         void rbDate_Click(object Sender, EventArgs e)
         {
-            DateSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.DateSettings);
-            UpdateDatesCaption();
+            if (DateSettingsDialog.ShowDialog(PluginSettings.Instance.DateSettings) == DialogResult.OK)
+            {
+                UpdateDatesCaption();
+            }
         }
+
         void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
 
             DateTime result;
             if (DateTime.TryParse(rbEndDate.Text, out result))
-                Settings.PluginSettings.Instance.DateSettings.EndDate = result;
+                PluginSettings.Instance.DateSettings.EndDate = result;
         }
+
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
 
             DateTime result;
             if (DateTime.TryParse(rbStartDate.Text, out result))
-                Settings.PluginSettings.Instance.DateSettings.StartDate = result;
+                PluginSettings.Instance.DateSettings.StartDate = result;
         }
+
+        #endregion
+
+        #region Catalog
 
         void rbCatalog_Click(object Sender, EventArgs e)
         {
-            SearchCatalogSettingsDialog.ShowDialog(Settings.PluginSettings.Instance.CatalogSettings);
-            UpdateCatalogCaption();
+            if (SearchCatalogSettingsDialog.ShowDialog(PluginSettings.Instance.CatalogSettings) == DialogResult.OK)
+            {
+                UpdateCatalogCaption();
+            }
         }
+
         private void UpdateCatalogCaption()
         {
-            rbCatalog.Caption = Settings.PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
+            rbCatalog.Caption = PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
+
+        #endregion
 
         #endregion
     }

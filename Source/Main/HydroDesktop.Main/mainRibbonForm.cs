@@ -13,7 +13,6 @@ using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Controls.RibbonControls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
@@ -129,8 +128,7 @@ namespace HydroDesktop.Main
 
             #region initialize the default map projection
 
-            _wgs84Projection = new ProjectionInfo();
-            _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84EsriString);
+            _wgs84Projection = ProjectionInfo.FromEsriString(Properties.Resources.Wgs84EsriString);
 
             _defaultProjection = new ProjectionInfo();
             _defaultProjection.CopyProperties(KnownCoordinateSystems.Projected.World.WebMercator);
@@ -161,10 +159,7 @@ namespace HydroDesktop.Main
             #region Load Plugins
 
             //initialize the home ribbon tab
-            applicationManager1.ShowExtensionsDialog = ShowExtensionsDialog.Default;
-            applicationManager1.Initialize();
-
-             
+            applicationManager1.ShowExtensionsDialog = ShowExtensionsDialog.Default;         
 
             //initialize  the menu bar
             AddRibbonButtons();
@@ -709,7 +704,7 @@ namespace HydroDesktop.Main
                 _isNewProject = _welcomeScreen.NewProjectCreated;
             }
             //reset the progress handler
-            applicationManager1.ProgressHandler = mwStatusStrip1;
+            //applicationManager1.ProgressHandler = mwStatusStrip1;
         }
 
         //sets the map extent to continental U.S

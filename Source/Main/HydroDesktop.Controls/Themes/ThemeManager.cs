@@ -37,8 +37,7 @@ namespace HydroDesktop.Controls.Themes
         public ThemeManager(string dbConnectionString)
         {
             _db = new DbOperations(dbConnectionString, Interfaces.DatabaseTypes.SQLite);
-            _wgs84Projection = new ProjectionInfo();
-            _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84ProjectionString);
+            _wgs84Projection = ProjectionInfo.FromEsriString(Properties.Resources.Wgs84ProjectionString);
         }
         /// <summary>
         /// Creates a new ThemeManager, using the dbOperations object
@@ -46,11 +45,9 @@ namespace HydroDesktop.Controls.Themes
         public ThemeManager(DbOperations dbTools)
         {
             _db = dbTools;
-            //initialize wgs84 projection
-            //string esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
             string esri = Properties.Resources.Wgs84ProjectionString;
-            _wgs84Projection = new ProjectionInfo();
-            _wgs84Projection.ReadEsriString(Properties.Resources.Wgs84ProjectionString);
+            _wgs84Projection = ProjectionInfo.FromEsriString(Properties.Resources.Wgs84ProjectionString);
+
         }
         #endregion
 
