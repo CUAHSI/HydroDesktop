@@ -149,9 +149,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="HydroDesktop.exe.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -196,12 +193,6 @@
     <None Include="Resources\CuahsiLogo38.png" />
     <None Include="Resources\add_16.png" />
     <None Include="Resources\attribute_table_16.png" />
-    <Content Include="HydroDesktop.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="HydroDesktop.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\cuahsi_logo1.GIF" />
     <None Include="Resources\zoom_to_next_16.png" />
     <None Include="Resources\zoom_out_16.png" />
