@@ -160,7 +160,7 @@ namespace TableView
             if (e.ActivePanelKey == kTableView)
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
-                //App.HeaderControl.SelectRoot(_tableViewRoot);
+                App.HeaderControl.SelectRoot(kTableView);
                 RefreshDatabasePath();
             }
         }

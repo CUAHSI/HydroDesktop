@@ -34,6 +34,8 @@
             //new empty database if required
             SetupDatabases();
 
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
+
             base.Activate();
         }
 
@@ -114,6 +116,15 @@
             catch (UnauthorizedAccessException)
             {
                 return false;
+            }
+        }
+
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
+        {
+            if (e.ActivePanelKey == "kMap")
+            {
+                App.DockManager.SelectPanel("kLegend");
+                App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
             }
         }
     }
