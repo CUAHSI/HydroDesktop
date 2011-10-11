@@ -10,7 +10,6 @@ using System.Text;
 using System.Web.Services;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;

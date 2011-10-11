@@ -199,6 +199,9 @@
     <Content Include="HydroDesktop.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="HydroDesktop.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\cuahsi_logo1.GIF" />
     <None Include="Resources\zoom_to_next_16.png" />
     <None Include="Resources\zoom_out_16.png" />

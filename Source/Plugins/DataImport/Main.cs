@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
 using HydroDesktop.Database;
 using DataImport;
 using DotSpatial.Controls.Header;
