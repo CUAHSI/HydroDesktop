@@ -5,5 +5,14 @@
     <Setting Name="TypeOfCatalog" Type="Search3.Settings.TypeOfCatalog" Scope="User">
       <Value Profile="(Default)">HisCentral</Value>
     </Setting>
+    <Setting Name="WebServicesFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WebServices.xml</Value>
+    </Setting>
+    <Setting Name="SynonymsFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Resources\Synonyms.xml</Value>
+    </Setting>
+    <Setting Name="OntologyFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Resources\OntologyTree.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

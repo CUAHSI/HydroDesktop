@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,12 +36,46 @@
       <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.WebServices">
+      <HintPath>..\..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\Binaries\log4net.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,11 +84,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
+    <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
+    <Compile Include="Area\RectangleDrawing.cs" />
+    <Compile Include="Searchers\HISCentralSearcher.cs" />
+    <Compile Include="Keywords\DbKeywordsList.cs" />
+    <Compile Include="Keywords\HisCentalKeywordsList.cs" />
+    <Compile Include="Keywords\IKeywordsList.cs" />
+    <Compile Include="Keywords\KeywordsList.cs" />
+    <Compile Include="Searchers\MetadataCacheSearcher.cs" />
+    <Compile Include="Searchers\SearchHelper.cs" />
+    <Compile Include="Searchers\SearchResult.cs" />
+    <Compile Include="Settings\KeywordsSettings.cs" />
+    <Compile Include="Settings\OntologyNode.cs" />
+    <Compile Include="Settings\OntologyTree.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Settings\UI\DateSettingsDialog.Designer.cs">
       <DependentUpon>DateSettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\UI\KeywordsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\KeywordsDialog.Designer.cs">
+      <DependentUpon>KeywordsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\UI\KeywordsUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\KeywordsUserControl.Designer.cs">
+      <DependentUpon>KeywordsUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\UI\SearchCatalogSettingsDialog.cs">
       <SubType>Form</SubType>
@@ -77,10 +138,34 @@
     <Compile Include="Settings\CatalogSettings.cs" />
     <Compile Include="Settings\DateSettings.cs" />
     <Compile Include="Settings\PluginSettings.cs" />
+    <Compile Include="Settings\WebServiceNode.cs" />
+    <Compile Include="Settings\UI\WebServicesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\WebServicesDialog.Designer.cs">
+      <DependentUpon>WebServicesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\WebServicesSettings.cs" />
+    <Compile Include="WebServices\DbWebServicesList.cs" />
+    <Compile Include="WebServices\HisCentralWebServicesList.cs" />
+    <Compile Include="WebServices\IWebServicesList.cs" />
+    <Compile Include="WebServices\WebServicesList.cs" />
+    <Compile Include="Settings\UI\WebServicesUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\WebServicesUserControl.Designer.cs">
+      <DependentUpon>WebServicesUserControl.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Settings\UI\DateSettingsDialog.resx">
       <DependentUpon>DateSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\KeywordsDialog.resx">
+      <DependentUpon>KeywordsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\KeywordsUserControl.resx">
+      <DependentUpon>KeywordsUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\UI\SearchCatalogSettingsDialog.resx">
       <DependentUpon>SearchCatalogSettingsDialog.cs</DependentUpon>
@@ -89,6 +174,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\WebServicesDialog.resx">
+      <DependentUpon>WebServicesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\WebServicesUserControl.resx">
+      <DependentUpon>WebServicesUserControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -168,10 +259,14 @@
     <None Include="Resources\draw_box_32_a.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\getOntologyTree.xml">
+    <Content Include="Resources\OntologyTree.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Synonyms.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
