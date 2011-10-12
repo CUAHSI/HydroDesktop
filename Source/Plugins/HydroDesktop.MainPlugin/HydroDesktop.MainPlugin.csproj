@@ -104,18 +104,23 @@
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
       <Private>False</Private>
+      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <Private>False</Private>
+      <HintPath>..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <Private>False</Private>
+      <HintPath>..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <Private>False</Private>
+      <HintPath>..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology">
       <Private>False</Private>
+      <HintPath>..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
