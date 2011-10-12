@@ -36,8 +36,6 @@ namespace Search3
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-
-            App.DockManager.Remove("kFacetedSearch");
             
             base.Deactivate();
         }
@@ -48,7 +46,8 @@ namespace Search3
             
             //Search ribbon tab
             var root = new RootItem(kHydroSearch3, "Search");
-            root.SortOrder = -100;
+            //setting the sort order to small positive number to display it to the right of home tab
+            root.SortOrder = -1; 
             head.Add(root);
 
             #region Area group

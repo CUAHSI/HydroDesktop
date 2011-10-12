@@ -24,7 +24,7 @@ Namespace EditView
         'Private Const kEditView As String = "kHydroEditView"
         Private Const kEditView As String = "kHydroEditView"
 
-        Private _EditView As New RootItem(kEditView, _pluginName)
+        Private _EditView As RootItem
 
         Private btnSelectSeries As SimpleActionItem
 
@@ -56,6 +56,8 @@ Namespace EditView
 
             '**************************************************************************************
             'Adding the ribbon tab
+            _EditView = New RootItem(kEditView, _pluginName)
+            _EditView.SortOrder = 40
             App.HeaderControl.Add(_EditView)
 
             '**************************************************************************************

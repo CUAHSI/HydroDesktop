@@ -22,19 +22,10 @@
         [Import("SeriesControl", typeof(ISeriesSelector))]
         internal ISeriesSelector SeriesControl { get; set; }       
 
-        private WelcomeScreen _welcomeScreen;
-        private bool _isNewProject = false;
-        
         public override void Activate()
         {
-            //displays the initial welcome screen
-            ShowWelcomeScreen();
-
-            //sets-up the database connection and creates a
-            //new empty database if required
-            SetupDatabases();
-
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
+            App.Loaded += new EventHandler(App_Loaded);
 
             base.Activate();
         }
@@ -44,20 +35,32 @@
             base.Deactivate();
         }
 
+        //runs when all extensions have been loaded
+        void App_Loaded(object sender, EventArgs e)
+        {
+            //displays the initial welcome screen
+            ShowWelcomeScreen();
+
+            //sets-up the database connection and creates a
+            //new empty database if required
+            SetupDatabases();
+        }
+
         /// <summary>
         /// In the welcome screen, user chooses to create a project from template,
         /// create a new project, or open an existing project
         /// </summary>
         private void ShowWelcomeScreen()
         {
-            _welcomeScreen = new WelcomeScreen(App);
-            _welcomeScreen.StartPosition = FormStartPosition.CenterScreen;
+            var welcomeScreen = new WelcomeScreen(App);
+            welcomeScreen.StartPosition = FormStartPosition.CenterScreen;
+            welcomeScreen.TopMost = true;
 
             //int x = this.Location.X + this.Width / 2 - _welcomeScreen.Width / 2;
             //int y = this.Location.Y + this.Height / 2 - _welcomeScreen.Height / 2;
             //_welcomeScreen.Location = new System.Drawing.Point(x, y);
 
-            _welcomeScreen.Show();
+            welcomeScreen.Show();
 
             //if (_welcomeScreen.ShowDialog() == DialogResult.OK)
             //{

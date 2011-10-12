@@ -25,7 +25,7 @@ namespace RibbonSamplePlugin
         internal ISeriesSelector SeriesControl { get; private set; }
 
         //the name of the plugin displayed in the ribbon tab
-        private const string _pluginName = "Ribbon Sample Plugin";
+        private const string _pluginName = "Sample1";
         private const string kHydroCSharpDock = "kDockRibbonSampleCsharp";
         private const string KHydroCSharp = "kRootRibbonSampleCsharp";
 
@@ -54,7 +54,9 @@ namespace RibbonSamplePlugin
         public override void Activate()
         {
             // Add "Ribbon" button to the "View" Panel in "Home" ribbon tab
-            App.HeaderControl.Add(new RootItem(KHydroCSharp, _pluginName));
+            var root = new RootItem(KHydroCSharp, _pluginName);
+            root.SortOrder = 100;
+            App.HeaderControl.Add(root);
 
             var simpleButton = new SimpleActionItem("C# Sample", rb_Click);
             simpleButton.LargeImage = CreateCircleImage(Color.Blue);
@@ -81,6 +83,7 @@ namespace RibbonSamplePlugin
 
             //Add a Ribbon Combo Box
             var simpleDropDown = new DotSpatial.Controls.Header.DropDownActionItem("kHydroCsharpDropdown", "DropDown");
+            simpleDropDown.RootKey = KHydroCSharp;
             simpleDropDown.GroupCaption = groupCaption2;
             App.HeaderControl.Add(simpleDropDown);
 

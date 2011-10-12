@@ -26,7 +26,9 @@
 
             App.DockManager.Add(new DockablePanel(SeriesViewKey, "time series", (SeriesSelector)MainSeriesSelector, DockStyle.Left));
 
-            App.HeaderControl.Add(new RootItem("kHydroTable", "Table"));
+            var tableRoot = new RootItem("kHydroTable", "Table");
+            tableRoot.SortOrder = 20;
+            App.HeaderControl.Add(tableRoot);
 
             base.Activate();
         }

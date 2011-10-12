@@ -80,6 +80,7 @@ Namespace GraphView
 
             'To Add Items to the ribbon menu
             tabGraph = New RootItem(kGraph, _pluginName)
+            tabGraph.SortOrder = 30
             App.HeaderControl.Add(tabGraph)
 
             If Not appSeriesView Is Nothing Then
