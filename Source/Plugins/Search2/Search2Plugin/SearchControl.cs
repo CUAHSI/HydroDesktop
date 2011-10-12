@@ -1653,9 +1653,7 @@ namespace HydroDesktop.Search
 
             double[] xy = new double[] { xMin, yMin, xMax, yMax };
 
-            string esri = Resources.wgs_84_esri_string;
-            ProjectionInfo wgs84 = new ProjectionInfo();
-            wgs84.ReadEsriString(esri);
+            ProjectionInfo wgs84 = ProjectionInfo.FromEsriString(Resources.wgs_84_esri_string);
 
             Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, app.Map.Projection, wgs84, 0, 2);
             //populate the listbox
@@ -1788,9 +1786,7 @@ namespace HydroDesktop.Search
                     polyFs.Projection = app.Map.Projection;
 
                     string esri = Resources.wgs_84_esri_string;
-                    ProjectionInfo wgs84 = new ProjectionInfo();
-                    wgs84.ReadEsriString(esri);
-
+                    ProjectionInfo wgs84 = ProjectionInfo.FromEsriString(esri);
 
                     //reproject the selected polygons to WGS1984         
                     polyFs.Reproject(wgs84);
