@@ -26,6 +26,7 @@ namespace Search3
         private TextEntryActionItem rbEndDate;
         private RectangleDrawing _rectangleDrawing;
         private TextEntryActionItem rbKeyword;
+        private SimpleActionItem rbDrawBox;
 
         public override void Activate()
         {
@@ -36,7 +37,6 @@ namespace Search3
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-            
             base.Deactivate();
         }
 
@@ -55,13 +55,14 @@ namespace Search3
             const string grpArea = "Area";
 
             //Draw Box
-            var rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
+            rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.draw_box_32_a;
             rbDrawBox.SmallImage = Resources.draw_box_16_a;
             rbDrawBox.GroupCaption = grpArea;
             rbDrawBox.ToggleGroupKey = grpArea;
             rbDrawBox.RootKey = kHydroSearch3;
             head.Add(rbDrawBox);
+            PluginSettings.Instance.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             //Select
             var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
@@ -338,6 +339,12 @@ namespace Search3
 
         #region  Area group
 
+        void Instance_AreaRectangleChanged(object sender, EventArgs e)
+        {
+            var rectangle = PluginSettings.Instance.AreaRectangle;
+            rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : "Draw Box";
+        }
+
         void rbDrawBox_Click(object Sender, EventArgs e)
         {
             if (_rectangleDrawing == null)
@@ -365,41 +372,65 @@ namespace Search3
 
             Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, wgs84, 0, 2);
 
-            //todo: save/show selected rectangle coords
-            /*listBox4.Items.Clear();
-            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[0]));
-            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[1]));
-            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[2]));
-            listBox4.Items.Add(String.Format(CultureInfo.InvariantCulture, "{0:N6}", xy[3]));
-             */ 
+            // Save rectangle
+            var xmin = xy[0];
+            var ymin = xy[1];
+            var xmax = xy[2];
+            var ymax = xy[3];
+            var rectangle = new AreaRectangle(xmin, ymin, xmax, ymax);
+            PluginSettings.Instance.AreaRectangle = rectangle;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
         {
+            DeactivateDrawBox();
             App.Map.FunctionMode = FunctionMode.Select;
+            SelectFirstVisiblePolygonLayer();
+        }
+
+        private void SelectFirstVisiblePolygonLayer()
+        {
+            foreach (var layer in App.Map.GetLayers())
+            {
+                if (layer.LegendText == "Base Map Data" &&
+                    layer is MapGroup)
+                {
+                    foreach (var subLayer in ((MapGroup)layer).GetLayers().OfType<IMapPolygonLayer>()
+                                                                          .Where(subLayer => subLayer.IsVisible))
+                    {
+                        subLayer.IsSelected = true;
+                        break;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        private void DeactivateDrawBox()
+        {
+            if (_rectangleDrawing == null) return;
+
+            _rectangleDrawing.Deactivate();
+            PluginSettings.Instance.AreaRectangle = null;
         }
 
         void rbAttribute_Click(object sender, EventArgs e)
         {
-            var featureLayerIsSelected = false;
+            DeactivateDrawBox();
+            SelectFirstVisiblePolygonLayer();
 
-            foreach (var lay in ((Map)App.Map).GetAllLayers())
+            foreach (var ori_fl in ((Map) App.Map).GetAllLayers().OfType<IMapFeatureLayer>()
+                                                                 .Where(ori_fl => ori_fl.IsSelected))
             {
-                var ori_fl = lay as IMapFeatureLayer;
-                if (ori_fl == null) continue;
-                if (ori_fl.IsSelected)
-                {
-                    featureLayerIsSelected = true;
-                    App.Map.FunctionMode = FunctionMode.Select;
-                    ori_fl.ShowAttributes();
-                }
+                App.Map.FunctionMode = FunctionMode.Select;
+                ori_fl.ShowAttributes();
+                return;
             }
+
             //if no layer is selected, inform the user
-            if (!featureLayerIsSelected)
-            {
-                MessageBox.Show("Please select a layer in the legend.", "Information", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-            }
+            MessageBox.Show("Please select a layer in the legend.", "Information", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
         }
 
         #endregion
@@ -473,8 +504,7 @@ namespace Search3
             }
 
             rbServices.Caption = caption;
-            // todo: Uncomment next line when will be fixed http://dotspatial.codeplex.com/workitem/351
-            // rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
+            rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
         }
 
         #endregion

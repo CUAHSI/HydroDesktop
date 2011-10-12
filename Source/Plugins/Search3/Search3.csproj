@@ -95,6 +95,7 @@
     <Compile Include="Searchers\MetadataCacheSearcher.cs" />
     <Compile Include="Searchers\SearchHelper.cs" />
     <Compile Include="Searchers\SearchResult.cs" />
+    <Compile Include="Settings\AreaRectangle.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
@@ -174,6 +175,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\UI\WebServicesDialog.resx">
       <DependentUpon>WebServicesDialog.cs</DependentUpon>

@@ -60,6 +60,17 @@ namespace Search3.Settings
             get { return _webServicesSettings.Value; }
         }
 
+        private AreaRectangle _areaRectangle;
+        public AreaRectangle AreaRectangle
+        {
+            get { return _areaRectangle; }
+            set
+            {
+                _areaRectangle = value;
+                RaiseAreaRectangleChanged();
+            }
+        }
+
         void _catalogSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -72,6 +83,17 @@ namespace Search3.Settings
                     Properties.Settings.Default.TypeOfCatalog = _catalogSettings.TypeOfCatalog;
                     Properties.Settings.Default.Save();
                     break;
+            }
+        }
+
+        public event EventHandler AreaRectangleChanged;
+
+        private void RaiseAreaRectangleChanged()
+        {
+            var handler = AreaRectangleChanged;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
             }
         }
     }
