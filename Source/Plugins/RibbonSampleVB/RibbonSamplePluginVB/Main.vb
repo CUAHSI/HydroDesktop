@@ -20,7 +20,7 @@ Namespace HydroDesktop.SamplePluginVB
         Private _mainControl As MyUserControl
 
         Private Const _pluginName As String = "VB_Sample"
-        Private Const kHydroSampleVBDock As String = "kHydroSampleVBDock"
+        Private Const kHydroSampleVB As String = "kHydroSampleVB" 'the root item key
 
 #End Region
 
@@ -29,15 +29,20 @@ Namespace HydroDesktop.SamplePluginVB
         'When the plugin is initialized
         Public Overrides Sub Activate()
 
+            Dim root1 As New RootItem(kHydroSampleVB, _pluginName)
+            root1.SortOrder = 70
+            App.HeaderControl.Add(root1)
+
             'To add a ribbon button to the 'Home' RibbonTab
             Dim button1 As New SimpleActionItem(_pluginName, AddressOf button1_Click)
             button1.LargeImage = My.Resources.vb_icon_32
+            button1.RootKey = kHydroSampleVB
             App.HeaderControl.Add(button1)
 
             If Not SeriesControl Is Nothing Then
                 _mainControl = New MyUserControl(SeriesControl)
                 _mainControl.Dock = DockStyle.Fill
-                App.DockManager.Add(New DockablePanel(kHydroSampleVBDock, _pluginName, _mainControl, DockStyle.Fill))
+                App.DockManager.Add(New DockablePanel(kHydroSampleVB, _pluginName, _mainControl, DockStyle.Fill))
             End If
 
             MyBase.Activate()
@@ -48,7 +53,7 @@ Namespace HydroDesktop.SamplePluginVB
 
             App.HeaderControl.RemoveAll()
 
-            App.DockManager.Remove(kHydroSampleVBDock)
+            App.DockManager.Remove(kHydroSampleVB)
 
             MyBase.Deactivate()
 

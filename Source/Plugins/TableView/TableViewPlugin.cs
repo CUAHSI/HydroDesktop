@@ -55,9 +55,6 @@ namespace TableView
             }
 
             #region initialize the Table Ribbon TabPage and related controls
-            
-            //Table Tab
-            //App.HeaderControl.Add(_tableViewRoot);
 
             //RefreshTheme
             var refreshThemeButton = new SimpleActionItem("Refresh", rbRefreshTheme_Click);

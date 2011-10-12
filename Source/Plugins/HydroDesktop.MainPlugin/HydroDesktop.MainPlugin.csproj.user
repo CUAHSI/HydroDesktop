@@ -3,4 +3,7 @@
   <PropertyGroup>
     <ReferencePath>F:\dev\HydroDesktop\Binaries\</ReferencePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
 </Project>

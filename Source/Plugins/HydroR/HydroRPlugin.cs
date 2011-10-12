@@ -24,7 +24,7 @@ namespace HydroR
         private const string _panelName = "HydroR";
         private const string kHydroR = "kHydroR";
 
-        private RootItem _hydroRTab = new RootItem(kHydroR, _panelName);
+        private RootItem _hydroRTab; 
 
         private SimpleActionItem _btnR;
 
@@ -58,6 +58,8 @@ namespace HydroR
                 App.DockManager.Add(new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill));
 
                 //Add a HydroR root item
+                _hydroRTab = new RootItem(kHydroR, _panelName);
+                _hydroRTab.SortOrder = 60;
                 App.HeaderControl.Add(_hydroRTab);
 
                 string rGroupCaption = _panelName + " Tools";
