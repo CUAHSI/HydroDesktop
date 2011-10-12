@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
+using DotSpatial.Controls.Compatibility;
 using System.Windows.Forms;
 using Oatc.OpenMI.Gui.ConfigurationEditor;
 using System.Drawing;
@@ -11,7 +11,7 @@ using System.IO;
 using System.Reflection;
 using HydroDesktop.Help;
 using DotSpatial.Controls.Docking;
-
+using DotSpatial.Controls.RibbonControls; //must be replaced by DotSpatial.Controls.Header
 
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
