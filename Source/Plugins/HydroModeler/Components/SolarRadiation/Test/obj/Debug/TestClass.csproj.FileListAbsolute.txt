@@ -1,0 +1,57 @@
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\nunit.framework.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\OpenMI.Standard.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\SMW.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\SolarRadiation.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\SharpMap.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\SMW.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\Oatc.OpenMI.Sdk.Buffer.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\SolarRadiation.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\ClassLibrary1\obj\Debug\ClassLibrary1.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\obj\Debug\ClassLibrary1.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\obj\Debug\ClassLibrary1.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\ClassLibrary1.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\ClassLibrary1.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\nunit.framework.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\OpenMI.Standard.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\SMW.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\SolarRadiation.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\SharpMap.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\SMW.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.pdb
+C:\Documents and Settings\ERCANM\My Documents\Visual Studio 2008\Projects\SolarRadiation\Test\bin\Debug\SolarRadiation.pdb
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\ClassLibrary1.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\ClassLibrary1.pdb
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\nunit.framework.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\OpenMI.Standard.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\SMW.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\SolarRadiation.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\SharpMap.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.pdb
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\SMW.pdb
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.pdb
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\bin\Debug\SolarRadiation.pdb
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\obj\Debug\ClassLibrary1.dll
+C:\Documents and Settings\ERCANM\Desktop\OpenMI\SolarRadiation\Test\obj\Debug\ClassLibrary1.pdb
