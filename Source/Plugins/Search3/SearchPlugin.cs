@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Projections;
+using HydroDesktop.Controls.Themes;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
@@ -19,6 +20,7 @@ namespace Search3
         //constants
         //root key
         const string kHydroSearch3 = "kHydroSearchV3";
+        const string TYPE_IN_KEYWORD = "Type-in a Keyword";
 
         private SimpleActionItem rbServices;
         private SimpleActionItem rbCatalog;
@@ -135,7 +137,7 @@ namespace Search3
             rbKeyword.RootKey = kHydroSearch3;
             rbKeyword.Width = 150;
             head.Add(rbKeyword);
-            rbKeyword.Text = "Type-in a Keyword";
+            UpdateKeywordsCaption();
 
             //Keyword more options
             var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
@@ -181,8 +183,7 @@ namespace Search3
 
             const string grpServices = "Web Services";
             rbServices = new SimpleActionItem("All Services", rbServices_Click);
-            rbServices.LargeImage = Resources.web_services_v1_32;
-            rbServices.SmallImage = Resources.web_services_v1_16;
+            ChangeWebServicesIcon();
             rbServices.ToolTipText = "Select web services (All Services selected)";
             rbServices.GroupCaption = grpServices;
             rbServices.RootKey = kHydroSearch3;
@@ -439,10 +440,14 @@ namespace Search3
 
         void rbKeyword_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (!_isManualKeywordTextEdit) return;
             if (e.PropertyName != "Text") return;
+            
             //todo: implement tooltip with keyword mathcing
+            rbKeyword.ToolTipText = "Matches....";
         }
 
+        private bool _isManualKeywordTextEdit = true;
         private void UpdateKeywordsCaption()
         {
             var keywords = PluginSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
@@ -457,7 +462,11 @@ namespace Search3
             {
                 sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
             }
-            rbKeyword.Text = sbKeywords.ToString();
+
+            _isManualKeywordTextEdit = false;
+            rbKeyword.Text = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
+            _isManualKeywordTextEdit = true;
+            rbKeyword.ToolTipText = rbKeyword.Text;
         }
 
         void rbKeyword_Click(object Sender, EventArgs e)
@@ -487,24 +496,53 @@ namespace Search3
             var totalCount = webWServicesSettings.TotalCount;
 
             string caption;
+            string hint;
+            WebServiceNode webServiceNode = null;
             if (checkedCount == totalCount)
             {
                 caption = "All services";
+                hint = caption;
             }else if (checkedCount == 1)
             {
                 // Get single checked item
                 var items = webWServicesSettings.WebServices.Where((w) => w.Checked).ToList();
                 Debug.Assert(items.Count == 1);
+                webServiceNode = items[0];
                 caption = items[0].Title;
-                // todo: Change button icon
+                hint = caption;
             }
             else
             {
                 caption = string.Format("{0} services selected", checkedCount);
+                hint = string.Format("{0} services", checkedCount);
             }
 
             rbServices.Caption = caption;
-            rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
+            rbServices.ToolTipText = string.Format("Select web services ({0} selected)", hint);
+            ChangeWebServicesIcon(webServiceNode);
+        }
+
+        private void ChangeWebServicesIcon(WebServiceNode webServiceNode = null)
+        {
+            if (webServiceNode == null || 
+                string.IsNullOrEmpty(webServiceNode.ServiceCode))
+            {
+                rbServices.LargeImage = Resources.web_services_v1_32;
+                rbServices.SmallImage = Resources.web_services_v1_16;
+                return;
+            }
+
+            try
+            {
+                var symbCreator = new SymbologyCreator(PluginSettings.Instance.CatalogSettings.HISCentralUrl);
+                var image = symbCreator.GetImageForService(webServiceNode.ServiceCode);
+                rbServices.LargeImage = rbServices.SmallImage = image;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to change icon." + Environment.NewLine +
+                                "Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         #endregion

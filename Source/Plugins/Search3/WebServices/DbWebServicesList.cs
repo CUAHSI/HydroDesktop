@@ -11,8 +11,8 @@ namespace Search3.WebServices
         {
             return new MetadataCacheSearcher().GetWebServices().Select(
                 service =>
-                new WebServiceNode(service.ServiceTitle, service.Id.ToString(),
-                                   service.DescriptionURL, service.EndpointURL, true)).ToList();
+                new WebServiceNode(service.ServiceTitle,
+                    service.ServiceCode, service.Id.ToString(), service.DescriptionURL, service.EndpointURL, true)).ToList();
         }
     }
 }

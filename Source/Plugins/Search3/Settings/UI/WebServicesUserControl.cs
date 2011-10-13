@@ -28,7 +28,9 @@ namespace Search3.Settings.UI
         void treeViewWebServices_AfterCheck(object sender, TreeViewEventArgs e)
         {
             var oldNode = (WebServiceNode)e.Node.Tag;
-            e.Node.Tag = new WebServiceNode(oldNode.Title, oldNode.ServiceID, oldNode.DescriptionUrl, oldNode.ServiceUrl, e.Node.Checked);
+            e.Node.Tag = new WebServiceNode(oldNode.Title,
+                                            oldNode.ServiceCode, oldNode.ServiceID, oldNode.DescriptionUrl,
+                                            oldNode.ServiceUrl, e.Node.Checked);
         }
 
         private void treeViewWebServices_OpenUrl(Object sender, TreeNodeMouseClickEventArgs e)
