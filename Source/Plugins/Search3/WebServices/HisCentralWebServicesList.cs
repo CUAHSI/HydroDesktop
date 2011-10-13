@@ -43,6 +43,7 @@ namespace Search3.WebServices
                     string serviceUrl = null;
                     string title = null;
                     string serviceID = null;
+                    string serviceCode = null;
                     foreach (XmlNode childNode2 in childNode1.ChildNodes)
                     {
                         switch (childNode2.Name)
@@ -59,9 +60,12 @@ namespace Search3.WebServices
                             case "servURL":
                                 serviceUrl = childNode2.InnerText;
                                 break;
+                            case "NetworkName":
+                                serviceCode = childNode2.InnerText;
+                                break;
                         }
                     }
-                    var node = new WebServiceNode(title, serviceID, desciptionUrl, serviceUrl, true);
+                    var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl, true);
                     result.Add(node);
                 }
             }

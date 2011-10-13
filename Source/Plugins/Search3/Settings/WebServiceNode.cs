@@ -8,9 +8,10 @@ namespace Search3.Settings
         {
         }
 
-        public WebServiceNode(string title, string serviceID, string descriptionUrl, string serviceUrl, bool isChecked)
+        public WebServiceNode(string title, string serviceCode, string serviceID, string descriptionUrl, string serviceUrl, bool isChecked)
         {
             ServiceID = serviceID;
+            ServiceCode = serviceCode;
             Title = title;
             DescriptionUrl = descriptionUrl;
             ServiceUrl = serviceUrl;
@@ -18,6 +19,7 @@ namespace Search3.Settings
         }
 
         public string ServiceID { get; private set; }
+        public string ServiceCode { get; private set; }
         public string Title { get; private set; }
         public string DescriptionUrl { get;  private set; }
         public string ServiceUrl { get; private set; }
@@ -45,6 +47,7 @@ namespace Search3.Settings
             if (source == null) throw new ArgumentNullException("source");
 
             ServiceID = source.ServiceID;
+            ServiceCode = source.ServiceCode;
             Title = source.Title;
             DescriptionUrl = source.DescriptionUrl;
             ServiceUrl = source.ServiceUrl;
