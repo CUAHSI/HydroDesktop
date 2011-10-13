@@ -16,15 +16,20 @@ namespace Search3.Settings
             {
                 if (_webServices == null)
                 {
-                    _webServices = new WebServicesList().GetWebServices().ToList();
+                    RefreshWebServices();
+                    Debug.Assert(_webServices != null);
                 }
                 return new ReadOnlyCollection<WebServiceNode>(_webServices);
             }
-            set
+            private set
             {
-                Debug.Assert(value != null);
                 _webServices = value;
             }
+        }
+
+        public void RefreshWebServices(CatalogSettings catalogSettings = null)
+        {
+            _webServices = new WebServicesList().GetWebServices(catalogSettings ?? SearchSettings.Instance.CatalogSettings).ToList();
         }
 
         public int CheckedCount

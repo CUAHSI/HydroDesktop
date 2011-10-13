@@ -58,6 +58,7 @@
     </Reference>
     <Reference Include="HydroDesktop.Controls">
       <HintPath>..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Data">
       <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
@@ -141,7 +142,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\CatalogSettings.cs" />
     <Compile Include="Settings\DateSettings.cs" />
-    <Compile Include="Settings\PluginSettings.cs" />
+    <Compile Include="Settings\SearchSettings.cs" />
     <Compile Include="Settings\WebServiceNode.cs" />
     <Compile Include="Settings\UI\WebServicesDialog.cs">
       <SubType>Form</SubType>

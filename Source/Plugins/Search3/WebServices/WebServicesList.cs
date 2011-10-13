@@ -4,16 +4,17 @@ using Search3.Settings;
 
 namespace Search3.WebServices
 {
-    class WebServicesList : IWebServicesList
+    class WebServicesList
     {
-        public IEnumerable<WebServiceNode> GetWebServices()
+        public IEnumerable<WebServiceNode> GetWebServices(CatalogSettings catalogSettings)
         {
+            if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
+
             IWebServicesList webServicesList;
-            var catalogSettings = PluginSettings.Instance.CatalogSettings;
-            switch(catalogSettings.TypeOfCatalog)
+            switch (catalogSettings.TypeOfCatalog)
             {
                 case TypeOfCatalog.HisCentral:
-                    webServicesList = new HisCentralWebServicesList();
+                    webServicesList = new HisCentralWebServicesList(catalogSettings.HISCentralUrl);
                     break;
                 case TypeOfCatalog.LocalMetadataCache:
                     webServicesList = new DbWebServicesList();

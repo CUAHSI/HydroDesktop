@@ -8,14 +8,14 @@ namespace Search3.Settings
         {
         }
 
-        public WebServiceNode(string title, string serviceCode, string serviceID, string descriptionUrl, string serviceUrl, bool isChecked)
+        public WebServiceNode(string title, string serviceCode, string serviceID, string descriptionUrl, string serviceUrl)
         {
             ServiceID = serviceID;
             ServiceCode = serviceCode;
             Title = title;
             DescriptionUrl = descriptionUrl;
             ServiceUrl = serviceUrl;
-            Checked = isChecked;
+            Checked = true;
         }
 
         public string ServiceID { get; private set; }
@@ -23,7 +23,7 @@ namespace Search3.Settings
         public string Title { get; private set; }
         public string DescriptionUrl { get;  private set; }
         public string ServiceUrl { get; private set; }
-        public bool Checked { get; private set; }
+        public bool Checked { get; set; }
 
         /// <summary>
         /// Create deep copy of current instance.

@@ -49,11 +49,11 @@ namespace Search3.Settings
             private set { _ontologyTree = value; }
         }
 
-        public void UpdateKeywordsAndOntology()
+        public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
         {
             SortedSet<string> keywords;
             OntologyTree ontologyTree;
-            new KeywordsList().GetKeywordsAndOntology(out keywords, out ontologyTree);
+            new KeywordsList().GetKeywordsAndOntology(out keywords, out ontologyTree, catalogSettings ?? SearchSettings.Instance.CatalogSettings);
 
             Keywords = keywords;
             OntologyTree = ontologyTree;

@@ -5,11 +5,14 @@ namespace Search3.Settings.UI
 {
     public partial class WebServicesDialog : Form
     {
+        private readonly WebServicesSettings _settings;
+
         private WebServicesDialog(WebServicesSettings settings)
         {
             InitializeComponent();
 
-            webServicesUserControl1.SetWebServices(settings.WebServices);
+            _settings = settings;
+            webServicesUserControl1.SetSettings(settings);
         }
 
         public static DialogResult ShowDialog(WebServicesSettings settings)
@@ -20,9 +23,7 @@ namespace Search3.Settings.UI
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    settings.WebServices =
-                        new System.Collections.ObjectModel.ReadOnlyCollection<WebServiceNode>(
-                            form.webServicesUserControl1.GetWebServices());
+                    settings.Copy(form._settings);
                 }
 
                 return form.DialogResult;
