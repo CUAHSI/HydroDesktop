@@ -430,7 +430,7 @@ namespace Search3
         }
 
         void rbKeyword_Click(object Sender, EventArgs e)
-        {
+        {        
             if (KeywordsDialog.ShowDialog(PluginSettings.Instance.KeywordsSettings) == DialogResult.OK)
             {
                 UpdateKeywordsCaption();
@@ -473,8 +473,8 @@ namespace Search3
             }
 
             rbServices.Caption = caption;
-            // todo: Uncomment next line when will be fixed http://dotspatial.codeplex.com/workitem/351
-            // rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
+            //fixed with latest version of DotSpatial.Plugins.Ribbon
+            rbServices.ToolTipText = string.Format("Select web services ({0} selected)", caption);
         }
 
         #endregion

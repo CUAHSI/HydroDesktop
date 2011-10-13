@@ -4,4 +4,8 @@
     <StartAction>Program</StartAction>
     <StartProgram>C:\dev\HydroDesktop\Binaries\HydroDesktop.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>F:\dev\HydroDesktop\Binaries\HydroDesktop.exe</StartProgram>
+  </PropertyGroup>
 </Project>
