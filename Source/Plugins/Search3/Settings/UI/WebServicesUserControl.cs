@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using System.Xml;
-using Search3.WebServices;
 
 namespace Search3.Settings.UI
 {
     public partial class WebServicesUserControl : UserControl
     {
+        #region Fields
+
+        private WebServicesSettings _webServicesSettings;
+
+        #endregion
+
         #region Constructors
 
         public WebServicesUserControl()
@@ -27,10 +30,8 @@ namespace Search3.Settings.UI
 
         void treeViewWebServices_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            var oldNode = (WebServiceNode)e.Node.Tag;
-            e.Node.Tag = new WebServiceNode(oldNode.Title,
-                                            oldNode.ServiceCode, oldNode.ServiceID, oldNode.DescriptionUrl,
-                                            oldNode.ServiceUrl, e.Node.Checked);
+            var webNode = (WebServiceNode)e.Node.Tag;
+            webNode.Checked = e.Node.Checked;
         }
 
         private void treeViewWebServices_OpenUrl(Object sender, TreeNodeMouseClickEventArgs e)
@@ -98,7 +99,13 @@ namespace Search3.Settings.UI
         /// </summary>
         public void RefreshWebServices()
         {
-            RefreshWebServices(new WebServicesList().GetWebServices());
+            if (_webServicesSettings == null)
+            {
+                return;
+            }
+            
+            _webServicesSettings.RefreshWebServices();
+            RefreshWebServices(_webServicesSettings.WebServices);
         }
 
 
@@ -116,23 +123,16 @@ namespace Search3.Settings.UI
         }
 
         /// <summary>
-        /// Get all web services.
+        /// Set settings into control.
         /// </summary>
-        /// <returns>Collection of all web services.</returns>
-        public IList<WebServiceNode> GetWebServices()
+        /// <param name="webServicesSettings">WebServices settings to set.</param>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="webServicesSettings"/> is null.</exception>
+        public void SetSettings(WebServicesSettings webServicesSettings)
         {
-            var list = new List<WebServiceNode>(treeViewWebServices.Nodes.Count);
-            list.AddRange(from TreeNode tnode in treeViewWebServices.Nodes select (WebServiceNode) tnode.Tag);
-            return list;
-        }
-        
-        /// <summary>
-        /// Set web services.
-        /// </summary>
-        /// <param name="webServices">Web services to set.</param>
-        public void SetWebServices(IEnumerable<WebServiceNode> webServices)
-        {
-            RefreshWebServices(webServices);
+            if (webServicesSettings == null) throw new ArgumentNullException("webServicesSettings");
+
+            _webServicesSettings = webServicesSettings;
+            RefreshWebServices(webServicesSettings.WebServices);
         }
 
         #endregion

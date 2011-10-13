@@ -4,11 +4,12 @@ using Search3.Settings;
 
 namespace Search3.Keywords
 {
-    class KeywordsList : IKeywordsList
+    class KeywordsList
     {
-        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree)
+        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree, CatalogSettings catalogSettings)
         {
-            var catalogSettings = PluginSettings.Instance.CatalogSettings;
+            if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
+
             IKeywordsList concreteList;
             switch (catalogSettings.TypeOfCatalog)
             {

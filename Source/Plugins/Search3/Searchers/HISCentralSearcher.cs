@@ -59,12 +59,7 @@ namespace Search3.Searchers
                * I added HydroDesktop.Data.Search.HISCentralSearcher
                * */
         #region Constructor
-
-        public HISCentralSearcher()
-        {
-            _hisCentralUrl = HydroDesktop.Configuration.Settings.Instance.DefaultHISCentralURL;
-        }
-
+       
         /// <summary>
         /// Create a new HIS Central Searcher which connects to the HIS Central web
         /// services
@@ -72,14 +67,14 @@ namespace Search3.Searchers
         /// <param name="hisCentralURL">The URL of HIS Central</param>
         public HISCentralSearcher(string hisCentralURL)
         {
-            _hisCentralUrl = hisCentralURL;
+            HISCentralUrl = hisCentralURL;
         }
 
         #endregion
 
-        #region Variables
-        protected string _hisCentralUrl = "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
-        protected bool _usePagedQuery = false;
+        #region Fields
+
+        private bool _usePagedQuery = false;
         
         #endregion
 
@@ -88,17 +83,7 @@ namespace Search3.Searchers
         /// <summary>
         /// Gets or sets the HIS Central URL
         /// </summary>
-        public string HISCentralUrl
-        {
-            get
-            {
-                return _hisCentralUrl;
-            }
-            set
-            {
-                _hisCentralUrl = value;
-            }
-        }
+        public string HISCentralUrl { get; set; }
 
         /// <summary>
         /// The query method for HIS Central. If use PagedQuery is true,
@@ -173,6 +158,7 @@ namespace Search3.Searchers
             catch (Exception ex)
             {
                 log.Error(ex);
+                throw;
             }
             finally
             {

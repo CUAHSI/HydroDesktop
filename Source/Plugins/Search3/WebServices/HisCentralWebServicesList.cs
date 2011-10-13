@@ -14,14 +14,16 @@ namespace Search3.WebServices
 
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string WebServicesFilename { get; set; }
+        private readonly string _hisCentralUrl;
 
         #endregion
 
         #region Constructors
 
-        public HisCentralWebServicesList()
+        public HisCentralWebServicesList(string hisCentralUrl)
         {
-            WebServicesFilename = Path.Combine(ServicesXmlDirectoryPath, PluginSettings.Instance.WebServicesXmlFileName);
+            _hisCentralUrl = hisCentralUrl;
+            WebServicesFilename = Path.Combine(ServicesXmlDirectoryPath, Properties.Settings.Default.WebServicesFileName);
         }
 
         #endregion
@@ -30,7 +32,7 @@ namespace Search3.WebServices
 
         public IEnumerable<WebServiceNode> GetWebServices()
         {
-            var document = GetWebServicesFromHISCentral(PluginSettings.Instance.CatalogSettings.HISCentralUrl);
+            var document = GetWebServicesFromHISCentral(_hisCentralUrl);
             if (document.DocumentElement == null)
                 return new WebServiceNode[] {};
 
@@ -65,7 +67,7 @@ namespace Search3.WebServices
                                 break;
                         }
                     }
-                    var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl, true);
+                    var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl);
                     result.Add(node);
                 }
             }

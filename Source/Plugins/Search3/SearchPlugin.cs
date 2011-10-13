@@ -64,7 +64,7 @@ namespace Search3
             rbDrawBox.ToggleGroupKey = grpArea;
             rbDrawBox.RootKey = kHydroSearch3;
             head.Add(rbDrawBox);
-            PluginSettings.Instance.AreaRectangleChanged += Instance_AreaRectangleChanged;
+            SearchSettings.Instance.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             //Select
             var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
@@ -342,7 +342,7 @@ namespace Search3
 
         void Instance_AreaRectangleChanged(object sender, EventArgs e)
         {
-            var rectangle = PluginSettings.Instance.AreaRectangle;
+            var rectangle = SearchSettings.Instance.AreaRectangle;
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : "Draw Box";
         }
 
@@ -379,7 +379,7 @@ namespace Search3
             var xmax = xy[2];
             var ymax = xy[3];
             var rectangle = new AreaRectangle(xmin, ymin, xmax, ymax);
-            PluginSettings.Instance.AreaRectangle = rectangle;
+            SearchSettings.Instance.AreaRectangle = rectangle;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
@@ -413,7 +413,7 @@ namespace Search3
             if (_rectangleDrawing == null) return;
 
             _rectangleDrawing.Deactivate();
-            PluginSettings.Instance.AreaRectangle = null;
+            SearchSettings.Instance.AreaRectangle = null;
         }
 
         void rbAttribute_Click(object sender, EventArgs e)
@@ -450,7 +450,7 @@ namespace Search3
         private bool _isManualKeywordTextEdit = true;
         private void UpdateKeywordsCaption()
         {
-            var keywords = PluginSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
+            var keywords = SearchSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
             var sbKeywords = new StringBuilder();
             const string separator = "; ";
             foreach(var key in keywords)
@@ -471,7 +471,7 @@ namespace Search3
 
         void rbKeyword_Click(object Sender, EventArgs e)
         {        
-            if (KeywordsDialog.ShowDialog(PluginSettings.Instance.KeywordsSettings) == DialogResult.OK)
+            if (KeywordsDialog.ShowDialog(SearchSettings.Instance.KeywordsSettings) == DialogResult.OK)
             {
                 UpdateKeywordsCaption();
             }
@@ -483,7 +483,7 @@ namespace Search3
 
         void rbServices_Click(object Sender, EventArgs e)
         {
-            if (WebServicesDialog.ShowDialog(PluginSettings.Instance.WebServicesSettings) == DialogResult.OK)
+            if (WebServicesDialog.ShowDialog(SearchSettings.Instance.WebServicesSettings) == DialogResult.OK)
             {
                 UpdateWebServicesCaption();
             }
@@ -491,7 +491,7 @@ namespace Search3
 
         private void UpdateWebServicesCaption()
         {
-            var webWServicesSettings = PluginSettings.Instance.WebServicesSettings;
+            var webWServicesSettings = SearchSettings.Instance.WebServicesSettings;
             var checkedCount = webWServicesSettings.CheckedCount;
             var totalCount = webWServicesSettings.TotalCount;
 
@@ -534,7 +534,7 @@ namespace Search3
 
             try
             {
-                var symbCreator = new SymbologyCreator(PluginSettings.Instance.CatalogSettings.HISCentralUrl);
+                var symbCreator = new SymbologyCreator(SearchSettings.Instance.CatalogSettings.HISCentralUrl);
                 var image = symbCreator.GetImageForService(webServiceNode.ServiceCode);
                 rbServices.LargeImage = rbServices.SmallImage = image;
             }
@@ -551,13 +551,13 @@ namespace Search3
 
         private void UpdateDatesCaption()
         {
-            rbStartDate.Text = PluginSettings.Instance.DateSettings.StartDate.ToShortDateString();
-            rbEndDate.Text = PluginSettings.Instance.DateSettings.EndDate.ToShortDateString();
+            rbStartDate.Text = SearchSettings.Instance.DateSettings.StartDate.ToShortDateString();
+            rbEndDate.Text = SearchSettings.Instance.DateSettings.EndDate.ToShortDateString();
         }
 
         void rbDate_Click(object Sender, EventArgs e)
         {
-            if (DateSettingsDialog.ShowDialog(PluginSettings.Instance.DateSettings) == DialogResult.OK)
+            if (DateSettingsDialog.ShowDialog(SearchSettings.Instance.DateSettings) == DialogResult.OK)
             {
                 UpdateDatesCaption();
             }
@@ -569,7 +569,7 @@ namespace Search3
 
             DateTime result;
             if (DateTime.TryParse(rbEndDate.Text, out result))
-                PluginSettings.Instance.DateSettings.EndDate = result;
+                SearchSettings.Instance.DateSettings.EndDate = result;
         }
 
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -578,7 +578,7 @@ namespace Search3
 
             DateTime result;
             if (DateTime.TryParse(rbStartDate.Text, out result))
-                PluginSettings.Instance.DateSettings.StartDate = result;
+                SearchSettings.Instance.DateSettings.StartDate = result;
         }
 
         #endregion
@@ -587,15 +587,19 @@ namespace Search3
 
         void rbCatalog_Click(object Sender, EventArgs e)
         {
-            if (SearchCatalogSettingsDialog.ShowDialog(PluginSettings.Instance.CatalogSettings) == DialogResult.OK)
+            if (SearchCatalogSettingsDialog.ShowDialog(SearchSettings.Instance.CatalogSettings,
+                                                       SearchSettings.Instance.WebServicesSettings,
+                                                       SearchSettings.Instance.KeywordsSettings) == DialogResult.OK)
             {
                 UpdateCatalogCaption();
+                UpdateWebServicesCaption();
+                UpdateKeywordsCaption();
             }
         }
 
         private void UpdateCatalogCaption()
         {
-            rbCatalog.Caption = PluginSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
+            rbCatalog.Caption = SearchSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
 
         #endregion

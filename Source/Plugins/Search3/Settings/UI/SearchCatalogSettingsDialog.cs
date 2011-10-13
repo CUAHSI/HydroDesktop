@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Forms;
+using Search3.WebServices;
 
 namespace Search3.Settings.UI
 {
@@ -8,19 +11,26 @@ namespace Search3.Settings.UI
         #region Fields
 
         private readonly CatalogSettings _catalogSettings;
-		//private static readonly string _ontologyFilename = Properties.Settings.Default.ontologyFilename;
+        private readonly WebServicesSettings _webServicesSettings;
+        private readonly KeywordsSettings _keywordsSettings;
 
 		#endregion
 
         #region Constructors
 
-        private SearchCatalogSettingsDialog(CatalogSettings catalogSettings)
+        private SearchCatalogSettingsDialog(CatalogSettings catalogSettings, 
+            WebServicesSettings webServicesSettings,
+            KeywordsSettings keywordsSettings)
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
-            
+            if (webServicesSettings == null) throw new ArgumentNullException("webServicesSettings");
+            if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
+
             InitializeComponent();
 
             _catalogSettings = catalogSettings;
+            _webServicesSettings = webServicesSettings;
+            _keywordsSettings = keywordsSettings;
 
             rbHisCentral.Tag = TypeOfCatalog.HisCentral;
             rbLocalMetadataCache.Tag = TypeOfCatalog.LocalMetadataCache;
@@ -60,29 +70,37 @@ namespace Search3.Settings.UI
 
         #endregion
 
-        public static DialogResult ShowDialog(CatalogSettings catalogSettings)
+        public static DialogResult ShowDialog(CatalogSettings catalogSettings, 
+                                              WebServicesSettings webServicesSettings,
+                                              KeywordsSettings keywordsSettings)
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
+            if (webServicesSettings == null) throw new ArgumentNullException("webServicesSettings");
+            if (keywordsSettings == null) throw new ArgumentNullException("keywordSettings");
 
-            using(var form = new SearchCatalogSettingsDialog(catalogSettings.Copy()))
+            using (var form = new SearchCatalogSettingsDialog(catalogSettings.Copy(), 
+                                                              webServicesSettings.Copy(), 
+                                                              keywordsSettings.Copy()))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    // todo: check for valid  _catalogSettings.HISCentralUrl
-                    /*
-                    if (false)
+                    if (catalogSettings.TypeOfCatalog != form._catalogSettings.TypeOfCatalog ||
+                        catalogSettings.HISCentralUrl != form._catalogSettings.HISCentralUrl)
                     {
-                        form.DialogResult = DialogResult.None;
-                        return DialogResult.None;
+                        form.RefreshWebServices();
+                        form.RefresKeywords();
                     }
-                     */
+
 
                     catalogSettings.Copy(form._catalogSettings);
+                    webServicesSettings.Copy(form._webServicesSettings);
+                    keywordsSettings.Copy(form._keywordsSettings);
                 }
 
                 return form.DialogResult;
             }
         }
+       
 
         void txtCustomUrl_TextChanged(object sender, EventArgs e)
         {
@@ -101,51 +119,32 @@ namespace Search3.Settings.UI
             // Show groupbox with urls only for HisCentral
             gbHisCentralUrl.Visible = _catalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral;
         }
-
+        
         private void btnRefreshServices_Click(object sender, EventArgs e)
         {
-            //todo: implement Refresh Services
-
-            /*
-            //check the custom url
-            if (!txtCustomUrl.Text.ToLower().StartsWith("http:"))
-            {
-                MessageBox.Show("Please enter a valid HIS Central URL.");
-                txtCustomUrl.Focus();
-                DialogResult = DialogResult.None;
-                return;
-            }
-
-
-            //refresh the services in search control
-            var searcher = new HISCentralSearcher(txtCustomUrl.Text);
-            string webServicesXmlPath = Path.Combine(Settings.Instance.ApplicationDataDirectory, 
-                Properties.Settings.Default.WebServicesFileName);
-
-            try
-            {
-                searcher.GetWebServicesXml(webServicesXmlPath);
-            }
-            catch (Exception ex)
-            {
-                const string error = "Error refreshing web services from HIS Central. Using existing list of web services.";
-                MessageBox.Show(error + " " + ex.Message);
-            }
-
-            if (_searchControl != null)
-            {
-                _searchControl.RefreshWebServices(false, false);
-            }*/
+            RefreshWebServices();
         }
 
         private void btnRefreshKeywords_Click(object sender, EventArgs e)
         {
-            // todo: Implement Refresh Keywords
-            /*
-            var searcher = new HISCentralSearcher(Settings.Instance.SelectedHISCentralURL);
-            string pluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			string xmlFileName = Path.Combine ( pluginPath, _ontologyFilename );
-            searcher.GetOntologyTreeXml(xmlFileName);*/
+            RefresKeywords();
+        }
+
+        private void RefreshWebServices()
+        {
+            try
+            {
+                _webServicesSettings.RefreshWebServices(_catalogSettings);
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Unable to refresh WebServices." + Environment.NewLine + "Error: " + ex.Message, "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void RefresKeywords()
+        {
+            _keywordsSettings.UpdateKeywordsAndOntology(_catalogSettings);
         }
 
         private void rbHisCentral_CheckedChanged(object sender, EventArgs e)
