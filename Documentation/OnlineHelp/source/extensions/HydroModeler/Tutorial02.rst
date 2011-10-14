@@ -1,7 +1,7 @@
 .. index:: Tutorial02
 
 Tutorial 2: Creating and Running a Model Configuration
-====================================================
+======================================================
 The purpose of this tutorial is to show how to create a model configuration by linking components in HydroModeler, and then how to execute it and view model output.  In short, the goal of this tutorial is to create the project in example configuration 4: watershed runoff calculation using TOPMODEL. 
 
 Overview
@@ -9,7 +9,7 @@ Overview
 In this exercise we are interested in calculating the streamflow at the outlet of a watershed using a TOPMODEL component coupled to a Evapotranspiration component. We will be simulating watershed number 18 in the Coweeta Hydrologic Laboratory located near Asheville, NC. The TOPMODEL component requires an ASCII raster file of topographic index for every pixel in the watershed, model parameters (m, Tmax, R, and canopy interception), and two input exchange items (precipitation and evapotranspiration). Input precipitation was obtained using the HydroDesktop search mechanism, and stored in a local database file. Daily potential evapotranspiration rate is calculated and delivered by a Hargreaves model component. The Hargreaves component is also linked to the HydroDesktop database to obtain three input exchange items (maximum, minimum, and average daily temperatures). Then, the TOPMODEL component is connected to a trigger which initiates the model run, and to the DbWriter component to store the output streamflow values back into the HydroDesktop database. Finally, the stored streamflow is plotted using the HydroDesktop Graph View plugin and compared to observed streamflow values.
 
 Creating the Configuration
-------------------------
+--------------------------
 
 1. Open the start menu, choose Program -- CUAHSI HIS -- HydroDesktop.
 
