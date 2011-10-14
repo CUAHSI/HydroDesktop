@@ -10,7 +10,9 @@ Guide Books:
 .. toctree::
    :maxdepth: 2
 
+   guide-books/Search/Search
+   guide-books/TableView/TableView
    using-the-orb
    working-with-databases
-   table-tab
+
    
