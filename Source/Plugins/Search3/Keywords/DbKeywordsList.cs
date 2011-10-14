@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Search3.Searchers;
+using Search3.Searching;
 using Search3.Settings;
 
 namespace Search3.Keywords

@@ -2,8 +2,10 @@
 
 namespace Search3.Settings
 {
-    class SearchSettings
+    public class SearchSettings
     {
+        #region Singletone implementation
+
         private SearchSettings()
         {
                 
@@ -14,6 +16,8 @@ namespace Search3.Settings
         {
             get { return _instance.Value; }
         }
+
+        #endregion
 
 
         private CatalogSettings _catalogSettings;
@@ -36,33 +40,28 @@ namespace Search3.Settings
             }
         }
 
-        private readonly Lazy<DateSettings> _dateSettings = new Lazy<DateSettings>(() => new DateSettings());
+        private readonly DateSettings _dateSettings = new DateSettings();
         public DateSettings DateSettings
         {
-            get { return _dateSettings.Value; }
+            get { return _dateSettings; }
         }
 
-        private readonly Lazy<KeywordsSettings> _keywordsSettings = new Lazy<KeywordsSettings>(() => new KeywordsSettings());
+        private readonly KeywordsSettings _keywordsSettings = new KeywordsSettings();
         public KeywordsSettings KeywordsSettings
         {
-            get { return _keywordsSettings.Value; }
+            get { return _keywordsSettings; }
         }
 
-        private readonly Lazy<WebServicesSettings> _webServicesSettings = new Lazy<WebServicesSettings>(() => new WebServicesSettings(), true);
+        private readonly WebServicesSettings _webServicesSettings = new WebServicesSettings();
         public WebServicesSettings WebServicesSettings
         {
-            get { return _webServicesSettings.Value; }
+            get { return _webServicesSettings; }
         }
 
-        private AreaRectangle _areaRectangle;
-        public AreaRectangle AreaRectangle
+        private readonly AreaSettings _areaSettings = new AreaSettings();
+        public AreaSettings AreaSettings
         {
-            get { return _areaRectangle; }
-            set
-            {
-                _areaRectangle = value;
-                RaiseAreaRectangleChanged();
-            }
+            get { return _areaSettings; }
         }
 
         void _catalogSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -77,17 +76,6 @@ namespace Search3.Settings
                     Properties.Settings.Default.TypeOfCatalog = _catalogSettings.TypeOfCatalog;
                     Properties.Settings.Default.Save();
                     break;
-            }
-        }
-
-        public event EventHandler AreaRectangleChanged;
-
-        private void RaiseAreaRectangleChanged()
-        {
-            var handler = AreaRectangleChanged;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
             }
         }
     }

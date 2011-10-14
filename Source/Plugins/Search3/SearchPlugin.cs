@@ -10,6 +10,8 @@ using HydroDesktop.Controls.Themes;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
+using Search3.Searching;
+using Search3.Searching.Exceptions;
 using Search3.Settings;
 using Search3.Settings.UI;
 
@@ -17,8 +19,8 @@ namespace Search3
 {
     public class SearchPlugin: Extension
     {
-        //constants
-        //root key
+        #region Fields
+
         const string kHydroSearch3 = "kHydroSearchV3";
         const string TYPE_IN_KEYWORD = "Type-in a Keyword";
 
@@ -26,9 +28,15 @@ namespace Search3
         private SimpleActionItem rbCatalog;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
-        private RectangleDrawing _rectangleDrawing;
         private TextEntryActionItem rbKeyword;
         private SimpleActionItem rbDrawBox;
+
+        private RectangleDrawing _rectangleDrawing;
+        private Searcher _searcher;
+
+        #endregion
+
+        #region Plugin operations
 
         public override void Activate()
         {
@@ -42,7 +50,11 @@ namespace Search3
             base.Deactivate();
         }
 
-        public void AddSearchRibbon()
+        #endregion
+
+        #region Private methods
+
+        private void AddSearchRibbon()
         {
             var head = App.HeaderControl;
             
@@ -64,7 +76,7 @@ namespace Search3
             rbDrawBox.ToggleGroupKey = grpArea;
             rbDrawBox.RootKey = kHydroSearch3;
             head.Add(rbDrawBox);
-            SearchSettings.Instance.AreaRectangleChanged += Instance_AreaRectangleChanged;
+            SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             //Select
             var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
@@ -204,7 +216,8 @@ namespace Search3
 
             #endregion
 
-            //search and download buttons
+            #region Search and download buttons
+
             string grpSearch = "Search";
             var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click);
             rbSearch.LargeImage = Resources.search2_3;
@@ -213,20 +226,20 @@ namespace Search3
             rbSearch.GroupCaption = grpSearch;
             rbSearch.RootKey = kHydroSearch3;
             head.Add(rbSearch);
-
-            var btnDownload = new SimpleActionItem("Download", rbDownload_Click)
-            {
-                RootKey = kHydroSearch3,
-                GroupCaption = grpSearch,
-                LargeImage = Resources.download32
-            };
+            
+            var btnDownload = new SimpleActionItem("Download", rbDownload_Click);
+            btnDownload.RootKey = kHydroSearch3;
+            btnDownload.GroupCaption = grpSearch;
+            btnDownload.LargeImage = Resources.download32;
             App.HeaderControl.Add(btnDownload);
+
+            #endregion
 
             //map buttons
             AddMapButtons();
         }
       
-        void AddMapButtons()
+        private void AddMapButtons()
         {
             string kHomeRoot = kHydroSearch3;
             string rpMapTools = "Map Tools";
@@ -328,21 +341,52 @@ namespace Search3
             //_rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
             //head.Add(_rbAttribute);
         }
-
-        #region event handlers
         
         void rbPan_Click(object sender, EventArgs e) { }
         void rbZoomIn_Click(object sender, EventArgs e) { }
         void rbZoomOut_Click(object sender, EventArgs e) { }
         void rbFullExtent_Click(object sender, EventArgs e) { }
-        void rbSearch_Click(object sender, EventArgs e) { }
         void rbDownload_Click(object sender, EventArgs e) { }
+
+        #region Search
+        
+        void rbSearch_Click(object sender, EventArgs e)
+        {
+            if (_searcher == null)
+            {
+                _searcher = new Searcher();
+            }
+
+            try
+            {
+                _searcher.Run(SearchSettings.Instance);
+            }
+            catch (SearchSettingsException sex)
+            {
+                string message;
+                if (sex is NoSelectedKeywordsException)
+                    message = "Please provide at least one Keyword for search.";
+                else if (sex is NoWebServicesException)
+                    message = "Please provide at least one Web Service for search.";
+                else if (sex is NoAreaToSearchException)
+                    message = "Please provide at least one Target Area for search.";
+                else
+                    message = sex.Message;
+
+                MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
 
         #region  Area group
 
         void Instance_AreaRectangleChanged(object sender, EventArgs e)
         {
-            var rectangle = SearchSettings.Instance.AreaRectangle;
+            var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : "Draw Box";
         }
 
@@ -379,7 +423,7 @@ namespace Search3
             var xmax = xy[2];
             var ymax = xy[3];
             var rectangle = new AreaRectangle(xmin, ymin, xmax, ymax);
-            SearchSettings.Instance.AreaRectangle = rectangle;
+            SearchSettings.Instance.AreaSettings.AreaRectangle = rectangle;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
@@ -413,7 +457,7 @@ namespace Search3
             if (_rectangleDrawing == null) return;
 
             _rectangleDrawing.Deactivate();
-            SearchSettings.Instance.AreaRectangle = null;
+            SearchSettings.Instance.AreaSettings.AreaRectangle = null;
         }
 
         void rbAttribute_Click(object sender, EventArgs e)

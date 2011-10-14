@@ -15,8 +15,10 @@ using System.Xml;
 using Search3.Extensions;
 using log4net;
 
-namespace Search3.Searchers
+namespace Search3.Searching
 {
+    //todo: Copied from Search2. Need to be refactored.
+
     public interface IHISCentralSearcher
     {
         /// <summary>

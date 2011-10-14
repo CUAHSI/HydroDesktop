@@ -9,7 +9,7 @@ using HydroDesktop.Interfaces;
 using DotSpatial.Topology;
 using Search3.Extensions;
 
-namespace Search3.Searchers
+namespace Search3.Searching
 {
     /// <summary>
     /// Searches in the 'MetadataCache' database
@@ -18,6 +18,8 @@ namespace Search3.Searchers
     /// </summary>
     public class MetadataCacheSearcher
     {
+        //todo: Copied from Search2. Need to be refactored.
+
         public MetadataCacheSearcher()
         {
             string connString = HydroDesktop.Configuration.Settings.Instance.MetadataCacheConnectionString;
