@@ -7,7 +7,7 @@
 Version History
 ===============
 
-Release 1.2 Build 624 (Oct 14, 2011)
+Release 1.2 Build 625 (Oct 14, 2011)
 ------------------------------------
 
 * Download manager added and data download speed improved
