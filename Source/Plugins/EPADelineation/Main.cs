@@ -32,6 +32,9 @@ namespace EPADelineation
 
         private RibbonButton _btstartDelineate;
 
+        //this variable is used for showing the warning message
+        private bool _showWarning = true;
+
         #endregion
 
         #region IExtension Members
@@ -41,6 +44,8 @@ namespace EPADelineation
         /// </summary>
         protected override void OnDeactivate()
         {
+            if (_mapArgs == null) return;
+            
             for (int i = 0; i < _mapArgs.Ribbon.Tabs[0].Panels.Count; i++)
             {
                 if (_mapArgs.Ribbon.Tabs[0].Panels[i].Text == "EPA Tool")
@@ -72,7 +77,40 @@ namespace EPADelineation
         /// <param name="args">The plugin arguments to access the main application</param>
         public void Initialize(IMapPluginArgs args)
         {
+            //in case of opening project..
+            //string epa_setting = args.AppManager.SerializationManager.GetCustomSetting<string>("epa_setting", "false");
+            string epa_setting = "new";
+            if (args.AppManager.Ribbon.Tabs[1].Tag != null)
+                epa_setting = args.AppManager.Ribbon.Tabs[1].Tag.ToString();
+            if (epa_setting == "opening") //hack: to indicate opening project
+                _showWarning = false;
+            
             _mapArgs = args;
+            
+            //show warning message..
+            bool runTool = true;
+            if (_showWarning)
+            {
+                var frmWarning = new WarningForm();
+                args.Ribbon.OrbDropDown.Close();
+                if (frmWarning.ShowDialog() == DialogResult.OK)
+                {
+                    _showWarning = false;
+                    runTool = true;
+                }
+                else
+                {
+                    runTool = false;
+                }
+            }
+            //exit if user pressed cancel
+            if (!runTool)
+            {
+                this.Deactivate();
+                return;
+            }
+            
+            
 
             //Setup the Panel and Add it to the MapView tab
             _rPanelEPADelineation = new RibbonPanel("EPA Tool", RibbonPanelFlowDirection.Bottom);
@@ -116,6 +154,7 @@ namespace EPADelineation
                         _mapArgs.Map.FunctionMode = FunctionMode.None;
                     }
                 }
+                _mapArgs.Map.FunctionMode = FunctionMode.None;
 
                 //Active the Save Watershed Form
                 SaveWatershed saveWS = new SaveWatershed(_mapArgs, _btstartDelineate);

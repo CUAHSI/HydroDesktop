@@ -26,8 +26,9 @@ namespace HydroDesktop.Main
                 "Table View",
                 "Graph",
                 "Edit",
-                "EPA Delineation",
+                //"EPA Delineation",
                 "Fetch Basemap",
+                "HydroR",
                 "Help Tab",
                 "Metadata Fetcher",
                 "Data Export"

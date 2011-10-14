@@ -143,6 +143,9 @@ namespace HydroDesktop.Main
         /// </summary>
         public static void OpenProject(string projectFileName, AppManager applicationManager)
         {
+            //applicationManager.SerializationManager.SetCustomSetting("epa_setting", "opening");
+            applicationManager.Ribbon.Tabs[1].Tag = "opening";
+
             applicationManager.ProgressHandler.Progress("Opening Project", 0, "Opening Project");
             applicationManager.SerializationManager.OpenProject(projectFileName);
             applicationManager.ProgressHandler.Progress("Project opened", 0, "");
