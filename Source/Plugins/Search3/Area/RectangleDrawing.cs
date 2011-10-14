@@ -15,6 +15,8 @@ namespace Search3.Area
     /// </summary>
     public class RectangleDrawing
     {
+        //todo: Copied from Search2. Need to be refactored.
+
         private Map _mainMap;
         private MapPolygonLayer _rectangleLayer = null;
         private bool _isActive = false;

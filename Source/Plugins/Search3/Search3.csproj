@@ -91,15 +91,30 @@
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Area\RectangleDrawing.cs" />
-    <Compile Include="Searchers\HISCentralSearcher.cs" />
+    <Compile Include="Searching\HISCentralSearcher.cs" />
     <Compile Include="Keywords\DbKeywordsList.cs" />
     <Compile Include="Keywords\HisCentalKeywordsList.cs" />
     <Compile Include="Keywords\IKeywordsList.cs" />
     <Compile Include="Keywords\KeywordsList.cs" />
-    <Compile Include="Searchers\MetadataCacheSearcher.cs" />
-    <Compile Include="Searchers\SearchHelper.cs" />
-    <Compile Include="Searchers\SearchResult.cs" />
+    <Compile Include="Searching\MetadataCacheSearcher.cs" />
+    <Compile Include="Searching\SearchHelper.cs" />
+    <Compile Include="Searching\SearchResult.cs" />
+    <Compile Include="Searching\Exceptions\HydrodesktopSearchException.cs" />
+    <Compile Include="Searching\Exceptions\NoAreaToSearchException.cs" />
+    <Compile Include="Searching\Exceptions\NoSelectedKeywordsException.cs" />
+    <Compile Include="Searching\Exceptions\NoWebServicesException.cs" />
+    <Compile Include="Searching\SearchCriteria.cs" />
+    <Compile Include="Searching\Searcher.cs" />
+    <Compile Include="Searching\SearchProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Searching\SearchProgressForm.Designer.cs">
+      <DependentUpon>SearchProgressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Searching\Exceptions\SearchSettingsException.cs" />
+    <Compile Include="Searching\SearchWithFailover.cs" />
     <Compile Include="Settings\AreaRectangle.cs" />
+    <Compile Include="Settings\AreaSettings.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
@@ -163,6 +178,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Searching\SearchProgressForm.resx">
+      <DependentUpon>SearchProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings\UI\DateSettingsDialog.resx">
       <DependentUpon>DateSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>

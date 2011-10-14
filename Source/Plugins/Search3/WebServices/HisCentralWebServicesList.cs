@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using Search3.Searchers;
+using Search3.Searching;
 using Search3.Settings;
 using log4net;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Data;
 
-namespace Search3.Searchers
+namespace Search3.Searching
 {
     public class SearchResult
     {

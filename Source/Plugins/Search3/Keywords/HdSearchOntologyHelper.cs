@@ -9,6 +9,8 @@ namespace Search3.Keywords
 {
    public  class HdSearchOntologyHelper
     {
+        //todo: Copied from Search2. Need to be refactored.
+
         private static readonly string _ontologyFilename = Properties.Settings.Default.OntologyFilename;
         private static readonly string _ontologySynonymsFilename = Properties.Settings.Default.SynonymsFilename;
 
