@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Search3.Searching.Exceptions;
@@ -10,18 +8,36 @@ using Search3.Settings;
 
 namespace Search3.Searching
 {
+    /// <summary>
+    /// Data series searcher.
+    /// </summary>
     public class Searcher
     {
         #region Fields
 
         private SearchProgressForm _searcherUI;
-        private Task _searchTask;
+        private Task<SearchResult> _searchTask;
         private CancellationTokenSource _cancellationTokenSource;
+        private Task _monitorTask;
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// Raised when progress changed.
+        /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
+        /// <summary>
+        /// Raised when Searcher sends any message.
+        /// </summary>
         public event EventHandler<LogMessageEventArgs> OnMessage;
+        /// <summary>
+        /// Raised whane search is completed.
+        /// </summary>
+        public event EventHandler<CompletedEventArgs> Completed;
+
+        #endregion
 
         #region Public methods
 
@@ -42,9 +58,12 @@ namespace Search3.Searching
 
             _searcherUI = new SearchProgressForm(this);
             ShowUI();
-            InternalStartSearching();
+            InternalStartSearching(settings);
         }
 
+        /// <summary>
+        /// Cancel searching.
+        /// </summary>
         public void Cancel()
         {
             if (_cancellationTokenSource == null ||
@@ -53,68 +72,130 @@ namespace Search3.Searching
             _cancellationTokenSource.Cancel();
         }
 
+        /// <summary>
+        /// Shows that searhing is active.
+        /// </summary>
         public bool IsBusy
         {
             get
             {
-                return _searchTask != null && !_searchTask.IsCompleted;
+                return _searchTask != null && _monitorTask != null &&
+                       (!_searchTask.IsCompleted || !_monitorTask.IsCompleted);
             }
         }
 
+        /// <summary>
+        /// Show GUI for searching.
+        /// </summary>
         public void ShowUI()
         {
             if (_searcherUI == null) return;
             _searcherUI.Show();
         }
 
+
+        /// <summary>
+        /// Hide GUI for searching.
+        /// </summary>
+        public void HideUI()
+        {
+            if (_searcherUI == null) return;
+            _searcherUI.Hide();
+        }
+
         #endregion
 
         #region Private methods
 
-        private void InternalStartSearching()
+        private void InternalStartSearching(SearchSettings settings)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             var _cancellationToken = _cancellationTokenSource.Token;
-            _cancellationToken.Register(() => LogMessage("Cancelled"));
-            _searchTask = Task.Factory.StartNew(DoSearch, _cancellationToken);
-            Task.Factory.StartNew(() =>
-                                      {
-                                          while (true)
-                                          {
-                                              if (_searchTask == null)
-                                              {
-                                                  break;
-                                              }
-                                              if (_searchTask.IsFaulted)
-                                              {
-                                                  LogMessage("Error", _searchTask.Exception);
-                                                  break;
-                                              }
-                                              if (_searchTask.IsCompleted)
-                                              {
-                                                  break;
-                                              }
-                                              Thread.Sleep(500);
-                                          }
-                                      });
+            _searchTask = Task.Factory.StartNew<SearchResult>(DoSearch, settings, _cancellationToken);
+            _monitorTask = Task.Factory.StartNew(DoMonitorTask);
         }
 
-        private void DoSearch()
+        private void DoMonitorTask()
+        {
+            while (true)
+            {
+                if (_searchTask == null) break;
+
+                if (!_searchTask.IsCompleted)
+                {
+                    Thread.Sleep(500);
+                    continue;
+                }
+
+
+                SearchResult result = null;
+                if (_searchTask.IsFaulted)
+                {
+                    if (_searchTask.Exception != null)
+                    {
+                        foreach (var error in _searchTask.Exception.InnerExceptions)
+                        {
+                            LogMessage("Error", error);
+                        }
+                    }
+                    else
+                    {
+                        LogMessage("Unknow error");
+                    }
+                }
+                else if (_searchTask.IsCanceled)
+                {
+                    LogMessage("Cancelled");
+                }else
+                {
+                    try
+                    {
+                        result = _searchTask.Result;
+                    }
+                    catch (AggregateException aex)
+                    {
+                        foreach (var error in aex.InnerExceptions)
+                        {
+                            LogMessage("Error", error);
+                        }
+                    }
+                }
+
+                RaiseCompleted(new CompletedEventArgs(result));
+                break;
+            }
+        }
+
+        private SearchResult DoSearch(object state)
         {
             LogMessage("Search started.");
-            //todo: DO SEARCH
-            for(int i = 0; i<100; i++)
+
+            var settings = (SearchSettings) state;
+            var parameters = Search2Helper.GetSearchParameters(settings);
+            var searcher = new BackgroundSearchWithFailover();
+            var e = new DoWorkEventArgs(parameters);
+            var progressHandler = new ProgressHandler(this);
+            if (parameters.SearchMethod == TypeOfCatalog.HisCentral)
             {
-                // Check for cancel
-                _cancellationTokenSource.Token.ThrowIfCancellationRequested();
-
-                // Do some work
-                Thread.Sleep(100);
-
-
-                Progress((int)(i / (100.0 - 1) * 100.0), ((int)(i / (100.0 - 1) * 100.0)).ToString());
+                searcher.HISCentralSearchWithFailover(e, HydroDesktop.Configuration.Settings.Instance.HISCentralURLList, progressHandler);
             }
-            LogMessage("Search finished.");
+            else
+            {
+                searcher.RunMetadataCacheSearch(e, progressHandler);
+            }
+
+            LogMessage("Search finished successfully.");
+
+            return (SearchResult)e.Result;
+        }
+
+        private void RaiseCompleted(CompletedEventArgs eventArgs)
+        {
+            var handler = Completed;
+            if (handler != null)
+            {
+                handler(this, eventArgs);
+            }
         }
 
         private void LogMessage(string message, Exception exception = null)
@@ -150,17 +231,26 @@ namespace Search3.Searching
         }
 
         #endregion
-    }
 
-    public class LogMessageEventArgs : EventArgs
-    {
-        public string Message { get; private set; }
-        public Exception Exception { get; private set; }
-
-        public LogMessageEventArgs(string message, Exception exception = null)
+        private class ProgressHandler : IProgressHandler
         {
-            Message = message;
-            Exception = exception;
+            private readonly Searcher _parent;
+
+            public ProgressHandler(Searcher parent)
+            {
+                if (parent == null) throw new ArgumentNullException("parent");
+                _parent = parent;
+            }
+
+            public void ReportProgress(int persentage, object state)
+            {
+                _parent.Progress(persentage, state.ToString());
+            }
+
+            public void CheckForCancel()
+            {
+                _parent._cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            }
         }
     }
 }

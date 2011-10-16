@@ -8,7 +8,7 @@ namespace Search3.Settings
         {
             XMin = xmin;
             YMin = ymin;
-            XMax = xmin;
+            XMax = xmax;
             YMax = ymax;
         }
 

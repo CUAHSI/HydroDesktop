@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Controls.Themes;
 using Search3.Area;
@@ -355,6 +358,7 @@ namespace Search3
             if (_searcher == null)
             {
                 _searcher = new Searcher();
+                _searcher.Completed += _searcher_Completed;
             }
 
             try
@@ -378,6 +382,43 @@ namespace Search3
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        void _searcher_Completed(object sender, CompletedEventArgs e)
+        {
+            DeactivateDrawBox();
+
+            if (e.Result == null) return;
+            var result = e.Result;
+            //We need to reproject the Search results from WGS84 to the projection of the map.
+            ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
+            foreach (var item in result.ResultItems)
+                item.FeatureSet.Projection = wgs84;
+
+            ShowSearchResults(result);
+        }
+
+        /// <summary>
+        /// Displays search results (all data series and sites complying to the search criteria)
+        /// </summary>
+        private void ShowSearchResults(SearchResult searchResult)
+        {
+            //try to save the search result layer and re-add it
+            var hdProjectPath = HydroDesktop.Configuration.Settings.Instance.CurrentProjectDirectory;
+
+            var loadedFeatures = new List<SearchResultItem>(searchResult.ResultItems.Count());
+            foreach (var key in searchResult.ResultItems)
+            {
+                var fs = key.FeatureSet;
+                var filename = Path.Combine(hdProjectPath,
+                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.SeriesDataCart.ServCode));
+                fs.Filename = filename;
+                fs.Save();
+                loadedFeatures.Add(new SearchResultItem(key.SeriesDataCart, FeatureSet.OpenFile(filename)));
+            }
+
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), Resources.SearchGroupName);
+            searchLayerCreator.Create();
         }
 
         #endregion

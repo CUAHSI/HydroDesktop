@@ -103,29 +103,21 @@ namespace Search3.Searching
         /// results will not be filtered by keyword.</param>
         /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
-        /// <param name="worker">The background worker (may be null) for reporting progress</param>
+        /// <param name="serviceIDs">array of serviceIDs provided by GetServicesInBox.
+        /// <param name="worker">The background worker for reporting progress</param>
         /// <param name="e">The results of the search (convert to DataTable)</param>
         /// If set to null, results will not be filtered by web service.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
         public void GetSeriesCatalogInRectangle(double xMin, double xMax, double yMin, double yMax, string[] keywords,
-            DateTime startDate, DateTime endDate, int[] serviceIDs, BackgroundWorker bgWorker, DoWorkEventArgs e)
+            DateTime startDate, DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
         {
             double tileWidth = 2.0; //the initial tile width is set to 2 degree
             double tileHeight = 1.5; //the initial tile height is set to 1.5 degree
 
             //determine if to use the background worker for progress reporting
             //and for cancellation
-            bool useWorker = false;
-            if (bgWorker != null)
-            {
-                if (bgWorker.WorkerReportsProgress == true && bgWorker.WorkerSupportsCancellation == true)
-                {
-                    useWorker = true;
-                }
-            }
-
-            bgWorker.CheckForCancel(e);
+            bool useWorker = true;
+            bgWorker.CheckForCancel();
 
 
             //get the list of series
@@ -141,7 +133,7 @@ namespace Search3.Searching
             {
                 Box tile = tiles[i];
 
-                bgWorker.CheckForCancel(e);
+                bgWorker.CheckForCancel();
 
                 // Do the web service call
                 //IList<SeriesDataCart> tileSeriesList = new List<SeriesMetadata>();
@@ -156,17 +148,6 @@ namespace Search3.Searching
                     int percentProgress = (i * 100) / numTiles + 1;
                     bgWorker.ReportProgress(percentProgress, message);
                 }
-
-                // Background worker updates
-                if (useWorker == true && e != null)
-                {
-                    // Check for cancel
-                    if (bgWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-                }
             }
 
             //(4) Create the Feature Set
@@ -180,7 +161,7 @@ namespace Search3.Searching
             // (5) Final Background worker updates
             if (useWorker && e != null)
             {
-                bgWorker.CheckForCancel(e);
+                bgWorker.CheckForCancel();
 
                 // Report progress
                 bgWorker.ReportProgress(100, "Search Finished");
@@ -197,27 +178,23 @@ namespace Search3.Searching
         /// results will not be filtered by keyword.</param>
         /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
-        /// <param name="worker">The background worker (may be null) for reporting progress</param>
+        /// <param name="serviceIDs">array of serviceIDs provided by GetServicesInBox.
+        /// <param name="worker">The background worker for reporting progress</param>
         /// <param name="e">The results of the search (convert to DataTable)</param>
         /// If set to null, results will not be filtered by web service.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
         public void GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
-            DateTime endDate, int[] serviceIDs, BackgroundWorker bgWorker, DoWorkEventArgs e)
+            DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
         {
+            if (bgWorker == null) throw new ArgumentNullException("bgWorker");
+
+
             double tileWidth = 2.0; //the initial tile width is set to 1 degree
             double tileHeight = 2.0; //the initial tile height is set to 1 degree
 
             //determine if to use the background worker for progress reporting
             //and for cancellation
-            bool useWorker = false;
-            if (bgWorker != null)
-            {
-                if (bgWorker.WorkerReportsProgress == true && bgWorker.WorkerSupportsCancellation == true)
-                {
-                    useWorker = true;
-                }
-            }
+            bool useWorker = true;
 
             //(1): Get the union of the polygons
             if (polygons.Count == 0)
@@ -225,7 +202,7 @@ namespace Search3.Searching
                 throw new ArgumentException("The number of polygons must be greater than zero.");
             }
 
-            bgWorker.CheckForCancel(e);
+            bgWorker.CheckForCancel();
 
             if (polygons.Count > 1 & useWorker == true)
             {
@@ -248,7 +225,7 @@ namespace Search3.Searching
                 {
                     Box tile = tiles[i];
 
-                    bgWorker.CheckForCancel(e);
+                    bgWorker.CheckForCancel();
 
                     // Do the web service call
                     IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
@@ -265,17 +242,6 @@ namespace Search3.Searching
                         int percentProgress = (i * 100) / numTiles + 1;
                         bgWorker.ReportProgress(percentProgress, message);
                     }
-
-                    // Background worker updates
-                    if (useWorker == true && e != null)
-                    {
-                        // Check for cancel
-                        if (bgWorker.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-                    }
                 }
             }
 
@@ -290,7 +256,7 @@ namespace Search3.Searching
             // (5) Final Background worker updates
             if (useWorker && e != null)
             {
-                bgWorker.CheckForCancel(e);
+                bgWorker.CheckForCancel();
 
                 // Report progress
                 bgWorker.ReportProgress(100, "Search Finished");
