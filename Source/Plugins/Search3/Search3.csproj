@@ -91,13 +91,17 @@
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Area\RectangleDrawing.cs" />
+    <Compile Include="Searching\CompletedEventArgs.cs" />
     <Compile Include="Searching\HISCentralSearcher.cs" />
     <Compile Include="Keywords\DbKeywordsList.cs" />
     <Compile Include="Keywords\HisCentalKeywordsList.cs" />
     <Compile Include="Keywords\IKeywordsList.cs" />
     <Compile Include="Keywords\KeywordsList.cs" />
+    <Compile Include="Searching\LogMessageEventArgs.cs" />
     <Compile Include="Searching\MetadataCacheSearcher.cs" />
+    <Compile Include="Searching\Search2Helper.cs" />
     <Compile Include="Searching\SearchHelper.cs" />
+    <Compile Include="Searching\SearchLayerCreator.cs" />
     <Compile Include="Searching\SearchResult.cs" />
     <Compile Include="Searching\Exceptions\HydrodesktopSearchException.cs" />
     <Compile Include="Searching\Exceptions\NoAreaToSearchException.cs" />

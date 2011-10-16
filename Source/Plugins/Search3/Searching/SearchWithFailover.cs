@@ -10,8 +10,13 @@ using log4net;
 
 namespace Search3.Searching
 {
+    public interface IProgressHandler
+    {
+        void ReportProgress(int persentage, object state);
+        void CheckForCancel();
+    }
 
-	/* this is deisgned to be partially testable, 
+    /* this is deisgned to be partially testable, 
 	 * and confiurable to use  HIScentrals other than ours
 	 * Logging was also added
 	 * * a list of endpoints is passed in (use HD Settings class)
@@ -27,9 +32,7 @@ namespace Search3.Searching
 
 		public IHISCentralSearcher Searcher { get; set; }
 
-		public void HISCentralSearchWithFailover ( DoWorkEventArgs e,
-		 IList<string> endpoints,
-		 BackgroundWorker bgWorker )
+        public void HISCentralSearchWithFailover(DoWorkEventArgs e, IList<string> endpoints, IProgressHandler bgWorker)
 		{
 			SearchCriteria parameters;
 			//  ArrayList parameters = e.Argument as ArrayList;
@@ -54,7 +57,7 @@ namespace Search3.Searching
 					dynamic (can only be created with a URL) and 
 					 * there is really no interface definiton of what the search inteface is
 					 * */
-					IHISCentralSearcher searcher = Searcher != null ? Searcher : new HISCentralSearcher ( url );
+					IHISCentralSearcher searcher = Searcher ?? new HISCentralSearcher ( url );
 
 
 					var worked = RunHisCentralSearch ( e, parameters, searcher, bgWorker );
@@ -66,8 +69,12 @@ namespace Search3.Searching
 				}
 				catch ( Exception ex )
 				{
+                    if (ex is OperationCanceledException)
+                    {
+                        throw;
+                    }
 
-					string show = String.Format ( "The Server '{0}' is not working. Now trying to switch to the next server. Please wait...",
+				    string show = String.Format ( "The Server '{0}' is not working. Now trying to switch to the next server. Please wait...",
 						url );
 					errorStack.Append ( ex.Message + "\n" + ex.StackTrace + "\n\n" );
 					log.Warn ( show, ex );
@@ -81,7 +88,7 @@ namespace Search3.Searching
 			throw new HydrodesktopSearchException ( errorStack.ToString() );
 		}
 
-		public Boolean RunHisCentralSearch ( DoWorkEventArgs e, SearchCriteria parameters, IHISCentralSearcher searcher, BackgroundWorker bgWorker )
+        public Boolean RunHisCentralSearch(DoWorkEventArgs e, SearchCriteria parameters, IHISCentralSearcher searcher, IProgressHandler bgWorker)
 		{
 			// TODO: What if areaParameter == null?  Search fails due to local error, not HIS Central error.
 			if ( parameters.areaParameter != null )
@@ -112,8 +119,11 @@ namespace Search3.Searching
 			return false;
 		}
 
-        public bool RunMetadataCacheSearch(DoWorkEventArgs e, BackgroundWorker bgWorker)
+        public bool RunMetadataCacheSearch(DoWorkEventArgs e, IProgressHandler bgWorker)
         {
+            if (e == null) throw new ArgumentNullException("e");
+            if (bgWorker == null) throw new ArgumentNullException("bgWorker");
+
             MetadataCacheSearcher searcher = new MetadataCacheSearcher();
             SearchCriteria parameters;
             if (!e.Argument.GetType().Equals(typeof(SearchCriteria)))

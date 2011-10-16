@@ -20,19 +20,26 @@ namespace Search3.Searching
 
             InitializeComponent();
 
+            searcher.Completed += searcher_Completed;
             searcher.OnMessage += searcher_OnMessage;
             searcher.ProgressChanged += searcher_ProgressChanged;
         }
 
+        void searcher_Completed(object sender, CompletedEventArgs e)
+        {
+            btnCancel.Enabled = false;
+        }
+
         void searcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            lbCurrentOperation.Text = string.Format("Comleted {0} %", e.UserState);
+            // todo: Refactor next line (e.UserState may be not series number)
+            lbCurrentOperation.Text = "Searching.. " + Convert.ToString(e.UserState) + " Series Found";
             progressBar1.Value = e.ProgressPercentage;
         }
 
         void searcher_OnMessage(object sender, LogMessageEventArgs e)
         {
-            
+            // todo: Show message log in the UI
         }
         
         private void btnCancel_Click(object sender, EventArgs e)

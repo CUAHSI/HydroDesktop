@@ -88,20 +88,22 @@ namespace Search3.Searching
         {
             if (seriesList == null) throw new ArgumentNullException("seriesList");
 
-            var result = new Dictionary<string, IFeatureSet>();
+	        var resultCollection = new List<SearchResultItem>();
             foreach(var dataCart in seriesList)
             {
                 IFeatureSet featureSet;
-                if (!result.TryGetValue(dataCart.ServCode, out featureSet))
+                var searchItem = resultCollection.FirstOrDefault(item => item.SeriesDataCart.ServCode == dataCart.ServCode);
+                if (searchItem == null)
                 {
                     featureSet =  CreateEmptyFeatureSet();
-                    result.Add(dataCart.ServCode, featureSet);
+                    searchItem = new SearchResultItem(dataCart, featureSet);
+                    resultCollection.Add(searchItem);
                 }
-
+                featureSet = searchItem.FeatureSet;
                 AddToFeatureSet(dataCart, featureSet);
             }
 
-            return new SearchResult(result);
+            return new SearchResult(resultCollection);
         }
 
 	    /// <summary>

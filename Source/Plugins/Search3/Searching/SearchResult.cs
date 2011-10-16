@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Data;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace Search3.Searching
 {
     public class SearchResult
     {
-        private readonly Dictionary<string, IFeatureSet> _featuresPerDataSource;
+        private readonly IEnumerable<SearchResultItem> _featuresPerDataSource;
 
-        public SearchResult(Dictionary<string, IFeatureSet> featuresPerDataSource)
+        public SearchResult(IEnumerable<SearchResultItem> featuresPerDataSource)
         {
             if (featuresPerDataSource == null) throw new ArgumentNullException("featuresPerDataSource");
             _featuresPerDataSource = featuresPerDataSource;
@@ -18,14 +19,29 @@ namespace Search3.Searching
         /// <summary>
         /// Dictionary of features per DataSources
         /// </summary>
-        public Dictionary<string, IFeatureSet> Features
+        public IEnumerable<SearchResultItem> ResultItems
         {
             get { return _featuresPerDataSource; }
         }
 
         public bool IsEmpty()
         {
-            return Features.All(item => item.Value.Features.Count <= 0);
+            return ResultItems.All(item => item.FeatureSet.Features.Count <= 0);
+        }
+    }
+
+    public class SearchResultItem
+    {
+        public SeriesDataCart SeriesDataCart { get; private set; }
+        public IFeatureSet FeatureSet { get; private set; }
+
+        public SearchResultItem(SeriesDataCart seriesDataCart, IFeatureSet featureSet)
+        {
+            if (seriesDataCart == null) throw new ArgumentNullException("seriesDataCart");
+            if (featureSet == null) throw new ArgumentNullException("featureSet");
+
+            SeriesDataCart = seriesDataCart;
+            FeatureSet = featureSet;
         }
     }
 }
