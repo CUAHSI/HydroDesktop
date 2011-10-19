@@ -506,6 +506,7 @@ namespace GetDotSpatial
                 "DotSpatial.Controls",
                 "DotSpatial.Data",
                 "DotSpatial.Data.Forms",
+                "DotSpatial.Extensions",
                 "DotSpatial.Modeling",
                 "DotSpatial.Modeling.Forms",
                 "DotSpatial.Projections",
