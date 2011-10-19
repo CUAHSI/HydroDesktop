@@ -1,0 +1,88 @@
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\UnitTest.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\UnitTest.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\obj\Debug\ResolveAssemblyReference.cache
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\obj\Debug\UnitTest.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\obj\Debug\UnitTest.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\nunit.framework.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\nunit.framework.xml
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\DiffusiveWave.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\DiffusiveWave.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\SMW.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\SharpMap.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\SMW.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\OpenMI.Standard.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\obj\Debug\ResolveAssemblyReference.cache
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\obj\Debug\UnitTest.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\obj\Debug\UnitTest.pdb
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\UnitTest.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\UnitTest.pdb
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\DiffusiveWave.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\nunit.framework.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\OpenMI.Standard.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\SMW.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\SharpMap.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\DiffusiveWave.pdb
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\SMW.pdb
+C:\_Code\Dev.CSharp\HydroDesktop not working\Source\Plugins\HydroModeler\Components\2D Wave Diffusion\UnitTest\bin\Debug\nunit.framework.xml
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\ResolveAssemblyReference.cache
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\UnitTest.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\UnitTest.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\UnitTest.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\UnitTest.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\DiffusiveWave.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\nunit.framework.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\OpenMI.Standard.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SMW.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SharpMap.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\DiffusiveWave.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SMW.pdb
+C:\_Code\Dev.CSharp\HydroDesktop\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\nunit.framework.xml
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\UnitTest.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\UnitTest.pdb
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\DiffusiveWave.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\OpenMI.Standard.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SMW.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SharpMap.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\DiffusiveWave.pdb
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SMW.pdb
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\nunit.framework.xml
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\ResolveAssemblyReference.cache
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\UnitTest.dll
+C:\_Code\_HD\HydroDesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\UnitTest.pdb
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\UnitTest.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\UnitTest.pdb
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\DiffusiveWave.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Backbone.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.DevelopmentSupport.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Wrapper.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\OpenMI.Standard.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SMW.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SharpMap.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Buffer.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\Oatc.OpenMI.Sdk.Spatial.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\DiffusiveWave.pdb
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\SMW.pdb
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\bin\Debug\nunit.framework.xml
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\ResolveAssemblyReference.cache
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\UnitTest.dll
+C:\_Code\_HD\_hydrodesktop\hydrodesktop\trunk\Source\Plugins\HydroModeler\Components\DiffusiveWave\Test\obj\Debug\UnitTest.pdb
