@@ -115,25 +115,6 @@ namespace HydroDesktop.Main
             return false;
         }
 
-        public static void ActivatePlugins(AppManager app, string[] pluginNames)
-        {
-            app.ProgressHandler.Progress("Loading Plugins", 0, "Loading Plugins");
-
-            //activate all listed plugins
-            foreach (string pluginName in pluginNames)
-            {
-                foreach (IExtension token in app.Extensions)
-                {
-                    if (!token.IsActive && token.Name == pluginName)
-                    {
-                        token.Activate();
-                    }
-                }
-            }
-
-            app.ProgressHandler.Progress("", 0, "");
-        }
-
         /// <summary>
         /// Opens a project and updates the maps
         /// </summary>

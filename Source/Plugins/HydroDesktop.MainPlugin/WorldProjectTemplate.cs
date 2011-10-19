@@ -22,19 +22,6 @@ namespace HydroDesktop.Main
         {
             Extent defaultMapExtent = new Extent(-170, -50, 170, 50);
 
-            string[] corePlugins = new string[]
-            {
-                "Search V2",
-                "Table View",
-                "Graph",
-                "Edit",
-                "EPA Delineation",
-                "Fetch Basemap",
-                "Help Tab",
-                "Metadata Fetcher",
-                "Data Export"
-            };
-
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
 
             //SetDefaultMapExtents(mainMap);
@@ -115,8 +102,6 @@ namespace HydroDesktop.Main
             double[] z = new double[] { 0, 0 };
             var wgs84 = ProjectionInfo.FromEsriString("GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]");
             Reproject.ReprojectPoints(xy, z, wgs84, mainMap.Projection, 0, 2);
-
-            Project.ActivatePlugins(applicationManager1, corePlugins);
 
             mainMap.ViewExtents = new Extent(xy);
 
