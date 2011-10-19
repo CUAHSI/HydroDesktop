@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Data;
+using DotSpatial.Projections;
 using Search3.Keywords;
+using Search3.Properties;
 using Search3.Settings;
 
 namespace Search3.Searching
@@ -76,40 +80,22 @@ namespace Search3.Searching
 
         private static void GetSearchArea(SearchCriteria searchCriteria, SearchSettings settings)
         {
-            object areaParameter = searchCriteria.areaParameter;
-            /*if (rectSelectMode == false)
+            object areaParameter = null;
+            if (settings.AreaSettings.Polygons != null)
             {
+                var polyFs = settings.AreaSettings.Polygons;
+                string esri = Resources.wgs_84_esri_string;
+                var wgs84 = ProjectionInfo.FromEsriString(esri);
 
-                List<IFeature> selectedPolygons = new List<IFeature>();
-                IMapFeatureLayer activeLayer = dgvSearch.MapLayer;
-                if (activeLayer.Selection.Count > 0)
-                {
-                    FeatureSet polyFs = new FeatureSet(FeatureType.Polygon);
+                //reproject the selected polygons to WGS1984         
+                polyFs.Reproject(wgs84);
 
-                    foreach (IFeature f in activeLayer.Selection.ToFeatureList())
-                    {
-                        polyFs.Features.Add(f);
-                    }
+                //the list of selected polygons passed in to the search function
+                var selectedPolygons = Enumerable.ToList(polyFs.Features);
 
-                    polyFs.Projection = app.Map.Projection;
-
-                    string esri = Resources.wgs_84_esri_string;
-                    ProjectionInfo wgs84 = ProjectionInfo.FromEsriString(esri);
-
-                    //reproject the selected polygons to WGS1984         
-                    polyFs.Reproject(wgs84);
-
-                    //the list of selected polygons passed in to the search function
-                    selectedPolygons = new List<IFeature>();
-                    foreach (IFeature f in polyFs.Features)
-                    {
-                        selectedPolygons.Add(f);
-                    }
-                }
                 areaParameter = selectedPolygons;
             }
-            else
-             */
+            else if (settings.AreaSettings.AreaRectangle != null)
             {
                 areaParameter = settings.AreaSettings.AreaRectangle;
             }
