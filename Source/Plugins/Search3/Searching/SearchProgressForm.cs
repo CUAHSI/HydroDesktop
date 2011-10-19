@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -33,8 +34,8 @@ namespace Search3.Searching
         void searcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // todo: Refactor next line (e.UserState may be not series number)
-            lbCurrentOperation.Text = "Searching.. " + Convert.ToString(e.UserState) + " Series Found";
-            progressBar1.Value = e.ProgressPercentage;
+            ThreadSafeSetText(lbCurrentOperation, "Searching.. " + Convert.ToString(e.UserState) + " Series Found");
+            ThreadSafeChangeProgressBarValue(progressBar1, e.ProgressPercentage);
         }
 
         void searcher_OnMessage(object sender, LogMessageEventArgs e)
@@ -51,6 +52,35 @@ namespace Search3.Searching
                     _searcher.Cancel();
                 }
             }
+        }
+
+
+        private static void ThreadSafeChangeProgressBarValue(ProgressBar pb, int value)
+        {
+            if (pb.InvokeRequired)
+            {
+                pb.BeginInvoke((Action<ProgressBar, int>)ChangeProgressBarValue, pb, value);
+            }
+            else
+                ChangeProgressBarValue(pb, value);
+        }
+        private static void ChangeProgressBarValue(ProgressBar pb, int value)
+        {
+            pb.Value = value;
+        }
+
+        private static void ThreadSafeSetText(Label label, string value)
+        {
+            if (label.InvokeRequired)
+            {
+                label.BeginInvoke((Action<Label, string>)SetTextToLabel, label, value);
+            }
+            else
+                SetTextToLabel(label, value);
+        }
+        private static void SetTextToLabel(Label label, string value)
+        {
+            label.Text = value;
         }
     }
 }
