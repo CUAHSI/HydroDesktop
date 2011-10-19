@@ -11,87 +11,110 @@ using System.IO;
 using System.Reflection;
 using HydroDesktop.Help;
 using DotSpatial.Controls.Docking;
-using DotSpatial.Controls.RibbonControls; //must be replaced by DotSpatial.Controls.Header
-
+//using DotSpatial.Controls.RibbonControls; //must be replaced by DotSpatial.Controls.Header
+using DotSpatial.Controls.Header;
+using HydroDesktop.Interfaces;
+using System.ComponentModel.Composition;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
-    public class Program :Extension 
+    public class Program : Extension
     {
         #region Variables
 
         //reference to the main application and it's UI items
-        private AppManager _mapArgs;
-        public RibbonTab _ribbonTab;
-        public RibbonButton _ribbonBtn;
+        //private AppManager _mapArgs;
+        //public RibbonTab _ribbonTab;
+        //public RibbonButton _ribbonBtn;
         //private ITabManager _t;
-        public string _panelName = "HydroModeler";
-        private const string kHydroModelerDock = "kHydroModelerDock";
+        //public string _panelName = "HydroModeler";
+        
         mainTab hydroModelerControl;
-        Bitmap bmp;
-        List<RibbonPanel> rps;
+        //Bitmap bmp;
+        //List<RibbonPanel> rps;
         private string ImagePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).CodeBase).Remove(0,6) + "/icons";
-        private int tabID = 0;
+        //private int tabID = 0;
         private readonly string _localHelpUri = HydroModeler.Settings.Default.localHelpUri;
+        
 
+        //reference to the main series view panel
+        [Import("SeriesControl", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
+
+        //plugin info
+        private const string _pluginName = "HydroModeler";
+        private const string kHydroModelerDock = "kHydroModelerDock";
+        private const string KHydroModeler = "RootRibbonHydroModeler";
+
+
+        private Dictionary<string, object> rps_dict = new Dictionary<string, object>();
         #endregion
 
 
         #region IExtension Members
 
+        /// <summary>
+        /// Occurs when the HydroModeler plugin is unloaded
+        /// </summary>
         public override void Deactivate()
         {
-
             // Remove ribbon tab
             App.HeaderControl.RemoveAll();
 
-            // Remove Work Page
+            // Remove the plugin panel
             App.DockManager.Remove(kHydroModelerDock);
 
+            // this line ensures that 'enabled' is set to false
             base.Deactivate();
         }
-        #endregion
-
-        public List<RibbonPanel> Rps
-        {
-            get { return rps; }
-            set { rps = value; }
-        }
-
-        #region IMapPlugin Members
 
         /// <summary>
         /// Occurs when the HydroModeler plugin is loaded
         /// </summary>
         public override void Activate()
         {
+            // add 'ribbon' button to the 'view' panel in 'home' ribbon tab
+            var root = new RootItem(KHydroModeler, _pluginName);
+            //root.SortOrder = 100;
+            root.SortOrder = 200;
+            App.HeaderControl.Add(root);
+
+            // add buttons
+            rps_dict = BuildRibbonPanel();
+            //foreach (RibbonPanel rp in rps)
+            //    _ribbonTab.Panels.Add(rp);
+
+            
+
             //set map args
-            _mapArgs = App;
+            //_mapArgs = App;
 
             // Initialize the Ribbon controls in the "Ribbon" ribbon tab
-            //_ribbonTab = new RibbonTab(_mapArgs.Ribbon, _panelName);
-            _ribbonTab = new RibbonTab();
-            _ribbonTab.ActiveChanged +=new EventHandler(_ribbonTab_ActiveChanged);
+            //_ribbonTab = new RibbonTab();
+            //_ribbonTab.ActiveChanged += new EventHandler(_ribbonTab_ActiveChanged);
 
             //Add Buttons to the Ribbon Panel
-            rps = BuildRibbonPanel();
-            foreach (RibbonPanel rp in rps)
-                _ribbonTab.Panels.Add(rp);
+            
 
-             //Add TabPage to the MwTabControl
-            //_t = _mapArgs.TabManager;
+            // Add a dockable panel
+            if (SeriesControl != null)
+            {
+                hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
+                App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
+            }
 
             //specify tab window
-            hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            //hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
             //_t.AddTab(_panelName, hydroModelerControl, bmp);
-            hydroModelerControl.Dock = DockStyle.Fill;
-            App.DockManager.Add(new DockablePanel(kHydroModelerDock, "HydroModeler", hydroModelerControl, DockStyle.Fill));
-            
+            //hydroModelerControl.Dock = DockStyle.Fill;
+            //App.DockManager.Add(new DockablePanel(kHydroModelerDock, "HydroModeler", hydroModelerControl, DockStyle.Fill));
+
             //activate tab
-            _ribbonBtn_Click(this, EventArgs.Empty);
+            //_ribbonBtn_Click(this, EventArgs.Empty);
 
             //update filelist
-            string text = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            //string text = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            string text = ((TextEntryActionItem)rps_dict["dirbox"]).Text;
             hydroModelerControl.filelist_update(text);
 
             //set pan mouse image
@@ -99,176 +122,309 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             base.Activate();
         }
-
         #endregion
 
+        //public List<RibbonPanel> Rps
+        //{
+        //    get { return rps; }
+        //    set { rps = value; }
+        //}
 
+        //public List<SimpleActionItem> Rps
+        //{
+        //    get { return rps; }
+        //    set { rps = value; }
+        //}
 
+        //public System.Collections.Hashtable hash = new System.Collections.Hashtable();
+        
 
-        List<RibbonPanel> BuildRibbonPanel()
+        #region IMapPlugin Members
+
+        private Dictionary<string, object> BuildRibbonPanel()
         {
-            //Create a new Ribbon Panel
-            RibbonPanel menu_panel = new RibbonPanel("Model",RibbonPanelFlowDirection.Bottom);
-            RibbonPanel model_tools = new RibbonPanel("Composition", RibbonPanelFlowDirection.Bottom);
-            RibbonPanel dir_panel = new RibbonPanel("Current Directory", RibbonPanelFlowDirection.Bottom);
-            RibbonPanel utility_panel = new RibbonPanel("Utilities", RibbonPanelFlowDirection.Bottom);
-            RibbonPanel help_panel = new RibbonPanel("Help", RibbonPanelFlowDirection.Bottom);
-            RibbonPanel view_panel = new RibbonPanel("Pan", RibbonPanelFlowDirection.Bottom);
 
-            
+            //Create a new Ribbon Panel
+            //RibbonPanel menu_panel = new RibbonPanel("Model",RibbonPanelFlowDirection.Bottom);
+            //RibbonPanel model_tools = new RibbonPanel("Composition", RibbonPanelFlowDirection.Bottom);
+            //RibbonPanel dir_panel = new RibbonPanel("Current Directory", RibbonPanelFlowDirection.Bottom);
+            //RibbonPanel utility_panel = new RibbonPanel("Utilities", RibbonPanelFlowDirection.Bottom);
+            //RibbonPanel help_panel = new RibbonPanel("Help", RibbonPanelFlowDirection.Bottom);
+            //RibbonPanel view_panel = new RibbonPanel("Pan", RibbonPanelFlowDirection.Bottom);
+
+
+            List<SimpleActionItem> btns = new List<SimpleActionItem>();
+            Dictionary<string, object> rps = new Dictionary<string, object>();
 
             #region menu panel
-            menu_panel.ButtonMoreVisible = false;
+            //menu_panel.ButtonMoreVisible = false;
 
             //Open Composition
+            /*
             RibbonButton rb = new RibbonButton("Open");
             menu_panel.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.open.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.open.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(OpenComp_Click);
             rb.Dispose();
+             */
+            var rb = new SimpleActionItem("Open", OpenComp_Click);
+            rb.LargeImage = HydroModeler.Properties.Resources.open.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.open.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Model";
+            rb.RootKey = KHydroModeler;
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("open", rb);
 
             //save
-            rb = new RibbonButton("Save");
+            /*rb = new RibbonButton("Save");
             menu_panel.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.save.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.save.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(Save_Click);
             rb.Dispose();
+            */
+            rb = new SimpleActionItem("Save", Save_Click);
+            rb.LargeImage = HydroModeler.Properties.Resources.save.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.save.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Model";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("save", rb);
 
             //save as
-            rb = new RibbonButton();
+            /*rb = new RibbonButton();
             rb.Text = "Save As...";
             menu_panel.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.saveas.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.saveas.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(SaveAs_Click);
-            rb.Dispose();
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Save As...", SaveAs_Click);
+            rb.LargeImage = HydroModeler.Properties.Resources.saveas.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.saveas.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Model";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("saveas", rb);
 
             #endregion
 
             #region model_panel
-            model_tools.ButtonMoreVisible = false;
+            //model_tools.ButtonMoreVisible = false;
 
             //Add Model
-            rb = new RibbonButton("Add Component");
+            /*rb = new RibbonButton("Add Component");
             model_tools.Items.Add(rb);
             rb.ToolTip = "Click to add a model to the composition";
             rb.Image = HydroModeler.Properties.Resources.add_model.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.add_model.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(AddModel_Click);
-            rb.Dispose();
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Add Component", AddModel_Click);
+            //rb.ToolTip = "Click to add a model to the composition";
+            rb.LargeImage = HydroModeler.Properties.Resources.add_model.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.add_model.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Composition";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("component", rb);
 
             //Add Trigger
-            rb = new RibbonButton("Add Trigger");
+            /*rb = new RibbonButton("Add Trigger");
             model_tools.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.trigger.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.trigger.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(AddTrigger_Click);
-            rb.Dispose();
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Add Trigger", AddTrigger_Click);
+            //rb.ToolTip = "Click to add a trigger to the composition";
+            rb.LargeImage = HydroModeler.Properties.Resources.trigger.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.trigger.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Composition";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("trigger", rb);
 
             //Add Connection
-            rb = new RibbonButton("Add Connection");
+            /*rb = new RibbonButton("Add Connection");
             rb.Enabled = false;
             model_tools.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.add_connection.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.add_connection.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(AddConnection_Click);
-            rb.Dispose();
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Add Connectiob", AddConnection_Click);
+            //rb.ToolTip = "Click to add a connection to the composition";
+            rb.LargeImage = HydroModeler.Properties.Resources.add_connection.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.add_connection.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Composition";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("connection", rb);
 
             //Run
-            rb = new RibbonButton("Run");
+            /*rb = new RibbonButton("Run");
             rb.Enabled = false;
             model_tools.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.run.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.run.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(Run_Click);
-            rb.Dispose();
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Run", Run_Click);
+            rb.LargeImage = HydroModeler.Properties.Resources.run.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.run.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Composition";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("run", rb);
 
             //Clear Composition
-            rb = new RibbonButton("Clear Composition");
+            /*rb = new RibbonButton("Clear Composition");
             model_tools.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.delete_icon.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.delete_icon.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(this.clear_Click);
-            rb.Dispose();
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Clear Composition", this.clear_Click);
+            rb.LargeImage = HydroModeler.Properties.Resources.delete_icon.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.delete_icon.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Composition";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("clear", rb);
 
             #endregion
 
             #region dir_panel
-            dir_panel.ButtonMoreVisible = false;
+            //dir_panel.ButtonMoreVisible = false;
 
             //change directory
-            rb = new RibbonButton();
+            /*rb = new RibbonButton();
             rb.MaxSizeMode = RibbonElementSizeMode.Compact;
             rb.Image = HydroModeler.Properties.Resources.change_dir.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.change_dir.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.MinSizeMode = RibbonElementSizeMode.Compact;
             rb.Click += new EventHandler(this.dirItem_click);
-            rb.Dispose();
+            rb.Dispose();*/
 
             //directory text box
-            RibbonTextBox rtb = new RibbonTextBox();
+            /*RibbonTextBox rtb = new RibbonTextBox();
             rtb.Text = "Current Directory";
             rtb.TextBoxText = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
             rtb.TextBoxWidth = 300;
-            rtb.TextBoxTextChanged += new System.EventHandler(ribbonTextBox_textChanged);
+            rtb.TextBoxTextChanged += new System.EventHandler(ribbonTextBox_textChanged);*/
 
-            //add to ribbon 
-            RibbonItemGroup rig = new RibbonItemGroup();
-            rig.Items.Add(rtb);
-            rig.Items.Add(rb);
-            dir_panel.Items.Add(rig);
-            #endregion
-
-            #region help_panel
            
+            rb = new SimpleActionItem("", this.dirItem_click);
+            rb.SmallImage = HydroModeler.Properties.Resources.change_dir.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Current Directory";
+            rb.RootKey = KHydroModeler;
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("directory", rb);
+
+            var rtb = new TextEntryActionItem();
+            string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
+            if (Directory.Exists(start_path))
+                rtb.Text = start_path;
+            else
+                rtb.Text = "C:/";
+            rtb.Caption = "test";
+            rtb.Width = 300;
+            rtb.GroupCaption = "Current Directory";
+            rtb.RootKey = KHydroModeler;
+            rtb.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(rtb_PropertyChanged);
+            App.HeaderControl.Add(rtb);
+            rps.Add("dirbox", rtb); 
             
-            //help
-            help_panel.ButtonMoreVisible = false;
-
-            rb = new RibbonButton();
-            help_panel.Items.Add(rb);
-            rb.Image = HydroModeler.Properties.Resources.help.GetThumbnailImage(20, 20, null, IntPtr.Zero);
-            rb.SmallImage = HydroModeler.Properties.Resources.help.GetThumbnailImage(20, 20, null, IntPtr.Zero);
-            rb.Click += new EventHandler(this.getHelp);            
-            rb.Dispose();
-
+            //add to ribbon 
+            //RibbonItemGroup rig = new RibbonItemGroup();
+            //rig.Items.Add(rtb);
+            //rig.Items.Add(rb);
+            //dir_panel.Items.Add(rig);
             #endregion
 
             #region view_panel
-            view_panel.ButtonMoreVisible = false;
+            //view_panel.ButtonMoreVisible = false;
 
-            rb = new RibbonButton();
+            /*rb = new RibbonButton();
             view_panel.Items.Add(rb);
             rb.Image = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.Click += new EventHandler(this.set_pan);
-            rb.Dispose();
-
+            rb.Dispose();*/
+            rb = new SimpleActionItem("Pan", this.set_pan);
+            rb.LargeImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "View";
+            rb.RootKey = KHydroModeler; 
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("pan", rb);
             #endregion
 
+            #region help_panel
+            //help
+            //help_panel.ButtonMoreVisible = false;
 
-            List<RibbonPanel> l = new List<RibbonPanel>();
+            /*rb = new RibbonButton();
+            help_panel.Items.Add(rb);
+            rb.Image = HydroModeler.Properties.Resources.help.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.help.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.Click += new EventHandler(this.getHelp);            
+            rb.Dispose();*/
+            rb = new SimpleActionItem("", this.getHelp);
+            rb.SmallImage = HydroModeler.Properties.Resources.help.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "Help";
+            rb.RootKey = KHydroModeler;
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("help", rb);
+            #endregion
+
+            /*List<RibbonPanel> l = new List<RibbonPanel>();
             l.Add(menu_panel);
             l.Add(model_tools);
             l.Add(dir_panel);
             l.Add(view_panel);
             l.Add(help_panel);
 
-            return l;
+            return l;*/
+
+            return rps;
+        }
+
+        void rtb_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            TextEntryActionItem te = (TextEntryActionItem)rps_dict["dirbox"];
+            ribbonTextBox_textChanged(te);
         }
 
         void reloadButtons(bool run, bool connection)
         {
-            
+
             //enable or disable run button
-            rps[1].Items[3].Enabled = run;
+            //rps[1].Items[3].Enabled = run;
+            ((SimpleActionItem)rps_dict["run"]).Enabled = run;
+
 
             //enable or disble connection button
-            rps[1].Items[2].Enabled = connection;
+            //rps[1].Items[2].Enabled = connection;
+            ((SimpleActionItem)rps_dict["connection"]).Enabled = connection;
 
         }
+
+        #endregion
+
 
 
         #region UI Events
@@ -276,27 +432,31 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         {
             if (hydroModelerControl.Ispan)
             {
-                hydroModelerControl.Ispan = false;
-                RibbonButton s = (RibbonButton)sender;
-                s.Checked = false;
+                //hydroModelerControl.Ispan = false;
+                //RibbonButton s = (RibbonButton)sender;
+                //s.Checked = false;
 
             }
             else
             {
-                RibbonButton s = (RibbonButton)sender;
-                s.Checked = true;
-                hydroModelerControl.Ispan = true;
+                //RibbonButton s = (RibbonButton)sender;
+                //s.Checked = true;
+                //hydroModelerControl.Ispan = true;
             }
         }
-        private void _ribbonTab_ActiveChanged(object sender, EventArgs e)
-        {
-            if(_ribbonTab.Selected)
-                _ribbonBtn_Click(sender, e);
-        }
-        private void ribbonTextBox_textChanged(object sender, EventArgs e)
+        //private void _ribbonTab_ActiveChanged(object sender, EventArgs e)
+        //{
+
+        //    if(_ribbonTab.Selected)
+        //        _ribbonBtn_Click(sender, e);
+        //}
+
+        private void ribbonTextBox_textChanged(TextEntryActionItem textbox)
         {
             //get path from ribbon textbox
-           string path = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            //string path = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            //TextEntryActionItem textbox = (TextEntryActionItem)rps_dict["dirbox"];
+            string path = textbox.Text;
 
             //replace path slashes
             path = path.Replace('/', '\\');
@@ -306,8 +466,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
         public void ribbonTextBox_update(string path)
         {
+            
             //update the ribbon textbox text
-            ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
+            //((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
+            ((TextEntryActionItem)rps_dict["dirbox"]).Text = path;
         }
         public void dirItem_click(object sender, EventArgs e)
         {
@@ -401,5 +563,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             LocalHelp.OpenHelpFile(_localHelpUri);
         }
         #endregion
+
     }
 }

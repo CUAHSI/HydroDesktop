@@ -14,7 +14,8 @@ using OpenMI.Standard;
 using Oatc.OpenMI.Gui.Core;
 using Oatc.OpenMI.Sdk.Backbone;
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
+//using DotSpatial.Controls.RibbonControls;
+using DotSpatial.Controls.Header;
 using System.Drawing.Imaging;
 using System.Timers;
 using System.Reflection;
@@ -28,20 +29,17 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
     {
 
         #region Window controls
-        //private System.Windows.Forms.HScrollBar compositionHScrollBar;
         private System.Windows.Forms.PictureBox compositionBox;
         private System.Windows.Forms.ListView fileList;
         private MyListView properties;
         private System.Windows.Forms.Panel ListPanel;
         private System.Windows.Forms.SplitContainer container;
-        //private TextBox output_box;
         private SplitContainer container2;
         private SplitContainer comp_container;
         private TextBox t;
         private System.Windows.Forms.FolderBrowserDialog dirDialog;
         private System.Windows.Forms.Button AddModelButton;
         private ImageList _hmImage;
-        //private Image _HMimage;
         private Button changeDir;
         private Button _Save;
         private Label currentDir;
@@ -79,7 +77,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private string listviewImagesPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).CodeBase).Remove(0, 6) + "/icons";
         private bool _isdragging = false;
         private int initialX, initialY, currentX, currentY;
-        private List<RibbonPanel> rps;
+        //private List<RibbonPanel> rps;
+        private Dictionary<string, object> rps;
         private string _currentFile = null;
         #endregion
 
@@ -136,7 +135,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// <summary>
         /// Creates a new instance of <see cref="mainTab">mainTab</see> window.
         /// </summary>
-        public mainTab(AppManager app, List<RibbonPanel> rp, string currentDirectory)
+        //public mainTab(AppManager app, List<RibbonPanel> rp, string currentDirectory)
+        public mainTab(AppManager app, Dictionary<string,object> rp, string currentDirectory)
         {
             //get ribbon panel object
             rps = rp;
@@ -969,7 +969,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
             //refresh filelist
-            this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            //this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            this.filelist_update(((TextEntryActionItem)rps["dirbox"]).Text);
         }
 
 
@@ -1033,7 +1034,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             dlgFile.Dispose();
 
             //refresh filelist
-            this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            //this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            this.filelist_update(((TextEntryActionItem)rps["dirbox"]).Text);
             UpdateTitle();
         }
 
@@ -1061,8 +1063,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //if pan is currently selected, disable it
             this.Ispan = false;
-            RibbonButton s = ((RibbonButton)rps[3].Items[0]);
-            s.Checked = false;
+            //RibbonButton s = ((RibbonButton)rps[3].Items[0]);
+            SimpleActionItem s = (SimpleActionItem)rps["connection"];
+           
+            //s.Checked = false;
 
 
             _isAddingConnection = true;
@@ -1230,10 +1234,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //--- update ribbon controls ---
             //disable "add connection"
             if (_composition.Models.Count - 1 <= _composition.Connections.Count)
-                ((RibbonButton)rps[1].Items[2]).Enabled = false;
+                //((RibbonButton)rps[1].Items[2]).Enabled = false;
+                ((SimpleActionItem)rps["connection"]).Enabled = false;
             //disable "run"
-            if(!_composition.HasTrigger())
-                ((RibbonButton)rps[1].Items[3]).Enabled = false;
+            if (!_composition.HasTrigger())
+                //((RibbonButton)rps[1].Items[3]).Enabled = false;
+                ((SimpleActionItem)rps["run"]).Enabled = false;
 
             CompositionUpdateArea();
             UpdateControls();
@@ -1257,9 +1263,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             menuEditTriggerAdd_Click(sender, e);
 
             //enable run button
-            if(_composition.Models.Count - _composition.Connections.Count <= 1)
-                if(_composition.HasTrigger())
-                    ((RibbonButton)rps[1].Items[3]).Enabled = true;
+            if (_composition.Models.Count - _composition.Connections.Count <= 1)
+                if (_composition.HasTrigger())
+                    //((RibbonButton)rps[1].Items[3]).Enabled = true;
+                    ((SimpleActionItem)rps["run"]).Enabled = true;
 
         }
 
@@ -1318,27 +1325,33 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
             //enable / disable "trigger"
-            if(!_composition.HasTrigger())
-                ((RibbonButton)rps[1].Items[1]).Enabled = true;         
+            if (!_composition.HasTrigger())
+                //((RibbonButton)rps[1].Items[1]).Enabled = true;         
+                ((SimpleActionItem)rps["trigger"]).Enabled = true;
             else
-                ((RibbonButton)rps[1].Items[1]).Enabled = false;
+                //((RibbonButton)rps[1].Items[1]).Enabled = false;
+                ((SimpleActionItem)rps["trigger"]).Enabled = false;
 
             //enable / disable "add connection"
-            if(_composition.Models.Count >= 2)
-                ((RibbonButton)rps[1].Items[2]).Enabled = true;
+            if (_composition.Models.Count >= 2)
+                //((RibbonButton)rps[1].Items[2]).Enabled = true;
+                ((SimpleActionItem)rps["connection"]).Enabled = true;
             else
-                ((RibbonButton)rps[1].Items[2]).Enabled = false;
+                //((RibbonButton)rps[1].Items[2]).Enabled = false;
+                ((SimpleActionItem)rps["connection"]).Enabled = false;
 
             //enable / disable "run"
 
             if (_composition.Models.Count - _composition.Connections.Count <= 1)
             {
                 if (_composition.HasTrigger())
-                    ((RibbonButton)rps[1].Items[3]).Enabled = true;
+                    //((RibbonButton)rps[1].Items[3]).Enabled = true;
+                    ((SimpleActionItem)rps["run"]).Enabled = true;
             }
             else
             {
-                ((RibbonButton)rps[1].Items[3]).Enabled = false;
+                //((RibbonButton)rps[1].Items[3]).Enabled = false;
+                    ((SimpleActionItem)rps["run"]).Enabled = false;
             }
 
 
@@ -2742,7 +2755,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                         //update the Enable Ribbon Add Connection
                         if (_composition.Models.Count - 1 > _composition.Connections.Count)
-                            ((RibbonButton)rps[1].Items[2]).Enabled = true;
+                            //((RibbonButton)rps[1].Items[2]).Enabled = true;
+                            ((SimpleActionItem)rps["connection"]).Enabled = true;
 
 
                         Application.CurrentCulture = _cultureInfo;
@@ -2782,10 +2796,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             _composition.RemoveAllModels();
 
             //disable "add connection"
-            ((RibbonButton)rps[1].Items[2]).Enabled = false;
+            //((RibbonButton)rps[1].Items[2]).Enabled = false;
+            ((SimpleActionItem)rps["connection"]).Enabled = false;
 
             //disable "run"
-            ((RibbonButton)rps[1].Items[3]).Enabled = false;
+            //((RibbonButton)rps[1].Items[3]).Enabled = false;
+            ((SimpleActionItem)rps["run"]).Enabled = false;
 
             CompositionUpdateArea();
             UpdateControls();
@@ -3716,7 +3732,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
                         //BROKEN:  File Exists is not working!!!!! It must be relatice to the OMI!!!!!
                         //check to see if a shapefile path was given
-                        string currPath = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText + "//";
+                        //string currPath = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText + "//";
+                        string currPath = ((TextEntryActionItem)rps["dirbox"]).Text + "//";
+
                         //check to see if the file exists by absolute path
                         if (File.Exists(Path.GetFullPath(values[i][j])))
                         { configStream += "\t\t\t\t<ShapefilePath>" + values[i][j] + "</ShapefilePath>" + "\n"; j++; }
@@ -4008,7 +4026,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     filelist_update(path);
 
                     //update the ribbon textbox text
-                    ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
+                    //((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
+                    ((TextEntryActionItem)rps["dirbox"]).Text = path;
+
+
                     //give the path to the run dialog box
                     _runBox._currentDirectory = path;
                 }
@@ -4022,7 +4043,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     filelist_update(path);
 
                     //update the ribbon textbox text
-                    ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
+                    //((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText = path;
+                    ((TextEntryActionItem)rps["dirbox"]).Text = path;
+
                     _runBox._currentDirectory = path;
                 }
                 else if (lvi.SubItems[2].Text == "omi" || lvi.SubItems[2].Text == "opr")
@@ -4056,7 +4079,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                     composition_clear();
 
                 //refresh the file browser
-                this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+                //this.filelist_update(((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+                this.filelist_update(((TextEntryActionItem)rps["dirbox"]).Text);
             }
         }
         #endregion

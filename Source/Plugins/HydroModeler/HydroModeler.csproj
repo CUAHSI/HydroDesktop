@@ -159,6 +159,9 @@
       <HintPath>..\..\..\Binaries\HydroDesktop.Help.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Oatc.OpenMI.Gui.Controls">
       <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Controls.dll</HintPath>
     </Reference>
@@ -185,6 +188,7 @@
       <HintPath>Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

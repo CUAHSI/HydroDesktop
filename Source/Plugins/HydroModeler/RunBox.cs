@@ -35,7 +35,7 @@ using Oatc.OpenMI.Gui.Core;
 using OpenMI.Standard;
 using System.IO;
 using DotSpatial.Controls;
-using DotSpatial.Controls.RibbonControls;
+//using DotSpatial.Controls.RibbonControls;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
