@@ -72,6 +72,10 @@
       <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
       <Private>False</Private>
