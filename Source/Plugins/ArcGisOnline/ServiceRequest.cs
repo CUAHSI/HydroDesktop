@@ -5,6 +5,11 @@ using System.Text;
 using DotSpatial.Data;
 using System.Net;
 using System.Windows.Forms;
+using Jayrock.Json;
+using Jayrock.Json.Conversion;
+using DotSpatial.Topology;
+using System.Data;
+using DotSpatial.Projections;
 
 namespace HydroDesktop.ArcGisOnline
 {
@@ -18,7 +23,9 @@ namespace HydroDesktop.ArcGisOnline
         public static IFeatureSet GetFeatures(string url)
         {
             //(1) form the url query
-            string[] fieldNames = new string[] { "Latitude", "Longitude", "SiteCode", "VarCode", "VarName", "ServCode", "watermluri" };
+            string[] fieldNames = new string[] { "Latitude", 
+                "Longitude", "SiteName", "SiteCode", "VarCode", "VarName", "ServCode", 
+                "watermluri", "StartDate", "EndDate" };
             string queryUri = GenerateQueryUri(url, fieldNames);
 
             using (WebClient wc = new WebClient())
@@ -27,6 +34,68 @@ namespace HydroDesktop.ArcGisOnline
                 {
                     string response = wc.DownloadString(queryUri);
                     int len = response.Length;
+
+                    //Declare Json Elements
+                    JsonObject mainObj = new JsonObject();
+                    JsonObject outputObj = new JsonObject();
+                    JsonArray shapeObj = new JsonArray();
+
+                    mainObj = JsonConvert.Import(response) as JsonObject;
+                    shapeObj = mainObj["features"] as JsonArray;
+
+                    //initialize feature set
+                    FeatureSet fs = new FeatureSet(FeatureType.Point);
+                    //attr table
+                    fs.DataTable.Columns.Add(new DataColumn("Latitude", typeof(double)));
+                    fs.DataTable.Columns.Add(new DataColumn("Longitude", typeof(double)));
+                    fs.DataTable.Columns.Add(new DataColumn("SiteName", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("SiteCode", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("VarCode", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("VarName", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("ServCode", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("WaterMLURI", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("StartDate", typeof(string)));
+                    fs.DataTable.Columns.Add(new DataColumn("EndDate", typeof(string)));
+
+                    foreach (JsonObject feature in shapeObj)
+                    {
+                        JsonObject atrList = feature["attributes"] as JsonObject;
+
+                        double latitude = Convert.ToDouble(atrList["Latitude"]);
+                        double longitude = Convert.ToDouble(atrList["Longitude"]);
+                        string siteCode = Convert.ToString(atrList["SiteCode"]);
+                        string varCode = Convert.ToString(atrList["VarCode"]);
+                        string varName = Convert.ToString(atrList["VarName"]);
+                        string startDate = Convert.ToString(atrList["StartDate"]);
+                        string endDate = Convert.ToString(atrList["EndDate"]);
+                        string siteName = Convert.ToString(atrList["SiteName"]);
+                        string servCode = Convert.ToString(atrList["ServCode"]);
+                        string waterMLURI = Convert.ToString(atrList["WaterMLURI"]);
+
+                        DotSpatial.Topology.Point pt = new DotSpatial.Topology.Point(longitude, latitude);
+
+                        IFeature f = fs.AddFeature(pt);
+
+                        DataRow r = f.DataRow;
+
+                        r["Latitude"] = latitude;
+                        r["Longitude"] = longitude;
+                        r["SiteCode"] = siteCode;
+                        r["VarCode"] = varCode;
+                        r["VarName"] = varName;
+                        r["ServCode"] = servCode;
+                        r["WaterMLURI"] = waterMLURI;
+                        r["SiteName"] = siteName;
+                        r["StartDate"] = startDate;
+                        r["EndDate"] = endDate;
+                    }
+
+                    //fs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984);
+
+                    return fs;
+
+                    //outputObj = mainObj["output"] as JsonObject;
+                    //shapeObj = outputObj["shape"] as JsonObject;
 
                 }
                 catch (WebException ex)
