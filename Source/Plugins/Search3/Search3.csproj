@@ -92,6 +92,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Area\AreaHelper.cs" />
+    <Compile Include="Area\SelectAreaByAttributeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Area\SelectAreaByAttributeDialog.Designer.cs">
+      <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
     <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Area\RectangleDrawing.cs" />
@@ -186,6 +193,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Area\SelectAreaByAttributeDialog.resx">
+      <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Searching\SearchProgressForm.resx">
       <DependentUpon>SearchProgressForm.cs</DependentUpon>
     </EmbeddedResource>
