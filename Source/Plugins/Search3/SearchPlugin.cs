@@ -33,9 +33,11 @@ namespace Search3
         private TextEntryActionItem rbEndDate;
         private TextEntryActionItem rbKeyword;
         private SimpleActionItem rbDrawBox;
+        private SimpleActionItem rbSelect;
 
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
+        private bool _isManualKeywordTextEdit = true;
 
         #endregion
 
@@ -72,23 +74,23 @@ namespace Search3
             const string grpArea = "Area";
 
             //Draw Box
-            rbDrawBox = new SimpleActionItem("Draw Box", rbDrawBox_Click);
+            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Box", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.draw_box_32_a;
             rbDrawBox.SmallImage = Resources.draw_box_16_a;
             rbDrawBox.GroupCaption = grpArea;
             rbDrawBox.ToggleGroupKey = grpArea;
-            rbDrawBox.RootKey = kHydroSearch3;
             head.Add(rbDrawBox);
             SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             //Select
-            var rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
+            rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
             rbSelect.ToolTipText = "Select Region";
             rbSelect.GroupCaption = grpArea;
             rbSelect.LargeImage = Resources.select;
             rbSelect.SmallImage = Resources.select_16;
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
+            SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
             //AttributeTable
             var rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
@@ -433,6 +435,8 @@ namespace Search3
 
         void rbDrawBox_Click(object Sender, EventArgs e)
         {
+            DeactivateSelectAreaByPolygon();
+
             if (_rectangleDrawing == null)
             {
                 _rectangleDrawing = new RectangleDrawing(App.Map);
@@ -467,11 +471,47 @@ namespace Search3
             SearchSettings.Instance.AreaSettings.AreaRectangle = rectangle;
         }
 
+        void AreaSettings_PolygonsChanged(object sender, EventArgs e)
+        {
+            var fsPolygons = SearchSettings.Instance.AreaSettings.Polygons;
+            rbSelect.ToolTipText = fsPolygons != null && fsPolygons.Features.Count > 0
+                                       ? string.Format("{0} polygons selected", fsPolygons.Features.Count)
+                                       : "Select Polygons";
+        }
+
         void rbSelect_Click(object sender, EventArgs e)
         {
+            DeactivateSelectAreaByPolygon();
             DeactivateDrawBox();
+
             App.Map.FunctionMode = FunctionMode.Select;
+
             SelectFirstVisiblePolygonLayer();
+            App.Map.SelectionChanged += Map_SelectionChanged;
+        }
+        
+        private void DeactivateSelectAreaByPolygon()
+        {
+            App.Map.SelectionChanged -= Map_SelectionChanged;
+            SearchSettings.Instance.AreaSettings.Polygons = null;
+        }
+
+        void Map_SelectionChanged(object sender, EventArgs e)
+        {
+            foreach (var polygonLayer in GetAllSelectedPolygonLayers())
+            {
+                var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
+                foreach (var f in polygonLayer.Selection.ToFeatureList())
+                {
+                    polyFs.Features.Add(f);
+                }
+                polyFs.Projection = App.Map.Projection;
+                SearchSettings.Instance.AreaSettings.Polygons = polyFs;
+
+
+                //todo: which layer should be saved, if there are several active layers?
+                break;
+            }
         }
 
         private void SelectFirstVisiblePolygonLayer()
@@ -493,6 +533,14 @@ namespace Search3
             }
         }
 
+        private IEnumerable<IMapPolygonLayer> GetAllSelectedPolygonLayers()
+        {
+            return App.Map.GetLayers().Where(layer => layer.LegendText == "Base Map Data" && layer is MapGroup)
+                .SelectMany(layer =>
+                    ((MapGroup) layer).GetLayers().OfType<IMapPolygonLayer>().Where(subLayer => subLayer.IsVisible &&
+                                                                                                subLayer.IsSelected));
+        }
+
         private void DeactivateDrawBox()
         {
             if (_rectangleDrawing == null) return;
@@ -504,6 +552,8 @@ namespace Search3
         void rbAttribute_Click(object sender, EventArgs e)
         {
             DeactivateDrawBox();
+            DeactivateSelectAreaByPolygon();
+
             SelectFirstVisiblePolygonLayer();
 
             foreach (var ori_fl in ((Map) App.Map).GetAllLayers().OfType<IMapFeatureLayer>()
@@ -532,7 +582,6 @@ namespace Search3
             rbKeyword.ToolTipText = "Matches....";
         }
 
-        private bool _isManualKeywordTextEdit = true;
         private void UpdateKeywordsCaption()
         {
             var keywords = SearchSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
