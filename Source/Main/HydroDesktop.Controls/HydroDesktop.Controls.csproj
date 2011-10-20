@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2D745DC4-9B59-4AA2-94DC-2370F1EE2991}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Controls</RootNamespace>
+    <AssemblyName>HydroDesktop.Controls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Analysis">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Analysis.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Modeling.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Modeling.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Topology.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Themes\SymbologyCreator.cs" />
+    <Compile Include="Themes\ThemeManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\defaulticon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AmeriFlux.gif" />
+    <None Include="Resources\BaltimoreGW.gif" />
+    <None Include="Resources\BaltPrecip.gif" />
+    <None Include="Resources\Benthic.gif" />
+    <None Include="Resources\BESOD.gif" />
+    <None Include="Resources\BESSoil.gif" />
+    <None Include="Resources\CIMS.gif" />
+    <None Include="Resources\COTCsnow.gif" />
+    <None Include="Resources\czo_ariz.gif" />
+    <None Include="Resources\czo_boulder.gif" />
+    <None Include="Resources\czo_catalina.gif" />
+    <None Include="Resources\czo_luquillo.gif" />
+    <None Include="Resources\czo_merced.gif" />
+    <None Include="Resources\czo_psu.gif" />
+    <None Include="Resources\czo_udel.gif" />
+    <None Include="Resources\CZSNW.gif" />
+    <None Include="Resources\EPA.gif" />
+    <None Include="Resources\GlacialRidge.gif" />
+    <None Include="Resources\GW_Edwards.gif" />
+    <None Include="Resources\HermineFlood.gif" />
+    <None Include="Resources\HydroNEXRAD.gif" />
+    <None Include="Resources\IIHRTippingB.gif" />
+    <None Include="Resources\IIHRWQ.gif" />
+    <None Include="Resources\LBL.gif" />
+    <None Include="Resources\LittleBearRiver.gif" />
+    <None Include="Resources\LoganRiver.gif" />
+    <None Include="Resources\MAST.gif" />
+    <None Include="Resources\MPE.gif" />
+    <None Include="Resources\MuddyRiver.gif" />
+    <None Include="Resources\MudLake.gif" />
+    <None Include="Resources\NADP.gif" />
+    <None Include="Resources\NCDCISH.gif" />
+    <None Include="Resources\NLDAS_MOS0125_H.gif" />
+    <None Include="Resources\NPCA.gif" />
+    <None Include="Resources\NWISDV.gif" />
+    <None Include="Resources\NWISGW.gif" />
+    <None Include="Resources\NWISIID.gif" />
+    <None Include="Resources\NWISUV.gif" />
+    <None Include="Resources\NWS-WGRFC MPE.gif" />
+    <None Include="Resources\NWS-WGRFC_Daily_MPE.gif" />
+    <None Include="Resources\NWS-WGRFC_Daily_MPE_Recent_Values.gif" />
+    <None Include="Resources\NWS-WGRFC_Hourly_MPE.gif" />
+    <None Include="Resources\NWS-WGRFC_Hourly_MPE_Recent_Values.gif" />
+    <None Include="Resources\NWS_WGRFC_Daily_MPE_Recent_Values.gif" />
+    <None Include="Resources\ODMDCEW2.gif" />
+    <None Include="Resources\ODMPMRW2.gif" />
+    <None Include="Resources\ODMRCEW2.gif" />
+    <None Include="Resources\ParadiseCreek.gif" />
+    <None Include="Resources\PWP.gif" />
+    <None Include="Resources\RIMP.gif" />
+    <None Include="Resources\RioGrandeET.gif" />
+    <None Include="Resources\RiverGages.gif" />
+    <None Include="Resources\SantaFe-RainDlySRWMD.gif" />
+    <None Include="Resources\SDRPF.gif" />
+    <None Include="Resources\SFe-FLStoret.gif" />
+    <None Include="Resources\SFe-SRGWL.gif" />
+    <None Include="Resources\SFe_CTDSondes.gif" />
+    <None Include="Resources\SFe_GWL_USGS.gif" />
+    <None Include="Resources\SFe_MICROWAVECITRA.gif" />
+    <None Include="Resources\SFe_SRWMD_SurfWater.gif" />
+    <None Include="Resources\SFe_Storet.gif" />
+    <None Include="Resources\SFe_SWFGWL.gif" />
+    <None Include="Resources\SRBHOS.gif" />
+    <None Include="Resources\TCEQ SWQM.gif" />
+    <None Include="Resources\TIFP_LowerSabine.gif" />
+    <None Include="Resources\TIFP_LowerSanAntonio.gif" />
+    <None Include="Resources\TWDB_Sondes.gif" />
+    <None Include="Resources\TWDB_Wind.gif" />
+    <None Include="Resources\WFO_FWD_Hourly_MPE_Recent_Values.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call $(SolutionDir)GetDotSpatial.exe</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
