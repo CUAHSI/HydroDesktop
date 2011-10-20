@@ -365,7 +365,14 @@ namespace Search3
 
             try
             {
-                _searcher.Run(SearchSettings.Instance);
+                if (!_searcher.IsUIVisible && _searcher.IsBusy)
+                {
+                    _searcher.ShowUI();
+                }
+                else
+                {
+                    _searcher.Run(SearchSettings.Instance);
+                }
             }
             catch (SearchSettingsException sex)
             {

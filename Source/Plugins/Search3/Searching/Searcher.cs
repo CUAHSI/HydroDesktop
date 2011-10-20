@@ -53,7 +53,10 @@ namespace Search3.Searching
             if (settings == null) 
                 throw new ArgumentNullException("settings");
             if (IsBusy)
+            {
+                ShowUI();
                 throw new InvalidOperationException("The previous search command is still active.");
+            }
             CheckSettingsForErrors(settings);
 
             _searcherUI = new SearchProgressForm(this);
@@ -81,6 +84,15 @@ namespace Search3.Searching
             {
                 return _searchTask != null && _monitorTask != null &&
                        (!_searchTask.IsCompleted || !_monitorTask.IsCompleted);
+            }
+        }
+
+        public bool IsUIVisible
+        {
+            get
+            {
+                if (_searcherUI == null) return false;
+                return _searcherUI.Visible;
             }
         }
 

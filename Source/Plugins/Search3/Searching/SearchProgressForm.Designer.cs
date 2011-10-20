@@ -31,6 +31,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.lbCurrentOperation = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btnHide = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -62,11 +63,23 @@
             this.progressBar1.Size = new System.Drawing.Size(322, 26);
             this.progressBar1.TabIndex = 2;
             // 
+            // btnHide
+            // 
+            this.btnHide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHide.Location = new System.Drawing.Point(179, 114);
+            this.btnHide.Name = "btnHide";
+            this.btnHide.Size = new System.Drawing.Size(75, 23);
+            this.btnHide.TabIndex = 3;
+            this.btnHide.Text = "Hide";
+            this.btnHide.UseVisualStyleBackColor = true;
+            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
+            // 
             // SearchProgressForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(347, 149);
+            this.Controls.Add(this.btnHide);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lbCurrentOperation);
             this.Controls.Add(this.btnCancel);
@@ -86,5 +99,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label lbCurrentOperation;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btnHide;
     }
 }
