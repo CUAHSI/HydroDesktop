@@ -112,14 +112,26 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //activate tab
             //_ribbonBtn_Click(this, EventArgs.Empty);
 
-            //update filelist
+
+            // set the initial text for the dirbox
+            string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
+            if (Directory.Exists(start_path))
+                 ((TextEntryActionItem)rps_dict["dirbox"]).Text =start_path;
+            else
+                ((TextEntryActionItem)rps_dict["dirbox"]).Text = "C:\\";
+
+            // update filelist
             //string text = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
             string text = ((TextEntryActionItem)rps_dict["dirbox"]).Text;
             hydroModelerControl.filelist_update(text);
 
-            //set pan mouse image
+            // set pan mouse image
             hydroModelerControl.Image_Path = ImagePath;
 
+            // add event for when HM panel is selected
+            App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(HM_Panel_Selected);
+
+            // activate plugin
             base.Activate();
         }
         #endregion
@@ -323,25 +335,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             rtb.TextBoxWidth = 300;
             rtb.TextBoxTextChanged += new System.EventHandler(ribbonTextBox_textChanged);*/
 
-           
-            rb = new SimpleActionItem("", this.dirItem_click);
-            rb.SmallImage = HydroModeler.Properties.Resources.change_dir.GetThumbnailImage(20, 20, null, IntPtr.Zero);
-            rb.GroupCaption = "Current Directory";
-            rb.RootKey = KHydroModeler;
-            App.HeaderControl.Add(rb);
-            btns.Add(rb);
-            rps.Add("directory", rb);
+            //rb = new SimpleActionItem("", this.dirItem_click);
+            //rb.SmallImage = HydroModeler.Properties.Resources.change_dir.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            //rb.GroupCaption = "Current Directory";
+            //rb.RootKey = KHydroModeler;
+            //rb.SortOrder = 100;
+            //App.HeaderControl.Add(rb);
+            //btns.Add(rb);
+            //rps.Add("directory", rb);
 
             var rtb = new TextEntryActionItem();
-            string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
-            if (Directory.Exists(start_path))
-                rtb.Text = start_path;
-            else
-                rtb.Text = "C:/";
-            rtb.Caption = "test";
             rtb.Width = 300;
-            rtb.GroupCaption = "Current Directory";
+            rtb.GroupCaption = "Directory";
             rtb.RootKey = KHydroModeler;
+            rtb.Caption = "Current Path: ";
             rtb.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(rtb_PropertyChanged);
             App.HeaderControl.Add(rtb);
             rps.Add("dirbox", rtb); 
@@ -428,6 +435,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
         #region UI Events
+        void HM_Panel_Selected(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
+        {
+            if (e.ActivePanelKey == kHydroModelerDock)
+            {
+                App.DockManager.SelectPanel("RootRibbonHydroModeler");
+                App.HeaderControl.SelectRoot(KHydroModeler);
+            }
+        }
         private void set_pan(object sender, EventArgs e)
         {
             if (hydroModelerControl.Ispan)
