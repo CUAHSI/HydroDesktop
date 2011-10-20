@@ -63,6 +63,7 @@ namespace HydroDesktop.ArcGisOnline
         private void DoRunArcGISOnline(Object sender, EventArgs e)
         {
             ArcGISOnlineForm frm = new ArcGISOnlineForm();
+            frm.App = App;
             frm.Show();
         }
 

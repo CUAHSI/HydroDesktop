@@ -1,4 +1,5 @@
 using System;
+using DotSpatial.Data;
 
 namespace Search3.Settings
 {
@@ -6,7 +7,11 @@ namespace Search3.Settings
     {
         public bool HasAnyArea
         {
-            get { return AreaRectangle != null; }
+            get
+            {
+                return AreaRectangle != null ||
+                       (Polygons != null && Polygons.Features.Count > 0);
+            }
         }
 
         private AreaRectangle _areaRectangle;
@@ -20,11 +25,31 @@ namespace Search3.Settings
             }
         }
 
+        private FeatureSet _polygons;
+        public FeatureSet Polygons
+        {
+            get { return _polygons; }
+            set
+            {
+                _polygons = value;
+                RaisePolygonsChanged();
+            }
+        }
+
         public event EventHandler AreaRectangleChanged;
+        public event EventHandler PolygonsChanged;
 
         private void RaiseAreaRectangleChanged()
         {
             var handler = AreaRectangleChanged;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+        private void RaisePolygonsChanged()
+        {
+            var handler = PolygonsChanged;
             if (handler != null)
             {
                 handler(this, EventArgs.Empty);
