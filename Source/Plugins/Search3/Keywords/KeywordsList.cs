@@ -6,7 +6,7 @@ namespace Search3.Keywords
 {
     class KeywordsList
     {
-        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree, CatalogSettings catalogSettings)
+        public void GetKeywordsAndOntology(out IList<string> keywords, out OntologyTree ontoloyTree, CatalogSettings catalogSettings)
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
 

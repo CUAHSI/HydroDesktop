@@ -10,7 +10,7 @@ namespace Search3.Settings.UI
     {
         #region Fields
 
-        private SortedSet<string> _keywords;
+        private IList<string> _keywords;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace Search3.Settings.UI
         /// <param name="keywords">Keywords.</param>
         /// <param name="ontologyTree">Ontology tree.</param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="keywords"/> or <paramref name="ontologyTree"/> is null.</exception>
-        public void BindKeywordsAndOntologyTree(SortedSet<string> keywords, OntologyTree ontologyTree)
+        public void BindKeywordsAndOntologyTree(IList<string> keywords, OntologyTree ontologyTree)
         {
             if (keywords == null) throw new ArgumentNullException("keywords");
             if (ontologyTree == null) throw new ArgumentNullException("ontologyTree");
@@ -47,16 +47,10 @@ namespace Search3.Settings.UI
 
             tboTypeKeyword.Clear();
             lblKeywordRelation.Text = "";
-
+           
             // Keywords
-            lbKeywords.BeginUpdate();
-            lbKeywords.Items.Clear();
-            foreach (var keyword in keywords)
-            {
-                lbKeywords.Items.Add(keyword);
-            }
-            lbKeywords.EndUpdate();
-
+            lbKeywords.DataSource = keywords;
+            
             // Ontology tree
             treeviewOntology.BeginUpdate();
             treeviewOntology.Nodes.Clear();

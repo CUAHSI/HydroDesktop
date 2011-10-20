@@ -9,7 +9,7 @@ namespace Search3.Keywords
     {
         private SortedSet<string> keywordsList;
 
-        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree)
+        public void GetKeywordsAndOntology(out IList<string> keywords, out OntologyTree ontoloyTree)
         {
             // Keywords
             var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySymbologyXmlFile();
@@ -27,7 +27,7 @@ namespace Search3.Keywords
 
             //------
             ontoloyTree = tree;
-            keywords = keywordsList;
+            keywords = keywordsList.ToList();
         }
 
         private void FillTree(XmlNode node, ICollection<OntologyNode> parentnode)

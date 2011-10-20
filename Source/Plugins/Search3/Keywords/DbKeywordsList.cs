@@ -7,7 +7,7 @@ namespace Search3.Keywords
 {
     class DbKeywordsList : IKeywordsList
     {
-        public void GetKeywordsAndOntology(out SortedSet<string> keywords, out OntologyTree ontoloyTree)
+        public void GetKeywordsAndOntology(out IList<string> keywords, out OntologyTree ontoloyTree)
         {
             // Keywords
             var searcher = new MetadataCacheSearcher();
@@ -25,7 +25,7 @@ namespace Search3.Keywords
             tree.Nodes.Add(parentNode);
 
             //------
-            keywords = sortedKeywords;
+            keywords = sortedKeywords.ToList();
             ontoloyTree = tree;
         }
     }

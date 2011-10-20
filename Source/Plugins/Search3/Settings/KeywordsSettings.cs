@@ -19,8 +19,8 @@ namespace Search3.Settings
             }
         }
 
-        private SortedSet<string> _keywords;
-        public SortedSet<string> Keywords
+        private IList<string> _keywords;
+        public IList<string> Keywords
         {
             get
             {
@@ -51,7 +51,7 @@ namespace Search3.Settings
 
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
         {
-            SortedSet<string> keywords;
+            IList<string> keywords;
             OntologyTree ontologyTree;
             new KeywordsList().GetKeywordsAndOntology(out keywords, out ontologyTree, catalogSettings ?? SearchSettings.Instance.CatalogSettings);
 
