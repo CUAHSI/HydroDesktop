@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Gills Creek</ID>
+        <Description>Gills Creek Watershed, Located in Columbia SC</Description>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Nutrient Load</ID>
+        <Description>Nutrient Loading in Kilograms per Day</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Mass</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>Time</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>kg/day</ID>
+          <Description>Kilograms per Day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Gills Creek</ID>
+        <Description>Gills Creek Nutrient Concentration</Description>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Nutrient Concentration</ID>
+        <Description>Nutrient Concentration in Milligrams per Liter</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Mass</Base>
+          </Dimension>
+          <Dimension>
+            <Power>-3</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mg/l</ID>
+          <Description>Milligrams per Liter</Description>
+          <ConversionFactorToSI>1000</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Gills Creek</ID>
+        <Description>Gills Creek Streamflow</Description>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Discharge</ID>
+        <Description>Streamflow Discharge in Cubic Feet per Second</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>3</Power>
+            <Base>Length</Base>
+          </Dimension>
+          <Dimension>
+            <Power>-1</Power>
+            <Base>Time</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>ft^3/s</ID>
+          <Description>Cubic Feet per Second</Description>
+          <ConversionFactorToSI>0.0283</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>10/27/2009 8:30:00AM </StartDateTime>
+    <TimeStepInSeconds>86400</TimeStepInSeconds>
+  </TimeHorizon>
+  <Expressions>
+    <Expression>
+      <Variable QuantityID="Nutrient Concentration" ElementSetID ="Gills Creek">X</Variable>
+      <Variable QuantityID="Streamflow" ElementSetID ="Gills Creek">Y</Variable>
+      <VariableExpression>2*X + 3*Y</VariableExpression>
+    </Expression>
+  </Expressions>
+</Configuration>
