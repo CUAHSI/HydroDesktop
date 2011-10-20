@@ -12,7 +12,13 @@ namespace Search3.Searching
 {
     public partial class SearchProgressForm : Form
     {
+        #region Fields
+
         private readonly Searcher _searcher;
+
+        #endregion
+
+        #region Constructors
 
         public SearchProgressForm(Searcher searcher)
         {
@@ -26,9 +32,18 @@ namespace Search3.Searching
             searcher.ProgressChanged += searcher_ProgressChanged;
         }
 
+        #endregion
+
+        #region Private methods
+
         void searcher_Completed(object sender, CompletedEventArgs e)
         {
+            if (!_searcher.IsUIVisible)
+            {
+                _searcher.ShowUI();
+            }
             btnCancel.Enabled = false;
+            MessageBox.Show("Search finished!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         void searcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -54,6 +69,10 @@ namespace Search3.Searching
             }
         }
 
+        private void btnHide_Click(object sender, EventArgs e)
+        {
+            _searcher.HideUI();
+        }
 
         private static void ThreadSafeChangeProgressBarValue(ProgressBar pb, int value)
         {
@@ -82,5 +101,7 @@ namespace Search3.Searching
         {
             label.Text = value;
         }
+
+        #endregion
     }
 }
