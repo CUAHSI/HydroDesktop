@@ -486,7 +486,7 @@ namespace Search3
 
             App.Map.FunctionMode = FunctionMode.Select;
 
-            SelectFirstVisiblePolygonLayer();
+            AreaHelper.SelectFirstVisiblePolygonLayer(App.Map);
             App.Map.SelectionChanged += Map_SelectionChanged;
         }
         
@@ -498,7 +498,7 @@ namespace Search3
 
         void Map_SelectionChanged(object sender, EventArgs e)
         {
-            foreach (var polygonLayer in GetAllSelectedPolygonLayers())
+            foreach (var polygonLayer in AreaHelper.GetAllSelectedPolygonLayers(App.Map))
             {
                 var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
                 foreach (var f in polygonLayer.Selection.ToFeatureList())
@@ -514,33 +514,6 @@ namespace Search3
             }
         }
 
-        private void SelectFirstVisiblePolygonLayer()
-        {
-            foreach (var layer in App.Map.GetLayers())
-            {
-                if (layer.LegendText == "Base Map Data" &&
-                    layer is MapGroup)
-                {
-                    foreach (var subLayer in ((MapGroup)layer).GetLayers().OfType<IMapPolygonLayer>()
-                                                                          .Where(subLayer => subLayer.IsVisible))
-                    {
-                        subLayer.IsSelected = true;
-                        break;
-                    }
-
-                    break;
-                }
-            }
-        }
-
-        private IEnumerable<IMapPolygonLayer> GetAllSelectedPolygonLayers()
-        {
-            return App.Map.GetLayers().Where(layer => layer.LegendText == "Base Map Data" && layer is MapGroup)
-                .SelectMany(layer =>
-                    ((MapGroup) layer).GetLayers().OfType<IMapPolygonLayer>().Where(subLayer => subLayer.IsVisible &&
-                                                                                                subLayer.IsSelected));
-        }
-
         private void DeactivateDrawBox()
         {
             if (_rectangleDrawing == null) return;
@@ -554,19 +527,9 @@ namespace Search3
             DeactivateDrawBox();
             DeactivateSelectAreaByPolygon();
 
-            SelectFirstVisiblePolygonLayer();
-
-            foreach (var ori_fl in ((Map) App.Map).GetAllLayers().OfType<IMapFeatureLayer>()
-                                                                 .Where(ori_fl => ori_fl.IsSelected))
-            {
-                App.Map.FunctionMode = FunctionMode.Select;
-                ori_fl.ShowAttributes();
-                return;
-            }
-
-            //if no layer is selected, inform the user
-            MessageBox.Show("Please select a layer in the legend.", "Information", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+            AreaHelper.SelectFirstVisiblePolygonLayer(App.Map);
+            SelectAreaByAttributeDialog.ShowDialog(App.Map);
+            Map_SelectionChanged(this, EventArgs.Empty);
         }
 
         #endregion
@@ -625,9 +588,9 @@ namespace Search3
 
         private void UpdateWebServicesCaption()
         {
-            var webWServicesSettings = SearchSettings.Instance.WebServicesSettings;
-            var checkedCount = webWServicesSettings.CheckedCount;
-            var totalCount = webWServicesSettings.TotalCount;
+            var webservicesSettings = SearchSettings.Instance.WebServicesSettings;
+            var checkedCount = webservicesSettings.CheckedCount;
+            var totalCount = webservicesSettings.TotalCount;
 
             string caption;
             string hint;
@@ -639,7 +602,7 @@ namespace Search3
             }else if (checkedCount == 1)
             {
                 // Get single checked item
-                var items = webWServicesSettings.WebServices.Where((w) => w.Checked).ToList();
+                var items = webservicesSettings.WebServices.Where((w) => w.Checked).ToList();
                 Debug.Assert(items.Count == 1);
                 webServiceNode = items[0];
                 caption = items[0].Title;
