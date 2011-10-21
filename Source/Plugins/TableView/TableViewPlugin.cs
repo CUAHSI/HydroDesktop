@@ -6,7 +6,6 @@ using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
-using HydroDesktop.Controls.Themes;
 using DotSpatial.Controls.Docking;
 
 namespace TableView
@@ -148,7 +147,6 @@ namespace TableView
 
         private void Refresh()
         {
-            RefreshAllThemes();
             SeriesControl.RefreshSelection();
         }
 
@@ -180,14 +178,6 @@ namespace TableView
             DeleteTheme();
         }
 
-        /// <summary>
-        /// Reads all themes from the database and displays them on the map
-        /// </summary>
-        private void RefreshAllThemes()
-        {
-            var manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
-            manager.RefreshAllThemes(App.Map as Map);
-        }
 
         private void DeleteTheme()
         {

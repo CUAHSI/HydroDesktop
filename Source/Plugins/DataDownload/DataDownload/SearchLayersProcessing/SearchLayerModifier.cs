@@ -9,7 +9,6 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Configuration;
-using HydroDesktop.Controls.Themes;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
 
@@ -288,8 +287,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             const int imageStep = 5;
             var imageSize = 5;
 
-            var symbCreator = new SymbologyCreator(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
-            var image = symbCreator.GetImageForService(servCode);
+            var imageHelper = new HydroDesktop.WebServices.ServiceIconHelper(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
+            var image = imageHelper.GetImageForService(servCode);
 
             const string seriesID = "SeriesID";
             var needDownloadedCategories = featureSet.DataTable.Columns.Contains(seriesID);
