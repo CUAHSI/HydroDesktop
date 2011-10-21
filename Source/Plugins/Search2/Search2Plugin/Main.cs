@@ -21,7 +21,8 @@ namespace HydroDesktop.Search
         private SearchControl ucSearch = null;
 
         //the search dockable panel
-        //DockablePanel searchPanel = null;
+        DockablePanel searchPanel = null;
+        bool searchPanelIsVisible = false;
 
         Extent _initialExtent = null;
 
@@ -46,10 +47,6 @@ namespace HydroDesktop.Search
             base.Deactivate();
         }
 
-        #endregion IExtension Members
-
-        #region IPlugin Members
-
         /// <summary>
         /// Initialize the plugin
         /// </summary>
@@ -61,9 +58,8 @@ namespace HydroDesktop.Search
             //add the ribbon panels and buttons
             AddRibbonItems();
 
-            var mnuHISCentral = new ToolStripMenuItem("HIS Central", Resources.OpenSearch);
-            var mnuMetadataCache = new ToolStripMenuItem("Metadata Cache", Resources.OpenSearch_1);
-            //add the search UI to the main application
+            //setup the search dock panel
+            // (will be activated when user selects search option)
             if (App.Map != null)
             {
                 //report progress
@@ -72,13 +68,10 @@ namespace HydroDesktop.Search
                 //Set the Search control
                 ucSearch = new SearchControl(App);
                 ucSearch.Dock = DockStyle.Fill;
-                var searchPanel = new DockablePanel(kSearchDock, "search", ucSearch, DockStyle.Right);
-                App.DockManager.Add(searchPanel);
+                searchPanel = new DockablePanel(kSearchDock, "search", ucSearch, DockStyle.Right);
 
                 ReportProgress(50, "Loading Search Plugin..");
 
-                //execute the HIS CentralClick event
-                mnuHISCentral_Click(null, null);
                 App.Map.ViewExtents = _initialExtent;
 
                 ReportProgress(0, String.Empty);
@@ -90,31 +83,24 @@ namespace HydroDesktop.Search
             base.Activate();
         }
 
-        
+        #endregion
 
-        private void _searchRibbonButton_Click(object sender, EventArgs e)
+        private void AddSearchPanel()
         {
-            ucSearch.SearchMode = SearchMode.HISCentral;
-            RefreshTheMap();
+            if (!searchPanelIsVisible)
+            {
+                App.DockManager.Add(searchPanel);
+            }
+            App.DockManager.SelectPanel(kSearchDock);
+            searchPanelIsVisible = true;
         }
-
-        //click - HIS Central Search button
-        private void mnuMetadataCache_Click(object sender, EventArgs e)
+        private void RemoveSearchPanel()
         {
-            ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
-            RefreshTheMap();
+            if (searchPanel == null) return;
+
+            App.DockManager.Remove(kSearchDock);
+            searchPanelIsVisible = false;
         }
-
-        //click - Metadata Cache Search button
-        private void mnuHISCentral_Click(object sender, EventArgs e)
-        {
-            ReportProgress(70, "Loading Search Plugin");
-
-            ucSearch.SearchMode = SearchMode.HISCentral;
-            RefreshTheMap();
-        }
-
-        #endregion IPlugin Members
 
         #region Progress
 
@@ -150,7 +136,8 @@ namespace HydroDesktop.Search
         //metadata cache ribbon dropdown click event
         private void rbtnMetadataCache_Click(object sender, EventArgs e)
         {
-            //ucSearch.MainImage = Resources.OpenSearch_1;
+            AddSearchPanel();
+            
             ucSearch.SearchMode = SearchMode.LocalMetaDataCache;
             RefreshTheMap();
         }
@@ -158,7 +145,8 @@ namespace HydroDesktop.Search
         //his central ribbon dropdown click event
         private void rbtnHISCentral_Click(object sender, EventArgs e)
         {
-            //ucSearch.MainImage = Resources.OpenSearch;
+            AddSearchPanel();
+            
             ucSearch.SearchMode = SearchMode.HISCentral;
             RefreshTheMap();
         }
@@ -172,17 +160,8 @@ namespace HydroDesktop.Search
         //force  the map to redraw
         private void RefreshTheMap()
         {
-            //if (App.PanelManager != null)
-            //{
-            //    if (_mapArgs.PanelManager.SelectedTabName != "MapView")
-            //    {
-            //        _mapArgs.PanelManager.SelectedTabName = "MapView";
-            //    }
-            //}
-
             App.Map.MapFrame.ResetExtents();
             App.Map.Invalidate();
-            //_mapArgs.Map.ViewExtents = _initialExtent;
         }
 
         #endregion Ribbon
