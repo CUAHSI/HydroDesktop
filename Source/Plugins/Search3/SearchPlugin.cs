@@ -481,9 +481,11 @@ namespace Search3
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
         {
             var fsPolygons = SearchSettings.Instance.AreaSettings.Polygons;
-            rbSelect.ToolTipText = fsPolygons != null && fsPolygons.Features.Count > 0
+            var caption = fsPolygons != null && fsPolygons.Features.Count > 0
                                        ? string.Format("{0} polygons selected", fsPolygons.Features.Count)
                                        : "Select Polygons";
+            rbSelect.Caption = caption;
+            rbSelect.ToolTipText = caption;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
