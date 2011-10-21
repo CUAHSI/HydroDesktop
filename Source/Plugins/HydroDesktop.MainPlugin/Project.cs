@@ -1,26 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Database;
-using HydroDesktop.Interfaces.ObjectModel;
-using System.Reflection;
-using System.Xml;
 //using NDepend.Helpers.FileDirectoryPath;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
-using System.Diagnostics;
-using System.Security.AccessControl;
-using HydroDesktop.Controls;
-using HydroDesktop.Controls.Themes;
 
 namespace HydroDesktop.Main
 {
