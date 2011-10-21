@@ -9,7 +9,6 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using HydroDesktop.Controls.Themes;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
@@ -17,6 +16,7 @@ using Search3.Searching;
 using Search3.Searching.Exceptions;
 using Search3.Settings;
 using Search3.Settings.UI;
+using HydroDesktop.WebServices;
 
 namespace Search3
 {
@@ -638,8 +638,8 @@ namespace Search3
 
             try
             {
-                var symbCreator = new SymbologyCreator(SearchSettings.Instance.CatalogSettings.HISCentralUrl);
-                var image = symbCreator.GetImageForService(webServiceNode.ServiceCode);
+                var imageHelper = new ServiceIconHelper(SearchSettings.Instance.CatalogSettings.HISCentralUrl);
+                var image = imageHelper.GetImageForService(webServiceNode.ServiceCode);
                 rbServices.LargeImage = rbServices.SmallImage = image;
             }
             catch (Exception ex)

@@ -202,66 +202,7 @@ namespace HydroDesktop.Main
             Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(newDbPath);
             Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newCachePath);
             Settings.Instance.CurrentProjectFile = appManager.SerializationManager.CurrentProjectFile;
-
-            //HydroAppManager hydroApp = appManager as HydroAppManager;
-            //if (hydroApp != null)
-            //{
-            //    hydroApp.SeriesView.SeriesSelector.SetupDatabase();
-            //}
         }
-
-        
-
-        /// <summary>
-        /// Loads all Theme layers. The themes are loaded directly from
-        /// the database
-        /// </summary>
-        //TODO a plug-in should be responsible for loading the themes
-        //private static void LoadThemes(string projectFileName, HydroAppManager applicationManager1, Map mainMap)
-        //{
-        //    try
-        //    {
-        //        RefreshAllThemes(projectFileName, applicationManager1, mainMap);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
-
-        /// <summary>
-        /// Reads all themes from the database and displays them on the map
-        /// 
-        /// </summary>
-        //TODO a plug-in should be responsible for loading the themes
-        //public static Boolean RefreshAllThemes(string projectFileName, HydroAppManager applicationManager1, Map mainMap)
-        //{
-        //    //  ReportProgress("Loading Themes...");
-
-        //    //First remove all existing theme layers
-        //    IMapGroup themeGroup = FindGroupByName(mainMap, "Themes");
-        //    themeGroup.Layers.Clear();
-
-        //    //Find or create the 'Themes' map group
-        //    var dbOperations = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-        //    ThemeManager themeManager = new ThemeManager(dbOperations);
-        //    IRepositoryManager repoManager = new RepositoryManagerSQL(dbOperations);
-        //    IList<Theme> themes = repoManager.GetAllThemes();
-
-        //    foreach (Theme theme in themes)
-        //    {
-        //        IFeatureSet fs = themeManager.GetFeatureSet(theme.Name, DefaultProjection);
-        //        //ReportProgress("Loading " + theme.Name);
-        //        themeManager.AddThemeToMap(fs, theme.Name, mainMap);
-        //    }
-        //    mainMap.Invalidate();
-        //    mainMap.MapFrame.ResetBuffer();
-        //    //   ReportProgress("");
-
-        //    //_issaved = false;
-        //    // _count.Add(1); // (used to monitor changes??)
-        //    return false;
-        //}
 
         /// <summary>
         /// Finds the map group with the specific name

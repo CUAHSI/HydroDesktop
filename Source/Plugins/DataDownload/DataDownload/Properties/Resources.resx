@@ -121,4 +121,7 @@
   <data name="download32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\download32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Wgs84ProjectionString" xml:space="preserve">
+    <value>GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223562997]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]]</value>
+  </data>
 </root>

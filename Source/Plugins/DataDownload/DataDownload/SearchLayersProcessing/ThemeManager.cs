@@ -13,7 +13,7 @@ using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 using System.IO;
 
-namespace HydroDesktop.Controls.Themes
+namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
     /// <summary>
     /// The ThemeManager is responsible for reading themes

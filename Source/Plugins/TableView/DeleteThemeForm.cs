@@ -29,18 +29,6 @@ namespace TableView
             bgwMain.ProgressChanged +=new ProgressChangedEventHandler(bgwMain_ProgressChanged);
         }
 
-        //void checkListThemes_ItemCheck(object sender, ItemCheckEventArgs e)
-        //{
-        //    if (checkListThemes.CheckedItems.Count > 0)
-        //    {
-        //        btnOK.Enabled = true;
-        //    }
-        //    else
-        //    {
-        //        btnOK.Enabled = false;
-        //    }
-        //}
-
         private void checkListThemes_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (checkListThemes.CheckedItems.Count > 0)
@@ -55,9 +43,6 @@ namespace TableView
 
         private void DeleteThemeForm_Load(object sender, EventArgs e)
         {
-            //_db = new DbOperations(Config.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-
-
             RepositoryManagerSQL repoManager = new RepositoryManagerSQL(_db);
             IList<Theme> themeList = repoManager.GetAllThemes();
 

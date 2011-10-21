@@ -111,11 +111,6 @@
       <Name>HydroDesktop.Configuration</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\HydroDesktop.Controls\HydroDesktop.Controls.csproj">
-      <Project>{2D745DC4-9B59-4AA2-94DC-2370F1EE2991}</Project>
-      <Name>HydroDesktop.Controls</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
       <Name>HydroDesktop.Data</Name>

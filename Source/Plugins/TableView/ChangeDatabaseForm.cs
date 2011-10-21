@@ -80,13 +80,6 @@ namespace TableView
 
             //(3) Refresh 'SeriesSelector' control
             _seriesView.SetupDatabase();
-            //_seriesView.SeriesSelector.RefreshSelection();
-
-            //ThemeManager manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString);
-            //if (_mainMap != null)
-            //{
-            //    manager.RefreshAllThemes(_mainMap);
-            //}
 
             DialogResult = DialogResult.OK;
             Close();
