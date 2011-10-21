@@ -87,6 +87,13 @@ namespace HydroDesktop.Docking
             if (dockStyle == DockStyle.Right)
                 MainDockPanel.DockRightPortion = (double)innerControl.Width / MainDockPanel.Width;
 
+            //setting document tab strip location to 'bottom'
+            if (dockStyle == DockStyle.Fill)
+            {
+                MainDockPanel.DocumentTabStripLocation = DocumentTabStripLocation.Bottom;
+                MainDockPanel.DocumentStyle = DocumentStyle.DockingWindow;
+            }
+
             DockContent content = new DockContent();
             content.ShowHint = ConvertToDockState(dockStyle);
             content.Controls.Add(innerControl);
