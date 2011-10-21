@@ -82,7 +82,13 @@ namespace HelpTab
             const string HelpTabKey = "kHelp";
             App.HeaderControl.Add(new RootItem(HelpTabKey, _helpTabName) { SortOrder = 200 });
 
-            // no such feature, presently.
+            // Help quick access image
+            var quickHelpButton = new SimpleActionItem("Help", onlineHelpButton_Click);
+            quickHelpButton.ToolTipText = "View Help";
+            quickHelpButton.GroupCaption = HeaderControl.HeaderHelpItemKey;
+            quickHelpButton.LargeImage = Resources.help_32x32;
+            quickHelpButton.SmallImage = Resources.help_16x16;
+            App.HeaderControl.Add(quickHelpButton);
             //helpPanel.Image = Resources.help_32x32;
 
             // Add a button to open help documentation
