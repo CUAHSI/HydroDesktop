@@ -196,4 +196,7 @@
   <data name="SearchGroupName" xml:space="preserve">
     <value>"Data Sites"</value>
   </data>
+  <data name="data_sources32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\data_sources32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

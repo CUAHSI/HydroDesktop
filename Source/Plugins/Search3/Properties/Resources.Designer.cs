@@ -81,6 +81,13 @@ namespace Search3.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap data_sources32 {
+            get {
+                object obj = ResourceManager.GetObject("data_sources32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap download32 {
             get {
                 object obj = ResourceManager.GetObject("download32", resourceCulture);
