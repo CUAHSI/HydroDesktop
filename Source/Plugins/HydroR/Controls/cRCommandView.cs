@@ -391,7 +391,7 @@ namespace HydroR
             {
                 count++;
                 //output = standardinput("install.packages(\"" + changeSlash(Path.GetDirectoryName(this.GetType().Assembly.Location)) + "/HydroR_1.1.tar.gz\",repos=NULL, type = \"source\")\n is.element(\"HydroR\", installed.packages()[,1])");
-                sendLineToR("install.packages(\"" + changeSlash(Path.GetDirectoryName(this.GetType().Assembly.Location)) + "/HydroR_1.1.tar.gz\",repos=NULL, type = \"source\")");
+                sendLineToR("install.packages(\"" + changeSlash(Path.GetDirectoryName(this.GetType().Assembly.Location)) + "/HydroR_1.2.tar.gz\",repos=NULL, type = \"source\")");
                 pushButton("{ENTER}");
                 output = standardinput("is.element(\"HydroR\", installed.packages()[,1])");
                 installed = output.Contains("TRUE");
@@ -584,6 +584,14 @@ namespace HydroR
             rtCommands.SelectLine(rtCommands.Line);
             rtCommands.GenerateCode = false;
 
+        }
+
+        public void btnSetRPath_Click(object sender, EventArgs e) 
+        {
+            frmInstallR frmR = new frmInstallR();
+            frmR.ShowDialog(this);
+            if (frmR.getRPathResult == HydroR.frmInstallR.buttonType.OK)
+                pathToR = frmR.getPathToR;
         }
 
         //save textbox to file

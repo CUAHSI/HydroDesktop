@@ -150,8 +150,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="HydroR_1.1.tar.gz">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="HydroR_1.2.tar.gz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
