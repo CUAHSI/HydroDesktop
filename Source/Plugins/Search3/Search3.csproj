@@ -297,6 +297,7 @@
     <None Include="Resources\draw_box_32_a.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\data_sources32.png" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

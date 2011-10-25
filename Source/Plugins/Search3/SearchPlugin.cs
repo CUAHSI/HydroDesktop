@@ -74,7 +74,8 @@ namespace Search3
             const string grpArea = "Area";
 
             //Draw Box
-            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Box", rbDrawBox_Click);
+            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Select Rectangle", rbDrawBox_Click);
+            rbDrawBox.ToolTipText = "Select area by drawing a rectangle on the map";
             rbDrawBox.LargeImage = Resources.draw_box_32_a;
             rbDrawBox.SmallImage = Resources.draw_box_16_a;
             rbDrawBox.GroupCaption = grpArea;
@@ -84,7 +85,7 @@ namespace Search3
 
             //Select
             rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
-            rbSelect.ToolTipText = "Select Region";
+            rbSelect.ToolTipText = "Select area by selecting polygons on the map";
             rbSelect.GroupCaption = grpArea;
             rbSelect.LargeImage = Resources.select;
             rbSelect.SmallImage = Resources.select_16;
@@ -169,7 +170,7 @@ namespace Search3
 
             #region Dates group
 
-            const string grpDates = "Time Range";
+            const string grpDates = "Date Range";
             rbStartDate = new TextEntryActionItem();
             rbStartDate.Caption = "Start";
             rbStartDate.GroupCaption = grpDates;
@@ -196,12 +197,12 @@ namespace Search3
 
             #endregion
 
-            #region Web Services group
+            #region Web Data Sources group
 
-            const string grpServices = "Web Services";
-            rbServices = new SimpleActionItem("All Services", rbServices_Click);
+            const string grpServices = "Data Sources";
+            rbServices = new SimpleActionItem("All Data Sources", rbServices_Click);
             ChangeWebServicesIcon();
-            rbServices.ToolTipText = "Select web services (All Services selected)";
+            rbServices.ToolTipText = "Select data sources (All data sources selected)";
             rbServices.GroupCaption = grpServices;
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
@@ -210,13 +211,16 @@ namespace Search3
 
             #region Catalog group
 
+            //do not add the catalog group for now
+            //change to application-level settings
+
             const string grpCatalog = "Catalog";
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
             rbCatalog.LargeImage = Resources.catalog_v2_32;
             rbCatalog.SmallImage = Resources.catalog_v2_32;
             rbCatalog.GroupCaption = grpCatalog;
             rbCatalog.RootKey = kHydroSearch3;
-            head.Add(rbCatalog);
+            //head.Add(rbCatalog);
             UpdateCatalogCaption();
 
             #endregion
@@ -236,12 +240,13 @@ namespace Search3
             btnDownload.RootKey = kHydroSearch3;
             btnDownload.GroupCaption = grpSearch;
             btnDownload.LargeImage = Resources.download32;
+            btnDownload.Enabled = false;
             App.HeaderControl.Add(btnDownload);
 
             #endregion
 
-            //map buttons
-            AddMapButtons();
+            //map buttons (not used)
+            //AddMapButtons();
         }
       
         private void AddMapButtons()
@@ -633,7 +638,7 @@ namespace Search3
             if (webServiceNode == null || 
                 string.IsNullOrEmpty(webServiceNode.ServiceCode))
             {
-                rbServices.LargeImage = Resources.web_services_v1_32;
+                rbServices.LargeImage = Resources.data_sources32;
                 rbServices.SmallImage = Resources.web_services_v1_16;
                 return;
             }

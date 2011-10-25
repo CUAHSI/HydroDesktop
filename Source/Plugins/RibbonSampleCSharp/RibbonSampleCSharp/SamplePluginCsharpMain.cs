@@ -29,6 +29,8 @@ namespace RibbonSamplePlugin
         private const string kHydroCSharpDock = "kDockRibbonSampleCsharp";
         private const string KHydroCSharp = "kRootRibbonSampleCsharp";
 
+        RootItem mainRootItem;
+
         #endregion
 
         #region IExtension Members
@@ -54,9 +56,9 @@ namespace RibbonSamplePlugin
         public override void Activate()
         {
             // Add "Ribbon" button to the "View" Panel in "Home" ribbon tab
-            var root = new RootItem(KHydroCSharp, _pluginName);
-            root.SortOrder = 100;
-            App.HeaderControl.Add(root);
+            mainRootItem = new RootItem(KHydroCSharp, _pluginName);
+            mainRootItem.SortOrder = 100;
+            App.HeaderControl.Add(mainRootItem);
 
             var simpleButton = new SimpleActionItem("C# Sample", rb_Click);
             simpleButton.LargeImage = CreateCircleImage(Color.Blue);
@@ -200,6 +202,8 @@ namespace RibbonSamplePlugin
         {
             MessageBox.Show("Connection String Is: " + 
                 HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, _pluginName);
+
+            mainRootItem.Visible = false;
         }
 
         void menuItem1_Click(object sender, EventArgs e)
