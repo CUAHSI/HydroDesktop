@@ -102,13 +102,13 @@ namespace HydroR
                 App.HeaderControl.Add(btnSave);
 
                 //when the HydroR panel is selected - activate SeriesView and HydroR ribbon tab
-                App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(DockManager_ActivePanelChanged);
+                App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_ActivePanelChanged);
             }
 
             base.Activate();
         }
 
-        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == kHydroR)
             {

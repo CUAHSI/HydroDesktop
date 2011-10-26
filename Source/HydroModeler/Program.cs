@@ -129,7 +129,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             hydroModelerControl.Image_Path = ImagePath;
 
             // add event for when HM panel is selected
-            App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.ActivePanelChangedEventArgs>(HM_Panel_Selected);
+            App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(HM_Panel_Selected);
 
             // activate plugin
             base.Activate();
@@ -435,7 +435,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 
         #region UI Events
-        void HM_Panel_Selected(object sender, DotSpatial.Controls.Docking.ActivePanelChangedEventArgs e)
+        void HM_Panel_Selected(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == kHydroModelerDock)
             {

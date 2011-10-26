@@ -197,7 +197,7 @@ Namespace EditView
 
 #Region "Event Handlers"
 
-        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.ActivePanelChangedEventArgs)
+        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
 
             'activate the Edit ribbon tab and the series view panel
             If e.ActivePanelKey = kEditView Then
