@@ -10,6 +10,9 @@ using DotSpatial.Controls.Header;
 
 namespace HelpTab
 {
+    /// <summary>
+    /// Main class of the HelpTab plugin
+    /// </summary>
     public class Main : Extension
     {
         #region Private Member Variables

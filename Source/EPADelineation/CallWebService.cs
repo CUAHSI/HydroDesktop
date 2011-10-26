@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Windows.Forms;
-using System.Web.Services;
 using System.Xml;
 using System.IO;
 

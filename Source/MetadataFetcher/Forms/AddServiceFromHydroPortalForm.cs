@@ -19,7 +19,9 @@ namespace HydroDesktop.MetadataFetcher.Forms
 		#endregion
 
 		#region Constructor
-
+        /// <summary>
+        /// Creates a new Add Service from HydroPortal form
+        /// </summary>
 		public AddServiceFromHydroPortalForm ()
 		{
 			InitializeComponent ();
@@ -32,8 +34,8 @@ namespace HydroDesktop.MetadataFetcher.Forms
 		/// <summary>
 		/// Cancels or closes the form if the user presses the ESC key
 		/// </summary>
-		/// <param name="msg"></param>
-		/// <param name="keyData"></param>
+		/// <param name="msg">message</param>
+		/// <param name="keyData">key data (esc key press)</param>
 		/// <returns>true if key press was handled, false otherwise</returns>
 		protected override bool ProcessCmdKey ( ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData )
 		{
@@ -101,7 +103,9 @@ namespace HydroDesktop.MetadataFetcher.Forms
 		#endregion
 
 		#region Public Members
-
+        /// <summary>
+        /// Initializes the HydroPortal connection
+        /// </summary>
 		public HydroDesktop.MetadataFetcher.HydroPortalUtils HydroPortalConnection
 		{
 			get
