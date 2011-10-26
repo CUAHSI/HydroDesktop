@@ -75,8 +75,8 @@ namespace Search3
 
             //Draw Box
             rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Box", rbDrawBox_Click);
-            rbDrawBox.LargeImage = Resources.draw_box_32_a;
-            rbDrawBox.SmallImage = Resources.draw_box_16_a;
+            rbDrawBox.LargeImage = Resources.Draw_Box_32;
+            rbDrawBox.SmallImage = Resources.Draw_Box_16;
             rbDrawBox.GroupCaption = grpArea;
             rbDrawBox.ToggleGroupKey = grpArea;
             head.Add(rbDrawBox);
@@ -86,8 +86,8 @@ namespace Search3
             rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
             rbSelect.ToolTipText = "Select Region";
             rbSelect.GroupCaption = grpArea;
-            rbSelect.LargeImage = Resources.select;
-            rbSelect.SmallImage = Resources.select_16;
+            rbSelect.LargeImage = Resources.select_poly_32;
+            rbSelect.SmallImage = Resources.select_poly_16;
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
@@ -96,8 +96,8 @@ namespace Search3
             var rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
             rbAttribute.ToolTipText = "Select by Attribute";
             rbAttribute.GroupCaption = grpArea;
-            rbAttribute.LargeImage = Resources.attribute_table;
-            rbAttribute.SmallImage = Resources.attribute_table_16;
+            rbAttribute.LargeImage = Resources.select_table_32;
+            rbAttribute.SmallImage = Resources.select_table_16;
             head.Add(rbAttribute);
 
             #endregion
@@ -158,8 +158,8 @@ namespace Search3
 
             //Keyword more options
             var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
-            rbKeyword2.LargeImage = Resources.keyword_v2_32;
-            rbKeyword2.SmallImage = Resources.keyword_v2_16;
+            rbKeyword2.LargeImage = Resources.keyword_32;
+            rbKeyword2.SmallImage = Resources.keyword_16;
             rbKeyword2.GroupCaption = grpKeyword;
             rbKeyword2.ToolTipText = "Show Keyword Ontology Tree";
             rbKeyword2.RootKey = kHydroSearch3;
@@ -225,8 +225,8 @@ namespace Search3
 
             string grpSearch = "Search";
             var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click);
-            rbSearch.LargeImage = Resources.search2_3;
-            rbSearch.SmallImage = Resources.search2_3;
+            rbSearch.LargeImage = Resources.search_32;
+            rbSearch.SmallImage = Resources.search_16;
             rbSearch.ToolTipText = "Run Search based on selected criteria";
             rbSearch.GroupCaption = grpSearch;
             rbSearch.RootKey = kHydroSearch3;
@@ -235,7 +235,8 @@ namespace Search3
             var btnDownload = new SimpleActionItem("Download", rbDownload_Click);
             btnDownload.RootKey = kHydroSearch3;
             btnDownload.GroupCaption = grpSearch;
-            btnDownload.LargeImage = Resources.download32;
+            btnDownload.LargeImage = Resources.download_32;
+            btnDownload.SmallImage = Resources.download_16;
             App.HeaderControl.Add(btnDownload);
 
             #endregion
