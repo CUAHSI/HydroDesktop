@@ -61,9 +61,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
    
   <!-- List of solutions. Now explict build files for solutions -->
   <ItemGroup>
-    <MainSln Include="$(SourceDirectory)\Source\Main\hydrodesktop.sln"/>
-    <PlugInSln Include="$(SourceDirectory)\Source\Plugins\HydroDesktopPlugins.sln"
-    Exclude="@(excludedSolution)" />
+    <MainSln Include="$(SourceDirectory)\Source\hydrodesktop.sln"/>
   </ItemGroup>
   
   <PropertyGroup>
@@ -123,7 +121,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 <ReleaseVersion Condition="'$(ReleaseVersion)' == ''">$(Major).$(Minor).$(Build).$(Revision)</ReleaseVersion>
 </PropertyGroup>
 			  <MSBuild.Community.Tasks.AssemblyInfo CodeLanguage="CS"  
-                OutputFile="$(SourceDirectory)\Source\Main\HydroDesktop.Main\Properties\AssemblyInfo.cs" 
+                OutputFile="$(SourceDirectory)\Source\HydroDesktop.MainPlugin\Properties\AssemblyInfo.cs" 
                 AssemblyTitle="HydroDesktop" 
                 AssemblyDescription="Hydrodesktop Main Application"
                 AssemblyConfiguration=""
@@ -139,7 +137,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   </Target>
    <!-- AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" -->
   <Target Name="Build"
-  DependsOnTargets="CleanSource;Clean;VersionConfig;BuildMain;BuildCorePlugins">
+  DependsOnTargets="CleanSource;Clean;VersionConfig;BuildMain">
   <!--  <CallTarget Targets="ConflictingDLLCheck" /> -->
     <CallTarget Targets="Installer" />
     <!-- Installer configured with no dependency. Nice to be able to call it separately -->
@@ -147,7 +145,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <OnError ExecuteTargets="MessageErrorHandler" />
   </Target>
   <Target Name="ReBuild"
-  DependsOnTargets="Clean;VersionConfig;BuildMain;BuildCorePlugins">
+  DependsOnTargets="Clean;VersionConfig;BuildMain">
 
     <CallTarget Targets="Installer" />
     <!-- Installer configured with no dependency. Nice to be able to call it separately -->
@@ -166,19 +164,20 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     Properties="Configuration=$(Configuration)" />
     <OnError ExecuteTargets="MessageErrorHandler" />
   </Target>
-  <!-- BUILD PLUGINS -->
-  <Target Name="BuildCorePlugins" DependsOnTargets="BuildMain">
+  <!-- BUILD PLUGINS (commented out) -->
+  <!-- <Target Name="BuildCorePlugins" DependsOnTargets="BuildMain">
     <PropertyGroup>
       <errMessage>BuildCorePlugins</errMessage>
     </PropertyGroup>
     <MSBuild Projects="@(PlugInSln)"
     Properties="Configuration=$(Configuration)" Targets="Build" />
     <OnError ExecuteTargets="MessageErrorHandler" />
-  </Target>
+  </Target> 
+  -->
   
   
   <!-- HydroModeler needs to be built before it's components -->
-  <Target Name="BuildHydroModelerComponents" DependsOnTargets="BuildCorePlugins">
+  <Target Name="BuildHydroModelerComponents" DependsOnTargets="BuildMain">
     <PropertyGroup>
       <errMessage>BuildCorePlugins</errMessage>
     </PropertyGroup>
