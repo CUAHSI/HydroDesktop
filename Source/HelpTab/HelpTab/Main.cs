@@ -75,7 +75,9 @@ namespace HelpTab
 
             base.Deactivate();
         }
-
+        /// <summary>
+        /// Activates the HelpTab plugin
+        /// </summary>
         public override void Activate()
         {
             // Initialize the Ribbon controls in the "Help" ribbon tab

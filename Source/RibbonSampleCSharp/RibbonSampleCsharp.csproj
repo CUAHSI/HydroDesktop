@@ -37,16 +37,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\Binaries\Plugins\RibbonSamplePlugin\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\RibbonSamplePlugin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <DocumentationFile>..\..\..\..\Binaries\Plugins\RibbonSamplePlugin\RibbonSampleCSharp.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Plugins\RibbonSamplePlugin\RibbonSampleCSharp.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\..\Binaries\Plugins\RibbonSamplePlugin\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\RibbonSamplePlugin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

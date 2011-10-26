@@ -17,16 +17,16 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Binaries\Plugins\DataDownload\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\DataDownload\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\..\Binaries\Plugins\DataDownload\DataDownload.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Plugins\DataDownload\DataDownload.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Binaries\Plugins\DataDownload\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\DataDownload\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
