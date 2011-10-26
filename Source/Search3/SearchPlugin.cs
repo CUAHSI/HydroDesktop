@@ -74,7 +74,7 @@ namespace Search3
             const string grpArea = "Area";
 
             //Draw Box
-            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Box", rbDrawBox_Click);
+            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Rectangle", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.Draw_Box_32;
             rbDrawBox.SmallImage = Resources.Draw_Box_16;
             rbDrawBox.GroupCaption = grpArea;
@@ -99,48 +99,6 @@ namespace Search3
             rbAttribute.LargeImage = Resources.select_table_32;
             rbAttribute.SmallImage = Resources.select_table_16;
             head.Add(rbAttribute);
-
-            #endregion
-
-            #region do not implement these for now - use attribute table selection instead
-
-            ////Select Layer
-            //var rbSelectLayer = new DropDownActionItem("kSearch3LayerDropDown", "Layer");
-            //rbSelectLayer.GroupCaption = grpArea;
-            //rbSelectLayer.AllowEditingText = true;
-            //rbSelectLayer.Items.Add("Countries");
-            //rbSelectLayer.Items.Add("U.S. States");
-            //rbSelectLayer.Items.Add("u.S. HUC");
-            //rbSelectLayer.Width = 120;
-            //rbSelectLayer.RootKey = kHydroSearch3;
-            //head.Add(rbSelectLayer);
-
-            ////Select Field
-            //var rbSelectField = new DropDownActionItem("kSearch3FieldDropDown", "Field_");
-            //rbSelectField.GroupCaption = grpArea;
-            //rbSelectField.AllowEditingText = true;
-            //rbSelectField.Items.Add("Name");
-            //rbSelectField.Items.Add("Population");
-            //rbSelectField.Items.Add("FIPS");
-            //rbSelectField.Width = 120;
-            ////rbSelectLayer.SelectedItem = "Countries";
-            //rbSelectField.RootKey = kHydroSearch3;
-            //head.Add(rbSelectField);
-
-            ////Select Value
-            //var rbSelectVal = new DropDownActionItem("kSearch3ValueDropDown", "Value ");
-            //rbSelectVal.GroupCaption = grpArea;
-            //rbSelectVal.AllowEditingText = true;
-            //rbSelectVal.Items.Add("Afghanistan");
-            //rbSelectVal.Items.Add("Australia");
-            //rbSelectVal.Items.Add("Austria");
-            //rbSelectVal.Width = 120;
-            ////rbSelectLayer.SelectedItem = "Countries";
-            //rbSelectVal.RootKey = kHydroSearch3;
-            //head.Add(rbSelectVal);
-
-            //rbSelectLayer.SelectedItem = "Countries";
-            //rbSelectField.SelectedItem = "Name";
 
             #endregion
 
@@ -187,7 +145,7 @@ namespace Search3
             rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
             UpdateDatesCaption();
 
-            var rbDate = new SimpleActionItem("Select Dates", rbDate_Click);
+            var rbDate = new SimpleActionItem("Select Time", rbDate_Click);
             rbDate.GroupCaption = grpDates;
             rbDate.RootKey = kHydroSearch3;
             rbDate.LargeImage = Resources.select_date_v1_32;
@@ -196,25 +154,20 @@ namespace Search3
 
             #endregion
 
-            #region Web Services group
+            #region Data Sources
 
-            const string grpServices = "Web Services";
+            const string grpDataSources = "Data Sources";
             rbServices = new SimpleActionItem("All Services", rbServices_Click);
             ChangeWebServicesIcon();
             rbServices.ToolTipText = "Select web services (All Services selected)";
-            rbServices.GroupCaption = grpServices;
+            rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
 
-            #endregion
-
-            #region Catalog group
-
-            const string grpCatalog = "Catalog";
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
             rbCatalog.LargeImage = Resources.option_32;
             rbCatalog.SmallImage = Resources.option_16;
-            rbCatalog.GroupCaption = grpCatalog;
+            rbCatalog.GroupCaption = grpDataSources;
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
             UpdateCatalogCaption();
@@ -233,6 +186,7 @@ namespace Search3
             head.Add(rbSearch);
             
             var btnDownload = new SimpleActionItem("Download", rbDownload_Click);
+            btnDownload.Enabled = false;
             btnDownload.RootKey = kHydroSearch3;
             btnDownload.GroupCaption = grpSearch;
             btnDownload.LargeImage = Resources.download_32;
@@ -241,117 +195,60 @@ namespace Search3
 
             #endregion
 
-            //map buttons
-            AddMapButtons();
+            //map buttons (not added for now)
+            //AddMapButtons();
         }
       
-        private void AddMapButtons()
-        {
-            string kHomeRoot = kHydroSearch3;
-            string rpMapTools = "Map Tools";
-            string kHydroMapTools = "kHydroMapToolsSearch";
-            var head = App.HeaderControl;
+        //private void AddMapButtons()
+        //{
+        //    string kHomeRoot = kHydroSearch3;
+        //    string rpMapTools = "Map Tools";
+        //    string kHydroMapTools = "kHydroMapToolsSearch";
+        //    var head = App.HeaderControl;
             
-            //Pan
-            var _rbPan = new SimpleActionItem(kHomeRoot, "Pan", rbPan_Click);
-            _rbPan.GroupCaption = rpMapTools;
-            _rbPan.LargeImage = Properties.Resources.pan;
-            _rbPan.SmallImage = Properties.Resources.pan_16;
-            _rbPan.ToolTipText = "Pan - Move the Map";
-            _rbPan.ToggleGroupKey = kHydroMapTools;
-            head.Add(_rbPan);
+        //    //Pan
+        //    var _rbPan = new SimpleActionItem(kHomeRoot, "Pan", rbPan_Click);
+        //    _rbPan.GroupCaption = rpMapTools;
+        //    _rbPan.LargeImage = Properties.Resources.pan;
+        //    _rbPan.SmallImage = Properties.Resources.pan_16;
+        //    _rbPan.ToolTipText = "Pan - Move the Map";
+        //    _rbPan.ToggleGroupKey = kHydroMapTools;
+        //    head.Add(_rbPan);
 
-            //ZoomIn
-            var _rbZoomIn = new SimpleActionItem(kHomeRoot, "Zoom In", rbZoomIn_Click);
-            _rbZoomIn.ToolTipText = "Zoom In";
-            _rbZoomIn.GroupCaption = rpMapTools;
-            _rbZoomIn.LargeImage = Properties.Resources.zoom_in;
-            _rbZoomIn.SmallImage = Properties.Resources.zoom_in_16;
-            _rbZoomIn.ToggleGroupKey = kHydroMapTools;
-            head.Add(_rbZoomIn);
+        //    //ZoomIn
+        //    var _rbZoomIn = new SimpleActionItem(kHomeRoot, "Zoom In", rbZoomIn_Click);
+        //    _rbZoomIn.ToolTipText = "Zoom In";
+        //    _rbZoomIn.GroupCaption = rpMapTools;
+        //    _rbZoomIn.LargeImage = Properties.Resources.zoom_in;
+        //    _rbZoomIn.SmallImage = Properties.Resources.zoom_in_16;
+        //    _rbZoomIn.ToggleGroupKey = kHydroMapTools;
+        //    head.Add(_rbZoomIn);
 
-            //ZoomOut
-            var _rbZoomOut = new SimpleActionItem(kHomeRoot, "Zoom Out", rbZoomOut_Click);
-            _rbZoomOut.ToolTipText = "Zoom Out";
-            _rbZoomOut.GroupCaption = rpMapTools;
-            _rbZoomOut.LargeImage = Properties.Resources.zoom_out;
-            _rbZoomOut.SmallImage = Properties.Resources.zoom_out_16;
-            _rbZoomOut.ToggleGroupKey = kHydroMapTools;
-            head.Add(_rbZoomOut);
+        //    //ZoomOut
+        //    var _rbZoomOut = new SimpleActionItem(kHomeRoot, "Zoom Out", rbZoomOut_Click);
+        //    _rbZoomOut.ToolTipText = "Zoom Out";
+        //    _rbZoomOut.GroupCaption = rpMapTools;
+        //    _rbZoomOut.LargeImage = Properties.Resources.zoom_out;
+        //    _rbZoomOut.SmallImage = Properties.Resources.zoom_out_16;
+        //    _rbZoomOut.ToggleGroupKey = kHydroMapTools;
+        //    head.Add(_rbZoomOut);
 
-            //ZoomToFullExtent
-            var _rbMaxExtents = new SimpleActionItem(kHomeRoot, "MaxExtents", rbFullExtent_Click);
-            _rbMaxExtents.ToolTipText = "Maximum Extents";
-            _rbMaxExtents.GroupCaption = rpMapTools;
-            _rbMaxExtents.LargeImage = Properties.Resources.full_extent;
-            _rbMaxExtents.SmallImage = Properties.Resources.full_extent_16;
-            head.Add(_rbMaxExtents);
-
-            
-
-
-            ////ZoomToPrevious
-            //_rbZoomToPrevious = new SimpleActionItem(kHomeRoot, "Previous", rbZoomToPrevious_Click);
-            //_rbZoomToPrevious.ToolTipText = "Go To Previous Map Extent";
-            //_rbZoomToPrevious.GroupCaption = rpMapTools;
-            //_rbZoomToPrevious.LargeImage = Properties.Resources.zoom_to_previous;
-            //_rbZoomToPrevious.SmallImage = Properties.Resources.full_extent_16;
-            //applicationManager1.HeaderControl.Add(_rbZoomToPrevious);
-
-            //if (_previousExtents.Count == 0)
-            //    _rbZoomToPrevious.Enabled = false;
-
-            ////ZoomToNext
-            //_rbZoomToNext = new SimpleActionItem(kHomeRoot, "Next", rbZoomToNext_Click);
-            //_rbZoomToNext.ToolTipText = "Go To Next Map Extent";
-            //_rbZoomToNext.GroupCaption = rpMapTools;
-            //_rbZoomToNext.LargeImage = Properties.Resources.zoom_to_next;
-            //_rbZoomToNext.SmallImage = Properties.Resources.zoom_to_next_16;
-            //applicationManager1.HeaderControl.Add(_rbZoomToNext);
-
-            //if ((_mCurrentExtents < _previousExtents.Count - 1) != true)
-            //    _rbZoomToNext.Enabled = false;
-
-            //_rbZoomToNext.Click += new EventHandler(rbZoomToNext_Click);
-
-            ////Separator
-            //var mapTools = new SeparatorItem();
-            //mapTools.GroupCaption = rpMapTools;
-            //mapTools.RootKey = kHomeRoot;
-            //head.Add(mapTools);
-
-            ////Add
-            //_rbAdd = new SimpleActionItem(kHomeRoot, "Add", rbAdd_Click);
-            //_rbAdd.ToolTipText = "Add Layer To The Map";
-            //_rbAdd.GroupCaption = rpMapTools;
-            //_rbAdd.LargeImage = Properties.Resources.add;
-            //_rbAdd.SmallImage = Properties.Resources.add_16;
-            //applicationManager1.HeaderControl.Add(_rbAdd);
-
-            ////Identifier
-            //_rbIdentifier = new SimpleActionItem(kHomeRoot, "Identify", rbIdentifier_Click);
-            //_rbIdentifier.ToolTipText = "Identify";
-            //_rbIdentifier.SmallImage = Properties.Resources.identifier_16;
-            //_rbIdentifier.GroupCaption = rpMapTools;
-            //_rbIdentifier.LargeImage = Properties.Resources.identifier;
-            //_rbIdentifier.ToggleGroupKey = kHydroMapTools;
-            //applicationManager1.HeaderControl.Add(_rbIdentifier);
+        //    //ZoomToFullExtent
+        //    var _rbMaxExtents = new SimpleActionItem(kHomeRoot, "MaxExtents", rbFullExtent_Click);
+        //    _rbMaxExtents.ToolTipText = "Maximum Extents";
+        //    _rbMaxExtents.GroupCaption = rpMapTools;
+        //    _rbMaxExtents.LargeImage = Properties.Resources.full_extent;
+        //    _rbMaxExtents.SmallImage = Properties.Resources.full_extent_16;
+        //    head.Add(_rbMaxExtents);
 
             
-
-            ////AttributeTable
-            //var _rbAttribute = new SimpleActionItem(kHomeRoot, "Attribute", rbAttribute_Click);
-            //_rbAttribute.ToolTipText = "Attribute Table";
-            //_rbAttribute.GroupCaption = rpMapTools;
-            //_rbAttribute.LargeImage = Properties.Resources.attribute_table;
-            //_rbAttribute.SmallImage = Properties.Resources.attribute_table_16;
-            //head.Add(_rbAttribute);
-        }
+        //}
         
-        void rbPan_Click(object sender, EventArgs e) { }
-        void rbZoomIn_Click(object sender, EventArgs e) { }
-        void rbZoomOut_Click(object sender, EventArgs e) { }
-        void rbFullExtent_Click(object sender, EventArgs e) { }
+        //void rbPan_Click(object sender, EventArgs e) { }
+        //void rbZoomIn_Click(object sender, EventArgs e) { }
+        //void rbZoomOut_Click(object sender, EventArgs e) { }
+        //void rbFullExtent_Click(object sender, EventArgs e) { }
+        
         void rbDownload_Click(object sender, EventArgs e) { }
 
         #region Search
