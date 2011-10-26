@@ -6,6 +6,7 @@ using DotSpatial.Controls.Docking;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.ComponentModel.Composition;
+using System.Drawing;
 
 namespace HydroDesktop.Docking
 {
@@ -78,7 +79,10 @@ namespace HydroDesktop.Docking
             string key = panel.Key;
             string caption = panel.Caption;
             Control innerControl = panel.InnerControl;
-            DockStyle dockStyle = panel.Dock;          
+            DockStyle dockStyle = panel.Dock;
+
+            Image img = null;
+            if (panel.SmallImage != null) img = panel.SmallImage;
  
             //set dock style of the inner control to Fill
             innerControl.Dock = DockStyle.Fill;
@@ -103,7 +107,8 @@ namespace HydroDesktop.Docking
             content.Tag = key;
             innerControl.Tag = key;
 
-            content.Show(MainDockPanel);
+            if (img != null)
+                content.Icon = ImageToIcon(img);
 
             //the tag is used by the ActivePanelChanged event
             content.Pane.Tag = key;
@@ -112,6 +117,16 @@ namespace HydroDesktop.Docking
             {
                 dockContents.Add(key, content);
             }
+        }
+
+        private Icon ImageToIcon(Image img)
+        {
+            Bitmap bm = img as Bitmap;
+            if (bm != null)
+            {
+                return Icon.FromHandle(bm.GetHicon());
+            }
+            return null;
         }
 
         public void Remove(string key)
@@ -147,7 +162,13 @@ namespace HydroDesktop.Docking
 
         }
 
-        public event EventHandler<ActivePanelChangedEventArgs> ActivePanelChanged;
+        public event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
+
+        public event EventHandler<DockablePanelEventArgs> PanelAdded;
+
+        public event EventHandler<DockablePanelEventArgs> PanelRemoved;
+
+        public event EventHandler<DockablePanelEventArgs> PanelClosed;
 
         public void SelectPanel(string key)
         {
@@ -178,7 +199,7 @@ namespace HydroDesktop.Docking
         {
             if (ActivePanelChanged != null)
             {
-                ActivePanelChanged(this, new ActivePanelChangedEventArgs(newActivePanelKey));
+                ActivePanelChanged(this, new DockablePanelEventArgs(newActivePanelKey));
             }
         }
     }

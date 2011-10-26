@@ -460,7 +460,7 @@ Namespace GraphView
         '    Next
         'End Sub
 
-        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.ActivePanelChangedEventArgs)
+        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
 
             'activate the graph ribbon tab and the series view panel
             If e.ActivePanelKey = kGraph Then
