@@ -74,11 +74,12 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GraphView", "GraphView\GraphView.vbproj", "{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.MainPlugin", "HydroDesktop.MainPlugin\HydroDesktop.MainPlugin.csproj", "{2FAAF21B-10DD-4430-87DC-54E981495485}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB} = {0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}
+		{CEB869C6-ED48-4846-9040-4E82AB58B86B} = {CEB869C6-ED48-4846-9040-4E82AB58B86B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF641240-4948-442D-9F64-72458BA88406}"
-	ProjectSection(SolutionItems) = preProject
-		RibbonSampleVB\RibbonSamplePluginVB.vbproj = RibbonSampleVB\RibbonSamplePluginVB.vbproj
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search3", "Search3\Search3.csproj", "{FB01F6EE-89C0-4A64-B023-C8CC566FF803}"
 EndProject
@@ -96,6 +97,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableView", "TableView\Tabl
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Interfaces", "HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj", "{0B9BA90B-2016-4754-915A-0AD74FD0067A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BC7EA709-44D7-4E39-964B-3F81B1C0780D} = {BC7EA709-44D7-4E39-964B-3F81B1C0780D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
