@@ -157,6 +157,12 @@
   <ItemGroup>
     <None Include="Resources\CuahsiLogo38.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\legend.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\timeSeries.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
