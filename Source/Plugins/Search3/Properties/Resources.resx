@@ -118,35 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="attribute_table" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\attribute_table.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="attribute_table_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\attribute_table_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="catalog_v2_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\catalog_v2_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="download32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\download32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="draw_box_16_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\draw_box_16_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="draw_box_32_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\draw_box_32_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="full_extent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\full_extent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="full_extent_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\full_extent_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="keyword_v2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\keyword_v2_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="keyword_v2_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\keyword_v2_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -156,15 +135,6 @@
   </data>
   <data name="RectangleLayerName" xml:space="preserve">
     <value>Search Rectangle</value>
-  </data>
-  <data name="search2_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search2_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="select" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\select.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="select_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\select_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="select_date_v1_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\select_date_v1_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -195,5 +165,41 @@
   </data>
   <data name="SearchGroupName" xml:space="preserve">
     <value>"Data Sites"</value>
+  </data>
+  <data name="download_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\download_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="download_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\download_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Draw_Box_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Draw_Box_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Draw_Box_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Draw_Box_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyword_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keyword_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyword_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keyword_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select_poly_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select_poly_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select_poly_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select_poly_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select_table_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select_table_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select_table_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select_table_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="search_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="search_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\search_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

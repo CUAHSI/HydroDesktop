@@ -60,20 +60,6 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap attribute_table {
-            get {
-                object obj = ResourceManager.GetObject("attribute_table", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap attribute_table_16 {
-            get {
-                object obj = ResourceManager.GetObject("attribute_table_16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap catalog_v2_32 {
             get {
                 object obj = ResourceManager.GetObject("catalog_v2_32", resourceCulture);
@@ -81,23 +67,30 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap download32 {
+        internal static System.Drawing.Bitmap download_16 {
             get {
-                object obj = ResourceManager.GetObject("download32", resourceCulture);
+                object obj = ResourceManager.GetObject("download_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap draw_box_16_a {
+        internal static System.Drawing.Bitmap download_32 {
             get {
-                object obj = ResourceManager.GetObject("draw_box_16_a", resourceCulture);
+                object obj = ResourceManager.GetObject("download_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap draw_box_32_a {
+        internal static System.Drawing.Bitmap Draw_Box_16 {
             get {
-                object obj = ResourceManager.GetObject("draw_box_32_a", resourceCulture);
+                object obj = ResourceManager.GetObject("Draw_Box_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Draw_Box_32 {
+            get {
+                object obj = ResourceManager.GetObject("Draw_Box_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,16 +109,16 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap keyword_v2_16 {
+        internal static System.Drawing.Bitmap keyword_16 {
             get {
-                object obj = ResourceManager.GetObject("keyword_v2_16", resourceCulture);
+                object obj = ResourceManager.GetObject("keyword_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap keyword_v2_32 {
+        internal static System.Drawing.Bitmap keyword_32 {
             get {
-                object obj = ResourceManager.GetObject("keyword_v2_32", resourceCulture);
+                object obj = ResourceManager.GetObject("keyword_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +146,16 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap search2_3 {
+        internal static System.Drawing.Bitmap search_16 {
             get {
-                object obj = ResourceManager.GetObject("search2_3", resourceCulture);
+                object obj = ResourceManager.GetObject("search_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap search_32 {
+            get {
+                object obj = ResourceManager.GetObject("search_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -169,20 +169,6 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap select {
-            get {
-                object obj = ResourceManager.GetObject("select", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap select_16 {
-            get {
-                object obj = ResourceManager.GetObject("select_16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap select_date_v1_16 {
             get {
                 object obj = ResourceManager.GetObject("select_date_v1_16", resourceCulture);
@@ -193,6 +179,34 @@ namespace Search3.Properties {
         internal static System.Drawing.Bitmap select_date_v1_32 {
             get {
                 object obj = ResourceManager.GetObject("select_date_v1_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select_poly_16 {
+            get {
+                object obj = ResourceManager.GetObject("select_poly_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select_poly_32 {
+            get {
+                object obj = ResourceManager.GetObject("select_poly_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select_table_16 {
+            get {
+                object obj = ResourceManager.GetObject("select_table_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select_table_32 {
+            get {
+                object obj = ResourceManager.GetObject("select_table_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
