@@ -212,8 +212,8 @@ namespace Search3
 
             const string grpCatalog = "Catalog";
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
-            rbCatalog.LargeImage = Resources.catalog_v2_32;
-            rbCatalog.SmallImage = Resources.catalog_v2_32;
+            rbCatalog.LargeImage = Resources.option_32;
+            rbCatalog.SmallImage = Resources.option_16;
             rbCatalog.GroupCaption = grpCatalog;
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
@@ -634,8 +634,8 @@ namespace Search3
             if (webServiceNode == null || 
                 string.IsNullOrEmpty(webServiceNode.ServiceCode))
             {
-                rbServices.LargeImage = Resources.web_services_v1_32;
-                rbServices.SmallImage = Resources.web_services_v1_16;
+                rbServices.LargeImage = Resources.server_32;
+                rbServices.SmallImage = Resources.server_16;
                 return;
             }
 

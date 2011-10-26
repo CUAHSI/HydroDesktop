@@ -60,13 +60,6 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap catalog_v2_32 {
-            get {
-                object obj = ResourceManager.GetObject("catalog_v2_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap download_16 {
             get {
                 object obj = ResourceManager.GetObject("download_16", resourceCulture);
@@ -119,6 +112,20 @@ namespace Search3.Properties {
         internal static System.Drawing.Bitmap keyword_32 {
             get {
                 object obj = ResourceManager.GetObject("keyword_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap option_16 {
+            get {
+                object obj = ResourceManager.GetObject("option_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap option_32 {
+            get {
+                object obj = ResourceManager.GetObject("option_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -211,16 +218,16 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap web_services_v1_16 {
+        internal static System.Drawing.Bitmap server_16 {
             get {
-                object obj = ResourceManager.GetObject("web_services_v1_16", resourceCulture);
+                object obj = ResourceManager.GetObject("server_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap web_services_v1_32 {
+        internal static System.Drawing.Bitmap server_32 {
             get {
-                object obj = ResourceManager.GetObject("web_services_v1_32", resourceCulture);
+                object obj = ResourceManager.GetObject("server_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
