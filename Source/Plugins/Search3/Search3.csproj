@@ -96,14 +96,14 @@
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
-    <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
+    <Compile Include="Searching\Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Area\RectangleDrawing.cs" />
     <Compile Include="Searching\CompletedEventArgs.cs" />
     <Compile Include="Searching\HISCentralSearcher.cs" />
-    <Compile Include="Keywords\DbKeywordsList.cs" />
-    <Compile Include="Keywords\HisCentalKeywordsList.cs" />
-    <Compile Include="Keywords\IKeywordsList.cs" />
-    <Compile Include="Keywords\KeywordsList.cs" />
+    <Compile Include="Searching\Keywords\DbKeywordsList.cs" />
+    <Compile Include="Searching\Keywords\HisCentalKeywordsList.cs" />
+    <Compile Include="Searching\Keywords\IKeywordsList.cs" />
+    <Compile Include="Searching\Keywords\KeywordsList.cs" />
     <Compile Include="Searching\LogMessageEventArgs.cs" />
     <Compile Include="Searching\MetadataCacheSearcher.cs" />
     <Compile Include="Searching\Search2Helper.cs" />
@@ -297,9 +297,21 @@
     <None Include="Resources\draw_box_32_a.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\zoom.png" />
+    <None Include="Resources\download_16.png" />
+    <None Include="Resources\download_32.png" />
+    <None Include="Resources\Draw_Box_16.png" />
+    <None Include="Resources\Draw_Box_32.png" />
+    <None Include="Resources\keyword_16.png" />
+    <None Include="Resources\keyword_32.png" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\select_poly_16.png" />
+    <None Include="Resources\select_poly_32.png" />
+    <None Include="Resources\select_table_16.png" />
+    <None Include="Resources\select_table_32.png" />
+    <None Include="Resources\search_32.png" />
     <Content Include="Resources\Synonyms.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
