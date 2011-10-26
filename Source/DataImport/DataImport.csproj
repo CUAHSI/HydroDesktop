@@ -44,10 +44,10 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-    <DocumentationFile>..\..\..\Binaries\Plugins\ImportFromWaterML\DataImport.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Plugins\ImportFromWaterML\DataImport.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\Binaries\Plugins\ImportFromWaterML\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\ImportFromWaterML\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

@@ -17,7 +17,10 @@ namespace EPADelineation
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Updates text in the progress bar dialog
+        /// </summary>
+        /// <param name="startpt">the comid of the outlet point</param>
         public void updateText(object[] startpt)
         {
             _isworking = true;

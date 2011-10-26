@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\Search3\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\Search3\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -96,14 +96,14 @@
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
-    <Compile Include="Searching\Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Area\RectangleDrawing.cs" />
+    <Compile Include="Keywords\DbKeywordsList.cs" />
+    <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
+    <Compile Include="Keywords\HisCentalKeywordsList.cs" />
+    <Compile Include="Keywords\IKeywordsList.cs" />
+    <Compile Include="Keywords\KeywordsList.cs" />
     <Compile Include="Searching\CompletedEventArgs.cs" />
     <Compile Include="Searching\HISCentralSearcher.cs" />
-    <Compile Include="Searching\Keywords\DbKeywordsList.cs" />
-    <Compile Include="Searching\Keywords\HisCentalKeywordsList.cs" />
-    <Compile Include="Searching\Keywords\IKeywordsList.cs" />
-    <Compile Include="Searching\Keywords\KeywordsList.cs" />
     <Compile Include="Searching\LogMessageEventArgs.cs" />
     <Compile Include="Searching\MetadataCacheSearcher.cs" />
     <Compile Include="Searching\Search2Helper.cs" />

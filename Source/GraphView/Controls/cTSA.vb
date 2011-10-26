@@ -1,7 +1,6 @@
 ﻿Imports HydroDesktop.Database
 Imports System.Data
 Imports DotSpatial.Controls
-Imports DotSpatial.Controls.RibbonControls
 Imports HydroDesktop.Interfaces
 Imports HydroDesktop.Configuration
 

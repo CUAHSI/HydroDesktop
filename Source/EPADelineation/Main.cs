@@ -18,6 +18,9 @@ using DotSpatial.Topology;
 
 namespace EPADelineation
 {
+    /// <summary>
+    /// EPA Delineation extension for HydroDesktop
+    /// </summary>
     public class Main : Extension
     {
         #region Variables
@@ -42,7 +45,6 @@ namespace EPADelineation
         /// <summary>
         /// Initialize the DotSpatial plugin
         /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
         public override void  Activate()
         {
             SimpleActionItem action = new SimpleActionItem("Delineate", _startDelineate_Click);

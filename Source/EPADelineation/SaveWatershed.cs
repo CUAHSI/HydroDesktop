@@ -19,12 +19,28 @@ using HydroDesktop.Help;
 
 namespace EPADelineation
 {
+    /// <summary>
+    /// This class is responsible for saving the watershed.
+    /// It calls the EPA WATERS web services and saves the watershed
+    /// to a shapefile layer
+    /// </summary>
     public partial class SaveWatershed : Form
     {
         #region Variables
 
+        /// <summary>
+        /// watershed outlet point
+        /// </summary>
         public static string _wshedpoint = "";
+
+        /// <summary>
+        /// watershed boundary (in JSON format)
+        /// </summary>
         public static string _wshed = "";
+
+        /// <summary>
+        /// stream identifier
+        /// </summary>
         public static string _stream = "";
 
         private AppManager _mapArgs;

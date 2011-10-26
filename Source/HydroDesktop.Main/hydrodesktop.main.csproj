@@ -79,49 +79,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="DotSpatial.Analysis">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Analysis.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Controls">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Data">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Data.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Modeling">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Modeling.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Modeling.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Modeling.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Projections">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Projections.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Projections.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Projections.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Serialization">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Symbology.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Symbology.Forms">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Symbology.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Topology">
-      <HintPath>..\Packages\DotSpatial_x86.1.0.753\lib\DotSpatial.Topology.dll</HintPath>
-    </Reference>
-    <Reference Include="EurekaLog">
-      <HintPath>..\..\..\SupportFiles\EurekaLog\EurekaLog.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
@@ -137,9 +94,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\..\..\SupportFiles\DockPanel\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

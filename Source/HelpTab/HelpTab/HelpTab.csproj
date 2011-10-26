@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\Binaries\Plugins\HelpTab\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HelpTab\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -45,7 +45,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <DocumentationFile>..\..\..\..\Binaries\Plugins\HelpTab\HelpTab.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Plugins\HelpTab\HelpTab.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\..\..\..\Binaries\Plugins\HelpTab\</OutputPath>
@@ -72,10 +72,6 @@
     </Reference>
     <Reference Include="HydroDesktop">
       <HintPath>..\..\..\..\Binaries\HydroDesktop.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Controls">
-      <HintPath>..\..\..\..\Binaries\HydroDesktop.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Help, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
