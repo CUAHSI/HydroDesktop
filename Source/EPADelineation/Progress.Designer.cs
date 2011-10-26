@@ -1,5 +1,8 @@
 ﻿namespace EPADelineation
 {
+    /// <summary>
+    /// Creates a new instance of the progress dialog form
+    /// </summary>
     partial class FmProgress
     {
         /// <summary>

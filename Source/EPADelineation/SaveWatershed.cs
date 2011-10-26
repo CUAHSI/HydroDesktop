@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web.Services;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -58,7 +57,10 @@ namespace EPADelineation
         #endregion Variables
 
         #region Constructor
-
+        /// <summary>
+        /// Creates a new Save Watershed dialog
+        /// </summary>
+        /// <param name="mapArgs">the DotSpatial AppManager</param>
         public SaveWatershed(AppManager mapArgs)
         {
             InitializeComponent();
@@ -144,7 +146,9 @@ namespace EPADelineation
         # endregion
 
         #region Click_Events
-
+        /// <summary>
+        /// When the user clicks OK
+        /// </summary>
         public void OK_Click(object sender, EventArgs e)
         {
             _wshedpoint = this.tbwshedpoint.Text;
@@ -212,7 +216,11 @@ namespace EPADelineation
                     _mapArgs.Map.Cursor = Cursors.Default;
             }
         }
-
+        /// <summary>
+        /// When the user clicks Cancel
+        /// </summary>
+        /// <param name="sender">sender</param>
+        /// <param name="e">event arguments</param>
         public void Cancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;

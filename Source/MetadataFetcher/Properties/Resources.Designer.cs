@@ -59,35 +59,45 @@ namespace HydroDesktop.MetadataFetcher.Properties {
                 resourceCulture = value;
             }
         }
-        
+        /// <summary>
+        /// Database image
+        /// </summary>
         public static System.Drawing.Icon Database {
             get {
                 object obj = ResourceManager.GetObject("Database", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
+        /// <summary>
+        /// Metadata fetcher small image
+        /// </summary>
         public static System.Drawing.Bitmap Metadata_Fetcher_16 {
             get {
                 object obj = ResourceManager.GetObject("Metadata_Fetcher_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
+        /// <summary>
+        /// Metadata fetcher large image
+        /// </summary>
         public static System.Drawing.Bitmap Metadata_Fetcher_32 {
             get {
                 object obj = ResourceManager.GetObject("Metadata_Fetcher_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
+        /// <summary>
+        /// Add service small image
+        /// </summary>
         public static System.Drawing.Bitmap Metadata_Fetcher_Add_16 {
             get {
                 object obj = ResourceManager.GetObject("Metadata_Fetcher_Add_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
+        /// <summary>
+        /// Add service large image
+        /// </summary>
         public static System.Drawing.Bitmap Metadata_Fetcher_Add_32 {
             get {
                 object obj = ResourceManager.GetObject("Metadata_Fetcher_Add_32", resourceCulture);

@@ -19,7 +19,7 @@ namespace HydroR
         #region Variables
 
         [Import("SeriesControl", typeof(ISeriesSelector))]
-        private ISeriesSelector _seriesSelector;
+        private ISeriesSelector _seriesSelector { get; set; }
 
         private const string _panelName = "HydroR";
         private const string kHydroR = "kHydroR";

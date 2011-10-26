@@ -11,8 +11,14 @@ namespace EPADelineation
 {
     public partial class FmProgress : Form
     {
+        /// <summary>
+        /// True if the process is still working
+        /// </summary>
         public bool _isworking = false;
 
+        /// <summary>
+        /// Creates a new instance of the progress dialog form
+        /// </summary>
         public FmProgress()
         {
             InitializeComponent();
@@ -49,7 +55,9 @@ namespace EPADelineation
                 _isworking = false;
             }
         }
-
+        /// <summary>
+        /// updates progress status text in the progress form
+        /// </summary>
         public void updateText()
         {
             _isworking = true;
@@ -73,6 +81,9 @@ namespace EPADelineation
             }
         }
 
+        /// <summary>
+        /// Closes the progress dialog form
+        /// </summary>
         public void closeForm()
         {
             _isworking = true;

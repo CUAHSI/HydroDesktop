@@ -11,13 +11,21 @@ using HydroDesktop.Interfaces;
 
 namespace RibbonSamplePlugin
 {
+    /// <summary>
+    /// The user control added to the main window by this plugin
+    /// </summary>
     public partial class MyUserControl : UserControl
     {
         //the series selection control
-        private ISeriesSelector _seriesSelector;
+        ISeriesSelector _seriesSelector { get; set; }
 
         private ToolStripItem _contextMenuItem = null;
         
+        /// <summary>
+        /// Creates a new instance of the user control that
+        /// uses the SeriesSelector control
+        /// </summary>
+        /// <param name="seriesSelector">the series selector control</param>
         public MyUserControl(ISeriesSelector seriesSelector)
         {
             InitializeComponent();

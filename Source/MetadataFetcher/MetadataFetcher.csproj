@@ -61,28 +61,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
-      <HintPath>..\..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+      <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\Binaries\HydroDesktop.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.WebServices">
-      <HintPath>..\..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+      <HintPath>..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -173,16 +172,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Database.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="stdole">
-      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Metadata_Fetcher_16.png" />
