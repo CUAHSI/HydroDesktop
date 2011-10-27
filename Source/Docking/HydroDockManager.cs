@@ -66,8 +66,28 @@ namespace HydroDesktop.Docking
 
         public void ResetLayout()
         {
-            //not implemented
-            //TODO: check MW4 implementation
+            ////not implemented
+            ////TODO: check MW4 implementation
+            //MainDockPanel.SaveAsXml(@"e:\dev\HydroDesktop\dock_layout.xml");
+
+            //string dockFileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "dock_layout.xml");
+
+            //if (System.IO.File.Exists(dockFileName))
+            //{
+            //    try
+            //    {
+            //        MainDockPanel.LoadFromXml(dockFileName, delegate(DeserializeDockContent));
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(ex.Message);
+            //    }
+            //}
+
+            //foreach (DockContent pnl in this.dockContents.Values)
+            //{
+            //    pnl.
+            //}
         }
 
         /// <summary>
@@ -117,38 +137,39 @@ namespace HydroDesktop.Docking
 
             content.Show(MainDockPanel);
 
+            //event handler for closing
+            content.FormClosing += new FormClosingEventHandler(content_FormClosing);
+            content.FormClosed += new FormClosedEventHandler(content_FormClosed);
+
             //the tag is used by the ActivePanelChanged event
             content.Pane.Tag = key;
 
-            //List<string> keysToRemove = new List<string>();
-            //if (key == "kMap")
-            //{
-            //    foreach (string k in dockContents.Keys)
-            //    {
-            //        if (k != "kMap")
-            //        {
-            //            keysToRemove.Add(k);
-            //        }
-            //    }
-            //}
+            //add panel to contents dictionary
+            if (!dockContents.ContainsKey(key))
+            {
+                dockContents.Add(key, content);
+            }
 
-            ////removing panels..
-            //foreach (string kr in keysToRemove)
-            //{
-            //    //
-            //    Remove(key);
-            //}
+            //trigger the panel added event
+            OnPanelAdded(key);
+        }
 
-            //content.SendToBack();
-            //content.SendToBack();
-            //content.SendToBack();
-            //content.SendToBack();
+        void content_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DockContent c = sender as DockContent;
+            if (c != null)
+            {
+                OnPanelClosed(c.Tag.ToString());
+            }
+        }
 
-            //if (dockContents.ContainsKey("kMap"))
-            //{
-            //    dockContents["kMap"].SendToBack();
-            //    MainDockPanel.UpdateDockWindowZOrder(DockStyle.Fill, true);
-            //}
+        void content_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DockContent c = sender as DockContent;
+            if (c != null)
+            {
+                OnPanelClosed(c.Tag.ToString());
+            }
         }
 
         private Icon ImageToIcon(Image img)
@@ -167,8 +188,14 @@ namespace HydroDesktop.Docking
             {
                 DockContent content = dockContents[key];
                 content.Close();
+                
+                //remove event handlers
+                content.FormClosing -= content_FormClosing;
+                content.FormClosed -= content_FormClosed;
+
                 content.Dispose();
                 dockContents.Remove(key);
+                OnPanelRemoved(key);
             }
         }
         public static WeifenLuo.WinFormsUI.Docking.DockState ConvertToDockState(System.Windows.Forms.DockStyle dockStyle)
@@ -225,6 +252,30 @@ namespace HydroDesktop.Docking
 
             string activePanelKey = activeContent.Tag.ToString();
             OnActivePanelChanged(activePanelKey);
+        }
+
+        protected void OnPanelClosed(string panelKey)
+        {
+            if (PanelClosed != null)
+            {
+                PanelClosed(this, new DockablePanelEventArgs(panelKey));
+            }
+        }
+
+        protected void OnPanelAdded(string panelKey)
+        {
+            if (PanelAdded != null)
+            {
+                PanelAdded(this, new DockablePanelEventArgs(panelKey));
+            }
+        }
+
+        protected void OnPanelRemoved(string panelKey)
+        {
+            if (PanelRemoved != null)
+            {
+                PanelRemoved(this, new DockablePanelEventArgs(panelKey));
+            }
         }
 
         protected void OnActivePanelChanged(string newActivePanelKey)

@@ -25,7 +25,7 @@ namespace RibbonSamplePlugin
         internal ISeriesSelector SeriesControl { get; private set; }
 
         //the name of the plugin displayed in the ribbon tab
-        private const string _pluginName = "Sample1";
+        private const string _pluginName = "View";
         private const string kHydroCSharpDock = "kDockRibbonSampleCsharp";
         private const string KHydroCSharp = "kRootRibbonSampleCsharp";
 
@@ -60,46 +60,13 @@ namespace RibbonSamplePlugin
             root.SortOrder = 100;
             App.HeaderControl.Add(root);
 
-            simpleButton = new SimpleActionItem("C# Sample", rb_Click);
-            simpleButton.LargeImage = CreateCircleImage(Color.Blue);
-            simpleButton.RootKey = KHydroCSharp;
-            App.HeaderControl.Add(simpleButton);
-
-
-            // Add a dockable panel
-            if (SeriesControl != null)
-            {
-                MyUserControl uc = new MyUserControl(SeriesControl);
-                App.DockManager.Add(new DockablePanel(kHydroCSharpDock, _pluginName, uc, DockStyle.Fill));
-            }
-
             // Create the Ribbon Button with a ribbon panel on the new ribbon tab        
-            var simpleButton2 = new SimpleActionItem("ribbon button", this.rb_Click);
+            var simpleButton2 = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Reset Layout 2", this.rb_Click);
             simpleButton2.RootKey = KHydroCSharp;
             simpleButton2.LargeImage = CreateCircleImage(Color.Blue);
-            simpleButton2.GroupCaption = "ribbon panel";
+            simpleButton2.GroupCaption = HeaderControl.ApplicationMenuKey;
+            simpleButton2.SortOrder = 200;
             App.HeaderControl.Add(simpleButton2);
-
-            //ribbon panel caption
-            var groupCaption2 = "ribbon panel 2";
-
-            //Add a Ribbon Combo Box
-            var simpleDropDown = new DotSpatial.Controls.Header.DropDownActionItem("kHydroCsharpDropdown", "DropDown");
-            simpleDropDown.RootKey = KHydroCSharp;
-            simpleDropDown.GroupCaption = groupCaption2;
-            App.HeaderControl.Add(simpleDropDown);
-
-            //Add a Ribbon Menu container item
-            string menuKey = "kHydroCsharpMenuContainer";
-            var simpleMenu = new MenuContainerItem(KHydroCSharp, menuKey, "Menu Container");
-            simpleMenu.GroupCaption = groupCaption2;
-            App.HeaderControl.Add(simpleMenu);
-            
-            var menuItem1 = new SimpleActionItem(KHydroCSharp, menuKey, "item 1", menuItem1_Click) { GroupCaption = groupCaption2, SmallImage = CreateSmallImage(Color.Green) };
-            var menuItem2 = new SimpleActionItem(KHydroCSharp, menuKey, "item 2", menuItem2_Click) { GroupCaption = groupCaption2, SmallImage = CreateSmallImage(Color.Red) };
-
-            //set the selected item
-            menuItem1.Enabled = true;
 
             //TODO try implementing this via ribbon
             //RibbonItemGroup grp = new RibbonItemGroup();
@@ -200,10 +167,21 @@ namespace RibbonSamplePlugin
         //when user clicks the first ribbon button
         void rb_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Connection String Is: " + 
-                HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, _pluginName);
+            //restore layout
+            foreach (Extension ext in App.Extensions)
+            {
+                ext.Deactivate();
+            }
 
-            simpleButton.Visible = false;
+            //App.DockManager.Remove("kMap");
+            //App.DockManager.Remove("kLegend");
+            //App.DockManager.Add(new DockablePanel("kMap", "Map", (Control)App.Map, DockStyle.Fill));
+            //App.DockManager.Add(new DockablePanel("kLegend", "Legend", (Control)App.Legend, DockStyle.Fill));
+
+            foreach (Extension ext in App.Extensions)
+            {
+                ext.Activate();
+            }
         }
 
         void menuItem1_Click(object sender, EventArgs e)

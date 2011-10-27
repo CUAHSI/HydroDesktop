@@ -14,12 +14,14 @@ Namespace GraphView
 
 #Region "Variables"
 
-        Private Const kGraph As String = "kHydroGraph"
+        Private Const kGraph As String = "kHydroGraph_01"
 
         <Import("SeriesControl", GetType(ISeriesSelector))>
         Private appSeriesView As ISeriesSelector
 
         Private _mainControl As cTSA
+
+        Private firstTimeLoaded As Boolean = True
 
         'reference to the main application and it's UI items
         Private Const _pluginName As String = "Graph"
@@ -77,10 +79,12 @@ Namespace GraphView
         'When the plugin is initialized
         Public Overrides Sub Activate()
 
-            'To Add Items to the ribbon menu
-            tabGraph = New RootItem(kGraph, _pluginName)
-            tabGraph.SortOrder = 30
-            App.HeaderControl.Add(tabGraph)
+            'watch for dock panel added event
+            If firstTimeLoaded Then
+                AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
+            End If
+
+            
 
             If Not appSeriesView Is Nothing Then
                 _mainControl = New cTSA(appSeriesView)
@@ -88,9 +92,13 @@ Namespace GraphView
                 _mainControl = New cTSA()
             End If
             _mainControl.Dock = DockStyle.Fill
-            App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
+
 
             InitializeRibbonButtons()
+
+            If Not firstTimeLoaded Then
+                App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
+            End If
 
             'when the graph dock panel is activated:
             'show graph ribbon tab and series view
@@ -108,14 +116,31 @@ Namespace GraphView
             'remove the dock panel
             App.DockManager.Remove(kGraph)
 
+            RemoveHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
+
             'important line to deactivate the plugin
             MyBase.Deactivate()
 
         End Sub
 
+        Sub DockPanelAdded(ByVal sender As Object, ByVal args As Docking.DockablePanelEventArgs)
+
+            If Not firstTimeLoaded Then Return
+
+            If args.ActivePanelKey = "kMap" Then
+                App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
+                firstTimeLoaded = False
+            End If
+        End Sub
+
         Private Sub InitializeRibbonButtons()
 
             Dim header As HeaderControl = App.HeaderControl
+
+            'To Add Items to the ribbon menu
+            tabGraph = New RootItem(kGraph, _pluginName)
+            tabGraph.SortOrder = 30
+            App.HeaderControl.Add(tabGraph)
 
             'Plot choosing Panel
             'Time Series Plot
@@ -124,7 +149,7 @@ Namespace GraphView
             rbTSA.LargeImage = My.Resources.TSA
             rbTSA.GroupCaption = rpPlots
             rbTSA.ToggleGroupKey = kTogglePlots
-            header.Add(rbTSA)
+            App.HeaderControl.Add(rbTSA)
 
             'Probability Plot
             rbProbability = New SimpleActionItem("Probability", AddressOf rbProbability_Click)
@@ -132,7 +157,7 @@ Namespace GraphView
             rbProbability.LargeImage = My.Resources.Probability
             rbProbability.GroupCaption = rpPlots
             rbProbability.ToggleGroupKey = kTogglePlots
-            header.Add(rbProbability)
+            App.HeaderControl.Add(rbProbability)
 
             'Histogram Plot
             rbHistogram = New SimpleActionItem("Histogram", AddressOf rbHistogram_Click)
@@ -140,7 +165,7 @@ Namespace GraphView
             rbHistogram.LargeImage = My.Resources.Histogram
             rbHistogram.GroupCaption = rpPlots
             rbHistogram.ToggleGroupKey = kTogglePlots
-            header.Add(rbHistogram)
+            App.HeaderControl.Add(rbHistogram)
 
             'Box/Whisker Plot
             rbBoxWhisker = New SimpleActionItem("Box/Whisker", AddressOf rbBoxWhisker_Click)
@@ -148,7 +173,7 @@ Namespace GraphView
             rbBoxWhisker.LargeImage = My.Resources.BoxWisker
             rbBoxWhisker.GroupCaption = rpPlots
             rbBoxWhisker.ToggleGroupKey = kTogglePlots
-            header.Add(rbBoxWhisker)
+            App.HeaderControl.Add(rbBoxWhisker)
 
             'Summary Plot
             rbSummary = New SimpleActionItem("Summary", AddressOf rbSummary_Click)
@@ -156,101 +181,108 @@ Namespace GraphView
             rbSummary.LargeImage = My.Resources.Summary
             rbSummary.GroupCaption = rpPlots
             rbSummary.ToggleGroupKey = kTogglePlots
-            header.Add(rbSummary)
+            App.HeaderControl.Add(rbSummary)
 
             'Option Panel for TSA and Probability
             rbPlotType = New MenuContainerItem(kGraph, PlotOptionsMenuKey, "Plot Type")
             rbPlotType.LargeImage = My.Resources.PlotType
             rbPlotType.GroupCaption = rpPlotOption
-            header.Add(rbPlotType)
+            App.HeaderControl.Add(rbPlotType)
 
             'Line
             rbLine = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Line", AddressOf rbLine_Click)
             rbLine.GroupCaption = rpPlotOption
-            header.Add(rbLine)
+            App.HeaderControl.Add(rbLine)
             'Point
             rbPoint = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Point", AddressOf rbPoint_Click)
             rbPoint.GroupCaption = rpPlotOption
-            header.Add(rbPoint)
+            App.HeaderControl.Add(rbPoint)
             'Both
             rbBoth = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Both", AddressOf rbBoth_Click)
             rbBoth.GroupCaption = rpPlotOption
-            header.Add(rbBoth)
+            App.HeaderControl.Add(rbBoth)
 
             'Color Setting
             rbColorSetting = New SimpleActionItem("Color Setting", AddressOf rbColorSetting_Click)
             rbColorSetting.RootKey = kGraph
             rbColorSetting.LargeImage = My.Resources.ColorSetting
             rbColorSetting.GroupCaption = rpPlotOption
-            header.Add(rbColorSetting)
+            App.HeaderControl.Add(rbColorSetting)
 
             'Show Legend
             rbShowLegend = New SimpleActionItem("Show Legend", AddressOf rbShowLegend_Click)
             rbShowLegend.RootKey = kGraph
             rbShowLegend.LargeImage = My.Resources.Legend
             rbShowLegend.GroupCaption = rpPlotOption
-            header.Add(rbShowLegend)
+            App.HeaderControl.Add(rbShowLegend)
 
             'Histogram Plot Option Panel
             'Histogram Type Menu
             rbHistogramType = New MenuContainerItem(kGraph, kHistogramType, "Histogram Type")
             rbHistogramType.LargeImage = My.Resources.HisType
             rbHistogramType.GroupCaption = rpHistogramOption
-            header.Add(rbHistogramType)
+            rbHistogramType.Visible = False
+            App.HeaderControl.Add(rbHistogramType)
 
             'Count
             rbhtCount = New SimpleActionItem(kGraph, kHistogramType, "Count", AddressOf rbhtCount_Click)
             rbhtCount.GroupCaption = rpHistogramOption
-            header.Add(rbhtCount)
+            App.HeaderControl.Add(rbhtCount)
             'Probability Density
             rbhtProbability = New SimpleActionItem(kGraph, kHistogramType, "Probability Density", AddressOf rbhtProbability_Click)
             rbhtProbability.GroupCaption = rpHistogramOption
-            header.Add(rbhtProbability)
+            App.HeaderControl.Add(rbhtProbability)
             'Relative Frequencies
             rbhtRelative = New SimpleActionItem(kGraph, kHistogramType, "Relative Frequencies", AddressOf rbhtRelative_Click)
             rbhtRelative.GroupCaption = rpHistogramOption
-            header.Add(rbhtRelative)
+            App.HeaderControl.Add(rbhtRelative)
 
             'Histogram Algorithm Menu
             rbAlgorithms = New MenuContainerItem(kGraph, kHistogramAlgorithm, "Binning Algorithms")
             rbAlgorithms.LargeImage = My.Resources.Binning
             rbAlgorithms.GroupCaption = rpHistogramOption
-            header.Add(rbAlgorithms)
+            App.HeaderControl.Add(rbAlgorithms)
 
             'Scott's
             rbhaScott = New SimpleActionItem(kGraph, kHistogramAlgorithm, "Scott's", AddressOf rbhaScott_Click)
             rbhaScott.GroupCaption = rpHistogramOption
-            header.Add(rbhaScott)
+            App.HeaderControl.Add(rbhaScott)
             'Sturges
             rbhaSturges = New SimpleActionItem(kGraph, kHistogramAlgorithm, "Sturges", AddressOf rbhaSturges_Click)
             rbhaSturges.GroupCaption = rpHistogramOption
-            header.Add(rbhaSturges)
+            App.HeaderControl.Add(rbhaSturges)
             'Freedman-Diaconis
             rbhaFreedman = New SimpleActionItem(kGraph, kHistogramAlgorithm, "Freedman-Diaconis", AddressOf rbhaFreedman_Click)
             rbhaFreedman.GroupCaption = rpHistogramOption
-            header.Add(rbhaFreedman)
+            App.HeaderControl.Add(rbhaFreedman)
+            rbAlgorithms.Visible = False
 
             'Box Whisker Plot Option Panel
             rbBoxWhiskerType = New MenuContainerItem(kGraph, kBoxWhiskerType, "Box Whisker Type")
             rbBoxWhiskerType.LargeImage = My.Resources.BoxWhiskerType
             rbBoxWhiskerType.GroupCaption = rpBoxWhiskerOption
-            header.Add(rbBoxWhiskerType)
+            App.HeaderControl.Add(rbBoxWhiskerType)
+            rbBoxWhiskerType.Visible = False
             'Monthly
             rbbtMonthly = New SimpleActionItem(kGraph, kBoxWhiskerType, "Monthly", AddressOf rbbtMonthly_Click)
             rbbtMonthly.GroupCaption = rpBoxWhiskerOption
-            header.Add(rbbtMonthly)
+            App.HeaderControl.Add(rbbtMonthly)
+            rbbtMonthly.Visible = False
             'Seasonal
             rbbtSeasonal = New SimpleActionItem(kGraph, kBoxWhiskerType, "Seasonal", AddressOf rbbtSeasonal_Click)
             rbbtSeasonal.GroupCaption = rpBoxWhiskerOption
-            header.Add(rbbtSeasonal)
+            App.HeaderControl.Add(rbbtSeasonal)
+            rbbtSeasonal.Visible = False
             'Yearly
             rbbtYearly = New SimpleActionItem(kGraph, kBoxWhiskerType, "Yearly", AddressOf rbbtYearly_Click)
             rbbtYearly.GroupCaption = rpBoxWhiskerOption
-            header.Add(rbbtYearly)
+            App.HeaderControl.Add(rbbtYearly)
+            rbbtYearly.Visible = False
             'Overall
             rbbtOverall = New SimpleActionItem(kGraph, kBoxWhiskerType, "Overall", AddressOf rbbtOverall_Click)
             rbbtOverall.GroupCaption = rpBoxWhiskerOption
-            header.Add(rbbtOverall)
+            App.HeaderControl.Add(rbbtOverall)
+            rbbtOverall.Visible = False
 
             'Others
             'Date Setting
@@ -258,7 +290,7 @@ Namespace GraphView
             rbDateTimeSetting.RootKey = kGraph
             rbDateTimeSetting.LargeImage = My.Resources.DateSetting
             rbDateTimeSetting.GroupCaption = rpOtherOptions
-            header.Add(rbDateTimeSetting)
+            App.HeaderControl.Add(rbDateTimeSetting)
 
             'TODO: Start and end date labels: Add to a different place!
             'rlblStratDate.Text = "Start Date:"
@@ -273,7 +305,7 @@ Namespace GraphView
             rbDisplayFullDateRange.RootKey = kGraph
             rbDisplayFullDateRange.ToggleGroupKey = "tkFullDateRange"
             rbDisplayFullDateRange.GroupCaption = rpOtherOptions
-            header.Add(rbDisplayFullDateRange)
+            App.HeaderControl.Add(rbDisplayFullDateRange)
 
             'The button should initially be checked
             rbTSA_Click()
@@ -466,6 +498,9 @@ Namespace GraphView
             If e.ActivePanelKey = kGraph Then
                 App.HeaderControl.SelectRoot(kGraph)
                 App.DockManager.SelectPanel("kHydroSeriesView")
+                tabGraph.Visible = True
+            ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
+                tabGraph.Visible = False
             End If
 
         End Sub

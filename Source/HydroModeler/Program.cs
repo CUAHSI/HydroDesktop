@@ -35,7 +35,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private string ImagePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).CodeBase).Remove(0,6) + "/icons";
         //private int tabID = 0;
         private readonly string _localHelpUri = HydroModeler.Settings.Default.localHelpUri;
-        
+
+        private RootItem root = null;
 
         //reference to the main series view panel
         [Import("SeriesControl", typeof(ISeriesSelector))]
@@ -73,10 +74,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// </summary>
         public override void Activate()
         {
+            App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
+            
             // add 'ribbon' button to the 'view' panel in 'home' ribbon tab
-            var root = new RootItem(KHydroModeler, _pluginName);
+            root = new RootItem(KHydroModeler, _pluginName);
             //root.SortOrder = 100;
-            root.SortOrder = 200;
+            root.SortOrder = 150;
             App.HeaderControl.Add(root);
 
             // add buttons
@@ -95,7 +98,50 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //Add Buttons to the Ribbon Panel
             
+            //COMMENTED BY JK
+            //// Add a dockable panel
+            //if (SeriesControl != null)
+            //{
+            //    hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
+            //    App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
+            //}
 
+            ////specify tab window
+            ////hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);
+            ////_t.AddTab(_panelName, hydroModelerControl, bmp);
+            ////hydroModelerControl.Dock = DockStyle.Fill;
+            ////App.DockManager.Add(new DockablePanel(kHydroModelerDock, "HydroModeler", hydroModelerControl, DockStyle.Fill));
+
+            ////activate tab
+            ////_ribbonBtn_Click(this, EventArgs.Empty);
+
+
+            //// set the initial text for the dirbox
+            //string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
+            //if (Directory.Exists(start_path))
+            //     ((TextEntryActionItem)rps_dict["dirbox"]).Text =start_path;
+            //else
+            //    ((TextEntryActionItem)rps_dict["dirbox"]).Text = "C:\\";
+
+            //// update filelist
+            ////string text = ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText;
+            //string text = ((TextEntryActionItem)rps_dict["dirbox"]).Text;
+            //hydroModelerControl.filelist_update(text);
+
+            //// set pan mouse image
+            //hydroModelerControl.Image_Path = ImagePath;
+
+            //// add event for when HM panel is selected
+            //App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(HM_Panel_Selected);
+
+            // activate plugin
+            base.Activate();
+        }
+
+        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        {
+            if (e.ActivePanelKey != "kMap") return;
+            
             // Add a dockable panel
             if (SeriesControl != null)
             {
@@ -116,7 +162,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // set the initial text for the dirbox
             string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
             if (Directory.Exists(start_path))
-                 ((TextEntryActionItem)rps_dict["dirbox"]).Text =start_path;
+                ((TextEntryActionItem)rps_dict["dirbox"]).Text = start_path;
             else
                 ((TextEntryActionItem)rps_dict["dirbox"]).Text = "C:\\";
 
@@ -130,9 +176,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             // add event for when HM panel is selected
             App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(HM_Panel_Selected);
-
-            // activate plugin
-            base.Activate();
         }
         #endregion
 
@@ -441,6 +484,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 App.DockManager.SelectPanel("RootRibbonHydroModeler");
                 App.HeaderControl.SelectRoot(KHydroModeler);
+                root.Visible = true;
+            }
+            else
+            {
+                root.Visible = false;
             }
         }
         private void set_pan(object sender, EventArgs e)

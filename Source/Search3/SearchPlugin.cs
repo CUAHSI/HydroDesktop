@@ -111,6 +111,7 @@ namespace Search3
             rbKeyword.GroupCaption = grpKeyword;
             rbKeyword.RootKey = kHydroSearch3;
             rbKeyword.Width = 150;
+            rbKeyword.Enabled = false;
             head.Add(rbKeyword);
             UpdateKeywordsCaption();
 
@@ -191,7 +192,7 @@ namespace Search3
             btnDownload.GroupCaption = grpSearch;
             btnDownload.LargeImage = Resources.download_32;
             btnDownload.SmallImage = Resources.download_16;
-            App.HeaderControl.Add(btnDownload);
+            //App.HeaderControl.Add(btnDownload);
 
             #endregion
 

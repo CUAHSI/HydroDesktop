@@ -44,21 +44,27 @@ Namespace HydroDesktop.SamplePluginVB
             AddHandler App.DockManager.PanelRemoved, AddressOf PanelRemoved
             AddHandler App.DockManager.PanelClosed, AddressOf PanelClosed
 
+            MyBase.Activate()
+        End Sub
+
+        Sub AddMainControl()
             If Not SeriesControl Is Nothing Then
                 _mainControl = New MyUserControl(SeriesControl)
                 _mainControl.Dock = DockStyle.Fill
-
 
                 Dim myPanel As New DockablePanel(kHydroSampleVB, _pluginName, _mainControl, DockStyle.Fill)
                 myPanel.DefaultSortOrder = 200
                 App.DockManager.Add(myPanel)
             End If
-
-            MyBase.Activate()
         End Sub
 
         Sub PanelAdded(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
             Debug.WriteLine("Panel Added:" & e.ActivePanelKey)
+
+            'only add my panel after the map is added
+            If e.ActivePanelKey = "kMap" Then
+                AddMainControl()
+            End If
         End Sub
 
         Sub PanelRemoved(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)

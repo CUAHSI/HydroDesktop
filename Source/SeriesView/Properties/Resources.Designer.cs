@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HydroDesktop.DataDownload.Properties {
+namespace SeriesView.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace HydroDesktop.DataDownload.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HydroDesktop.DataDownload.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SeriesView.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,33 +60,10 @@ namespace HydroDesktop.DataDownload.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap download_16 {
+        internal static System.Drawing.Bitmap timeSeries {
             get {
-                object obj = ResourceManager.GetObject("download_16", resourceCulture);
+                object obj = ResourceManager.GetObject("timeSeries", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap download_32 {
-            get {
-                object obj = ResourceManager.GetObject("download_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap download32 {
-            get {
-                object obj = ResourceManager.GetObject("download32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;D_WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137,298.257223562997]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]].
-        /// </summary>
-        internal static string Wgs84ProjectionString {
-            get {
-                return ResourceManager.GetString("Wgs84ProjectionString", resourceCulture);
             }
         }
     }

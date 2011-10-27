@@ -21,6 +21,8 @@ namespace HydroDesktop.DataDownload
         private const string TableTabKey = "kHome";
         private readonly SearchLayerModifier _searchLayerModifier = new SearchLayerModifier();
 
+        private SimpleActionItem btnDownload = null;
+
         #endregion
 
         #region Properties
@@ -71,11 +73,14 @@ namespace HydroDesktop.DataDownload
             if (App == null) throw new ArgumentNullException("App");
 
             // Initialize menu
-            var btnDownload = new SimpleActionItem("Download", DoDownload)
+            btnDownload = new SimpleActionItem("Download", DoDownload)
                                   {
-                                      RootKey = TableTabKey,
+                                      RootKey = "kHydroSearchV3",
                                       GroupCaption = "Search",
-                                      LargeImage = Properties.Resources.download32
+                                      LargeImage = Properties.Resources.download_32,
+                                      SmallImage = Properties.Resources.download_16,
+                                      ToolTipText = "Click to download all selected series",
+                                      Enabled = false
                                   };
             App.HeaderControl.Add(btnDownload);
 
@@ -139,7 +144,10 @@ namespace HydroDesktop.DataDownload
 
         private void AttachLayerToPlugin(ILayer layer)
         {
-            _searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map)App.Map);
+            if (_searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map)App.Map))
+            {
+                btnDownload.Enabled = true;
+            }
 
             var group = layer as IGroup;
             if (group != null)

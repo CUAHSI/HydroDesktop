@@ -27,7 +27,6 @@ namespace TableView
         private const string _optionsParallelMode = "Parallel";
         private const string _optionsSequenceMode = "Sequence";
 
-        //private readonly RootItem _tableViewRoot = new RootItem(kTableView, _tablePanelName);
         private cTableView tableViewControl;
 
         #endregion
@@ -52,6 +51,9 @@ namespace TableView
                 MessageBox.Show("Cannot activate the TableView plugin. SeriesView not found.");
                 return;
             }
+
+            //event for adding the dockable panel
+            App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
 
             #region initialize the Table Ribbon TabPage and related controls
 
@@ -113,15 +115,33 @@ namespace TableView
              
             #endregion initialize the Table Ribbon TabPage and related controls
 
-            // Add "Table View Plugin" dock panel to the SeriesView
-            tableViewControl = new cTableView(SeriesControl);
-            tableViewControl.Dock = DockStyle.Fill;
-            App.DockManager.Add(new DockablePanel(kTableView, _tablePanelName, tableViewControl, DockStyle.Fill));
-            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
-            
             SeriesControl.Refreshed += SeriesControl_Refreshed;
 
             base.Activate();
+        }
+
+        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        {
+            //the 'Table' dockable panel should follow after 'Map'
+            if (e.ActivePanelKey == "kMap")
+                AddTableViewPanel();
+        }
+
+        void AddTableViewPanel()
+        {
+            // Add "Table View Plugin" dock panel to the SeriesView
+            tableViewControl = new cTableView(SeriesControl);
+            tableViewControl.Dock = DockStyle.Fill;
+            var tableViewPanel = new DockablePanel
+            {
+                Key = kTableView,
+                Caption = _tablePanelName,
+                InnerControl = tableViewControl,
+                Dock = DockStyle.Fill
+            };
+            App.DockManager.Add(tableViewPanel);
+
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
         }
 
         private void TableViewModeChanged(object sender, EventArgs e)
@@ -157,6 +177,10 @@ namespace TableView
                 App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(kTableView);
                 RefreshDatabasePath();
+            }
+            else
+            {
+                
             }
         }
 
