@@ -144,7 +144,7 @@ namespace Search3.Searching
                 // Report progress
                 if (useWorker == true)
                 {
-                    string message = fullSeriesList.Count.ToString();
+                    var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
                     int percentProgress = (i * 100) / numTiles + 1;
                     bgWorker.ReportProgress(percentProgress, message);
                 }
@@ -238,7 +238,7 @@ namespace Search3.Searching
                     // Report progress
                     if (useWorker == true)
                     {
-                        string message = fullSeriesList.Count.ToString();
+                        var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
                         int percentProgress = (i * 100) / numTiles + 1;
                         bgWorker.ReportProgress(percentProgress, message);
                     }
