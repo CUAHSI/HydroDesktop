@@ -39,14 +39,36 @@ Namespace HydroDesktop.SamplePluginVB
             button1.RootKey = kHydroSampleVB
             App.HeaderControl.Add(button1)
 
+            'testing event handlers
+            AddHandler App.DockManager.PanelAdded, AddressOf PanelAdded
+            AddHandler App.DockManager.PanelRemoved, AddressOf PanelRemoved
+            AddHandler App.DockManager.PanelClosed, AddressOf PanelClosed
+
             If Not SeriesControl Is Nothing Then
                 _mainControl = New MyUserControl(SeriesControl)
                 _mainControl.Dock = DockStyle.Fill
-                App.DockManager.Add(New DockablePanel(kHydroSampleVB, _pluginName, _mainControl, DockStyle.Fill))
+
+
+                Dim myPanel As New DockablePanel(kHydroSampleVB, _pluginName, _mainControl, DockStyle.Fill)
+                myPanel.DefaultSortOrder = 200
+                App.DockManager.Add(myPanel)
             End If
 
             MyBase.Activate()
         End Sub
+
+        Sub PanelAdded(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
+            Debug.WriteLine("Panel Added:" & e.ActivePanelKey)
+        End Sub
+
+        Sub PanelRemoved(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
+            Debug.WriteLine("Panel Removed:" & e.ActivePanelKey)
+        End Sub
+
+        Sub PanelClosed(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
+            Debug.WriteLine("Panel Closed:" & e.ActivePanelKey)
+        End Sub
+
 
         'when the plug-in is deactivated
         Public Overrides Sub Deactivate()

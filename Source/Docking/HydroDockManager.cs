@@ -80,6 +80,7 @@ namespace HydroDesktop.Docking
             string caption = panel.Caption;
             Control innerControl = panel.InnerControl;
             DockStyle dockStyle = panel.Dock;
+            short zOrder = panel.DefaultSortOrder;
 
             Image img = null;
             if (panel.SmallImage != null) img = panel.SmallImage;
@@ -107,16 +108,47 @@ namespace HydroDesktop.Docking
             content.Tag = key;
             innerControl.Tag = key;
 
+            
+
             if (img != null)
+            {
                 content.Icon = ImageToIcon(img);
+            }
+
+            content.Show(MainDockPanel);
 
             //the tag is used by the ActivePanelChanged event
             content.Pane.Tag = key;
 
-            if (!dockContents.ContainsKey(key))
-            {
-                dockContents.Add(key, content);
-            }
+            //List<string> keysToRemove = new List<string>();
+            //if (key == "kMap")
+            //{
+            //    foreach (string k in dockContents.Keys)
+            //    {
+            //        if (k != "kMap")
+            //        {
+            //            keysToRemove.Add(k);
+            //        }
+            //    }
+            //}
+
+            ////removing panels..
+            //foreach (string kr in keysToRemove)
+            //{
+            //    //
+            //    Remove(key);
+            //}
+
+            //content.SendToBack();
+            //content.SendToBack();
+            //content.SendToBack();
+            //content.SendToBack();
+
+            //if (dockContents.ContainsKey("kMap"))
+            //{
+            //    dockContents["kMap"].SendToBack();
+            //    MainDockPanel.UpdateDockWindowZOrder(DockStyle.Fill, true);
+            //}
         }
 
         private Icon ImageToIcon(Image img)
