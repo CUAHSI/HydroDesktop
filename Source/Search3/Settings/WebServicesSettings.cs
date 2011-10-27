@@ -16,7 +16,16 @@ namespace Search3.Settings
             {
                 if (_webServices == null)
                 {
-                    RefreshWebServices();
+                    try
+                    {
+                        RefreshWebServices();
+                    }catch(Exception)
+                    {
+                        //TODO: log error
+
+                        _webServices = new List<WebServiceNode>();
+                    }
+
                     Debug.Assert(_webServices != null);
                 }
                 return new ReadOnlyCollection<WebServiceNode>(_webServices);
