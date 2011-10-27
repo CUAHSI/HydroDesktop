@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Search3.Searching
@@ -27,17 +21,37 @@ namespace Search3.Searching
 
             InitializeComponent();
 
-            searcher.Completed += searcher_Completed;
-            searcher.OnMessage += searcher_OnMessage;
-            searcher.ProgressChanged += searcher_ProgressChanged;
+            SubscribeToSearcherEvents();
+            Disposed += SearchProgressForm_Disposed;
         }
 
         #endregion
 
         #region Private methods
 
+        void SearchProgressForm_Disposed(object sender, EventArgs e)
+        {
+            UnSubscribeToSearcherEvents();
+        }
+
+        private void SubscribeToSearcherEvents()
+        {
+            _searcher.Completed += searcher_Completed;
+            _searcher.OnMessage += searcher_OnMessage;
+            _searcher.ProgressChanged += searcher_ProgressChanged;
+        }
+
+        private void UnSubscribeToSearcherEvents()
+        {
+            _searcher.Completed -= searcher_Completed;
+            _searcher.OnMessage -= searcher_OnMessage;
+            _searcher.ProgressChanged -= searcher_ProgressChanged;
+        }
+
         void searcher_Completed(object sender, CompletedEventArgs e)
         {
+            UnSubscribeToSearcherEvents();
+
             if (!_searcher.IsUIVisible)
             {
                 _searcher.ShowUI();

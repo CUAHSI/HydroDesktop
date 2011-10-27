@@ -18,8 +18,7 @@ namespace Search3.Searching
         private SearchProgressForm _searcherUI;
         private Task<SearchResult> _searchTask;
         private CancellationTokenSource _cancellationTokenSource;
-        private Task _monitorTask;
-
+        
         #endregion
 
         #region Events
@@ -82,8 +81,7 @@ namespace Search3.Searching
         {
             get
             {
-                return _searchTask != null && _monitorTask != null &&
-                       (!_searchTask.IsCompleted || !_monitorTask.IsCompleted);
+                return _searchTask != null && !_searchTask.IsCompleted;
             }
         }
 
@@ -122,60 +120,49 @@ namespace Search3.Searching
         private void InternalStartSearching(SearchSettings settings)
         {
             _cancellationTokenSource = new CancellationTokenSource();
-            var _cancellationToken = _cancellationTokenSource.Token;
-            _searchTask = Task.Factory.StartNew<SearchResult>(DoSearch, settings, _cancellationToken);
-            _monitorTask = Task.Factory.StartNew(DoMonitorTask);
+            _searchTask = Task.Factory.StartNew<SearchResult>(DoSearch, settings, _cancellationTokenSource.Token);
+            _searchTask.ContinueWith(OnFinishedTask, new CancellationTokenSource().Token, TaskContinuationOptions.None,
+                                     TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void DoMonitorTask()
+        private void OnFinishedTask(Task<SearchResult> task)
         {
-            while (true)
+            if (task == null) return;
+            SearchResult result = null;
+            if (task.IsFaulted)
             {
-                if (_searchTask == null) break;
-
-                if (!_searchTask.IsCompleted)
+                if (task.Exception != null)
                 {
-                    Thread.Sleep(500);
-                    continue;
-                }
-
-
-                SearchResult result = null;
-                if (_searchTask.IsFaulted)
-                {
-                    if (_searchTask.Exception != null)
+                    foreach (var error in task.Exception.InnerExceptions)
                     {
-                        foreach (var error in _searchTask.Exception.InnerExceptions)
-                        {
-                            LogMessage("Error", error);
-                        }
-                    }
-                    else
-                    {
-                        LogMessage("Unknow error");
+                        LogMessage("Error", error);
                     }
                 }
-                else if (_searchTask.IsCanceled)
+                else
                 {
-                    LogMessage("Cancelled");
-                }else
-                {
-                    try
-                    {
-                        result = _searchTask.Result;
-                    }
-                    catch (AggregateException aex)
-                    {
-                        foreach (var error in aex.InnerExceptions)
-                        {
-                            LogMessage("Error", error);
-                        }
-                    }
+                    LogMessage("Unknow error");
                 }
-
-                RaiseCompleted(new CompletedEventArgs(result));
-                break;
             }
+            else if (task.IsCanceled)
+            {
+                LogMessage("Cancelled");
+            }
+            else
+            {
+                try
+                {
+                    result = task.Result;
+                }
+                catch (AggregateException aex)
+                {
+                    foreach (var error in aex.InnerExceptions)
+                    {
+                        LogMessage("Error", error);
+                    }
+                }
+            }
+
+            RaiseCompleted(new CompletedEventArgs(result));
         }
 
         private SearchResult DoSearch(object state)
