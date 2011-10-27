@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpenMI.Standard</AssemblyName>
+    <AssemblyOriginatorKeyFile>OpenMI.Standard.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OpenMI.Standard</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\..\..\..\..\Binaries\Plugins\HydroModeler\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\bin\OpenMI.Standard.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\bin\OpenMI.Standard.XML</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IDataOperation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IDimension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IDiscreteTimes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IElementSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IExchangeItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IInputExchangeItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ILink.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ILinkableComponent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IListener.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IManageState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IOutputExchangeItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IPublisher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IQuantity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IScalarSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ISpatialReference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITime.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITimeSpan.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITimeStamp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IUnit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IValueSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IVector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IVectorSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="OpenMIStandard.cd" />
+    <None Include="OpenMI.Standard.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
