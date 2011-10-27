@@ -53,3 +53,4 @@ glob:*.ReSharper
 glob:*.orig
 *.csproj.vs10x
 *.sln.docstates
+Source/Packages/
