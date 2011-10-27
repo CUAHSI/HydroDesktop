@@ -93,7 +93,7 @@ AlwaysShowComponentsList=false
 ;InfoBeforeFile=Source\..\..\Documents\Pre-install.txt
 ;InfoAfterFile=Source\..\..\Documents\Post-install.txt
 OutputDir=Releases
-OutputBaseFilename="HydroDesktop12_Beta_Installer"
+OutputBaseFilename="HydroDesktop13_Beta_Installer"
 ;SetupIconFile=Source\..\..\Documents\MapWindow.ico
 ;UninstallDisplayIcon=Source\..\..\Documents\MapWindow.ico
 
@@ -131,7 +131,7 @@ Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV
 Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
 Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search3\*"; DestDir: "{app}\Plugins\Search2"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\Search3\*"; DestDir: "{app}\Plugins\Search3"; Flags: ignoreversion recursesubdirs;
 Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
