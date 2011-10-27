@@ -7,24 +7,16 @@ namespace Search3.Area
 {
     static class AreaHelper
     {
-        #region Fields
-
-        private const string BASE_MAP_DATA_ROOT = "Base Map Data";
-
-        #endregion
-
         #region Public methods
 
-        public static IEnumerable<IMapPolygonLayer> GetAllPolygonLayers(IMap map)
+        public static IEnumerable<IMapPolygonLayer> GetAllPolygonLayers(Map map)
         {
             if (map == null) throw new ArgumentNullException("map");
 
-            return map.GetLayers().Where(layer => layer.LegendText == BASE_MAP_DATA_ROOT &&
-                                                  layer is MapGroup)
-                .SelectMany(layer => ((MapGroup) layer).GetLayers().OfType<IMapPolygonLayer>());
+            return map.GetAllLayers().OfType<IMapPolygonLayer>();
         }
 
-        public static IEnumerable<IMapPolygonLayer> GetAllSelectedPolygonLayers(IMap map)
+        public static IEnumerable<IMapPolygonLayer> GetAllSelectedPolygonLayers(Map map)
         {
             if (map == null) throw new ArgumentNullException("map");
 
@@ -34,7 +26,7 @@ namespace Search3.Area
         }
 
 
-        public static void SelectFirstVisiblePolygonLayer(IMap map)
+        public static void SelectFirstVisiblePolygonLayer(Map map)
         {
             if (map == null) throw new ArgumentNullException("map");
 
