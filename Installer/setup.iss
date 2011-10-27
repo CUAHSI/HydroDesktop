@@ -119,7 +119,7 @@ Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
+;Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 
@@ -131,15 +131,15 @@ Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV
 Source: "..\Binaries\Plugins\HydroModeler\*"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion ;
 Source: "..\Binaries\Plugins\HydroR\*"; DestDir: "{app}\Plugins\HydroR"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\*"; DestDir: "{app}\Plugins\MetadataFetcher"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search2\*"; DestDir: "{app}\Plugins\Search2"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\Search3\*"; DestDir: "{app}\Plugins\Search2"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
-Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; DestName: "WeifenLuo.WinFormsUI.Docking.dll"; Flags: ignoreversion;
+;Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; DestName: "WeifenLuo.WinFormsUI.Docking.dll"; Flags: ignoreversion;
 
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
