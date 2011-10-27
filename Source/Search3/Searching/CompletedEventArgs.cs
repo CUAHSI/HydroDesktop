@@ -9,6 +9,9 @@ namespace Search3.Searching
             Result = result;
         }
 
+        /// <summary>
+        /// Search result. May be null.
+        /// </summary>
         public SearchResult Result { get; private set; }
     }
 }

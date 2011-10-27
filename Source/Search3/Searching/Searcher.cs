@@ -71,6 +71,7 @@ namespace Search3.Searching
             if (_cancellationTokenSource == null ||
                 !_cancellationTokenSource.Token.CanBeCanceled) return;
 
+            LogMessage("Cancelling...");
             _cancellationTokenSource.Cancel();
         }
 
@@ -135,17 +136,17 @@ namespace Search3.Searching
                 {
                     foreach (var error in task.Exception.InnerExceptions)
                     {
-                        LogMessage("Error", error);
+                        LogMessage("Error:", error);
                     }
                 }
                 else
                 {
-                    LogMessage("Unknow error");
+                    LogMessage("Unknow error.");
                 }
             }
             else if (task.IsCanceled)
             {
-                LogMessage("Cancelled");
+                LogMessage("Cancelled.");
             }
             else
             {
@@ -157,7 +158,7 @@ namespace Search3.Searching
                 {
                     foreach (var error in aex.InnerExceptions)
                     {
-                        LogMessage("Error", error);
+                        LogMessage("Error:", error);
                     }
                 }
             }
@@ -249,6 +250,11 @@ namespace Search3.Searching
             public void CheckForCancel()
             {
                 _parent._cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            }
+
+            public void ReportMessage(string message)
+            {
+                _parent.LogMessage(message);
             }
         }
     }

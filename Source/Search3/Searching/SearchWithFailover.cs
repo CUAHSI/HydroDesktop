@@ -14,6 +14,7 @@ namespace Search3.Searching
     {
         void ReportProgress(int persentage, object state);
         void CheckForCancel();
+        void ReportMessage(string message);
     }
 
     /* this is deisgned to be partially testable, 
