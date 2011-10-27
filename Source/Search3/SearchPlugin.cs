@@ -394,7 +394,7 @@ namespace Search3
 
             App.Map.FunctionMode = FunctionMode.Select;
 
-            AreaHelper.SelectFirstVisiblePolygonLayer(App.Map);
+            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map);
             App.Map.SelectionChanged += Map_SelectionChanged;
         }
         
@@ -406,7 +406,7 @@ namespace Search3
 
         void Map_SelectionChanged(object sender, EventArgs e)
         {
-            foreach (var polygonLayer in AreaHelper.GetAllSelectedPolygonLayers(App.Map))
+            foreach (var polygonLayer in AreaHelper.GetAllSelectedPolygonLayers((Map)App.Map))
             {
                 var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
                 foreach (var f in polygonLayer.Selection.ToFeatureList())
@@ -435,8 +435,8 @@ namespace Search3
             DeactivateDrawBox();
             DeactivateSelectAreaByPolygon();
 
-            AreaHelper.SelectFirstVisiblePolygonLayer(App.Map);
-            SelectAreaByAttributeDialog.ShowDialog(App.Map);
+            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map);
+            SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
         }
 
