@@ -7,12 +7,10 @@ using HydroDesktop.WebServices;
 using System.ComponentModel;
 using DotSpatial.Data;
 using System.Net;
-using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
 using System.Web;
 using System.Xml;
-using Search3.Extensions;
 using log4net;
 
 namespace Search3.Searching
@@ -37,9 +35,6 @@ namespace Search3.Searching
         void GetSeriesCatalogInRectangle(double xMin, double xMax, double yMin, double yMax, string[] keywords, DateTime startDate, DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e);
         void GetWebServicesXml(string xmlFileName);
     }
-
-
-  
 
     /// <summary>
     /// Search for data series using HIS Central
@@ -113,7 +108,7 @@ namespace Search3.Searching
             {
                 String error ="Error refreshing Ontology keywords from HIS Central. Using the existing list of keywords.";
                 log.Error(error, ex);
-                MessageBox.Show(error);
+                throw;
             }
         }
 
@@ -140,12 +135,9 @@ namespace Search3.Searching
                 {
                     using (var localFileStream = new FileStream(xmlFileName, FileMode.Create))
                     {
-                        byte[] buffer = new byte[255];
-                        double totalBytesRead = 0;
-
+                        var buffer = new byte[255];
                         while ((bytesRead = responseStream.Read(buffer, 0, buffer.Length)) > 0)
                         {
-                            totalBytesRead += bytesRead;
                             localFileStream.Write(buffer, 0, bytesRead);
                         }
                     }
@@ -163,44 +155,6 @@ namespace Search3.Searching
                     response.Close();
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets all data series within the geographic bounding box that match the
-        /// specified criteria
-        /// </summary>
-        /// <param name="xMin">minimum x (longitude)</param>
-        /// <param name="xMax">maximum x (longitude)</param>
-        /// <param name="yMin">minimum y (latitude)</param>
-        /// <param name="yMax">maximum y (latitude)</param>
-        /// <param name="keywords">the array of concept keywords. If set to null,
-        /// results will not be filtered by concept keyword</param>
-        /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
-        /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
-        /// If set to null, results will not be filtered by web service.</param>
-        /// <returns>A list of data series matching the specified criteria</returns>
-        private IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string[] keywords,
-            DateTime startDate, DateTime endDate, int[] networkIDs)
-        {
-            if (keywords == null)
-            {
-                return GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, String.Empty, startDate, endDate, networkIDs);
-            }
-            if (keywords.Length == 0)
-            {
-                return GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, String.Empty, startDate, endDate, networkIDs);
-            }
-            if (keywords.Length == 1)
-            {
-                return GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, keywords[0], startDate, endDate, networkIDs);
-            }
-            var lst = new List<SeriesDataCart>();
-            foreach (string keyword in keywords)
-            {
-                lst.AddRange(GetSeriesCatalogForBox(xMin, xMax, yMin, yMax, keyword, startDate, endDate, networkIDs));
-            }
-            return lst;
         }
 
         /// <summary>
@@ -315,97 +269,97 @@ namespace Search3.Searching
         /// <summary>
         /// Read the list of series from the XML that is returned by HIS Central
         /// </summary>
-        /// <param name="r">the xml reader</param>
+        /// <param name="reader">the xml reader</param>
         /// <returns>the list of intermediate 'SeriesDataCart' objects</returns>
-        private SeriesDataCart ReadSeriesFromHISCentral(XmlReader r)
+        private static SeriesDataCart ReadSeriesFromHISCentral(XmlReader reader)
         {
             var usaCulture = new CultureInfo("en-US");
             
             var series = new SeriesDataCart();
-            while (r.Read())
+            while (reader.Read())
             {
-                string nodeName = r.Name.ToLower();
+                string nodeName = reader.Name.ToLower();
 
-                if (r.NodeType == XmlNodeType.Element)
+                if (reader.NodeType == XmlNodeType.Element)
                 {
 
                     switch (nodeName)
                     {
                         case "servcode":
-                            r.Read();
-                            series.ServCode = r.Value;
+                            reader.Read();
+                            series.ServCode = reader.Value;
                             break;
                         case "servurl":
-                            r.Read();
-                            series.ServURL = r.Value;
+                            reader.Read();
+                            series.ServURL = reader.Value;
                             break;
                         case "location":
-                            r.Read();
-                            series.SiteCode = r.Value;
+                            reader.Read();
+                            series.SiteCode = reader.Value;
                             break;
                         case "varcode":
-                            r.Read();
-                            series.VariableCode = r.Value;
+                            reader.Read();
+                            series.VariableCode = reader.Value;
                             break;
                         case "varname":
-                            r.Read();
-                            series.VariableName = r.Value;
+                            reader.Read();
+                            series.VariableName = reader.Value;
                             break;
                         case "begindate":
-                            r.Read();
-                            series.BeginDate = Convert.ToDateTime(r.Value, usaCulture);
+                            reader.Read();
+                            series.BeginDate = Convert.ToDateTime(reader.Value, usaCulture);
                             break;
                         case "enddate":
-                            r.Read();
-                            series.EndDate = Convert.ToDateTime(r.Value, usaCulture);
+                            reader.Read();
+                            series.EndDate = Convert.ToDateTime(reader.Value, usaCulture);
                             break;
                         case "valuecount":
-                            r.Read();
-                            series.ValueCount = Convert.ToInt32(r.Value);
+                            reader.Read();
+                            series.ValueCount = Convert.ToInt32(reader.Value);
                             break;
                         case "sitename":
-                            r.Read();
-                            series.SiteName = r.Value;
+                            reader.Read();
+                            series.SiteName = reader.Value;
                             break;
                         case "latitude":
-                            r.Read();
-                            series.Latitude = Convert.ToDouble(r.Value, CultureInfo.InvariantCulture);
+                            reader.Read();
+                            series.Latitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
                             break;
                         case "longitude":
-                            r.Read();
-                            series.Longitude = Convert.ToDouble(r.Value, CultureInfo.InvariantCulture);
+                            reader.Read();
+                            series.Longitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
                             break;
                         case "datatype":
-                            r.Read();
-                            series.DataType = r.Value;
+                            reader.Read();
+                            series.DataType = reader.Value;
                             break;
                         case "valuetype":
-                            r.Read();
-                            series.ValueType = r.Value;
+                            reader.Read();
+                            series.ValueType = reader.Value;
                             break;
                         case "samplemedium":
-                            r.Read();
-                            series.SampleMedium = r.Value;
+                            reader.Read();
+                            series.SampleMedium = reader.Value;
                             break;
                         case "timeunits":
-                            r.Read();
-                            series.TimeUnit = r.Value;
+                            reader.Read();
+                            series.TimeUnit = reader.Value;
                             break;
                         case "conceptkeyword":
-                            r.Read();
-                            series.ConceptKeyword = r.Value;
+                            reader.Read();
+                            series.ConceptKeyword = reader.Value;
                             break;
                         case "gencategory":
-                            r.Read();
-                            series.GeneralCategory = r.Value;
+                            reader.Read();
+                            series.GeneralCategory = reader.Value;
                             break;
                         case "timesupport":
-                            r.Read();
-                            series.TimeSupport = Convert.ToDouble(r.Value, CultureInfo.InvariantCulture);
+                            reader.Read();
+                            series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
                             break;     
                     }
                 }
-                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "seriesrecord")
+                else if (reader.NodeType == XmlNodeType.EndElement && nodeName == "seriesrecord")
                 {
                     return series;
                 }
@@ -429,6 +383,11 @@ namespace Search3.Searching
         {
             if (bgWorker == null) throw new ArgumentNullException("bgWorker");
 
+            if (keywords == null || keywords.Length == 0)
+            {
+                keywords = new[] { String.Empty };
+            }
+
             double tileWidth = 1.0; //the initial tile width is set to 1 degree
             double tileHeight = 1.0; //the initial tile height is set to 1 degree
             
@@ -439,36 +398,38 @@ namespace Search3.Searching
             
             //Split the polygon area bounding box into 1x1 decimal degree tiles
  
-            Box extentBox = new Box(xMin, xMax, yMin, yMax);
+            var extentBox = new Box(xMin, xMax, yMin, yMax);
             IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-            int numTiles = tiles.Count;
-
-            for (int i = 0; i < numTiles; i++)
+            for (int i = 0; i < tiles.Count; i++)
             {
-                Box tile = tiles[i];
+                var tile = tiles[i];
 
                 bgWorker.CheckForCancel();
 
                 // Do the web service call
-                //IList<SeriesDataCart> tileSeriesList = new List<SeriesMetadata>();
-                IEnumerable<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
+                var tileSeriesList = new List<SeriesDataCart>();
+                foreach (var keyword in keywords)
+                {
+                    bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i+1, tiles.Count ));
+                    bgWorker.CheckForCancel();
+                    tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keyword,
+                                                                   startDate, endDate, serviceIDs));
+                }
 
                 fullSeriesList.AddRange(tileSeriesList);
 
                 // Report progress
-                {
-                    string message = fullSeriesList.Count.ToString();
-                    int percentProgress = (i * 100) / numTiles + 1;
-                    bgWorker.ReportProgress(percentProgress, message);
-                }
+                var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
+                int percentProgress = (i * 100) / tiles.Count + 1;
+                bgWorker.ReportProgress(percentProgress, message);
             }
-            
+
 
             //(4) Create the Feature Set
             SearchResult resultFs = null;
             if (fullSeriesList.Count > 0)
             {
-                bgWorker.ReportProgress(0, "Calculating Points");
+                bgWorker.ReportMessage("Calculating Points...");
                 resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
             }
 
@@ -496,12 +457,13 @@ namespace Search3.Searching
         /// <param name="bgWorker">The background worker (may be null) for reporting progress</param>
         /// <param name="e">The results of the search (convert to DataTable)</param>
         /// If set to null, results will not be filtered by web service.</param>
+        /// <param name="bgWorker">Prpgress handler.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
         public void GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
             DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
         {
-            double tileWidth = 1.0; //the initial tile width is set to 1 degree
-            double tileHeight = 1.0; //the initial tile height is set to 1 degree
+            if (polygons == null) throw new ArgumentNullException("polygons");
+            if (bgWorker == null) throw new ArgumentNullException("bgWorker");
 
             //(1): Get the union of the polygons
             if (polygons.Count == 0)
@@ -509,46 +471,55 @@ namespace Search3.Searching
                 throw new ArgumentException("The number of polygons must be greater than zero.");
             }
 
+            if (keywords == null || keywords.Length == 0)
+            {
+                keywords = new[] { String.Empty };
+            }
+
+            double tileWidth = 1.0; //the initial tile width is set to 1 degree
+            double tileHeight = 1.0; //the initial tile height is set to 1 degree
+
             // Check for cancel
             bgWorker.CheckForCancel();
 
-            if (polygons.Count > 1)
-            {
-                bgWorker.ReportProgress(0, "Processing Polygons");
-            }
-
             //get the list of series
             var fullSeriesList = new List<SeriesDataCart>();
-
-            foreach (IFeature polygon in polygons)
+            for (int index = 0; index < polygons.Count; index++)
             {
-                //Split the polygon area bounding box into 1x1 decimal degree tiles
-                IEnvelope env = polygon.Envelope;
-                Box extentBox = new Box(env.Left(), env.Right(), env.Bottom(), env.Top());
-                IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-                int numTiles = tiles.Count;
-
-                
-                for (int i = 0; i < numTiles; i++)
+                if (polygons.Count > 1)
                 {
-                    Box tile = tiles[i];
+                    bgWorker.ReportMessage(string.Format("Processing polygons: {0} of {1}", index + 1, polygons.Count));
+                }
+
+                var polygon = polygons[index];
+                var env = polygon.Envelope;  //Split the polygon area bounding box into 1x1 decimal degree tiles
+                var extentBox = new Box(env.Left(), env.Right(), env.Bottom(), env.Top());
+                var tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    var tile = tiles[i];
 
                     bgWorker.CheckForCancel();
 
                     // Do the web service call
-                    IEnumerable<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
+
+                    var tileSeriesList = new List<SeriesDataCart>();
+                    foreach (var keyword in keywords)
+                    {
+                        bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i + 1, tiles.Count));
+                        bgWorker.CheckForCancel();
+                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keyword,
+                                                                       startDate, endDate, serviceIDs));
+                    }
 
                     // Clip the points by polygon
-                    IEnumerable<SeriesDataCart> seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
-                    
+                    var seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
                     fullSeriesList.AddRange(seriesInPolygon);
 
                     // Report progress
-                    {
-                        string message = fullSeriesList.Count.ToString();
-                        int percentProgress = (i * 100) / numTiles + 1;
-                        bgWorker.ReportProgress(percentProgress, message);
-                    }
+                    var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
+                    var percentProgress = (i*100)/tiles.Count + 1;
+                    bgWorker.ReportProgress(percentProgress, message);
                 }
             }
 
@@ -556,7 +527,7 @@ namespace Search3.Searching
             SearchResult resultFs = null;
             if (fullSeriesList.Count > 0)
             {
-                bgWorker.ReportProgress(0, "Calculating Points");
+                bgWorker.ReportMessage("Calculating Points");
                 resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
             }
 
