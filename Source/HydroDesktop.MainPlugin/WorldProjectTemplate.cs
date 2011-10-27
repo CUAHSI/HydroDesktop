@@ -36,21 +36,24 @@ namespace HydroDesktop.Main
             try
             {
                 string fileName = Path.Combine(baseMapFolder, "world_countries.shp");
-                IFeatureSet fsCountries = FeatureSet.OpenFile(fileName);
-                fsCountries.Reproject(mainMap.Projection);
-                MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
-                layCountries.LegendText = "Countries";
-                PolygonScheme schmCountries = new PolygonScheme();
-                schmCountries.EditorSettings.StartColor = Color.Orange;
-                schmCountries.EditorSettings.EndColor = Color.Silver;
-                schmCountries.EditorSettings.ClassificationType =
-                    ClassificationType.UniqueValues;
-                schmCountries.EditorSettings.FieldName = "NAME";
-                schmCountries.EditorSettings.UseGradient = true;
-                schmCountries.CreateCategories(layCountries.DataSet.DataTable);
-                layCountries.Symbology = schmCountries;
-                baseGroup.Layers.Add(layCountries);
-                layCountries.MapFrame = mainMap.MapFrame;
+                if (File.Exists(fileName))
+                {
+                    IFeatureSet fsCountries = FeatureSet.OpenFile(fileName);
+                    fsCountries.Reproject(mainMap.Projection);
+                    MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
+                    layCountries.LegendText = "Countries";
+                    PolygonScheme schmCountries = new PolygonScheme();
+                    schmCountries.EditorSettings.StartColor = Color.Orange;
+                    schmCountries.EditorSettings.EndColor = Color.Silver;
+                    schmCountries.EditorSettings.ClassificationType =
+                        ClassificationType.UniqueValues;
+                    schmCountries.EditorSettings.FieldName = "NAME";
+                    schmCountries.EditorSettings.UseGradient = true;
+                    schmCountries.CreateCategories(layCountries.DataSet.DataTable);
+                    layCountries.Symbology = schmCountries;
+                    baseGroup.Layers.Add(layCountries);
+                    layCountries.MapFrame = mainMap.MapFrame;
+                }
             }
             catch { }
             
@@ -58,31 +61,37 @@ namespace HydroDesktop.Main
             //load a rivers layer
             try
             {
-                string fileName = Path.Combine(baseMapFolder, "world_rivers.shp");
-                IFeatureSet fsRivers = FeatureSet.OpenFile(fileName);
-                fsRivers.Reproject(mainMap.Projection);
-                MapLineLayer layRivers = new MapLineLayer(fsRivers);
-                layRivers.LegendText = "rivers";
-                LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
-                layRivers.Symbolizer = symRivers;
-                baseGroup.Layers.Add(layRivers);
-                layRivers.MapFrame = mainMap.MapFrame;
+                var fileName = Path.Combine(baseMapFolder, "world_rivers.shp");
+                if (File.Exists(fileName))
+                {
+                    IFeatureSet fsRivers = FeatureSet.OpenFile(fileName);
+                    fsRivers.Reproject(mainMap.Projection);
+                    MapLineLayer layRivers = new MapLineLayer(fsRivers);
+                    layRivers.LegendText = "rivers";
+                    LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
+                    layRivers.Symbolizer = symRivers;
+                    baseGroup.Layers.Add(layRivers);
+                    layRivers.MapFrame = mainMap.MapFrame;
+                }
             }
             catch { }
 
             //load a lakes layer
             try
             {
-                string fileName = Path.Combine(baseMapFolder, "world_lakes.shp");
-                IFeatureSet fsLakes = FeatureSet.OpenFile(fileName);
-                fsLakes.Reproject(mainMap.Projection);
-                MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
-                layLakes.LegendText = "lakes";
-                PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
-                    Color.Blue);
-                layLakes.Symbolizer = symLakes;
-                baseGroup.Layers.Add(layLakes);
-                layLakes.MapFrame = mainMap.MapFrame;
+                var fileName = Path.Combine(baseMapFolder, "world_lakes.shp");
+                if (File.Exists(fileName))
+                {
+                    IFeatureSet fsLakes = FeatureSet.OpenFile(fileName);
+                    fsLakes.Reproject(mainMap.Projection);
+                    MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
+                    layLakes.LegendText = "lakes";
+                    PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
+                                                                       Color.Blue);
+                    layLakes.Symbolizer = symLakes;
+                    baseGroup.Layers.Add(layLakes);
+                    layLakes.MapFrame = mainMap.MapFrame;
+                }
             }
             catch { }
 
