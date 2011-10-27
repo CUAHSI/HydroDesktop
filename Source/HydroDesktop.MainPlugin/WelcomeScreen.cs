@@ -10,6 +10,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
+using System.Reflection;
 
 namespace HydroDesktop.Main
 {
@@ -34,7 +35,12 @@ namespace HydroDesktop.Main
         {
             InitializeComponent();
 
-            lblProductVersion.Text = "CUAHSI HydroDesktop " + Application.ProductVersion;
+
+            string appName = Assembly.GetAssembly(this.GetType()).Location;
+            AssemblyName assemblyName = AssemblyName.GetAssemblyName(appName);
+            string version = assemblyName.Version.ToString();
+
+            lblProductVersion.Text = "CUAHSI HydroDesktop " + version;
             
             _app = app;
             _recentProjectFiles = new List<ProjectFileInfo>();

@@ -158,6 +158,15 @@ namespace HelpTab
             aboutButton.ToolTipText = "Open the HydroDesktop About dialog.";
             aboutButton.GroupCaption = _helpPanelName;
             App.HeaderControl.Add(aboutButton);
+
+            //add the about button to application menu
+            var aboutButton2 = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "About", aboutButton_Click);
+            aboutButton2.GroupCaption = HeaderControl.ApplicationMenuKey;
+            aboutButton2.LargeImage = Resources.info_32x32;
+            aboutButton2.SmallImage = Resources.info_16x16;
+            aboutButton2.ToolTipText = "Open the HydroDesktop About dialog.";
+            //aboutButton2.GroupCaption = HeaderControl.ApplicationMenuKey;
+            App.HeaderControl.Add(aboutButton2);
             
             // This line ensures that "Enabled" is set to true
             base.Activate();
@@ -214,10 +223,10 @@ namespace HelpTab
 
         void aboutButton_Click(object sender, EventArgs e)
         {
-            //AboutBox frm = new AboutBox();
+            AboutBox frm = new AboutBox();
 
-            //frm.StartPosition = FormStartPosition.CenterScreen;
-            //frm.Show();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.Show();
         }
 
         #endregion

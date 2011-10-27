@@ -30,6 +30,8 @@ namespace HydroR
 
         private cRCommandView _hydroRControl;
 
+        bool firstTimeAdding = true;
+
         #endregion
 
         #region IExtension Members
@@ -42,12 +44,17 @@ namespace HydroR
             App.HeaderControl.RemoveAll();
 
             App.DockManager.Remove(kHydroR);
+
+            //App.DockManager.PanelAdded -= DockManager_PanelAdded;
  
             base.Deactivate();
         }
 
         public override void Activate()
         {
+            //event for adding the HydroR dock panel
+            App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
+            
             // Handle code for switching the page content
             //_hydroRControl.RChanged += new cRCommandView.REventHandler(ribbonBnt_TextChanged);
 
@@ -55,7 +62,9 @@ namespace HydroR
             if (_seriesSelector != null)
             {
                 _hydroRControl = new cRCommandView(_seriesSelector);
-                App.DockManager.Add(new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill));
+                
+                if (!firstTimeAdding)
+                    AddHydroRPanel();
 
                 //Add a HydroR root item
                 _hydroRTab = new RootItem(kHydroR, _panelName);
@@ -103,40 +112,44 @@ namespace HydroR
 
                 //when the HydroR panel is selected - activate SeriesView and HydroR ribbon tab
                 App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_ActivePanelChanged);
+
+                App.DockManager.SelectPanel("kHydroSeriesView");
+                App.HeaderControl.SelectRoot(kHydroR);
             }
 
             base.Activate();
+        }
+
+        void AddHydroRPanel()
+        {
+            //HydroR dock panel should be preferentially added after "graph"
+            App.DockManager.Add(new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill));
+            firstTimeAdding = false;
+        }
+
+        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        {           
+            if (e.ActivePanelKey == "kMap")
+            {
+                //HydroR dock panel should be preferentially added after "map"
+                AddHydroRPanel();
+                App.DockManager.SelectPanel("kMap");
+            }
         }
 
         void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == kHydroR)
             {
-                App.DockManager.SelectPanel("kHydroR");
+                App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(kHydroR);
+                _hydroRTab.Visible = true;
+            }
+            else
+            {
+                _hydroRTab.Visible = false;
             }
         }
-
-        #endregion
-
-
-        #region Event Handlers
-
-        //private void ribbonBnt_TextChanged(EventArgs e)
-        //{
-        //    if (_hydroRControl.RIsRunning)
-        //        _btnR.Caption = "Close R";
-        //    else
-        //        _btnR.Caption = "Start R";
-        //}
-
-        ////Workaround method to find the corresponding StartR ribbon button
-        //private RibbonButton FindBtnR()
-        //{
-        //    RibbonTab hydroRTab = App.Ribbon.Tabs.Find(t => t.Text == _panelName);
-        //    RibbonButton btnR = hydroRTab.Panels[0].Items[0] as RibbonButton;
-        //    return btnR;
-        //}
 
         #endregion
     }

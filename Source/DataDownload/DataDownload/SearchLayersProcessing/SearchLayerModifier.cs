@@ -60,16 +60,20 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         /// <param name="layer">Layer</param>
         /// <param name="map">Map</param>
         /// <exception cref="ArgumentNullException"><para>layer</para>, <para>map</para> must be not null.</exception>
-        public void AddCustomFeaturesToSearchLayer(ILayer layer, Map map)
+        public bool AddCustomFeaturesToSearchLayer(ILayer layer, Map map)
         {
             if (layer == null) throw new ArgumentNullException("layer");
             if (map == null) throw new ArgumentNullException("map");
 
-            if (!IsSearchLayer(layer)) return;
+            if (!IsSearchLayer(layer)) return false;
+
+            
 
             SetUpLabeling((IFeatureLayer)layer, map);
             UpdateSymbolizing((IFeatureLayer)layer);
             AttachPopup((IFeatureLayer)layer, map);
+
+            return true;
         }
 
         public void UpdateSearchLayerAfterDownloading(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, 

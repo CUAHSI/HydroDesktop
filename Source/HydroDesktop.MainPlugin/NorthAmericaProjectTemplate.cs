@@ -14,6 +14,8 @@ namespace HydroDesktop.Main
 {
     internal class NorthAmericaProjectTemplate
     {
+        static DotSpatial.Projections.ProjectedCategories.World projWorld = KnownCoordinateSystems.Projected.World;
+        
         /// <summary>
         /// This method is only used when opening the default project fails. The base shapefiles
         /// are loaded from the [Program Files]\[Cuahsi HIS]\HydroDesktop\maps\baseData-mercatorSphere folder.
@@ -23,7 +25,7 @@ namespace HydroDesktop.Main
             //set the projection of main map
             if (mainMap.Projection == null)
             {
-                mainMap.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+                mainMap.Projection = projWorld.WebMercator;
             }
             
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
@@ -43,7 +45,7 @@ namespace HydroDesktop.Main
             if (File.Exists(fileName1))
             {
                 IFeatureSet fsCountries = FeatureSet.OpenFile(fileName1);
-                fsCountries.Reproject(mainMap.Projection);
+                fsCountries.Reproject(projWorld.WebMercator);
                 MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
                 layCountries.LegendText = "Countries";
                 PolygonScheme schmCountries = new PolygonScheme();
@@ -64,7 +66,7 @@ namespace HydroDesktop.Main
             if (File.Exists(fileName2))
             {
                 IFeatureSet fsStates = FeatureSet.OpenFile(fileName2);
-                fsStates.Reproject(mainMap.Projection);
+                fsStates.Reproject(projWorld.WebMercator);
                 layStates = new MapPolygonLayer(fsStates);
                 PolygonScheme schmStates = new PolygonScheme();
                 layStates.IsVisible = true;
@@ -88,7 +90,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName3))
                 {
                     IFeatureSet fsProvince = FeatureSet.OpenFile(fileName3);
-                    fsProvince.Reproject(mainMap.Projection);
+                    fsProvince.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layProvince = new MapPolygonLayer(fsProvince);
                     PolygonScheme schmProvince = new PolygonScheme();
                     layProvince.IsVisible = true;
@@ -114,7 +116,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName4))
                 {
                     IFeatureSet fsCounties = FeatureSet.OpenFile(fileName4);
-                    fsCounties.Reproject(mainMap.Projection);
+                    fsCounties.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layCounties = new MapPolygonLayer(fsCounties);
                     layCounties.LegendText = "U.S. Counties";
                     layCounties.IsVisible = false;
@@ -147,7 +149,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName5))
                 {
                     IFeatureSet fsHUC = FeatureSet.OpenFile(fileName5);
-                    fsHUC.Reproject(mainMap.Projection);
+                    fsHUC.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layHUC = new MapPolygonLayer(fsHUC);
                     layHUC.LegendText = "U.S. HUC";
                     layHUC.IsVisible = false;
@@ -176,7 +178,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName6))
                 {
                     IFeatureSet fsRivers = FeatureSet.OpenFile(fileName6);
-                    fsRivers.Reproject(mainMap.Projection);
+                    fsRivers.Reproject(projWorld.WebMercator);
                     MapLineLayer layRivers = new MapLineLayer(fsRivers);
                     layRivers.LegendText = "rivers";
                     LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
@@ -194,7 +196,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName7))
                 {
                     IFeatureSet fsLakes = FeatureSet.OpenFile(fileName7);
-                    fsLakes.Reproject(mainMap.Projection);
+                    fsLakes.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
                     layLakes.LegendText = "lakes";
                     PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
@@ -226,8 +228,9 @@ namespace HydroDesktop.Main
             double[] z = new double[] { 0, 0 };
             ProjectionInfo wgs84 =ProjectionInfo.FromEsriString(
             "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]");
-            Reproject.ReprojectPoints(xy, z, wgs84, map.Projection, 0, 2);
+            Reproject.ReprojectPoints(xy, z, wgs84, projWorld.WebMercator, 0, 2);
             map.ViewExtents = new Extent(xy);
+            map.MapFrame.ResetExtents();
 
         }
     }
