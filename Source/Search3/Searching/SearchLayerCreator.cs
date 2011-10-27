@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -44,12 +45,18 @@ namespace Search3.Searching
         /// </summary>
         public void Create()
         {
+            if (_searchResult.ResultItems.Count() == 0) return;
+
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, _searchGroupName);
+
+            var layerToSelect = (MapPointLayer)null;
             foreach(var item in _searchResult.ResultItems)
             {
                 var subResultLayer = CreateSearchResultLayer(item, root);
                 root.Add(subResultLayer);
+                layerToSelect = subResultLayer;
             }
+            Debug.Assert(layerToSelect != null);
             _map.Refresh();
 
             //assign the projection again
@@ -59,7 +66,7 @@ namespace Search3.Searching
             for (int i = 0; i < root.Layers.Count; i++)
             {
                 var layer = root[i];
-                var state = i == 0;
+                var state = layer == layerToSelect;
                 var rendItem = layer as IRenderableLegendItem;
                 if (rendItem != null)
                 {
