@@ -1,4 +1,5 @@
 using System;
+using HydroDesktop.WebServices;
 
 namespace Search3.Settings
 {
@@ -8,16 +9,19 @@ namespace Search3.Settings
         {
         }
 
-        public WebServiceNode(string title, string serviceCode, string serviceID, string descriptionUrl, string serviceUrl)
+        public WebServiceNode(string title, string serviceCode, string serviceID, string descriptionUrl, string serviceUrl,
+            Box boundingBox)
         {
             ServiceID = serviceID;
             ServiceCode = serviceCode;
             Title = title;
             DescriptionUrl = descriptionUrl;
             ServiceUrl = serviceUrl;
+            ServiceBoundingBox = boundingBox;
             Checked = true;
         }
 
+        public Box ServiceBoundingBox { get; private set; }
         public string ServiceID { get; private set; }
         public string ServiceCode { get; private set; }
         public string Title { get; private set; }

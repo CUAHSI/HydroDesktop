@@ -373,7 +373,7 @@ namespace Search3
             var ymin = xy[1];
             var xmax = xy[2];
             var ymax = xy[3];
-            var rectangle = new AreaRectangle(xmin, ymin, xmax, ymax);
+            var rectangle = new Box(xmin, xmax, ymin, ymax);
             SearchSettings.Instance.AreaSettings.AreaRectangle = rectangle;
         }
 

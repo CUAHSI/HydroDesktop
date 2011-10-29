@@ -211,16 +211,16 @@ namespace HydroDesktop.WebServices
             soap.Append(cuahsiXmlns);
             soap.Append(@">");
             soap.Append(@"<xmin>");
-            soap.Append(latLongBox.xmin.ToString());
+            soap.Append(latLongBox.XMin.ToString());
             soap.Append(@"</xmin>");
             soap.Append(@"<xmax>");
-            soap.Append(latLongBox.xmax.ToString());
+            soap.Append(latLongBox.XMax.ToString());
             soap.Append(@"</xmax>");
             soap.Append(@"<ymin>");
-            soap.Append(latLongBox.ymin.ToString());
+            soap.Append(latLongBox.YMin.ToString());
             soap.Append(@"</ymin>");
             soap.Append(@"<ymax>");
-            soap.Append(latLongBox.ymax.ToString());
+            soap.Append(latLongBox.YMax.ToString());
             soap.Append(@"</ymax>");
             if (string.IsNullOrEmpty(keyword))
             {

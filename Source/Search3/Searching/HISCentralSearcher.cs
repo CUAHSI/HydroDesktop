@@ -412,7 +412,7 @@ namespace Search3.Searching
                 {
                     bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i+1, tiles.Count ));
                     bgWorker.CheckForCancel();
-                    tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keyword,
+                    tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keyword,
                                                                    startDate, endDate, serviceIDs));
                 }
 
@@ -508,7 +508,7 @@ namespace Search3.Searching
                     {
                         bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i + 1, tiles.Count));
                         bgWorker.CheckForCancel();
-                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keyword,
+                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keyword,
                                                                        startDate, endDate, serviceIDs));
                     }
 

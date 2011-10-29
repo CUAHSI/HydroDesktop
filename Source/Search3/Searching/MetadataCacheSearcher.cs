@@ -137,7 +137,7 @@ namespace Search3.Searching
 
                 // Do the web service call
                 //IList<SeriesDataCart> tileSeriesList = new List<SeriesMetadata>();
-                IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
+                IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keywords, startDate, endDate, serviceIDs);
 
                 fullSeriesList.AddRange(tileSeriesList);
 
@@ -228,7 +228,7 @@ namespace Search3.Searching
                     bgWorker.CheckForCancel();
 
                     // Do the web service call
-                    IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.xmin, tile.xmax, tile.ymin, tile.ymax, keywords, startDate, endDate, serviceIDs);
+                    IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keywords, startDate, endDate, serviceIDs);
 
                     // Clip the points by polygon
                     IEnumerable<SeriesDataCart> seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);

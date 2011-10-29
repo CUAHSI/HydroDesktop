@@ -1,5 +1,6 @@
 using System;
 using DotSpatial.Data;
+using HydroDesktop.WebServices;
 
 namespace Search3.Settings
 {
@@ -14,8 +15,8 @@ namespace Search3.Settings
             }
         }
 
-        private AreaRectangle _areaRectangle;
-        public AreaRectangle AreaRectangle
+        private Box _areaRectangle;
+        public Box AreaRectangle
         {
             get { return _areaRectangle; }
             set

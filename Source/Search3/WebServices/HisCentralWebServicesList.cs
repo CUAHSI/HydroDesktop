@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
+using HydroDesktop.WebServices;
 using Search3.Searching;
 using Search3.Settings;
 using log4net;
@@ -46,6 +48,7 @@ namespace Search3.WebServices
                     string title = null;
                     string serviceID = null;
                     string serviceCode = null;
+                    double xmin = double.NaN, xmax = double.NaN, ymin = double.NaN, ymax = double.NaN;
                     foreach (XmlNode childNode2 in childNode1.ChildNodes)
                     {
                         switch (childNode2.Name)
@@ -65,9 +68,29 @@ namespace Search3.WebServices
                             case "NetworkName":
                                 serviceCode = childNode2.InnerText;
                                 break;
+                            case "minx":
+                                double.TryParse(childNode2.InnerText, NumberStyles.Number, CultureInfo.InvariantCulture,
+                                                out xmin);
+                                break;
+                            case "maxx":
+                                double.TryParse(childNode2.InnerText, NumberStyles.Number, CultureInfo.InvariantCulture,
+                                                out xmax);
+                                break;
+                            case "miny":
+                                double.TryParse(childNode2.InnerText, NumberStyles.Number, CultureInfo.InvariantCulture,
+                                                out ymin);
+                                break;
+                            case "maxy":
+                                double.TryParse(childNode2.InnerText, NumberStyles.Number, CultureInfo.InvariantCulture,
+                                                out ymax);
+                                break;
                         }
                     }
-                    var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl);
+                    var boundingBox = (Box) null;
+                    if (!double.IsNaN(xmin) && !double.IsNaN(xmax) && !double.IsNaN(ymin) && !double.IsNaN(ymax))
+                        boundingBox = new Box(xmin, xmax, ymin, ymax);
+
+                    var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl, boundingBox);
                     result.Add(node);
                 }
             }

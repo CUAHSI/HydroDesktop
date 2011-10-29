@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HydroDesktop.WebServices
 {
@@ -11,20 +9,21 @@ namespace HydroDesktop.WebServices
     {
         public Box(double xMin, double xMax, double yMin, double yMax)
         {
-            xmin = xMin;
-            xmax = xMax;
-            ymin = yMin;
-            ymax = yMax;
+            XMin = xMin;
+            YMin = yMin;
+            XMax = xMax;
+            YMax = yMax;
         }
-        
-        public double xmin;
-        public double xmax;
-        public double ymin;
-        public double ymax;
+
+        public double XMin { get; private set; }
+        public double XMax { get; private set; }
+        public double YMin { get; private set; }
+        public double YMax { get; private set; }
 
         public override string ToString()
         {
-            return string.Format("{0}, {1}, {2}, {3}", xmin, xmax, ymin, ymax);
+            return string.Format("Point1 (Lng/Lat): {0:N6} {1:N6} " + Environment.NewLine +
+                                 "Point2 (Lng/Lat): {2:N6} {3:N6} ", XMin, YMin, YMax, YMax);
         }
     }
 }
