@@ -12,13 +12,13 @@ namespace Search3.Area
     {
         #region Fields
 
-        private readonly IMap _map;
+        private readonly Map _map;
 
         #endregion
 
         #region Constructors
 
-        private SelectAreaByAttributeDialog(IMap map)
+        private SelectAreaByAttributeDialog(Map map)
         {
             if (map == null) throw new ArgumentNullException("map");
 
@@ -33,7 +33,7 @@ namespace Search3.Area
 
         #region Public methods
 
-        public static DialogResult ShowDialog(IMap map)
+        public static DialogResult ShowDialog(Map map)
         {
             if (map == null) throw new ArgumentNullException("map");
 
