@@ -135,7 +135,7 @@ namespace Search3.WebServices
             throw new Exception();
         }
 
-        private void RefreshListFromHisCentral(IHISCentralSearcher searcher)
+        private void RefreshListFromHisCentral(HISCentralSearcher searcher)
         {
             searcher.GetWebServicesXml(WebServicesFilename);
         }

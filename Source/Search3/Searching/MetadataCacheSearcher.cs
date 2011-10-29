@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
-using System.ComponentModel;
 using DotSpatial.Data;
 using HydroDesktop.WebServices;
 using HydroDesktop.Interfaces;
 using DotSpatial.Topology;
-using Search3.Extensions;
+using Search3.Settings;
 
 namespace Search3.Searching
 {
@@ -16,7 +16,7 @@ namespace Search3.Searching
     /// use this class when the "Metadata Cache" search
     /// option is selected
     /// </summary>
-    public class MetadataCacheSearcher
+    public class MetadataCacheSearcher : ISearcher
     {
         //todo: Copied from Search2. Need to be refactored.
 
@@ -105,11 +105,10 @@ namespace Search3.Searching
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
         /// <param name="serviceIDs">array of serviceIDs provided by GetServicesInBox.
         /// <param name="worker">The background worker for reporting progress</param>
-        /// <param name="e">The results of the search (convert to DataTable)</param>
         /// If set to null, results will not be filtered by web service.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
-        public void GetSeriesCatalogInRectangle(double xMin, double xMax, double yMin, double yMax, string[] keywords,
-            DateTime startDate, DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
+        public SearchResult GetSeriesCatalogInRectangle(Box extentBox, string[] keywords,
+            DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
         {
             double tileWidth = 2.0; //the initial tile width is set to 2 degree
             double tileHeight = 1.5; //the initial tile height is set to 1.5 degree
@@ -124,8 +123,6 @@ namespace Search3.Searching
             var fullSeriesList = new List<SeriesDataCart>();
 
             //Split the polygon area bounding box into 1x1 decimal degree tiles
-
-            Box extentBox = new Box(xMin, xMax, yMin, yMax);
             IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
             int numTiles = tiles.Count;
 
@@ -136,8 +133,9 @@ namespace Search3.Searching
                 bgWorker.CheckForCancel();
 
                 // Do the web service call
-                //IList<SeriesDataCart> tileSeriesList = new List<SeriesMetadata>();
-                IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keywords, startDate, endDate, serviceIDs);
+                var tileSeriesList = GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax,
+                                                                              keywords, startDate, endDate,
+                                                                              serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray());
 
                 fullSeriesList.AddRange(tileSeriesList);
 
@@ -145,7 +143,7 @@ namespace Search3.Searching
                 if (useWorker == true)
                 {
                     var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                    int percentProgress = (i * 100) / numTiles + 1;
+                    int percentProgress = (i*100)/numTiles + 1;
                     bgWorker.ReportProgress(percentProgress, message);
                 }
             }
@@ -159,14 +157,12 @@ namespace Search3.Searching
             }
 
             // (5) Final Background worker updates
-            if (useWorker && e != null)
-            {
-                bgWorker.CheckForCancel();
 
-                // Report progress
-                bgWorker.ReportProgress(100, "Search Finished");
-                e.Result = resultFs;
-            }  
+            bgWorker.CheckForCancel();
+
+            // Report progress
+            bgWorker.ReportProgress(100, "Search Finished");
+            return resultFs;
         }
 
         /// <summary>
@@ -179,12 +175,11 @@ namespace Search3.Searching
         /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
         /// <param name="serviceIDs">array of serviceIDs provided by GetServicesInBox.
-        /// <param name="worker">The background worker for reporting progress</param>
-        /// <param name="e">The results of the search (convert to DataTable)</param>
+        /// <param name="bgWorker">The background worker for reporting progress</param>
         /// If set to null, results will not be filtered by web service.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
-        public void GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
-            DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
+        public SearchResult GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
+            DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
         {
             if (bgWorker == null) throw new ArgumentNullException("bgWorker");
 
@@ -228,7 +223,9 @@ namespace Search3.Searching
                     bgWorker.CheckForCancel();
 
                     // Do the web service call
-                    IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keywords, startDate, endDate, serviceIDs);
+                    IList<SeriesDataCart> tileSeriesList = GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin,
+                                                                                  tile.YMax, keywords, startDate,
+                                                                                  endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray());
 
                     // Clip the points by polygon
                     IEnumerable<SeriesDataCart> seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
@@ -239,7 +236,7 @@ namespace Search3.Searching
                     if (useWorker == true)
                     {
                         var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                        int percentProgress = (i * 100) / numTiles + 1;
+                        int percentProgress = (i*100)/numTiles + 1;
                         bgWorker.ReportProgress(percentProgress, message);
                     }
                 }
@@ -254,14 +251,12 @@ namespace Search3.Searching
             }
 
             // (5) Final Background worker updates
-            if (useWorker && e != null)
-            {
-                bgWorker.CheckForCancel();
 
-                // Report progress
-                bgWorker.ReportProgress(100, "Search Finished");
-                e.Result = resultFs;
-            }
+            bgWorker.CheckForCancel();
+
+            // Report progress
+            bgWorker.ReportProgress(100, "Search Finished");
+            return resultFs;
         }
     }
 }
