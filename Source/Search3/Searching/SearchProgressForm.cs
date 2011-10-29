@@ -57,7 +57,28 @@ namespace Search3.Searching
                 _searcher.ShowUI();
             }
             btnCancel.Enabled = false;
-            MessageBox.Show("Search finished!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            string message;
+            switch (e.Reason)
+            {
+                case CompletedReasones.Cancelled:
+                    message = "Search has been canceled successfully.";
+                    break;
+                case CompletedReasones.Faulted:
+                    message = "Search has been faulted due to an unhandled exception.";
+                    break;
+                case CompletedReasones.NormalCompleted:
+                    message = e.Result == null || e.Result.IsEmpty()
+                                  ? "No results were found. Please change the search criteria."
+                                  : "Search finished!";
+                    break;
+                default:
+                    message = "Search was finished for unknown reason.";
+                    break;
+            }
+
+
+            MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         void searcher_ProgressChanged(object sender, ProgressChangedEventArgs e)

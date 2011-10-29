@@ -130,8 +130,10 @@ namespace Search3.Searching
         {
             if (task == null) return;
             SearchResult result = null;
+            CompletedReasones reason;
             if (task.IsFaulted)
             {
+                reason = CompletedReasones.Faulted;
                 if (task.Exception != null)
                 {
                     foreach (var error in task.Exception.InnerExceptions)
@@ -146,6 +148,7 @@ namespace Search3.Searching
             }
             else if (task.IsCanceled)
             {
+                reason = CompletedReasones.Cancelled;
                 LogMessage("Cancelled.");
             }
             else
@@ -153,9 +156,11 @@ namespace Search3.Searching
                 try
                 {
                     result = task.Result;
+                    reason = CompletedReasones.NormalCompleted;
                 }
                 catch (AggregateException aex)
                 {
+                    reason = CompletedReasones.Faulted;
                     foreach (var error in aex.InnerExceptions)
                     {
                         LogMessage("Error:", error);
@@ -163,7 +168,7 @@ namespace Search3.Searching
                 }
             }
 
-            RaiseCompleted(new CompletedEventArgs(result));
+            RaiseCompleted(new CompletedEventArgs(result, reason));
         }
 
         private SearchResult DoSearch(object state)
