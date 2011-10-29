@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DotSpatial.Data;
+using HydroDesktop.WebServices;
 using Search3.Searching.Exceptions;
 using Search3.Settings;
 
@@ -177,21 +180,33 @@ namespace Search3.Searching
 
             var settings = (SearchSettings) state;
             var parameters = Search2Helper.GetSearchParameters(settings);
-            var searcher = new BackgroundSearchWithFailover();
-            var e = new DoWorkEventArgs(parameters);
             var progressHandler = new ProgressHandler(this);
-            if (parameters.SearchMethod == TypeOfCatalog.HisCentral)
+            var searcher = parameters.SearchMethod == TypeOfCatalog.HisCentral
+                               ? (ISearcher) new HISCentralSearcher(parameters.hisCentralURL)
+                               : new MetadataCacheSearcher();
+            SearchResult result = null;
+
+            if (parameters.areaParameter != null)
             {
-                searcher.HISCentralSearchWithFailover(e, HydroDesktop.Configuration.Settings.Instance.HISCentralURLList, progressHandler);
-            }
-            else
-            {
-                searcher.RunMetadataCacheSearch(e, progressHandler);
+                if (!parameters.BoundinBoxSearch)
+                {
+                    result = searcher.GetSeriesCatalogInPolygon((List<IFeature>)parameters.areaParameter,
+                                                       parameters.Keywords.ToArray(),
+                                                       parameters.startDate, parameters.endDate,
+                                                       parameters.WebServices.ToArray(), progressHandler);
+                }
+                else
+                {
+                    result = searcher.GetSeriesCatalogInRectangle((Box)parameters.areaParameter,
+                                                         parameters.Keywords.ToArray(),
+                                                         parameters.startDate, parameters.endDate,
+                                                         parameters.WebServices.ToArray(), progressHandler);
+                }
             }
 
             LogMessage("Search finished successfully.");
 
-            return (SearchResult)e.Result;
+            return result;
         }
 
         private void RaiseCompleted(CompletedEventArgs eventArgs)
@@ -262,5 +277,12 @@ namespace Search3.Searching
                 _parent.LogMessage(message);
             }
         }
+    }
+
+    public interface IProgressHandler
+    {
+        void ReportProgress(int persentage, object state);
+        void CheckForCancel();
+        void ReportMessage(string message);
     }
 }

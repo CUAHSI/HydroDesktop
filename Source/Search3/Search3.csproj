@@ -123,7 +123,6 @@
       <DependentUpon>SearchProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Searching\Exceptions\SearchSettingsException.cs" />
-    <Compile Include="Searching\SearchWithFailover.cs" />
     <Compile Include="Settings\AreaSettings.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />

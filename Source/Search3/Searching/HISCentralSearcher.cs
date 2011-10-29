@@ -1,46 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices;
-using System.ComponentModel;
 using DotSpatial.Data;
 using System.Net;
 using System.IO;
 using System.Globalization;
 using System.Web;
 using System.Xml;
+using Search3.Settings;
 using log4net;
 
 namespace Search3.Searching
 {
     //todo: Copied from Search2. Need to be refactored.
 
-    public interface IHISCentralSearcher
+    public interface ISearcher
     {
-        /// <summary>
-        /// Defined to make the class testable using MOQ
-        /// Gets all data series that match the
-        /// specified criteria and are within the geographic polygon
-        /// </summary>
-        /// <param name="polygons">one or multiple polygons</param>
-        /// <param name="keywords">array of keywords. If set to null,
-        /// results will not be filtered by keyword.</param>
-        /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
-        /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="e">The results of the search (convert to DataTable)</param>
-        /// <returns>A list of data series matching the specified criteria</returns>
-        void GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e);
-        void GetSeriesCatalogInRectangle(double xMin, double xMax, double yMin, double yMax, string[] keywords, DateTime startDate, DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e);
-        void GetWebServicesXml(string xmlFileName);
+        SearchResult GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
+                                       DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker);
+
+        SearchResult GetSeriesCatalogInRectangle(Box extentBox, string[] keywords,
+                                         DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs,
+                                         IProgressHandler bgWorker);
     }
 
     /// <summary>
-    /// Search for data series using HIS Central
-    /// 
+    /// Search for data series using HIS Central 
     /// </summary>
-    public class HISCentralSearcher :  IHISCentralSearcher
+    public class HISCentralSearcher : ISearcher
     {
         private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -372,33 +363,32 @@ namespace Search3.Searching
         /// Gets all search result that match the
         /// specified criteria and are within the specific rectangle
         /// </summary>
+        /// <param name="extentBox">Extent box for rectangle</param>
         /// <param name="keywords">array of keywords. If set to null,
         /// results will not be filtered by keyword.</param>
         /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="e">The results of the search (convert to DataTable)</param>
         /// <returns>A list of data series matching the specified criteria</returns>
-        public void GetSeriesCatalogInRectangle(double xMin, double xMax, double yMin, double yMax, string[] keywords,
-            DateTime startDate, DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
+        public SearchResult GetSeriesCatalogInRectangle(Box extentBox, string[] keywords,
+            DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
         {
+            if (extentBox == null) throw new ArgumentNullException("extentBox");
             if (bgWorker == null) throw new ArgumentNullException("bgWorker");
 
             if (keywords == null || keywords.Length == 0)
             {
-                keywords = new[] { String.Empty };
+                keywords = new[] {String.Empty};
             }
 
             double tileWidth = 1.0; //the initial tile width is set to 1 degree
             double tileHeight = 1.0; //the initial tile height is set to 1 degree
-            
+
             bgWorker.CheckForCancel();
 
             //get the list of series
             var fullSeriesList = new List<SeriesDataCart>();
-            
+
             //Split the polygon area bounding box into 1x1 decimal degree tiles
- 
-            var extentBox = new Box(xMin, xMax, yMin, yMax);
             IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -410,17 +400,18 @@ namespace Search3.Searching
                 var tileSeriesList = new List<SeriesDataCart>();
                 foreach (var keyword in keywords)
                 {
-                    bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i+1, tiles.Count ));
+                    bgWorker.ReportMessage(string.Format(
+                        "Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i + 1, tiles.Count));
                     bgWorker.CheckForCancel();
                     tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keyword,
-                                                                   startDate, endDate, serviceIDs));
+                                                                   startDate, endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
                 }
 
                 fullSeriesList.AddRange(tileSeriesList);
 
                 // Report progress
                 var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                int percentProgress = (i * 100) / tiles.Count + 1;
+                int percentProgress = (i*100)/tiles.Count + 1;
                 bgWorker.ReportProgress(percentProgress, message);
             }
 
@@ -434,14 +425,11 @@ namespace Search3.Searching
             }
 
             // (5) Final Background worker updates
-            if (e != null)
-            {
-                bgWorker.CheckForCancel();
+            bgWorker.CheckForCancel();
 
-                // Report progress
-                bgWorker.ReportProgress(100, "Search Finished");
-                e.Result = resultFs;
-            }  
+            // Report progress
+            bgWorker.ReportProgress(100, "Search Finished");
+            return resultFs;
         }
 
         /// <summary>
@@ -455,12 +443,11 @@ namespace Search3.Searching
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
         /// <param name="serviceIDs">array of serviceIDs provided by GetServicesInBox.
         /// <param name="bgWorker">The background worker (may be null) for reporting progress</param>
-        /// <param name="e">The results of the search (convert to DataTable)</param>
         /// If set to null, results will not be filtered by web service.</param>
         /// <param name="bgWorker">Prpgress handler.</param>
         /// <returns>A list of data series matching the specified criteria</returns>
-        public void GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
-            DateTime endDate, int[] serviceIDs, IProgressHandler bgWorker, DoWorkEventArgs e)
+        public SearchResult GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
+            DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
         {
             if (polygons == null) throw new ArgumentNullException("polygons");
             if (bgWorker == null) throw new ArgumentNullException("bgWorker");
@@ -473,7 +460,7 @@ namespace Search3.Searching
 
             if (keywords == null || keywords.Length == 0)
             {
-                keywords = new[] { String.Empty };
+                keywords = new[] {String.Empty};
             }
 
             double tileWidth = 1.0; //the initial tile width is set to 1 degree
@@ -492,7 +479,7 @@ namespace Search3.Searching
                 }
 
                 var polygon = polygons[index];
-                var env = polygon.Envelope;  //Split the polygon area bounding box into 1x1 decimal degree tiles
+                var env = polygon.Envelope; //Split the polygon area bounding box into 1x1 decimal degree tiles
                 var extentBox = new Box(env.Left(), env.Right(), env.Bottom(), env.Top());
                 var tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
                 for (int i = 0; i < tiles.Count; i++)
@@ -506,10 +493,13 @@ namespace Search3.Searching
                     var tileSeriesList = new List<SeriesDataCart>();
                     foreach (var keyword in keywords)
                     {
-                        bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i + 1, tiles.Count));
+                        bgWorker.ReportMessage(
+                            string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
+                                          i + 1, tiles.Count));
                         bgWorker.CheckForCancel();
-                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keyword,
-                                                                       startDate, endDate, serviceIDs));
+                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax,
+                                                                       keyword,
+                                                                       startDate, endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
                     }
 
                     // Clip the points by polygon
@@ -532,14 +522,10 @@ namespace Search3.Searching
             }
 
             // (5) Final Background worker updates
-            if (e != null)
-            {
-                bgWorker.CheckForCancel();
 
-                // Report progress
-                bgWorker.ReportProgress(100, "Search Finished");
-                e.Result = resultFs;
-            }  
+            bgWorker.CheckForCancel();
+            bgWorker.ReportProgress(100, "Search Finished");
+            return resultFs;
         }
 
         #endregion

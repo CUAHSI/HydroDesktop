@@ -26,8 +26,7 @@ namespace Search3.Searching
             var searchCritria = new SearchCriteria();
 
             searchCritria.SearchMethod = settings.CatalogSettings.TypeOfCatalog;
-            foreach (var keyword in settings.KeywordsSettings.SelectedKeywords)
-                searchCritria.keywords.Add(keyword);
+            searchCritria.Keywords.AddRange(settings.KeywordsSettings.SelectedKeywords);
 
             /* this region to be refactored /*/
             // Validate and refine the list of keywords.
@@ -38,14 +37,14 @@ namespace Search3.Searching
             {
                 var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
                 var ontologyHelper = new HdSearchOntologyHelper();
-                ontologyHelper.RefineKeywordList(searchCritria.keywords, ontologyXml);
+                ontologyHelper.RefineKeywordList(searchCritria.Keywords, ontologyXml);
             }
             else
             {
                 //in the special case of metadata cache - hydrosphere keyword
-                if (searchCritria.keywords.Contains("Hydrosphere"))
+                if (searchCritria.Keywords.Contains("Hydrosphere"))
                 {
-                    searchCritria.keywords.Clear();
+                    searchCritria.Keywords.Clear();
                 }
             }
             /* this region to be refactored /*/
@@ -58,14 +57,11 @@ namespace Search3.Searching
             //if all webservices are selected, pass an empty array
             if (settings.WebServicesSettings.TotalCount == settings.WebServicesSettings.CheckedCount)
             {
-                searchCritria.serviceIDs.Clear();
+                searchCritria.WebServices.Clear();
             }
             else
             {
-                foreach (var item in settings.WebServicesSettings.WebServices.Where(item => item.Checked))
-                {
-                    searchCritria.serviceIDs.Add(Convert.ToInt32(item.ServiceID));
-                }
+                searchCritria.WebServices.AddRange(settings.WebServicesSettings.WebServices.Where(item => item.Checked));
             }
 
             //get the HIS Central URL
