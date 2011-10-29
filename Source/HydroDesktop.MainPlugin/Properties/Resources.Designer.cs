@@ -80,5 +80,14 @@ namespace HydroDesktop.Main.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;D_WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137,298.257223562997]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]].
+        /// </summary>
+        internal static string wgs_84_esri_string {
+            get {
+                return ResourceManager.GetString("wgs_84_esri_string", resourceCulture);
+            }
+        }
     }
 }
