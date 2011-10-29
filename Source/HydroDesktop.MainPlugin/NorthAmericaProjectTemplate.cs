@@ -23,10 +23,7 @@ namespace HydroDesktop.Main
         public static Boolean LoadBaseMaps(AppManager applicationManager1, Map mainMap)
         {
             //set the projection of main map
-            if (mainMap.Projection == null)
-            {
-                mainMap.Projection = projWorld.WebMercator;
-            }
+            mainMap.Projection = projWorld.WebMercator;
             
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
 
@@ -226,8 +223,7 @@ namespace HydroDesktop.Main
             xy[2] = defaultMapExtent.MaxX;
             xy[3] = defaultMapExtent.MaxY;
             double[] z = new double[] { 0, 0 };
-            ProjectionInfo wgs84 =ProjectionInfo.FromEsriString(
-            "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]");
+            ProjectionInfo wgs84 =ProjectionInfo.FromEsriString(Properties.Resources.wgs_84_esri_string);
             Reproject.ReprojectPoints(xy, z, wgs84, projWorld.WebMercator, 0, 2);
             map.ViewExtents = new Extent(xy);
             map.MapFrame.ResetExtents();
