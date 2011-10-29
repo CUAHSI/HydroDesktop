@@ -46,8 +46,8 @@ namespace HydroDesktop.Search
         public static List<Box> CreateTiles(Box bigBoundingBox, double tileWidth, double tileHeight)
         {
             var tiles = new List<Box>();
-            double fullWidth = Math.Abs(bigBoundingBox.xmax - bigBoundingBox.xmin);
-            double fullHeight = Math.Abs(bigBoundingBox.ymax - bigBoundingBox.ymin);
+            double fullWidth = Math.Abs(bigBoundingBox.XMax - bigBoundingBox.XMin);
+            double fullHeight = Math.Abs(bigBoundingBox.YMax - bigBoundingBox.YMin);
 
             if (fullWidth < tileWidth || fullHeight < tileHeight)
             {
@@ -55,7 +55,7 @@ namespace HydroDesktop.Search
                 return tiles;
             }
 
-            double yll = bigBoundingBox.ymin; //y-coordinate of the tile's lower left corner
+            double yll = bigBoundingBox.YMin; //y-coordinate of the tile's lower left corner
             var numColumns = (int)(Math.Ceiling(fullWidth / tileWidth));
             var numRows = (int)(Math.Ceiling(fullHeight / tileHeight));
             var lastTileWidth = fullWidth - ((numColumns - 1) * tileWidth);
@@ -64,7 +64,7 @@ namespace HydroDesktop.Search
 
             for (r = 0; r < numRows; r++)
             {
-                double xll = bigBoundingBox.xmin; //x-coordinate of the tile's lower left corner
+                double xll = bigBoundingBox.XMin; //x-coordinate of the tile's lower left corner
 
                 if (r == numRows - 1)
                 {

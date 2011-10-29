@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using DotSpatial.Data;
+using HydroDesktop.WebServices;
 using Search3.Searching.Exceptions;
 using Search3.Settings;
 using log4net;
@@ -106,7 +107,7 @@ namespace Search3.Searching
 				else
 				{
 					log.Info ( "Search in Box" );
-					var coords = (AreaRectangle)parameters.areaParameter;
+					var coords = (Box)parameters.areaParameter;
 					//*             searcher.GetSeriesCatalogInRectangle(
 					//                          (double)coords[0], (double)coords[2], (double)coords[1], (double)coords[3],
 					searcher.GetSeriesCatalogInRectangle (
@@ -125,7 +126,7 @@ namespace Search3.Searching
             if (e == null) throw new ArgumentNullException("e");
             if (bgWorker == null) throw new ArgumentNullException("bgWorker");
 
-            MetadataCacheSearcher searcher = new MetadataCacheSearcher();
+            var searcher = new MetadataCacheSearcher();
             SearchCriteria parameters;
             if (!e.Argument.GetType().Equals(typeof(SearchCriteria)))
             {
@@ -150,7 +151,7 @@ namespace Search3.Searching
                 else
                 {
                     log.Info("Search in Box");
-                    var coords = (AreaRectangle)parameters.areaParameter;
+                    var coords = (Box)parameters.areaParameter;
                     searcher.GetSeriesCatalogInRectangle(
                         coords.XMin, coords.XMax, coords.YMin, coords.YMax,
                         parameters.keywords.ToArray(),

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HydroDesktop.WebServices;
 using Search3.Settings;
 
 namespace Search3.Searching
@@ -25,7 +26,7 @@ namespace Search3.Searching
             set
             {
            
-            if (value.GetType().Equals(typeof(AreaRectangle)))
+            if (value.GetType().Equals(typeof(Box)))
                 {
                     _boundingBoxSearch = true;
                 }

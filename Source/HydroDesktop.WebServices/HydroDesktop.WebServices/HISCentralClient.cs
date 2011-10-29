@@ -331,10 +331,10 @@ namespace HydroDesktop.WebServices
             {
                 try
                 {
-                    param[0] = latLongBox.xmin;
-                    param[1] = latLongBox.xmax;
-                    param[2] = latLongBox.ymin;
-                    param[3] = latLongBox.ymax;
+                    param[0] = latLongBox.XMin;
+                    param[1] = latLongBox.XMax;
+                    param[2] = latLongBox.YMin;
+                    param[3] = latLongBox.YMax;
                     param[4] = keywords[i];
                     param[5] = "";
                     param[6] = DateToString(beginDate);
@@ -638,10 +638,10 @@ namespace HydroDesktop.WebServices
             object boxObj = _assembly.CreateInstance("Box");
             Type boxType = boxObj.GetType();
             PropertyInfo[] boxProperties = boxType.GetProperties();
-            boxProperties[0].SetValue(boxObj, box.xmin, null);
-            boxProperties[1].SetValue(boxObj, box.xmax, null);
-            boxProperties[2].SetValue(boxObj, box.ymin, null);
-            boxProperties[3].SetValue(boxObj, box.ymax, null);
+            boxProperties[0].SetValue(boxObj, box.XMin, null);
+            boxProperties[1].SetValue(boxObj, box.XMax, null);
+            boxProperties[2].SetValue(boxObj, box.YMin, null);
+            boxProperties[3].SetValue(boxObj, box.YMax, null);
 
             return boxObj;
         }
