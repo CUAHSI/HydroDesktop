@@ -10,8 +10,8 @@ namespace HydroDesktop.WebServices
         public Box(double xMin, double xMax, double yMin, double yMax)
         {
             XMin = xMin;
-            YMin = yMin;
             XMax = xMax;
+            YMin = yMin;
             YMax = yMax;
         }
 
