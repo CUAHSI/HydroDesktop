@@ -56,6 +56,11 @@ namespace Search3.Settings
             DescriptionUrl = source.DescriptionUrl;
             ServiceUrl = source.ServiceUrl;
             Checked = source.Checked;
+            ServiceBoundingBox = source.ServiceBoundingBox == null
+                                     ? null
+                                     : new Box(source.ServiceBoundingBox.XMin,
+                                               source.ServiceBoundingBox.XMax, source.ServiceBoundingBox.YMin,
+                                               source.ServiceBoundingBox.YMax);
         }
     }
 }

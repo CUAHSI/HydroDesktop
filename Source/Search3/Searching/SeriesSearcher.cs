@@ -24,56 +24,26 @@ namespace Search3.Searching
             }
 
             bgWorker.CheckForCancel();
-            
-            var fullSeriesList = new List<SeriesDataCart>();
-            var tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-            for (int i = 0; i < tiles.Count; i++)
-            {
-                var tile = tiles[i];
-
-                bgWorker.CheckForCancel();
-
-                // Do the web service call
-                var tileSeriesList = new List<SeriesDataCart>();
-                foreach (var keyword in keywords)
-                {
-                    bgWorker.ReportMessage(string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i + 1, tiles.Count));
-                    bgWorker.CheckForCancel();
-                    tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keyword,
-                                                                   startDate, endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
-                }
-
-                fullSeriesList.AddRange(tileSeriesList);
-
-                // Report progress
-                var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                var percentProgress = (i * 100) / tiles.Count + 1;
-                bgWorker.ReportProgress(percentProgress, message);
-            }
-
-            //(4) Create the Feature Set
+            var extent = new Extent(extentBox.XMin, extentBox.YMin, extentBox.XMax, extentBox.YMax);
+            var fullSeriesList = GetSeriesListForExtent(extent, keywords, tileWidth, tileHeight, startDate, endDate,
+                                                        serviceIDs, bgWorker, series => true);
             SearchResult resultFs = null;
             if (fullSeriesList.Count > 0)
             {
                 bgWorker.ReportMessage("Calculating Points...");
                 resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
             }
-
-            // (5) Final Background worker updates
+            
             bgWorker.CheckForCancel();
-
-            // Report progress
             bgWorker.ReportProgress(100, "Search Finished.");
             return resultFs;
         }
-
+        
         public SearchResult GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, double tileWidth, double tileHeight,
                                                       DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
         {
             if (polygons == null) throw new ArgumentNullException("polygons");
             if (bgWorker == null) throw new ArgumentNullException("bgWorker");
-
-            //(1): Get the union of the polygons
             if (polygons.Count == 0)
             {
                 throw new ArgumentException("The number of polygons must be greater than zero.");
@@ -83,11 +53,7 @@ namespace Search3.Searching
             {
                 keywords = new[] { String.Empty };
             }
-
-            // Check for cancel
-            bgWorker.CheckForCancel();
-
-            //get the list of series
+            
             var fullSeriesList = new List<SeriesDataCart>();
             for (int index = 0; index < polygons.Count; index++)
             {
@@ -96,11 +62,73 @@ namespace Search3.Searching
                     bgWorker.ReportMessage(string.Format("Processing polygons: {0} of {1}", index + 1, polygons.Count));
                 }
 
+                bgWorker.CheckForCancel();
                 var polygon = polygons[index];
-                var env = polygon.Envelope; //Split the polygon area bounding box into 1x1 decimal degree tiles
-                var extentBox = new Box(env.Left(), env.Right(), env.Bottom(), env.Top());
-                var tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-                for (int i = 0; i < tiles.Count; i++)
+                var extentBox = new Extent(polygon.Envelope);
+                var seriesForPolygon = GetSeriesListForExtent(extentBox, keywords, tileWidth, tileHeight, startDate,
+                                                              endDate,
+                                                              serviceIDs, bgWorker,
+                                                              item => polygon.Intersects(new Coordinate(item.Longitude, item.Latitude)));
+                fullSeriesList.AddRange(seriesForPolygon);
+            }
+
+            SearchResult resultFs = null;
+            if (fullSeriesList.Count > 0)
+            {
+                bgWorker.ReportMessage("Calculating Points...");
+                resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
+            }
+            
+            bgWorker.CheckForCancel();
+            bgWorker.ReportProgress(100, "Search Finished.");
+            return resultFs;
+        }
+
+        private List<SeriesDataCart> GetSeriesListForExtent(Extent extent, string[] keywords, double tileWidth, double tileHeight,
+                                                      DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, 
+                                                      IProgressHandler bgWorker, Func<SeriesDataCart, bool> seriesFilter)
+        {
+            var servicesToSearch = new List<Tuple<WebServiceNode[], Extent>>();
+            if (serviceIDs.Length > 0)
+            {
+                foreach (var webService in serviceIDs)
+                {
+                    if (webService.ServiceBoundingBox == null)
+                    {
+                        servicesToSearch.Add(new Tuple<WebServiceNode[], Extent>(new[] { webService }, extent));
+                        continue;
+                    }
+
+                    var wsBox = webService.ServiceBoundingBox;
+                    var wsExtent = new Extent(wsBox.XMin, wsBox.YMin, wsBox.XMax, wsBox.YMax);
+                    if (wsExtent.Intersects(extent))
+                    {
+                        servicesToSearch.Add(new Tuple<WebServiceNode[], Extent>(new[] { webService }, wsExtent.Intersection(extent)));
+                    }
+                }
+            }
+            else
+            {
+                servicesToSearch.Add(new Tuple<WebServiceNode[], Extent>(new WebServiceNode[] { }, extent));
+            }
+
+            var servicesWithExtents = new List<Tuple<WebServiceNode[], List<Extent>>>(servicesToSearch.Count);
+            int totalTilesCount = 0;
+            foreach (var wsInfo in servicesToSearch)
+            {
+                var tiles = SearchHelper.CreateTiles(wsInfo.Item2, tileWidth, tileHeight);
+                servicesWithExtents.Add(new Tuple<WebServiceNode[], List<Extent>>(wsInfo.Item1, tiles));
+                totalTilesCount += tiles.Count;
+            }
+
+            var fullSeriesList = new List<SeriesDataCart>();
+            int currentTileIndex = 0;
+            foreach (var wsInfo in servicesWithExtents)
+            {
+                var webServices = wsInfo.Item1;
+                var tiles = wsInfo.Item2;
+
+                for (int i = 0; i < tiles.Count; i++, currentTileIndex++)
                 {
                     var tile = tiles[i];
 
@@ -112,35 +140,23 @@ namespace Search3.Searching
                     {
                         bgWorker.ReportMessage(
                             string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
-                                          i + 1, tiles.Count));
+                                          currentTileIndex + 1, totalTilesCount));
                         bgWorker.CheckForCancel();
-                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax,
-                                                                       keyword, startDate, endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
+                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY,
+                                                                       keyword, startDate, endDate,
+                                                                       webServices.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
                     }
 
-                    // Clip the points by polygon
-                    var seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
-                    fullSeriesList.AddRange(seriesInPolygon);
+                    fullSeriesList.AddRange(tileSeriesList.Where(seriesFilter));
 
                     // Report progress
-                    var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                    var percentProgress = (i * 100) / tiles.Count + 1;
+                    var message = string.Format("{0} Series found", fullSeriesList.Count);
+                    var percentProgress = (currentTileIndex * 100) / totalTilesCount + 1;
                     bgWorker.ReportProgress(percentProgress, message);
                 }
             }
 
-            //(4) Create the Feature Set
-            SearchResult resultFs = null;
-            if (fullSeriesList.Count > 0)
-            {
-                bgWorker.ReportMessage("Calculating Points...");
-                resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
-            }
-
-            // (5) Final Background worker updates
-            bgWorker.CheckForCancel();
-            bgWorker.ReportProgress(100, "Search Finished.");
-            return resultFs;
+            return fullSeriesList;
         }
 
         /// <summary>

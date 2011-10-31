@@ -43,11 +43,11 @@ namespace Search3.Searching
         /// <param name="tileWidth">The tile width in decimal degrees</param>
         /// <param name="tileHeight">The tile height (south-north) in decimal degrees</param>
         /// <returns></returns>
-        public static List<Box> CreateTiles(Box bigBoundingBox, double tileWidth, double tileHeight)
+        public static List<Extent> CreateTiles(Extent bigBoundingBox, double tileWidth, double tileHeight)
         {
-            var tiles = new List<Box>();
-            double fullWidth = Math.Abs(bigBoundingBox.XMax - bigBoundingBox.XMin);
-            double fullHeight = Math.Abs(bigBoundingBox.YMax - bigBoundingBox.YMin);
+            var tiles = new List<Extent>();
+            double fullWidth = Math.Abs(bigBoundingBox.MaxX - bigBoundingBox.MinX);
+            double fullHeight = Math.Abs(bigBoundingBox.MaxY - bigBoundingBox.MinY);
 
             if (fullWidth < tileWidth || fullHeight < tileHeight)
             {
@@ -55,7 +55,7 @@ namespace Search3.Searching
                 return tiles;
             }
 
-            double yll = bigBoundingBox.YMin; //y-coordinate of the tile's lower left corner
+            double yll = bigBoundingBox.MinY; //y-coordinate of the tile's lower left corner
             var numColumns = (int)(Math.Ceiling(fullWidth / tileWidth));
             var numRows = (int)(Math.Ceiling(fullHeight / tileHeight));
             var lastTileWidth = fullWidth - ((numColumns - 1) * tileWidth);
@@ -64,7 +64,7 @@ namespace Search3.Searching
 
             for (r = 0; r < numRows; r++)
             {
-                double xll = bigBoundingBox.XMin; //x-coordinate of the tile's lower left corner
+                double xll = bigBoundingBox.MinX; //x-coordinate of the tile's lower left corner
 
                 if (r == numRows - 1)
                 {
@@ -74,8 +74,8 @@ namespace Search3.Searching
                 int c;
                 for (c = 0; c < numColumns; c++)
                 {
-                    Box newTile = c == (numColumns - 1) ? new Box(xll, xll + lastTileWidth, yll, yll + tileHeight) : 
-                                                          new Box(xll, xll + tileWidth, yll, yll + tileHeight);
+                    var newTile = c == (numColumns - 1) ? new Extent(xll, yll, xll + lastTileWidth, yll + tileHeight) :
+                                                          new Extent(xll, yll, xll + tileWidth, yll + tileHeight);
                     tiles.Add(newTile);
                     xll = xll + tileWidth;
                 }
