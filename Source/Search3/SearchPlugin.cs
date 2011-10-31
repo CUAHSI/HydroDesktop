@@ -361,20 +361,7 @@ namespace Search3
             var xMax = _rectangleDrawing.RectangleExtent.MaxX;
             var yMax = _rectangleDrawing.RectangleExtent.MaxY;
 
-            var xy = new[] { xMin, yMin, xMax, yMax };
-
-            string esri = Resources.wgs_84_esri_string;
-            var wgs84 = ProjectionInfo.FromEsriString(esri);
-
-            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, wgs84, 0, 2);
-
-            // Save rectangle
-            var xmin = xy[0];
-            var ymin = xy[1];
-            var xmax = xy[2];
-            var ymax = xy[3];
-            var rectangle = new Box(xmin, xmax, ymin, ymax);
-            SearchSettings.Instance.AreaSettings.AreaRectangle = rectangle;
+            SearchSettings.Instance.AreaSettings.SetAreaRectangle(new Box(xMin, xMax, yMin, yMax), App.Map.Projection);
         }
 
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
@@ -427,7 +414,7 @@ namespace Search3
             if (_rectangleDrawing == null) return;
 
             _rectangleDrawing.Deactivate();
-            SearchSettings.Instance.AreaSettings.AreaRectangle = null;
+            SearchSettings.Instance.AreaSettings.SetAreaRectangle(null, null);
         }
 
         void rbAttribute_Click(object sender, EventArgs e)

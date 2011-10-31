@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DotSpatial.Data;
-using HydroDesktop.WebServices;
+using Search3.Keywords;
 using Search3.Searching.Exceptions;
 using Search3.Settings;
 
@@ -179,29 +177,51 @@ namespace Search3.Searching
             LogMessage("Search started.");
 
             var settings = (SearchSettings) state;
-            var parameters = Search2Helper.GetSearchParameters(settings);
             var progressHandler = new ProgressHandler(this);
-            var searcher = parameters.SearchMethod == TypeOfCatalog.HisCentral
-                               ? (ISearcher) new HISCentralSearcher(parameters.hisCentralURL)
+            var searcher = settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral
+                               ? (ISearcher) new HISCentralSearcher(settings.CatalogSettings.HISCentralUrl)
                                : new MetadataCacheSearcher();
-            SearchResult result = null;
 
-            if (parameters.areaParameter != null)
+            SearchResult result;
+            var webServices = settings.WebServicesSettings.TotalCount == settings.WebServicesSettings.CheckedCount
+                                  ? new WebServiceNode[] {}
+                                  : settings.WebServicesSettings.WebServices.Where(item => item.Checked).ToArray();
+
+            var keywords = settings.KeywordsSettings.SelectedKeywords.ToList();
+
+            if (settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral)
             {
-                if (!parameters.BoundinBoxSearch)
+                //todo: do we need to do this?
+                var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
+                var ontologyHelper = new HdSearchOntologyHelper();
+                ontologyHelper.RefineKeywordList(keywords, ontologyXml);
+            }
+            else
+            {
+                //in the special case of metadata cache - hydrosphere keyword
+                if (keywords.Contains("Hydrosphere"))
                 {
-                    result = searcher.GetSeriesCatalogInPolygon((List<IFeature>)parameters.areaParameter,
-                                                       parameters.Keywords.ToArray(),
-                                                       parameters.startDate, parameters.endDate,
-                                                       parameters.WebServices.ToArray(), progressHandler);
+                    keywords.Clear();
                 }
-                else
-                {
-                    result = searcher.GetSeriesCatalogInRectangle((Box)parameters.areaParameter,
-                                                         parameters.Keywords.ToArray(),
-                                                         parameters.startDate, parameters.endDate,
-                                                         parameters.WebServices.ToArray(), progressHandler);
-                }
+            }
+
+            if (settings.AreaSettings.Polygons != null)
+            {
+                var polygons = Area.AreaHelper.ReprojectPolygonsToWGS84(settings.AreaSettings.Polygons);
+
+                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(),
+                                                            settings.DateSettings.StartDate,
+                                                            settings.DateSettings.EndDate,
+                                                            webServices, progressHandler);
+            }else
+            {
+                var box = Area.AreaHelper.ReprojectBoxToWGS84(settings.AreaSettings.AreaRectangle,
+                                                              settings.AreaSettings.RectangleProjection);
+
+                result = searcher.GetSeriesCatalogInRectangle(box, keywords.ToArray(),
+                                                              settings.DateSettings.StartDate,
+                                                              settings.DateSettings.EndDate,
+                                                              webServices, progressHandler);
             }
 
             LogMessage("Search finished successfully.");
