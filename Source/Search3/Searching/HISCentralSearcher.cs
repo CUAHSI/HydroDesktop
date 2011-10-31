@@ -1,47 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.WebServices;
-using DotSpatial.Data;
 using System.Net;
 using System.IO;
 using System.Globalization;
 using System.Web;
 using System.Xml;
-using Search3.Settings;
-using log4net;
 
 namespace Search3.Searching
 {
-    //todo: Copied from Search2. Need to be refactored.
-
-    public interface ISearcher
-    {
-        SearchResult GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
-                                       DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker);
-
-        SearchResult GetSeriesCatalogInRectangle(Box extentBox, string[] keywords,
-                                         DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs,
-                                         IProgressHandler bgWorker);
-    }
-
     /// <summary>
     /// Search for data series using HIS Central 
     /// </summary>
-    public class HISCentralSearcher : ISearcher
+    public class HISCentralSearcher : SeriesSearcher
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        #region Fields
 
-        /* I (valentine) honestly have no idea why this cals exsits. Jiri added it
-               * it did not inherit from HydroDesktop.Data.Search.HISCentralSearcher
-               * even though it had many of the same methods.
-               * I added HydroDesktop.Data.Search.HISCentralSearcher
-               * */
+        private readonly string _hisCentralUrl;
+
+        #endregion
+
         #region Constructor
-       
+
         /// <summary>
         /// Create a new HIS Central Searcher which connects to the HIS Central web
         /// services
@@ -49,67 +30,19 @@ namespace Search3.Searching
         /// <param name="hisCentralURL">The URL of HIS Central</param>
         public HISCentralSearcher(string hisCentralURL)
         {
-            HISCentralUrl = hisCentralURL;
+            _hisCentralUrl = hisCentralURL;
         }
 
         #endregion
 
-        #region Fields
-
-        private bool _usePagedQuery = false;
-        
-        #endregion
-
-        #region ISearcher Members
-
-        /// <summary>
-        /// Gets or sets the HIS Central URL
-        /// </summary>
-        public string HISCentralUrl { get; set; }
-
-        /// <summary>
-        /// The query method for HIS Central. If use PagedQuery is true,
-        /// then the new method 'getSeriesCatalogForBoxPaged()' is used.
-        /// </summary>
-        public bool UsePagedQuery
-        {
-            get
-            {
-                return _usePagedQuery;
-            }
-            set
-            {
-                _usePagedQuery = value;
-            }
-        }
-
-        /// <summary>
-        /// Get the 'Ontology Tree' and save it to the xml file
-        /// </summary>
-        public void GetOntologyTreeXml(string xmlFileName)
-        {
-            WebClient client = new WebClient();
-            string url = HISCentralUrl + "/getOntologyTree?conceptKeyword=Hydrosphere";
-
-            try
-            {
-                client.DownloadFile(url, xmlFileName);
-            }
-            catch (Exception ex)
-            {
-                String error ="Error refreshing Ontology keywords from HIS Central. Using the existing list of keywords.";
-                log.Error(error, ex);
-                throw;
-            }
-        }
+        #region Public methods
 
         public void GetWebServicesXml(string xmlFileName)
         {
             HttpWebResponse response = null;
-            int bytesRead = 0;
             try
             {
-                string url = HISCentralUrl + "/GetWaterOneFlowServiceInfo";
+                string url = _hisCentralUrl + "/GetWaterOneFlowServiceInfo";
 
                 var request = (HttpWebRequest) WebRequest.Create(url);
                 //Endpoint is the URL to which u are making the request.
@@ -127,17 +60,13 @@ namespace Search3.Searching
                     using (var localFileStream = new FileStream(xmlFileName, FileMode.Create))
                     {
                         var buffer = new byte[255];
+                        int bytesRead;
                         while ((bytesRead = responseStream.Read(buffer, 0, buffer.Length)) > 0)
                         {
                             localFileStream.Write(buffer, 0, bytesRead);
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                throw;
             }
             finally
             {
@@ -148,29 +77,20 @@ namespace Search3.Searching
             }
         }
 
-        /// <summary>
-        /// Gets all data series within the geographic bounding box that match the
-        /// specified criteria
-        /// </summary>
-        /// <param name="xMin">minimum x (longitude)</param>
-        /// <param name="xMax">maximum x (longitude)</param>
-        /// <param name="yMin">minimum y (latitude)</param>
-        /// <param name="yMax">maximum y (latitude)</param>
-        /// <param name="keyword">the concept keyword. If set to null,
-        /// results will not be filtered by concept keyword</param>
-        /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
-        /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
-        /// If set to null, results will not be filtered by web service.</param>
-        /// <returns>A list of data series matching the specified criteria</returns>
-        private IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string keyword,
-            DateTime startDate, DateTime endDate, int[] networkIDs)
+        #endregion
+
+        #region Private methods
+
+        protected override IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin,
+                                                                              double yMax, string keyword,
+                                                                              DateTime startDate, DateTime endDate,
+                                                                              int[] networkIDs)
         {
             //call the web service dynamically, using WebClient
             var usaFormat = new CultureInfo("en-US");
 
             var url = new StringBuilder();
-            url.Append(HISCentralUrl);
+            url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
             url.Append(HttpUtility.UrlEncode(xMin.ToString(usaFormat)));
@@ -180,14 +100,14 @@ namespace Search3.Searching
             url.Append(HttpUtility.UrlEncode(yMin.ToString(usaFormat)));
             url.Append("&ymax=");
             url.Append(HttpUtility.UrlEncode(yMax.ToString(usaFormat)));
-            
+
             //to append the keyword
             url.Append("&conceptKeyword=");
             if (!String.IsNullOrEmpty(keyword))
             {
-                url.Append(HttpUtility.UrlEncode(keyword));    
+                url.Append(HttpUtility.UrlEncode(keyword));
             }
-            
+
             //to append the list of networkIDs separated by comma
             url.Append("&networkIDs=");
             if (networkIDs != null)
@@ -204,19 +124,19 @@ namespace Search3.Searching
                 }
                 url.Append(HttpUtility.UrlEncode(serviceParam.ToString()));
             }
-            
+
             //to append the start and end date
             url.Append("&beginDate=");
             url.Append(HttpUtility.UrlEncode(startDate.ToString("MM/dd/yyyy")));
             url.Append("&endDate=");
             url.Append(HttpUtility.UrlEncode(endDate.ToString("MM/dd/yyyy")));
-            
+
             //to encode the URL
             string finalURL = url.ToString();
 
             //to read the xml stream
             var seriesList = new List<SeriesDataCart>();
-            using(var reader = XmlReader.Create(finalURL))
+            using (var reader = XmlReader.Create(finalURL))
             {
                 while (reader.Read())
                 {
@@ -238,7 +158,7 @@ namespace Search3.Searching
                                 var userFromServerPercentage = serverDateRange.TotalDays > 0
                                                                    ? userDateRange.TotalDays/serverDateRange.TotalDays
                                                                    : 1.0;
-                                if (userFromServerPercentage > 1.0) 
+                                if (userFromServerPercentage > 1.0)
                                     userFromServerPercentage = 1.0;
                                 var esimatedValueCount = (int) (series.ValueCount*userFromServerPercentage);
 
@@ -262,10 +182,10 @@ namespace Search3.Searching
         /// </summary>
         /// <param name="reader">the xml reader</param>
         /// <returns>the list of intermediate 'SeriesDataCart' objects</returns>
-        private static SeriesDataCart ReadSeriesFromHISCentral(XmlReader reader)
+        private SeriesDataCart ReadSeriesFromHISCentral(XmlReader reader)
         {
             var usaCulture = new CultureInfo("en-US");
-            
+
             var series = new SeriesDataCart();
             while (reader.Read())
             {
@@ -347,7 +267,7 @@ namespace Search3.Searching
                         case "timesupport":
                             reader.Read();
                             series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
-                            break;     
+                            break;
                     }
                 }
                 else if (reader.NodeType == XmlNodeType.EndElement && nodeName == "seriesrecord")
@@ -357,175 +277,6 @@ namespace Search3.Searching
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets all search result that match the
-        /// specified criteria and are within the specific rectangle
-        /// </summary>
-        /// <param name="extentBox">Extent box for rectangle</param>
-        /// <param name="keywords">array of keywords. If set to null,
-        /// results will not be filtered by keyword.</param>
-        /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
-        /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <returns>A list of data series matching the specified criteria</returns>
-        public SearchResult GetSeriesCatalogInRectangle(Box extentBox, string[] keywords,
-            DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
-        {
-            if (extentBox == null) throw new ArgumentNullException("extentBox");
-            if (bgWorker == null) throw new ArgumentNullException("bgWorker");
-
-            if (keywords == null || keywords.Length == 0)
-            {
-                keywords = new[] {String.Empty};
-            }
-
-            double tileWidth = 1.0; //the initial tile width is set to 1 degree
-            double tileHeight = 1.0; //the initial tile height is set to 1 degree
-
-            bgWorker.CheckForCancel();
-
-            //get the list of series
-            var fullSeriesList = new List<SeriesDataCart>();
-
-            //Split the polygon area bounding box into 1x1 decimal degree tiles
-            IList<Box> tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-            for (int i = 0; i < tiles.Count; i++)
-            {
-                var tile = tiles[i];
-
-                bgWorker.CheckForCancel();
-
-                // Do the web service call
-                var tileSeriesList = new List<SeriesDataCart>();
-                foreach (var keyword in keywords)
-                {
-                    bgWorker.ReportMessage(string.Format(
-                        "Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, i + 1, tiles.Count));
-                    bgWorker.CheckForCancel();
-                    tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax, keyword,
-                                                                   startDate, endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
-                }
-
-                fullSeriesList.AddRange(tileSeriesList);
-
-                // Report progress
-                var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                int percentProgress = (i*100)/tiles.Count + 1;
-                bgWorker.ReportProgress(percentProgress, message);
-            }
-
-
-            //(4) Create the Feature Set
-            SearchResult resultFs = null;
-            if (fullSeriesList.Count > 0)
-            {
-                bgWorker.ReportMessage("Calculating Points...");
-                resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
-            }
-
-            // (5) Final Background worker updates
-            bgWorker.CheckForCancel();
-
-            // Report progress
-            bgWorker.ReportProgress(100, "Search Finished");
-            return resultFs;
-        }
-
-        /// <summary>
-        /// Gets all data series that match the
-        /// specified criteria and are within the geographic polygon
-        /// </summary>
-        /// <param name="polygons">one or multiple polygons</param>
-        /// <param name="keywords">array of keywords. If set to null,
-        /// results will not be filtered by keyword.</param>
-        /// <param name="startDate">start date. If set to null, results will not be filtered by start date.</param>
-        /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
-        /// <param name="serviceIDs">array of serviceIDs provided by GetServicesInBox.
-        /// <param name="bgWorker">The background worker (may be null) for reporting progress</param>
-        /// If set to null, results will not be filtered by web service.</param>
-        /// <param name="bgWorker">Prpgress handler.</param>
-        /// <returns>A list of data series matching the specified criteria</returns>
-        public SearchResult GetSeriesCatalogInPolygon(IList<IFeature> polygons, string[] keywords, DateTime startDate,
-            DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
-        {
-            if (polygons == null) throw new ArgumentNullException("polygons");
-            if (bgWorker == null) throw new ArgumentNullException("bgWorker");
-
-            //(1): Get the union of the polygons
-            if (polygons.Count == 0)
-            {
-                throw new ArgumentException("The number of polygons must be greater than zero.");
-            }
-
-            if (keywords == null || keywords.Length == 0)
-            {
-                keywords = new[] {String.Empty};
-            }
-
-            double tileWidth = 1.0; //the initial tile width is set to 1 degree
-            double tileHeight = 1.0; //the initial tile height is set to 1 degree
-
-            // Check for cancel
-            bgWorker.CheckForCancel();
-
-            //get the list of series
-            var fullSeriesList = new List<SeriesDataCart>();
-            for (int index = 0; index < polygons.Count; index++)
-            {
-                if (polygons.Count > 1)
-                {
-                    bgWorker.ReportMessage(string.Format("Processing polygons: {0} of {1}", index + 1, polygons.Count));
-                }
-
-                var polygon = polygons[index];
-                var env = polygon.Envelope; //Split the polygon area bounding box into 1x1 decimal degree tiles
-                var extentBox = new Box(env.Left(), env.Right(), env.Bottom(), env.Top());
-                var tiles = SearchHelper.CreateTiles(extentBox, tileWidth, tileHeight);
-                for (int i = 0; i < tiles.Count; i++)
-                {
-                    var tile = tiles[i];
-
-                    bgWorker.CheckForCancel();
-
-                    // Do the web service call
-
-                    var tileSeriesList = new List<SeriesDataCart>();
-                    foreach (var keyword in keywords)
-                    {
-                        bgWorker.ReportMessage(
-                            string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
-                                          i + 1, tiles.Count));
-                        bgWorker.CheckForCancel();
-                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.XMin, tile.XMax, tile.YMin, tile.YMax,
-                                                                       keyword,
-                                                                       startDate, endDate, serviceIDs.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
-                    }
-
-                    // Clip the points by polygon
-                    var seriesInPolygon = SearchHelper.ClipByPolygon(tileSeriesList, polygon);
-                    fullSeriesList.AddRange(seriesInPolygon);
-
-                    // Report progress
-                    var message = string.Format("{0} Series found", fullSeriesList.Count.ToString());
-                    var percentProgress = (i*100)/tiles.Count + 1;
-                    bgWorker.ReportProgress(percentProgress, message);
-                }
-            }
-
-            //(4) Create the Feature Set
-            SearchResult resultFs = null;
-            if (fullSeriesList.Count > 0)
-            {
-                bgWorker.ReportMessage("Calculating Points");
-                resultFs = SearchHelper.ToFeatureSetsByDataSource(fullSeriesList);
-            }
-
-            // (5) Final Background worker updates
-
-            bgWorker.CheckForCancel();
-            bgWorker.ReportProgress(100, "Search Finished");
-            return resultFs;
         }
 
         #endregion
