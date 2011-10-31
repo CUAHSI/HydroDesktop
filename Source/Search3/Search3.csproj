@@ -106,7 +106,6 @@
     <Compile Include="Searching\HISCentralSearcher.cs" />
     <Compile Include="Searching\LogMessageEventArgs.cs" />
     <Compile Include="Searching\MetadataCacheSearcher.cs" />
-    <Compile Include="Searching\Search2Helper.cs" />
     <Compile Include="Searching\SearchHelper.cs" />
     <Compile Include="Searching\SearchLayerCreator.cs" />
     <Compile Include="Searching\SearchResult.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Searching\Exceptions\NoAreaToSearchException.cs" />
     <Compile Include="Searching\Exceptions\NoSelectedKeywordsException.cs" />
     <Compile Include="Searching\Exceptions\NoWebServicesException.cs" />
-    <Compile Include="Searching\SearchCriteria.cs" />
     <Compile Include="Searching\Searcher.cs" />
     <Compile Include="Searching\SearchProgressForm.cs">
       <SubType>Form</SubType>
