@@ -178,9 +178,21 @@ namespace Search3.Searching
 
             var settings = (SearchSettings) state;
             var progressHandler = new ProgressHandler(this);
-            var searcher = settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral
-                               ? (ISearcher) new HISCentralSearcher(settings.CatalogSettings.HISCentralUrl)
-                               : new MetadataCacheSearcher();
+
+            SeriesSearcher searcher;
+            double tileWidth, tileHeight;
+            if (settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral)
+            {
+                searcher = new HISCentralSearcher(settings.CatalogSettings.HISCentralUrl);
+                tileWidth = 1.0;
+                tileHeight = 1.0;
+            }
+            else
+            {
+                searcher = new MetadataCacheSearcher();
+                tileWidth = 2.0;
+                tileHeight = 2.0;
+            }
 
             SearchResult result;
             var webServices = settings.WebServicesSettings.TotalCount == settings.WebServicesSettings.CheckedCount
@@ -209,7 +221,7 @@ namespace Search3.Searching
             {
                 var polygons = Area.AreaHelper.ReprojectPolygonsToWGS84(settings.AreaSettings.Polygons);
 
-                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(),
+                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(), tileWidth, tileHeight,
                                                             settings.DateSettings.StartDate,
                                                             settings.DateSettings.EndDate,
                                                             webServices, progressHandler);
@@ -218,7 +230,7 @@ namespace Search3.Searching
                 var box = Area.AreaHelper.ReprojectBoxToWGS84(settings.AreaSettings.AreaRectangle,
                                                               settings.AreaSettings.RectangleProjection);
 
-                result = searcher.GetSeriesCatalogInRectangle(box, keywords.ToArray(),
+                result = searcher.GetSeriesCatalogInRectangle(box, keywords.ToArray(), tileWidth, tileHeight,
                                                               settings.DateSettings.StartDate,
                                                               settings.DateSettings.EndDate,
                                                               webServices, progressHandler);
