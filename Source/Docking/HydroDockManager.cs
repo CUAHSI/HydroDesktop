@@ -66,6 +66,39 @@ namespace HydroDesktop.Docking
 
         public void ResetLayout()
         {
+            //first, check the list
+            foreach (string key in dockContents.Keys)
+            {
+                if (key == "kHydroSeriesView")
+                {
+                    DockContent cnt = dockContents[key];
+
+                    cnt.Dock = DockStyle.Left;
+                    cnt.DockState = DockState.DockLeft;
+                    cnt.PanelPane = dockContents["kLegend"].Pane;
+
+                    if (cnt.IsHidden)
+                    {
+                        cnt.Show();
+                    }
+                }
+                
+                else if (key != "kMap" && key != "kLegend")
+                {           
+                    DockContent cnt = dockContents[key];
+
+                    cnt.Dock = DockStyle.Fill;
+                    cnt.DockState = DockState.Document;
+                    cnt.PanelPane = dockContents["kMap"].Pane;
+                    
+                    if (cnt.IsHidden)
+                    {
+                        cnt.Show();
+                    }
+                }
+            }
+            
+            
             ////not implemented
             ////TODO: check MW4 implementation
             //MainDockPanel.SaveAsXml(@"e:\dev\HydroDesktop\dock_layout.xml");
@@ -128,7 +161,7 @@ namespace HydroDesktop.Docking
             content.Tag = key;
             innerControl.Tag = key;
 
-            
+            content.HideOnClose = true;
 
             if (img != null)
             {
