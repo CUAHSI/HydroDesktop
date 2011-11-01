@@ -66,6 +66,17 @@ namespace HydroDesktop.Docking
 
         public void ResetLayout()
         {
+            //check the map
+            DockContent mapContent = dockContents["kMap"];
+            if (mapContent.IsFloat)
+            {
+                mapContent.Dock = DockStyle.Fill;
+                mapContent.DockState = DockState.Document;
+                mapContent.PanelPane = MainDockPanel.ActiveDocumentPane;
+                //mapContent.Show(MainDockPanel);
+            }
+            
+            
             //first, check the list
             foreach (string key in dockContents.Keys)
             {
@@ -82,15 +93,14 @@ namespace HydroDesktop.Docking
                         cnt.Show();
                     }
                 }
-                
                 else if (key != "kMap" && key != "kLegend")
-                {           
+                {
                     DockContent cnt = dockContents[key];
 
                     cnt.Dock = DockStyle.Fill;
                     cnt.DockState = DockState.Document;
                     cnt.PanelPane = dockContents["kMap"].Pane;
-                    
+
                     if (cnt.IsHidden)
                     {
                         cnt.Show();
