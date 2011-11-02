@@ -66,6 +66,10 @@
             //{
             //    bool _isNewProject = _welcomeScreen.NewProjectCreated;
             //}
+
+            //activate the map panel
+            App.DockManager.SelectPanel("kMap");
+            App.DockManager.SelectPanel("kLegend");
         }
 
         /// <summary>
