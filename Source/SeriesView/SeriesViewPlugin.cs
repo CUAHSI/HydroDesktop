@@ -28,14 +28,14 @@
             App.DockManager.ActivePanelChanged += new EventHandler<DockablePanelEventArgs>(DockManager_ActivePanelChanged);
             
             //event handler for adding the series selector
-            if (firstTimeActivating)
-            {
-                App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
-            }
-            else
-            {
+            //if (firstTimeActivating)
+            //{
+            //    App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
+            //}
+            //else
+            //{
                 AddSeriesDockPanel();
-            }
+            //}
 
             tableRoot = new RootItem("kHydroTable", "Table");
             tableRoot.SortOrder = 20;

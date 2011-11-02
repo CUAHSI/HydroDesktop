@@ -65,16 +65,18 @@ Namespace EditView
 
             'To add a new edit view dockable panel to the main application window
             'watch for dock panel added event
-            If firstTimeLoading Then
-                AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
-            Else
-                App.DockManager.Add(New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill))
-            End If
+            'If firstTimeLoading Then
+            '    AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
+            'Else
+
+            'End If
 
 
             _mainControl = New cEditView(_seriesSelector)
 
             _mainControl.Dock = DockStyle.Fill
+
+            App.DockManager.Add(New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill))
 
 
             'when the edit view panel is activated, select the Edit ribbon tab
