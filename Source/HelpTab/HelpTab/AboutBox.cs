@@ -40,9 +40,16 @@ namespace HelpTab
             //string asmVer = System.Reflection.Assembly.GetAssembly(typeof(AboutBox)).
             //lblVersionInfo.Text = "Version:  " + Application.ProductVersion;
 
-            string appName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Application Extensions\HydroDesktop.MainPlugin");
-            AssemblyName assemblyName = AssemblyName.GetAssemblyName(appName);
-            lblVersionInfo.Text = assemblyName.Version.ToString();
+            string appName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Application Extensions\HydroDesktop.MainPlugin.dll");
+            if (System.IO.File.Exists(appName))
+            {
+                AssemblyName assemblyName = AssemblyName.GetAssemblyName(appName);
+                lblVersionInfo.Text = assemblyName.Version.ToString();
+            }
+            else
+            {
+                lblVersionInfo.Text = "1.3";
+            }
 
             linkLabel1.Links.Remove(linkLabel1.Links[0]);
             linkLabel1.Links.Add(0, linkLabel1.Text.Length, "http://www.hydrodesktop.org");
