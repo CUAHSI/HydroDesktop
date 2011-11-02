@@ -25,7 +25,7 @@
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
-            App.Loaded += new EventHandler(App_Loaded);
+            App.ExtensionsActivated += new EventHandler(App_Loaded);
 
             base.Activate();
         }
