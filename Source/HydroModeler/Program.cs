@@ -66,15 +66,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         public override void Activate()
         {
             // add 'ribbon' button to the 'view' panel in 'home' ribbon tab
+            
             root = new RootItem(KHydroModeler, _pluginName);
             root.SortOrder = 150;
+            root.Visible = true;
             App.HeaderControl.Add(root);
 
             // add buttons to the ribbon
             rps_dict = BuildRibbonPanel();
-
-            // add paneladded event to HM
-            //App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
 
             // Add a dockable panel
             if (SeriesControl != null)
@@ -112,16 +111,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // add event for when HM panel is selected
             App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(HM_Panel_Selected);
         }
-
-        //void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
-        //{
-        //    if (e.ActivePanelKey == "kMap")
-        //    {
-        //        //HydroR dock panel should be preferentially added after "map"
-        //        Add_HM_Panel();
-        //        App.DockManager.SelectPanel("kMap");
-        //    }
-        //}
         #endregion
 
         #region IMapPlugin Members
@@ -245,6 +234,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             rb.LargeImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.GroupCaption = "View";
+            //rb.ToggleGroupKey = "View";
             rb.RootKey = KHydroModeler; 
             App.HeaderControl.Add(rb);
             btns.Add(rb);
@@ -284,8 +274,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         #endregion
 
-
-
         #region UI Events
         void HM_Panel_Selected(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
@@ -293,27 +281,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 App.DockManager.SelectPanel("RootRibbonHydroModeler");
                 App.HeaderControl.SelectRoot(KHydroModeler);
-                root.Visible = true;
-            }
-            else
-            {
-                root.Visible = false;
             }
         }
+
         private void set_pan(object sender, EventArgs e)
         {
             if (hydroModelerControl.Ispan)
             {
-                //hydroModelerControl.Ispan = false;
-                //RibbonButton s = (RibbonButton)sender;
-                //s.Checked = false;
-
+                hydroModelerControl.Ispan = false;
+                SimpleActionItem s = ((SimpleActionItem)rps_dict["pan"]);
             }
             else
-            {
-                //RibbonButton s = (RibbonButton)sender;
-                //s.Checked = true;
-                //hydroModelerControl.Ispan = true;
+            {   
+                hydroModelerControl.Ispan = true;
+                SimpleActionItem s = ((SimpleActionItem)rps_dict["pan"]);
             }
         }
         private void ribbonTextBox_textChanged(TextEntryActionItem textbox)
