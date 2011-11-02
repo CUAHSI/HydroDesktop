@@ -63,7 +63,7 @@ namespace HydroR
             {
                 _hydroRControl = new cRCommandView(_seriesSelector);
                 
-                if (!firstTimeAdding)
+                //if (!firstTimeAdding)
                     AddHydroRPanel();
 
                 //Add a HydroR root item

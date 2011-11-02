@@ -74,8 +74,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// </summary>
         public override void Activate()
         {
-            App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
-            
             // add 'ribbon' button to the 'view' panel in 'home' ribbon tab
             root = new RootItem(KHydroModeler, _pluginName);
             //root.SortOrder = 100;
@@ -98,13 +96,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             //Add Buttons to the Ribbon Panel
             
-            //COMMENTED BY JK
-            //// Add a dockable panel
-            //if (SeriesControl != null)
-            //{
-            //    hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
-            //    App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
-            //}
+            // Add a dockable panel
+            if (SeriesControl != null)
+            {
+                hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
+                App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
+            }
 
             ////specify tab window
             ////hydroModelerControl = new mainTab(App, rps, ((RibbonTextBox)((RibbonItemGroup)rps[2].Items[0]).Items[0]).TextBoxText);

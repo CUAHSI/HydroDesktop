@@ -53,7 +53,7 @@ namespace TableView
             }
 
             //event for adding the dockable panel
-            App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
+            //App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
 
             #region initialize the Table Ribbon TabPage and related controls
 
@@ -114,6 +114,8 @@ namespace TableView
             //-----
              
             #endregion initialize the Table Ribbon TabPage and related controls
+
+            AddTableViewPanel();
 
             SeriesControl.Refreshed += SeriesControl_Refreshed;
 

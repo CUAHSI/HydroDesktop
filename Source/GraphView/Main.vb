@@ -80,9 +80,9 @@ Namespace GraphView
         Public Overrides Sub Activate()
 
             'watch for dock panel added event
-            If firstTimeLoaded Then
-                AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
-            End If
+            'If firstTimeLoaded Then
+            '    AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
+            'End If
 
             
 
@@ -96,9 +96,9 @@ Namespace GraphView
 
             InitializeRibbonButtons()
 
-            If Not firstTimeLoaded Then
-                App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
-            End If
+            'If Not firstTimeLoaded Then
+            App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
+            'End If
 
             'when the graph dock panel is activated:
             'show graph ribbon tab and series view
