@@ -53,7 +53,7 @@ namespace HydroR
         public override void Activate()
         {
             //event for adding the HydroR dock panel
-            App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
+            //App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
             
             // Handle code for switching the page content
             //_hydroRControl.RChanged += new cRCommandView.REventHandler(ribbonBnt_TextChanged);
@@ -123,7 +123,9 @@ namespace HydroR
         void AddHydroRPanel()
         {
             //HydroR dock panel should be preferentially added after "graph"
-            App.DockManager.Add(new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill));
+            var dp = new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill);
+            dp.DefaultSortOrder = 40;
+            App.DockManager.Add(dp);
             firstTimeAdding = false;
         }
 

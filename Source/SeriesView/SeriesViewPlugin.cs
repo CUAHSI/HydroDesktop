@@ -89,7 +89,8 @@
                 Caption = "time series",
                 InnerControl = (SeriesSelector)MainSeriesSelector,
                 Dock = DockStyle.Left,
-                SmallImage = Properties.Resources.timeSeries
+                SmallImage = Properties.Resources.timeSeries,
+                DefaultSortOrder = 1000
             };
 
             App.DockManager.Add(timeSeriesPanel);
