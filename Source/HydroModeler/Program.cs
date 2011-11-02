@@ -91,7 +91,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             if (SeriesControl != null)
             {
                 hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
-                App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
+                var hmDockPanel = new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill);
+                hmDockPanel.DefaultSortOrder = 1000; //HydroModeler should be the last dockable panel by default
+                App.DockManager.Add(hmDockPanel);
             }
 
             // set the initial text for the dirbox

@@ -76,7 +76,9 @@ Namespace EditView
 
             _mainControl.Dock = DockStyle.Fill
 
-            App.DockManager.Add(New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill))
+            Dim dp As New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill)
+            dp.DefaultSortOrder = 30
+            App.DockManager.Add(dp)
 
 
             'when the edit view panel is activated, select the Edit ribbon tab

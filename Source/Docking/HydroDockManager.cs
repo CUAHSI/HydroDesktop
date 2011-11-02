@@ -28,6 +28,8 @@ namespace HydroDesktop.Docking
         /// </summary>
         private Dictionary<string, DockContent> dockContents = new Dictionary<string,DockContent>();
 
+        private Dictionary<DockContent, int> sortOrderLookup = new Dictionary<DockContent, int>();
+
         /// <summary>The active panel key</summary>
         private string ActivePanelKey { get; set; }
 
@@ -192,9 +194,20 @@ namespace HydroDesktop.Docking
             {
                 dockContents.Add(key, content);
             }
+            if (!sortOrderLookup.ContainsKey(content))
+            {
+                sortOrderLookup.Add(content, zOrder);
+            }
 
             //trigger the panel added event
             OnPanelAdded(key);
+
+            //set the correct sort order
+            if (content.Pane.Contents.Count > 1)
+            {
+                int sortingIndex = ConvertSortOrderToIndex(content, zOrder);
+                content.Pane.SetContentIndex(content, sortingIndex);
+            }
         }
 
         void content_FormClosed(object sender, FormClosedEventArgs e)
@@ -327,6 +340,21 @@ namespace HydroDesktop.Docking
             {
                 ActivePanelChanged(this, new DockablePanelEventArgs(newActivePanelKey));
             }
+        }
+
+        int ConvertSortOrderToIndex(DockContent content, int sortOrder)
+        {
+            DockPane pane = content.Pane;
+            int index = pane.Contents.Count - 1;
+            List<int> sortOrderList = new List<int>();
+
+            foreach (DockContent existingContent in pane.Contents)
+            {
+                sortOrderList.Add(sortOrderLookup[existingContent]);
+            }
+            sortOrderList.Sort();
+            index = sortOrderList.IndexOf(sortOrder);
+            return index;
         }
     }
 }

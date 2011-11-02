@@ -139,7 +139,8 @@ namespace TableView
                 Key = kTableView,
                 Caption = _tablePanelName,
                 InnerControl = tableViewControl,
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                DefaultSortOrder = 10
             };
             App.DockManager.Add(tableViewPanel);
 

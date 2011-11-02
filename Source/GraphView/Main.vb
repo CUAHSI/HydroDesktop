@@ -97,7 +97,9 @@ Namespace GraphView
             InitializeRibbonButtons()
 
             'If Not firstTimeLoaded Then
-            App.DockManager.Add(New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill))
+            Dim dp As New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill)
+            dp.DefaultSortOrder = 20
+            App.DockManager.Add(dp)
             'End If
 
             'when the graph dock panel is activated:
