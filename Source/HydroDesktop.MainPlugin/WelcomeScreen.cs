@@ -36,7 +36,7 @@ namespace HydroDesktop.Main
             InitializeComponent();
 
 
-            string appName = Assembly.GetAssembly(this.GetType()).Location;
+            string appName = Assembly.GetAssembly(typeof(WelcomeScreen)).Location;
             AssemblyName assemblyName = AssemblyName.GetAssemblyName(appName);
             string version = assemblyName.Version.ToString();
 

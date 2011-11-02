@@ -167,8 +167,14 @@ namespace GetDotSpatial
             }
             else if (packageId.Contains("DotSpatial_x86"))
             {
-                //DotSpatial is using a special naming convention for package naming
+                //SDSC.EDU package source is using a special naming convention for package naming
                 packageUrl = String.Format("{0}/DotSpatial_x86.{1}.nupkg", packageSource, packageVersion);
+                targetFolder = FindTargetFolder(packageTarget);
+            }
+            else if (packageSource.Contains("hydro10.sdsc.edu"))
+            {
+                //SDSC.EDU package source is using a special naming convention for package naming
+                packageUrl = String.Format("{0}/{1}.{2}.nupkg", packageSource, packageId, packageVersion);
                 targetFolder = FindTargetFolder(packageTarget);
             }
             else
