@@ -40,7 +40,7 @@ namespace HelpTab
             //string asmVer = System.Reflection.Assembly.GetAssembly(typeof(AboutBox)).
             //lblVersionInfo.Text = "Version:  " + Application.ProductVersion;
 
-            string appName = Assembly.GetAssembly(this.GetType()).Location;
+            string appName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Application Extensions\HydroDesktop.MainPlugin");
             AssemblyName assemblyName = AssemblyName.GetAssemblyName(appName);
             lblVersionInfo.Text = assemblyName.Version.ToString();
 
