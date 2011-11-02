@@ -28,21 +28,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         //public RibbonButton _ribbonBtn;
         //private ITabManager _t;
         //public string _panelName = "HydroModeler";
-        
-        mainTab hydroModelerControl;
-        //Bitmap bmp;
         //List<RibbonPanel> rps;
-        private string ImagePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).CodeBase).Remove(0,6) + "/icons";
-        //private int tabID = 0;
-        private readonly string _localHelpUri = HydroModeler.Settings.Default.localHelpUri;
 
+        // Local variables
+        mainTab hydroModelerControl;
+        private string ImagePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).CodeBase).Remove(0,6) + "/icons";
+        private string _defaultPath = HydroModeler.Properties.Resources.startpath;
+        private readonly string _localHelpUri = HydroModeler.Settings.Default.localHelpUri;
         private RootItem root = null;
 
-        //reference to the main series view panel
+        // reference to the main series view panel
         [Import("SeriesControl", typeof(ISeriesSelector))]
         internal ISeriesSelector SeriesControl { get; private set; }
 
-        //plugin info
+        // plugin info
         private const string _pluginName = "HydroModeler";
         private const string kHydroModelerDock = "kHydroModelerDock";
         private const string KHydroModeler = "RootRibbonHydroModeler";
@@ -99,8 +98,11 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             // Add a dockable panel
             if (SeriesControl != null)
             {
-                hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
-                App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
+                Add_HM_Panel();
+                //hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
+                //App.DockManager.Add(new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill));
+                
+                
             }
 
             ////specify tab window
@@ -135,9 +137,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             base.Activate();
         }
 
-        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        void Add_HM_Panel()
         {
-            if (e.ActivePanelKey != "kMap") return;
+            //if (e.ActivePanelKey != "kHydroModelerDock") return;
             
             // Add a dockable panel
             if (SeriesControl != null)
@@ -389,6 +391,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             rtb.GroupCaption = "Directory";
             rtb.RootKey = KHydroModeler;
             rtb.Caption = "Current Path: ";
+            //if (System.IO.Directory.Exists(System.IO.Path.Combine(new string[2]{Directory.GetCurrentDirectory(),_defaultPath})))
+            //    rtb.Text = _defaultPath;
+            //else
+            //    rtb.Text = "C:/";
             rtb.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(rtb_PropertyChanged);
             App.HeaderControl.Add(rtb);
             rps.Add("dirbox", rtb); 
