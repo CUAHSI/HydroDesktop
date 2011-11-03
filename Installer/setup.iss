@@ -196,6 +196,7 @@ Type: files; Name: "{app}\FetchBasemap\FetchBasemap.*"
 Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
+Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
 
 [UninstallDelete]
 Type: files; Name: "{app}\Plugins\FetchBasemap.*"
