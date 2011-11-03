@@ -1,15 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.OleDb;
-using System.Linq;
-using System.Drawing;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
-
 using DotSpatial.Controls;
 using HydroDesktop.Database;
 using HydroDesktop.Configuration;
@@ -70,7 +59,7 @@ namespace HydroDesktop.ExportToCSV
         {
             DbOperations db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
 
-            ThemeExportDialog dlg_3 = new ThemeExportDialog(db);
+            var dlg_3 = new ThemeExportDialog(db);
             dlg_3.ShowDialog();
         }
 

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.OleDb;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Threading;
 using System.Collections;
 
 using HydroDesktop.Database;
@@ -23,7 +18,7 @@ namespace HydroDesktop.ExportToCSV
 	{
 		#region Variables
 
-		private DbOperations _dboperation;
+		private readonly DbOperations _dboperation;
 		private bool _formIsClosing = false;
 		private DataTable _dtList = new DataTable ();
 		SaveFileDialog _saveFileDlg = new SaveFileDialog ();
@@ -38,7 +33,9 @@ namespace HydroDesktop.ExportToCSV
 		/// </summary>
 		public ThemeExportDialog (DbOperations dbOperation)
 		{
-			InitializeComponent ();
+		    if (dbOperation == null) throw new ArgumentNullException("dbOperation");
+
+		    InitializeComponent ();
             _dboperation = dbOperation;
 		}
 
@@ -51,22 +48,25 @@ namespace HydroDesktop.ExportToCSV
 		/// </summary>
 		private void ExportDialog_load ( object sender, EventArgs e )
 		{
-			this.Cursor = Cursors.WaitCursor;
+			Cursor = Cursors.WaitCursor;
 
-			//populate combo box with list of themes
-
-			DataTable dtThemes = _dboperation.LoadTable ( "themes", "SELECT ThemeID, ThemeName from DataThemeDescriptions" );
-			cbVariable.DataSource = dtThemes;
-			cbVariable.DisplayMember = "ThemeName";
-			cbVariable.ValueMember = "ThemeID";
+			//populate list box with list of themes
+			var dtThemes = _dboperation.LoadTable ( "themes", "SELECT ThemeID, ThemeName from DataThemeDescriptions" );
+            clbThemes.Items.Clear();
+            foreach(DataRow row in dtThemes.Rows)
+            {
+                clbThemes.Items.Add(new ThemeDescription(Convert.ToInt32(row["ThemeID"]), 
+                                                         row["ThemeName"].ToString()), true);
+            }
+		    
 
 			// Populate checked list box with list of fields to export
 			LoadFieldList ();
 
-			this.Cursor = Cursors.Default;
+			Cursor = Cursors.Default;
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Initialize the ChecklistBox to show all the fields necessary.
 		/// </summary>
 		private void LoadFieldList ()
@@ -260,8 +260,8 @@ namespace HydroDesktop.ExportToCSV
 			gbxExportData.Enabled = true;
 			gbxExportData.Visible = true;
 			gbxExport.Enabled = true;
-			btnSelectAll.Enabled = true;
-			btnSelectNone.Enabled = true;
+			btnSelectAllFields.Enabled = true;
+			btnSelectNoneFields.Enabled = true;
 			gbxDelimiters.Enabled = true;
 			gbxFields.Enabled = true;
 			pgsBar.Value = 0;
@@ -324,14 +324,21 @@ namespace HydroDesktop.ExportToCSV
 			// Make sure we aren't still working on a previous task
 			if ( bgwMain.IsBusy == true )
 			{
-				MessageBox.Show ( "The background worker is busy now. Please try later." );
+                MessageBox.Show("The background worker is busy now. Please try later.", "Export To Text File", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return;
 			}
+
+            //Check the themes  for export.  There should be at least one item selected.
+            if (clbThemes.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Please choose at least one theme to export", "Export To Text File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
 			//Check the desired fields for export.  There should be at least one item selected.
 			if ( clbExportItems.CheckedItems.Count == 0 )
 			{
-				MessageBox.Show ( "Please choose at least one field to export", "Export To Text File" );
+                MessageBox.Show("Please choose at least one field to export", "Export To Text File", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return;
 			}
 
@@ -371,27 +378,21 @@ namespace HydroDesktop.ExportToCSV
 			}
 
 			// Construct DataTable of all the series in the selected theme
-			int themeID;
-			themeID = Convert.ToInt32 ( cbVariable.SelectedValue );
+		    var themeIds = new StringBuilder();
+            foreach(var item in clbThemes.CheckedItems)
+            {
+                var themeDescr = (ThemeDescription)item;
+                themeIds.AppendFormat("{0},", themeDescr.ThemeId);
+            }
+		    themeIds.Remove(themeIds.Length - 1, 1);
+		    
+            DataTable dtSeries = _dboperation.LoadTable("series",
+			                                              "SELECT v.NoDataValue, ds.SeriesID " +
+			                                              "FROM DataSeries ds INNER JOIN variables v ON ds.VariableID = v.VariableID " +
+			                                              "INNER JOIN DataThemes t ON ds.SeriesID = t.SeriesID " +
+			                                              "WHERE t.ThemeID in (" + themeIds + ")");
 
-			DataTable dtSeries = new DataTable ();
-			DbOperations dbOperations = _dboperation as DbOperations;
-			dtSeries = dbOperations.LoadTable ( "series",
-					  "SELECT v.NoDataValue, ds.SeriesID " +
-					  "FROM DataSeries ds INNER JOIN variables v ON ds.VariableID = v.VariableID " +
-					  "INNER JOIN DataThemes t ON ds.SeriesID = t.SeriesID " +
-					  "WHERE t.ThemeID = " + themeID.ToString () );
-
-			bool checkNoData;
-			if ( this.chkNodata.Checked == true )
-			{
-				checkNoData = true;
-			}
-			else
-			{
-				checkNoData = false;
-			}
-
+		    var checkNoData = chkNodata.Checked;
 			//Add all checked items into the HashTable
 			Hashtable checkedItems = new Hashtable ();
 			foreach ( string item in clbExportItems.CheckedItems )
@@ -407,8 +408,8 @@ namespace HydroDesktop.ExportToCSV
 			gbxExportData.Visible = false;
 			gbxThemes.Enabled = false;
 			gbxExport.Enabled = false;
-			btnSelectAll.Enabled = false;
-			btnSelectNone.Enabled = false;
+			btnSelectAllFields.Enabled = false;
+			btnSelectNoneFields.Enabled = false;
 			gbxDelimiters.Enabled = false;
 			gbxFields.Enabled = false;
 			gbxProgress.Enabled = true;
@@ -425,7 +426,7 @@ namespace HydroDesktop.ExportToCSV
 			parameters[2] = checkNoData;
 			parameters[3] = delimiter;
 			parameters[4] = checkedItems;
-			parameters[5] = dbOperations;
+            parameters[5] = _dboperation;
 
             // Check for overwrite
             if (File.Exists(outputFilename) == true)
@@ -443,8 +444,8 @@ namespace HydroDesktop.ExportToCSV
                     gbxExportData.Enabled = true;
                     gbxExportData.Visible = true;
                     gbxExport.Enabled = true;
-                    btnSelectAll.Enabled = true;
-                    btnSelectNone.Enabled = true;
+                    btnSelectAllFields.Enabled = true;
+                    btnSelectNoneFields.Enabled = true;
                     gbxDelimiters.Enabled = true;
                     gbxFields.Enabled = true;
                     pgsBar.Value = 0;
@@ -503,10 +504,7 @@ namespace HydroDesktop.ExportToCSV
 		/// </summary>
 		private void SelectAll_Click ( object sender, EventArgs e )
 		{
-			for ( int c = 0; c < clbExportItems.Items.Count; c++ )
-			{
-				clbExportItems.SetItemChecked ( c, true );
-			}
+            SetCheckedItems(clbExportItems, true);
 		}
 
 		/// <summary>
@@ -514,13 +512,29 @@ namespace HydroDesktop.ExportToCSV
 		/// </summary>
 		private void SelectNone_Click ( object sender, EventArgs e )
 		{
-			for ( int c = 0; c < clbExportItems.Items.Count; c++ )
-			{
-				clbExportItems.SetItemChecked ( c, false );
-			}
+		    SetCheckedItems(clbExportItems, false);
 		}
 
-		#endregion
+        private void btnSelectAllThemes_Click(object sender, EventArgs e)
+        {
+            SetCheckedItems(clbThemes, true);
+        }
+
+        private void btnSelectNoneThemes_Click(object sender, EventArgs e)
+        {
+            SetCheckedItems(clbThemes, false);
+        }
+
+        private void SetCheckedItems(CheckedListBox clb, bool isChecked)
+        {
+            for (int c = 0; c < clb.Items.Count; c++)
+            {
+                clb.SetItemChecked(c, isChecked);
+            }
+        }
+
+
+	    #endregion
 
 		#region Cancel Events
 
@@ -565,9 +579,29 @@ namespace HydroDesktop.ExportToCSV
 		}
 
 		#endregion
-
-
-
+        
 		#endregion
-	}
+
+        #region Helpers
+
+        private class ThemeDescription
+        {
+            public int ThemeId { get; private set; }
+            public string ThemeName { get; private set; }
+
+            public ThemeDescription(int themeId, string themeName)
+            {
+                ThemeId = themeId;
+                ThemeName = themeName;
+            }
+
+            public override string ToString()
+            {
+                return ThemeName;
+            }
+        }
+
+        #endregion
+
+    }
 }
