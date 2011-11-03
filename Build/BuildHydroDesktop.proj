@@ -135,7 +135,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
                AssemblyFileVersion="$(ReleaseVersion)" 
 			   AssemblyVersion="$(ReleaseVersion)" 
-                <!-- AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)" --> />
+               />
   </Target>
    <!-- AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" -->
   <Target Name="Build"
