@@ -134,8 +134,8 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 				Guid="e008a526-3833-447f-9125-96cf8aa1f515"
 
                AssemblyFileVersion="$(ReleaseVersion)" 
-			   AssemblyVersion="$(ReleaseVersion)"
-                <!-- AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)" /> -->
+			   AssemblyVersion="$(ReleaseVersion)" 
+                <!-- AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)" --> />
   </Target>
    <!-- AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" -->
   <Target Name="Build"
