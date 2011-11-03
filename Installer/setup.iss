@@ -124,7 +124,7 @@ Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 
 Source: "..\Binaries\Plugins\WebMap\BruTile.dll"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\WebMap\DotSpatia.Plugins.WebMap.dll"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\WebMap\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins\WebMap"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EditView\*"; DestDir: "{app}\Plugins\EditView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\*"; DestDir: "{app}\Plugins\EPADelineation"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExportToCSV\*"; DestDir: "{app}\Plugins\ExportToCSV"; Flags: ignoreversion;
