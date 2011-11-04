@@ -76,7 +76,7 @@ namespace Search3.Settings.UI
                         ForeColor = clrBule,
                         NodeFont = font,
                         Text = webNode.Title,
-                        Name = webNode.ServiceID,
+                        Name = webNode.ServiceID.ToString(),
                         Checked = webNode.Checked,
                         Tag = webNode
                     };
