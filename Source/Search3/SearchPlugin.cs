@@ -9,6 +9,8 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Projections;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
@@ -20,7 +22,7 @@ using HydroDesktop.WebServices;
 
 namespace Search3
 {
-    public class SearchPlugin: Extension
+    public class SearchPlugin : Extension, IWebServicesStore
     {
         #region Fields
 
@@ -597,5 +599,20 @@ namespace Search3
         #endregion
 
         #endregion
+
+        public IList<DataServiceInfo> GetWebServices()
+        {
+            var webServices = SearchSettings.Instance.WebServicesSettings.WebServices;
+            var result = new List<DataServiceInfo>(webServices.Count);
+            result.AddRange(webServices.Select(wsInfo => new DataServiceInfo
+                                                             {
+                                                                 EndpointURL = wsInfo.ServiceUrl,
+                                                                 DescriptionURL = wsInfo.DescriptionUrl,
+                                                                 ServiceTitle = wsInfo.Title,
+                                                                 HISCentralID = wsInfo.ServiceID
+                                                             }));
+
+            return result;
+        }
     }
 }

@@ -144,7 +144,7 @@ namespace Search3.Searching
                         bgWorker.CheckForCancel();
                         tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY,
                                                                        keyword, startDate, endDate,
-                                                                       webServices.Select(item => Convert.ToInt32(item.ServiceID)).ToArray()));
+                                                                       webServices.Select(item => item.ServiceID).ToArray()));
                     }
 
                     fullSeriesList.AddRange(tileSeriesList.Where(seriesFilter));

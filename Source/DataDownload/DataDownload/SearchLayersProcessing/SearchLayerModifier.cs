@@ -4,13 +4,13 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Xml;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
+using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
@@ -19,12 +19,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
     /// </summary>
     class SearchLayerModifier
     {
-        #region Fields
-
-        private static readonly WebServicesList _webServicesList = new WebServicesList();
-        private static XmlDocument _webServList;
-
-        #endregion
 
         #region Public methods
 
@@ -154,10 +148,23 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         {
             get
             {
-                if (_webServList == null)
-                    _webServList = _webServicesList.GetWebServicesList(false, true);
                 if (_services == null || _services.Count == 0)
-                    _services = GetServices(_webServList.DocumentElement);
+                {
+                    _services = new Dictionary<string, string>();
+
+                    var wss = Global.PluginEntryPoint.App.Extensions.OfType<IWebServicesStore>().FirstOrDefault();
+                    if (wss != null)
+                    {
+                        var infos = wss.GetWebServices();
+                        if (infos != null)
+                        {
+                            foreach (var info in infos)
+                            {
+                                _services.Add(info.EndpointURL, info.DescriptionURL);
+                            }
+                        }
+                    }
+                }
                 return _services;
             }
         }
@@ -172,37 +179,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
             searchInformer.Start(map, layer);
             _searchInformersPerLayes.Add(layer, searchInformer);
-        }
-
-        private static Dictionary<string, string> GetServices(XmlNode node)
-        {
-            var res = new Dictionary<string, string>();
-
-            foreach (XmlNode childNode1 in node.ChildNodes)
-            {
-                if (childNode1.Name != "ServiceInfo") continue;
-                var nodeInfo = new NodeInfo();
-                foreach (XmlNode childNode2 in childNode1.ChildNodes)
-                {
-                    if (childNode2.Name == "ServiceDescriptionURL")
-                    {
-                        nodeInfo.DescriptionUrl = childNode2.InnerText;
-                    }
-                    else if (childNode2.Name == "servURL")
-                    {
-                        nodeInfo.ServiceUrl = childNode2.InnerText;
-                    }
-                }
-                try
-                {
-                    res.Add(nodeInfo.ServiceUrl, nodeInfo.DescriptionUrl);
-                }catch
-                {
-                    continue;
-                }
-            }
-
-            return res;
         }
 
         private static void UpdateSymbolizing(IFeatureLayer layer)
@@ -344,16 +320,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             }
 
             return scheme;
-        }
-
-        #endregion
-
-        #region Helpers
-
-        class NodeInfo
-        {
-            public String DescriptionUrl { get; set; }
-            public String ServiceUrl { get; set; }
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace Search3.Settings
         {
         }
 
-        public WebServiceNode(string title, string serviceCode, string serviceID, string descriptionUrl, string serviceUrl,
+        public WebServiceNode(string title, string serviceCode, int serviceID, string descriptionUrl, string serviceUrl,
             Box boundingBox)
         {
             ServiceID = serviceID;
@@ -22,7 +22,7 @@ namespace Search3.Settings
         }
 
         public Box ServiceBoundingBox { get; private set; }
-        public string ServiceID { get; private set; }
+        public int ServiceID { get; private set; }
         public string ServiceCode { get; private set; }
         public string Title { get; private set; }
         public string DescriptionUrl { get;  private set; }
