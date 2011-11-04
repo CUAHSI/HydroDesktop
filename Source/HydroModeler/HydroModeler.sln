@@ -8,10 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroModeler", "HydroModele
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oatc.OpenMI.Gui.Core", "Utilities\OpenMI\gui\Core\Oatc.OpenMI.Gui.Core.csproj", "{5ED7C71D-E89A-41F7-8B34-54C0C099412C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroR", "..\HydroR\HydroR.csproj", "{C872275F-6717-43F1-BD8E-AF4AC077DB43}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonSampleCsharp", "..\RibbonSampleCSharp\RibbonSampleCSharp\RibbonSampleCsharp.csproj", "{A54040C6-DC52-4381-93A5-BEAD2F036D6F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,22 +28,6 @@ Global
 		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Release|x86.ActiveCfg = Release|Any CPU
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Debug|x86.ActiveCfg = Debug|x86
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Debug|x86.Build.0 = Debug|x86
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Release|x86.ActiveCfg = Release|x86
-		{C872275F-6717-43F1-BD8E-AF4AC077DB43}.Release|x86.Build.0 = Release|x86
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Debug|x86.ActiveCfg = Debug|x86
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Debug|x86.Build.0 = Debug|x86
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Release|x86.ActiveCfg = Release|x86
-		{A54040C6-DC52-4381-93A5-BEAD2F036D6F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

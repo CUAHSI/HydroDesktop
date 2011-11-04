@@ -22,7 +22,7 @@ namespace HydroModeler.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace HydroModeler.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HydroModeler.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace HydroModeler.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,105 +60,112 @@ namespace HydroModeler.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap add_connection {
+        public static System.Drawing.Bitmap add_connection {
             get {
                 object obj = ResourceManager.GetObject("add_connection", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap add_model {
+        public static System.Drawing.Bitmap add_model {
             get {
                 object obj = ResourceManager.GetObject("add_model", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap change_dir {
+        public static System.Drawing.Bitmap change_dir {
             get {
                 object obj = ResourceManager.GetObject("change_dir", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Icon component_image {
+        public static System.Drawing.Icon component_image {
             get {
                 object obj = ResourceManager.GetObject("component_image", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap delete_icon {
+        public static System.Drawing.Bitmap delete_icon {
             get {
                 object obj = ResourceManager.GetObject("delete_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Icon Folder {
+        public static System.Drawing.Icon Folder {
             get {
                 object obj = ResourceManager.GetObject("Folder", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap help {
+        public static System.Drawing.Bitmap help {
             get {
                 object obj = ResourceManager.GetObject("help", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Icon model_image {
+        public static System.Drawing.Icon model_image {
             get {
                 object obj = ResourceManager.GetObject("model_image", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap open {
+        public static System.Drawing.Bitmap open {
             get {
                 object obj = ResourceManager.GetObject("open", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static byte[] pan {
+        public static byte[] pan {
             get {
                 object obj = ResourceManager.GetObject("pan", resourceCulture);
                 return ((byte[])(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pan1 {
+        public static System.Drawing.Bitmap pan1 {
             get {
                 object obj = ResourceManager.GetObject("pan1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap run {
+        public static System.Drawing.Bitmap run {
             get {
                 object obj = ResourceManager.GetObject("run", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap save {
+        public static System.Drawing.Bitmap save {
             get {
                 object obj = ResourceManager.GetObject("save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap saveas {
+        public static System.Drawing.Bitmap saveas {
             get {
                 object obj = ResourceManager.GetObject("saveas", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static byte[] Source {
+        public static System.Drawing.Bitmap select {
+            get {
+                object obj = ResourceManager.GetObject("select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static byte[] Source {
             get {
                 object obj = ResourceManager.GetObject("Source", resourceCulture);
                 return ((byte[])(obj));
@@ -168,20 +175,20 @@ namespace HydroModeler.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ./Plugins/HydroModeler/hydromodeler_example_configurations.
         /// </summary>
-        internal static string startpath {
+        public static string startpath {
             get {
                 return ResourceManager.GetString("startpath", resourceCulture);
             }
         }
         
-        internal static byte[] Target {
+        public static byte[] Target {
             get {
                 object obj = ResourceManager.GetObject("Target", resourceCulture);
                 return ((byte[])(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap trigger {
+        public static System.Drawing.Bitmap trigger {
             get {
                 object obj = ResourceManager.GetObject("trigger", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
