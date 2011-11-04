@@ -37,7 +37,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,17 +58,17 @@
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Wrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\Oatc.OpenMI.Sdk\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
@@ -83,7 +83,7 @@
     </Reference>
     <Reference Include="SMW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities\edu.SC.SMW\bin\Debug\SMW.dll</HintPath>
+      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
