@@ -98,7 +98,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RunBox.resx">
@@ -113,6 +113,8 @@
   <ItemGroup>
     <Content Include="HelpPage.htm" />
     <Content Include="OmiEd.ico" />
+    <None Include="Resources\select.bmp" />
+    <Content Include="Resources\select.png" />
     <None Include="Resources\component_image.ico" />
     <None Include="Resources\model_image.ico" />
     <None Include="Resources\pan.cur" />

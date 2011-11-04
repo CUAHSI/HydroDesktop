@@ -232,15 +232,27 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             #region view_panel
             rb = new SimpleActionItem("Pan", this.set_pan);
-            rb.ToolTipText = "Click to activate pan on the model canvas";
+            rb.ToolTipText = "Click to activate pan cursor on the model canvas";
             rb.LargeImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(32, 32, null, IntPtr.Zero);
             rb.SmallImage = HydroModeler.Properties.Resources.pan1.GetThumbnailImage(20, 20, null, IntPtr.Zero);
             rb.GroupCaption = "View";
-            //rb.ToggleGroupKey = "View";
+            rb.ToggleGroupKey = "View";
             rb.RootKey = KHydroModeler; 
             App.HeaderControl.Add(rb);
             btns.Add(rb);
             rps.Add("pan", rb);
+
+            rb = new SimpleActionItem("Select", this.set_select);
+            rb.ToolTipText = "Click to activate the select cursor on the model canvas";
+            rb.LargeImage = HydroModeler.Properties.Resources.select.GetThumbnailImage(32, 32, null, IntPtr.Zero);
+            rb.SmallImage = HydroModeler.Properties.Resources.select.GetThumbnailImage(20, 20, null, IntPtr.Zero);
+            rb.GroupCaption = "View";
+            rb.ToggleGroupKey = "View";
+            rb.RootKey = KHydroModeler;
+            App.HeaderControl.Add(rb);
+            btns.Add(rb);
+            rps.Add("select", rb);
+
             #endregion
 
             #region help_panel
@@ -288,16 +300,13 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         private void set_pan(object sender, EventArgs e)
         {
-            if (hydroModelerControl.Ispan)
-            {
-                hydroModelerControl.Ispan = false;
-                SimpleActionItem s = ((SimpleActionItem)rps_dict["pan"]);
-            }
-            else
-            {   
-                hydroModelerControl.Ispan = true;
-                SimpleActionItem s = ((SimpleActionItem)rps_dict["pan"]);
-            }
+            hydroModelerControl.Ispan = true;
+            SimpleActionItem s = ((SimpleActionItem)rps_dict["pan"]);
+        }
+        private void set_select(object sender, EventArgs e)
+        {
+            hydroModelerControl.Ispan = false;
+            SimpleActionItem s = ((SimpleActionItem)rps_dict["select"]);
         }
         private void ribbonTextBox_textChanged(TextEntryActionItem textbox)
         {
