@@ -60,6 +60,8 @@ namespace TableView
 
         private void UpdateViewMode()
         {
+            if (String.IsNullOrEmpty(Settings.Instance.DataRepositoryConnectionString)) return;
+
             switch (ViewMode)
             {
                 case TableViewMode.SequenceView:
