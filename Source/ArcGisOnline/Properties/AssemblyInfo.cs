@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ArcGisOnline")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Displays a layer from ArcGIS Online web service in the map.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("CUAHSI")]
 [assembly: AssemblyProduct("ArcGisOnline")]
 [assembly: AssemblyCopyright("Copyright ©  2011")]
 [assembly: AssemblyTrademark("")]
