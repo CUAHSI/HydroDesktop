@@ -110,6 +110,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="Resources\arcgis_online_16.png" />
   </ItemGroup>
   <ItemGroup>
