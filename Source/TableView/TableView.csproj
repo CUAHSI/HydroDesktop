@@ -154,6 +154,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="Resources\table2.png" />
   </ItemGroup>
   <ItemGroup>

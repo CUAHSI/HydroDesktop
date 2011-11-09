@@ -155,6 +155,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="Resources\CuahsiLogo38.png" />
   </ItemGroup>
   <ItemGroup>

@@ -280,6 +280,7 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="Resources\TSA_icon.png" />
     <None Include="Icons\box.png" />
     <None Include="Icons\Histogram graph.png" />

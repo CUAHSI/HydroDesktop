@@ -15,8 +15,8 @@
     <tags></tags>
   </metadata>
   <dependencies>
-    <dependency id="jayrock-json" />
-    <dependency id="HydroDesktop.Configuration"/>
+    <dependency id="HydroDesktop.Data" />
+    <dependency id="HydroDesktop.Help"/>
     <dependency id="HydroDesktop.Interfaces" />
   </dependencies>
 </package>

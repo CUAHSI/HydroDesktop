@@ -14,11 +14,4 @@
     <language>en-US</language>
     <tags></tags>
   </metadata>
-  <dependencies>
-    <dependency id="HydroDesktop.Data" />
-    <dependency id="HydroDesktop.Configuration"/>
-    <dependency id="HydroDesktop.Interfaces" />
-    <dependency id="HydroDesktop.WebServices" />
-    <dependency id="log4net" />
-  </dependencies>
 </package>
