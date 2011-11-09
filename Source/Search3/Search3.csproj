@@ -223,6 +223,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

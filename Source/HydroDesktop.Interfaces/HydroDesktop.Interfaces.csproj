@@ -97,6 +97,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeriesEventArgs.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="package.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>call $(SolutionDir)GetDotSpatial.exe</PreBuildEvent>

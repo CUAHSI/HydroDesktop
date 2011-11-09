@@ -18,5 +18,6 @@
     <dependency id="jayrock-json" />
     <dependency id="HydroDesktop.Configuration"/>
     <dependency id="HydroDesktop.Interfaces" />
+    <dependency id="HydroDesktop.Help" />
   </dependencies>
 </package>

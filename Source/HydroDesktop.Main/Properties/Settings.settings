@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydroDesktop.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="SampleProjectsDirectory" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Sample Projects</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>

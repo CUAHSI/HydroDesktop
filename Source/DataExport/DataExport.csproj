@@ -120,6 +120,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="Resources\DataExport.gif" />
   </ItemGroup>
   <ItemGroup>

@@ -113,6 +113,7 @@
   <ItemGroup>
     <Content Include="HelpPage.htm" />
     <Content Include="OmiEd.ico" />
+    <None Include="package.nuspec" />
     <None Include="Resources\select.bmp" />
     <Content Include="Resources\select.png" />
     <None Include="Resources\component_image.ico" />

@@ -117,6 +117,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagrams\SeriesViewClassDiagram.cd" />
+    <None Include="package.nuspec" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
