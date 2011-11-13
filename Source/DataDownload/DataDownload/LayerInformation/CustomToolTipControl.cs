@@ -91,13 +91,16 @@ namespace HydroDesktop.DataDownload.LayerInformation
             lbSiteName.Text = itemForCommonParts.SiteName;
             if (lbSiteName.Width > thisWidth) thisWidth = lbSiteName.Width;
             
+            // Variable labels...
             var sameVarName = info.GetItems().All(item => itemForCommonParts.VarName == item.VarName);
             var sameType = info.GetItems().All(item => itemForCommonParts.DataType == item.DataType);
             var showDataType = info.ItemsCount > 1 &&
                                (!sameType || sameVarName);
-            foreach(var item in info.GetItems())
+            const int max_variables_count = 10; // If variables list is too long, limit display to max_variables_count
+            var variablesList = info.GetItems().ToList(); 
+            for (int i = 0; i < variablesList.Count && i < max_variables_count; i++)
             {
-                // Variable label
+                var item = variablesList[i];
                 var lbVariable = new Label {AutoSize = true, Location = new Point(startX, startY)};
                 AddControl(lbVariable, ref startY);
                 lbVariable.Text = string.Format("{0}{1} - {2}{3}",
@@ -107,7 +110,14 @@ namespace HydroDesktop.DataDownload.LayerInformation
                                                 item.IsDownloaded ? string.Empty : " (estimated)");
                 if (lbVariable.Width > thisWidth) thisWidth = lbVariable.Width;
             }
-            
+            if (variablesList.Count > max_variables_count)
+            {
+                var lbVariable = new Label { AutoSize = true, Location = new Point(startX, startY) };
+                AddControl(lbVariable, ref startY);
+                lbVariable.Text = string.Format("{0} more available but not shown", variablesList.Count - max_variables_count);
+                if (lbVariable.Width > thisWidth) thisWidth = lbVariable.Width;
+            }
+
             // Download data label
             startY += 2;
             var lbDowloadData = new LinkLabel {AutoSize = true, Location = new Point(startX, startY)};
