@@ -79,6 +79,29 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
             UpdateDataTable(searchLayer, downloadedFeatureSet, downloadManager);
             UpdateSymbolizing(searchLayer);
+            UpdateContextMenu(searchLayer);
+        }
+
+        private void UpdateContextMenu(IFeatureLayer searchLayer)
+        {
+            var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+            // TODO: replace line above with MEF if need
+            if (exportPlugin == null) return;
+
+            const string dataGroupName = "Data";
+            var dataGroupMenu = searchLayer.ContextMenuItems.FirstOrDefault(item => item.Name == dataGroupName);
+            if (dataGroupMenu == null)
+                return;
+
+            const string name = "Export Time Series Data";
+            if (dataGroupMenu.MenuItems.Exists(item => item.Name == name))
+            {
+                // menu item already exists. Do nothing.
+                return;
+            }
+
+            var menuItem = new SymbologyMenuItem(name, delegate { exportPlugin.Export(searchLayer); });
+            dataGroupMenu.MenuItems.Add(menuItem);
         }
 
         public void RemoveCustomFeaturesFromLayer(ILayer layer)
