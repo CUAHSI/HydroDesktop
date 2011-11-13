@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Collections;
+using System.Linq;
 
 using HydroDesktop.Database;
 using HydroDesktop.Help;
@@ -19,7 +21,8 @@ namespace HydroDesktop.ExportToCSV
 		#region Variables
 
 		private readonly DbOperations _dboperation;
-		private bool _formIsClosing = false;
+	    private readonly IEnumerable<string> _selectedThemes;
+	    private bool _formIsClosing = false;
 		private DataTable _dtList = new DataTable ();
 		SaveFileDialog _saveFileDlg = new SaveFileDialog ();
 		private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
@@ -31,15 +34,16 @@ namespace HydroDesktop.ExportToCSV
 		/// <summary>
 		/// Initialize the ExportData form, and create a connection for building datatable.
 		/// </summary>
-		public ThemeExportDialog (DbOperations dbOperation)
+		public ThemeExportDialog (DbOperations dbOperation, IEnumerable<string> selectedThemes = null)
 		{
-		    if (dbOperation == null) throw new ArgumentNullException("dbOperation");
+            if (dbOperation == null) throw new ArgumentNullException("dbOperation");
 
-		    InitializeComponent ();
+            InitializeComponent();
             _dboperation = dbOperation;
+		    _selectedThemes = selectedThemes;
 		}
-
-		#endregion
+        
+	    #endregion
 
 		#region Initialization
 
@@ -55,8 +59,9 @@ namespace HydroDesktop.ExportToCSV
             clbThemes.Items.Clear();
             foreach(DataRow row in dtThemes.Rows)
             {
-                clbThemes.Items.Add(new ThemeDescription(Convert.ToInt32(row["ThemeID"]), 
-                                                         row["ThemeName"].ToString()), true);
+                var themeName = row["ThemeName"].ToString();
+                var check = _selectedThemes == null || _selectedThemes.Contains(themeName);
+                clbThemes.Items.Add(new ThemeDescription(Convert.ToInt32(row["ThemeID"]), themeName), check);
             }
 		    
 

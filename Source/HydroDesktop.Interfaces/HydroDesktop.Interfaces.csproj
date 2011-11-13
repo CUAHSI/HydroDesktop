@@ -53,6 +53,8 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.Data, Version=0.11.9.6, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL" />
+    <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -66,6 +68,7 @@
     <Compile Include="DatabaseChangedEventArgs.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FilterTypes.cs" />
+    <Compile Include="IDataExportPlugin.cs" />
     <Compile Include="IHydroDbOperations.cs" />
     <Compile Include="IMetadataCacheManager.cs" />
     <Compile Include="IRepositoryManager.cs" />
