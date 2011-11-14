@@ -7,11 +7,4 @@ SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Help.csproj -Version %buil
 SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Data.csproj -Version %build.number% -Properties Configuration=Release
 SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.WebServices.csproj -Version %build.number% -Properties Configuration=Release
 SupportFiles\Nuget\nuget.exe pack Source\SeriesView\SeriesView.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack Source\.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack DotSpatial.Plugins.ShapeEditor\DotSpatial.Plugins.ShapeEditor.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack DotSpatial.Plugins.SpatiaLite\DotSpatial.Plugins.SpatiaLite.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack DotSpatial.Plugins.ToolManager\DotSpatial.Plugins.ToolManager.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack DotSpatial.Plugins.Taudem\DotSpatial.Plugins.Taudem.csproj -Version %build.number% -Properties Configuration=Release -NoPackageAnalysis
-SupportFiles\Nuget\nuget.exe pack DotSpatial.Tools\DotSpatial.Tools.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack DotSpatial.Plugins.WebMap\DotSpatial.Plugins.WebMap.csproj -Version %build.number% -Properties Configuration=Release
-forfiles /m DotSpatial.*.nupkg /c "cmd /c  SupportFiles\Nuget\nuget.exe  push @FILE ce9f5fda-2ac2-4f4d-867c-be1bc6581ee9 -Source http://www.myget.org/F/dotspatial/"
+forfiles /m HydroDesktop.*.nupkg /c "cmd /c  SupportFiles\Nuget\nuget.exe  push @FILE ce9f5fda-2ac2-4f4d-867c-be1bc6581ee9 -Source http://www.myget.org/F/hydrodesktop/"
