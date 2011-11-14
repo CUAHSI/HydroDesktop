@@ -13,10 +13,10 @@
     <summary />
     <language>en-US</language>
     <tags></tags>
+    <dependencies>
+      <dependency id="HydroDesktop.Configuration"/>
+      <dependency id="HydroDesktop.Interfaces" />
+      <dependency id="HydroDesktop.Data" />
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="HydroDesktop.Configuration"/>
-    <dependency id="HydroDesktop.Interfaces" />
-	  <dependency id="HydroDesktop.Data" />
-  </dependencies>
 </package>
