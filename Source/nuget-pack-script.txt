@@ -1,10 +1,10 @@
 ﻿if exist *.nupkg  del *.nupkg
 
 :: Publish extensions
-SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Configuration.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Interfaces.csproj -Version %build.number% -Properties Configuration=Release -NoPackageAnalysis
-SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Help.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Data.csproj -Version %build.number% -Properties Configuration=Release
-SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.WebServices.csproj -Version %build.number% -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj -Version %build.number% -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj -Version %build.number% -Properties Configuration=Release -NoPackageAnalysis
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Help\HydroDesktop.Help.csproj -Version %build.number% -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Data\HydroDesktop.Data.csproj -Version %build.number% -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj -Version %build.number% -Properties Configuration=Release
 SupportFiles\Nuget\nuget.exe pack Source\SeriesView\SeriesView.csproj -Version %build.number% -Properties Configuration=Release
-forfiles /m HydroDesktop.*.nupkg /c "cmd /c  SupportFiles\Nuget\nuget.exe  push @FILE ce9f5fda-2ac2-4f4d-867c-be1bc6581ee9 -Source http://www.myget.org/F/hydrodesktop/"
+forfiles /m HydroDesktop.*.nupkg /c "cmd /c  SupportFiles\Nuget\nuget.exe  push @FILE 546086eb-759c-4006-8209-787d4a4f448d -Source http://www.myget.org/F/hydrodesktop/"
