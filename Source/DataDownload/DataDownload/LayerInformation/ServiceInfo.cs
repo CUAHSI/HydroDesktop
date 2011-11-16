@@ -19,12 +19,16 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor of <see cref="ServiceInfo"/>
+        /// </summary>
         public ServiceInfo()
         {
             DataSource = unknown;
             SiteName = unknown;
             ValueCount = null;
             ServiceDesciptionUrl = unknown;
+            VarCode = unknown;
         }
 
         #endregion
@@ -34,13 +38,15 @@ namespace HydroDesktop.DataDownload.LayerInformation
         private string _dataSource;
 
         /// <summary>
-        /// DataSource
+        /// DataSource, not null.
         /// </summary>
         public string DataSource
         {
             get { return _dataSource; }
             set
             {
+                if (value == null) throw new ArgumentNullException("value");
+
                 _dataSource = value;
                 NotifyPropertyChanged("DataSource");
             }
@@ -49,13 +55,15 @@ namespace HydroDesktop.DataDownload.LayerInformation
         private string _siteName;
 
         /// <summary>
-        /// SiteName
+        /// SiteName, not null.
         /// </summary>
         public string SiteName
         {
             get { return _siteName; }
             set
             {
+                if (value == null) throw new ArgumentNullException("value");
+
                 _siteName = value;
                 NotifyPropertyChanged("SiteName");
             }
@@ -80,13 +88,15 @@ namespace HydroDesktop.DataDownload.LayerInformation
         private string _serviceDesciptionUrl;
 
         /// <summary>
-        /// ServiceDesciptionUrl
+        /// ServiceDesciptionUrl, not null.
         /// </summary>
         public string ServiceDesciptionUrl
         {
             get { return _serviceDesciptionUrl; }
             set
             {
+                if (value == null) throw new ArgumentNullException("value");
+
                 _serviceDesciptionUrl = value;
                 NotifyPropertyChanged("ServiceDesciptionUrl");
             }
@@ -107,7 +117,19 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         public string SiteCode { get; set; }
 
-        public string VarCode { get; set; }
+        private string _varCode;
+        /// <summary>
+        /// Variable code, not null.
+        /// </summary>
+        public string VarCode
+        {
+            get { return _varCode; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value");
+                _varCode = value;
+            }
+        }
 
         public string ServiceUrl { get; set; }
 
@@ -210,7 +232,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         public override int GetHashCode()
         {
             return DataSource.GetHashCode() ^ SiteName.GetHashCode() ^
-                   ValueCount.GetHashCode() ^ ServiceDesciptionUrl.GetHashCode() ^ 
+                   (ValueCount != null ? ValueCount.GetHashCode() : 0) ^ ServiceDesciptionUrl.GetHashCode() ^
                    VarCode.GetHashCode();
         }
 

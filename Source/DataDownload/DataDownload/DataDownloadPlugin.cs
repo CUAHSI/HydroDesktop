@@ -19,9 +19,7 @@ namespace HydroDesktop.DataDownload
         #region Fields
 
         private const string TableTabKey = "kHome";
-        private readonly SearchLayerModifier _searchLayerModifier = new SearchLayerModifier();
-
-        private SimpleActionItem btnDownload = null;
+        private SimpleActionItem btnDownload;
 
         #endregion
 
@@ -39,6 +37,12 @@ namespace HydroDesktop.DataDownload
         private DownloadManager DownloadManager
         {
             get { return DownloadManager.Instance; }
+        }
+
+        private SearchLayerModifier _searchLayerModifier;
+        private SearchLayerModifier SearchLayerModifier
+        {
+            get { return _searchLayerModifier ?? (_searchLayerModifier = new SearchLayerModifier((Map) App.Map)); }
         }
 
         #endregion
@@ -111,6 +115,7 @@ namespace HydroDesktop.DataDownload
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
+            SearchLayerModifier.DisablePopupInformer();
 
             Global.PluginEntryPoint = null;
 
@@ -144,7 +149,7 @@ namespace HydroDesktop.DataDownload
 
         private void AttachLayerToPlugin(ILayer layer)
         {
-            if (_searchLayerModifier.AddCustomFeaturesToSearchLayer(layer, (Map)App.Map))
+            if (SearchLayerModifier.AddCustomFeaturesToSearchLayer(layer))
             {
                 btnDownload.Enabled = true;
             }
@@ -162,7 +167,7 @@ namespace HydroDesktop.DataDownload
 
         private void UnattachLayerFromPlugin(ILayer layer)
         {
-            _searchLayerModifier.RemoveCustomFeaturesFromLayer(layer);
+            SearchLayerModifier.RemoveCustomFeaturesFromLayer(layer);
 
             var group = layer as IGroup;
             if (group != null)
@@ -180,7 +185,7 @@ namespace HydroDesktop.DataDownload
             var hasPointsToDownload = false;
             foreach (var layer in App.Map.MapFrame.GetAllLayers())
             {
-                if (!layer.Checked || !_searchLayerModifier.IsSearchLayer(layer)) continue;
+                if (!layer.Checked || !SearchLayerModifier.IsSearchLayer(layer)) continue;
 
                 var featureLayer = (IFeatureLayer) layer;
                 if (featureLayer.Selection.Count == 0) continue;
@@ -235,7 +240,7 @@ namespace HydroDesktop.DataDownload
             featureSet.FillAttributes();
 
             var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
-            _searchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
+            SearchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
 
             // Refresh list of the time series in the table and graph in the main form
             SeriesControl.RefreshSelection();

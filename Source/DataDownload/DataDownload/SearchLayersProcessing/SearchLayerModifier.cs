@@ -19,8 +19,25 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
     /// </summary>
     class SearchLayerModifier
     {
+        private readonly Map _map;
+        private readonly SearchLayerInformer _searchInformer;
+
+        public SearchLayerModifier(Map map)
+        {
+            _map = map;
+            if (map == null) throw new ArgumentNullException("map");
+
+            var extractor = new HISCentralInfoExtractor(Services);
+            _searchInformer = new SearchLayerInformer(extractor, map);
+        }
+       
 
         #region Public methods
+
+        public void DisablePopupInformer()
+        {
+            _searchInformer.Stop();
+        }
 
         /// <summary>
         /// Check layer for search attributes
@@ -52,20 +69,15 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         /// Add some specific features to layer, if this layer is search results layer
         /// </summary>
         /// <param name="layer">Layer</param>
-        /// <param name="map">Map</param>
         /// <exception cref="ArgumentNullException"><para>layer</para>, <para>map</para> must be not null.</exception>
-        public bool AddCustomFeaturesToSearchLayer(ILayer layer, Map map)
+        public bool AddCustomFeaturesToSearchLayer(ILayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
-            if (map == null) throw new ArgumentNullException("map");
 
             if (!IsSearchLayer(layer)) return false;
 
-            
-
-            SetUpLabeling((IFeatureLayer)layer, map);
+            SetUpLabeling((IFeatureLayer)layer, _map);
             UpdateSymbolizing((IFeatureLayer)layer);
-            AttachPopup((IFeatureLayer)layer, map);
 
             return true;
         }
@@ -109,13 +121,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             if (layer == null) throw new ArgumentNullException("layer");
             if (!IsSearchLayer(layer)) return;
 
-            var feature = (IFeatureLayer) layer;
-            SearchLayerInformer infrormer;
-            if (_searchInformersPerLayes.TryGetValue(feature, out infrormer))
-            {
-                infrormer.Stop();
-                _searchInformersPerLayes.Remove(feature);
-            }
+            //todo: Undo of SetUpLabeling, UpdateSymbolizing
         }
 
         #endregion
@@ -191,19 +197,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 return _services;
             }
         }
-
-        private readonly Dictionary<IFeatureLayer, SearchLayerInformer> _searchInformersPerLayes = new Dictionary<IFeatureLayer, SearchLayerInformer>();
-
-        private void AttachPopup(IFeatureLayer layer, Map map)
-        {
-            var extractor = new HISCentralInfoExtractor(Services);
-            var searchInformer = new SearchLayerInformer(extractor);
-            if (_searchInformersPerLayes.ContainsKey(layer)) return;
-
-            searchInformer.Start(map, layer);
-            _searchInformersPerLayes.Add(layer, searchInformer);
-        }
-
+     
         private static void UpdateSymbolizing(IFeatureLayer layer)
         {
             Debug.Assert(layer != null);

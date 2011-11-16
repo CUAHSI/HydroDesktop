@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
+using System.Linq;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -16,8 +18,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         #region Fields
 
         private readonly IServiceInfoExtractor _serviceInfoExtractor;
-        private Map _map;
-        private IFeatureLayer _layer;
+        private readonly Map _map;
         private readonly Popup toolTip;
         private readonly CustomToolTipControl customToolTip;
 
@@ -29,17 +30,24 @@ namespace HydroDesktop.DataDownload.LayerInformation
         /// Create instance of <see cref="SearchLayerInformer"/>
         /// </summary>
         /// <param name="serviceInfoExtractor">Instance of IServiceInfoExtractor</param>
+        /// <param name="map">Map</param>
         /// <exception cref="ArgumentNullException">serviceInfoExtractor must be not null.</exception>
-        public SearchLayerInformer(IServiceInfoExtractor serviceInfoExtractor)
+        public SearchLayerInformer(IServiceInfoExtractor serviceInfoExtractor, Map map)
         {
             if (serviceInfoExtractor == null) throw new ArgumentNullException("serviceInfoExtractor");
+            if (map == null) throw new ArgumentNullException("map");
+
+
             _serviceInfoExtractor = serviceInfoExtractor;
+            _map = map;
 
             toolTip = new Popup(customToolTip = new CustomToolTipControl());
             customToolTip.Popup = toolTip;
             toolTip.AutoClose = false;
             toolTip.FocusOnOpen = false;
             toolTip.ShowingAnimation = toolTip.HidingAnimation = PopupAnimations.Blend;
+
+            _map.MouseMove += _map_MouseMove;
         }
 
         #endregion
@@ -51,67 +59,30 @@ namespace HydroDesktop.DataDownload.LayerInformation
         /// </summary>
         public void Stop()
         {
-            if (_map != null)
-            {
-                _map.MouseMove -= _map_MouseMove;
-                _map.Layers.LayerRemoved -= Layers_LayerRemoved;
-            }
-
-            if (_layer != null)
-            {
-                _layer.VisibleChanged -= layer_VisibleChanged;
-            }
+            _map.MouseMove -= _map_MouseMove;
         }
-
-        /// <summary>
-        /// Start engine
-        /// </summary>
-        /// <param name="map">Map to process</param>
-        /// <param name="layer">Layer to process</param>
-        /// <exception cref="ArgumentNullException"><para>map</para>, <para>layer</para> must be not null.</exception>
-        public void Start(Map map, IFeatureLayer layer)
-        {
-            if (map == null) throw new ArgumentNullException("map");
-            if (layer == null) throw new ArgumentNullException("layer");
-
-            Stop();
-
-            _map = map;
-            _layer = layer;
-            
-            _map.Layers.LayerRemoved += Layers_LayerRemoved;
-            layer.VisibleChanged += layer_VisibleChanged;
-            layer_VisibleChanged(layer, EventArgs.Empty);
-        }
-
+    
         #endregion
 
         #region Private methods
 
-        void layer_VisibleChanged(object sender, EventArgs e)
-        {
-            if (!_layer.IsVisible)
-            {
-                HideToolTip();
-                _map.MouseMove -= _map_MouseMove;
-                return;
-            }
-            _map.MouseMove -= _map_MouseMove;
-            _map.MouseMove += _map_MouseMove;
-        }
-
         void _map_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (!_layer.IsVisible)
+            var visibleLayers = _map.GetAllLayers().OfType<IFeatureLayer>()
+                                                   .Where(layer => layer.IsVisible).ToList();
+            if (visibleLayers.Count == 0)
             {
+                HideToolTip();
                 return;
             }
 
             var rtol = new Rectangle(e.X - 8, e.Y - 8, 0x10, 0x10);
             var tolerant = _map.PixelToProj(rtol);
 
-            var pInfo = Identify(_layer, tolerant);
-            if (pInfo == null || pInfo.IsEmpty)
+            var pInfos = visibleLayers.Select(layer => Identify(layer, tolerant))
+                                      .Where(pInfo => !pInfo.IsEmpty).ToList();
+
+            if (pInfos.Count == 0)
             {
                 HideToolTip();
                 return;
@@ -119,11 +90,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             // If already visible same tooltip, not show again
             var control = (CustomToolTipControl) toolTip.Content;
-            if (toolTip.Visible && control.IsInfoAlreadySetted(pInfo))
+            if (toolTip.Visible && control.IsInfoAlreadySetted(pInfos))
                 return;
 
             HideToolTip();
-            control.SetInfo(pInfo);
+            control.SetInfo(pInfos);
             toolTip.Show(_map, e.Location);
         }
 
@@ -144,19 +115,15 @@ namespace HydroDesktop.DataDownload.LayerInformation
                     feature.ParentFeatureSet.FillAttributes();
                 }
                 var pInfo = ClassConvertor.IFeatureToServiceInfo(feature, layer);
-                pInfo.ServiceDesciptionUrl = _serviceInfoExtractor.GetServiceDesciptionUrl(pInfo.ServiceUrl);
+                var serviceDescription = _serviceInfoExtractor.GetServiceDesciptionUrl(pInfo.ServiceUrl);
+                if (serviceDescription != null)
+                {
+                    pInfo.ServiceDesciptionUrl = serviceDescription;
+                }
                 group.AddOverlappedServiceInfo(pInfo);
             }
 
             return group;
-        }
-
-        void Layers_LayerRemoved(object sender, LayerEventArgs e)
-        {
-            if (e.Layer == _layer)
-            {
-                Stop();
-            }
         }
 
         #endregion
