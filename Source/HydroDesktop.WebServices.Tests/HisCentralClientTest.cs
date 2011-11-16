@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HydroDesktop.Interfaces.ObjectModel;
 using NUnit.Framework;
 using HydroDesktop.WebServices;
-using HydroDesktop.Interfaces.ObjectModel;
 using System.Data;
 
 namespace HydroDesktop.WebServices.Tests

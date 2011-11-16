@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using HydroDesktop.Interfaces;
-using HydroDesktop.Search;
-using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace SearchUnitTests
 {
     [TestFixture()]
     public class SearchWithFailoverTest
     {
+        /*
         private Mock<IHISCentralSearcher> HisCentralSearcher;
 
         private DoWorkEventArgs workEventsWorks;
@@ -105,7 +97,7 @@ namespace SearchUnitTests
                         backgroundWorker.Object);
                 }
                     );
-
+        */
             /* The method is void, so there is no way to set a
          * .Return(void).Callback(throw Exception)
          * Tried .Callback(c => {if (counter >0) { return new mock<>.setup().Throws() }
@@ -145,6 +137,6 @@ namespace SearchUnitTests
             //        backgroundWorker.Object);
 
             //}
-        }
+        
     }
 }

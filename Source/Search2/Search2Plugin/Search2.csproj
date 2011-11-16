@@ -47,7 +47,7 @@
     <DocumentationFile>..\..\..\Binaries\Plugins\Search2\Search2.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\..\Binaries\Plugins\Search2\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\Search2\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

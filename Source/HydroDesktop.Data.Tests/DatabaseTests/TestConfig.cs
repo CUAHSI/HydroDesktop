@@ -4,7 +4,6 @@ using System.Reflection;
 using System.IO;
 using log4net;
 using HydroDesktop.Interfaces;
-using HydroDesktop.Controls.Themes;
 using HydroDesktop.Database;
 
 
@@ -102,15 +101,6 @@ namespace HydroDesktop.Data.Tests
                     _metadataCacheManager = new MetadataCacheManagerSQL(DatabaseTypes.SQLite, DefaultLocalCacheConnection());
                 }
                 return _metadataCacheManager;
-            }
-        }
-
-        public static ThemeManager ThemeManager
-        {
-            get
-            {
-                DbOperations db = new DbOperations(DefaultActualDataConnection(), DatabaseTypes.SQLite);
-                return new ThemeManager(db);
             }
         }
     }

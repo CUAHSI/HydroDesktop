@@ -15,6 +15,7 @@ namespace HydroDesktop.Interfaces.Tests
     [TestFixture()]
     public class HydroDatabaseTest
     {
+        /*
         private string cleanDb1;
         private string cleanDb2;
 
@@ -160,7 +161,7 @@ namespace HydroDesktop.Interfaces.Tests
          * This is true even if the thrown exception inherits from the expected exception.
         // System.Data.Sqlite exceptions are of type System.Data.Common.DbException
        // [ExpectedException(typeof(System.Data.Common.DbException))]
-         */
+         *//*
         [ExpectedException]
         public void LoadTableBadQuery()
         {
@@ -169,6 +170,7 @@ namespace HydroDesktop.Interfaces.Tests
             string sqlTest = "SELECT * FROM JABBERQOKCY";
             DataTable dt = hdb.LoadTable(sqlTest);
             Assert.Null(dt);
-        }
+        }*/
     }
+    
 }
