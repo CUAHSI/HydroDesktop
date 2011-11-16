@@ -135,6 +135,8 @@ namespace HydroDesktop.DataDownload
 
         private void Map_LayerAdded(object sender, LayerEventArgs e)
         {
+            if (e.Layer == null) return; //occurs when moving layer
+            
             AttachLayerToPlugin(e.Layer);
         }
         void Layers_LayerRemoved(object sender, LayerEventArgs e)

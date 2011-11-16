@@ -107,9 +107,9 @@ namespace HydroDesktop.WebServices
             return descriptionImporter;
         }
 
-        public static string GetAssemblyFilePath(Uri webServiceUri)
+        public static string GetAssemblyFilePath(Uri wsdlUri)
         {
-            if (String.IsNullOrEmpty(webServiceUri.ToString()))
+            if (String.IsNullOrEmpty(wsdlUri.ToString()))
             {
                 log.Error("Web Service Not Found");
                 throw new Exception("Web Service Not Found");
@@ -128,7 +128,7 @@ namespace HydroDesktop.WebServices
                 log.Debug("Creating assemblyPath" + assemblyPath);
                 System.IO.Directory.CreateDirectory(assemblyPath);
 }
-            string uriString = webServiceUri.ToString();
+            string uriString = wsdlUri.ToString();
             
 
             if (uriString.StartsWith(@"http://"))
@@ -144,19 +144,19 @@ namespace HydroDesktop.WebServices
         /// </summary>
         /// <param name="webServiceUri">Location of WSDL.</param>
         /// <returns>A web service assembly.</returns>
-        public static Assembly BuildAssemblyFromWSDL(Uri webServiceUri)
+        public static Assembly BuildAssemblyFromWSDL(Uri wsdlUri)
         {
             log.Debug("BuildAssemblyFromWSDL");
 
-            if (String.IsNullOrEmpty(webServiceUri.ToString())){
+            if (String.IsNullOrEmpty(wsdlUri.ToString())){
                 log.Error("Web Service Not Found"); 
                 throw new Exception("Web Service Not Found");
 }
-            XmlTextReader xmlreader = new XmlTextReader(webServiceUri.ToString() + "?wsdl");
+            XmlTextReader xmlreader = new XmlTextReader(wsdlUri.ToString());
 
             ServiceDescriptionImporter descriptionImporter = BuildServiceDescriptionImporter(xmlreader);
 
-            string assemblyPath = GetAssemblyFilePath(webServiceUri);
+            string assemblyPath = GetAssemblyFilePath(wsdlUri);
 
             xmlreader.Close();
 
