@@ -20,3 +20,4 @@ HydroDesktop Extensions:
    HydroR/HydroR
    GraphView/GraphView
    EditView/EditView
+   MetadataFetcher/MetadataFetcher

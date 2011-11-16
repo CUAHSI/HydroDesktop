@@ -26,8 +26,8 @@ Table of Contents
    :maxdepth: 2
 
    general-concepts
-   extensions/extensions
    guide-books
+   extensions/extensions
    version-history
 
 Additional Resources
