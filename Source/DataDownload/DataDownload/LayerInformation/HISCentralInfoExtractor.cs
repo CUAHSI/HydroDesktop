@@ -30,7 +30,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         {
             if (serviceUrl == null) return null;
             string res;
-            return _services.TryGetValue(serviceUrl, out res) ? res : null;
+            return _services.TryGetValue(serviceUrl, out res) ? res : serviceUrl;
         }
     }
 }
