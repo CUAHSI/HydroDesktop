@@ -52,9 +52,10 @@ namespace GetDotSpatial
                         try
                         {
                             //* means delete all files in the directory
-                            if (fullPath.EndsWith("*"))
-                            
-                            File.Delete(fullPath);
+                            if (!(fullPath.EndsWith("*")))
+                            {
+                                File.Delete(fullPath);
+                            }
                         }
                         catch (UnauthorizedAccessException)
                         {
@@ -117,7 +118,7 @@ namespace GetDotSpatial
 
         private static string FindTargetFolder(string packageTarget)
         {
-            string baseFolder = AppDomain.CurrentDomain.BaseDirectory; //hydroDesktop/Source/Main
+            string baseFolder = AppDomain.CurrentDomain.BaseDirectory; //hydroDesktop/Source
             
             if (baseFolder.EndsWith("/") || baseFolder.EndsWith(Path.DirectorySeparatorChar.ToString()))
             {
