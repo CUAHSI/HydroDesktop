@@ -57,17 +57,17 @@ namespace HydroDesktop.WebServices
         /// <param name="_assemblyxUrl"></param>
         /// <param name="serviceName"></param>
         /// <returns></returns>
-        protected Assembly CreateDynamicAssembly(string asmxUrl)
+        protected Assembly CreateDynamicAssembly(string wsdlUrl)
         {
             try
             {
-                asmxUrl = asmxUrl.ToLower().Trim();
-                if (asmxUrl.Contains("?wsdl"))
+                wsdlUrl = wsdlUrl.ToLower().Trim();
+                if (wsdlUrl.EndsWith("asmx"))
                 {
-                    asmxUrl = asmxUrl.Replace("?wsdl", "");
+                    wsdlUrl = wsdlUrl + "?wsdl";
                 }
                 
-                Uri uri = new Uri(asmxUrl);
+                Uri uri = new Uri(wsdlUrl);
                 
                 string assemblyPath = AssemblyBuilder.GetAssemblyFilePath(uri);
                 

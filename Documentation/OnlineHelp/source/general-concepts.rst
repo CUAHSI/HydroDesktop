@@ -27,6 +27,14 @@ Search
 
 HydroDesktop can search for hydrologic time series data, download it, and save it to your local Data Repository database. When searching for data, you can specify the following filters: region of interest, time period of interest, and variables of interest.  When the search results are returned, you can further filter the results and then choose which data you want to actually download and store as a theme in your database.
 
+Read the following help for more information on search:
+
+.. toctree::
+   :maxdepth: 1
+   
+   guide-books/Search/Search
+
+
 Projects
 --------
 
