@@ -98,6 +98,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SeriesSelector.Designer.cs">
+      <DependentUpon>SeriesSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="SeriesViewPlugin.cs" />
     <Compile Include="FilterDataSeries.cs">
       <SubType>Form</SubType>
