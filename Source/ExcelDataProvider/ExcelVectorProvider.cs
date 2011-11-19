@@ -1,20 +1,28 @@
 using System.Data;
+using System.Diagnostics;
 using System.IO;
-using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
-using System.Linq;
 using Excel;
 using System;
 using ExcelExtension.Properties;
 
 namespace ExcelExtension
 {
+    /// <summary>
+    /// Excel Vector Provider. It let converts data from MS Excel files into FeatureSet.
+    /// Points coordinates msut be in Latitude/Longitude columns.
+    /// </summary>
     public class ExcelVectorProvider : IVectorProvider
     {
-        internal static string[] Extensions = { ".xls", ".xlsx" };
-
+        /// <summary>
+        /// Opens the specified file
+        /// </summary>
+        /// <param name="fileName">Path to file.</param>
+        /// <returns>Feature set from file data.</returns>
+        /// <exception cref="Exception">Throws if no sheets in the file, or 
+        /// Latitude or Longitude column not found.</exception>
         public IDataSet Open(string fileName)
         {
             var fs = new FeatureSet
@@ -45,15 +53,28 @@ namespace ExcelExtension
                 {
                     throw new Exception("There is no sheets in the file");
                 }
-                var table = ds.Tables[0];
-                int latColumnIndex = table.Columns.IndexOf("Latitude");
-                int lngColumnIndex = table.Columns.IndexOf("Longitude");
+
+                // Find first table (sheet) with Latitude/Longitude columns.
+                DataTable table = null;
+                int latColumnIndex = -1;
+                int lngColumnIndex = -1;
+                for (int i = 0; i < ds.Tables.Count; i++)
+                {
+                    table = ds.Tables[i];
+                    latColumnIndex = table.Columns.IndexOf("Latitude");
+                    lngColumnIndex = table.Columns.IndexOf("Longitude");
+                    if (latColumnIndex >= 0 && lngColumnIndex >=0)
+                    {
+                        break;
+                    }
+                }
                 if (latColumnIndex == -1 || lngColumnIndex == -1)
                 {
                     throw new Exception("Latitude or Longitude column not found");
                 }
+                Debug.Assert(table != null);
 
-                for (int i = 0; i < reader.FieldCount; i++)
+                for (int i = 0; i < table.Columns.Count; i++)
                 {
                     string sFieldName = table.Columns[i].ColumnName;
                     Type type = table.Columns[i].DataType;
@@ -73,21 +94,21 @@ namespace ExcelExtension
                 {
                     var lat = reader.GetDouble(latColumnIndex);
                     var lng = reader.GetDouble(lngColumnIndex);
-
                     IGeometry geometry = new Point(lng, lat);
 
                     IFeature feature = new Feature(geometry);
                     feature.DataRow = fs.DataTable.NewRow();
-                    for (int i = 0; i < reader.FieldCount; i++)
+                    for (int j = 0; j < reader.FieldCount; j++)
                     {
-                        object value = reader[i];
+                        object value = reader.GetValue(j);
                         if (value == null)
                         {
                             value = DBNull.Value;
                         }
-                        feature.DataRow[i] = value;
+                        feature.DataRow[j] = value;
                     }
                     fs.Features.Add(feature);
+
                 }
             }finally
             {
@@ -107,7 +128,7 @@ namespace ExcelExtension
         {
             get
             {
-                return "MS Excel files|*.xlsx;*.xls"; 
+                return "Excel files (*.xlsx,*.xls)|*.xlsx;*.xls"; 
             }
         }
 
@@ -133,7 +154,7 @@ namespace ExcelExtension
 
         public IFeatureSet CreateNew(string fileName, FeatureType featureType, bool inRam, IProgressHandler progressHandler)
         {
-            return null;
+            throw new NotSupportedException();
         }
 
         FeatureType IVectorProvider.GetFeatureType(string fileName)
