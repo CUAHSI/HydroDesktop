@@ -12,6 +12,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     /// WaterOneFlow client which can be used to connect to a REST WaterOneFlow
     /// web service
     /// </summary>
+    /// <remarks>This implementation is not tested, contains some hard-coded URL's and needs refactoring</remarks>
     public class RestWaterOneFlowClient : IWaterOneFlowClient
     {
         #region Variables

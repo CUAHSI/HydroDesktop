@@ -4,6 +4,9 @@ using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
 {
+    /// <summary>
+    /// Interface for WaterOneFlow SOAP Service Client
+    /// </summary>
     public interface IWaterOneFlowClient
     {
         /// <summary>

@@ -15,6 +15,9 @@ namespace HydroDesktop.WebServices
     /// </summary>
     public class ServiceIconHelper
     {
+        /// <summary>
+        /// Creates a new instance of the icon helper class
+        /// </summary>
         public ServiceIconHelper(string hisCentralUrl)
         {
             _hisCentralUrl = hisCentralUrl;
