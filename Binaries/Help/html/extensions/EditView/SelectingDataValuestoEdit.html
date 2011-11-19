@@ -1,0 +1,117 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Selecting Data Values to Edit &mdash; HydroDesktop Help</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="Edit View Tab" href="EditView.html" />
+    <link rel="next" title="Changing the Value of Selected Data Values" href="ChangingtheValueofSelectedDataValues.html" />
+    <link rel="prev" title="Selecting Data Series to Edit" href="SelectingDataSeriestoEdit.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="EditView.html" >Edit View Tab</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Selecting Data Values to Edit</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="ChangingtheValueofSelectedDataValues.html" title="Changing the Value of Selected Data Values" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="SelectingDataSeriestoEdit.html" title="Selecting Data Series to Edit" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="selecting-data-values-to-edit">
+<span id="index-0"></span><h1>Selecting Data Values to Edit<a class="headerlink" href="#selecting-data-values-to-edit" title="Permalink to this headline">¶</a></h1>
+<p>Before data values within a data series can be edited, they must first be selected.  You can select individual data values by clicking on their associated record in the tabular view at the bottom of the Edit View tab.  When you do so, you will notice that the corresponding point on the plot changes color from black to red.  Additionally, the Edit View extension provides several filters that can be used for selecting multiple data values that you would like to edit.  These include the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Value Threshold Filter - use this filter to select all data values greater than or less than a given threshold or between two threshold values.  Useful for selecting out of range values for interpolation.</li>
+<li>Data Gaps Filter - use this filter to select data values where the time gap between two values is greater than a threshold.  Useful for finding data gaps.</li>
+<li>Date Filter - use this filter to select all data values greater than or less than a give date or between two dates.  Useful for selecting blocks of data for deletion.</li>
+<li>Value Change Threshold Filter - use this filter to select all data values where the change from one value to the next is greater than some threshold value.  Useful for detecting anomalies in time series.</li>
+</ul>
+</div></blockquote>
+<p>The following is an example of how to apply a value threshold data filter:</p>
+<ol class="arabic simple">
+<li>If you have not already, select a data series for editing and click the &#8220;Start Editing&#8221; button on the Edit View ribbon.</li>
+<li>Type a value into one of the threshold value boxes and then click the &#8220;Apply Filter&#8221; button. In the example below, a filter has been applied to select dissolved oxygen data values greater than 15 mg/L, which are obvious out of range values that need to be edited.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/Edit_image003.png" src="../../_images/Edit_image003.png" />
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Oct 13, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
