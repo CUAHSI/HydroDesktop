@@ -245,6 +245,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             Global.PluginEntryPoint.StartDownloading(startArgs, layer);
         }
 
+
         void lblServiceDesciptionUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
