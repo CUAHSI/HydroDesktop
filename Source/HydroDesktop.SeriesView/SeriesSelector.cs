@@ -15,9 +15,6 @@ namespace SeriesView
     {
         #region Private Variables
 
-        private DataTable _table;
-        private DataView _dataView;
-
         //Private Six Criterion Tables
         private DataTable _themeTable;
         private DataTable _siteTable;
@@ -27,16 +24,19 @@ namespace SeriesView
         private DataTable _qcLevelTable;
 
         //private clicked series and selected seriesID
-        private int _clickedSeriesID = 0;
+        private int _clickedSeriesID;
         
         //private uncheck all indicator
         private bool _uncheckAll = false;
         //private checkboxes visible indicator
         private bool _checkBoxesVisible = true;
 
+        private bool _needShowVariableNameWithDataType;
+
         #endregion
 
         #region Constructor
+
         public SeriesSelector()
         {
             InitializeComponent();
@@ -46,6 +46,8 @@ namespace SeriesView
             dgvSeries.CellMouseDown += dgvSeries_CellMouseDown;
             dgvSeries.CurrentCellDirtyStateChanged += dgvSeries_CurrentCellDirtyStateChanged;
             dgvSeries.CellValueChanged += dgvSeries_CellValueChanged;
+            dgvSeries.CellFormatting += dgvSeries_CellFormatting;
+
             btnUncheckAll.Click += btnUncheckAll_Click;
 
             //filter option events
@@ -62,6 +64,18 @@ namespace SeriesView
         #endregion 
 
         #region Event Handlers
+
+        void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (_needShowVariableNameWithDataType &&
+                dgvSeries.Columns[e.ColumnIndex].Name == "VariableName")
+            {
+                e.Value = string.Format("{0}, {1}",
+                                        dgvSeries.Rows[e.RowIndex].Cells["VariableName"].Value,
+                                        dgvSeries.Rows[e.RowIndex].Cells["DataType"].Value);
+                e.FormattingApplied = true;
+            }
+        }
 
         void SeriesSelector_Disposed(object sender, EventArgs e)
         {
@@ -94,7 +108,7 @@ namespace SeriesView
         void radAll_Click(object sender, EventArgs e)
         {
             SetFilterOption(FilterTypes.All);
-            _dataView.RowFilter = "";
+            MainView.RowFilter = "";
         }
 
         void radComplex_Click(object sender, EventArgs e)
@@ -217,16 +231,16 @@ namespace SeriesView
                         break;
                 }
 
-                _dataView.RowFilter = filter;
+                MainView.RowFilter = filter;
             }
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataRow[] tableRows = _table.Select("SeriesID=" + _clickedSeriesID.ToString());
+            var tableRows = MainView.Table.Select("SeriesID=" + _clickedSeriesID);
             if (tableRows.Length > 0)
             {
-                frmProperty f = new frmProperty(tableRows[0]);
+                var f = new frmProperty(tableRows[0]);
                 f.Show();
             }
         }
@@ -237,7 +251,7 @@ namespace SeriesView
             if (MessageBox.Show("Are you sure you want to delete this series (ID: "+_clickedSeriesID+")?", 
                 "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
-                RepositoryManagerSQL manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+                var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
                 manager.DeleteSeries(_clickedSeriesID);
                 RefreshSelection();
             }   
@@ -339,20 +353,15 @@ namespace SeriesView
         {
             get
             {
-                if (_dataView != null)
-                {
-                    return _dataView.RowFilter;
-                }
-                else
-                {
-                    return String.Empty;
-                }
+                var view = MainView;
+                return view != null ? view.RowFilter : String.Empty;
             }
             set
             {
-                if (_dataView != null)
+                var view = MainView;
+                if (view != null)
                 {
-                    _dataView.RowFilter = value;
+                    view.RowFilter = value;
                 }
             }
         }
@@ -408,60 +417,71 @@ namespace SeriesView
             }
 
             _uncheckAll = false;
+        }
 
-            //foreach (DataGridViewRow row in dgvSeries.Rows)
-            //{
-            //    bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
-            //    if (isChecked)
-            //    {
-            //        row.Cells["Checked"].Value = false;
-            //    }
-            //}
+        private DataView MainView
+        {
+            get { return dgvSeries.DataSource as DataView; }
         }
 
         public void SetupDatabase()
         {
             //Settings.Instance.Load();
-            string conString = Settings.Instance.DataRepositoryConnectionString;
+            var conString = Settings.Instance.DataRepositoryConnectionString;
             
             //if the connection string is not set, exit
             if (String.IsNullOrEmpty(conString)) return;
             
-            RepositoryManagerSQL manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, conString);
-            DataTable tbl = manager.GetSeriesTable2();
-            tbl.Columns.Add("Checked", typeof(bool));
-            //set value of 'checked' initially to 'false'
-            foreach (DataRow row in tbl.Rows)
-            {
-                row["Checked"] = false;
-            }
-
-
-            _dataView = new DataView(tbl);
-            _table = tbl;
-            dgvSeries.DataSource = _dataView;
+            var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, conString);
+            var tbl = manager.GetSeriesTable2();
+          
+            // Add Checked column
+            var columnChecked = new DataColumn("Checked", typeof (bool)) {DefaultValue = false,};
+            tbl.Columns.Add(columnChecked);
+            
+            dgvSeries.DataSource = new DataView(tbl);
             //datagridview representation
             foreach (DataGridViewColumn col in dgvSeries.Columns)
             {
-                if (col.Name != "Checked" && col.Name != "SiteName" && col.Name != "VariableName" && col.Name != "SeriesID")
+                if (col.Name != "Checked" && 
+                    col.Name != "SiteName" && 
+                    col.Name != "VariableName" && 
+                    col.Name != "SeriesID")
                 {
                     col.Visible = false;
                 }
             }
+
+            // Determine necessity to show VariableName with DataType in UI
+            _needShowVariableNameWithDataType = false;
+            foreach(DataRow row in tbl.Rows)
+            {
+                var variable = row["VariableName"].ToString();
+                var site = row["SiteName"].ToString();
+                if (tbl.Select(string.Format("VariableName = '{0}' and SiteName = '{1}'", variable, site)).Length >= 2)
+                {
+                    _needShowVariableNameWithDataType = true;
+                    break;
+                }
+            }
+
             dgvSeries.Columns["Checked"].DisplayIndex = 0;
             dgvSeries.Columns["Checked"].Width = 25;
             dgvSeries.Columns["Checked"].ReadOnly = false;
 
+            dgvSeries.Columns["SeriesID"].DisplayIndex = 1;
+            dgvSeries.Columns["SeriesID"].Width = 35;
+            dgvSeries.Columns["SeriesID"].ReadOnly = true;
+
             dgvSeries.Columns["VariableName"].DisplayIndex = 2;
             dgvSeries.Columns["VariableName"].ReadOnly = true;
+            dgvSeries.Columns["VariableName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             dgvSeries.Columns["SiteName"].DisplayIndex = 3;
             dgvSeries.Columns["SiteName"].ReadOnly = true;
             dgvSeries.Columns["SiteName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvSeries.Columns["SeriesID"].DisplayIndex = 1;
-            dgvSeries.Columns["SeriesID"].Width = 35;
-            dgvSeries.Columns["SeriesID"].ReadOnly = true;
+            
 
             //setup the filter option to "default all"
             SetFilterOption(FilterType);
@@ -469,7 +489,7 @@ namespace SeriesView
             //to populate the 'Simple filter' criteria combo boxes
             AddSimpleFilterOptions();
 
-            _dataView.RowFilter = "";
+            MainView.RowFilter = "";
 
             OnSelectionRefreshed();
         }
@@ -689,13 +709,6 @@ namespace SeriesView
                 return;
             }
 
-            //All the Series Table
-            DataTable allSeriesList = _table;
-
-
-            //Build select strings
-            StringBuilder SQLString = new StringBuilder();
-
             //Get the checked IDs
             int[] checkedIDs = new int[this.CheckedIDList.Length];
             if (checkedIDs.Length > 0)
@@ -767,16 +780,15 @@ namespace SeriesView
                 return "series are exported.";
             }
 
-            ///<summary>
-            /// Complete Data Export codes here if "GetExportOptionsDialog" is used.
-            ///</summary>
+            
+            // todo: Complete Data Export codes here if "GetExportOptionsDialog" is used.
             return "series are exported.";
         }
         #endregion
 
         private void btnEditFilter_Click(object sender, EventArgs e)
         {
-            frmComplexSelection frm = new frmComplexSelection(_table);
+            var frm = new frmComplexSelection(MainView.Table);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 txtFilter.Text = frm.FilterExpression;
