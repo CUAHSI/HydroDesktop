@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Application Extensions\</OutputPath>
+    <OutputPath>..\..\Binaries\Application Extensions\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -97,6 +97,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SeriesSelector.Designer.cs">
+      <DependentUpon>SeriesSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="SeriesViewPlugin.cs" />
     <Compile Include="FilterDataSeries.cs">
