@@ -27,6 +27,7 @@ namespace HydroR
         private RootItem _hydroRTab; 
 
         private SimpleActionItem _btnR;
+        private SimpleActionItem _btnSettings;
 
         private cRCommandView _hydroRControl;
 
@@ -56,15 +57,13 @@ namespace HydroR
             //App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
             
             // Handle code for switching the page content
-            //_hydroRControl.RChanged += new cRCommandView.REventHandler(ribbonBnt_TextChanged);
 
             // Add panel to the docking manager
             if (_seriesSelector != null)
             {
                 _hydroRControl = new cRCommandView(_seriesSelector);
                 
-                //if (!firstTimeAdding)
-                    AddHydroRPanel();
+                AddHydroRPanel();
 
                 //Add a HydroR root item
                 _hydroRTab = new RootItem(kHydroR, _panelName);
@@ -74,7 +73,7 @@ namespace HydroR
                 string rGroupCaption = _panelName + " Tools";
                 string rScriptCaption = "Script";
 
-                _btnR = new SimpleActionItem(kHydroR, "StartR", _hydroRControl.btnR_Click);
+                _btnR = new SimpleActionItem(kHydroR, "Start R", _hydroRControl.btnR_Click);
                 _btnR.Key = "kBtnR";
                 _btnR.LargeImage = Properties.Resources.Ricon;
                 _btnR.GroupCaption = rGroupCaption;
@@ -110,11 +109,20 @@ namespace HydroR
                 btnSave.GroupCaption = rScriptCaption;
                 App.HeaderControl.Add(btnSave);
 
+                _btnSettings = new SimpleActionItem(kHydroR, "Path to R", _hydroRControl.btnSettings_Click);
+                _btnSettings.LargeImage = Properties.Resources.RSettings_32;
+                _btnSettings.SmallImage = Properties.Resources.RSettings_16;
+                _btnSettings.GroupCaption = "Settings";
+                _btnSettings.Click += new EventHandler(_hydroRControl.btnSettings_Click);
+                App.HeaderControl.Add(_btnSettings);
+
                 //when the HydroR panel is selected - activate SeriesView and HydroR ribbon tab
                 App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_ActivePanelChanged);
 
                 App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(kHydroR);
+
+                _hydroRControl.RChanged += new cRCommandView.REventHandler(_hydroRControl_RChanged);
             }
 
             base.Activate();
@@ -127,6 +135,20 @@ namespace HydroR
             dp.DefaultSortOrder = 40;
             App.DockManager.Add(dp);
             firstTimeAdding = false;
+        }
+
+        void _hydroRControl_RChanged(EventArgs e)
+        {
+            if (_hydroRControl.RIsRunning)
+            {
+                _btnR.Caption = "Close R";
+                _btnSettings.Enabled = false;
+            }
+            else
+            {
+                _btnR.Caption = "Start R";
+                _btnSettings.Enabled = true;
+            }
         }
 
         void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
