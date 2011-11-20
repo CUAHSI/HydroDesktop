@@ -11,15 +11,18 @@ using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
 
-
 namespace HydroDesktop.DataDownload
 {
+    /// <summary>
+    /// Plugin that allows to download Features data.
+    /// </summary>
     public class DataDownloadPlugin : Extension
     {
         #region Fields
 
         private const string TableTabKey = "kHome";
         private SimpleActionItem btnDownload;
+        private ToolStripItem _seriesControlUpdateValuesMenuItem;
 
         #endregion
 
@@ -68,6 +71,19 @@ namespace HydroDesktop.DataDownload
             downloadManager.Start(startArgs);
         }
 
+        /// <summary>
+        /// Starts downloading
+        /// </summary>
+        /// <param name="featureLayer">Layer with features to download</param>
+        /// <param name="featuresToDownload">Features to download</param>
+        public void StartDownloading(IFeatureLayer featureLayer, IEnumerable<IFeature> featuresToDownload)
+        {
+            var dataThemeName = featureLayer.LegendText;
+            var oneSeriesList = featuresToDownload.Select(f => ClassConvertor.IFeatureToOneSeriesDownloadInfo(f, featureLayer)).ToList();
+            var startArgs = new StartDownloadArg(oneSeriesList, dataThemeName);
+            StartDownloading(startArgs, featureLayer);
+        }
+
         #endregion
 
         #region Plugin operations
@@ -88,7 +104,6 @@ namespace HydroDesktop.DataDownload
                                   };
             App.HeaderControl.Add(btnDownload);
 
-
             Global.PluginEntryPoint = this;
 
             // Subscribe to events
@@ -98,9 +113,12 @@ namespace HydroDesktop.DataDownload
             DownloadManager.Completed += DownloadManager_Completed;
             //----
 
+            // Update SeriesControl ContextMenu
+            _seriesControlUpdateValuesMenuItem = SeriesControl.ContextMenuStrip.Items.Add("Update Values from Server", null, DoSeriesControlUpdateValues);
+
             base.Activate();
         }
-
+       
         /// <summary>
         /// Fires when the plugin should become inactive
         /// </summary>
@@ -119,6 +137,9 @@ namespace HydroDesktop.DataDownload
 
             Global.PluginEntryPoint = null;
 
+            // Remove added menu items from SeriesControl ContextMenu
+            SeriesControl.ContextMenuStrip.Items.Remove(_seriesControlUpdateValuesMenuItem);
+
             // This line ensures that "Enabled" is set to false.
             base.Deactivate();
         }
@@ -126,6 +147,30 @@ namespace HydroDesktop.DataDownload
         #endregion
 
         #region Private methods
+
+        private void DoSeriesControlUpdateValues(object sender, EventArgs e)
+        {
+            var selectedSeriesID = SeriesControl.SelectedSeriesID;
+            if (selectedSeriesID == 0) return;
+
+            // Find by selectedSeriesID layer and feature to update.
+            // We can do it, because value of SeriesID column is unique for all features in the map.
+            foreach (var layer in App.Map.MapFrame.GetAllLayers())
+            {
+                if (!SearchLayerModifier.IsSearchLayer(layer)) continue;
+
+                var featureLayer = (IFeatureLayer)layer;
+                if (featureLayer.DataSet.GetColumn("SeriesID") == null) continue;
+
+                var featureToDownload = featureLayer.DataSet.Features
+                    .FirstOrDefault(feature => feature.DataRow["SeriesID"] != DBNull.Value &&
+                                               feature.DataRow["SeriesID"].ToString() == selectedSeriesID.ToString());
+                if (featureToDownload != null)
+                {
+                    StartDownloading(featureLayer, new[] { featureToDownload });
+                }
+            }
+        }
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
@@ -193,14 +238,8 @@ namespace HydroDesktop.DataDownload
                 if (featureLayer.Selection.Count == 0) continue;
                 hasPointsToDownload = true;
 
-                var dataThemeName = featureLayer.LegendText;
-                var oneSeriesList = new List<OneSeriesDownloadInfo>(featureLayer.Selection.Count);
-                oneSeriesList.AddRange(
-                    featureLayer.Selection.ToFeatureList().Select(
-                        f => ClassConvertor.IFeatureToOneSeriesDownloadInfo(f, featureLayer)));
-                var startArgs = new StartDownloadArg(oneSeriesList, dataThemeName);
-                StartDownloading(startArgs, featureLayer);
-                break; // todo: what we must do if several layers are selected?
+                StartDownloading(featureLayer, featureLayer.Selection.ToFeatureList());
+                break;
             }
 
             if (!hasPointsToDownload)

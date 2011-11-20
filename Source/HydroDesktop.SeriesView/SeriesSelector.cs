@@ -1,35 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data;
 using System.ComponentModel;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
-using HydroDesktop.Interfaces.ObjectModel;
 using System.Drawing;
 using HydroDesktop.Interfaces;
 
 namespace SeriesView
 {
-    public class SeriesSelector : UserControl, ISeriesSelector
+    public partial class SeriesSelector : UserControl, ISeriesSelector
     {
-        private Panel panel1;
-        private Button btnCheckAll;
-        private Button btnUncheckAll;
-        private GroupBox groupBox1;
-        private RadioButton radAll;
-        private ComboBox cbBoxCriterion;
-        private ComboBox cbBoxContent;
-        private RadioButton radComplex;
-        private DataGridView dgvSeries;
-        private RadioButton radSimple;
-
         #region Private Variables
-
-        private DataTable _table;
-        private DataView _dataView;
 
         //Private Six Criterion Tables
         private DataTable _themeTable;
@@ -40,53 +24,38 @@ namespace SeriesView
         private DataTable _qcLevelTable;
 
         //private clicked series and selected seriesID
-        private int _clickedSeriesID = 0;
-
-        private ContextMenuStrip contextMenuStrip1;
-        private IContainer components;
-        private Panel panelComplexFilter;
-        private TextBox txtFilter;
-        private Button btnApplyFilter;
-        private ToolStripMenuItem propertiesToolStripMenuItem;
-        private Button btnEditFilter;
+        private int _clickedSeriesID;
         
         //private uncheck all indicator
         private bool _uncheckAll = false;
-        private ToolStripMenuItem deleteToolStripMenuItem;
-        private BackgroundWorker bgwTable2Txt;
-        private ToolStripMenuItem exportToolStripMenuItem;
-        private Button btnRefresh;
-
         //private checkboxes visible indicator
         private bool _checkBoxesVisible = true;
+
+        private bool _needShowVariableNameWithDataType;
 
         #endregion
 
         #region Constructor
+
         public SeriesSelector()
         {
             InitializeComponent();
 
             //to assign the events
-            dgvSeries.CellMouseUp += new DataGridViewCellMouseEventHandler(dgvSeries_CellMouseUp);
+            dgvSeries.CellMouseUp += dgvSeries_CellMouseUp;
+            dgvSeries.CellMouseDown += dgvSeries_CellMouseDown;
+            dgvSeries.CurrentCellDirtyStateChanged += dgvSeries_CurrentCellDirtyStateChanged;
+            dgvSeries.CellValueChanged += dgvSeries_CellValueChanged;
+            dgvSeries.CellFormatting += dgvSeries_CellFormatting;
 
-            dgvSeries.CellMouseDown += new DataGridViewCellMouseEventHandler(dgvSeries_CellMouseDown);
-
-            dgvSeries.CurrentCellDirtyStateChanged += new EventHandler(dgvSeries_CurrentCellDirtyStateChanged);
-
-            dgvSeries.CellValueChanged += new DataGridViewCellEventHandler(dgvSeries_CellValueChanged);
-
-            btnUncheckAll.Click += new EventHandler(btnUncheckAll_Click);
+            btnUncheckAll.Click += btnUncheckAll_Click;
 
             //filter option events
-            radAll.Click += new EventHandler(radAll_Click);
-
-            radSimple.Click += new EventHandler(radSimple_Click);
-
-            radComplex.Click += new EventHandler(radComplex_Click);
-
-            cbBoxCriterion.SelectedIndexChanged +=new EventHandler(cbBoxCriterion_SelectedIndexChanged);
-            cbBoxContent.SelectedIndexChanged +=new EventHandler(cbBoxContent_SelectedIndexChanged);
+            radAll.Click += radAll_Click;
+            radSimple.Click += radSimple_Click;
+            radComplex.Click += radComplex_Click;
+            cbBoxCriterion.SelectedIndexChanged +=cbBoxCriterion_SelectedIndexChanged;
+            cbBoxContent.SelectedIndexChanged +=cbBoxContent_SelectedIndexChanged;
 
             Settings.Instance.DatabaseChanged += Instance_DatabaseChanged;
             Disposed += SeriesSelector_Disposed;
@@ -95,6 +64,18 @@ namespace SeriesView
         #endregion 
 
         #region Event Handlers
+
+        void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (_needShowVariableNameWithDataType &&
+                dgvSeries.Columns[e.ColumnIndex].Name == "VariableName")
+            {
+                e.Value = string.Format("{0}, {1}",
+                                        dgvSeries.Rows[e.RowIndex].Cells["VariableName"].Value,
+                                        dgvSeries.Rows[e.RowIndex].Cells["DataType"].Value);
+                e.FormattingApplied = true;
+            }
+        }
 
         void SeriesSelector_Disposed(object sender, EventArgs e)
         {
@@ -127,7 +108,7 @@ namespace SeriesView
         void radAll_Click(object sender, EventArgs e)
         {
             SetFilterOption(FilterTypes.All);
-            _dataView.RowFilter = "";
+            MainView.RowFilter = "";
         }
 
         void radComplex_Click(object sender, EventArgs e)
@@ -250,16 +231,16 @@ namespace SeriesView
                         break;
                 }
 
-                _dataView.RowFilter = filter;
+                MainView.RowFilter = filter;
             }
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataRow[] tableRows = _table.Select("SeriesID=" + _clickedSeriesID.ToString());
+            var tableRows = MainView.Table.Select("SeriesID=" + _clickedSeriesID);
             if (tableRows.Length > 0)
             {
-                frmProperty f = new frmProperty(tableRows[0]);
+                var f = new frmProperty(tableRows[0]);
                 f.Show();
             }
         }
@@ -270,7 +251,7 @@ namespace SeriesView
             if (MessageBox.Show("Are you sure you want to delete this series (ID: "+_clickedSeriesID+")?", 
                 "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
-                RepositoryManagerSQL manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+                var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
                 manager.DeleteSeries(_clickedSeriesID);
                 RefreshSelection();
             }   
@@ -372,20 +353,15 @@ namespace SeriesView
         {
             get
             {
-                if (_dataView != null)
-                {
-                    return _dataView.RowFilter;
-                }
-                else
-                {
-                    return String.Empty;
-                }
+                var view = MainView;
+                return view != null ? view.RowFilter : String.Empty;
             }
             set
             {
-                if (_dataView != null)
+                var view = MainView;
+                if (view != null)
                 {
-                    _dataView.RowFilter = value;
+                    view.RowFilter = value;
                 }
             }
         }
@@ -441,60 +417,71 @@ namespace SeriesView
             }
 
             _uncheckAll = false;
+        }
 
-            //foreach (DataGridViewRow row in dgvSeries.Rows)
-            //{
-            //    bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
-            //    if (isChecked)
-            //    {
-            //        row.Cells["Checked"].Value = false;
-            //    }
-            //}
+        private DataView MainView
+        {
+            get { return dgvSeries.DataSource as DataView; }
         }
 
         public void SetupDatabase()
         {
             //Settings.Instance.Load();
-            string conString = Settings.Instance.DataRepositoryConnectionString;
+            var conString = Settings.Instance.DataRepositoryConnectionString;
             
             //if the connection string is not set, exit
             if (String.IsNullOrEmpty(conString)) return;
             
-            RepositoryManagerSQL manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, conString);
-            DataTable tbl = manager.GetSeriesTable2();
-            tbl.Columns.Add("Checked", typeof(bool));
-            //set value of 'checked' initially to 'false'
-            foreach (DataRow row in tbl.Rows)
-            {
-                row["Checked"] = false;
-            }
-
-
-            _dataView = new DataView(tbl);
-            _table = tbl;
-            dgvSeries.DataSource = _dataView;
+            var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, conString);
+            var tbl = manager.GetSeriesTable2();
+          
+            // Add Checked column
+            var columnChecked = new DataColumn("Checked", typeof (bool)) {DefaultValue = false,};
+            tbl.Columns.Add(columnChecked);
+            
+            dgvSeries.DataSource = new DataView(tbl);
             //datagridview representation
             foreach (DataGridViewColumn col in dgvSeries.Columns)
             {
-                if (col.Name != "Checked" && col.Name != "SiteName" && col.Name != "VariableName" && col.Name != "SeriesID")
+                if (col.Name != "Checked" && 
+                    col.Name != "SiteName" && 
+                    col.Name != "VariableName" && 
+                    col.Name != "SeriesID")
                 {
                     col.Visible = false;
                 }
             }
+
+            // Determine necessity to show VariableName with DataType in UI
+            _needShowVariableNameWithDataType = false;
+            foreach(DataRow row in tbl.Rows)
+            {
+                var variable = row["VariableName"].ToString();
+                var site = row["SiteName"].ToString();
+                if (tbl.Select(string.Format("VariableName = '{0}' and SiteName = '{1}'", variable, site)).Length >= 2)
+                {
+                    _needShowVariableNameWithDataType = true;
+                    break;
+                }
+            }
+
             dgvSeries.Columns["Checked"].DisplayIndex = 0;
             dgvSeries.Columns["Checked"].Width = 25;
             dgvSeries.Columns["Checked"].ReadOnly = false;
 
+            dgvSeries.Columns["SeriesID"].DisplayIndex = 1;
+            dgvSeries.Columns["SeriesID"].Width = 35;
+            dgvSeries.Columns["SeriesID"].ReadOnly = true;
+
             dgvSeries.Columns["VariableName"].DisplayIndex = 2;
             dgvSeries.Columns["VariableName"].ReadOnly = true;
+            dgvSeries.Columns["VariableName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             dgvSeries.Columns["SiteName"].DisplayIndex = 3;
             dgvSeries.Columns["SiteName"].ReadOnly = true;
             dgvSeries.Columns["SiteName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvSeries.Columns["SeriesID"].DisplayIndex = 1;
-            dgvSeries.Columns["SeriesID"].Width = 35;
-            dgvSeries.Columns["SeriesID"].ReadOnly = true;
+            
 
             //setup the filter option to "default all"
             SetFilterOption(FilterType);
@@ -502,7 +489,7 @@ namespace SeriesView
             //to populate the 'Simple filter' criteria combo boxes
             AddSimpleFilterOptions();
 
-            _dataView.RowFilter = "";
+            MainView.RowFilter = "";
 
             OnSelectionRefreshed();
         }
@@ -661,23 +648,11 @@ namespace SeriesView
 
         private int[] GetCheckedIDs()
         {
-            List<int> seriesIDs = new List<int>();
-
-            //foreach (DataRow row in _table.Rows)
-            //{
-            //    bool isChecked = Convert.ToBoolean(row["Checked"]);
-            //    if (isChecked == true)
-            //    {
-            //        int seriesID = Convert.ToInt32(row["SeriesID"]);
-            //        seriesIDs.Add(seriesID);
-            //    }               
-            //}
-            //return seriesIDs.ToArray();
-
+            var seriesIDs = new List<int>();
             foreach (DataGridViewRow dr in dgvSeries.Rows)
             {
-                bool isChecked = Convert.ToBoolean(dr.Cells["Checked"].Value);
-                if (isChecked == true)
+                var isChecked = Convert.ToBoolean(dr.Cells["Checked"].Value);
+                if (isChecked)
                 {
                     int seriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
                     seriesIDs.Add(seriesID);
@@ -688,7 +663,7 @@ namespace SeriesView
 
         private int[] GetVisibleIDs()
         {
-            List<int> seriesIDs = new List<int>();
+            var seriesIDs = new List<int>();
             foreach (DataGridViewRow dr in dgvSeries.Rows)
             {
                 if (dr.Visible)
@@ -703,6 +678,7 @@ namespace SeriesView
         #endregion
 
         #region Data Export
+
         private void bgwTable2Txt_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -732,13 +708,6 @@ namespace SeriesView
                 MessageBox.Show("The background worker is busy now, please try later.");
                 return;
             }
-
-            //All the Series Table
-            DataTable allSeriesList = _table;
-
-
-            //Build select strings
-            StringBuilder SQLString = new StringBuilder();
 
             //Get the checked IDs
             int[] checkedIDs = new int[this.CheckedIDList.Length];
@@ -811,285 +780,15 @@ namespace SeriesView
                 return "series are exported.";
             }
 
-            ///<summary>
-            /// Complete Data Export codes here if "GetExportOptionsDialog" is used.
-            ///</summary>
+            
+            // todo: Complete Data Export codes here if "GetExportOptionsDialog" is used.
             return "series are exported.";
-        }
-        #endregion
-
-        #region Component Designer generated code
-        private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCheckAll = new System.Windows.Forms.Button();
-            this.btnUncheckAll = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panelComplexFilter = new System.Windows.Forms.Panel();
-            this.btnApplyFilter = new System.Windows.Forms.Button();
-            this.btnEditFilter = new System.Windows.Forms.Button();
-            this.txtFilter = new System.Windows.Forms.TextBox();
-            this.dgvSeries = new System.Windows.Forms.DataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.radAll = new System.Windows.Forms.RadioButton();
-            this.cbBoxCriterion = new System.Windows.Forms.ComboBox();
-            this.cbBoxContent = new System.Windows.Forms.ComboBox();
-            this.radComplex = new System.Windows.Forms.RadioButton();
-            this.radSimple = new System.Windows.Forms.RadioButton();
-            this.bgwTable2Txt = new System.ComponentModel.BackgroundWorker();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.panelComplexFilter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSeries)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.btnRefresh);
-            this.panel1.Controls.Add(this.btnCheckAll);
-            this.panel1.Controls.Add(this.btnUncheckAll);
-            this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Location = new System.Drawing.Point(3, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(245, 420);
-            this.panel1.TabIndex = 20;
-            // 
-            // btnCheckAll
-            // 
-            this.btnCheckAll.Location = new System.Drawing.Point(66, 4);
-            this.btnCheckAll.Name = "btnCheckAll";
-            this.btnCheckAll.Size = new System.Drawing.Size(80, 20);
-            this.btnCheckAll.TabIndex = 19;
-            this.btnCheckAll.Text = "Check All";
-            this.btnCheckAll.UseVisualStyleBackColor = true;
-            this.btnCheckAll.Visible = false;
-            // 
-            // btnUncheckAll
-            // 
-            this.btnUncheckAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUncheckAll.Location = new System.Drawing.Point(149, 4);
-            this.btnUncheckAll.Name = "btnUncheckAll";
-            this.btnUncheckAll.Size = new System.Drawing.Size(80, 20);
-            this.btnUncheckAll.TabIndex = 18;
-            this.btnUncheckAll.Text = "Uncheck All";
-            this.btnUncheckAll.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.panelComplexFilter);
-            this.groupBox1.Controls.Add(this.dgvSeries);
-            this.groupBox1.Controls.Add(this.radAll);
-            this.groupBox1.Controls.Add(this.cbBoxCriterion);
-            this.groupBox1.Controls.Add(this.cbBoxContent);
-            this.groupBox1.Controls.Add(this.radComplex);
-            this.groupBox1.Controls.Add(this.radSimple);
-            this.groupBox1.Location = new System.Drawing.Point(5, 22);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 395);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Selection Tool";
-            // 
-            // panelComplexFilter
-            // 
-            this.panelComplexFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelComplexFilter.Controls.Add(this.btnApplyFilter);
-            this.panelComplexFilter.Controls.Add(this.btnEditFilter);
-            this.panelComplexFilter.Controls.Add(this.txtFilter);
-            this.panelComplexFilter.Location = new System.Drawing.Point(6, 34);
-            this.panelComplexFilter.Name = "panelComplexFilter";
-            this.panelComplexFilter.Size = new System.Drawing.Size(226, 49);
-            this.panelComplexFilter.TabIndex = 19;
-            this.panelComplexFilter.Visible = false;
-            // 
-            // btnApplyFilter
-            // 
-            this.btnApplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApplyFilter.Location = new System.Drawing.Point(158, 26);
-            this.btnApplyFilter.Name = "btnApplyFilter";
-            this.btnApplyFilter.Size = new System.Drawing.Size(60, 20);
-            this.btnApplyFilter.TabIndex = 2;
-            this.btnApplyFilter.Text = "Apply";
-            this.btnApplyFilter.UseVisualStyleBackColor = true;
-            this.btnApplyFilter.Click += new System.EventHandler(this.btnApplyFilter_Click);
-            // 
-            // btnEditFilter
-            // 
-            this.btnEditFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditFilter.Location = new System.Drawing.Point(159, 3);
-            this.btnEditFilter.Name = "btnEditFilter";
-            this.btnEditFilter.Size = new System.Drawing.Size(60, 20);
-            this.btnEditFilter.TabIndex = 1;
-            this.btnEditFilter.Text = "Edit..";
-            this.btnEditFilter.UseVisualStyleBackColor = true;
-            this.btnEditFilter.Click += new System.EventHandler(this.btnEditFilter_Click);
-            // 
-            // txtFilter
-            // 
-            this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(3, 3);
-            this.txtFilter.Multiline = true;
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(150, 43);
-            this.txtFilter.TabIndex = 0;
-            // 
-            // dgvSeries
-            // 
-            this.dgvSeries.AllowUserToAddRows = false;
-            this.dgvSeries.AllowUserToDeleteRows = false;
-            this.dgvSeries.AllowUserToResizeColumns = false;
-            this.dgvSeries.AllowUserToResizeRows = false;
-            this.dgvSeries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSeries.BackgroundColor = System.Drawing.Color.White;
-            this.dgvSeries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSeries.ColumnHeadersVisible = false;
-            this.dgvSeries.ContextMenuStrip = this.contextMenuStrip1;
-            this.dgvSeries.Location = new System.Drawing.Point(7, 89);
-            this.dgvSeries.MultiSelect = false;
-            this.dgvSeries.Name = "dgvSeries";
-            this.dgvSeries.RowHeadersVisible = false;
-            this.dgvSeries.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSeries.Size = new System.Drawing.Size(224, 300);
-            this.dgvSeries.TabIndex = 18;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.propertiesToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.exportToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
-            // 
-            // propertiesToolStripMenuItem
-            // 
-            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.propertiesToolStripMenuItem.Text = "Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deleteToolStripMenuItem.Text = "Delete Series";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exportToolStripMenuItem.Text = "Export Series";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            // 
-            // radAll
-            // 
-            this.radAll.AutoSize = true;
-            this.radAll.Checked = true;
-            this.radAll.Location = new System.Drawing.Point(15, 13);
-            this.radAll.Name = "radAll";
-            this.radAll.Size = new System.Drawing.Size(44, 17);
-            this.radAll.TabIndex = 17;
-            this.radAll.TabStop = true;
-            this.radAll.Text = "ALL";
-            this.radAll.UseVisualStyleBackColor = true;
-            // 
-            // cbBoxCriterion
-            // 
-            this.cbBoxCriterion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbBoxCriterion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBoxCriterion.FormattingEnabled = true;
-            this.cbBoxCriterion.Location = new System.Drawing.Point(6, 34);
-            this.cbBoxCriterion.Name = "cbBoxCriterion";
-            this.cbBoxCriterion.Size = new System.Drawing.Size(225, 21);
-            this.cbBoxCriterion.TabIndex = 13;
-            // 
-            // cbBoxContent
-            // 
-            this.cbBoxContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbBoxContent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBoxContent.FormattingEnabled = true;
-            this.cbBoxContent.Location = new System.Drawing.Point(6, 61);
-            this.cbBoxContent.Name = "cbBoxContent";
-            this.cbBoxContent.Size = new System.Drawing.Size(225, 21);
-            this.cbBoxContent.TabIndex = 14;
-            // 
-            // radComplex
-            // 
-            this.radComplex.AutoSize = true;
-            this.radComplex.Location = new System.Drawing.Point(142, 13);
-            this.radComplex.Name = "radComplex";
-            this.radComplex.Size = new System.Drawing.Size(90, 17);
-            this.radComplex.TabIndex = 12;
-            this.radComplex.Text = "Complex Filter";
-            this.radComplex.UseVisualStyleBackColor = true;
-            // 
-            // radSimple
-            // 
-            this.radSimple.AutoSize = true;
-            this.radSimple.Location = new System.Drawing.Point(61, 13);
-            this.radSimple.Name = "radSimple";
-            this.radSimple.Size = new System.Drawing.Size(81, 17);
-            this.radSimple.TabIndex = 11;
-            this.radSimple.Text = "Simple Filter";
-            this.radSimple.UseVisualStyleBackColor = true;
-            // 
-            // bgwTable2Txt
-            // 
-            this.bgwTable2Txt.WorkerReportsProgress = true;
-            this.bgwTable2Txt.WorkerSupportsCancellation = true;
-            this.bgwTable2Txt.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTable2Txt_DoWork);
-            this.bgwTable2Txt.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTable2Txt_RunWorkerCompleted);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(5, 4);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(59, 20);
-            this.btnRefresh.TabIndex = 20;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // SeriesSelector
-            // 
-            this.Controls.Add(this.panel1);
-            this.Name = "SeriesSelector";
-            this.Size = new System.Drawing.Size(250, 425);
-            this.panel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.panelComplexFilter.ResumeLayout(false);
-            this.panelComplexFilter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSeries)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.ResumeLayout(false);
-
         }
         #endregion
 
         private void btnEditFilter_Click(object sender, EventArgs e)
         {
-            frmComplexSelection frm = new frmComplexSelection(_table);
+            var frm = new frmComplexSelection(MainView.Table);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 txtFilter.Text = frm.FilterExpression;
