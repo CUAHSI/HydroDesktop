@@ -481,6 +481,23 @@ namespace HydroR
             }
         }
 
+        //this will launch the R settings
+        public void btnSettings_Click(object sender, EventArgs e)
+        {
+            frmInstallR frmR = new frmInstallR(true);
+            frmR.getPathToR = pathToR;
+            frmR.ShowDialog(this);
+            if (frmR.getRPathResult == HydroR.frmInstallR.buttonType.OK)
+            {
+                string newPathToR = frmR.getPathToR;
+                if (newPathToR != pathToR)
+                {
+                    pathToR = newPathToR;
+                    //startR();
+                }
+            }
+        }
+
         //if the process has exited resize the panels so the text box takes up the entire screen
         private void p_Exited(object sender, EventArgs e)
         {
