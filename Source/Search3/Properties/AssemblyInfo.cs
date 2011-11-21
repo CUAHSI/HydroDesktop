@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Search3")]
 [assembly: AssemblyDescription("Search 3 Extension for HydroDesktop")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("CUAHSI")]
 [assembly: AssemblyProduct("Search3")]
 [assembly: AssemblyCopyright("Copyright © CUAHSI 2011")]
 [assembly: AssemblyTrademark("")]
