@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -49,14 +50,13 @@ namespace Search3.Searching
 
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, _searchGroupName);
 
-            var layerToSelect = (MapPointLayer)null;
+            var layersToSelect = new List<MapPointLayer>();
             foreach(var item in _searchResult.ResultItems)
             {
                 var subResultLayer = CreateSearchResultLayer(item, root);
                 root.Add(subResultLayer);
-                layerToSelect = subResultLayer;
+                layersToSelect.Add(subResultLayer);
             }
-            Debug.Assert(layerToSelect != null);
             _map.Refresh();
 
             //assign the projection again
@@ -66,7 +66,7 @@ namespace Search3.Searching
             for (int i = 0; i < root.Layers.Count; i++)
             {
                 var layer = root[i];
-                var state = layer == layerToSelect;
+                var state = layersToSelect.Contains(layer);
                 var rendItem = layer as IRenderableLegendItem;
                 if (rendItem != null)
                 {
