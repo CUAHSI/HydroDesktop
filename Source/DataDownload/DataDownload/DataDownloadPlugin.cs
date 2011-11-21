@@ -196,9 +196,12 @@ namespace HydroDesktop.DataDownload
 
         private void AttachLayerToPlugin(ILayer layer)
         {
-            if (SearchLayerModifier.AddCustomFeaturesToSearchLayer(layer))
+            if (SearchLayerModifier.IsSearchLayer(layer))
             {
-                btnDownload.Enabled = true;
+                if (SearchLayerModifier.AddCustomFeaturesToSearchLayer((IFeatureLayer) layer))
+                {
+                    btnDownload.Enabled = true;
+                }
             }
 
             var group = layer as IGroup;

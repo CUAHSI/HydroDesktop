@@ -11,6 +11,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
@@ -46,7 +47,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         /// <returns>True - layer is search layer, otherwise - false.</returns>
         /// <exception cref="ArgumentNullException"><para>layer</para> must be not null.</exception>
         /// <remarks>If layer is search layer, it can be casted at least to IFeatureLayer</remarks>
-        public bool IsSearchLayer(ILayer layer)
+        public static bool IsSearchLayer(ILayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
 
@@ -70,14 +71,14 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         /// </summary>
         /// <param name="layer">Layer</param>
         /// <exception cref="ArgumentNullException"><para>layer</para>, <para>map</para> must be not null.</exception>
-        public bool AddCustomFeaturesToSearchLayer(ILayer layer)
+        public bool AddCustomFeaturesToSearchLayer(IFeatureLayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
 
             if (!IsSearchLayer(layer)) return false;
 
-            SetUpLabeling((IFeatureLayer)layer, _map);
-            UpdateSymbolizing((IFeatureLayer)layer);
+            SetUpLabeling(layer, _map);
+            UpdateSymbolizing(layer);
 
             return true;
         }
@@ -143,25 +144,58 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             // Update values in search layer to corresponding from downloaded features
             foreach (var dInfo in downloadManager.GetSavedData())
             {
-                var searchFeature = dInfo.SourceFeature;
-                var series = dInfo.ResultSeries.First();
-
-                // Find downloaded feature
-                var downloadedFeature = downloadedFeatureSet.Features.FirstOrDefault(feature =>
-                                    (string)feature.DataRow["SiteCode"] == series.Site.Code &&
-                                    (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
-                                    (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
-                                    (string)feature.DataRow["DataType"] == series.Variable.DataType &&
-                                    (string)feature.DataRow["Method"] == series.Method.Description &&
-                                    (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition);
-
-
-                if (downloadedFeature == null) continue;
-
-                // updating...
-                foreach (DataColumn column in downloadedFeatureSet.DataTable.Columns)
+                var seriesToProcess = new List<Series>();
+                // Find all series with different Method/QualityControlLevel
+                foreach(var series in dInfo.ResultSeries)
                 {
-                    searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
+                    if (!seriesToProcess.Exists(s => s.Site.Code == series.Site.Code &&
+                                                     s.Variable.Code == series.Variable.Code &&
+                                                     s.Method.Description == series.Method.Description &&
+                                                     s.QualityControlLevel.Definition == series.QualityControlLevel.Definition))
+                    {
+                        seriesToProcess.Add(series);
+                    }
+                }
+
+                var searchFeature = dInfo.SourceFeature;
+                Series firstSeries;
+                if (searchFeature.DataRow["Method"] != DBNull.Value &&
+                    searchFeature.DataRow["QualityCont"] != DBNull.Value)
+                {
+                    firstSeries = seriesToProcess.First(s =>
+                                                        (string)searchFeature.DataRow["SiteCode"] == s.Site.Code &&
+                                                        (string)searchFeature.DataRow["VarCode"] == s.Variable.Code &&
+                                                        (string)searchFeature.DataRow["VarName"] == s.Variable.Name &&
+                                                        (string)searchFeature.DataRow["DataType"] == s.Variable.DataType &&
+                                                        (string)searchFeature.DataRow["Method"] == s.Method.Description &&
+                                                        (string)searchFeature.DataRow["QualityCont"] == s.QualityControlLevel.Definition);
+                }
+                else
+                    firstSeries = seriesToProcess.First();
+                seriesToProcess.Remove(firstSeries);
+                
+                UpdateFeatureFromFeature(searchFeature, downloadedFeatureSet, firstSeries);
+
+                // Additional series...
+                foreach(var series in seriesToProcess)
+                {
+                    var sFeature = searchLayer.DataSet.Features.FirstOrDefault(
+                       feature =>
+                                  (string)feature.DataRow["SiteCode"] == series.Site.Code &&
+                                  (string)feature.DataRow["VarCode"] == series.Variable.Code &&
+                                  (string)feature.DataRow["VarName"] == series.Variable.Name &&
+                                  (string)feature.DataRow["DataType"] == series.Variable.DataType &&
+                                  feature.DataRow["Method"] != DBNull.Value && (string)feature.DataRow["Method"] == series.Method.Description &&
+                                  feature.DataRow["QualityCont"] != DBNull.Value && (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition
+                       );
+                    // If no such feature in Search shapeFile, then add it...
+                    if (sFeature == null) 
+                    {
+                        sFeature = searchFeature.Copy();
+                        searchLayer.DataSet.Features.Add(sFeature);
+                    }
+
+                    UpdateFeatureFromFeature(sFeature, downloadedFeatureSet, series);
                 }
             }
 
@@ -169,6 +203,25 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             if (!string.IsNullOrEmpty(searchLayer.DataSet.Filename))
             {
                 searchLayer.DataSet.Save();
+            }
+        }
+
+        private void UpdateFeatureFromFeature(IFeature searchFeature, IFeatureSet featureSet, Series series)
+        {
+            // Find downloaded feature
+            var downloadedFeature = featureSet.Features.FirstOrDefault(feature =>
+                                (string)feature.DataRow["SiteCode"] == series.Site.Code &&
+                                (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
+                                (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
+                                (string)feature.DataRow["DataType"] == series.Variable.DataType &&
+                                (string)feature.DataRow["Method"] == series.Method.Description &&
+                                (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition);
+            if (downloadedFeature == null) return;
+
+            // updating...
+            foreach (DataColumn column in featureSet.DataTable.Columns)
+            {
+                searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
             }
         }
 
@@ -207,7 +260,17 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             {
                 // assume that layer has same data source in all rows
                 var servCode = layer.DataSet.GetFeature(0).DataRow["ServiceCode"].ToString();
-                layer.Symbology = CreateSymbology(servCode, layer.DataSet);
+                var symb = CreateSymbology(servCode, layer.DataSet);
+
+                if (layer.DataSet.FeatureLookup.Count > 0 &&
+                    layer.DataSet.FeatureLookup.Count != layer.DataSet.Features.Count)
+                {
+                    // todo: Sometimes it's true. I don't know why, need additional investigation (Maxim).
+                    layer.DataSet.FeatureLookup.Clear();
+                    // If not clear FeatureLookup, then exception raised in next line
+                }
+
+                layer.Symbology = symb;
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using HydroDesktop.DataDownload.Downloading.Exceptions;
@@ -419,13 +420,13 @@ namespace HydroDesktop.DataDownload.Downloading
                 }
                 Debug.Assert(dInfo != null);
                 
-                IEnumerable<Series> series;
+                IList<Series> series;
                 var startTime = DateTime.Now;
 
                 // Parsing series from xml
                 try
                 {
-                    series = objDownloader.DataSeriesFromXml(dInfo);
+                    series = objDownloader.DataSeriesFromXml(dInfo).ToList();
                 }
                 catch (DataSeriesFromXmlException ex)
                 {
@@ -443,16 +444,6 @@ namespace HydroDesktop.DataDownload.Downloading
                     dInfo.ErrorMessage = ex.Message;
                     continue;
                 }
-                catch (TooMuchSeriesFromXmlException ex)
-                {
-                    dInfo.Status = DownloadInfoStatus.Error;
-                    Information.WithError++;
-                    DoLogError(ex.Message, null, dInfo); // No stack trace
-                    dInfo.ErrorMessage = ex.Message;
-                    continue;
-                }
-
-                Debug.Assert(series != null);
 
                 // Save series to database
                 int numSavedValues;

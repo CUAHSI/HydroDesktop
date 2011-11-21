@@ -103,7 +103,6 @@
     <Compile Include="Downloading\Exceptions\DownloadXmlException.cs" />
     <Compile Include="Downloading\Exceptions\NoSeriesFromXmlException.cs" />
     <Compile Include="Downloading\Exceptions\SaveDataSeriesException.cs" />
-    <Compile Include="Downloading\Exceptions\TooMuchSeriesFromXmlException.cs" />
     <Compile Include="Downloading\ManagerInformation.cs" />
     <Compile Include="Downloading\OneSeriesDownloadInfo.cs" />
     <Compile Include="Downloading\RedownloadControl.cs">

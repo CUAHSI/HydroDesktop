@@ -103,10 +103,9 @@ namespace HydroDesktop.DataDownload.Downloading
         /// Converts the xml file to a data series object.
         /// </summary>
         /// <param name="dInfo">Download info</param>
-        /// <returns>Collectiob of the data series objects</returns>
+        /// <returns>Collection of the data series objects</returns>
         /// <exception cref="DataSeriesFromXmlException">Exception during parsing</exception>
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
-        /// <exception cref="TooMuchSeriesFromXmlException">Throws when too much series in xml file.</exception>
         public IEnumerable<Series> DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
         {
             var client = GetWsClientInstance(dInfo.Wsdl);
@@ -117,33 +116,23 @@ namespace HydroDesktop.DataDownload.Downloading
             var result = new List<Series>();
             foreach (var xmlFile in dInfo.FilesWithData)
             {
-                result.Add(GetDataSeriesFromXml(xmlFile, parser));
+                IList<Series> seriesList;
+                try
+                {
+                    seriesList = parser.ParseGetValues(xmlFile);
+                }
+                catch (Exception ex)
+                {
+                    throw new DataSeriesFromXmlException(ex.Message, ex);
+                }
+                if (seriesList == null || seriesList.Count == 0)
+                    throw new NoSeriesFromXmlException();
+
+                result.AddRange(seriesList);
             }
             return result;
         }
-
-
-        private Series GetDataSeriesFromXml(string xmlFileName, IWaterOneFlowParser parser)
-        {
-            IList<Series> seriesList;
-
-            try
-            {
-                seriesList = parser.ParseGetValues(xmlFileName);
-            }
-            catch(Exception ex)
-            {
-                throw new DataSeriesFromXmlException(ex.Message, ex);
-            }
-
-            if (seriesList == null || seriesList.Count == 0)
-                throw new NoSeriesFromXmlException();
-            if (seriesList.Count > 1)
-                throw new TooMuchSeriesFromXmlException();
-
-            return seriesList[0];
-        }
-        
+     
 
         /// <summary>
         /// Creates a new DataSeries from a xml file and saves it to database.
