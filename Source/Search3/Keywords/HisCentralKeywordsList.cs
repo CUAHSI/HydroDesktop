@@ -5,7 +5,7 @@ using Search3.Settings;
 
 namespace Search3.Keywords
 {
-    class HisCentalKeywordsList : IKeywordsList
+    class HisCentralKeywordsList : IKeywordsList
     {
         private SortedSet<string> keywordsList;
 

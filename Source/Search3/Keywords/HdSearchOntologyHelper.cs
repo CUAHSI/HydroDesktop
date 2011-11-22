@@ -22,11 +22,11 @@ namespace Search3.Keywords
        {
            return ReadXmlFile(filename);
        }
-       public static XmlDocument ReadOntologySymbologyXmlFile()
+       public static XmlDocument ReadOntologySynonymsXmlFile()
        {
            return ReadXmlFile(_ontologySynonymsFilename);
        }
-       public static XmlDocument ReadOntologySymbologyXmlFile(string filename)
+       public static XmlDocument ReadOntologySynonymsXmlFile(string filename)
        {
            return ReadXmlFile(filename);
        }
