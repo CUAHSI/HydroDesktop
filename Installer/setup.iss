@@ -136,7 +136,7 @@ Source: "..\Binaries\Plugins\Search3\*"; DestDir: "{app}\Plugins\Search3"; Flags
 Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\ZDataDownload"; Flags: ignoreversion;
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
@@ -175,6 +175,8 @@ Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueNam
 Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop}"; Flags: nowait postinstall skipifsilent
 
 [InstallDelete]
+Type: files; Name: "{app}\Application Extensions\*"
+Type: files; Name: "{app}\Plugins\*"; Flags: recursesubdirs;
 Type: files; Name: "{app}\Application Extensions\DotSpatial.Plugins.DockManager.dll"
 Type: files; Name: "{app}\DotSpatial.Common.dll"
 Type: files; Name: "{app}\DotSpatial.Desktop.dll"
@@ -200,6 +202,8 @@ Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
 
 [UninstallDelete]
+Type: files; Name: "{app}\Application Extensions\*"
+Type: files; Name: "{app}\Plugins\*"; Flags: recursesubdirs;
 Type: files; Name: "{app}\Plugins\FetchBasemap.*"
 Type: files; Name: "{app}\Plugins\1_SeriesView.*"
 Type: files; Name: "{app}\Plugins\TSA.*"
