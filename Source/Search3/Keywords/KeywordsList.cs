@@ -17,7 +17,7 @@ namespace Search3.Keywords
                     concreteList = new DbKeywordsList();
                     break;
                 case TypeOfCatalog.HisCentral:
-                    concreteList = new HisCentalKeywordsList();
+                    concreteList = new HisCentralKeywordsList();
                     break;
                 default:
                     throw new Exception("Unknown TypeOfCatalog");

@@ -176,7 +176,7 @@ Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop
 
 [InstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
-Type: files; Name: "{app}\Plugins\*"; Flags: recursesubdirs;
+Type: files; Name: "{app}\Plugins\*"
 Type: files; Name: "{app}\Application Extensions\DotSpatial.Plugins.DockManager.dll"
 Type: files; Name: "{app}\DotSpatial.Common.dll"
 Type: files; Name: "{app}\DotSpatial.Desktop.dll"
