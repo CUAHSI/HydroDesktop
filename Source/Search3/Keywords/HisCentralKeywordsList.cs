@@ -12,7 +12,7 @@ namespace Search3.Keywords
         public void GetKeywordsAndOntology(out IList<string> keywords, out OntologyTree ontoloyTree)
         {
             // Keywords
-            var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySymbologyXmlFile();
+            var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySynonymsXmlFile();
             var nList = tmpsyndoc.GetElementsByTagName("SearchableKeyword");
             keywordsList = new SortedSet<string>();
             foreach (var elem in nList.Cast<XmlElement>().Where(elem => !keywordsList.Contains(elem.InnerText)))
