@@ -36,19 +36,17 @@ namespace Search3.Searching
 
         private void SubscribeToSearcherEvents()
         {
-            _searcher.Completed += searcher_Completed;
             _searcher.OnMessage += searcher_OnMessage;
             _searcher.ProgressChanged += searcher_ProgressChanged;
         }
 
         private void UnSubscribeToSearcherEvents()
         {
-            _searcher.Completed -= searcher_Completed;
             _searcher.OnMessage -= searcher_OnMessage;
             _searcher.ProgressChanged -= searcher_ProgressChanged;
         }
 
-        void searcher_Completed(object sender, CompletedEventArgs e)
+        public void DoSearchFinished(CompletedEventArgs e)
         {
             UnSubscribeToSearcherEvents();
 
@@ -57,6 +55,7 @@ namespace Search3.Searching
                 _searcher.ShowUI();
             }
             btnCancel.Enabled = false;
+            Text = "Search Finished";
 
             string message;
             switch (e.Reason)
@@ -70,17 +69,16 @@ namespace Search3.Searching
                 case CompletedReasones.NormalCompleted:
                     message = e.Result == null || e.Result.IsEmpty()
                                   ? "No results were found. Please change the search criteria."
-                                  : "Search finished!";
+                                  : "Search finished successfully.";
                     break;
                 default:
                     message = "Search was finished for unknown reason.";
                     break;
             }
 
-
-            MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            searcher_OnMessage(_searcher, new LogMessageEventArgs(message));
         }
-
+      
         void searcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             ThreadSafeSetText(lbCurrentOperation, Convert.ToString(e.UserState));

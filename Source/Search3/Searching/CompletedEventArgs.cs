@@ -4,10 +4,11 @@ namespace Search3.Searching
 {
     public class CompletedEventArgs : EventArgs
     {
-        public CompletedEventArgs(SearchResult result, CompletedReasones reason)
+        public CompletedEventArgs(SearchResult result, CompletedReasones reason, IProgressHandler progressHandler)
         {
             Result = result;
             Reason = reason;
+            ProgressHandler = progressHandler;
         }
 
         /// <summary>
@@ -19,6 +20,11 @@ namespace Search3.Searching
         /// Reason of completed event
         /// </summary>
         public CompletedReasones Reason { get; private set; }
+
+        /// <summary>
+        /// Progress handler
+        /// </summary>
+        public IProgressHandler ProgressHandler { get; private set; }
     }
 
     public enum CompletedReasones

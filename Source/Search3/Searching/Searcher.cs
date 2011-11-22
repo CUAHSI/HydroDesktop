@@ -61,6 +61,7 @@ namespace Search3.Searching
 
             _searcherUI = new SearchProgressForm(this);
             ShowUI();
+            LogMessage("Search started.");
             InternalStartSearching(settings);
         }
 
@@ -104,8 +105,7 @@ namespace Search3.Searching
             if (_searcherUI == null) return;
             _searcherUI.Show();
         }
-
-
+        
         /// <summary>
         /// Hide GUI for searching.
         /// </summary>
@@ -150,7 +150,6 @@ namespace Search3.Searching
             else if (task.IsCanceled)
             {
                 reason = CompletedReasones.Cancelled;
-                LogMessage("Cancelled.");
             }
             else
             {
@@ -169,13 +168,13 @@ namespace Search3.Searching
                 }
             }
 
-            RaiseCompleted(new CompletedEventArgs(result, reason));
+            var completeArgs = new CompletedEventArgs(result, reason, new ProgressHandler(this));
+            RaiseCompleted(completeArgs);
+            _searcherUI.DoSearchFinished(completeArgs);
         }
 
         private SearchResult DoSearch(object state)
         {
-            LogMessage("Search started.");
-
             var settings = (SearchSettings) state;
             var progressHandler = new ProgressHandler(this);
 
@@ -235,9 +234,6 @@ namespace Search3.Searching
                                                               settings.DateSettings.EndDate,
                                                               webServices, progressHandler);
             }
-
-            LogMessage("Search finished successfully.");
-
             return result;
         }
 

@@ -299,6 +299,7 @@ namespace Search3
             DeactivateDrawBox();
 
             if (e.Result == null) return;
+            e.ProgressHandler.ReportMessage("Adding Sites to Map...");
             var result = e.Result;
             //We need to reproject the Search results from WGS84 to the projection of the map.
             ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
