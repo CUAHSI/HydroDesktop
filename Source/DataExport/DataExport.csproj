@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
@@ -70,6 +71,7 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
