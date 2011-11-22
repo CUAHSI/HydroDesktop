@@ -203,7 +203,7 @@ Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll
 
 [UninstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
-Type: files; Name: "{app}\Plugins\*"; Flags: recursesubdirs;
+Type: files; Name: "{app}\Plugins\*"
 Type: files; Name: "{app}\Plugins\FetchBasemap.*"
 Type: files; Name: "{app}\Plugins\1_SeriesView.*"
 Type: files; Name: "{app}\Plugins\TSA.*"

@@ -30,6 +30,32 @@ namespace Search3.Keywords
             keywords = keywordsList.ToList();
         }
 
+        public void GetKeywordsAndOntology2(out IList<OntologyConcept> keywords, out OntologyTree tree)
+        {
+            // Keywords
+            var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySynonymsXmlFile();
+            var nList = tmpsyndoc.GetElementsByTagName("SearchableKeyword");
+            keywordsList = new SortedSet<string>();
+            foreach (var elem in nList.Cast<XmlElement>().Where(elem => !keywordsList.Contains(elem.InnerText)))
+            {
+                keywordsList.Add(elem.InnerText);
+            }
+
+            // Ontology tree
+            var tree = new OntologyTree();
+            var tmpxmldoc = HdSearchOntologyHelper.ReadOntologyXmlFile();
+            FillTree(tmpxmldoc.DocumentElement, tree.Nodes);
+
+            //------
+            ontoloyTree = tree;
+            keywords = keywordsList.ToList();
+        }
+
+        private void AddSynonymToTree(string conceptPath, int conceptId, string conceptName)
+        {
+
+        }
+
         private void FillTree(XmlNode node, ICollection<OntologyNode> parentnode)
         {
             // End recursion if the node is a text type

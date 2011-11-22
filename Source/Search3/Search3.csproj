@@ -124,6 +124,7 @@
     <Compile Include="Searching\SeriesSearcher.cs" />
     <Compile Include="Settings\AreaSettings.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
+    <Compile Include="Settings\OntologyConcept.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
