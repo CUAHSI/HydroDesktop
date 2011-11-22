@@ -99,7 +99,7 @@
     <Compile Include="Area\RectangleDrawing.cs" />
     <Compile Include="Keywords\DbKeywordsList.cs" />
     <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
-    <Compile Include="Keywords\HisCentalKeywordsList.cs" />
+    <Compile Include="Keywords\HisCentralKeywordsList.cs" />
     <Compile Include="Keywords\IKeywordsList.cs" />
     <Compile Include="Keywords\KeywordsList.cs" />
     <Compile Include="Searching\CompletedEventArgs.cs" />
