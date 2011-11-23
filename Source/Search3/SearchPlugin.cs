@@ -36,6 +36,7 @@ namespace Search3
         private TextEntryActionItem rbKeyword;
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
+        private SimpleActionItem rbAttribute;
 
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
@@ -75,6 +76,9 @@ namespace Search3
 
             const string grpArea = "Area";
 
+            CurrentAreaSelectMode = AreaSelectMode.None;
+            App.Map.SelectionChanged += Map_SelectionChanged;
+
             //Draw Box
             rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Rectangle", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.Draw_Box_32;
@@ -87,17 +91,18 @@ namespace Search3
             //Select
             rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
             rbSelect.ToolTipText = "Select Region";
-            rbSelect.GroupCaption = grpArea;
             rbSelect.LargeImage = Resources.select_poly_32;
             rbSelect.SmallImage = Resources.select_poly_16;
+            rbSelect.GroupCaption = grpArea;
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
             //AttributeTable
-            var rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
+            rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
             rbAttribute.ToolTipText = "Select by Attribute";
             rbAttribute.GroupCaption = grpArea;
+            rbAttribute.ToggleGroupKey = grpArea;
             rbAttribute.LargeImage = Resources.select_table_32;
             rbAttribute.SmallImage = Resources.select_table_16;
             head.Add(rbAttribute);
@@ -177,7 +182,7 @@ namespace Search3
 
             #endregion
 
-            #region Search button
+            #region Search and download buttons
 
             string grpSearch = "Search";
             var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click);
@@ -187,6 +192,14 @@ namespace Search3
             rbSearch.GroupCaption = grpSearch;
             rbSearch.RootKey = kHydroSearch3;
             head.Add(rbSearch);
+            
+            var btnDownload = new SimpleActionItem("Download", rbDownload_Click);
+            btnDownload.Enabled = false;
+            btnDownload.RootKey = kHydroSearch3;
+            btnDownload.GroupCaption = grpSearch;
+            btnDownload.LargeImage = Resources.download_32;
+            btnDownload.SmallImage = Resources.download_16;
+            //App.HeaderControl.Add(btnDownload);
 
             #endregion
 
@@ -328,6 +341,19 @@ namespace Search3
 
         #region  Area group
 
+        private AreaSelectMode CurrentAreaSelectMode
+        {
+            get; set;
+        }
+
+        private enum AreaSelectMode
+        {
+            None,
+            DrawBox,
+            SelectPolygons,
+            SelectAttribute
+        }
+
         void Instance_AreaRectangleChanged(object sender, EventArgs e)
         {
             var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
@@ -336,6 +362,8 @@ namespace Search3
 
         void rbDrawBox_Click(object Sender, EventArgs e)
         {
+            CurrentAreaSelectMode = AreaSelectMode.DrawBox;
+
             DeactivateSelectAreaByPolygon();
 
             if (_rectangleDrawing == null)
@@ -371,25 +399,30 @@ namespace Search3
 
         void rbSelect_Click(object sender, EventArgs e)
         {
+            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+
             DeactivateSelectAreaByPolygon();
             DeactivateDrawBox();
-
+            
             App.Map.FunctionMode = FunctionMode.Select;
 
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map);
-            App.Map.SelectionChanged += Map_SelectionChanged;
         }
         
         private void DeactivateSelectAreaByPolygon()
         {
-            App.Map.SelectionChanged -= Map_SelectionChanged;
             SearchSettings.Instance.AreaSettings.Polygons = null;
         }
 
         void Map_SelectionChanged(object sender, EventArgs e)
         {
-            foreach (var polygonLayer in AreaHelper.GetAllSelectedPolygonLayers((Map)App.Map))
+            if (CurrentAreaSelectMode == AreaSelectMode.DrawBox ||
+                CurrentAreaSelectMode == AreaSelectMode.SelectPolygons ||
+                CurrentAreaSelectMode == AreaSelectMode.SelectAttribute)
             {
+                var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map) App.Map).FirstOrDefault();
+                if (polygonLayer == null) return;
+
                 var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
                 foreach (var f in polygonLayer.Selection.ToFeatureList())
                 {
@@ -397,10 +430,6 @@ namespace Search3
                 }
                 polyFs.Projection = App.Map.Projection;
                 SearchSettings.Instance.AreaSettings.Polygons = polyFs;
-
-
-                //todo: which layer should be saved, if there are several active layers?
-                break;
             }
         }
 
@@ -414,6 +443,8 @@ namespace Search3
 
         void rbAttribute_Click(object sender, EventArgs e)
         {
+            CurrentAreaSelectMode = AreaSelectMode.SelectAttribute;
+
             DeactivateDrawBox();
             DeactivateSelectAreaByPolygon();
 
