@@ -31,61 +31,6 @@ namespace Search3.Keywords
             keywords = keywordsList.ToList();
         }
 
-        public void GetKeywordsAndOntology2(out IList<string> keywords, out OntologyTree ontoTree)
-        {
-            // Keywords
-            var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySynonymsXmlFile();
-            var nList = tmpsyndoc.GetElementsByTagName("OntologyPath");
-            keywordsList = new SortedSet<string>();
-
-            XmlElement root = tmpsyndoc.DocumentElement;
-            
-            foreach (XmlElement elem in root.ChildNodes)
-            {
-                foreach (XmlElement child in elem.ChildNodes)
-                {
-                    int conceptID = 0;
-                    string conceptName = String.Empty;
-                    string conceptPath = String.Empty;
-                    if (child.Name == "ConceptID" && !String.IsNullOrEmpty(child.InnerText))
-                        conceptID = Convert.ToInt32(child.InnerText);
-                    else if (child.Name == "ConceptName")
-                    {
-                        conceptName = child.InnerText;
-                    }
-                    else if (child.Name == "ConceptPath")
-                    {
-                        conceptPath = child.InnerText;
-                    }
-                    if (conceptID > 0)
-                    {
-                        //AddSynonymToTree(conceptPath, conceptID, conceptName);
-                    }
-                    keywordsList.Add(conceptName);
-                }
-            }
-
-
-            foreach (var elem in nList.Cast<XmlElement>().Where(elem => !keywordsList.Contains(elem.InnerText)))
-            {
-                keywordsList.Add(elem.InnerText);
-            }
-
-            // Ontology tree
-            var tree = new OntologyTree();
-            var tmpxmldoc = HdSearchOntologyHelper.ReadOntologyXmlFile();
-            FillTree(tmpxmldoc.DocumentElement, tree.Nodes);
-
-            //------
-            ontoTree = tree;
-            keywords = keywordsList.ToList();
-        }
-
-        private void AddSynonymToTree(string conceptPath, int conceptId, string conceptName, OntologyTree tree)
-        {
-             
-        }
-
         private void FillTree(XmlNode node, ICollection<OntologyNode> parentnode)
         {
             // End recursion if the node is a text type

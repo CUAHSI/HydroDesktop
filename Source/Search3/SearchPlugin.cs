@@ -177,7 +177,7 @@ namespace Search3
 
             #endregion
 
-            #region Search and download buttons
+            #region Search button
 
             string grpSearch = "Search";
             var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click);
@@ -187,14 +187,6 @@ namespace Search3
             rbSearch.GroupCaption = grpSearch;
             rbSearch.RootKey = kHydroSearch3;
             head.Add(rbSearch);
-            
-            var btnDownload = new SimpleActionItem("Download", rbDownload_Click);
-            btnDownload.Enabled = false;
-            btnDownload.RootKey = kHydroSearch3;
-            btnDownload.GroupCaption = grpSearch;
-            btnDownload.LargeImage = Resources.download_32;
-            btnDownload.SmallImage = Resources.download_16;
-            //App.HeaderControl.Add(btnDownload);
 
             #endregion
 
