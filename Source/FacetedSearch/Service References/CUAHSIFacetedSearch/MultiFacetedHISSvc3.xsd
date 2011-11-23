@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" />
+  <xs:element name="GetAllOntologyElements">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllOntologyElementsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetAllOntologyElementsResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllTypedOntologyElements">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllTypedOntologyElementsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="GetAllTypedOntologyElementsResult" nillable="true" type="q1:ArrayOfOntologyElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOntologyElementsGivenConstraints">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="Selections" nillable="true" type="q2:ArrayOfOntologyElement" />
+        <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="MinY" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+        <xs:element minOccurs="0" name="MinX" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+        <xs:element minOccurs="0" name="IncludeSpatialResults" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOntologyElementsGivenConstraintsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetOntologyElementsGivenConstraintsResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTypedOntologyElementsGivenConstraints">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="Selections" nillable="true" type="q3:ArrayOfOntologyElement" />
+        <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="MinY" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+        <xs:element minOccurs="0" name="MinX" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+        <xs:element minOccurs="0" name="IncludeSpatialResults" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTypedOntologyElementsGivenConstraintsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="GetTypedOntologyElementsGivenConstraintsResult" nillable="true" type="q4:OntologyEnvelope" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConductFacetedSearch">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="Selections" nillable="true" type="q5:ArrayOfOntologyElement" />
+        <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="MinY" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+        <xs:element minOccurs="0" name="MinX" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+        <xs:element minOccurs="0" name="IncludeSpatialResults" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConductFacetedSearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="ConductFacetedSearchResult" nillable="true" type="q6:ArrayOfSeriesCatalogRecord" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDensityOfOntologyRoot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="Selections" nillable="true" type="q7:ArrayOfOntologyElement" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="MyTopLevel" nillable="true" type="q8:OntologyElement" />
+        <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="MinY" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+        <xs:element minOccurs="0" name="MinX" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+        <xs:element minOccurs="0" name="IncludeSpatialResults" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDensityOfOntologyRootResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="GetDensityOfOntologyRootResult" nillable="true" type="q9:ArrayOfDataDensity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSQLOfNextQuery">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="Selections" nillable="true" type="q10:ArrayOfOntologyElement" />
+        <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="MinY" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+        <xs:element minOccurs="0" name="MinX" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+        <xs:element minOccurs="0" name="IncludeSpatialResults" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSQLOfNextQueryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetSQLOfNextQueryResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSQLOfSearchQuery">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="Selections" nillable="true" type="q11:ArrayOfOntologyElement" />
+        <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="MinY" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+        <xs:element minOccurs="0" name="MinX" type="xs:double" />
+        <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+        <xs:element minOccurs="0" name="IncludeSpatialResults" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSQLOfSearchQueryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetSQLOfSearchQueryResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConductTestFacetedSearch">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConductTestFacetedSearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="ConductTestFacetedSearchResult" nillable="true" type="q12:ArrayOfSeriesCatalogRecord" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestTexasInitialization">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestTexasInitializationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="TestTexasInitializationResult" nillable="true" type="q13:ArrayOfOntologyElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestUtahPesticideSearch">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestUtahPesticideSearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="TestUtahPesticideSearchResult" nillable="true" type="q14:ArrayOfSeriesCatalogRecord" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOntologyElementsWithTestConstraints">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOntologyElementsWithTestConstraintsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetOntologyElementsWithTestConstraintsResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTestOntologyElementList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="items" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTestOntologyElementListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" minOccurs="0" name="GetTestOntologyElementListResult" nillable="true" type="q15:ArrayOfOntologyElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
