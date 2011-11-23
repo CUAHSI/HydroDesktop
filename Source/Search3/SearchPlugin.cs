@@ -416,8 +416,9 @@ namespace Search3
 
         void Map_SelectionChanged(object sender, EventArgs e)
         {
-            if (CurrentAreaSelectMode == AreaSelectMode.None ||
-                CurrentAreaSelectMode == AreaSelectMode.SelectPolygons)
+            if (CurrentAreaSelectMode == AreaSelectMode.DrawBox ||
+                CurrentAreaSelectMode == AreaSelectMode.SelectPolygons ||
+                CurrentAreaSelectMode == AreaSelectMode.SelectAttribute)
             {
                 var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map) App.Map).FirstOrDefault();
                 if (polygonLayer == null) return;
