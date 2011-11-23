@@ -124,7 +124,6 @@
     <Compile Include="Searching\SeriesSearcher.cs" />
     <Compile Include="Settings\AreaSettings.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
-    <Compile Include="Settings\OntologyConcept.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
@@ -229,6 +228,19 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\keyword_v2_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keyword_v2_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\web_services_v1_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\web_services_v1_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\catalog_v2_32.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\search2_3.png" />
@@ -277,6 +289,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\select_date_v1_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\draw_box_16_a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\draw_box_32_a.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\zoom.png" />
