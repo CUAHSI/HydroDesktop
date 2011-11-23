@@ -76,7 +76,7 @@ namespace Search3
 
             const string grpArea = "Area";
 
-            CurrentAreaSelectMode = AreaSelectMode.None;
+            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
             App.Map.SelectionChanged += Map_SelectionChanged;
 
             //Draw Box
