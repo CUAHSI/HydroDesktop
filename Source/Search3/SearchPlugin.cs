@@ -33,14 +33,13 @@ namespace Search3
         private SimpleActionItem rbCatalog;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
-        private TextEntryActionItem rbKeyword;
+        private DropDownActionItem rbKeyword;
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
         private SimpleActionItem rbAttribute;
 
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
-        private bool _isManualKeywordTextEdit = true;
 
         #endregion
 
@@ -113,13 +112,19 @@ namespace Search3
 
             //Keyword text entry
             const string grpKeyword = "Keyword";
-            rbKeyword = new TextEntryActionItem();
-            rbKeyword.PropertyChanged += rbKeyword_PropertyChanged;
+            rbKeyword = new DropDownActionItem();
+            rbKeyword.AllowEditingText = true;
             rbKeyword.GroupCaption = grpKeyword;
             rbKeyword.RootKey = kHydroSearch3;
             rbKeyword.Width = 150;
             rbKeyword.Enabled = false;
+            // Populate items by keywords
+            rbKeyword.Items.Clear();
+            rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
+
             head.Add(rbKeyword);
+
+            rbKeyword.SelectedValueChanged += rbKeyword_SelectedValueChanged;
             UpdateKeywordsCaption();
 
             //Keyword more options
@@ -206,7 +211,7 @@ namespace Search3
             //map buttons (not added for now)
             //AddMapButtons();
         }
-      
+
         //private void AddMapButtons()
         //{
         //    string kHomeRoot = kHydroSearch3;
@@ -457,37 +462,53 @@ namespace Search3
 
         #region Keywords
 
-        void rbKeyword_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private const string KEYWORDS_SEPARATOR = ";";
+
+        void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
         {
-            if (!_isManualKeywordTextEdit) return;
-            if (e.PropertyName != "Text") return;
+            if (_keywordsUpdating) return;
             
-            //todo: implement tooltip with keyword mathcing
-            rbKeyword.ToolTipText = "Matches....";
+            if (e.SelectedItem == null)
+            {
+                SearchSettings.Instance.KeywordsSettings.SelectedKeywords = null;
+            }
+            else
+            {
+                var keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
+            }
+            UpdateKeywordsCaption();
         }
 
+        private bool _keywordsUpdating;
         private void UpdateKeywordsCaption()
         {
-            var keywords = SearchSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
-            var sbKeywords = new StringBuilder();
-            const string separator = "; ";
-            foreach(var key in keywords)
+            _keywordsUpdating = true;
+            try
             {
-                sbKeywords.Append(key + separator);
-            }
-            // Remove last separator
-            if (sbKeywords.Length > 0)
-            {
-                sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
-            }
+                var keywords = SearchSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
+                var sbKeywords = new StringBuilder();
+                const string separator = KEYWORDS_SEPARATOR + " ";
+                foreach (var key in keywords)
+                {
+                    sbKeywords.Append(key + separator);
+                }
+                // Remove last separator
+                if (sbKeywords.Length > 0)
+                {
+                    sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
+                }
 
-            _isManualKeywordTextEdit = false;
-            rbKeyword.Text = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
-            _isManualKeywordTextEdit = true;
-            rbKeyword.ToolTipText = rbKeyword.Text;
+                rbKeyword.SelectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
+                rbKeyword.ToolTipText = rbKeyword.SelectedItem.ToString();
+            }
+            finally
+            {
+                _keywordsUpdating = false;
+            }
         }
 
-        void rbKeyword_Click(object Sender, EventArgs e)
+        void rbKeyword_Click(object sender, EventArgs e)
         {        
             if (KeywordsDialog.ShowDialog(SearchSettings.Instance.KeywordsSettings) == DialogResult.OK)
             {
@@ -603,7 +624,7 @@ namespace Search3
 
         #region Catalog
 
-        void rbCatalog_Click(object Sender, EventArgs e)
+        void rbCatalog_Click(object sender, EventArgs e)
         {
             if (SearchCatalogSettingsDialog.ShowDialog(SearchSettings.Instance.CatalogSettings,
                                                        SearchSettings.Instance.WebServicesSettings,
