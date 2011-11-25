@@ -475,6 +475,24 @@ namespace Search3
             else
             {
                 var keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                // Replace keywords by synonyms
+                if (SearchSettings.Instance.KeywordsSettings.Synonyms != null)
+                {
+                    for (int i = 0; i < keywords.Count; i++)
+                    {
+                        var strNode = keywords[i];
+                        foreach (var ontoPath in SearchSettings.Instance.KeywordsSettings.Synonyms)
+                        {
+                            if (string.Equals(ontoPath.SearchableKeyword, strNode,
+                                              StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                keywords[i] = ontoPath.ConceptName;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
             }
             UpdateKeywordsCaption();

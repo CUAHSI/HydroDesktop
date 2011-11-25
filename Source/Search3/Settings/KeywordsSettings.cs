@@ -31,7 +31,10 @@ namespace Search3.Settings
                 Debug.Assert(_keywords != null);
                 return _keywords;
             }
-            private set { _keywords = value; }
+            private set
+            {
+                _keywords = value;
+            }
         }
 
         private OntologyTree _ontologyTree;
@@ -48,15 +51,17 @@ namespace Search3.Settings
             }
             private set { _ontologyTree = value; }
         }
+    
+        public ArrayOfOntologyPath Synonyms { get;set;}
+    
 
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
         {
-            IList<string> keywords;
-            OntologyTree ontologyTree;
-            new KeywordsList().GetKeywordsAndOntology(out keywords, out ontologyTree, catalogSettings ?? SearchSettings.Instance.CatalogSettings);
+            var keywordsData = new KeywordsList().GetKeywordsListData(catalogSettings ?? SearchSettings.Instance.CatalogSettings);
 
-            Keywords = keywords;
-            OntologyTree = ontologyTree;
+            Keywords = keywordsData.Keywords;
+            OntologyTree = keywordsData.OntoloyTree;
+            Synonyms = keywordsData.Synonyms;
         }
 
         /// <summary>
@@ -85,6 +90,7 @@ namespace Search3.Settings
 
             Keywords = source.Keywords;
             OntologyTree = source.OntologyTree;
+            Synonyms = source.Synonyms;
         }
     }
 }

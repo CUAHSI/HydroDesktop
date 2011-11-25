@@ -10,15 +10,39 @@ namespace Search3.Keywords
     {
         private SortedSet<string> keywordsList;
 
-        public void GetKeywordsAndOntology(out IList<string> keywords, out OntologyTree ontoloyTree)
+        public KeywordListData GetKeywordsListData()
         {
-            // Keywords
+            // Synonyms and keywords
             var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySynonymsXmlFile();
-            var nList = tmpsyndoc.GetElementsByTagName("SearchableKeyword");
             keywordsList = new SortedSet<string>();
-            foreach (var elem in nList.Cast<XmlElement>().Where(elem => !keywordsList.Contains(elem.InnerText)))
+            var synonyms = new ArrayOfOntologyPath();
+            var root = tmpsyndoc.DocumentElement;
+            foreach (XmlElement elem in root.ChildNodes)
             {
-                keywordsList.Add(elem.InnerText);
+                var ontoPath = new OntologyPath();
+                foreach (XmlElement child in elem.ChildNodes)
+                {
+                    if (child.Name == "conceptID")
+                    {
+                        int conceptID;
+                        if (Int32.TryParse(child.InnerText, out conceptID))
+                            ontoPath.ConceptID = conceptID;
+                    }
+                    else if (child.Name == "ConceptName")
+                    {
+                        ontoPath.ConceptName = child.InnerText;
+                    }
+                    else if (child.Name == "ConceptPath")
+                    {
+                        ontoPath.ConceptPath = child.InnerText;
+                    }
+                    else if (child.Name == "SearchableKeyword")
+                    {
+                        ontoPath.SearchableKeyword = child.InnerText;
+                    }
+                }
+                synonyms.Add(ontoPath);
+                keywordsList.Add(ontoPath.SearchableKeyword);
             }
 
             // Ontology tree
@@ -27,8 +51,13 @@ namespace Search3.Keywords
             FillTree(tmpxmldoc.DocumentElement, tree.Nodes);
 
             //------
-            ontoloyTree = tree;
-            keywords = keywordsList.ToList();
+            var result = new KeywordListData
+                             {
+                                 OntoloyTree = tree, 
+                                 Keywords = keywordsList.ToList(), 
+                                 Synonyms = synonyms,
+                             };
+            return result;
         }
 
         private void FillTree(XmlNode node, ICollection<OntologyNode> parentnode)

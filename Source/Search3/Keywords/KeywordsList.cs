@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Search3.Settings;
 
 namespace Search3.Keywords
 {
     class KeywordsList
     {
-        public void GetKeywordsAndOntology(out IList<string> keywords, out OntologyTree ontoloyTree, CatalogSettings catalogSettings)
+        public KeywordListData GetKeywordsListData(CatalogSettings catalogSettings)
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
 
@@ -23,7 +22,7 @@ namespace Search3.Keywords
                     throw new Exception("Unknown TypeOfCatalog");
             }
 
-            concreteList.GetKeywordsAndOntology(out keywords, out ontoloyTree);
+            return concreteList.GetKeywordsListData();
         }
     }
 }
