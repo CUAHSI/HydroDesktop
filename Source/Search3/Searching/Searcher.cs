@@ -204,8 +204,7 @@ namespace Search3.Searching
             {
                 //todo: do we need to do this?
                 var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
-                var ontologyHelper = new HdSearchOntologyHelper();
-                ontologyHelper.RefineKeywordList(keywords, ontologyXml);
+                HdSearchOntologyHelper.RefineKeywordList(keywords, ontologyXml);
             }
             else
             {

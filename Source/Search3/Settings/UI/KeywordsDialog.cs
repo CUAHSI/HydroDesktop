@@ -10,11 +10,7 @@ namespace Search3.Settings.UI
         private KeywordsDialog(KeywordsSettings settings)
         {
             InitializeComponent();
-            Load += delegate
-                        {
-                            keywordsUserControl1.BindKeywordsAndOntologyTree(settings.Keywords, settings.OntologyTree);
-                            keywordsUserControl1.AddSelectedKeywords(settings.SelectedKeywords);
-                        };
+            Load += delegate { keywordsUserControl1.BindKeywordsSettings(settings); };
         }
 
         #endregion

@@ -81,7 +81,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -101,6 +100,7 @@
     <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Keywords\HisCentralKeywordsList.cs" />
     <Compile Include="Keywords\IKeywordsList.cs" />
+    <Compile Include="Keywords\KeywordListData.cs" />
     <Compile Include="Keywords\KeywordsList.cs" />
     <Compile Include="Searching\CompletedEventArgs.cs" />
     <Compile Include="Searching\HISCentralSearcher.cs" />
@@ -126,6 +126,7 @@
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
+    <Compile Include="Settings\ArrayOfOntologyPath.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

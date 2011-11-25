@@ -10,7 +10,7 @@ namespace Search3.Settings.UI
     {
         #region Fields
 
-        private IList<string> _keywords;
+        private KeywordsSettings _keywordsSettings;
 
         #endregion
 
@@ -35,27 +35,32 @@ namespace Search3.Settings.UI
         /// <summary>
         /// Set data into control.
         /// </summary>
-        /// <param name="keywords">Keywords.</param>
-        /// <param name="ontologyTree">Ontology tree.</param>
-        /// <exception cref="ArgumentNullException">Throws if <paramref name="keywords"/> or <paramref name="ontologyTree"/> is null.</exception>
-        public void BindKeywordsAndOntologyTree(IList<string> keywords, OntologyTree ontologyTree)
+        /// <param name="keywordsSettings">Keyword settings.</param>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="keywordsSettings"/> is null.</exception>
+        public void BindKeywordsSettings(KeywordsSettings keywordsSettings)
         {
-            if (keywords == null) throw new ArgumentNullException("keywords");
-            if (ontologyTree == null) throw new ArgumentNullException("ontologyTree");
+            if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
-            _keywords = keywords;
-
+            _keywordsSettings = keywordsSettings;
+            
             tboTypeKeyword.Clear();
             lblKeywordRelation.Text = "";
            
             // Keywords
-            lbKeywords.DataSource = keywords;
+            lbKeywords.DataSource = keywordsSettings.Keywords;
             
             // Ontology tree
             treeviewOntology.BeginUpdate();
             treeviewOntology.Nodes.Clear();
-            FillTreeviewOntology(treeviewOntology.Nodes, ontologyTree.Nodes);
+            FillTreeviewOntology(treeviewOntology.Nodes, keywordsSettings.OntologyTree.Nodes);
             treeviewOntology.EndUpdate();
+
+            // Selected keywords
+            AddSelectedKeywords(keywordsSettings.SelectedKeywords);
+            if (keywordsSettings.SelectedKeywords.Count() > 0)
+            {
+                UpdateKeywordTextBox(keywordsSettings.SelectedKeywords.First());
+            }
         }
 
         /// <summary>
@@ -175,24 +180,34 @@ namespace Search3.Settings.UI
             tboTypeKeyword.Text = string.Empty;
             var strNode = lbKeywords.Items[keyIndex].ToString();
 
-            foreach (var str in _keywords.Where(str => str.ToLower() == strNode.ToLower()))
+            //check for synonyms
+            if (_keywordsSettings.Synonyms != null)
             {
-                tboTypeKeyword.Text = str;
-                FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
+                foreach (var ontoPath in _keywordsSettings.Synonyms)
+                {
+                    if (string.Equals(ontoPath.SearchableKeyword, strNode, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        UpdateKeywordTextBox(ontoPath.ConceptName);
+                    }
+                }
             }
 
             //check ends
             if (tboTypeKeyword.Text == "")
             {
-                tboTypeKeyword.Text = lbKeywords.Items[keyIndex].ToString();
-                FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
+                UpdateKeywordTextBox(lbKeywords.Items[keyIndex].ToString());
             }
+        }
+
+        private void UpdateKeywordTextBox(string text)
+        {
+            tboTypeKeyword.Text = text;
+            FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
         }
 
         private void tvOntology_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            tboTypeKeyword.Text = e.Node.Text;
-            FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
+            UpdateKeywordTextBox(e.Node.Text);
         }
 
         private void FindInTreeView(IEnumerable tncoll, string strNode)
