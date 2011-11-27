@@ -164,11 +164,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 {
                     firstSeries = seriesToProcess.First(s =>
                                                         (string)searchFeature.DataRow["SiteCode"] == s.Site.Code &&
-                                                        (string)searchFeature.DataRow["VarCode"] == s.Variable.Code &&
-                                                        (string)searchFeature.DataRow["VarName"] == s.Variable.Name &&
-                                                        (string)searchFeature.DataRow["DataType"] == s.Variable.DataType &&
-                                                        (string)searchFeature.DataRow["Method"] == s.Method.Description &&
-                                                        (string)searchFeature.DataRow["QualityCont"] == s.QualityControlLevel.Definition);
+                                                        ((string)searchFeature.DataRow["VarCode"]).StartsWith(s.Variable.Code) &&
+                                                        (string)searchFeature.DataRow["DataType"] == s.Variable.DataType);
                 }
                 else
                     firstSeries = seriesToProcess.First();

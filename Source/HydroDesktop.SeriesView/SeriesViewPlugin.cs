@@ -46,14 +46,14 @@
 
         void DockManager_ActivePanelChanged(object sender, DockablePanelEventArgs e)
         {
-            if (e.ActivePanelKey == "kHydroTable")
-            {
-                tableRoot.Visible = true;
-            }
-            else if (e.ActivePanelKey != "kHydroSeriesView")
-            {
-                tableRoot.Visible = false;
-            }
+            //if (e.ActivePanelKey == "kHydroTable")
+            //{
+            //    tableRoot.Visible = true;
+            //}
+            //else if (e.ActivePanelKey != "kHydroSeriesView")
+            //{
+            //    tableRoot.Visible = false;
+            //}
         }
 
         public override void  Deactivate()

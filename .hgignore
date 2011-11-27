@@ -26,6 +26,7 @@ syntax: glob
 *.sbr
 *.scc
 *.vsmdi
+*.onetoc2
 [Bb]in
 [Db]ebug*/
 [Tt]est[Rr]esults*/

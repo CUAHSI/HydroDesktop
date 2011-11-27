@@ -112,6 +112,16 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             // add event for when HM panel is selected
             App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(HM_Panel_Selected);
+
+            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
+        }
+
+        void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
+        {
+            if (e.SelectedRootKey == "RootRibbonHydroModeler")
+            {
+                App.DockManager.SelectPanel(kHydroModelerDock);
+            }
         }
         #endregion
 
