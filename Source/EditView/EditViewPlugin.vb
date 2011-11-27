@@ -80,6 +80,8 @@ Namespace EditView
             dp.DefaultSortOrder = 30
             App.DockManager.Add(dp)
 
+            'adding the Edit Tab
+            AddHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
 
             'when the edit view panel is activated, select the Edit ribbon tab
             AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
@@ -91,15 +93,22 @@ Namespace EditView
 
         End Sub
 
-
-        Sub DockPanelAdded(ByVal sender As Object, ByVal args As Docking.DockablePanelEventArgs)
-            If Not firstTimeLoading Then Exit Sub
-
-            If args.ActivePanelKey = "kMap" Then
-                App.DockManager.Add(New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill))
+        Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
+            If e.SelectedRootKey = kEditView Then
+                App.DockManager.SelectPanel(kEditView)
             End If
-            App.DockManager.SelectPanel("kMap")
+
         End Sub
+
+
+        'Sub DockPanelAdded(ByVal sender As Object, ByVal args As Docking.DockablePanelEventArgs)
+        '    If Not firstTimeLoading Then Exit Sub
+
+        '    If args.ActivePanelKey = "kMap" Then
+        '        App.DockManager.Add(New DockablePanel(kEditView, _pluginName, _mainControl, DockStyle.Fill))
+        '    End If
+        '    App.DockManager.SelectPanel("kMap")
+        'End Sub
 
 
         Private Sub InitializeRibbonButtons()
@@ -195,7 +204,9 @@ Namespace EditView
 
             App.DockManager.Remove(kEditView)
 
-            RemoveHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
+            'Remove event handlers
+            RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
+            RemoveHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
 
             MyBase.Deactivate()
 
@@ -229,10 +240,11 @@ Namespace EditView
             If e.ActivePanelKey = kEditView Then
                 App.HeaderControl.SelectRoot(kEditView)
                 App.DockManager.SelectPanel("kHydroSeriesView")
-                _EditView.Visible = True
-            ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
-                _EditView.Visible = False
             End If
+            '_EditView.Visible = True
+            'ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
+            '    _EditView.Visible = False
+            'End If
 
         End Sub
 

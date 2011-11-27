@@ -102,6 +102,9 @@ Namespace GraphView
             App.DockManager.Add(dp)
             'End If
 
+
+            AddHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
+
             'when the graph dock panel is activated:
             'show graph ribbon tab and series view
             AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
@@ -118,11 +121,18 @@ Namespace GraphView
             'remove the dock panel
             App.DockManager.Remove(kGraph)
 
-            RemoveHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
+            RemoveHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
+            RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
 
             'important line to deactivate the plugin
             MyBase.Deactivate()
 
+        End Sub
+
+        Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
+            If e.SelectedRootKey = kGraph Then
+                App.DockManager.SelectPanel(kGraph)
+            End If
         End Sub
 
         Sub DockPanelAdded(ByVal sender As Object, ByVal args As Docking.DockablePanelEventArgs)
@@ -500,9 +510,6 @@ Namespace GraphView
             If e.ActivePanelKey = kGraph Then
                 App.HeaderControl.SelectRoot(kGraph)
                 App.DockManager.SelectPanel("kHydroSeriesView")
-                tabGraph.Visible = True
-            ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
-                tabGraph.Visible = False
             End If
 
         End Sub

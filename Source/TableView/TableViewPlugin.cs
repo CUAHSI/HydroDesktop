@@ -119,15 +119,27 @@ namespace TableView
 
             SeriesControl.Refreshed += SeriesControl_Refreshed;
 
+            //event when ribbon tab is changed
+            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
+
             base.Activate();
         }
 
-        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        //when the table root item is selected
+        void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            //the 'Table' dockable panel should follow after 'Map'
-            if (e.ActivePanelKey == "kMap")
-                AddTableViewPanel();
+            if (e.SelectedRootKey == kTableView)
+            {
+                App.DockManager.SelectPanel(kTableView);
+            }
         }
+
+        //void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        //{
+        //    //the 'Table' dockable panel should follow after 'Map'
+        //    if (e.ActivePanelKey == "kMap")
+        //        AddTableViewPanel();
+        //}
 
         void AddTableViewPanel()
         {
@@ -180,10 +192,6 @@ namespace TableView
                 App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(kTableView);
                 RefreshDatabasePath();
-            }
-            else
-            {
-                
             }
         }
 

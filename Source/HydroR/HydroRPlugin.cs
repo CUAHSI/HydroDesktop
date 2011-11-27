@@ -123,9 +123,20 @@ namespace HydroR
                 App.HeaderControl.SelectRoot(kHydroR);
 
                 _hydroRControl.RChanged += new cRCommandView.REventHandler(_hydroRControl_RChanged);
+
+                //when the HydroR root item is selected
+                App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
             }
 
             base.Activate();
+        }
+
+        void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
+        {
+            if (e.SelectedRootKey == kHydroR)
+            {
+                App.DockManager.SelectPanel(kHydroR);
+            }
         }
 
         void AddHydroRPanel()
@@ -151,15 +162,15 @@ namespace HydroR
             }
         }
 
-        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
-        {           
-            if (e.ActivePanelKey == "kMap")
-            {
-                //HydroR dock panel should be preferentially added after "map"
-                AddHydroRPanel();
-                App.DockManager.SelectPanel("kMap");
-            }
-        }
+        //void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
+        //{           
+        //    if (e.ActivePanelKey == "kMap")
+        //    {
+        //        //HydroR dock panel should be preferentially added after "map"
+        //        AddHydroRPanel();
+        //        App.DockManager.SelectPanel("kMap");
+        //    }
+        //}
 
         void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
@@ -167,11 +178,11 @@ namespace HydroR
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(kHydroR);
-                _hydroRTab.Visible = true;
+                //_hydroRTab.Visible = true;
             }
             else
             {
-                _hydroRTab.Visible = false;
+                //_hydroRTab.Visible = false;
             }
         }
 

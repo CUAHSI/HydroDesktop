@@ -75,7 +75,7 @@ namespace Search3
 
             const string grpArea = "Area";
 
-            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+            CurrentAreaSelectMode = AreaSelectMode.None;
             App.Map.SelectionChanged += Map_SelectionChanged;
 
             //Draw Box
@@ -96,6 +96,8 @@ namespace Search3
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
+            rbSelect.Selected = true;
+            //rbSelect.OnClick(null);
 
             //AttributeTable
             rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
@@ -208,8 +210,20 @@ namespace Search3
 
             #endregion
 
+            CurrentAreaSelectMode = AreaSelectMode.None;
+
+            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
+
             //map buttons (not added for now)
             //AddMapButtons();
+        }
+
+        void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
+        {
+            if (e.SelectedRootKey == kHydroSearch3)
+            {
+                App.DockManager.SelectPanel("kMap");
+            }
         }
 
         //private void AddMapButtons()
@@ -406,7 +420,6 @@ namespace Search3
         {
             CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
 
-            DeactivateSelectAreaByPolygon();
             DeactivateDrawBox();
             
             App.Map.FunctionMode = FunctionMode.Select;
@@ -421,8 +434,7 @@ namespace Search3
 
         void Map_SelectionChanged(object sender, EventArgs e)
         {
-            if (CurrentAreaSelectMode == AreaSelectMode.DrawBox ||
-                CurrentAreaSelectMode == AreaSelectMode.SelectPolygons ||
+            if (CurrentAreaSelectMode == AreaSelectMode.SelectPolygons ||
                 CurrentAreaSelectMode == AreaSelectMode.SelectAttribute)
             {
                 var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map) App.Map).FirstOrDefault();

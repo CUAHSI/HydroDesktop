@@ -15,17 +15,22 @@
     using HydroDesktop.Interfaces;
     using HydroDesktop.Database;
 
-    public class HydroDesktopMainPlugin : Extension
+    public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
         //the seriesView component is the shared HydroDesktop component
         //for database management
         [Import("SeriesControl", typeof(ISeriesSelector))]
-        internal ISeriesSelector SeriesControl { get; set; }       
+        internal ISeriesSelector SeriesControl { get; set; }
+       
+        [Import("Shell")]
+        public ContainerControl Shell { get; set; }
 
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
-            App.ExtensionsActivated += new EventHandler(App_Loaded);
+            //App.ExtensionsActivated += new EventHandler(App_Loaded);
+
+            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
 
             base.Activate();
         }
@@ -35,8 +40,22 @@
             base.Deactivate();
         }
 
-        //runs when all extensions have been loaded
-        void App_Loaded(object sender, EventArgs e)
+        #region IPartImportsSatisfiedNotification Members
+
+        /// <summary>
+        /// setup the parent form. This 
+        /// occurs when the main form becomes available
+        /// </summary>
+        public void OnImportsSatisfied()
+        {
+            Form mainForm = Shell as Form;
+            if (mainForm != null)
+            {
+                mainForm.Shown += new EventHandler(mainForm_Shown);
+            }
+        }
+
+        void mainForm_Shown(object sender, EventArgs e)
         {
             //displays the initial welcome screen
             ShowWelcomeScreen();
@@ -45,6 +64,19 @@
             //new empty database if required
             SetupDatabases();
         }
+
+        #endregion
+
+        ////runs when all extensions have been loaded
+        //void App_Loaded(object sender, EventArgs e)
+        //{
+        //    //displays the initial welcome screen
+        //    ShowWelcomeScreen();
+
+        //    //sets-up the database connection and creates a
+        //    //new empty database if required
+        //    SetupDatabases();
+        //}
 
         /// <summary>
         /// In the welcome screen, user chooses to create a project from template,
@@ -132,6 +164,14 @@
             {
                 App.DockManager.SelectPanel("kLegend");
                 App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+            }
+        }
+
+        void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
+        {
+            if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
+            {
+                App.DockManager.SelectPanel("kMap");
             }
         }
     }
