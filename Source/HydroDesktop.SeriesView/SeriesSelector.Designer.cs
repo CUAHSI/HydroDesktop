@@ -31,6 +31,8 @@ namespace SeriesView
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnOptions = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.btnCheckAll = new System.Windows.Forms.Button();
             this.btnUncheckAll = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -49,7 +51,6 @@ namespace SeriesView
             this.radComplex = new System.Windows.Forms.RadioButton();
             this.radSimple = new System.Windows.Forms.RadioButton();
             this.bgwTable2Txt = new System.ComponentModel.BackgroundWorker();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panelComplexFilter.SuspendLayout();
@@ -59,17 +60,39 @@ namespace SeriesView
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.btnOptions);
             this.panel1.Controls.Add(this.btnRefresh);
             this.panel1.Controls.Add(this.btnCheckAll);
             this.panel1.Controls.Add(this.btnUncheckAll);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Location = new System.Drawing.Point(3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(245, 420);
+            this.panel1.Size = new System.Drawing.Size(368, 420);
             this.panel1.TabIndex = 20;
+            // 
+            // btnOptions
+            // 
+            this.btnOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOptions.Location = new System.Drawing.Point(273, 3);
+            this.btnOptions.Name = "btnOptions";
+            this.btnOptions.Size = new System.Drawing.Size(92, 20);
+            this.btnOptions.TabIndex = 21;
+            this.btnOptions.Text = "Display options";
+            this.btnOptions.UseVisualStyleBackColor = true;
+            this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(5, 4);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(59, 20);
+            this.btnRefresh.TabIndex = 20;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnCheckAll
             // 
@@ -79,23 +102,23 @@ namespace SeriesView
             this.btnCheckAll.TabIndex = 19;
             this.btnCheckAll.Text = "Check All";
             this.btnCheckAll.UseVisualStyleBackColor = true;
-            this.btnCheckAll.Visible = false;
+            this.btnCheckAll.Click += new System.EventHandler(this.btnCheckAll_Click);
             // 
             // btnUncheckAll
             // 
-            this.btnUncheckAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUncheckAll.Location = new System.Drawing.Point(149, 4);
             this.btnUncheckAll.Name = "btnUncheckAll";
             this.btnUncheckAll.Size = new System.Drawing.Size(80, 20);
             this.btnUncheckAll.TabIndex = 18;
             this.btnUncheckAll.Text = "Uncheck All";
             this.btnUncheckAll.UseVisualStyleBackColor = true;
+            this.btnUncheckAll.Click += new System.EventHandler(this.btnUncheckAll_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.panelComplexFilter);
             this.groupBox1.Controls.Add(this.dgvSeries);
             this.groupBox1.Controls.Add(this.radAll);
@@ -103,30 +126,30 @@ namespace SeriesView
             this.groupBox1.Controls.Add(this.cbBoxContent);
             this.groupBox1.Controls.Add(this.radComplex);
             this.groupBox1.Controls.Add(this.radSimple);
-            this.groupBox1.Location = new System.Drawing.Point(5, 22);
+            this.groupBox1.Location = new System.Drawing.Point(5, 30);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 395);
+            this.groupBox1.Size = new System.Drawing.Size(360, 387);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selection Tool";
             // 
             // panelComplexFilter
             // 
-            this.panelComplexFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelComplexFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelComplexFilter.Controls.Add(this.btnApplyFilter);
             this.panelComplexFilter.Controls.Add(this.btnEditFilter);
             this.panelComplexFilter.Controls.Add(this.txtFilter);
             this.panelComplexFilter.Location = new System.Drawing.Point(6, 34);
             this.panelComplexFilter.Name = "panelComplexFilter";
-            this.panelComplexFilter.Size = new System.Drawing.Size(226, 49);
+            this.panelComplexFilter.Size = new System.Drawing.Size(349, 49);
             this.panelComplexFilter.TabIndex = 19;
             this.panelComplexFilter.Visible = false;
             // 
             // btnApplyFilter
             // 
             this.btnApplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApplyFilter.Location = new System.Drawing.Point(158, 26);
+            this.btnApplyFilter.Location = new System.Drawing.Point(281, 26);
             this.btnApplyFilter.Name = "btnApplyFilter";
             this.btnApplyFilter.Size = new System.Drawing.Size(60, 20);
             this.btnApplyFilter.TabIndex = 2;
@@ -137,7 +160,7 @@ namespace SeriesView
             // btnEditFilter
             // 
             this.btnEditFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditFilter.Location = new System.Drawing.Point(159, 3);
+            this.btnEditFilter.Location = new System.Drawing.Point(282, 3);
             this.btnEditFilter.Name = "btnEditFilter";
             this.btnEditFilter.Size = new System.Drawing.Size(60, 20);
             this.btnEditFilter.TabIndex = 1;
@@ -147,13 +170,13 @@ namespace SeriesView
             // 
             // txtFilter
             // 
-            this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFilter.Location = new System.Drawing.Point(3, 3);
             this.txtFilter.Multiline = true;
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(150, 43);
+            this.txtFilter.Size = new System.Drawing.Size(273, 43);
             this.txtFilter.TabIndex = 0;
             // 
             // dgvSeries
@@ -162,9 +185,9 @@ namespace SeriesView
             this.dgvSeries.AllowUserToDeleteRows = false;
             this.dgvSeries.AllowUserToResizeColumns = false;
             this.dgvSeries.AllowUserToResizeRows = false;
-            this.dgvSeries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSeries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSeries.BackgroundColor = System.Drawing.Color.White;
             this.dgvSeries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSeries.ColumnHeadersVisible = false;
@@ -174,7 +197,7 @@ namespace SeriesView
             this.dgvSeries.Name = "dgvSeries";
             this.dgvSeries.RowHeadersVisible = false;
             this.dgvSeries.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSeries.Size = new System.Drawing.Size(224, 300);
+            this.dgvSeries.Size = new System.Drawing.Size(347, 292);
             this.dgvSeries.TabIndex = 18;
             // 
             // contextMenuStrip1
@@ -184,26 +207,26 @@ namespace SeriesView
             this.deleteToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 70);
             // 
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.deleteToolStripMenuItem.Text = "Delete Series";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.exportToolStripMenuItem.Text = "Export Series";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -221,24 +244,24 @@ namespace SeriesView
             // 
             // cbBoxCriterion
             // 
-            this.cbBoxCriterion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbBoxCriterion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbBoxCriterion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBoxCriterion.FormattingEnabled = true;
             this.cbBoxCriterion.Location = new System.Drawing.Point(6, 34);
             this.cbBoxCriterion.Name = "cbBoxCriterion";
-            this.cbBoxCriterion.Size = new System.Drawing.Size(225, 21);
+            this.cbBoxCriterion.Size = new System.Drawing.Size(348, 21);
             this.cbBoxCriterion.TabIndex = 13;
             // 
             // cbBoxContent
             // 
-            this.cbBoxContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbBoxContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbBoxContent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBoxContent.FormattingEnabled = true;
             this.cbBoxContent.Location = new System.Drawing.Point(6, 61);
             this.cbBoxContent.Name = "cbBoxContent";
-            this.cbBoxContent.Size = new System.Drawing.Size(225, 21);
+            this.cbBoxContent.Size = new System.Drawing.Size(348, 21);
             this.cbBoxContent.TabIndex = 14;
             // 
             // radComplex
@@ -268,21 +291,11 @@ namespace SeriesView
             this.bgwTable2Txt.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTable2Txt_DoWork);
             this.bgwTable2Txt.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTable2Txt_RunWorkerCompleted);
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(5, 4);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(59, 20);
-            this.btnRefresh.TabIndex = 20;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
             // SeriesSelector
             // 
             this.Controls.Add(this.panel1);
             this.Name = "SeriesSelector";
-            this.Size = new System.Drawing.Size(250, 425);
+            this.Size = new System.Drawing.Size(373, 425);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -316,5 +329,6 @@ namespace SeriesView
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.Button btnRefresh;
         private System.ComponentModel.BackgroundWorker bgwTable2Txt;
+        private System.Windows.Forms.Button btnOptions;
     }
 }

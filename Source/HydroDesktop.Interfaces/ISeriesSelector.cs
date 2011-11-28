@@ -80,5 +80,10 @@ namespace HydroDesktop.Interfaces
         /// When the refresh method is called or the 'Refresh' button is pressed
         /// </summary>
         event EventHandler Refreshed;
+
+        /// <summary>
+        /// Site column name.
+        /// </summary>
+        string SiteDisplayColumn { get; }
     }
 }
