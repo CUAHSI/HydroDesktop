@@ -22,7 +22,7 @@ namespace HydroDesktop.ExportToCSV
 
 		private readonly DbOperations _dboperation;
 	    private readonly IEnumerable<string> _selectedThemes;
-	    private bool _formIsClosing = false;
+	    private bool _formIsClosing;
 		private DataTable _dtList = new DataTable ();
 		SaveFileDialog _saveFileDlg = new SaveFileDialog ();
 		private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
@@ -101,7 +101,22 @@ namespace HydroDesktop.ExportToCSV
 				headers[i] = _dtList.Columns[i].ToString ();
 			}
 
-			//Initialize items in CheckedlistBox
+            // Fill DateTime columns
+	        cmbDateTimeColumns.Items.Clear();
+            foreach(DataColumn column in _dtList.Columns)
+            {
+                if (column.DataType == typeof(DateTime))
+                {
+                    cmbDateTimeColumns.Items.Add(column.ColumnName);
+                }
+            }
+            if (cmbDateTimeColumns.Items.Count > 0)
+            {
+                cmbDateTimeColumns.SelectedIndex = 0;
+            }
+	        chbUseDateRange_CheckedChanged(this, EventArgs.Empty); // To update "use date range" controls
+
+	        //Initialize items in CheckedlistBox
 			clbExportItems.Items.AddRange ( headers );
 			for ( int h = 0; h < clbExportItems.Items.Count; h++ )
 			{
@@ -132,6 +147,7 @@ namespace HydroDesktop.ExportToCSV
 			string delimiter = (string)parameters[3];
 			Hashtable checkedItems = (Hashtable)parameters[4];
 			DbOperations dbOperations = (DbOperations)parameters[5];
+		    DatesRange datesRange = (DatesRange) parameters[6];
 
 			//get count for ProgressReport
 			int totalSeriesCount = dtSeries.Rows.Count;
@@ -141,7 +157,7 @@ namespace HydroDesktop.ExportToCSV
 			foreach ( DataRow row in dtSeries.Rows )
 			{
 				//Check for cancel
-				if ( exportdlg_worker.CancellationPending == true )
+				if ( exportdlg_worker.CancellationPending )
 				{
 					e.Cancel = true;
 					return "Data Export Cancelled.";
@@ -152,8 +168,9 @@ namespace HydroDesktop.ExportToCSV
 
 				int seriesID = Convert.ToInt32 ( row["SeriesID"] );
 
+                
 				string sql;
-				if ( checkNodata == true )
+				if ( checkNodata )
 				{
                     sql = "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
                           "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
@@ -186,8 +203,20 @@ namespace HydroDesktop.ExportToCSV
 					"AND dv.SeriesID = ds.SeriesID " +
 					"AND ds.SeriesID = " + row["SeriesID"].ToString ();
 				}
+                var cmd = dbOperations.CreateCommand(sql);
 
-				DataTable tbl = dbOperations.LoadTable ( "values", sql );
+                // Append date range filter
+                if (datesRange != null)
+                {
+                    cmd.CommandText += string.Format(" AND ({0} >=  @p1 and {0} <=  @p2)", datesRange.ColumnName);
+                    var startDateParameter = dbOperations.AddParameter(cmd, "@p1", DbType.DateTime);
+                    var endDateParemater = dbOperations.AddParameter(cmd, "@p2", DbType.DateTime);
+
+                    startDateParameter.Value = datesRange.StartDate;
+                    endDateParemater.Value = datesRange.EndDate;
+                }
+
+                var tbl = dbOperations.LoadTable("values", cmd);                
 
 				//Construct columns that were selected
 				for ( int i = 0; i < tbl.Columns.Count; i++ )
@@ -261,19 +290,7 @@ namespace HydroDesktop.ExportToCSV
 			this.Cursor = Cursors.Default;
 
 			// Restore controls to their regular state
-			gbxThemes.Enabled = true;
-			gbxExportData.Enabled = true;
-			gbxExportData.Visible = true;
-			gbxExport.Enabled = true;
-			btnSelectAllFields.Enabled = true;
-			btnSelectNoneFields.Enabled = true;
-			gbxDelimiters.Enabled = true;
-			gbxFields.Enabled = true;
-			pgsBar.Value = 0;
-			gbxProgress.Text = "Processing...";
-			gbxProgress.Enabled = false;
-			gbxProgress.Visible = false;
-			btnPgsCancel.Enabled = true;
+		    UpdateControlsState(false);
 
 			if ( e.Error != null )
 			{
@@ -282,6 +299,7 @@ namespace HydroDesktop.ExportToCSV
 
 			else if ( e.Cancelled == true || e.Result.ToString () == "Data Export Cancelled." )
 			{
+                btncancel.Enabled = true;
 				// Close the form if the user clicked the X to close it.
 				if ( _formIsClosing == true )
 				{
@@ -408,30 +426,35 @@ namespace HydroDesktop.ExportToCSV
 				}
 			}
 
+		    DatesRange datesRange = null;
+            if (chbUseDateRange.Checked && cmbDateTimeColumns.SelectedIndex >= 0)
+            {
+                datesRange = new DatesRange
+                                 {
+                                     ColumnName = cmbDateTimeColumns.SelectedItem.ToString(),
+                                     StartDate = dtpStartDateRange.Value,
+                                     EndDate = dtpEndDateRange.Value,
+                                 };
+            }
+
+
 			//Disable all the buttons after "Export" button is clicked.
-			gbxExportData.Enabled = false;
-			gbxExportData.Visible = false;
-			gbxThemes.Enabled = false;
-			gbxExport.Enabled = false;
-			btnSelectAllFields.Enabled = false;
-			btnSelectNoneFields.Enabled = false;
-			gbxDelimiters.Enabled = false;
-			gbxFields.Enabled = false;
-			gbxProgress.Enabled = true;
-			gbxProgress.Visible = true;
-			btnPgsCancel.Enabled = true;
+		    UpdateControlsState(true);
 
 			// Show hourglass
 			this.Cursor = Cursors.WaitCursor;
 
 			//pass parameters to BackgroundWorker
-			object[] parameters = new object[6];
-			parameters[0] = outputFilename;
-			parameters[1] = dtSeries;
-			parameters[2] = checkNoData;
-			parameters[3] = delimiter;
-			parameters[4] = checkedItems;
-            parameters[5] = _dboperation;
+		    var parameters = new object[]
+		                         {
+		                             outputFilename,
+		                             dtSeries,
+		                             checkNoData,
+		                             delimiter,
+		                             checkedItems,
+		                             _dboperation,
+                                     datesRange,
+		                         };
 
             // Check for overwrite
             if (File.Exists(outputFilename) == true)
@@ -445,35 +468,38 @@ namespace HydroDesktop.ExportToCSV
                     this.Cursor = Cursors.Default;
 
                     // Restore controls to their regular state
-                    gbxThemes.Enabled = true;
-                    gbxExportData.Enabled = true;
-                    gbxExportData.Visible = true;
-                    gbxExport.Enabled = true;
-                    btnSelectAllFields.Enabled = true;
-                    btnSelectNoneFields.Enabled = true;
-                    gbxDelimiters.Enabled = true;
-                    gbxFields.Enabled = true;
-                    pgsBar.Value = 0;
-                    gbxProgress.Text = "Processing...";
-                    gbxProgress.Enabled = false;
-                    gbxProgress.Visible = false;
-                    btnPgsCancel.Enabled = true;
-
+                    UpdateControlsState(false);
                     return;
                 }
 
-                else
-                {
-                    File.Delete(outputFilename);
-                    bgwMain.RunWorkerAsync(parameters);
-                }
+                File.Delete(outputFilename);
+                bgwMain.RunWorkerAsync(parameters);
             }
 
             else 
                 bgwMain.RunWorkerAsync ( parameters );
 		}
 
-		/// <summary>
+        private void UpdateControlsState(bool isExporting)
+        {
+            gbxDatesRange.Enabled = !isExporting;
+            btnExport.Enabled = !isExporting;
+            gbxThemes.Enabled = !isExporting;
+            gbxExport.Enabled = !isExporting;
+            btnSelectAllFields.Enabled = !isExporting;
+            btnSelectNoneFields.Enabled = !isExporting;
+            gbxDelimiters.Enabled = !isExporting;
+            gbxFields.Enabled = !isExporting;
+            gbxProgress.Enabled = isExporting;
+            gbxProgress.Visible = isExporting;
+            if (!isExporting)
+            {
+                pgsBar.Value = 0;
+                gbxProgress.Text = "Processing...";
+            }
+        }
+
+	    /// <summary>
 		///Set the "Others" radiobutton be selected automatically when the textbox is changed.
 		/// </summary>        
 		private void other_TextChanged ( object sender, EventArgs e )
@@ -539,6 +565,15 @@ namespace HydroDesktop.ExportToCSV
         }
 
 
+        private void chbUseDateRange_CheckedChanged(object sender, EventArgs e)
+        {
+            var useDateRange = chbUseDateRange.Checked;
+            cmbDateTimeColumns.Enabled = useDateRange;
+            dtpStartDateRange.Enabled = useDateRange;
+            lblAndRange.Enabled = useDateRange;
+            dtpEndDateRange.Enabled = useDateRange;
+        }
+
 	    #endregion
 
 		#region Cancel Events
@@ -550,15 +585,7 @@ namespace HydroDesktop.ExportToCSV
 		{
 			bgwMain.CancelAsync ();
 			gbxProgress.Text = "Cancelling...";
-			btnPgsCancel.Enabled = false;
-		}
-
-		/// <summary>
-		/// Call "Cancel_worker" when button click happens.
-		/// </summary>
-		private void pgsCancel_Click ( object sender, EventArgs e )
-		{
-			Cancel_worker ();
+		    btncancel.Enabled = false;
 		}
 
 		/// <summary>
@@ -580,7 +607,14 @@ namespace HydroDesktop.ExportToCSV
 		/// </summary>
 		private void btnCancel_Click ( object sender, EventArgs e )
 		{
-			this.DialogResult = DialogResult.Cancel;
+            if (bgwMain.IsBusy)
+            {
+                Cancel_worker();
+            }
+            else
+            {
+                DialogResult = DialogResult.Cancel;
+            }
 		}
 
 		#endregion
@@ -606,7 +640,13 @@ namespace HydroDesktop.ExportToCSV
             }
         }
 
-        #endregion
+	    private class DatesRange
+	    {
+            public string ColumnName { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
+	    }
 
+	    #endregion
     }
 }
