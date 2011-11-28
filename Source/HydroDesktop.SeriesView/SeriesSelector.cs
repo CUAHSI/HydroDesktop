@@ -25,9 +25,8 @@ namespace SeriesView
 
         //private clicked series and selected seriesID
         private int _clickedSeriesID;
-        
-        //private uncheck all indicator
-        private bool _uncheckAll = false;
+
+        private bool _checkedAllChanging; //checked all indicator
         //private checkboxes visible indicator
         private bool _checkBoxesVisible = true;
 
@@ -48,24 +47,22 @@ namespace SeriesView
             dgvSeries.CellValueChanged += dgvSeries_CellValueChanged;
             dgvSeries.CellFormatting += dgvSeries_CellFormatting;
 
-            btnUncheckAll.Click += btnUncheckAll_Click;
-
             //filter option events
             radAll.Click += radAll_Click;
             radSimple.Click += radSimple_Click;
             radComplex.Click += radComplex_Click;
-            cbBoxCriterion.SelectedIndexChanged +=cbBoxCriterion_SelectedIndexChanged;
-            cbBoxContent.SelectedIndexChanged +=cbBoxContent_SelectedIndexChanged;
+            cbBoxCriterion.SelectedIndexChanged += cbBoxCriterion_SelectedIndexChanged;
+            cbBoxContent.SelectedIndexChanged += cbBoxContent_SelectedIndexChanged;
 
             Settings.Instance.DatabaseChanged += Instance_DatabaseChanged;
             Disposed += SeriesSelector_Disposed;
         }
-       
-        #endregion 
+
+        #endregion
 
         #region Event Handlers
 
-        void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (_needShowVariableNameWithDataType &&
                 dgvSeries.Columns[e.ColumnIndex].Name == "VariableName")
@@ -77,61 +74,66 @@ namespace SeriesView
             }
         }
 
-        void SeriesSelector_Disposed(object sender, EventArgs e)
+        private void SeriesSelector_Disposed(object sender, EventArgs e)
         {
             Settings.Instance.DatabaseChanged -= Instance_DatabaseChanged;
         }
 
-        void Instance_DatabaseChanged(object sender, EventArgs e)
+        private void Instance_DatabaseChanged(object sender, EventArgs e)
         {
             RefreshSelection();
         }
 
-        void dgvSeries_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgvSeries_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 _clickedSeriesID = Convert.ToInt32(dgvSeries.Rows[e.RowIndex].Cells["SeriesID"].Value);
 
                 if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
-                {                  
+                {
                     dgvSeries.Rows[e.RowIndex].Selected = true;
                 }
-            }       
+            }
         }
 
-        void btnUncheckAll_Click(object sender, EventArgs e)
+        private void btnUncheckAll_Click(object sender, EventArgs e)
         {
-            UncheckAll();
+            SetChecked(false);
         }
 
-        void radAll_Click(object sender, EventArgs e)
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            SetChecked(true);
+        }
+
+        private void radAll_Click(object sender, EventArgs e)
         {
             SetFilterOption(FilterTypes.All);
             MainView.RowFilter = "";
         }
 
-        void radComplex_Click(object sender, EventArgs e)
+        private void radComplex_Click(object sender, EventArgs e)
         {
             SetFilterOption(FilterTypes.Complex);
         }
 
-        void radSimple_Click(object sender, EventArgs e)
+        private void radSimple_Click(object sender, EventArgs e)
         {
             SetFilterOption(FilterTypes.Simple);
         }
 
-        void dgvSeries_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void dgvSeries_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (_uncheckAll) return;
-            
+            if (_checkedAllChanging) return;
+
             DataGridViewRow row = dgvSeries.Rows[e.RowIndex];
             int seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
-            bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);         
+            bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
             OnSeriesCheck(seriesID, isChecked);
         }
 
-        void dgvSeries_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        private void dgvSeries_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dgvSeries.IsCurrentCellDirty)
             {
@@ -139,7 +141,7 @@ namespace SeriesView
             }
         }
 
-        void dgvSeries_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgvSeries_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -160,9 +162,10 @@ namespace SeriesView
                     break;
 
                 case "Site":
-                    cbBoxContent.DataSource = _siteTable;
-                    cbBoxContent.DisplayMember = "SiteName";
+                    cbBoxContent.DataSource = null;
+                    cbBoxContent.DisplayMember = SiteDisplayColumn;
                     cbBoxContent.ValueMember = "SiteID";
+                    cbBoxContent.DataSource = _siteTable;                    
                     break;
 
                 case "Variable":
@@ -246,15 +249,16 @@ namespace SeriesView
         }
 
 
-        void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete this series (ID: "+_clickedSeriesID+")?", 
-                "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
+            if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
+                                "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
-                var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+                var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite,
+                                                       Settings.Instance.DataRepositoryConnectionString);
                 manager.DeleteSeries(_clickedSeriesID);
                 RefreshSelection();
-            }   
+            }
         }
 
         private void btnApplyFilter_Click(object sender, EventArgs e)
@@ -282,6 +286,18 @@ namespace SeriesView
 
         #region ISeriesSelector Members
 
+        private string _siteDisplayColumn = "SiteName";
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string SiteDisplayColumn
+        {
+            get { return _siteDisplayColumn; }
+            private set
+            {
+                _siteDisplayColumn = value;
+                SetupDatabase();
+            }
+        }
+
         /// <summary>
         /// Get the array of all checked series IDs
         /// </summary>
@@ -303,10 +319,7 @@ namespace SeriesView
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CheckBoxesVisible
         {
-            get
-            {
-                return _checkBoxesVisible;
-            }
+            get { return _checkBoxesVisible; }
             set
             {
                 _checkBoxesVisible = value;
@@ -320,7 +333,7 @@ namespace SeriesView
             get
             {
                 return _clickedSeriesID;
-                
+
                 //if (dgvSeries.SelectedRows.Count > 0)
                 //{   
                 //    int seriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
@@ -342,7 +355,7 @@ namespace SeriesView
                         dr.Selected = true;
                         _clickedSeriesID = rowSeriesID;
                         break;
-                    }          
+                    }
                 }
                 //if no match found, don't select any rows
             }
@@ -383,7 +396,7 @@ namespace SeriesView
         {
             //refresh all the series, according to the new database.
             //before  refreshing, any check boxes are unchecked.
-            UncheckAll();
+            SetChecked(false);
             SetupDatabase();
         }
 
@@ -397,26 +410,23 @@ namespace SeriesView
 
         #region Methods
 
-        /// <summary>
-        /// Unchecks all series check boxes
-        /// </summary>
-        public void UncheckAll()
+        private void SetChecked(bool isCheckedValue)
         {
-            _uncheckAll = true;
-            
+            _checkedAllChanging = true;
+
             foreach (DataGridViewRow row in dgvSeries.Rows)
             {
                 bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
-                if (isChecked)
+                if (isChecked != isCheckedValue)
                 {
-                    row.Cells["Checked"].Value = false;
-                    int seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
+                    row.Cells["Checked"].Value = isCheckedValue;
+                    var seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
                     _clickedSeriesID = seriesID;
-                    OnSeriesCheck(seriesID, false);
+                    OnSeriesCheck(seriesID, isCheckedValue);
                 }
             }
 
-            _uncheckAll = false;
+            _checkedAllChanging = false;
         }
 
         private DataView MainView
@@ -428,37 +438,39 @@ namespace SeriesView
         {
             //Settings.Instance.Load();
             var conString = Settings.Instance.DataRepositoryConnectionString;
-            
+
             //if the connection string is not set, exit
             if (String.IsNullOrEmpty(conString)) return;
-            
+
             var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, conString);
             var tbl = manager.GetSeriesTable2();
-          
+
             // Add Checked column
             var columnChecked = new DataColumn("Checked", typeof (bool)) {DefaultValue = false,};
             tbl.Columns.Add(columnChecked);
-            
+
             dgvSeries.DataSource = new DataView(tbl);
             //datagridview representation
             foreach (DataGridViewColumn col in dgvSeries.Columns)
             {
-                if (col.Name != "Checked" && 
-                    col.Name != "SiteName" && 
-                    col.Name != "VariableName" && 
+                if (col.Name != "Checked" &&
+                    col.Name != SiteDisplayColumn &&
+                    col.Name != "VariableName" &&
                     col.Name != "SeriesID")
                 {
                     col.Visible = false;
                 }
+                else
+                    col.Visible = true;
             }
 
             // Determine necessity to show VariableName with DataType in UI
             _needShowVariableNameWithDataType = false;
-            foreach(DataRow row in tbl.Rows)
+            foreach (DataRow row in tbl.Rows)
             {
                 var variable = row["VariableName"].ToString();
-                var site = row["SiteName"].ToString();
-                if (tbl.Select(string.Format("VariableName = '{0}' and SiteName = '{1}'", variable, site)).Length >= 2)
+                var site = row["SiteID"].ToString();
+                if (tbl.Select(string.Format("VariableName = '{0}' and SiteID = '{1}'", variable, site)).Length >= 2)
                 {
                     _needShowVariableNameWithDataType = true;
                     break;
@@ -477,11 +489,11 @@ namespace SeriesView
             dgvSeries.Columns["VariableName"].ReadOnly = true;
             dgvSeries.Columns["VariableName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvSeries.Columns["SiteName"].DisplayIndex = 3;
-            dgvSeries.Columns["SiteName"].ReadOnly = true;
-            dgvSeries.Columns["SiteName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvSeries.Columns[SiteDisplayColumn].DisplayIndex = 3;
+            dgvSeries.Columns[SiteDisplayColumn].ReadOnly = true;
+            dgvSeries.Columns[SiteDisplayColumn].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            
+
 
             //setup the filter option to "default all"
             SetFilterOption(FilterType);
@@ -516,7 +528,8 @@ namespace SeriesView
             }
             else if (newFilterType == FilterTypes.Simple)
             {
-                dgvSeries.Location = new System.Drawing.Point(6, 90); ;
+                dgvSeries.Location = new System.Drawing.Point(6, 90);
+                ;
                 dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
                 radSimple.Checked = true;
                 radComplex.Checked = false;
@@ -532,7 +545,8 @@ namespace SeriesView
             }
             else if (newFilterType == FilterTypes.Complex)
             {
-                dgvSeries.Location = new System.Drawing.Point(6, 90); ;
+                dgvSeries.Location = new System.Drawing.Point(6, 90);
+                ;
                 dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
                 radSimple.Checked = false;
                 radComplex.Checked = true;
@@ -559,9 +573,9 @@ namespace SeriesView
             DbOperations db = new DbOperations(conString, DatabaseTypes.SQLite);
 
             string sqlTheme = "SELECT ThemeID, ThemeName FROM DataThemeDescriptions";
-            string sqlSite = "SELECT SiteID, SiteName FROM Sites";
+            string sqlSite = string.Format("SELECT SiteID, {0} FROM Sites", SiteDisplayColumn);
             string sqlVariable = "SELECT VariableID, VariableName, UnitsAbbreviation " +
-                "FROM Variables INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID";
+                                 "FROM Variables INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID";
             string sqlMethod = "SELECT MethodID, MethodDescription FROM Methods";
             string sqlSource = "SELECT SourceID, Organization FROM Sources";
             string sqlQcLevel = "SELECT QualityControlLevelID, Definition FROM QualityControlLevels";
@@ -606,7 +620,7 @@ namespace SeriesView
             if (String.IsNullOrEmpty(filterExpression)) return FilterTypes.All;
 
             //other filter types --> simple uses the ID and has only one '='.
-            string[] parts = filterExpression.Split(new char[] { '=' });
+            string[] parts = filterExpression.Split(new char[] {'='});
             int numParts = parts.Length;
             if (numParts == 2)
             {
@@ -683,7 +697,7 @@ namespace SeriesView
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            e.Result = RunDataExport((DataTable)e.Argument, worker, e);
+            e.Result = RunDataExport((DataTable) e.Argument, worker, e);
         }
 
         private void bgwTable2Txt_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -691,8 +705,8 @@ namespace SeriesView
             if (e.Error != null)
             {
                 MessageBox.Show("Export Failed" + e.Error.Message, "Hint",
-                MessageBoxButtons.OK, MessageBoxIcon.Information,
-                MessageBoxDefaultButton.Button2);
+                                MessageBoxButtons.OK, MessageBoxIcon.Information,
+                                MessageBoxDefaultButton.Button2);
             }
         }
 
@@ -722,7 +736,7 @@ namespace SeriesView
                 _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
                 if (_clickedSeriesID > 0)
                 {
-                    checkedIDs = new int[] { _clickedSeriesID };
+                    checkedIDs = new int[] {_clickedSeriesID};
                 }
                 else
                 {
@@ -735,9 +749,10 @@ namespace SeriesView
             dboperation = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
 
             //Export DataValues of the selected series instead of just series list!!
-            string sql = "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
-                      "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
-                      "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
+            string sql =
+                "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
+                "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
+                "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
                 "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
                 "WHERE v.VariableID = ds.VariableID " +
                 "AND s.SiteID = ds.SiteID " +
@@ -765,7 +780,8 @@ namespace SeriesView
                 }
             }
 
-            HydroDesktop.ImportExport.ExportDataTableToTextFileDialog exportForm = new HydroDesktop.ImportExport.ExportDataTableToTextFileDialog(table);
+            HydroDesktop.ImportExport.ExportDataTableToTextFileDialog exportForm =
+                new HydroDesktop.ImportExport.ExportDataTableToTextFileDialog(table);
             exportForm.ShowDialog();
 
             //bgwTable2Txt.RunWorkerAsync(allSeriesList);
@@ -780,10 +796,11 @@ namespace SeriesView
                 return "series are exported.";
             }
 
-            
+
             // todo: Complete Data Export codes here if "GetExportOptionsDialog" is used.
             return "series are exported.";
         }
+
         #endregion
 
         private void btnEditFilter_Click(object sender, EventArgs e)
@@ -798,6 +815,20 @@ namespace SeriesView
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             RefreshSelection();
-        }        
+        }
+
+        private void btnOptions_Click(object sender, EventArgs e)
+        {
+            var ds = new DisplaySettings
+                         {
+                             SiteDisplayColumn = SiteDisplayColumn,
+                         };
+
+            if (DisplayOptionsForm.ShowDialog(ds) == DialogResult.OK)
+            {
+                SiteDisplayColumn = ds.SiteDisplayColumn;
+            }
+        }
     }
 }
+

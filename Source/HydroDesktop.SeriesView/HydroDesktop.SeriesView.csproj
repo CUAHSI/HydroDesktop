@@ -93,6 +93,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisplayOptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisplayOptionsForm.Designer.cs">
+      <DependentUpon>DisplayOptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -126,6 +132,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DisplayOptionsForm.resx">
+      <DependentUpon>DisplayOptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FilterDataSeries.resx">
       <DependentUpon>FilterDataSeries.cs</DependentUpon>
     </EmbeddedResource>
