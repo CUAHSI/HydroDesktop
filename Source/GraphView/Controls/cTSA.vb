@@ -247,7 +247,8 @@ Public Class cTSA
             ProgressBar.Value += 1
             unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & selectedSeriesIdList(count - 1) & "'")
             ProgressBar.Value += 1
-            siteName = dbTools.ExecuteSingleOutput("SELECT SiteName FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & selectedSeriesIdList(count - 1) & "'")
+            siteName = dbTools.ExecuteSingleOutput("SELECT " & SeriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & selectedSeriesIdList(count - 1) & "'")
+
             ProgressBar.Value += 1
             options = CPlotOptions1.Options
 
@@ -297,6 +298,7 @@ Public Class cTSA
         Dim count As Integer = selectedSeriesIdList.Count
         Dim strStartDate As String
         Dim strEndDate As String
+        Dim SeriesSelector = _seriesMenu
 
         'progress bar setting
         ProgressBar.Visible = True
@@ -333,7 +335,8 @@ Public Class cTSA
             ProgressBar.Value += 1
             unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & s & "'")
             ProgressBar.Value += 1
-            siteName = dbTools.ExecuteSingleOutput("SELECT SiteName FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & s & "'")
+            siteName = dbTools.ExecuteSingleOutput("SELECT " & SeriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & s & "'")
+
             options = CPlotOptions1.Options
             ProgressBar.Value += 1
 
