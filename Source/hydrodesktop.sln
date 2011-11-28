@@ -179,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.SeriesView", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelExtension", "ExcelDataProvider\ExcelExtension.csproj", "{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroughtAnalysis", "DroughtAnalysis\DroughtAnalysis.csproj", "{2CAFD6F1-CED6-4E26-8787-16159E9243BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -455,6 +457,16 @@ Global
 		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

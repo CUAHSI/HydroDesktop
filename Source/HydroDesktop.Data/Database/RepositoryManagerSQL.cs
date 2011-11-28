@@ -440,9 +440,14 @@ namespace HydroDesktop.Database
                     sqlIn.Append(",");
                 }
             }
+            string filter = "DataThemes.SeriesID in (" + sqlIn.ToString() + ")";
+            return GetSeriesTable(filter);
+        }
 
+        public DataTable GetSeriesTable(string seriesDataFilter)
+        {
             string sql = DetailedSeriesSQLQuery() +
-                " WHERE DataThemes.SeriesID in (" + sqlIn.ToString() + ")";
+                " WHERE " + seriesDataFilter;
 
             DataTable table = _db.LoadTable("SeriesListTable", sql);
             return table;
@@ -543,6 +548,111 @@ namespace HydroDesktop.Database
 
             return series;
         }
+
+        /// <summary>
+        /// Gets list of all series that are associated with the site
+        /// </summary>
+        public IList<Series> GetSeriesBySite(Site site)
+        {
+            if (site.Id <= 0) throw new ArgumentException("site must have a valid ID");
+
+            string filter = "DataSeries.SiteID = " + site.Id;
+            DataTable seriesTable = GetSeriesTable(filter);
+            return SeriesListFromTable(seriesTable);
+        }
+
+
+        public IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2)
+        {
+            if (variable1.Id <= 0) throw new ArgumentException("variable1 must have a valid ID");
+            if (variable2.Id <= 0) throw new ArgumentException("variable2 must have a valid ID");
+
+            string sqlQuery = "select s.SiteID, s.SiteName, SiteCode, Latitude, Longitude from sites s where s.SiteID in " +
+"( select s1.SiteID From DataSeries s1 " +
+"inner join DataSeries s2 on s1.SiteID = s2.SiteID and s1.VariableID = 4 and s2.variableID = 1 ) ORDER BY s.SiteName";
+
+            DataTable tbl = _db.LoadTable(sqlQuery);
+            List<Site> siteList = new List<Site>();
+
+            foreach (DataRow r in tbl.Rows)
+            {
+                Site s = new Site();
+                s.Id = (long)r["SiteID"];
+                s.Code = (string)r["SiteCode"];
+                s.Latitude = (double)r["Latitude"];
+                s.Longitude = (double)r["Longitude"];
+                s.Name = (string)r["SiteName"];
+
+                siteList.Add(s);
+            }
+            return siteList;
+        }
+
+        private IList<Series> SeriesListFromTable(DataTable seriesTable)
+        {
+            IList<Series> seriesList = new List<Series>();
+
+            foreach (DataRow row in seriesTable.Rows)
+            {
+                Site st = new Site();
+                st.Id = (long)row["SiteID"];
+                st.Latitude = (double)row["Latitude"];
+                st.Longitude = (double)row["Longitude"];
+                st.Name = (string)row["SiteName"];
+                st.Code = (string)row["SiteCode"];
+
+                Unit timeUnit = Unit.UnknownTimeUnit;
+                timeUnit.Name = (string)row["TimeUnitsName"];
+
+                Unit variableUnit = Unit.Unknown;
+                variableUnit.Abbreviation = (string)row["VariableUnitsName"];
+
+                Variable v = new Variable();
+                v.Id = (long)row["VariableID"];
+                v.Name = (string)row["VariableName"];
+                v.Code = (string)row["VariableCode"];
+                v.DataType = (string)row["DataType"];
+                v.ValueType = (string)row["ValueType"];
+                v.Speciation = row["Speciation"] == DBNull.Value ? null : (string)row["Speciation"];
+                v.SampleMedium = row["SampleMedium"] == DBNull.Value ? null : (string)row["SampleMedium"];
+                v.TimeSupport = row["TimeSupport"] == DBNull.Value ? 0 : (double)row["TimeSupport"];
+                v.VariableUnit = variableUnit;
+                v.TimeUnit = timeUnit;
+                v.GeneralCategory = row["GeneralCategory"] == DBNull.Value ? null : (string)row["GeneralCategory"];
+                v.NoDataValue = (double)row["NoDataValue"];
+
+                Method m = new Method();
+                m.Description = (string)row["MethodDescription"];
+
+                Source src = Source.Unknown;
+                src.Description = (string)row["SourceDescription"];
+                src.Citation = (string)row["Citation"];
+                src.Organization = (string)row["Organization"];
+
+                QualityControlLevel qc = QualityControlLevel.Unknown;
+                qc.Code = (string)row["QualityControlLevelCode"];
+                qc.Definition = (string)row["QualityControlLevelDefinition"];
+
+                Series ser = new Series(st, v, m, qc, src);
+                ser.BeginDateTime = Convert.ToDateTime(row["BeginDateTime"]);
+                ser.EndDateTime = Convert.ToDateTime(row["EndDateTime"]);
+                ser.BeginDateTimeUTC = Convert.ToDateTime(row["BeginDateTimeUTC"]);
+                ser.EndDateTimeUTC = Convert.ToDateTime(row["EndDateTimeUTC"]);
+                ser.ValueCount = Convert.ToInt32(row["ValueCount"]);
+                ser.Id = (long)row["SeriesID"];
+
+                seriesList.Add(ser);
+            }
+
+            return seriesList;
+        }
+
+        public IList<Series> GetAllSeries()
+        {
+            DataTable seriesTable = GetSeriesTable2();
+            return SeriesListFromTable(seriesTable);
+        }
+
         #endregion
 
         #region Save Series
