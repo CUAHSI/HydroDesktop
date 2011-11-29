@@ -570,7 +570,7 @@ namespace EPADelineation
         /// Add the start point and the delineated polygon into Map and also save them as shapefiles
         /// </summary>
         /// <param name="pointpolygon">IList of IFeatureset saving both start point and delineated polygon</param>
-        public void AddEPAShapes(IList<IFeatureSet> pointpolygon)
+        private void AddEPAShapes(IEnumerable<IFeatureSet> pointpolygon)
         {
             if (pointpolygon != null)
             {
@@ -578,8 +578,8 @@ namespace EPADelineation
                 {
                     //Assign projection here <--Necessary
                     fsset.Projection = _mapArgs.Map.Projection;
-                    //FeatureSet fs = fsset as FeatureSet;
 
+                    var indexToInsert = GetPositionToInsertWatershedLayer();
                     if (fsset.FeatureType == FeatureType.Point)
                     {
                         try
@@ -587,8 +587,8 @@ namespace EPADelineation
                             //Save featureset as a MapPointLayer
                             IMapPointLayer point = new MapPointLayer(fsset);
                             point.LegendText = Path.GetFileNameWithoutExtension(_wshedpoint);
-
-                            _mapArgs.Map.Layers.Add(point);
+                            
+                            _mapArgs.Map.Layers.Insert(indexToInsert, point);
 
                             fsset.Filename = _wshedpoint;
                             fsset.SaveAs(_wshedpoint, true);
@@ -611,7 +611,7 @@ namespace EPADelineation
                             LineSymbolizer linesymbol = new LineSymbolizer(Color.Blue, 1);
                             line.Symbolizer = linesymbol;
 
-                            _mapArgs.Map.Layers.Add(line);
+                            _mapArgs.Map.Layers.Insert(indexToInsert, line);
 
                             fsset.Filename = _stream;
                             fsset.Save();
@@ -642,7 +642,7 @@ namespace EPADelineation
                             IMapPolygonLayer poly = new MapPolygonLayer(polyfs);
                             poly.Symbolizer = polysymbol;
 
-                            _mapArgs.Map.Layers.Add(poly);
+                            _mapArgs.Map.Layers.Insert(indexToInsert, poly);
                         }
                         catch (Exception ex)
                         {
@@ -652,6 +652,23 @@ namespace EPADelineation
                     }
                 }
             }
+        }
+
+        private int GetPositionToInsertWatershedLayer()
+        {
+            // Watershed layers must be inserted below the "Data Sites" group
+            const string dataSitesName = "\"Data Sites\"";
+
+            for (int i = 0; i < _mapArgs.Map.Layers.Count; i++)
+            {
+                var layer = _mapArgs.Map.Layers[i];
+                if (layer is IMapGroup &&
+                    layer.LegendText == dataSitesName)
+                {
+                    return i;
+                }
+            }
+            return _mapArgs.Map.Layers.Count;
         }
 
         # endregion
