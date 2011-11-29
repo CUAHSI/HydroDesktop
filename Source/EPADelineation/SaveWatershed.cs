@@ -44,7 +44,7 @@ namespace EPADelineation
 
         private AppManager _mapArgs;
 
-        private BackgroundWorker _bgw;
+        private readonly BackgroundWorker _bgw;
 
         private bool isActive;
 
@@ -67,15 +67,53 @@ namespace EPADelineation
             _mapArgs = mapArgs;
 
             //Setup background worker
-            _bgw = new BackgroundWorker();
-            _bgw.WorkerSupportsCancellation = false;
-            _bgw.WorkerReportsProgress = false;
-            _bgw.DoWork += new DoWorkEventHandler(_bgw_DoWork);
-            _bgw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bgw_RunWorkerCompleted);
+            _bgw = new BackgroundWorker
+                       {
+                           WorkerSupportsCancellation = false, 
+                           WorkerReportsProgress = false
+                       };
+            _bgw.DoWork += _bgw_DoWork;
+            _bgw.RunWorkerCompleted += _bgw_RunWorkerCompleted;
+            
+            InitializeShapeFileNames();
         }
 
         #endregion Constructor
 
+        private void InitializeShapeFileNames()
+        {
+            var allLayers = ((Map) _mapArgs.Map).GetAllLayers();
+
+            tbwshedpoint.Text = GetOrderedText<IMapPointLayer>(allLayers, "Watershed Point");
+            tbwshed.Text = GetOrderedText<IMapPolygonLayer>(allLayers, "Watershed");
+            tbstreamline.Text = GetOrderedText<IMapLineLayer>(allLayers, "Reaches");
+        }
+
+        private static string GetOrderedText<T>(IEnumerable<ILayer> allLayers, string defaultText) where T : ILegendItem
+        {
+            var layers = allLayers.OfType<T>().Where(layer => layer.LegendText.StartsWith(defaultText)).ToList();
+            if (layers.Count() == 0)
+                return defaultText;
+
+            int number = 0;
+            foreach(var layer in layers)
+            {
+                // Try extract number
+                var name = layer.LegendText.Replace(defaultText, String.Empty).Trim();
+                if (string.IsNullOrEmpty(name) && number == 0)
+                {
+                    number = 1;
+                }
+
+                int n;
+                if (Int32.TryParse(name, out n))
+                    number = n + 1;
+            }
+
+            return string.Format("{0} {1}", defaultText, number);
+        }
+
+        
         #region BackgroundWorker Methods
 
         private void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
