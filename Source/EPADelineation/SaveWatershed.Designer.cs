@@ -153,6 +153,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SaveWatershed";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Save Watershed";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.SaveDialog_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SaveDialog_FormClosing);
