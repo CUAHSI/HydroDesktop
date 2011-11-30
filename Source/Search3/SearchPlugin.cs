@@ -75,7 +75,8 @@ namespace Search3
 
             const string grpArea = "Area";
 
-            CurrentAreaSelectMode = AreaSelectMode.None;
+            //to get area select mode
+            App.Map.FunctionModeChanged +=new EventHandler(Map_FunctionModeChanged);
             App.Map.SelectionChanged += Map_SelectionChanged;
 
             //Draw Box
@@ -96,8 +97,6 @@ namespace Search3
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
-            rbSelect.Selected = true;
-            //rbSelect.OnClick(null);
 
             //AttributeTable
             rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
@@ -209,8 +208,6 @@ namespace Search3
             //App.HeaderControl.Add(btnDownload);
 
             #endregion
-
-            CurrentAreaSelectMode = AreaSelectMode.None;
 
             App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
 
@@ -360,6 +357,15 @@ namespace Search3
 
         #region  Area group
 
+        void Map_FunctionModeChanged(object sender, EventArgs e)
+        {
+            if (App.Map.FunctionMode == FunctionMode.Select && CurrentAreaSelectMode != AreaSelectMode.DrawBox)
+            {
+                CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+                rbSelect.Toggle();
+            }
+        }
+
         private AreaSelectMode CurrentAreaSelectMode
         {
             get; set;
@@ -438,7 +444,31 @@ namespace Search3
                 CurrentAreaSelectMode == AreaSelectMode.SelectAttribute)
             {
                 var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map) App.Map).FirstOrDefault();
-                if (polygonLayer == null) return;
+                if (polygonLayer == null)
+                {
+                    //special case: if the map layers or the group is selected
+                    if (App.Map.MapFrame.IsSelected)
+                    {
+                        IEnumerable<IMapPolygonLayer> polygonLayers = AreaHelper.GetAllPolygonLayers((Map) App.Map).Reverse<IMapPolygonLayer>();
+                        foreach(IMapPolygonLayer polyLayer in polygonLayers)
+                        {
+                            if (polyLayer.IsVisible && polyLayer.Selection.Count > 0)
+                            {
+                                var polyFs2 = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
+                                foreach (var f in polyLayer.Selection.ToFeatureList())
+                                {
+                                    polyFs2.Features.Add(f);
+                                }
+                                polyFs2.Projection = App.Map.Projection;
+                                SearchSettings.Instance.AreaSettings.Polygons = polyFs2;
+                                return;
+                            }
+
+                        }
+                    
+                    }
+                    return;
+                }
 
                 var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
                 foreach (var f in polygonLayer.Selection.ToFeatureList())

@@ -24,6 +24,7 @@ namespace EPADelineation
     {
         #region Variables
         private bool isActive;
+        private SimpleActionItem action;
 
         #endregion Variables
 
@@ -46,7 +47,7 @@ namespace EPADelineation
         /// </summary>
         public override void  Activate()
         {
-            SimpleActionItem action = new SimpleActionItem("Delineate", _startDelineate_Click);
+            action = new SimpleActionItem("Delineate", _startDelineate_Click);
             action.GroupCaption = "EPA Tool";
             action.ToolTipText = "Using EPA Web Services to Delineate Catchments";
             action.SmallImage = Properties.Resources.Delineation_icon_32.GetThumbnailImage(16, 16, null, IntPtr.Zero);
