@@ -26,6 +26,7 @@
         public ContainerControl Shell { get; set; }
 
         private ProjectManager myProjectManager;
+        private bool ignoreRootSelected = false;
 
         public override void Activate()
         {
@@ -207,12 +208,17 @@
             if (e.ActivePanelKey == "kMap")
             {
                 App.DockManager.SelectPanel("kLegend");
+                ignoreRootSelected = true;
                 App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+                ignoreRootSelected = false;
+                //header visibility
+                
             }
         }
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
+            if (ignoreRootSelected) return;
             if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
                 App.DockManager.SelectPanel("kMap");

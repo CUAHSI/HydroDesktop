@@ -32,6 +32,7 @@ namespace HydroR
         private cRCommandView _hydroRControl;
 
         bool firstTimeAdding = true;
+        bool ignoreRootSelected = false;
 
         #endregion
 
@@ -133,10 +134,12 @@ namespace HydroR
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            if (e.SelectedRootKey == kHydroR)
-            {
-                App.DockManager.SelectPanel(kHydroR);
-            }
+            //if (ignoreRootSelected) return;
+            
+            //if (e.SelectedRootKey == kHydroR)
+            //{
+            //    App.DockManager.SelectPanel(kHydroR);
+            //}
         }
 
         void AddHydroRPanel()
@@ -177,12 +180,14 @@ namespace HydroR
             if (e.ActivePanelKey == kHydroR)
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
+                ignoreRootSelected = true;
+                _hydroRTab.Visible = true;
                 App.HeaderControl.SelectRoot(kHydroR);
-                //_hydroRTab.Visible = true;
+                ignoreRootSelected = false;
             }
             else
             {
-                //_hydroRTab.Visible = false;
+                _hydroRTab.Visible = false;
             }
         }
 

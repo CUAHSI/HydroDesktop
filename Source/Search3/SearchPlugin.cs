@@ -41,6 +41,10 @@ namespace Search3
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
 
+        private bool ignoreRootSelected = false;
+
+        private RootItem root;
+
         #endregion
 
         #region Plugin operations
@@ -66,7 +70,7 @@ namespace Search3
             var head = App.HeaderControl;
             
             //Search ribbon tab
-            var root = new RootItem(kHydroSearch3, "Search");
+            root = new RootItem(kHydroSearch3, "Search");
             //setting the sort order to small positive number to display it to the right of home tab
             root.SortOrder = -1; 
             head.Add(root);
@@ -211,16 +215,34 @@ namespace Search3
 
             App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
 
+            App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_ActivePanelChanged);
+
             //map buttons (not added for now)
             //AddMapButtons();
         }
 
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        {
+            ignoreRootSelected = true;
+            if (e.ActivePanelKey == "kMap" || e.ActivePanelKey == "kLegend")
+            {
+                App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+                root.Visible = true;
+            }
+            else
+            {
+                root.Visible = false;
+            }
+            ignoreRootSelected = false;
+        }
+
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            if (e.SelectedRootKey == kHydroSearch3)
-            {
-                App.DockManager.SelectPanel("kMap");
-            }
+            //if (ignoreRootSelected) return;
+            //if (e.SelectedRootKey == kHydroSearch3)
+            //{
+            //    App.DockManager.SelectPanel("kMap");
+            //}
         }
 
         //private void AddMapButtons()

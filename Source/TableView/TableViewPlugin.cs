@@ -29,6 +29,8 @@ namespace TableView
 
         private cTableView tableViewControl;
 
+        private bool ignoreRootSelected = false;
+
         #endregion
 
         public override void Deactivate()
@@ -128,10 +130,12 @@ namespace TableView
         //when the table root item is selected
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            if (e.SelectedRootKey == kTableView)
-            {
-                App.DockManager.SelectPanel(kTableView);
-            }
+            //if (ignoreRootSelected) return;
+            
+            //if (e.SelectedRootKey == kTableView)
+            //{
+            //    App.DockManager.SelectPanel(kTableView);
+            //}
         }
 
         //void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
@@ -190,7 +194,10 @@ namespace TableView
             if (e.ActivePanelKey == kTableView)
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
-                App.HeaderControl.SelectRoot(kTableView);
+                //ignoreRootSelected = true;
+                
+                //App.HeaderControl.SelectRoot(kTableView);
+                //ignoreRootSelected = false;
                 RefreshDatabasePath();
             }
         }

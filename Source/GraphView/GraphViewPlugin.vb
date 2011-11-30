@@ -71,6 +71,8 @@ Namespace GraphView
         Private rbDateTimeSetting As SimpleActionItem 'Date Setting
         Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
         Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
+
+        Private ignoreRootSelected As Boolean = False
 #End Region
 
 
@@ -130,6 +132,7 @@ Namespace GraphView
         End Sub
 
         Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
+            If ignoreRootSelected Then Return
             If e.SelectedRootKey = kGraph Then
                 App.DockManager.SelectPanel(kGraph)
             End If
@@ -508,8 +511,15 @@ Namespace GraphView
 
             'activate the graph ribbon tab and the series view panel
             If e.ActivePanelKey = kGraph Then
+
+                ignoreRootSelected = True
+                tabGraph.Visible = True
                 App.HeaderControl.SelectRoot(kGraph)
+                ignoreRootSelected = False
+
                 App.DockManager.SelectPanel("kHydroSeriesView")
+            Else
+                tabGraph.Visible = False
             End If
 
         End Sub
