@@ -27,15 +27,7 @@
         {
             App.DockManager.ActivePanelChanged += new EventHandler<DockablePanelEventArgs>(DockManager_ActivePanelChanged);
             
-            //event handler for adding the series selector
-            //if (firstTimeActivating)
-            //{
-            //    App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
-            //}
-            //else
-            //{
-                AddSeriesDockPanel();
-            //}
+            AddSeriesDockPanel();
 
             tableRoot = new RootItem("kHydroTable", "Table");
             tableRoot.SortOrder = 20;
@@ -46,13 +38,9 @@
 
         void DockManager_ActivePanelChanged(object sender, DockablePanelEventArgs e)
         {
-            //if (e.ActivePanelKey == "kHydroTable")
+            //if (e.ActivePanelKey == "kSeriesView")
             //{
-            //    tableRoot.Visible = true;
-            //}
-            //else if (e.ActivePanelKey != "kHydroSeriesView")
-            //{
-            //    tableRoot.Visible = false;
+            //    App.DockManager.SelectPanel("kHydroTable");
             //}
         }
 

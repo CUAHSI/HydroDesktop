@@ -64,11 +64,7 @@
         void mainForm_Shown(object sender, EventArgs e)
         {
             //displays the initial welcome screen
-            ShowWelcomeScreen();
-
-            //sets-up the database connection and creates a
-            //new empty database if required
-            SetupDatabases();
+            ShowWelcomeScreen();   
         }
 
         #endregion
@@ -131,24 +127,25 @@
         /// </summary>
         private void ShowWelcomeScreen()
         {
+            //activate the map panel
+            App.DockManager.SelectPanel("kMap");
+            App.DockManager.SelectPanel("kLegend");
+            
             var welcomeScreen = new WelcomeScreen(myProjectManager);
             welcomeScreen.StartPosition = FormStartPosition.CenterScreen;
             welcomeScreen.TopMost = true;
+            welcomeScreen.FormClosing += new FormClosingEventHandler(welcomeScreen_FormClosing);
 
             //int x = this.Location.X + this.Width / 2 - _welcomeScreen.Width / 2;
             //int y = this.Location.Y + this.Height / 2 - _welcomeScreen.Height / 2;
             //_welcomeScreen.Location = new System.Drawing.Point(x, y);
 
             welcomeScreen.Show();
+        }
 
-            //if (_welcomeScreen.ShowDialog() == DialogResult.OK)
-            //{
-            //    bool _isNewProject = _welcomeScreen.NewProjectCreated;
-            //}
-
-            //activate the map panel
-            App.DockManager.SelectPanel("kMap");
-            App.DockManager.SelectPanel("kLegend");
+        void welcomeScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SetupDatabases();
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace HydroDesktop.Main
             if (File.Exists(fileName1))
             {
                 IFeatureSet fsCountries = FeatureSet.OpenFile(fileName1);
-                fsCountries.Reproject(projWorld.WebMercator);
+                //fsCountries.Reproject(projWorld.WebMercator);
                 MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
                 layCountries.LegendText = "Countries";
                 PolygonScheme schmCountries = new PolygonScheme();
@@ -57,28 +57,6 @@ namespace HydroDesktop.Main
                 baseGroup.Layers.Add(layCountries);
                 layCountries.MapFrame = mainMap.MapFrame;
             }
-            
-            //load U.S. states layer         
-            string fileName2 = Path.Combine(baseMapFolder, "us_states.shp");
-            if (File.Exists(fileName2))
-            {
-                IFeatureSet fsStates = FeatureSet.OpenFile(fileName2);
-                fsStates.Reproject(projWorld.WebMercator);
-                layStates = new MapPolygonLayer(fsStates);
-                PolygonScheme schmStates = new PolygonScheme();
-                layStates.IsVisible = true;
-                layStates.LegendText = "U.S. States";
-                schmStates.EditorSettings.StartColor = Color.LemonChiffon;
-                schmStates.EditorSettings.EndColor = Color.LightPink;
-                schmStates.EditorSettings.ClassificationType =
-                    ClassificationType.UniqueValues;
-                schmStates.EditorSettings.FieldName = "NAME";
-                schmStates.EditorSettings.UseGradient = true;
-                schmStates.CreateCategories(layStates.DataSet.DataTable);
-                layStates.Symbology = schmStates;
-                baseGroup.Layers.Add(layStates);
-                layStates.MapFrame = mainMap.MapFrame;
-            }
 
             //load Canada Provinces layer
             try
@@ -87,7 +65,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName3))
                 {
                     IFeatureSet fsProvince = FeatureSet.OpenFile(fileName3);
-                    fsProvince.Reproject(projWorld.WebMercator);
+                    //fsProvince.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layProvince = new MapPolygonLayer(fsProvince);
                     PolygonScheme schmProvince = new PolygonScheme();
                     layProvince.IsVisible = true;
@@ -105,6 +83,28 @@ namespace HydroDesktop.Main
                 }
             }
             catch { }
+            
+            //load U.S. states layer         
+            string fileName2 = Path.Combine(baseMapFolder, "us_states.shp");
+            if (File.Exists(fileName2))
+            {
+                IFeatureSet fsStates = FeatureSet.OpenFile(fileName2);
+                //fsStates.Reproject(projWorld.WebMercator);
+                layStates = new MapPolygonLayer(fsStates);
+                PolygonScheme schmStates = new PolygonScheme();
+                layStates.IsVisible = true;
+                layStates.LegendText = "U.S. States";
+                schmStates.EditorSettings.StartColor = Color.LemonChiffon;
+                schmStates.EditorSettings.EndColor = Color.LightPink;
+                schmStates.EditorSettings.ClassificationType =
+                    ClassificationType.UniqueValues;
+                schmStates.EditorSettings.FieldName = "NAME";
+                schmStates.EditorSettings.UseGradient = true;
+                schmStates.CreateCategories(layStates.DataSet.DataTable);
+                layStates.Symbology = schmStates;
+                baseGroup.Layers.Add(layStates);
+                layStates.MapFrame = mainMap.MapFrame;
+            }    
 
             //load a U.S. counties layer
             try
@@ -113,7 +113,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName4))
                 {
                     IFeatureSet fsCounties = FeatureSet.OpenFile(fileName4);
-                    fsCounties.Reproject(projWorld.WebMercator);
+                    //fsCounties.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layCounties = new MapPolygonLayer(fsCounties);
                     layCounties.LegendText = "U.S. Counties";
                     layCounties.IsVisible = false;
@@ -121,21 +121,7 @@ namespace HydroDesktop.Main
                     baseGroup.Layers.Add(layCounties);
                     layCounties.MapFrame = mainMap.MapFrame;
                 }
-                //PolygonScheme schmCounties = new PolygonScheme();
-
-                //schmCounties.EditorSettings.StartColor = Color.LemonChiffon;
-                //schmCounties.EditorSettings.EndColor = Color.LightPink;
-                //schmCounties.EditorSettings.ClassificationType =
-                //    ClassificationType.UniqueValues;
-                //schmCounties.EditorSettings.FieldName = "NAME";
-                //schmCounties.EditorSettings.UseGradient = true;
-                //schmCounties.CreateCategories(layCounties.DataSet.DataTable);
-                //layCounties.Symbology = schmCounties;
-
-                //layCounties.Symbolizer.SetFillColor(Color.Transparent);
-                //layCounties.DynamicVisibilityWidth = 1000000; //approximately 1:1Million
-                //layCounties.DynamicVisibilityMode = DynamicVisibilityMode.ZoomedIn;
-                //layCounties.UseDynamicVisibility = true;
+                
             }
             catch { }
 
@@ -146,22 +132,12 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName5))
                 {
                     IFeatureSet fsHUC = FeatureSet.OpenFile(fileName5);
-                    fsHUC.Reproject(projWorld.WebMercator);
+                    //fsHUC.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layHUC = new MapPolygonLayer(fsHUC);
                     layHUC.LegendText = "U.S. HUC";
                     layHUC.IsVisible = false;
                     layHUC.Symbolizer = new PolygonSymbolizer(Color.FromArgb(100, Color.PaleGreen), Color.Gray);
-                    //PolygonScheme schmHUC = new PolygonScheme();
-                    //layHUC.IsVisible = false;
-                    //layHUC.LegendText = "HUC";
-                    //schmHUC.EditorSettings.StartColor = Color.PaleGreen;
-                    //schmHUC.EditorSettings.EndColor = Color.OrangeRed;
-                    //schmHUC.EditorSettings.ClassificationType =
-                    //    ClassificationType.UniqueValues;
-                    //schmHUC.EditorSettings.FieldName = "HUC";
-                    //schmHUC.EditorSettings.UseGradient = true;
-                    //schmHUC.CreateCategories(layHUC.DataSet.DataTable);
-                    //layHUC.Symbology = schmHUC;
+                    
                     baseGroup.Layers.Add(layHUC);
                     layHUC.MapFrame = mainMap.MapFrame;
                 }
@@ -175,7 +151,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName6))
                 {
                     IFeatureSet fsRivers = FeatureSet.OpenFile(fileName6);
-                    fsRivers.Reproject(projWorld.WebMercator);
+                    //fsRivers.Reproject(projWorld.WebMercator);
                     MapLineLayer layRivers = new MapLineLayer(fsRivers);
                     layRivers.LegendText = "rivers";
                     LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
@@ -193,7 +169,7 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName7))
                 {
                     IFeatureSet fsLakes = FeatureSet.OpenFile(fileName7);
-                    fsLakes.Reproject(projWorld.WebMercator);
+                    //fsLakes.Reproject(projWorld.WebMercator);
                     MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
                     layLakes.LegendText = "lakes";
                     PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
@@ -204,9 +180,6 @@ namespace HydroDesktop.Main
                 }
             }
             catch { }
-
-            //this is now done by MEF...
-            //Project.ActivatePlugins(applicationManager1, _corePlugins);
 
             SetMapExtent(mainMap);
             
