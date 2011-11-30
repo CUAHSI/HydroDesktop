@@ -590,4 +590,17 @@ Public Class cTimeSeriesPlot
             zgTimeSeries.IsShowPointValues = value
         End Set
     End Property
+
+    Public Sub ZoomIn() Implements IChart.ZoomIn
+        zgTimeSeries.ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut() Implements IChart.ZoomOut
+        zgTimeSeries.ZoomOut(zgTimeSeries.GraphPane)
+    End Sub
+
+    Public Sub ZoomOutAll() Implements IChart.ZoomOutAll
+        zgTimeSeries.ZoomOutAll(zgTimeSeries.GraphPane)
+    End Sub
+
 End Class

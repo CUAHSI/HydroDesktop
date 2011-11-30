@@ -23,7 +23,7 @@ Partial Class cTimeSeriesPlot
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
 		Me.components = New System.ComponentModel.Container
-		Me.zgTimeSeries = New ZedGraph.ZedGraphControl
+        Me.zgTimeSeries = New Controls.ZedGraphControlEx
 		Me.SuspendLayout()
 		'
 		'zgTimeSeries
@@ -52,6 +52,6 @@ Partial Class cTimeSeriesPlot
 		Me.ResumeLayout(False)
 
 	End Sub
-    Friend WithEvents zgTimeSeries As ZedGraph.ZedGraphControl
+    Friend WithEvents zgTimeSeries As Controls.ZedGraphControlEx
 
 End Class

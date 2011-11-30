@@ -75,6 +75,9 @@ Namespace GraphView
         Private Const rpChart As String = "Chart"
         Private rbShowPointValues As SimpleActionItem 'Show Point Values Toggle button
         Private _showPointValues As Boolean
+        Private rbZoomIn As SimpleActionItem 'Zoom In Toggle button
+        Private rbZoomOut As SimpleActionItem 'Zoom Out Toggle button
+        Private rbUndoZoom As SimpleActionItem 'Undo zoom Toggle button
 
 #End Region
 
@@ -325,11 +328,30 @@ Namespace GraphView
             App.HeaderControl.Add(rbDisplayFullDateRange)
 
             'Chart
+            'Show Point Values
             rbShowPointValues = New SimpleActionItem("Show Point Values", AddressOf rbShowPointValues_Click)
             rbShowPointValues.RootKey = kGraph
             rbShowPointValues.GroupCaption = rpChart
             App.HeaderControl.Add(rbShowPointValues)
             rbShowPointValues_Click()
+
+            'Zoom In
+            rbZoomIn = New SimpleActionItem("Zoom In", AddressOf rbZoomIn_Click)
+            rbZoomIn.RootKey = kGraph
+            rbZoomIn.GroupCaption = rpChart
+            App.HeaderControl.Add(rbZoomIn)
+
+            ' Zoom Out
+            rbZoomOut = New SimpleActionItem("Zoom Out", AddressOf rbZoomOut_Click)
+            rbZoomOut.RootKey = kGraph
+            rbZoomOut.GroupCaption = rpChart
+            App.HeaderControl.Add(rbZoomOut)
+
+            ' Undo Zoom
+            rbUndoZoom = New SimpleActionItem("Undo Zoom", AddressOf rbUndoZoom_Click)
+            rbUndoZoom.RootKey = kGraph
+            rbUndoZoom.GroupCaption = rpChart
+            App.HeaderControl.Add(rbUndoZoom)
 
             'The button should initially be checked
             rbTSA_Click()
@@ -515,6 +537,18 @@ Namespace GraphView
                 rbShowPointValues.Caption = "Show Point Values - Off"
             End If
             _showPointValues = Not _showPointValues
+        End Sub
+
+        Private Sub rbUndoZoom_Click()
+            _mainControl.UndoZoom()
+        End Sub
+
+        Private Sub rbZoomIn_Click()
+            _mainControl.ZoomIn()
+        End Sub
+
+        Private Sub rbZoomOut_Click()
+            _mainControl.ZoomOut()
         End Sub
 
 

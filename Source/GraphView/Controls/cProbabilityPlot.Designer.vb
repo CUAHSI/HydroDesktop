@@ -23,7 +23,7 @@ Partial Class cProbabilityPlot
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Me.zgProbabilityPlot = New ZedGraph.ZedGraphControl
+        Me.zgProbabilityPlot = New Controls.ZedGraphControlEx
         Me.SuspendLayout()
         '
         'zgProbabilityPlot
@@ -50,6 +50,6 @@ Partial Class cProbabilityPlot
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents zgProbabilityPlot As ZedGraph.ZedGraphControl
+    Friend WithEvents zgProbabilityPlot As Controls.ZedGraphControlEx
 
 End Class

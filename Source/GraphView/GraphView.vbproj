@@ -141,6 +141,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\IChart.vb" />
+    <Compile Include="Controls\ZedGraphControlEx.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Pretty.vb" />
     <Compile Include="BoxPlot.vb" />
     <Compile Include="Controls\cBoxWhiskerPlot.Designer.vb">

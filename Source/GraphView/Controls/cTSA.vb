@@ -380,6 +380,27 @@ Public Class cTSA
         DirectCast(pBoxWhisker, IChart).ShowPointValues = showPointValues
     End Sub
 
+    Public Sub UndoZoom()
+        DirectCast(pTimeSeries, IChart).ZoomOutAll()
+        DirectCast(pProbability, IChart).ZoomOutAll()
+        DirectCast(pHistogram, IChart).ZoomOutAll()
+        DirectCast(pBoxWhisker, IChart).ZoomOutAll()
+    End Sub
+
+    Public Sub ZoomIn()
+        DirectCast(pTimeSeries, IChart).ZoomIn()
+        DirectCast(pProbability, IChart).ZoomIn()
+        DirectCast(pHistogram, IChart).ZoomIn()
+        DirectCast(pBoxWhisker, IChart).ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut()
+        DirectCast(pTimeSeries, IChart).ZoomOut()
+        DirectCast(pProbability, IChart).ZoomOut()
+        DirectCast(pHistogram, IChart).ZoomOut()
+        DirectCast(pBoxWhisker, IChart).ZoomOut()
+    End Sub
+
 
     Private Sub ColorChooser(ByVal options As PlotOptions)
         options.GetPointColor = pointcolorlist(colorcount Mod 10)
