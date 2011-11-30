@@ -26,15 +26,18 @@ namespace HydroDesktop.Main
         private bool _newProjectCreated = false;
 
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
+
+        private ProjectManager myProjectManager;
         
         #endregion
 
         #region Constructor
 
-        public WelcomeScreen(AppManager app)
+        public WelcomeScreen(ProjectManager projManager)
         {
             InitializeComponent();
 
+            myProjectManager = projManager;
 
             string appName = Assembly.GetAssembly(typeof(WelcomeScreen)).Location;
             AssemblyName assemblyName = AssemblyName.GetAssemblyName(appName);
@@ -42,7 +45,7 @@ namespace HydroDesktop.Main
 
             lblProductVersion.Text = "CUAHSI HydroDesktop " + version;
             
-            _app = app;
+            _app = projManager.App;
             _recentProjectFiles = new List<ProjectFileInfo>();
             bsRecentFiles = new BindingSource(RecentProjectFiles, null);
             lstRecentProjects.DataSource = bsRecentFiles;
@@ -96,7 +99,7 @@ namespace HydroDesktop.Main
                     this.Cursor = Cursors.WaitCursor;
                     
                     panelStatus.Visible = true;
-                    Project.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
+                    myProjectManager.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
 
                     lblProgress.Text = "Loading Plugins...";
 
@@ -117,7 +120,7 @@ namespace HydroDesktop.Main
         private void CreateEmptyProject()
         {
             panelStatus.Visible = true;
-            Project.CreateEmptyProject(_app.Map);
+            myProjectManager.CreateEmptyProject();
             
 
             SetDefaultMapExtents();
@@ -209,8 +212,8 @@ namespace HydroDesktop.Main
         {
             lblProgress.Text = "Opening Project " + Path.GetFileNameWithoutExtension(projectFileName).ToString() + "...";
             this.Cursor = Cursors.WaitCursor;
-            //Project.ActivatePlugins(_app, _corePlugins);
-            Project.OpenProject(projectFileName, _app);
+
+            myProjectManager.OpenProject(projectFileName);
 
             this.Cursor = Cursors.Default;
 

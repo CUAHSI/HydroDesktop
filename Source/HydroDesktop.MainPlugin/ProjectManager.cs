@@ -12,14 +12,28 @@ using DotSpatial.Symbology;
 
 namespace HydroDesktop.Main
 {
-    public class Project
+    public class ProjectManager
     {
+        /// <summary>
+        /// The main app manager
+        /// </summary>
+        public AppManager App { get; private set; }
+        
+        /// <summary>
+        /// Creates a new instance of the project manager
+        /// </summary>
+        /// <param name="mainApp"></param>
+        public ProjectManager(AppManager mainApp)
+        {
+            App = mainApp;
+        }
+        
         public static ProjectionInfo DefaultProjection { get { return KnownCoordinateSystems.Projected.World.WebMercator; } }
 
         //sets the map extent to continental U.S
-        private static void SetDefaultMapExtents(Map mainMap)
+        private void SetDefaultMapExtents()
         {
-            mainMap.ViewExtents = DefaultMapExtents().ToExtent();
+            App.Map.ViewExtents = DefaultMapExtents().ToExtent();
         }
 
         public static Envelope DefaultMapExtents()
@@ -106,18 +120,62 @@ namespace HydroDesktop.Main
         /// <summary>
         /// Opens a project and updates the maps
         /// </summary>
-        public static void OpenProject(string projectFileName, AppManager applicationManager)
+        public void OpenProject(string projectFileName)
         {
-            applicationManager.ProgressHandler.Progress("Opening Project", 0, "Opening Project");
-            applicationManager.SerializationManager.OpenProject(projectFileName);
-            applicationManager.ProgressHandler.Progress("Project opened", 0, "");
+            App.ProgressHandler.Progress("Opening Project", 0, "Opening Project");
+            App.SerializationManager.OpenProject(projectFileName);
+            App.ProgressHandler.Progress("Project opened", 0, "");
+        }
+
+        public void OpeningProject()
+        {
+            //todo: change the configuration settings paths
+            string projectFile = App.SerializationManager.CurrentProjectFile;
+            Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
+
+            //also need to set-up the DB
+            string dbFileName = Path.ChangeExtension(projectFile, "sqlite");
+            string cacheDbFileName = dbFileName.Replace(".sqlite", "_cache.sqlite");
+
+            bool cacheDbIsValid = ValidateDatabase(dbFileName, DatabaseType.DefaulDatabase);
+            if (!ValidateDatabase(dbFileName, DatabaseType.DefaulDatabase))
+            {
+                SQLiteHelper.CreateSQLiteDatabase(dbFileName);
+            }
+            if (!ValidateDatabase(cacheDbFileName, DatabaseType.MetadataCacheDatabase))
+            {
+                SQLiteHelper.CreateMetadataCacheDb(cacheDbFileName);
+            }
+            Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(dbFileName);
+            Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(cacheDbFileName);
+        
+            
+        }
+
+        //checks if the db exists. Also checks the db schema
+        private bool ValidateDatabase(string dbFileName, DatabaseType dbType)
+        {
+            //check if db exists
+            if (SQLiteHelper.DatabaseExists(dbFileName))
+            {
+                try
+                {
+                    SQLiteHelper.CheckDatabaseSchema(dbFileName, dbType);
+                    return true;
+                }
+                catch (InvalidDatabaseSchemaException)
+                {
+                    return false;
+                }
+            }
+            return false;
         }
 
         /// <summary>
         /// Creates a new project, using a predefined project template to load the base maps.
         /// </summary>
         /// <param name="templateName">The project template name</param>
-        public static void CreateNewProject(string templateName, AppManager appManager, Map map)
+        public void CreateNewProject(string templateName, AppManager appManager, Map map)
         {
             switch (templateName)
             {
@@ -136,60 +194,80 @@ namespace HydroDesktop.Main
         /// <summary>
         /// Creates a new 'empty' project
         /// </summary>
-        public static void CreateEmptyProject(IMap map)
+        public void CreateEmptyProject()
         {
-            map.Layers.Clear();
+            App.Map.Layers.Clear();
         }
 
         //saves the current HydroDesktop project file to the user specified location
-        public static void SaveProjectAs(string projectFileName, AppManager appManager)
+        public void SavingProject()
         {
+            string projectFileName = App.SerializationManager.CurrentProjectFile;
+            
             Settings.Instance.AddFileToRecentFiles(projectFileName);
 
             string newProjectDirectory = Path.GetDirectoryName(projectFileName);
 
-            appManager.ProgressHandler.Progress("Saving Project " + projectFileName, 0, "");
+            App.ProgressHandler.Progress("Saving Project " + projectFileName, 0, "");
             Application.DoEvents();
 
-            //also create a copy of the .sqlite database
-            string newDbPath = Path.ChangeExtension(projectFileName, ".sqlite");
-
-            //current database path
-            string currentDbPath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
-            //copy db to new path. If no db exists, create new db in the new location
-            if (SQLiteHelper.DatabaseExists(currentDbPath))
+            //are we saving or are we doing 'save as' ?
+            if (projectFileName != Settings.Instance.CurrentProjectFile)
             {
-                File.Copy(currentDbPath, newDbPath, true);
+
+                //also create a copy of the .sqlite database
+                string newDbPath = Path.ChangeExtension(projectFileName, ".sqlite");
+
+                //current database path
+                string currentDbPath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
+                //copy db to new path. If no db exists, create new db in the new location
+                if (SQLiteHelper.DatabaseExists(currentDbPath))
+                {
+                    File.Copy(currentDbPath, newDbPath, true);
+                }
+                else
+                {
+                    CreateNewDatabase(newDbPath);
+                }
+                //create a copy of the metadata cache (_cache.sqlite) database
+                string newCachePath = projectFileName.Replace(".dspx", "_cache.sqlite");
+
+                //current database path
+                string currentCachePath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.MetadataCacheConnectionString);
+                //copy db to new path. If no db exists, create new db in the new location
+                if (SQLiteHelper.DatabaseExists(currentCachePath))
+                {
+                    File.Copy(currentCachePath, newCachePath, true);
+                }
+                else
+                {
+                    SQLiteHelper.CreateMetadataCacheDb(newCachePath);
+                }
+
+                //TODO: need to trigger a DatabaseChanged event (Settings.Instance.DatabaseChanged..)
+
+                //update application level database configuration settings
+                Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(newDbPath);
+                Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newCachePath);
+                Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
+        
+                //Also save any data sites layers 
+                IMapGroup dataSitesGroup = FindGroupByName("Data Sites");
+                if (dataSitesGroup == null) return;
+                if (dataSitesGroup.Layers.Count == null) return;
+
+                string projDir = App.SerializationManager.CurrentProjectDirectory;
+                foreach (IMapLayer layer in dataSitesGroup.Layers)
+                {
+                    IFeatureLayer fl = layer as IFeatureLayer;
+                    if (fl != null)
+                    {
+                        fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)),true);
+                    }
+                }
             }
-            else
-            {
-                Project.CreateNewDatabase(newDbPath);
-            }
-            //create a copy of the metadata cache (_cache.sqlite) database
-            string newCachePath = projectFileName.Replace(".dspx", "_cache.sqlite");
+            App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
 
-            //current database path
-            string currentCachePath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.MetadataCacheConnectionString);
-            //copy db to new path. If no db exists, create new db in the new location
-            if (SQLiteHelper.DatabaseExists(currentCachePath))
-            {
-                File.Copy(currentCachePath, newCachePath, true);
-            }
-            else
-            {
-                SQLiteHelper.CreateMetadataCacheDb(newCachePath);
-            }
-
-
-            //save the current project to the new db path
-            appManager.SerializationManager.SaveProject(projectFileName);
-
-            //TODO: need to trigger a DatabaseChanged event (Settings.Instance.DatabaseChanged..)
-
-            //update application level database configuration settings
-            Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(newDbPath);
-            Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newCachePath);
-            Settings.Instance.CurrentProjectFile = appManager.SerializationManager.CurrentProjectFile;
         }
 
         /// <summary>
@@ -198,9 +276,9 @@ namespace HydroDesktop.Main
         /// <param name="map">the map to search</param>
         /// <param name="groupLegendText">the legend text of the map  group</param>
         /// <returns></returns>
-        private static IMapGroup FindGroupByName(Map map, string groupLegendText)
+        private IMapGroup FindGroupByName(string groupLegendText)
         {
-            foreach (LegendItem item in map.Layers)
+            foreach (LegendItem item in App.Map.Layers)
             {
                 if (item is IMapGroup && item.LegendText.ToLower() == groupLegendText.ToLower())
                 {
