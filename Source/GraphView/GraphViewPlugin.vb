@@ -29,8 +29,8 @@ Namespace GraphView
 
         Private tabGraph As RootItem
 
-        Private rpPlots As String = "Plots"
-        Private kTogglePlots As String = "kHydroPlotsGroup"
+        Private Const rpPlots As String = "Plots"
+        Private Const kTogglePlots As String = "kHydroPlotsGroup"
 
         Private rbTSA As SimpleActionItem 'Time Series
         Private rbProbability As SimpleActionItem 'Probability
@@ -38,7 +38,7 @@ Namespace GraphView
         Private rbBoxWhisker As SimpleActionItem 'Box/Whisker
         Private rbSummary As SimpleActionItem 'Summary
 
-        Private rpPlotOption As String = "TSA & Probability Plot Options"
+        Private Const rpPlotOption As String = "TSA & Probability Plot Options"
         Const PlotOptionsMenuKey = "kHydroPlotOptions"
         Private rbPlotType As MenuContainerItem 'Plot Type
         Private rbLine As SimpleActionItem 'Line
@@ -47,7 +47,7 @@ Namespace GraphView
         Private rbColorSetting As SimpleActionItem 'Color Setting
         Private rbShowLegend As SimpleActionItem 'Close Legend
 
-        Private rpHistogramOption As String = "Histogram Plot Options"
+        Private Const rpHistogramOption As String = "Histogram Plot Options"
         Const kHistogramType = "kHistogramType"
         Private rbHistogramType As MenuContainerItem 'Histogram Type
         Private rbhtCount As SimpleActionItem 'Count
@@ -59,7 +59,7 @@ Namespace GraphView
         Private rbhaSturges As SimpleActionItem 'Sturges'
         Private rbhaFreedman As SimpleActionItem 'Freedman-Diaconis’
 
-        Private rpBoxWhiskerOption As String = "Box Whisker Plot Option"
+        Private Const rpBoxWhiskerOption As String = "Box Whisker Plot Option"
         Const kBoxWhiskerType = "kBoxWhiskerType"
         Private rbBoxWhiskerType As MenuContainerItem 'Box Whisker Type
         Private rbbtMonthly As SimpleActionItem 'Monthly
@@ -67,10 +67,15 @@ Namespace GraphView
         Private rbbtYearly As SimpleActionItem 'Yearly
         Private rbbtOverall As SimpleActionItem 'Overall
 
-        Private rpOtherOptions As String = "Date & Time"
+        Private Const rpOtherOptions As String = "Date & Time"
         Private rbDateTimeSetting As SimpleActionItem 'Date Setting
         Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
         Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
+
+        Private Const rpChart As String = "Chart"
+        Private rbShowPointValues As SimpleActionItem 'Show Point Values Toggle button
+        Private _showPointValues As Boolean
+
 #End Region
 
 
@@ -319,6 +324,13 @@ Namespace GraphView
             rbDisplayFullDateRange.GroupCaption = rpOtherOptions
             App.HeaderControl.Add(rbDisplayFullDateRange)
 
+            'Chart
+            rbShowPointValues = New SimpleActionItem("Show Point Values", AddressOf rbShowPointValues_Click)
+            rbShowPointValues.RootKey = kGraph
+            rbShowPointValues.GroupCaption = rpChart
+            App.HeaderControl.Add(rbShowPointValues)
+            rbShowPointValues_Click()
+
             'The button should initially be checked
             rbTSA_Click()
 
@@ -492,6 +504,17 @@ Namespace GraphView
             'Else
             '    _mainControl.IsDisplayFullDate = False
             'End If
+        End Sub
+
+        'Show Point Values 
+        Private Sub rbShowPointValues_Click()
+            _mainControl.ShowPointValues(_showPointValues)
+            If _showPointValues Then
+                rbShowPointValues.Caption = "Show Point Values - On"
+            Else
+                rbShowPointValues.Caption = "Show Point Values - Off"
+            End If
+            _showPointValues = Not _showPointValues
         End Sub
 
 

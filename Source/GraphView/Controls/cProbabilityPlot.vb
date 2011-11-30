@@ -1,10 +1,13 @@
-﻿Imports ZedGraph
+﻿Imports Controls
+Imports ZedGraph
 Imports System.Drawing
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 
 
 Public Class cProbabilityPlot
+    Implements IChart
+
     Public Shared m_Data As Data.DataTable
     Public Shared m_Site As String
     Public Shared m_Var As String
@@ -608,7 +611,7 @@ Public Class cProbabilityPlot
     End Sub
     Protected Sub ExportToTextFile()
         'Check selected series
-        Dim checkedSeries As Integer = SeriesSelector.checkedIDList.Count()
+        Dim checkedSeries As Integer = SeriesSelector.CheckedIDList.Count()
 
         'Check if there is any series to export
         If (checkedSeries <= 0) Then
@@ -658,7 +661,7 @@ Public Class cProbabilityPlot
                 'Select datavalue from database
                 Dim dataValue As DataTable = New DataTable
                 Dim sql As String
-                sql = "SELECT DataValue FROM DataValues WHERE SeriesID = " & SeriesSelector.checkedIDList(count - 1)
+                sql = "SELECT DataValue FROM DataValues WHERE SeriesID = " & SeriesSelector.CheckedIDList(count - 1)
                 dataValue = dbOperation.LoadTable("value", sql)
 
                 Dim validRow() As DataRow
@@ -920,4 +923,14 @@ Public Class cProbabilityPlot
         End With
 
     End Sub
+
+    Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
+        Get
+            Return zgProbabilityPlot.IsShowPointValues
+        End Get
+        Set(ByVal value As Boolean)
+            zgProbabilityPlot.IsShowPointValues = value
+        End Set
+    End Property
+
 End Class
