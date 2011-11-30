@@ -25,13 +25,19 @@
         [Import("Shell")]
         public ContainerControl Shell { get; set; }
 
+        private ProjectManager myProjectManager;
+
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
-            //App.ExtensionsActivated += new EventHandler(App_Loaded);
+            myProjectManager = new ProjectManager(App);
 
             App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
-
+            App.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
+            App.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
+            App.SerializationManager.NewProjectCreated += new EventHandler<SerializingEventArgs>(SerializationManager_NewProjectCreated);
+            App.SerializationManager.IsDirtyChanged += new EventHandler(SerializationManager_IsDirtyChanged);
+            
             base.Activate();
         }
 
@@ -67,6 +73,47 @@
 
         #endregion
 
+        //Saving a project (save or save as..)
+        void SerializationManager_Serializing(object sender, SerializingEventArgs e)
+        {
+            myProjectManager.SavingProject();
+
+            Shell.Text = "CUAHSI HydroDesktop - " + Path.GetFileName(App.SerializationManager.CurrentProjectFile);
+            
+            //string projFile = App.SerializationManager.CurrentProjectFile;
+            //App.ProgressHandler.Progress("Saving Project " + projFile, 0, "Saving Project " + projFile);
+            
+            
+            //throw new NotImplementedException();
+        }
+
+        //show information about current project state
+        void SerializationManager_IsDirtyChanged(object sender, EventArgs e)
+        {
+            if (App.SerializationManager.IsDirty && !(Shell.Text.EndsWith(" *")))
+            {
+                Shell.Text += " *";
+            }
+            else if (!App.SerializationManager.IsDirty && Shell.Text.EndsWith(" *"))
+            {
+                Shell.Text = Shell.Text.Substring(0, Shell.Text.LastIndexOf("*"));
+            }
+        }
+
+        void SerializationManager_NewProjectCreated(object sender, SerializingEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
+        {
+            myProjectManager.OpeningProject();
+            Shell.Text = "CUAHSI HydroDesktop - " + Path.GetFileName(App.SerializationManager.CurrentProjectFile);
+            //setup new db information
+            SeriesControl.SetupDatabase();
+        }
+
+
         ////runs when all extensions have been loaded
         //void App_Loaded(object sender, EventArgs e)
         //{
@@ -84,7 +131,7 @@
         /// </summary>
         private void ShowWelcomeScreen()
         {
-            var welcomeScreen = new WelcomeScreen(App);
+            var welcomeScreen = new WelcomeScreen(myProjectManager);
             welcomeScreen.StartPosition = FormStartPosition.CenterScreen;
             welcomeScreen.TopMost = true;
 
