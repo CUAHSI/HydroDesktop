@@ -23,7 +23,7 @@ Partial Class cHistogramPlot
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
 		Me.components = New System.ComponentModel.Container
-		Me.zgHistogramPlot = New ZedGraph.ZedGraphControl
+        Me.zgHistogramPlot = New Controls.ZedGraphControlEx
 		Me.SuspendLayout()
 		'
 		'zgHistogramPlot
@@ -52,6 +52,6 @@ Partial Class cHistogramPlot
 		Me.ResumeLayout(False)
 
 	End Sub
-    Friend WithEvents zgHistogramPlot As ZedGraph.ZedGraphControl
+    Friend WithEvents zgHistogramPlot As Controls.ZedGraphControlEx
 
 End Class

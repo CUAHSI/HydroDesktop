@@ -1137,4 +1137,16 @@ Public Class cBoxWhiskerPlot
             zgBoxWhiskerPlot.IsShowPointValues = value
         End Set
     End Property
+
+    Public Sub ZoomOutAll() Implements IChart.ZoomOutAll
+        zgBoxWhiskerPlot.ZoomOutAll(zgBoxWhiskerPlot.GraphPane)
+    End Sub
+
+    Public Sub ZoomIn() Implements IChart.ZoomIn
+        zgBoxWhiskerPlot.ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut() Implements IChart.ZoomOut
+        zgBoxWhiskerPlot.ZoomOut(zgBoxWhiskerPlot.GraphPane)
+    End Sub
 End Class

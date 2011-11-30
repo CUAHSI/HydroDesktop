@@ -1,4 +1,5 @@
 ﻿Imports Controls
+Imports Microsoft.VisualBasic.Devices
 Imports ZedGraph
 Imports System.Drawing
 Imports HydroDesktop.Database
@@ -932,5 +933,17 @@ Public Class cProbabilityPlot
             zgProbabilityPlot.IsShowPointValues = value
         End Set
     End Property
+
+    Public Sub ZoomIn() Implements IChart.ZoomIn
+        zgProbabilityPlot.ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut() Implements IChart.ZoomOut
+        zgProbabilityPlot.ZoomOut(zgProbabilityPlot.GraphPane)
+    End Sub
+
+    Public Sub ZoomOutAll() Implements IChart.ZoomOutAll
+        zgProbabilityPlot.ZoomOutAll(zgProbabilityPlot.GraphPane)
+    End Sub
 
 End Class

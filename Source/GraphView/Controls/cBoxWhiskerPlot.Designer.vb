@@ -23,7 +23,7 @@ Partial Class cBoxWhiskerPlot
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Me.zgBoxWhiskerPlot = New ZedGraph.ZedGraphControl
+        Me.zgBoxWhiskerPlot = New Controls.ZedGraphControlEx
         Me.SuspendLayout()
         '
         'zgBoxWhiskerPlot
@@ -51,6 +51,6 @@ Partial Class cBoxWhiskerPlot
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents zgBoxWhiskerPlot As ZedGraph.ZedGraphControl
+    Friend WithEvents zgBoxWhiskerPlot As Controls.ZedGraphControlEx
 
 End Class

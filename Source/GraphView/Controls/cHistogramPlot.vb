@@ -705,4 +705,16 @@ Public Class cHistogramPlot
             zgHistogramPlot.IsShowPointValues = value
         End Set
     End Property
+
+    Public Sub ZoomIn() Implements IChart.ZoomIn
+        zgHistogramPlot.ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut() Implements IChart.ZoomOut
+        zgHistogramPlot.ZoomOut(zgHistogramPlot.GraphPane)
+    End Sub
+
+    Public Sub ZoomOutAll() Implements IChart.ZoomOutAll
+        zgHistogramPlot.ZoomOutAll(zgHistogramPlot.GraphPane)
+    End Sub
 End Class
