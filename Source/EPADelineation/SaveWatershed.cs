@@ -234,9 +234,6 @@ namespace EPADelineation
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
                 _mapArgs.Map.Cursor = Cursors.Default;
             }
         }
