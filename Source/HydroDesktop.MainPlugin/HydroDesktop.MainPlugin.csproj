@@ -129,7 +129,7 @@
   <ItemGroup>
     <Compile Include="NorthAmericaProjectTemplate.cs" />
     <Compile Include="PredefinedTemplate.cs" />
-    <Compile Include="Project.cs" />
+    <Compile Include="ProjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HydroDesktopMainPlugin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

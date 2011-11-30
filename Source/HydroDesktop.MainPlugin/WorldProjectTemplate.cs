@@ -24,8 +24,6 @@ namespace HydroDesktop.Main
 
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
 
-            //SetDefaultMapExtents(mainMap);
-
             MapGroup baseGroup = new MapGroup(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler);
             baseGroup.LegendText = "Base Map Data";
             baseGroup.ParentMapFrame = mainMap.MapFrame;
@@ -39,7 +37,6 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName))
                 {
                     IFeatureSet fsCountries = FeatureSet.OpenFile(fileName);
-                    fsCountries.Reproject(mainMap.Projection);
                     MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
                     layCountries.LegendText = "Countries";
                     PolygonScheme schmCountries = new PolygonScheme();
@@ -95,21 +92,13 @@ namespace HydroDesktop.Main
             }
             catch { }
 
-            //theme data group
-            //create a new empty 'themes' data group
-            MapGroup themeGroup = new MapGroup(mainMap.Layers,
-                mainMap.MapFrame, mainMap.ProgressHandler);
-            themeGroup.ParentMapFrame = mainMap.MapFrame;
-            themeGroup.MapFrame = mainMap.MapFrame;
-            themeGroup.LegendText = "Themes";
-
             double[] xy = new double[4];
             xy[0] = defaultMapExtent.MinX;
             xy[1] = defaultMapExtent.MinY;
             xy[2] = defaultMapExtent.MaxX;
             xy[3] = defaultMapExtent.MaxY;
             double[] z = new double[] { 0, 0 };
-            var wgs84 = ProjectionInfo.FromEsriString("GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]");
+            var wgs84 = ProjectionInfo.FromEsriString(Properties.Resources.wgs_84_esri_string);
             Reproject.ReprojectPoints(xy, z, wgs84, mainMap.Projection, 0, 2);
 
             mainMap.ViewExtents = new Extent(xy);
