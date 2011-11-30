@@ -3,6 +3,7 @@ Imports System.Data
 Imports DotSpatial.Controls
 Imports HydroDesktop.Interfaces
 Imports HydroDesktop.Configuration
+Imports Controls
 
 
 
@@ -371,6 +372,14 @@ Public Class cTSA
 
         ProgressBar.Visible = False
     End Sub
+
+    Public Sub ShowPointValues(ByVal showPointValues As Boolean)
+        DirectCast(pTimeSeries, IChart).ShowPointValues = showPointValues
+        DirectCast(pProbability, IChart).ShowPointValues = showPointValues
+        DirectCast(pHistogram, IChart).ShowPointValues = showPointValues
+        DirectCast(pBoxWhisker, IChart).ShowPointValues = showPointValues
+    End Sub
+
 
     Private Sub ColorChooser(ByVal options As PlotOptions)
         options.GetPointColor = pointcolorlist(colorcount Mod 10)

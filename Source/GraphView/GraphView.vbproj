@@ -140,6 +140,7 @@
     <Compile Include="Controls\fDateTimeSetting.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\IChart.vb" />
     <Compile Include="Pretty.vb" />
     <Compile Include="BoxPlot.vb" />
     <Compile Include="Controls\cBoxWhiskerPlot.Designer.vb">

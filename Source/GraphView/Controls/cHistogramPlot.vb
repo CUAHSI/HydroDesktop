@@ -1,12 +1,15 @@
-﻿Imports ZedGraph
+﻿Imports Controls
+Imports ZedGraph
 Imports System.Drawing
 
 Public Class cHistogramPlot
-	Public Shared m_Data As Data.DataTable
-	Public Shared m_Site As String
-	Public Shared m_Var As String
-	Public Shared m_Options As PlotOptions
-	Private Const m_MaxHistBins As Integer = 20	'holds the maximum number of Bins for a Histogram plot, 20 = selected due to spacing of values on the plot
+    Implements IChart
+
+    Public Shared m_Data As Data.DataTable
+    Public Shared m_Site As String
+    Public Shared m_Var As String
+    Public Shared m_Options As PlotOptions
+    Private Const m_MaxHistBins As Integer = 20 'holds the maximum number of Bins for a Histogram plot, 20 = selected due to spacing of values on the plot
     Private m_StdDev As Double = 0
     Private m_ID As Integer
 
@@ -61,17 +64,17 @@ Public Class cHistogramPlot
         End Try
     End Sub
 
-	Public Sub Replot(ByVal options As PlotOptions)
-		Try
-			m_Options = options
+    Public Sub Replot(ByVal options As PlotOptions)
+        Try
+            m_Options = options
             'Graph()
-		Catch ex As Exception
-			Throw New Exception("Error Occured in ZGHistogram.Replot" & vbCrLf & ex.Message)
-		End Try
-	End Sub
+        Catch ex As Exception
+            Throw New Exception("Error Occured in ZGHistogram.Replot" & vbCrLf & ex.Message)
+        End Try
+    End Sub
 
-	Public Sub Clear()
-		Try
+    Public Sub Clear()
+        Try
             'If Not (m_Data Is Nothing) Then
             'm_Data.Dispose()
             'm_Data = Nothing
@@ -101,7 +104,7 @@ Public Class cHistogramPlot
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGHistogram.Clear" & vbCrLf & ex.Message)
         End Try
-	End Sub
+    End Sub
 
     Protected Sub Graph(ByVal gPane As ZedGraph.GraphPane)
         Try
@@ -460,7 +463,7 @@ Public Class cHistogramPlot
 
         ElseIf pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Freedman Then
             'FD gives us the bin width, dX
-            
+
             pOptions.binWidth = 2 * (Statistics.UpperQuartile(m_Data) - Statistics.LowerQuartile(m_Data)) / (Statistics.Count(m_Data) ^ (1 / 3))
 
             pOptions.numBins = Math.Round((Statistics.Maximum(m_Data) - Statistics.Minimum(m_Data)) / pOptions.binWidth)
@@ -497,7 +500,7 @@ Public Class cHistogramPlot
                 xCenterList(j) = (.xMin + (j + 1) * dX + .xMin + j * dX) / 2.0#
                 lbin(j) = .xMin + j * dX
                 rbin(j) = .xMin + (j + 1) * dX
-               
+
             Next j
 
 
@@ -612,12 +615,12 @@ Public Class cHistogramPlot
     End Function
 
 
-	Public Sub New()
+    Public Sub New()
 
-		' This call is required by the Windows Form Designer.
-		InitializeComponent()
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
 
-		' Add any initialization after the InitializeComponent() call.
+        ' Add any initialization after the InitializeComponent() call.
         Dim gPane As GraphPane = zgHistogramPlot.MasterPane.PaneList(0)
         gPane.Border.IsVisible = False
         gPane.Legend.IsVisible = False
@@ -626,25 +629,25 @@ Public Class cHistogramPlot
         zgHistogramPlot.MasterPane.Border.IsVisible = False
 
 
-	End Sub
+    End Sub
 
-	Private Sub zgHistogramPlot_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As System.Drawing.Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgHistogramPlot.ContextMenuBuilder
-		' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
-		' Create a new menu item
-		Dim item As System.Windows.Forms.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-		' This is the user-defined Tag so you can find this menu item later if necessary
-		item.Name = "export_to_text_file"
-		item.Tag = "export_to_text_file"
-		' This is the text that will show up in the menu
-		item.Text = "Export to Text File"
-		' Add a handler that will respond when that menu item is selected
-		AddHandler item.Click, AddressOf ExportToTextFile
-		' Add the menu item to the menu
-		menuStrip.Items.Add(item)
-	End Sub
+    Private Sub zgHistogramPlot_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As System.Drawing.Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgHistogramPlot.ContextMenuBuilder
+        ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
+        ' Create a new menu item
+        Dim item As System.Windows.Forms.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        ' This is the user-defined Tag so you can find this menu item later if necessary
+        item.Name = "export_to_text_file"
+        item.Tag = "export_to_text_file"
+        ' This is the text that will show up in the menu
+        item.Text = "Export to Text File"
+        ' Add a handler that will respond when that menu item is selected
+        AddHandler item.Click, AddressOf ExportToTextFile
+        ' Add the menu item to the menu
+        menuStrip.Items.Add(item)
+    End Sub
 
-	Protected Sub ExportToTextFile()
-		System.Windows.Forms.MessageBox.Show("Not Yet Implemented")
+    Protected Sub ExportToTextFile()
+        System.Windows.Forms.MessageBox.Show("Not Yet Implemented")
     End Sub
     Public Sub Refreshing()
         zgHistogramPlot.AxisChange()
@@ -694,4 +697,12 @@ Public Class cHistogramPlot
         Return ID
     End Function
 
+    Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
+        Get
+            Return zgHistogramPlot.IsShowPointValues
+        End Get
+        Set(ByVal value As Boolean)
+            zgHistogramPlot.IsShowPointValues = value
+        End Set
+    End Property
 End Class
