@@ -27,6 +27,8 @@
 
         private ProjectManager myProjectManager;
 
+        private WelcomeScreen welcomeScreenForm;
+
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
@@ -131,21 +133,25 @@
             App.DockManager.SelectPanel("kMap");
             App.DockManager.SelectPanel("kLegend");
             
-            var welcomeScreen = new WelcomeScreen(myProjectManager);
-            welcomeScreen.StartPosition = FormStartPosition.CenterScreen;
-            welcomeScreen.TopMost = true;
-            welcomeScreen.FormClosing += new FormClosingEventHandler(welcomeScreen_FormClosing);
+            welcomeScreenForm = new WelcomeScreen(myProjectManager);
+            welcomeScreenForm.StartPosition = FormStartPosition.CenterScreen;
+            welcomeScreenForm.TopMost = true;
+            welcomeScreenForm.FormClosing += new FormClosingEventHandler(welcomeScreen_FormClosing);
 
             //int x = this.Location.X + this.Width / 2 - _welcomeScreen.Width / 2;
             //int y = this.Location.Y + this.Height / 2 - _welcomeScreen.Height / 2;
             //_welcomeScreen.Location = new System.Drawing.Point(x, y);
 
-            welcomeScreen.Show();
+            welcomeScreenForm.Show();
         }
 
         void welcomeScreen_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SetupDatabases();
+            //if creating new project - setup the databases
+            if (welcomeScreenForm.NewProjectCreated)
+            {
+                SetupDatabases();
+            }
         }
 
         /// <summary>
