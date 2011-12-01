@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MultiFacetedHISService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" />
+      <xsd:import schemaLocation="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="MultiFacetedHISSvc_GetAllTypedOntologyElements_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllTypedOntologyElements" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetAllTypedOntologyElements_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllTypedOntologyElementsResponse" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetTypedOntologyElementsGivenConstraints_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTypedOntologyElementsGivenConstraints" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetTypedOntologyElementsGivenConstraints_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTypedOntologyElementsGivenConstraintsResponse" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_ConductFacetedSearch_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConductFacetedSearch" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_ConductFacetedSearch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConductFacetedSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetDensityOfOntologyRoot_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDensityOfOntologyRoot" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetDensityOfOntologyRoot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDensityOfOntologyRootResponse" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetSQLOfNextQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSQLOfNextQuery" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetSQLOfNextQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSQLOfNextQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetSQLOfSearchQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSQLOfSearchQuery" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetSQLOfSearchQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSQLOfSearchQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetSQLOfNextDensityQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSQLOfNextDensityQuery" />
+  </wsdl:message>
+  <wsdl:message name="MultiFacetedHISSvc_GetSQLOfNextDensityQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSQLOfNextDensityQueryResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MultiFacetedHISSvc">
+    <wsdl:operation name="GetAllTypedOntologyElements">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElements" message="tns:MultiFacetedHISSvc_GetAllTypedOntologyElements_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElementsResponse" message="tns:MultiFacetedHISSvc_GetAllTypedOntologyElements_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTypedOntologyElementsGivenConstraints">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraints" message="tns:MultiFacetedHISSvc_GetTypedOntologyElementsGivenConstraints_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraintsResponse" message="tns:MultiFacetedHISSvc_GetTypedOntologyElementsGivenConstraints_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConductFacetedSearch">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearch" message="tns:MultiFacetedHISSvc_ConductFacetedSearch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearchResponse" message="tns:MultiFacetedHISSvc_ConductFacetedSearch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDensityOfOntologyRoot">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRoot" message="tns:MultiFacetedHISSvc_GetDensityOfOntologyRoot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRootResponse" message="tns:MultiFacetedHISSvc_GetDensityOfOntologyRoot_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSQLOfNextQuery">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextQuery" message="tns:MultiFacetedHISSvc_GetSQLOfNextQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextQueryResponse" message="tns:MultiFacetedHISSvc_GetSQLOfNextQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSQLOfSearchQuery">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfSearchQuery" message="tns:MultiFacetedHISSvc_GetSQLOfSearchQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfSearchQueryResponse" message="tns:MultiFacetedHISSvc_GetSQLOfSearchQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSQLOfNextDensityQuery">
+      <wsdl:input wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextDensityQuery" message="tns:MultiFacetedHISSvc_GetSQLOfNextDensityQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextDensityQueryResponse" message="tns:MultiFacetedHISSvc_GetSQLOfNextDensityQuery_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_MultiFacetedHISSvc" type="tns:MultiFacetedHISSvc">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAllTypedOntologyElements">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElements" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTypedOntologyElementsGivenConstraints">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraints" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConductFacetedSearch">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDensityOfOntologyRoot">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRoot" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSQLOfNextQuery">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSQLOfSearchQuery">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfSearchQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSQLOfNextDensityQuery">
+      <soap:operation soapAction="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextDensityQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MultiFacetedHISService">
+    <wsdl:port name="BasicHttpBinding_MultiFacetedHISSvc" binding="tns:BasicHttpBinding_MultiFacetedHISSvc">
+      <soap:address location="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
