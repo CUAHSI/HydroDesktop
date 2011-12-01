@@ -1,4 +1,5 @@
 ﻿Imports Controls
+Imports System.Globalization
 Imports ZedGraph
 Imports System.Drawing
 
@@ -508,7 +509,7 @@ Public Class cHistogramPlot
             ' we need to put each datapoint into its respective bin
             For i = 0 To .numBins
                 'query the data tables for each bin
-                Dim str As String = "DataValue >= " & lbin(i).ToString & " and DataValue < " & rbin(i).ToString
+                Dim str As String = "DataValue >= " & lbin(i).ToString(CultureInfo.InvariantCulture) & " and DataValue < " & rbin(i).ToString(CultureInfo.InvariantCulture)
                 Dim validRows As DataRow()
 
                 validRows = HistTable.Select(str, "")
