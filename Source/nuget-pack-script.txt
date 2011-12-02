@@ -1,0 +1,12 @@
+﻿if exist *.nupkg  del *.nupkg
+
+:: Publish extensions
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj -Version 1.3.1 -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj -Version 1.3.1 -Properties Configuration=Release -NoPackageAnalysis
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Help\HydroDesktop.Help.csproj -Version 1.3.1 -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.Data\HydroDesktop.Data.csproj -Version 1.3.1 -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj -Version 1.3.1 -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\HydroDesktop.SeriesView\HydroDesktop.SeriesView.csproj -Version 1.3.1 -Properties Configuration=Release
+SupportFiles\Nuget\nuget.exe pack Source\EPADelineation\EPADelineation.csproj -Version 1.3.1 -Properties Configuration=Release
+forfiles /m HydroDesktop.*.nupkg /c "cmd /c  SupportFiles\Nuget\nuget.exe  push @FILE 546086eb-759c-4006-8209-787d4a4f448d -Source http://www.myget.org/F/hydrodesktop/"
+SupportFiles\Nuget\nuget.exe push EPADelineation.1.3.1.nupkg 546086eb-759c-4006-8209-787d4a4f448d -Source http://www.myget.org/F/hydrodesktop/"

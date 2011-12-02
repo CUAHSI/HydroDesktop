@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MultiFacetedHIS" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="ArrayOfOntologyElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OntologyElement" nillable="true" type="tns:OntologyElement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOntologyElement" nillable="true" type="tns:ArrayOfOntologyElement" />
+  <xs:complexType name="OntologyElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsLeaf" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsRoot" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsSearchable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Layer" type="xs:int" />
+      <xs:element minOccurs="0" name="Querystructuretbl" type="xs:int" />
+      <xs:element minOccurs="0" name="Synonym" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cConceptID" type="xs:int" />
+      <xs:element minOccurs="0" name="cConceptName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cParentID" type="xs:int" />
+      <xs:element minOccurs="0" name="itsJoinProperty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="latitude" type="xs:double" />
+      <xs:element minOccurs="0" name="longitude" type="xs:double" />
+      <xs:element minOccurs="0" name="myJoinProperty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="mySearchProperty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="seriesCatalogDistance" type="xs:int" />
+      <xs:element minOccurs="0" name="tblJoinsTo" type="xs:int" />
+      <xs:element minOccurs="0" name="tblName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OntologyElement" nillable="true" type="tns:OntologyElement" />
+  <xs:complexType name="OntologyEnvelope">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OntologyElements" nillable="true" type="tns:ArrayOfOntologyElement" />
+      <xs:element minOccurs="0" name="Sites" nillable="true" type="tns:ArrayOfSiteData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OntologyEnvelope" nillable="true" type="tns:OntologyEnvelope" />
+  <xs:complexType name="ArrayOfSiteData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SiteData" nillable="true" type="tns:SiteData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSiteData" nillable="true" type="tns:ArrayOfSiteData" />
+  <xs:complexType name="SiteData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SiteID" type="xs:int" />
+      <xs:element minOccurs="0" name="latitude" type="xs:double" />
+      <xs:element minOccurs="0" name="longitude" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SiteData" nillable="true" type="tns:SiteData" />
+  <xs:complexType name="ArrayOfSeriesCatalogRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SeriesCatalogRecord" nillable="true" type="tns:SeriesCatalogRecord" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSeriesCatalogRecord" nillable="true" type="tns:ArrayOfSeriesCatalogRecord" />
+  <xs:complexType name="SeriesCatalogRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EndDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Latitude" type="xs:double" />
+      <xs:element minOccurs="0" name="Longitude" type="xs:double" />
+      <xs:element minOccurs="0" name="SeriesID" type="xs:int" />
+      <xs:element minOccurs="0" name="ServCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServURL" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SiteCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SiteID" type="xs:int" />
+      <xs:element minOccurs="0" name="StartDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ValueCount" type="xs:int" />
+      <xs:element minOccurs="0" name="VarCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SeriesCatalogRecord" nillable="true" type="tns:SeriesCatalogRecord" />
+  <xs:complexType name="SelectionDensityReport">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BeginTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ChoiceCount" type="xs:int" />
+      <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FacetSelection" nillable="true" type="q1:ArrayOfKeyValueOfstringOntologyElementk1GtbSX3" />
+      <xs:element minOccurs="0" name="FacetSelectionRoot" nillable="true" type="tns:ArrayOfOntologyElement" />
+      <xs:element minOccurs="0" name="Layer1Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer2Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer3Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer4Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer5Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer6Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer7Options" type="xs:int" />
+      <xs:element minOccurs="0" name="Layer8Options" type="xs:int" />
+      <xs:element minOccurs="0" name="MaxX" type="xs:double" />
+      <xs:element minOccurs="0" name="MaxY" type="xs:double" />
+      <xs:element minOccurs="0" name="MinX" type="xs:double" />
+      <xs:element minOccurs="0" name="MinY" type="xs:double" />
+      <xs:element minOccurs="0" name="OntologyCount" type="xs:int" />
+      <xs:element minOccurs="0" name="RemainingOntologyElements" nillable="true" type="tns:ArrayOfOntologyElement" />
+      <xs:element minOccurs="0" name="RootLayerOptions" type="xs:int" />
+      <xs:element minOccurs="0" name="SeriesCount" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="TopConstraintDimensions" nillable="true" type="q2:ArrayOfint" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="TopConstraintSelection" nillable="true" type="q3:ArrayOfKeyValueOfstringOntologyElementk1GtbSX3" />
+      <xs:element minOccurs="0" name="ValueCount" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SelectionDensityReport" nillable="true" type="tns:SelectionDensityReport" />
+</xs:schema>

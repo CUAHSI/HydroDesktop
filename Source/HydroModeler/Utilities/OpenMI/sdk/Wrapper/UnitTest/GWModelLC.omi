@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<LinkableComponent Type="Oatc.OpenMI.Sdk.Wrapper.UnitTest.GWModelLC" Assembly="bin\debug\Oatc.OpenMI.Sdk.Wrapper.UnitTest.dll">
+  <Arguments>
+    <Argument Key="Dummy" ReadOnly="true" Value="DummyValue" />
+   </Arguments>
+</LinkableComponent>
