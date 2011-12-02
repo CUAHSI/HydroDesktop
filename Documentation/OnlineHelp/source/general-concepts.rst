@@ -25,15 +25,11 @@ HydroDesktop also has the ability to query a given data service to figure out wh
 Search
 ------
 
-HydroDesktop can search for hydrologic time series data, download it, and save it to your local Data Repository database. When searching for data, you can specify the following filters: region of interest, time period of interest, and variables of interest.  When the search results are returned, you can further filter the results and then choose which data you want to actually download and store as a theme in your database.
+HydroDesktop can search for hydrologic time series data, download it, and save it to your local Data Repository database.
+When searching for data, you can specify the following filters: region of interest, parameter, time range, and data source.
+When the search results are returned, you can further filter the results and then choose which data you want to actually download.
 
-Read the following help for more information on search:
-
-.. toctree::
-   :maxdepth: 1
-   
-   guide-books/Search/Search
-
+For more information on search see :doc:`guide-books/Search/Search`.
 
 Projects
 --------
@@ -45,7 +41,6 @@ Getting Help
 
 There are a variety ways of getting help with HydroDesktop:
 
-* Click the help button on the ribbon.
-* Click buttons on the Help tab. The Help tab has buttons for opening the help system, leaving a comment, etc.
+* Click buttons on the Help tab of the ribbon. The Help tab has buttons for opening the help system, leaving a comment, etc.
 * Click help buttons on the specific HydroDesktop tools that you are using, if available.
-* Add to discussions and issues on the Codeplex Web site at http://hydrodesktop.codeplex.com/.
+* Add to discussions and issues on the HydroDesktop Web site at http://hydrodesktop.codeplex.com/.
