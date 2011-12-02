@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FB01F6EE-89C0-4A64-B023-C8CC566FF803}</ProjectGuid>
+    <ProjectGuid>{BA38E49F-BB13-4AA3-A31F-69E16D7AA4A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FacetedSearch3</RootNamespace>
