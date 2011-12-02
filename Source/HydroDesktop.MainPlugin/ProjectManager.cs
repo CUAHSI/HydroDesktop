@@ -248,7 +248,7 @@ namespace HydroDesktop.Main
                 //Also save any data sites layers 
                 IMapGroup dataSitesGroup = FindGroupByName("Data Sites");
                 if (dataSitesGroup == null) return;
-                if (dataSitesGroup.Layers.Count == null) return;
+                if (dataSitesGroup.Layers.Count == 0) return;
 
                 string projDir = App.SerializationManager.CurrentProjectDirectory;
                 foreach (IMapLayer layer in dataSitesGroup.Layers)
