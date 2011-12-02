@@ -123,6 +123,9 @@ namespace Search3.Area
             var selectedLayer = cmbActiveLayer.SelectedItem as IMapPolygonLayer;
             if (selectedLayer == null) return;
 
+            //make the selected layer visible
+            selectedLayer.IsVisible = true;
+
             var dataColumn = cmbField.SelectedItem as DataColumn;
             if (dataColumn == null) return;
 

@@ -12,6 +12,7 @@ using HydroDesktop.Interfaces;
 using System.ServiceModel.Description;
 using DotSpatial.Data;
 using DotSpatial.Topology;
+using System.ServiceModel;
 
 namespace FacetedSearch3
 {
@@ -19,7 +20,7 @@ namespace FacetedSearch3
     /// The user control added to the main window by this plugin
     /// </summary>
     public partial class FacetedSearchControl : UserControl
-    {        
+    {
         public string BaseMapPath;                                          // location of BaseMap for Map display/query
         public Boolean SpatialTemporalCommitted = false;                    // tracks state of the form => determines whether the user is ready to use the Faceted Search features.
         public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> TopLevelFacets;    // contains the XML representation of the entire searchable ontology         
@@ -66,7 +67,12 @@ namespace FacetedSearch3
         {
             try
             {
-                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                BasicHttpBinding binding = new BasicHttpBinding();
+                EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
+                FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address);
+                
+                //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                using (cl)
                 {
                     bool configed = false;
                     try
@@ -246,7 +252,11 @@ namespace FacetedSearch3
                     RemoveDownStreamSearchFacetSpecifiers(MyIndex + 1);
                     SpatialTemporalCommitted = true;
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
-                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+
+                    BasicHttpBinding binding = new BasicHttpBinding();
+                    EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
+                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address))
                     {
                         ConfigureCUAHSIChannelFactory(cl);
                         FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
@@ -291,7 +301,11 @@ namespace FacetedSearch3
                 {
                     SpatialTemporalCommitted = true;
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
-                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+
+                    BasicHttpBinding binding = new BasicHttpBinding();
+                    EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
+                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address))
                     {
                         ConfigureCUAHSIChannelFactory(cl);
                         List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SearchRes = cl.ConductFacetedSearch(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX).OrderByDescending(r => r.ValueCount).ToList();
@@ -331,7 +345,10 @@ namespace FacetedSearch3
                     SpatialTemporalCommitted = true;
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
                     string SQLRes;
-                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    BasicHttpBinding binding = new BasicHttpBinding();
+                    EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
+                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address))
                     {
                         ConfigureCUAHSIChannelFactory(cl);
                         SQLRes = cl.GetSQLOfNextQuery(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
@@ -369,7 +386,10 @@ namespace FacetedSearch3
                     SpatialTemporalCommitted = true;
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
                     string SQLRes;
-                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    BasicHttpBinding binding = new BasicHttpBinding();
+                    EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
+                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address))
                     {
                         ConfigureCUAHSIChannelFactory(cl);
                         SQLRes = cl.GetSQLOfSearchQuery(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
