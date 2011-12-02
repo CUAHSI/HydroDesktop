@@ -10,6 +10,7 @@ namespace Search3.Settings.UI
         private DateSettingsDialog(DateSettings dateSettings)
         {
             InitializeComponent();
+            
 
             _dateSettings = dateSettings;
 

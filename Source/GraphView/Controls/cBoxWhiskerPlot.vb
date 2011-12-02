@@ -1,7 +1,10 @@
-﻿Imports ZedGraph
+﻿Imports Controls
+Imports ZedGraph
 Imports System.Drawing
 
 Public Class cBoxWhiskerPlot
+    Implements IChart
+
     Public Shared m_Data As Data.DataTable
     Public Shared m_Site As String
     Public Shared m_Var As String
@@ -1126,4 +1129,24 @@ Public Class cBoxWhiskerPlot
         Return ID
     End Function
 
+    Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
+        Get
+            Return zgBoxWhiskerPlot.IsShowPointValues
+        End Get
+        Set(ByVal value As Boolean)
+            zgBoxWhiskerPlot.IsShowPointValues = value
+        End Set
+    End Property
+
+    Public Sub ZoomOutAll() Implements IChart.ZoomOutAll
+        zgBoxWhiskerPlot.ZoomOutAll(zgBoxWhiskerPlot.GraphPane)
+    End Sub
+
+    Public Sub ZoomIn() Implements IChart.ZoomIn
+        zgBoxWhiskerPlot.ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut() Implements IChart.ZoomOut
+        zgBoxWhiskerPlot.ZoomOut(zgBoxWhiskerPlot.GraphPane)
+    End Sub
 End Class

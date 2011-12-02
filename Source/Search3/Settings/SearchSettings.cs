@@ -73,8 +73,8 @@ namespace Search3.Settings
                     //todo: save HydroDesktop.Configuration.Settings
                     break;
                 case CatalogSettings.PROPERTY_TypeOfCatalog:
-                    Properties.Settings.Default.TypeOfCatalog = _catalogSettings.TypeOfCatalog;
-                    Properties.Settings.Default.Save();
+                    //Properties.Settings.Default.TypeOfCatalog = _catalogSettings.TypeOfCatalog;
+                    //Properties.Settings.Default.Save();
                     break;
             }
         }

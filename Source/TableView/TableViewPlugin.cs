@@ -28,8 +28,7 @@ namespace TableView
         private const string _optionsSequenceMode = "Sequence";
 
         private cTableView tableViewControl;
-
-        private bool ignoreRootSelected = false;
+        private TextEntryActionItem dbTextBox;
 
         #endregion
 
@@ -77,23 +76,33 @@ namespace TableView
             deleteThemeButton.GroupCaption = _tablePanelName;
             App.HeaderControl.Add(deleteThemeButton);
 
+            //Current database
+            dbTextBox = new TextEntryActionItem();
+            dbTextBox.Caption = "";
+            dbTextBox.GroupCaption = "Current Database Path";
+            dbTextBox.RootKey = kTableView;
+            dbTextBox.Width = 300;
+            dbTextBox.ToolTipText = "Path to current database";
+            dbTextBox.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(dbTextBox_PropertyChanged);
+            App.HeaderControl.Add(dbTextBox);
+
             //Change Database
             var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click);
             changeDatabaseButton.RootKey = kTableView;
             changeDatabaseButton.ToolTipText = "Change Database";
             changeDatabaseButton.LargeImage = Properties.Resources.changeDatabase;
             changeDatabaseButton.SmallImage = Properties.Resources.changeDatabase_16x16;
-            changeDatabaseButton.GroupCaption = "Database";
+            changeDatabaseButton.GroupCaption = "Current Database Path";
             App.HeaderControl.Add(changeDatabaseButton);
 
-            //New Database
-            var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
-            newDatabaseButton.RootKey = kTableView;
-            newDatabaseButton.ToolTipText = "Create New Database";
-            newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
-            newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
-            newDatabaseButton.GroupCaption = "Database";
-            App.HeaderControl.Add(newDatabaseButton);
+            ////New Database
+            //var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
+            //newDatabaseButton.RootKey = kTableView;
+            //newDatabaseButton.ToolTipText = "Create New Database";
+            //newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
+            //newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
+            //newDatabaseButton.GroupCaption = "Database";
+            //App.HeaderControl.Add(newDatabaseButton);
 
             // Options buttons
             var sequenceModeAction = new SimpleActionItem(_optionsSequenceMode, TableViewModeChanged);
@@ -127,15 +136,18 @@ namespace TableView
             base.Activate();
         }
 
+        void dbTextBox_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
         //when the table root item is selected
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            //if (ignoreRootSelected) return;
-            
-            //if (e.SelectedRootKey == kTableView)
-            //{
-            //    App.DockManager.SelectPanel(kTableView);
-            //}
+            if (e.SelectedRootKey == kTableView)
+            {
+                App.DockManager.SelectPanel(kTableView);
+            }
         }
 
         //void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
@@ -194,10 +206,7 @@ namespace TableView
             if (e.ActivePanelKey == kTableView)
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
-                //ignoreRootSelected = true;
-                
-                //App.HeaderControl.SelectRoot(kTableView);
-                //ignoreRootSelected = false;
+                App.HeaderControl.SelectRoot(kTableView);
                 RefreshDatabasePath();
             }
         }
@@ -206,7 +215,8 @@ namespace TableView
         {
             if (tableViewControl != null)
             {
-                App.ProgressHandler.Progress(string.Empty, 0, string.Format("Database: {0}", tableViewControl.DatabasePath));
+                //App.ProgressHandler.Progress(string.Empty, 0, string.Format("Database: {0}", tableViewControl.DatabasePath));
+                dbTextBox.Text = tableViewControl.DatabasePath;
             }
         }
 
@@ -244,33 +254,33 @@ namespace TableView
             }
         }
 
-        private void rbNewDatabase_Click(object sender, EventArgs e)
-        {
-            CreateNewDatabase();
-        }
+        //private void rbNewDatabase_Click(object sender, EventArgs e)
+        //{
+        //    CreateNewDatabase();
+        //}
 
-        /// <summary>
-        /// Creates a new database to be used by the HydroDesktop application
-        /// </summary>
-        private void CreateNewDatabase()
-        {
-            var saveDialog = new SaveFileDialog {Filter = "SQLite Database|*.sqlite"};
-            if (saveDialog.ShowDialog() != DialogResult.OK) return;
-            var newDbFileName = saveDialog.FileName;
-            try
-            {
-                if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
-                {
-                    var connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
-                    Settings.Instance.DataRepositoryConnectionString = connString;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to create new database." + Environment.NewLine +
-                                ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        ///// <summary>
+        ///// Creates a new database to be used by the HydroDesktop application
+        ///// </summary>
+        //private void CreateNewDatabase()
+        //{
+        //    var saveDialog = new SaveFileDialog {Filter = "SQLite Database|*.sqlite"};
+        //    if (saveDialog.ShowDialog() != DialogResult.OK) return;
+        //    var newDbFileName = saveDialog.FileName;
+        //    try
+        //    {
+        //        if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
+        //        {
+        //            var connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
+        //            Settings.Instance.DataRepositoryConnectionString = connString;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Unable to create new database." + Environment.NewLine +
+        //                        ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         # endregion
     }

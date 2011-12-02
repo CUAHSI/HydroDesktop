@@ -14,6 +14,8 @@ namespace Search3.Area
 
         private readonly Map _map;
 
+        private bool _changesApplied = false;
+
         #endregion
 
         #region Constructors
@@ -25,6 +27,7 @@ namespace Search3.Area
             _map = map;
 
             InitializeComponent();
+            
 
             BindMapToForm();
         }
@@ -89,7 +92,7 @@ namespace Search3.Area
             var dataColumn = cmbField.SelectedItem as DataColumn;
             if (dataColumn == null)
             {
-                lbValues.DataSource = null;
+                //lbValues.DataSource = null;
                 return;
             }
 
@@ -99,51 +102,74 @@ namespace Search3.Area
             var uniqueValues = new SortedSet<string>();
             foreach(DataRow row in selectedLayer.DataSet.DataTable.Rows)
                 uniqueValues.Add(row[dataColumn.ColumnName].ToString());
-            lbValues.DataSource = uniqueValues.ToList();
+
+            //lbValues.SuspendLayout();
+            //lbValues.DataSource = uniqueValues.ToList();
+            //lbValues.ResumeLayout();
+            cmbValues.DataSource = uniqueValues.ToList();
+
+            if (!selectedLayer.IsVisible) 
+                selectedLayer.IsVisible = true;
+
+            _changesApplied = false;
         }
 
-        private void teFirstLetters_TextChanged(object sender, EventArgs e)
-        {
-            if (lbValues.Items.Count == 0) return;
+        //private void teFirstLetters_TextChanged(object sender, EventArgs e)
+        //{
+        //    if (lbValues.Items.Count == 0) return;
 
-            var text = teFirstLetters.Text;
-            for (int i = 0; i < lbValues.Items.Count; i++)
-            {
-                var curItem =  lbValues.Items[i].ToString();
-                var selected = string.IsNullOrEmpty(text)
-                                   ? (text == curItem)
-                                   : curItem.StartsWith(text, StringComparison.InvariantCultureIgnoreCase);
-                lbValues.SetSelected(i, selected);
+        //    var text = teFirstLetters.Text;
+        //    for (int i = 0; i < lbValues.Items.Count; i++)
+        //    {
+        //        var curItem =  lbValues.Items[i].ToString();
+        //        var selected = string.IsNullOrEmpty(text)
+        //                           ? (text == curItem)
+        //                           : curItem.StartsWith(text, StringComparison.InvariantCultureIgnoreCase);
+        //        lbValues.SetSelected(i, selected);
 
-            }
-        }
+        //    }
+        //}
 
         private void SelectShapesInTheMap()
         {
+            if (_changesApplied) return;
+            
             var selectedLayer = cmbActiveLayer.SelectedItem as IMapPolygonLayer;
             if (selectedLayer == null) return;
+
+            
 
             var dataColumn = cmbField.SelectedItem as DataColumn;
             if (dataColumn == null) return;
 
-            if (lbValues.SelectedItems.Count == 0)
-            {
-                selectedLayer.UnSelectAll();
-                _map.Refresh();
-                return;
-            }
+            //if (cmbValues.SelectedItem != null)
+            //{
+            //    selectedLayer.UnSelectAll();
+            //    _map.Refresh();
+            //    return;
+            //}
 
-            var selectedValues = new List<string>(lbValues.SelectedItems.Count);
-            selectedValues.AddRange(from object item in lbValues.SelectedItems select item.ToString());
+            //var selectedValues = new List<string>(lbValues.SelectedItems.Count);
+            //selectedValues.AddRange(from object item in lbValues.SelectedItems select item.ToString());
 
-            foreach(var feature in selectedLayer.DataSet.Features)
-            {
-                if (selectedValues.Contains(feature.DataRow[dataColumn.ColumnName].ToString()))
-                    selectedLayer.Select(feature);
-                else
-                    selectedLayer.UnSelect(feature);
-            }
-            _map.Refresh();
+            ////selecting area by attribute
+            //_map.ClearSelection();
+            string selectedColumn = cmbField.Text;
+            //foreach(string selectedVal in selectedValues)
+            //{
+            //    string filterEx = string.Format("[{0}] = '{1}'",selectedColumn, selectedVal);
+            //    selectedLayer.SelectByAttribute(filterEx,ModifySelectionMode.Append);
+            //}
+
+            var selectedValue = cmbValues.SelectedItem.ToString();
+            string filterEx = string.Format("[{0}] = '{1}'", selectedColumn, selectedValue);
+            selectedLayer.SelectByAttribute(filterEx,ModifySelectionMode.Append);
+
+            //zoom to selection
+            selectedLayer.ZoomToSelectedFeatures();
+
+            _changesApplied = true;
+            //_map.Refresh();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
@@ -157,5 +183,10 @@ namespace Search3.Area
         }
 
         #endregion
+
+        private void lbValues_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _changesApplied = false;
+        }
     }
 }

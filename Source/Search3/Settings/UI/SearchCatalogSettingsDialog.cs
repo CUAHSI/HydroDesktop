@@ -27,6 +27,7 @@ namespace Search3.Settings.UI
             if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
             InitializeComponent();
+            
 
             _catalogSettings = catalogSettings;
             _webServicesSettings = webServicesSettings;

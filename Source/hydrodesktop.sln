@@ -314,6 +314,7 @@ Global
 		{FC10C307-3EB0-468E-B750-D0421BCC0C2A}.Debug|x86.Build.0 = Debug|x86
 		{FC10C307-3EB0-468E-B750-D0421BCC0C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC10C307-3EB0-468E-B750-D0421BCC0C2A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FC10C307-3EB0-468E-B750-D0421BCC0C2A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{FC10C307-3EB0-468E-B750-D0421BCC0C2A}.Release|x86.ActiveCfg = Release|x86
 		{FC10C307-3EB0-468E-B750-D0421BCC0C2A}.Release|x86.Build.0 = Release|x86
 		{CBC247A5-F50E-41ED-807C-94DE7E970DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

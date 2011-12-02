@@ -10,6 +10,7 @@ namespace Search3.Settings.UI
         private WebServicesDialog(WebServicesSettings settings)
         {
             InitializeComponent();
+            
 
             _settings = settings;
             webServicesUserControl1.SetSettings(settings);

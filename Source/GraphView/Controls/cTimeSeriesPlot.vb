@@ -1,9 +1,11 @@
-﻿Imports ZedGraph
+﻿Imports Controls
+Imports ZedGraph
 Imports System.Drawing
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 
 Public Class cTimeSeriesPlot
+    Implements IChart
 
     Public Sub New()
         ' This call is required by the Windows Form Designer.
@@ -579,5 +581,26 @@ Public Class cTimeSeriesPlot
         ID = (curve.Label.Text.ToString.Substring(StartIndex, IDLength))
         Return ID
     End Function
+
+    Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
+        Get
+            Return zgTimeSeries.IsShowPointValues
+        End Get
+        Set(ByVal value As Boolean)
+            zgTimeSeries.IsShowPointValues = value
+        End Set
+    End Property
+
+    Public Sub ZoomIn() Implements IChart.ZoomIn
+        zgTimeSeries.ZoomIn()
+    End Sub
+
+    Public Sub ZoomOut() Implements IChart.ZoomOut
+        zgTimeSeries.ZoomOut(zgTimeSeries.GraphPane)
+    End Sub
+
+    Public Sub ZoomOutAll() Implements IChart.ZoomOutAll
+        zgTimeSeries.ZoomOutAll(zgTimeSeries.GraphPane)
+    End Sub
 
 End Class

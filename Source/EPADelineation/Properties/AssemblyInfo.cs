@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EPA Delineation")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("EPA Watershed Delineation")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jingqi Dong")]
 [assembly: AssemblyProduct("EPA Delineation")]

@@ -137,7 +137,6 @@ namespace HydroDesktop.Main
             string dbFileName = Path.ChangeExtension(projectFile, "sqlite");
             string cacheDbFileName = dbFileName.Replace(".sqlite", "_cache.sqlite");
 
-            bool cacheDbIsValid = ValidateDatabase(dbFileName, DatabaseType.DefaulDatabase);
             if (!ValidateDatabase(dbFileName, DatabaseType.DefaulDatabase))
             {
                 SQLiteHelper.CreateSQLiteDatabase(dbFileName);
@@ -158,17 +157,12 @@ namespace HydroDesktop.Main
             //check if db exists
             if (SQLiteHelper.DatabaseExists(dbFileName))
             {
-                try
-                {
-                    SQLiteHelper.CheckDatabaseSchema(dbFileName, dbType);
-                    return true;
-                }
-                catch (InvalidDatabaseSchemaException)
-                {
-                    return false;
-                }
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }           
         }
 
         /// <summary>
@@ -254,7 +248,7 @@ namespace HydroDesktop.Main
                 //Also save any data sites layers 
                 IMapGroup dataSitesGroup = FindGroupByName("Data Sites");
                 if (dataSitesGroup == null) return;
-                if (dataSitesGroup.Layers.Count == null) return;
+                if (dataSitesGroup.Layers.Count == 0) return;
 
                 string projDir = App.SerializationManager.CurrentProjectDirectory;
                 foreach (IMapLayer layer in dataSitesGroup.Layers)

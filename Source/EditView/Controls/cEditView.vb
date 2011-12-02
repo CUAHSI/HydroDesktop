@@ -1,5 +1,4 @@
 ﻿Imports System.Collections.Generic
-Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Data
 Imports System.Linq
@@ -7,9 +6,6 @@ Imports System.Text
 Imports System.Windows.Forms
 Imports HydroDesktop.Database
 Imports System.Collections
-Imports System.Data.Common
-Imports System.Threading
-Imports System.Globalization
 Imports QualifierHandling
 Imports ZedGraph
 Imports HydroDesktop.Interfaces
@@ -21,8 +17,8 @@ Public Class cEditView
 
 #Region "privateDeclaration"
     
-    Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-    Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
+    Private connString
+    Private dbTools
     Private CurveEditingColor As Drawing.Color = Color.Black
 
     'private SeriesSelector control for checking / unchecking the series
@@ -47,10 +43,7 @@ Public Class cEditView
 
     Public Sub RefreshSelection()
         pTimeSeriesPlot.Clear()
-
-        connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
-
+        RefreshDbTools()
     End Sub
 
     Private Sub SettingColor()
@@ -74,7 +67,7 @@ Public Class cEditView
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
+        RefreshDbTools()
     End Sub
 
     Public Sub New(ByVal seriesSelector As ISeriesSelector)
@@ -97,6 +90,7 @@ Public Class cEditView
         lblstatus.Text = "Ready"
         SettingColor()
         pTimeSeriesPlot.Clear()
+        RefreshDbTools()
 
         'Add Event
         'SeriesSelector.MultipleCheck = false;
@@ -121,8 +115,6 @@ Public Class cEditView
     End Sub
 
     Private Sub ShowAllFieldsinSequence()
-        Dim connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
         Originaldt = New DataTable
         Dim dt As New DataTable
         Dim SQLString As New StringBuilder
@@ -151,22 +143,21 @@ Public Class cEditView
 
     Public Sub PlotGraph(ByVal SeriesID As Integer)
         Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Line, ccList0(colorcount Mod 10), CurveEditingColor, False, True)
-        Dim connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
-        Dim nodatavalue As Double
-        Dim data As DataTable = New DataTable()
+        'Dim nodatavalue As Double
+        Dim data As DataTable
         Dim variableName As String = ""
         Dim unitsName As String = ""
         Dim siteName As String = ""
 
-        nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & SeriesID & "')")
+        'nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & SeriesID & "')")
         'data = dbTools.LoadTable("DataValues", "SELECT ValueID, DataValue, LocalDateTime, CensorCode FROM DataValues WHERE (SeriesID = '" & SeriesID & "') AND (DataValue <> '" & nodatavalue & "') ORDER BY LocalDateTime")
         'data = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE (SeriesID = '" & SeriesID & "') AND (DataValue <> '" & nodatavalue & "') ORDER BY LocalDateTime")
-        data = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE (SeriesID = '" & SeriesID & "') ORDER BY LocalDateTime")
+
         variableName = dbTools.ExecuteSingleOutput("SELECT VariableName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & SeriesID & "'")
         unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & SeriesID & "'")
         siteName = dbTools.ExecuteSingleOutput("SELECT " & _seriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & SeriesID & "'")
 
+        data = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE (SeriesID = '" & SeriesID & "') ORDER BY LocalDateTime")
         If data.Rows.Count = 1 Then
             options.TimeSeriesMethod = PlotOptions.TimeSeriesType.Point
         End If
@@ -206,8 +197,6 @@ Public Class cEditView
     End Sub
 
     Public Sub AddSeriesToDataGridView(ByVal SeriesID As Integer)
-        Dim connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
         Originaldt = New DataTable
         Dim dt As New DataTable
         Dim dtdgvDataSource As DataTable
@@ -218,10 +207,7 @@ Public Class cEditView
         SQLString.Append("FileID FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) ")
         SQLString.Append("WHERE SeriesID = " + SeriesID.ToString)
 
-
-
         dt = dbTools.LoadTable("DataValues", SQLString.ToString)
-
 
         dt.Columns.Add("Other")
         If dgvDataValues.Rows.Count = 0 Then
@@ -269,19 +255,20 @@ Public Class cEditView
 
     Private Sub SeriesSelector_Refreshed()
 
-        connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
-
+        RefreshDbTools()
         pTimeSeriesPlot.Clear()
         selectedSeriesIdList.Clear()
 
     End Sub
 
+    Private Sub RefreshDbTools()
+        connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
+        dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
+    End Sub
+
 
     Private Sub SeriesSelector_SeriesCheck()
         'Declaring all variables
-        Dim connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
         Dim data As DataTable = New DataTable()
         Dim variableName As String = ""
         Dim unitsName As String = ""

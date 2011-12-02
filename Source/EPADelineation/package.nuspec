@@ -14,9 +14,8 @@
     <language>en-US</language>
     <tags></tags>
     <dependencies>
-      <dependency id="jayrock-json" version="0.9.12915=" />
+      <dependency id="jayrock-json" />
       <dependency id="HydroDesktop.Configuration" version="1.3.1" />
-      <dependency id="HydroDesktop.Interfaces" version="1.3.1" />
       <dependency id="HydroDesktop.Help" version="1.3.1" />
     </dependencies>
   </metadata>

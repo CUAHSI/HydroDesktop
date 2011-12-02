@@ -286,6 +286,7 @@
     <None Include="Resources\Draw_Box_32.png" />
     <None Include="Resources\keyword_16.png" />
     <None Include="Resources\keyword_32.png" />
+    <None Include="Resources\HydroDesktop.ico" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

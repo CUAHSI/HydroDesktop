@@ -12,6 +12,6 @@
     <description>$description$</description>
     <summary />
     <language>en-US</language>
-    <tags></tags>
+    <tags>HideReleaseFromEndUser</tags>
   </metadata>
 </package>

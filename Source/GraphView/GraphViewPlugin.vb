@@ -29,8 +29,8 @@ Namespace GraphView
 
         Private tabGraph As RootItem
 
-        Private rpPlots As String = "Plots"
-        Private kTogglePlots As String = "kHydroPlotsGroup"
+        Private Const rpPlots As String = "Plots"
+        Private Const kTogglePlots As String = "kHydroPlotsGroup"
 
         Private rbTSA As SimpleActionItem 'Time Series
         Private rbProbability As SimpleActionItem 'Probability
@@ -38,7 +38,7 @@ Namespace GraphView
         Private rbBoxWhisker As SimpleActionItem 'Box/Whisker
         Private rbSummary As SimpleActionItem 'Summary
 
-        Private rpPlotOption As String = "TSA & Probability Plot Options"
+        Private Const rpPlotOption As String = "TSA & Probability Plot Options"
         Const PlotOptionsMenuKey = "kHydroPlotOptions"
         Private rbPlotType As MenuContainerItem 'Plot Type
         Private rbLine As SimpleActionItem 'Line
@@ -47,7 +47,7 @@ Namespace GraphView
         Private rbColorSetting As SimpleActionItem 'Color Setting
         Private rbShowLegend As SimpleActionItem 'Close Legend
 
-        Private rpHistogramOption As String = "Histogram Plot Options"
+        Private Const rpHistogramOption As String = "Histogram Plot Options"
         Const kHistogramType = "kHistogramType"
         Private rbHistogramType As MenuContainerItem 'Histogram Type
         Private rbhtCount As SimpleActionItem 'Count
@@ -59,7 +59,7 @@ Namespace GraphView
         Private rbhaSturges As SimpleActionItem 'Sturges'
         Private rbhaFreedman As SimpleActionItem 'Freedman-Diaconis’
 
-        Private rpBoxWhiskerOption As String = "Box Whisker Plot Option"
+        Private Const rpBoxWhiskerOption As String = "Box Whisker Plot Option"
         Const kBoxWhiskerType = "kBoxWhiskerType"
         Private rbBoxWhiskerType As MenuContainerItem 'Box Whisker Type
         Private rbbtMonthly As SimpleActionItem 'Monthly
@@ -67,12 +67,18 @@ Namespace GraphView
         Private rbbtYearly As SimpleActionItem 'Yearly
         Private rbbtOverall As SimpleActionItem 'Overall
 
-        Private rpOtherOptions As String = "Date & Time"
+        Private Const rpOtherOptions As String = "Date & Time"
         Private rbDateTimeSetting As SimpleActionItem 'Date Setting
         Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
         Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
 
-        Private ignoreRootSelected As Boolean = False
+        Private Const rpChart As String = "Chart"
+        Private rbShowPointValues As SimpleActionItem 'Show Point Values Toggle button
+        Private _showPointValues As Boolean
+        Private rbZoomIn As SimpleActionItem 'Zoom In Toggle button
+        Private rbZoomOut As SimpleActionItem 'Zoom Out Toggle button
+        Private rbUndoZoom As SimpleActionItem 'Undo zoom Toggle button
+
 #End Region
 
 
@@ -132,7 +138,6 @@ Namespace GraphView
         End Sub
 
         Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
-            If ignoreRootSelected Then Return
             If e.SelectedRootKey = kGraph Then
                 App.DockManager.SelectPanel(kGraph)
             End If
@@ -201,20 +206,20 @@ Namespace GraphView
             'Option Panel for TSA and Probability
             rbPlotType = New MenuContainerItem(kGraph, PlotOptionsMenuKey, "Plot Type")
             rbPlotType.LargeImage = My.Resources.PlotType
-            rbPlotType.GroupCaption = rpPlotOption
+            'rbPlotType.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbPlotType)
 
             'Line
             rbLine = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Line", AddressOf rbLine_Click)
-            rbLine.GroupCaption = rpPlotOption
+            'rbLine.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbLine)
             'Point
             rbPoint = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Point", AddressOf rbPoint_Click)
-            rbPoint.GroupCaption = rpPlotOption
+            'rbPoint.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbPoint)
             'Both
             rbBoth = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Both", AddressOf rbBoth_Click)
-            rbBoth.GroupCaption = rpPlotOption
+            'rbBoth.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbBoth)
 
             'Color Setting
@@ -236,7 +241,6 @@ Namespace GraphView
             rbHistogramType = New MenuContainerItem(kGraph, kHistogramType, "Histogram Type")
             rbHistogramType.LargeImage = My.Resources.HisType
             rbHistogramType.GroupCaption = rpHistogramOption
-            rbHistogramType.Visible = False
             App.HeaderControl.Add(rbHistogramType)
 
             'Count
@@ -251,6 +255,7 @@ Namespace GraphView
             rbhtRelative = New SimpleActionItem(kGraph, kHistogramType, "Relative Frequencies", AddressOf rbhtRelative_Click)
             rbhtRelative.GroupCaption = rpHistogramOption
             App.HeaderControl.Add(rbhtRelative)
+            rbHistogramType.Visible = False
 
             'Histogram Algorithm Menu
             rbAlgorithms = New MenuContainerItem(kGraph, kHistogramAlgorithm, "Binning Algorithms")
@@ -322,8 +327,39 @@ Namespace GraphView
             rbDisplayFullDateRange.GroupCaption = rpOtherOptions
             App.HeaderControl.Add(rbDisplayFullDateRange)
 
+            'Chart
+            'Show Point Values
+            rbShowPointValues = New SimpleActionItem("Show Point Values", AddressOf rbShowPointValues_Click)
+            rbShowPointValues.RootKey = kGraph
+            rbShowPointValues.GroupCaption = rpChart
+            App.HeaderControl.Add(rbShowPointValues)
+            rbShowPointValues.Visible = False
+            rbShowPointValues_Click()
+
+            'Zoom In
+            rbZoomIn = New SimpleActionItem("Zoom In", AddressOf rbZoomIn_Click)
+            rbZoomIn.RootKey = kGraph
+            rbZoomIn.GroupCaption = rpChart
+            rbZoomIn.Visible = False
+            App.HeaderControl.Add(rbZoomIn)
+
+            ' Zoom Out
+            rbZoomOut = New SimpleActionItem("Zoom Out", AddressOf rbZoomOut_Click)
+            rbZoomOut.RootKey = kGraph
+            rbZoomOut.GroupCaption = rpChart
+            rbZoomOut.Visible = False
+            App.HeaderControl.Add(rbZoomOut)
+
+            ' Undo Zoom
+            rbUndoZoom = New SimpleActionItem("Undo Zoom", AddressOf rbUndoZoom_Click)
+            rbUndoZoom.RootKey = kGraph
+            rbUndoZoom.GroupCaption = rpChart
+            rbUndoZoom.Visible = False
+            App.HeaderControl.Add(rbUndoZoom)
+
             'The button should initially be checked
             rbTSA_Click()
+            rbTSA.Toggle()
 
         End Sub
 
@@ -335,6 +371,9 @@ Namespace GraphView
             'UncheckOtherPlotButtons(rbTSA)
             _mainControl.TabControl2.SelectTab(0)
             rbPlotType.Visible = True
+            rbColorSetting.Visible = True
+            rbShowLegend.Visible = True
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
@@ -345,30 +384,33 @@ Namespace GraphView
             'UncheckOtherPlotButtons(rbProbability)
             _mainControl.TabControl2.SelectTab(1)
             rbPlotType.Visible = True
+            rbColorSetting.Visible = True
+            rbShowLegend.Visible = True
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
-            'rpPlotType.Visible = True
-            'rpHistogramOption.Visible = False
-            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbHistogram_Click()
             'UncheckOtherPlotButtons(rbHistogram)
             _mainControl.TabControl2.SelectTab(2)
             rbPlotType.Visible = False
+            rbColorSetting.Visible = False
+            rbShowLegend.Visible = False
+
             rbHistogramType.Visible = True
             rbAlgorithms.Visible = True
             rbBoxWhiskerType.Visible = False
-            'rpPlotOption.Visible = False
-            'rpHistogramOption.Visible = True
-            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbBoxWhisker_Click()
             'UncheckOtherPlotButtons(rbBoxWhisker)
             _mainControl.TabControl2.SelectTab(3)
             rbPlotType.Visible = False
+            rbColorSetting.Visible = False
+            rbShowLegend.Visible = False
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = True
@@ -381,6 +423,9 @@ Namespace GraphView
             'UncheckOtherPlotButtons(rbSummary)
             _mainControl.TabControl2.SelectTab(4)
             rbPlotType.Visible = False
+            rbColorSetting.Visible = False
+            rbShowLegend.Visible = False
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
@@ -497,6 +542,29 @@ Namespace GraphView
             'End If
         End Sub
 
+        'Show Point Values 
+        Private Sub rbShowPointValues_Click()
+            _mainControl.ShowPointValues(_showPointValues)
+            If _showPointValues Then
+                rbShowPointValues.Caption = "Show Point Values - On"
+            Else
+                rbShowPointValues.Caption = "Show Point Values - Off"
+            End If
+            _showPointValues = Not _showPointValues
+        End Sub
+
+        Private Sub rbUndoZoom_Click()
+            _mainControl.UndoZoom()
+        End Sub
+
+        Private Sub rbZoomIn_Click()
+            _mainControl.ZoomIn()
+        End Sub
+
+        Private Sub rbZoomOut_Click()
+            _mainControl.ZoomOut()
+        End Sub
+
 
         'this is replaced by toggle buttons
         'Sub UncheckOtherPlotButtons(ByRef PlotButton As RibbonItem)
@@ -511,15 +579,8 @@ Namespace GraphView
 
             'activate the graph ribbon tab and the series view panel
             If e.ActivePanelKey = kGraph Then
-
-                ignoreRootSelected = True
-                tabGraph.Visible = True
                 App.HeaderControl.SelectRoot(kGraph)
-                ignoreRootSelected = False
-
                 App.DockManager.SelectPanel("kHydroSeriesView")
-            Else
-                tabGraph.Visible = False
             End If
 
         End Sub
