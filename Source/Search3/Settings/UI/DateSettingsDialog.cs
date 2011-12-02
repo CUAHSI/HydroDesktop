@@ -10,7 +10,7 @@ namespace Search3.Settings.UI
         private DateSettingsDialog(DateSettings dateSettings)
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.CuahsiIcon;
+            
 
             _dateSettings = dateSettings;
 

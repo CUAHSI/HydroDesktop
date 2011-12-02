@@ -60,13 +60,6 @@ namespace Search3.Properties {
             }
         }
         
-        internal static System.Drawing.Icon CuahsiIcon {
-            get {
-                object obj = ResourceManager.GetObject("CuahsiIcon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap download_16 {
             get {
                 object obj = ResourceManager.GetObject("download_16", resourceCulture);
