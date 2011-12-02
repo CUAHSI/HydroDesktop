@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using DotSpatial.Controls;
@@ -36,7 +35,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
         {
             if (serviceInfoExtractor == null) throw new ArgumentNullException("serviceInfoExtractor");
             if (map == null) throw new ArgumentNullException("map");
-
 
             _serviceInfoExtractor = serviceInfoExtractor;
             _map = map;
