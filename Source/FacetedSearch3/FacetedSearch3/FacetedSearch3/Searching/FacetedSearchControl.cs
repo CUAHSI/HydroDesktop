@@ -63,8 +63,20 @@ namespace FacetedSearch3
         private FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient GetMulitFacetedHISSvcClient()
         {
             //the code: new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient() required modifying app.config
-            
+            //this is the information originally from app.config, now set through code.
             BasicHttpBinding binding = new BasicHttpBinding();
+            binding.CloseTimeout = new TimeSpan(0, 5, 0);
+            binding.OpenTimeout = new TimeSpan(0, 5, 0);
+            binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
+            binding.SendTimeout = new TimeSpan(0, 5, 0);
+            int maxSize = 2147483647;
+            binding.MaxBufferSize = maxSize;
+            binding.MaxBufferPoolSize = maxSize;
+            binding.MaxReceivedMessageSize = maxSize;
+            binding.ReaderQuotas.MaxStringContentLength = maxSize;
+            binding.ReaderQuotas.MaxArrayLength = maxSize;
+            binding.ReaderQuotas.MaxBytesPerRead = maxSize;
+            binding.ReaderQuotas.MaxNameTableCharCount = maxSize;
             EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
             return new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address);
         }

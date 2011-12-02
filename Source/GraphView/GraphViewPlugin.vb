@@ -241,7 +241,6 @@ Namespace GraphView
             rbHistogramType = New MenuContainerItem(kGraph, kHistogramType, "Histogram Type")
             rbHistogramType.LargeImage = My.Resources.HisType
             rbHistogramType.GroupCaption = rpHistogramOption
-            rbHistogramType.Visible = False
             App.HeaderControl.Add(rbHistogramType)
 
             'Count
@@ -256,6 +255,7 @@ Namespace GraphView
             rbhtRelative = New SimpleActionItem(kGraph, kHistogramType, "Relative Frequencies", AddressOf rbhtRelative_Click)
             rbhtRelative.GroupCaption = rpHistogramOption
             App.HeaderControl.Add(rbhtRelative)
+            rbHistogramType.Visible = False
 
             'Histogram Algorithm Menu
             rbAlgorithms = New MenuContainerItem(kGraph, kHistogramAlgorithm, "Binning Algorithms")
@@ -333,28 +333,33 @@ Namespace GraphView
             rbShowPointValues.RootKey = kGraph
             rbShowPointValues.GroupCaption = rpChart
             App.HeaderControl.Add(rbShowPointValues)
+            rbShowPointValues.Visible = False
             rbShowPointValues_Click()
 
             'Zoom In
             rbZoomIn = New SimpleActionItem("Zoom In", AddressOf rbZoomIn_Click)
             rbZoomIn.RootKey = kGraph
             rbZoomIn.GroupCaption = rpChart
+            rbZoomIn.Visible = False
             App.HeaderControl.Add(rbZoomIn)
 
             ' Zoom Out
             rbZoomOut = New SimpleActionItem("Zoom Out", AddressOf rbZoomOut_Click)
             rbZoomOut.RootKey = kGraph
             rbZoomOut.GroupCaption = rpChart
+            rbZoomOut.Visible = False
             App.HeaderControl.Add(rbZoomOut)
 
             ' Undo Zoom
             rbUndoZoom = New SimpleActionItem("Undo Zoom", AddressOf rbUndoZoom_Click)
             rbUndoZoom.RootKey = kGraph
             rbUndoZoom.GroupCaption = rpChart
+            rbUndoZoom.Visible = False
             App.HeaderControl.Add(rbUndoZoom)
 
             'The button should initially be checked
             rbTSA_Click()
+            rbTSA.Toggle()
 
         End Sub
 
@@ -366,6 +371,9 @@ Namespace GraphView
             'UncheckOtherPlotButtons(rbTSA)
             _mainControl.TabControl2.SelectTab(0)
             rbPlotType.Visible = True
+            rbColorSetting.Visible = True
+            rbShowLegend.Visible = True
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
@@ -376,30 +384,33 @@ Namespace GraphView
             'UncheckOtherPlotButtons(rbProbability)
             _mainControl.TabControl2.SelectTab(1)
             rbPlotType.Visible = True
+            rbColorSetting.Visible = True
+            rbShowLegend.Visible = True
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
-            'rpPlotType.Visible = True
-            'rpHistogramOption.Visible = False
-            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbHistogram_Click()
             'UncheckOtherPlotButtons(rbHistogram)
             _mainControl.TabControl2.SelectTab(2)
             rbPlotType.Visible = False
+            rbColorSetting.Visible = False
+            rbShowLegend.Visible = False
+
             rbHistogramType.Visible = True
             rbAlgorithms.Visible = True
             rbBoxWhiskerType.Visible = False
-            'rpPlotOption.Visible = False
-            'rpHistogramOption.Visible = True
-            'rpBoxWhiskerOption.Visible = False
         End Sub
 
         Sub rbBoxWhisker_Click()
             'UncheckOtherPlotButtons(rbBoxWhisker)
             _mainControl.TabControl2.SelectTab(3)
             rbPlotType.Visible = False
+            rbColorSetting.Visible = False
+            rbShowLegend.Visible = False
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = True
@@ -412,6 +423,9 @@ Namespace GraphView
             'UncheckOtherPlotButtons(rbSummary)
             _mainControl.TabControl2.SelectTab(4)
             rbPlotType.Visible = False
+            rbColorSetting.Visible = False
+            rbShowLegend.Visible = False
+
             rbHistogramType.Visible = False
             rbAlgorithms.Visible = False
             rbBoxWhiskerType.Visible = False
