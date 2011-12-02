@@ -48,7 +48,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\..\..\..\..\Binaries\Plugins\HydroModeler\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -94,23 +94,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling">
-      <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Modeling.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Modeling.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Modeling.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=x86">
-      <HintPath>..\..\..\..\..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

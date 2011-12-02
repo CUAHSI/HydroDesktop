@@ -226,9 +226,9 @@ namespace Oatc.OpenMI.Gui.Core
             topLeft.Y = Rect.Y;
             
             //Sets up the colors to use
-            Pen outlinePen = new Pen(DotSpatial.Data.Global.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.6 * Highlight), 1.0F);
-            Color gradientTop = DotSpatial.Data.Global.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.7 * Highlight);
-            Color gradientBottom = DotSpatial.Data.Global.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 1.0 * Highlight);
+            Pen outlinePen = new Pen(DotSpatial.Symbology.SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.6 * Highlight), 1.0F);
+            Color gradientTop = DotSpatial.Symbology.SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.7 * Highlight);
+            Color gradientBottom = DotSpatial.Symbology.SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 1.0 * Highlight);
 
             //The path used for drop shadows
             GraphicsPath shadowPath = new GraphicsPath();
