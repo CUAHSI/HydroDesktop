@@ -10,6 +10,7 @@ namespace Search3.Settings.UI
         private KeywordsDialog(KeywordsSettings settings)
         {
             InitializeComponent();
+            this.Icon = Properties.Resources.CuahsiIcon;
             Load += delegate { keywordsUserControl1.BindKeywordsSettings(settings); };
         }
 

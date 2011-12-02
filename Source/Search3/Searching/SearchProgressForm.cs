@@ -20,6 +20,7 @@ namespace Search3.Searching
             _searcher = searcher;
 
             InitializeComponent();
+            this.Icon = Properties.Resources.CuahsiIcon;
 
             SubscribeToSearcherEvents();
             Disposed += SearchProgressForm_Disposed;
@@ -55,6 +56,7 @@ namespace Search3.Searching
                 _searcher.ShowUI();
             }
             btnCancel.Enabled = false;
+            btnHide.Text = "Close";
             Text = "Search Finished";
 
             string message;

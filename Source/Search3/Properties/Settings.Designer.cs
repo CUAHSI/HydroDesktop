@@ -23,63 +23,48 @@ namespace Search3.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("HisCentral")]
         public global::Search3.Settings.TypeOfCatalog TypeOfCatalog {
             get {
                 return ((global::Search3.Settings.TypeOfCatalog)(this["TypeOfCatalog"]));
             }
-            set {
-                this["TypeOfCatalog"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("WebServices.xml")]
         public string WebServicesFileName {
             get {
                 return ((string)(this["WebServicesFileName"]));
             }
-            set {
-                this["WebServicesFileName"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Resources\\Synonyms.xml")]
         public string SynonymsFilename {
             get {
                 return ((string)(this["SynonymsFilename"]));
             }
-            set {
-                this["SynonymsFilename"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Resources\\OntologyTree.xml")]
         public string OntologyFilename {
             get {
                 return ((string)(this["OntologyFilename"]));
             }
-            set {
-                this["OntologyFilename"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("searchresult_{0}.shp")]
         public string SearchResultNameMask {
             get {
                 return ((string)(this["SearchResultNameMask"]));
-            }
-            set {
-                this["SearchResultNameMask"] = value;
             }
         }
     }

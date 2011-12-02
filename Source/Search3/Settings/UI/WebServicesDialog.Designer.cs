@@ -126,7 +126,7 @@
             this.MinimizeBox = false;
             this.Name = "WebServicesDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Web Services";
+            this.Text = "Data Sources";
             this.paButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -25,6 +25,7 @@ namespace Search3.Area
             _map = map;
 
             InitializeComponent();
+            this.Icon = Properties.Resources.CuahsiIcon;
 
             BindMapToForm();
         }
