@@ -171,9 +171,9 @@ namespace Search3
             #region Data Sources
 
             const string grpDataSources = "Data Sources";
-            rbServices = new SimpleActionItem("All Services", rbServices_Click);
+            rbServices = new SimpleActionItem("All Data Sources", rbServices_Click);
             ChangeWebServicesIcon();
-            rbServices.ToolTipText = "Select web services (All Services selected)";
+            rbServices.ToolTipText = "Select data sources (All web services selected)";
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
@@ -181,6 +181,7 @@ namespace Search3
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
             rbCatalog.LargeImage = Resources.option_32;
             rbCatalog.SmallImage = Resources.option_16;
+            rbCatalog.ToolTipText = "Select the Search Catalog";
             rbCatalog.GroupCaption = grpDataSources;
             rbCatalog.RootKey = kHydroSearch3;
             head.Add(rbCatalog);
@@ -415,9 +416,15 @@ namespace Search3
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
         {
             var fsPolygons = SearchSettings.Instance.AreaSettings.Polygons;
-            var caption = fsPolygons != null && fsPolygons.Features.Count > 0
-                                       ? string.Format("{0} polygons selected", fsPolygons.Features.Count)
-                                       : "Select Polygons";
+            var caption = "Select Polygons";
+            if (fsPolygons != null && fsPolygons.Features.Count > 0)
+            {
+                int numPolygons = fsPolygons.Features.Count;
+                caption = numPolygons > 1
+                    ? String.Format("{0} polygons selected", fsPolygons.Features.Count)
+                    : "1 polygon selected";
+            }
+            
             rbSelect.Caption = caption;
             rbSelect.ToolTipText = caption;
         }
@@ -699,6 +706,7 @@ namespace Search3
         private void UpdateCatalogCaption()
         {
             rbCatalog.Caption = SearchSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
+            rbCatalog.ToolTipText = "Select search catalog (selected catalog: " + SearchSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
 
         #endregion

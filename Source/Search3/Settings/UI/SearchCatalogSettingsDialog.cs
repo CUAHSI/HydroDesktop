@@ -27,6 +27,7 @@ namespace Search3.Settings.UI
             if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
             InitializeComponent();
+            this.Icon = Properties.Resources.CuahsiIcon;
 
             _catalogSettings = catalogSettings;
             _webServicesSettings = webServicesSettings;
