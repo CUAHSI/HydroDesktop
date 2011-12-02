@@ -10,7 +10,7 @@ namespace Search3.Settings.UI
         private WebServicesDialog(WebServicesSettings settings)
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.CuahsiIcon;
+            
 
             _settings = settings;
             webServicesUserControl1.SetSettings(settings);
