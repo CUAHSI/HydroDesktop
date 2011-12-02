@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -18,8 +21,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
     class HISCentralInfoExtractor : IServiceInfoExtractor
     {
-        private readonly System.Collections.Generic.Dictionary<string, string> _services;
-        public HISCentralInfoExtractor(System.Collections.Generic.Dictionary<string, string> services)
+        private readonly Dictionary<string, string> _services;
+        public HISCentralInfoExtractor(Dictionary<string, string> services)
         {
             if (services == null) throw new ArgumentNullException("services");
             
@@ -31,6 +34,35 @@ namespace HydroDesktop.DataDownload.LayerInformation
             if (serviceUrl == null) return null;
             string res;
             return _services.TryGetValue(serviceUrl, out res) ? res : serviceUrl;
+        }
+    }
+
+    internal static class HisCentralServices
+    {
+        private static Dictionary<string, string> _services;
+        public static Dictionary<string, string> Services
+        {
+            get
+            {
+                if (_services == null || _services.Count == 0)
+                {
+                    _services = new Dictionary<string, string>();
+
+                    var wss = Global.PluginEntryPoint.App.Extensions.OfType<IWebServicesStore>().FirstOrDefault();
+                    if (wss != null)
+                    {
+                        var infos = wss.GetWebServices();
+                        if (infos != null)
+                        {
+                            foreach (var info in infos)
+                            {
+                                _services.Add(info.EndpointURL, info.DescriptionURL);
+                            }
+                        }
+                    }
+                }
+                return _services;
+            }
         }
     }
 }
