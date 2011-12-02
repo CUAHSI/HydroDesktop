@@ -93,10 +93,6 @@
       <HintPath>..\..\Binaries\HydroDesktop.Help.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Jayrock.Json">
       <HintPath>References\Jayrock.Json.dll</HintPath>
     </Reference>
