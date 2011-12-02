@@ -10,6 +10,7 @@ using DotSpatial.Symbology;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
+using HydroDesktop.DataDownload.LayerInformation;
 
 namespace HydroDesktop.DataDownload
 {
@@ -47,6 +48,8 @@ namespace HydroDesktop.DataDownload
         {
             get { return _searchLayerModifier ?? (_searchLayerModifier = new SearchLayerModifier((Map) App.Map)); }
         }
+
+        private SearchLayerInformer _searchLayerInformer;
 
         #endregion
 
@@ -88,6 +91,7 @@ namespace HydroDesktop.DataDownload
 
         #region Plugin operations
 
+        /// <ingeritdoc/>
         public override void Activate()
         {
             if (App == null) throw new ArgumentNullException("App");
@@ -120,7 +124,7 @@ namespace HydroDesktop.DataDownload
         }
        
         /// <summary>
-        /// Fires when the plugin should become inactive
+        /// Fires when the plug-in should become inactive
         /// </summary>
         public override void Deactivate()
         {
@@ -133,7 +137,10 @@ namespace HydroDesktop.DataDownload
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
-            SearchLayerModifier.DisablePopupInformer();
+            if (_searchLayerInformer != null)
+            {
+                _searchLayerInformer.Stop();
+            }
 
             Global.PluginEntryPoint = null;
 
@@ -174,13 +181,8 @@ namespace HydroDesktop.DataDownload
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
-            AttachToAllLayers();
-        }
-
-        private void AttachToAllLayers()
-        {
             foreach (var layer in App.Map.MapFrame.Layers)
-                AttachLayerToPlugin(layer);
+                AttachLayerToPlugin(layer, false);
         }
 
         private void Map_LayerAdded(object sender, LayerEventArgs e)
@@ -194,14 +196,22 @@ namespace HydroDesktop.DataDownload
             UnattachLayerFromPlugin(e.Layer);
         }
 
-        private void AttachLayerToPlugin(ILayer layer)
+        private void AttachLayerToPlugin(ILayer layer, bool addCustomFeatures = true)
         {
             if (SearchLayerModifier.IsSearchLayer(layer))
             {
-                if (SearchLayerModifier.AddCustomFeaturesToSearchLayer((IFeatureLayer) layer))
+                if (_searchLayerInformer == null)
                 {
-                    btnDownload.Enabled = true;
+                    // Create popup-informer
+                    var extractor = new HISCentralInfoExtractor(new Lazy<Dictionary<string, string>>(() => HisCentralServices.Services));
+                    _searchLayerInformer = new SearchLayerInformer(extractor, (Map) App.Map);
                 }
+
+                if (addCustomFeatures)
+                {
+                    SearchLayerModifier.AddCustomFeaturesToSearchLayer((IFeatureLayer) layer);
+                }
+                btnDownload.Enabled = true;
             }
 
             var group = layer as IGroup;
@@ -211,7 +221,7 @@ namespace HydroDesktop.DataDownload
                 group.LayerRemoved += Layers_LayerRemoved;
 
                 foreach (var child in group.GetLayers())
-                    AttachLayerToPlugin(child);
+                    AttachLayerToPlugin(child, addCustomFeatures);
             }
         }
 
