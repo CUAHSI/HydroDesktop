@@ -16,7 +16,8 @@ The general workflow for harvesting metadata into your local cache is:
 #. Use the **Add** button to add WaterOneFlow services to the list of services that the metadata cache will harvest.  This just adds services to a list and doesn't actually perform any harvesting.
 #. Use the **Manage** button to harvest metadata for selected services.
 
-Once metadata has been harvested, you can search the local metadata cache database by using the Search extension.  See the documentation on the Search extension for more information.
+Once metadata has been harvested, you can search the local metadata cache database by using the Search tab.
+For more information on search see :doc:`/guide-books/Search/Search`.
 
 
 Managing Services
