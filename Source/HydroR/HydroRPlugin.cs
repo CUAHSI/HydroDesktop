@@ -31,8 +31,6 @@ namespace HydroR
 
         private cRCommandView _hydroRControl;
 
-        bool firstTimeAdding = true;
-
         #endregion
 
         #region IExtension Members
@@ -145,7 +143,6 @@ namespace HydroR
             var dp = new DockablePanel(kHydroR, _panelName, _hydroRControl, DockStyle.Fill);
             dp.DefaultSortOrder = 40;
             App.DockManager.Add(dp);
-            firstTimeAdding = false;
         }
 
         void _hydroRControl_RChanged(EventArgs e)
