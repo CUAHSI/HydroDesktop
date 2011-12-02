@@ -21,8 +21,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
     class HISCentralInfoExtractor : IServiceInfoExtractor
     {
-        private readonly Dictionary<string, string> _services;
-        public HISCentralInfoExtractor(Dictionary<string, string> services)
+        private readonly Lazy<Dictionary<string, string>> _services;
+        public HISCentralInfoExtractor(Lazy<Dictionary<string, string>> services)
         {
             if (services == null) throw new ArgumentNullException("services");
             
@@ -33,7 +33,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         {
             if (serviceUrl == null) return null;
             string res;
-            return _services.TryGetValue(serviceUrl, out res) ? res : serviceUrl;
+            return _services.Value.TryGetValue(serviceUrl, out res) ? res : serviceUrl;
         }
     }
 

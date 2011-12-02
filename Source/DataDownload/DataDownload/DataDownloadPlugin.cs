@@ -203,7 +203,7 @@ namespace HydroDesktop.DataDownload
                 if (_searchLayerInformer == null)
                 {
                     // Create popup-informer
-                      var extractor = new HISCentralInfoExtractor(HisCentralServices.Services);
+                    var extractor = new HISCentralInfoExtractor(new Lazy<Dictionary<string, string>>(() => HisCentralServices.Services));
                     _searchLayerInformer = new SearchLayerInformer(extractor, (Map) App.Map);
                 }
 
