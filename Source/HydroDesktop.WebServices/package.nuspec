@@ -12,7 +12,7 @@
     <description>$description$</description>
     <summary />
     <language>en-US</language>
-    <tags></tags>
+    <tags>HideReleaseFromEndUser</tags>
     <dependencies>
       <dependency id="HydroDesktop.Interfaces" version="1.3.0.0" />
       <dependency id="log4net" />

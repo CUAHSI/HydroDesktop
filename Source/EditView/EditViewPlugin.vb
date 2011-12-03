@@ -97,10 +97,10 @@ Namespace EditView
 
         Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
 
-            'If ignoreRootSelected Then Return
-            'If e.SelectedRootKey = kEditView Then
-            '    App.DockManager.SelectPanel(kEditView)
-            'End If
+            If ignoreRootSelected Then Return
+            If e.SelectedRootKey = kEditView Then
+                App.DockManager.SelectPanel(kEditView)
+            End If
 
         End Sub
 
@@ -243,12 +243,9 @@ Namespace EditView
             'activate the Edit ribbon tab and the series view panel
             If e.ActivePanelKey = kEditView Then
                 ignoreRootSelected = True
-                _EditView.Visible = True
                 App.HeaderControl.SelectRoot(kEditView)
                 ignoreRootSelected = False
                 App.DockManager.SelectPanel("kHydroSeriesView")
-            Else
-                _EditView.Visible = False
             End If
             '_EditView.Visible = True
             'ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
