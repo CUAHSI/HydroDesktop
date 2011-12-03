@@ -54,7 +54,7 @@
             {
                 var res = MessageBox.Show(string.Format("Save changes to new project?"),
                                      HYDRODESKTOP_NAME,
-                                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information,
+                                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
                                      MessageBoxDefaultButton.Button3);
                 switch (res)
                 {
@@ -79,7 +79,7 @@
             {
                 var res = MessageBox.Show(string.Format("Save changes to current project [{0}]?", GetProjectShortName()),
                                     HYDRODESKTOP_NAME,
-                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information,
+                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
                                     MessageBoxDefaultButton.Button3);
                 switch (res)
                 {
@@ -99,7 +99,7 @@
             {
                 var res = MessageBox.Show(string.Format("Exit Hydrodesktop?"),
                                     HYDRODESKTOP_NAME,
-                                    MessageBoxButtons.OKCancel, MessageBoxIcon.Information,
+                                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
                                     MessageBoxDefaultButton.Button2);
                 switch (res)
                 {
