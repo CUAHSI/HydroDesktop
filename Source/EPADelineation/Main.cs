@@ -1,19 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Data;
-using DotSpatial.Projections;
-using DotSpatial.Symbology;
-using DotSpatial.Topology;
 
 namespace EPADelineation
 {
@@ -31,7 +18,7 @@ namespace EPADelineation
         #region IExtension Members
 
         /// <summary>
-        /// Fires when the plugin should become inactive
+        /// Fires when the plug-in should become inactive
         /// </summary>
         public override void Deactivate()
         {
@@ -43,7 +30,7 @@ namespace EPADelineation
 
 
         /// <summary>
-        /// Initialize the DotSpatial plugin
+        /// Initialize the DotSpatial plug-in
         /// </summary>
         public override void  Activate()
         {
@@ -52,7 +39,7 @@ namespace EPADelineation
             action.ToolTipText = "Using EPA Web Services to Delineate Catchments";
             action.SmallImage = Properties.Resources.Delineation_icon_32.GetThumbnailImage(16, 16, null, IntPtr.Zero);
             action.LargeImage = Properties.Resources.Delineation_icon_32;
-            action.RootKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
+            action.RootKey = HeaderControl.HomeRootItemKey;
             action.ToggleGroupKey = "tDelineateEpaTool";
             App.HeaderControl.Add(action);
 
@@ -65,21 +52,25 @@ namespace EPADelineation
 
         private void _startDelineate_Click(object sender, EventArgs e)
         {
-            if (isActive)
+            App.Map.FunctionMode = FunctionMode.None;
+            
+            var saveWS = new SaveWatershed(App);
+            var res = saveWS.ShowDialog();
+            if (res == System.Windows.Forms.DialogResult.OK)
             {
-                isActive = false;
-                App.Map.Cursor = Cursors.Default;
+                saveWS.Completed += saveWS_Completed;
             }
             else
             {
-                isActive = true;
-                //Check if any other Map Tools are checked
-                App.Map.FunctionMode = FunctionMode.None;
-
-                //Active the Save Watershed Form
-                SaveWatershed saveWS = new SaveWatershed(App);
-                saveWS.ShowDialog();
+                App.Map.FunctionMode = FunctionMode.Select;
             }
+        }
+
+        void saveWS_Completed(object sender, EventArgs e)
+        {
+            var saveWS = (SaveWatershed) sender;
+            saveWS.Completed -= saveWS_Completed;
+            App.Map.FunctionMode = FunctionMode.Select;
         }
 
         #endregion Click Events

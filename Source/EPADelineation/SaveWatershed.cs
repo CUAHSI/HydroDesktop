@@ -42,12 +42,13 @@ namespace EPADelineation
 
         private readonly AppManager _mapArgs;
         private readonly BackgroundWorker _bgw;
-        private bool isActive;
         private ProjectionInfo _defaultProjection;
         private readonly ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
 
         #endregion Variables
+
+        public event EventHandler Completed;
 
         #region Constructor
         /// <summary>
@@ -111,56 +112,47 @@ namespace EPADelineation
 
         private void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Error != null)
+            try
             {
-                MessageBox.Show(e.Error.Message);
-            }
+                ((Map)_mapArgs.Map).MouseClick -= Mouse_Click;
+                if (e.Error != null)
+                {
+                    MessageBox.Show(e.Error.Message);
+                }
 
-            else if (e.Result == null)
+                var result = e.Result as IList<IFeatureSet>;
+                if (result != null && result.Count == 3 &&
+                    result[0] != null && result[1] != null && result[2] != null)
+                {
+                    _defaultProjection = _mapArgs.Map.Projection;
+
+                    var world = new DotSpatial.Projections.GeographicCategories.World();
+                    var projWorld = new DotSpatial.Projections.ProjectedCategories.World();
+
+                    //This reprojection procedure is critical and important to finally get the correct projection.
+                    foreach (var fs in result)
+                    {
+                        fs.Projection = world.WGS1984;
+                        //fs.Reproject(_mapArgs.Map.Projection);
+                        fs.Reproject(projWorld.WebMercator);
+                    }
+
+                    AddEPAShapes(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
             {
                 _mapArgs.Map.Cursor = Cursors.Default;
-                return;
-            }
 
-            else
-            {
-                var result = e.Result as IList<IFeatureSet>;
-
-                //this checks correct type of result
-                if (result == null)
+                // Raise completed event
+                var handler = Completed;
+                if (handler != null)
                 {
-                    _mapArgs.Map.Cursor = Cursors.Default;
-                    return;
-                }
-                if (result[0] == null || result[1] == null || result[2] == null)
-                {
-                    _mapArgs.Map.Cursor = Cursors.Default;
-                    return;
-                }
-
-                _defaultProjection = _mapArgs.Map.Projection;
-
-                var world = new DotSpatial.Projections.GeographicCategories.World();
-                var projWorld = new DotSpatial.Projections.ProjectedCategories.World();
-
-                //This reprojection procedure is critical and important to finally get the correct projection.
-                foreach (var fs in result)
-                {
-                    fs.Projection = world.WGS1984;
-                    //fs.Reproject(_mapArgs.Map.Projection);
-                    fs.Reproject(projWorld.WebMercator);
-                }
-
-                try
-                {
-                    AddEPAShapes(result);
-                    _mapArgs.Map.Cursor = Cursors.Default;
-                    isActive = false;
-                }
-
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    handler(this, EventArgs.Empty);
                 }
             }
         }
@@ -223,35 +215,9 @@ namespace EPADelineation
                 }
             }
 
-            try
-            {
-                _mapArgs.Map.Cursor = Cursors.Cross;
-                ((Map)_mapArgs.Map).MouseClick += Mouse_Click;
-                Close();
-                isActive = true;
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                _mapArgs.Map.Cursor = Cursors.Default;
-            }
-        }
-        /// <summary>
-        /// When the user clicks Cancel
-        /// </summary>
-        /// <param name="sender">sender</param>
-        /// <param name="e">event arguments</param>
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Cancel;
+            _mapArgs.Map.Cursor = Cursors.Cross;
+            ((Map) _mapArgs.Map).MouseClick += Mouse_Click;
             Close();
-            isActive = false;
-        }
-
-        private void SaveDialog_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            isActive = false;
         }
 
         /// <summary>
@@ -286,12 +252,11 @@ namespace EPADelineation
                 return;
             }
 
-            var click = e.Button;
             var _mainMap = _mapArgs.Map as Map;
             _defaultProjection = KnownCoordinateSystems.Projected.World.WebMercator;
 
             //Must satisfy these three prerequisites to trig the delineation
-            if ((click == MouseButtons.Left) && (_mapArgs.Map.Cursor == Cursors.Cross) && isActive)
+            if ((e.Button == MouseButtons.Left) && (_mapArgs.Map.Cursor == Cursors.Cross))
             {
                 try
                 {
@@ -529,83 +494,81 @@ namespace EPADelineation
         /// <param name="pointpolygon">IList of IFeatureset saving both start point and delineated polygon</param>
         private void AddEPAShapes(IEnumerable<IFeatureSet> pointpolygon)
         {
-            if (pointpolygon != null)
+            if (pointpolygon == null) return;
+            foreach (IFeatureSet fsset in pointpolygon)
             {
-                foreach (IFeatureSet fsset in pointpolygon)
+                //Assign projection here <--Necessary
+                fsset.Projection = _mapArgs.Map.Projection;
+
+                var indexToInsert = GetPositionToInsertWatershedLayer();
+                if (fsset.FeatureType == FeatureType.Point)
                 {
-                    //Assign projection here <--Necessary
-                    fsset.Projection = _mapArgs.Map.Projection;
-
-                    var indexToInsert = GetPositionToInsertWatershedLayer();
-                    if (fsset.FeatureType == FeatureType.Point)
+                    try
                     {
-                        try
-                        {
-                            //Save featureset as a MapPointLayer
-                            IMapPointLayer point = new MapPointLayer(fsset);
-                            point.LegendText = Path.GetFileNameWithoutExtension(_wshedpoint);
+                        //Save featureset as a MapPointLayer
+                        IMapPointLayer point = new MapPointLayer(fsset);
+                        point.LegendText = Path.GetFileNameWithoutExtension(_wshedpoint);
                             
-                            _mapArgs.Map.Layers.Insert(indexToInsert, point);
+                        _mapArgs.Map.Layers.Insert(indexToInsert, point);
 
-                            fsset.Filename = _wshedpoint;
-                            fsset.SaveAs(_wshedpoint, true);
-                        }
-                        catch (Exception ex)
-                        {
-                            var message = "Failed to add the point." + Environment.NewLine + ex.Message;
-                            MessageBox.Show(message);
-                        }
+                        fsset.Filename = _wshedpoint;
+                        fsset.SaveAs(_wshedpoint, true);
                     }
-
-                    if (fsset.FeatureType == FeatureType.Line)
+                    catch (Exception ex)
                     {
-                        try
-                        {
-                            //Save featureset as a MapLineLayer
-                            IMapLineLayer line = new MapLineLayer(fsset);
-                            line.LegendText = Path.GetFileNameWithoutExtension(_stream);
-
-                            var linesymbol = new LineSymbolizer(Color.Blue, 1);
-                            line.Symbolizer = linesymbol;
-
-                            _mapArgs.Map.Layers.Insert(indexToInsert, line);
-
-                            fsset.Filename = _stream;
-                            fsset.Save();
-                        }
-                        catch (Exception ex)
-                        {
-                            var message = "Failed to add the streamline." + Environment.NewLine + ex.Message;
-                            MessageBox.Show(message);
-                        }
+                        var message = "Failed to add the point." + Environment.NewLine + ex.Message;
+                        MessageBox.Show(message);
                     }
+                }
 
-                    if (fsset.FeatureType == FeatureType.Polygon)
+                if (fsset.FeatureType == FeatureType.Line)
+                {
+                    try
                     {
-                        try
-                        {
-                            //Effective in solving projection problem to display polygon
-                            string file = _wshed;
-                            //fsset.Reproject(_mapArgs.Map.Projection);
-                            fsset.SaveAs(file, true);
+                        //Save featureset as a MapLineLayer
+                        IMapLineLayer line = new MapLineLayer(fsset);
+                        line.LegendText = Path.GetFileNameWithoutExtension(_stream);
 
-                            IFeatureSet polyfs = FeatureSet.Open(file);
+                        var linesymbol = new LineSymbolizer(Color.Blue, 1);
+                        line.Symbolizer = linesymbol;
 
-                            polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
-                            polyfs.Reproject(_mapArgs.Map.Projection);
+                        _mapArgs.Map.Layers.Insert(indexToInsert, line);
 
-                            var polysymbol = new PolygonSymbolizer(Color.LightBlue.ToTransparent((float)0.7), Color.DarkBlue);
+                        fsset.Filename = _stream;
+                        fsset.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = "Failed to add the streamline." + Environment.NewLine + ex.Message;
+                        MessageBox.Show(message);
+                    }
+                }
 
-                            IMapPolygonLayer poly = new MapPolygonLayer(polyfs);
-                            poly.Symbolizer = polysymbol;
+                if (fsset.FeatureType == FeatureType.Polygon)
+                {
+                    try
+                    {
+                        //Effective in solving projection problem to display polygon
+                        string file = _wshed;
+                        //fsset.Reproject(_mapArgs.Map.Projection);
+                        fsset.SaveAs(file, true);
 
-                            _mapArgs.Map.Layers.Insert(indexToInsert, poly);
-                        }
-                        catch (Exception ex)
-                        {
-                            var message = "Failed to add the watershed." + Environment.NewLine + ex.Message;
-                            MessageBox.Show(message);
-                        }
+                        IFeatureSet polyfs = FeatureSet.Open(file);
+
+                        polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+                        polyfs.Reproject(_mapArgs.Map.Projection);
+
+                        var polysymbol = new PolygonSymbolizer(Color.LightBlue.ToTransparent((float)0.7), Color.DarkBlue);
+
+                        IMapPolygonLayer poly = new MapPolygonLayer(polyfs);
+                        poly.Symbolizer = polysymbol;
+
+                        _mapArgs.Map.Layers.Insert(indexToInsert, poly);
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = "Failed to add the watershed." + Environment.NewLine + ex.Message;
+                        MessageBox.Show(message);
                     }
                 }
             }
