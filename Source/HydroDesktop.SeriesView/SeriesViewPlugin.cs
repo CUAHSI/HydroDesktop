@@ -40,12 +40,7 @@
         {
             if (e.ActivePanelKey == "kHydroTable")
             {
-                tableRoot.Visible = true;
                 App.HeaderControl.SelectRoot("kHydroTable");
-            }
-            else
-            {
-                tableRoot.Visible = false;
             }
         }
 

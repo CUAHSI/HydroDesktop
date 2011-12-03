@@ -119,12 +119,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            //if (ignoreRootSelected) return;
+            if (ignoreRootSelected) return;
             
-            //if (e.SelectedRootKey == "RootRibbonHydroModeler")
-            //{
-            //    App.DockManager.SelectPanel(kHydroModelerDock);
-            //}
+            if (e.SelectedRootKey == "RootRibbonHydroModeler")
+            {
+                App.DockManager.SelectPanel(kHydroModelerDock);
+            }
         }
         #endregion
 
@@ -308,13 +308,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 App.DockManager.SelectPanel("RootRibbonHydroModeler");
                 ignoreRootSelected = true;
-                root.Visible = true;
                 App.HeaderControl.SelectRoot(KHydroModeler);
                 ignoreRootSelected = false;
-            }
-            else
-            {
-                root.Visible = false;
             }
         }
 
