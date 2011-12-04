@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
-using HydroDesktop.Interfaces;
 using System.ServiceModel.Description;
 using DotSpatial.Data;
 using DotSpatial.Topology;
