@@ -1,15 +1,11 @@
 ﻿namespace HydroDesktop.Main
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Windows.Forms;
 
     using DotSpatial.Controls;
     using DotSpatial.Controls.Header;
     using System.ComponentModel.Composition;
-    using DotSpatial.Controls.Docking;
     using HydroDesktop.Configuration;
     using System.IO;
     using HydroDesktop.Interfaces;
@@ -17,6 +13,8 @@
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
+        private const string HYDRODESKTOP_NAME = "CUAHSI HydroDesktop";
+
         //the seriesView component is the shared HydroDesktop component
         //for database management
         [Import("SeriesControl", typeof(ISeriesSelector))]
@@ -34,17 +32,95 @@
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             myProjectManager = new ProjectManager(App);
 
-            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
-            App.SerializationManager.Serializing += new EventHandler<SerializingEventArgs>(SerializationManager_Serializing);
-            App.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
-            App.SerializationManager.NewProjectCreated += new EventHandler<SerializingEventArgs>(SerializationManager_NewProjectCreated);
-            App.SerializationManager.IsDirtyChanged += new EventHandler(SerializationManager_IsDirtyChanged);
-            
+            App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
+            App.SerializationManager.Serializing += SerializationManager_Serializing;
+            App.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            App.SerializationManager.NewProjectCreated += SerializationManager_NewProjectCreated;
+            App.SerializationManager.IsDirtyChanged += SerializationManager_IsDirtyChanged;
+
+            // todo: export Shell in MapWindow as Form to avoid type casting
+            if (Shell is Form)
+            {
+                ((Form)Shell).FormClosing += HydroDesktopMainPlugin_FormClosing;
+            }
+
             base.Activate();
         }
 
+        void HydroDesktopMainPlugin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var projectExists = App.SerializationManager.CurrentProjectFile != null;
+            if (!projectExists)
+            {
+                var res = MessageBox.Show(string.Format("Save changes to new project?"),
+                                     HYDRODESKTOP_NAME,
+                                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
+                                     MessageBoxDefaultButton.Button3);
+                switch (res)
+                {
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        return;
+                    case DialogResult.No:
+                        // Do nothing, exit without saving
+                        return;
+                    case DialogResult.Yes:
+                        // Save and exit
+                        //todo: show DS Save Project Dialog, and remove next 2 lines
+                        e.Cancel = true;
+                        MessageBox.Show("To save new project please select File ->Save (Save As...) from main menu.",
+                                        HYDRODESKTOP_NAME, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                }
+            }
+
+            var hasProjectChanges = App.SerializationManager.IsDirty;
+            if (hasProjectChanges)
+            {
+                var res = MessageBox.Show(string.Format("Save changes to current project [{0}]?", GetProjectShortName()),
+                                    HYDRODESKTOP_NAME,
+                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
+                                    MessageBoxDefaultButton.Button3);
+                switch (res)
+                {
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        return;
+                    case DialogResult.No:
+                        // Do nothing, exit without saving
+                        return;
+                    case DialogResult.Yes:
+                        // Save and exit
+                        App.SerializationManager.SaveProject(App.SerializationManager.CurrentProjectFile);
+                        return;
+                }
+            }
+            else
+            {
+                var res = MessageBox.Show(string.Format("Exit Hydrodesktop?"),
+                                    HYDRODESKTOP_NAME,
+                                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
+                                    MessageBoxDefaultButton.Button2);
+                switch (res)
+                {
+                    case DialogResult.Cancel:
+                        // Not exit
+                        e.Cancel = true;
+                        return;
+                    case DialogResult.OK:
+                        // Exit
+                        return;
+                }
+            }
+        }
+
         public override void  Deactivate()
-        {       
+        {
+            if (Shell is Form)
+            {
+                ((Form)Shell).FormClosing -= HydroDesktopMainPlugin_FormClosing;
+            }
+
             base.Deactivate();
         }
 
@@ -75,14 +151,12 @@
         void SerializationManager_Serializing(object sender, SerializingEventArgs e)
         {
             myProjectManager.SavingProject();
+            Shell.Text = string.Format("{0} - {1}", HYDRODESKTOP_NAME, GetProjectShortName());
+        }
 
-            Shell.Text = "CUAHSI HydroDesktop - " + Path.GetFileName(App.SerializationManager.CurrentProjectFile);
-            
-            //string projFile = App.SerializationManager.CurrentProjectFile;
-            //App.ProgressHandler.Progress("Saving Project " + projFile, 0, "Saving Project " + projFile);
-            
-            
-            //throw new NotImplementedException();
+        private string GetProjectShortName()
+        {
+            return Path.GetFileName(App.SerializationManager.CurrentProjectFile);
         }
 
         //show information about current project state
@@ -106,7 +180,7 @@
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             myProjectManager.OpeningProject();
-            Shell.Text = "CUAHSI HydroDesktop - " + Path.GetFileName(App.SerializationManager.CurrentProjectFile);
+            Shell.Text = string.Format("{0} - {1}", HYDRODESKTOP_NAME, GetProjectShortName());
             //setup new db information
             SeriesControl.SetupDatabase();
         }
@@ -213,7 +287,17 @@
             if (e.ActivePanelKey == "kMap")
             {
                 App.DockManager.SelectPanel("kLegend");
-                App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+
+                //if the clicked root item was 'search', then don't select the map root item
+                //(the user intended to show search tab and map panel)
+                if (App.SerializationManager.GetCustomSetting<bool>("SearchRootClicked", false))
+                {
+                    App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+                }
+                else
+                {
+                    App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
+                }
             }
         }
 

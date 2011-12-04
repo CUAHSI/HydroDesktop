@@ -28,6 +28,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private string _defaultPath = HydroModeler.Properties.Resources.startpath;
         private readonly string _localHelpUri = HydroModeler.Settings.Default.localHelpUri;
         private RootItem root = null;
+        private bool ignoreRootSelected = false; //used by synchronizing between ribbon and docking
 
         // reference to the main series view panel
         [Import("SeriesControl", typeof(ISeriesSelector))]
@@ -118,6 +119,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
+            if (ignoreRootSelected) return;
+            
             if (e.SelectedRootKey == "RootRibbonHydroModeler")
             {
                 App.DockManager.SelectPanel(kHydroModelerDock);
@@ -304,7 +307,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             if (e.ActivePanelKey == kHydroModelerDock)
             {
                 App.DockManager.SelectPanel("RootRibbonHydroModeler");
+                ignoreRootSelected = true;
                 App.HeaderControl.SelectRoot(KHydroModeler);
+                ignoreRootSelected = false;
             }
         }
 

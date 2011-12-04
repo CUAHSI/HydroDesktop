@@ -220,6 +220,7 @@ namespace Search3
         {
             if (e.SelectedRootKey == kHydroSearch3)
             {
+                App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 App.DockManager.SelectPanel("kMap");
             }
         }
