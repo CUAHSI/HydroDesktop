@@ -9,36 +9,26 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
-using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
     /// <summary>
-    /// Class conatains methods for modifing "search layer"
+    /// Class contains methods for modifying "search layer"
     /// </summary>
     class SearchLayerModifier
     {
         private readonly Map _map;
-        private readonly SearchLayerInformer _searchInformer;
 
         public SearchLayerModifier(Map map)
         {
-            _map = map;
             if (map == null) throw new ArgumentNullException("map");
 
-            var extractor = new HISCentralInfoExtractor(Services);
-            _searchInformer = new SearchLayerInformer(extractor, map);
+            _map = map;
         }
-       
 
         #region Public methods
-
-        public void DisablePopupInformer()
-        {
-            _searchInformer.Stop();
-        }
 
         /// <summary>
         /// Check layer for search attributes
@@ -71,16 +61,14 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         /// </summary>
         /// <param name="layer">Layer</param>
         /// <exception cref="ArgumentNullException"><para>layer</para>, <para>map</para> must be not null.</exception>
-        public bool AddCustomFeaturesToSearchLayer(IFeatureLayer layer)
+        public void AddCustomFeaturesToSearchLayer(IFeatureLayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
 
-            if (!IsSearchLayer(layer)) return false;
+            if (!IsSearchLayer(layer)) return;
 
             SetUpLabeling(layer, _map);
             UpdateSymbolizing(layer);
-
-            return true;
         }
 
         public void UpdateSearchLayerAfterDownloading(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, 
@@ -131,7 +119,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
         private void UpdateDataTable(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, DownloadManager downloadManager)
         {
-            // Add all columns from downloadedFeatureSet, wich not exists in searchLayer
+            // Add all columns from downloadedFeatureSet, which not exists in searchLayer
             foreach (DataColumn column in downloadedFeatureSet.DataTable.Columns)
             {
                 if (!searchLayer.DataSet.DataTable.Columns.Contains(column.ColumnName))
@@ -221,32 +209,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
             }
         }
-
-        private static Dictionary<string, string> _services;
-        private static Dictionary<string, string> Services
-        {
-            get
-            {
-                if (_services == null || _services.Count == 0)
-                {
-                    _services = new Dictionary<string, string>();
-
-                    var wss = Global.PluginEntryPoint.App.Extensions.OfType<IWebServicesStore>().FirstOrDefault();
-                    if (wss != null)
-                    {
-                        var infos = wss.GetWebServices();
-                        if (infos != null)
-                        {
-                            foreach (var info in infos)
-                            {
-                                _services.Add(info.EndpointURL, info.DescriptionURL);
-                            }
-                        }
-                    }
-                }
-                return _services;
-            }
-        }
      
         private static void UpdateSymbolizing(IFeatureLayer layer)
         {
@@ -310,7 +272,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             // Find min/max value in valueField 
             var minValue = int.MaxValue;
             var maxValue = int.MinValue;
-            //foreach (var feature in featureSet.Features)
             foreach (DataRow row in featureSet.DataTable.Rows)
             {
                 int value;
@@ -344,7 +305,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             const int imageStep = 5;
             var imageSize = 5;
 
-            var imageHelper = new HydroDesktop.WebServices.ServiceIconHelper(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
+            var imageHelper = new WebServices.ServiceIconHelper(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
             var image = imageHelper.GetImageForService(servCode);
 
             const string seriesID = "SeriesID";
@@ -377,7 +338,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 myCategory.SelectionSymbolizer.SetFillColor(Color.Yellow);
                 scheme.AddCategory(myCategory);
 
-                // add categorie for downloaded
+                // add category for downloaded
                 if (needDownloadedCategories)
                 {
                     mySymbolizer = new PointSymbolizer(image, imageSize);

@@ -175,11 +175,6 @@ namespace HydroR
             {
                 App.DockManager.SelectPanel("kHydroSeriesView");
                 App.HeaderControl.SelectRoot(kHydroR);
-                //_hydroRTab.Visible = true;
-            }
-            else
-            {
-                //_hydroRTab.Visible = false;
             }
         }
 

@@ -43,6 +43,7 @@
             // 
             // OK
             // 
+            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Location = new System.Drawing.Point(37, 171);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(83, 24);
@@ -53,13 +54,13 @@
             // 
             // Cancel
             // 
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Location = new System.Drawing.Point(144, 171);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(83, 24);
             this.Cancel.TabIndex = 1;
             this.Cancel.Text = "&Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
-            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // gbxSave
             // 
@@ -156,7 +157,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Save Watershed";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.SaveDialog_HelpButtonClicked);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SaveDialog_FormClosing);
             this.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.SaveDialog_HelpRequested);
             this.gbxSave.ResumeLayout(false);
             this.gbxSave.PerformLayout();

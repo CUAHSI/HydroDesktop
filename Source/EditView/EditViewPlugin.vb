@@ -17,6 +17,8 @@ Namespace EditView
         <Import("SeriesControl", GetType(ISeriesSelector))>
         Private _seriesSelector As ISeriesSelector
 
+        Private ignoreRootSelected As Boolean = False
+
         Private _mainControl As cEditView
 
         Private Const _pluginName As String = "Edit"
@@ -94,6 +96,8 @@ Namespace EditView
         End Sub
 
         Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
+
+            If ignoreRootSelected Then Return
             If e.SelectedRootKey = kEditView Then
                 App.DockManager.SelectPanel(kEditView)
             End If
@@ -238,7 +242,9 @@ Namespace EditView
 
             'activate the Edit ribbon tab and the series view panel
             If e.ActivePanelKey = kEditView Then
+                ignoreRootSelected = True
                 App.HeaderControl.SelectRoot(kEditView)
+                ignoreRootSelected = False
                 App.DockManager.SelectPanel("kHydroSeriesView")
             End If
             '_EditView.Visible = True
