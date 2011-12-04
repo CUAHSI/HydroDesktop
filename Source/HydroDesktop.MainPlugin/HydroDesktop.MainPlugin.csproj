@@ -164,6 +164,12 @@
   <ItemGroup>
     <None Include="Resources\timeSeries.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help.csproj">
+      <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
+      <Name>HydroDesktop.Help</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

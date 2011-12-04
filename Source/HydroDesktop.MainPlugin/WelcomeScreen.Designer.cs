@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeScreen));
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.linkLabelQuickStart = new System.Windows.Forms.LinkLabel();
+            this.linkLabelHelp = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblProductVersion = new System.Windows.Forms.Label();
@@ -66,25 +66,27 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // linkLabel1
+            // linkLabelQuickStart
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(12, 98);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(171, 13);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Getting Started with HydroDesktop";
+            this.linkLabelQuickStart.AutoSize = true;
+            this.linkLabelQuickStart.Location = new System.Drawing.Point(12, 98);
+            this.linkLabelQuickStart.Name = "linkLabelQuickStart";
+            this.linkLabelQuickStart.Size = new System.Drawing.Size(171, 13);
+            this.linkLabelQuickStart.TabIndex = 4;
+            this.linkLabelQuickStart.TabStop = true;
+            this.linkLabelQuickStart.Text = "Getting Started with HydroDesktop";
+            this.linkLabelQuickStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelQuickStart_click);
             // 
-            // linkLabel2
+            // linkLabelHelp
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(22, 130);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(140, 13);
-            this.linkLabel2.TabIndex = 5;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "View HydroDesktop help file";
+            this.linkLabelHelp.AutoSize = true;
+            this.linkLabelHelp.Location = new System.Drawing.Point(22, 130);
+            this.linkLabelHelp.Name = "linkLabelHelp";
+            this.linkLabelHelp.Size = new System.Drawing.Size(140, 13);
+            this.linkLabelHelp.TabIndex = 5;
+            this.linkLabelHelp.TabStop = true;
+            this.linkLabelHelp.Text = "View HydroDesktop help file";
+            this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_click);
             // 
             // pictureBox1
             // 
@@ -121,6 +123,7 @@
             this.lstRecentProjects.Name = "lstRecentProjects";
             this.lstRecentProjects.Size = new System.Drawing.Size(245, 82);
             this.lstRecentProjects.TabIndex = 9;
+            this.lstRecentProjects.Click += new System.EventHandler(this.lstRecentProjects_Click);
             // 
             // bsRecentFiles
             // 
@@ -244,8 +247,8 @@
             this.Controls.Add(this.groupBoxProject);
             this.Controls.Add(this.lblProductVersion);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.linkLabel2);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.linkLabelHelp);
+            this.Controls.Add(this.linkLabelQuickStart);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -268,8 +271,8 @@
         #endregion
 
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel linkLabelQuickStart;
+        private System.Windows.Forms.LinkLabel linkLabelHelp;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblProductVersion;
