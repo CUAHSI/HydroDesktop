@@ -1,35 +1,53 @@
-﻿Public Class fDateTimeSetting
+﻿Imports System.Windows.Forms
 
-    Public Sub initialize()
+Public Class fDateTimeSetting
 
-        dtpStartDate.MinDate = _CTSA.StartDateLimit
-        dtpEndDate.MaxDate = _CTSA.EndDateLimit
+    Private ReadOnly _ctsa As cTSA
 
-        dtpStartDate.SelectionStart = _CTSA.StartDateTime
-        dtpEndDate.SelectionStart = _CTSA.EndDateTime
+    Public Sub New(ctsa As cTSA)
 
-        dtpEndDate.MinDate = dtpStartDate.SelectionStart
-        dtpStartDate.MaxDate = dtpEndDate.SelectionStart
+        ' This call is required by the designer.
+        InitializeComponent()
 
+        ' Add any initialization after the InitializeComponent() call.
+        _ctsa = ctsa
+
+        dtpStartDate.MinDate = _ctsa.StartDateLimit
+        dtpStartDate.MaxDate = _ctsa.EndDateLimit
+        dtpEndDate.MinDate = _ctsa.StartDateLimit
+        dtpEndDate.MaxDate = _ctsa.EndDateLimit
+
+        dtpStartDate.Value = _ctsa.StartDateTime
+        dtpEndDate.Value = _ctsa.EndDateTime
+
+        AddHandler dtpStartDate.ValueChanged, AddressOf dtpDate_ValueChanged
+        AddHandler dtpEndDate.ValueChanged, AddressOf dtpDate_ValueChanged
+
+        btnApply.Enabled = False
     End Sub
 
-
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.Close()
-    End Sub
-
-    Private Sub dtpStartDate_DateChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DateRangeEventArgs) Handles dtpStartDate.DateChanged
-        dtpEndDate.MinDate = dtpStartDate.SelectionStart
-    End Sub
-
-    Private Sub dtpEndDate_DateChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DateRangeEventArgs) Handles dtpEndDate.DateChanged
-        dtpStartDate.MaxDate = dtpEndDate.SelectionStart
+    Private Sub dtpDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
+        btnApply.Enabled = True
     End Sub
 
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
-        _CTSA.StartDateTime = dtpStartDate.SelectionStart
-        _CTSA.EndDateTime = dtpEndDate.SelectionStart
-        _CTSA.ApplyOptions()
-        Me.Close()
+        ApplyDates()
     End Sub
+
+    Private Sub btnOK_Click(sender As System.Object, e As System.EventArgs) Handles btnOK.Click
+        ApplyDates()
+        Close()
+    End Sub
+
+
+    Private Sub ApplyDates()
+        If Not btnApply.Enabled Then Return
+
+        _ctsa.StartDateTime = dtpStartDate.Value
+        _ctsa.EndDateTime = dtpEndDate.Value
+        _ctsa.ApplyOptions()
+
+        btnApply.Enabled = False
+    End Sub
+
 End Class

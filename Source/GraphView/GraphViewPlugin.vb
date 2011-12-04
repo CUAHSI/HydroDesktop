@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
+Imports System.ComponentModel
 Imports DotSpatial.Controls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
@@ -69,6 +70,9 @@ Namespace GraphView
 
         Private Const rpOtherOptions As String = "Date & Time"
         Private rbDateTimeSetting As SimpleActionItem 'Date Setting
+        Private rbStartDate As TextEntryActionItem 'Date Setting
+        Private rbEndDate As TextEntryActionItem 'Date Setting
+        Private rbApplyDateSettings As SimpleActionItem
         Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
         Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
 
@@ -92,7 +96,7 @@ Namespace GraphView
             '    AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
             'End If
 
-            
+
 
             If Not appSeriesView Is Nothing Then
                 _mainControl = New cTSA(appSeriesView)
@@ -306,26 +310,42 @@ Namespace GraphView
 
             'Others
             'Date Setting
+            rbStartDate = New TextEntryActionItem()
+            rbStartDate.Caption = "Start"
+            rbStartDate.GroupCaption = rpOtherOptions
+            rbStartDate.RootKey = kGraph
+            rbStartDate.Width = 60
+            AddHandler rbStartDate.PropertyChanged, AddressOf dateSettings_PropertyChanged
+            App.HeaderControl.Add(rbStartDate)
+
+            rbEndDate = New TextEntryActionItem()
+            rbEndDate.Caption = " End"
+            rbEndDate.GroupCaption = rpOtherOptions
+            rbEndDate.RootKey = kGraph
+            rbEndDate.Width = 60
+            AddHandler rbEndDate.PropertyChanged, AddressOf dateSettings_PropertyChanged
+            App.HeaderControl.Add(rbEndDate)
+
+            AddHandler _mainControl.DatesChanged, AddressOf mainControlDatesChanged
+
+            rbApplyDateSettings = New SimpleActionItem("Refresh", AddressOf rbDateTimeRefresh_Click)
+            rbApplyDateSettings.RootKey = kGraph
+            rbApplyDateSettings.LargeImage = My.Resources.DateSetting
+            rbApplyDateSettings.GroupCaption = rpOtherOptions
+            App.HeaderControl.Add(rbApplyDateSettings)
+
+            rbDisplayFullDateRange = New SimpleActionItem("Full Date Range", AddressOf rbDisplayFullDateRange_Click)
+            rbDisplayFullDateRange.RootKey = kGraph
+            rbDisplayFullDateRange.GroupCaption = rpOtherOptions
+            rbDisplayFullDateRange.Enabled = False
+            App.HeaderControl.Add(rbDisplayFullDateRange)
+
             rbDateTimeSetting = New SimpleActionItem("Date Setting", AddressOf rbDateTimeSetting_Click)
             rbDateTimeSetting.RootKey = kGraph
             rbDateTimeSetting.LargeImage = My.Resources.DateSetting
             rbDateTimeSetting.GroupCaption = rpOtherOptions
             App.HeaderControl.Add(rbDateTimeSetting)
-
-            'TODO: Start and end date labels: Add to a different place!
-            'rlblStratDate.Text = "Start Date:"
-            'rlblEndDate.Text = "End Date:"
-            'rpOtherOptions.Items.Add(rlblStratDate)
-            'rpOtherOptions.Items.Add(rlblEndDate)
-            '_mainControl.rlblStratDate = rlblStratDate
-            '_mainControl.rlblEndDate = rlblEndDate
-
-            'Display Full Date Range toggle button
-            rbDisplayFullDateRange = New SimpleActionItem("Display Full Date Range", AddressOf rbDisplayFullDateRange_Click)
-            rbDisplayFullDateRange.RootKey = kGraph
-            rbDisplayFullDateRange.ToggleGroupKey = "tkFullDateRange"
-            rbDisplayFullDateRange.GroupCaption = rpOtherOptions
-            App.HeaderControl.Add(rbDisplayFullDateRange)
+            rbDateTimeSetting.Visible = False
 
             'Chart
             'Show Point Values
@@ -361,6 +381,41 @@ Namespace GraphView
             rbTSA_Click()
             rbTSA.Toggle()
 
+        End Sub
+
+        Private Sub dateSettings_PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+            If "Text".Equals(e.PropertyName) Then
+                Dim startDate As DateTime
+                Dim endDate As DateTime
+                If (DateTime.TryParse(rbStartDate.Text, startDate) And
+                    DateTime.TryParse(rbEndDate.Text, endDate)) Then
+
+                    If _mainControl.StartDateLimit.Date >= startDate And
+                       _mainControl.EndDateLimit.Date <= endDate Then
+                        rbDisplayFullDateRange.Enabled = False
+                    Else
+                        rbDisplayFullDateRange.Enabled = True
+                    End If
+
+                End If
+            End If
+        End Sub
+
+        Private Sub rbDateTimeRefresh_Click(ByVal sender As Object, ByVal e As EventArgs)
+            Dim startDate As DateTime
+            Dim endDate As DateTime
+            If (DateTime.TryParse(rbStartDate.Text, startDate) And
+                DateTime.TryParse(rbEndDate.Text, endDate)) Then
+                _mainControl.StartDateTime = startDate
+                _mainControl.EndDateTime = endDate
+                _mainControl.IsDisplayFullDate = False
+                _mainControl.ApplyOptions()
+            End If
+        End Sub
+
+        Private Sub mainControlDatesChanged(ByVal sender As Object, ByVal e As EventArgs)
+            rbStartDate.Text = _mainControl.StartDateTime.ToShortDateString()
+            rbEndDate.Text = _mainControl.EndDateTime.ToShortDateString()
         End Sub
 
 #End Region
@@ -520,26 +575,18 @@ Namespace GraphView
 
             'rckbDisplayFullDateRange.Checked = False
             _mainControl.IsDisplayFullDate = False
-            Dim frmDateTimeSetting = New fDateTimeSetting
-            frmDateTimeSetting._CTSA = _mainControl
-            frmDateTimeSetting.initialize()
+            Dim frmDateTimeSetting = New fDateTimeSetting(_mainControl)
             frmDateTimeSetting.ShowDialog()
         End Sub
 
         'Display full date range toggle button is clicked
-        Sub rbDisplayFullDateRange_Click()
+        Private Sub rbDisplayFullDateRange_Click()
             If _mainControl.IsDisplayFullDate Then
                 _mainControl.IsDisplayFullDate = False
             Else
                 _mainControl.IsDisplayFullDate = True
                 _mainControl.ApplyOptions()
             End If
-            'If rckbDisplayFullDateRange.Checked Then
-            '    _mainControl.IsDisplayFullDate = True
-            '    _mainControl.ApplyOptions()
-            'Else
-            '    _mainControl.IsDisplayFullDate = False
-            'End If
         End Sub
 
         'Show Point Values 

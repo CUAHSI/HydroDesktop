@@ -30,10 +30,60 @@ Public Class cTSA
     Private _seriesMenu As ISeriesSelector
 
 
-    Public StartDateTime As DateTime
-    Public EndDateTime As DateTime
-    Public StartDateLimit As DateTime
-    Public EndDateLimit As DateTime
+    Private _startDateTime As DateTime
+    Public Property StartDateTime() As DateTime
+        Get
+            Return _startDateTime
+        End Get
+        Set(ByVal value As DateTime)
+            _startDateTime = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private _endDateTime As DateTime
+    Public Property EndDateTime() As Date
+        Get
+            Return _endDateTime
+        End Get
+        Set(value As Date)
+            _endDateTime = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private _startDateLimit As DateTime
+    Public Property StartDateLimit() As Date
+        Get
+            Return _startDateLimit
+        End Get
+        Set(value As Date)
+            _startDateLimit = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private _endDateLimit As DateTime
+    Public Property EndDateLimit() As Date
+        Get
+            Return _endDateLimit
+        End Get
+        Set(value As Date)
+            _endDateLimit = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private Sub RaiseDatesChanged()
+        RaiseEvent DatesChanged(Me, EventArgs.Empty)
+    End Sub
+
+    Public Event DatesChanged As EventHandler
+
     Public IsDisplayFullDate As Boolean = True
 
     Public Sub RefreshView()
@@ -429,7 +479,7 @@ Public Class cTSA
 
         If IsDisplayFullDate Then
             StartDateTime = StartDateLimit
-            EndDateTime = EndDateLimit
+            Me.EndDateTime = EndDateLimit
             'rlblStratDate.Text = "Start Date: " + StartDateTime.ToString
             'rlblEndDate.Text = "End Date:   " + EndDateTime.ToString
         End If
@@ -461,7 +511,7 @@ Public Class cTSA
 
             If IsDisplayFullDate Then
                 StartDateTime = StartDateLimit
-                EndDateTime = EndDateLimit
+                Me.EndDateTime = EndDateLimit
                 'rlblStratDate.Text = "Start Date: " + StartDateTime.ToString
                 'rlblEndDate.Text = "End Date:   " + EndDateTime.ToString
             End If
