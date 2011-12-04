@@ -11,6 +11,7 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 using System.Reflection;
+using HydroDesktop.Help;
 
 namespace HydroDesktop.Main
 {
@@ -251,6 +252,21 @@ namespace HydroDesktop.Main
             lstRecentProjects.SelectedIndex = -1;
         }
         #endregion
+
+        private void linkLabelQuickStart_click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LocalHelp.OpenHelpFile("HydroDesktop_Quick_Start_Guide_1.3.pdf");
+        }
+
+        private void linkLabelHelp_click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LocalHelp.OpenHelpFile("welcome.html");
+        }
+
+        private void lstRecentProjects_Click(object sender, EventArgs e)
+        {
+            rbOpenExistingProject.Checked = true;
+        }
 
         
     } 
