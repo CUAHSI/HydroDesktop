@@ -210,20 +210,20 @@ Namespace GraphView
             'Option Panel for TSA and Probability
             rbPlotType = New MenuContainerItem(kGraph, PlotOptionsMenuKey, "Plot Type")
             rbPlotType.LargeImage = My.Resources.PlotType
-            'rbPlotType.GroupCaption = rpPlotOption
+            rbPlotType.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbPlotType)
 
             'Line
             rbLine = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Line", AddressOf rbLine_Click)
-            'rbLine.GroupCaption = rpPlotOption
+            rbLine.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbLine)
             'Point
             rbPoint = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Point", AddressOf rbPoint_Click)
-            'rbPoint.GroupCaption = rpPlotOption
+            rbPoint.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbPoint)
             'Both
             rbBoth = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Both", AddressOf rbBoth_Click)
-            'rbBoth.GroupCaption = rpPlotOption
+            rbBoth.GroupCaption = rpPlotOption
             App.HeaderControl.Add(rbBoth)
 
             'Color Setting
@@ -336,6 +336,8 @@ Namespace GraphView
 
             rbDisplayFullDateRange = New SimpleActionItem("Full Date Range", AddressOf rbDisplayFullDateRange_Click)
             rbDisplayFullDateRange.RootKey = kGraph
+            rbDisplayFullDateRange.LargeImage = My.Resources.FullDateRange
+            rbDisplayFullDateRange.SmallImage = My.Resources.FullDateRange_16
             rbDisplayFullDateRange.GroupCaption = rpOtherOptions
             rbDisplayFullDateRange.Enabled = False
             App.HeaderControl.Add(rbDisplayFullDateRange)

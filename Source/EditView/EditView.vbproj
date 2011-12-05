@@ -271,8 +271,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="References\ZedGraph.dll" />
-    <None Include="package.nuspec" />
     <None Include="Resources\Legend.png" />
+    <None Include="package.nuspec" />
     <None Include="Resources\Interpolate.png" />
     <None Include="Resources\DeriveNewSeries.png" />
     <None Include="Resources\Edit.png" />

@@ -54,6 +54,7 @@ namespace HydroDesktop.Main
                 schmCountries.EditorSettings.UseGradient = true;
                 schmCountries.CreateCategories(layCountries.DataSet.DataTable);
                 layCountries.Symbology = schmCountries;
+                layCountries.ProgressReportingEnabled = false;
                 baseGroup.Layers.Add(layCountries);
                 layCountries.MapFrame = mainMap.MapFrame;
             }
@@ -78,6 +79,7 @@ namespace HydroDesktop.Main
                     schmProvince.EditorSettings.UseGradient = true;
                     schmProvince.CreateCategories(layProvince.DataSet.DataTable);
                     layProvince.Symbology = schmProvince;
+                    layProvince.ProgressReportingEnabled = false;
                     baseGroup.Layers.Add(layProvince);
                     layProvince.MapFrame = mainMap.MapFrame;
                 }
@@ -102,6 +104,7 @@ namespace HydroDesktop.Main
                 schmStates.EditorSettings.UseGradient = true;
                 schmStates.CreateCategories(layStates.DataSet.DataTable);
                 layStates.Symbology = schmStates;
+                layStates.ProgressReportingEnabled = false;
                 baseGroup.Layers.Add(layStates);
                 layStates.MapFrame = mainMap.MapFrame;
             }    
@@ -118,6 +121,7 @@ namespace HydroDesktop.Main
                     layCounties.LegendText = "U.S. Counties";
                     layCounties.IsVisible = false;
                     layCounties.Symbolizer = new PolygonSymbolizer(Color.FromArgb(120, Color.Beige), Color.LightGray);
+                    layCounties.ProgressReportingEnabled = false;
                     baseGroup.Layers.Add(layCounties);
                     layCounties.MapFrame = mainMap.MapFrame;
                 }
@@ -137,7 +141,7 @@ namespace HydroDesktop.Main
                     layHUC.LegendText = "U.S. HUC";
                     layHUC.IsVisible = false;
                     layHUC.Symbolizer = new PolygonSymbolizer(Color.FromArgb(100, Color.PaleGreen), Color.Gray);
-                    
+                    layHUC.ProgressReportingEnabled = false;
                     baseGroup.Layers.Add(layHUC);
                     layHUC.MapFrame = mainMap.MapFrame;
                 }
