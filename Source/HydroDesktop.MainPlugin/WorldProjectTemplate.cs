@@ -55,6 +55,7 @@ namespace HydroDesktop.Main
                     layCountries.Symbology = schmCountries;
                     baseGroup.Layers.Add(layCountries);
                     layCountries.MapFrame = mainMap.MapFrame;
+                    layCountries.ProgressReportingEnabled = false;
                 }
             }
             catch { }
