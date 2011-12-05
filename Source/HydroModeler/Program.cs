@@ -98,6 +98,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
             // set the initial text for the dirbox
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
             string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
             if (Directory.Exists(start_path))
                 ((TextEntryActionItem)rps_dict["dirbox"]).Text = start_path;
