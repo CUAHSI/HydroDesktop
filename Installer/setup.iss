@@ -155,7 +155,7 @@ Source: "..\Binaries\Maps\*"; DestDir: "{app}\Maps"; Permissions: everyone-modif
 ;Example Configurations for HydroModeler
 ;Uncomment following line after HydroModeler is ready for V 1.2
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Permissions: everyone-modify; Flags: recursesubdirs
-Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Permissions: everyone-modify; Flags: recursesubdirs
+Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Permissions: everyone-modify; Flags: recursesubdirs
 
 ;Source: "hydromodeler_example_configurations\example_configuration_01"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_01"; Permissions: everyone-modify
 ;Source: "hydromodeler_example_configurations\example_configuration_02"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_02"; Permissions: everyone-modify
