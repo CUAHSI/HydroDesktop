@@ -224,10 +224,7 @@ Type: files; Name: "{app}\q_save.xml"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify
-Name: {app}\databases; Permissions: everyone-modify
-Name: {app}\maps; Permissions: everyone-modify
-Name: {app}\projects; Permissions: everyone-modify
-Name: {app}\HydroDesktop\default; Permissions: everyone-modify
+Name: {app}\Maps; Permissions: everyone-modify
 ; not yet capable of moving stuff outside of the HD folder reliably
 ;Name: {userdocs}\HydroDesktop\default; Permissions: everyone-modify
 
