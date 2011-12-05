@@ -120,8 +120,8 @@ namespace Search3
             rbKeyword.Width = 150;
             rbKeyword.Enabled = false;
             // Populate items by keywords
-            rbKeyword.Items.Clear();
-            rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
+            PopulateKeywords();
+            SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { PopulateKeywords(); };
 
             head.Add(rbKeyword);
 
@@ -210,12 +210,12 @@ namespace Search3
 
             #endregion
 
-            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
+            App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
 
             //map buttons (not added for now)
             //AddMapButtons();
         }
-
+        
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
             if (e.SelectedRootKey == kHydroSearch3)
@@ -513,6 +513,13 @@ namespace Search3
         #region Keywords
 
         private const string KEYWORDS_SEPARATOR = ";";
+
+        private void PopulateKeywords()
+        {
+            // Populate items by keywords
+            rbKeyword.Items.Clear();
+            rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
+        }
 
         void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
         {
