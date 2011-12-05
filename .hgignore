@@ -55,3 +55,4 @@ glob:*.orig
 *.csproj.vs10x
 *.sln.docstates
 Source/Packages/
+Documentation/OnlineHelp/build/
