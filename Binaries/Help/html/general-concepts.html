@@ -1,0 +1,135 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>General Concepts &mdash; HydroDesktop Help</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="index.html" />
+    <link rel="next" title="Guide Books" href="guide-books.html" />
+    <link rel="prev" title="Welcome to HydroDesktop Help" href="welcome.html" />
+    <link media="only screen and (max-device-width: 480px)" href="_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+    <div class="breadcrumb">General Concepts</div>
+	<div class="pagebutton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="guide-books.html" title="Guide Books" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="welcome.html" title="Welcome to HydroDesktop Help" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="welcome.html">Welcome</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">General Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wateroneflow-web-service">WaterOneFlow Web Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-management">Data Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#projects">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="general-concepts">
+<span id="index-0"></span><h1>General Concepts<a class="headerlink" href="#general-concepts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="wateroneflow-web-service">
+<h2>WaterOneFlow Web Service<a class="headerlink" href="#wateroneflow-web-service" title="Permalink to this headline">¶</a></h2>
+<p>Web services are like programs that you access on the Internet, which typically have one distinct &#8220;service&#8221; that they provide to you.  WaterOneFlow is a Web service whereby you provide a location, a variable of interest (e.g., streamflow), and a time period, and it returns a time series of data.  The output format from WaterOneFlow is an XML language called WaterML that includes both the time series data and also the metadata to fully describe the data.  This is a standard design that dozens of agencies and universities now use to publish their data.</p>
+<p>HydroDesktop knows how to request data from a WaterOneFlow Web service and translate the WaterML response into your local database so that you can get on with your analysis.  It handles this details of communicating with Web services so that you don&#8217;t have to.</p>
+</div>
+<div class="section" id="data-management">
+<h2>Data Management<a class="headerlink" href="#data-management" title="Permalink to this headline">¶</a></h2>
+<p>HydroDesktop works with both spatial and temporal data.  Spatial data tend to be in the form of shapefiles, and some shapefiles such as basemap data are distributed with HydroDesktop.  Extensions can enable HydroDesktop to work with additional spatial data types such as online map services.</p>
+<p>Temporal data are stored in a relational database called the Data Repository.  By default, SQLite is used as the database format.  Tools in HydroDesktop know how to read this database and present information from it to the user.  A default database is included with HydroDesktop, but you can and are encouraged to create and use your own project-specific databases.  These databases are filled with temporal data that you acquire through data searches, data import, or data generation using models and analytical tools.</p>
+<p>HydroDesktop also has the ability to query a given data service to figure out what data are available through the service.  It stores this catalog of available data in another database called the Metadata Cache.  To keep things clean, this database is kept separate from the Data Repository.  Think of the Metadata Cache as a description of all data from all remote data sources that your installation of HydroDesktop knows about, and the Data Repository as a collection of data that you&#8217;ve actually downloaded from data sources and saved.</p>
+</div>
+<div class="section" id="search">
+<h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
+<p>HydroDesktop can search for hydrologic time series data, download it, and save it to your local Data Repository database.
+When searching for data, you can specify the following filters: region of interest, parameter, time range, and data source.
+When the search results are returned, you can further filter the results and then choose which data you want to actually download.</p>
+<p>For more information on search see <a class="reference internal" href="guide-books/Search/Search.html"><em>Searching for Data</em></a>.</p>
+</div>
+<div class="section" id="projects">
+<h2>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">¶</a></h2>
+<p>You save elements of a HydroDesktop session in a project file.  The project file keeps track of which Data Repository database you were using, what layers you had in your map, how those layers were symbolized, etc.</p>
+</div>
+<div class="section" id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
+<p>There are a variety ways of getting help with HydroDesktop:</p>
+<ul class="simple">
+<li>Click buttons on the Help tab of the ribbon. The Help tab has buttons for opening the help system, leaving a comment, etc.</li>
+<li>Click help buttons on the specific HydroDesktop tools that you are using, if available.</li>
+<li>Add to discussions and issues on the HydroDesktop Web site at <a class="reference external" href="http://hydrodesktop.codeplex.com/">http://hydrodesktop.codeplex.com/</a>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 02, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>
