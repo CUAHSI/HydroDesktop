@@ -14,12 +14,17 @@ namespace HydroDesktop.Main
 {
     internal class WorldProjectTemplate
     {
+        static DotSpatial.Projections.ProjectedCategories.World projWorld = KnownCoordinateSystems.Projected.World;
+        
         /// <summary>
         /// Load base maps for World template project. The base shapefiles
         /// are loaded from the [Program Files]\[Cuahsi HIS]\HydroDesktop\maps\BaseData folder.
         /// </summary>
         public static Boolean LoadBaseMaps(AppManager applicationManager1, Map mainMap)
         {
+            //set the projection of main map
+            mainMap.Projection = projWorld.WebMercator;
+            
             Extent defaultMapExtent = new Extent(-170, -50, 170, 50);
 
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;

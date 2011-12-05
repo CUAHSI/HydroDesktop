@@ -127,6 +127,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoordinateDisplay.cs" />
     <Compile Include="NorthAmericaProjectTemplate.cs" />
     <Compile Include="PredefinedTemplate.cs" />
     <Compile Include="ProjectManager.cs" />

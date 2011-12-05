@@ -64,6 +64,7 @@
             this.checkBox1.TabIndex = 3;
             this.checkBox1.Text = "Show this dialog at startup";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // linkLabelQuickStart
@@ -72,7 +73,7 @@
             this.linkLabelQuickStart.Location = new System.Drawing.Point(12, 98);
             this.linkLabelQuickStart.Name = "linkLabelQuickStart";
             this.linkLabelQuickStart.Size = new System.Drawing.Size(171, 13);
-            this.linkLabelQuickStart.TabIndex = 4;
+            this.linkLabelQuickStart.TabIndex = 0;
             this.linkLabelQuickStart.TabStop = true;
             this.linkLabelQuickStart.Text = "Getting Started with HydroDesktop";
             this.linkLabelQuickStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelQuickStart_click);
@@ -83,7 +84,7 @@
             this.linkLabelHelp.Location = new System.Drawing.Point(22, 130);
             this.linkLabelHelp.Name = "linkLabelHelp";
             this.linkLabelHelp.Size = new System.Drawing.Size(140, 13);
-            this.linkLabelHelp.TabIndex = 5;
+            this.linkLabelHelp.TabIndex = 1;
             this.linkLabelHelp.TabStop = true;
             this.linkLabelHelp.Text = "View HydroDesktop help file";
             this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_click);
@@ -122,7 +123,7 @@
             this.lstRecentProjects.Location = new System.Drawing.Point(23, 125);
             this.lstRecentProjects.Name = "lstRecentProjects";
             this.lstRecentProjects.Size = new System.Drawing.Size(245, 82);
-            this.lstRecentProjects.TabIndex = 9;
+            this.lstRecentProjects.TabIndex = 6;
             this.lstRecentProjects.Click += new System.EventHandler(this.lstRecentProjects_Click);
             // 
             // bsRecentFiles
@@ -153,7 +154,7 @@
             this.btnBrowseProject.Location = new System.Drawing.Point(138, 97);
             this.btnBrowseProject.Name = "btnBrowseProject";
             this.btnBrowseProject.Size = new System.Drawing.Size(78, 22);
-            this.btnBrowseProject.TabIndex = 16;
+            this.btnBrowseProject.TabIndex = 5;
             this.btnBrowseProject.Text = "Browse ...";
             this.btnBrowseProject.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnBrowseProject.UseVisualStyleBackColor = true;
@@ -165,7 +166,7 @@
             this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 100);
             this.rbOpenExistingProject.Name = "rbOpenExistingProject";
             this.rbOpenExistingProject.Size = new System.Drawing.Size(126, 17);
-            this.rbOpenExistingProject.TabIndex = 15;
+            this.rbOpenExistingProject.TabIndex = 4;
             this.rbOpenExistingProject.Text = "Open Existing Project";
             this.rbOpenExistingProject.UseVisualStyleBackColor = true;
             // 
@@ -175,7 +176,7 @@
             this.rbEmptyProject.Location = new System.Drawing.Point(6, 213);
             this.rbEmptyProject.Name = "rbEmptyProject";
             this.rbEmptyProject.Size = new System.Drawing.Size(149, 17);
-            this.rbEmptyProject.TabIndex = 14;
+            this.rbEmptyProject.TabIndex = 7;
             this.rbEmptyProject.Text = "Create New Empty Project";
             this.rbEmptyProject.UseVisualStyleBackColor = true;
             // 
@@ -188,7 +189,7 @@
             this.lstProjectTemplates.Location = new System.Drawing.Point(23, 42);
             this.lstProjectTemplates.Name = "lstProjectTemplates";
             this.lstProjectTemplates.Size = new System.Drawing.Size(245, 43);
-            this.lstProjectTemplates.TabIndex = 13;
+            this.lstProjectTemplates.TabIndex = 3;
             // 
             // rbNewProjectTemplate
             // 
@@ -197,7 +198,7 @@
             this.rbNewProjectTemplate.Location = new System.Drawing.Point(6, 19);
             this.rbNewProjectTemplate.Name = "rbNewProjectTemplate";
             this.rbNewProjectTemplate.Size = new System.Drawing.Size(190, 17);
-            this.rbNewProjectTemplate.TabIndex = 12;
+            this.rbNewProjectTemplate.TabIndex = 2;
             this.rbNewProjectTemplate.TabStop = true;
             this.rbNewProjectTemplate.Text = "Create New Project From Template";
             this.rbNewProjectTemplate.UseVisualStyleBackColor = true;
@@ -208,7 +209,7 @@
             this.btnOK.Location = new System.Drawing.Point(407, 243);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 14;
+            this.btnOK.TabIndex = 8;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);

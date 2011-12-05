@@ -27,6 +27,8 @@
 
         private WelcomeScreen welcomeScreenForm;
 
+        private CoordinateDisplay latLongDisplay;
+
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
@@ -43,6 +45,9 @@
             {
                 ((Form)Shell).FormClosing += HydroDesktopMainPlugin_FormClosing;
             }
+
+            //show latitude, longitude coordinate display
+            latLongDisplay = new CoordinateDisplay(App);
 
             base.Activate();
         }
@@ -66,10 +71,8 @@
                         return;
                     case DialogResult.Yes:
                         // Save and exit
-                        //todo: show DS Save Project Dialog, and remove next 2 lines
                         e.Cancel = true;
-                        MessageBox.Show("To save new project please select File ->Save (Save As...) from main menu.",
-                                        HYDRODESKTOP_NAME, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ShowSaveProjectDialog();
                         return;
                 }
             }
@@ -110,6 +113,17 @@
                     case DialogResult.OK:
                         // Exit
                         return;
+                }
+            }
+        }
+
+        private void ShowSaveProjectDialog()
+        {
+            using (var dlg = new SaveFileDialog { Filter = SerializationManager.SaveDialogFilterText, SupportMultiDottedExtensions = true })
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    App.SerializationManager.SaveProject(dlg.FileName);
                 }
             }
         }
@@ -183,6 +197,10 @@
             Shell.Text = string.Format("{0} - {1}", HYDRODESKTOP_NAME, GetProjectShortName());
             //setup new db information
             SeriesControl.SetupDatabase();
+            if (App.Map.Projection != null)
+            {
+                latLongDisplay.MapProjectionString = App.Map.Projection.ToEsriString();
+            }
         }
 
 
@@ -212,11 +230,12 @@
             welcomeScreenForm.TopMost = true;
             welcomeScreenForm.FormClosing += new FormClosingEventHandler(welcomeScreen_FormClosing);
 
-            //int x = this.Location.X + this.Width / 2 - _welcomeScreen.Width / 2;
-            //int y = this.Location.Y + this.Height / 2 - _welcomeScreen.Height / 2;
-            //_welcomeScreen.Location = new System.Drawing.Point(x, y);
+            int x = Shell.Location.X + Shell.Width / 2 - welcomeScreenForm.Width / 2;
+            int y = Shell.Location.Y + Shell.Height / 2 - welcomeScreenForm.Height / 2;
+            welcomeScreenForm.Location = new System.Drawing.Point(x, y);
 
             welcomeScreenForm.Show();
+            welcomeScreenForm.Focus();
         }
 
         void welcomeScreen_FormClosing(object sender, FormClosingEventArgs e)
@@ -226,6 +245,9 @@
             {
                 SetupDatabases();
             }
+
+            //setup the lat, long coordinate display
+            latLongDisplay.ShowCoordinates = true;
         }
 
         /// <summary>
@@ -306,6 +328,13 @@
             if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
                 App.DockManager.SelectPanel("kMap");
+                if (latLongDisplay != null)
+                    this.latLongDisplay.ShowCoordinates = true;
+            }
+            else
+            {
+                if (latLongDisplay != null)
+                    latLongDisplay.ShowCoordinates = false;
             }
         }
     }
