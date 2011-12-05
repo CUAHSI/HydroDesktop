@@ -8,6 +8,11 @@ namespace Search3.Settings
 {
     public class KeywordsSettings
     {
+        /// <summary>
+        /// Fires when Keywords/OntologyTree/Synonyms changed
+        /// </summary>
+        public event EventHandler KeywordsChanged;
+
         private IEnumerable<string> _selectedKeywords;
         public IEnumerable<string> SelectedKeywords
         {
@@ -52,7 +57,7 @@ namespace Search3.Settings
             private set { _ontologyTree = value; }
         }
     
-        public ArrayOfOntologyPath Synonyms { get;set;}
+        public ArrayOfOntologyPath Synonyms { get;private set;}
     
 
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
@@ -62,6 +67,8 @@ namespace Search3.Settings
             Keywords = keywordsData.Keywords;
             OntologyTree = keywordsData.OntoloyTree;
             Synonyms = keywordsData.Synonyms;
+
+            RaiseKeywordsChanged();
         }
 
         /// <summary>
@@ -91,6 +98,21 @@ namespace Search3.Settings
             Keywords = source.Keywords;
             OntologyTree = source.OntologyTree;
             Synonyms = source.Synonyms;
+
+            RaiseKeywordsChanged();
         }
+
+        #region Private methods
+
+        private void RaiseKeywordsChanged()
+        {
+            var handler = KeywordsChanged;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
     }
 }
