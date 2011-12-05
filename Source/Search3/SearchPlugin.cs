@@ -387,7 +387,7 @@ namespace Search3
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : "Draw Box";
         }
 
-        void rbDrawBox_Click(object Sender, EventArgs e)
+        void rbDrawBox_Click(object sender, EventArgs e)
         {
             CurrentAreaSelectMode = AreaSelectMode.DrawBox;
 
@@ -395,7 +395,7 @@ namespace Search3
 
             if (_rectangleDrawing == null)
             {
-                _rectangleDrawing = new RectangleDrawing(App.Map);
+                _rectangleDrawing = new RectangleDrawing((Map) App.Map);
                 _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
             }
 
