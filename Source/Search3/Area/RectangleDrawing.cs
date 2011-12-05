@@ -17,20 +17,21 @@ namespace Search3.Area
     {
         //todo: Copied from Search2. Need to be refactored.
 
-        private Map _mainMap;
-        private MapPolygonLayer _rectangleLayer = null;
-        private bool _isActive = false;
-        private int _numClicks = 0;
+        #region Fields
+
+        private readonly Map _mainMap;
+        private MapPolygonLayer _rectangleLayer;
+        private bool _isActive;
+        private int _numClicks;
         private Coordinate _startPoint;
-        
-        public RectangleDrawing(IMap map)
+
+        #endregion
+
+        public RectangleDrawing(Map map)
         {
-            _mainMap = map as Map;
+            if (map == null) throw new ArgumentNullException("map");
 
-            if (_mainMap == null) throw new ArgumentException
-                ("Search - RectangleDrawing - type of mainMap must be DotSpatial.Controls.Map");
-
-            AddRectangleLayer();
+            _mainMap = map;
         }
 
         public event EventHandler RectangleCreated;
@@ -66,8 +67,8 @@ namespace Search3.Area
         {
             if (!_isActive)
             {
-                _mainMap.MouseDown += new System.Windows.Forms.MouseEventHandler(mainMap_MouseDown);
-                _mainMap.MouseUp += new System.Windows.Forms.MouseEventHandler(mainMap_MouseUp);
+                _mainMap.MouseDown += mainMap_MouseDown;
+                _mainMap.MouseUp += mainMap_MouseUp;
             }
             _numClicks = 0;
             _isActive = true;
@@ -77,6 +78,9 @@ namespace Search3.Area
             DisableLayerSelection();
         }
 
+        /// <summary>
+        /// Deactivates the rectangle drawing function
+        /// </summary>
         public void Deactivate()
         {
             _mainMap.MouseDown -= mainMap_MouseDown;
@@ -121,7 +125,7 @@ namespace Search3.Area
             }
         }
 
-        void mainMap_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        void mainMap_MouseUp(object sender, MouseEventArgs e)
         {
             //only modify rectangle drawing if function mode is Select
             if (_mainMap.FunctionMode != FunctionMode.Select) return;
@@ -150,7 +154,7 @@ namespace Search3.Area
             }
         }
 
-        void mainMap_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        void mainMap_MouseDown(object sender, MouseEventArgs e)
         {
             //only modify rectangle drawing if function mode is Select
             if (_mainMap.FunctionMode != FunctionMode.Select) return;
@@ -241,24 +245,14 @@ namespace Search3.Area
 
             if (_rectangleLayer == null)
             {
-
-                FeatureSet rectangleFs = new FeatureSet(FeatureType.Polygon);
+                var rectangleFs = new FeatureSet(FeatureType.Polygon);
                 rectangleFs.DataTable.Columns.Add(new DataColumn("ID"));
                 rectangleFs.Projection = _mainMap.Projection;
 
-                _rectangleLayer = new MapPolygonLayer(rectangleFs);
-                _rectangleLayer.LegendText = Properties.Resources.RectangleLayerName;
-                //_rectangleLayer.LegendItemVisible = false;
-                Color redColor = Color.Red.ToTransparent(0.5f);
+                _rectangleLayer = new MapPolygonLayer(rectangleFs){LegendText = Properties.Resources.RectangleLayerName};
+                var redColor = Color.Red.ToTransparent(0.5f);
                 _rectangleLayer.Symbolizer = new PolygonSymbolizer(redColor, Color.Red);
                 _rectangleLayer.SelectionSymbolizer = _rectangleLayer.Symbolizer;
-                _mainMap.Layers.Add(_rectangleLayer);
-
-            }
-
-            //if the 'rectangle layer' object exists, but it is not found in the map
-            if (!RectangleLayerIsInMap())
-            {
                 _mainMap.Layers.Add(_rectangleLayer);
             }
         }
@@ -287,7 +281,7 @@ namespace Search3.Area
 
         protected void OnRectangleCreated()
         {
-            if (RectangleCreated != null) RectangleCreated(this, null);
+            if (RectangleCreated != null) RectangleCreated(this, EventArgs.Empty);
         }
     }
 }
