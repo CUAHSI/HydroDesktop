@@ -11,6 +11,7 @@ Guide Books:
    :maxdepth: 2
 
    guide-books/Search/Search
+   guide-books/ExportingTimeSeries/time-series-export
    guide-books/TableView/TableView
    using-the-orb
    working-with-databases
