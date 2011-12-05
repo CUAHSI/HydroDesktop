@@ -29,6 +29,9 @@ namespace HydroDesktop.Main
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
         private ProjectManager myProjectManager;
+
+        const string SampleProjectsDirectory = "hydrodesktop_sample_projects";
+        const string QuickStartGuideFile = "HydroDesktop_Quick_Start_Guide_1.3.pdf";
         
         #endregion
 
@@ -239,15 +242,28 @@ namespace HydroDesktop.Main
         private void FindRecentProjectFiles()
         {
             this.RecentProjectFiles.Clear();
-            
-            foreach(string recentFile in Settings.Instance.RecentProjectFiles)
+
+            foreach (string recentFile in Settings.Instance.RecentProjectFiles)
             {
                 if (File.Exists(recentFile))
                 {
                     this.RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
                 }
-
             }
+
+            //also add the project files from hd_sample_projects folder
+            string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SampleProjectsDirectory);
+            if (Directory.Exists(projDir))
+            {
+                string[] projFiles = Directory.GetFiles(projDir, "*.dspx", SearchOption.AllDirectories);
+                foreach (string projFile in projFiles)
+                {
+                    ProjectFileInfo projFileInfo = new ProjectFileInfo(projFile);
+                    if (!RecentProjectFiles.Contains(projFileInfo))
+                        RecentProjectFiles.Add(projFileInfo);
+                }
+            }
+
             bsRecentFiles.ResetBindings(false);
             lstRecentProjects.SelectedIndex = -1;
         }
@@ -255,7 +271,7 @@ namespace HydroDesktop.Main
 
         private void linkLabelQuickStart_click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            LocalHelp.OpenHelpFile("HydroDesktop_Quick_Start_Guide_1.3.pdf");
+            LocalHelp.OpenHelpFile(QuickStartGuideFile);
         }
 
         private void linkLabelHelp_click(object sender, LinkLabelLinkClickedEventArgs e)
