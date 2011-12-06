@@ -2,6 +2,7 @@
 Imports System.Drawing
 Imports System.ComponentModel
 Imports DotSpatial.Controls
+Imports System.Globalization
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
@@ -68,6 +69,7 @@ Namespace GraphView
         Private rbbtYearly As SimpleActionItem 'Yearly
         Private rbbtOverall As SimpleActionItem 'Overall
 
+        Private ReadOnly _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern
         Private Const rpOtherOptions As String = "Date & Time"
         Private rbDateTimeSetting As SimpleActionItem 'Date Setting
         Private rbStartDate As TextEntryActionItem 'Date Setting
@@ -387,37 +389,58 @@ Namespace GraphView
 
         Private Sub dateSettings_PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
             If "Text".Equals(e.PropertyName) Then
-                Dim startDate As DateTime
-                Dim endDate As DateTime
-                If (DateTime.TryParse(rbStartDate.Text, startDate) And
-                    DateTime.TryParse(rbEndDate.Text, endDate)) Then
 
-                    If _mainControl.StartDateLimit.Date >= startDate And
+                Dim startDate = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, False)
+                If (startDate Is Nothing) Then Return
+                Dim endDate = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, False)
+                If (endDate Is Nothing) Then Return
+
+                If _mainControl.StartDateLimit.Date >= startDate And
                        _mainControl.EndDateLimit.Date <= endDate Then
-                        rbDisplayFullDateRange.Enabled = False
-                    Else
-                        rbDisplayFullDateRange.Enabled = True
-                    End If
-
+                    rbDisplayFullDateRange.Enabled = False
+                Else
+                    rbDisplayFullDateRange.Enabled = True
                 End If
+
             End If
         End Sub
 
         Private Sub rbDateTimeRefresh_Click(ByVal sender As Object, ByVal e As EventArgs)
-            Dim startDate As DateTime
-            Dim endDate As DateTime
-            If (DateTime.TryParse(rbStartDate.Text, startDate) And
-                DateTime.TryParse(rbEndDate.Text, endDate)) Then
-                _mainControl.StartDateTime = startDate
-                _mainControl.EndDateTime = endDate
-                _mainControl.IsDisplayFullDate = False
-                _mainControl.ApplyOptions()
-            End If
+            ' Validation of Start/End date
+            Dim startDate = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, True)
+            If (startDate Is Nothing) Then Return
+            Dim endDate = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, True)
+            If (endDate Is Nothing) Then Return
+            ' end of validation
+                
+            _mainControl.StartDateTime = startDate
+            _mainControl.EndDateTime = endDate
+            _mainControl.IsDisplayFullDate = False
+            _mainControl.ApplyOptions()
         End Sub
 
+        Private Function ValidateDate(str As String, dateFormat As String) As DateTime?
+            Try
+                Return DateTime.ParseExact(str, dateFormat, CultureInfo.CurrentCulture)
+            Catch ex As Exception
+                Return Nothing
+            End Try
+        End Function
+
+        Private Function ValidateDateEdit(item As TextEntryActionItem, itemName As String, dateFormat As String, showMessage As Boolean) As DateTime?
+            Dim result As DateTime?
+            result = ValidateDate(item.Text, dateFormat)
+            If (result Is Nothing And showMessage) Then
+                MessageBox.Show(String.Format("{0} is in incorrect format. Please enter {1} in the format {2}", itemName, itemName.ToLower(), dateFormat),
+                                String.Format("{0} validation", itemName), MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+            Return result
+        End Function
+
+
         Private Sub mainControlDatesChanged(ByVal sender As Object, ByVal e As EventArgs)
-            rbStartDate.Text = _mainControl.StartDateTime.ToShortDateString()
-            rbEndDate.Text = _mainControl.EndDateTime.ToShortDateString()
+            rbStartDate.Text = _mainControl.StartDateTime.ToString(_datesFormat)
+            rbEndDate.Text = _mainControl.EndDateTime.ToString(_datesFormat)
         End Sub
 
 #End Region
