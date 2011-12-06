@@ -16,7 +16,6 @@ using FacetedSearch3.Searching;
 using FacetedSearch3.Searching.Exceptions;
 using FacetedSearch3.Settings;
 using FacetedSearch3.Settings.UI;
-using HydroDesktop.WebServices;
 
 namespace FacetedSearch3
 {
@@ -387,43 +386,6 @@ namespace FacetedSearch3
                 MessageBox.Show("Please specify spatial and temporal constraints prior to initializing faceted search.");
             }                 
         }        
-
-        void _searcher_Completed(object sender, CompletedEventArgs e)
-        {
-            DeactivateDrawBox();
-
-            if (e.Result == null) return;
-            var result = e.Result;
-            //We need to reproject the Search results from WGS84 to the projection of the map.
-            ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
-            foreach (var item in result.ResultItems)
-                item.FeatureSet.Projection = wgs84;
-
-            ShowSearchResults(result);
-        }
-
-        /// <summary>
-        /// Displays search results (all data series and sites complying to the search criteria)
-        /// </summary>
-        private void ShowSearchResults(SearchResult searchResult)
-        {
-            //try to save the search result layer and re-add it
-            var hdProjectPath = HydroDesktop.Configuration.Settings.Instance.CurrentProjectDirectory;
-
-            var loadedFeatures = new List<SearchResultItem>(searchResult.ResultItems.Count());
-            foreach (var key in searchResult.ResultItems)
-            {
-                var fs = key.FeatureSet;
-                var filename = Path.Combine(hdProjectPath,
-                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.SeriesDataCart.ServCode));
-                fs.Filename = filename;
-                fs.Save();
-                loadedFeatures.Add(new SearchResultItem(key.SeriesDataCart, FeatureSet.OpenFile(filename)));
-            }
-
-            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), Resources.SearchGroupName);
-            searchLayerCreator.Create();
-        }
 
         #endregion
 
