@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table Tab &mdash; HydroDesktop Help</title>
+    <title>Concentration &mdash; HydroDesktop Help</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,9 +25,6 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
-    <link rel="up" title="Guide Books" href="../../guide-books.html" />
-    <link rel="next" title="Using the File Menu" href="../../using-the-file-menu.html" />
-    <link rel="prev" title="Time Series Data Export" href="../ExportingTimeSeries/time-series-export.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -35,27 +32,17 @@
 	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
 </div>
 <div id="header">
-        <div class="breadcrumb"><a href="../../guide-books.html" accesskey="U">Guide Books</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Table Tab</div>
+    <div class="breadcrumb">Concentration</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="../../using-the-file-menu.html" title="Using the File Menu" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="../ExportingTimeSeries/time-series-export.html" title="Time Series Data Export" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
   <div class="sphinxsidebarwrapper">
 	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
-	<ul class="current">
+	<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../guide-books.html">Guide Books</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../Search/Search.html">Searching for Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ExportingTimeSeries/time-series-export.html">Time Series Data Export</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Table Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../using-the-file-menu.html">Using the File Menu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../working-with-databases.html">Working with Databases</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
 </ul>
 
@@ -86,19 +73,16 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="table-tab">
-<span id="index-0"></span><h1>Table Tab<a class="headerlink" href="#table-tab" title="Permalink to this headline">¶</a></h1>
-<p>The Table Tab in HydroDesktop provides functions to view and export time series data.
-You can also change the current database and build your own local metadata cache
-using the tools on this tab.</p>
-<div class="figure">
-<img alt="../../_images/Table_introduction.png" src="../../_images/Table_introduction.png" />
-</div>
-<p>Table tab</p>
-<p>For more information on exporting time series data, see <a class="reference internal" href="../ExportingTimeSeries/time-series-export.html"><em>Time Series Data Export</em></a>.</p>
-<p>For more information on the local metadata cache, see <a class="reference internal" href="../../extensions/MetadataFetcher/MetadataFetcher.html"><em>Metadata Fetcher</em></a>.</p>
-<p>For more information on the current database path and working with databases, see
-<a class="reference internal" href="../../working-with-databases.html"><em>Working with Databases</em></a>.</p>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script><div class="section" id="concentration">
+<h1>Concentration<a class="headerlink" href="#concentration" title="Permalink to this headline">¶</a></h1>
+<p>These components were created to find the concentrations of a contaminant in soil and water at any given timestep.  They were designed to model the concentration of a contaminant in a river or channel.</p>
+<div class="section" id="water-advection-and-sediment-diffusion">
+<h2>Water Advection and Sediment Diffusion<a class="headerlink" href="#water-advection-and-sediment-diffusion" title="Permalink to this headline">¶</a></h2>
+<p>These comonents were designed assuming a state where a water layer resides above a sediment column and, as a result, must work in tandem using a bidirectional link because of the shared boundary condition.  Assuming a pollutant is introduced, we can model it&#8217;s dilution based on the advection-diffusion equation.  Advection describes the horizontal displacement of the contaminant, governed by the flow characteristics of the river, where as diffusion describes the infiltration of the conaminant to or from the soil bed, moving from areas of higher concentration to lower concentration.  Assuming that the primary means of transportation are advection in the x direction and diffusion in the z direction, the equations for the concentration of the water and the concentration of the sediment column are derived from the advection-diffusion equation. Using these equations, we are able to estimate the concentration of pollutant, at any given time step, that is present in the water or in the soil.</p>
+<p>The two components are derived from this equation.</p>
+\[\frac{\partial C}{\partial t} = D_x \frac{\partial^2C}{\partial x^2}+D_z \frac{\partial^2C}{\partial z^2} - u \frac{\partial C}{\partial x} - v \frac{\partial C}{\partial z}\]<p>The following equation was used to model the Water Advection Component.</p>
+\[\frac{\partial C_w}{\partial t} = D_{w,z} \frac{\partial^2C_w}{\partial z^2} - v \frac{\partial C_w}{\partial x}\]<p>The following equation was used to model the Sediment Diffusion Component.</p>
+\[\frac{\partial C_s}{\partial t} = D_{s,z} \frac{\partial^2C_s}{\partial z^2}\]</div>
 </div>
 
 

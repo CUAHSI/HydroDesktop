@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table Tab &mdash; HydroDesktop Help</title>
+    <title>Changing the R Version &mdash; HydroDesktop Help</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,9 +25,9 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
-    <link rel="up" title="Guide Books" href="../../guide-books.html" />
-    <link rel="next" title="Using the File Menu" href="../../using-the-file-menu.html" />
-    <link rel="prev" title="Time Series Data Export" href="../ExportingTimeSeries/time-series-export.html" />
+    <link rel="up" title="HydroR" href="HydroR.html" />
+    <link rel="next" title="Graph Tab" href="../GraphView/GraphView.html" />
+    <link rel="prev" title="Closing the R Console" href="ClosingRConsole.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -35,27 +35,21 @@
 	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
 </div>
 <div id="header">
-        <div class="breadcrumb"><a href="../../guide-books.html" accesskey="U">Guide Books</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Table Tab</div>
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroR.html" >HydroR</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Changing the R Version</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="../../using-the-file-menu.html" title="Using the File Menu" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="../ExportingTimeSeries/time-series-export.html" title="Time Series Data Export" accesskey="P">previous</a></div>
+	<div class="pagebutton"><a href="../GraphView/GraphView.html" title="Graph Tab" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="ClosingRConsole.html" title="Closing the R Console" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
   <div class="sphinxsidebarwrapper">
 	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
-	<ul class="current">
+	<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../guide-books.html">Guide Books</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../Search/Search.html">Searching for Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ExportingTimeSeries/time-series-export.html">Time Series Data Export</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Table Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../using-the-file-menu.html">Using the File Menu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../working-with-databases.html">Working with Databases</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
 </ul>
 
@@ -86,19 +80,18 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="table-tab">
-<span id="index-0"></span><h1>Table Tab<a class="headerlink" href="#table-tab" title="Permalink to this headline">¶</a></h1>
-<p>The Table Tab in HydroDesktop provides functions to view and export time series data.
-You can also change the current database and build your own local metadata cache
-using the tools on this tab.</p>
-<div class="figure">
-<img alt="../../_images/Table_introduction.png" src="../../_images/Table_introduction.png" />
+  <div class="section" id="changing-the-r-version">
+<span id="index-0"></span><h1>Changing the R Version<a class="headerlink" href="#changing-the-r-version" title="Permalink to this headline">¶</a></h1>
+<p>When you have multiple versions of <strong>R</strong>, you can check and change the version of R that is used by HydroR with the following steps:</p>
+<ol class="arabic simple">
+<li>Click the &#8220;Path to R&#8221; button on the HydroDesktop ribbon.  The following window will appear asking if you want to change the path to R.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HR_image011.png" src="../../_images/HR_image011.png" />
 </div>
-<p>Table tab</p>
-<p>For more information on exporting time series data, see <a class="reference internal" href="../ExportingTimeSeries/time-series-export.html"><em>Time Series Data Export</em></a>.</p>
-<p>For more information on the local metadata cache, see <a class="reference internal" href="../../extensions/MetadataFetcher/MetadataFetcher.html"><em>Metadata Fetcher</em></a>.</p>
-<p>For more information on the current database path and working with databases, see
-<a class="reference internal" href="../../working-with-databases.html"><em>Working with Databases</em></a>.</p>
+<ol class="arabic simple" start="2">
+<li>Use the <strong>Browse...</strong> button to locate a different version of R on your computer.</li>
+</ol>
 </div>
 
 

@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table Tab &mdash; HydroDesktop Help</title>
+    <title>Routing &mdash; HydroDesktop Help</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,9 +25,6 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="../../index.html" />
-    <link rel="up" title="Guide Books" href="../../guide-books.html" />
-    <link rel="next" title="Using the File Menu" href="../../using-the-file-menu.html" />
-    <link rel="prev" title="Time Series Data Export" href="../ExportingTimeSeries/time-series-export.html" />
     <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -35,27 +32,17 @@
 	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
 </div>
 <div id="header">
-        <div class="breadcrumb"><a href="../../guide-books.html" accesskey="U">Guide Books</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Table Tab</div>
+    <div class="breadcrumb">Routing</div>
 	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="../../using-the-file-menu.html" title="Using the File Menu" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="../ExportingTimeSeries/time-series-export.html" title="Time Series Data Export" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
   <div class="sphinxsidebarwrapper">
 	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
-	<ul class="current">
+	<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../guide-books.html">Guide Books</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../Search/Search.html">Searching for Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ExportingTimeSeries/time-series-export.html">Time Series Data Export</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Table Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../using-the-file-menu.html">Using the File Menu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../working-with-databases.html">Working with Databases</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
 </ul>
 
@@ -86,19 +73,23 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="table-tab">
-<span id="index-0"></span><h1>Table Tab<a class="headerlink" href="#table-tab" title="Permalink to this headline">¶</a></h1>
-<p>The Table Tab in HydroDesktop provides functions to view and export time series data.
-You can also change the current database and build your own local metadata cache
-using the tools on this tab.</p>
-<div class="figure">
-<img alt="../../_images/Table_introduction.png" src="../../_images/Table_introduction.png" />
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script><div class="section" id="routing">
+<h1>Routing<a class="headerlink" href="#routing" title="Permalink to this headline">¶</a></h1>
+<p>Routing is the determination of the strength and time span of water flow using upstream points to help approximate these values.</p>
+<div class="section" id="muskingum-method">
+<h2>Muskingum Method<a class="headerlink" href="#muskingum-method" title="Permalink to this headline">¶</a></h2>
+<p>This component will transform flow data through a channel network at each subbasin to a watershed outlet.  The method behind this component is derived from a variable discharge-storage relationship that is comprised of wedge and prism volumes.  The wedge shape accounts for the wave effect caused in moving water, which is controlled by a weighing factor that ranges from 0 to 0.5, while the prism shape accounts for the water residing in the cross sectional area of the channel, which is weighted by proportionality constants, the time it takes a flood wave to move through the channel.  By looking at these pieces we are able to determine the total storage of the channel.</p>
+<p>The following equation is used to obtain the total water storage in a channel.</p>
+\[S_{j+1}-S_j = \frac{I_j+I_{j+1}}{2}\Delta t-\frac{Q_j+Q_{j+1}}{2}\Delta t\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((S)\)</span> is the total storage at times <span class="raw-latex">\(j\)</span> and <span class="raw-latex">\(j+1\)</span>, <span class="raw-latex">\((I)\)</span> is the inflow at times <span class="raw-latex">\(j\)</span> and <span class="raw-latex">\(j+1\)</span>, and <span class="raw-latex">\((Q)\)</span> is the outflow at times <span class="raw-latex">\(j\)</span> and <span class="raw-latex">\(j+1\)</span>.</p>
 </div>
-<p>Table tab</p>
-<p>For more information on exporting time series data, see <a class="reference internal" href="../ExportingTimeSeries/time-series-export.html"><em>Time Series Data Export</em></a>.</p>
-<p>For more information on the local metadata cache, see <a class="reference internal" href="../../extensions/MetadataFetcher/MetadataFetcher.html"><em>Metadata Fetcher</em></a>.</p>
-<p>For more information on the current database path and working with databases, see
-<a class="reference internal" href="../../working-with-databases.html"><em>Working with Databases</em></a>.</p>
+<p>By assuming that the storage can be expressed as a function of the weighting factor and proportionality coefficient, the equation can be reduced as follows.</p>
+\[Q_{j+1} = C_1I_{j+1}+C_2I_j+C_3Q_j\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((I)\)</span> is the inflow at times <span class="raw-latex">\(j\)</span> and <span class="raw-latex">\(j+1\)</span>, <span class="raw-latex">\((Q)\)</span> is the outflow at times <span class="raw-latex">\(j\)</span> and <span class="raw-latex">\(j+1\)</span>, and <span class="raw-latex">\((C_1)\)</span>, <span class="raw-latex">\((C_2)\)</span>, and <span class="raw-latex">\((C_3)\)</span> are functions of the weighing factor, proportionality coefficient, and the change in time.</p>
+</div>
+</div>
 </div>
 
 

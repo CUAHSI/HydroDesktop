@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Working with Databases &mdash; HydroDesktop Help</title>
+    <title>Using the File Menu &mdash; HydroDesktop Help</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="HydroDesktop Help" href="index.html" />
     <link rel="up" title="Guide Books" href="guide-books.html" />
-    <link rel="next" title="Extensions" href="extensions/extensions.html" />
-    <link rel="prev" title="Using the File Menu" href="using-the-file-menu.html" />
+    <link rel="next" title="Working with Databases" href="working-with-databases.html" />
+    <link rel="prev" title="Table Tab" href="guide-books/TableView/TableView.html" />
     <link media="only screen and (max-device-width: 480px)" href="_static/mobile.css" type="text/css" rel="stylesheet" /> 
   </head>
   <body>
@@ -36,10 +36,10 @@
 </div>
 <div id="header">
         <div class="breadcrumb"><a href="guide-books.html" accesskey="U">Guide Books</a><img src="_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
-    <div class="breadcrumb">Working with Databases</div>
+    <div class="breadcrumb">Using the File Menu</div>
 	<div class="pagebutton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
-	<div class="pagebutton"><a href="extensions/extensions.html" title="Extensions" accesskey="N">next</a></div>
-	<div class="pagebutton"><a href="using-the-file-menu.html" title="Using the File Menu" accesskey="P">previous</a></div>
+	<div class="pagebutton"><a href="working-with-databases.html" title="Working with Databases" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="guide-books/TableView/TableView.html" title="Table Tab" accesskey="P">previous</a></div>
 </div>
 
 <div id="sphinxsidebar">
@@ -51,8 +51,8 @@
 <li class="toctree-l2"><a class="reference internal" href="guide-books/Search/Search.html">Searching for Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guide-books/ExportingTimeSeries/time-series-export.html">Time Series Data Export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guide-books/TableView/TableView.html">Table Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="using-the-file-menu.html">Using the File Menu</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Working with Databases</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Using the File Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="working-with-databases.html">Working with Databases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extensions/extensions.html">Extensions</a></li>
@@ -86,28 +86,17 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="working-with-databases">
-<span id="index-0"></span><h1>Working with Databases<a class="headerlink" href="#working-with-databases" title="Permalink to this headline">¶</a></h1>
-<p>Temporal data are stored in a relational database called the Data Repository.  Catalogs of available data, which may not yet have been downloaded into the Data Repository, are maintained in another database called the Metadata Cache database.</p>
-<p>Tools in HydroDesktop know how to read these databases and present information from them to the user, and they also know how to properly save information to these databases.  Therefore, it&#8217;s generally a good idea to use HydroDesktop to work with these databases.  However, some users may want to open the databases directly. This page describes how to locate and open HydroDesktop databases outside of HydroDesktop.</p>
-<div class="section" id="locating-the-hydrodesktop-databases">
-<span id="index-1"></span><h2>Locating the HydroDesktop Databases<a class="headerlink" href="#locating-the-hydrodesktop-databases" title="Permalink to this headline">¶</a></h2>
-<p>The <em>Data Repository</em> and <em>Metadata Cache</em> databases are linked to the current project opened in HydroDesktop. To locate the Data Repository database:</p>
+  <div class="section" id="using-the-file-menu">
+<span id="index-0"></span><h1>Using the File Menu<a class="headerlink" href="#using-the-file-menu" title="Permalink to this headline">¶</a></h1>
+<p>The HydroDesktop File Menu provides access to general application-wide functionality such as printing and saving.</p>
+<div class="section" id="getting-your-hydrodesktop-version-number">
+<span id="index-1"></span><h2>Getting Your HydroDesktop Version Number<a class="headerlink" href="#getting-your-hydrodesktop-version-number" title="Permalink to this headline">¶</a></h2>
+<p>Knowing the HydroDesktop version helps you check if you have the latest version of the software, and can also be useful when reporting bugs.</p>
+<p>To check for your HydroDesktop version number:</p>
 <ol class="arabic simple">
-<li>In the Ribbon, in the <strong>Table</strong> tab, in the <strong>Database</strong> panel, click <strong>Change</strong>.  The location of the current database is shown in the dialog that opens.</li>
+<li>Click the File menu.</li>
+<li>Click About.  The dialog that opens will show you the version number.</li>
 </ol>
-<p>The <em>Metadata Cache</em> database has the name ending with _cache.sqlite. To locate the Metadata cache database:</p>
-<ol class="arabic simple">
-<li>In the Ribbon, in the <strong>Table</strong> tab, in the <strong>Database</strong> panel, click <strong>Change</strong>. The location of the current metadata cache database is shown in the dialog that opens.</li>
-</ol>
-</div>
-<div class="section" id="viewing-the-hydrodesktop-databases">
-<span id="index-2"></span><h2>Viewing the HydroDesktop Databases<a class="headerlink" href="#viewing-the-hydrodesktop-databases" title="Permalink to this headline">¶</a></h2>
-<p>HydroDesktop attempts to provide simplified and useful views into its databases through its user interface.  However, it is also possible to open and peruse the database contents directly.  By default, HydroDesktop uses SQLite as its database format.  You can view the contents of a SQLite database using the following free viewers:</p>
-<ul class="simple">
-<li>SQLite Database Browser - <a class="reference external" href="http://sourceforge.net/projects/sqlitebrowser/">http://sourceforge.net/projects/sqlitebrowser/</a></li>
-<li>Firefox SQLite Manager Add-on (requires Firefox) - <a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/5817/">https://addons.mozilla.org/en-US/firefox/addon/5817/</a></li>
-</ul>
 </div>
 </div>
 
