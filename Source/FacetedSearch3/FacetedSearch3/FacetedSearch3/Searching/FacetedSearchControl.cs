@@ -495,10 +495,12 @@ namespace FacetedSearch3
             // string shapeFileName = String.Format(@"{0}\{1}.shp", Settings.Instance.TempDirectory, "FacetedSearchResult");
             FeatureSet fs = new FeatureSet(FeatureType.Point);
 
-            fs.DataTable.Columns.Add(new DataColumn("ServCode", typeof(string)));
-            fs.DataTable.Columns.Add(new DataColumn("ServURL", typeof(string)));
+            fs.DataTable.Columns.Add(new DataColumn("ServiceCode", typeof(string)));
+            fs.DataTable.Columns.Add(new DataColumn("ServiceURL", typeof(string)));
             fs.DataTable.Columns.Add(new DataColumn("SiteCode", typeof(string)));
+            fs.DataTable.Columns.Add(new DataColumn("SiteName", typeof(string))); //to improve display of labels and pop-up. shows a copy of SiteCode
             fs.DataTable.Columns.Add(new DataColumn("VarCode", typeof(string)));
+            fs.DataTable.Columns.Add(new DataColumn("VarName", typeof(string))); //to improve display of labels and pop-up. shows a copy of VarCode
             fs.DataTable.Columns.Add(new DataColumn("StartDate", typeof(DateTime)));
             fs.DataTable.Columns.Add(new DataColumn("EndDate", typeof(DateTime)));
             fs.DataTable.Columns.Add(new DataColumn("ValueCount", typeof(int)));
@@ -508,10 +510,12 @@ namespace FacetedSearch3
                 DotSpatial.Topology.Point p = new DotSpatial.Topology.Point(o.Longitude, o.Latitude);
                 IFeature f = fs.AddFeature(p);
                 f.DataRow.BeginEdit();                
-                f.DataRow["ServCode"] = o.ServCode;
-                f.DataRow["ServURL"] = o.ServURL;
+                f.DataRow["ServiceCode"] = o.ServCode;
+                f.DataRow["ServiceURL"] = o.ServURL;
                 f.DataRow["SiteCode"] = o.SiteCode;
+                f.DataRow["SiteName"] = o.SiteCode; //todo return site name by service
                 f.DataRow["VarCode"] = o.VarCode;
+                f.DataRow["VarName"] = o.VarCode; //todo return variable name by service
                 f.DataRow["StartDate"] = o.StartDate;
                 f.DataRow["EndDate"] = o.EndDate;
                 f.DataRow["ValueCount"] = o.ValueCount;

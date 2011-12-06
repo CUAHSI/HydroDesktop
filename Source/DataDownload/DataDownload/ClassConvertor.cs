@@ -62,7 +62,7 @@ namespace HydroDesktop.DataDownload
 
                 switch (fld.ColumnName)
                 {
-                    case "DataSource":
+                    case "ServiceCode":
                         pInfo.DataSource = strValue;
                         break;
                     case "SiteName":
