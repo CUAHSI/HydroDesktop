@@ -111,19 +111,9 @@ namespace Search3
 
             #region Keyword Group
 
-            //Keyword text entry
-            const string grpKeyword = "Keyword";
-            rbKeyword = new DropDownActionItem();
-            rbKeyword.AllowEditingText = true;
-            rbKeyword.GroupCaption = grpKeyword;
-            rbKeyword.RootKey = kHydroSearch3;
-            rbKeyword.Width = 150;
-            rbKeyword.Enabled = false;
-            // Populate items by keywords
-            PopulateKeywords();
-            SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { PopulateKeywords(); };
-
-            head.Add(rbKeyword);
+            RefreshKeywordDropDown();
+            
+            SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { RefreshKeywordDropDown(); };
 
             rbKeyword.SelectedValueChanged += rbKeyword_SelectedValueChanged;
             UpdateKeywordsCaption();
@@ -132,10 +122,12 @@ namespace Search3
             var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
             rbKeyword2.LargeImage = Resources.keyword_32;
             rbKeyword2.SmallImage = Resources.keyword_16;
-            rbKeyword2.GroupCaption = grpKeyword;
+            rbKeyword2.GroupCaption = "Keyword";
             rbKeyword2.ToolTipText = "Show Keyword Ontology Tree";
             rbKeyword2.RootKey = kHydroSearch3;
             head.Add(rbKeyword2);
+
+            
 
             #endregion
 
@@ -214,6 +206,28 @@ namespace Search3
 
             //map buttons (not added for now)
             //AddMapButtons();
+        }
+
+        void RefreshKeywordDropDown()
+        {
+            if (rbKeyword !=null) App.HeaderControl.Remove(rbKeyword.Key);
+
+            //Keyword text entry
+            if (rbKeyword == null)
+            {
+                const string grpKeyword = "Keyword";
+                rbKeyword = new DropDownActionItem();
+                rbKeyword.AllowEditingText = true;
+                rbKeyword.GroupCaption = grpKeyword;
+                rbKeyword.RootKey = kHydroSearch3;
+                rbKeyword.Width = 150;
+                rbKeyword.Enabled = false;
+            }
+            // Populate items by keywords
+            PopulateKeywords();
+
+            App.HeaderControl.Add(rbKeyword);
+            //SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { PopulateKeywords(); };
         }
         
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)

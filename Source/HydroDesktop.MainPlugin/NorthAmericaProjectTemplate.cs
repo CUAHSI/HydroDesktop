@@ -148,42 +148,43 @@ namespace HydroDesktop.Main
             }
             catch { }
 
-            //load a rivers layer
-            try
-            {
-                string fileName6 = Path.Combine(baseMapFolder, "world_rivers.shp");
-                if (File.Exists(fileName6))
-                {
-                    IFeatureSet fsRivers = FeatureSet.OpenFile(fileName6);
-                    //fsRivers.Reproject(projWorld.WebMercator);
-                    MapLineLayer layRivers = new MapLineLayer(fsRivers);
-                    layRivers.LegendText = "rivers";
-                    LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
-                    layRivers.Symbolizer = symRivers;
-                    baseGroup.Layers.Add(layRivers);
-                    layRivers.MapFrame = mainMap.MapFrame;
-                }
-            }
-            catch { }
+            ////load a rivers layer
+            //try
+            //{
+            //    string fileName6 = Path.Combine(baseMapFolder, "world_rivers.shp");
+            //    if (File.Exists(fileName6))
+            //    {
+            //        IFeatureSet fsRivers = FeatureSet.OpenFile(fileName6);
+            //        //fsRivers.Reproject(projWorld.WebMercator);
+            //        MapLineLayer layRivers = new MapLineLayer(fsRivers);
+            //        layRivers.LegendText = "rivers";
+            //        LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
+            //        layRivers.Symbolizer = symRivers;
+            //        baseGroup.Layers.Add(layRivers);
+            //        layRivers.MapFrame = mainMap.MapFrame;
+            //    }
+            //}
+            //catch { }
 
-            //load a lakes layer
-            try
-            {
-                string fileName7 = Path.Combine(baseMapFolder, "world_lakes.shp");
-                if (File.Exists(fileName7))
-                {
-                    IFeatureSet fsLakes = FeatureSet.OpenFile(fileName7);
-                    //fsLakes.Reproject(projWorld.WebMercator);
-                    MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
-                    layLakes.LegendText = "lakes";
-                    PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
-                        Color.Blue);
-                    layLakes.Symbolizer = symLakes;
-                    baseGroup.Layers.Add(layLakes);
-                    layLakes.MapFrame = mainMap.MapFrame;
-                }
-            }
-            catch { }
+            ////load a lakes layer
+            //try
+            //{
+            //    string fileName7 = Path.Combine(baseMapFolder, "world_lakes.shp");
+            //    if (File.Exists(fileName7))
+            //    {
+            //        IFeatureSet fsLakes = FeatureSet.OpenFile(fileName7);
+            //        //fsLakes.Reproject(projWorld.WebMercator);
+            //        MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
+            //        layLakes.LegendText = "lakes";
+            //        PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
+            //            Color.Blue);
+            //        layLakes.Symbolizer = symLakes;
+            //        layLakes.ProgressReportingEnabled = false;
+            //        baseGroup.Layers.Add(layLakes);
+            //        layLakes.MapFrame = mainMap.MapFrame;                
+            //    }
+            //}
+            //catch { }
 
             SetMapExtent(mainMap);
             
