@@ -13,3 +13,6 @@ Table tab
 For more information on exporting time series data, see :doc:`/guide-books/ExportingTimeSeries/time-series-export`.
 
 For more information on the local metadata cache, see :doc:`/extensions/MetadataFetcher/MetadataFetcher`.
+
+For more information on the current database path and working with databases, see
+:doc:`/working-with-databases`.

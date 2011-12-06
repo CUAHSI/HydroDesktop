@@ -16,11 +16,13 @@ Tools in HydroDesktop know how to read these databases and present information f
 Locating the HydroDesktop Databases
 -----------------------------------
 
-The *Data Repository* database is linked to the current project opened in HydroDesktop. To locate the Data Repository database:
+The *Data Repository* and *Metadata Cache* databases are linked to the current project opened in HydroDesktop. To locate the Data Repository database:
 
 #. In the Ribbon, in the **Table** tab, in the **Database** panel, click **Change**.  The location of the current database is shown in the dialog that opens.
 
-The *Metadata Cache* database is located in the application directory for HydroDesktop, e.g., C:\\Program Files\\CUAHSI HIS\\HydroDesktop\\databases\\MetadataCache.sqlite.
+The *Metadata Cache* database has the name ending with _cache.sqlite. To locate the Metadata cache database:
+
+#. In the Ribbon, in the **Table** tab, in the **Database** panel, click **Change**. The location of the current metadata cache database is shown in the dialog that opens.
 
 .. index:: 
    single: databases; viewing

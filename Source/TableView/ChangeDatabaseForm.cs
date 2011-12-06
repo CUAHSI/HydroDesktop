@@ -67,8 +67,11 @@ namespace TableView
             }
 
             // Check databases schema
-            if (!CheckDatabaseSchema(newDataRepositoryPath, DatabaseType.DefaulDatabase) ||
-                !CheckDatabaseSchema(newMetadataCachePath, DatabaseType.MetadataCacheDatabase))
+
+            // temporarily changed by JK - don't check the DefaultDatabase schema (to fix HydroModeler DB opening for AGU demo)
+            //if (!CheckDatabaseSchema(newDataRepositoryPath, DatabaseType.DefaulDatabase) ||
+            //    !CheckDatabaseSchema(newMetadataCachePath, DatabaseType.MetadataCacheDatabase))
+            if (!CheckDatabaseSchema(newMetadataCachePath, DatabaseType.MetadataCacheDatabase))
             {
                 DialogResult = DialogResult.None;
                 return;

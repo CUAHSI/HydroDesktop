@@ -1,0 +1,128 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Solar Radiation &mdash; HydroDesktop Help</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+    <div class="breadcrumb">Solar Radiation</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script><div class="section" id="solar-radiation">
+<h1>Solar Radiation<a class="headerlink" href="#solar-radiation" title="Permalink to this headline">¶</a></h1>
+<p>This component is used to determine the amount of solar radiation that is present at Earth&#8217;s surface.  Radiation can either be absorbed or deflected.  A surfaced ability to deflect radiation is described by the albedo, and this can vary based on the type of surface that is present.  For example, snow will have a different albedo than vegitation.</p>
+<div class="section" id="net-solar-radiation">
+<h2>Net Solar Radiation<a class="headerlink" href="#net-solar-radiation" title="Permalink to this headline">¶</a></h2>
+<p>This component is design to compute the total amount of solar radiation.  The net radiation is the total of short and long wave radiation.  The short wave radiation is determined by the canopy reflection coefficient and the incoming solar radiation.  For this component, the canopy coefficient will be assumed to be a constant value of 0.23 because the variables that characterize the canopy coefficient, such as the time of day, angle of exposure and surface vegetation, vary only slighty.  The long wave radiation is determined using standarized equations for long wave radiation, cloudiness factor and relative solar radiation.</p>
+<p>This is the net solar radiation equation.</p>
+\[R_n = S_n + L_n\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((R_n)\)</span> is the net radiation, <span class="raw-latex">\((S_n)\)</span> is the short wave radiation, and <span class="raw-latex">\((L_n)\)</span> is the long wave radiation.</p>
+</div>
+<p>The following equation is used to determine the short wave radiation.</p>
+\[S_n = (1-\alpha)R_s\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((S_n)\)</span> is the short wave radiation, <span class="raw-latex">\((\alpha)\)</span> is the canopy coefficient held constant at 0.23, and <span class="raw-latex">\((R_s)\)</span> is the incoming solar radiation.</p>
+</div>
+<p>The following equation is used to determine the long wave radiation.</p>
+\[R_s = T_fR_a\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((R_s)\)</span> is the incoming solar radiation, <span class="raw-latex">\((T_f)\)</span> is the atmospheric transmittance, and <span class="raw-latex">\((R_a)\)</span> is the extraterrestrial radiation.</p>
+</div>
+<p>The following equation is used to find the extraterrestrial radation.</p>
+\[L_n = \frac{-c_f\sigma(0.34-0.14\sqrt{e_a})(T_{kmax}^4+T_{kmin}^4)}{2}\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((L_n)\)</span> is the long wave radiation, <span class="raw-latex">\((c_f)\)</span> is the cloudiness factor, <span class="raw-latex">\((\sigma)\)</span> is the Stefan-Boltzmann constant, <span class="raw-latex">\((T_{kmax})\)</span> is the maximum temperature, and <span class="raw-latex">\((T_{kmin})\)</span> is the minimum temperature.</p>
+</div>
+<p>The following equation is used to find the cloudiness factor.</p>
+\[c_f = 1.35\frac{R_s}{R_{s0}}-0.35\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((c_f)\)</span> is the cloudiness factor, <span class="raw-latex">\((R_s)\)</span> is the incoming solar radiation, and <span class="raw-latex">\((R_{s0})\)</span> is the clear sky radiation.</p>
+</div>
+<p>The following equation is used to determine the relative solar radiation and can have values that range from 0.3 to 1.0.</p>
+\[\frac{R_s}{R_{s0}} = \frac{T_f}{0.75+2\times10^{-5}z}\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((R_s)\)</span> is the incoming solar radiation, <span class="raw-latex">\((R_{s0})\)</span> is the clear sky radiation, and <span class="raw-latex">\((T_f)\)</span> is the atmospheric transmittance.</p>
+</div>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 05, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
