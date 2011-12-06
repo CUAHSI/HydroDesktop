@@ -75,6 +75,7 @@ namespace HydroDesktop.Main
                     layRivers.Symbolizer = symRivers;
                     baseGroup.Layers.Add(layRivers);
                     layRivers.MapFrame = mainMap.MapFrame;
+                    
                 }
             }
             catch { }
@@ -94,6 +95,7 @@ namespace HydroDesktop.Main
                     layLakes.Symbolizer = symLakes;
                     baseGroup.Layers.Add(layLakes);
                     layLakes.MapFrame = mainMap.MapFrame;
+                    layLakes.ProgressReportingEnabled = false;
                 }
             }
             catch { }
