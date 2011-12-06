@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,8 @@ namespace Search3
 
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
+
+        private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
 
         #endregion
 
@@ -293,8 +296,38 @@ namespace Search3
 
         #region Search
         
+        private DateTime? ValidateDateEdit(TextEntryActionItem item, string itemName, string dateFormat, bool showMessage)
+        {
+            var validateDate = (Func<string, DateTime?>)delegate(string str)
+            {
+                try
+                {
+                    return DateTime.ParseExact(str, dateFormat, CultureInfo.CurrentCulture);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            };
+            var result = validateDate(item.Text);
+            if (result == null && showMessage)
+            {
+                MessageBox.Show(string.Format("{0} is in incorrect format. Please enter {1} in the format {2}", itemName, itemName.ToLower(), dateFormat),
+                                string.Format("{0} validation", itemName), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            return result;
+        }
+
         void rbSearch_Click(object sender, EventArgs e)
         {
+            // Validation of Start/End date
+            if (ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, true) == null ||
+                ValidateDateEdit(rbEndDate, "End Date", _datesFormat, true) == null)
+            {
+                return;
+            }
+            // end of validation
+
             if (_searcher == null)
             {
                 _searcher = new Searcher();
@@ -471,7 +504,7 @@ namespace Search3
                     //special case: if the map layers or the group is selected
                     if (App.Map.MapFrame.IsSelected)
                     {
-                        IEnumerable<IMapPolygonLayer> polygonLayers = AreaHelper.GetAllPolygonLayers((Map) App.Map).Reverse<IMapPolygonLayer>();
+                        IEnumerable<IMapPolygonLayer> polygonLayers = AreaHelper.GetAllPolygonLayers((Map) App.Map).Reverse();
                         foreach(IMapPolygonLayer polyLayer in polygonLayers)
                         {
                             if (polyLayer.IsVisible && polyLayer.Selection.Count > 0)
@@ -679,11 +712,11 @@ namespace Search3
 
         private void UpdateDatesCaption()
         {
-            rbStartDate.Text = SearchSettings.Instance.DateSettings.StartDate.ToShortDateString();
-            rbEndDate.Text = SearchSettings.Instance.DateSettings.EndDate.ToShortDateString();
+            rbStartDate.Text = SearchSettings.Instance.DateSettings.StartDate.ToString(_datesFormat);
+            rbEndDate.Text = SearchSettings.Instance.DateSettings.EndDate.ToString(_datesFormat);
         }
 
-        void rbDate_Click(object Sender, EventArgs e)
+        void rbDate_Click(object sender, EventArgs e)
         {
             if (DateSettingsDialog.ShowDialog(SearchSettings.Instance.DateSettings) == DialogResult.OK)
             {
@@ -695,18 +728,22 @@ namespace Search3
         {
             if (e.PropertyName != "Text") return;
 
-            DateTime result;
-            if (DateTime.TryParse(rbEndDate.Text, out result))
-                SearchSettings.Instance.DateSettings.EndDate = result;
+            var result = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, false);
+            if (result != null)
+            {
+                SearchSettings.Instance.DateSettings.EndDate = result.Value;
+            }
         }
 
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
 
-            DateTime result;
-            if (DateTime.TryParse(rbStartDate.Text, out result))
-                SearchSettings.Instance.DateSettings.StartDate = result;
+            var result = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, false);
+            if (result != null)
+            {
+                SearchSettings.Instance.DateSettings.StartDate = result.Value;
+            }
         }
 
         #endregion
