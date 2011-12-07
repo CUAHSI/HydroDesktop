@@ -8,9 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Data", "HydroD
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Configuration", "HydroDesktop.Configuration\HydroDesktop.Configuration.csproj", "{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B9BA90B-2016-4754-915A-0AD74FD0067A} = {0B9BA90B-2016-4754-915A-0AD74FD0067A}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGisOnline", "ArcGisOnline\ArcGisOnline.csproj", "{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -174,6 +171,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelExtension", "ExcelDataProvider\ExcelExtension.csproj", "{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroModeler", "HydroModeler\HydroModeler.csproj", "{D26B704D-1FC9-4040-A29D-21FB8707ECE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroughtAnalysis", "DroughtAnalysis\DroughtAnalysis.csproj", "{2CAFD6F1-CED6-4E26-8787-16159E9243BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -449,6 +448,16 @@ Global
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2CAFD6F1-CED6-4E26-8787-16159E9243BB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

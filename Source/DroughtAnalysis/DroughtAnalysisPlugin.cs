@@ -37,6 +37,7 @@ namespace DroughtAnalysis
 
         public override void Deactivate()
         {
+            App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
 

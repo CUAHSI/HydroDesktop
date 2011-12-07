@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>F:\dev\HydroDesktop\Binaries\HydroDesktop.exe</StartProgram>
+    <StartProgram>C:\Program Files\CUAHSI HIS\HydroDesktop\HydroDesktop.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>F:\dev\HydroDesktop\Binaries\HydroDesktop.exe</StartProgram>
+    <StartProgram>C:\Program Files\CUAHSI HIS\HydroDesktop\HydroDesktop.exe</StartProgram>
   </PropertyGroup>
 </Project>
