@@ -526,9 +526,22 @@ namespace FacetedSearch3
             fs.Projection = 
                    new ProjectionInfo();
             fs.ProjectionString = "+proj=longlat +ellps=WGS84 +no_defs";
-            
-#if DEBUG            
-            fs.Filename = FacetedShapeFileName;
+               
+            // the faceted search shapefile is saved to the current project directory
+            // preferably this should be in the current project's directory
+            // if the current project directory doesn't exist then use a temp folder
+            string facetedSearchShapefileFullPath =
+                System.IO.Path.Combine(App.SerializationManager.CurrentProjectDirectory, FacetedShapeFileName);
+            if (App.SerializationManager.CurrentProjectDirectory == null)
+            {
+                string hdTempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "HydroDesktop");
+                facetedSearchShapefileFullPath = System.IO.Path.Combine(hdTempPath, FacetedShapeFileName);
+            }
+            else
+            {
+                facetedSearchShapefileFullPath = System.IO.Path.Combine(App.SerializationManager.CurrentProjectDirectory, FacetedShapeFileName);
+            }
+            fs.Filename = facetedSearchShapefileFullPath;
             fs.Save();
 
             // implement threshold for adding to map directly or via shapefile on disk?
@@ -539,7 +552,9 @@ namespace FacetedSearch3
             { 
             }
 
-            App.Map.AddLayer(FacetedShapeFileName);
+            // need to use the full path (relative path didn't work when deploying
+            // the plugin as a package)
+            App.Map.AddLayer(facetedSearchShapefileFullPath);
 
             fs.Dispose();
 
@@ -550,7 +565,7 @@ namespace FacetedSearch3
             // MapArgs.Map.AddLabels((IFeatureLayer)newLayer,
             // String.Format("[{0}]", "FacetedSearchResults"), String.Empty,
             //     new LabelSymbolizer());
-#endif
+
         }
 
        
