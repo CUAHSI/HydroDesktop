@@ -98,8 +98,20 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
 
             // set the initial text for the dirbox
-            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
-            string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
+            string start_path;
+            try
+            {
+                Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+                start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
+            }
+            catch 
+            {
+                var AppManagerAssembly = Assembly.GetAssembly(typeof(AppManager));
+                start_path = string.Empty;
+                if (AppManagerAssembly != null) 
+                    start_path = Path.Combine(AppManagerAssembly.Location, "Plugins\\HydroModeler\\hydromodeler_example_configurations");
+            }
+            
             if (Directory.Exists(start_path))
                 ((TextEntryActionItem)rps_dict["dirbox"]).Text = start_path;
             else
