@@ -530,8 +530,7 @@ namespace FacetedSearch3
             // the faceted search shapefile is saved to the current project directory
             // preferably this should be in the current project's directory
             // if the current project directory doesn't exist then use a temp folder
-            string facetedSearchShapefileFullPath =
-                System.IO.Path.Combine(App.SerializationManager.CurrentProjectDirectory, FacetedShapeFileName);
+            string facetedSearchShapefileFullPath;
             if (App.SerializationManager.CurrentProjectDirectory == null)
             {
                 string hdTempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "HydroDesktop");
