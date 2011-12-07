@@ -85,6 +85,7 @@ namespace FacetedSearch3
         /// </summary>
         public void LoadTotalFacetCollection()
         {
+            App.ProgressHandler.Progress(String.Empty, 0, "Initializing Faceted Search ... Please Wait");
             try
             {            
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
@@ -119,7 +120,8 @@ namespace FacetedSearch3
 #else
                   MessageBox.Show("Error connecting to server. Please verify you have access to the internet and try again.");          
 #endif
-            }                
+            }
+            App.ProgressHandler.Progress(String.Empty, 0, String.Empty);    
         }
 
         /// <summary>
