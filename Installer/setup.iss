@@ -52,13 +52,11 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{B3FF6BFE-3E8A-4acb-AD61-5C4304FD754B}
+AppID={{B3FF6BFE-3E8A-4acb-AD61-5C4304FD754B}
 PrivilegesRequired=poweruser
 MinVersion=,5.01
-
 ; Necessary setting for the 64bit version
 ArchitecturesInstallIn64BitMode="x64 ia64"
-
 ;
 AppName={#AppName}
 AppVersion={#AppVerStr}
@@ -72,21 +70,17 @@ AppPublisherURL="www.cuahsi.org"
 AppSupportURL="www.hydrodesktop.org"
 AppUpdatesURL="www.hydrodesktop.org"
 AppCopyright=Copyright © CUAHSI 2009-2011
-
 AppContact="www.hydrodesktop.org"
-
 VersionInfoCompany=CUAHSI [www.cuahsi.org]
 VersionInfoCopyright=Mozilla Public License (MPL) 1.1
 VersionInfoDescription=HydroDesktop [www.HydroDesktop.org]
 VersionInfoProductName="{#AppName} {#AppVerStr}
 VersionInfoProductVersion={#AppVerStr}
-
 DefaultDirName={pf}\CUAHSI HIS\HydroDesktop
 DefaultGroupName=CUAHSI HIS\HydroDesktop
 ;If this is set to auto, at startup Setup will look in the registry
 ;to see if the same application is already installed, and if so, it
 ;will not show the Select Start Menu Folder wizard page.
-DisableProgramGroupPage=false
 AllowNoIcons=true
 AlwaysShowComponentsList=false
 ;LicenseFile=Source\App\license.rtf
@@ -96,18 +90,15 @@ OutputDir=Releases
 OutputBaseFilename="HydroDesktop13_Beta_Installer"
 ;SetupIconFile=Source\..\..\Documents\MapWindow.ico
 ;UninstallDisplayIcon=Source\..\..\Documents\MapWindow.ico
-
 ChangesAssociations=true
-Compression=lzma/fast
+Compression=lzma/Normal
 SolidCompression=true
-InternalCompressLevel=fast
+InternalCompressLevel=Normal
 ;WizardImageFile=Source\..\..\Documents\WizImage-MW.bmp
 ;WizardSmallImageFile=Source\..\..\Documents\WizSmallImage-MW.bmp
-
 ;#ifdef Debug
 ;SetupLogging=true
 ;#endif
-
 ;[Languages]
 
 [Tasks]
@@ -204,6 +195,8 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
+Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktip\*"
 
 [UninstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
@@ -218,6 +211,7 @@ Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
 Type: files; Name: "{app}\FluentNHibernate.dll"
 Type: files; Name: "{app}\NHibernate.dll"
 Type: files; Name: "{app}\q_save.xml"
+Type: files; Name: "{userappdata}\HydroDesktop.exe\Extensions\*"
 ;Name: {app}\Sample Projects; Type: filesandordirs; Components:
 ;Name: {app}; Type: files; Components:
 ;Name: {app}; Type: dirifempty; Components:
@@ -362,17 +356,7 @@ begin
 end;
 
 
-function InitializeSetup(): Boolean;
-var
-  //ErrorCode: Integer;
-  //ExpectedLocalLocation: String;
-  R1: Boolean;
-begin
-  R1 := True;
 
-  // Check for .NET prerequisites
-	Result := CheckDotNetVersions();
-end;
 	
 function IsX64: Boolean;
 begin
@@ -393,9 +377,39 @@ begin
 	
 	if Result = '' then
 		Result := x86;
+end;
+
+procedure CurUninstallStepChanged (CurUninstallStep: TUninstallStep);
+var
+  mres : integer;
+begin
+  case CurUninstallStep of
+    usPostUninstall:
+      begin
+        mres := MsgBox('Do you want to delete extension packages?', mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
+        if mres = IDYES then
+          DelTree(ExpandConstant('{userappdata}\Hydrodesktop.exe'), True, True, True);
+      end;  
+  end;
 end;	
 
+procedure DeletePackages;
+begin
+   DelTree(ExpandConstant('{userappdata}\Hydrodesktop.exe'), True, True, True);
+end;  
 
-//#ifdef Debug
-//  #expr SaveToFile(AddBackslash(SourcePath) + "Preprocessed.iss")
-//#endif
+
+function InitializeSetup(): Boolean;
+var
+  //ErrorCode: Integer;
+  //ExpectedLocalLocation: String;
+  R1: Boolean;
+begin
+  R1 := True;
+  
+  DeletePackages();
+  
+  // Check for .NET prerequisites
+	Result := CheckDotNetVersions();
+	
+end;
