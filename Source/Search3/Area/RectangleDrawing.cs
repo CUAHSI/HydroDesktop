@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
@@ -15,8 +17,6 @@ namespace Search3.Area
     /// </summary>
     public class RectangleDrawing
     {
-        //todo: Copied from Search2. Need to be refactored.
-
         #region Fields
 
         private readonly Map _mainMap;
@@ -27,14 +27,31 @@ namespace Search3.Area
 
         #endregion
 
+        public event EventHandler RectangleCreated;
+        public event EventHandler Deactivated;
+
+        #region Constructors
+        
         public RectangleDrawing(Map map)
         {
             if (map == null) throw new ArgumentNullException("map");
+            Contract.EndContractBlock();
 
             _mainMap = map;
+            _mainMap.Layers.LayerRemoved += Layers_LayerRemoved;
         }
 
-        public event EventHandler RectangleCreated;
+        #endregion
+
+        void Layers_LayerRemoved(object sender, LayerEventArgs e)
+        {
+            if (_rectangleLayer == null) return;
+
+            if (e.Layer == _rectangleLayer)
+            {
+                Deactivate();
+            }
+        }
 
         /// <summary>
         /// The extent of the area rectangle
@@ -83,6 +100,8 @@ namespace Search3.Area
         /// </summary>
         public void Deactivate()
         {
+            if (!IsActivated) return;
+
             _mainMap.MouseDown -= mainMap_MouseDown;
             _mainMap.MouseUp -= mainMap_MouseUp;
             _numClicks = 0;
@@ -99,6 +118,9 @@ namespace Search3.Area
             _mainMap.ResetBuffer();
             _mainMap.FunctionMode = FunctionMode.Select;
             EnableLayerSelection();
+
+            //Raise event
+            OnDeactivated();
         }
 
         private void DisableLayerSelection()
@@ -233,16 +255,10 @@ namespace Search3.Area
             //check for the rectangle layer
             if (_rectangleLayer == null)
             {
-                foreach (IMapLayer lay in _mainMap.GetAllLayers())
-                {
-                    if (lay.LegendText == Properties.Resources.RectangleLayerName)
-                    {
-                        _rectangleLayer = lay as MapPolygonLayer;
-                        break;
-                    }
-                }
+                _rectangleLayer = _mainMap.GetAllLayers().OfType<MapPolygonLayer>()
+                                                         .Where(lay => lay.LegendText == Properties.Resources.RectangleLayerName)
+                                                         .FirstOrDefault();
             }
-
             if (_rectangleLayer == null)
             {
                 var rectangleFs = new FeatureSet(FeatureType.Polygon);
@@ -263,14 +279,7 @@ namespace Search3.Area
         /// <returns></returns>
         public bool RectangleLayerIsInMap()
         {
-            foreach (IMapLayer lay in _mainMap.GetAllLayers())
-            {
-                if (lay.LegendText == Properties.Resources.RectangleLayerName)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return _mainMap.GetAllLayers().Cast<IMapLayer>().Any(lay => lay.LegendText == Properties.Resources.RectangleLayerName);
         }
 
         private void RemoveRectangleLayer()
@@ -279,9 +288,22 @@ namespace Search3.Area
             _rectangleLayer = null;
         }
 
-        protected void OnRectangleCreated()
+        private void OnRectangleCreated()
         {
-            if (RectangleCreated != null) RectangleCreated(this, EventArgs.Empty);
+            var handler = RectangleCreated;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
+        private void OnDeactivated()
+        {
+            var handler = Deactivated;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
     }
 }

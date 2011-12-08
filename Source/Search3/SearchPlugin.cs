@@ -444,9 +444,16 @@ namespace Search3
             {
                 _rectangleDrawing = new RectangleDrawing((Map) App.Map);
                 _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
+                _rectangleDrawing.Deactivated += _rectangleDrawing_Deactivated;
             }
 
             _rectangleDrawing.Activate();
+        }
+
+        void _rectangleDrawing_Deactivated(object sender, EventArgs e)
+        {
+            if (_isDeactivatingDrawBox) return;
+            rbSelect_Click(this, EventArgs.Empty);
         }
 
         void rectangleDrawing_RectangleCreated(object sender, EventArgs e)
@@ -535,12 +542,15 @@ namespace Search3
             }
         }
 
+        private bool _isDeactivatingDrawBox;
         private void DeactivateDrawBox()
         {
             if (_rectangleDrawing == null) return;
 
+            _isDeactivatingDrawBox = true;
             _rectangleDrawing.Deactivate();
             SearchSettings.Instance.AreaSettings.SetAreaRectangle(null, null);
+            _isDeactivatingDrawBox = false;
         }
 
         void rbAttribute_Click(object sender, EventArgs e)
