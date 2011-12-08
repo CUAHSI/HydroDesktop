@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to Link Models into a Configuration &mdash; HydroDesktop Help</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="How to Run a Model Configuration" href="RunningComposition.html" />
+    <link rel="prev" title="How to Open an OpenMI Project File" href="OpeningOprFile.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">How to Link Models into a Configuration</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="RunningComposition.html" title="How to Run a Model Configuration" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="OpeningOprFile.html" title="How to Open an OpenMI Project File" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-link-models-into-a-configuration">
+<span id="index-0"></span><h1>How to Link Models into a Configuration<a class="headerlink" href="#how-to-link-models-into-a-configuration" title="Permalink to this headline">¶</a></h1>
+<p>The purpose of linking the models together is to transfer data back and forth between models so that you are able to calculate the required data for your project.  In this demonstration, we will be recreating example configuration 3.</p>
+<ol class="arabic simple">
+<li>To link models together, we first need to place a few models within the HydroModeler plugin in HydroDesktop.  Navigate to the model folder within example_configuration_03.  Inside these folders you will find the Sediment_Diff and Water_adv .omi files.  Add these to your project.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig1_m.png" src="../../_images/HM_fig1_m.png" />
+</div>
+<ol class="arabic simple" start="2">
+<li>Next, you will want to add a trigger.  Locate the Composition panel of the ribbon toolbar and click Add Trigger.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig2_m.png" src="../../_images/HM_fig2_m.png" />
+</div>
+<ol class="arabic simple" start="3">
+<li>Now that our components have been place, we can begin to link them together.  Find the Add Connection button located at the top in the main ribbon.  First click your starting model and then click again on the model you wish for your link to end.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig3_m.png" src="../../_images/HM_fig3_m.png" />
+</div>
+<ol class="arabic simple" start="4">
+<li>For some intances, you may have a project that needs the link to work in both directions.  You can repeat the above directions but switch the order in which you click the models.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig4_m.png" src="../../_images/HM_fig4_m.png" />
+</div>
+<ol class="arabic simple" start="5">
+<li>You may link as many models and in any direction as you wish but note that the trigger can only function as a terminal end to a link and only one model may be linked to it.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig5_m.png" src="../../_images/HM_fig5_m.png" />
+</div>
+<ol class="arabic simple" start="6">
+<li>Once the link has been made, you need to modify it to determine what information will be conveyed through the link.  To do this, click the link to access the Connection Properties.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig6_m.png" src="../../_images/HM_fig6_m.png" />
+</div>
+<ol class="arabic simple" start="7">
+<li>You will see two boxes, one labeled Output Exchange Items and one labeled Input Exchange Items.  Expand the desired input and output variables you would like for the model to utilize and select the appropriate location.  The location can be found as a subset of a selected variable.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig7_m.png" src="../../_images/HM_fig7_m.png" />
+</div>
+<ol class="arabic simple" start="8">
+<li>Note that within the location branch, there are Element Mappers.  These are built in functions to help you mediate your data if they do not overlay eachother.  More than likely, you will not need to check anything here.  To confirm that your data is appropriate, you may click the ElementSet button to display a visual representation of your data.</li>
+<li>Now click apply and notice that a link has been created in the links box.  Different links can be created and stored in the links box and you can apply or delete them as you see fit.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig8_m.png" src="../../_images/HM_fig8_m.png" />
+</div>
+<ol class="arabic simple" start="10">
+<li>Your have created your link and you can exit the Connection Properties dialog box by clicking close.</li>
+</ol>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 05, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

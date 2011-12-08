@@ -1,0 +1,259 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Searching for Data &mdash; HydroDesktop Help</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="Guide Books" href="../../guide-books.html" />
+    <link rel="next" title="Time Series Data Export" href="../ExportingTimeSeries/time-series-export.html" />
+    <link rel="prev" title="Guide Books" href="../../guide-books.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../../guide-books.html" accesskey="U">Guide Books</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Searching for Data</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="../ExportingTimeSeries/time-series-export.html" title="Time Series Data Export" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="../../guide-books.html" title="Guide Books" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../guide-books.html">Guide Books</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Searching for Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ExportingTimeSeries/time-series-export.html">Time Series Data Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../TableView/TableView.html">Table Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../using-the-orb.html">Using the Orb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../working-with-databases.html">Working with Databases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="searching-for-data">
+<span id="index-0"></span><h1>Searching for Data<a class="headerlink" href="#searching-for-data" title="Permalink to this headline">¶</a></h1>
+<p>When searching for data in HydroDesktop, you can specify the following filters:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#search-specifying-area-of-interest"><em>Area of interest</em></a></li>
+<li><a class="reference internal" href="#search-choosing-keywords"><em>Keywords (e.g., Precipitation)</em></a></li>
+<li><a class="reference internal" href="#search-setting-a-time-range"><em>Time range</em></a></li>
+<li><a class="reference internal" href="#search-choosing-data-sources"><em>Data sources</em></a></li>
+</ol>
+<p>Once you <a class="reference internal" href="#search-running-a-search"><em>initiate a search</em></a>, HydroDesktop queries the CUAHSI-HIS national catalog of known time series data to find locations of time series that match your search.
+Search results are presented in the map and include information that HydroDesktop
+can use to connect to each individual data provider for data access.</p>
+<p>You can then further filter the results and choose which data you want to actually <a class="reference internal" href="#search-downloading-data"><em>download</em></a>.</p>
+<div class="figure">
+<img alt="../../_images/Search_fig01.png" src="../../_images/Search_fig01.png" />
+</div>
+<p>The tools for running a search are located on the <em>Search</em> tab of the HydroDesktop ribbon.
+The panels in this tab represent the steps in the workflow above.</p>
+<div class="figure">
+<img alt="../../_images/Search_fig02.png" src="../../_images/Search_fig02.png" />
+</div>
+<div class="section" id="specifying-area-of-interest">
+<span id="search-specifying-area-of-interest"></span><h2>Specifying Area of Interest<a class="headerlink" href="#specifying-area-of-interest" title="Permalink to this headline">¶</a></h2>
+<p>There are two ways of specifying an area of interest for the search: <em>drawing a box</em> or <em>selecting a polygon</em>.</p>
+<div class="section" id="drawing-a-box">
+<h3>Drawing a Box<a class="headerlink" href="#drawing-a-box" title="Permalink to this headline">¶</a></h3>
+<p>If you are very familiar with the location of your study area, then drawing a box may be the easiest option.</p>
+<p>To draw a box around your area of interest:</p>
+<ol class="arabic simple">
+<li>Use the tools on the <em>Map</em> tab to locate and zoom in to your area of interest.</li>
+<li>On the <em>Search</em> tab, click the <strong>Draw Rectangle</strong> tool.</li>
+<li>With the left mouse button, click and drag in the map to draw a box around your study area.</li>
+</ol>
+<div class="figure">
+<img alt="../../_images/Search_fig03.png" src="../../_images/Search_fig03.png" />
+<p class="caption">Once a box is drawn, it is highlighted in the map</p>
+</div>
+</div>
+<div class="section" id="selecting-a-polygon">
+<h3>Selecting a Polygon<a class="headerlink" href="#selecting-a-polygon" title="Permalink to this headline">¶</a></h3>
+<p>If a polygon feature in the map represents your area of interest, you can select that polygon to be used in the search.
+For example, the polygon could represent a county as found in the U.S. Counties dataset included with HydroDesktop,
+or the polygon could come from a shapefile that you created and added to the map.</p>
+<p>You can either select polygons by location or by attributes of the polygon feature.</p>
+<p>To select polygons by location:</p>
+<ol class="arabic simple">
+<li>In the <em>Legend</em>, left-click to select the map layer that you want to use.  Note that you must select a polygon layer.  The search will not work with online basemap data, point layers, or line layers.</li>
+<li>In the <em>Legend</em>, make sure the desired map layer is visible by placing a check in the box next to the layer&#8217;s name.</li>
+<li>On the <em>Search</em> tab, click the <strong>Select Polygons</strong> tool.  This tool works like the <strong>Select</strong> tool on the Map tab, and either tool can be used to select features.</li>
+<li>With the left mouse button, click a polygon in the map or draw a box that intersects one or more polygons to select those features.</li>
+</ol>
+<div class="figure">
+<img alt="../../_images/Search_fig04.png" src="../../_images/Search_fig04.png" />
+<p class="caption">A selected polygon is highlighted in the map</p>
+</div>
+<p>Alternately, you can select polygons using attributes of polygon features.</p>
+<p>To select polygons by attributes:</p>
+<ol class="arabic simple">
+<li>In the <em>Legend</em>, make sure the desired map layer is visible by placing a check in the box next to the layer&#8217;s name.</li>
+<li>On the <em>Search</em> tab, click the <strong>Select by Attribute</strong> button.</li>
+<li>In the dialog that opens, choose the layer of interest, an attribute of that layer, and then the value of the attribute that will be used to identify the polygon of interest.  To choose the value, you can either select it from the list or type in the desired value.</li>
+<li>With the attribute value highlighted, click <strong>OK</strong> to close the dialog and select the feature.</li>
+</ol>
+<div class="figure">
+<img alt="../../_images/Search_fig05.png" src="../../_images/Search_fig05.png" />
+</div>
+</div>
+</div>
+<div class="section" id="choosing-keywords">
+<span id="search-choosing-keywords"></span><h2>Choosing Keywords<a class="headerlink" href="#choosing-keywords" title="Permalink to this headline">¶</a></h2>
+<p>To faciliate searching across a variety of data sources, each with their own naming conventions for hydrologic parameters, CUAHSI maintains an ontology of hydrologic <em>keywords</em> to which a given data source&#8217;s parameters are mapped.
+This means a search for the keyword <em>Precipitation</em> will return results even if a data source calls that parameter &#8220;rainfall&#8221; or &#8220;precip&#8221; instead.</p>
+<p>You can choose from one or more of these keywords when conducting a search.</p>
+<p>To quickly choose a single keyword:</p>
+<ol class="arabic simple">
+<li>In the <em>Keyword</em> panel on the <em>Search</em> tab, locate the drop down box where you can type a keyword.</li>
+<li>Start typing the keyword, e.g., <em>streamflow</em>, in the box.  The box autocompletes to a valid keyword based on what you type.  Or, you can click the drop down arrow to choose a keyword from the list.</li>
+</ol>
+<p>To select multiple keywords:</p>
+<ol class="arabic simple">
+<li>In the <em>Search</em> tab, click the <strong>Keyword Selection</strong> button.</li>
+<li>In the dialog that opens, choose a keyword by either typing it in the text box at the top or by browsing the keywords and selecting a desired keyword.</li>
+<li>With a keyword highlighted, click the green plus sign to add it to the list of selected keywords.</li>
+<li>Repeat steps 2 and 3 to add more keywords.</li>
+<li>Click <strong>OK</strong> when all desired keywords have been added.</li>
+</ol>
+<div class="figure">
+<img alt="../../_images/Search_fig06.png" src="../../_images/Search_fig06.png" />
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are interested in all variables, then select the top-level <strong>Hydrosphere</strong> keyword.</p>
+</div>
+</div>
+<div class="section" id="setting-a-time-range">
+<span id="search-setting-a-time-range"></span><h2>Setting a Time Range<a class="headerlink" href="#setting-a-time-range" title="Permalink to this headline">¶</a></h2>
+<p>Search results will only be returned if the period of record for a time series intersects the time range that you specify.</p>
+<p>To quickly set the time range, enter the start and end dates into the boxes in the <em>Time Range</em> panel of the <em>Search</em> tab.  Default values are provided as a guide.</p>
+<p>For more advanced options regarding time ranges, click the <strong>Select Time</strong> button.  This button opens a dialog in which you can manually set the start and end dates or quickly select a recent period such as the last month.</p>
+</div>
+<div class="section" id="choosing-data-sources">
+<span id="search-choosing-data-sources"></span><h2>Choosing Data Sources<a class="headerlink" href="#choosing-data-sources" title="Permalink to this headline">¶</a></h2>
+<p>Dozens of data source publish data using WaterOneFlow, making them accessible in HydroDesktop.  These data sources register with CUAHSI&#8217;s HIS Central, where a catalog of all data sources and what parameters those data sources publish is maintained.</p>
+<p>By default, when HydroDesktop performs a search, it sends the request to HIS Central.  HIS Central searches its catalog to see who has time series that match the search criteria, and is sends back search results to HydroDesktop.</p>
+<p>In many cases, this default behavior is fine and there is no need to modify this aspect of search.  However, you do have a couple of advanced options available to you.</p>
+<p>One of these options is to <strong>restrict the search to specific data sources</strong>.  You might do this when you know you only want to work with USGS data.</p>
+<p>To restrict the option to particular data sources:</p>
+<ol class="arabic simple">
+<li>On the <em>Search</em> tab, click the <strong>All Services</strong> button.</li>
+<li>In the dialog that opens, place a check next to services that you do not want to exclude from the search, and click <strong>OK</strong>.</li>
+</ol>
+<p>Another option you have is to search the local metadata cache instead of HIS Central.
+The <em>metadata cache</em> is a database, much like the one at HIS Central, which catalogs what parameters are available from certain data sources.
+However, the metadata cache is created by you and managed by you.  It has no ties to HIS Central.
+Creating a metadata cache is useful if you are aware of services that are not registered at HIS Central.  These services wouldn&#8217;t be returned in HIS Central search results, but may still be useful to you.
+For more information on creating a metadata cache, see <a class="reference internal" href="../../extensions/MetadataFetcher/MetadataFetcher.html"><em>Metadata Fetcher</em></a>.</p>
+<p>To search the metadata cache instead of HIS Central:</p>
+<ol class="arabic simple">
+<li>On the <em>Search</em> tab, click the <strong>HIS Central</strong> button.</li>
+<li>Select the <strong>Local Metadata Cache</strong> option and click <strong>OK</strong>.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You must have already harvested data into the metadata cache before attempting to search it.</p>
+</div>
+</div>
+<div class="section" id="running-a-search">
+<span id="search-running-a-search"></span><h2>Running a Search<a class="headerlink" href="#running-a-search" title="Permalink to this headline">¶</a></h2>
+<p>With search parameters set, follow these steps to run a search:</p>
+<ol class="arabic simple">
+<li>In the <em>Search</em> tab, click the <strong>Run Search</strong> button.</li>
+<li>When the dialog indicates the search has finished, click to <strong>Hide</strong> the dialog.</li>
+</ol>
+<p>Locations of time series that match your search criteria are displayed in the map and symbolized by data source and number of data values available.
+You can hover your mouse over one of the symbols in the map to see more about that location.</p>
+<div class="figure">
+<img alt="../../_images/Search_fig07.png" src="../../_images/Search_fig07.png" />
+</div>
+</div>
+<div class="section" id="downloading-data">
+<span id="search-downloading-data"></span><h2>Downloading Data<a class="headerlink" href="#downloading-data" title="Permalink to this headline">¶</a></h2>
+<p>There are a couple of ways to download data from search results.  The easiest is to hover the mouse over the location of a desired time series in the map, and in the pop-up window that opens, click the <strong>Download</strong> button.</p>
+<p>If you would like to download multiple time series, then you can select them and click the <strong>Download</strong> button on the <em>Search</em> tab.
+You select series the same way you select other features in the map.
+For example, you can use the <strong>Select</strong> tool on the <em>Map</em> tab to click on or draw a box around the time series you want to download.</p>
+<p>When the download begins, the Download Manager shows detailed progress of each download.</p>
+<div class="figure">
+<img alt="../../_images/Search_fig08.png" src="../../_images/Search_fig08.png" />
+<p class="caption">Download Manager</p>
+</div>
+<p>When the download completes, click to <strong>Hide</strong> the dialog.
+If any errors occur during the download, you can click to view the details of the download attempt or attempt to re-download the series with errors.
+You can also copy the error log so that you can post it to the HydroDesktop issue tracker, thereby alerting the development team to potential issues with the system.</p>
+<p>With the download complete, you can now visualize, analyze, and export the data using HydroDesktop&#8217;s other capabilities.</p>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 05, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
