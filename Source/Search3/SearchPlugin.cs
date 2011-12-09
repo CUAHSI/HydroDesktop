@@ -51,11 +51,15 @@ namespace Search3
         public override void Activate()
         {
             AddSearchRibbon();
-            base.Activate(); 
+            base.Activate();
+
+            App.SerializationManager.Serializing += SerializationManager_Serializing;
         }
 
         public override void Deactivate()
         {
+            App.SerializationManager.Serializing -= SerializationManager_Serializing;
+
             App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
@@ -63,6 +67,18 @@ namespace Search3
         #endregion
 
         #region Private methods
+
+        void SerializationManager_Serializing(object sender, SerializingEventArgs e)
+        {
+            // Note: quick fix of http://hydrodesktop.codeplex.com/workitem/8360
+            // DS do not serialize DotSpatial.Data.FeatureSet.
+
+            // Remove the "Area rectangle" layer
+            if (_rectangleDrawing != null)
+            {
+                _rectangleDrawing.Deactivate();
+            }
+        }
 
         private void AddSearchRibbon()
         {
@@ -129,8 +145,6 @@ namespace Search3
             rbKeyword2.ToolTipText = "Show Keyword Ontology Tree";
             rbKeyword2.RootKey = kHydroSearch3;
             head.Add(rbKeyword2);
-
-            
 
             #endregion
 
