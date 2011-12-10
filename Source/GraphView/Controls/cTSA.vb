@@ -307,7 +307,7 @@ Public Class cTSA
             ColorChooser(options)
 
             Summary.GetStatistics(data, options)
-            pDataSummary.CreateStatTable(siteName, selectedSeriesIdList(count - 1), data, options)
+            pDataSummary.CreateStatTable(siteName, variableName, selectedSeriesIdList(count - 1), data, options)
             pDataSummary.StatTableStyling()
 
             If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
@@ -398,7 +398,7 @@ Public Class cTSA
 
             If data.Rows.Count > 0 Then
                 Summary.GetStatistics(data, options)
-                pDataSummary.CreateStatTable(siteName, s, data, options)
+                pDataSummary.CreateStatTable(siteName, variableName, s, data, options)
                 If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
                     'pSummaryPlot.Plot(data, siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
                     pTimeSeries.Plot(data, siteName, variableName, unitsName, options, s)

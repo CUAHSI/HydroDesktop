@@ -8,6 +8,7 @@ Public Class cBoxWhiskerPlot
     Public Shared m_Data As Data.DataTable
     Public Shared m_Site As String
     Public Shared m_Var As String
+    Private Shared m_Variable As String
     Public Shared m_Options As PlotOptions
     Private m_StdDev As Double = 0
     Private m_ID As Integer
@@ -24,6 +25,7 @@ Public Class cBoxWhiskerPlot
         Try
             m_Data = objDataTable.Copy
             m_Site = strSiteName
+            m_Variable = strVariableName
             m_Var = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_ID = ID
@@ -207,7 +209,7 @@ Public Class cBoxWhiskerPlot
                 gPane.YAxis.Scale.MinGrace = 0 '0.025 '2.5%
                 gPane.YAxis.Scale.MagAuto = False
 
-                gPane.Title.Text = m_Site + " ,ID: " + m_ID.ToString
+                gPane.Title.Text = m_Site + ", " + m_Variable + ", ID: " + m_ID.ToString
 
                 '6. Plot the Data
                 If numPts > 0 Then

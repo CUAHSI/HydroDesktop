@@ -12,6 +12,7 @@ Public Class cProbabilityPlot
     Public Shared m_Data As Data.DataTable
     Public Shared m_Site As String
     Public Shared m_Var As String
+    Private Shared m_Variable As String
     Public Shared m_Units As String
     Public Shared m_VarList As New List(Of String)
     Public Shared m_Options As PlotOptions
@@ -42,6 +43,7 @@ Public Class cProbabilityPlot
             m_Data = objDataTable.Copy
             'm_DataRows = objDataTable.Select("", "DataValue ASC")
             m_Site = strSiteName
+            m_Variable = strVariableName
             m_Var = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_Units = strVariableUnits
@@ -276,7 +278,7 @@ Public Class cProbabilityPlot
             End Select
 
             'Setting Legend Title
-            probLine.Label.Text += ", ID: " + m_SeriesID.ToString
+            probLine.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
 
             'Setting Y Axis
             probLine.Link.Title = m_Var

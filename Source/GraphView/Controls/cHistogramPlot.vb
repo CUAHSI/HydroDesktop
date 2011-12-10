@@ -9,6 +9,7 @@ Public Class cHistogramPlot
     Public Shared m_Data As Data.DataTable
     Public Shared m_Site As String
     Public Shared m_Var As String
+    Public Shared m_Variable As String
     Public Shared m_Options As PlotOptions
     Private Const m_MaxHistBins As Integer = 20 'holds the maximum number of Bins for a Histogram plot, 20 = selected due to spacing of values on the plot
     Private m_StdDev As Double = 0
@@ -30,6 +31,7 @@ Public Class cHistogramPlot
         Try
             m_Data = objDataTable.Copy
             m_Site = strSiteName
+            m_Variable = strVariableName
             m_Var = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_ID = ID
@@ -181,7 +183,7 @@ Public Class cHistogramPlot
                 gPane.YAxis.MajorGrid.IsVisible = True
                 gPane.YAxis.MinorGrid.IsVisible = False
                 gPane.YAxis.Scale.MagAuto = False
-                gPane.Title.Text = m_Site + " ,ID: " + m_ID.ToString
+                gPane.Title.Text = m_Site + ", " + m_Variable + ", ID: " + m_ID.ToString
                 gPane.XAxis.Scale.FormatAuto = False
 
 
