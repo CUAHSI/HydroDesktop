@@ -89,5 +89,25 @@ namespace DroughtAnalysis
                 Settings.OutputDirectory = textBox2.Text;
             }
         }
+
+        //analyze drought button
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (Settings.SelectedSite == null)
+            {
+                MessageBox.Show("Please select a station.");
+                return;
+            }
+
+            //process the selected site
+            DataExporter exp = new DataExporter();
+            exp.ExportDataForStation(Settings.SelectedSite);
+        }
+
+        private void Stations_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxStations.SelectedIndex < 0) Settings.SelectedSite = null;
+            Settings.SelectedSite = (Site)listBoxStations.SelectedItem;
+        }
     }
 }
