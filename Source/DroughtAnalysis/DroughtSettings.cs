@@ -19,6 +19,8 @@ namespace DroughtAnalysis
         public Series PrecipitationSeries { get; set; }
 
         public IList<Site> SuitableSites { get; set; }
+
+        public Site SelectedSite { get; set; }
     }
 
     public enum TypeOfDrought
