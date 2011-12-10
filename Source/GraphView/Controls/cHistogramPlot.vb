@@ -6,11 +6,11 @@ Imports System.Drawing
 Public Class cHistogramPlot
     Implements IChart
 
-    Public Shared m_Data As Data.DataTable
-    Public Shared m_Site As String
-    Public Shared m_Var As String
-    Public Shared m_Variable As String
-    Public Shared m_Options As PlotOptions
+    Private Shared m_Data As Data.DataTable
+    Private Shared m_Site As String
+    Private Shared m_VariableWithUnits As String
+    Private Shared m_Variable As String
+    Private Shared m_Options As PlotOptions
     Private Const m_MaxHistBins As Integer = 20 'holds the maximum number of Bins for a Histogram plot, 20 = selected due to spacing of values on the plot
     Private m_StdDev As Double = 0
     Private m_ID As Integer
@@ -32,7 +32,7 @@ Public Class cHistogramPlot
             m_Data = objDataTable.Copy
             m_Site = strSiteName
             m_Variable = strVariableName
-            m_Var = strVariableName & " - " & strVariableUnits
+            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_ID = ID
 
@@ -153,7 +153,7 @@ Public Class cHistogramPlot
                 ' Scaling the X axis better
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                gPane.XAxis.Title.Text = m_Var
+                gPane.XAxis.Title.Text = m_VariableWithUnits
                 gPane.XAxis.MinorTic.IsAllTics = False
                 gPane.XAxis.Title.Gap = 0.2
                 gPane.XAxis.Scale.Mag = 0

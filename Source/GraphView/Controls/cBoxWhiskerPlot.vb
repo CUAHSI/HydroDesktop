@@ -5,11 +5,11 @@ Imports System.Drawing
 Public Class cBoxWhiskerPlot
     Implements IChart
 
-    Public Shared m_Data As Data.DataTable
-    Public Shared m_Site As String
-    Public Shared m_Var As String
+    Private Shared m_Data As Data.DataTable
+    Private Shared m_Site As String
+    Private Shared m_VariableWithUnits As String
     Private Shared m_Variable As String
-    Public Shared m_Options As PlotOptions
+    Private Shared m_Options As PlotOptions
     Private m_StdDev As Double = 0
     Private m_ID As Integer
 
@@ -26,7 +26,7 @@ Public Class cBoxWhiskerPlot
             m_Data = objDataTable.Copy
             m_Site = strSiteName
             m_Variable = strVariableName
-            m_Var = strVariableName & " - " & strVariableUnits
+            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_ID = ID
             Dim i As Integer
@@ -197,7 +197,7 @@ Public Class cBoxWhiskerPlot
                 gPane.YAxis.MajorGrid.IsVisible = True
                 gPane.YAxis.MajorGrid.Color = Color.Gray
                 'gPane.YAxis.Type = ZedGraph.AxisType.Linear
-                gPane.YAxis.Title.Text = m_Var
+                gPane.YAxis.Title.Text = m_VariableWithUnits
                 If min > 0 And (min - (0.2 * m_StdDev)) < 0 Then
                     gPane.YAxis.Scale.Min = 0
                 Else
