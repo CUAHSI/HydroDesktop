@@ -1,5 +1,4 @@
 ﻿Imports Controls
-Imports Microsoft.VisualBasic.Devices
 Imports ZedGraph
 Imports System.Drawing
 Imports HydroDesktop.Database
@@ -9,14 +8,14 @@ Imports HydroDesktop.Interfaces
 Public Class cProbabilityPlot
     Implements IChart
 
-    Public Shared m_Data As Data.DataTable
-    Public Shared m_Site As String
-    Public Shared m_Var As String
+    Private Shared m_Data As Data.DataTable
+    Private Shared m_Site As String
+    Private Shared m_VariableWithUnits As String
     Private Shared m_Variable As String
-    Public Shared m_Units As String
-    Public Shared m_VarList As New List(Of String)
-    Public Shared m_Options As PlotOptions
-    Public Shared m_SeriesID As Integer
+    Private Shared m_Units As String
+    Private Shared m_VarList As New List(Of String)
+    Private Shared m_Options As PlotOptions
+    Private Shared m_SeriesID As Integer
     Private m_StdDev As Double
     Private m_SeriesSelector As ISeriesSelector
 
@@ -44,19 +43,19 @@ Public Class cProbabilityPlot
             'm_DataRows = objDataTable.Select("", "DataValue ASC")
             m_Site = strSiteName
             m_Variable = strVariableName
-            m_Var = strVariableName & " - " & strVariableUnits
+            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_Units = strVariableUnits
             m_SeriesID = intSeriesID
 
-            m_VarList.Add(m_Var)
+            m_VarList.Add(m_VariableWithUnits)
 
             If (e_StdDev = 0) And (Not (m_Data Is Nothing)) And (m_Data.Rows.Count > 0) Then
                 m_StdDev = Statistics.StandardDeviation(m_Data)
             Else
                 m_StdDev = e_StdDev
             End If
-            PlotProbability(m_Site, m_Var, m_Units)
+            PlotProbability(m_Site, m_VariableWithUnits, m_Units)
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGProbability.Plot" & vbCrLf & ex.Message)
         End Try
@@ -65,7 +64,7 @@ Public Class cProbabilityPlot
     Public Sub Replot(ByVal options As PlotOptions)
         Try
             m_Options = options
-            PlotProbability(m_Site, m_Var, m_Units)
+            PlotProbability(m_Site, m_VariableWithUnits, m_Units)
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGProbability.Replot" & vbCrLf & ex.Message)
         End Try
@@ -211,7 +210,7 @@ Public Class cProbabilityPlot
             '        gPane.Title.Text = m_Var
             '    ElseIf (gPane.Title.Text = "Title") Or _
             '    (gPane.Title.Text = "No Data To Plot") Then
-            gPane.Title.Text = m_Var & vbCrLf & " at " & m_Site
+            gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
             '        gPane.Legend.IsVisible = False
             '    Else
             '        gPane.Title.Text = "Alarm! It is not good comparison (Different variables)"
@@ -281,7 +280,7 @@ Public Class cProbabilityPlot
             probLine.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
 
             'Setting Y Axis
-            probLine.Link.Title = m_Var
+            probLine.Link.Title = m_VariableWithUnits
             'If gPane.CurveList.Count = 1 Then
             '    With gPane.YAxis
             '        .Scale.MagAuto = False

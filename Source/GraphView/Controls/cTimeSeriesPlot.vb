@@ -24,13 +24,13 @@ Public Class cTimeSeriesPlot
 
     Private m_SeriesSelector As ISeriesSelector
 
-    Public Shared m_Data As Data.DataTable
+    Private Shared m_Data As DataTable
     ' Public Shared m_DataSet As Data.DataSet
-    Public Shared m_Site As String
-    Public Shared m_Var As String
+    Private Shared m_Site As String
+    Private Shared m_VariableWithUnits As String
     Private Shared m_Variable As String
-    Public Shared m_Options As PlotOptions
-    Public Shared m_SeriesID As Integer
+    Private Shared m_Options As PlotOptions
+    Private Shared m_SeriesID As Integer
 
     'the main series selector control
     Public Property SeriesSelector() As ISeriesSelector
@@ -43,18 +43,18 @@ Public Class cTimeSeriesPlot
     End Property
 
 
-    Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer)
+    Public Sub Plot(ByRef objDataTable As DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer)
         Try
             m_Data = objDataTable.Copy
             m_Site = strSiteName
             m_Variable = strVariableName
-            m_Var = strVariableName & " - " & strVariableUnits
+            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_SeriesID = intSeriesID
             Graph()
 
         Catch ex As Exception
-            Throw New Exception("Error Occured in ZGTimeSeries.Plot" & vbCrLf & ex.Message)
+            Throw New Exception("Error Occurred in ZGTimeSeries.Plot" & vbCrLf & ex.Message)
         End Try
     End Sub
 
@@ -63,7 +63,7 @@ Public Class cTimeSeriesPlot
             m_Options = options
             Graph()
         Catch ex As Exception
-            Throw New Exception("Error Occured in ZGTimeSeries.Replot" & vbCrLf & ex.Message)
+            Throw New Exception("Error Occurred in ZGTimeSeries.Replot" & vbCrLf & ex.Message)
         End Try
     End Sub
 
@@ -131,7 +131,7 @@ Public Class cTimeSeriesPlot
                 '        gPane.Title.Text = m_Var
                 '    ElseIf (gPane.Title.Text = "Title") Or _
                 '    (gPane.Title.Text = "No Data To Plot") Then
-                gPane.Title.Text = m_Var & vbCrLf & " at " & m_Site
+                gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
                 '        gPane.Legend.IsVisible = False
                 '    Else
                 '        gPane.Title.Text = "Alarm! It is not good comparison (Different variables)"
@@ -196,7 +196,7 @@ Public Class cTimeSeriesPlot
                 curve.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
 
                 'Setting Y Axis
-                curve.Link.Title = m_Var
+                curve.Link.Title = m_VariableWithUnits
                 '    If gPane.CurveList.Count = 1 Then
                 '        With gPane.YAxis
                 '            .Scale.MagAuto = False
