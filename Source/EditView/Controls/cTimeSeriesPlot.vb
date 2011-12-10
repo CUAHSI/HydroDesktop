@@ -22,15 +22,13 @@ Public Class cTimeSeriesPlot
     Private Const XColumn As String = "LocalDateTime"
     Private Const YColumn As String = "DataValue"
     Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-    Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
-    Private m_SeriesSelector As ISeriesSelector
 
-    Public Shared m_Data As Data.DataTable
-    ' Public Shared m_DataSet As Data.DataSet
-    Public Shared m_Site As String
-    Public Shared m_Var As String
-    Public Shared m_Options As PlotOptions
-    Public Shared m_SeriesID As Integer
+    Private Shared m_Data As DataTable
+    Private Shared m_Site As String
+    Private Shared m_VariableWithUnits As String
+    Private Shared m_Variable As String
+    Private Shared m_Options As PlotOptions
+    Private Shared m_SeriesID As Integer
 
     Public EditCurvePointList As PointPairList
     Public EditCurveLable As String
@@ -40,16 +38,16 @@ Public Class cTimeSeriesPlot
 
     Private Sub SettingColor()
         ccList0.Clear()
-        ccList0.Add(System.Drawing.Color.FromArgb(106, 61, 154))
-        ccList0.Add(System.Drawing.Color.FromArgb(202, 178, 214))
-        ccList0.Add(System.Drawing.Color.FromArgb(255, 127, 0))
-        ccList0.Add(System.Drawing.Color.FromArgb(253, 191, 111))
-        ccList0.Add(System.Drawing.Color.FromArgb(227, 26, 28))
-        ccList0.Add(System.Drawing.Color.FromArgb(251, 154, 153))
-        ccList0.Add(System.Drawing.Color.FromArgb(51, 160, 44))
-        ccList0.Add(System.Drawing.Color.FromArgb(178, 223, 138))
-        ccList0.Add(System.Drawing.Color.FromArgb(31, 120, 180))
-        ccList0.Add(System.Drawing.Color.FromArgb(166, 206, 227))
+        ccList0.Add(Color.FromArgb(106, 61, 154))
+        ccList0.Add(Color.FromArgb(202, 178, 214))
+        ccList0.Add(Color.FromArgb(255, 127, 0))
+        ccList0.Add(Color.FromArgb(253, 191, 111))
+        ccList0.Add(Color.FromArgb(227, 26, 28))
+        ccList0.Add(Color.FromArgb(251, 154, 153))
+        ccList0.Add(Color.FromArgb(51, 160, 44))
+        ccList0.Add(Color.FromArgb(178, 223, 138))
+        ccList0.Add(Color.FromArgb(31, 120, 180))
+        ccList0.Add(Color.FromArgb(166, 206, 227))
     End Sub
 
     'the main series selector control
@@ -67,7 +65,8 @@ Public Class cTimeSeriesPlot
         Try
             m_Data = objDataTable.Copy
             m_Site = strSiteName
-            m_Var = strVariableName & " - " & strVariableUnits
+            m_Variable = strVariableName
+            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_SeriesID = intSeriesID
 
@@ -143,7 +142,7 @@ Public Class cTimeSeriesPlot
                 '        gPane.Title.Text = m_Var
                 '    ElseIf (gPane.Title.Text = "Title") Or _
                 '    (gPane.Title.Text = "No Data To Plot") Then
-                gPane.Title.Text = m_Var & vbCrLf & " at " & m_Site
+                gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
                 '        gPane.Legend.IsVisible = False
                 '    Else
                 '        gPane.Title.Text = "Alarm! It is not good comparison (Different variables)"
@@ -197,15 +196,15 @@ Public Class cTimeSeriesPlot
                         curve.Symbol.IsVisible = True
                 End Select
 
-                curve.Label.Text += ", ID: " + m_SeriesID.ToString
+                curve.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
 
                 'Setting Y Axis
-                curve.Link.Title = m_Var
+                curve.Link.Title = m_VariableWithUnits
                 If gPane.CurveList.Count = 1 Then
                     With gPane.YAxis
                         .Scale.MagAuto = False
                         .IsVisible = True
-                        .Title.Text = m_Var
+                        .Title.Text = m_VariableWithUnits
                         '.Scale.FontSpec.FontColor = curve.Color
                         '.Title.FontSpec.FontColor = curve.Color
                         '.Color = curve.Color
@@ -508,7 +507,7 @@ Public Class cTimeSeriesPlot
             With gPane.YAxis
                 .Scale.MagAuto = False
                 .IsVisible = True
-                .Title.Text = m_Var
+                .Title.Text = m_VariableWithUnits
                 '.Scale.FontSpec.FontColor = curve.Color
                 '.Title.FontSpec.FontColor = curve.Color
                 '.Color = curve.Color
