@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataExporter.cs" />
     <Compile Include="DroughtAnalysisPlugin.cs" />
     <Compile Include="DroughtSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

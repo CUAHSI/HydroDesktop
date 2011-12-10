@@ -561,15 +561,32 @@ namespace HydroDesktop.Database
             return SeriesListFromTable(seriesTable);
         }
 
+        /// <summary>
+        /// Gets the list of all series that are available at a site
+        /// </summary>
+        /// <param name="mySite">The site</param>
+        /// <returns>The list of the series from the db</returns>
+        /// <remarks>The data values aren't loaded unless requested</remarks>
+        public IList<Series> GetAllSeriesForSite(Site mySite)
+        {
+            if (mySite.Id <= 0) throw new ArgumentException("The site must have a valid ID");
+            
+            string sqlQuery = DetailedSeriesSQLQuery2();
+            sqlQuery += string.Format(" WHERE DataSeries.SiteID = {0}", mySite.Id);
+            DataTable tbl = _db.LoadTable(sqlQuery);
+            return SeriesListFromTable(tbl);
+        }
 
         public IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2)
         {
             if (variable1.Id <= 0) throw new ArgumentException("variable1 must have a valid ID");
             if (variable2.Id <= 0) throw new ArgumentException("variable2 must have a valid ID");
 
-            string sqlQuery = "select s.SiteID, s.SiteName, SiteCode, Latitude, Longitude from sites s where s.SiteID in " +
-"( select s1.SiteID From DataSeries s1 " +
-"inner join DataSeries s2 on s1.SiteID = s2.SiteID and s1.VariableID = 4 and s2.variableID = 1 ) ORDER BY s.SiteName";
+            string sqlQuery = String.Format("select s1.SeriesID as 'SeriesID1', s2.SeriesID as 'SeriesID2', " +
+                "site.SiteID, site.SiteName, site.SiteCode, site.Latitude, site.Longitude " +
+                "FROM DataSeries s1 INNER JOIN DataSeries s2 ON s1.SiteID = s2.SiteID " +
+                "INNER JOIN Sites site ON s1.SiteID = site.SiteID " +
+                "WHERE s1.VariableID = {0} AND s2.VariableID = {1}", variable1.Id, variable2.Id);
 
             DataTable tbl = _db.LoadTable(sqlQuery);
             List<Site> siteList = new List<Site>();
@@ -582,6 +599,14 @@ namespace HydroDesktop.Database
                 s.Latitude = (double)r["Latitude"];
                 s.Longitude = (double)r["Longitude"];
                 s.Name = (string)r["SiteName"];
+
+                Series s1 = new Series(s, variable1, Method.Unknown, QualityControlLevel.Unknown, Source.Unknown);
+                s1.Id = (long)r["SeriesID1"];
+                s.AddDataSeries(s1);
+
+                Series s2 = new Series(s, variable2, Method.Unknown, QualityControlLevel.Unknown, Source.Unknown);
+                s2.Id = (long)r["SeriesID2"];
+                s.AddDataSeries(s2);
 
                 siteList.Add(s);
             }
