@@ -84,7 +84,7 @@ namespace DroughtAnalysis
 
         private void TextBoxOutputFolder_TextChanged(object sender, EventArgs e)
         {
-            if (Directory.Exists(textBox1.Text))
+            if (Directory.Exists(textBox2.Text))
             {
                 Settings.OutputDirectory = textBox2.Text;
             }
@@ -98,10 +98,18 @@ namespace DroughtAnalysis
                 MessageBox.Show("Please select a station.");
                 return;
             }
+            if (!Directory.Exists(Settings.OutputDirectory))
+            {
+                MessageBox.Show("Please specify a valid output directory.");
+                return;
+            }
+
+            string dataFile = Path.Combine(Settings.OutputDirectory, "meteo.dat");
 
             //process the selected site
             DataExporter exp = new DataExporter();
-            exp.ExportDataForStation(Settings.SelectedSite);
+            exp.ExportDataForStation(Settings.SelectedSite, dataFile);
+            MessageBox.Show("Created data file: " + dataFile + ". Please run the R-script using this file.");
         }
 
         private void Stations_SelectedIndexChanged(object sender, EventArgs e)
