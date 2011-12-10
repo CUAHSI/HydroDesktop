@@ -6,10 +6,11 @@
         InitializeComponent()
     End Sub
 
-    Public Sub CreateStatTable(ByVal site As String, ByVal seriesId As Integer, ByVal data As DataTable, ByVal options As PlotOptions)
+    Public Sub CreateStatTable(ByVal siteName As String, ByVal variableName As String, ByVal seriesId As Integer, ByVal data As DataTable, ByVal options As PlotOptions)
+        Dim siteAndVariable = siteName + ", " + variableName
 
         If options.UseCensoredData = True Then
-            dgvStatSummary.Rows.Add(site, "ID " + seriesId.ToString)
+            dgvStatSummary.Rows.Add(siteAndVariable, "ID " + seriesId.ToString)
             dgvStatSummary.Rows.Add("# Of Observations", Statistics.Count(data))
             dgvStatSummary.Rows.Add("# Of Censored Obs.", Statistics.CountCensored(data))
             dgvStatSummary.Rows.Add("Arithmetic Mean", Statistics.ArithmeticMean(data))
@@ -24,7 +25,7 @@
             dgvStatSummary.Rows.Add("Percentiles 75%", Statistics.Percentile(data, 75))
             dgvStatSummary.Rows.Add("Percentiles 90%", Statistics.Percentile(data, 90))
             dgvStatSummary.Rows.Add()
-            dgvStatSummary.Columns(0).Width = site.Length * 7
+            dgvStatSummary.Columns(0).Width = siteAndVariable.Length * 7
             dgvStatSummary.AutoResizeColumns()
         Else
             Dim temp As DataTable = data.Copy
@@ -37,7 +38,7 @@
                 Next censoredRow
             End If
             If temp.Rows.Count > 0 Then
-                dgvStatSummary.Rows.Add(site, "ID " + seriesId.ToString)
+                dgvStatSummary.Rows.Add(siteAndVariable, "ID " + seriesId.ToString)
                 dgvStatSummary.Rows.Add("# Of Observations", Statistics.Count(temp))
                 dgvStatSummary.Rows.Add("# Of Censored Obs.", Statistics.CountCensored(temp))
                 dgvStatSummary.Rows.Add("Arithmetic Mean", Statistics.ArithmeticMean(temp))
@@ -52,7 +53,7 @@
                 dgvStatSummary.Rows.Add("Percentiles 75%", Statistics.Percentile(temp, 75))
                 dgvStatSummary.Rows.Add("Percentiles 90%", Statistics.Percentile(temp, 90))
                 dgvStatSummary.Rows.Add()
-                dgvStatSummary.Columns(0).Width = site.Length * 7
+                dgvStatSummary.Columns(0).Width = siteAndVariable.Length * 7
                 dgvStatSummary.AutoResizeColumns()
             End If
         End If

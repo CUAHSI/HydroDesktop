@@ -28,6 +28,7 @@ Public Class cTimeSeriesPlot
     ' Public Shared m_DataSet As Data.DataSet
     Public Shared m_Site As String
     Public Shared m_Var As String
+    Private Shared m_Variable As String
     Public Shared m_Options As PlotOptions
     Public Shared m_SeriesID As Integer
 
@@ -46,6 +47,7 @@ Public Class cTimeSeriesPlot
         Try
             m_Data = objDataTable.Copy
             m_Site = strSiteName
+            m_Variable = strVariableName
             m_Var = strVariableName & " - " & strVariableUnits
             m_Options = objOptions
             m_SeriesID = intSeriesID
@@ -191,7 +193,7 @@ Public Class cTimeSeriesPlot
                 End Select
 
                 'Setting Legend Title
-                curve.Label.Text += ", ID: " + m_SeriesID.ToString
+                curve.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
 
                 'Setting Y Axis
                 curve.Link.Title = m_Var
