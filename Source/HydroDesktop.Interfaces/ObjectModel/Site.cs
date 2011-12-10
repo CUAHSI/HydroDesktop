@@ -98,6 +98,18 @@ namespace HydroDesktop.Interfaces.ObjectModel
         ///// </summary>
         //public virtual DataServiceInfo DataService { get; set; }
 
+        /// <summary>
+        /// Associates a data series with this site
+        /// </summary>
+        /// <param name="dataSeries">the data series</param>
+        public void AddDataSeries(Series dataSeries)
+        {
+            if (DataSeriesList == null)
+                DataSeriesList = new List<Series>();
+
+            DataSeriesList.Add(dataSeries);
+        }
+
         /// <nheritdoc />
         public override string ToString()
         {

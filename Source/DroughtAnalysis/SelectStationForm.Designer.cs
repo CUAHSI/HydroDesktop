@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.listBoxStations = new System.Windows.Forms.ListBox();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -38,7 +39,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +50,7 @@
             this.listBoxStations.Name = "listBoxStations";
             this.listBoxStations.Size = new System.Drawing.Size(399, 82);
             this.listBoxStations.TabIndex = 0;
+            this.listBoxStations.SelectedIndexChanged += new System.EventHandler(this.Stations_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -122,6 +123,7 @@
             this.button3.TabIndex = 8;
             this.button3.Text = "Analyze Meteorological Drought";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // SelectStationForm
             // 

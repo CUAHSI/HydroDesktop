@@ -36,6 +36,7 @@ namespace DroughtAnalysis
 
         private DataTable GetVariableTable(string filter)
         {
+            //finds the variables that fulfill the filter conditions
             string sqlstr = "SELECT VariableID, VariableName, VariableCode, DataType, ValueType, Speciation, SampleMedium, " +
                 "TimeSupport, GeneralCategory, NoDataValue, " +
                 "units1.UnitsName as 'VariableUnitsName', units2.UnitsName as 'TimeUnitsName' FROM Variables " +
