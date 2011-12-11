@@ -24,14 +24,6 @@ Public Class cTimeSeriesPlot
 
     Private m_SeriesSelector As ISeriesSelector
 
-    Private Shared m_Data As DataTable
-    ' Public Shared m_DataSet As Data.DataSet
-    Private Shared m_Site As String
-    Private Shared m_VariableWithUnits As String
-    Private Shared m_Variable As String
-    Private Shared m_Options As PlotOptions
-    Private Shared m_SeriesID As Integer
-
     'the main series selector control
     Public Property SeriesSelector() As ISeriesSelector
         Get
@@ -43,29 +35,14 @@ Public Class cTimeSeriesPlot
     End Property
 
 
-    Public Sub Plot(ByRef objDataTable As DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer)
+    Public Sub Plot(ByRef options As TimeSeriesPlotOptions)
         Try
-            m_Data = objDataTable.Copy
-            m_Site = strSiteName
-            m_Variable = strVariableName
-            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
-            m_Options = objOptions
-            m_SeriesID = intSeriesID
-            Graph()
-
+            Graph(options)
         Catch ex As Exception
             Throw New Exception("Error Occurred in ZGTimeSeries.Plot" & vbCrLf & ex.Message)
         End Try
     End Sub
 
-    Public Sub Replot(ByVal options As PlotOptions)
-        Try
-            m_Options = options
-            Graph()
-        Catch ex As Exception
-            Throw New Exception("Error Occurred in ZGTimeSeries.Replot" & vbCrLf & ex.Message)
-        End Try
-    End Sub
 
     Public Sub Clear()
         Try
@@ -91,14 +68,14 @@ Public Class cTimeSeriesPlot
         End Try
     End Sub
 
-    Protected Sub Graph()
+    Private Sub Graph(ByRef options As TimeSeriesPlotOptions)
         Try
             Dim gPane As GraphPane = zgTimeSeries.GraphPane
-            Dim i As Integer = 0
-            Dim IsInYAxis As Boolean = False
 
-            'gPane.CurveList.Clear()
-
+            Dim m_Data = options.DataTable.Copy
+            Dim m_Site = options.SiteName
+            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+            Dim m_Options = options.PlotOptions
 
             If (m_Data Is Nothing) Or (m_Data.Rows.Count <= 0) Then
                 gPane.XAxis.IsVisible = False
@@ -123,7 +100,6 @@ Public Class cTimeSeriesPlot
                 'Setting X Axis
                 gPane.XAxis.IsVisible = True
                 gPane.XAxis.Title.Text = "Date and Time"
-
 
                 'Setting Title
                 'If Not (gPane.Title.Text = "Alarm! It is not good comparison (Different variables)") Then
@@ -166,9 +142,8 @@ Public Class cTimeSeriesPlot
                     End If
                 Next row
 
-
-
                 Dim curve As LineItem = gPane.AddCurve(m_Site, pointList, m_Options.GetLineColor, SymbolType.Circle)
+                curve.Tag = options
                 curve.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
                 curve.Symbol.Fill.RangeMin = 0
                 curve.Symbol.Fill.RangeMax = 1
@@ -193,7 +168,33 @@ Public Class cTimeSeriesPlot
                 End Select
 
                 'Setting Legend Title
-                curve.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
+                Dim needShowDataType = False
+                For Each c In zgTimeSeries.GraphPane.CurveList
+                    Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+
+                    For Each cc In zgTimeSeries.GraphPane.CurveList
+                        If Not ReferenceEquals(c, cc) Then
+                            Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+
+                            If ccOptions.SiteName = cOptions.SiteName And
+                               ccOptions.VariableName = cOptions.VariableName Then
+                                needShowDataType = True
+                                Exit For
+                            End If
+                        End If
+                    Next
+                Next
+                If Not needShowDataType Then
+                    ' Set legend only for current curve
+                    curve.Label.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                Else
+                    ' Update legend for all curves
+                    For Each c In zgTimeSeries.GraphPane.CurveList
+                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                    Next
+                End If
+
 
                 'Setting Y Axis
                 curve.Link.Title = m_VariableWithUnits

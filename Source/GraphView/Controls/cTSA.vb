@@ -1,11 +1,7 @@
 ﻿Imports HydroDesktop.Database
-Imports System.Data
-Imports DotSpatial.Controls
 Imports HydroDesktop.Interfaces
 Imports HydroDesktop.Configuration
 Imports Controls
-
-
 
 Public Class cTSA
 
@@ -25,7 +21,7 @@ Public Class cTSA
     Private colorcount As Integer = 0
     'the list of the series which is selected
     'Private selectedSeriesId As Integer = 0
-    Private selectedSeriesIdList As New ArrayList()
+    Private ReadOnly selectedSeriesIdList As New ArrayList()
     Private ccList0 As New ArrayList()
     Private _seriesMenu As ISeriesSelector
 
@@ -197,40 +193,17 @@ Public Class cTSA
     Private Sub SeriesSelector_SeriesCheck() 'ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs)
 
         'Declaring all variables
-        Dim connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
-        Dim nodatavalue As Double
-        Dim data As DataTable = New DataTable()
-        Dim variableName As String = ""
-        Dim unitsName As String = ""
-        Dim siteName As String = ""
-        Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Both, PlotOptions.HistogramType.Count, PlotOptions.HistorgramAlgorithms.Scott, 0, 0, 0, 0, 0, 0, 0, PlotOptions.BoxWhiskerType.Monthly, Drawing.Color.Black, Drawing.Color.Black, True, Today, Today, False, False)
+      
         Dim count As Integer = 0
-        Dim strStartDate As String
-        Dim strEndDate As String
         Dim SeriesSelector = _seriesMenu
         Dim curveIndex As Integer = 0
         Dim removedSeriesID As Integer = 0
         Dim CheckedSeriesState As Boolean = False
 
-        'If (_seriesMenu.SeriesView.SeriesSelector.CheckedIDList.Count > selectedSeriesIdList.Count) Then
         If Not (selectedSeriesIdList.Contains(SeriesSelector.SelectedSeriesID)) Then
-            'Define the selected series
-            'selectedSeriesId = SeriesSelector3.checkedSeriesID
-
-            'If Not selectedSeriesIdList.Contains(SeriesSelector.CheckedSeriesID) Then
-            '    selectedSeriesIdList.Add(SeriesSelector.CheckedSeriesID)
-            'Else
-            '    Return 'Added by Jiri, to avoid errors if SeriesCheck occurs more times
-            'End If
-
             selectedSeriesIdList.Add(SeriesSelector.SelectedSeriesID)
             CheckedSeriesState = True
         Else
-            'If Not selectedSeriesIdList.Contains(SeriesSelector.CheckedIDList) Then
-            '    Return 'Added by Jiri, to avoid errors if SeriesCheck event occurs more times
-            'End If
-
             For i As Integer = 0 To selectedSeriesIdList.Count - 1
                 If Not SeriesSelector.CheckedIDList.Contains(selectedSeriesIdList(i)) Then
                     removedSeriesID = selectedSeriesIdList(i)
@@ -271,85 +244,93 @@ Public Class cTSA
 
         If (CheckedSeriesState = True) Or (selectedSeriesIdList.Count = 1) Then 'And (CPlotOptions1.dtpStartDatePicker.Value = lastStartDate) And (CPlotOptions1.dtpEndDatePicker.Value = lastEndDate) Then
 
-            For Each s As Integer In selectedSeriesIdList
-                'Date Range setting
-                count += 1
-            Next
+            count += selectedSeriesIdList.Cast(Of Integer)().Count()
 
             'progress bar setting
             ProgressBar.Visible = True
-            ProgressBar.Maximum = 10
+            ProgressBar.Maximum = 11
             ProgressBar.Minimum = 0
             ProgressBar.Value = 0
 
-            'Date Range setting
-            DateRangeSelection(selectedSeriesIdList(count - 1))
+            Dim seriesID = selectedSeriesIdList(count - 1)
 
-            strStartDate = StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")
-            strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1).ToString("yyyy-MM-dd HH:mm:ss")
-            ProgressBar.Value += 1
+            'Date Range setting
+            DateRangeSelection(seriesID)
 
             'get data
-            nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & selectedSeriesIdList(count - 1) & "')")
-            ProgressBar.Value += 1
-            data = dbTools.LoadTable("DataValues", "SELECT DataValue, LocalDateTime, CensorCode, strftime('%m', LocalDateTime) as DateMonth FROM DataValues WHERE (SeriesID = '" & selectedSeriesIdList(count - 1) & "') AND (DataValue <> '" & nodatavalue & "') AND (LocalDateTime between '" & strStartDate & "' AND '" & strEndDate & "')  ORDER BY LocalDateTime")
-            ProgressBar.Value += 1
-            variableName = dbTools.ExecuteSingleOutput("SELECT VariableName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & selectedSeriesIdList(count - 1) & "'")
-            ProgressBar.Value += 1
-            unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & selectedSeriesIdList(count - 1) & "'")
-            ProgressBar.Value += 1
-            siteName = dbTools.ExecuteSingleOutput("SELECT " & SeriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & selectedSeriesIdList(count - 1) & "'")
-
-            ProgressBar.Value += 1
-            options = CPlotOptions1.Options
+            Dim timeSeriesOptions = GetTimeSeriesPlotOptions(seriesID)
 
             'Set different color to each curve if the color option is not selected
-            ColorChooser(options)
+            ColorChooser(timeSeriesOptions.PlotOptions)
 
-            Summary.GetStatistics(data, options)
-            pDataSummary.CreateStatTable(siteName, variableName, selectedSeriesIdList(count - 1), data, options)
+            Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
+            pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, seriesID, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
             pDataSummary.StatTableStyling()
-
+            
             If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
-                pTimeSeries.Plot(data, siteName, variableName, unitsName, options, selectedSeriesIdList(count - 1))
+                pTimeSeries.Plot(timeSeriesOptions)
                 ProgressBar.Value += 1
                 'pTimeSeries.zgTimeSeries.GraphPane.Title.Text = strStartDate
-                pBoxWhisker.Plot(data, selectedSeriesIdList(count - 1), siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
+                pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                 ProgressBar.Value += 1
-                pProbability.Plot(data, siteName, variableName, unitsName, options, selectedSeriesIdList(count - 1), Summary.Statistic_StandardDeviation)
+                pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                 ProgressBar.Value += 1
-                pHistogram.Plot(data, selectedSeriesIdList(count - 1), siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
+                pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                 ProgressBar.Value += 1
                 'pSummaryPlot.Plot(data, siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
             End If
             colorcount += 1
-
-
         End If
+
         pDataSummary.StatTableStyling()
         pTimeSeries.Refreshing()
         pProbability.Refreshing()
         pHistogram.Refreshing()
         pBoxWhisker.Refreshing()
 
-
         ProgressBar.Visible = False
 
     End Sub
 
-    Public Sub ApplyOptions()
+    Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As TimeSeriesPlotOptions
         Dim connString = Settings.Instance.DataRepositoryConnectionString
         Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
-        Dim nodatavalue As Double
-        Dim data As DataTable = New DataTable()
-        Dim variableName As String = ""
-        Dim unitsName As String = ""
-        Dim siteName As String = ""
-        Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Both, PlotOptions.HistogramType.Count, PlotOptions.HistorgramAlgorithms.Scott, 0, 0, 0, 0, 0, 0, 0, PlotOptions.BoxWhiskerType.Monthly, Drawing.Color.Black, Drawing.Color.Black, True, Today, Today, False, False)
+
+        Dim strStartDate = StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")
+        Dim strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1).ToString("yyyy-MM-dd HH:mm:ss")
+        ProgressBar.Value += 1
+
+        Dim nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & seriesID & "')")
+        ProgressBar.Value += 1
+        Dim data = dbTools.LoadTable("DataValues", "SELECT DataValue, LocalDateTime, CensorCode, strftime('%m', LocalDateTime) as DateMonth, strftime('%Y', LocalDateTime) as DateYear FROM DataValues WHERE (SeriesID = '" & seriesID & "') AND (DataValue <> '" & nodatavalue & "') AND (LocalDateTime between '" & strStartDate & "' AND '" & strEndDate & "')  ORDER BY LocalDateTime")
+        ProgressBar.Value += 1
+        Dim variableName = dbTools.ExecuteSingleOutput("SELECT VariableName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & seriesID & "'")
+        ProgressBar.Value += 1
+        Dim unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & seriesID & "'")
+        ProgressBar.Value += 1
+        Dim siteName = dbTools.ExecuteSingleOutput("SELECT " & _seriesMenu.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & seriesID & "'")
+        ProgressBar.Value += 1
+        Dim dataType = dbTools.ExecuteSingleOutput("SELECT DataType FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & seriesID & "'")
+        ProgressBar.Value += 1
+
+        Dim options = CPlotOptions1.Options
+
+        Dim timeSeriesOptions = New TimeSeriesPlotOptions
+        timeSeriesOptions.DataTable = data
+        timeSeriesOptions.DataType = dataType
+        timeSeriesOptions.PlotOptions = options
+        timeSeriesOptions.SeriesID = seriesID
+        timeSeriesOptions.SiteName = siteName
+        timeSeriesOptions.VariableName = variableName
+        timeSeriesOptions.VariableUnits = unitsName
+
+        Return timeSeriesOptions
+    End Function
+
+
+    Public Sub ApplyOptions()
+
         Dim count As Integer = selectedSeriesIdList.Count
-        Dim strStartDate As String
-        Dim strEndDate As String
-        Dim SeriesSelector = _seriesMenu
 
         'progress bar setting
         ProgressBar.Visible = True
@@ -374,40 +355,27 @@ Public Class cTSA
 
             'setting Date Range
             DateRangeSelection(selectedSeriesIdList(count - 1))
-            strStartDate = StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")
-            strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1).ToString("yyyy-MM-dd HH:mm:ss")
-            ProgressBar.Value += 1
 
-            nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & s & "')")
-            ProgressBar.Value += 1
-            data = dbTools.LoadTable("DataValues", "SELECT DataValue, LocalDateTime, CensorCode, strftime('%m', LocalDateTime) as DateMonth, strftime('%Y', LocalDateTime) as DateYear FROM DataValues WHERE (SeriesID = '" & s & "') AND (DataValue <> '" & nodatavalue & "') AND (LocalDateTime between '" & strStartDate & "' AND '" & strEndDate & "')  ORDER BY LocalDateTime")
-            ProgressBar.Value += 1
-            variableName = dbTools.ExecuteSingleOutput("SELECT VariableName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & s & "'")
-            ProgressBar.Value += 1
-            unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & s & "'")
-            ProgressBar.Value += 1
-            siteName = dbTools.ExecuteSingleOutput("SELECT " & SeriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & s & "'")
+            ' Get data
+            Dim timeSeriesOptions = GetTimeSeriesPlotOptions(s)
 
-            options = CPlotOptions1.Options
-            ProgressBar.Value += 1
 
             'Set different color to each curve if the color option is not selected
-            ColorChooser(options)
+            ColorChooser(timeSeriesOptions.PlotOptions)
 
 
-
-            If data.Rows.Count > 0 Then
-                Summary.GetStatistics(data, options)
-                pDataSummary.CreateStatTable(siteName, variableName, s, data, options)
+            If timeSeriesOptions.DataTable.Rows.Count > 0 Then
+                Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
+                pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, s, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
                 If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
                     'pSummaryPlot.Plot(data, siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
-                    pTimeSeries.Plot(data, siteName, variableName, unitsName, options, s)
+                    pTimeSeries.Plot(timeSeriesOptions)
                     ProgressBar.Value += 1
-                    pProbability.Plot(data, siteName, variableName, unitsName, options, s, Summary.Statistic_StandardDeviation)
+                    pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                     ProgressBar.Value += 1
-                    pBoxWhisker.Plot(data, selectedSeriesIdList(count - 1), siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
+                    pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                     ProgressBar.Value += 1
-                    pHistogram.Plot(data, selectedSeriesIdList(count - 1), siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
+                    pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                     ProgressBar.Value += 1
                 End If
             End If
