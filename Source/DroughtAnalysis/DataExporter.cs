@@ -7,6 +7,8 @@ using HydroDesktop.Database;
 using System.Data;
 using System.IO;
 using System.Globalization;
+using System.Collections;
+using HydroDesktop.ImportExport;
 
 namespace DroughtAnalysis
 {
@@ -69,19 +71,13 @@ namespace DroughtAnalysis
             string sqlQueryValues = sqlSelect.ToString() + sqlJoin.ToString() + sqlWhere.ToString();
             DataTable valuesTable = dbm.DbOperations.LoadTable(sqlQueryValues);
 
-            string sep = "\t";
-            using (StreamWriter wri = new StreamWriter(outFileName, false))
-            {
-                //write header
-                wri.WriteLine(string.Format("{0}{1}{2}{3}{4}", "datum", sep, "tep", sep, "sra"));
-
-                foreach (DataRow row in valuesTable.Rows)
-                {
-                    wri.WriteLine(string.Format("{0}{1}{2}{1}{3}{4}", Convert.ToDateTime(row[0]).ToString("yyyy-MM-dd"), sep, 
-                        Convert.ToString(row[1], CultureInfo.InvariantCulture), sep, Convert.ToString(row[2], CultureInfo.InvariantCulture)));
-                }
-            }
-
+            string separator = "\t";
+            DelimitedTextWriter.DataTableToDelimitedFile(valuesTable, outFileName,
+                                                         new DelimitedFormatOptions { Append = false, Delimiter = separator, IncludeHeaders = true, UseShortDateFormat = true });
+            
+            //todo: Use backgroundWorker for writing large files
         }
+
+        
     }
 }

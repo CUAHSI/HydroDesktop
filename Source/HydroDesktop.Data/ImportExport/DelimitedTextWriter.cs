@@ -268,200 +268,223 @@ namespace HydroDesktop.ImportExport
 			_textStream.Write ( System.Environment.NewLine );
 		}
 
-		/// <summary>
-		/// Writes data from a data table to a text stream, formatted as delimited values
-		/// </summary>
-		/// <param name="dataTable">The data table with the data to write</param>
-		/// <param name="outputStream">The text stream to which the delimited data will be written</param>
-		/// <param name="delimiter">The delimiter to be used to separate data items in a given data row.</param>
-		/// <param name="includeHeaders">True if the column names from the data table should be included as headers in the output stream</param>
-		public static void DataTableToStream ( DataTable dataTable, TextWriter outputStream, string delimiter, bool includeHeaders )
-		{
-			DataTableToStream ( dataTable, outputStream, delimiter, includeHeaders, null, null, BackgroundWorkerReportingOptions.None );
-		}
+        /// <summary>
+        /// Writes data from a data table to a text stream, formatted as delimited values
+        /// </summary>
+        /// <param name="dataTable">The data table with the data to write</param>
+        /// <param name="outputStream">The text stream to which the delimited data will be written</param>
+        /// <param name="formatOptions">The delimited text stream formatting options</param>
+        public static void DataTableToStream(DataTable dataTable, TextWriter outputStream, DelimitedFormatOptions formatOptions)
+        {
+            DataTableToStream(dataTable, outputStream, formatOptions, null, null, BackgroundWorkerReportingOptions.None);
+        }
 
-		/// <summary>
-		/// Writes data from a data table to a text stream, formatted as delimited values
-		/// </summary>
-		/// <param name="dataTable">The data table with the data to write</param>
-		/// <param name="outputStream">The text stream to which the delimited data will be written</param>
-		/// <param name="delimiter">The delimiter to be used to separate data items in a given data row.</param>
-		/// <param name="includeHeaders">True if the column names from the data table should be included as headers in the output stream</param>
-		/// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
-		/// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
-		/// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
-		public static void DataTableToStream ( DataTable dataTable, TextWriter outputStream, string delimiter, bool includeHeaders, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption )
-		{
-			// Check that columns are present
-			int columnCount = dataTable.Columns.Count;
-			if ( columnCount == 0 )
-			{
-				return;
-			}
+        /// <summary>
+        /// Writes data from a data table to a text stream, formatted as delimited values
+        /// </summary>
+        /// <param name="dataTable">The data table with the data to write</param>
+        /// <param name="outputStream">The text stream to which the delimited data will be written</param>
+        /// <param name="formatOptions">The delimited text stream formatting options</param>
+        /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
+        /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
+        /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
+        public static void DataTableToStream(DataTable dataTable, TextWriter outputStream, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
+        {
+            // Check that columns are present
+            int columnCount = dataTable.Columns.Count;
+            if (columnCount == 0)
+            {
+                return;
+            }
 
-			// Get the number of rows in the table
-			long totalSteps = 0;
-			long currentStep = 0;
-			int percentComplete = 0;
-			int previousPercentComplete = 0;
+            // Get the number of rows in the table
+            long totalSteps = 0;
+            long currentStep = 0;
+            int percentComplete = 0;
+            int previousPercentComplete = 0;
 
-			// Background worker updates
-			if ( bgWorker != null )
-			{
-				// Check for cancel
-				if ( e != null && bgWorker.CancellationPending )
-				{
-					e.Cancel = true;
-					return;
-				}
+            // Background worker updates
+            if (bgWorker != null)
+            {
+                // Check for cancel
+                if (e != null && bgWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
 
-				// Report progress
-				if ( bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None )
-				{
-					if ( reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress )
-					{
-						bgWorker.ReportProgress ( 0, "Reading data..." );
-					}
-					else if ( reportingOption == BackgroundWorkerReportingOptions.ProgressOnly )
-					{
-						bgWorker.ReportProgress ( 0 );
-					}
+                // Report progress
+                if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                {
+                    if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
+                    {
+                        bgWorker.ReportProgress(0, "Reading data...");
+                    }
+                    else if (reportingOption == BackgroundWorkerReportingOptions.ProgressOnly)
+                    {
+                        bgWorker.ReportProgress(0);
+                    }
 
-					totalSteps = dataTable.Rows.Count;
-				}
-			}
+                    totalSteps = dataTable.Rows.Count;
+                }
+            }
 
-			// Write the column headers
-			if ( includeHeaders == true )
-			{
-				// Background worker updates
-				if ( bgWorker != null )
-				{
-					// Check for cancel
-					if ( e != null && bgWorker.CancellationPending )
-					{
-						e.Cancel = true;
-						return;
-					}
+            
+            // Write the column headers
+            if (formatOptions.IncludeHeaders == true)
+            {
+                // Background worker updates
+                if (bgWorker != null)
+                {
+                    // Check for cancel
+                    if (e != null && bgWorker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
 
-					// Report progress
-					if ( bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None )
-					{
-						if ( reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress )
-						{
-							bgWorker.ReportProgress ( 0, "Reading column headers..." );
-						}
-						else if ( reportingOption == BackgroundWorkerReportingOptions.ProgressOnly )
-						{
-							bgWorker.ReportProgress ( 0 );
-						}
+                    // Report progress
+                    if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                    {
+                        if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
+                        {
+                            bgWorker.ReportProgress(0, "Reading column headers...");
+                        }
+                        else if (reportingOption == BackgroundWorkerReportingOptions.ProgressOnly)
+                        {
+                            bgWorker.ReportProgress(0);
+                        }
 
-						totalSteps = dataTable.Rows.Count;
-					}
-				}
+                        totalSteps = dataTable.Rows.Count;
+                    }
+                }
 
-				// Write each column name from the data table
-				for ( int i = 0; i < columnCount; i++ )
-				{
-					string item = FormatDataItem ( dataTable.Columns[i].ColumnName, delimiter );
-					if ( i > 0 )
-					{
-						outputStream.Write ( delimiter + item );
-					}
-					else
-					{
-						outputStream.Write ( item );
-					}
-				}
+                // Write each column name from the data table
+                for (int i = 0; i < columnCount; i++)
+                {
+                    string item = FormatDataItem(dataTable.Columns[i].ColumnName, formatOptions.Delimiter);
+                    if (i > 0)
+                    {
+                        outputStream.Write(formatOptions.Delimiter + item);
+                    }
+                    else
+                    {
+                        outputStream.Write(item);
+                    }
+                }
 
-				outputStream.Write ( System.Environment.NewLine );
-			}
+                outputStream.Write(System.Environment.NewLine);
+            }
 
-			// Write the data
-			foreach ( DataRow row in dataTable.Rows )
-			{
-				// Background worker updates
-				if ( bgWorker != null )
-				{
-					// Check for cancel
-					if ( e != null && bgWorker.CancellationPending )
-					{
-						e.Cancel = true;
-						return;
-					}
+            //date time column index
+            int dateTimeColumnIndex = -1;
+            for (int i = 0; i < columnCount; i++)
+            {
+                if (dataTable.Columns[i].DataType == typeof(DateTime))
+                {
+                    dateTimeColumnIndex = i;
+                    break;
+                }
+            }
 
-					// Report progress
-					if ( bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None )
-					{
-						currentStep++;
-						percentComplete = (int)(100 * currentStep / totalSteps);
-						if ( percentComplete > previousPercentComplete )
-						{
-							if ( reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress )
-							{
-								bgWorker.ReportProgress ( percentComplete, "Writing line " + currentStep + " of " + totalSteps + "..." );
-							}
-							else if ( reportingOption == BackgroundWorkerReportingOptions.ProgressOnly )
-							{
-								bgWorker.ReportProgress ( percentComplete );
-							}
 
-							previousPercentComplete = percentComplete;
-						}
-					}
-				}
+            // Write the data
+            foreach (DataRow row in dataTable.Rows)
+            {
+                // Background worker updates
+                if (bgWorker != null)
+                {
+                    // Check for cancel
+                    if (e != null && bgWorker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
 
-				// Write data from each column for the current row
-				for ( int i = 0; i < columnCount; i++ )
-				{
-					object rowValue = row[i];
+                    // Report progress
+                    if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                    {
+                        currentStep++;
+                        percentComplete = (int)(100 * currentStep / totalSteps);
+                        if (percentComplete > previousPercentComplete)
+                        {
+                            if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
+                            {
+                                bgWorker.ReportProgress(percentComplete, "Writing line " + currentStep + " of " + totalSteps + "...");
+                            }
+                            else if (reportingOption == BackgroundWorkerReportingOptions.ProgressOnly)
+                            {
+                                bgWorker.ReportProgress(percentComplete);
+                            }
 
-					if ( rowValue == null )
-					{
-						rowValue = String.Empty;
-					}
+                            previousPercentComplete = percentComplete;
+                        }
+                    }
+                }
 
-					string item = FormatDataItem ( rowValue.ToString (), delimiter );
+                // Write data from each column for the current row
+                for (int i = 0; i < columnCount; i++)
+                {
+                    object rowValue = row[i];
 
-					if ( i > 0 )
-					{
-						outputStream.Write ( delimiter + item );
-					}
-					else
-					{
-						outputStream.Write ( item );
-					}
-				}
+                    if (rowValue == null)
+                    {
+                        rowValue = String.Empty;
+                    }
 
-				outputStream.Write ( System.Environment.NewLine );
-			}
+                    string item;
+                    if (i != dateTimeColumnIndex)
+                    {
+                        item = FormatDataItem(rowValue.ToString(), formatOptions.Delimiter);
+                    }
+                    else if (!formatOptions.UseShortDateFormat)
+                    {
+                        item = FormatDataItem((Convert.ToDateTime(rowValue)).ToString(formatOptions.DateTimeFormat), formatOptions.Delimiter);
+                    }
+                    else
+                    {
+                        item = FormatDataItem((Convert.ToDateTime(rowValue)).ToString("yyyy-MM-dd"), formatOptions.Delimiter);
+                    }
 
-			// Background worker updates
-			if ( bgWorker != null )
-			{
-				// Check for cancel
-				if ( e != null && bgWorker.CancellationPending )
-				{
-					e.Cancel = true;
-					return;
-				}
+                    if (i > 0)
+                    {
+                        outputStream.Write(formatOptions.Delimiter + item);
+                    }
+                    else
+                    {
+                        outputStream.Write(item);
+                    }
+                }
 
-				// Report progress
-				if ( bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None )
-				{
-					if ( reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress )
-					{
-						bgWorker.ReportProgress ( 100, "All lines written" );
-					}
-					else if ( reportingOption == BackgroundWorkerReportingOptions.ProgressOnly )
-					{
-						bgWorker.ReportProgress ( 100 );
-					}
+                outputStream.Write(System.Environment.NewLine);
+            }
 
-					totalSteps = dataTable.Rows.Count;
-				}
-			}
-		}
+            // Background worker updates
+            if (bgWorker != null)
+            {
+                // Check for cancel
+                if (e != null && bgWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                // Report progress
+                if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                {
+                    if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
+                    {
+                        bgWorker.ReportProgress(100, "All lines written");
+                    }
+                    else if (reportingOption == BackgroundWorkerReportingOptions.ProgressOnly)
+                    {
+                        bgWorker.ReportProgress(100);
+                    }
+
+                    totalSteps = dataTable.Rows.Count;
+                }
+            }
+        }
 
 		/// <summary>
 		/// Writes data from a data table to a delimited text file
@@ -472,7 +495,8 @@ namespace HydroDesktop.ImportExport
 		/// <param name="includeHeaders">True if the column names from the data table should be included as headers in the output stream</param>
 		public static void DataTableToDelimitedFile ( DataTable dataTable, string outputFilename, string delimiter, bool includeHeaders )
 		{
-			DataTableToDelimitedFile ( dataTable, outputFilename, delimiter, includeHeaders, false, null, null, BackgroundWorkerReportingOptions.None );
+			//DataTableToDelimitedFile ( dataTable, outputFilename, delimiter, includeHeaders, false, null, null, BackgroundWorkerReportingOptions.None );
+            DataTableToDelimitedFile(dataTable, outputFilename, new DelimitedFormatOptions { Delimiter = delimiter, Append = false, IncludeHeaders = includeHeaders });
 		}
 
 		/// <summary>
@@ -503,7 +527,7 @@ namespace HydroDesktop.ImportExport
 			DataTableToDelimitedFile ( dataTable, outputFilename, delimiter, includeHeaders, false, bgWorker, e, reportingOption );
 		}
 
-		/// <summary>
+        /// <summary>
 		/// Writes data from a data table to a delimited text file
 		/// </summary>
 		/// <param name="dataTable">The data table with the data to write</param>
@@ -514,8 +538,37 @@ namespace HydroDesktop.ImportExport
 		/// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
 		/// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
 		/// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
-		public static void DataTableToDelimitedFile ( DataTable dataTable, string outputFilename, string delimiter, bool includeHeaders, bool append, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption )
-		{
+        public static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, string delimiter, bool includeHeaders, bool append, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
+        {
+            DelimitedFormatOptions formatOptions = new DelimitedFormatOptions { Append = append, Delimiter = delimiter, IncludeHeaders = includeHeaders };
+            DataTableToDelimitedFile(dataTable, outputFilename, formatOptions, bgWorker, e, reportingOption);
+        }
+
+        /// <summary>
+        /// Writes data from a data table to a delimited text file
+        /// </summary>
+        /// <param name="dataTable">The data table with the data to write</param>
+        /// <param name="outputFilename">Full path and filename for the output  file</param>
+        /// <param name="formatOptions">Delimited text formatting options</param>
+        /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
+        /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
+        /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
+        public static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, DelimitedFormatOptions formatOptions)
+        {
+            DataTableToDelimitedFile(dataTable, outputFilename, formatOptions, null, null, BackgroundWorkerReportingOptions.None);
+        }
+
+        /// <summary>
+        /// Writes data from a data table to a delimited text file
+        /// </summary>
+        /// <param name="dataTable">The data table with the data to write</param>
+        /// <param name="outputFilename">Full path and filename for the output  file</param>
+        /// <param name="formatOptions">Delimited text formatting options</param>
+        /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
+        /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
+        /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
+        public static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
+        {
 			// Check that the folder exists
 			try
 			{
@@ -534,12 +587,12 @@ namespace HydroDesktop.ImportExport
 			TextWriter outputStream = null;
 			try
 			{
-				using ( outputStream = new StreamWriter ( outputFilename, append ) as TextWriter )
+				using ( outputStream = new StreamWriter ( outputFilename, formatOptions.Append ) as TextWriter )
 				{
 					try
 					{
 						// Write the data
-						DelimitedTextWriter.DataTableToStream ( dataTable, outputStream, delimiter, includeHeaders, bgWorker, e, reportingOption );
+						DelimitedTextWriter.DataTableToStream ( dataTable, outputStream, formatOptions, bgWorker, e, reportingOption );
 					}
 					catch ( Exception ex )
 					{

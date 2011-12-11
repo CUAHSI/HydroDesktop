@@ -77,6 +77,7 @@
     <Compile Include="Database\RepositoryManagerSQL.cs" />
     <Compile Include="ImportExport\CsvFileParser.cs" />
     <Compile Include="ImportExport\CsvStreamReader.cs" />
+    <Compile Include="ImportExport\DelimitedFormatOptions.cs" />
     <Compile Include="ImportExport\DelimitedTextWriter.cs" />
     <Compile Include="ImportExport\ExportDataTableToTextFileDialog.cs">
       <SubType>Form</SubType>
