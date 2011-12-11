@@ -7,17 +7,10 @@ Imports HydroDesktop.Interfaces
 
 Public Class cProbabilityPlot
     Implements IChart
-
-    Private Shared m_Data As Data.DataTable
-    Private Shared m_Site As String
-    Private Shared m_VariableWithUnits As String
-    Private Shared m_Variable As String
-    Private Shared m_Units As String
+    
     Private Shared m_VarList As New List(Of String)
-    Private Shared m_Options As PlotOptions
-    Private Shared m_SeriesID As Integer
-    Private m_StdDev As Double
     Private m_SeriesSelector As ISeriesSelector
+    Dim m_StdDev
 
     'the main series selector control
     Public Property SeriesSelector() As ISeriesSelector
@@ -29,25 +22,10 @@ Public Class cProbabilityPlot
         End Set
     End Property
 
-    Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer, Optional ByVal e_StdDev As Double = 0)
+    Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
         Try
-            'If Not (m_Data Is Nothing) Then
-            'm_Data.Dispose()
-            'm_Data = Nothing
-            'End If
-            'If Not (m_DataRows.Length < 1) Then
-            '    ReDim m_DataRows(0)
-            'End If
-
-            m_Data = objDataTable.Copy
-            'm_DataRows = objDataTable.Select("", "DataValue ASC")
-            m_Site = strSiteName
-            m_Variable = strVariableName
-            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
-            m_Options = objOptions
-            m_Units = strVariableUnits
-            m_SeriesID = intSeriesID
-
+            Dim m_Data = options.DataTable
+            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
             m_VarList.Add(m_VariableWithUnits)
 
             If (e_StdDev = 0) And (Not (m_Data Is Nothing)) And (m_Data.Rows.Count > 0) Then
@@ -55,31 +33,15 @@ Public Class cProbabilityPlot
             Else
                 m_StdDev = e_StdDev
             End If
-            PlotProbability(m_Site, m_VariableWithUnits, m_Units)
+            PlotProbability(options)
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGProbability.Plot" & vbCrLf & ex.Message)
         End Try
     End Sub
 
-    Public Sub Replot(ByVal options As PlotOptions)
-        Try
-            m_Options = options
-            PlotProbability(m_Site, m_VariableWithUnits, m_Units)
-        Catch ex As Exception
-            Throw New Exception("Error Occured in ZGProbability.Replot" & vbCrLf & ex.Message)
-        End Try
-    End Sub
-
     Public Sub Clear()
         Try
-            'If Not (m_Data Is Nothing) Then
-            'm_Data.Dispose()
-            'm_Data = Nothing
-            'End If
-            'm_Data.Clear()
-            'PlotProbability(m_Site, m_Var, m_Units)
-
-            Dim gPane As ZedGraph.GraphPane = zgProbabilityPlot.GraphPane
+            Dim gPane As GraphPane = zgProbabilityPlot.GraphPane
             gPane.CurveList.Clear()
             gPane.Title.Text = "No Data To Plot"
             gPane.XAxis.IsVisible = False
@@ -96,7 +58,13 @@ Public Class cProbabilityPlot
 
 #Region " Probability "
 
-    Private Sub PlotProbability(ByVal site As String, ByVal variable As String, ByVal varUnits As String)
+    Private Sub PlotProbability(ByRef options As TimeSeriesPlotOptions)
+
+        Dim m_Data = options.DataTable.Copy
+        Dim m_Site = options.SiteName
+        Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+        Dim m_Options = options.PlotOptions
+
         Dim i As Integer 'counter
         Dim gPane As ZedGraph.GraphPane 'GraphPane of the zgProbability plot object -> used to set data and characteristics
         'Dim g As Drawing.Graphics 'graphics object of the zgProbability plot object -> used to redraw/update the plot
@@ -200,8 +168,8 @@ Public Class cProbabilityPlot
             'gPane.YAxis.Scale.MaxGrace = 0.025
             'gPane.YAxis.Scale.MagAuto = False
             'Title
-            While (GetStringLen(site, gPane.Title.FontSpec.GetFont(gPane.CalcScaleFactor)) > zgProbabilityPlot.Width)
-                site = GraphTitleBreaks(site)
+            While (GetStringLen(m_Site, gPane.Title.FontSpec.GetFont(gPane.CalcScaleFactor)) > zgProbabilityPlot.Width)
+                m_Site = GraphTitleBreaks(m_Site)
             End While
 
             'Setting title
@@ -251,7 +219,8 @@ Public Class cProbabilityPlot
             '7. Plot the Data
             'create the points
             'probLine = New ZedGraph.LineItem("ProbCurve")
-            probLine = gPane.AddCurve(site, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
+            probLine = gPane.AddCurve(m_Site, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
+            probLine.Tag = options
             probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
             probLine.Symbol.Fill.RangeMin = 0
             probLine.Symbol.Fill.RangeMax = 1
@@ -277,7 +246,32 @@ Public Class cProbabilityPlot
             End Select
 
             'Setting Legend Title
-            probLine.Label.Text += ", " + m_Variable + ", ID: " + m_SeriesID.ToString
+            Dim needShowDataType = False
+            For Each c In zgProbabilityPlot.GraphPane.CurveList
+                Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+
+                For Each cc In zgProbabilityPlot.GraphPane.CurveList
+                    If Not ReferenceEquals(c, cc) Then
+                        Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+
+                        If ccOptions.SiteName = cOptions.SiteName And
+                           ccOptions.VariableName = cOptions.VariableName Then
+                            needShowDataType = True
+                            Exit For
+                        End If
+                    End If
+                Next
+            Next
+            If Not needShowDataType Then
+                ' Set legend only for current curve
+                probLine.Label.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+            Else
+                ' Update legend for all curves
+                For Each c In zgProbabilityPlot.GraphPane.CurveList
+                    Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                    c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                Next
+            End If
 
             'Setting Y Axis
             probLine.Link.Title = m_VariableWithUnits

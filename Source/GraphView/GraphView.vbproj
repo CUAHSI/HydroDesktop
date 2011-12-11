@@ -141,6 +141,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\IChart.vb" />
+    <Compile Include="Controls\TimeSeriesPlotOptions.vb" />
     <Compile Include="Controls\ZedGraphControlEx.vb">
       <SubType>UserControl</SubType>
     </Compile>

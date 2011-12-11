@@ -1,19 +1,14 @@
 ﻿Imports Controls
 Imports System.Globalization
 Imports ZedGraph
-Imports System.Drawing
 
 Public Class cHistogramPlot
     Implements IChart
 
     Private Shared m_Data As Data.DataTable
-    Private Shared m_Site As String
-    Private Shared m_VariableWithUnits As String
-    Private Shared m_Variable As String
-    Private Shared m_Options As PlotOptions
+    
     Private Const m_MaxHistBins As Integer = 20 'holds the maximum number of Bins for a Histogram plot, 20 = selected due to spacing of values on the plot
     Private m_StdDev As Double = 0
-    Private m_ID As Integer
 
     Private yValue() As Double
     Private xCenterList() As Double
@@ -23,18 +18,10 @@ Public Class cHistogramPlot
     Private LogScale As Boolean = False
 
 
-    Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal ID As Integer, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByVal e_StdDev As Double) ', Optional ByVal e_StdDev As Double = 0))
-        'If Not (m_Data Is Nothing) Then
-        'Clear()
-        'End If
-
+    Public Sub Plot(ByRef options As TimeSeriesPlotOptions, ByVal e_StdDev As Double)
         Try
-            m_Data = objDataTable.Copy
-            m_Site = strSiteName
-            m_Variable = strVariableName
-            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
-            m_Options = objOptions
-            m_ID = ID
+            m_Data = options.DataTable.Copy
+          
 
             Dim i As Integer
 
@@ -55,7 +42,7 @@ Public Class cHistogramPlot
             Dim gPane As GraphPane = New GraphPane
             zgHistogramPlot.MasterPane.PaneList.Add(gPane)
             i = zgHistogramPlot.MasterPane.PaneList.Count - 1
-            Graph(zgHistogramPlot.MasterPane.PaneList(i))
+            Graph(zgHistogramPlot.MasterPane.PaneList(i), options)
 
             If zgHistogramPlot.MasterPane.PaneList.Count > 1 Then
                 zgHistogramPlot.IsShowHScrollBar = False
@@ -64,15 +51,6 @@ Public Class cHistogramPlot
 
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGHistogram.Plot" & vbCrLf & ex.Message)
-        End Try
-    End Sub
-
-    Public Sub Replot(ByVal options As PlotOptions)
-        Try
-            m_Options = options
-            'Graph()
-        Catch ex As Exception
-            Throw New Exception("Error Occured in ZGHistogram.Replot" & vbCrLf & ex.Message)
         End Try
     End Sub
 
@@ -109,8 +87,13 @@ Public Class cHistogramPlot
         End Try
     End Sub
 
-    Protected Sub Graph(ByVal gPane As ZedGraph.GraphPane)
+    Protected Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
         Try
+            Dim m_Site = options.SiteName
+            Dim m_Variable = options.VariableName
+            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+            Dim m_Options = options.PlotOptions
+            Dim m_ID = options.SeriesID
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'New code
@@ -183,12 +166,40 @@ Public Class cHistogramPlot
                 gPane.YAxis.MajorGrid.IsVisible = True
                 gPane.YAxis.MinorGrid.IsVisible = False
                 gPane.YAxis.Scale.MagAuto = False
-                gPane.Title.Text = m_Site + ", " + m_Variable + ", ID: " + m_ID.ToString
+                gPane.Tag = options
+
+                Dim needShowDataType = False
+                For Each c In zgHistogramPlot.MasterPane.PaneList
+                    Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+
+                    For Each cc In zgHistogramPlot.MasterPane.PaneList
+                        If Not ReferenceEquals(c, cc) Then
+                            Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+
+                            If ccOptions.SiteName = cOptions.SiteName And
+                               ccOptions.VariableName = cOptions.VariableName Then
+                                needShowDataType = True
+                                Exit For
+                            End If
+                        End If
+                    Next
+                Next
+                If Not needShowDataType Then
+                    ' Set legend only for current curve
+                    gPane.Title.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                Else
+                    ' Update legend for all curves
+                    For Each c In zgHistogramPlot.MasterPane.PaneList()
+                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                    Next
+                End If
+
+
                 gPane.XAxis.Scale.FormatAuto = False
 
-
                 Dim min As Double = Double.MinValue
-                Dim list1 As List(Of Double) = New List(Of Double)
+                Dim list1 As List(Of Double)
                 Dim k As Double
                 For Each k In yValue
                     If (k < min) Then
@@ -196,7 +207,6 @@ Public Class cHistogramPlot
                     End If
                 Next
                 Dim max As Double = Double.MinValue
-                list1 = New List(Of Double)
                 For Each k In yValue
                     If (k > max) Then
                         max = k

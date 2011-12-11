@@ -5,30 +5,16 @@ Imports System.Drawing
 Public Class cBoxWhiskerPlot
     Implements IChart
 
-    Private Shared m_Data As Data.DataTable
-    Private Shared m_Site As String
-    Private Shared m_VariableWithUnits As String
-    Private Shared m_Variable As String
-    Private Shared m_Options As PlotOptions
+    Private Shared m_Data As DataTable
     Private m_StdDev As Double = 0
-    Private m_ID As Integer
 
     Private Const db_outFld_ValDTMonth As String = "DateMonth"
     Private Const db_outFld_ValDTYear As String = "DateYear"
     Private Const db_outFld_ValDTDay As String = "DateDay"
 
-    Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal ID As Integer, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, Optional ByVal e_StdDev As Double = 0) ', Optional ByVal e_StdDev As Double = 0))
-        'If Not (m_Data Is Nothing) Then
-        'Clear()
-        'End If
-
+    Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
         Try
-            m_Data = objDataTable.Copy
-            m_Site = strSiteName
-            m_Variable = strVariableName
-            m_VariableWithUnits = strVariableName & " - " & strVariableUnits
-            m_Options = objOptions
-            m_ID = ID
+            m_Data = options.DataTable.Copy
             Dim i As Integer
 
             If zgBoxWhiskerPlot.MasterPane.PaneList.Count <> 0 Then
@@ -49,7 +35,7 @@ Public Class cBoxWhiskerPlot
             Dim gPane As GraphPane = New GraphPane
             zgBoxWhiskerPlot.MasterPane.PaneList.Add(gPane)
             i = zgBoxWhiskerPlot.MasterPane.PaneList.Count - 1
-            Graph(zgBoxWhiskerPlot.MasterPane.PaneList(i))
+            Graph(zgBoxWhiskerPlot.MasterPane.PaneList(i), options)
 
             If zgBoxWhiskerPlot.MasterPane.PaneList.Count > 1 Then
                 zgBoxWhiskerPlot.IsShowHScrollBar = False
@@ -62,24 +48,8 @@ Public Class cBoxWhiskerPlot
         End Try
     End Sub
 
-    Public Sub Replot(ByVal options As PlotOptions)
-        Try
-            m_Options = options
-            'Graph()
-        Catch ex As Exception
-            Throw New Exception("Error Occured in ZGBoxWhisker.Replot" & vbCrLf & ex.Message)
-        End Try
-    End Sub
-
     Public Sub Clear()
         Try
-            'If Not (m_Data Is Nothing) Then
-            'm_Data.Dispose()
-            'm_Data = Nothing
-            'End If
-            'm_Data.Clear()
-            'Graph()
-
             'gPane.CurveList.Clear()
             'gPane.GraphObjList.Clear()
             'gPane.Title.Text = "No Data To Plot"
@@ -103,7 +73,10 @@ Public Class cBoxWhiskerPlot
         End Try
     End Sub
 
-    Protected Sub Graph(ByVal gPane As GraphPane)
+    Protected Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
+        Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+        Dim m_Options = options.PlotOptions
+
         Try
             If ((m_Data Is Nothing) OrElse (m_Data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
                 gPane.CurveList.Clear()
@@ -118,14 +91,14 @@ Public Class cBoxWhiskerPlot
                 Dim i As Integer
                 Dim numPts As Integer 'number of points in ptList
                 Dim xTitle As String 'the title of the XAxis
-                Dim medianList As ZedGraph.PointPairList 'collection of Median points for the Box/Whisker plot
-                Dim meanList As ZedGraph.PointPairList 'collection of Mean points for the Box/Whisker plot
-                Dim outlierList As ZedGraph.PointPairList = Nothing 'collection of Outlier points for the Box/Whisker plot
+                Dim medianList As PointPairList 'collection of Median points for the Box/Whisker plot
+                Dim meanList As PointPairList 'collection of Mean points for the Box/Whisker plot
+                Dim outlierList As PointPairList = Nothing 'collection of Outlier points for the Box/Whisker plot
                 Dim boxes As BoxPlot() = Nothing 'collection of boxes to draw
                 Dim xAxisLabels As String() = Nothing 'collection of labels for the x-Axis
-                Dim medianLine As ZedGraph.LineItem 'zedgraph curve item -> line that contains all of the Medain points
-                Dim meanLine As ZedGraph.LineItem 'zedgraph curve item -> line that contains all of the Mean points
-                Dim outlierLine As ZedGraph.LineItem 'zedgraph curve item -> line that contains all of the outliers
+                Dim medianLine As LineItem 'zedgraph curve item -> line that contains all of the Medain points
+                Dim meanLine As LineItem 'zedgraph curve item -> line that contains all of the Mean points
+                Dim outlierLine As LineItem 'zedgraph curve item -> line that contains all of the outliers
                 Dim min, max As Double 'the max,Min value
                 Dim showXTics As Boolean = True 'tracks if showing major tic marks along the x-axis
 
@@ -209,7 +182,33 @@ Public Class cBoxWhiskerPlot
                 gPane.YAxis.Scale.MinGrace = 0 '0.025 '2.5%
                 gPane.YAxis.Scale.MagAuto = False
 
-                gPane.Title.Text = m_Site + ", " + m_Variable + ", ID: " + m_ID.ToString
+                gPane.Tag = options
+                Dim needShowDataType = False
+                For Each c In zgBoxWhiskerPlot.MasterPane.PaneList
+                    Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+
+                    For Each cc In zgBoxWhiskerPlot.MasterPane.PaneList
+                        If Not ReferenceEquals(c, cc) Then
+                            Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+
+                            If ccOptions.SiteName = cOptions.SiteName And
+                               ccOptions.VariableName = cOptions.VariableName Then
+                                needShowDataType = True
+                                Exit For
+                            End If
+                        End If
+                    Next
+                Next
+                If Not needShowDataType Then
+                    ' Set legend only for current curve
+                    gPane.Title.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                Else
+                    ' Update legend for all curves
+                    For Each c In zgBoxWhiskerPlot.MasterPane.PaneList()
+                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                    Next
+                End If
 
                 '6. Plot the Data
                 If numPts > 0 Then
@@ -628,9 +627,9 @@ Public Class cBoxWhiskerPlot
         '         min (byRef) -> the minimum value of the whisker/outliers
         '         max (byRef) -> the maximum value of the whisker/outliers
         Const numPts As Integer = 5 'number of months in the year -> Overall will always have this many points
-        Dim validRows() As Data.DataRow
+        Dim validRows() As DataRow
         Dim numValid As Integer 'number of valid rows retrieved
-        Dim overallData As Data.DataTable
+        Dim overallData As DataTable
         Dim i As Integer
         Try
             '1. Create the Mean, Median point list
