@@ -30,22 +30,92 @@ namespace DroughtAnalysis
         {
             bindingSource1.DataSource = Settings.SuitableSites;
 
-            CheckRPath();
+            listBoxStations.SelectedIndex = -1;
+
+            TryGuessPathToR();
+
+            TryCreateDefaultOutputFolder();
         }
 
-        private void CheckRPath()
+        private void TryGuessPathToR()
         {
-            string defaultRPath = @"C:\Program Files\R\R-2.14.0\bin\i386\R.exe";
-            if (File.Exists(defaultRPath))
+            try
             {
-                Settings.PathToR = defaultRPath;
-                textBox1.Text = Settings.PathToR;
+                string programFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                string baseRPath1 = "R\\R-{0}\\bin\\i386\\R.exe";
+                string[] possibleRVersionsNew = new string[] { "2.14.0", "2.13.2", "2.13.1", "2.13.0", "2.12.2", "2.12.1", "2.12.0", };
+                string baseRPathOld = "R\\R-{0}\\bin\\R.exe";
+                string[] possibleRVersionsOld = new string[] { "2.11.1", "2.11.0", "2.10.1", "2.10.0" };
+                foreach (string rVersion in possibleRVersionsNew)
+                {
+                    string rPath = Path.Combine(programFilesDir, string.Format(baseRPath1, rVersion));
+                    if (File.Exists(rPath))
+                    {
+                        Settings.PathToR = rPath;
+                        txtPathToR.Text = rPath;
+                        return;
+                    }
+                }
+                foreach (string rVersion in possibleRVersionsOld)
+                {
+                    string rPath = Path.Combine(programFilesDir, string.Format(baseRPathOld, rVersion));
+                    if (File.Exists(rPath))
+                    {
+                        Settings.PathToR = rPath;
+                        txtPathToR.Text = rPath;
+                        return;
+                    }
+                }
+
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return;
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void TryCreateDefaultOutputFolder()
         {
-            string defaultRPath = @"C:\Program Files\R\R-2.14.0\bin\i386\R.exe";
+            try
+            {
+                string documentsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string hydroDocsDir = Path.Combine(documentsDir, "HydroDesktop");
+                if (!Directory.Exists(hydroDocsDir))
+                {
+                    Directory.CreateDirectory(hydroDocsDir);
+                }
+                if (Directory.Exists(hydroDocsDir))
+                {
+                    string droughtDir = Path.Combine(hydroDocsDir, "Drought");
+                    if (!Directory.Exists(droughtDir))
+                    {
+                        Directory.CreateDirectory(droughtDir);
+                    }
+
+                    if (Directory.Exists(droughtDir))
+                    {
+                        Settings.OutputDirectory = droughtDir;
+                        txtOutputFolder.Text = Settings.OutputDirectory;
+                    }
+                }
+
+                
+
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return;
+            }
+            catch (IOException)
+            {
+                return;
+            }
+
+        }
+
+
+        private void btnPathToR_Click(object sender, EventArgs e)
+        {
             
             OpenFileDialog fd = new OpenFileDialog();
             string initialDir = @"C:\Program Files\R";
@@ -53,40 +123,43 @@ namespace DroughtAnalysis
             {
                 fd.InitialDirectory = initialDir;
             }
-            fd.Filter = "*.exe";
+            fd.Filter = "R.exe file|*.exe";
 
             if (fd.ShowDialog() == DialogResult.OK)
             {
                 Settings.PathToR = fd.FileName;
-                textBox1.Text = Settings.PathToR;
+                txtPathToR.Text = Settings.PathToR;
             }
         }
 
         private void TextBoxR_TextChanged(object sender, EventArgs e)
         {
-            if (textBox1.Text.ToLower().EndsWith("r.exe"))
+            if (txtPathToR.Text.ToLower().EndsWith("r.exe"))
             {
-                Settings.PathToR = textBox1.Text;
+                Settings.PathToR = txtPathToR.Text;
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnOutputFolder_Click(object sender, EventArgs e)
         {
            FolderBrowserDialog fd = new FolderBrowserDialog();
+           if (Settings.OutputDirectory != null)
+               if (Directory.Exists(Settings.OutputDirectory))
+                   fd.SelectedPath = Settings.OutputDirectory;
 
             if (fd.ShowDialog() == DialogResult.OK)
             {
                 fd.ShowNewFolderButton = true;
                 Settings.OutputDirectory = fd.SelectedPath;
-                textBox1.Text = Settings.PathToR;
+                txtOutputFolder.Text = Settings.OutputDirectory;
             }
         }
 
         private void TextBoxOutputFolder_TextChanged(object sender, EventArgs e)
         {
-            if (Directory.Exists(textBox2.Text))
+            if (Directory.Exists(txtOutputFolder.Text))
             {
-                Settings.OutputDirectory = textBox2.Text;
+                Settings.OutputDirectory = txtOutputFolder.Text;
             }
         }
 

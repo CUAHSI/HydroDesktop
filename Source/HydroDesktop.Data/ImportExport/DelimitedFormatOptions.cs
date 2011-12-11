@@ -48,5 +48,10 @@ namespace HydroDesktop.ImportExport
         /// Determines whether data is to be appended to the file. If the file exists and append is false, the file is overwritten. If the file exists and append is true, the data is appended to the file. Otherwise, a new file is created.
         /// </summary>
         public bool Append { get; set; }
+
+        /// <summary>
+        /// True if the culture should be set to InvariantCulture (decimal points will always be saved as ".")
+        /// </summary>
+        public bool UseInvariantCulture { get; set; }
     }
 }

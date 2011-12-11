@@ -33,11 +33,11 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtPathToR = new System.Windows.Forms.TextBox();
+            this.txtOutputFolder = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnPathToR = new System.Windows.Forms.Button();
+            this.btnOutputFolder = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -70,21 +70,21 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Set path to R:";
             // 
-            // textBox1
+            // txtPathToR
             // 
-            this.textBox1.Location = new System.Drawing.Point(15, 157);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(328, 20);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.TextChanged += new System.EventHandler(this.TextBoxR_TextChanged);
+            this.txtPathToR.Location = new System.Drawing.Point(15, 157);
+            this.txtPathToR.Name = "txtPathToR";
+            this.txtPathToR.Size = new System.Drawing.Size(328, 20);
+            this.txtPathToR.TabIndex = 3;
+            this.txtPathToR.TextChanged += new System.EventHandler(this.TextBoxR_TextChanged);
             // 
-            // textBox2
+            // txtOutputFolder
             // 
-            this.textBox2.Location = new System.Drawing.Point(15, 211);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(328, 20);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.TextChanged += new System.EventHandler(this.TextBoxOutputFolder_TextChanged);
+            this.txtOutputFolder.Location = new System.Drawing.Point(15, 211);
+            this.txtOutputFolder.Name = "txtOutputFolder";
+            this.txtOutputFolder.Size = new System.Drawing.Size(328, 20);
+            this.txtOutputFolder.TabIndex = 5;
+            this.txtOutputFolder.TextChanged += new System.EventHandler(this.TextBoxOutputFolder_TextChanged);
             // 
             // label3
             // 
@@ -95,25 +95,25 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Output Directory:";
             // 
-            // button1
+            // btnPathToR
             // 
-            this.button1.Location = new System.Drawing.Point(350, 157);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(61, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Browse..";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnPathToR.Location = new System.Drawing.Point(350, 157);
+            this.btnPathToR.Name = "btnPathToR";
+            this.btnPathToR.Size = new System.Drawing.Size(61, 23);
+            this.btnPathToR.TabIndex = 6;
+            this.btnPathToR.Text = "Browse..";
+            this.btnPathToR.UseVisualStyleBackColor = true;
+            this.btnPathToR.Click += new System.EventHandler(this.btnPathToR_Click);
             // 
-            // button2
+            // btnOutputFolder
             // 
-            this.button2.Location = new System.Drawing.Point(350, 208);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(61, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Browse..";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnOutputFolder.Location = new System.Drawing.Point(350, 208);
+            this.btnOutputFolder.Name = "btnOutputFolder";
+            this.btnOutputFolder.Size = new System.Drawing.Size(61, 23);
+            this.btnOutputFolder.TabIndex = 7;
+            this.btnOutputFolder.Text = "Browse..";
+            this.btnOutputFolder.UseVisualStyleBackColor = true;
+            this.btnOutputFolder.Click += new System.EventHandler(this.btnOutputFolder_Click);
             // 
             // button3
             // 
@@ -131,11 +131,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(423, 292);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.btnOutputFolder);
+            this.Controls.Add(this.btnPathToR);
+            this.Controls.Add(this.txtOutputFolder);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtPathToR);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listBoxStations);
@@ -153,11 +153,11 @@
         private System.Windows.Forms.ListBox listBoxStations;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtPathToR;
+        private System.Windows.Forms.TextBox txtOutputFolder;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnPathToR;
+        private System.Windows.Forms.Button btnOutputFolder;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.BindingSource bindingSource1;
     }
