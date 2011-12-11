@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Data;
+using System.Globalization;
+using System.Threading;
 
 namespace HydroDesktop.ImportExport
 {
@@ -289,7 +291,7 @@ namespace HydroDesktop.ImportExport
         /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
         /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
         public static void DataTableToStream(DataTable dataTable, TextWriter outputStream, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
-        {
+        {          
             // Check that columns are present
             int columnCount = dataTable.Columns.Count;
             if (columnCount == 0)
@@ -387,6 +389,13 @@ namespace HydroDesktop.ImportExport
                 }
             }
 
+            //set correct culture info - decimal point formatting option
+            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+            if (formatOptions.UseInvariantCulture)
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            }
+
 
             // Write the data
             foreach (DataRow row in dataTable.Rows)
@@ -422,7 +431,7 @@ namespace HydroDesktop.ImportExport
                     }
                 }
 
-                // Write data from each column for the current row
+                // write data for each row
                 for (int i = 0; i < columnCount; i++)
                 {
                     object rowValue = row[i];
@@ -433,6 +442,7 @@ namespace HydroDesktop.ImportExport
                     }
 
                     string item;
+
                     if (i != dateTimeColumnIndex)
                     {
                         item = FormatDataItem(rowValue.ToString(), formatOptions.Delimiter);
@@ -458,6 +468,10 @@ namespace HydroDesktop.ImportExport
 
                 outputStream.Write(System.Environment.NewLine);
             }
+
+            //reset the culture info
+            if (Thread.CurrentThread.CurrentCulture != originalCulture)
+                Thread.CurrentThread.CurrentCulture = originalCulture;
 
             // Background worker updates
             if (bgWorker != null)

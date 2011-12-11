@@ -71,9 +71,20 @@ namespace DroughtAnalysis
             string sqlQueryValues = sqlSelect.ToString() + sqlJoin.ToString() + sqlWhere.ToString();
             DataTable valuesTable = dbm.DbOperations.LoadTable(sqlQueryValues);
 
+            //change the column names
+            valuesTable.Columns[0].ColumnName = "Datum";
+            for (int i = 0; i < station.DataSeriesList.Count; i++)
+            {
+                string vName = station.DataSeriesList[i].Variable.Name.ToLower();
+                if (vName.Contains("temp"))
+                    valuesTable.Columns[i + 1].ColumnName = "Teploty";
+                else if (vName.Contains("precip"))
+                    valuesTable.Columns[i + 1].ColumnName = "Srazky";
+            }
+
             string separator = "\t";
             DelimitedTextWriter.DataTableToDelimitedFile(valuesTable, outFileName,
-                                                         new DelimitedFormatOptions { Append = false, Delimiter = separator, IncludeHeaders = true, UseShortDateFormat = true });
+            new DelimitedFormatOptions { Append = false, Delimiter = separator, IncludeHeaders = true, UseShortDateFormat = true, UseInvariantCulture = true });
             
             //todo: Use backgroundWorker for writing large files
         }
