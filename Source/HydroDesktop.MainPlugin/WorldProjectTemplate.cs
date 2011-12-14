@@ -38,13 +38,15 @@ namespace HydroDesktop.Main
             //load the 'Countries of the world' layer
             try
             {
+                mainMap.BackColor = Color.LightBlue;
+                
                 string fileName = Path.Combine(baseMapFolder, "world_countries.shp");
                 if (File.Exists(fileName))
                 {
                     IFeatureSet fsCountries = FeatureSet.OpenFile(fileName);
                     MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
                     layCountries.LegendText = "Countries";
-                    layCountries.Symbolizer = new PolygonSymbolizer(Color.LightGreen);
+                    layCountries.Symbolizer = new PolygonSymbolizer(Color.FromArgb(255,239,213),Color.LightGray);
                     //PolygonScheme schmCountries = new PolygonScheme();
                     //schmCountries.EditorSettings.StartColor = Color.Orange;
                     //schmCountries.EditorSettings.EndColor = Color.Silver;

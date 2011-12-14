@@ -133,7 +133,7 @@ Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Exte
 
 ;Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; DestName: "WeifenLuo.WinFormsUI.Docking.dll"; Flags: ignoreversion;
 
-Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"
+Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
@@ -400,13 +400,7 @@ end;
 
 
 function InitializeSetup(): Boolean;
-var
-  //ErrorCode: Integer;
-  //ExpectedLocalLocation: String;
-  R1: Boolean;
-begin
-  R1 := True;
-  
+begin  
   DeletePackages();
   
   // Check for .NET prerequisites
