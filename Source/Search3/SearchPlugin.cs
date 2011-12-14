@@ -646,8 +646,12 @@ namespace Search3
                     sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
                 }
 
-                rbKeyword.SelectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
-                rbKeyword.ToolTipText = rbKeyword.SelectedItem.ToString();
+                if (sbKeywords.Length > 0)
+                {
+                    rbKeyword.SelectedItem = sbKeywords.ToString();
+                }
+                //rbKeyword.SelectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
+                //rbKeyword.ToolTipText = rbKeyword.SelectedItem.ToString();
             }
             finally
             {
