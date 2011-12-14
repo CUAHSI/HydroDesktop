@@ -35,9 +35,23 @@ namespace Search3.Area
                          subLayer.IsSelected);
         }
 
-        public static void SelectFirstVisiblePolygonLayer(Map map)
+        public static void SelectFirstVisiblePolygonLayer(Map map, bool isWorldTemplate)
         {
             if (map == null) throw new ArgumentNullException("map");
+
+            //special case: world project template
+            if (isWorldTemplate)
+            {
+                map.MapFrame.IsSelected = false;
+                foreach (var layer in GetAllPolygonLayers(map).Where(subLayer => subLayer.IsVisible))
+                {
+                    layer.IsSelected = true;
+                    map.Legend.RefreshNodes();
+                    break;
+                }
+            }
+
+            if (map.MapFrame.IsSelected) return; //don't select layers if map frame is already selected
 
             var hasSelected = GetAllPolygonLayers(map).Where(subLayer => subLayer.IsVisible)
                                                       .Any(item => item.IsSelected);

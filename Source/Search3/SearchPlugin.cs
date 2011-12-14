@@ -507,7 +507,9 @@ namespace Search3
             
             App.Map.FunctionMode = FunctionMode.Select;
 
-            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map);
+            string isWorldTemplate = App.SerializationManager.GetCustomSetting<string>("world_template", "false");
+            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
+            //App.Map.MapFrame.IsSelected = true;
         }
         
         private void DeactivateSelectAreaByPolygon()
@@ -575,7 +577,7 @@ namespace Search3
             DeactivateDrawBox();
             DeactivateSelectAreaByPolygon();
 
-            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map);
+            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
             SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
         }
