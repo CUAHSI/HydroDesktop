@@ -29,11 +29,11 @@ namespace HydroDesktop.Main
 
             string baseMapFolder = Settings.Instance.DefaultBaseMapDirectory;
 
-            MapGroup baseGroup = new MapGroup(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler);
-            baseGroup.LegendText = "Base Map Data";
-            baseGroup.ParentMapFrame = mainMap.MapFrame;
-            baseGroup.MapFrame = mainMap.MapFrame;
-            baseGroup.IsVisible = true;
+            //MapGroup baseGroup = new MapGroup(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler);
+            //baseGroup.LegendText = "Base Map Data";
+            //baseGroup.ParentMapFrame = mainMap.MapFrame;
+            //baseGroup.MapFrame = mainMap.MapFrame;
+            //baseGroup.IsVisible = true;
 
             //load the 'Countries of the world' layer
             try
@@ -44,16 +44,18 @@ namespace HydroDesktop.Main
                     IFeatureSet fsCountries = FeatureSet.OpenFile(fileName);
                     MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries);
                     layCountries.LegendText = "Countries";
-                    PolygonScheme schmCountries = new PolygonScheme();
-                    schmCountries.EditorSettings.StartColor = Color.Orange;
-                    schmCountries.EditorSettings.EndColor = Color.Silver;
-                    schmCountries.EditorSettings.ClassificationType =
-                        ClassificationType.UniqueValues;
-                    schmCountries.EditorSettings.FieldName = "NAME";
-                    schmCountries.EditorSettings.UseGradient = true;
-                    schmCountries.CreateCategories(layCountries.DataSet.DataTable);
-                    layCountries.Symbology = schmCountries;
-                    baseGroup.Layers.Add(layCountries);
+                    layCountries.Symbolizer = new PolygonSymbolizer(Color.LightGreen);
+                    //PolygonScheme schmCountries = new PolygonScheme();
+                    //schmCountries.EditorSettings.StartColor = Color.Orange;
+                    //schmCountries.EditorSettings.EndColor = Color.Silver;
+                    //schmCountries.EditorSettings.ClassificationType =
+                    //    ClassificationType.UniqueValues;
+                    //schmCountries.EditorSettings.FieldName = "NAME";
+                    //schmCountries.EditorSettings.UseGradient = true;
+                    //schmCountries.CreateCategories(layCountries.DataSet.DataTable);
+                    //layCountries.Symbology = schmCountries;
+                    //baseGroup.Layers.Add(layCountries);
+                    mainMap.Layers.Add(layCountries);
                     layCountries.MapFrame = mainMap.MapFrame;
                     layCountries.ProgressReportingEnabled = false;
                 }
@@ -68,12 +70,12 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName))
                 {
                     IFeatureSet fsRivers = FeatureSet.OpenFile(fileName);
-                    fsRivers.Reproject(mainMap.Projection);
+                    //fsRivers.Reproject(mainMap.Projection);
                     MapLineLayer layRivers = new MapLineLayer(fsRivers);
                     layRivers.LegendText = "rivers";
                     LineSymbolizer symRivers = new LineSymbolizer(Color.Blue, 1.0);
                     layRivers.Symbolizer = symRivers;
-                    baseGroup.Layers.Add(layRivers);
+                    mainMap.Layers.Add(layRivers);
                     layRivers.MapFrame = mainMap.MapFrame;
                     
                 }
@@ -87,18 +89,21 @@ namespace HydroDesktop.Main
                 if (File.Exists(fileName))
                 {
                     IFeatureSet fsLakes = FeatureSet.OpenFile(fileName);
-                    fsLakes.Reproject(mainMap.Projection);
+                    //fsLakes.Reproject(mainMap.Projection);
                     MapPolygonLayer layLakes = new MapPolygonLayer(fsLakes);
                     layLakes.LegendText = "lakes";
                     PolygonSymbolizer symLakes = new PolygonSymbolizer(Color.Blue,
                                                                        Color.Blue);
                     layLakes.Symbolizer = symLakes;
-                    baseGroup.Layers.Add(layLakes);
+                    mainMap.Layers.Add(layLakes);
                     layLakes.MapFrame = mainMap.MapFrame;
                     layLakes.ProgressReportingEnabled = false;
                 }
             }
             catch { }
+
+            
+            
 
             double[] xy = new double[4];
             xy[0] = defaultMapExtent.MinX;

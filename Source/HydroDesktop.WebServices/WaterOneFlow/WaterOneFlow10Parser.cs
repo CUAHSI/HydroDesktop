@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
+using System.Globalization;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
 {
@@ -190,12 +191,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     else if (nodeName == "begindatetime")
                     {
                         r.Read();
-                        query.BeginDateParameter = Convert.ToDateTime(r.Value);
+                        query.BeginDateParameter = Convert.ToDateTime(r.Value,CultureInfo.InvariantCulture);
                     }
                     else if (nodeName == "enddatetime")
                     {
                         r.Read();
-                        query.EndDateParameter = Convert.ToDateTime(r.Value);
+                        query.EndDateParameter = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
                     }
                 }
                 else if (r.NodeType == XmlNodeType.EndElement && nodeName == "queryinfo")
@@ -386,7 +387,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     else if (nodeName == "nodatavalue")
                     {
                         r.Read();
-                        varInfo.NoDataValue = Convert.ToDouble(r.Value);
+                        varInfo.NoDataValue = Convert.ToDouble(r.Value, CultureInfo.InvariantCulture);
                     }
                     else if (nodeName == "timesupport")
                     {
@@ -454,13 +455,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     else if (nodeName == "begindatetime")
                     {
                         r.Read();
-                        series.BeginDateTime = Convert.ToDateTime(r.Value);
+                        series.BeginDateTime = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
                         series.BeginDateTimeUTC = series.BeginDateTime;
                     }
                     else if (nodeName == "enddatetime")
                     {
                         r.Read();
-                        series.EndDateTime = Convert.ToDateTime(r.Value);
+                        series.EndDateTime = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
                         series.EndDateTimeUTC = series.EndDateTime;
                     }
                     else if (nodeName == "method")
@@ -542,7 +543,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             {
                                 localDateTime = r.GetAttribute("DateTime");
                             }
-                            val.LocalDateTime = Convert.ToDateTime(localDateTime);
+                            val.LocalDateTime = Convert.ToDateTime(localDateTime, CultureInfo.InvariantCulture);
                             
                             val.DateTimeUTC = val.LocalDateTime;
                             val.UTCOffset = 0.0;
@@ -632,13 +633,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                 string offsetValue = r.GetAttribute("offsetValue");
                                 if (!String.IsNullOrEmpty(offsetValue))
                                 {
-                                    val.OffsetValue = Convert.ToDouble(offsetValue);
+                                    val.OffsetValue = Convert.ToDouble(offsetValue, CultureInfo.InvariantCulture);
                                 }
                             }
 
                             //data value
                             string strVal = r.ReadString();
-                            val.Value = Convert.ToDouble(strVal);
+                            val.Value = Convert.ToDouble(strVal, CultureInfo.InvariantCulture);
                             //val.Value = Convert.ToDouble(r.ReadElementString());
                             //val.Value = Convert.ToDouble(r.ReadInnerXml());
                             //val.Value = Convert.ToDouble(r.Value); //r.ReadElementContentAsDouble();

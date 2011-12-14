@@ -129,6 +129,8 @@ namespace HydroDesktop.Main
 
         public void OpeningProject()
         {
+            if (App.SerializationManager.CurrentProjectFile == null) return;
+            
             //todo: change the configuration settings paths
             string projectFile = App.SerializationManager.CurrentProjectFile;
             Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
@@ -177,7 +179,20 @@ namespace HydroDesktop.Main
                     NorthAmericaProjectTemplate.LoadBaseMaps(appManager, map);
                     break;
                 case "World":
+                    
+                    //foreach (Extension ext in App.Extensions)
+                    //{
+                    //    if (ext.AssemblyQualifiedName.ToLower().Contains("webmap"))
+                    //        ext.Deactivate();
+                    //}
                     WorldProjectTemplate.LoadBaseMaps(appManager, map);
+
+                    App.SerializationManager.SetCustomSetting("world_template", "true");
+                    //App.SerializationManager.SetCustomSetting("FetchBasemap_BasemapName", "Bing Aerial Map");
+                    //App.SerializationManager.SetCustomSetting("FetchBasemap_Opacity", "50");
+                    //App.SerializationManager.OnDeserializing(new SerializingEventArgs());
+                    App.Map.MapFrame.ResetExtents();
+
                     break;
                 default:
                     NorthAmericaProjectTemplate.LoadBaseMaps(appManager, map);

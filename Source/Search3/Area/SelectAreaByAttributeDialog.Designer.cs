@@ -74,6 +74,7 @@
             // 
             this.cmbActiveLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbActiveLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbActiveLayer.FormattingEnabled = true;
             this.cmbActiveLayer.Location = new System.Drawing.Point(17, 36);
             this.cmbActiveLayer.Name = "cmbActiveLayer";
@@ -84,6 +85,7 @@
             // 
             this.cmbField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbField.FormattingEnabled = true;
             this.cmbField.Location = new System.Drawing.Point(17, 81);
             this.cmbField.Name = "cmbField";
