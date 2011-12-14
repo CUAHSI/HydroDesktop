@@ -370,13 +370,13 @@ Public Class cTSA
                 If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
                     'pSummaryPlot.Plot(data, siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
                     pTimeSeries.Plot(timeSeriesOptions)
-                    ProgressBar.Value += 1
+                    If ProgressBar.Value < 100 Then ProgressBar.Value += 1
                     pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                    ProgressBar.Value += 1
+                    If ProgressBar.Value < 100 Then ProgressBar.Value += 1
                     pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                    ProgressBar.Value += 1
+                    If ProgressBar.Value < 100 Then ProgressBar.Value += 1
                     pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                    ProgressBar.Value += 1
+                    If ProgressBar.Value < 100 Then ProgressBar.Value += 1
                 End If
             End If
             colorcount += 1

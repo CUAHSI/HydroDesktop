@@ -239,6 +239,7 @@ namespace Search3
                 rbKeyword.RootKey = kHydroSearch3;
                 rbKeyword.Width = 150;
                 rbKeyword.Enabled = false;
+                rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
             }
             // Populate items by keywords
             PopulateKeywords();
