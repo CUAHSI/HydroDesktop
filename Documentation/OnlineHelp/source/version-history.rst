@@ -7,6 +7,20 @@
 Version History
 ===============
 
+Release 1.3 Build 244 (Dec 14, 2011)
+------------------------------------
+
+* Search toolbar moved to the main ribbon
+* Pop-up map context menu for quick time series download from selected site added
+* Download speed for very large time series improved
+* Support for re-sizing and docking the map, graph, table and edit panels added
+* Data export option using the map context menu added
+* Support for using online published 3rd-party extensions added
+* Quick context menu for updating data from server added
+* Graph display options improved - show site name or site code, show variable name in graph legend
+* Support for more web basemap layers added and basemap display speed improved
+* Documentation and help files updated
+
 Release 1.2 Build 625 (Oct 14, 2011)
 ------------------------------------
 
