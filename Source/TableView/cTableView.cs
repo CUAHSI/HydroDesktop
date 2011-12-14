@@ -75,7 +75,10 @@ namespace TableView
 
         private void UpdateDatabasePath()
         {
-            DatabasePath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
+            if (Settings.Instance.DataRepositoryConnectionString != null)
+            {
+                DatabasePath = SQLiteHelper.GetSQLiteFileName(Settings.Instance.DataRepositoryConnectionString);
+            }
         }
 
         private void dataGridViewNavigator1_PageChanged(object sender, PageChangedEventArgs e)

@@ -188,9 +188,9 @@ namespace HydroDesktop.Main
                     WorldProjectTemplate.LoadBaseMaps(appManager, map);
 
                     App.SerializationManager.SetCustomSetting("world_template", "true");
-                    //App.SerializationManager.SetCustomSetting("FetchBasemap_BasemapName", "Bing Aerial Map");
-                    //App.SerializationManager.SetCustomSetting("FetchBasemap_Opacity", "50");
-                    //App.SerializationManager.OnDeserializing(new SerializingEventArgs());
+                    App.SerializationManager.SetCustomSetting("FetchBasemap_BasemapName", "Bing Aerial Map");
+                    App.SerializationManager.SetCustomSetting("FetchBasemap_Opacity", "50");
+                    App.SerializationManager.OnDeserializing(new SerializingEventArgs());
                     App.Map.MapFrame.ResetExtents();
 
                     break;
