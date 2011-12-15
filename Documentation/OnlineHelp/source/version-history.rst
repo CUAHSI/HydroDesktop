@@ -7,7 +7,7 @@
 Version History
 ===============
 
-Release 1.3 Build 244 (Dec 14, 2011)
+Release 1.3 Build 246 (Dec 15, 2011)
 ------------------------------------
 
 * Search toolbar moved to the main ribbon
