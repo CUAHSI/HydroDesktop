@@ -6,6 +6,7 @@ using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 
 namespace HydroDesktop.Database
 {
@@ -296,8 +297,8 @@ namespace HydroDesktop.Database
             SeriesDataCart result = new SeriesDataCart();
             result.SiteName = Convert.ToString(row["SiteName"]);
             result.SiteCode = Convert.ToString(row["SiteCode"]);
-            result.Latitude = Convert.ToDouble(row["Latitude"]);
-            result.Longitude = Convert.ToDouble(row["Longitude"]);
+            result.Latitude = Convert.ToDouble(row["Latitude"], CultureInfo.InvariantCulture);
+            result.Longitude = Convert.ToDouble(row["Longitude"], CultureInfo.InvariantCulture);
 
             //Variable v = new Variable();
             result.VariableName = Convert.ToString(row["VariableName"]);
@@ -306,14 +307,14 @@ namespace HydroDesktop.Database
             result.ValueType = Convert.ToString(row["ValueType"]);
             
             result.SampleMedium = Convert.ToString(row["SampleMedium"]);
-            result.TimeSupport = Convert.ToDouble(row["TimeSupport"]);
+            result.TimeSupport = Convert.ToDouble(row["TimeSupport"], CultureInfo.InvariantCulture);
             result.GeneralCategory = Convert.ToString(row["GeneralCategory"]);
             result.TimeUnit = Convert.ToString(row["TimeUnitsName"]);
 
             Source src = Source.Unknown;
 
-            result.BeginDate = Convert.ToDateTime(row["BeginDateTime"]);
-            result.EndDate = Convert.ToDateTime(row["EndDateTime"]);
+            result.BeginDate = Convert.ToDateTime(row["BeginDateTime"], CultureInfo.InvariantCulture);
+            result.EndDate = Convert.ToDateTime(row["EndDateTime"], CultureInfo.InvariantCulture);
             result.ValueCount = Convert.ToInt32(row["ValueCount"]);
 
             result.ServURL = Convert.ToString(row["ServiceEndpointURL"]);
@@ -332,11 +333,24 @@ namespace HydroDesktop.Database
 		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax )
 		{
             string sql1 = DetailedSeriesSQLQuery();
-            string sqlWhere = string.Format(" WHERE Latitude > {0} AND Latitude < {1} AND Longitude > {2} AND Longitude < {3}",
-                yMin, yMax, xMin, xMax);
+            string sqlWhere = " WHERE Latitude > @minlat AND Latitude <= @maxlat AND Longitude > @minlon AND Longitude <= @maxlon";
             string sql = sql1 + sqlWhere;
 
-            DataTable seriesTable = _db.LoadTable("seriesTable", sql);
+            DbCommand cmd = _db.CreateCommand(sql);
+            //lat, lon parameters
+            _db.AddParameter(cmd, "@minlat", DbType.Double);
+            _db.AddParameter(cmd, "@maxlat", DbType.Double);
+            _db.AddParameter(cmd, "@minlon", DbType.Double);
+            _db.AddParameter(cmd, "@maxlon", DbType.Double);
+
+            cmd.Parameters[0].Value = yMin;
+            cmd.Parameters[1].Value = yMax;
+            cmd.Parameters[2].Value = xMin;
+            cmd.Parameters[3].Value = xMax;
+
+            DataTable seriesTable = _db.LoadTable("seriesTable", cmd);
+            
+            //DataTable seriesTable = _db.LoadTable("seriesTable", sql);
 
             IList<SeriesDataCart> lst = new List<SeriesDataCart>();
             foreach (DataRow row in seriesTable.Rows)
@@ -362,8 +376,7 @@ namespace HydroDesktop.Database
 		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs )
 		{
             string sql1 = DetailedSeriesSQLQuery();
-            string sqlWhere1 = string.Format(" WHERE Latitude > {0} AND Latitude < {1} AND Longitude > {2} AND Longitude < {3}",
-                yMin, yMax, xMin, xMax);
+            string sqlWhere1 = " WHERE Latitude > @minlat AND Latitude < @maxlat AND Longitude > @minlon AND Longitude < @maxlon";
             string sqlWhere2 = "";
 
             //concept keywords | variable names
@@ -426,10 +439,20 @@ namespace HydroDesktop.Database
 
             string sql = sql1 + sqlWhere1 + sqlWhere2 + sqlWhere3 + sqlWhere4;
             DbCommand cmd = _db.CreateCommand(sql);
+            //lat, lon parameters
+            _db.AddParameter(cmd, "@minlat", DbType.Double);
+            _db.AddParameter(cmd, "@maxlat", DbType.Double);
+            _db.AddParameter(cmd, "@minlon", DbType.Double);
+            _db.AddParameter(cmd, "@maxlon", DbType.Double);
+            
             _db.AddParameter(cmd, "@p1", DbType.DateTime);
             _db.AddParameter(cmd, "@p2", DbType.DateTime);
-            cmd.Parameters[0].Value = startDate;
-            cmd.Parameters[1].Value = endDate;
+            cmd.Parameters[0].Value = yMin;
+            cmd.Parameters[1].Value = yMax;
+            cmd.Parameters[2].Value = xMin;
+            cmd.Parameters[3].Value = xMax;
+            cmd.Parameters[4].Value = startDate;
+            cmd.Parameters[5].Value = endDate;
             
             DataTable seriesTable = _db.LoadTable("seriesTable", cmd);
 
