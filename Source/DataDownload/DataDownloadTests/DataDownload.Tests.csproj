@@ -8,8 +8,8 @@
     <ProjectGuid>{FAF8AF84-237F-42C8-A376-1E13BD5AD426}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroDesktop.DataDownloadTests</RootNamespace>
-    <AssemblyName>DataDownloadTests</AssemblyName>
+    <RootNamespace>HydroDesktop.DataDownload.Tests</RootNamespace>
+    <AssemblyName>DataDownload.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,13 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.5.9.10348\lib\nunit.framework.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +49,10 @@
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDownload\DataDownload.csproj">
       <Project>{CBC247A5-F50E-41ED-807C-94DE7E970DB9}</Project>
       <Name>DataDownload</Name>

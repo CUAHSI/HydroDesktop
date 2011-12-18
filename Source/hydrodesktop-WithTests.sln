@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGisOnline", "ArcGisOnlin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDownload", "DataDownload\DataDownload\DataDownload.csproj", "{CBC247A5-F50E-41ED-807C-94DE7E970DB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDownloadTests", "DataDownload\DataDownloadTests\DataDownloadTests.csproj", "{FAF8AF84-237F-42C8-A376-1E13BD5AD426}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDownload.Tests", "DataDownload\DataDownloadTests\DataDownload.Tests.csproj", "{FAF8AF84-237F-42C8-A376-1E13BD5AD426}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataExport", "DataExport\DataExport.csproj", "{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}"
 EndProject
@@ -58,6 +58,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search3", "Search3\Search3.csproj", "{FB01F6EE-89C0-4A64-B023-C8CC566FF803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableView", "TableView\TableView.csproj", "{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelExtension", "ExcelDataProvider\ExcelExtension.csproj", "{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -402,6 +404,16 @@ Global
 		{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}.Release|x86.ActiveCfg = Release|x86
 		{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}.Release|x86.Build.0 = Release|x86
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
