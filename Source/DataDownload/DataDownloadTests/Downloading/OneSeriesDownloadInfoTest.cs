@@ -1,7 +1,7 @@
 ﻿using HydroDesktop.DataDownload.Downloading;
 using NUnit.Framework;
 
-namespace HydroDesktop.DataDownloadTests.Downloading
+namespace HydroDesktop.DataDownload.Tests.Downloading
 {
     [TestFixture]
     class OneSeriesDownloadInfoTest
