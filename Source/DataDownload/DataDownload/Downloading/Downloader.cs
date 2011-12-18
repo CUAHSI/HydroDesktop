@@ -5,7 +5,6 @@ using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.Configuration;
 using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading
@@ -19,7 +18,7 @@ namespace HydroDesktop.DataDownload.Downloading
         #region Variables
 
         //to store the proxy class for each WaterOneFlow web service for re-use
-        private readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
+        private static readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
         private static readonly object _syncObject = new object();
         private readonly RepositoryManagerSQL _repositoryManager;
 
@@ -46,7 +45,7 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         /// <param name="wsdl">The URL of the web service main page</param>
         /// <returns>the appropriate WaterOneFlow client</returns>
-        private WaterOneFlowClient GetWsClientInstance(string wsdl)
+        private static WaterOneFlowClient GetWsClientInstance(string wsdl)
         {
             WaterOneFlowClient wsClient;
 
@@ -77,10 +76,12 @@ namespace HydroDesktop.DataDownload.Downloading
         {
             try
             {
-                return GetWsClientInstance(info.Wsdl).GetValuesXML(info.FullSiteCode, info.FullVariableCode,
-                                                                   info.StartDate, info.EndDate,
-                                                                   info.EstimatedValuesCount,
-                                                                   getValueProgressHandler);
+                var client = GetWsClientInstance(info.Wsdl);
+                info.XmlParser = client.Parser;
+                return client.GetValuesXML(info.FullSiteCode, info.FullVariableCode,
+                                           info.StartDate, info.EndDate,
+                                           info.EstimatedValuesCount,
+                                           getValueProgressHandler);
             }
             catch (Exception ex)
             {
@@ -108,11 +109,7 @@ namespace HydroDesktop.DataDownload.Downloading
         /// <exception cref="NoSeriesFromXmlException">Throws when no series in xml file</exception>
         public IEnumerable<Series> DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
         {
-            var client = GetWsClientInstance(dInfo.Wsdl);
-            var parser = client.ServiceInfo.Version == 1.0
-                                             ? (IWaterOneFlowParser) new WaterOneFlow10Parser()
-                                             : new WaterOneFlow11Parser();
-
+            var parser = dInfo.XmlParser;
             var result = new List<Series>();
             foreach (var xmlFile in dInfo.FilesWithData)
             {

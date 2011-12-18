@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using DotSpatial.Data;
 using HydroDesktop.Configuration;
+using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
@@ -14,6 +17,8 @@ namespace HydroDesktop.DataDownload.Downloading
     /// </summary>
     public class OneSeriesDownloadInfo : INotifyPropertyChanged
     {
+        private readonly ServiceInfo _serviceInfo;
+
         #region Consts
 
         internal const string PROPERTY_Wsdl = "Wsdl";
@@ -21,15 +26,7 @@ namespace HydroDesktop.DataDownload.Downloading
         internal const string PROPERTY_FullVariableCode = "FullVariableCode";
         internal const string PROPERTY_SiteName = "SiteName";
         internal const string PROPERTY_VariableName = "VariableName";
-        internal const string PROPERTY_StartDate = "StartDate";
-        internal const string PROPERTY_EndDate = "EndDate";
-        internal const string PROPERTY_Latitude = "Latitude";
-        internal const string PROPERTY_Longitude = "Longitude";
-        internal const string PROPERTY_Status = "Status";
         internal const string PROPERTY_StatusAsString = "StatusAsString";
-        internal const string PROPERTY_DownloadTimeTaken = "DownloadTimeTaken";
-        internal const string PROPERTY_ErrorMessage = "ErrorMessage";
-        internal const string PROPERTY_OverwriteOption = "OverwriteOption";
 
         private const int INITIAL_TIME_TO_DOWNLOAD = 15;
 
@@ -37,143 +34,97 @@ namespace HydroDesktop.DataDownload.Downloading
 
         #region Constructors
 
-        public OneSeriesDownloadInfo()
+        /// <summary>
+        /// Create instance of <see cref="OneSeriesDownloadInfo"/>
+        /// </summary>
+        /// <param name="serviceInfo">Service info</param>
+        /// <exception cref="ArgumentNullException">Raises if <see cref="serviceInfo"/> is null.</exception>
+        public OneSeriesDownloadInfo(ServiceInfo serviceInfo)
         {
+            if (serviceInfo == null) throw new ArgumentNullException("serviceInfo");
+            Contract.EndContractBlock();
+
+            _serviceInfo = serviceInfo;
             Status = DownloadInfoStatus.Pending;
-            EstimatedValuesCount = -1;
+
+            OverwriteOption = serviceInfo.IsDownloaded? OverwriteOptions.Overwrite: 
+                               (OverwriteOptions)Enum.Parse(typeof (OverwriteOptions), Settings.Instance.DownloadOption);
+            EstimatedValuesCount = serviceInfo.ValueCount.HasValue ? serviceInfo.ValueCount.Value : -1;
         }
 
         #endregion
 
         #region Properties
 
-        public IFeature SourceFeature { get; set; }
-        public IEnumerable<Series> ResultSeries { get; set; }
+        /// <summary>
+        /// Uri of WaterML, may be null.
+        /// </summary>
+        public string WaterMLUri
+        {
+            get { return _serviceInfo.WaterMLUri; }
+        }
 
-        private string _wsdl;
+        public IFeature SourceFeature
+        {
+            get { return _serviceInfo.SourceFeature; }
+        }
+
+        public IEnumerable<Series> ResultSeries { get; set; }
+        
         /// <summary>
         /// Service url
         /// </summary>
         public string Wsdl
         {
-            get { return _wsdl; }
-            set
-            {
-                _wsdl = value;
-                NotifyPropertyChanged(PROPERTY_Wsdl);
-            }
+            get { return _serviceInfo.ServiceUrl; }
         }
-
-        private string _fullSiteCode;
+        
         /// <summary>
         /// Site code
         /// </summary>
         public string FullSiteCode
         {
-            get { return _fullSiteCode; }
-            set
-            {
-                _fullSiteCode = value;
-                NotifyPropertyChanged(PROPERTY_FullSiteCode);
-            }
+            get { return _serviceInfo.SiteCode; }
         }
-
-        private string _fullVariableCode;
+        
         /// <summary>
         /// Variable code
         /// </summary>
         public string FullVariableCode
         {
-            get { return _fullVariableCode; }
-            set
-            {
-                _fullVariableCode = value;
-                NotifyPropertyChanged(PROPERTY_FullVariableCode);
-            }
+            get { return _serviceInfo.VarCode; }
         }
-
-        private string _siteName;
+        
         /// <summary>
         /// Site name
         /// </summary>
         public string SiteName
         {
-            get { return _siteName; }
-            set
-            {
-                _siteName = value;
-                NotifyPropertyChanged(PROPERTY_SiteName);
-            }
+            get { return _serviceInfo.SiteName; }
         }
-
-        private string _variableName;
+        
         /// <summary>
         /// Variable name
         /// </summary>
         public string VariableName
         {
-            get { return _variableName; }
-            set
-            {
-                _variableName = value;
-                NotifyPropertyChanged(PROPERTY_VariableName);
-            }
+            get { return _serviceInfo.VarName; }
         }
-
-        private DateTime _startDate;
+        
         /// <summary>
         /// Start date
         /// </summary>
         public DateTime StartDate
         {
-            get { return _startDate; }
-            set
-            {
-                _startDate = value;
-                NotifyPropertyChanged(PROPERTY_StartDate);
-            }
+            get {return _serviceInfo.StartDate; }
         }
-
-        private DateTime _endDate;
+        
         /// <summary>
         /// End date
         /// </summary>
         public DateTime EndDate
         {
-            get { return _endDate; }
-            set
-            {
-                _endDate = value;
-                NotifyPropertyChanged(PROPERTY_EndDate);
-            }
-        }
-
-        private double _latitude;
-        /// <summary>
-        /// Latitude
-        /// </summary>
-        public double Latitude
-        {
-            get { return _latitude; }
-            set
-            {
-                _latitude = value;
-                NotifyPropertyChanged(PROPERTY_Latitude);
-            }
-        }
-
-        private double _longitude;
-        /// <summary>
-        /// Longitude
-        /// </summary>
-        public double Longitude
-        {
-            get { return _longitude; }
-            set
-            {
-                _longitude = value;
-                NotifyPropertyChanged(PROPERTY_Longitude);
-            }
+            get { return !_serviceInfo.IsDownloaded? _serviceInfo.EndDate : DateTime.Now; }
         }
 
         private DownloadInfoStatus _status;
@@ -186,7 +137,6 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _status = value;
-                NotifyPropertyChanged(PROPERTY_Status);
                 NotifyPropertyChanged(PROPERTY_StatusAsString);
 
                 if (_status == DownloadInfoStatus.Pending)
@@ -200,6 +150,9 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
         
+        /// <summary>
+        /// Status of current item (text presentation)
+        /// </summary>
         public string StatusAsString
         {
             get
@@ -210,34 +163,16 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
 
-        private TimeSpan _downloadTimeTaken;
         /// <summary>
         /// Time interval, taken to downloading
         /// </summary>
-        public TimeSpan DownloadTimeTaken
-        {
-            get { return _downloadTimeTaken; }
-            set
-            {
-                _downloadTimeTaken = value;
-                NotifyPropertyChanged(PROPERTY_DownloadTimeTaken);
-            }
-        }
+        public TimeSpan DownloadTimeTaken { get; set; }
 
 
-        private string _errorMessage;
         /// <summary>
         /// Error mesage. May be not null, if Status == DownloadInfoStatus.Error
         /// </summary>
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set
-            {
-                _errorMessage = value;
-                NotifyPropertyChanged(PROPERTY_ErrorMessage);
-            }
-        }
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// Collection of files with downloaded data series.
@@ -261,19 +196,10 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
 
-        private OverwriteOptions _overwriteOption = (OverwriteOptions)Enum.Parse(typeof(OverwriteOptions), Settings.Instance.DownloadOption);
-
-        public OverwriteOptions OverwriteOption
-        {
-            get { return _overwriteOption; }
-            set
-            {
-                _overwriteOption = value;
-                NotifyPropertyChanged(PROPERTY_OverwriteOption);
-            }
-        }
+        public OverwriteOptions OverwriteOption { get; private set; }
 
         public double EstimatedTimeToDownload { get; set; }
+
         public double Progress
         {
             get
@@ -310,18 +236,17 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
 
+        public IWaterOneFlowParser XmlParser { get; set; }
+    
         #endregion
 
-        #region Events
+        
+        #region INotifyPropertyChanged implementation
 
         /// <summary>
         /// Raises when property changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Private methods
 
         private void NotifyPropertyChanged(string name)
         {
@@ -338,7 +263,7 @@ namespace HydroDesktop.DataDownload.Downloading
     public enum DownloadInfoStatus
     {
         /// <summary>
-        /// Pending (awaitng to downloading)
+        /// Pending (awaiting to downloading)
         /// </summary>
         Pending,
         /// <summary>
@@ -350,7 +275,7 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         Downloaded,
         /// <summary>
-        /// Some error occured during downloading or saving
+        /// Some error occurred during downloading or saving
         /// </summary>
         Error,
         /// <summary>

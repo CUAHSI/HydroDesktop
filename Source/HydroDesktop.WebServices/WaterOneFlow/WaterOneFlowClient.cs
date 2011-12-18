@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 using System.IO;
 using System.Net;
@@ -17,7 +17,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		#region Variables
 
 		private string _asmxURL;
-		private IWaterOneFlowParser _parser;
+		private readonly IWaterOneFlowParser _parser;
 
 		//the directory where downloaded files are stored
 		private string _downloadDirectory;
@@ -56,14 +56,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             //assign the waterOneFlow parser
             //the parser is automatically set depending on service version information
             //in the WaterML file
-            if (ServiceInfo.Version == 1.0)
-            {
-                _parser = new WaterOneFlow10Parser();
-            }
-            else
-            {
-                _parser = new WaterOneFlow11Parser();
-            }
+		    _parser = ServiceInfo.Version.ToString(CultureInfo.InvariantCulture) == "1.0"
+		                  ? (IWaterOneFlowParser) new WaterOneFlow10Parser()
+		                  : new WaterOneFlow11Parser();
 		}
 
 		/// <summary>
@@ -81,7 +76,15 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 		#region Properties
 
-		/// <summary>
+        /// <summary>
+        ///  WaterOneFlow parser
+        /// </summary>
+	    public IWaterOneFlowParser Parser
+	    {
+	        get { return _parser; }
+	    }
+
+	    /// <summary>
 		/// Gets information about the web service used by this web service client
 		/// </summary>
 		public DataServiceInfo ServiceInfo
@@ -533,7 +536,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <param name="timeTaken">Time taken to download current interval (in seconds)</param>
         void Progress(int intervalNumber, int totalIntervalsCount, double timeTaken);
         /// <summary>
-        /// Shows that current opeation should be cancelled
+        /// Shows that current operation should be cancelled
         /// </summary>
         bool CancellationPending { get;}
     }

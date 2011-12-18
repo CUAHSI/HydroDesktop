@@ -6,7 +6,7 @@ using DotSpatial.Symbology;
 namespace HydroDesktop.DataDownload.LayerInformation
 {
     /// <summary>
-    /// Class with information about service on the map
+    /// Information about service on the map
     /// </summary>
     public class ServiceInfo : INotifyPropertyChanged
     {
@@ -177,6 +177,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
             }
         }
 
+        public string WaterMLUri { get;set;}
+    
         private void UodateIsDownloaded()
         {
             if (Layer == null || SourceFeature == null)
@@ -192,30 +194,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
         #endregion
 
         #region Public methods
-
-        /// <summary>
-        /// Create deep copy into current instance from source
-        /// </summary>
-        /// <param name="source">Source to copy</param>
-        public void Copy(ServiceInfo source)
-        {
-            Layer = source.Layer;
-            SourceFeature = source.SourceFeature;
-
-            DataSource = source.DataSource;
-            SiteName = source.SiteName;
-            EndDate = source.EndDate;
-            Latitude = source.Latitude;
-            Longitude = source.Longitude;
-            ServiceUrl = source.ServiceUrl;
-            SiteCode = source.SiteCode;
-            StartDate = source.StartDate;
-            VarCode = source.VarCode;
-            VarName = source.VarName;
-            DataType = source.DataType;
-            ValueCount = source.ValueCount;
-            ServiceDesciptionUrl = source.ServiceDesciptionUrl;
-        }
 
         public override bool Equals(object obj)
         {
@@ -240,6 +218,9 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         #region INotifyPropertyChanged implementation
 
+        /// <summary>
+        /// Raises when property changed.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string name)
