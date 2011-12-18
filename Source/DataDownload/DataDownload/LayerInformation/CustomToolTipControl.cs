@@ -237,7 +237,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             }
 
             var seriesList = new List<OneSeriesDownloadInfo>(infoGroup.ItemsCount);
-            seriesList.AddRange(infoGroup.GetItems().Select(ClassConvertor.ServiceInfoToOneSeriesDownloadInfo));
+            seriesList.AddRange(infoGroup.GetItems().Select(item => new OneSeriesDownloadInfo(item)));
             var layer = infoGroup.GetItems().First().Layer; // we have at least one element
 
             var dataThemeName = layer.LegendText;

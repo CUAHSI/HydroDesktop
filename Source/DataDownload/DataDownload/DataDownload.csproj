@@ -89,7 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassConvertor.cs" />
+    <Compile Include="LayerInformation\ServiceInfoHelper.cs" />
     <Compile Include="Downloading\DatabaseManager.cs" />
     <Compile Include="Downloading\Downloader.cs" />
     <Compile Include="Downloading\DownloadManager.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Controls;
@@ -40,20 +41,13 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         public static bool IsSearchLayer(ILayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
+            Contract.EndContractBlock();
 
             var featureLayer = layer as PointLayer;
             if (featureLayer == null) return false;
 
-            var searchColumns = new[] { "SiteCode", "VarCode", "ServiceCode", "ServiceURL", "StartDate", "EndDate", "ValueCount" };
-            var layerColumns = featureLayer.DataSet.GetColumns();
-            
-            foreach (var sColumn in searchColumns)
-            {
-                var hasColumn = layerColumns.Any(dataColumn => dataColumn.ColumnName == sColumn);
-                if (!hasColumn)
-                    return false;
-            }
-            return true;
+            return IsWaterOneFlowSearchLayer(featureLayer) || 
+                   IsWaterMLUriSearchLayer(featureLayer);
         }
 
         /// <summary>
@@ -116,6 +110,26 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         #endregion
 
         #region Private methods
+
+        private static bool IsWaterOneFlowSearchLayer(PointLayer featureLayer)
+        {
+            Contract.Ensures(featureLayer != null);
+
+            var searchColumns = new[] { "SiteCode", "VarCode", "ServiceCode", "ServiceURL", "StartDate", "EndDate", "ValueCount" };
+            var layerColumns = featureLayer.DataSet.GetColumns();
+
+            return searchColumns.Select(sColumn => layerColumns.Any(dataColumn => dataColumn.ColumnName == sColumn)).All(hasColumn => hasColumn);
+        }
+
+        private static bool IsWaterMLUriSearchLayer(PointLayer featureLayer)
+        {
+            Contract.Ensures(featureLayer != null);
+
+            var searchColumns = new[] { "SiteCode", "VarCode", "WaterMLUri", "StartDate", "EndDate" };
+            var layerColumns = featureLayer.DataSet.GetColumns();
+
+            return searchColumns.Select(sColumn => layerColumns.Any(dataColumn => dataColumn.ColumnName == sColumn)).All(hasColumn => hasColumn);
+        }
 
         private void UpdateDataTable(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, DownloadManager downloadManager)
         {

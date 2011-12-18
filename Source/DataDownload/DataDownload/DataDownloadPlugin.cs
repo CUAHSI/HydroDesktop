@@ -15,7 +15,7 @@ using HydroDesktop.DataDownload.LayerInformation;
 namespace HydroDesktop.DataDownload
 {
     /// <summary>
-    /// Plugin that allows to download Features data.
+    /// Plug-in that allows to download Features data.
     /// </summary>
     public class DataDownloadPlugin : Extension
     {
@@ -82,7 +82,7 @@ namespace HydroDesktop.DataDownload
         public void StartDownloading(IFeatureLayer featureLayer, IEnumerable<IFeature> featuresToDownload)
         {
             var dataThemeName = featureLayer.LegendText;
-            var oneSeriesList = featuresToDownload.Select(f => ClassConvertor.IFeatureToOneSeriesDownloadInfo(f, featureLayer)).ToList();
+            var oneSeriesList = featuresToDownload.Select(f => new OneSeriesDownloadInfo(f.ToServiceInfo(featureLayer))).ToList();
             var startArgs = new StartDownloadArg(oneSeriesList, dataThemeName);
             StartDownloading(startArgs, featureLayer);
         }
