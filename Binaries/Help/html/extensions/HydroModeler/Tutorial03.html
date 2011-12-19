@@ -2,16 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
     <title>Tutorial 3: Creating a New Model Component &mdash; HydroDesktop Help</title>
-    
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -83,20 +80,26 @@
   <div class="section" id="tutorial-3-creating-a-new-model-component">
 <span id="index-0"></span><h1>Tutorial 3: Creating a New Model Component<a class="headerlink" href="#tutorial-3-creating-a-new-model-component" title="Permalink to this headline">¶</a></h1>
 <p>The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2 to calculate potential evapotranspiration.  We will be using the C# programming language in this demonstration. Hargreaves is a simple potential evapotranspiration model that requires only geographic location and air temperature (daily minimum, maximum, and average) as input.</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We assume that you have some knowledge of programming using C#.  For background information on programming with C#, we recommend Microsoft&#8217;s Development Network: <a class="reference external" href="http://msdn.microsoft.com/en-us/beginner/bb308734.aspx">http://msdn.microsoft.com/en-us/beginner/bb308734.aspx</a>.</p>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In this tutorial, we show how to create the component from scratch.  There is, however, a sample component template is available in the HydroDesktop source code that may be useful if you are creating your own components.  The sample component is available at <em>[Path to HydroDesktop Source]SourcePluginsHydroModelerComponentsSampleComponent</em>.</p>
 </div>
 <div class="section" id="installing-visual-studio">
 <h2>Installing Visual Studio<a class="headerlink" href="#installing-visual-studio" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Perform these steps only if you do not already have Microsoft Visual Studio 2010 installed on your computer.</p>
+</div>
 <ol class="arabic simple">
 <li>Download Microsoft Visual C# 2010 for free from <a class="reference external" href="http://www.microsoft.com/express/Downloads/">http://www.microsoft.com/express/Downloads/</a></li>
 <li>Choose the tab Visual Studio 2010 Express.  Then select Visual C# 2010 Express Edition.  Click Download and follow instructions to install.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig44.png" src="../../_images/HM_fig44.png" />
+<img alt="../../_images/HM_fig446.png" src="../../_images/HM_fig446.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -115,7 +118,7 @@
 <li>Create a new C# class library project.  Name the project &#8220;Hargreaves&#8221; and save it in your working directory.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/class.png" src="../../_images/class.png" />
+<img alt="../../_images/class6.png" src="../../_images/class6.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -124,7 +127,7 @@
 <li>Add two new folders (source and data) by right clicking on the project name and selecting Add &#8211;&gt; New Folder.  Next, copy the default class &#8220;class1.cs&#8221; into the source folder and rename it Hargreaves.cs.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/folders.png" src="../../_images/folders.png" />
+<img alt="../../_images/folders6.png" src="../../_images/folders6.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -135,29 +138,25 @@
 <li>You can view the references that currently exist in the project by expanding the &#8220;Reference&#8221; item listed in the Solution Explorer window (located on the upper right side of the page).  Currently, this project only contains the default references.  We need to add several additional references. To do this, right click on  &#8220;References&#8221; in the Solution Explorer and select &#8220;Add New Reference&#8221;.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/ref.png" src="../../_images/ref.png" />
+<img alt="../../_images/ref6.png" src="../../_images/ref6.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="2">
-<li>Browse to <em>[Path to HydroDesktop Source Code]/Binaries/Plugins/HydroModeler/</em>. Add the following dll&#8217;s:</li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+<li>Browse to <em>[Path to HydroDesktop Source Code]/Binaries/Plugins/HydroModeler/</em>. Add the following dll&#8217;s:<ul>
 <li>Oatc.OpenMI.Sdk.Backbone.dll</li>
 <li>Oatc.OpenMI.Sdk.Buffer.dll</li>
 <li>Oatc.OpenMI.Sdk.DevelopmentSupport.dll</li>
 <li>Oatc.OpenMI.Sdk.Wrapper.dll</li>
 <li>OpenMI.Standard.dll)</li>
 </ul>
-</div></blockquote>
-<ol class="arabic simple" start="3">
+</li>
 <li>Right click on &#8220;References&#8221; in the solution explorer again and browse to <em>[Path to HydroDesktop]/Binaries/Plugins/HydroModeler/example_configuration/bin</em>.  Add the following dll:
 - SMW.dll.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/referencesstructure.png" src="../../_images/referencesstructure.png" />
+<img alt="../../_images/referencesstructure6.png" src="../../_images/referencesstructure6.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -169,7 +168,7 @@
 <li>Right-click on the &#8220;source&#8221; folder in the Solution Explorer and select Add &#8211;&gt; Class. Rename the class LinkableComponent.cs.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/linkablecomponent.png" src="../../_images/linkablecomponent.png" />
+<img alt="../../_images/linkablecomponent6.png" src="../../_images/linkablecomponent6.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -177,6 +176,9 @@
 <ol class="arabic simple" start="2">
 <li>Add the following line of code so that the LinkableComponent class inherits from the Oatc.OpenMI.Sdk.Wrapper.LinkableEngine abstract class.</li>
 </ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SampleLinkableComponent</span> <span class="p">:</span> <span class="n">Oatc</span><span class="p">.</span><span class="n">OpenMI</span><span class="p">.</span><span class="n">Sdk</span><span class="p">.</span><span class="n">Wrapper</span><span class="p">.</span><span class="n">LinkableEngine</span>
+</pre></div>
+</div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -391,16 +393,52 @@
 <li>Right-click on the Data folder in the Solution Explorer and select Add &#8211;&gt; New Item.  Select to add an XML file.  Rename this file config.xml.</li>
 <li>Add the following lines to the config.xml file to provide the overall structure.</li>
 </ol>
+<div class="highlight-XML"><pre>&lt;Configuration&gt;
+  &lt;ExchangeItems&gt; &lt;/ExchangeItems&gt;
+  &lt;TimeHorizon&gt; &lt;/TimeHorizon&gt;
+  &lt;ModelInfo&gt; &lt;/ModelInfo&gt;
+&lt;/Configuration&gt;</pre>
+</div>
 <ol class="arabic simple" start="3">
 <li>Add the following output exchange item within the ExchangeItems element.</li>
 </ol>
+<div class="highlight-XML"><pre>&lt;OutputExchangeItem&gt;
+  &lt;ElementSet&gt;
+    &lt;ID&gt;Coweeta&lt;/ID&gt;
+    &lt;Description&gt;Coweeta watershed, NC&lt;/Description&gt;
+    &lt;ShapefilePath&gt;..\..\data\gis\coweeta_18.shp&lt;/ShapefilePath&gt;
+    &lt;Version&gt;1&lt;/Version&gt;
+  &lt;/ElementSet&gt;
+  &lt;Quantity&gt;
+    &lt;ID&gt;PET&lt;/ID&gt;
+    &lt;Description&gt;Potential Evapotranspiration&lt;/Description&gt;
+    &lt;Dimensions&gt;
+      &lt;Dimension&gt;
+        &lt;Base&gt;Length&lt;/Base&gt;
+        &lt;Power&gt;1&lt;/Power&gt;
+      &lt;/Dimension&gt;
+      &lt;Dimension&gt;
+        &lt;Base&gt;Time&lt;/Base&gt;
+        &lt;Power&gt;-1&lt;/Power&gt;
+      &lt;/Dimension&gt;
+    &lt;/Dimensions&gt;
+    &lt;Unit&gt;
+      &lt;ID&gt;mm/day&lt;/ID&gt;
+      &lt;Description&gt;Millimeters per day&lt;/Description&gt;
+      &lt;ConversionFactorToSI&gt;1&lt;/ConversionFactorToSI&gt;
+      &lt;OffSetToSI&gt;0&lt;/OffSetToSI&gt;
+    &lt;/Unit&gt;
+    &lt;ValueType&gt;Scalar&lt;/ValueType&gt;
+  &lt;/Quantity&gt;
+&lt;/OutputExchangeItem&gt;</pre>
+</div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ol class="arabic simple" start="4">
 <li>Add the following input exchange item for average temperature as well.</li>
 </ol>
-<div class="highlight-XML"><pre>    &lt;InputExchangeItem&gt;
+<div class="highlight-XML"><pre>&lt;InputExchangeItem&gt;
   &lt;ElementSet&gt;
     &lt;ID&gt;Climate Station 01&lt;/ID&gt;
     &lt;Description&gt;Climate Station 01, near Coweeta watershed 18 in NC&lt;/Description&gt;
@@ -445,10 +483,10 @@
 <li>Add an argument named Output to define the relative location of the output csv file.</li>
 </ol>
 <div class="highlight-XML"><pre>&lt;LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\bin\Debug\Hargreaves.dll"&gt;
-      &lt;Arguments&gt;
+  &lt;Arguments&gt;
     &lt;Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" /&gt;
   &lt;/Arguments&gt;
-    &lt;/LinkableComponent&gt;</pre>
+&lt;/LinkableComponent&gt;</pre>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -469,7 +507,7 @@
 <li>Add the HydroModeler extension by selecting the orb button &#8211;&gt; Extensions &#8211;&gt; HydroModeler.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/HM_fig50.png" src="../../_images/HM_fig50.png" />
+<img alt="../../_images/HM_fig506.png" src="../../_images/HM_fig506.png" />
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -478,7 +516,7 @@
 <li>Use the Add Component button from the HydroModeler ribbon control to add the Hargreaves.omi file.  If everything worked correctly, you will see the Hargreaves component added to modeling canvas.</li>
 </ol>
 <div class="figure align-center">
-<img alt="../../_images/trigger.png" src="../../_images/trigger.png" />
+<img alt="../../_images/trigger6.png" src="../../_images/trigger6.png" />
 </div>
 </div>
 <div class="section" id="creating-a-unit-test-case">
@@ -580,8 +618,8 @@
     </div>
     <div class="footer"><p>
       &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
-      &nbsp;Last updated on Dec 14, 2011.&nbsp;
-      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.&nbsp;
+      &nbsp;Last updated on Dec 19, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
     </p></div>
     <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
   </body>

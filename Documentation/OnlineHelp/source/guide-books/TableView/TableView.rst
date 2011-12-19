@@ -8,7 +8,8 @@ You can also change the current database and build your own local metadata cache
 using the tools on this tab.  
 
 .. figure:: ./images/Table_introduction.png
-Table tab
+
+   Table tab
 
 For more information on exporting time series data, see :doc:`/guide-books/ExportingTimeSeries/time-series-export`.
 
