@@ -3,22 +3,18 @@
 Tutorial 3: Creating a New Model Component
 ==========================================
    
-The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2 to calculate potential evapotranspiration.  We will be using the C# programming language in this demonstration. Hargreaves is a simple potential evapotranspiration model that requires only geographic location and air temperature (daily minimum, maximum, and average) as input. 
+The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2 to calculate potential evapotranspiration.  We will be using the C# programming language in this demonstration. Hargreaves is a simple potential evapotranspiration model that requires only geographic location and air temperature (daily minimum, maximum, and average) as input.
 
-.. Note:
-	We assume that you have some knowledge of programming using C#.  For background information on programming with C#, we recommend Microsoft's Development Network: http://msdn.microsoft.com/en-us/beginner/bb308734.aspx.
+.. Note::
+   We assume that you have some knowledge of programming using C#.  For background information on programming with C#, we recommend Microsoft's Development Network: http://msdn.microsoft.com/en-us/beginner/bb308734.aspx.
 
-|
-
-.. Note:
-	In this tutorial, we show how to create the component from scratch.  There is, however, a sample component template is available in the HydroDesktop source code that may be useful if you are creating your own components.  The sample component is available at *[Path to HydroDesktop Source]\Source\Plugins\HydroModeler\Components\SampleComponent*.  
-
-|
+.. Note::
+   In this tutorial, we show how to create the component from scratch.  There is, however, a sample component template is available in the HydroDesktop source code that may be useful if you are creating your own components.  The sample component is available at *[Path to HydroDesktop Source]\Source\Plugins\HydroModeler\Components\SampleComponent*.  
 
 Installing Visual Studio 
 ------------------------
 
-.. Note:
+.. Note::
 	Perform these steps only if you do not already have Microsoft Visual Studio 2010 installed on your computer.
 	
 1. Download Microsoft Visual C# 2010 for free from http://www.microsoft.com/express/Downloads/
@@ -65,11 +61,12 @@ Adding References
 |
 
 2. Browse to *[Path to HydroDesktop Source Code]/Binaries/Plugins/HydroModeler/*. Add the following dll's:
-  - Oatc.OpenMI.Sdk.Backbone.dll 
-  - Oatc.OpenMI.Sdk.Buffer.dll 
-  - Oatc.OpenMI.Sdk.DevelopmentSupport.dll 
-  - Oatc.OpenMI.Sdk.Wrapper.dll 
-  - OpenMI.Standard.dll)
+
+   - Oatc.OpenMI.Sdk.Backbone.dll 
+   - Oatc.OpenMI.Sdk.Buffer.dll 
+   - Oatc.OpenMI.Sdk.DevelopmentSupport.dll 
+   - Oatc.OpenMI.Sdk.Wrapper.dll 
+   - OpenMI.Standard.dll)
 
 3. Right click on "References" in the solution explorer again and browse to *[Path to HydroDesktop]/Binaries/Plugins/HydroModeler/example_configuration/bin*.  Add the following dll:
    - SMW.dll.
@@ -92,6 +89,7 @@ Create the Linkable Component Class
 2. Add the following line of code so that the LinkableComponent class inherits from the Oatc.OpenMI.Sdk.Wrapper.LinkableEngine abstract class.
 
 .. code-block:: c#
+
 	class SampleLinkableComponent : Oatc.OpenMI.Sdk.Wrapper.LinkableEngine
 
 |
@@ -308,6 +306,7 @@ The configuration file defines the input and output exchange items of the compon
 2. Add the following lines to the config.xml file to provide the overall structure. 
 
 .. code-block:: XML
+
 	<Configuration>
 	  <ExchangeItems> </ExchangeItems>
 	  <TimeHorizon> </TimeHorizon>
@@ -317,7 +316,8 @@ The configuration file defines the input and output exchange items of the compon
 3. Add the following output exchange item within the ExchangeItems element.  
 
 .. code-block:: XML
-	<OutputExchangeItem>
+
+    <OutputExchangeItem>
       <ElementSet>
         <ID>Coweeta</ID>
         <Description>Coweeta watershed, NC</Description>
@@ -353,7 +353,7 @@ The configuration file defines the input and output exchange items of the compon
 
 .. code-block:: XML
 
-	<InputExchangeItem>
+    <InputExchangeItem>
       <ElementSet>
         <ID>Climate Station 01</ID>
         <Description>Climate Station 01, near Coweeta watershed 18 in NC</Description>
@@ -399,14 +399,14 @@ The *omi* file defines the component properties including the path (which is rec
 .. code-block:: XML
 
     <LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\bin\Debug\Hargreaves.dll">
-	  <Arguments>
+      <Arguments>
         <Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" />
       </Arguments>
-	</LinkableComponent>
+    </LinkableComponent>
 
 |
 
-.. Note ::
+.. Note::
 	You may need to edit the paths to either the Hargreaves.dll or Config.xml files. They should be relative paths from the Hargreaves.omi file.
     
 |
@@ -435,7 +435,7 @@ Creating a Unit Test Case
 
 The last step is to create a unit test for your new component.  A unit test allows you to verify that the component works properly.  We will show how to create tests for each of the Initialize and PerformTimeStep methods.  You could also add a test for the Finish method using the same basic approach.  There is not need to test the CalculatePET method because this is done already within the PerformTimeStep test. 
 
-.. Note ::
+.. Note::
 
 	We recommend using TestDriven.Net from  http://www.testdriven.net as a user friendly way of running the unit tests. 
 
