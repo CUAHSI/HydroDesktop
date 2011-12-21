@@ -104,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\drought_16.png" />
+    <None Include="msr_v11.r">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\drought_32.png" />

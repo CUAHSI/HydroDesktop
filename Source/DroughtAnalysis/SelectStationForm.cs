@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.IO;
+using System.Diagnostics;
 
 namespace DroughtAnalysis
 {
@@ -42,6 +43,10 @@ namespace DroughtAnalysis
             try
             {
                 string programFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                if (programFilesDir.EndsWith(" (x86)"))
+                {
+                    programFilesDir = programFilesDir.Remove(programFilesDir.IndexOf(" (x86)"));
+                }
                 string baseRPath1 = "R\\R-{0}\\bin\\i386\\R.exe";
                 string[] possibleRVersionsNew = new string[] { "2.14.0", "2.13.2", "2.13.1", "2.13.0", "2.12.2", "2.12.1", "2.12.0", };
                 string baseRPathOld = "R\\R-{0}\\bin\\R.exe";
@@ -180,9 +185,41 @@ namespace DroughtAnalysis
             string dataFile = Path.Combine(Settings.OutputDirectory, "meteo.dat");
 
             //process the selected site
+            Cursor = Cursors.WaitCursor;
+            lblProgress.Text = "Creating drought data file..";
             DataExporter exp = new DataExporter();
             exp.ExportDataForStation(Settings.SelectedSite, dataFile);
-            MessageBox.Show("Created data file: " + dataFile + ". Please run the R-script using this file.");
+
+            if (!File.Exists(dataFile))
+            {
+                MessageBox.Show("Error creating drought data file.");
+                Cursor = Cursors.Default;
+                return;
+            }
+
+            //start the R-SCRIPT
+            string rScriptExe = Path.Combine(Path.GetDirectoryName(Settings.PathToR), "RScript.exe");
+            ProcessStartInfo rScriptInfo = new ProcessStartInfo(rScriptExe);
+
+            string rScriptPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "msr_v11.r");
+
+            rScriptInfo.Arguments = String.Format("{0} {1} {2} {3}", rScriptPath, Settings.OutputDirectory, dataFile, Settings.SelectedSite.Name);
+
+            try
+            {
+
+                using (Process p = Process.Start(rScriptInfo))
+                {
+                    p.WaitForExit();
+                }
+                Cursor = Cursors.Default;
+                lblProgress.Text = "Operation Completed!";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error running R-script." + ex.Message);
+            }
+            MessageBox.Show("Created Report files in directory: " + Settings.OutputDirectory);
         }
 
         private void Stations_SelectedIndexChanged(object sender, EventArgs e)
