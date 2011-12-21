@@ -80,26 +80,29 @@ namespace TopModel
             }
 
             //System.IO.Directory.CreateDirectory("wateroutput");
-            StreamWriter swa = new StreamWriter(outputPath + "/Runoff.csv");
+            StreamWriter swa = new StreamWriter(outputPath + "/TopModel_Output.csv");
             swa.WriteLine("Daily Runoff....");
             DateTime start = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetTimeHorizon().Start).ModifiedJulianDay);
             DateTime end = CalendarConverter.ModifiedJulian2Gregorian(((TimeStamp)this.GetTimeHorizon().End).ModifiedJulianDay);
             swa.WriteLine("StartDate: , " + String.Format("{0:MM/dd/yyyy hh:mm:ss}", start));
             swa.WriteLine("EndDate: , " + String.Format("{0:MM/dd/yyyy hh:mm:ss}", end));
             swa.WriteLine();
-            swa.WriteLine("Time [0:MM/dd/yyyy hh:mm:ss], Runoff");
+            swa.WriteLine("Time [0:MM/dd/yyyy hh:mm:ss], Runoff, Streamflow [l/s]");
 
 
             foreach (KeyValuePair<DateTime, double> kvp in outputValues)
             {
 
                 string time = String.Format("{0:MM/dd/yyyy hh:mm:ss}", kvp.Key);
+                
+                // write the time
                 swa.Write(time + ",");
 
+                //write the runoff calculation
                 swa.Write(kvp.Value.ToString() + ",");
 
-                swa.Write("\n");
-
+                //write the streamflow calculation
+                swa.Write((kvp.Value * (_watershedArea) / 86400).ToString()+'\n');
 
             }
             swa.Close();
