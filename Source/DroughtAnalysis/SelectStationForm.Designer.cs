@@ -39,6 +39,7 @@
             this.btnPathToR = new System.Windows.Forms.Button();
             this.btnOutputFolder = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.lblProgress = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -125,11 +126,20 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(21, 259);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(0, 13);
+            this.lblProgress.TabIndex = 9;
+            // 
             // SelectStationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(423, 292);
+            this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btnOutputFolder);
             this.Controls.Add(this.btnPathToR);
@@ -160,5 +170,6 @@
         private System.Windows.Forms.Button btnOutputFolder;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.Label lblProgress;
     }
 }
