@@ -202,6 +202,11 @@ namespace DroughtAnalysis
             ProcessStartInfo rScriptInfo = new ProcessStartInfo(rScriptExe);
 
             string rScriptPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "msr_v11.r");
+            if (!File.Exists(rScriptPath))
+            {
+                MessageBox.Show("The R script file " + rScriptPath + " was not found. Cannot calculate drought analysis.");
+                return;
+            }
 
             rScriptInfo.Arguments = String.Format("{0} {1} {2} {3}", rScriptPath, Settings.OutputDirectory, dataFile, Settings.SelectedSite.Name);
 
