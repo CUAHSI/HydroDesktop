@@ -499,9 +499,12 @@ namespace CUAHSI.HIS
             #region Map Values
             if (mapper.Count > 0)
             {
-                IValueSet mappedValues = mapper[linkID].MapValues(values);
-                // return values 
-                return mappedValues;
+                if (mapper.ContainsKey(linkID))
+                {
+                    IValueSet mappedValues = mapper[linkID].MapValues(values);
+                    // return values 
+                    return mappedValues;
+                }
             }
             #endregion
 
@@ -782,19 +785,36 @@ namespace CUAHSI.HIS
             {
                 //query db to gather required information based on theme id (including dimension, conversion, offset)
                 string sql = "SELECT ds.SeriesID, v.VariableName, v.VariableCode, u.UnitsAbbreviation, td.ThemeName, " +
-                        "td.ThemeDescription, ds.BeginDateTime, ds.EndDateTime, ds.SiteID, ds.Dimension, ds.ConversionToSI, ds.OffsetToSI " +
+                        "td.ThemeDescription, ds.BeginDateTime, ds.EndDateTime, ds.SiteID, uc.ConversionFactor " +
                         "FROM DataThemeDescriptions td " +
                         "INNER JOIN DataThemes t ON td.ThemeID = t.ThemeID " +
                         "INNER JOIN DataSeries ds ON t.SeriesID = ds.SeriesID " +
                         "INNER JOIN Variables v ON ds.VariableID = v.VariableID " +
                         "INNER JOIN Sites s ON ds.SiteID = s.SiteID " +
                         "INNER JOIN Units u ON v.VariableUnitsID = u.UnitsID " +
+                        "INNER JOIN UnitConversions uc ON u.UnitsID = uc.ConversionID " +
                         "WHERE t.themeID = '" + themeID.ToString() + "' " +
                         "ORDER BY s.SiteName ASC";
 
                 dtSeries = _db.LoadTable("series", sql);
             }
             catch (Exception)
+            {
+                //query db to gather required information based on theme id (omitting dimension, conversion, offset)
+                string sql = "SELECT ds.SeriesID, v.VariableName, v.VariableCode, u.UnitsAbbreviation, td.ThemeName, " +
+                    "td.ThemeDescription, ds.BeginDateTime, ds.EndDateTime, ds.SiteID " +
+                    "FROM DataThemeDescriptions td " +
+                    "INNER JOIN DataThemes t ON td.ThemeID = t.ThemeID " +
+                    "INNER JOIN DataSeries ds ON t.SeriesID = ds.SeriesID " +
+                    "INNER JOIN Variables v ON ds.VariableID = v.VariableID " +
+                    "INNER JOIN Sites s ON ds.SiteID = s.SiteID " +
+                    "INNER JOIN Units u ON v.VariableUnitsID = u.UnitsID " +
+                    "WHERE t.themeID = '" + themeID.ToString() + "' " +
+                    "ORDER BY s.SiteName ASC";
+
+                dtSeries = _db.LoadTable("series", sql);
+            }
+            if (dtSeries.Rows.Count == 0)
             {
                 //query db to gather required information based on theme id (omitting dimension, conversion, offset)
                 string sql = "SELECT ds.SeriesID, v.VariableName, v.VariableCode, u.UnitsAbbreviation, td.ThemeName, " +
@@ -829,9 +849,14 @@ namespace CUAHSI.HIS
                 double Offset2SI = 0;
                 try
                 {
+
+                    Conversion2Si = Convert.ToDouble(row["ConversionFactor"]);
+
+                    //Broken: This needs to be implemented in the DB
                     Dimension = Convert.ToString(row["Dimension"]);
-                    Conversion2Si = Convert.ToDouble(row["ConversionToSI"]);
-                    Offset2SI = Convert.ToDouble(row["OffsetToSI"]);
+
+                    //Broken: This needs to be implemented in the DB
+                    Offset2SI = Convert.ToDouble(row["OffsetToSI"]); 
                 }
                 catch (Exception) { }
 
