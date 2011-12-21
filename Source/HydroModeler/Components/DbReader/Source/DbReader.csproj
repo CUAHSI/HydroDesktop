@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\Research\Presentations\2012_AWRA\HydroModeler\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
