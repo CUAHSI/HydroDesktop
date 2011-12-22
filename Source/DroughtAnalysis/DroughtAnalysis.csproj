@@ -17,11 +17,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Binaries\Plugins\DroughtAnalysis\</OutputPath>
+    <OutputPath>C:\Program Files\CUAHSI HIS\HydroDesktop\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Binaries\Plugins\DroughtAnalysis\DroughtAnalysis.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RScriptModifier.cs" />
     <Compile Include="SelectStationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,7 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\drought_16.png" />
-    <None Include="msr_v11.r">
+    <None Include="msr-vysl_11.r">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

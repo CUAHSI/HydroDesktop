@@ -94,7 +94,7 @@ while (!konec) {
     }
     else
       pos = pos + 1
-    if (pos == dni) {
+    if (pos == dni - 1) {
       vzestup = FALSE
       konec = TRUE
     }

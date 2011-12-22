@@ -43,11 +43,10 @@ namespace DroughtAnalysis
 
         void btnMeteoDrought_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Meteorological Drought");
+            if (formIsRunning) return;
+            
             StationFinder sf = new StationFinder(App.Map);
             var res = sf.FindSuitableStations();
-
-            
 
             if (res.Count == 0)
                 MessageBox.Show("No Sites with Temperature and precipitation found. Please download data first.");
@@ -56,7 +55,9 @@ namespace DroughtAnalysis
             {
                 UserSettings.SuitableSites = res;
                 SelectStationForm frm = new SelectStationForm(UserSettings);
+                frm.FormClosed += new FormClosedEventHandler(frm_FormClosed);
                 frm.Show();
+                formIsRunning = true;
             }
             catch (Exception ex)
             {
@@ -64,9 +65,18 @@ namespace DroughtAnalysis
             }
         }
 
+        void frm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            formIsRunning = false;
+        }
+
         void btnHydroDrought_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This operation is not yet implemented");
         }
+
+
+        bool formIsRunning = false;
     }
+    
 }
