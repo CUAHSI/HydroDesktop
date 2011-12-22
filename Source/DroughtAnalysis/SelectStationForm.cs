@@ -27,6 +27,8 @@ namespace DroughtAnalysis
 
         public DroughtSettings Settings { get; set; }
 
+        private string defaultOutputFolder;
+
         private void SelectStationForm_Load(object sender, EventArgs e)
         {
             bindingSource1.DataSource = Settings.SuitableSites;
@@ -36,6 +38,7 @@ namespace DroughtAnalysis
             TryGuessPathToR();
 
             TryCreateDefaultOutputFolder();
+            defaultOutputFolder = Settings.OutputDirectory;
         }
 
         private void TryGuessPathToR()
@@ -101,6 +104,7 @@ namespace DroughtAnalysis
                     {
                         Settings.OutputDirectory = droughtDir;
                         txtOutputFolder.Text = Settings.OutputDirectory;
+                        defaultOutputFolder = droughtDir;
                     }
                 }
 
@@ -168,9 +172,23 @@ namespace DroughtAnalysis
             }
         }
 
+        public static string RemoveDiacritism(string Text)
+        {
+            string stringFormD = Text.Normalize(System.Text.NormalizationForm.FormD);
+            System.Text.StringBuilder retVal = new System.Text.StringBuilder();
+            for (int index = 0; index < stringFormD.Length; index++)
+            {
+                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(stringFormD[index]) != System.Globalization.UnicodeCategory.NonSpacingMark)
+                    retVal.Append(stringFormD[index]);
+            }
+            return retVal.ToString().Normalize(System.Text.NormalizationForm.FormC);
+        }
+
         //analyze drought button
         private void button3_Click(object sender, EventArgs e)
         {
+            
+            
             if (Settings.SelectedSite == null)
             {
                 MessageBox.Show("Please select a station.");
@@ -182,11 +200,34 @@ namespace DroughtAnalysis
                 return;
             }
 
-            string dataFile = Path.Combine(Settings.OutputDirectory, "meteo.dat");
+            //try creating output directory
+            Settings.OutputDirectory = txtOutputFolder.Text;
+            if (checkBoxNewDirectory.Checked)
+            {
+                try
+                {
+                    string stationNameEnglish = RScriptModifier.RemoveDiacritism(Settings.SelectedSite.Name);
+                    string newOutDir = Path.Combine(Settings.OutputDirectory, stationNameEnglish);
+                    if (!Directory.Exists(newOutDir))
+                    {
+                        Directory.CreateDirectory(newOutDir);
+                        Settings.OutputDirectory = newOutDir;
+                    }
+                }
+                catch { }
+            }
+
+            //format the site name
+            string siteName1 = Settings.SelectedSite.Name;
+            string siteName = RScriptModifier.RemoveDiacritism(siteName1.ToLower().Replace(" ", "_"));
+
+            string dataFile = Path.Combine(Settings.OutputDirectory, string.Format("{0}_data.dat",siteName));
 
             //process the selected site
             Cursor = Cursors.WaitCursor;
             lblProgress.Text = "Creating drought data file..";
+            Application.DoEvents();
+
             DataExporter exp = new DataExporter();
             exp.ExportDataForStation(Settings.SelectedSite, dataFile);
 
@@ -197,22 +238,43 @@ namespace DroughtAnalysis
                 return;
             }
 
-            //start the R-SCRIPT
-            string rScriptExe = Path.Combine(Path.GetDirectoryName(Settings.PathToR), "RScript.exe");
-            ProcessStartInfo rScriptInfo = new ProcessStartInfo(rScriptExe);
+            lblProgress.Text = "Passing parameters to R script..";
+            Application.DoEvents();
 
-            string rScriptPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "msr_v11.r");
-            if (!File.Exists(rScriptPath))
-            {
-                MessageBox.Show("The R script file " + rScriptPath + " was not found. Cannot calculate drought analysis.");
-                return;
-            }
-
-            rScriptInfo.Arguments = String.Format("{0} {1} {2} {3}", rScriptPath, Settings.OutputDirectory, dataFile, Settings.SelectedSite.Name);
+            //pass the parameters to the R-script by modifying the script
+            string rScriptTemplatePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "msr-vysl_11.r");
+            string newScriptFullPath = Path.Combine(Settings.OutputDirectory, String.Format("{0}_R_script", siteName));
+            RScriptParameterInfo param = new RScriptParameterInfo();
+            param.InputFilePath = dataFile;
+            param.OutputDirectory = Settings.OutputDirectory;
+            param.StationName = siteName;
 
             try
             {
+                RScriptModifier.ModifyRScript(rScriptTemplatePath, newScriptFullPath, param);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error passing parameters to R script. " + ex.Message);
+                return;
+            }
 
+            //RUN the R-SCRIPT
+            lblProgress.Text = "Executing R-script '" + newScriptFullPath + "'";
+            Application.DoEvents();
+            string rScriptExe = Path.Combine(Path.GetDirectoryName(Settings.PathToR), "RScript.exe");
+            ProcessStartInfo rScriptInfo = new ProcessStartInfo(rScriptExe);
+            
+            if (!File.Exists(newScriptFullPath))
+            {
+                MessageBox.Show("The R script file '" + newScriptFullPath + "' was not found. Cannot calculate drought analysis.");
+                return;
+            }
+            //the only argument passed to RSCRIPT.exe is the script file name.
+            rScriptInfo.Arguments = String.Format(@"""{0}""", newScriptFullPath);
+
+            try
+            {
                 using (Process p = Process.Start(rScriptInfo))
                 {
                     p.WaitForExit();
@@ -223,14 +285,60 @@ namespace DroughtAnalysis
             catch (Exception ex)
             {
                 MessageBox.Show("Error running R-script." + ex.Message);
+                return;
             }
+
             MessageBox.Show("Created Report files in directory: " + Settings.OutputDirectory);
+            btnViewResults.Enabled = true;
         }
 
         private void Stations_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBoxStations.SelectedIndex < 0) Settings.SelectedSite = null;
             Settings.SelectedSite = (Site)listBoxStations.SelectedItem;
+
+            
+
+            //if (String.IsNullOrEmpty(defaultOutputFolder))
+            //{
+            //    defaultOutputFolder = txtOutputFolder.Text;
+            //}
+
+            ////try to change path..
+            //string sitePath = txtOutputFolder.Text;
+            //string siteNameEnglish = RScriptModifier.RemoveDiacritism(Settings.SelectedSite.Name);
+            //try
+            //{
+            //    sitePath = Path.Combine(defaultOutputFolder, siteNameEnglish);
+            //    if (!Directory.Exists(sitePath))
+            //    {
+            //        Directory.CreateDirectory(sitePath);
+            //    }
+            //    if (Directory.Exists(sitePath))
+            //    {
+            //        txtOutputFolder.Text = sitePath;
+            //        Settings.OutputDirectory = sitePath;
+            //    }
+            //}
+            //catch { }
+        }
+
+        private void btnViewResults_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+                {
+                    FileName = Settings.OutputDirectory,
+                    UseShellExecute = true,
+                    Verb = "open"
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot open results folder. " + ex.Message);
+            }
+
         }
     }
 }

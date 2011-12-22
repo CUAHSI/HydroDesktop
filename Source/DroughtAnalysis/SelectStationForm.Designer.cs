@@ -40,6 +40,8 @@
             this.btnOutputFolder = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.lblProgress = new System.Windows.Forms.Label();
+            this.checkBoxNewDirectory = new System.Windows.Forms.CheckBox();
+            this.btnViewResults = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -118,7 +120,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(227, 250);
+            this.button3.Location = new System.Drawing.Point(15, 275);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(184, 30);
             this.button3.TabIndex = 8;
@@ -134,11 +136,36 @@
             this.lblProgress.Size = new System.Drawing.Size(0, 13);
             this.lblProgress.TabIndex = 9;
             // 
+            // checkBoxNewDirectory
+            // 
+            this.checkBoxNewDirectory.AutoSize = true;
+            this.checkBoxNewDirectory.Checked = true;
+            this.checkBoxNewDirectory.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxNewDirectory.Location = new System.Drawing.Point(15, 239);
+            this.checkBoxNewDirectory.Name = "checkBoxNewDirectory";
+            this.checkBoxNewDirectory.Size = new System.Drawing.Size(172, 17);
+            this.checkBoxNewDirectory.TabIndex = 10;
+            this.checkBoxNewDirectory.Text = "Create new directory for station";
+            this.checkBoxNewDirectory.UseVisualStyleBackColor = true;
+            // 
+            // btnViewResults
+            // 
+            this.btnViewResults.Enabled = false;
+            this.btnViewResults.Location = new System.Drawing.Point(239, 273);
+            this.btnViewResults.Name = "btnViewResults";
+            this.btnViewResults.Size = new System.Drawing.Size(172, 30);
+            this.btnViewResults.TabIndex = 11;
+            this.btnViewResults.Text = "View Result Files";
+            this.btnViewResults.UseVisualStyleBackColor = true;
+            this.btnViewResults.Click += new System.EventHandler(this.btnViewResults_Click);
+            // 
             // SelectStationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 292);
+            this.ClientSize = new System.Drawing.Size(423, 315);
+            this.Controls.Add(this.btnViewResults);
+            this.Controls.Add(this.checkBoxNewDirectory);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btnOutputFolder);
@@ -171,5 +198,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Label lblProgress;
+        private System.Windows.Forms.CheckBox checkBoxNewDirectory;
+        private System.Windows.Forms.Button btnViewResults;
     }
 }

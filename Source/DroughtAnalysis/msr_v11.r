@@ -15,16 +15,6 @@ nastavsucho5 = 100  # obrazek od jakeho S
 
 nastavsucho6 = 9999  # obrazek od jakeho S
 
-#JIRKA - nastaveni promennych z prikazove radky
-args <- commandArgs(trailingOnly = TRUE) #parametry prikazove radky skriptu
-if (length(args) > 0)
-	setwd(args[1]) #prvni parametr je slozka, kam se ulozi vystupni soubory
-if (length(args) > 1)
-	soubor= args[2] #druhy parametr je nazev vstupniho souboru
-if (length(args) > 2)
-	Nazevstanice = args[3] #treti parametr je nazev stanice
-#KONEC JIRKA - nastaveni promennych z prikazove radky 
-
 data = read.table(soubor, header=TRUE)
 
 sb = Nazevstanice
@@ -76,25 +66,25 @@ posl_zpracovany = 0
 konec = FALSE
 
 while (!konec) {
-  #minimum, v≈°echny pos absolutnƒõ k cel√© SR
+  #minimum, vsechny pos absolutne k cele SR
   SR_min_pos = posl_zpracovany + which.min(SR[(posl_zpracovany + 1):dni]) #relativn√≠!
   min_nalez = FALSE
   while (!min_nalez) {
     SR_min_dalsi_pos = SR_min_pos + which.min(SR[(SR_min_pos + 1):dni])
     if (SR[SR_min_dalsi_pos] - SR[SR_min_pos] > 1e-5)
       min_nalez = TRUE
-    else  #prvn√≠ minimum -> v≈ædy plat√≠ (SR_min_dalsi_pos > SR_min_pos)
+    else  #prvn√≠ minimum -> vzdy plati≠ (SR_min_dalsi_pos > SR_min_pos)
       SR_min_pos = SR_min_dalsi_pos
   }
   sucho_kon = c(sucho_kon, SR_min_pos)
 
-  #p≈ôedchoz√≠ maximum
-  SR_max_pos = posl_zpracovany + which.max(SR[(posl_zpracovany + 1):(SR_min_pos - 1)]) #z definice which.max v≈ædy prvn√≠
+  #predchozi≠ maximum
+  SR_max_pos = posl_zpracovany + which.max(SR[(posl_zpracovany + 1):(SR_min_pos - 1)]) #z definice which.max vzdy prvni≠
   sucho_zac = c(sucho_zac, SR_max_pos + 1)
 
     if (sucho_kon[1] < sucho_zac[1]) sucho_kon[1] = sucho_zac
 
-  #odkud se bude br√°t zbytek
+  #odkud se bude brat zbytek
   vzestup = TRUE
   pos = SR_min_pos
   while (vzestup) {
@@ -104,7 +94,7 @@ while (!konec) {
     }
     else
       pos = pos + 1
-    if (pos == dni) {
+    if (pos == dni - 1) {
       vzestup = FALSE
       konec = TRUE
     }
@@ -127,7 +117,7 @@ for (su in 1:such) {
   tmp_sra = sra[tmp_obd]
   T_suma[su] = sum(tmp_tep)
   tmp_T_nezap = tapply(tmp_tep, zapornet[tmp_obd], sum)
-  if (length(tmp_T_nezap) == 1 && names(tmp_T_nezap)[1] == "TRUE") #jen z√°porn√©
+  if (length(tmp_T_nezap) == 1 && names(tmp_T_nezap)[1] == "TRUE") #jen zaporne
     T_nezap[su] = 0
   else  
     T_nezap[su] = tmp_T_nezap[["FALSE"]]
@@ -585,7 +575,7 @@ par(mar = c(1, 1, 1, 1))
 image(prvni_rok:druhy,1:365,mat_sucho3_transf, axes = F, col=c("white", "white", "white" ,"white","white","white"), lwd=1  ,xlab="",ylab="", frame.plot = FALSE, useRaster = FALSE, add = FALSE )
 
 
-legend("bottom", title="Sucho", c("MalÈ","St¯ednÏ velkÈ","VelkÈ","Velmi velkÈ","ExtrÈmnÏ velkÈ"), fill = c('ivory2', 'yellow', 'orange', 'red', 'black')  , horiz=TRUE)
+legend("bottom", title="Sucho", c("MalÈ","Stredne velke","VelkÈ","Velmi velkÈ","ExtrÈmne velkÈ"), fill = c('ivory2', 'yellow', 'orange', 'red', 'black')  , horiz=TRUE)
 
 
 dev.off()
@@ -609,7 +599,7 @@ par(mar = c(1, 1, 1, 1))
 image(prvni_rok:druhy,1:365,mat_sucho3_transf, axes = F, col=c("white","white", "white", "white" ,"white","white","white"), lwd=1  ,xlab="",ylab="", frame.plot = FALSE, useRaster = FALSE, add = FALSE )
 
 
-legend("bottom", title="Sucho", c("MalÈ","St¯ednÏ velkÈ","VelkÈ","Velmi velkÈ","ExtrÈmnÏ velkÈ","ChybÏjÌcÌ data"), fill = c('ivory2', 'yellow', 'orange', 'red', 'black', 'blue')  , horiz=TRUE)
+legend("bottom", title="Sucho", c("MalÈ","StrednÏ velkÈ","VelkÈ","Velmi velkÈ","ExtrÈmne velkÈ","ChybejÌcÌ data"), fill = c('ivory2', 'yellow', 'orange', 'red', 'black', 'blue')  , horiz=TRUE)
 
 
 dev.off()
