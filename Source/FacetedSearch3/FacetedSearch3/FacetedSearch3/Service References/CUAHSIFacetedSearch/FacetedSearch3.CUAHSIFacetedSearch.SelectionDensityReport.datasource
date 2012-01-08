@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="SelectionDensityReport" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport</TypeInfo>
+   <TypeInfo>FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport, FacetedSearch3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

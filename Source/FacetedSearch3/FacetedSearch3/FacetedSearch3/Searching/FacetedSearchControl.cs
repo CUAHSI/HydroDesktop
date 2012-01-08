@@ -41,8 +41,7 @@ namespace FacetedSearch3
         public FacetedSearchControl(AppManager a)
         {
             InitializeComponent();
-            App = a;            
-            LoadTotalFacetCollection();
+            App = a;                        
             ResetInterface();
         }
         
@@ -151,6 +150,7 @@ namespace FacetedSearch3
         /// </summary>
         public void InitializeFacetedSearch()
         {
+            LoadTotalFacetCollection();
             List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
             if (InputsSufficientForFacetedSearch())
             {
@@ -161,7 +161,7 @@ namespace FacetedSearch3
                 {
                     ConfigureCUAHSIChannelFactory(cl);                    
                     try
-                    {
+                    {                        
                         FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false);
                         MyRemainingFacets = env.OntologyElements;
                         FacetFlowPanel.Enabled = true;
