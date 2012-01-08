@@ -67,7 +67,7 @@ namespace FacetedSearch3
             binding.OpenTimeout = new TimeSpan(0, 5, 0);
             binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
             binding.SendTimeout = new TimeSpan(0, 5, 0);
-            int maxSize = 2147483647;
+            int maxSize = Int32.MaxValue; // 2147483647;
             binding.MaxBufferSize = maxSize;
             binding.MaxBufferPoolSize = maxSize;
             binding.MaxReceivedMessageSize = maxSize;
@@ -76,7 +76,9 @@ namespace FacetedSearch3
             binding.ReaderQuotas.MaxBytesPerRead = maxSize;
             binding.ReaderQuotas.MaxNameTableCharCount = maxSize;
             EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
-            return new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address);
+            FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address);
+            ConfigureCUAHSIChannelFactory(cl);
+            return cl;
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace FacetedSearch3
             {            
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
                 {
-                    bool configed = false;
+                    /*bool configed = false;
                     try
                     {
                         ConfigureCUAHSIChannelFactory(cl);
@@ -98,13 +100,13 @@ namespace FacetedSearch3
                     catch (Exception ex)
                     {
                         MessageBox.Show(string.Format("Error configuring channel factory with message {0}, inner ex: {1}", ex.Message, ex.InnerException));
-                    }
+                    }*/
                     try
                     {
-                        if (configed) 
-                        {
-                            TopLevelFacets = cl.GetAllTypedOntologyElements().ToList();
-                        }                        
+                        // if (configed) 
+                        // {                            
+                            cl.BeginGetAllTypedOntologyElements(LoadTotalFacetCollection_Complete, cl);
+                        // }                        
                     }
                     catch (Exception e)
                     {
@@ -121,6 +123,53 @@ namespace FacetedSearch3
 #endif
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);    
+        }
+        
+        private void LoadTotalFacetCollection_Complete(IAsyncResult result)
+        {            
+            try
+            {
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
+                {
+                    TopLevelFacets = cl.EndGetAllTypedOntologyElements(result);
+                }
+
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        #region Initialize form with retrieved data
+                        if (InputsSufficientForFacetedSearch())
+                        {
+                            SpatialTemporalCommitted = true;
+                            RemoveDownStreamSearchFacetSpecifiers(0);        // remove all searchfacetspecifers
+                            ResetFacetFlowPanel();
+                            try
+                            {
+                                cl.BeginGetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false, 
+                                    InitializeFacetedSearch_Complete, cl);
+                            }
+                            catch (Exception e)
+                            {
+#if DEBUG
+                                MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
+#else
+                MessageBox.Show("Error in transit layer. Please try again.");
+#endif
+                            }                            
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a spatial region to bound your search prior to initiating faceted search");
+                        }
+                        #endregion
+                    }));                                
+                }                    
+            }
+            catch (Exception e)
+            { 
+                MessageBox.Show(string.Format("Error initializing total list of ontology elements with message {0}, inner ex: {1}", e.Message, e.InnerException));  
+            }            
         }
 
         /// <summary>
@@ -150,38 +199,27 @@ namespace FacetedSearch3
         /// </summary>
         public void InitializeFacetedSearch()
         {
-            LoadTotalFacetCollection();
-            List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
-            if (InputsSufficientForFacetedSearch())
-            {
-                SpatialTemporalCommitted = true;
-                RemoveDownStreamSearchFacetSpecifiers(0);        // remove all searchfacetspecifers
-                ResetFacetFlowPanel();
-                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
-                {
-                    ConfigureCUAHSIChannelFactory(cl);                    
-                    try
-                    {                        
-                        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false);
-                        MyRemainingFacets = env.OntologyElements;
-                        FacetFlowPanel.Enabled = true;
-                        FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));                        
-                    }
-                    catch (Exception e)
-                    {
-#if DEBUG                        
-                        MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
-#else
-                    MessageBox.Show("Error in transit layer. Please try again.");
-#endif
-                    }
-                }
+            LoadTotalFacetCollection();                        
+        }
 
-                ResizeSearchSpecifiers();
+        private void InitializeFacetedSearch_Complete(IAsyncResult result)
+        {
+            try
+            {                                                
+                FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState;
+                FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.EndGetTypedOntologyElementsGivenConstraints(result);                
+                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                MyRemainingFacets = env.OntologyElements;                
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    FacetFlowPanel.Enabled = true;
+                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
+                    ResizeSearchSpecifiers();
+                }));                
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("Please select a spatial region to bound your search prior to initiating faceted search");                
+                MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
             }
         }
         
@@ -194,7 +232,7 @@ namespace FacetedSearch3
         {
 
             return (SrchExt != null);
-
+            #region currently inactive validation => TO-DO: Update given new Plug-in interface of HydroDesktop 1.3
             /*
             object areaParameter = null;
             if (App.AreaSettings.Polygons != null)
@@ -217,7 +255,7 @@ namespace FacetedSearch3
             }
             return true;
             */
-
+            #endregion
         }
 
         /// <summary>
@@ -260,32 +298,19 @@ namespace FacetedSearch3
         /// <param name="AllSelectedFacets"></param>
         public void InvokeNextButton(List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> AllSelectedFacets, int MyIndex)
         {
-            SelectedFacets = AllSelectedFacets;
-            List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+            SelectedFacets = AllSelectedFacets;            
             if (InputsSufficientForFacetedSearch())
             {
                 try
                 {
                     RemoveDownStreamSearchFacetSpecifiers(MyIndex + 1);
-                    SpatialTemporalCommitted = true;
-                    // SrchExt = SelectedShapes.Envelope.ToExtent();
-                    //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    SpatialTemporalCommitted = true;                    
 
                     using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
                     {
-                        ConfigureCUAHSIChannelFactory(cl);
-                        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
-                        MyRemainingFacets = env.OntologyElements;
-
-                        if (IncludeSpatialResults == true)
-                        {
-                            PutReturnOnMap(env.Sites);
-                        }
-                    }                    
-            
-                    FacetFlowPanel.Enabled = true;
-                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
-                    ResizeSearchSpecifiers();
+                        cl.BeginGetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults, InvokeNextButton_Complete, cl);
+                        // FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);                                                
+                    }                                
                 }
                 catch (Exception e)
                 { 
@@ -302,14 +327,43 @@ namespace FacetedSearch3
             }
         }
 
+        private void InvokeNextButton_Complete(IAsyncResult result)
+        {
+            try
+            {
+                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = new CUAHSIFacetedSearch.OntologyEnvelope();
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
+                {                    
+                    env = cl.EndGetTypedOntologyElementsGivenConstraints(result);
+                    MyRemainingFacets = env.OntologyElements;
+                }
+                
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    if (IncludeSpatialResults == true)
+                    {
+                        PutReturnOnMap(env.Sites);
+                    }
+
+                    FacetFlowPanel.Enabled = true;
+                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
+                    ResizeSearchSpecifiers();
+                }));                               
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(string.Format("Error completing Next request with message {0}, inner ex {1}", exc.Message, exc.InnerException));
+            }
+        }
+
         /// <summary>
         /// Executes search for SeriesCatalog
         /// </summary>
         /// <param name="AllSelectedFacets"></param>
         public void InvokeSearchButton(List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> AllSelectedFacets)
         {
-            SelectedFacets = AllSelectedFacets;
-            List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+            SelectedFacets = AllSelectedFacets;            
             if (InputsSufficientForFacetedSearch())
             {
                 try
@@ -320,11 +374,7 @@ namespace FacetedSearch3
 
                     using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
                     {
-                        ConfigureCUAHSIChannelFactory(cl);
-                        List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SearchRes = cl.ConductFacetedSearch(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX).OrderByDescending(r => r.ValueCount).ToList();
-
-                        PutReturnOnMap(SearchRes);
-                        // dataGridView1.DataSource = SearchRes;
+                        cl.BeginConductFacetedSearch(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, InvokeSearchButton_Complete, cl);                                                
                     }
                 }
                 catch (Exception e)
@@ -340,6 +390,31 @@ namespace FacetedSearch3
             {
                 MessageBox.Show("Please select a spatial region to bound your search prior to initiating faceted search");
             }
+        }
+
+        private void InvokeSearchButton_Complete(IAsyncResult result)
+        {
+            try
+            {
+                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SearchRes = new List<CUAHSIFacetedSearch.SeriesCatalogRecord>();
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
+                {
+                    SearchRes = cl.EndConductFacetedSearch(result).OrderByDescending(r => r.ValueCount).ToList();                                  
+                }                
+
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    PutReturnOnMap(SearchRes);
+                    FacetFlowPanel.Enabled = true;
+                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
+                    ResizeSearchSpecifiers();
+                }));
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(string.Format("Error completing Search request with message {0}, inner ex {1}", exc.Message, exc.InnerException));
+            }                    
         }
 
         /// <summary>
