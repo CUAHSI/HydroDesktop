@@ -486,6 +486,9 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
         private int SiteIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SiteNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime StartDateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -493,6 +496,9 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string VarCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string VariableNameField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -609,6 +615,19 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SiteName {
+            get {
+                return this.SiteNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SiteNameField, value) != true)) {
+                    this.SiteNameField = value;
+                    this.RaisePropertyChanged("SiteName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime StartDate {
             get {
                 return this.StartDateField;
@@ -643,6 +662,19 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
                 if ((object.ReferenceEquals(this.VarCodeField, value) != true)) {
                     this.VarCodeField = value;
                     this.RaisePropertyChanged("VarCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string VariableName {
+            get {
+                return this.VariableNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VariableNameField, value) != true)) {
+                    this.VariableNameField = value;
+                    this.RaisePropertyChanged("VariableName");
                 }
             }
         }
