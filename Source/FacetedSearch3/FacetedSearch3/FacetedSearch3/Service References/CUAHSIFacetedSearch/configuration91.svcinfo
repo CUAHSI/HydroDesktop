@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="oikfwcYMuBq73UAAku9gy68NT4s=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="kDzyox8NH29ZeoUjc1u8KXbhqq8=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_MultiFacetedHISSvc1">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_MultiFacetedHISSvc1" contract="CUAHSIFacetedSearch.MultiFacetedHISSvc" bindingType="basicHttpBinding" address="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc" bindingConfiguration="BasicHttpBinding_MultiFacetedHISSvc1">
+    <endpoint name="BasicHttpBinding_MultiFacetedHISSvc1" contract="CUAHSIFacetedSearch.MultiFacetedHISSvc" bindingType="basicHttpBinding" address="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc" bindingConfiguration="BasicHttpBinding_MultiFacetedHISSvc1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc</serializedValue>
+          <serializedValue>http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
