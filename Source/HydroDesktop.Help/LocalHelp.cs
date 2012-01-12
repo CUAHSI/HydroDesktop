@@ -6,7 +6,10 @@ using System.IO;
 
 namespace HydroDesktop.Help
 {
-	public class LocalHelp
+	/// <summary>
+	/// Local help support for HydroDesktop help files
+	/// </summary>
+    public class LocalHelp
 	{
 		#region Private Member Variables
 

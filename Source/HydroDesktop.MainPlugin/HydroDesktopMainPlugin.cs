@@ -119,7 +119,7 @@
 
         private void ShowSaveProjectDialog()
         {
-            using (var dlg = new SaveFileDialog { Filter = SerializationManager.SaveDialogFilterText, SupportMultiDottedExtensions = true })
+            using (var dlg = new SaveFileDialog { Filter = App.SerializationManager.SaveDialogFilterText, SupportMultiDottedExtensions = true })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {

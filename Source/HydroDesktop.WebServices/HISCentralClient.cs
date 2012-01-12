@@ -24,7 +24,7 @@ namespace HydroDesktop.WebServices
         /// <summary>
         /// Creates a new instance of HIS central web service client
         /// </summary>
-        /// <param name="_assemblyxURL">The url of the server with HIS Central web services</param>
+        /// <param name="asmxURL">The url of the server with HIS Central web services</param>
         public HISCentralClient(string asmxURL) :
             base(asmxURL) 
             {
