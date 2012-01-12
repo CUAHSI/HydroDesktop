@@ -5,7 +5,10 @@ using System.Net;
 
 namespace HydroDesktop.Help
 {
-	public class WebUtilities
+	/// <summary>
+	/// Web utilities for HydroDesktop help files
+	/// </summary>
+    public class WebUtilities
 	{
 		#region Public Methods
 
