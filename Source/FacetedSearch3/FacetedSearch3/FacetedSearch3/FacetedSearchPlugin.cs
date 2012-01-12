@@ -253,7 +253,7 @@ namespace FacetedSearch3
             #region Faceted Search Control
 
             fsc = new FacetedSearchControl(App);
-            App.DockManager.Add(new DotSpatial.Controls.Docking.DockablePanel(kHydroFacetedSearch3, "Faceted Search", fsc, DockStyle.Top));
+            App.DockManager.Add(new DotSpatial.Controls.Docking.DockablePanel(kHydroFacetedSearch3, "Faceted Search", fsc, DockStyle.Left));
 
             #endregion
         }

@@ -40,6 +40,8 @@ namespace CUAHSI.HIS
         int new_series_count = 0;
         public Dictionary<string, string> dbargs;
         public Dictionary<int, string> series2link;
+        private Dictionary<string, List<DateTime>> _timestep = new Dictionary<string,List<DateTime>>();
+
         //private DbOperations _db;
 
         #region ILinkableComponent Members
@@ -63,6 +65,9 @@ namespace CUAHSI.HIS
 
             //store the link for future reference
             _links.Add(link.ID, link);
+
+            // create timestep list
+            //_timestep.Add(link.ID, new List<DateTime>());
         }
 
         /// <summary>
@@ -116,6 +121,28 @@ namespace CUAHSI.HIS
 
                 //-- get the theme
                 Theme theme = series.ThemeList[0];
+
+                //-- need to adjust the series values back by one time step
+                Dictionary<DateTime, double> new_data = new Dictionary<DateTime, double>();
+                
+
+                // determine the timestep using the first two values (assumes uniform timstep)
+                double timestep = _timestep[theme.Name][1].Subtract(_timestep[theme.Name][0]).TotalSeconds;
+
+                // grab the existing data and save with new time
+                //List<DataValue> dv = new List<DataValue>();
+                for (int i = 0; i <= series.ValueCount - 1; i++)
+                {
+                    //dv.Add(series.DataValueList[i]);
+                    //dv[i].LocalDateTime = dv[i].LocalDateTime.AddSeconds(-timestep);
+                    //dv[i].DateTimeUTC = dv[i].DateTimeUTC.AddSeconds(-timestep);
+                    series.DataValueList[i].DateTimeUTC = series.DataValueList[i].DateTimeUTC.AddSeconds(-timestep);
+                    series.DataValueList[i].LocalDateTime = series.DataValueList[i].LocalDateTime.AddSeconds(-timestep);
+                }
+
+                // replace old values
+                //for (int i = 0; i <= series.ValueCount - 1; i++)
+                //    series.DataValueList[i] = dv[i];
 
                 //-- save data series
                 db.SaveSeriesAsCopy(series, theme);
@@ -409,9 +436,11 @@ namespace CUAHSI.HIS
         /// <param name="anEvent">the event that was triggered</param>
         public void OnEvent(IEvent anEvent)
         {
-
+            
             if (anEvent.Type == EventType.DataChanged)
             {
+               
+
                 //get the current time
                 TimeStamp ts = (TimeStamp)anEvent.SimulationTime;
 
@@ -430,6 +459,12 @@ namespace CUAHSI.HIS
                         string themeDescription = link.SourceElementSet.Description;
                         string themeName = link.SourceElementSet.ID;
                         Theme theme = new Theme(themeName, themeDescription);
+
+                        //save dt info for the timestep
+                        if (!_timestep.ContainsKey(themeName))
+                            _timestep.Add(themeName, new List<DateTime>());
+                        if (_timestep[themeName].Count < 2)
+                            _timestep[themeName].Add(CalendarConverter.ModifiedJulian2Gregorian(ts.ModifiedJulianDay));
 
                         //get link values
                         vals = (ScalarSet)anEvent.Sender.GetValues(ts, key);
