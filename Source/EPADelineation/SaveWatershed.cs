@@ -11,7 +11,6 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using HydroDesktop.Configuration;
 using HydroDesktop.Help;
 
 namespace EPADelineation
@@ -177,7 +176,7 @@ namespace EPADelineation
 
             Application.DoEvents();
 
-            string folderpath = Settings.Instance.CurrentProjectDirectory;
+            string folderpath = _mapArgs.SerializationManager.CurrentProjectDirectory;
             string delineationpath = Path.Combine(folderpath, "Delineation");
             var filename = new string[3];
             filename[0] = _wshedpoint + ".shp";

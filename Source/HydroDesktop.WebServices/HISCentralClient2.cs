@@ -50,6 +50,9 @@ namespace HydroDesktop.WebServices
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Response time of the web service call
+        /// </summary>
         public long ResponseTime
         {
             get
@@ -64,7 +67,7 @@ namespace HydroDesktop.WebServices
         /// <summary>
         /// Creates a new instance of HIS central web service client
         /// </summary>
-        /// <param name="_assemblyxURL">The url of the server with HIS Central web services</param>
+        /// <param name="asmxURL">The url of the server with HIS Central web services</param>
         public HISCentralClient2(string asmxURL)
         {
             _asmxURL = asmxURL;
@@ -183,9 +186,9 @@ namespace HydroDesktop.WebServices
         /// Returns the series catalog for the specified region (latitude | longitude bounding box)
         /// </summary>
         /// <param name="latLongBox">the latitude / </param>
-        /// <param name="keyword"></param>
-        /// <param name="beginDate"></param>
-        /// <param name="endDate"></param>
+        /// <param name="keywords">The array of keywords</param>
+        /// <param name="beginDate">The begin start date</param>
+        /// <param name="endDate">The end date</param>
         /// <returns>a list of all matching data series entries</returns>
         public IList<SeriesMetadata> GetSeriesCatalogForBox(Box latLongBox, string[] keywords, DateTime beginDate, DateTime endDate)
         {
@@ -283,7 +286,10 @@ namespace HydroDesktop.WebServices
         /// Retrieves information about CUAHSI WaterOneFlow web services available in the specified region
         /// (latitude / longitude bounding box).
         /// </summary>
-        /// <param name="latLongBox"></param>
+        /// <param name="xmin">Minimum x (longitude)</param>
+        /// <param name="xmax">Maximum x (longitude)</param>
+        /// <param name="ymax">Maximum y (latitude)</param>
+        /// <param name="ymin">Minimum y (latitude)</param>
         /// <returns></returns>
         public IList<DataServiceInfo> GetServicesInBox(double xmin, double ymin, double xmax, double ymax)
         {
