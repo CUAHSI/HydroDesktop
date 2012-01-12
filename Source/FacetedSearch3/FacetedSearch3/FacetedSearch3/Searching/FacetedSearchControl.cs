@@ -108,7 +108,7 @@ namespace FacetedSearch3
                     {
                         // if (configed) 
                         // {                            
-                            cl.BeginGetAllTypedOntologyElements(LoadTotalFacetCollection_Complete, cl);
+                            cl.BeginGetOntologyElements(LoadTotalFacetCollection_Complete, cl);
                         // }                        
                     }
                     catch (Exception e)
@@ -134,7 +134,7 @@ namespace FacetedSearch3
             {
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
                 {
-                    TopLevelFacets = cl.EndGetAllTypedOntologyElements(result);
+                    TopLevelFacets = cl.EndGetOntologyElements(result);
                 }
 
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
@@ -149,7 +149,7 @@ namespace FacetedSearch3
                             ResetFacetFlowPanel();
                             try
                             {
-                                cl.BeginGetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false, 
+                                cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false, 
                                     InitializeFacetedSearch_Complete, cl);
                             }
                             catch (Exception e)
@@ -210,7 +210,7 @@ namespace FacetedSearch3
             try
             {                                                
                 FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState;
-                FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.EndGetTypedOntologyElementsGivenConstraints(result);                
+                FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.EndGetOntologyElementsGivenConstraints(result);                
                 List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
                 MyRemainingFacets = env.OntologyElements;                
                 this.Invoke(new MethodInvoker(delegate
@@ -311,7 +311,7 @@ namespace FacetedSearch3
 
                     using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
-                        cl.BeginGetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults, InvokeNextButton_Complete, cl);
+                        cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults, InvokeNextButton_Complete, cl);
                         // FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);                                                
                     }                                
                 }
@@ -338,7 +338,7 @@ namespace FacetedSearch3
                 FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = new CUAHSIFacetedSearch.OntologyEnvelope();
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
                 {                    
-                    env = cl.EndGetTypedOntologyElementsGivenConstraints(result);
+                    env = cl.EndGetOntologyElementsGivenConstraints(result);
                     MyRemainingFacets = env.OntologyElements;
                 }
                 
@@ -377,7 +377,7 @@ namespace FacetedSearch3
 
                     using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
-                        cl.BeginConductFacetedSearch(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, InvokeSearchButton_Complete, cl);                                                
+                        cl.BeginGetSeriesGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, InvokeSearchButton_Complete, cl);                                                
                     }
                 }
                 catch (Exception e)
@@ -403,7 +403,7 @@ namespace FacetedSearch3
                 List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SearchRes = new List<CUAHSIFacetedSearch.SeriesCatalogRecord>();
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
                 {
-                    SearchRes = cl.EndConductFacetedSearch(result).OrderByDescending(r => r.ValueCount).ToList();                                  
+                    SearchRes = cl.EndGetSeriesGivenConstraints(result).OrderByDescending(r => r.ValueCount).ToList();                                  
                 }                
 
                 this.Invoke(new MethodInvoker(delegate

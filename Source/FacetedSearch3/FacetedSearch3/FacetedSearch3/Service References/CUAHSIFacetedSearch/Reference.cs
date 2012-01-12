@@ -1106,39 +1106,39 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CUAHSIFacetedSearch.MultiFacetedHISSvc")]
     public interface MultiFacetedHISSvc {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElements", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElementsResponse")]
-        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> GetAllTypedOntologyElements();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElements", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsResponse")]
+        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> GetOntologyElements();
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElements", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetAllTypedOntologyElementsResponse")]
-        System.IAsyncResult BeginGetAllTypedOntologyElements(System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElements", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsResponse")]
+        System.IAsyncResult BeginGetOntologyElements(System.AsyncCallback callback, object asyncState);
         
-        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> EndGetAllTypedOntologyElements(System.IAsyncResult result);
+        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> EndGetOntologyElements(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraints", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraintsRes" +
-            "ponse")]
-        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope GetTypedOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsGivenConstraints", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsGivenConstraintsResponse" +
+            "")]
+        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope GetOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraints", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetTypedOntologyElementsGivenConstraintsRes" +
-            "ponse")]
-        System.IAsyncResult BeginGetTypedOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsGivenConstraints", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsGivenConstraintsResponse" +
+            "")]
+        System.IAsyncResult BeginGetOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState);
         
-        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope EndGetTypedOntologyElementsGivenConstraints(System.IAsyncResult result);
+        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope EndGetOntologyElementsGivenConstraints(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearch", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearchResponse")]
-        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> ConductFacetedSearch(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetSeriesGivenConstraints", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetSeriesGivenConstraintsResponse")]
+        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> GetSeriesGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearch", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/ConductFacetedSearchResponse")]
-        System.IAsyncResult BeginConductFacetedSearch(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetSeriesGivenConstraints", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetSeriesGivenConstraintsResponse")]
+        System.IAsyncResult BeginGetSeriesGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> EndConductFacetedSearch(System.IAsyncResult result);
+        System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> EndGetSeriesGivenConstraints(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRoot", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRootResponse")]
-        FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport GetDensityOfOntologyRoot(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsDataDensities", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsDataDensitiesResponse")]
+        FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport GetOntologyElementsDataDensities(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRoot", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetDensityOfOntologyRootResponse")]
-        System.IAsyncResult BeginGetDensityOfOntologyRoot(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsDataDensities", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetOntologyElementsDataDensitiesResponse")]
+        System.IAsyncResult BeginGetOntologyElementsDataDensities(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState);
         
-        FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport EndGetDensityOfOntologyRoot(System.IAsyncResult result);
+        FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport EndGetOntologyElementsDataDensities(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextQuery", ReplyAction="http://tempuri.org/MultiFacetedHISSvc/GetSQLOfNextQueryResponse")]
         string GetSQLOfNextQuery(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults);
@@ -1171,11 +1171,11 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class GetAllTypedOntologyElementsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetOntologyElementsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public GetAllTypedOntologyElementsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public GetOntologyElementsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -1190,11 +1190,11 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class GetTypedOntologyElementsGivenConstraintsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetOntologyElementsGivenConstraintsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public GetTypedOntologyElementsGivenConstraintsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public GetOntologyElementsGivenConstraintsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -1209,11 +1209,11 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ConductFacetedSearchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetSeriesGivenConstraintsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public ConductFacetedSearchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public GetSeriesGivenConstraintsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -1228,11 +1228,11 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class GetDensityOfOntologyRootCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetOntologyElementsDataDensitiesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public GetDensityOfOntologyRootCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public GetOntologyElementsDataDensitiesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -1306,29 +1306,29 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class MultiFacetedHISSvcClient : System.ServiceModel.ClientBase<FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvc>, FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvc {
         
-        private BeginOperationDelegate onBeginGetAllTypedOntologyElementsDelegate;
+        private BeginOperationDelegate onBeginGetOntologyElementsDelegate;
         
-        private EndOperationDelegate onEndGetAllTypedOntologyElementsDelegate;
+        private EndOperationDelegate onEndGetOntologyElementsDelegate;
         
-        private System.Threading.SendOrPostCallback onGetAllTypedOntologyElementsCompletedDelegate;
+        private System.Threading.SendOrPostCallback onGetOntologyElementsCompletedDelegate;
         
-        private BeginOperationDelegate onBeginGetTypedOntologyElementsGivenConstraintsDelegate;
+        private BeginOperationDelegate onBeginGetOntologyElementsGivenConstraintsDelegate;
         
-        private EndOperationDelegate onEndGetTypedOntologyElementsGivenConstraintsDelegate;
+        private EndOperationDelegate onEndGetOntologyElementsGivenConstraintsDelegate;
         
-        private System.Threading.SendOrPostCallback onGetTypedOntologyElementsGivenConstraintsCompletedDelegate;
+        private System.Threading.SendOrPostCallback onGetOntologyElementsGivenConstraintsCompletedDelegate;
         
-        private BeginOperationDelegate onBeginConductFacetedSearchDelegate;
+        private BeginOperationDelegate onBeginGetSeriesGivenConstraintsDelegate;
         
-        private EndOperationDelegate onEndConductFacetedSearchDelegate;
+        private EndOperationDelegate onEndGetSeriesGivenConstraintsDelegate;
         
-        private System.Threading.SendOrPostCallback onConductFacetedSearchCompletedDelegate;
+        private System.Threading.SendOrPostCallback onGetSeriesGivenConstraintsCompletedDelegate;
         
-        private BeginOperationDelegate onBeginGetDensityOfOntologyRootDelegate;
+        private BeginOperationDelegate onBeginGetOntologyElementsDataDensitiesDelegate;
         
-        private EndOperationDelegate onEndGetDensityOfOntologyRootDelegate;
+        private EndOperationDelegate onEndGetOntologyElementsDataDensitiesDelegate;
         
-        private System.Threading.SendOrPostCallback onGetDensityOfOntologyRootCompletedDelegate;
+        private System.Threading.SendOrPostCallback onGetOntologyElementsDataDensitiesCompletedDelegate;
         
         private BeginOperationDelegate onBeginGetSQLOfNextQueryDelegate;
         
@@ -1367,13 +1367,13 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
                 base(binding, remoteAddress) {
         }
         
-        public event System.EventHandler<GetAllTypedOntologyElementsCompletedEventArgs> GetAllTypedOntologyElementsCompleted;
+        public event System.EventHandler<GetOntologyElementsCompletedEventArgs> GetOntologyElementsCompleted;
         
-        public event System.EventHandler<GetTypedOntologyElementsGivenConstraintsCompletedEventArgs> GetTypedOntologyElementsGivenConstraintsCompleted;
+        public event System.EventHandler<GetOntologyElementsGivenConstraintsCompletedEventArgs> GetOntologyElementsGivenConstraintsCompleted;
         
-        public event System.EventHandler<ConductFacetedSearchCompletedEventArgs> ConductFacetedSearchCompleted;
+        public event System.EventHandler<GetSeriesGivenConstraintsCompletedEventArgs> GetSeriesGivenConstraintsCompleted;
         
-        public event System.EventHandler<GetDensityOfOntologyRootCompletedEventArgs> GetDensityOfOntologyRootCompleted;
+        public event System.EventHandler<GetOntologyElementsDataDensitiesCompletedEventArgs> GetOntologyElementsDataDensitiesCompleted;
         
         public event System.EventHandler<GetSQLOfNextQueryCompletedEventArgs> GetSQLOfNextQueryCompleted;
         
@@ -1381,69 +1381,69 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
         
         public event System.EventHandler<GetSQLOfNextDensityQueryCompletedEventArgs> GetSQLOfNextDensityQueryCompleted;
         
-        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> GetAllTypedOntologyElements() {
-            return base.Channel.GetAllTypedOntologyElements();
+        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> GetOntologyElements() {
+            return base.Channel.GetOntologyElements();
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginGetAllTypedOntologyElements(System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetAllTypedOntologyElements(callback, asyncState);
+        public System.IAsyncResult BeginGetOntologyElements(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetOntologyElements(callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> EndGetAllTypedOntologyElements(System.IAsyncResult result) {
-            return base.Channel.EndGetAllTypedOntologyElements(result);
+        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> EndGetOntologyElements(System.IAsyncResult result) {
+            return base.Channel.EndGetOntologyElements(result);
         }
         
-        private System.IAsyncResult OnBeginGetAllTypedOntologyElements(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            return this.BeginGetAllTypedOntologyElements(callback, asyncState);
+        private System.IAsyncResult OnBeginGetOntologyElements(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return this.BeginGetOntologyElements(callback, asyncState);
         }
         
-        private object[] OnEndGetAllTypedOntologyElements(System.IAsyncResult result) {
-            System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> retVal = this.EndGetAllTypedOntologyElements(result);
+        private object[] OnEndGetOntologyElements(System.IAsyncResult result) {
+            System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> retVal = this.EndGetOntologyElements(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnGetAllTypedOntologyElementsCompleted(object state) {
-            if ((this.GetAllTypedOntologyElementsCompleted != null)) {
+        private void OnGetOntologyElementsCompleted(object state) {
+            if ((this.GetOntologyElementsCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.GetAllTypedOntologyElementsCompleted(this, new GetAllTypedOntologyElementsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.GetOntologyElementsCompleted(this, new GetOntologyElementsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void GetAllTypedOntologyElementsAsync() {
-            this.GetAllTypedOntologyElementsAsync(null);
+        public void GetOntologyElementsAsync() {
+            this.GetOntologyElementsAsync(null);
         }
         
-        public void GetAllTypedOntologyElementsAsync(object userState) {
-            if ((this.onBeginGetAllTypedOntologyElementsDelegate == null)) {
-                this.onBeginGetAllTypedOntologyElementsDelegate = new BeginOperationDelegate(this.OnBeginGetAllTypedOntologyElements);
+        public void GetOntologyElementsAsync(object userState) {
+            if ((this.onBeginGetOntologyElementsDelegate == null)) {
+                this.onBeginGetOntologyElementsDelegate = new BeginOperationDelegate(this.OnBeginGetOntologyElements);
             }
-            if ((this.onEndGetAllTypedOntologyElementsDelegate == null)) {
-                this.onEndGetAllTypedOntologyElementsDelegate = new EndOperationDelegate(this.OnEndGetAllTypedOntologyElements);
+            if ((this.onEndGetOntologyElementsDelegate == null)) {
+                this.onEndGetOntologyElementsDelegate = new EndOperationDelegate(this.OnEndGetOntologyElements);
             }
-            if ((this.onGetAllTypedOntologyElementsCompletedDelegate == null)) {
-                this.onGetAllTypedOntologyElementsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetAllTypedOntologyElementsCompleted);
+            if ((this.onGetOntologyElementsCompletedDelegate == null)) {
+                this.onGetOntologyElementsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetOntologyElementsCompleted);
             }
-            base.InvokeAsync(this.onBeginGetAllTypedOntologyElementsDelegate, null, this.onEndGetAllTypedOntologyElementsDelegate, this.onGetAllTypedOntologyElementsCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginGetOntologyElementsDelegate, null, this.onEndGetOntologyElementsDelegate, this.onGetOntologyElementsCompletedDelegate, userState);
         }
         
-        public FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope GetTypedOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
-            return base.Channel.GetTypedOntologyElementsGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults);
+        public FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope GetOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
+            return base.Channel.GetOntologyElementsGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginGetTypedOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetTypedOntologyElementsGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
+        public System.IAsyncResult BeginGetOntologyElementsGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetOntologyElementsGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope EndGetTypedOntologyElementsGivenConstraints(System.IAsyncResult result) {
-            return base.Channel.EndGetTypedOntologyElementsGivenConstraints(result);
+        public FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope EndGetOntologyElementsGivenConstraints(System.IAsyncResult result) {
+            return base.Channel.EndGetOntologyElementsGivenConstraints(result);
         }
         
-        private System.IAsyncResult OnBeginGetTypedOntologyElementsGivenConstraints(object[] inValues, System.AsyncCallback callback, object asyncState) {
+        private System.IAsyncResult OnBeginGetOntologyElementsGivenConstraints(object[] inValues, System.AsyncCallback callback, object asyncState) {
             System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections = ((System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>)(inValues[0]));
             System.DateTime BeginTime = ((System.DateTime)(inValues[1]));
             System.DateTime EndTime = ((System.DateTime)(inValues[2]));
@@ -1452,37 +1452,37 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
             double MinX = ((double)(inValues[5]));
             double MaxX = ((double)(inValues[6]));
             bool IncludeSpatialResults = ((bool)(inValues[7]));
-            return this.BeginGetTypedOntologyElementsGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
+            return this.BeginGetOntologyElementsGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
         }
         
-        private object[] OnEndGetTypedOntologyElementsGivenConstraints(System.IAsyncResult result) {
-            FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope retVal = this.EndGetTypedOntologyElementsGivenConstraints(result);
+        private object[] OnEndGetOntologyElementsGivenConstraints(System.IAsyncResult result) {
+            FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope retVal = this.EndGetOntologyElementsGivenConstraints(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnGetTypedOntologyElementsGivenConstraintsCompleted(object state) {
-            if ((this.GetTypedOntologyElementsGivenConstraintsCompleted != null)) {
+        private void OnGetOntologyElementsGivenConstraintsCompleted(object state) {
+            if ((this.GetOntologyElementsGivenConstraintsCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.GetTypedOntologyElementsGivenConstraintsCompleted(this, new GetTypedOntologyElementsGivenConstraintsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.GetOntologyElementsGivenConstraintsCompleted(this, new GetOntologyElementsGivenConstraintsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void GetTypedOntologyElementsGivenConstraintsAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
-            this.GetTypedOntologyElementsGivenConstraintsAsync(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, null);
+        public void GetOntologyElementsGivenConstraintsAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
+            this.GetOntologyElementsGivenConstraintsAsync(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, null);
         }
         
-        public void GetTypedOntologyElementsGivenConstraintsAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, object userState) {
-            if ((this.onBeginGetTypedOntologyElementsGivenConstraintsDelegate == null)) {
-                this.onBeginGetTypedOntologyElementsGivenConstraintsDelegate = new BeginOperationDelegate(this.OnBeginGetTypedOntologyElementsGivenConstraints);
+        public void GetOntologyElementsGivenConstraintsAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, object userState) {
+            if ((this.onBeginGetOntologyElementsGivenConstraintsDelegate == null)) {
+                this.onBeginGetOntologyElementsGivenConstraintsDelegate = new BeginOperationDelegate(this.OnBeginGetOntologyElementsGivenConstraints);
             }
-            if ((this.onEndGetTypedOntologyElementsGivenConstraintsDelegate == null)) {
-                this.onEndGetTypedOntologyElementsGivenConstraintsDelegate = new EndOperationDelegate(this.OnEndGetTypedOntologyElementsGivenConstraints);
+            if ((this.onEndGetOntologyElementsGivenConstraintsDelegate == null)) {
+                this.onEndGetOntologyElementsGivenConstraintsDelegate = new EndOperationDelegate(this.OnEndGetOntologyElementsGivenConstraints);
             }
-            if ((this.onGetTypedOntologyElementsGivenConstraintsCompletedDelegate == null)) {
-                this.onGetTypedOntologyElementsGivenConstraintsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetTypedOntologyElementsGivenConstraintsCompleted);
+            if ((this.onGetOntologyElementsGivenConstraintsCompletedDelegate == null)) {
+                this.onGetOntologyElementsGivenConstraintsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetOntologyElementsGivenConstraintsCompleted);
             }
-            base.InvokeAsync(this.onBeginGetTypedOntologyElementsGivenConstraintsDelegate, new object[] {
+            base.InvokeAsync(this.onBeginGetOntologyElementsGivenConstraintsDelegate, new object[] {
                         Selections,
                         BeginTime,
                         EndTime,
@@ -1490,24 +1490,24 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
                         MaxY,
                         MinX,
                         MaxX,
-                        IncludeSpatialResults}, this.onEndGetTypedOntologyElementsGivenConstraintsDelegate, this.onGetTypedOntologyElementsGivenConstraintsCompletedDelegate, userState);
+                        IncludeSpatialResults}, this.onEndGetOntologyElementsGivenConstraintsDelegate, this.onGetOntologyElementsGivenConstraintsCompletedDelegate, userState);
         }
         
-        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> ConductFacetedSearch(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX) {
-            return base.Channel.ConductFacetedSearch(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginConductFacetedSearch(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginConductFacetedSearch(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, callback, asyncState);
+        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> GetSeriesGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX) {
+            return base.Channel.GetSeriesGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> EndConductFacetedSearch(System.IAsyncResult result) {
-            return base.Channel.EndConductFacetedSearch(result);
+        public System.IAsyncResult BeginGetSeriesGivenConstraints(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetSeriesGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, callback, asyncState);
         }
         
-        private System.IAsyncResult OnBeginConductFacetedSearch(object[] inValues, System.AsyncCallback callback, object asyncState) {
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> EndGetSeriesGivenConstraints(System.IAsyncResult result) {
+            return base.Channel.EndGetSeriesGivenConstraints(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetSeriesGivenConstraints(object[] inValues, System.AsyncCallback callback, object asyncState) {
             System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections = ((System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>)(inValues[0]));
             System.DateTime BeginTime = ((System.DateTime)(inValues[1]));
             System.DateTime EndTime = ((System.DateTime)(inValues[2]));
@@ -1515,61 +1515,61 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
             double MaxY = ((double)(inValues[4]));
             double MinX = ((double)(inValues[5]));
             double MaxX = ((double)(inValues[6]));
-            return this.BeginConductFacetedSearch(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, callback, asyncState);
+            return this.BeginGetSeriesGivenConstraints(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, callback, asyncState);
         }
         
-        private object[] OnEndConductFacetedSearch(System.IAsyncResult result) {
-            System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> retVal = this.EndConductFacetedSearch(result);
+        private object[] OnEndGetSeriesGivenConstraints(System.IAsyncResult result) {
+            System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> retVal = this.EndGetSeriesGivenConstraints(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnConductFacetedSearchCompleted(object state) {
-            if ((this.ConductFacetedSearchCompleted != null)) {
+        private void OnGetSeriesGivenConstraintsCompleted(object state) {
+            if ((this.GetSeriesGivenConstraintsCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.ConductFacetedSearchCompleted(this, new ConductFacetedSearchCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.GetSeriesGivenConstraintsCompleted(this, new GetSeriesGivenConstraintsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void ConductFacetedSearchAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX) {
-            this.ConductFacetedSearchAsync(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, null);
+        public void GetSeriesGivenConstraintsAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX) {
+            this.GetSeriesGivenConstraintsAsync(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, null);
         }
         
-        public void ConductFacetedSearchAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, object userState) {
-            if ((this.onBeginConductFacetedSearchDelegate == null)) {
-                this.onBeginConductFacetedSearchDelegate = new BeginOperationDelegate(this.OnBeginConductFacetedSearch);
+        public void GetSeriesGivenConstraintsAsync(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, object userState) {
+            if ((this.onBeginGetSeriesGivenConstraintsDelegate == null)) {
+                this.onBeginGetSeriesGivenConstraintsDelegate = new BeginOperationDelegate(this.OnBeginGetSeriesGivenConstraints);
             }
-            if ((this.onEndConductFacetedSearchDelegate == null)) {
-                this.onEndConductFacetedSearchDelegate = new EndOperationDelegate(this.OnEndConductFacetedSearch);
+            if ((this.onEndGetSeriesGivenConstraintsDelegate == null)) {
+                this.onEndGetSeriesGivenConstraintsDelegate = new EndOperationDelegate(this.OnEndGetSeriesGivenConstraints);
             }
-            if ((this.onConductFacetedSearchCompletedDelegate == null)) {
-                this.onConductFacetedSearchCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnConductFacetedSearchCompleted);
+            if ((this.onGetSeriesGivenConstraintsCompletedDelegate == null)) {
+                this.onGetSeriesGivenConstraintsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetSeriesGivenConstraintsCompleted);
             }
-            base.InvokeAsync(this.onBeginConductFacetedSearchDelegate, new object[] {
+            base.InvokeAsync(this.onBeginGetSeriesGivenConstraintsDelegate, new object[] {
                         Selections,
                         BeginTime,
                         EndTime,
                         MinY,
                         MaxY,
                         MinX,
-                        MaxX}, this.onEndConductFacetedSearchDelegate, this.onConductFacetedSearchCompletedDelegate, userState);
+                        MaxX}, this.onEndGetSeriesGivenConstraintsDelegate, this.onGetSeriesGivenConstraintsCompletedDelegate, userState);
         }
         
-        public FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport GetDensityOfOntologyRoot(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
-            return base.Channel.GetDensityOfOntologyRoot(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginGetDensityOfOntologyRoot(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetDensityOfOntologyRoot(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
+        public FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport GetOntologyElementsDataDensities(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
+            return base.Channel.GetOntologyElementsDataDensities(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport EndGetDensityOfOntologyRoot(System.IAsyncResult result) {
-            return base.Channel.EndGetDensityOfOntologyRoot(result);
+        public System.IAsyncResult BeginGetOntologyElementsDataDensities(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetOntologyElementsDataDensities(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
         }
         
-        private System.IAsyncResult OnBeginGetDensityOfOntologyRoot(object[] inValues, System.AsyncCallback callback, object asyncState) {
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport EndGetOntologyElementsDataDensities(System.IAsyncResult result) {
+            return base.Channel.EndGetOntologyElementsDataDensities(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetOntologyElementsDataDensities(object[] inValues, System.AsyncCallback callback, object asyncState) {
             System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections = ((System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>)(inValues[0]));
             System.DateTime BeginTime = ((System.DateTime)(inValues[1]));
             System.DateTime EndTime = ((System.DateTime)(inValues[2]));
@@ -1578,37 +1578,37 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
             double MinX = ((double)(inValues[5]));
             double MaxX = ((double)(inValues[6]));
             bool IncludeSpatialResults = ((bool)(inValues[7]));
-            return this.BeginGetDensityOfOntologyRoot(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
+            return this.BeginGetOntologyElementsDataDensities(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, callback, asyncState);
         }
         
-        private object[] OnEndGetDensityOfOntologyRoot(System.IAsyncResult result) {
-            FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport retVal = this.EndGetDensityOfOntologyRoot(result);
+        private object[] OnEndGetOntologyElementsDataDensities(System.IAsyncResult result) {
+            FacetedSearch3.CUAHSIFacetedSearch.SelectionDensityReport retVal = this.EndGetOntologyElementsDataDensities(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnGetDensityOfOntologyRootCompleted(object state) {
-            if ((this.GetDensityOfOntologyRootCompleted != null)) {
+        private void OnGetOntologyElementsDataDensitiesCompleted(object state) {
+            if ((this.GetOntologyElementsDataDensitiesCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.GetDensityOfOntologyRootCompleted(this, new GetDensityOfOntologyRootCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.GetOntologyElementsDataDensitiesCompleted(this, new GetOntologyElementsDataDensitiesCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void GetDensityOfOntologyRootAsync(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
-            this.GetDensityOfOntologyRootAsync(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, null);
+        public void GetOntologyElementsDataDensitiesAsync(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
+            this.GetOntologyElementsDataDensitiesAsync(Selections, BeginTime, EndTime, MinY, MaxY, MinX, MaxX, IncludeSpatialResults, null);
         }
         
-        public void GetDensityOfOntologyRootAsync(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, object userState) {
-            if ((this.onBeginGetDensityOfOntologyRootDelegate == null)) {
-                this.onBeginGetDensityOfOntologyRootDelegate = new BeginOperationDelegate(this.OnBeginGetDensityOfOntologyRoot);
+        public void GetOntologyElementsDataDensitiesAsync(System.Collections.Generic.Dictionary<string, FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults, object userState) {
+            if ((this.onBeginGetOntologyElementsDataDensitiesDelegate == null)) {
+                this.onBeginGetOntologyElementsDataDensitiesDelegate = new BeginOperationDelegate(this.OnBeginGetOntologyElementsDataDensities);
             }
-            if ((this.onEndGetDensityOfOntologyRootDelegate == null)) {
-                this.onEndGetDensityOfOntologyRootDelegate = new EndOperationDelegate(this.OnEndGetDensityOfOntologyRoot);
+            if ((this.onEndGetOntologyElementsDataDensitiesDelegate == null)) {
+                this.onEndGetOntologyElementsDataDensitiesDelegate = new EndOperationDelegate(this.OnEndGetOntologyElementsDataDensities);
             }
-            if ((this.onGetDensityOfOntologyRootCompletedDelegate == null)) {
-                this.onGetDensityOfOntologyRootCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetDensityOfOntologyRootCompleted);
+            if ((this.onGetOntologyElementsDataDensitiesCompletedDelegate == null)) {
+                this.onGetOntologyElementsDataDensitiesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetOntologyElementsDataDensitiesCompleted);
             }
-            base.InvokeAsync(this.onBeginGetDensityOfOntologyRootDelegate, new object[] {
+            base.InvokeAsync(this.onBeginGetOntologyElementsDataDensitiesDelegate, new object[] {
                         Selections,
                         BeginTime,
                         EndTime,
@@ -1616,7 +1616,7 @@ namespace FacetedSearch3.CUAHSIFacetedSearch {
                         MaxY,
                         MinX,
                         MaxX,
-                        IncludeSpatialResults}, this.onEndGetDensityOfOntologyRootDelegate, this.onGetDensityOfOntologyRootCompletedDelegate, userState);
+                        IncludeSpatialResults}, this.onEndGetOntologyElementsDataDensitiesDelegate, this.onGetOntologyElementsDataDensitiesCompletedDelegate, userState);
         }
         
         public string GetSQLOfNextQuery(System.Collections.Generic.List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Selections, System.DateTime BeginTime, System.DateTime EndTime, double MinY, double MaxY, double MinX, double MaxX, bool IncludeSpatialResults) {
