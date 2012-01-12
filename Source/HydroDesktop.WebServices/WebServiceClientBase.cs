@@ -35,6 +35,9 @@ namespace HydroDesktop.WebServices
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of the base web service client
+        /// </summary>
         public WebServiceClientBase() { }
 
         /// <summary>
@@ -54,9 +57,8 @@ namespace HydroDesktop.WebServices
         /// Dynamically instantiates an assembly that contains the web services and 
         /// associated types
         /// </summary>
-        /// <param name="_assemblyxUrl"></param>
-        /// <param name="serviceName"></param>
-        /// <returns></returns>
+        /// <param name="wsdlUrl">Uri of the service WSDL</param>
+        /// <returns>the service proxy assembly</returns>
         protected Assembly CreateDynamicAssembly(string wsdlUrl)
         {
             try
@@ -90,7 +92,11 @@ namespace HydroDesktop.WebServices
                 return null;
             }
         }
-
+        /// <summary>
+        /// Gets the names of all web services on the HydroServer
+        /// </summary>
+        /// <param name="assembly">The web service proxy assembly</param>
+        /// <returns>The list of the service names</returns>
         protected IList<string> GetServiceNames(Assembly assembly)
         {
             List<string> serviceNames = new List<string>();
@@ -131,10 +137,11 @@ namespace HydroDesktop.WebServices
         /// Creates a table with an appropriate schema for storing the results of a
         /// web method. The table has the same number of columns as the number of 
         /// public properties of the return type.
-        /// </summary>
+        /// <summary>
         /// <param name="properties">The array of public properties of the return type</param>
         /// <param name="typeName">Name of the return type</param>
         /// <returns>An empty data table</returns>
+        /// </summary>
         protected DataTable CreateResultTable(PropertyInfo[] properties, string typeName)
         {
             DataTable table = new DataTable(typeName);

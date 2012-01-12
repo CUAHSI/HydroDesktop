@@ -55,6 +55,7 @@ namespace HydroDesktop.WebServices
         /// <summary>
         /// Gets the web response from the SOAP web service
         /// </summary>
+        /// <param name="url">the url of the WSDL file</param>
         /// <param name="soapEnvelope">The xml SOAP Envelope</param>
         /// <param name="soapAction">The SOAP Action</param>
         /// <param name="outFileName">The output file name</param>

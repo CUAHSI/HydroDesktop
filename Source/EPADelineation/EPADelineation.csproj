@@ -85,10 +85,6 @@
       <HintPath>..\..\Binaries\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HydroDesktop.Help">
       <HintPath>..\..\Binaries\HydroDesktop.Help.dll</HintPath>
       <Private>False</Private>
