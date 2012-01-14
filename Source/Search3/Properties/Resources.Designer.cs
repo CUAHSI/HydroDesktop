@@ -167,15 +167,6 @@ namespace Search3.Properties {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;Data Sites&quot;.
-        /// </summary>
-        internal static string SearchGroupName {
-            get {
-                return ResourceManager.GetString("SearchGroupName", resourceCulture);
-            }
-        }
-        
         internal static System.Drawing.Bitmap select_date_v1_16 {
             get {
                 object obj = ResourceManager.GetObject("select_date_v1_16", resourceCulture);

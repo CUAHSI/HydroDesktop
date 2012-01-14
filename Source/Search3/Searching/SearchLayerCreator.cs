@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DotSpatial.Controls;
-using DotSpatial.Data;
 using DotSpatial.Symbology;
 using System.Linq;
 
@@ -117,16 +115,11 @@ namespace Search3.Searching
         
         private MapGroup GetSearchResultLayerGroup()
         {
-            return GetDataSitesLayerGroup(_map, _searchGroupName);
-        }
-
-        public static MapGroup GetDataSitesLayerGroup(IMap map, string searchGroupName)
-        {
             MapGroup layer = null;
-            foreach (var lay in map.Layers)
+            foreach (var lay in _map.Layers)
             {
                 if (lay is MapGroup &&
-                    lay.LegendText.ToLower() == searchGroupName.ToLower())
+                    lay.LegendText.ToLower() == _searchGroupName.ToLower())
                 {
                     layer = lay as MapGroup;
                     break;

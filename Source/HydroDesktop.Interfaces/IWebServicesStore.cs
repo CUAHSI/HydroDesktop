@@ -21,6 +21,5 @@ namespace HydroDesktop.Interfaces
     public interface ISearchPlugin
     {
         void AddFeatures(List<Tuple<string, IFeatureSet>> featuresPerCode);
-        IMapGroup GetDataSitesLayerGroup(IMap map);
     }
 }

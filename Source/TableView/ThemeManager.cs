@@ -10,6 +10,7 @@ using HydroDesktop.Database;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 using System.IO;
+using Hydrodesktop.Common;
 
 namespace TableView
 {
@@ -108,7 +109,7 @@ namespace TableView
         /// <returns>The group named 'Themes'</returns>
         private IMapGroup FindThemeGroup(Map mainMap)
         {
-            return _searchPlugin.GetDataSitesLayerGroup(mainMap);
+            return FindGroupLayerByName(mainMap, LayerConstants.SearchGroupName);
         }
 
         /// <summary>
@@ -124,6 +125,21 @@ namespace TableView
                 themeNameList.Add(row[0].ToString());
             }
             return themeNameList;
+        }
+
+        private MapGroup FindGroupLayerByName(IMap map, string layerName)
+        {
+            MapGroup layer = null;
+            foreach (var lay in map.Layers)
+            {
+                if (lay is MapGroup &&
+                    lay.LegendText.ToLower() == layerName.ToLower())
+                {
+                    layer = lay as MapGroup;
+                    break;
+                }
+            }
+            return layer;
         }
 
         /// <summary>
