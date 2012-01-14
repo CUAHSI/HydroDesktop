@@ -18,14 +18,16 @@ namespace TableView
 
         private ISeriesSelector _seriesView;
         private Map _mainMap;
+        private readonly ISearchPlugin _searchPlugin;
 
-        public ChangeDatabaseForm(ISeriesSelector seriesView, Map mainMap)
+        public ChangeDatabaseForm(ISeriesSelector seriesView, Map mainMap, ISearchPlugin searchPlugin)
         {
             InitializeComponent();
             LoadSettings();
 
             _seriesView = seriesView;
             _mainMap = mainMap;
+            _searchPlugin = searchPlugin;
         }
 
         private void LoadSettings()
@@ -83,6 +85,13 @@ namespace TableView
 
             //(3) Refresh 'SeriesSelector' control
             _seriesView.SetupDatabase();
+
+            //(4) Update map layers
+            if (_mainMap != null)
+            {
+                var manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString, _searchPlugin);
+                manager.RefreshAllThemes(_mainMap);
+            }
 
             DialogResult = DialogResult.OK;
             Close();

@@ -146,6 +146,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             AddControl(container, lbDataSource);
             lbDataSource.Text = itemForCommonParts.DataSource;
             lbDataSource.Links[0].LinkData = itemForCommonParts.ServiceDesciptionUrl;
+            lbDataSource.Links[0].Enabled = IsValidServiceDesciptionUrl(itemForCommonParts.ServiceDesciptionUrl);
             CalculateContainerSize(lbDataSource, ref thisWidth, ref startY);
 
             // Site Name label
@@ -253,11 +254,16 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 var target = e.Link.LinkData as string;
 
                 // If the value looks like a URL, navigate to it.
-                if (null != target && (target.StartsWith("http") || target.StartsWith("www")))
+                if (IsValidServiceDesciptionUrl(target))
                 {
                     Process.Start(target);
                 }
             }
+        }
+
+        private bool IsValidServiceDesciptionUrl(string target)
+        {
+            return null != target && (target.StartsWith("http") || target.StartsWith("www"));
         }
 
         void CustomToolTipControl_SizeChanged(object sender, EventArgs e)

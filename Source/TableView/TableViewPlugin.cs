@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using HydroDesktop.Database;
@@ -236,8 +237,10 @@ namespace TableView
             var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
             using (var frm = new DeleteThemeForm(db))
             {
-                if (frm.ShowDialog() != DialogResult.OK) return;
-                Refresh();
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    Refresh();
+                }
             }
         }
 
@@ -247,10 +250,12 @@ namespace TableView
 
         private void rbChangeDatabase_Click(object sender, EventArgs e)
         {
-            using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map))
+            using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.Extensions.OfType<ISearchPlugin>().FirstOrDefault()))
             {
-                if (frmChangeDatabase.ShowDialog() != DialogResult.OK) return;
-                Refresh();
+                if (frmChangeDatabase.ShowDialog() == DialogResult.OK)
+                {
+                    Refresh();
+                }
             }
         }
 

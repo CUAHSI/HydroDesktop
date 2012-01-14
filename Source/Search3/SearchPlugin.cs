@@ -23,7 +23,7 @@ using HydroDesktop.WebServices;
 
 namespace Search3
 {
-    public class SearchPlugin : Extension, IWebServicesStore
+    public class SearchPlugin : Extension, IWebServicesStore, ISearchPlugin
     {
         #region Fields
 
@@ -407,10 +407,10 @@ namespace Search3
             {
                 var fs = key.FeatureSet;
                 var filename = Path.Combine(hdProjectPath,
-                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.SeriesDataCart.ServCode));
+                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode));
                 fs.Filename = filename;
                 fs.Save();
-                loadedFeatures.Add(new SearchResultItem(key.SeriesDataCart, FeatureSet.OpenFile(filename)));
+                loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));
             }
 
             var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), Resources.SearchGroupName);
@@ -817,5 +817,20 @@ namespace Search3
 
             return result;
         }
+
+        public void AddFeatures(List<Tuple<string, IFeatureSet>> featuresPerCode)
+        {
+            var loadedFeatures = new List<SearchResultItem>(featuresPerCode.Count());
+            loadedFeatures.AddRange(featuresPerCode.Select(item => new SearchResultItem(item.Item1, item.Item2)));
+
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), Resources.SearchGroupName);
+            searchLayerCreator.Create();
+        }
+
+        public IMapGroup GetDataSitesLayerGroup(IMap map)
+        {
+            return SearchLayerCreator.GetDataSitesLayerGroup(map, Resources.SearchGroupName);
+        }
+
     }
 }

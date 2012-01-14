@@ -92,11 +92,11 @@ namespace Search3.Searching
             foreach(var dataCart in seriesList)
             {
                 IFeatureSet featureSet;
-                var searchItem = resultCollection.FirstOrDefault(item => item.SeriesDataCart.ServCode == dataCart.ServCode);
+                var searchItem = resultCollection.FirstOrDefault(item => item.ServiceCode == dataCart.ServCode);
                 if (searchItem == null)
                 {
                     featureSet =  CreateEmptyFeatureSet();
-                    searchItem = new SearchResultItem(dataCart, featureSet);
+                    searchItem = new SearchResultItem(dataCart.ServCode, featureSet);
                     resultCollection.Add(searchItem);
                 }
                 featureSet = searchItem.FeatureSet;
