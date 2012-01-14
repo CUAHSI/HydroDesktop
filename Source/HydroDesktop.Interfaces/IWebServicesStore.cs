@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using DotSpatial.Controls;
+using DotSpatial.Data;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
@@ -13,5 +16,11 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <returns>Web services list.</returns>
         IList<DataServiceInfo> GetWebServices();
+    }
+
+    public interface ISearchPlugin
+    {
+        void AddFeatures(List<Tuple<string, IFeatureSet>> featuresPerCode);
+        IMapGroup GetDataSitesLayerGroup(IMap map);
     }
 }

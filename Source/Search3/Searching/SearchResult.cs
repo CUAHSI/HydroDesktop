@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using DotSpatial.Data;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -32,15 +33,16 @@ namespace Search3.Searching
 
     public class SearchResultItem
     {
-        public SeriesDataCart SeriesDataCart { get; private set; }
         public IFeatureSet FeatureSet { get; private set; }
+        public string ServiceCode { get; private set; }
 
-        public SearchResultItem(SeriesDataCart seriesDataCart, IFeatureSet featureSet)
+        public SearchResultItem(string serviceCode, IFeatureSet featureSet)
         {
-            if (seriesDataCart == null) throw new ArgumentNullException("seriesDataCart");
+            if (serviceCode == null) throw new ArgumentNullException("serviceCode");
             if (featureSet == null) throw new ArgumentNullException("featureSet");
+            Contract.EndContractBlock();
 
-            SeriesDataCart = seriesDataCart;
+            ServiceCode = serviceCode;
             FeatureSet = featureSet;
         }
     }

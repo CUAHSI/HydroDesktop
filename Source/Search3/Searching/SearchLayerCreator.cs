@@ -46,7 +46,7 @@ namespace Search3.Searching
         /// </summary>
         public void Create()
         {
-            if (_searchResult.ResultItems.Count() == 0) return;
+            if (!_searchResult.ResultItems.Any()) return;
 
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, _searchGroupName);
 
@@ -91,8 +91,8 @@ namespace Search3.Searching
 
             // Get Title of web-server
             var webService = Settings.SearchSettings.Instance.WebServicesSettings.WebServices.FirstOrDefault(
-                ws => ws.ServiceCode == item.SeriesDataCart.ServCode);
-            var defaulLegendText = webService != null? webService.Title : item.SeriesDataCart.ServCode;
+                ws => ws.ServiceCode == item.ServiceCode);
+            var defaulLegendText = webService != null? webService.Title : item.ServiceCode;
 
             // Build legend text 
             var legendText = defaulLegendText;
@@ -117,11 +117,16 @@ namespace Search3.Searching
         
         private MapGroup GetSearchResultLayerGroup()
         {
+            return GetDataSitesLayerGroup(_map, _searchGroupName);
+        }
+
+        public static MapGroup GetDataSitesLayerGroup(IMap map, string searchGroupName)
+        {
             MapGroup layer = null;
-            foreach (var lay in _map.Layers)
+            foreach (var lay in map.Layers)
             {
                 if (lay is MapGroup &&
-                    lay.LegendText.ToLower() == _searchGroupName.ToLower())
+                    lay.LegendText.ToLower() == searchGroupName.ToLower())
                 {
                     layer = lay as MapGroup;
                     break;
