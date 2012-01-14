@@ -83,10 +83,7 @@ namespace TableView
             Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(newDataRepositoryPath);
             Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newMetadataCachePath);
 
-            //(3) Refresh 'SeriesSelector' control
-            _seriesView.SetupDatabase();
-
-            //(4) Update map layers
+            //(3) Update map layers
             if (_mainMap != null)
             {
                 var manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString, _searchPlugin);

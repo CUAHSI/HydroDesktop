@@ -280,11 +280,7 @@
                 //create new metadataCacheDb
                 SQLiteHelper.CreateMetadataCacheDb(metadataCachePath);
                 string conString2 = SQLiteHelper.GetSQLiteConnectionString(metadataCachePath);
-                Settings.Instance.MetadataCacheConnectionString = conString2;
-
-                //initialize the Series control (populates its columns)
-                //this code will fail if DataRepositoryConnectionString is not set
-                this.SeriesControl.SetupDatabase();
+                Settings.Instance.MetadataCacheConnectionString = conString2;                
             }
             //TODO: find a smart solution when Write access to temp folder is denied
         }

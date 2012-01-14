@@ -252,10 +252,7 @@ namespace TableView
         {
             using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.Extensions.OfType<ISearchPlugin>().FirstOrDefault()))
             {
-                if (frmChangeDatabase.ShowDialog() == DialogResult.OK)
-                {
-                    Refresh();
-                }
+                frmChangeDatabase.ShowDialog();
             }
         }
 
