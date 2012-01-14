@@ -12,6 +12,7 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using Hydrodesktop.Common;
 using Search3.Area;
 using Search3.Extensions;
 using Search3.Properties;
@@ -23,7 +24,7 @@ using HydroDesktop.WebServices;
 
 namespace Search3
 {
-    public class SearchPlugin : Extension, IWebServicesStore
+    public class SearchPlugin : Extension, IWebServicesStore, ISearchPlugin
     {
         #region Fields
 
@@ -407,13 +408,13 @@ namespace Search3
             {
                 var fs = key.FeatureSet;
                 var filename = Path.Combine(hdProjectPath,
-                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.SeriesDataCart.ServCode));
+                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode));
                 fs.Filename = filename;
                 fs.Save();
-                loadedFeatures.Add(new SearchResultItem(key.SeriesDataCart, FeatureSet.OpenFile(filename)));
+                loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));
             }
 
-            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), Resources.SearchGroupName);
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), LayerConstants.SearchGroupName);
             searchLayerCreator.Create();
         }
 
@@ -817,5 +818,15 @@ namespace Search3
 
             return result;
         }
+
+        public void AddFeatures(List<Tuple<string, IFeatureSet>> featuresPerCode)
+        {
+            var loadedFeatures = new List<SearchResultItem>(featuresPerCode.Count());
+            loadedFeatures.AddRange(featuresPerCode.Select(item => new SearchResultItem(item.Item1, item.Item2)));
+
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), LayerConstants.SearchGroupName);
+            searchLayerCreator.Create();
+        }
+
     }
 }
