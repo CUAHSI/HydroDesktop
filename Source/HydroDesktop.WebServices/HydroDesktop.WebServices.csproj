@@ -74,6 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RESTServices\WaterMLServiceClient.cs" />
     <Compile Include="ServiceIconHelper.cs" />
     <Compile Include="SoapHelper.cs" />
     <Compile Include="WaterOneFlow\IWaterOneFlowClient.cs" />

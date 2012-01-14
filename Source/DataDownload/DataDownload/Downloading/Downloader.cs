@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Net;
 using System.Reflection;
 using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Database;
@@ -76,6 +79,12 @@ namespace HydroDesktop.DataDownload.Downloading
         {
             try
             {
+                if (!string.IsNullOrEmpty(info.WaterMLUri))
+                {
+                    info.XmlParser = new WaterOneFlow11Parser();
+                    return GetValuesAsWaterMLUri(info);
+                }
+
                 var client = GetWsClientInstance(info.Wsdl);
                 info.XmlParser = client.Parser;
                 return client.GetValuesXML(info.FullSiteCode, info.FullVariableCode,
@@ -94,6 +103,45 @@ namespace HydroDesktop.DataDownload.Downloading
 
                 throw new DownloadXmlException(exToWrap.Message, exToWrap);
             }
+        }
+
+        private IEnumerable<string> GetValuesAsWaterMLUri(OneSeriesDownloadInfo info)
+        {
+            using (var wc = new WebClient())
+            {
+                var uri =string.Format("http://midgewater.twdb.state.tx.us/tpwd/GetValues?location={0}&variable={1}&startDate={2}&endDate={3}", info.FullSiteCode,
+                    info.FullVariableCode, info.StartDate.ToString("s", CultureInfo.InvariantCulture), info.EndDate.ToString("s", CultureInfo.InvariantCulture));
+
+                var fileName = SaveWebMethodResut(info.FullSiteCode, info.FullVariableCode);
+                wc.DownloadFile(uri, fileName);
+                return new string[] {fileName};
+            }
+        }
+
+        private string SaveWebMethodResut(string siteCode, string variableCode)
+        {
+            //generate the file name
+            string timeStamp = GenerateTimeStampString();
+            string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
+            fileName = fileName.Replace(":", "-");
+            fileName = fileName.Replace("=", "-");
+            fileName = fileName.Replace("/", "-");
+
+            var DownloadDirectory = Path.Combine(Path.GetTempPath(), "HydroDesktop");
+            fileName = Path.Combine(DownloadDirectory, fileName);
+            
+            return fileName;
+        }
+
+        // <summary>
+        /// Generates a 'time stamp' string in the yyyyMMddhhmmss-miliseconds format for
+        /// the current system dateTime
+        /// </summary>
+        /// <returns></returns>
+        private string GenerateTimeStampString()
+        {
+            DateTime now = DateTime.Now;
+            return now.ToString("yyyyMMddhhmmss") + now.Millisecond.ToString("000");
         }
 
         #endregion
