@@ -8,7 +8,5 @@ namespace HydroDesktop.Search
         {
             return Settings.Instance.SelectedHISCentralURL;
         }
-
-        internal static readonly string SEARCH_RESULT_LAYER_NAME = Resources.SEARCH_RESULT_LAYER_NAME;
     }
 }

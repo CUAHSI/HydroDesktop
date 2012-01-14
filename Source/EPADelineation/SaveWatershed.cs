@@ -12,6 +12,7 @@ using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
 using HydroDesktop.Help;
+using Hydrodesktop.Common;
 
 namespace EPADelineation
 {
@@ -576,7 +577,7 @@ namespace EPADelineation
         private int GetPositionToInsertWatershedLayer()
         {
             // Watershed layers must be inserted below the "Data Sites" group
-            const string dataSitesName = "\"Data Sites\"";
+            var dataSitesName = LayerConstants.SearchGroupName;
 
             for (int i = 0; i < _mapArgs.Map.Layers.Count; i++)
             {
