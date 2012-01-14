@@ -5,6 +5,7 @@ using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using Hydrodesktop.Common;
 
 namespace HydroDesktop.Search
 {
@@ -42,7 +43,7 @@ namespace HydroDesktop.Search
         /// </summary>
         public void Create()
         {
-            var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, Global.SEARCH_RESULT_LAYER_NAME);
+            var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, LayerConstants.SearchGroupName);
             foreach(var item in _searchResult.Features)
             {
                 var subResultLayer = CreateSearchResultLayer(item.Key, item.Value, item.Key);
@@ -89,7 +90,7 @@ namespace HydroDesktop.Search
             foreach (var lay in _map.Layers)
             {
                 if (lay is MapGroup &&
-                    lay.LegendText.ToLower() == Global.SEARCH_RESULT_LAYER_NAME.ToLower())
+                    lay.LegendText.ToLower() == LayerConstants.SearchGroupName.ToLower())
                 {
                     layer = lay as MapGroup;
                     break;
