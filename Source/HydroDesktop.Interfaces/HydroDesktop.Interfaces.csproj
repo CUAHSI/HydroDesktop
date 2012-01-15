@@ -72,6 +72,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="FilterTypes.cs" />
     <Compile Include="IDataExportPlugin.cs" />
+    <Compile Include="IDataSeriesRepository.cs" />
     <Compile Include="IHydroDbOperations.cs" />
     <Compile Include="IMetadataCacheManager.cs" />
     <Compile Include="IRepositoryManager.cs" />
