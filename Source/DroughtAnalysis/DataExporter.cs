@@ -50,7 +50,7 @@ namespace DroughtAnalysis
             }
             
             //get the series
-            RepositoryManagerSQL dbm = new RepositoryManagerSQL(HydroDesktop.Interfaces.DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
+            var dbm = RepositoryFactory.Instance.CreateRepositoryManager(HydroDesktop.Interfaces.DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
       
             IList<Series> validSeriesList = station.DataSeriesList;
 

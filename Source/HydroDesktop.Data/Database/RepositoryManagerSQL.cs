@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
-using System.Windows.Forms;
 using System.Data.Common;
 using System.ComponentModel;
 using HydroDesktop.Interfaces;
@@ -15,15 +14,8 @@ namespace HydroDesktop.Database
     /// Helper class for reading and writing HydroDesktop objects to
     /// and from the HydroDesktop data repository SQLite database
     /// </summary>
-    public class RepositoryManagerSQL : IRepositoryManager
+    class RepositoryManagerSQL : BaseRepository, IRepositoryManager
     {
-        #region Variables
-
-        // The helper class wraps the database operations
-        private DbOperations _db;
-
-        #endregion
-
         #region Constructor
         /// <summary>
         /// Creates a new instance of the manager given a connection string
@@ -31,16 +23,8 @@ namespace HydroDesktop.Database
         /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
         /// <param name="connectionString">The connection string</param>
         public RepositoryManagerSQL(DatabaseTypes dbType, string connectionString)
+            : base(dbType, connectionString)
         {
-            //if it's a SQLite database - check if DB file exists
-            if (dbType == DatabaseTypes.SQLite)
-            {
-                CheckDbFile(connectionString);
-            }
-            
-            //initialize the DAO objects           
-            _db = new DbOperations(connectionString, dbType);
-
             
         }
 
@@ -49,21 +33,18 @@ namespace HydroDesktop.Database
         /// </summary>
         /// <param name="db">The DbOperations object for handling the database</param>
         public RepositoryManagerSQL(DbOperations db)
+            :base(db)
         {
-            //if it's a SQLite database - check if DB file exists
-            if (db.DatabaseType == DatabaseTypes.SQLite)
-            {
-                CheckDbFile(db.ConnectionString);
-            }
-
-            _db = db;
         }
+
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Creates a new instance of the SQL repository database manager
-        /// </summary>
+        
+        private IHydroDbOperations _db
+        {
+            get { return DbOperations; }
+        }
         public IHydroDbOperations DbOperations
         {
             get { return _db; }
@@ -4355,7 +4336,6 @@ namespace HydroDesktop.Database
         public event EventHandler SeriesAdded;
         #endregion
 
-
         #region Protected Methods
         /// <summary>
         /// When a theme is saved to database
@@ -4377,23 +4357,6 @@ namespace HydroDesktop.Database
         protected void OnThemeDeleted()
         {
             if (ThemeDeleted != null) ThemeDeleted(this, null);
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Checks if the SQLite db file exists. if it doesn't exist,
-        /// re-create it
-        /// </summary>
-        private void CheckDbFile(string sqLiteConnString)
-        {
-            string sqlitePath = SQLiteHelper.GetSQLiteFileName(sqLiteConnString);
-            if (!SQLiteHelper.DatabaseExists(sqlitePath))
-            {
-                SQLiteHelper.CreateSQLiteDatabase(sqlitePath);
-            }
         }
 
         #endregion

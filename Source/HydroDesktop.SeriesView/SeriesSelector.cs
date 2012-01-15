@@ -254,7 +254,7 @@ namespace SeriesView
             if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
                                 "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
-                var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite,
+                var manager = RepositoryFactory.Instance.CreateRepositoryManager(DatabaseTypes.SQLite,
                                                        Settings.Instance.DataRepositoryConnectionString);
                 manager.DeleteSeries(_clickedSeriesID);
                 RefreshSelection();
@@ -442,7 +442,7 @@ namespace SeriesView
             //if the connection string is not set, exit
             if (String.IsNullOrEmpty(conString)) return;
 
-            var manager = new RepositoryManagerSQL(DatabaseTypes.SQLite, conString);
+            var manager = RepositoryFactory.Instance.CreateRepositoryManager(DatabaseTypes.SQLite, conString);
             var tbl = manager.GetSeriesTable2();
 
             // Add Checked column
