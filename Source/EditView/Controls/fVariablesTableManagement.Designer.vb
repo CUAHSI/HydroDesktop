@@ -25,42 +25,42 @@ Partial Class fVariablesTableManagement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Me.btnSubmit = New System.Windows.Forms.Button
-        Me.txtID = New System.Windows.Forms.TextBox
-        Me.lblID = New System.Windows.Forms.Label
-        Me.btnCancel = New System.Windows.Forms.Button
-        Me.lblVariableCode = New System.Windows.Forms.Label
-        Me.txtVariableCode = New System.Windows.Forms.TextBox
-        Me.txtVariableName = New System.Windows.Forms.TextBox
-        Me.lblVariableName = New System.Windows.Forms.Label
-        Me.txtSpeciation = New System.Windows.Forms.TextBox
-        Me.lblSpeciation = New System.Windows.Forms.Label
-        Me.txtSampleMedium = New System.Windows.Forms.TextBox
-        Me.lblSampleMedium = New System.Windows.Forms.Label
-        Me.gboxVariableUnits = New System.Windows.Forms.GroupBox
-        Me.ddlUnitsName = New System.Windows.Forms.ComboBox
-        Me.lblVUnitsAbbreviation = New System.Windows.Forms.Label
-        Me.lblVUnitsType = New System.Windows.Forms.Label
-        Me.lblValueType = New System.Windows.Forms.Label
-        Me.ddlValueType = New System.Windows.Forms.ComboBox
-        Me.lblRegular = New System.Windows.Forms.Label
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.rbtnRegularNo = New System.Windows.Forms.RadioButton
-        Me.rbtnRegularYes = New System.Windows.Forms.RadioButton
-        Me.gboxTimeSupport = New System.Windows.Forms.GroupBox
-        Me.txtTValue = New System.Windows.Forms.TextBox
-        Me.lblTValue = New System.Windows.Forms.Label
-        Me.ddlTUnitsName = New System.Windows.Forms.ComboBox
-        Me.lblTUnitsAbbreviation = New System.Windows.Forms.Label
-        Me.lblTUnitsType = New System.Windows.Forms.Label
+        Me.components = New System.ComponentModel.Container()
+        Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.txtID = New System.Windows.Forms.TextBox()
+        Me.lblID = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.lblVariableCode = New System.Windows.Forms.Label()
+        Me.txtVariableCode = New System.Windows.Forms.TextBox()
+        Me.txtVariableName = New System.Windows.Forms.TextBox()
+        Me.lblVariableName = New System.Windows.Forms.Label()
+        Me.txtSpeciation = New System.Windows.Forms.TextBox()
+        Me.lblSpeciation = New System.Windows.Forms.Label()
+        Me.txtSampleMedium = New System.Windows.Forms.TextBox()
+        Me.lblSampleMedium = New System.Windows.Forms.Label()
+        Me.gboxVariableUnits = New System.Windows.Forms.GroupBox()
+        Me.ddlUnitsName = New System.Windows.Forms.ComboBox()
+        Me.lblVUnitsAbbreviation = New System.Windows.Forms.Label()
+        Me.lblVUnitsType = New System.Windows.Forms.Label()
+        Me.lblValueType = New System.Windows.Forms.Label()
+        Me.ddlValueType = New System.Windows.Forms.ComboBox()
+        Me.lblRegular = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.rbtnRegularNo = New System.Windows.Forms.RadioButton()
+        Me.rbtnRegularYes = New System.Windows.Forms.RadioButton()
+        Me.gboxTimeSupport = New System.Windows.Forms.GroupBox()
+        Me.txtTValue = New System.Windows.Forms.TextBox()
+        Me.lblTValue = New System.Windows.Forms.Label()
+        Me.ddlTUnitsName = New System.Windows.Forms.ComboBox()
+        Me.lblTUnitsAbbreviation = New System.Windows.Forms.Label()
+        Me.lblTUnitsType = New System.Windows.Forms.Label()
         Me.ConfigBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.ddlDataType = New System.Windows.Forms.ComboBox
-        Me.lblDataType = New System.Windows.Forms.Label
-        Me.txtNoDataValue = New System.Windows.Forms.TextBox
-        Me.lblNoDataValue = New System.Windows.Forms.Label
-        Me.txtGeneralCategory = New System.Windows.Forms.TextBox
-        Me.lblGeneralCategory = New System.Windows.Forms.Label
+        Me.ddlDataType = New System.Windows.Forms.ComboBox()
+        Me.lblDataType = New System.Windows.Forms.Label()
+        Me.txtNoDataValue = New System.Windows.Forms.TextBox()
+        Me.lblNoDataValue = New System.Windows.Forms.Label()
+        Me.txtGeneralCategory = New System.Windows.Forms.TextBox()
+        Me.lblGeneralCategory = New System.Windows.Forms.Label()
         Me.gboxVariableUnits.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.gboxTimeSupport.SuspendLayout()
@@ -407,7 +407,7 @@ Partial Class fVariablesTableManagement
         Me.MinimizeBox = False
         Me.Name = "fVariablesTableManagement"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Variables Table Management"
         Me.gboxVariableUnits.ResumeLayout(False)
         Me.gboxVariableUnits.PerformLayout()
