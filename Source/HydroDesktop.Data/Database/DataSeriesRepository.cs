@@ -353,16 +353,17 @@ namespace HydroDesktop.Database
                 "SourceDescription, Organization, Citation, " +
                 "QualityControlLevelCode, Definition as 'QualityControlLevelDefinition', " +
                 "BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, ThemeName " +
-                "FROM DataThemeDescriptions " +
-                "INNER JOIN DataThemes ON DataThemes.ThemeID = DataThemeDescriptions.ThemeID " +
-                "INNER JOIN DataSeries ON DataThemes.SeriesID = DataSeries.SeriesID " +
-                "INNER JOIN Sites ON DataSeries.SiteID = Sites.SiteID " +
-                "INNER JOIN Variables ON DataSeries.VariableID = Variables.VariableID " +
-                "INNER JOIN Units units1 ON Variables.VariableUnitsID = units1.UnitsID " +
-                "INNER JOIN Units units2 ON Variables.TimeUnitsID = units2.UnitsID " +
-                "INNER JOIN Methods  ON DataSeries.MethodID = Methods.MethodID " +
-                "INNER JOIN Sources ON DataSeries.SourceID = Sources.SourceID " +
-                "INNER JOIN QualityControlLevels ON DataSeries.QualityControlLevelID = QualityControlLevels.QualityControlLevelID ";
+                "FROM DataSeries " +
+                "LEFT JOIN DataThemes ON DataThemes.SeriesID = DataSeries.SeriesID " +
+                "LEFT JOIN DataThemeDescriptions ON DataThemes.ThemeID = DataThemeDescriptions.ThemeID " +
+                "LEFT JOIN Sites ON DataSeries.SiteID = Sites.SiteID " +
+                "LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID " +
+                "LEFT JOIN Units units1 ON Variables.VariableUnitsID = units1.UnitsID " +
+                "LEFT JOIN Units units2 ON Variables.TimeUnitsID = units2.UnitsID " +
+                "LEFT JOIN Methods  ON DataSeries.MethodID = Methods.MethodID " +
+                "LEFT JOIN Sources ON DataSeries.SourceID = Sources.SourceID " +
+                "LEFT JOIN QualityControlLevels ON DataSeries.QualityControlLevelID = QualityControlLevels.QualityControlLevelID ";
+
             return sql;
         }
 
