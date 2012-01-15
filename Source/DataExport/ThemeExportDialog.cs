@@ -24,7 +24,6 @@ namespace HydroDesktop.ExportToCSV
         private readonly IEnumerable<string> _selectedThemes;
         private bool _formIsClosing;
         private DataTable _dtList = new DataTable();
-        private SaveFileDialog _saveFileDlg = new SaveFileDialog();
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
 
         #endregion
@@ -55,13 +54,16 @@ namespace HydroDesktop.ExportToCSV
             Cursor = Cursors.WaitCursor;
 
             //populate list box with list of themes
-            var dtThemes = _dboperation.LoadTable("themes", "SELECT ThemeID, ThemeName from DataThemeDescriptions");
+            var repository = RepositoryFactory.Instance.CreateDataThemesRepository(_dboperation);
+            var dtThemes = repository.GetThemesForAllSeries();
+
             clbThemes.Items.Clear();
             foreach (DataRow row in dtThemes.Rows)
             {
                 var themeName = row["ThemeName"].ToString();
                 var check = _selectedThemes == null || _selectedThemes.Contains(themeName);
-                clbThemes.Items.Add(new ThemeDescription(Convert.ToInt32(row["ThemeID"]), themeName), check);
+                var themeID = row["ThemeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(row["ThemeID"]);
+                clbThemes.Items.Add(new ThemeDescription(themeID, themeName), check);
             }
 
 
@@ -330,21 +332,16 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            _saveFileDlg.Title = "Select file";
-            _saveFileDlg.OverwritePrompt = false;
+            using (var _saveFileDlg = new SaveFileDialog())
+            {
+                _saveFileDlg.Title = "Select file";
+                _saveFileDlg.OverwritePrompt = false;
+                _saveFileDlg.Filter = rdoComma.Checked ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt" : "Text (*.txt)|*.txt";
 
-            if (rdoComma.Checked == true)
-            {
-                _saveFileDlg.Filter = "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt";
-            }
-            else
-            {
-                _saveFileDlg.Filter = "Text (*.txt)|*.txt";
-            }
-
-            if (_saveFileDlg.ShowDialog() == DialogResult.OK)
-            {
-                tbOutPutFileName.Text = _saveFileDlg.FileName;
+                if (_saveFileDlg.ShowDialog() == DialogResult.OK)
+                {
+                    tbOutPutFileName.Text = _saveFileDlg.FileName;
+                }
             }
         }
 
@@ -413,19 +410,9 @@ namespace HydroDesktop.ExportToCSV
             }
 
             // Construct DataTable of all the series in the selected theme
-            var themeIds = new StringBuilder();
-            foreach (var item in clbThemes.CheckedItems)
-            {
-                var themeDescr = (ThemeDescription) item;
-                themeIds.AppendFormat("{0},", themeDescr.ThemeId);
-            }
-            themeIds.Remove(themeIds.Length - 1, 1);
-
-            DataTable dtSeries = _dboperation.LoadTable("series",
-                                                        "SELECT v.NoDataValue, ds.SeriesID " +
-                                                        "FROM DataSeries ds INNER JOIN variables v ON ds.VariableID = v.VariableID " +
-                                                        "INNER JOIN DataThemes t ON ds.SeriesID = t.SeriesID " +
-                                                        "WHERE t.ThemeID in (" + themeIds + ")");
+            var themeIds = (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
+            var repository = RepositoryFactory.Instance.CreateDataSeriesRepository(_dboperation);
+            var dtSeries = repository.GetSeriesIDsWithNoDataValueTable(themeIds);
 
             var checkNoData = chkNodata.Checked;
             //Add all checked items into the HashTable
@@ -638,10 +625,10 @@ namespace HydroDesktop.ExportToCSV
 
         private class ThemeDescription
         {
-            public int ThemeId { get; private set; }
+            public int? ThemeId { get; private set; }
             public string ThemeName { get; private set; }
 
-            public ThemeDescription(int themeId, string themeName)
+            public ThemeDescription(int? themeId, string themeName)
             {
                 ThemeId = themeId;
                 ThemeName = themeName;

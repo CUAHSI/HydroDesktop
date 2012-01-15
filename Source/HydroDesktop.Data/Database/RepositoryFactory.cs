@@ -70,6 +70,27 @@ namespace HydroDesktop.Database
             return new DataSeriesRepository(dbOperations);
         }
 
+        /// <summary>
+        /// Create instance of <see cref="IDataThemesRepository"/> using connection string
+        /// </summary>
+        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
+        /// <param name="connectionString">The connection string</param>
+        /// <returns>Instance of <see cref="IDataThemesRepository"/></returns>
+        public IDataThemesRepository CreateDataThemesRepository(DatabaseTypes dbType, string connectionString)
+        {
+            return new DataThemesRepository(dbType, connectionString);
+        }
+
+        /// <summary>
+        /// Create instance of <see cref="IDataThemesRepository"/> using DbOperations
+        /// </summary>
+        /// <param name="dbOperations">The DbOperations object for handling the database</param>
+        /// <returns>Instance of <see cref="IDataThemesRepository"/></returns>
+        public IDataThemesRepository CreateDataThemesRepository(DbOperations dbOperations)
+        {
+            return new DataThemesRepository(dbOperations);
+        }
+
         #endregion
     }
 }
