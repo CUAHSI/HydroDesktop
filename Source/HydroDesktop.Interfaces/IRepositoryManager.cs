@@ -14,10 +14,10 @@ namespace HydroDesktop.Interfaces
     public interface IRepositoryManager
     {
         /// <summary>
-        /// Gets the database operations tools
+        /// DbOperations
         /// </summary>
         IHydroDbOperations DbOperations { get; }
-        
+
         /// <summary>
         /// Deletes a theme and all its series as long as the series don't belong to any other theme.
         /// </summary>
@@ -34,67 +34,7 @@ namespace HydroDesktop.Interfaces
         /// <param name="e">The arguments for background worker</param>
         /// <returns>true if the theme was successfully deleted</returns>
         bool DeleteTheme(int themeID, BackgroundWorker worker, DoWorkEventArgs e);
-
         
-        /// <summary>
-        /// Deletes a series given it's ID. The series is only deleted when it belongs to one theme.
-        /// </summary>
-        /// <param name="seriesID">The database ID of the series</param>
-        /// <returns>true if series was deleted, false otherwise</returns>
-        bool DeleteSeries(int seriesID);
-
- 
-        /// <summary>
-        /// Gets a list of all available series in the form of a data table
-        /// </summary>
-        /// <returns></returns>
-        DataTable GetSeriesListTable();
- 
-
-        /// <summary>
-        /// Returns a detailed data table for all series in the database
-        /// </summary>
-        /// <returns>The DataTable with series metadata information</returns>
-        DataTable GetSeriesTable();
-        
-        /// <summary>
-        /// Returns a detailed data table for all series in the database. The
-        /// table includes the IDs of site, variable, source, method and QCLevel.
-        /// </summary>
-        /// <returns>The DataTable with series metadata information</returns>
-        DataTable GetSeriesTable2();
-        
-
-        /// <summary>
-        /// Returns a detailed table for all series that match the attributes
-        /// </summary>
-        /// <param name="seriesIDs">The list of series IDs</param>
-        /// <returns>the data table</returns>
-        DataTable GetSeriesTable(int[] seriesIDs);
-        
-        /// <summary>
-        /// Returns a detailed table for all series that match the attributes
-        /// </summary>
-        /// <param name="listOfSeriesID">The list of series IDs</param>
-        /// <returns>the data table</returns>
-        DataTable GetSeriesTable(IEnumerable<int> listOfSeriesID);
-        
-
-        /// <summary>
-        /// Returns the data table of detailed properties for one series
-        /// </summary>
-        /// <param name="seriesID">The id of the series</param>
-        /// <returns>The detailed table. This table only has one data row.</returns>
-        DataTable GetSeriesTable(int seriesID);
-
-        /// <summary>
-        /// Gets the DataSeries object associated with the ID.
-        /// If not found, returns null
-        /// </summary>
-        /// <param name="seriesID">The SeriesID</param>
-        /// <returns>The Series object(without its dataValues populated)</returns>
-        Series GetSeriesByID(int seriesID);
-
 
         /// <summary>
         /// Adds an existing series to an existing theme
@@ -151,9 +91,5 @@ namespace HydroDesktop.Interfaces
 
         IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2);
 
-    }
-
-    public interface IDataSeriesRepository
-    {
     }
 }

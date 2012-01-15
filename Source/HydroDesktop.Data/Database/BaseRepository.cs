@@ -51,7 +51,10 @@ namespace HydroDesktop.Database
 
         #region Properties
 
-        protected IHydroDbOperations HydroDbOperations
+        /// <summary>
+        /// Database operations
+        /// </summary>
+        public IHydroDbOperations DbOperations
         {
             get { return _db; }
         }
