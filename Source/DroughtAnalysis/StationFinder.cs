@@ -27,9 +27,9 @@ namespace DroughtAnalysis
         {
             Variable tmpVa = GetTemperatureVariable();
             Variable pcpVa = GetPrecipitationVariable();
-            if (tmpVa == null || pcpVa == null) return new List<Site>();  
+            if (tmpVa == null || pcpVa == null) return new List<Site>();
 
-            RepositoryManagerSQL repo = new RepositoryManagerSQL(HydroDesktop.Interfaces.DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
+            var repo = RepositoryFactory.Instance.CreateRepositoryManager(DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
             IList<Site> suitableSites = repo.GetSitesWithBothVariables(tmpVa, pcpVa);
             return suitableSites;
         }

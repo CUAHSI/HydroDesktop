@@ -148,6 +148,12 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <returns>The list of all themes</returns>
         IList<Theme> GetAllThemes();
-        
+
+        IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2);
+
+    }
+
+    public interface IDataSeriesRepository
+    {
     }
 }
