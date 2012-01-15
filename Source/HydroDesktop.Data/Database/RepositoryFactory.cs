@@ -91,6 +91,28 @@ namespace HydroDesktop.Database
             return new DataThemesRepository(dbOperations);
         }
 
+
+        /// <summary>
+        /// Create instance of <see cref="IMethodsRepository"/> using connection string
+        /// </summary>
+        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
+        /// <param name="connectionString">The connection string</param>
+        /// <returns>Instance of <see cref="IMethodsRepository"/></returns>
+        public IMethodsRepository CreateMethodsRepository(DatabaseTypes dbType, string connectionString)
+        {
+            return new MethodsRepository(dbType, connectionString);
+        }
+
+        /// <summary>
+        /// Create instance of <see cref="IMethodsRepository"/> using DbOperations
+        /// </summary>
+        /// <param name="dbOperations">The DbOperations object for handling the database</param>
+        /// <returns>Instance of <see cref="IMethodsRepository"/></returns>
+        public IMethodsRepository CreateMethodsRepository(DbOperations dbOperations)
+        {
+            return new MethodsRepository(dbOperations);
+        }
+
         #endregion
     }
 }

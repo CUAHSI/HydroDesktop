@@ -76,6 +76,7 @@
     <Compile Include="IDataThemesRepository.cs" />
     <Compile Include="IHydroDbOperations.cs" />
     <Compile Include="IMetadataCacheManager.cs" />
+    <Compile Include="IMethodsRepository.cs" />
     <Compile Include="IRepositoryManager.cs" />
     <Compile Include="ISeriesSelector.cs" />
     <Compile Include="IWebServicesStore.cs" />

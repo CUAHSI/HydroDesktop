@@ -12,6 +12,7 @@ Public Class fDeriveNewDataSeries
     Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
     Private newSeriesID As Integer
     Private todaystring As String = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss")
+    Private Const DERIVED_METHOD_DESCRIPTION = "Derived using HydroDesktop Edit View"
 
     Public Sub New()
         InitializeComponent()
@@ -45,10 +46,17 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub FillMethods()
-        Dim dt As DataTable
+        Dim repo = RepositoryFactory.Instance.CreateMethodsRepository(dbTools)
+
+        ' Check for Derived method 
+        Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
+        If Not derivedMethod.HasValue Then
+            ' Insert Derived method
+            repo.InsertMethod(DERIVED_METHOD_DESCRIPTION, "unknown")
+        End If
 
         'Fill up Method drop down list
-        dt = dbTools.LoadTable("Methods", "Select * FROM Methods")
+        Dim dt = repo.GetAllMethods()
         dt.Rows.Add()
         dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Methods", "MethodID").ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Method..."
@@ -558,15 +566,9 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub SetDefaultMethods()
-        Dim currentMethodID As Integer
-        Dim count As Integer = 0
-
-        currentMethodID = dbTools.ExecuteSingleOutput("SELECT MethodID FROM DataSeries WHERE SeriesID = " + _SelectedSeriesID.ToString)
-
-        While Not (ddlMethods.SelectedValue = currentMethodID)
-            ddlMethods.SelectedItem = ddlMethods.Items.Item(count)
-            count += 1
-        End While
+        Dim repo = RepositoryFactory.Instance.CreateMethodsRepository(dbTools)
+        Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
+        ddlMethods.SelectedValue = derivedMethod
     End Sub
 
 #End Region
