@@ -1,0 +1,112 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Example Configuration 2 - Penman-Monteith &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="Example Configuration 3 - Bidirectional Link" href="ExConfig3.html" />
+    <link rel="prev" title="Example Configuration 1 - Smith Branch" href="ExConfig1.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Example Configuration 2 - Penman-Monteith</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="ExConfig3.html" title="Example Configuration 3 - Bidirectional Link" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="ExConfig1.html" title="Example Configuration 1 - Smith Branch" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="example-configuration-2-penman-monteith">
+<span id="index-0"></span><h1>Example Configuration 2 - Penman-Monteith<a class="headerlink" href="#example-configuration-2-penman-monteith" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig5.png" src="../../_images/HM_fig5.png" />
+</div>
+<p>The primary purpose of the Penman Monteith method is to calculate the loss of water from land surfaces due to evaporation.  This method is designed off of the ASCE Penman Monteith approximation.  This method is better at describing evapotranspirtation that other &#8220;open-water&#8221; evaporation equations because it considers transpiration as well as evaporation.  We will be refering to the newer version of this model known as the standard reference evapotranspiration equation.  Because net solar radiation and evapotranspiration are data that can be reused for other calculations, they have been seperated into a different components.</p>
+<p>The first equation is the ASCE standardized referencce evapotranspiration equation used to find the evapotranspiration.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig6.png" src="../../_images/HM_fig6.png" />
+</div>
+<p>The following equations show how the net solar radiation was calculated.  The second equation is the main equation for the net radiation.  Equation 3 is used to find the short wave radiation.  Equation 4 is used to find the long wave radiation.  Equation 5 is used to find the extraterrestrial radiation.  Equation 6 is used to find the cloudiness factor.  Equation 7 shows the relative solar radiation and can have values ranging from 0.3 to 1.0.</p>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig7.png" src="../../_images/HM_fig7.png" />
+</div>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig8.png" src="../../_images/HM_fig8.png" />
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 19, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

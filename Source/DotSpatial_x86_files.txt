@@ -1,0 +1,13 @@
+DotSpatial.Analysis.dll
+DotSpatial.Controls.dll
+DotSpatial.Data.dll
+DotSpatial.Data.Forms.dll
+DotSpatial.Extensions.dll
+DotSpatial.Modeling.dll
+DotSpatial.Modeling.Forms.dll
+DotSpatial.Projections.dll
+DotSpatial.Projections.Forms.dll
+DotSpatial.Serialization.dll
+DotSpatial.Symbology.dll
+DotSpatial.Symbology.Forms.dll
+DotSpatial.Topology.dll
