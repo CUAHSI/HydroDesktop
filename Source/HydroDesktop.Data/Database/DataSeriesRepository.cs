@@ -76,6 +76,35 @@ namespace HydroDesktop.Database
             return GetSeriesTable(string.Format("DataSeries.SeriesID={0}", seriesID));
         }
         
+        public DataTable GetSeriesIDsWithNoDataValueTable(IEnumerable<int?> themeIDs)
+        {
+            var themeList = themeIDs.ToList();
+
+            var hasNulls = themeList.Any(value => !value.HasValue);
+            var notNullsFilter = new StringBuilder();
+            const string separator = ", ";
+            foreach (var themeID in themeList.Where(themeID => themeID.HasValue))
+            {
+                notNullsFilter.Append(themeID + separator);
+            }
+            if (notNullsFilter.Length > 0)
+            {
+                notNullsFilter.Remove(notNullsFilter.Length - separator.Length, separator.Length);
+            }
+
+            var query = "SELECT v.NoDataValue, ds.SeriesID " +
+                        "FROM DataSeries ds INNER JOIN variables v ON ds.VariableID = v.VariableID " +
+                        "LEFT JOIN DataThemes t ON ds.SeriesID = t.SeriesID " +
+                        "WHERE t.ThemeID in (" + notNullsFilter + ")";
+            if (hasNulls)
+            {
+                query += " or t.ThemeID is null";
+            }
+
+            var dtSeries = DbOperations.LoadTable("series", query);
+            return dtSeries;
+        }
+
         public IList<Series> GetAllSeriesForSite(Site mySite)
         {
             if (mySite.Id <= 0) throw new ArgumentException("The site must have a valid ID");

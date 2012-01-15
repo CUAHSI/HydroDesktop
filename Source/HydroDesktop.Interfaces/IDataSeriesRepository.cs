@@ -45,6 +45,13 @@ namespace HydroDesktop.Interfaces
         DataTable GetSeriesTable(int seriesID);
 
         /// <summary>
+        /// Returns the data table of SeriesID and NoDataValue
+        /// </summary>
+        /// <param name="themeIDs">The ids of the themes</param>
+        /// <returns>Data table.</returns>
+        DataTable GetSeriesIDsWithNoDataValueTable(IEnumerable<int?> themeIDs);
+
+        /// <summary>
         /// Given a Series ID, finds corresponding series in the database
         /// </summary>
         /// <param name="seriesID">the series ID</param>
