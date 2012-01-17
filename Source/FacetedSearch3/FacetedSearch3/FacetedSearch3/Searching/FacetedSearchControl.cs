@@ -22,8 +22,8 @@ namespace FacetedSearch3
     {
         public string BaseMapPath;                                          // location of BaseMap for Map display/query
         public Boolean SpatialTemporalCommitted = false;                    // tracks state of the form => determines whether the user is ready to use the Faceted Search features.
-        public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> TopLevelFacets;    // contains the XML representation of the entire searchable ontology         
-        public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> SelectedFacets;    // contains a record of what facets have been selected for the existing search. Equal to summing all selections from each existing SearchFacetSpecifier object.
+        public IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> TopLevelFacets;    // contains the XML representation of the entire searchable ontology         
+        public IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> SelectedFacets;    // contains a record of what facets have been selected for the existing search. Equal to summing all selections from each existing SearchFacetSpecifier object.
       
         public DateTime BeginDateTime;                                      // historical boundary of search temporal constraints
         public DateTime EndDateTime;                                        // modern boundary of search temporal constraints
@@ -149,7 +149,7 @@ namespace FacetedSearch3
                             ResetFacetFlowPanel();
                             try
                             {
-                                cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false, 
+                                cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets.ToArray(), BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false, 
                                     InitializeFacetedSearch_Complete, cl);
                             }
                             catch (Exception e)
@@ -211,7 +211,7 @@ namespace FacetedSearch3
             {                                                
                 FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState;
                 FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.EndGetOntologyElementsGivenConstraints(result);                
-                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
                 MyRemainingFacets = env.OntologyElements;                
                 this.Invoke(new MethodInvoker(delegate
                 {
@@ -311,7 +311,7 @@ namespace FacetedSearch3
 
                     using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
-                        cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults, InvokeNextButton_Complete, cl);
+                        cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets.ToArray(), BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults, InvokeNextButton_Complete, cl);
                         // FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);                                                
                     }                                
                 }
@@ -334,7 +334,7 @@ namespace FacetedSearch3
         {
             try
             {
-                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
                 FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = new CUAHSIFacetedSearch.OntologyEnvelope();
                 using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
                 {                    
@@ -377,7 +377,7 @@ namespace FacetedSearch3
 
                     using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
-                        cl.BeginGetSeriesGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, InvokeSearchButton_Complete, cl);                                                
+                        cl.BeginGetSeriesGivenConstraints(SelectedFacets.ToArray(), BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, InvokeSearchButton_Complete, cl);                                                
                     }
                 }
                 catch (Exception e)
@@ -440,7 +440,7 @@ namespace FacetedSearch3
                     using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
                         ConfigureCUAHSIChannelFactory(cl);
-                        SQLRes = cl.GetSQLOfNextQuery(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
+                        SQLRes = cl.GetSQLOfNextQuery(SelectedFacets.ToArray(), BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
                     }
 
                     MessageBox.Show(SQLRes);
@@ -479,7 +479,7 @@ namespace FacetedSearch3
                     using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
                         ConfigureCUAHSIChannelFactory(cl);
-                        SQLRes = cl.GetSQLOfSearchQuery(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
+                        SQLRes = cl.GetSQLOfSearchQuery(SelectedFacets.ToArray(), BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
                     }
 
                     MessageBox.Show(SQLRes);
@@ -568,7 +568,7 @@ namespace FacetedSearch3
         /// Creates shapefile from search results, shows shapefile on map display
         /// </summary>
         /// <param name="SeriesCatalogResults"></param>
-        private void PutReturnOnMap(List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SeriesCatalogResults)
+        private void PutReturnOnMap(IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SeriesCatalogResults)
         {
             FeatureSet fs = new FeatureSet(FeatureType.Point);
             try
@@ -626,7 +626,7 @@ namespace FacetedSearch3
                 fs.Save();
 
                 // implement threshold for adding to map directly or via shapefile on disk?
-                if (SeriesCatalogResults.Count > 25000)
+                if (SeriesCatalogResults.Count<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord>() > 25000)
                 {
                 }
                 else
@@ -657,7 +657,7 @@ namespace FacetedSearch3
         /// Overloaded method for rendering point data on map
         /// </summary>
         /// <param name="MyRemainingFacets"></param>
-        private void PutReturnOnMap(List<FacetedSearch3.CUAHSIFacetedSearch.SiteData> MyRemainingFacets)
+        private void PutReturnOnMap(IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.SiteData> MyRemainingFacets)
         {
             
             ClearPointLayersFromMap();

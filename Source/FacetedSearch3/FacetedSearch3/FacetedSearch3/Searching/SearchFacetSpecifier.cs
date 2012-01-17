@@ -20,10 +20,10 @@ namespace FacetedSearch3
     public partial class SearchFacetSpecifier : UserControl
     {
         private FacetedSearchControl FacetedSearchHost;
-        public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> PreviousSelectedOntologyElements;      // serialized ontology elements that have been specified by previous SearchFacetSpecifiers
-        public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyFullFacetSet;                        // The entire catalog of ontological terms, unfiltered
-        public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> RemainingFacets;                       // response from XML webservice. These are the facets that are remaining given the user's selections.        
-        public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Orphans;
+        public IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> PreviousSelectedOntologyElements;      // serialized ontology elements that have been specified by previous SearchFacetSpecifiers
+        public IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyFullFacetSet;                        // The entire catalog of ontological terms, unfiltered
+        public IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> RemainingFacets;                       // response from XML webservice. These are the facets that are remaining given the user's selections.        
+        public IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> Orphans;
         public List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MySelectedFacets;
         // private Boolean MyRootIsSpecified;                                              // Specifies whether the root element of one of the web-service layer properties has been selected
         public int MyFacetIndex;                                                        // position in the search stack that is the FacetFlowPanel on the CUAHSISearchForm (parent FlowLayoutPanel).        
@@ -158,7 +158,7 @@ namespace FacetedSearch3
         /// <param name="SelectedThusFar">The list of ontological terms that have already been selected (selected upstream of this).</param>
         /// <param name="RemainingFacets">The list of ontological terms that are remaining given the selections that have been made up to this.</param>
         /// <param name="MyIndex">Zero-based index of SearchFacetSpecifiers on the parent control. This is my position.</param>
-        public SearchFacetSpecifier(FacetedSearchControl ParentForm, List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> FullFacetSet, List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> SelectedThusFar, List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> RemainingFacetsIn, int MyIndex)
+        public SearchFacetSpecifier(FacetedSearchControl ParentForm, IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> FullFacetSet, IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> SelectedThusFar, IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> RemainingFacetsIn, int MyIndex)
         {
             #region Initialize Control
             InitializeComponent();
@@ -185,7 +185,7 @@ namespace FacetedSearch3
         /// </summary>
         /// <param name="RemainingFacets"></param>
         /// <param name="MyIndex"></param>
-        public SearchFacetSpecifier(List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> RemainingFacetsIn, int MyIndex)
+        public SearchFacetSpecifier(IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> RemainingFacetsIn, int MyIndex)
         {
             InitializeComponent();
             RemainingFacets = RemainingFacetsIn;
