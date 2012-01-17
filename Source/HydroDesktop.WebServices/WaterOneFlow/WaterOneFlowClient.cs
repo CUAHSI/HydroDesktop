@@ -274,14 +274,16 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             using (var resp = (HttpWebResponse)req.GetResponse())
             {
                 // we will read data via the response stream
-                Stream ReceiveStream = resp.GetResponseStream();
-
-                byte[] buffer = new byte[1024];
-                FileStream outFile = new FileStream(filename, FileMode.Create);
-
-                int bytesRead;
-                while ((bytesRead = ReceiveStream.Read(buffer, 0, buffer.Length)) != 0)
-                    outFile.Write(buffer, 0, bytesRead);
+                using (Stream ReceiveStream = resp.GetResponseStream())
+                {
+                    byte[] buffer = new byte[1024];
+                    using (FileStream outFile = new FileStream(filename, FileMode.Create))
+                    {
+                        int bytesRead;
+                        while ((bytesRead = ReceiveStream.Read(buffer, 0, buffer.Length)) != 0)
+                            outFile.Write(buffer, 0, bytesRead);
+                    }
+                }
             }
         }
 
