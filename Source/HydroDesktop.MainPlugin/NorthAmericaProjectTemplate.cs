@@ -18,7 +18,7 @@ namespace HydroDesktop.Main
         
         /// <summary>
         /// This method is only used when opening the default project fails. The base shapefiles
-        /// are loaded from the [Program Files]\[Cuahsi HIS]\HydroDesktop\maps\baseData-mercatorSphere folder.
+        /// are loaded from the [Program Files]\[Cuahsi HIS]\HydroDesktop\maps\baseData folder.
         /// </summary>
         public static Boolean LoadBaseMaps(AppManager applicationManager1, Map mainMap)
         {
