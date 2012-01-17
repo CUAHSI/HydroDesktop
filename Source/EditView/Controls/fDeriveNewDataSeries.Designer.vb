@@ -3,9 +3,6 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class fDeriveNewDataSeries
     Inherits System.Windows.Forms.Form
-    Public _cEditView As cEditView
-    Public _SelectedSeriesID As Integer
-
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _

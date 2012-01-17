@@ -13,23 +13,26 @@ Public Class fDeriveNewDataSeries
     Private newSeriesID As Integer
     Private todaystring As String = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss")
     Private Const DERIVED_METHOD_DESCRIPTION = "Derived using HydroDesktop Edit View"
+    Private ReadOnly _SelectedSeriesID As Integer
+    Private ReadOnly _cEditView As cEditView
 
-    Public Sub New()
+    Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
+
+        _SelectedSeriesID = seriesId
+        _cEditView = cEditView
+
         InitializeComponent()
         initialize()
 
+        SetDefault()
     End Sub
 
-    Public Sub initialize()
+    Private Sub initialize()
         'fill all lists of this form
         rbtnCopy.Checked = True
         FillQualityControlLevel()
         FillMethods()
         FillVariable()
-
-        'ddlMethods.DropDownStyle = ComboBoxStyle.DropDownList
-        'ddlQualityControlLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        'ddlVariable.DropDownStyle = ComboBoxStyle.DropDownList
     End Sub
 
     Public Sub FillQualityControlLevel()
@@ -78,7 +81,7 @@ Public Class fDeriveNewDataSeries
         ddlVariable.ValueMember = "VariableID"
     End Sub
 
-    Public Sub SetDefault()
+    Private Sub SetDefault()
 
         'setting text boxes to blank
         txtA.Text = "0"
