@@ -27,8 +27,8 @@ namespace HydroDesktop.WebServices
         /// <summary>
         /// Compiles an assembly from the proxy class provided by the ServiceDescriptionImporter.
         /// </summary>
-        /// <param name="descriptionImporter"></param>
-        /// <param name="assemblyPath">The assembly file path</param>
+        /// <param name="descriptionImporter">SOAP Service Description Importer</param>
+        /// <param name="outputPath">The assembly output file path</param>
         /// <returns>An assembly that can be used to execute the web service methods.</returns>
         private static Assembly CompileAssembly(ServiceDescriptionImporter descriptionImporter, string outputPath)
         {
@@ -106,7 +106,11 @@ namespace HydroDesktop.WebServices
 
             return descriptionImporter;
         }
-
+        /// <summary>
+        /// Gets the assembly file path for the WSDL proxy web service assembly
+        /// </summary>
+        /// <param name="wsdlUri">The Uri of the WSDL</param>
+        /// <returns>The assembly file path</returns>
         public static string GetAssemblyFilePath(Uri wsdlUri)
         {
             if (String.IsNullOrEmpty(wsdlUri.ToString()))
@@ -142,7 +146,7 @@ namespace HydroDesktop.WebServices
         /// Builds an assembly from a web service description.
         /// The assembly can be used to execute the web service methods.
         /// </summary>
-        /// <param name="webServiceUri">Location of WSDL.</param>
+        /// <param name="wsdlUri">Location of WSDL.</param>
         /// <returns>A web service assembly.</returns>
         public static Assembly BuildAssemblyFromWSDL(Uri wsdlUri)
         {

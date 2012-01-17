@@ -85,10 +85,6 @@
       <HintPath>..\..\Binaries\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HydroDesktop.Help">
       <HintPath>..\..\Binaries\HydroDesktop.Help.dll</HintPath>
       <Private>False</Private>
@@ -154,6 +150,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Delineation_icon_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

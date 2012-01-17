@@ -21,7 +21,7 @@ namespace HydroDesktop.DataDownload.Downloading
         //to store the proxy class for each WaterOneFlow web service for re-use
         private readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
         private static readonly object _syncObject = new object();
-        private readonly RepositoryManagerSQL _repositoryManager;
+        private readonly IRepositoryManager _repositoryManager;
 
         #endregion
 
@@ -32,7 +32,8 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         public Downloader()
         {
-            _repositoryManager = new RepositoryManagerSQL(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
+            _repositoryManager = RepositoryFactory.Instance.CreateRepositoryManager(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
+                
         }
 
         #endregion

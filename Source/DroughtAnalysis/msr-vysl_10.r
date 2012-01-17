@@ -13,17 +13,7 @@ nastavsucho3 = 20  # obrazek od jakeho S
 nastavsucho4 = 50  # obrazek od jakeho S 
 nastavsucho5 = 100  # obrazek od jakeho S 
 
-nastavsucho6 = 9999  # obrazek od jakeho S
-
-#JIRKA - nastaveni promennych z prikazove radky
-args <- commandArgs(trailingOnly = TRUE) #parametry prikazove radky skriptu
-if (length(args) > 0)
-	setwd(args[1]) #prvni parametr je slozka, kam se ulozi vystupni soubory
-if (length(args) > 1)
-	soubor= args[2] #druhy parametr je nazev vstupniho souboru
-if (length(args) > 2)
-	Nazevstanice = args[3] #treti parametr je nazev stanice
-#KONEC JIRKA - nastaveni promennych z prikazove radky 
+nastavsucho6 = 9999  # obrazek od jakeho S 
 
 data = read.table(soubor, header=TRUE)
 

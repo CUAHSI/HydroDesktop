@@ -71,9 +71,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\BaseRepository.cs" />
+    <Compile Include="Database\DataSeriesRepository.cs" />
+    <Compile Include="Database\DataThemesRepository.cs" />
     <Compile Include="Database\MetadataCacheManagerSQL.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database\RepositoryFactory.cs" />
     <Compile Include="Database\RepositoryManagerSQL.cs" />
     <Compile Include="ImportExport\CsvFileParser.cs" />
     <Compile Include="ImportExport\CsvStreamReader.cs" />

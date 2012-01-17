@@ -9,6 +9,7 @@ using HydroDesktop.Database;
 //using NDepend.Helpers.FileDirectoryPath;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
+using Hydrodesktop.Common;
 
 namespace HydroDesktop.Main
 {
@@ -261,7 +262,7 @@ namespace HydroDesktop.Main
                 Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
         
                 //Also save any data sites layers 
-                IMapGroup dataSitesGroup = FindGroupByName("Data Sites");
+                IMapGroup dataSitesGroup = FindGroupByName(LayerConstants.SearchGroupName);
                 if (dataSitesGroup == null) return;
                 if (dataSitesGroup.Layers.Count == 0) return;
 

@@ -34,7 +34,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// Creates a new instance of a WaterOneFlow web service client
 		/// which communicates with the specified web service.
 		/// </summary>
-		/// <param name="service">The object with web service information</param>
+		/// <param name="serviceInfo">The object with web service information</param>
 		/// <remarks>Throws an exception if the web service is not a valid
 		/// WaterOneFlow service</remarks>
 		public WaterOneFlowClient ( DataServiceInfo serviceInfo )

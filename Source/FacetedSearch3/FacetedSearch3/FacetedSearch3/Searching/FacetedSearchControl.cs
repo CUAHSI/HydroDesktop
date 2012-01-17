@@ -41,8 +41,7 @@ namespace FacetedSearch3
         public FacetedSearchControl(AppManager a)
         {
             InitializeComponent();
-            App = a;            
-            LoadTotalFacetCollection();
+            App = a;                        
             ResetInterface();
         }
         
@@ -59,7 +58,7 @@ namespace FacetedSearch3
             EndDateTime = eTime;
         }
 
-        private FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient GetMulitFacetedHISSvcClient()
+        private FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient GetMultiFacetedHISSvcClient()
         {
             //the code: new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient() required modifying app.config
             //this is the information originally from app.config, now set through code.
@@ -68,7 +67,7 @@ namespace FacetedSearch3
             binding.OpenTimeout = new TimeSpan(0, 5, 0);
             binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
             binding.SendTimeout = new TimeSpan(0, 5, 0);
-            int maxSize = 2147483647;
+            int maxSize = Int32.MaxValue; // 2147483647;
             binding.MaxBufferSize = maxSize;
             binding.MaxBufferPoolSize = maxSize;
             binding.MaxReceivedMessageSize = maxSize;
@@ -76,8 +75,13 @@ namespace FacetedSearch3
             binding.ReaderQuotas.MaxArrayLength = maxSize;
             binding.ReaderQuotas.MaxBytesPerRead = maxSize;
             binding.ReaderQuotas.MaxNameTableCharCount = maxSize;
+
             EndpointAddress address = new EndpointAddress("http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc");
-            return new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address);
+            // LOCALTESTING EndpointAddress address = new EndpointAddress("http://abedigcuahsi-pc:80/FacetedSearch/MultiFacetedHISSvc.svc");
+            
+            FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new CUAHSIFacetedSearch.MultiFacetedHISSvcClient(binding, address);
+            ConfigureCUAHSIChannelFactory(cl);
+            return cl;
         }
 
         /// <summary>
@@ -88,9 +92,9 @@ namespace FacetedSearch3
             App.ProgressHandler.Progress(String.Empty, 0, "Initializing Faceted Search ... Please Wait");
             try
             {            
-                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                 {
-                    bool configed = false;
+                    /*bool configed = false;
                     try
                     {
                         ConfigureCUAHSIChannelFactory(cl);
@@ -99,13 +103,13 @@ namespace FacetedSearch3
                     catch (Exception ex)
                     {
                         MessageBox.Show(string.Format("Error configuring channel factory with message {0}, inner ex: {1}", ex.Message, ex.InnerException));
-                    }
+                    }*/
                     try
                     {
-                        if (configed) 
-                        {
-                            TopLevelFacets = cl.GetAllTypedOntologyElements().ToList();
-                        }                        
+                        // if (configed) 
+                        // {                            
+                            cl.BeginGetOntologyElements(LoadTotalFacetCollection_Complete, cl);
+                        // }                        
                     }
                     catch (Exception e)
                     {
@@ -122,6 +126,53 @@ namespace FacetedSearch3
 #endif
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);    
+        }
+        
+        private void LoadTotalFacetCollection_Complete(IAsyncResult result)
+        {            
+            try
+            {
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
+                {
+                    TopLevelFacets = cl.EndGetOntologyElements(result);
+                }
+
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        #region Initialize form with retrieved data
+                        if (InputsSufficientForFacetedSearch())
+                        {
+                            SpatialTemporalCommitted = true;
+                            RemoveDownStreamSearchFacetSpecifiers(0);        // remove all searchfacetspecifers
+                            ResetFacetFlowPanel();
+                            try
+                            {
+                                cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false, 
+                                    InitializeFacetedSearch_Complete, cl);
+                            }
+                            catch (Exception e)
+                            {
+#if DEBUG
+                                MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
+#else
+                MessageBox.Show("Error in transit layer. Please try again.");
+#endif
+                            }                            
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a spatial region to bound your search prior to initiating faceted search");
+                        }
+                        #endregion
+                    }));                                
+                }                    
+            }
+            catch (Exception e)
+            { 
+                MessageBox.Show(string.Format("Error initializing total list of ontology elements with message {0}, inner ex: {1}", e.Message, e.InnerException));  
+            }            
         }
 
         /// <summary>
@@ -151,37 +202,27 @@ namespace FacetedSearch3
         /// </summary>
         public void InitializeFacetedSearch()
         {
-            List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
-            if (InputsSufficientForFacetedSearch())
-            {
-                SpatialTemporalCommitted = true;
-                RemoveDownStreamSearchFacetSpecifiers(0);        // remove all searchfacetspecifers
-                ResetFacetFlowPanel();
-                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
-                {
-                    ConfigureCUAHSIChannelFactory(cl);                    
-                    try
-                    {
-                        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, false);
-                        MyRemainingFacets = env.OntologyElements;
-                        FacetFlowPanel.Enabled = true;
-                        FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));                        
-                    }
-                    catch (Exception e)
-                    {
-#if DEBUG                        
-                        MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
-#else
-                    MessageBox.Show("Error in transit layer. Please try again.");
-#endif
-                    }
-                }
+            LoadTotalFacetCollection();                        
+        }
 
-                ResizeSearchSpecifiers();
+        private void InitializeFacetedSearch_Complete(IAsyncResult result)
+        {
+            try
+            {                                                
+                FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState;
+                FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.EndGetOntologyElementsGivenConstraints(result);                
+                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                MyRemainingFacets = env.OntologyElements;                
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    FacetFlowPanel.Enabled = true;
+                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
+                    ResizeSearchSpecifiers();
+                }));                
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("Please select a spatial region to bound your search prior to initiating faceted search");                
+                MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
             }
         }
         
@@ -194,7 +235,7 @@ namespace FacetedSearch3
         {
 
             return (SrchExt != null);
-
+            #region currently inactive validation => TO-DO: Update given new Plug-in interface of HydroDesktop 1.3
             /*
             object areaParameter = null;
             if (App.AreaSettings.Polygons != null)
@@ -217,7 +258,7 @@ namespace FacetedSearch3
             }
             return true;
             */
-
+            #endregion
         }
 
         /// <summary>
@@ -260,32 +301,19 @@ namespace FacetedSearch3
         /// <param name="AllSelectedFacets"></param>
         public void InvokeNextButton(List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> AllSelectedFacets, int MyIndex)
         {
-            SelectedFacets = AllSelectedFacets;
-            List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+            SelectedFacets = AllSelectedFacets;            
             if (InputsSufficientForFacetedSearch())
             {
                 try
                 {
                     RemoveDownStreamSearchFacetSpecifiers(MyIndex + 1);
-                    SpatialTemporalCommitted = true;
-                    // SrchExt = SelectedShapes.Envelope.ToExtent();
-                    //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
+                    SpatialTemporalCommitted = true;                    
 
-                    using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
+                    using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
-                        ConfigureCUAHSIChannelFactory(cl);
-                        FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
-                        MyRemainingFacets = env.OntologyElements;
-
-                        if (IncludeSpatialResults == true)
-                        {
-                            PutReturnOnMap(env.Sites);
-                        }
-                    }                    
-            
-                    FacetFlowPanel.Enabled = true;
-                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
-                    ResizeSearchSpecifiers();
+                        cl.BeginGetOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults, InvokeNextButton_Complete, cl);
+                        // FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.GetTypedOntologyElementsGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);                                                
+                    }                                
                 }
                 catch (Exception e)
                 { 
@@ -302,14 +330,43 @@ namespace FacetedSearch3
             }
         }
 
+        private void InvokeNextButton_Complete(IAsyncResult result)
+        {
+            try
+            {
+                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = new CUAHSIFacetedSearch.OntologyEnvelope();
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
+                {                    
+                    env = cl.EndGetOntologyElementsGivenConstraints(result);
+                    MyRemainingFacets = env.OntologyElements;
+                }
+                
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    if (IncludeSpatialResults == true)
+                    {
+                        PutReturnOnMap(env.Sites);
+                    }
+
+                    FacetFlowPanel.Enabled = true;
+                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
+                    ResizeSearchSpecifiers();
+                }));                               
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(string.Format("Error completing Next request with message {0}, inner ex {1}", exc.Message, exc.InnerException));
+            }
+        }
+
         /// <summary>
         /// Executes search for SeriesCatalog
         /// </summary>
         /// <param name="AllSelectedFacets"></param>
         public void InvokeSearchButton(List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> AllSelectedFacets)
         {
-            SelectedFacets = AllSelectedFacets;
-            List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+            SelectedFacets = AllSelectedFacets;            
             if (InputsSufficientForFacetedSearch())
             {
                 try
@@ -318,13 +375,9 @@ namespace FacetedSearch3
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
                     //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
 
-                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
+                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
-                        ConfigureCUAHSIChannelFactory(cl);
-                        List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SearchRes = cl.ConductFacetedSearch(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX).OrderByDescending(r => r.ValueCount).ToList();
-
-                        PutReturnOnMap(SearchRes);
-                        // dataGridView1.DataSource = SearchRes;
+                        cl.BeginGetSeriesGivenConstraints(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, InvokeSearchButton_Complete, cl);                                                
                     }
                 }
                 catch (Exception e)
@@ -340,6 +393,31 @@ namespace FacetedSearch3
             {
                 MessageBox.Show("Please select a spatial region to bound your search prior to initiating faceted search");
             }
+        }
+
+        private void InvokeSearchButton_Complete(IAsyncResult result)
+        {
+            try
+            {
+                List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
+                List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SearchRes = new List<CUAHSIFacetedSearch.SeriesCatalogRecord>();
+                using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState)
+                {
+                    SearchRes = cl.EndGetSeriesGivenConstraints(result).OrderByDescending(r => r.ValueCount).ToList();                                  
+                }                
+
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    PutReturnOnMap(SearchRes);
+                    FacetFlowPanel.Enabled = true;
+                    FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
+                    ResizeSearchSpecifiers();
+                }));
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(string.Format("Error completing Search request with message {0}, inner ex {1}", exc.Message, exc.InnerException));
+            }                    
         }
 
         /// <summary>
@@ -359,7 +437,7 @@ namespace FacetedSearch3
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
                     string SQLRes;
                     //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
-                    using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
+                    using(FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
                         ConfigureCUAHSIChannelFactory(cl);
                         SQLRes = cl.GetSQLOfNextQuery(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
@@ -398,7 +476,7 @@ namespace FacetedSearch3
                     // SrchExt = SelectedShapes.Envelope.ToExtent();
                     string SQLRes;
                     //using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = new FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient())
-                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMulitFacetedHISSvcClient())
+                    using (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = GetMultiFacetedHISSvcClient())
                     {
                         ConfigureCUAHSIChannelFactory(cl);
                         SQLRes = cl.GetSQLOfSearchQuery(SelectedFacets, BeginDateTime, EndDateTime, SrchExt.MinY, SrchExt.MaxY, SrchExt.MinX, SrchExt.MaxX, IncludeSpatialResults);
@@ -492,72 +570,77 @@ namespace FacetedSearch3
         /// <param name="SeriesCatalogResults"></param>
         private void PutReturnOnMap(List<FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord> SeriesCatalogResults)
         {
-            ClearPointLayersFromMap();
-
-            // string shapeFileName = String.Format(@"{0}\{1}.shp", Settings.Instance.TempDirectory, "FacetedSearchResult");
             FeatureSet fs = new FeatureSet(FeatureType.Point);
-
-            fs.DataTable.Columns.Add(new DataColumn("ServiceCode", typeof(string)));
-            fs.DataTable.Columns.Add(new DataColumn("ServiceURL", typeof(string)));
-            fs.DataTable.Columns.Add(new DataColumn("SiteCode", typeof(string)));
-            fs.DataTable.Columns.Add(new DataColumn("SiteName", typeof(string))); //to improve display of labels and pop-up. shows a copy of SiteCode
-            fs.DataTable.Columns.Add(new DataColumn("VarCode", typeof(string)));
-            fs.DataTable.Columns.Add(new DataColumn("VarName", typeof(string))); //to improve display of labels and pop-up. shows a copy of VarCode
-            fs.DataTable.Columns.Add(new DataColumn("StartDate", typeof(DateTime)));
-            fs.DataTable.Columns.Add(new DataColumn("EndDate", typeof(DateTime)));
-            fs.DataTable.Columns.Add(new DataColumn("ValueCount", typeof(int)));
-
-            foreach (FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord o in SeriesCatalogResults)
+            try
             {
-                DotSpatial.Topology.Point p = new DotSpatial.Topology.Point(o.Longitude, o.Latitude);
-                IFeature f = fs.AddFeature(p);
-                f.DataRow.BeginEdit();                
-                f.DataRow["ServiceCode"] = o.ServCode;
-                f.DataRow["ServiceURL"] = o.ServURL;
-                f.DataRow["SiteCode"] = o.SiteCode;
-                f.DataRow["SiteName"] = o.SiteCode; //todo return site name by service
-                f.DataRow["VarCode"] = o.VarCode;
-                f.DataRow["VarName"] = o.VarCode; //todo return variable name by service
-                f.DataRow["StartDate"] = o.StartDate;
-                f.DataRow["EndDate"] = o.EndDate;
-                f.DataRow["ValueCount"] = o.ValueCount;
-                f.DataRow.EndEdit();
-            }
+                ClearPointLayersFromMap();
 
-            //set the projection
-            fs.Projection = 
-                   new ProjectionInfo();
-            fs.ProjectionString = "+proj=longlat +ellps=WGS84 +no_defs";
-               
-            // the faceted search shapefile is saved to the current project directory
-            // preferably this should be in the current project's directory
-            // if the current project directory doesn't exist then use a temp folder
-            string facetedSearchShapefileFullPath;
-            if (App.SerializationManager.CurrentProjectDirectory == null)
+                // string shapeFileName = String.Format(@"{0}\{1}.shp", Settings.Instance.TempDirectory, "FacetedSearchResult");                
+
+                fs.DataTable.Columns.Add(new DataColumn("ServiceCode", typeof(string)));
+                fs.DataTable.Columns.Add(new DataColumn("ServiceURL", typeof(string)));
+                fs.DataTable.Columns.Add(new DataColumn("SiteCode", typeof(string)));
+                fs.DataTable.Columns.Add(new DataColumn("SiteName", typeof(string))); //to improve display of labels and pop-up. shows a copy of SiteCode
+                fs.DataTable.Columns.Add(new DataColumn("VarCode", typeof(string)));
+                fs.DataTable.Columns.Add(new DataColumn("VarName", typeof(string))); //to improve display of labels and pop-up. shows a copy of VarCode
+                fs.DataTable.Columns.Add(new DataColumn("StartDate", typeof(DateTime)));
+                fs.DataTable.Columns.Add(new DataColumn("EndDate", typeof(DateTime)));
+                fs.DataTable.Columns.Add(new DataColumn("ValueCount", typeof(int)));
+
+                foreach (FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord o in SeriesCatalogResults)
+                {
+                    DotSpatial.Topology.Point p = new DotSpatial.Topology.Point(o.Longitude, o.Latitude);
+                    IFeature f = fs.AddFeature(p);
+                    f.DataRow.BeginEdit();
+                    f.DataRow["ServiceCode"] = o.ServCode;
+                    f.DataRow["ServiceURL"] = o.ServURL;
+                    f.DataRow["SiteCode"] = o.SiteCode;
+                    f.DataRow["SiteName"] = o.SiteName;
+                    f.DataRow["VarCode"] = o.VarCode;
+                    f.DataRow["VarName"] = o.VariableName;
+                    f.DataRow["StartDate"] = o.StartDate;
+                    f.DataRow["EndDate"] = o.EndDate;
+                    f.DataRow["ValueCount"] = o.ValueCount;
+                    f.DataRow.EndEdit();
+                }
+
+                //set the projection
+                fs.Projection =
+                       new ProjectionInfo();
+                fs.ProjectionString = "+proj=longlat +ellps=WGS84 +no_defs";
+
+                // the faceted search shapefile is saved to the current project directory
+                // preferably this should be in the current project's directory
+                // if the current project directory doesn't exist then use a temp folder
+                string facetedSearchShapefileFullPath;
+                if (App.SerializationManager.CurrentProjectDirectory == null)
+                {
+                    string hdTempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "HydroDesktop");
+                    facetedSearchShapefileFullPath = System.IO.Path.Combine(hdTempPath, FacetedShapeFileName);
+                }
+                else
+                {
+                    facetedSearchShapefileFullPath = System.IO.Path.Combine(App.SerializationManager.CurrentProjectDirectory, FacetedShapeFileName);
+                }
+                fs.Filename = facetedSearchShapefileFullPath;
+                fs.Save();
+
+                // implement threshold for adding to map directly or via shapefile on disk?
+                if (SeriesCatalogResults.Count > 25000)
+                {
+                }
+                else
+                {
+                }
+
+                // need to use the full path (relative path didn't work when deploying
+                // the plugin as a package)
+                App.Map.AddLayer(facetedSearchShapefileFullPath);
+            }
+            finally
             {
-                string hdTempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "HydroDesktop");
-                facetedSearchShapefileFullPath = System.IO.Path.Combine(hdTempPath, FacetedShapeFileName);
-            }
-            else
-            {
-                facetedSearchShapefileFullPath = System.IO.Path.Combine(App.SerializationManager.CurrentProjectDirectory, FacetedShapeFileName);
-            }
-            fs.Filename = facetedSearchShapefileFullPath;
-            fs.Save();
-
-            // implement threshold for adding to map directly or via shapefile on disk?
-            if (SeriesCatalogResults.Count > 25000)
-            {
-            }
-            else
-            { 
-            }
-
-            // need to use the full path (relative path didn't work when deploying
-            // the plugin as a package)
-            App.Map.AddLayer(facetedSearchShapefileFullPath);
-
-            fs.Dispose();
+                fs.Dispose();
+            }                        
 
             //add featureSet to the map
             // IMapLayer newLayer = MapArgs.Map.Layers.Add(shapeFileName);
