@@ -5,11 +5,11 @@ using System.Text;
 using DotSpatial.Data;
 using System.Net;
 using System.Windows.Forms;
-using Jayrock.Json;
-using Jayrock.Json.Conversion;
+using Newtonsoft.Json;
 using DotSpatial.Topology;
 using System.Data;
 using DotSpatial.Projections;
+using Newtonsoft.Json.Linq;
 
 namespace HydroDesktop.ArcGisOnline
 {
@@ -36,12 +36,12 @@ namespace HydroDesktop.ArcGisOnline
                     int len = response.Length;
 
                     //Declare Json Elements
-                    JsonObject mainObj = new JsonObject();
-                    JsonObject outputObj = new JsonObject();
-                    JsonArray shapeObj = new JsonArray();
+                    JObject mainObj = new JObject();
+                    JObject outputObj = new JObject();
+                    JArray shapeObj = new JArray();
 
-                    mainObj = JsonConvert.Import(response) as JsonObject;
-                    shapeObj = mainObj["features"] as JsonArray;
+                    mainObj = JObject.Parse(response);
+                    shapeObj = mainObj["features"] as JArray;
 
                     //initialize feature set
                     FeatureSet fs = new FeatureSet(FeatureType.Point);
@@ -57,9 +57,9 @@ namespace HydroDesktop.ArcGisOnline
                     fs.DataTable.Columns.Add(new DataColumn("StartDate", typeof(string)));
                     fs.DataTable.Columns.Add(new DataColumn("EndDate", typeof(string)));
 
-                    foreach (JsonObject feature in shapeObj)
+                    foreach (JObject feature in shapeObj)
                     {
-                        JsonObject atrList = feature["attributes"] as JsonObject;
+                        JObject atrList = feature["attributes"] as JObject;
 
                         double latitude = Convert.ToDouble(atrList["Latitude"]);
                         double longitude = Convert.ToDouble(atrList["Longitude"]);
