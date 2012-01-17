@@ -42,6 +42,9 @@ namespace CUAHSI.HIS
         public Dictionary<int, string> series2link;
         private Dictionary<string, List<DateTime>> _timestep = new Dictionary<string,List<DateTime>>();
 
+        private bool getStartTime = true;
+        private double _start = 0;
+
         //private DbOperations _db;
 
         #region ILinkableComponent Members
@@ -129,20 +132,20 @@ namespace CUAHSI.HIS
                 // determine the timestep using the first two values (assumes uniform timstep)
                 double timestep = _timestep[theme.Name][1].Subtract(_timestep[theme.Name][0]).TotalSeconds;
 
-                // grab the existing data and save with new time
-                //List<DataValue> dv = new List<DataValue>();
+                // change the data value times back 1 time step 
+                // this is necessary b/c each model advances it's time before dbwriter gets the data
                 for (int i = 0; i <= series.ValueCount - 1; i++)
                 {
-                    //dv.Add(series.DataValueList[i]);
-                    //dv[i].LocalDateTime = dv[i].LocalDateTime.AddSeconds(-timestep);
-                    //dv[i].DateTimeUTC = dv[i].DateTimeUTC.AddSeconds(-timestep);
-                    series.DataValueList[i].DateTimeUTC = series.DataValueList[i].DateTimeUTC.AddSeconds(-timestep);
-                    series.DataValueList[i].LocalDateTime = series.DataValueList[i].LocalDateTime.AddSeconds(-timestep);
-                }
 
-                // replace old values
-                //for (int i = 0; i <= series.ValueCount - 1; i++)
-                //    series.DataValueList[i] = dv[i];
+                    // subtract 1 for the timestep advancement
+                    // subtract 1 for the 1-timestep delay that OpenMI creates
+                    series.DataValueList[i].DateTimeUTC = series.DataValueList[i].DateTimeUTC.AddSeconds(-2*timestep);
+                    series.DataValueList[i].LocalDateTime = series.DataValueList[i].LocalDateTime.AddSeconds(-2*timestep);
+
+                    // remove data value if less than start
+                    if (series.DataValueList[i].LocalDateTime < CalendarConverter.ModifiedJulian2Gregorian(_start).AddSeconds(-timestep))
+                        series.DataValueList[i].Value = series.GetNoDataValue();
+                }
 
                 //-- save data series
                 db.SaveSeriesAsCopy(series, theme);
@@ -439,10 +442,13 @@ namespace CUAHSI.HIS
             
             if (anEvent.Type == EventType.DataChanged)
             {
-               
 
                 //get the current time
                 TimeStamp ts = (TimeStamp)anEvent.SimulationTime;
+
+                // get the simulation start time
+                if (getStartTime)
+                    _start = ts.ModifiedJulianDay; getStartTime = false;
 
                 //get values
                 ScalarSet vals = new ScalarSet();

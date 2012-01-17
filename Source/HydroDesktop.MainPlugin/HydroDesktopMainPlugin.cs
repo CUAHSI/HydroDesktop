@@ -119,7 +119,7 @@
 
         private void ShowSaveProjectDialog()
         {
-            using (var dlg = new SaveFileDialog { Filter = SerializationManager.SaveDialogFilterText, SupportMultiDottedExtensions = true })
+            using (var dlg = new SaveFileDialog { Filter = App.SerializationManager.SaveDialogFilterText, SupportMultiDottedExtensions = true })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
@@ -156,7 +156,15 @@
         void mainForm_Shown(object sender, EventArgs e)
         {
             //displays the initial welcome screen
-            ShowWelcomeScreen();   
+            if (string.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
+            {
+                ShowWelcomeScreen();
+            }
+            else
+            {
+                //do not show the welcome screen if a project is being opened
+                SerializationManager_Deserializing(null, null);
+            }
         }
 
         #endregion
@@ -201,6 +209,8 @@
             {
                 latLongDisplay.MapProjectionString = App.Map.Projection.ToEsriString();
             }
+
+            //disable progress reporting for the layers
         }
 
 
@@ -224,7 +234,7 @@
             //activate the map panel
             App.DockManager.SelectPanel("kMap");
             App.DockManager.SelectPanel("kLegend");
-            
+
             welcomeScreenForm = new WelcomeScreen(myProjectManager);
             welcomeScreenForm.StartPosition = FormStartPosition.CenterScreen;
             welcomeScreenForm.TopMost = true;

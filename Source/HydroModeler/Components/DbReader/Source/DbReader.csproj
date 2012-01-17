@@ -73,11 +73,6 @@
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Buffer, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
@@ -132,6 +127,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Utilities\OpenMI\sdk\Buffer\Oatc.OpenMI.Sdk.Buffer.csproj">
+      <Project>{C9844E74-074D-46FA-AEF6-371B3481468B}</Project>
+      <Name>Oatc.OpenMI.Sdk.Buffer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
