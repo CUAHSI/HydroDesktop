@@ -166,6 +166,11 @@
     <None Include="Resources\timeSeries.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help.csproj">
       <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
       <Name>HydroDesktop.Help</Name>

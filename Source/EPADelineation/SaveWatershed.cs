@@ -11,8 +11,8 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using HydroDesktop.Configuration;
 using HydroDesktop.Help;
+using Hydrodesktop.Common;
 
 namespace EPADelineation
 {
@@ -177,7 +177,7 @@ namespace EPADelineation
 
             Application.DoEvents();
 
-            string folderpath = Settings.Instance.CurrentProjectDirectory;
+            string folderpath = _mapArgs.SerializationManager.CurrentProjectDirectory;
             string delineationpath = Path.Combine(folderpath, "Delineation");
             var filename = new string[3];
             filename[0] = _wshedpoint + ".shp";
@@ -577,7 +577,7 @@ namespace EPADelineation
         private int GetPositionToInsertWatershedLayer()
         {
             // Watershed layers must be inserted below the "Data Sites" group
-            const string dataSitesName = "\"Data Sites\"";
+            var dataSitesName = LayerConstants.SearchGroupName;
 
             for (int i = 0; i < _mapArgs.Map.Layers.Count; i++)
             {

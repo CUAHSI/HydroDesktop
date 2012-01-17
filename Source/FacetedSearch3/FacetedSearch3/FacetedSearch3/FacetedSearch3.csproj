@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Binaries\Plugins\FacetedSearch3\</OutputPath>
+    <OutputPath>C:\Users\Alex Bedig\AppData\Roaming\HydroDesktop.exe\Extensions\Packages\FacetedSearch3.1.3.250\lib\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,31 +34,24 @@
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\..\Binaries\log4net.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -160,7 +153,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">
@@ -236,6 +231,11 @@
     <None Include="Resources\draw_box_32_a.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISService.wsdl" />
+    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc1.disco" />
     <None Include="Service References\CUAHSIFacetedSearch\FacetedSearch3.CUAHSIFacetedSearch.OntologyElement.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -248,18 +248,13 @@
     <None Include="Service References\CUAHSIFacetedSearch\FacetedSearch3.CUAHSIFacetedSearch.SeriesCatalogRecord.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc.disco" />
-    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISService1.wsdl" />
-    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc4.xsd">
+    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc41.xsd">
+    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc42.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc43.xsd">
+    <None Include="Service References\CUAHSIFacetedSearch\MultiFacetedHISSvc3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\CUAHSIFacetedSearch\Reference.svcmap">

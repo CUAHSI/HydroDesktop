@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DotSpatial.Controls;
-using DotSpatial.Data;
 using DotSpatial.Symbology;
 using System.Linq;
 
@@ -46,7 +44,7 @@ namespace Search3.Searching
         /// </summary>
         public void Create()
         {
-            if (_searchResult.ResultItems.Count() == 0) return;
+            if (!_searchResult.ResultItems.Any()) return;
 
             var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, _searchGroupName);
 
@@ -91,8 +89,8 @@ namespace Search3.Searching
 
             // Get Title of web-server
             var webService = Settings.SearchSettings.Instance.WebServicesSettings.WebServices.FirstOrDefault(
-                ws => ws.ServiceCode == item.SeriesDataCart.ServCode);
-            var defaulLegendText = webService != null? webService.Title : item.SeriesDataCart.ServCode;
+                ws => ws.ServiceCode == item.ServiceCode);
+            var defaulLegendText = webService != null? webService.Title : item.ServiceCode;
 
             // Build legend text 
             var legendText = defaulLegendText;

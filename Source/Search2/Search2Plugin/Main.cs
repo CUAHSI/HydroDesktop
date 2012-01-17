@@ -7,6 +7,7 @@ using DotSpatial.Data;
 using HydroDesktop.Search.Extensions;
 using System.Collections.Generic;
 using DotSpatial.Controls.Docking;
+using Hydrodesktop.Common;
 
 namespace HydroDesktop.Search
 {
@@ -172,7 +173,7 @@ namespace HydroDesktop.Search
             //move the search result layer to the correct folder
             string newDirectory = App.SerializationManager.CurrentProjectDirectory;
             //check if there are search results layers
-            string searchGroupName = Global.SEARCH_RESULT_LAYER_NAME;
+            string searchGroupName = LayerConstants.SearchGroupName;
             //find the search result group
             IMapGroup grp = App.Map.MapFrame.GetAllGroups().Find(p => p.LegendText == searchGroupName);
             if (grp == null) return; //no search result groups

@@ -25,6 +25,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         #endregion
 
+        /// <summary>
+        /// Creates a new instance of a WaterOneFlow client for accessing REST services
+        /// </summary>
         public RestWaterOneFlowClient()
         {
             _parser = new WaterOneFlow10Parser();
@@ -55,8 +58,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Given the site code get the list of Series available at the site
         /// </summary>
-        /// <param name="siteCode">The full site code in [NetworkPrefix:SiteCode] format</param>
-        /// <returns></returns>
+        /// <param name="fullSiteCode">The full site code in [NetworkPrefix:SiteCode] format</param>
+        /// <returns>The SiteInfo series information</returns>
         public IList<SeriesMetadata> GetSiteInfo(string fullSiteCode)
         {
             string xmlFile = GetSiteInfoXML(fullSiteCode);

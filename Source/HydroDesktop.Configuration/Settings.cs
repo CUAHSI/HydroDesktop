@@ -130,7 +130,7 @@ namespace HydroDesktop.Configuration
                 string oldValue = _metadataCacheConnectionString;
                 _metadataCacheConnectionString = value;
                 if (oldValue != value)
-                    OnDatabaseChanged();
+                    OnMetadataCacheChanged();
             }
         }
 
@@ -304,8 +304,9 @@ namespace HydroDesktop.Configuration
 
         private void OnDatabaseChanged()
         {
-            if (DatabaseChanged != null)
-                DatabaseChanged(this, new EventArgs());
+            var handler = DatabaseChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -316,8 +317,9 @@ namespace HydroDesktop.Configuration
 
         private void OnMetadataCacheChanged()
         {
-            if (MetadataCacheChanged != null)
-                MetadataCacheChanged(this, new EventArgs());
+            var handler = MetadataCacheChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
 
         #endregion Events

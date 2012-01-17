@@ -9,7 +9,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Auxiliary data reader class
     /// </summary>
-    public static class DataReader
+    static class DataReader
     {
         /// <summary>
         /// Convert object in data reader result to null or string
