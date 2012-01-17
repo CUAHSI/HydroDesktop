@@ -14,6 +14,7 @@ using HydroDesktop.WebServices.WaterOneFlow;
 using HydroDesktop.MetadataFetcher;
 using System.Threading;
 using System.IO;
+using System.Net;
 
 namespace HydroDesktop.MetadataFetcher.Forms
 {
@@ -810,7 +811,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 			MetadataCacheManagerSQL cacheManager = DatabaseOperations.GetCacheManager();
 
 			StringBuilder errors = new StringBuilder ();  // Keep track of errors and report them at the end
-
+            string err = "error:";
 			foreach ( string serviceUrl in serviceUrls )
 			{
 				// Check for cancel
@@ -901,9 +902,14 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				{
 					siteList = waterOneFlowClient.GetSites ();
 				}
-				catch ( Exception ex )
+				catch ( WebException ex )
 				{
-					// Flag the error and continue to the next service
+
+                    StreamReader sr = new StreamReader(ex.Response.GetResponseStream());
+ 
+                        err += sr.ReadToEnd();
+                    
+                    // Flag the error and continue to the next service
 					errors.AppendLine ( "Could not get site list from service with URL: " + serviceUrl + ".\n" + ex.Message + "\n\n" );
 					continue;
 				}
@@ -930,6 +936,8 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				double north = -90;
 				double south = 90;
 
+                string errorResponse = "error";
+
 				foreach ( Site site in siteList )
 				{
 					// Check for cancel
@@ -948,22 +956,37 @@ namespace HydroDesktop.MetadataFetcher.Forms
 					// Get series for this site
 					IList<SeriesMetadata> currentSeriesList;
 
-					try
-					{
-						currentSeriesList = waterOneFlowClient.GetSiteInfo ( site.Code );
-					}
-					catch ( Exception ex )
-					{
-						// Flag the error and continue to the next site
-						siteErrorCount++;
+                    try
+                    {
+                        currentSeriesList = waterOneFlowClient.GetSiteInfo(site.Code);
+                    }
+                    catch (WebException ex)
+                    {
+                        // Flag the error and continue to the next site
+                        siteErrorCount++;
 
-						if ( siteErrorCount == 1 )
-						{
-							firstSiteError = ex.Message;
-						}
+                        if (siteErrorCount == 1)
+                        {
+                            firstSiteError = ex.Message;
+                        }
 
-						continue;
-					}
+                        StreamReader rdr = new StreamReader(ex.Response.GetResponseStream());
+                        err += rdr.ReadToEnd();
+
+                        continue;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Flag the error and continue to the next site
+                        siteErrorCount++;
+
+                        if (siteErrorCount == 1)
+                        {
+                            firstSiteError = ex.Message;
+                        }
+
+                        continue;
+                    }
 
 					// Update service extent 
 					if ( site.Latitude > north )

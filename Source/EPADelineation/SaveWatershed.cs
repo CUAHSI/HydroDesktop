@@ -178,6 +178,14 @@ namespace EPADelineation
             Application.DoEvents();
 
             string folderpath = _mapArgs.SerializationManager.CurrentProjectDirectory;
+
+            if (string.IsNullOrEmpty(folderpath))
+            {
+                folderpath = Path.Combine(Path.GetTempPath(), "HydroDesktop");
+                if (!Directory.Exists(folderpath))
+                    Directory.CreateDirectory(folderpath);
+            }
+
             string delineationpath = Path.Combine(folderpath, "Delineation");
             var filename = new string[3];
             filename[0] = _wshedpoint + ".shp";
