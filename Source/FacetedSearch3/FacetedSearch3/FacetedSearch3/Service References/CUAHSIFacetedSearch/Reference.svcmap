@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3e8b274d-7886-4434-9d6a-2879acbecc64" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4a52aa15-10bf-4595-8343-ff12eb47755b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -8,9 +8,7 @@
     <GenerateInternalTypes>false</GenerateInternalTypes>
     <GenerateMessageContracts>false</GenerateMessageContracts>
     <NamespaceMappings />
-    <CollectionMappings>
-      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
-    </CollectionMappings>
+    <CollectionMappings />
     <GenerateSerializableTypes>true</GenerateSerializableTypes>
     <Serializer>Auto</Serializer>
     <UseSerializerForFaults>true</UseSerializerForFaults>
@@ -20,15 +18,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://abedigcuahsi-pc:80/FacetedSearch/MultiFacetedHISSvc.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MultiFacetedHISSvc1.disco" MetadataType="Disco" ID="c036d363-1fcc-479d-8298-ea673a101e76" SourceId="1" SourceUrl="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?disco" />
-    <MetadataFile FileName="MultiFacetedHISSvc.xsd" MetadataType="Schema" ID="fa3d47ae-c6c7-440c-877c-45f7a40251e6" SourceId="1" SourceUrl="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd3" />
-    <MetadataFile FileName="MultiFacetedHISService.wsdl" MetadataType="Wsdl" ID="6c926a8a-2b0d-4b2f-994e-2a182344c237" SourceId="1" SourceUrl="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?wsdl" />
-    <MetadataFile FileName="MultiFacetedHISSvc1.xsd" MetadataType="Schema" ID="70a43b5a-5674-47e1-9cff-16000361cf03" SourceId="1" SourceUrl="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd1" />
-    <MetadataFile FileName="MultiFacetedHISSvc2.xsd" MetadataType="Schema" ID="9865dd16-29cc-4db2-b980-e6c84ba06543" SourceId="1" SourceUrl="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd2" />
-    <MetadataFile FileName="MultiFacetedHISSvc3.xsd" MetadataType="Schema" ID="8d154467-9e4b-4f3e-a2df-53223add3386" SourceId="1" SourceUrl="http://abedigcuahsi-pc/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd0" />
+    <MetadataFile FileName="MultiFacetedHISService.wsdl" MetadataType="Wsdl" ID="e365d840-3680-4281-aa8b-7f1557dfec10" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?wsdl" />
+    <MetadataFile FileName="MultiFacetedHISSvc.xsd" MetadataType="Schema" ID="677b24d9-d454-4aa9-82a9-3efce2c4d076" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd1" />
+    <MetadataFile FileName="MultiFacetedHISSvc1.xsd" MetadataType="Schema" ID="a0fa35b3-8f84-48fe-b730-8ef549317d3b" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd2" />
+    <MetadataFile FileName="MultiFacetedHISSvc2.xsd" MetadataType="Schema" ID="07b10544-2bd3-4e02-bb00-b7973abcb08a" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd3" />
+    <MetadataFile FileName="MultiFacetedHISSvc3.xsd" MetadataType="Schema" ID="3803a454-065f-42e1-8f01-119dd4759249" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd0" />
+    <MetadataFile FileName="MultiFacetedHISSvc.disco" MetadataType="Disco" ID="e01353bf-5752-44d2-a29d-a3ea068f2cdd" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
