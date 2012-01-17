@@ -15,7 +15,7 @@ namespace HydroDesktop.Database
 
         #endregion
 
-        #region Singletone implementation
+        #region Constructors
 
         private RepositoryFactory()
         {
@@ -23,16 +23,16 @@ namespace HydroDesktop.Database
 
             AddRepoCreator<IRepositoryManager>(
                 new RepositoryCreator
-                    {
-                        CreatorByConnectionString = (dbType, connStr) => new RepositoryManagerSQL(dbType, connStr),
-                        CreatorByDbOperations = dbOp => new RepositoryManagerSQL(dbOp)
-                    });
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new RepositoryManagerSQL(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new RepositoryManagerSQL(dbOp)
+                });
             AddRepoCreator<IDataSeriesRepository>(
                 new RepositoryCreator
-                    {
-                        CreatorByConnectionString = (dbType, connStr) => new DataSeriesRepository(dbType, connStr),
-                        CreatorByDbOperations = dbOp => new DataSeriesRepository(dbOp)
-                    });
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new DataSeriesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new DataSeriesRepository(dbOp)
+                });
             AddRepoCreator<IDataThemesRepository>(
                 new RepositoryCreator
                 {
@@ -40,12 +40,28 @@ namespace HydroDesktop.Database
                     CreatorByDbOperations = dbOp => new DataThemesRepository(dbOp)
                 });
             AddRepoCreator<IMethodsRepository>(
-               new RepositoryCreator
-               {
-                   CreatorByConnectionString = (dbType, connStr) => new MethodsRepository(dbType, connStr),
-                   CreatorByDbOperations = dbOp => new MethodsRepository(dbOp)
-               });
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new MethodsRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new MethodsRepository(dbOp)
+                });
+            AddRepoCreator<IVariablesRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new VariablesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new VariablesRepository(dbOp)
+                });
+            AddRepoCreator<IUnitsRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new UnitsRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new UnitsRepository(dbOp)
+                });
         }
+
+        #endregion
+
+        #region Singletone implementation
 
         private static readonly Lazy<RepositoryFactory> _instance = new Lazy<RepositoryFactory>(() => new RepositoryFactory(), true);
         /// <summary>
@@ -87,7 +103,7 @@ namespace HydroDesktop.Database
         /// </summary>
         /// <param name="dbOperations">The DbOperations object for handling the database</param>
         /// <returns>Instance of <see cref="T"/></returns>
-        public T Get<T>(DbOperations dbOperations)
+        public T Get<T>(IHydroDbOperations dbOperations)
         {
             RepositoryCreator repoCreator;
             if (!_repositoryCreators.TryGetValue(typeof(T), out repoCreator))
@@ -119,7 +135,7 @@ namespace HydroDesktop.Database
         private class RepositoryCreator
         {
             public Func<DatabaseTypes, string, object> CreatorByConnectionString { get; set; }
-            public Func<DbOperations, object> CreatorByDbOperations { get; set; }
+            public Func<IHydroDbOperations, object> CreatorByDbOperations { get; set; }
 
         }
 

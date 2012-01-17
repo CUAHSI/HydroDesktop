@@ -9,7 +9,7 @@ namespace HydroDesktop.Database
     {
         #region Fields
 
-        private readonly DbOperations _db;
+        private readonly IHydroDbOperations _db;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace HydroDesktop.Database
         /// Creates a new BaseRepository associated with the specified database
         /// </summary>
         /// <param name="db">The DbOperations object for handling the database</param>
-        protected BaseRepository(DbOperations db)
+        protected BaseRepository(IHydroDbOperations db)
         {
             //if it's a SQLite database - check if DB file exists
             if (db.DatabaseType == DatabaseTypes.SQLite)

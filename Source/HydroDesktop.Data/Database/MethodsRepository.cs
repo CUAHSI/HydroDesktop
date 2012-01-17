@@ -17,7 +17,8 @@ namespace HydroDesktop.Database
         {
         }
 
-        public MethodsRepository(DbOperations db) : base(db)
+        public MethodsRepository(IHydroDbOperations db)
+            : base(db)
         {
         }
 

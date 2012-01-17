@@ -80,6 +80,8 @@
     <Compile Include="Database\MethodsRepository.cs" />
     <Compile Include="Database\RepositoryFactory.cs" />
     <Compile Include="Database\RepositoryManagerSQL.cs" />
+    <Compile Include="Database\UnitsRepository.cs" />
+    <Compile Include="Database\VariablesRepository.cs" />
     <Compile Include="ImportExport\CsvFileParser.cs" />
     <Compile Include="ImportExport\CsvStreamReader.cs" />
     <Compile Include="ImportExport\DelimitedFormatOptions.cs" />
