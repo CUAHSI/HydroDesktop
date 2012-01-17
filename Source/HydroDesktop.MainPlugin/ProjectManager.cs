@@ -6,7 +6,6 @@ using DotSpatial.Controls;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
-//using NDepend.Helpers.FileDirectoryPath;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
 using Hydrodesktop.Common;
@@ -126,6 +125,24 @@ namespace HydroDesktop.Main
             App.ProgressHandler.Progress("Opening Project", 0, "Opening Project");
             App.SerializationManager.OpenProject(projectFileName);
             App.ProgressHandler.Progress("Project opened", 0, "");
+
+            //disable excessive progress reporting
+            DisableProgressReportingForLayers();
+        }
+
+        private void DisableProgressReportingForLayers()
+        {
+            foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
+            {
+                layer.ProgressHandler = null;
+                
+                MapPolygonLayer polyLay = layer as MapPolygonLayer;
+                if (polyLay != null)
+                {
+                    polyLay.ProgressReportingEnabled = false;
+                }
+            }
+            App.Map.ProgressHandler = null;
         }
 
         public void OpeningProject()
