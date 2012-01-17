@@ -18,20 +18,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Binaries\Plugins\DroughtAnalysis\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Binaries\Plugins\DroughtAnalysis\DroughtAnalysis.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Plugins\DroughtAnalysis.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Binaries\Plugins\DroughtAnalysis\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Binaries\Plugins\DroughtAnalysis\DroughtAnalysis.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Plugins\DroughtAnalysis.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">

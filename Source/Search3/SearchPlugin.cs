@@ -242,6 +242,7 @@ namespace Search3
                 rbKeyword.Enabled = false;
                 rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
             }
+
             // Populate items by keywords
             PopulateKeywords();
 
@@ -594,6 +595,8 @@ namespace Search3
             // Populate items by keywords
             rbKeyword.Items.Clear();
             rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
+
+            rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
         }
 
         void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
