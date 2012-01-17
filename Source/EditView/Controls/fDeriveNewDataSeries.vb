@@ -49,7 +49,7 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub FillMethods()
-        Dim repo = RepositoryFactory.Instance.CreateMethodsRepository(dbTools)
+        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
 
         ' Check for Derived method 
         Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
@@ -569,7 +569,7 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub SetDefaultMethods()
-        Dim repo = RepositoryFactory.Instance.CreateMethodsRepository(dbTools)
+        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
         Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
         ddlMethods.SelectedValue = derivedMethod
     End Sub

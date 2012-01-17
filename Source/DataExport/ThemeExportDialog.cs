@@ -10,6 +10,7 @@ using System.Linq;
 
 using HydroDesktop.Database;
 using HydroDesktop.Help;
+using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.ExportToCSV
 {
@@ -54,7 +55,7 @@ namespace HydroDesktop.ExportToCSV
             Cursor = Cursors.WaitCursor;
 
             //populate list box with list of themes
-            var repository = RepositoryFactory.Instance.CreateDataThemesRepository(_dboperation);
+            var repository = RepositoryFactory.Instance.Get <IDataThemesRepository>(_dboperation);
             var dtThemes = repository.GetThemesForAllSeries();
 
             clbThemes.Items.Clear();
@@ -411,7 +412,7 @@ namespace HydroDesktop.ExportToCSV
 
             // Construct DataTable of all the series in the selected theme
             var themeIds = (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
-            var repository = RepositoryFactory.Instance.CreateDataSeriesRepository(_dboperation);
+            var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_dboperation);
             var dtSeries = repository.GetSeriesIDsWithNoDataValueTable(themeIds);
 
             var checkNoData = chkNodata.Checked;
