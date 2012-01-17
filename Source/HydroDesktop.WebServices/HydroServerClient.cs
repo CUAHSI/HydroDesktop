@@ -202,10 +202,11 @@ namespace HydroDesktop.WebServices
 
 		public IList<DataServiceInfo> GetWaterOneFlowServices ()
 		{
-			string result = (string)CallWebMethod ( "GetWaterOneFlowServices", null );
+			//string result = (string)CallWebMethod ( "GetWaterOneFlowServices", null );
 
-			List<DataServiceInfo> resultList = (List<DataServiceInfo>)ParseGetWaterOneFlowServicesResponse ( result );
-			return resultList;
+			//List<DataServiceInfo> resultList = (List<DataServiceInfo>)ParseGetWaterOneFlowServicesResponse ( result );
+			//return resultList;
+            return null;
 		}
 
 		#endregion

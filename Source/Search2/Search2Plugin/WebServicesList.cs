@@ -7,13 +7,12 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using log4net;
 
 namespace HydroDesktop.Search
 {
     public class WebServicesList
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string SERVICES_XML_NAME = Properties.Settings.Default.WebServicesFileName;
         private IHISCentralSearcher _searcher;
@@ -243,7 +242,7 @@ namespace HydroDesktop.Search
                     }
                     catch (FileNotFoundException ex)
                     {
-                        log.Error("HIS central GetWebServices Fail to write a file" + url + " " + ex.Message);
+                        //log.Error("HIS central GetWebServices Fail to write a file" + url + " " + ex.Message);
                     }
                     if (File.Exists(WebServicesFilename))
                     {
@@ -252,7 +251,7 @@ namespace HydroDesktop.Search
                 }
                 catch
                 {
-                    log.Error("HIS central GetWebServices Failed " + url);
+                    //log.Error("HIS central GetWebServices Failed " + url);
                     continue;
                 }
             }

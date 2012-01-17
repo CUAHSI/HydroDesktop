@@ -116,6 +116,24 @@ namespace HydroDesktop.WebServices.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.cuahsi.org/his/1.0/ws/.
+        /// </summary>
+        internal static string CUAHSI_1_0_Namespace {
+            get {
+                return ResourceManager.GetString("CUAHSI_1_0_Namespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.cuahsi.org/his/1.1/ws/.
+        /// </summary>
+        internal static string CUAHSI_1_1_Namespace {
+            get {
+                return ResourceManager.GetString("CUAHSI_1_1_Namespace", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap czo_ariz {
             get {
                 object obj = ResourceManager.GetObject("czo_ariz", resourceCulture);

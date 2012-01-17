@@ -15,7 +15,6 @@ using DotSpatial.Symbology;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
 using HydroDesktop.Search.Extensions;
-using log4net;
 using System.Drawing;
 
 
@@ -23,7 +22,7 @@ namespace HydroDesktop.Search
 {
     public partial class SearchControl : UserControl
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Private Member Variables
 
@@ -323,7 +322,7 @@ namespace HydroDesktop.Search
         private void Populate_xmlcombo()
         {
             string fname = Application.StartupPath + "\\q_save.xml";
-            log.Debug("Populate_xmlcombo: Reading  file " + fname);
+            //log.Debug("Populate_xmlcombo: Reading  file " + fname);
             XmlDocument doc = new XmlDocument();
 
             try
@@ -336,7 +335,7 @@ namespace HydroDesktop.Search
             }
             catch (Exception ex)
             {
-                log.Error("Populate_xmlcombo: Reading  file " + fname + "execption " + ex.Message);
+                //log.Error("Populate_xmlcombo: Reading  file " + fname + "execption " + ex.Message);
                 //WriteError ( ex.ToString (), "Previous searches not loaded" );
                 doc = CreateNewSearchFile(fname);
             }
@@ -354,7 +353,7 @@ namespace HydroDesktop.Search
         public XmlDocument CreateNewSearchFile(string fname)
         {
             XmlDocument doc = new XmlDocument(); ;
-            log.Debug("Populate_xmlcombo: new search file " + fname);
+            //log.Debug("Populate_xmlcombo: new search file " + fname);
             //file is not found and therefore lets create a new xml file here
             XmlTextWriter hd_xmlWriter = new XmlTextWriter(fname, System.Text.Encoding.UTF8);
             hd_xmlWriter.Formatting = Formatting.Indented;

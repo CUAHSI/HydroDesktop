@@ -11,10 +11,8 @@ using System.Net;
 using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
-using System.Web;
 using System.Xml;
 using HydroDesktop.Configuration;
-using log4net;
 
 namespace HydroDesktop.Search
 {
@@ -52,7 +50,7 @@ namespace HydroDesktop.Search
     /// </summary>
     public class HISCentralSearcher :  IHISCentralSearcher
     {
-        private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /* I (valentine) honestly have no idea why this cals exsits. Jiri added it
                * it did not inherit from HydroDesktop.Data.Search.HISCentralSearcher
@@ -132,7 +130,7 @@ namespace HydroDesktop.Search
             catch (Exception ex)
             {
                 String error ="Error refreshing Ontology keywords from HIS Central. Using the existing list of keywords.";
-                log.Error(error, ex);
+                //log.Error(error, ex);
                 MessageBox.Show(error);
             }
         }
@@ -270,19 +268,19 @@ namespace HydroDesktop.Search
             url.Append(HISCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
-            url.Append(HttpUtility.UrlEncode(xMin.ToString(usaFormat)));
+            url.Append(System.Uri.EscapeDataString(xMin.ToString(usaFormat)));
             url.Append("&xmax=");
-            url.Append(HttpUtility.UrlEncode(xMax.ToString(usaFormat)));
+            url.Append(System.Uri.EscapeDataString(xMax.ToString(usaFormat)));
             url.Append("&ymin=");
-            url.Append(HttpUtility.UrlEncode(yMin.ToString(usaFormat)));
+            url.Append(System.Uri.EscapeDataString(yMin.ToString(usaFormat)));
             url.Append("&ymax=");
-            url.Append(HttpUtility.UrlEncode(yMax.ToString(usaFormat)));
+            url.Append(System.Uri.EscapeDataString(yMax.ToString(usaFormat)));
             
             //to append the keyword
             url.Append("&conceptKeyword=");
             if (!String.IsNullOrEmpty(keyword))
             {
-                url.Append(HttpUtility.UrlEncode(keyword));    
+                url.Append(System.Uri.EscapeDataString(keyword));    
             }
             
             //to append the list of networkIDs separated by comma
@@ -299,14 +297,14 @@ namespace HydroDesktop.Search
                 {
                     serviceParam.Append(networkIDs[networkIDs.Length - 1]);
                 }
-                url.Append(HttpUtility.UrlEncode(serviceParam.ToString()));
+                url.Append(System.Uri.EscapeDataString(serviceParam.ToString()));
             }
             
             //to append the start and end date
             url.Append("&beginDate=");
-            url.Append(HttpUtility.UrlEncode(startDate.ToString("MM/dd/yyyy")));
+            url.Append(System.Uri.EscapeDataString(startDate.ToString("MM/dd/yyyy")));
             url.Append("&endDate=");
-            url.Append(HttpUtility.UrlEncode(endDate.ToString("MM/dd/yyyy")));
+            url.Append(System.Uri.EscapeDataString(endDate.ToString("MM/dd/yyyy")));
             
             //to encode the URL
             string finalURL = url.ToString();

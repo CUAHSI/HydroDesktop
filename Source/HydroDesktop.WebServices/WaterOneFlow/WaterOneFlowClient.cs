@@ -259,21 +259,41 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return savedFiles.AsEnumerable();
 	    }
 
+        private string GetWebResponseString(HttpWebResponse resp)
+        {
+            // we will read data via the response stream
+            Stream receiveStream = resp.GetResponseStream();
+            using (StreamReader r = new StreamReader(receiveStream))
+            {
+                return r.ReadToEnd();
+            }     
+        }
+
+        private void SaveWebResponseToFile(HttpWebRequest req, string filename)
+        {
+            using (var resp = (HttpWebResponse)req.GetResponse())
+            {
+                // we will read data via the response stream
+                Stream ReceiveStream = resp.GetResponseStream();
+
+                byte[] buffer = new byte[1024];
+                FileStream outFile = new FileStream(filename, FileMode.Create);
+
+                int bytesRead;
+                while ((bytesRead = ReceiveStream.Read(buffer, 0, buffer.Length)) != 0)
+                    outFile.Write(buffer, 0, bytesRead);
+            }
+        }
+
         private string GetAndSavesValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
         {
-            //the web method parameters
-            var param = new object[5];
-            param[0] = siteCode;
-            param[1] = variableCode;
-            param[2] = startTime.ToString("yyyy-MM-dd");
-            param[3] = endTime.ToString("yyyy-MM-dd");
-            param[4] = ""; //authentication token is not specified
+            HttpWebRequest req = WebServiceHelper.CreateGetValuesRequest(_asmxURL, siteCode, variableCode, startTime, endTime);
 
-            var result = CallWebMethod("GetValues", param);
+            string filename = GenerateGetValuesFileName(siteCode, variableCode);
 
-            //generate the file name
-            var fileName = SaveWebMethodResut(result, siteCode, variableCode);
-            return fileName;
+            SaveWebResponseToFile(req, filename);
+
+            return filename;
         }
         private string SaveWebMethodResut(object result, string siteCode, string variableCode)
         {
@@ -288,6 +308,18 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             WriteLinesToFile(fileName, result.ToString());
             return fileName;
         }
+        private string GenerateGetValuesFileName(string siteCode, string variableCode)
+        {
+            //generate the file name
+            string timeStamp = GenerateTimeStampString();
+            string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
+            fileName = fileName.Replace(":", "-");
+            fileName = fileName.Replace("=", "-");
+            fileName = fileName.Replace("/", "-");
+
+            fileName = Path.Combine(DownloadDirectory, fileName);
+            return fileName;
+        }
 
 	    /// <summary>
 		/// Gets the information about all sites in the web service as a XML document in the WaterML format
@@ -295,26 +327,14 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <returns>The downloaded XML file name</returns>
 		public string GetSitesXML ()
 		{
-			object[] param = new object[2];
-			param[0] = new string[] { "" };
-			param[1] = "";
+            //generate the file name
+            string fileName = Path.Combine(DownloadDirectory, "sites" + GenerateTimeStampString() + ".xml");
+            
+            HttpWebRequest req = WebServiceHelper.CreateGetSitesRequest(_asmxURL);
 
-			Object result = null;
+            SaveWebResponseToFile(req, fileName);
 
-			//for WaterOneFlow 1.0 services we need to call GetSitesXml().
-			//for WaterOneFlow 1.1 services we need to call the GetSites() method instead.
-			if ( ServiceInfo.Version == 1.0 )
-			{
-				result = CallWebMethod ( "GetSitesXml", param );
-			}
-			else
-			{
-				result = CallWebMethod ( "GetSites", param );
-			}
-			//generate the file name
-			string fileName = Path.Combine ( DownloadDirectory, "sites" + GenerateTimeStampString () + ".xml" );
-			WriteLinesToFile ( fileName, result.ToString () );
-			return fileName;
+            return fileName; 
 		}
 
 		/// <summary>
@@ -327,31 +347,33 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <returns>The downloaded XML file name</returns>
 		public string GetSitesXML ( double westLongitude, double southLatitude, double eastLongitude, double northLatitude )
 		{
-			object[] param = new object[2];
-			string argument = "GEOM:BOX(" + westLongitude.ToString () + " " +
-											southLatitude.ToString () + "," +
-											eastLongitude.ToString () + " " +
-											northLatitude.ToString () + ")";
-			param[0] = new string[] { argument };
-			param[1] = "";
+            throw new NotImplementedException();
+            
+            //object[] param = new object[2];
+            //string argument = "GEOM:BOX(" + westLongitude.ToString () + " " +
+            //                                southLatitude.ToString () + "," +
+            //                                eastLongitude.ToString () + " " +
+            //                                northLatitude.ToString () + ")";
+            //param[0] = new string[] { argument };
+            //param[1] = "";
 
-			Object result = null;
+            //Object result = null;
 
-			//for WaterOneFlow 1.0 services we need to call GetSitesXml().
-			//for WaterOneFlow 1.1 services we need to call the GetSites() method instead.
-			if ( ServiceInfo.Version == 1.0 )
-			{
-				result = CallWebMethod ( "GetSitesXml", param );
-			}
-			else
-			{
-				result = CallWebMethod ( "GetSites", param );
-			}
+            ////for WaterOneFlow 1.0 services we need to call GetSitesXml().
+            ////for WaterOneFlow 1.1 services we need to call the GetSites() method instead.
+            //if ( ServiceInfo.Version == 1.0 )
+            //{
+            //    result = CallWebMethod ( "GetSitesXml", param );
+            //}
+            //else
+            //{
+            //    result = CallWebMethod ( "GetSites", param );
+            //}
 
-			//generate the file name
-			string fileName = Path.Combine ( DownloadDirectory, "sites" + GenerateTimeStampString () + ".xml" );
-			WriteLinesToFile ( fileName, result.ToString () );
-			return fileName;
+            ////generate the file name
+            //string fileName = Path.Combine ( DownloadDirectory, "sites" + GenerateTimeStampString () + ".xml" );
+            //WriteLinesToFile ( fileName, result.ToString () );
+            //return fileName;
 		}
 
 		/// <summary>
@@ -362,19 +384,15 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <returns>the downloaded xml file name</returns>
 		public string GetSiteInfoXML ( string fullSiteCode )
 		{
-			object[] param = new object[2];
-			param[0] = fullSiteCode;
-			param[1] = "";
+            //generate the file name
+            string fileName = "Site-" + fullSiteCode + "-" + GenerateTimeStampString() + ".xml";
+            fileName = fileName.Replace(":", "-");
+            fileName = Path.Combine(DownloadDirectory, fileName);
 
-			Object result = null;
-			result = CallWebMethod ( "GetSiteInfo", param );
+            HttpWebRequest req = WebServiceHelper.CreateGetSiteInfoRequest(_asmxURL, fullSiteCode);
 
-			//generate the file name
-			string fileName = "Site-" + fullSiteCode + "-" + GenerateTimeStampString () + ".xml";
-			fileName = fileName.Replace ( ":", "-" );
-			fileName = Path.Combine ( DownloadDirectory, fileName );
-			WriteLinesToFile ( fileName, result.ToString () );
-			return fileName;
+            SaveWebResponseToFile(req, fileName);
+            return fileName;
 		}
 
 		#endregion
@@ -403,80 +421,82 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		{
 			string errorMessage = "The service " + _asmxURL + " is not a valid WaterOneFlow service. ";
 
-			MethodInfo getValuesMethod = null;
-			MethodInfo getSiteInfoMethod = null;
-			MethodInfo getSitesMethod = null;
-			//object serviceProxy = null;
-			string getSitesMethodName = "GetSitesXml";
+            _serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(_asmxURL);
+            
+            //MethodInfo getValuesMethod = null;
+            //MethodInfo getSiteInfoMethod = null;
+            //MethodInfo getSitesMethod = null;
+            ////object serviceProxy = null;
+            //string getSitesMethodName = "GetSitesXml";
 
-			//get the names of all service classes in the assembly
-			IList<string> serviceNames = GetServiceNames ( _assembly );
+            ////get the names of all service classes in the assembly
+            //IList<string> serviceNames = GetServiceNames ( _assembly );
 
-			foreach ( string serviceName in serviceNames )
-			{
-				//create the 'service proxy class' object
-				if ( _webService == null )
-				{
-					_webService = _assembly.CreateInstance ( serviceName );
-				}
+            //foreach ( string serviceName in serviceNames )
+            //{
+            //    //create the 'service proxy class' object
+            //    if ( _webService == null )
+            //    {
+            //        _webService = _assembly.CreateInstance ( serviceName );
+            //    }
 
-				if ( _webService != null )
-				{
-					//try to find the GetValues method
-					getValuesMethod = _webService.GetType ().GetMethod ( "GetValues" );
+            //    if ( _webService != null )
+            //    {
+            //        //try to find the GetValues method
+            //        getValuesMethod = _webService.GetType ().GetMethod ( "GetValues" );
 
-					//try to find the GetSiteInfo() method
-					getSiteInfoMethod = _webService.GetType ().GetMethod ( "GetSiteInfo" );
+            //        //try to find the GetSiteInfo() method
+            //        getSiteInfoMethod = _webService.GetType ().GetMethod ( "GetSiteInfo" );
 
-					//look for the GetSitesXml() method. If not found, try to check GetSites() instead.
+            //        //look for the GetSitesXml() method. If not found, try to check GetSites() instead.
 
-					getSitesMethod = _webService.GetType ().GetMethod ( "GetSitesXml" );
+            //        getSitesMethod = _webService.GetType ().GetMethod ( "GetSitesXml" );
 
-					if ( getSitesMethod != null )
-					{
-						getSitesMethodName = "GetSitesXml";
-					}
-					else
-					{
-						getSitesMethod = _webService.GetType ().GetMethod ( "GetSites" );
-						getSitesMethodName = "GetSites";
-					}
+            //        if ( getSitesMethod != null )
+            //        {
+            //            getSitesMethodName = "GetSitesXml";
+            //        }
+            //        else
+            //        {
+            //            getSitesMethod = _webService.GetType ().GetMethod ( "GetSites" );
+            //            getSitesMethodName = "GetSites";
+            //        }
 
-					//if the service class contains all supported methods, then there is no need to check
-					//the other classes.
-					if ( getValuesMethod != null && getSitesMethod != null && getSiteInfoMethod != null )
-					{
-						break;
-					}
-				}
-			}
+            //        //if the service class contains all supported methods, then there is no need to check
+            //        //the other classes.
+            //        if ( getValuesMethod != null && getSitesMethod != null && getSiteInfoMethod != null )
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
 
-			//throw an exception if the web service class or some of its methods don't exist
-			if ( _webService == null )
-				throw new WebException ( errorMessage );
+            ////throw an exception if the web service class or some of its methods don't exist
+            //if ( _webService == null )
+            //    throw new WebException ( errorMessage );
 
-			if ( getValuesMethod == null )
-				throw new WebException ( errorMessage + "GetValues method not found." );
-			if ( getSiteInfoMethod == null )
-				throw new WebException ( errorMessage + "GetSiteInfo method not found." );
+            //if ( getValuesMethod == null )
+            //    throw new WebException ( errorMessage + "GetValues method not found." );
+            //if ( getSiteInfoMethod == null )
+            //    throw new WebException ( errorMessage + "GetSiteInfo method not found." );
 
-			if ( getSitesMethod == null )
-				throw new WebException ( errorMessage + "GetSites method not found." );
+            //if ( getSitesMethod == null )
+            //    throw new WebException ( errorMessage + "GetSites method not found." );
 
-			if ( getSitesMethod.ReturnType != typeof ( string ) )
-				throw new WebException ( errorMessage + "GetSites method with return type 'string' not found." );
+            //if ( getSitesMethod.ReturnType != typeof ( string ) )
+            //    throw new WebException ( errorMessage + "GetSites method with return type 'string' not found." );
 
-			//set properties of the ServiceInfo which can be determined from the WSDL
-			_serviceInfo.ServiceName = _webService.GetType ().FullName;
+            ////set properties of the ServiceInfo which can be determined from the WSDL
+            //_serviceInfo.ServiceName = _webService.GetType ().FullName;
 
-			if ( getSitesMethodName == "GetSitesXml" )
-			{
-				_serviceInfo.Version = 1.0;
-			}
-			else
-			{
-				_serviceInfo.Version = 1.1;
-			}
+            //if ( getSitesMethodName == "GetSitesXml" )
+            //{
+            //    _serviceInfo.Version = 1.0;
+            //}
+            //else
+            //{
+            //    _serviceInfo.Version = 1.1;
+            //}
 		}
 
 		/// <summary>

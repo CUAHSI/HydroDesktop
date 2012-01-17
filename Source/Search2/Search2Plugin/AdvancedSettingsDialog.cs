@@ -88,7 +88,7 @@ namespace HydroDesktop.Search
                 hisCentralURL = txtCustomUrl.Text;
                 try
                 {
-                    HISCentralClient client = new HISCentralClient(hisCentralURL);
+                    HISCentralClient2 client = new HISCentralClient2(hisCentralURL);
                     hisCentralURL = txtCustomUrl.Text;
                 }
                 catch

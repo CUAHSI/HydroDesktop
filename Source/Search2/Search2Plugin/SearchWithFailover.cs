@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using DotSpatial.Data;
-using log4net;
 
 namespace HydroDesktop.Search
 {
@@ -20,7 +19,7 @@ namespace HydroDesktop.Search
 	public class BackgroundSearchWithFailover
 	{
 
-		private static readonly log4net.ILog log = LogManager.GetLogger ( System.Reflection.MethodBase.GetCurrentMethod ().DeclaringType );
+		//private static readonly log4net.ILog log = LogManager.GetLogger ( System.Reflection.MethodBase.GetCurrentMethod ().DeclaringType );
 
 		public IHISCentralSearcher Searcher { get; set; }
 
@@ -58,7 +57,7 @@ namespace HydroDesktop.Search
 					if ( worked ) return;
 					// TODO: It seems like if we get to the code below, then the error is in search parameters (areaParameter), not HIS Central.
 					errorStack.Append ( "RunHisCentralSearch returned false.\n\n" );
-					log.Info ( "HIS Server " + url + " failed" );
+					//log.Info ( "HIS Server " + url + " failed" );
 					continue;
 				}
 				catch ( Exception ex )
@@ -67,13 +66,13 @@ namespace HydroDesktop.Search
 					string show = String.Format ( "The Server '{0}' is not working. Now trying to switch to the next server. Please wait...",
 						url );
 					errorStack.Append ( ex.Message + "\n" + ex.StackTrace + "\n\n" );
-					log.Warn ( show, ex );
+					//log.Warn ( show, ex );
 					ex.Source = show;
 					// message box cannot be tested
 					//  MessageBox.Show(show); // need to raise an event
 				}
 			}
-			log.Error ( "No HIS Central Servers worked" );
+			//log.Error ( "No HIS Central Servers worked" );
 			// MessageBox.Show("Servers are not working. Please try later.");
 			throw new HydrodesktopSearchException ( errorStack.ToString() );
 		}
@@ -85,7 +84,7 @@ namespace HydroDesktop.Search
 			{
 				if ( !parameters.BoundinBoxSearch )
 				{
-					log.Info ( "Search in Polygon" );
+					//log.Info ( "Search in Polygon" );
 					searcher.GetSeriesCatalogInPolygon ( (List<IFeature>)parameters.areaParameter,
 													   parameters.keywords.ToArray (),
 													   parameters.startDate, parameters.endDate,
@@ -94,7 +93,7 @@ namespace HydroDesktop.Search
 				}
 				else
 				{
-					log.Info ( "Search in Box" );
+					//log.Info ( "Search in Box" );
 					var coords = (SearchCriteria.AreaRectangle)parameters.areaParameter;
 					//*             searcher.GetSeriesCatalogInRectangle(
 					//                          (double)coords[0], (double)coords[2], (double)coords[1], (double)coords[3],
@@ -126,7 +125,7 @@ namespace HydroDesktop.Search
             {
                 if (!parameters.BoundinBoxSearch)
                 {
-                    log.Info("Search in Polygon");
+                    //log.Info("Search in Polygon");
                     searcher.GetSeriesCatalogInPolygon((List<IFeature>)parameters.areaParameter,
                                                        parameters.keywords.ToArray(),
                                                        parameters.startDate, parameters.endDate,
@@ -135,7 +134,7 @@ namespace HydroDesktop.Search
                 }
                 else
                 {
-                    log.Info("Search in Box");
+                    //log.Info("Search in Box");
                     var coords = (SearchCriteria.AreaRectangle)parameters.areaParameter;
                     searcher.GetSeriesCatalogInRectangle(
                         coords.xMin, coords.xMax, coords.yMin, coords.yMax,

@@ -10,7 +10,6 @@ namespace EPADelineation
     public class Main : Extension
     {
         #region Variables
-        private bool isActive;
         private SimpleActionItem action;
 
         #endregion Variables

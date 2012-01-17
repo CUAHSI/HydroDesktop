@@ -10,13 +10,13 @@ using System.Windows.Forms;
 using System.Xml;
 using System.IO;
 
-using Jayrock.Json;
-using Jayrock.Json.Conversion;
+using Newtonsoft.Json;
 
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
+using Newtonsoft.Json.Linq;
 
 namespace EPADelineation
 {
@@ -253,19 +253,19 @@ namespace EPADelineation
                 response = response.Substring(start + 1, end - 1 - start);
 
                 //Declare Json Elements
-                JsonObject mainObj = new JsonObject();
-                JsonObject outputObj = new JsonObject();
-                JsonObject shapeObj = new JsonObject();
+                JObject mainObj = new JObject();
+                JToken outputObj = new JObject();
+                JToken shapeObj = new JObject();
 
-                mainObj = JsonConvert.Import(response) as JsonObject;
+                mainObj = JObject.Parse(response);
 
-                outputObj = mainObj["output"] as JsonObject;
-                shapeObj = outputObj["shape"] as JsonObject;
+                outputObj = mainObj["output"];
+                shapeObj = outputObj["shape"];
 
                 string stype = shapeObj["type"].ToString();
                 string area = outputObj["total_areasqkm"].ToString();
 
-                JsonArray coordArray = shapeObj["coordinates"] as JsonArray;
+                JArray coordArray = shapeObj["coordinates"] as JArray;
 
                 //For coordinate information
                 string lat;
@@ -283,7 +283,7 @@ namespace EPADelineation
                 //For the case GeoJSON returns a MultiPolygon 
                 if (stype.Trim().ToLower() == "multipolygon")
                 {
-                    foreach (JsonArray Polycoord in coordArray) //The third level branket
+                    foreach (JArray Polycoord in coordArray) //The third level branket
                     {
                         Polygon[] polys = new Polygon[Polycoord.Count]; ;
 
@@ -291,13 +291,13 @@ namespace EPADelineation
                         {
                             for (int i = 0; i < Polycoord.Count; i++)//The second level branket
                             {
-                                JsonArray multiRingcoord = (JsonArray)Polycoord[i];
+                                JArray multiRingcoord = (JArray)Polycoord[i];
 
                                 IList<Coordinate> multicoords = new List<Coordinate>();
 
                                 if (multiRingcoord != null)
                                 {
-                                    foreach (JsonArray latlongcoord in multiRingcoord) //The first level branket
+                                    foreach (JArray latlongcoord in multiRingcoord) //The first level branket
                                     {
                                         Coordinate coord = new Coordinate();
 
@@ -347,14 +347,14 @@ namespace EPADelineation
                 //For the case GeoJSON returns a Polygon 
                 if (stype.Trim().ToLower() == "polygon")
                 {
-                    foreach (JsonArray Ringcoord in coordArray)  //The second level branket
+                    foreach (JArray Ringcoord in coordArray)  //The second level branket
                     {
                         IList<Coordinate> coords = new List<Coordinate>();
 
                         if (Ringcoord != null)
                         {
 
-                            foreach (JsonArray latlongcoord in Ringcoord) //The first level branket
+                            foreach (JArray latlongcoord in Ringcoord) //The first level branket
                             {
                                 Coordinate coord = new Coordinate();
 
@@ -435,15 +435,15 @@ namespace EPADelineation
                 response = response.Substring(start + 1, end - 1 - start);
 
                 //Declare Json Elements
-                JsonObject mainObj = new JsonObject();
-                JsonObject outputObj = new JsonObject();
-                JsonArray lineObj = new JsonArray();
-                JsonObject shapeObj = new JsonObject();
+                JObject mainObj = new JObject();
+                JToken outputObj;
+                JArray lineObj = new JArray();
+                JToken shapeObj = new JObject();
 
-                mainObj = JsonConvert.Import(response) as JsonObject;
+                mainObj = JObject.Parse(response);
 
-                outputObj = mainObj["output"] as JsonObject;
-                lineObj = outputObj["flowlines_traversed"] as JsonArray;
+                outputObj = mainObj["output"];
+                lineObj = outputObj["flowlines_traversed"] as JArray;
 
                 List<string> comid = new List<string>();
                 List<string> reachcode = new List<string>();
@@ -458,9 +458,9 @@ namespace EPADelineation
                 IFeatureSet linefs = new FeatureSet(FeatureType.Line);
 
                 //for (int i = 0; i < lineObj.Count; i++)
-                foreach (JsonObject flowObj in lineObj)
+                foreach (JObject flowObj in lineObj)
                 {
-                    shapeObj = flowObj["shape"] as JsonObject;
+                    shapeObj = flowObj["shape"] as JObject;
 
                     string id = flowObj["comid"].ToString();
                     string code = flowObj["reachcode"].ToString();
@@ -468,7 +468,7 @@ namespace EPADelineation
 
                     string stype = shapeObj["type"].ToString();
 
-                    JsonArray coordArray = shapeObj["coordinates"] as JsonArray;
+                    JArray coordArray = shapeObj["coordinates"] as JArray;
 
                     //For coordinate information
                     string lat;
@@ -483,13 +483,13 @@ namespace EPADelineation
 
                             for (int j = 0; j < coordArray.Count; j++)//The second level branket
                             {
-                                JsonArray linecoord = (JsonArray)coordArray[j];
+                                JArray linecoord = (JArray)coordArray[j];
 
                                 IList<Coordinate> multicoords = new List<Coordinate>();
 
                                 if (linecoord != null)
                                 {
-                                    foreach (JsonArray latlongcoord in linecoord) //The first level branket
+                                    foreach (JArray latlongcoord in linecoord) //The first level branket
                                     {
                                         Coordinate coord = new Coordinate();
 
@@ -517,7 +517,7 @@ namespace EPADelineation
                     if (stype.Trim().ToLower() == "linestring")
                     {
                         IList<Coordinate> coords = new List<Coordinate>();
-                        foreach (JsonArray latlongcoord in coordArray)  //The second level branket
+                        foreach (JArray latlongcoord in coordArray)  //The second level branket
                         {
                             Coordinate coord = new Coordinate();
 
