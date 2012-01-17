@@ -1,6 +1,4 @@
-﻿'If _VariableID = Nothing, it means the user selected create new in fDeriveNewDataSeries
-
-Imports HydroDesktop.Database
+﻿Imports HydroDesktop.Database
 Imports System.Globalization
 Imports System.Threading
 Imports System.Text
@@ -11,9 +9,16 @@ Public Class fVariablesTableManagement
 
     Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
     Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
+    Private ReadOnly _fDeriveNewDataSeries As fDeriveNewDataSeries
+    Private ReadOnly _VariableID As Integer
 
-    Public Sub New()
+    'If _VariableID = Nothing, it means the user selected create new in fDeriveNewDataSeries
+    Public Sub New(ByVal variableID As Int32, ByRef fDeriveNewDataSeries As fDeriveNewDataSeries)
+        _VariableID = variableID
+        _fDeriveNewDataSeries = fDeriveNewDataSeries
+
         InitializeComponent()
+        initialize()
     End Sub
 
     Private Sub CloseMe() Handles Me.Leave, btnCancel.Click
@@ -24,7 +29,7 @@ Public Class fVariablesTableManagement
     End Sub
 
 
-    Public Sub initialize()
+    Private Sub initialize()
         Dim dt As DataTable
         Dim dt2 As DataTable
 

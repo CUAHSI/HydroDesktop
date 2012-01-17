@@ -79,6 +79,8 @@
     <Compile Include="IMethodsRepository.cs" />
     <Compile Include="IRepositoryManager.cs" />
     <Compile Include="ISeriesSelector.cs" />
+    <Compile Include="IUnitsRepository.cs" />
+    <Compile Include="IVariablesRepository.cs" />
     <Compile Include="IWebServicesStore.cs" />
     <Compile Include="ObjectModel\BaseEntity.cs" />
     <Compile Include="ObjectModel\Constants.cs" />

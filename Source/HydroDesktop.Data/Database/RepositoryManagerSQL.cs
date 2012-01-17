@@ -30,7 +30,7 @@ namespace HydroDesktop.Database
         /// Creates a new RepositoryManager associated with the specified database
         /// </summary>
         /// <param name="db">The DbOperations object for handling the database</param>
-        public RepositoryManagerSQL(DbOperations db)
+        public RepositoryManagerSQL(IHydroDbOperations db)
             :base(db)
         {
         }
