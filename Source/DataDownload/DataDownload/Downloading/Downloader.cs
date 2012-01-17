@@ -32,7 +32,7 @@ namespace HydroDesktop.DataDownload.Downloading
         /// </summary>
         public Downloader()
         {
-            _repositoryManager = RepositoryFactory.Instance.CreateRepositoryManager(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
+            _repositoryManager = RepositoryFactory.Instance.Get<IRepositoryManager>(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
                 
         }
 

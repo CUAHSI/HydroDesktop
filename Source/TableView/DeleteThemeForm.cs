@@ -43,7 +43,7 @@ namespace TableView
 
         private void DeleteThemeForm_Load(object sender, EventArgs e)
         {
-            var repoManager = RepositoryFactory.Instance.CreateRepositoryManager(_db);
+            var repoManager = RepositoryFactory.Instance.Get<IRepositoryManager>(_db);
             IList<Theme> themeList = repoManager.GetAllThemes();
 
             foreach (Theme theme in themeList)
@@ -91,7 +91,7 @@ namespace TableView
                     index++;
                 }
 
-                var manager = RepositoryFactory.Instance.CreateRepositoryManager(_db);
+                var manager = RepositoryFactory.Instance.Get<IRepositoryManager>(_db);
                 object[] parameters = new object[2];
                 parameters[0] = themeIDList;
                 parameters[1] = manager;

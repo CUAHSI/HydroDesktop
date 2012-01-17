@@ -1,5 +1,6 @@
 using System;
 using HydroDesktop.Interfaces;
+using System.Collections.Generic;
 
 namespace HydroDesktop.Database
 {
@@ -8,11 +9,42 @@ namespace HydroDesktop.Database
     /// </summary>
     public class RepositoryFactory
     {
+        #region Fields
+
+        private readonly Dictionary<Type, RepositoryCreator> _repositoryCreators;
+
+        #endregion
+
         #region Singletone implementation
-        
+
         private RepositoryFactory()
         {
-            
+            _repositoryCreators = new Dictionary<Type, RepositoryCreator>();
+
+            AddRepoCreator<IRepositoryManager>(
+                new RepositoryCreator
+                    {
+                        CreatorByConnectionString = (dbType, connStr) => new RepositoryManagerSQL(dbType, connStr),
+                        CreatorByDbOperations = dbOp => new RepositoryManagerSQL(dbOp)
+                    });
+            AddRepoCreator<IDataSeriesRepository>(
+                new RepositoryCreator
+                    {
+                        CreatorByConnectionString = (dbType, connStr) => new DataSeriesRepository(dbType, connStr),
+                        CreatorByDbOperations = dbOp => new DataSeriesRepository(dbOp)
+                    });
+            AddRepoCreator<IDataThemesRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new DataThemesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new DataThemesRepository(dbOp)
+                });
+            AddRepoCreator<IMethodsRepository>(
+               new RepositoryCreator
+               {
+                   CreatorByConnectionString = (dbType, connStr) => new MethodsRepository(dbType, connStr),
+                   CreatorByDbOperations = dbOp => new MethodsRepository(dbOp)
+               });
         }
 
         private static readonly Lazy<RepositoryFactory> _instance = new Lazy<RepositoryFactory>(() => new RepositoryFactory(), true);
@@ -29,88 +61,66 @@ namespace HydroDesktop.Database
         #region Public methods
 
         /// <summary>
-        /// Create instance of <see cref="IRepositoryManager"/> using connection string
+        /// Get instance of <see cref="T"/> using connection string
         /// </summary>
         /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
         /// <param name="connectionString">The connection string</param>
-        /// <returns>Instance of <see cref="IRepositoryManager"/></returns>
-        public IRepositoryManager CreateRepositoryManager(DatabaseTypes dbType, string connectionString)
+        /// <returns>Instance of <see cref="T"/></returns>
+        public T Get<T>(DatabaseTypes dbType, string connectionString)
         {
-            return new RepositoryManagerSQL(dbType, connectionString);
+            RepositoryCreator repoCreator;
+            if (!_repositoryCreators.TryGetValue(typeof(T), out repoCreator))
+            {
+                throw new Exception("Interface not registered.");
+            }
+
+            if (repoCreator != null && repoCreator.CreatorByConnectionString != null)
+            {
+                return (T)repoCreator.CreatorByConnectionString(dbType, connectionString);
+            }
+
+            return default(T);
         }
 
         /// <summary>
-        /// Create instance of <see cref="IRepositoryManager"/> using DbOperations
+        /// Get instance of <see cref="T"/> using DbOperations
         /// </summary>
         /// <param name="dbOperations">The DbOperations object for handling the database</param>
-        /// <returns>Instance of <see cref="IRepositoryManager"/></returns>
-        public IRepositoryManager CreateRepositoryManager(DbOperations dbOperations)
+        /// <returns>Instance of <see cref="T"/></returns>
+        public T Get<T>(DbOperations dbOperations)
         {
-            return new RepositoryManagerSQL(dbOperations);
+            RepositoryCreator repoCreator;
+            if (!_repositoryCreators.TryGetValue(typeof(T), out repoCreator))
+            {
+                throw new Exception("Interface not registered.");
+            }
+
+            if (repoCreator != null && repoCreator.CreatorByDbOperations != null)
+            {
+                return (T)repoCreator.CreatorByDbOperations(dbOperations);
+            }
+
+            return default(T);
         }
 
-        /// <summary>
-        /// Create instance of <see cref="IDataSeriesRepository"/> using connection string
-        /// </summary>
-        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
-        /// <param name="connectionString">The connection string</param>
-        /// <returns>Instance of <see cref="IDataSeriesRepository"/></returns>
-        public IDataSeriesRepository CreateDataSeriesRepository(DatabaseTypes dbType, string connectionString)
+        #endregion
+
+        #region Private methods
+
+        private void AddRepoCreator<T>(RepositoryCreator creator)
         {
-            return new DataSeriesRepository(dbType, connectionString);
+            _repositoryCreators.Add(typeof(T), creator);
         }
 
-        /// <summary>
-        /// Create instance of <see cref="IDataSeriesRepository"/> using DbOperations
-        /// </summary>
-        /// <param name="dbOperations">The DbOperations object for handling the database</param>
-        /// <returns>Instance of <see cref="IDataSeriesRepository"/></returns>
-        public IDataSeriesRepository CreateDataSeriesRepository(DbOperations dbOperations)
-        {
-            return new DataSeriesRepository(dbOperations);
-        }
+        #endregion
 
-        /// <summary>
-        /// Create instance of <see cref="IDataThemesRepository"/> using connection string
-        /// </summary>
-        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
-        /// <param name="connectionString">The connection string</param>
-        /// <returns>Instance of <see cref="IDataThemesRepository"/></returns>
-        public IDataThemesRepository CreateDataThemesRepository(DatabaseTypes dbType, string connectionString)
-        {
-            return new DataThemesRepository(dbType, connectionString);
-        }
+        #region Nested type: RepositoryCreator
 
-        /// <summary>
-        /// Create instance of <see cref="IDataThemesRepository"/> using DbOperations
-        /// </summary>
-        /// <param name="dbOperations">The DbOperations object for handling the database</param>
-        /// <returns>Instance of <see cref="IDataThemesRepository"/></returns>
-        public IDataThemesRepository CreateDataThemesRepository(DbOperations dbOperations)
+        private class RepositoryCreator
         {
-            return new DataThemesRepository(dbOperations);
-        }
+            public Func<DatabaseTypes, string, object> CreatorByConnectionString { get; set; }
+            public Func<DbOperations, object> CreatorByDbOperations { get; set; }
 
-
-        /// <summary>
-        /// Create instance of <see cref="IMethodsRepository"/> using connection string
-        /// </summary>
-        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
-        /// <param name="connectionString">The connection string</param>
-        /// <returns>Instance of <see cref="IMethodsRepository"/></returns>
-        public IMethodsRepository CreateMethodsRepository(DatabaseTypes dbType, string connectionString)
-        {
-            return new MethodsRepository(dbType, connectionString);
-        }
-
-        /// <summary>
-        /// Create instance of <see cref="IMethodsRepository"/> using DbOperations
-        /// </summary>
-        /// <param name="dbOperations">The DbOperations object for handling the database</param>
-        /// <returns>Instance of <see cref="IMethodsRepository"/></returns>
-        public IMethodsRepository CreateMethodsRepository(DbOperations dbOperations)
-        {
-            return new MethodsRepository(dbOperations);
         }
 
         #endregion
