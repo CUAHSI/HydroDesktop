@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CBC247A5-F50E-41ED-807C-94DE7E970DB9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.DataDownload</RootNamespace>
+    <AssemblyName>DataDownload</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\Plugins\ZDataDownload\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\Binaries\Plugins\ZDataDownload\DataDownload.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Binaries\Plugins\ZDataDownload\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.WebServices">
+      <HintPath>..\..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\Binaries\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClassConvertor.cs" />
+    <Compile Include="Downloading\DatabaseManager.cs" />
+    <Compile Include="Downloading\Downloader.cs" />
+    <Compile Include="Downloading\DownloadManager.cs" />
+    <Compile Include="Downloading\DownloadManagerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Downloading\DownloadManagerUI.Designer.cs">
+      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Downloading\Exceptions\DataSeriesFromXmlException.cs" />
+    <Compile Include="Downloading\Exceptions\DownloadXmlException.cs" />
+    <Compile Include="Downloading\Exceptions\NoSeriesFromXmlException.cs" />
+    <Compile Include="Downloading\Exceptions\SaveDataSeriesException.cs" />
+    <Compile Include="Downloading\ManagerInformation.cs" />
+    <Compile Include="Downloading\OneSeriesDownloadInfo.cs" />
+    <Compile Include="Downloading\RedownloadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Downloading\RedownloadControl.Designer.cs">
+      <DependentUpon>RedownloadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Downloading\StartDownloadArg.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="LayerInformation\CustomToolTipControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\CustomToolTipControl.Designer.cs">
+      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerInformation\HISCentralInfoExtractor.cs" />
+    <Compile Include="LayerInformation\ServiceInfoGroup.cs" />
+    <Compile Include="LayerInformation\PopupControl\GripBounds.cs" />
+    <Compile Include="LayerInformation\PopupControl\NativeMethods.cs" />
+    <Compile Include="LayerInformation\PopupControl\Popup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\Popup.Designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerInformation\PopupControl\PopupAnimations.cs" />
+    <Compile Include="LayerInformation\SearchLayerInformer.cs" />
+    <Compile Include="LayerInformation\ServiceInfo.cs" />
+    <Compile Include="DataDownloadPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SearchLayersProcessing\SearchLayerModifier.cs" />
+    <Compile Include="SearchLayersProcessing\SymbologyCreator.cs" />
+    <Compile Include="SearchLayersProcessing\ThemeManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Downloading\DownloadManagerUI.resx">
+      <DependentUpon>DownloadManagerUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Downloading\RedownloadControl.resx">
+      <DependentUpon>RedownloadControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerInformation\CustomToolTipControl.resx">
+      <DependentUpon>CustomToolTipControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="default_web_services.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="package.nuspec" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="download32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\download_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\download_32.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

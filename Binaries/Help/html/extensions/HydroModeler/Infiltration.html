@@ -1,0 +1,124 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Infiltration &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+    <div class="breadcrumb">Infiltration</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script><div class="section" id="infiltration">
+<h1>Infiltration<a class="headerlink" href="#infiltration" title="Permalink to this headline">¶</a></h1>
+<p>Infiltration is the process of water penetrating through the surface and into the soil.  The amount of infiltration that occurs is dictated by the characteristics of the soil, ranging from the porosity to the current moisture content, as well as surface covering, like vegitation.</p>
+<div class="section" id="green-ampt">
+<h2>Green Ampt<a class="headerlink" href="#green-ampt" title="Permalink to this headline">¶</a></h2>
+<p>The component uses the Green and Ampt method to determine the amount of excess precipitation that has occured.  Green Ampt does a better approximation of excess rainfall by incorporation more than just the amount of rainfall by including the intensity and the time frame that the rainfall occurs.  This component also requires soil charateristics, such as the current moisture content and the moisure content at complete saturation.  The Green and Ampt method uses a few contants such as the porosity, effective porosity, soil suction head and hydraulic conductivity,  all of which have estimated values, for varying soil types, found by Rawls, Brakensiek and Miller.  Because this method requires more initial data, the estimation of excess rainfall becomes a more accurate model than the Curve Number method.</p>
+<p>This is the Green Ampt equation.</p>
+\[F(t) = Kt+\psi\Delta\theta ln\left(1+\frac{F(t)}{\psi\Delta\theta}\right)\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((K)\)</span> is the hydraulic conductivity, and <span class="raw-latex">\((\psi)\)</span> is the wetting front soil suction head.</p>
+</div>
+</div>
+<div class="section" id="curve-number-method">
+<h2>Curve Number Method<a class="headerlink" href="#curve-number-method" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of this component is to compute the amount of excess precipitation that occurs based on the amount of water that infiltrates into the soil.  This component is designed on a commonly used practice in hydrological engineering, which calculates the excess precipitation using continuing extraction and soil water storage as supporting data.  Geospatial information, like the land cover and soil data obtained from the Enviromental Protection Agncy (EPA) and National Resources Conservation Service (NRCS), are used to model this method.  Using this information allows for the calculation of curve numbers for each subbasin within the watershed.  Because some data is not readily available,  this component would be more advantageous to use than the Green Ampt.  For example,  if the moisture content of the soil is unknown, then the Curve Number component can approximate the excess rainfall based on assumed soil conditions.</p>
+<p>Excess precipitation can be obtained using the Curve Numbers equation.</p>
+\[P_e = P-I_a-F_a\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((P_e)\)</span> is the excess precipitation, <span class="raw-latex">\((P)\)</span> is the precipitation, <span class="raw-latex">\((I_a)\)</span> is the initial abstraction, and <span class="raw-latex">\((F_a)\)</span> is the continuing abstraction.</p>
+</div>
+<p>The following equation is a conceptual model used to approximate the continuing abstraction.</p>
+\[F_a = \frac{S(P-I_a)}{P-I_a+S}\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((F_a)\)</span> is the continuing abstraction, <span class="raw-latex">\((S)\)</span> is soil water storage, <span class="raw-latex">\((P)\)</span> is the precipitation, and <span class="raw-latex">\((I_a)\)</span> is the initial abstraction.</p>
+</div>
+<p>The following equation is an empirical formula for soil water storage.</p>
+\[S = \frac{1000}{CN}-10\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((S)\)</span> is the soil water storage, and <span class="raw-latex">\((CN)\)</span> is the curve number parameter.</p>
+</div>
+<p>The following equation is an estimation of the initial abstraction using an empirically derived relationship.</p>
+\[I_a = 0.2S\]<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Where <span class="raw-latex">\((I_a)\)</span> is the initial abstraction, and <span class="raw-latex">\((S)\)</span> is the soil water storage.</p>
+</div>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 19, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

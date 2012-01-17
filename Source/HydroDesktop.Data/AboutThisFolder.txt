@@ -1,0 +1,1 @@
+This folder contains the source of the HydroDesktop.Data.dll which is the main library for accessing the database and communicating with web services.
