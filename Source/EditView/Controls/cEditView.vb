@@ -16,7 +16,7 @@ Public Class cEditView
     'Inherits UserControl
 
 #Region "privateDeclaration"
-    
+
     Private connString
     Private dbTools
     Private CurveEditingColor As Drawing.Color = Color.Black
@@ -524,14 +524,11 @@ Public Class cEditView
 
     'Derive New Series
     Public Sub btnDeriveNewDataSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Dim SeriesSelector = _seriesSelector
+        Dim seriesSelector = _seriesSelector
         'check if the user selected any series, then open the Derive New Series form
-        If Not SeriesSelector.SelectedSeriesID = 0 Then
+        If Not seriesSelector.SelectedSeriesID = 0 Then
             Dim frmDeriveNewDataSeries As fDeriveNewDataSeries
-            frmDeriveNewDataSeries = New fDeriveNewDataSeries()
-            frmDeriveNewDataSeries._cEditView = Me
-            frmDeriveNewDataSeries._SelectedSeriesID = SeriesSelector.SelectedSeriesID
-            frmDeriveNewDataSeries.SetDefault()
+            frmDeriveNewDataSeries = New fDeriveNewDataSeries(_seriesSelector.SelectedSeriesID, Me)
             frmDeriveNewDataSeries.ShowDialog()
         Else
             MsgBox("Please select a series to derive.")
@@ -1506,6 +1503,6 @@ Public Class cEditView
 
 
 
-   
+
 End Class
 'End Namespace

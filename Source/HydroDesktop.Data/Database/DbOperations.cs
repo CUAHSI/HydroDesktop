@@ -785,23 +785,16 @@ namespace HydroDesktop.Database
         /// <returns>the query result (value of first matching row and column)</returns>
         public object ExecuteSingleOutput(String sqlString)
         {
-            _sw.Reset();
-            _sw.Start();
-            
-            object output = null;
-            DbCommand cmd = CreateCommand(sqlString);
+            object output;
+            var cmd = CreateCommand(sqlString);
             try
             {
                 cmd.Connection.Open();               
                 cmd.CommandText = sqlString;
-                if (cmd.ExecuteScalar().ToString() == "")
+                output = cmd.ExecuteScalar();
+                if (output != null)
                 {
-                    output = null;
-                }
-                else
-                {
-                    output = cmd.ExecuteScalar();
-                    cmd.Connection.Close();
+                    output = output.ToString();
                 }
             }
             catch
@@ -813,9 +806,6 @@ namespace HydroDesktop.Database
                 cmd.Connection.Close();
                 cmd.Dispose();
             }
-
-            _sw.Stop();
-            Debug.WriteLine("ExecuteSingleOutput:" + sqlString + " " + _sw.ElapsedMilliseconds + "ms");
 
             return output;
 

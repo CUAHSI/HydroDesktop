@@ -26,18 +26,18 @@ Partial Class fQualityControlLevelTableManagement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ConfigBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.lblID = New System.Windows.Forms.Label
-        Me.txtID = New System.Windows.Forms.TextBox
-        Me.lblCode = New System.Windows.Forms.Label
-        Me.txtCode = New System.Windows.Forms.TextBox
-        Me.lblDefinition = New System.Windows.Forms.Label
-        Me.txtDefinition = New System.Windows.Forms.TextBox
-        Me.lblExplanation = New System.Windows.Forms.Label
-        Me.txtExplanation = New System.Windows.Forms.TextBox
-        Me.btnSubmit = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
+        Me.lblID = New System.Windows.Forms.Label()
+        Me.txtID = New System.Windows.Forms.TextBox()
+        Me.lblCode = New System.Windows.Forms.Label()
+        Me.txtCode = New System.Windows.Forms.TextBox()
+        Me.lblDefinition = New System.Windows.Forms.Label()
+        Me.txtDefinition = New System.Windows.Forms.TextBox()
+        Me.lblExplanation = New System.Windows.Forms.Label()
+        Me.txtExplanation = New System.Windows.Forms.TextBox()
+        Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -143,14 +143,13 @@ Partial Class fQualityControlLevelTableManagement
         Me.Controls.Add(Me.lblCode)
         Me.Controls.Add(Me.txtID)
         Me.Controls.Add(Me.lblID)
-        Me.Name = "fQualityControlLevelTableManagement"
-        Me.Text = "Quality Control Level Table Management"
-        CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
+        Me.Name = "fQualityControlLevelTableManagement"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "Quality Control Level Table Management"
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
