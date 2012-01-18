@@ -26,7 +26,7 @@ namespace HydroDesktop.Database
 
         public DataTable GetThemesForAllSeries()
         {
-            var dtThemes = DbOperations.LoadTable("themes", "SELECT ThemeID, ThemeName from DataThemeDescriptions");
+            var dtThemes = DbOperations.LoadTable(TableName, "SELECT ThemeID, ThemeName from DataThemeDescriptions");
             if (Int32.Parse(DbOperations.ExecuteSingleOutput("Select count(*) from DataSeries " +
                                                              "Where SeriesID not in (Select SeriesID from DataThemes)").
                                 ToString()) > 0)
@@ -37,5 +37,10 @@ namespace HydroDesktop.Database
         }
 
         #endregion
+
+        public override string TableName
+        {
+            get { return "DataThemes"; }
+        }
     }
 }

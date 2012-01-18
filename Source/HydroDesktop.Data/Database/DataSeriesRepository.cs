@@ -462,5 +462,10 @@ namespace HydroDesktop.Database
         }
 
         #endregion
+
+        public override string TableName
+        {
+            get { return "DataSeries"; }
+        }
     }
 }

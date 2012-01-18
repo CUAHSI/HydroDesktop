@@ -26,7 +26,7 @@ namespace HydroDesktop.Database
         
         public Unit GetByID(long id)
         {
-            var dt = DbOperations.LoadTable("Units", "Select * FROM Units where UnitsID=" + id);
+            var dt = DbOperations.LoadTable(TableName, "Select * FROM Units where UnitsID=" + id);
             if (dt == null || dt.Rows.Count == 0)
                 return null;
 
@@ -42,5 +42,10 @@ namespace HydroDesktop.Database
         }
 
         #endregion
+
+        public override string TableName
+        {
+            get { return "Units"; }
+        }
     }
 }
