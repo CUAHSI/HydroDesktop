@@ -15,7 +15,8 @@ namespace HydroDesktop.Database
         {
         }
 
-        public DataThemesRepository(DbOperations db) : base(db)
+        public DataThemesRepository(IHydroDbOperations db)
+            : base(db)
         {
         }
 

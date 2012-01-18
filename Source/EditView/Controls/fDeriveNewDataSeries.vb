@@ -12,23 +12,28 @@ Public Class fDeriveNewDataSeries
     Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
     Private newSeriesID As Integer
     Private todaystring As String = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss")
+    Private Const DERIVED_METHOD_DESCRIPTION = "Derived using HydroDesktop Edit View"
+    Private ReadOnly _SelectedSeriesID As Integer
+    Private ReadOnly _cEditView As cEditView
+    'Private _defaultDerivedVariableID As Integer
 
-    Public Sub New()
+    Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
+
+        _SelectedSeriesID = seriesId
+        _cEditView = cEditView
+
         InitializeComponent()
         initialize()
 
+        SetDefault()
     End Sub
 
-    Public Sub initialize()
+    Private Sub initialize()
         'fill all lists of this form
         rbtnCopy.Checked = True
         FillQualityControlLevel()
         FillMethods()
         FillVariable()
-
-        'ddlMethods.DropDownStyle = ComboBoxStyle.DropDownList
-        'ddlQualityControlLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        'ddlVariable.DropDownStyle = ComboBoxStyle.DropDownList
     End Sub
 
     Public Sub FillQualityControlLevel()
@@ -45,10 +50,17 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub FillMethods()
-        Dim dt As DataTable
+        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+
+        ' Check for Derived method 
+        Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
+        If Not derivedMethod.HasValue Then
+            ' Insert Derived method
+            repo.InsertMethod(DERIVED_METHOD_DESCRIPTION, "unknown")
+        End If
 
         'Fill up Method drop down list
-        dt = dbTools.LoadTable("Methods", "Select * FROM Methods")
+        Dim dt = repo.GetAllMethods()
         dt.Rows.Add()
         dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Methods", "MethodID").ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Method..."
@@ -58,10 +70,16 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub FillVariable()
-        Dim dt As DataTable
+        Dim variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)(dbTools)
+        Dim dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
+
+        'todo: Create default derived variable
+        'Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
+        'Dim var = variablesRepository.GetByID(currentVariableID)
+        'Dim defaultDerivedVariableID = variablesRepository.CreateCopy(currentVariableID)
 
         'Fill up Variable drop down list
-        dt = dbTools.LoadTable("Variables", "Select * FROM Variables")
+        Dim dt = variablesRepository.GetAll()
         dt.Rows.Add()
         dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Variables", "VariableID").ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Variable..."
@@ -70,8 +88,7 @@ Public Class fDeriveNewDataSeries
         ddlVariable.ValueMember = "VariableID"
     End Sub
 
-    Public Sub SetDefault()
-
+    Private Sub SetDefault()
         'setting text boxes to blank
         txtA.Text = "0"
         txtB.Text = "0"
@@ -84,8 +101,6 @@ Public Class fDeriveNewDataSeries
         SetDefaultMethods()
         SetDefaultQualityControlLevel()
         SetDefaultVariable()
-
-
     End Sub
 
     Private Sub AlgebraicValidation(ByVal Validated As Boolean)
@@ -558,15 +573,9 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub SetDefaultMethods()
-        Dim currentMethodID As Integer
-        Dim count As Integer = 0
-
-        currentMethodID = dbTools.ExecuteSingleOutput("SELECT MethodID FROM DataSeries WHERE SeriesID = " + _SelectedSeriesID.ToString)
-
-        While Not (ddlMethods.SelectedValue = currentMethodID)
-            ddlMethods.SelectedItem = ddlMethods.Items.Item(count)
-            count += 1
-        End While
+        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+        Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
+        ddlMethods.SelectedValue = derivedMethod
     End Sub
 
 #End Region
@@ -575,27 +584,25 @@ Public Class fDeriveNewDataSeries
 
     Private Sub ddlVariable_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlVariable.SelectedIndexChanged
         If ddlVariable.SelectedIndex = ddlVariable.Items.Count - 1 Then
-            Dim VariablesTableManagement As fVariablesTableManagement = New fVariablesTableManagement()
-            VariablesTableManagement.initialize()
-            VariablesTableManagement.Show()
-            VariablesTableManagement._fDeriveNewDataSeries = Me
+            ShowVariablesTableManagment(Nothing)
         End If
     End Sub
 
     Private Sub btnVariable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVariable.Click
-        Dim VariablesTableManagement As fVariablesTableManagement = New fVariablesTableManagement()
-        VariablesTableManagement.Show()
-        VariablesTableManagement._fDeriveNewDataSeries = Me
-        VariablesTableManagement._VariableID = ddlVariable.SelectedValue
-        VariablesTableManagement.initialize()
+        ShowVariablesTableManagment(ddlVariable.SelectedValue)
+    End Sub
+
+    Private Sub ShowVariablesTableManagment(ByVal variableID As Integer)
+        Dim variablesTableManagement As fVariablesTableManagement = New fVariablesTableManagement(variableID, Me)
+        variablesTableManagement.Show()
     End Sub
 
     Public Sub SetDefaultVariable()
-        Dim currentVariableID As Integer
+
+        Dim repo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
+        Dim currentVariableID = repo.GetVariableID(_SelectedSeriesID)
+
         Dim count As Integer = 0
-
-        currentVariableID = dbTools.ExecuteSingleOutput("SELECT VariableID FROM DataSeries WHERE SeriesID = " + _SelectedSeriesID.ToString)
-
         While Not (ddlVariable.SelectedValue = currentVariableID)
             ddlVariable.SelectedItem = ddlVariable.Items.Item(count)
             count += 1

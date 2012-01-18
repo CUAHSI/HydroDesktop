@@ -30,7 +30,7 @@ namespace HydroDesktop.Database
         /// Creates a new RepositoryManager associated with the specified database
         /// </summary>
         /// <param name="db">The DbOperations object for handling the database</param>
-        public RepositoryManagerSQL(DbOperations db)
+        public RepositoryManagerSQL(IHydroDbOperations db)
             :base(db)
         {
         }
@@ -63,7 +63,7 @@ namespace HydroDesktop.Database
             {
                 int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
 
-                var seriesRepository = RepositoryFactory.Instance.CreateDataSeriesRepository(_db);
+                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
                 seriesRepository.DeleteSeries(seriesID);
             }
 
@@ -117,7 +117,7 @@ namespace HydroDesktop.Database
                 
                 int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
 
-                var seriesRepository = RepositoryFactory.Instance.CreateDataSeriesRepository(_db);
+                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
                 seriesRepository.DeleteSeries(seriesID);
 
                 //progress report

@@ -30,7 +30,12 @@ namespace HydroDesktop.Interfaces
         /// Get the database connection string
         /// </summary>
         string ConnectionString { get; }
-        
+
+        /// <summary>
+        /// Database type (supported type is SQLite)
+        /// </summary>
+        DatabaseTypes DatabaseType { get; }
+
         /// <summary>
         /// Test if we are able to connect to the database specified in the constructor
         /// </summary>
