@@ -30,13 +30,21 @@ namespace HydroDesktop.Database
         /// Create new instance of <see cref="DataSeriesRepository"/>
         /// </summary>
         /// <param name="db">The DbOperations object for handling the database</param>
-        public DataSeriesRepository(DbOperations db) : base(db)
+        public DataSeriesRepository(IHydroDbOperations db)
+            : base(db)
         {
         }
 
         #endregion
 
         #region Public methods
+        
+        public int GetVariableID(int seriesID)
+        {
+            var result =
+                DbOperations.ExecuteSingleOutput("SELECT VariableID FROM DataSeries WHERE SeriesID = " + seriesID);
+            return Convert.ToInt32(result);
+        }
 
         public DataTable GetDetailedSeriesTable()
         {
@@ -454,5 +462,10 @@ namespace HydroDesktop.Database
         }
 
         #endregion
+
+        public override string TableName
+        {
+            get { return "DataSeries"; }
+        }
     }
 }

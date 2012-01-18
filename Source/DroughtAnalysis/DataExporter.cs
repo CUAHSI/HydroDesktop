@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Database;
 using System.Data;
@@ -50,7 +51,7 @@ namespace DroughtAnalysis
             }
             
             //get the series
-            var dbm = RepositoryFactory.Instance.CreateRepositoryManager(HydroDesktop.Interfaces.DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
+            var dbm = RepositoryFactory.Instance.Get < IRepositoryManager>(DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
       
             IList<Series> validSeriesList = station.DataSeriesList;
 

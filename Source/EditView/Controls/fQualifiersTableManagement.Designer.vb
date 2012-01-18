@@ -25,16 +25,16 @@ Partial Class fQualifiersTableManagement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ConfigBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.btnSubmit = New System.Windows.Forms.Button
-        Me.txtDescription = New System.Windows.Forms.TextBox
-        Me.txtQualifierCode = New System.Windows.Forms.TextBox
-        Me.lblDescription = New System.Windows.Forms.Label
-        Me.lblLink = New System.Windows.Forms.Label
-        Me.lblSetTo = New System.Windows.Forms.Label
-        Me.ddlQualifiers = New System.Windows.Forms.ComboBox
-        Me.btnCancel = New System.Windows.Forms.Button
+        Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.txtDescription = New System.Windows.Forms.TextBox()
+        Me.txtQualifierCode = New System.Windows.Forms.TextBox()
+        Me.lblDescription = New System.Windows.Forms.Label()
+        Me.lblLink = New System.Windows.Forms.Label()
+        Me.lblSetTo = New System.Windows.Forms.Label()
+        Me.ddlQualifiers = New System.Windows.Forms.ComboBox()
+        Me.btnCancel = New System.Windows.Forms.Button()
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -129,7 +129,7 @@ Partial Class fQualifiersTableManagement
         Me.MinimizeBox = False
         Me.Name = "fQualifiersTableManagement"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Qualifiers Table Management"
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
