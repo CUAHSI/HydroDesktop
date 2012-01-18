@@ -71,14 +71,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area\AreaHelper.cs" />
+    <Compile Include="Area\Box.cs" />
+    <Compile Include="Area\RectangleDrawing.cs" />
     <Compile Include="Area\SelectAreaByAttributeDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Area\SelectAreaByAttributeDialog.Designer.cs">
+    <Compile Include="Area\SelectAreaByAttributeDialog.designer.cs">
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\BackgroundWorkerHelper.cs" />
-    <Compile Include="Area\RectangleDrawing.cs" />
     <Compile Include="Searching\FacetedSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -137,7 +138,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Area\SelectAreaByAttributeDialog.resx">
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Searching\FacetedSearchControl.resx">
       <DependentUpon>FacetedSearchControl.cs</DependentUpon>
@@ -273,17 +273,11 @@
     <None Include="Resources\Draw_Box_32.png" />
     <None Include="Resources\keyword_16.png" />
     <None Include="Resources\keyword_32.png" />
-    <Content Include="Resources\OntologyTree.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\select_poly_16.png" />
     <None Include="Resources\select_poly_32.png" />
     <None Include="Resources\select_table_16.png" />
     <None Include="Resources\select_table_32.png" />
     <None Include="Resources\search_32.png" />
-    <Content Include="Resources\Synonyms.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

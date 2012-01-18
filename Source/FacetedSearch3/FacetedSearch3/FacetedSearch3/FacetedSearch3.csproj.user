@@ -9,6 +9,6 @@
     <StartProgram>J:\dev\HydroDesktop\Binaries\HydroDesktop.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup>
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
 </Project>

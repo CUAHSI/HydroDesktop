@@ -88,7 +88,7 @@ namespace Search3
             //Search ribbon tab
             var root = new RootItem(kHydroSearch3, "Search");
             //setting the sort order to small positive number to display it to the right of home tab
-            root.SortOrder = -1; 
+            root.SortOrder = -10; 
             head.Add(root);
 
             #region Area group
@@ -595,8 +595,8 @@ namespace Search3
             // Populate items by keywords
             rbKeyword.Items.Clear();
             rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
-
-            rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
+            
+            //rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
         }
 
         void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
