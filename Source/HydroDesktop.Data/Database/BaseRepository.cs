@@ -59,6 +59,11 @@ namespace HydroDesktop.Database
             get { return _db; }
         }
 
+        /// <summary>
+        /// Table (Entity) name for which this repository used
+        /// </summary>
+        public abstract string TableName { get; }
+
         #endregion
 
         #region Private Methods

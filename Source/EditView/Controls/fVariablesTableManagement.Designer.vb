@@ -324,7 +324,7 @@ Partial Class fVariablesTableManagement
         'ddlDataType
         '
         Me.ddlDataType.FormattingEnabled = True
-        Me.ddlDataType.Items.AddRange(New Object() {"Average", "Maximum", "Minimum", "Continuous", "Unknown", "Others..."})
+        Me.ddlDataType.Items.AddRange(New Object() {"Average", "Maximum", "Minimum", "Sum", "Continuous", "Unknown", "Others..."})
         Me.ddlDataType.Location = New System.Drawing.Point(272, 166)
         Me.ddlDataType.Name = "ddlDataType"
         Me.ddlDataType.Size = New System.Drawing.Size(153, 21)

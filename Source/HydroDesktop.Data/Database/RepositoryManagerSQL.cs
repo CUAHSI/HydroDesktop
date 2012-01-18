@@ -3886,5 +3886,10 @@ namespace HydroDesktop.Database
         }
 
         #endregion
+
+        public override string TableName
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

@@ -65,7 +65,11 @@ Public Class fVariablesTableManagement
             txtGeneralCategory.Text = dbTools.ExecuteSingleOutput("SELECT GeneralCategory FROM Variables WHERE VariableID = " + _VariableID.ToString).ToString
             ddlUnitsName.SelectedItem = ddlUnitsName.Items(dbTools.ExecuteSingleOutput("SELECT VariableUnitsID FROM Variables WHERE VariableID = " + _VariableID.ToString) - 1)
             ddlTUnitsName.SelectedItem = ddlTUnitsName.Items(dbTools.ExecuteSingleOutput("SELECT TimeUnitsID FROM Variables WHERE VariableID = " + _VariableID.ToString) - 1)
-            ddlDataType.Text = dbTools.ExecuteSingleOutput("SELECT DataType FROM Variables WHERE VariableID = " + _VariableID.ToString).ToString
+            Dim dataType = dbTools.ExecuteSingleOutput("SELECT DataType FROM Variables WHERE VariableID = " + _VariableID.ToString).ToString
+            If Not ddlDataType.Items.Contains(dataType) Then
+                ddlDataType.Items.Add(dataType)
+            End If
+            ddlDataType.Text = dataType
             ddlValueType.Text = dbTools.ExecuteSingleOutput("SELECT ValueType FROM Variables WHERE VariableID = " + _VariableID.ToString).ToString
             btnSubmit.Text = "Edit"
         End If

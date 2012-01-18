@@ -30,7 +30,7 @@ namespace HydroDesktop.Database
         {
             if (methodID == null)
             {
-                methodID = DbOperations.GetNextID("Methods", "MethodID");
+                methodID = DbOperations.GetNextID(TableName, "MethodID");
             }
             DbOperations.ExecuteNonQuery(
                 string.Format(
@@ -78,5 +78,10 @@ namespace HydroDesktop.Database
         }
 
         #endregion
+
+        public override string TableName
+        {
+            get { return "Methods"; }
+        }
     }
 }

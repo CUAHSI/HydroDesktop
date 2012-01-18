@@ -4,6 +4,7 @@ Imports System.Threading
 Imports System.Text
 Imports System.Windows.Forms
 Imports HydroDesktop.Interfaces
+Imports HydroDesktop.Interfaces.ObjectModel
 
 
 Public Class fDeriveNewDataSeries
@@ -15,7 +16,8 @@ Public Class fDeriveNewDataSeries
     Private Const DERIVED_METHOD_DESCRIPTION = "Derived using HydroDesktop Edit View"
     Private ReadOnly _SelectedSeriesID As Integer
     Private ReadOnly _cEditView As cEditView
-    'Private _defaultDerivedVariableID As Integer
+    Private _derivedVariable As Variable
+    Private _selectedSeriesVariable As Variable
 
     Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
 
@@ -30,10 +32,10 @@ Public Class fDeriveNewDataSeries
 
     Private Sub initialize()
         'fill all lists of this form
-        rbtnCopy.Checked = True
         FillQualityControlLevel()
         FillMethods()
         FillVariable()
+        rbtnCopy.Checked = True
     End Sub
 
     Public Sub FillQualityControlLevel()
@@ -73,10 +75,11 @@ Public Class fDeriveNewDataSeries
         Dim variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)(dbTools)
         Dim dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
 
-        'todo: Create default derived variable
-        'Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
-        'Dim var = variablesRepository.GetByID(currentVariableID)
-        'Dim defaultDerivedVariableID = variablesRepository.CreateCopy(currentVariableID)
+        'Create derived variable
+        Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
+        _selectedSeriesVariable = variablesRepository.GetByID(currentVariableID)
+        _derivedVariable = variablesRepository.CreateCopy(_selectedSeriesVariable)
+        _derivedVariable.ValueType = "Derived Value"
 
         'Fill up Variable drop down list
         Dim dt = variablesRepository.GetAll()
@@ -598,9 +601,7 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub SetDefaultVariable()
-
-        Dim repo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
-        Dim currentVariableID = repo.GetVariableID(_SelectedSeriesID)
+        Dim currentVariableID = _derivedVariable.Id
 
         Dim count As Integer = 0
         While Not (ddlVariable.SelectedValue = currentVariableID)
@@ -661,6 +662,43 @@ Public Class fDeriveNewDataSeries
             gboxAggregate.Enabled = False
             gboxAlgebraic.Enabled = False
         End If
+
+        UpdateDerivedVarible()
+    End Sub
+
+    Private Sub UpdateDerivedVarible()
+        If Not rbtnAggregate.Checked Then
+            _derivedVariable.DataType = _selectedSeriesVariable.DataType
+            _derivedVariable.TimeSupport = _selectedSeriesVariable.TimeSupport
+        Else
+            'Update TimeSupport
+            If rbtnDaily.Checked Then
+                _derivedVariable.TimeSupport = 1.0
+            ElseIf rbtnMonthly.Checked Then
+                _derivedVariable.TimeSupport = 30.0
+            ElseIf rbtnQuarterly.Checked Then
+                _derivedVariable.TimeSupport = 120.0
+            End If
+
+            'Update DataType
+            If rbtnMaximum.Checked Then
+                _derivedVariable.DataType = "Maximum"
+            ElseIf rbtnMinimum.Checked Then
+                _derivedVariable.DataType = "Minimum"
+            ElseIf _rbtnAverage.Checked Then
+                _derivedVariable.DataType = "Average"
+            ElseIf _rbtnSum.Checked Then
+                _derivedVariable.DataType = "Sum"
+            End If
+        End If
+
+        'Save changes
+        Dim repo = RepositoryFactory.Instance.Get(Of IVariablesRepository)(dbTools)
+        repo.Update(_derivedVariable)
+    End Sub
+
+    Private Sub rbtnDaily_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles rbtnSum.CheckedChanged, rbtnQuarterly.CheckedChanged, rbtnMonthly.CheckedChanged, rbtnMinimum.CheckedChanged, rbtnMaximum.CheckedChanged, rbtnDaily.CheckedChanged, rbtnAverage.CheckedChanged
+        UpdateDerivedVarible()
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
@@ -724,6 +762,5 @@ Public Class fDeriveNewDataSeries
     End Sub
 
 #End Region
-
 
 End Class
