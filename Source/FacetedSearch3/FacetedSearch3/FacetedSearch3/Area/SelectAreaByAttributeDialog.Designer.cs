@@ -35,14 +35,13 @@
             this.cmbField = new System.Windows.Forms.ComboBox();
             this.lblField = new System.Windows.Forms.Label();
             this.lblValue = new System.Windows.Forms.Label();
-            this.teFirstLetters = new System.Windows.Forms.TextBox();
-            this.lbValues = new System.Windows.Forms.ListBox();
+            this.cmbValues = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnApply
             // 
             this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApply.Location = new System.Drawing.Point(146, 333);
+            this.btnApply.Location = new System.Drawing.Point(146, 186);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(75, 23);
             this.btnApply.TabIndex = 4;
@@ -54,7 +53,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(227, 333);
+            this.btnOK.Location = new System.Drawing.Point(227, 186);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
@@ -75,6 +74,7 @@
             // 
             this.cmbActiveLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbActiveLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbActiveLayer.FormattingEnabled = true;
             this.cmbActiveLayer.Location = new System.Drawing.Point(17, 36);
             this.cmbActiveLayer.Name = "cmbActiveLayer";
@@ -85,6 +85,7 @@
             // 
             this.cmbField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbField.FormattingEnabled = true;
             this.cmbField.Location = new System.Drawing.Point(17, 81);
             this.cmbField.Name = "cmbField";
@@ -109,35 +110,22 @@
             this.lblValue.TabIndex = 6;
             this.lblValue.Text = "Value: type-in first few letters";
             // 
-            // teFirstLetters
+            // cmbValues
             // 
-            this.teFirstLetters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.teFirstLetters.Location = new System.Drawing.Point(17, 147);
-            this.teFirstLetters.Name = "teFirstLetters";
-            this.teFirstLetters.Size = new System.Drawing.Size(288, 20);
-            this.teFirstLetters.TabIndex = 2;
-            this.teFirstLetters.TextChanged += new System.EventHandler(this.teFirstLetters_TextChanged);
-            // 
-            // lbValues
-            // 
-            this.lbValues.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbValues.FormattingEnabled = true;
-            this.lbValues.Location = new System.Drawing.Point(17, 173);
-            this.lbValues.Name = "lbValues";
-            this.lbValues.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbValues.Size = new System.Drawing.Size(288, 134);
-            this.lbValues.TabIndex = 3;
+            this.cmbValues.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbValues.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbValues.FormattingEnabled = true;
+            this.cmbValues.Location = new System.Drawing.Point(17, 147);
+            this.cmbValues.Name = "cmbValues";
+            this.cmbValues.Size = new System.Drawing.Size(288, 21);
+            this.cmbValues.TabIndex = 7;
             // 
             // SelectAreaByAttributeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 368);
-            this.Controls.Add(this.lbValues);
-            this.Controls.Add(this.teFirstLetters);
+            this.ClientSize = new System.Drawing.Size(314, 221);
+            this.Controls.Add(this.cmbValues);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.cmbField);
             this.Controls.Add(this.lblField);
@@ -164,7 +152,6 @@
         private System.Windows.Forms.ComboBox cmbField;
         private System.Windows.Forms.Label lblField;
         private System.Windows.Forms.Label lblValue;
-        private System.Windows.Forms.TextBox teFirstLetters;
-        private System.Windows.Forms.ListBox lbValues;
+        private System.Windows.Forms.ComboBox cmbValues;
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using DotSpatial.Data;
+using DotSpatial.Projections;
+using FacetedSearch3.Area;
 
 namespace FacetedSearch3.Settings
 {
@@ -14,15 +16,22 @@ namespace FacetedSearch3.Settings
             }
         }
 
-        private AreaRectangle _areaRectangle;
-        public AreaRectangle AreaRectangle
+        private Box _areaRectangle;
+        public Box AreaRectangle
         {
             get { return _areaRectangle; }
-            set
+            private set
             {
                 _areaRectangle = value;
                 RaiseAreaRectangleChanged();
             }
+        }
+        public ProjectionInfo RectangleProjection { get; private set; }
+
+        public void SetAreaRectangle(Box areaRectangle, ProjectionInfo rectangleProjection)
+        {
+            RectangleProjection = rectangleProjection;
+            AreaRectangle = areaRectangle;
         }
 
         private FeatureSet _polygons;

@@ -35,7 +35,6 @@ namespace FacetedSearch3
 
 
         private static string FacetedShapeFileName = "FacetedSearchResults.shp";
-        private static string FacetedShapeLayerName = "FacetedSearchResults.shp";
 
         #region Methods
         public FacetedSearchControl(AppManager a)
@@ -125,7 +124,7 @@ namespace FacetedSearch3
                   MessageBox.Show("Error connecting to server. Please verify you have access to the internet and try again.");          
 #endif
             }
-            App.ProgressHandler.Progress(String.Empty, 0, String.Empty);    
+            App.ProgressHandler.Progress(String.Empty, 0, "Initializing Faceted Search - Populating the Tree View");    
         }
         
         private void LoadTotalFacetCollection_Complete(IAsyncResult result)
@@ -208,7 +207,7 @@ namespace FacetedSearch3
         private void InitializeFacetedSearch_Complete(IAsyncResult result)
         {
             try
-            {                                                
+            {             
                 FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient cl = (FacetedSearch3.CUAHSIFacetedSearch.MultiFacetedHISSvcClient)result.AsyncState;
                 FacetedSearch3.CUAHSIFacetedSearch.OntologyEnvelope env = cl.EndGetOntologyElementsGivenConstraints(result);                
                 IEnumerable<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement> MyRemainingFacets = new List<FacetedSearch3.CUAHSIFacetedSearch.OntologyElement>();
@@ -218,12 +217,22 @@ namespace FacetedSearch3
                     FacetFlowPanel.Enabled = true;
                     FacetFlowPanel.Controls.Add(new SearchFacetSpecifier(this, TopLevelFacets, SelectedFacets, MyRemainingFacets, FacetFlowPanel.Controls.Count));
                     ResizeSearchSpecifiers();
+                    MakeSearchPanelVisible();
+                    App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
                 }));                
             }
             catch (Exception e)
             {
                 MessageBox.Show(string.Format("Error in transit layer with message {0} and inner exception {1}", e.Message, e.InnerException));
             }
+        }
+
+        /// <summary>
+        /// Makes the "Faceted Search" dock panel selected and visible
+        /// </summary>
+        private void MakeSearchPanelVisible()
+        {
+            App.DockManager.SelectPanel("kHydroFacetedSearchV3");
         }
         
         /// <summary>

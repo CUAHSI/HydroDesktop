@@ -33,6 +33,7 @@ namespace FacetedSearch3
         // private TextEntryActionItem rbKeyword;
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
+        private SimpleActionItem rbAttribute;
 
         private FacetedSearchControl fsc;     
 
@@ -69,14 +70,18 @@ namespace FacetedSearch3
             var root = new RootItem(kHydroFacetedSearch3, "Faceted Search");
             //setting the sort order to small positive number to display it to the right of home tab
             root.SortOrder = -1; 
-            head.Add(root);            
+            head.Add(root);
 
             #region Area group
 
             const string grpArea = "Area";
 
+            //to get area select mode
+            App.Map.FunctionModeChanged += new EventHandler(Map_FunctionModeChanged);
+            App.Map.SelectionChanged += Map_SelectionChanged;
+
             //Draw Box
-            rbDrawBox = new SimpleActionItem(kHydroFacetedSearch3, "Draw Box", rbDrawBox_Click);
+            rbDrawBox = new SimpleActionItem(kHydroFacetedSearch3, "Draw Rectangle", rbDrawBox_Click);
             rbDrawBox.LargeImage = Resources.Draw_Box_32;
             rbDrawBox.SmallImage = Resources.Draw_Box_16;
             rbDrawBox.GroupCaption = grpArea;
@@ -87,22 +92,23 @@ namespace FacetedSearch3
             //Select
             rbSelect = new SimpleActionItem(kHydroFacetedSearch3, "Select Polygons", rbSelect_Click);
             rbSelect.ToolTipText = "Select Region";
-            rbSelect.GroupCaption = grpArea;
             rbSelect.LargeImage = Resources.select_poly_32;
             rbSelect.SmallImage = Resources.select_poly_16;
+            rbSelect.GroupCaption = grpArea;
             rbSelect.ToggleGroupKey = grpArea;
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
             //AttributeTable
-            var rbAttribute = new SimpleActionItem(kHydroFacetedSearch3, "Select by Attribute", rbAttribute_Click);
+            rbAttribute = new SimpleActionItem(kHydroFacetedSearch3, "Select by Attribute", rbAttribute_Click);
             rbAttribute.ToolTipText = "Select by Attribute";
             rbAttribute.GroupCaption = grpArea;
+            rbAttribute.ToggleGroupKey = grpArea;
             rbAttribute.LargeImage = Resources.select_table_32;
             rbAttribute.SmallImage = Resources.select_table_16;
-            head.Add(rbAttribute);            
+            head.Add(rbAttribute);
 
-            #endregion            
+            #endregion
 
             #region do not implement these for now - use attribute table selection instead
 
@@ -371,14 +377,26 @@ namespace FacetedSearch3
         
         void rbSearch_Click(object sender, EventArgs e)
         {            
+            //there must be at least one layer in the map
+            if (App.Map.Layers.Count == 0)
+            {
+                MessageBox.Show("Please add at least one layer to the map.");
+                return;
+            }
+            
+            //reproject the area parameter to wgs84 and then run search.
             if (SearchSettings.Instance.AreaSettings.Polygons != null)
             {
-                fsc.SetSearchParameters(SearchSettings.Instance.AreaSettings.Polygons.Extent, SearchSettings.Instance.DateSettings.StartDate, SearchSettings.Instance.DateSettings.EndDate);
+                Extent extentInWgs84 = AreaHelper.ReprojectExtentToWGS84(SearchSettings.Instance.AreaSettings.Polygons.Extent, App.Map.Projection);
+                fsc.SetSearchParameters(extentInWgs84, SearchSettings.Instance.DateSettings.StartDate, SearchSettings.Instance.DateSettings.EndDate);
                 fsc.InitializeFacetedSearch();
             }
             else if (SearchSettings.Instance.AreaSettings.AreaRectangle != null)
             {
-                fsc.SetSearchParameters(new Extent(SearchSettings.Instance.AreaSettings.AreaRectangle.XMin, SearchSettings.Instance.AreaSettings.AreaRectangle.YMin, SearchSettings.Instance.AreaSettings.AreaRectangle.XMax, SearchSettings.Instance.AreaSettings.AreaRectangle.YMax), SearchSettings.Instance.DateSettings.StartDate, SearchSettings.Instance.DateSettings.EndDate);
+                Extent areaRectangleExtent = new Extent(SearchSettings.Instance.AreaSettings.AreaRectangle.XMin, SearchSettings.Instance.AreaSettings.AreaRectangle.YMin, SearchSettings.Instance.AreaSettings.AreaRectangle.XMax, SearchSettings.Instance.AreaSettings.AreaRectangle.YMax);
+                Extent areaRectangelExtentInWgs84 = AreaHelper.ReprojectExtentToWGS84(areaRectangleExtent, App.Map.Projection);
+                
+                fsc.SetSearchParameters(areaRectangelExtentInWgs84, SearchSettings.Instance.DateSettings.StartDate, SearchSettings.Instance.DateSettings.EndDate);
                 fsc.InitializeFacetedSearch();    
             }
             else
@@ -391,23 +409,55 @@ namespace FacetedSearch3
 
         #region  Area group
 
+        void Map_FunctionModeChanged(object sender, EventArgs e)
+        {
+            if (App.Map.FunctionMode == FunctionMode.Select && CurrentAreaSelectMode != AreaSelectMode.DrawBox)
+            {
+                CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+                rbSelect.Toggle();
+            }
+        }
+
+        private AreaSelectMode CurrentAreaSelectMode
+        {
+            get;
+            set;
+        }
+
+        private enum AreaSelectMode
+        {
+            None,
+            DrawBox,
+            SelectPolygons,
+            SelectAttribute
+        }
+
         void Instance_AreaRectangleChanged(object sender, EventArgs e)
         {
             var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : "Draw Box";
         }
 
-        void rbDrawBox_Click(object Sender, EventArgs e)
+        void rbDrawBox_Click(object sender, EventArgs e)
         {
+            CurrentAreaSelectMode = AreaSelectMode.DrawBox;
+
             DeactivateSelectAreaByPolygon();
 
             if (_rectangleDrawing == null)
             {
-                _rectangleDrawing = new RectangleDrawing(App.Map);
+                _rectangleDrawing = new RectangleDrawing((Map)App.Map);
                 _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
+                _rectangleDrawing.Deactivated += _rectangleDrawing_Deactivated;
             }
 
             _rectangleDrawing.Activate();
+        }
+
+        void _rectangleDrawing_Deactivated(object sender, EventArgs e)
+        {
+            if (_isDeactivatingDrawBox) return;
+            rbSelect_Click(this, EventArgs.Empty);
         }
 
         void rectangleDrawing_RectangleCreated(object sender, EventArgs e)
@@ -415,57 +465,79 @@ namespace FacetedSearch3
             if (_rectangleDrawing == null) return;
 
             var xMin = _rectangleDrawing.RectangleExtent.MinX;
-            var YMin = _rectangleDrawing.RectangleExtent.MinY;
-            var XMax = _rectangleDrawing.RectangleExtent.MaxX;
-            var YMax = _rectangleDrawing.RectangleExtent.MaxY;
+            var yMin = _rectangleDrawing.RectangleExtent.MinY;
+            var xMax = _rectangleDrawing.RectangleExtent.MaxX;
+            var yMax = _rectangleDrawing.RectangleExtent.MaxY;
 
-            var xy = new[] { xMin, YMin, XMax, YMax };
-
-            string esri = Resources.wgs_84_esri_string;
-            var wgs84 = ProjectionInfo.FromEsriString(esri);
-
-            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, wgs84, 0, 2);
-
-            // Save rectangle
-            var xmin = xy[0];
-            var ymin = xy[1];
-            var xmax = xy[2];
-            var ymax = xy[3];
-            var rectangle = new AreaRectangle(xmin, ymin, xmax, ymax);
-            SearchSettings.Instance.AreaSettings.AreaRectangle = rectangle;
+            SearchSettings.Instance.AreaSettings.SetAreaRectangle(new Box(xMin, xMax, yMin, yMax), App.Map.Projection);
         }
 
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
         {
             var fsPolygons = SearchSettings.Instance.AreaSettings.Polygons;
-            var caption = fsPolygons != null && fsPolygons.Features.Count > 0
-                                       ? string.Format("{0} polygons selected", fsPolygons.Features.Count)
-                                       : "Select Polygons";
+            var caption = "Select Polygons";
+            if (fsPolygons != null && fsPolygons.Features.Count > 0)
+            {
+                int numPolygons = fsPolygons.Features.Count;
+                caption = numPolygons > 1
+                    ? String.Format("{0} polygons selected", fsPolygons.Features.Count)
+                    : "1 polygon selected";
+            }
+
             rbSelect.Caption = caption;
             rbSelect.ToolTipText = caption;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
         {
-            DeactivateSelectAreaByPolygon();
+            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+
             DeactivateDrawBox();
 
             App.Map.FunctionMode = FunctionMode.Select;
 
-            AreaHelper.SelectFirstVisiblePolygonLayer(App.Map);
-            App.Map.SelectionChanged += Map_SelectionChanged;
+            string isWorldTemplate = App.SerializationManager.GetCustomSetting<string>("world_template", "false");
+            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
+            //App.Map.MapFrame.IsSelected = true;
         }
-        
+
         private void DeactivateSelectAreaByPolygon()
         {
-            App.Map.SelectionChanged -= Map_SelectionChanged;
             SearchSettings.Instance.AreaSettings.Polygons = null;
         }
 
         void Map_SelectionChanged(object sender, EventArgs e)
         {
-            foreach (var polygonLayer in AreaHelper.GetAllSelectedPolygonLayers(App.Map))
+            if (CurrentAreaSelectMode == AreaSelectMode.SelectPolygons ||
+                CurrentAreaSelectMode == AreaSelectMode.SelectAttribute)
             {
+                var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map)App.Map).FirstOrDefault();
+                if (polygonLayer == null)
+                {
+                    //special case: if the map layers or the group is selected
+                    if (App.Map.MapFrame.IsSelected)
+                    {
+                        IEnumerable<IMapPolygonLayer> polygonLayers = AreaHelper.GetAllPolygonLayers((Map)App.Map).Reverse();
+                        foreach (IMapPolygonLayer polyLayer in polygonLayers)
+                        {
+                            if (polyLayer.IsVisible && polyLayer.Selection.Count > 0)
+                            {
+                                var polyFs2 = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
+                                foreach (var f in polyLayer.Selection.ToFeatureList())
+                                {
+                                    polyFs2.Features.Add(f);
+                                }
+                                polyFs2.Projection = App.Map.Projection;
+                                SearchSettings.Instance.AreaSettings.Polygons = polyFs2;
+                                return;
+                            }
+
+                        }
+
+                    }
+                    return;
+                }
+
                 var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
                 foreach (var f in polygonLayer.Selection.ToFeatureList())
                 {
@@ -473,28 +545,29 @@ namespace FacetedSearch3
                 }
                 polyFs.Projection = App.Map.Projection;
                 SearchSettings.Instance.AreaSettings.Polygons = polyFs;
-
-
-                //todo: which layer should be saved, if there are several active layers?
-                break;
             }
         }
 
+        private bool _isDeactivatingDrawBox;
         private void DeactivateDrawBox()
         {
             if (_rectangleDrawing == null) return;
 
+            _isDeactivatingDrawBox = true;
             _rectangleDrawing.Deactivate();
-            SearchSettings.Instance.AreaSettings.AreaRectangle = null;
+            SearchSettings.Instance.AreaSettings.SetAreaRectangle(null, null);
+            _isDeactivatingDrawBox = false;
         }
 
         void rbAttribute_Click(object sender, EventArgs e)
         {
+            CurrentAreaSelectMode = AreaSelectMode.SelectAttribute;
+
             DeactivateDrawBox();
             DeactivateSelectAreaByPolygon();
 
-            AreaHelper.SelectFirstVisiblePolygonLayer(App.Map);
-            SelectAreaByAttributeDialog.ShowDialog(App.Map);
+            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
+            SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
         }
 
