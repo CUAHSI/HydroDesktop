@@ -25,16 +25,16 @@ Partial Class fMethodTableManagement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ConfigBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.btnSubmit = New System.Windows.Forms.Button
-        Me.txtDescription = New System.Windows.Forms.TextBox
-        Me.txtLink = New System.Windows.Forms.TextBox
-        Me.lblDescription = New System.Windows.Forms.Label
-        Me.txtID = New System.Windows.Forms.TextBox
-        Me.lblID = New System.Windows.Forms.Label
-        Me.lblLink = New System.Windows.Forms.Label
-        Me.btnCancel = New System.Windows.Forms.Button
+        Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.txtDescription = New System.Windows.Forms.TextBox()
+        Me.txtLink = New System.Windows.Forms.TextBox()
+        Me.lblDescription = New System.Windows.Forms.Label()
+        Me.txtID = New System.Windows.Forms.TextBox()
+        Me.lblID = New System.Windows.Forms.Label()
+        Me.lblLink = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -122,14 +122,13 @@ Partial Class fMethodTableManagement
         Me.Controls.Add(Me.lblDescription)
         Me.Controls.Add(Me.txtID)
         Me.Controls.Add(Me.lblID)
-        Me.Name = "fMethodTableManagement"
-        Me.Text = "Method Table Management"
-        CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
+        Me.Name = "fMethodTableManagement"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "Method Table Management"
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

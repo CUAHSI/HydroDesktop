@@ -10,6 +10,13 @@ namespace HydroDesktop.Interfaces
     public interface IDataSeriesRepository
     {
         /// <summary>
+        /// Get VariableID for given SeriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>VariableID</returns>
+        int GetVariableID(int seriesID);
+
+        /// <summary>
         /// Returns a detailed data table for all series in the database. The
         /// table includes the IDs of site, variable, source, method and QCLevel.
         /// </summary>
