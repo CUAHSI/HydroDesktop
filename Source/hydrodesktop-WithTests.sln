@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroughtAnalysis", "DroughtA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Data.Tests", "HydroDesktop.Data.Tests\HydroDesktop.Data.Tests.csproj", "{8FC4515D-D5EF-405D-BD8D-E5F481583313}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7427BF8-9FEF-4E4C-9B44-3DFF1C67356B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -390,5 +392,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7CAE8D9A-DB52-4B89-AA3D-90421CF2597D} = {A7427BF8-9FEF-4E4C-9B44-3DFF1C67356B}
+		{8FC4515D-D5EF-405D-BD8D-E5F481583313} = {A7427BF8-9FEF-4E4C-9B44-3DFF1C67356B}
+		{AAC539BD-17E4-4FC0-8A9D-294DDA49104C} = {A7427BF8-9FEF-4E4C-9B44-3DFF1C67356B}
+		{6AFB9805-B0D9-4F3A-B977-957B11565364} = {A7427BF8-9FEF-4E4C-9B44-3DFF1C67356B}
 	EndGlobalSection
 EndGlobal
