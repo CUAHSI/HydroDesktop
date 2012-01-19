@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HydroDesktop.Interfaces;
 using NUnit.Framework;
 using HydroDesktop.Database;
 using System.Data;
@@ -16,25 +17,16 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
         [Test]
         public void TestGetSeriesListTable()
         {
-            RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
-            DataTable fullSeriesTable = manager.GetSeriesListTable();
-
+            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(TestConfig.DbOperations);
+            var fullSeriesTable = manager.GetDetailedSeriesTable();
             Assert.Greater(fullSeriesTable.Rows.Count, 0);
         }
 
-        [Test]
-        public void TestGetSeriesTable_all()
-        {
-            RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
-            DataTable fullSeriesTable = manager.GetSeriesTable();
-
-            Assert.Greater(fullSeriesTable.Rows.Count, 0);
-        }
 
         [Test]
         public void TestGetSeriesTable_twoSeries()
         {
-            RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
+            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(TestConfig.DbOperations);
 
             string sql = "SELECT SeriesID from DataSeries";
             DataTable tbl = TestConfig.DbOperations.LoadTable("tbl", sql);
@@ -53,7 +45,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
         [Test]
         public void TestGetSeriesTable_oneSeries()
         {
-            RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
+            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(TestConfig.DbOperations);
 
             DataTable seriesTable = manager.GetSeriesTable(1);
             Assert.Greater(seriesTable.Rows.Count, 0);
@@ -62,7 +54,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
         [Test]
         public void SaveSeries_Simple()
         {
-            RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
+            var manager = RepositoryFactory.Instance.Get<IRepositoryManager>(TestConfig.DbOperations);
 
             Random rnd = new Random();
             int randomNumber = rnd.Next(10000);
@@ -83,7 +75,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
         [Test]
         public void SaveSeries_TwoSeriesOneSite()
         {
-            RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
+            var manager = RepositoryFactory.Instance.Get<IRepositoryManager>(TestConfig.DbOperations);
 
             Random rnd = new Random();
             int randomNumber = rnd.Next(1000);
