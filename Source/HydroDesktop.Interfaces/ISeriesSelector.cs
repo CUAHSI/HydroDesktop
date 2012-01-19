@@ -72,11 +72,6 @@ namespace HydroDesktop.Interfaces
         event SeriesEventHandler SeriesCheck;
 
         /// <summary>
-        /// When a series is selected (highlighted)
-        /// </summary>
-        event EventHandler SeriesSelected;
-
-        /// <summary>
         /// When the refresh method is called or the 'Refresh' button is pressed
         /// </summary>
         event EventHandler Refreshed;
