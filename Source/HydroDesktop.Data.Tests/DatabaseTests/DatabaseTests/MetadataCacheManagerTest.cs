@@ -19,8 +19,7 @@ namespace HydroDesktop.Data.Tests.DatabaseTests
         {
             //DbOperations dbTools = new DbOperations(Config.DefaultLocalCacheConnection(), DatabaseTypes.SQLite);
 
-            MetadataCacheManagerSQL manager = new MetadataCacheManagerSQL(DatabaseTypes.SQLite, TestConfig.DefaultLocalCacheConnection());
-            
+            MetadataCacheManagerSQL manager = new MetadataCacheManagerSQL(DatabaseTypes.SQLite, TestConfig.DefaultLocalCacheConnection);
             IList<DataServiceInfo>  services = manager.GetAllServices();
         }
 

@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\ZDataDownload\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,13 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.5.9.10348\lib\nunit.framework.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +49,11 @@
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\DataDownload\DataDownload.csproj">
       <Project>{CBC247A5-F50E-41ED-807C-94DE7E970DB9}</Project>
       <Name>DataDownload</Name>

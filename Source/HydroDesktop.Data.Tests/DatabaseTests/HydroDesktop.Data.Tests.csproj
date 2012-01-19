@@ -56,11 +56,11 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.5.9.10348\lib\nunit.framework.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -81,22 +81,22 @@
     <ProjectReference Include="..\..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
       <Name>HydroDesktop.Data</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
       <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
       <Name>HydroDesktop.Interfaces</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj">
       <Project>{7D649595-3CD3-4F13-A59B-5F7B8716FDFA}</Project>
       <Name>HydroDesktop.WebServices</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
