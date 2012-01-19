@@ -1111,6 +1111,10 @@ Public Class cEditView
             frmloading.Value = i
         Next
 
+        If Not SQLstring2.EndsWith(";") Then
+            SQLstring2 += ";"
+
+        End If
         SQLstring2 += "COMMIT;"
 
         dbTools.ExecuteNonQuery(SQLstring2)
