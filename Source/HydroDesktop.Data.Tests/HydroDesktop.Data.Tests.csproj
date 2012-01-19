@@ -39,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\Binaries\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -54,13 +54,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net">
+      <HintPath>..\..\SupportFiles\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.5.9.10348\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\SupportFiles\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -78,22 +76,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
       <Name>HydroDesktop.Data</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
       <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
       <Name>HydroDesktop.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj">
+    <ProjectReference Include="..\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj">
       <Project>{7D649595-3CD3-4F13-A59B-5F7B8716FDFA}</Project>
       <Name>HydroDesktop.WebServices</Name>
       <Private>True</Private>
