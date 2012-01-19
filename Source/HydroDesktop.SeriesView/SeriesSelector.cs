@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using System.Data;
 using System.ComponentModel;
@@ -41,7 +41,6 @@ namespace SeriesView
             InitializeComponent();
 
             //to assign the events
-            dgvSeries.CellMouseUp += dgvSeries_CellMouseUp;
             dgvSeries.CellMouseDown += dgvSeries_CellMouseDown;
             dgvSeries.CurrentCellDirtyStateChanged += dgvSeries_CurrentCellDirtyStateChanged;
             dgvSeries.CellValueChanged += dgvSeries_CellValueChanged;
@@ -99,12 +98,28 @@ namespace SeriesView
 
         private void btnUncheckAll_Click(object sender, EventArgs e)
         {
+            SetEnableToButtons(false);
             SetChecked(false);
+            SetEnableToButtons(true);
+        }
+
+        private void SetEnableToButtons(bool enable)
+        {
+            btnCheckAll.Enabled = enable;
+            btnUncheckAll.Enabled = enable;
+            btnRefresh.Enabled = enable;
+            btnOptions.Enabled = enable;
+            radAll.Enabled = enable;
+            radSimple.Enabled = enable;
+            radComplex.Enabled = enable;
+            panelComplexFilter.Enabled = enable;
         }
 
         private void btnCheckAll_Click(object sender, EventArgs e)
         {
+            SetEnableToButtons(false);
             SetChecked(true);
+            SetEnableToButtons(true);
         }
 
         private void radAll_Click(object sender, EventArgs e)
@@ -139,15 +154,6 @@ namespace SeriesView
             {
                 dgvSeries.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
-        }
-
-        private void dgvSeries_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                //contextMenuStrip1.Show();
-            }
-            OnSelectedSeriesChanged();
         }
 
         private void cbBoxCriterion_SelectedIndexChanged(object sender, EventArgs e)
@@ -401,9 +407,6 @@ namespace SeriesView
         }
 
         public event SeriesEventHandler SeriesCheck;
-
-        public event EventHandler SeriesSelected;
-
         public event EventHandler Refreshed;
 
         #endregion
@@ -412,21 +415,43 @@ namespace SeriesView
 
         private void SetChecked(bool isCheckedValue)
         {
-            _checkedAllChanging = true;
+            if (_checkedAllChanging) return; // to avoid multiply checking/un-checking
 
-            foreach (DataGridViewRow row in dgvSeries.Rows)
+            _checkedAllChanging = true;
+            try
             {
-                bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
-                if (isChecked != isCheckedValue)
+                // Get all rows to process
+                var rowsToProcess = dgvSeries.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(row => Convert.ToBoolean(row.Cells["Checked"].Value) != isCheckedValue)
+                    .ToList();
+
+                // If rows to process is to many, ask user for confirmation
+                if (isCheckedValue && rowsToProcess.Count > 20)
+                {
+                    var dialogResult = MessageBox.Show(
+                        string.Format("Do you really want to check {0} series?", rowsToProcess.Count) +
+                        Environment.NewLine
+                        + "It make take a long time.", "Series View", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button2
+                        );
+                    if (dialogResult != DialogResult.Yes) return;
+                }
+
+                // Process series...
+                foreach (var row in rowsToProcess)
                 {
                     row.Cells["Checked"].Value = isCheckedValue;
                     var seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
                     _clickedSeriesID = seriesID;
                     OnSeriesCheck(seriesID, isCheckedValue);
+                    Application.DoEvents();
                 }
             }
-
-            _checkedAllChanging = false;
+            finally
+            {
+                _checkedAllChanging = false;
+            }
         }
 
         private DataView MainView
@@ -638,17 +663,10 @@ namespace SeriesView
 
         private void OnSeriesCheck(int seriesID, bool checkState)
         {
-            if (SeriesCheck != null)
+            var handler = SeriesCheck;
+            if (handler != null)
             {
-                SeriesCheck(this, new SeriesEventArgs(seriesID, checkState));
-            }
-        }
-
-        private void OnSelectedSeriesChanged()
-        {
-            if (SeriesSelected != null)
-            {
-                SeriesSelected(this, null);
+                handler(this, new SeriesEventArgs(seriesID, checkState));
             }
         }
 
@@ -814,7 +832,9 @@ namespace SeriesView
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            SetEnableToButtons(false);
             RefreshSelection();
+            SetEnableToButtons(true);
         }
 
         private void btnOptions_Click(object sender, EventArgs e)
