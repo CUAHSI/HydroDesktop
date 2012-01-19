@@ -1,14 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using HydroDesktop.Common;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
     /// <summary>
     /// Class with information about service on the map
     /// </summary>
-    public class ServiceInfo : INotifyPropertyChanged
+    public class ServiceInfo : ObservableObject<ServiceInfo>
     {
         #region Fields
 
@@ -48,7 +48,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _dataSource = value;
-                NotifyPropertyChanged("DataSource");
+                NotifyPropertyChanged(x => x.DataSource);
             }
         }
 
@@ -65,7 +65,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _siteName = value;
-                NotifyPropertyChanged("SiteName");
+                NotifyPropertyChanged(x => SiteName);
             }
         }
 
@@ -80,8 +80,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
             set
             {
                 _valueCount = value;
-                NotifyPropertyChanged("ValueCount");
-                NotifyPropertyChanged("ValueCountAsString");
+                NotifyPropertyChanged(x => ValueCount);
+                NotifyPropertyChanged(x => ValueCountAsString);
             }
         }
 
@@ -98,10 +98,13 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _serviceDesciptionUrl = value;
-                NotifyPropertyChanged("ServiceDesciptionUrl");
+                NotifyPropertyChanged(x => ServiceDesciptionUrl);
             }
         }
 
+        /// <summary>
+        /// ValueCount as string
+        /// </summary>
         public string ValueCountAsString
         {
             get { return ValueCount.HasValue ? string.Format("{0} Values", ValueCount) : unknown; }
@@ -173,7 +176,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             set
             {
                 _isDownloaded = value;
-                NotifyPropertyChanged("IsDownloaded");
+                NotifyPropertyChanged(x => IsDownloaded);
             }
         }
 
@@ -234,18 +237,6 @@ namespace HydroDesktop.DataDownload.LayerInformation
             return DataSource.GetHashCode() ^ SiteName.GetHashCode() ^
                    (ValueCount != null ? ValueCount.GetHashCode() : 0) ^ ServiceDesciptionUrl.GetHashCode() ^
                    VarCode.GetHashCode();
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
         #endregion

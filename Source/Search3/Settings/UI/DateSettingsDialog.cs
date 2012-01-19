@@ -19,9 +19,9 @@ namespace Search3.Settings.UI
             dtpEndDate.MinDate = DateTime.MinValue;
             dtpEndDate.MaxDate = DateTime.MaxValue;
 
-            dtpStartDate.DataBindings.Add(new Binding("Value", _dateSettings, DateSettings.PROPERTY_StartDate)
+            dtpStartDate.DataBindings.Add(new Binding("Value", _dateSettings, "StartDate")
                                               {DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
-            dtpEndDate.DataBindings.Add(new Binding("Value", _dateSettings, DateSettings.PROPERTY_EndDate)
+            dtpEndDate.DataBindings.Add(new Binding("Value", _dateSettings, "EndDate")
                                             {DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
 
             // Quick radio Buttons

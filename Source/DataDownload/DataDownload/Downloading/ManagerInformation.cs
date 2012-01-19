@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
+using HydroDesktop.Common;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
     /// <summary>
     /// Information about download progress
     /// </summary>
-    class ManagerInformation : INotifyPropertyChanged
+    class ManagerInformation : ObservableObject<ManagerInformation>
     {
         private readonly DownloadManager _parent;
 
@@ -92,7 +92,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _downloadedAndSaved = value;
-                NotifyPropertyChanged("DownloadedAndSaved");
+                NotifyPropertyChanged(x => DownloadedAndSaved);
 
                 // update depended properties
                 RemainingSeries = TotalSeries - (DownloadedAndSaved + WithError);
@@ -109,7 +109,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _downloaded = value;
-                NotifyPropertyChanged("Downloaded");
+                NotifyPropertyChanged(x => Downloaded);
             }
         }
 
@@ -123,7 +123,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _withError = value;
-                NotifyPropertyChanged("WithError");
+                NotifyPropertyChanged(x => WithError);
 
                 // update depended properties
                 RemainingSeries = TotalSeries - (DownloadedAndSaved + WithError);
@@ -138,7 +138,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _totalSeries = value;
-                NotifyPropertyChanged("TotalSeries");
+                NotifyPropertyChanged(x => TotalSeries);
 
                 // update depended properties
                 RemainingSeries = TotalSeries;
@@ -157,7 +157,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _remainingSeries = value;
-                NotifyPropertyChanged("RemainingSeries");
+                NotifyPropertyChanged(x => RemainingSeries);
 
                 // update depended properties
                 RefreshEstimatedTimeForDownload();
@@ -172,7 +172,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _estimatedTime = value;
-                NotifyPropertyChanged("EstimatedTime");
+                NotifyPropertyChanged(x => EstimatedTime);
             }
         }
 
@@ -183,7 +183,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _estimatedTimeForDownload = value;
-                NotifyPropertyChanged("EstimatedTimeForDownload");
+                NotifyPropertyChanged(x => EstimatedTimeForDownload);
 
                 EstimatedTime = EstimatedTimeForDownload.Add(EstimatedTimeForSave);
             }
@@ -196,7 +196,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _estimatedTimeForSave = value;
-                NotifyPropertyChanged("EstimatedTimeForSave");
+                NotifyPropertyChanged(x => EstimatedTimeForSave);
 
                 EstimatedTime = EstimatedTimeForDownload.Add(EstimatedTimeForSave);
             }
@@ -230,22 +230,6 @@ namespace HydroDesktop.DataDownload.Downloading
         public double GetTotalProgress()
         {
             return StartArgs.ItemsToDownload.Sum(item => item.Progress)/StartArgs.ItemsToDownload.Count;
-        }
-
-        #endregion
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Private methods
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
         #endregion

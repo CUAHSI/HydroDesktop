@@ -68,11 +68,11 @@ namespace Search3.Settings
         {
             switch (e.PropertyName)
             {
-                case CatalogSettings.PROPERTY_HISCentralUrl:
+                case "HISCentralUrl":
                     HydroDesktop.Configuration.Settings.Instance.SelectedHISCentralURL = _catalogSettings.HISCentralUrl;
                     //todo: save HydroDesktop.Configuration.Settings
                     break;
-                case CatalogSettings.PROPERTY_TypeOfCatalog:
+                case "TypeOfCatalog":
                     //Properties.Settings.Default.TypeOfCatalog = _catalogSettings.TypeOfCatalog;
                     //Properties.Settings.Default.Save();
                     break;

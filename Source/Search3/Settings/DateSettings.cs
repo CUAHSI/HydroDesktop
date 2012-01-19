@@ -1,13 +1,10 @@
 using System;
-using System.ComponentModel;
+using HydroDesktop.Common;
 
 namespace Search3.Settings
 {
-    public class DateSettings : INotifyPropertyChanged
+    public class DateSettings : ObservableObject<DateSettings>
     {
-        internal const string PROPERTY_StartDate = "StartDate";
-        internal const string PROPERTY_EndDate = "EndDate";
-
         private DateTime _startDate;
         public DateTime StartDate
         {
@@ -15,7 +12,7 @@ namespace Search3.Settings
             set
             {
                 _startDate = value;
-                NotifyPropertyChanged(PROPERTY_StartDate);
+                NotifyPropertyChanged(x => StartDate);
             }
         }
 
@@ -26,7 +23,7 @@ namespace Search3.Settings
             set
             {
                 _endDate = value;
-                NotifyPropertyChanged(PROPERTY_EndDate);
+                NotifyPropertyChanged(x => EndDate);
             }
         }
 
@@ -60,17 +57,5 @@ namespace Search3.Settings
             StartDate = source.StartDate;
             EndDate = source.EndDate;
         }
-
-        #region INotifyPropertyChanged implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
-        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using DotSpatial.Data;
+using HydroDesktop.Common;
 using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -12,24 +13,9 @@ namespace HydroDesktop.DataDownload.Downloading
     /// This class is used to pass information required to download
     /// data values using the WaterML GetValues() call
     /// </summary>
-    public class OneSeriesDownloadInfo : INotifyPropertyChanged
+    public class OneSeriesDownloadInfo : ObservableObject<OneSeriesDownloadInfo>
     {
         #region Consts
-
-        internal const string PROPERTY_Wsdl = "Wsdl";
-        internal const string PROPERTY_FullSiteCode = "FullSiteCode";
-        internal const string PROPERTY_FullVariableCode = "FullVariableCode";
-        internal const string PROPERTY_SiteName = "SiteName";
-        internal const string PROPERTY_VariableName = "VariableName";
-        internal const string PROPERTY_StartDate = "StartDate";
-        internal const string PROPERTY_EndDate = "EndDate";
-        internal const string PROPERTY_Latitude = "Latitude";
-        internal const string PROPERTY_Longitude = "Longitude";
-        internal const string PROPERTY_Status = "Status";
-        internal const string PROPERTY_StatusAsString = "StatusAsString";
-        internal const string PROPERTY_DownloadTimeTaken = "DownloadTimeTaken";
-        internal const string PROPERTY_ErrorMessage = "ErrorMessage";
-        internal const string PROPERTY_OverwriteOption = "OverwriteOption";
 
         private const int INITIAL_TIME_TO_DOWNLOAD = 15;
 
@@ -60,7 +46,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _wsdl = value;
-                NotifyPropertyChanged(PROPERTY_Wsdl);
+                NotifyPropertyChanged(x => Wsdl);
             }
         }
 
@@ -74,7 +60,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _fullSiteCode = value;
-                NotifyPropertyChanged(PROPERTY_FullSiteCode);
+                NotifyPropertyChanged(x => FullSiteCode);
             }
         }
 
@@ -88,7 +74,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _fullVariableCode = value;
-                NotifyPropertyChanged(PROPERTY_FullVariableCode);
+                NotifyPropertyChanged(x => FullVariableCode);
             }
         }
 
@@ -102,7 +88,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _siteName = value;
-                NotifyPropertyChanged(PROPERTY_SiteName);
+                NotifyPropertyChanged(x => SiteName);
             }
         }
 
@@ -116,7 +102,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _variableName = value;
-                NotifyPropertyChanged(PROPERTY_VariableName);
+                NotifyPropertyChanged(x => VariableName);
             }
         }
 
@@ -130,7 +116,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _startDate = value;
-                NotifyPropertyChanged(PROPERTY_StartDate);
+                NotifyPropertyChanged(x => StartDate);
             }
         }
 
@@ -144,7 +130,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _endDate = value;
-                NotifyPropertyChanged(PROPERTY_EndDate);
+                NotifyPropertyChanged(x => EndDate);
             }
         }
 
@@ -158,7 +144,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _latitude = value;
-                NotifyPropertyChanged(PROPERTY_Latitude);
+                NotifyPropertyChanged(x => Latitude);
             }
         }
 
@@ -172,7 +158,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _longitude = value;
-                NotifyPropertyChanged(PROPERTY_Longitude);
+                NotifyPropertyChanged(x => Longitude);
             }
         }
 
@@ -186,8 +172,8 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _status = value;
-                NotifyPropertyChanged(PROPERTY_Status);
-                NotifyPropertyChanged(PROPERTY_StatusAsString);
+                NotifyPropertyChanged(x => Status);
+                NotifyPropertyChanged(x => StatusAsString);
 
                 if (_status == DownloadInfoStatus.Pending)
                 {
@@ -200,6 +186,9 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
         
+        /// <summary>
+        /// Status as string
+        /// </summary>
         public string StatusAsString
         {
             get
@@ -220,7 +209,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _downloadTimeTaken = value;
-                NotifyPropertyChanged(PROPERTY_DownloadTimeTaken);
+                NotifyPropertyChanged(x => DownloadTimeTaken);
             }
         }
 
@@ -235,7 +224,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _errorMessage = value;
-                NotifyPropertyChanged(PROPERTY_ErrorMessage);
+                NotifyPropertyChanged(x => ErrorMessage);
             }
         }
 
@@ -269,7 +258,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _overwriteOption = value;
-                NotifyPropertyChanged(PROPERTY_OverwriteOption);
+                NotifyPropertyChanged(x => OverwriteOption);
             }
         }
 
@@ -306,61 +295,11 @@ namespace HydroDesktop.DataDownload.Downloading
             {
                 _downloadedChunksPercent = value;
 
-                NotifyPropertyChanged(PROPERTY_StatusAsString);
+                NotifyPropertyChanged(x => DownloadedChunksPercent);
             }
         }
 
         #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Raises when property changed.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Private methods
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Statuses of DownloadInfo
-    /// </summary>
-    public enum DownloadInfoStatus
-    {
-        /// <summary>
-        /// Pending (awaitng to downloading)
-        /// </summary>
-        Pending,
-        /// <summary>
-        /// Downloading
-        /// </summary>
-        Downloading,
-        /// <summary>
-        /// Downloaded
-        /// </summary>
-        Downloaded,
-        /// <summary>
-        /// Some error occured during downloading or saving
-        /// </summary>
-        Error,
-        /// <summary>
-        /// Downloaded and saved without errors/warnings.
-        /// </summary>
-        Ok,
-        /// <summary>
-        /// Downloaded and saved with warnings.
-        /// </summary>
-        OkWithWarnings
     }
 }
 
