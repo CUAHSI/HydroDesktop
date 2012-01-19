@@ -122,12 +122,12 @@
     <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
       <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
       <Name>HydroDesktop.Interfaces</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj">
       <Project>{7D649595-3CD3-4F13-A59B-5F7B8716FDFA}</Project>
       <Name>HydroDesktop.WebServices</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

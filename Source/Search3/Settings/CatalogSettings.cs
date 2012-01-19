@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using HydroDesktop.Common;
 
 namespace Search3.Settings
 {
     /// <summary>
     /// Catalog settings 
     /// </summary>
-    public class CatalogSettings : INotifyPropertyChanged
+    public class CatalogSettings : ObservableObject<CatalogSettings>
     {
-        #region Properties names
-
-        internal const string PROPERTY_HISCentralUrl = "HISCentralUrl";
-        internal const string PROPERTY_TypeOfCatalog = "TypeOfCatalog";
-
-        #endregion
-
         internal const string HISCENTRAL_URL_1 = "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
         internal const string HISCENTRAL_URL_2 = "http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx";
 
@@ -28,7 +19,7 @@ namespace Search3.Settings
             set
             {
                 _hisCentralUrl = value;
-                NotifyPropertyChanged(PROPERTY_HISCentralUrl);
+                NotifyPropertyChanged(x => HISCentralUrl);
             }
         }
 
@@ -39,21 +30,9 @@ namespace Search3.Settings
             set
             {
                 _typeOfCatalog = value;
-                NotifyPropertyChanged(PROPERTY_TypeOfCatalog);
+                NotifyPropertyChanged(x => TypeOfCatalog);
             }
         }
-
-        #region INotifyPropertyChanged implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
-        #endregion
 
         public CatalogSettings()
         {
