@@ -57,6 +57,12 @@ namespace HydroDesktop.Database
                     CreatorByConnectionString = (dbType, connStr) => new UnitsRepository(dbType, connStr),
                     CreatorByDbOperations = dbOp => new UnitsRepository(dbOp)
                 });
+            AddRepoCreator<IDataValuesRepository>(
+               new RepositoryCreator
+               {
+                   CreatorByConnectionString = (dbType, connStr) => new DataValuesRepository(dbType, connStr),
+                   CreatorByDbOperations = dbOp => new DataValuesRepository(dbOp)
+               });
         }
 
         #endregion

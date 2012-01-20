@@ -1,4 +1,5 @@
 using System;
+using HydroDesktop.Common;
 
 namespace Search3.Searching
 {

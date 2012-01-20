@@ -146,7 +146,6 @@
     <Compile Include="Settings\UI\SearchCatalogSettingsDialog.Designer.cs">
       <DependentUpon>SearchCatalogSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\EnumHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

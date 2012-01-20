@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HydroDesktop.Common;
 using Search3.Keywords;
 using Search3.Searching.Exceptions;
 using Search3.Settings;
@@ -304,12 +305,5 @@ namespace Search3.Searching
                 _parent.LogMessage(message);
             }
         }
-    }
-
-    public interface IProgressHandler
-    {
-        void ReportProgress(int persentage, object state);
-        void CheckForCancel();
-        void ReportMessage(string message);
     }
 }
