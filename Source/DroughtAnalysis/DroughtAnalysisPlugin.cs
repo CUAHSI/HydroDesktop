@@ -9,13 +9,18 @@ using System.Windows.Forms;
 
 namespace DroughtAnalysis
 {
+    /// <summary>
+    /// The drought analysis plugin main entry point
+    /// </summary>
     public class DroughtAnalysisPlugin:Extension
     {
         const string droughtAnalysisPluginKey = "kDroughtAnalysis";
         const string droughtAnalysisPluginName = "Drought Analysis";
 
         private DroughtSettings UserSettings = new DroughtSettings();
-        
+        /// <summary>
+        /// Activates this extension
+        /// </summary>
         public override void Activate()
         {
             var droughtMenu = new MenuContainerItem(HeaderControl.HomeRootItemKey, droughtAnalysisPluginKey, "Drought Analysis");
@@ -34,7 +39,9 @@ namespace DroughtAnalysis
             
             base.Activate();
         }
-
+        /// <summary>
+        /// Deactivates this extension
+        /// </summary>
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();

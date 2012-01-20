@@ -14,17 +14,27 @@ namespace DroughtAnalysis
 {
     public partial class SelectStationForm : Form
     {
+        /// <summary>
+        /// Creates a new instance of the parameter selection form
+        /// </summary>
         public SelectStationForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Creates a new instance of the parameter selection form using the existing settings
+        /// </summary>
+        /// <param name="settings">The parameter settings</param>
         public SelectStationForm(DroughtSettings settings)
         {
             InitializeComponent();
             Settings = settings;
         }
 
+        /// <summary>
+        /// Gets or sets the drought calculation parameter settings associated with this form
+        /// </summary>
         public DroughtSettings Settings { get; set; }
 
         private string defaultOutputFolder;

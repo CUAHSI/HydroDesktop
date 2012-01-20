@@ -12,6 +12,12 @@ namespace DroughtAnalysis
     /// </summary>
     public static class RScriptModifier
     {
+        /// <summary>
+        /// Modifies the R-script and saves it to the output path
+        /// </summary>
+        /// <param name="inputScriptPath">The input script path</param>
+        /// <param name="outputScriptPath">The output script path</param>
+        /// <param name="parameters">The parameters to be modified</param>
         public static void ModifyRScript(string inputScriptPath, string outputScriptPath, RScriptParameterInfo parameters)
         {
             if (!File.Exists(inputScriptPath))
@@ -68,7 +74,11 @@ namespace DroughtAnalysis
                 }
             }
         }
-
+        /// <summary>
+        /// Removes any diacritic characters and replaces them by ascii characters (important for the file name)
+        /// </summary>
+        /// <param name="Text">the text in unicode characters</param>
+        /// <returns>the converted text in ascii characters</returns>
         public static string RemoveDiacritism(string Text)
         {
             string stringFormD = Text.Normalize(System.Text.NormalizationForm.FormD);
@@ -81,11 +91,22 @@ namespace DroughtAnalysis
             return retVal.ToString().Normalize(System.Text.NormalizationForm.FormC);
         }
     }
-
+    /// <summary>
+    /// Parameters of the R script
+    /// </summary>
     public class RScriptParameterInfo
     {
+        /// <summary>
+        /// Gets or sets the output directory
+        /// </summary>
         public string OutputDirectory { get; set; }
+        /// <summary>
+        /// Gets or sets the input file name
+        /// </summary>
         public string InputFilePath { get; set; }
+        /// <summary>
+        /// Gets or sets the station name
+        /// </summary>
         public string StationName { get; set; }
     }
 }

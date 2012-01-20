@@ -10,13 +10,23 @@ using HydroDesktop.Interfaces;
 
 namespace DroughtAnalysis
 {
+    /// <summary>
+    /// Finds a station that has all required variables
+    /// </summary>
     public class StationFinder
     {
+        /// <summary>
+        /// Creates a new instance of the station finder class
+        /// </summary>
+        /// <param name="map">The map of the application</param>
         public StationFinder(IMap map)
         {
             MainMap = map;
         }
 
+        /// <summary>
+        /// Gets or sets the main map where stations are found
+        /// </summary>
         public IMap MainMap { get; set; }
         
         /// <summary>
@@ -75,6 +85,10 @@ namespace DroughtAnalysis
             return v;
         }
 
+        /// <summary>
+        /// Gets the variable object that measures temperature
+        /// </summary>
+        /// <returns>The variable object</returns>
         public Variable GetTemperatureVariable()
         {
             DataTable tab = GetVariableTable("VariableName LIKE 'temperatur%' AND DataType = 'Average'");
@@ -84,6 +98,10 @@ namespace DroughtAnalysis
                 return null;
         }
 
+        /// <summary>
+        /// Gets the variable object that measures precipitation
+        /// </summary>
+        /// <returns>The precipitation variable object</returns>
         public Variable GetPrecipitationVariable()
         {
             DataTable tab = GetVariableTable("VariableName LIKE 'precip%'");
