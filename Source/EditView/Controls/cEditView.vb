@@ -983,8 +983,8 @@ Public Class cEditView
 
     'Saving changes Method
     Public Sub SaveGraphChangesToDatabase()
-        Dim SQLstring As String
-        Dim SQLstring2 As String
+        Dim SQLstring As New StringBuilder
+        Dim SQLstring2 As New StringBuilder
         Dim datavalue As Double
         'Dim QualifierCode As String
         Dim ValueID As Integer
@@ -1001,7 +1001,7 @@ Public Class cEditView
         dt = dbTools.LoadTable("SELECT ValueID FROM DataValues WHERE SeriesID = " + newseriesID.ToString)
         For i As Integer = 0 To dt.Rows.Count - 1
             If Not ValueIDList.Contains(dt.Rows(i)("ValueID")) Then
-                SQLstring = "DELETE FROM DataValues WHERE ValueID = " + dt.Rows(i)("ValueID").ToString
+                SQLstring.AppendFormat("DELETE FROM DataValues WHERE ValueID ={0}", dt.Rows(i))
                 dbTools.ExecuteNonQuery(SQLstring)
             End If
         Next
@@ -1015,7 +1015,7 @@ Public Class cEditView
         frmloading.Value = 0
 
         lblstatus.Text = "Saving..."
-        SQLstring2 = "BEGIN TRANSACTION; "
+        SQLstring2.Append("BEGIN TRANSACTION; ")
         'saving by table
         For i As Integer = 0 To Editdt.Rows.Count - 1
 
@@ -1026,69 +1026,67 @@ Public Class cEditView
             If Not Editdt.Rows(i)("Other") = 0 Then
                 'Deleteing point
                 If Editdt.Rows(i)("Other") = -1 Then
-                    SQLstring = "DELETE FROM DataValues WHERE ValueID = " + ValueID.ToString + "; "
-                    SQLstring2 += SQLstring
-
+                    SQLstring2.AppendFormat("DELETE FROM DataValues WHERE ValueID = {0}; ", ValueID)
 
                     'Adding point
                 ElseIf Editdt.Rows(i)("Other") = 1 Then
                     If dbTools.ExecuteSingleOutput("Select ValueID FROM DataValues WHERE ValueID = " + ValueID.ToString) = Nothing Then
-                        SQLstring = "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, "
-                        SQLstring += "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES ("
+                        SQLstring = New StringBuilder("INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, ")
+                        SQLstring.Append("OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (")
                         'ValueID,SeriesID,DataValue
                         For j As Integer = 0 To 2
-                            SQLstring += Editdt.Rows(i)(j).ToString + ","
+                            SQLstring.AppendFormat("{0},", Editdt.Rows(i)(j))
                         Next
                         'ValueAccuracy
                         If Editdt.Rows(i)(3) Is DBNull.Value Then
-                            SQLstring += "NULL,"
+                            SQLstring.Append("NULL,")
                         Else
-                            SQLstring += Editdt.Rows(i)(3).ToString + ","
+                            SQLstring.AppendFormat("{0},", Editdt.Rows(i)(3))
                         End If
                         'LocalDateTime
-                        SQLstring += "'" + Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss") + "',"
+                        SQLstring.AppendFormat("'{0}',", Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss"))
                         'UTCOffset
-                        SQLstring += Editdt.Rows(i)(5).ToString
+                        SQLstring.Append(Editdt.Rows(i)(5))
                         'DateTimeUTC
-                        SQLstring += ",'" + Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss") + "',"
+                        SQLstring.AppendFormat("'{0}',", Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss"))
                         'OffsetValue
                         If Editdt.Rows(i)(8) Is DBNull.Value Then
-                            SQLstring += "NULL,"
+                            SQLstring.Append("NULL,")
                         Else
-                            SQLstring += Editdt.Rows(i)(8).ToString + ","
+                            SQLstring.AppendFormat("{0},", Editdt.Rows(i)(8))
                         End If
                         'OffsetTypeID
                         If Editdt.Rows(i)(9) Is DBNull.Value Then
-                            SQLstring += "NULL,"
+                            SQLstring.Append("NULL,")
                         Else
-                            SQLstring += Editdt.Rows(i)(9).ToString + ","
+                            SQLstring.Append(Editdt.Rows(i)(9)).Append(",")
                         End If
                         'CensorCode
                         If Editdt.Rows(i)(10) Is DBNull.Value Then
-                            SQLstring += "NULL,"
+                            SQLstring.Append("NULL,")
                         Else
-                            SQLstring += "'" + Editdt.Rows(i)(10).ToString + "',"
+                            SQLstring.AppendFormat("'{0}',", Editdt.Rows(i)(10))
                         End If
                         'QualifierID
                         If Editdt.Rows(i)(7) Is DBNull.Value Then
-                            SQLstring += "NULL,"
+                            SQLstring.Append("NULL,")
                         Else
-                            SQLstring += GetQualifierID(Editdt.Rows(i)(7).ToString).ToString + ","
+                            SQLstring.Append(GetQualifierID(Editdt.Rows(i)(7).ToString)).Append(",")
                         End If
                         'SampleID
                         If Editdt.Rows(i)(11) Is DBNull.Value Then
-                            SQLstring += "NULL,"
+                            SQLstring.Append("NULL,")
                         Else
-                            SQLstring += Editdt.Rows(i)(11).ToString() + ","
+                            SQLstring.Append(Editdt.Rows(i)(11)).Append(",")
                         End If
                         'FileID
                         If Editdt.Rows(i)(12) Is DBNull.Value Then
-                            SQLstring += "NULL)"
+                            SQLstring.Append("NULL)")
                         Else
-                            SQLstring += Editdt.Rows(i)(12).ToString() + "); "
+                            SQLstring.Append(Editdt.Rows(i)(12)).Append("); ")
                         End If
 
-                        SQLstring2 += SQLstring
+                        SQLstring2.Append(SQLstring)
                     End If
 
 
@@ -1096,13 +1094,13 @@ Public Class cEditView
                 ElseIf Editdt.Rows(i)("Other") = 2 Then
                     'Update 
                     If Not datavalue = dgvDataValues.Rows(i).Cells("DataValue").Value Then
-                        SQLstring = "UPDATE DataValues SET DataValue = "
-                        SQLstring += Editdt.Rows(i)("DataValue").ToString + ", QualifierID = "
-                        SQLstring += GetQualifierID(Editdt.Rows(i)("QualifierCode")).ToString
-                        SQLstring += " WHERE ValueID = "
-                        SQLstring += ValueID.ToString + "; "
+                        SQLstring = New StringBuilder("UPDATE DataValues SET DataValue = ")
+                        SQLstring.Append(Editdt.Rows(i)("DataValue")).Append(", QualifierID = ")
+                        SQLstring.Append(GetQualifierID(Editdt.Rows(i)("QualifierCode")))
+                        SQLstring.Append(" WHERE ValueID = ")
+                        SQLstring.Append(ValueID.ToString).Append("; ")
 
-                        SQLstring2 += SQLstring
+                        SQLstring2.Append(SQLstring)
 
                     End If
                 End If
@@ -1111,13 +1109,13 @@ Public Class cEditView
             frmloading.Value = i
         Next
 
-        If Not SQLstring2.EndsWith(";") Then
-            SQLstring2 += ";"
+        If Not SQLstring2.ToString().TrimEnd().EndsWith(";") Then
+            SQLstring2.Append(";")
 
         End If
-        SQLstring2 += "COMMIT;"
+        SQLstring2.Append("COMMIT;")
 
-        dbTools.ExecuteNonQuery(SQLstring2)
+        dbTools.ExecuteNonQuery(SQLstring2.ToString())
 
         'Update DataSeries
         'UpdateDataSeries(newseriesID)
