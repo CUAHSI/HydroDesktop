@@ -1,10 +1,18 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 
-namespace Search3.Extensions
+namespace HydroDesktop.Common.Tools
 {
-    static class EnumHelper
+    /// <summary>
+    /// Helper for enums
+    /// </summary>
+    public static class EnumHelper
     {
+        /// <summary>
+        /// Get description from Enum Value
+        /// </summary>
+        /// <param name="enumValue">Enum value.</param>
+        /// <returns>Description of value.</returns>
         public static string Description(this Enum enumValue)
         {
             var descriptions =

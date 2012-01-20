@@ -359,7 +359,7 @@ namespace HydroDesktop.Database
             catch { }
             return true;
         }
-     
+
         #endregion
 
         #region Private methods

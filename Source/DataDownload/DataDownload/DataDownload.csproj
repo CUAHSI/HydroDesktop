@@ -89,6 +89,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassConvertor.cs" />
+    <Compile Include="DataAggregation\AggregationMode.cs" />
+    <Compile Include="DataAggregation\AggregationSettings.cs" />
+    <Compile Include="DataAggregation\Aggregator.cs" />
+    <Compile Include="DataAggregation\UI\AggregationSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataAggregation\UI\AggregationSettingsDialog.Designer.cs">
+      <DependentUpon>AggregationSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Downloading\DatabaseManager.cs" />
     <Compile Include="Downloading\Downloader.cs" />
     <Compile Include="Downloading\DownloadInfoStatus.cs" />
@@ -149,6 +158,9 @@
     <Compile Include="SearchLayersProcessing\ThemeManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DataAggregation\UI\AggregationSettingsDialog.resx">
+      <DependentUpon>AggregationSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Downloading\DownloadManagerUI.resx">
       <DependentUpon>DownloadManagerUI.cs</DependentUpon>
     </EmbeddedResource>

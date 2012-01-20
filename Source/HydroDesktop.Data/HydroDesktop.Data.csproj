@@ -71,6 +71,7 @@
     <Compile Include="Database\BaseRepository.cs" />
     <Compile Include="Database\DataSeriesRepository.cs" />
     <Compile Include="Database\DataThemesRepository.cs" />
+    <Compile Include="Database\DataValuesRepository.cs" />
     <Compile Include="Database\MetadataCacheManagerSQL.cs">
       <SubType>Code</SubType>
     </Compile>

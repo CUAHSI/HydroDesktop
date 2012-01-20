@@ -6,6 +6,7 @@ using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices;
 using Search3.Settings;
+using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 
 namespace Search3.Searching
 {

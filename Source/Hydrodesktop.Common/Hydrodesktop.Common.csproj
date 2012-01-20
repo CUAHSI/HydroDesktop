@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IProgressHandler.cs" />
     <Compile Include="LayerConstants.cs" />
     <Compile Include="ObservableObject.T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +51,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\EnumHelper.cs" />
     <Compile Include="Tools\NameHelper.cs" />
   </ItemGroup>
   <ItemGroup>

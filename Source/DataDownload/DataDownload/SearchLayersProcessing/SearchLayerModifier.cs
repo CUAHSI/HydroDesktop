@@ -8,6 +8,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Configuration;
+using HydroDesktop.DataDownload.DataAggregation.UI;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -85,24 +86,33 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
         private void UpdateContextMenu(IFeatureLayer searchLayer)
         {
-            var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
-            // TODO: replace line above with MEF if need
-            if (exportPlugin == null) return;
-
             const string dataGroupName = "Data";
             var dataGroupMenu = searchLayer.ContextMenuItems.FirstOrDefault(item => item.Name == dataGroupName);
             if (dataGroupMenu == null)
                 return;
 
-            const string name = "Export Time Series Data";
-            if (dataGroupMenu.MenuItems.Exists(item => item.Name == name))
+            const string exportTimeSeries = "Export Time Series Data";
+            if (!dataGroupMenu.MenuItems.Exists(item => item.Name == exportTimeSeries))
             {
-                // menu item already exists. Do nothing.
-                return;
+                var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+                // TODO: replace line above with MEF if need
+                if (exportPlugin != null)
+                {
+                    var menuItem = new SymbologyMenuItem(exportTimeSeries, delegate { exportPlugin.Export(searchLayer); });
+                    dataGroupMenu.MenuItems.Add(menuItem);
+                }
             }
 
-            var menuItem = new SymbologyMenuItem(name, delegate { exportPlugin.Export(searchLayer); });
-            dataGroupMenu.MenuItems.Add(menuItem);
+            const string showDataValuesInMap = "Show Data Values in Map";
+            if (!dataGroupMenu.MenuItems.Exists(item => item.Name == showDataValuesInMap))
+            {
+                var menuItem = new SymbologyMenuItem(showDataValuesInMap, delegate
+                                                                              {
+                                                                                  new AggregationSettingsDialog(searchLayer).ShowDialog();
+                                                                              });
+                dataGroupMenu.MenuItems.Add(menuItem);
+            }
+            
         }
 
         public void RemoveCustomFeaturesFromLayer(ILayer layer)
