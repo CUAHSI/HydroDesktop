@@ -1,0 +1,626 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial 3: Creating a New Model Component &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="HydroModeler" href="HydroModeler.html" />
+    <link rel="next" title="Example Configuration 1 - Smith Branch" href="ExConfig1.html" />
+    <link rel="prev" title="Tutorial 2: Creating and Running a Model Configuration" href="Tutorial02.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../extensions.html" accesskey="U">Extensions</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="HydroModeler.html" >HydroModeler</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Tutorial 3: Creating a New Model Component</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="ExConfig1.html" title="Example Configuration 1 - Smith Branch" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="Tutorial02.html" title="Tutorial 2: Creating and Running a Model Configuration" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tutorial-3-creating-a-new-model-component">
+<span id="index-0"></span><h1>Tutorial 3: Creating a New Model Component<a class="headerlink" href="#tutorial-3-creating-a-new-model-component" title="Permalink to this headline">¶</a></h1>
+<p>The purpose of this tutorial is to show how to create a new component for HydroModeler using the Simple Model Wrapper (SMW) approach. The focus will be on creating the Hargreaves component that is used in Tutorial 2 to calculate potential evapotranspiration.  We will be using the C# programming language in this demonstration. Hargreaves is a simple potential evapotranspiration model that requires only geographic location and air temperature (daily minimum, maximum, and average) as input.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We assume that you have some knowledge of programming using C#.  For background information on programming with C#, we recommend Microsoft&#8217;s Development Network: <a class="reference external" href="http://msdn.microsoft.com/en-us/beginner/bb308734.aspx">http://msdn.microsoft.com/en-us/beginner/bb308734.aspx</a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In this tutorial, we show how to create the component from scratch.  There is, however, a sample component template is available in the HydroDesktop source code that may be useful if you are creating your own components.  The sample component is available at <em>[Path to HydroDesktop Source]SourcePluginsHydroModelerComponentsSampleComponent</em>.</p>
+</div>
+<div class="section" id="installing-visual-studio">
+<h2>Installing Visual Studio<a class="headerlink" href="#installing-visual-studio" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Perform these steps only if you do not already have Microsoft Visual Studio 2010 installed on your computer.</p>
+</div>
+<ol class="arabic simple">
+<li>Download Microsoft Visual C# 2010 for free from <a class="reference external" href="http://www.microsoft.com/express/Downloads/">http://www.microsoft.com/express/Downloads/</a></li>
+<li>Choose the tab Visual Studio 2010 Express.  Then select Visual C# 2010 Express Edition.  Click Download and follow instructions to install.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig446.png" src="../../_images/HM_fig446.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="downloading-hydrodesktop-source-code">
+<h2>Downloading HydroDesktop Source Code<a class="headerlink" href="#downloading-hydrodesktop-source-code" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>You can download the HydroDesktop source code either using the source control management system (Hg) or by going to <em>http://hydrodesktop.codeplex.com/SourceControl/list/changesets</em> and downloading the latest revision of the source control.</li>
+</ol>
+</div>
+<div class="section" id="create-hargreaves-component-using-microsoft-visual-c">
+<h2>Create Hargreaves component using Microsoft Visual C#<a class="headerlink" href="#create-hargreaves-component-using-microsoft-visual-c" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Start Microsoft Visual Studio 2010.</li>
+<li>Create a new C# class library project.  Name the project &#8220;Hargreaves&#8221; and save it in your working directory.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/class6.png" src="../../_images/class6.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Add two new folders (source and data) by right clicking on the project name and selecting Add &#8211;&gt; New Folder.  Next, copy the default class &#8220;class1.cs&#8221; into the source folder and rename it Hargreaves.cs.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/folders6.png" src="../../_images/folders6.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="adding-references">
+<h3>Adding References<a class="headerlink" href="#adding-references" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>You can view the references that currently exist in the project by expanding the &#8220;Reference&#8221; item listed in the Solution Explorer window (located on the upper right side of the page).  Currently, this project only contains the default references.  We need to add several additional references. To do this, right click on  &#8220;References&#8221; in the Solution Explorer and select &#8220;Add New Reference&#8221;.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/ref6.png" src="../../_images/ref6.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Browse to <em>[Path to HydroDesktop Source Code]/Binaries/Plugins/HydroModeler/</em>. Add the following dll&#8217;s:<ul>
+<li>Oatc.OpenMI.Sdk.Backbone.dll</li>
+<li>Oatc.OpenMI.Sdk.Buffer.dll</li>
+<li>Oatc.OpenMI.Sdk.DevelopmentSupport.dll</li>
+<li>Oatc.OpenMI.Sdk.Wrapper.dll</li>
+<li>OpenMI.Standard.dll)</li>
+</ul>
+</li>
+<li>Right click on &#8220;References&#8221; in the solution explorer again and browse to <em>[Path to HydroDesktop]/Binaries/Plugins/HydroModeler/example_configuration/bin</em>.  Add the following dll:
+- SMW.dll.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/referencesstructure6.png" src="../../_images/referencesstructure6.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="create-the-linkable-component-class">
+<h3>Create the Linkable Component Class<a class="headerlink" href="#create-the-linkable-component-class" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Right-click on the &#8220;source&#8221; folder in the Solution Explorer and select Add &#8211;&gt; Class. Rename the class LinkableComponent.cs.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/linkablecomponent6.png" src="../../_images/linkablecomponent6.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Add the following line of code so that the LinkableComponent class inherits from the Oatc.OpenMI.Sdk.Wrapper.LinkableEngine abstract class.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SampleLinkableComponent</span> <span class="p">:</span> <span class="n">Oatc</span><span class="p">.</span><span class="n">OpenMI</span><span class="p">.</span><span class="n">Sdk</span><span class="p">.</span><span class="n">Wrapper</span><span class="p">.</span><span class="n">LinkableEngine</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="creating-the-hargreaves-component-using-smw">
+<h3>Creating the Hargreaves Component using SMW<a class="headerlink" href="#creating-the-hargreaves-component-using-smw" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Include the following using statements to the top of the Hargreaves.cs file.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">using</span> <span class="nn">Oatc.OpenMI.Sdk.Backbone</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Oatc.OpenMI.Sdk.Buffer</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Oatc.OpenMI.Sdk.DevelopmentSupport</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Oatc.OpenMI.Sdk.Wrapper</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SMW</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Make the class inherit from SMW.Wrapper.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Engine</span> <span class="p">:</span> <span class="n">SMW</span><span class="p">.</span><span class="n">Wrapper</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Define the global variables for the class using the following lines of code.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">namespace</span> <span class="nn">Hargreaves</span>
+<span class="p">{</span>
+                <span class="k">public</span> <span class="k">class</span> <span class="nc">Engine</span> <span class="p">:</span> <span class="n">SMW</span><span class="p">.</span><span class="n">Wrapper</span>
+                <span class="p">{</span>
+                        <span class="k">public</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">input_quantity</span><span class="p">;</span>
+                        <span class="k">public</span> <span class="kt">string</span> <span class="n">output_quantity</span><span class="p">;</span>
+                        <span class="k">public</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">input_elementset</span><span class="p">;</span>
+                        <span class="k">public</span> <span class="kt">string</span> <span class="n">output_elementset</span><span class="p">;</span>
+                        <span class="n">Dictionary</span><span class="p">&lt;</span><span class="n">DateTime</span><span class="p">,</span> <span class="kt">double</span><span class="p">[]&gt;</span> <span class="n">_output</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="n">DateTime</span><span class="p">,</span> <span class="kt">double</span><span class="p">[]&gt;();</span>
+                        <span class="kt">string</span> <span class="n">output_path</span> <span class="p">=</span> <span class="s">&quot;./hargreaves_output.txt&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Define what the component should do when a model is loaded into HydroModeler by implementing the <em>Initialize</em> method.  In the code below, the component will read input data from the configuration file and create input and output exchange items from the information included in the configuration file.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Initialize</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Hashtable</span> <span class="n">properties</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//---- get configuration data</span>
+    <span class="kt">string</span> <span class="n">config</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">properties</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="s">&quot;ConfigFile&quot;</span><span class="p">))</span>
+        <span class="n">config</span> <span class="p">=</span> <span class="n">properties</span><span class="p">[</span><span class="s">&quot;ConfigFile&quot;</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;A configuration file must be supplied for the Hargreaves component!!!&quot;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">properties</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">))</span>
+        <span class="n">output_path</span> <span class="p">=</span> <span class="n">properties</span><span class="p">[</span><span class="s">&quot;Output&quot;</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+
+    <span class="c1">//---- set smw parameters</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">SetVariablesFromConfigFile</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">SetValuesTableFields</span><span class="p">();</span>
+
+    <span class="c1">//---- get exchange item attributes</span>
+    <span class="c1">//-- input exchange items</span>
+    <span class="kt">int</span> <span class="n">num_inputs</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetInputExchangeItemCount</span><span class="p">();</span>
+    <span class="n">input_elementset</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="n">num_inputs</span><span class="p">];</span>
+    <span class="n">input_quantity</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="n">num_inputs</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span> <span class="n">i</span><span class="p">&lt;=</span> <span class="n">num_inputs</span><span class="p">-</span><span class="m">1</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="n">InputExchangeItem</span> <span class="n">input</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetInputExchangeItem</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">input_elementset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">input</span><span class="p">.</span><span class="n">ElementSet</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span>
+        <span class="n">input_quantity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">input</span><span class="p">.</span><span class="n">Quantity</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//-- output exchange items</span>
+    <span class="kt">int</span> <span class="n">num_outputs</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetOutputExchangeItemCount</span><span class="p">();</span>
+    <span class="n">OutputExchangeItem</span> <span class="n">output</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetOutputExchangeItem</span><span class="p">(</span><span class="n">num_outputs</span> <span class="p">-</span> <span class="m">1</span><span class="p">);</span>
+    <span class="n">output_elementset</span> <span class="p">=</span> <span class="n">output</span><span class="p">.</span><span class="n">ElementSet</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span>
+    <span class="n">output_quantity</span> <span class="p">=</span> <span class="n">output</span><span class="p">.</span><span class="n">Quantity</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Define what the component should do when a model is for each iteration of the model run by implementing the <em>PerformTimeStep</em> method.  In the code below, the component will get input data from other components and then using the data to calculate PET for that time step.  Finally, it will set the PET values for other components to read.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">PerformTimeStep</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//---- get input data</span>
+    <span class="c1">//-- temp</span>
+    <span class="kt">double</span><span class="p">[]</span> <span class="n">temp</span> <span class="p">=</span> <span class="p">((</span><span class="n">ScalarSet</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetValues</span><span class="p">(</span><span class="n">input_quantity</span><span class="p">[</span><span class="m">0</span><span class="p">],</span> <span class="n">input_elementset</span><span class="p">[</span><span class="m">0</span><span class="p">])).</span><span class="n">data</span><span class="p">;</span>
+    <span class="c1">//-- max temp</span>
+    <span class="kt">double</span><span class="p">[]</span> <span class="n">maxtemp</span> <span class="p">=</span> <span class="p">((</span><span class="n">ScalarSet</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetValues</span><span class="p">(</span><span class="n">input_quantity</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">input_elementset</span><span class="p">[</span><span class="m">1</span><span class="p">])).</span><span class="n">data</span><span class="p">;</span>
+    <span class="c1">//-- min temp</span>
+    <span class="kt">double</span><span class="p">[]</span> <span class="n">mintemp</span> <span class="p">=</span> <span class="p">((</span><span class="n">ScalarSet</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetValues</span><span class="p">(</span><span class="n">input_quantity</span><span class="p">[</span><span class="m">2</span><span class="p">],</span> <span class="n">input_elementset</span><span class="p">[</span><span class="m">2</span><span class="p">])).</span><span class="n">data</span><span class="p">;</span>
+
+    <span class="c1">//---- calculate PET for each element</span>
+    <span class="c1">//-- get the number of elements (assuming that they&#39;re all the same)</span>
+    <span class="kt">int</span> <span class="n">elemcount</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetInputExchangeItem</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">ElementSet</span><span class="p">.</span><span class="n">ElementCount</span><span class="p">;</span>
+    <span class="kt">double</span><span class="p">[]</span> <span class="n">pet</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="n">elemcount</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="n">elemcount</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="n">pet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">CalculatePET</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mintemp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">maxtemp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//---- save output values</span>
+    <span class="n">DateTime</span> <span class="n">dt</span> <span class="p">=</span> <span class="n">CalendarConverter</span><span class="p">.</span><span class="n">ModifiedJulian2Gregorian</span><span class="p">(((</span><span class="n">TimeStamp</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetCurrentTime</span><span class="p">()).</span><span class="n">ModifiedJulianDay</span><span class="p">);</span>
+    <span class="n">_output</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">pet</span><span class="p">);</span>
+
+    <span class="c1">//---- set output values</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">SetValues</span><span class="p">(</span><span class="n">output_quantity</span><span class="p">,</span> <span class="n">output_elementset</span><span class="p">,</span> <span class="k">new</span> <span class="n">ScalarSet</span><span class="p">(</span><span class="n">pet</span><span class="p">));</span>
+
+    <span class="c1">//---- advance the component&#39;s internal time</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">AdvanceTime</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="6">
+<li>In the PerformTimeStep method we called a second method named <em>CalculatePET</em>.  We next need to implement this method which will do the actual Hargreaves calculation.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">/// Calculates the potential evapotranspiration using the Hargreaves-Samani method</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="c1">/// &lt;param name=&quot;T&quot;&gt;Averaged daily temperature&lt;/param&gt;</span>
+<span class="c1">/// &lt;param name=&quot;Tmin&quot;&gt;Minimum daily temperature&lt;/param&gt;</span>
+<span class="c1">/// &lt;param name=&quot;Tmax&quot;&gt;Maximum daily temperature&lt;/param&gt;</span>
+<span class="c1">/// &lt;param name=&quot;e&quot;&gt;element index&lt;/param&gt;</span>
+<span class="c1">/// &lt;returns&gt;PET in mm/day&lt;/returns&gt;</span>
+<span class="k">public</span> <span class="kt">double</span> <span class="nf">CalculatePET</span><span class="p">(</span><span class="kt">double</span> <span class="n">T</span><span class="p">,</span> <span class="kt">double</span> <span class="n">Tmin</span><span class="p">,</span> <span class="kt">double</span> <span class="n">Tmax</span><span class="p">,</span> <span class="kt">int</span> <span class="n">eid</span><span class="p">)</span>
+<span class="p">{</span>
+
+
+    <span class="c1">//---- calculate the relative distance between the earth and sun</span>
+    <span class="c1">//-- get Julian day</span>
+    <span class="n">TimeStamp</span> <span class="n">ts</span> <span class="p">=</span> <span class="p">(</span><span class="n">TimeStamp</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetCurrentTime</span><span class="p">();</span>
+    <span class="n">DateTime</span> <span class="n">dt</span> <span class="p">=</span> <span class="n">CalendarConverter</span><span class="p">.</span><span class="n">ModifiedJulian2Gregorian</span><span class="p">(</span><span class="n">ts</span><span class="p">.</span><span class="n">ModifiedJulianDay</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="n">dt</span><span class="p">.</span><span class="n">DayOfYear</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">dr</span> <span class="p">=</span> <span class="m">1</span> <span class="p">+</span> <span class="m">0.033</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Cos</span><span class="p">((</span><span class="m">2</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">PI</span> <span class="p">*</span> <span class="n">j</span><span class="p">)</span> <span class="p">/</span> <span class="m">365</span><span class="p">);</span>
+
+    <span class="c1">//---- calculate the solar declination</span>
+    <span class="kt">double</span> <span class="n">d</span> <span class="p">=</span> <span class="m">0.4093</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Sin</span><span class="p">((</span><span class="m">2</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">PI</span> <span class="p">*</span> <span class="n">j</span><span class="p">)</span> <span class="p">/</span> <span class="m">365</span> <span class="p">-</span> <span class="m">1.405</span><span class="p">);</span>
+
+    <span class="c1">//---- calculate the sunset hour angle</span>
+    <span class="c1">//-- get latitude in degrees</span>
+    <span class="n">ElementSet</span> <span class="n">es</span> <span class="p">=</span> <span class="p">(</span><span class="n">ElementSet</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="n">GetInputExchangeItem</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">ElementSet</span><span class="p">;</span>
+    <span class="n">Element</span> <span class="n">e</span> <span class="p">=</span> <span class="n">es</span><span class="p">.</span><span class="n">GetElement</span><span class="p">(</span><span class="n">eid</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">p</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GetVertex</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">y</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">PI</span> <span class="p">/</span> <span class="m">180</span><span class="p">;</span>
+    <span class="c1">//-- calc ws</span>
+    <span class="kt">double</span> <span class="n">ws</span> <span class="p">=</span> <span class="n">Math</span><span class="p">.</span><span class="n">Acos</span><span class="p">(-</span><span class="m">1</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Tan</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Tan</span><span class="p">(</span><span class="n">d</span><span class="p">));</span>
+
+    <span class="c1">//---- calculate the total incoming extra terrestrial solar radiation</span>
+    <span class="kt">double</span> <span class="n">Ra</span> <span class="p">=</span> <span class="m">15.392</span> <span class="p">*</span> <span class="n">dr</span> <span class="p">*</span> <span class="p">(</span><span class="n">ws</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">+</span> <span class="n">Math</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">ws</span><span class="p">));</span>
+
+    <span class="c1">//---- calculate PET (From Hargreaves and Samani 1985)</span>
+    <span class="c1">//-- calculate latent heat of vaporization (from Water Resources Engineering, David A. Chin)</span>
+    <span class="kt">double</span> <span class="n">L</span> <span class="p">=</span> <span class="m">2.501</span> <span class="p">-</span> <span class="m">0.002361</span> <span class="p">*</span> <span class="n">T</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">PET</span> <span class="p">=</span> <span class="p">(</span><span class="m">0.0023</span> <span class="p">*</span> <span class="n">Ra</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">Tmax</span> <span class="p">-</span> <span class="n">Tmin</span><span class="p">)</span> <span class="p">*</span> <span class="p">(</span><span class="n">T</span> <span class="p">+</span> <span class="m">17.8</span><span class="p">))</span> <span class="p">/</span> <span class="n">L</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">PET</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li>Define what the component should do after a model run has completed by implementing the <em>Finish</em> method.   In the code below, the component will simply write out the results to a text file.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Finish</span><span class="p">()</span>
+<span class="p">{</span>
+            <span class="n">StreamWriter</span> <span class="n">sw</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StreamWriter</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span><span class="k">false</span><span class="p">);</span>
+
+            <span class="c1">//write header line</span>
+            <span class="n">sw</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Simulation Time, PET[mm/day]&quot;</span><span class="p">);</span>
+
+            <span class="c1">//write all values</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="n">KeyValuePair</span><span class="p">&lt;</span><span class="n">DateTime</span><span class="p">,</span> <span class="kt">double</span><span class="p">[]&gt;</span> <span class="n">kvp</span> <span class="k">in</span> <span class="n">_output</span><span class="p">)</span>
+            <span class="p">{</span>
+                    <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0:MM/dd/yyyy: hh:mm tt}&quot;</span><span class="p">,</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Key</span><span class="p">));</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+                    <span class="p">{</span>
+                            <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;,&quot;</span> <span class="p">+</span> <span class="n">kvp</span><span class="p">.</span><span class="n">Value</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                    <span class="p">}</span>
+                    <span class="n">sw</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+    <span class="c1">//close file</span>
+    <span class="n">sw</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="compiling">
+<h3>Compiling<a class="headerlink" href="#compiling" title="Permalink to this headline">¶</a></h3>
+<p>The next step involves compiling the application.  Compiling is the process of converting written code into an binary file that the computer can run.</p>
+<ol class="arabic simple">
+<li>In Visual Studio C#, select Build &#8211;&gt; Build Solution.  If there are any errors, the Error List window at the bottom of the screen will notify you.</li>
+</ol>
+</div>
+<div class="section" id="create-the-configuration-xml-file">
+<h3>Create the Configuration XML File<a class="headerlink" href="#create-the-configuration-xml-file" title="Permalink to this headline">¶</a></h3>
+<p>The configuration file defines the input and output exchange items of the component, the time horizon of the component (start and end times), as well as the time step of the component.</p>
+<ol class="arabic simple">
+<li>Right-click on the Data folder in the Solution Explorer and select Add &#8211;&gt; New Item.  Select to add an XML file.  Rename this file config.xml.</li>
+<li>Add the following lines to the config.xml file to provide the overall structure.</li>
+</ol>
+<div class="highlight-XML"><pre>&lt;Configuration&gt;
+  &lt;ExchangeItems&gt; &lt;/ExchangeItems&gt;
+  &lt;TimeHorizon&gt; &lt;/TimeHorizon&gt;
+  &lt;ModelInfo&gt; &lt;/ModelInfo&gt;
+&lt;/Configuration&gt;</pre>
+</div>
+<ol class="arabic simple" start="3">
+<li>Add the following output exchange item within the ExchangeItems element.</li>
+</ol>
+<div class="highlight-XML"><pre>&lt;OutputExchangeItem&gt;
+  &lt;ElementSet&gt;
+    &lt;ID&gt;Coweeta&lt;/ID&gt;
+    &lt;Description&gt;Coweeta watershed, NC&lt;/Description&gt;
+    &lt;ShapefilePath&gt;..\..\data\gis\coweeta_18.shp&lt;/ShapefilePath&gt;
+    &lt;Version&gt;1&lt;/Version&gt;
+  &lt;/ElementSet&gt;
+  &lt;Quantity&gt;
+    &lt;ID&gt;PET&lt;/ID&gt;
+    &lt;Description&gt;Potential Evapotranspiration&lt;/Description&gt;
+    &lt;Dimensions&gt;
+      &lt;Dimension&gt;
+        &lt;Base&gt;Length&lt;/Base&gt;
+        &lt;Power&gt;1&lt;/Power&gt;
+      &lt;/Dimension&gt;
+      &lt;Dimension&gt;
+        &lt;Base&gt;Time&lt;/Base&gt;
+        &lt;Power&gt;-1&lt;/Power&gt;
+      &lt;/Dimension&gt;
+    &lt;/Dimensions&gt;
+    &lt;Unit&gt;
+      &lt;ID&gt;mm/day&lt;/ID&gt;
+      &lt;Description&gt;Millimeters per day&lt;/Description&gt;
+      &lt;ConversionFactorToSI&gt;1&lt;/ConversionFactorToSI&gt;
+      &lt;OffSetToSI&gt;0&lt;/OffSetToSI&gt;
+    &lt;/Unit&gt;
+    &lt;ValueType&gt;Scalar&lt;/ValueType&gt;
+  &lt;/Quantity&gt;
+&lt;/OutputExchangeItem&gt;</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Add the following input exchange item for average temperature as well.</li>
+</ol>
+<div class="highlight-XML"><pre>&lt;InputExchangeItem&gt;
+  &lt;ElementSet&gt;
+    &lt;ID&gt;Climate Station 01&lt;/ID&gt;
+    &lt;Description&gt;Climate Station 01, near Coweeta watershed 18 in NC&lt;/Description&gt;
+    &lt;ShapefilePath&gt;..\..\data\gis\climateStation.shp&lt;/ShapefilePath&gt;
+    &lt;Version&gt;1&lt;/Version&gt;
+  &lt;/ElementSet&gt;
+  &lt;Quantity&gt;
+    &lt;ID&gt;Temp&lt;/ID&gt;
+    &lt;Description&gt;Daily Averaged Temperature&lt;/Description&gt;
+    &lt;Dimensions&gt;
+      &lt;Dimension&gt;
+        &lt;Base&gt;Temperature&lt;/Base&gt;
+        &lt;Power&gt;1&lt;/Power&gt;
+      &lt;/Dimension&gt;
+    &lt;/Dimensions&gt;
+    &lt;Unit&gt;
+      &lt;ID&gt;Celsius&lt;/ID&gt;
+      &lt;Description&gt;Degrees Celsius&lt;/Description&gt;
+      &lt;ConversionFactorToSI&gt;1&lt;/ConversionFactorToSI&gt;
+      &lt;OffSetToSI&gt;0&lt;/OffSetToSI&gt;
+    &lt;/Unit&gt;
+    &lt;ValueType&gt;Scalar&lt;/ValueType&gt;
+  &lt;/Quantity&gt;
+&lt;/InputExchangeItem&gt;</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Next add two more input exchange items for minimum and maximum temperature.  You can copy the input exchange item above and just replace the Quantity ID and Description for each of the new exchange item.</li>
+</ol>
+</div>
+<div class="section" id="create-the-omi-file">
+<h3>Create the omi File<a class="headerlink" href="#create-the-omi-file" title="Permalink to this headline">¶</a></h3>
+<p>The <em>omi</em> file defines the component properties including the path (which is recommended to be a relative path) to the component dll, the path to the component cofig.xml file, and any other arguments for the component.</p>
+<ol class="arabic simple">
+<li>Add a new XML file under the <em>Data</em> folder as you did previously and name it Hargreaves.omi.</li>
+</ol>
+<ol class="arabic simple" start="3">
+<li>Define the relative path to the Hargeaves.dll.</li>
+<li>Define an argument (Key - ReadOnly - Value) for the configuration file. Key is a string used to search in the properties of the omi, ReadOnly is a boolen and is set to be true, and Value points to the <em>relative</em> location of the configuration.xml.</li>
+<li>Add an argument named Output to define the relative location of the output csv file.</li>
+</ol>
+<div class="highlight-XML"><pre>&lt;LinkableComponent Type="Hargreaves.source.LinkableComponent" Assembly="..\bin\Debug\Hargreaves.dll"&gt;
+  &lt;Arguments&gt;
+    &lt;Argument Key="ConfigFile" ReadOnly="true" Value=".\Config.xml" /&gt;
+  &lt;/Arguments&gt;
+&lt;/LinkableComponent&gt;</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may need to edit the paths to either the Hargreaves.dll or Config.xml files. They should be relative paths from the Hargreaves.omi file.</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="viewing-the-component-in-hydromodeler">
+<h3>Viewing the Component in HydroModeler<a class="headerlink" href="#viewing-the-component-in-hydromodeler" title="Permalink to this headline">¶</a></h3>
+<p>You have completed the steps to create the component.  Next we will show how to load the component into HydroModeler.</p>
+<ol class="arabic simple">
+<li>Start HydroDesktop.</li>
+<li>Add the HydroModeler extension by selecting the orb button &#8211;&gt; Extensions &#8211;&gt; HydroModeler.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/HM_fig506.png" src="../../_images/HM_fig506.png" />
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Use the Add Component button from the HydroModeler ribbon control to add the Hargreaves.omi file.  If everything worked correctly, you will see the Hargreaves component added to modeling canvas.</li>
+</ol>
+<div class="figure align-center">
+<img alt="../../_images/trigger6.png" src="../../_images/trigger6.png" />
+</div>
+</div>
+<div class="section" id="creating-a-unit-test-case">
+<h3>Creating a Unit Test Case<a class="headerlink" href="#creating-a-unit-test-case" title="Permalink to this headline">¶</a></h3>
+<p>The last step is to create a unit test for your new component.  A unit test allows you to verify that the component works properly.  We will show how to create tests for each of the Initialize and PerformTimeStep methods.  You could also add a test for the Finish method using the same basic approach.  There is not need to test the CalculatePET method because this is done already within the PerformTimeStep test.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We recommend using TestDriven.Net from  <a class="reference external" href="http://www.testdriven.net">http://www.testdriven.net</a> as a user friendly way of running the unit tests.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">In the same solution in which you created the Hargreaves component, right-click on the solution and select Add &#8211;&gt; New Project to create a new project for the unit tests.  Choose Visual C# Class Library and name the project HargreavesTest.</p>
+</li>
+<li><p class="first">Add a references to the HargreavesTest project for the following dlls.</p>
+<blockquote>
+<div><ul class="simple">
+<li>nunit.framework.dll from <em>[Path to HydroDesktop Source]/Binaries/Plugins/HydroModeler/example_configuration/bin</em></li>
+<li>Oatc.OpenMI.Sdk.Backbone</li>
+<li>Oatc.OpenMI.Sdk.Buffer</li>
+<li>Oatc.OpenMI.Sdk.DevelopmentSupport</li>
+<li>Oatc.OpenMI.Sdk.Wrapper</li>
+<li>SMW</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Add a project reference to the Hargreaves project by right-clicking on References and selecting Add Reference and switching to the Projects tab.</p>
+</li>
+<li><p class="first">The following lines of code are needed to setup the test class file.</p>
+</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="k">namespace</span> <span class="nn">Test</span>
+<span class="p">{</span>
+<span class="na">        [TestFixture]</span>
+        <span class="k">public</span> <span class="k">class</span> <span class="nc">TestClass</span>
+        <span class="p">{</span>
+                <span class="n">Hargreaves</span><span class="p">.</span><span class="n">Engine</span> <span class="n">hargreaves</span><span class="p">;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>To test the Initialize method, we will try to initialize the component using the config.xml file as shown in the lines below.  You may need to change the path to the config.xml file from what is shown below.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="na">[TestFixtureSetUp]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">Initialize</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//---- create instance of the hargreaves model</span>
+    <span class="n">hargreaves</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Hargreaves</span><span class="p">.</span><span class="n">Engine</span><span class="p">();</span>
+
+    <span class="c1">//---- define input arguments</span>
+    <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Hashtable</span> <span class="n">args</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Hashtable</span><span class="p">();</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;ConfigFile&quot;</span><span class="p">,</span> <span class="s">&quot;../../../data/config.xml&quot;</span><span class="p">);</span>
+
+    <span class="c1">//---- call the initialize method</span>
+    <span class="n">hargreaves</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+
+    <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Initialize has completed successfully&quot;</span><span class="p">);</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li>To test the PerformTimeStep method, we will do an example calculation for a known solution where the average temperature is 19 degrees C, the minimum temperature is 17 degrees C, and the maximum temperature is 21 degrees C.  We know that the solution for this problem is 1.16 mm/d.  If the code does not perform this calculation correctly, the test will fail.</li>
+</ol>
+<div class="highlight-c#"><div class="highlight"><pre><span class="na">[Test]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">PerformTimeStep</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\n\n---------------------------------------------------&quot;</span><span class="p">);</span>
+    <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Running the &#39;PerformTimeStep&#39; Test&quot;</span><span class="p">);</span>
+    <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;---------------------------------------------------&quot;</span><span class="p">);</span>
+
+    <span class="c1">//---- put data into IValueSets</span>
+    <span class="n">IValueSet</span> <span class="n">temp</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ScalarSet</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">{</span> <span class="m">19</span> <span class="p">});</span>
+    <span class="n">IValueSet</span> <span class="n">mintemp</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ScalarSet</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">{</span> <span class="m">17</span> <span class="p">});</span>
+    <span class="n">IValueSet</span> <span class="n">maxtemp</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ScalarSet</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">{</span> <span class="m">21</span> <span class="p">});</span>
+
+    <span class="c1">//---- set values</span>
+    <span class="n">hargreaves</span><span class="p">.</span><span class="n">SetValues</span><span class="p">(</span><span class="s">&quot;Temp&quot;</span><span class="p">,</span> <span class="s">&quot;Climate Station 01&quot;</span><span class="p">,</span><span class="n">temp</span><span class="p">);</span>
+    <span class="n">hargreaves</span><span class="p">.</span><span class="n">SetValues</span><span class="p">(</span><span class="s">&quot;Min Temp&quot;</span><span class="p">,</span> <span class="s">&quot;Climate Station 01&quot;</span><span class="p">,</span> <span class="n">mintemp</span><span class="p">);</span>
+    <span class="n">hargreaves</span><span class="p">.</span><span class="n">SetValues</span><span class="p">(</span><span class="s">&quot;Max Temp&quot;</span><span class="p">,</span> <span class="s">&quot;Climate Station 01&quot;</span><span class="p">,</span> <span class="n">maxtemp</span><span class="p">);</span>
+
+    <span class="c1">//---- call perform time step</span>
+    <span class="n">hargreaves</span><span class="p">.</span><span class="n">PerformTimeStep</span><span class="p">();</span>
+
+    <span class="c1">//---- read calculated results</span>
+    <span class="kt">double</span><span class="p">[]</span> <span class="n">pet</span> <span class="p">=</span> <span class="p">((</span><span class="n">ScalarSet</span><span class="p">)</span><span class="n">hargreaves</span><span class="p">.</span><span class="n">GetValues</span><span class="p">(</span><span class="s">&quot;PET&quot;</span><span class="p">,</span> <span class="s">&quot;Coweeta&quot;</span><span class="p">)).</span><span class="n">data</span><span class="p">;</span>
+
+    <span class="kt">double</span> <span class="n">chk</span> <span class="p">=</span> <span class="n">Math</span><span class="p">.</span><span class="n">Round</span><span class="p">(</span><span class="n">pet</span><span class="p">[</span><span class="m">0</span><span class="p">],</span> <span class="m">2</span><span class="p">);</span>
+    <span class="n">Assert</span><span class="p">.</span><span class="n">IsTrue</span><span class="p">(</span><span class="n">chk</span> <span class="p">==</span> <span class="m">1.16</span><span class="p">,</span> <span class="s">&quot;The calculated value of &quot;</span> <span class="p">+</span> <span class="n">chk</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span> <span class="p">+</span> <span class="s">&quot; does not equal the known value of 1.16&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 19, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

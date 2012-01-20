@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Select Series to Download &mdash; HydroDesktop Help</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link rel="up" title="Search and Download Data" href="Search.html" />
+    <link rel="next" title="Downloading Data" href="DownloadingData.html" />
+    <link rel="prev" title="Search Management" href="SearchManagement.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+        <div class="breadcrumb"><a href="../../guide-books.html" accesskey="U">Guide Books</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+        <div class="breadcrumb"><a href="Search.html" >Search and Download Data</a><img src="../../_static/triangle_closed.png" height="9" width="9" alt="&gt;"></div>
+    <div class="breadcrumb">Select Series to Download</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+	<div class="pagebutton"><a href="DownloadingData.html" title="Downloading Data" accesskey="N">next</a></div>
+	<div class="pagebutton"><a href="SearchManagement.html" title="Search Management" accesskey="P">previous</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions/extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="select-series-to-download">
+<span id="index-0"></span><h1>Select Series to Download<a class="headerlink" href="#select-series-to-download" title="Permalink to this headline">¶</a></h1>
+<p>The search results are shown in the &#8220;Search Results&#8221; map layer and in the <strong>Results</strong> tab of the search panel.</p>
+<p>To select data series for download use one of the following options:</p>
+<p>1. Select sites using the <strong>map</strong> by dragging a box around the sites. The selected sites for download are highlighted in the map.
+For each selected site in the map, all series will be downloaded.
+2. Select series using the <strong>Results</strong> tab in the search panel. Multiple series can be selected by holding the <strong>CTRL</strong> or <strong>SHIFT</strong> key.
+If you want to select all series, click on a series in the <strong>Results</strong> tab and press <strong>CTRL+A</strong> keys.
+3. Select series using the <strong>Attribute Table</strong></p>
+<p>To select series using the attribute table, click the <strong>Attribute</strong> button in the main <em>Home</em> toolbar.</p>
+<p>A new dialog <strong>Attribute Table Editor</strong> is shown.
+- You can sort each column by clicking on the column header.
+- You can select a series by clicking on the row
+- You can select multiple series by holding the <strong>SHIFT</strong> or <strong>CTRL</strong> key.</p>
+<p>Some key columns to note in the attribute table editor are:</p>
+<ul class="simple">
+<li>DataSource: The original data source of the data</li>
+<li>SiteName: The name of the monitoring point where the time series is recorded.</li>
+<li>VarName: The name of the variable represented by the time series.</li>
+<li>DataType: Some sites report several statistics of data. For example at a streamflow location, you can find minimum, maximum, and average streamflow values computed on daily time step.</li>
+<li>ValueType: Information how the values were obtained (field observation, derived value)</li>
+<li>StartDate, EndDate, ValueCount: These fields give you sense of the overall period of record for a time series and the number of values for its period of record.</li>
+<li>ServiceURL, ServiceCode: These fields give you information about the web service that holds the data</li>
+<li>TimeSupport, TimeUnits: the length of period of each observation. For example, if the variable is daily precipitation amount, then the time support is one day.</li>
+<li>Latitude, Longitude: the coordinates of the site in WGS84 coordinate system</li>
+</ul>
+<p><em>Selecting series to download using the map and the attribute table:</em></p>
+<div class="figure align-center">
+<img alt="../../_images/Search_fig06.png" src="../../_images/Search_fig06.png" />
+</div>
+<p>.</p>
+<p>After selecting the series to download from the search results, specify the <strong>Theme name</strong>. The theme name is a grouping of the downloaded data.  You can select <em>New Theme</em> or <em>Existing Theme</em>
+if there already are themes from previous downloads in the map.</p>
+<p><strong>Next Step:</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DownloadingData.html">Downloading Data</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 02, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>

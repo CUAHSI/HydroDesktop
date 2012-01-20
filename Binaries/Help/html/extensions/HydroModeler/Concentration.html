@@ -1,0 +1,98 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Concentration &mdash; HydroDesktop Help</title>
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HydroDesktop Help" href="../../index.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<a href="http://www.hydrodesktop.org"><img src="../../_static/HDlogo.png" alt="CUAHSI HydroDesktop" height="75px"></a>
+</div>
+<div id="header">
+    <div class="breadcrumb">Concentration</div>
+	<div class="pagebutton"><a href="../../genindex.html" title="General Index" accesskey="I">index</a></div>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../../welcome.html">Welcome</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general-concepts.html">General Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide-books.html">Guide Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions.html">Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../version-history.html">Version History</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script><div class="section" id="concentration">
+<h1>Concentration<a class="headerlink" href="#concentration" title="Permalink to this headline">¶</a></h1>
+<p>These components were created to find the concentrations of a contaminant in soil and water at any given timestep.  They were designed to model the concentration of a contaminant in a river or channel.</p>
+<div class="section" id="water-advection-and-sediment-diffusion">
+<h2>Water Advection and Sediment Diffusion<a class="headerlink" href="#water-advection-and-sediment-diffusion" title="Permalink to this headline">¶</a></h2>
+<p>These comonents were designed assuming a state where a water layer resides above a sediment column and, as a result, must work in tandem using a bidirectional link because of the shared boundary condition.  Assuming a pollutant is introduced, we can model it&#8217;s dilution based on the advection-diffusion equation.  Advection describes the horizontal displacement of the contaminant, governed by the flow characteristics of the river, where as diffusion describes the infiltration of the conaminant to or from the soil bed, moving from areas of higher concentration to lower concentration.  Assuming that the primary means of transportation are advection in the x direction and diffusion in the z direction, the equations for the concentration of the water and the concentration of the sediment column are derived from the advection-diffusion equation. Using these equations, we are able to estimate the concentration of pollutant, at any given time step, that is present in the water or in the soil.</p>
+<p>The two components are derived from this equation.</p>
+\[\frac{\partial C}{\partial t} = D_x \frac{\partial^2C}{\partial x^2}+D_z \frac{\partial^2C}{\partial z^2} - u \frac{\partial C}{\partial x} - v \frac{\partial C}{\partial z}\]<p>The following equation was used to model the Water Advection Component.</p>
+\[\frac{\partial C_w}{\partial t} = D_{w,z} \frac{\partial^2C_w}{\partial z^2} - v \frac{\partial C_w}{\partial x}\]<p>The following equation was used to model the Sediment Diffusion Component.</p>
+\[\frac{\partial C_s}{\partial t} = D_{s,z} \frac{\partial^2C_s}{\partial z^2}\]</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer"><p>
+      &nbsp;&copy; Copyright 2010, Consortium of Universities for the Advancement of Hydrologic Science, Inc.&nbsp;
+      &nbsp;Last updated on Dec 19, 2011.&nbsp;
+      &nbsp;Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.&nbsp;
+    </p></div>
+    <script type="text/javascript" charset="utf-8" src="../../_static/toc.js"></script>
+  </body>
+</html>
