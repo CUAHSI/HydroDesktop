@@ -936,8 +936,6 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				double north = -90;
 				double south = 90;
 
-                string errorResponse = "error";
-
 				foreach ( Site site in siteList )
 				{
 					// Check for cancel

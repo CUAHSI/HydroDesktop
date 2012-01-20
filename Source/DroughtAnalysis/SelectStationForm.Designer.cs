@@ -1,5 +1,8 @@
 ﻿namespace DroughtAnalysis
 {
+    /// <summary>
+    /// Main form for selecting stations and drought parameters
+    /// </summary>
     partial class SelectStationForm
     {
         /// <summary>
