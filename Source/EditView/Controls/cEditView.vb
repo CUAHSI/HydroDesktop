@@ -5,7 +5,6 @@ Imports System.Linq
 Imports System.Text
 Imports System.Windows.Forms
 Imports HydroDesktop.Database
-Imports System.Collections
 Imports QualifierHandling
 Imports ZedGraph
 Imports HydroDesktop.Interfaces
@@ -19,19 +18,18 @@ Public Class cEditView
 
     Private connString
     Private dbTools
-    Private CurveEditingColor As Drawing.Color = Color.Black
+    Private ReadOnly CurveEditingColor As Color = Color.Black
 
-    'private SeriesSelector control for checking / unchecking the series
     Public _seriesSelector As ISeriesSelector
 
-    Public Originaldt As Data.DataTable
+    Private Originaldt As Data.DataTable
     Public Editdt As DataTable
     Public newseriesID As Integer = 0
     Public Editing As Boolean = False
-    Public selectedSeriesIdList As New ArrayList()
-    Private ccList0 As New ArrayList()
-    Public nodataseriescount As Integer = 0
-    Public colorcount As Integer = 0
+    Private ReadOnly selectedSeriesIdList As New List(Of Int32)
+    Private ReadOnly ccList0 As New List(Of Color)
+    Private nodataseriescount As Integer = 0
+    Private colorcount As Integer = 0
     Public ShowLegend As Boolean
     Public Canceled As Boolean = False
 
@@ -48,16 +46,16 @@ Public Class cEditView
 
     Private Sub SettingColor()
         ccList0.Clear()
-        ccList0.Add(System.Drawing.Color.FromArgb(106, 61, 154))
-        ccList0.Add(System.Drawing.Color.FromArgb(202, 178, 214))
-        ccList0.Add(System.Drawing.Color.FromArgb(255, 127, 0))
-        ccList0.Add(System.Drawing.Color.FromArgb(253, 191, 111))
-        ccList0.Add(System.Drawing.Color.FromArgb(227, 26, 28))
-        ccList0.Add(System.Drawing.Color.FromArgb(251, 154, 153))
-        ccList0.Add(System.Drawing.Color.FromArgb(51, 160, 44))
-        ccList0.Add(System.Drawing.Color.FromArgb(178, 223, 138))
-        ccList0.Add(System.Drawing.Color.FromArgb(31, 120, 180))
-        ccList0.Add(System.Drawing.Color.FromArgb(166, 206, 227))
+        ccList0.Add(Color.FromArgb(106, 61, 154))
+        ccList0.Add(Color.FromArgb(202, 178, 214))
+        ccList0.Add(Color.FromArgb(255, 127, 0))
+        ccList0.Add(Color.FromArgb(253, 191, 111))
+        ccList0.Add(Color.FromArgb(227, 26, 28))
+        ccList0.Add(Color.FromArgb(251, 154, 153))
+        ccList0.Add(Color.FromArgb(51, 160, 44))
+        ccList0.Add(Color.FromArgb(178, 223, 138))
+        ccList0.Add(Color.FromArgb(31, 120, 180))
+        ccList0.Add(Color.FromArgb(166, 206, 227))
     End Sub
 
 
@@ -82,24 +80,17 @@ Public Class cEditView
         'assign the events
         AddHandler _seriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
         AddHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
-        'AddHandler _args.SeriesView.SeriesSelector.SeriesSelected, AddressOf SeriesSelector_SeriesSelected
 
-        'SeriesSelector.MultipleCheck = True
         gboxDataFilter.Enabled = False
         ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
         lblstatus.Text = "Ready"
         SettingColor()
         pTimeSeriesPlot.Clear()
         RefreshDbTools()
-
-        'Add Event
-        'SeriesSelector.MultipleCheck = false;
-
     End Sub
 
     Public Sub initialize()
         gboxDataFilter.Enabled = False
-        'SeriesSelector.MultipleCheck = True
         ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
         lblstatus.Text = "Ready"
     End Sub
@@ -112,33 +103,6 @@ Public Class cEditView
     'To refresh the themes shown in the series selector
     Public Sub RefreshView()
         _seriesSelector.RefreshSelection()
-    End Sub
-
-    Private Sub ShowAllFieldsinSequence()
-        Originaldt = New DataTable
-        Dim dt As New DataTable
-        Dim SQLString As New StringBuilder
-
-        SQLString.Append("SELECT ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UTCOffset, ")
-        SQLString.Append("DateTimeUTC, QualifierCode, OffsetValue, OffsetTypeID, CensorCode, SampleID, ")
-        SQLString.Append("FileID FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) ")
-        SQLString.Append("WHERE SeriesID = ")
-        For Each seriesID As Integer In selectedSeriesIdList
-            SQLString.Append(seriesID)
-            SQLString.Append(",")
-        Next
-        SQLString.Remove(SQLString.Length - 1, 1)
-        SQLString.Append(")")
-
-
-        dt = dbTools.LoadTable("DataValues", SQLString.ToString)
-        dt.Columns.Add("Other")
-        For i As Integer = 0 To dt.Rows.Count - 1
-            dt.Rows(i)("Other") = 0
-
-        Next
-        dgvDataValues.DataSource = dt
-        ResetGridViewStyle()
     End Sub
 
     Public Sub PlotGraph(ByVal SeriesID As Integer)
@@ -373,14 +337,11 @@ Public Class cEditView
 
             Editdt = dbTools.LoadTable(SQLString.ToString)
             Editdt.Columns.Add("Other")
-            Editdt.Columns.Add("Selected")
             For i As Integer = 0 To Editdt.Rows.Count - 1
                 Editdt.Rows(i)("Other") = 0
-                Editdt.Rows(i)("Selected") = 0
             Next
 
             Originaldt = Editdt.Copy
-
             dgvDataValues.DataSource = Editdt
 
             'get the begin and end datetime of the series
@@ -498,26 +459,16 @@ Public Class cEditView
 
     'Reset style of data grid view
     Public Sub ResetGridViewStyle() Handles dgvDataValues.Sorted
-        'dgvDataValues.ReadOnly = True
         For i As Integer = 0 To dgvDataValues.Columns.Count - 1
             dgvDataValues.Columns(i).ReadOnly = True
         Next
-        'dgvDataValues.Columns("DataValue").ReadOnly = False
         dgvDataValues.Columns("Other").Visible = False
-        dgvDataValues.Columns("Selected").Visible = False
 
-        dgvDataValues.ClearSelection()
         For i As Integer = 0 To dgvDataValues.Rows.Count - 1
             If dgvDataValues.Rows(i).Cells("Other").Value = -1 Then
                 dgvDataValues.Rows(i).DefaultCellStyle.BackColor = Color.Red
             Else
                 dgvDataValues.Rows(i).DefaultCellStyle.BackColor = Nothing
-            End If
-
-            If dgvDataValues.Rows(i).Cells("Selected").Value = 1 Then
-                dgvDataValues.Rows(i).Selected = True
-            Else
-                dgvDataValues.Rows(i).Selected = False
             End If
         Next
     End Sub
@@ -533,33 +484,6 @@ Public Class cEditView
         Else
             MsgBox("Please select a series to derive.")
         End If
-    End Sub
-
-    'Selection of point
-    Private Sub dataViewSeries_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dgvDataValues.MouseClick, dgvDataValues.KeyDown, dgvDataValues.KeyUp, dgvDataValues.MouseDoubleClick   ', dgvDataValues.SelectionChanged
-        Dim IDlist As New ArrayList
-
-        'Clear all selected points (Z value)
-        pTimeSeriesPlot.RemoveSelectedPoints()
-
-        'Select points (Add Z value)
-        For i As Integer = 0 To dgvDataValues.SelectedRows.Count - 1
-            IDlist.Add(CType(dgvDataValues.SelectedRows(i).Cells("ValueID").Value, Integer))
-        Next
-
-        pTimeSeriesPlot.SelectingPoints(IDlist)
-
-        pTimeSeriesPlot.Refreshing()
-
-
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If IDlist.Contains(CType(Editdt.Rows(i)("ValueID"), Integer)) Then
-                Editdt.Rows(i)("Selected") = 1
-            Else
-                Editdt.Rows(i)("Selected") = 0
-            End If
-        Next
-
     End Sub
 
     'Apply Changes to Database
@@ -607,7 +531,7 @@ Public Class cEditView
 
             Editdt = Originaldt.Copy
             RefreshDataGridView()
-            pTimeSeriesPlot.ReplotEditingCurve(Editdt)
+            pTimeSeriesPlot.ReplotEditingCurve(Me)
 
             If SeriesRowsCount(newseriesID) < 1 Then
                 gboxDataFilter.Enabled = False
@@ -630,7 +554,6 @@ Public Class cEditView
         txtValueLess.Text = ""
         rbtnValueThreshold.Select()
         dgvDataValues.ClearSelection()
-        pTimeSeriesPlot.RemoveSelectedPoints()
     End Sub
 
     'radio buttons change events
@@ -801,7 +724,7 @@ Public Class cEditView
                     If pTimeSeriesPlot.HasEditingCurve Then
                         'pTimeSeriesPlot.ChangeValueByInterpolating(returned)
                         ChangeValueByInterpolating(returned)
-                        pTimeSeriesPlot.ReplotEditingCurve(Editdt)
+                        pTimeSeriesPlot.ReplotEditingCurve(Me)
                     Else
                         ChangeValueByInterpolating(returned)
                     End If
@@ -824,19 +747,6 @@ Public Class cEditView
 
     End Sub
 
-
-    'Public Sub btnAddNewPoint_Click()
-    '    If Editing Then
-    '        Dim frmAddNewPoint As fAddNewPoint = New fAddNewPoint()
-
-    '        frmAddNewPoint._cEditView = Me
-    '        frmAddNewPoint.ShowDialog()
-    '    Else
-    '        MsgBox(ErrMsgForNotEditing)
-    '    End If
-    'End Sub
-
-
     Public Sub btnFlag_Click()
         If Editing Then
             If dgvDataValues.SelectedRows.Count >= 1 Then
@@ -851,57 +761,6 @@ Public Class cEditView
             MsgBox(ErrMsgForNotEditing)
         End If
     End Sub
-
-
-
-
-    'Associate changes to table from graph
-    'Public Sub ReflectChanges()
-    '    Dim j As Integer
-    '    Dim eCurve As CurveItem = pTimeSeriesPlot.EditingCurve
-
-    '    For i As Integer = 0 To eCurve.Points.Count - 1
-
-    '        j = 0
-    '        Do Until dgvDataValues.Rows(j).Cells("ValueID").Value = Val(pTimeSeriesPlot.PointValueID(i))
-    '            j += 1
-    '        Loop
-    '        dgvDataValues.Rows(j).Cells("DataValue").Value = Val(eCurve.Points(i).Y)
-
-    '    Next
-    'End Sub
-
-    'Associate changes to graph from table when "DataValue" changed
-    'Private Sub dgvDataValues_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvDataValues.CellValueChanged
-    '    If e.ColumnIndex = 2 Then
-    '        If pTimeSeriesPlot.HasEditingCurve Then
-    '            Dim j As Integer = 0
-    '            Dim eCurve As CurveItem = pTimeSeriesPlot.EditingCurve
-    '            For i As Integer = 0 To pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count - 1
-    '                If pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList(i).Color = CurveEditingColor Then
-    '                    eCurve = pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList(i)
-    '                End If
-    '            Next
-    '            'if not adding a new point 
-    '            If Not dgvDataValues.AllowUserToAddRows = True Then
-
-    '                'If data value is changing
-    '                If e.ColumnIndex = dgvDataValues.Columns("DataValue").Index Then
-    '                    Do Until pTimeSeriesPlot.PointValueID(j) = dgvDataValues.Rows(e.RowIndex).Cells("ValueID").Value
-    '                        j += 1
-    '                    Loop
-    '                    eCurve.Points(j).Y = dgvDataValues.Rows(e.RowIndex).Cells("DataValue").Value
-    '                End If
-    '            End If
-
-    '            'Allow user to save the changes
-    '            btnApplyToDatabase.Enabled = True
-    '            btnRestoreData.Enabled = True
-
-    '            pTimeSeriesPlot.Refreshing()
-    '        End If
-    '    End If
-    'End Sub
 
     'Adding a point
     Public Sub btnAddNewPoint_Click()
@@ -926,23 +785,22 @@ Public Class cEditView
         End If
     End Sub
 
+    Public Function GetSelectedRows() As DataGridViewSelectedRowCollection
+        Return dgvDataValues.SelectedRows
+    End Function
+
     'Delete the selected point
     Public Sub btnDeletePoint_Click()
         If Editing Then
-            If dgvDataValues.SelectedRows.Count >= 1 Then
+            Dim selectedRows = GetSelectedRows()
+            If selectedRows.Count >= 1 Then
                 If MsgBox("Do you want to delete the point/points?", MsgBoxStyle.OkCancel, "Delete point") = MsgBoxResult.Ok Then
-                    For i As Integer = 0 To Editdt.Rows.Count - 1
-                        If Editdt.Rows(i)("Selected") = 1 Then
-                            Editdt.Rows(i)("Other") = -1
-                        End If
+                    For Each row As DataGridViewRow In selectedRows
+                        row.Cells("Other").Value = -1
                     Next
-                    'If pTimeSeriesPlot.HasEditingCurve Then
-                    '    pTimeSeriesPlot.DeletingPoints()
-                    'End If
                 End If
-                pTimeSeriesPlot.ReplotEditingCurve(Editdt)
+                pTimeSeriesPlot.ReplotEditingCurve(Me)
                 RefreshDataGridView()
-
             Else
                 MsgBox(ErrMsgForNotPointSelected)
             End If
@@ -952,8 +810,8 @@ Public Class cEditView
     End Sub
 
     'Associate Table selection with Zvalue(selected points) in the graph Method
-    Public Sub ReflectZvalue()
-        Dim IDlist As New ArrayList 'List(Of Integer)
+    Private Sub ReflectZvalue()
+        Dim IDlist As New List(Of Integer)
         Dim eCurve As CurveItem = pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList(0)
         For i As Integer = 0 To pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count - 1
             If pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList(i).Color = CurveEditingColor Then
@@ -967,6 +825,9 @@ Public Class cEditView
             End If
         Next
 
+        'Unsubscribe from SelectionChanged event to avoid multiple raising of event
+        RemoveHandler dgvDataValues.SelectionChanged, AddressOf dgvDataValues_SelectionChanged
+
         For i As Integer = 0 To dgvDataValues.Rows.Count - 1
             If IDlist.Contains(Val(dgvDataValues.Rows(i).Cells("ValueID").Value)) Then
                 dgvDataValues.Rows(i).Selected = True
@@ -975,10 +836,9 @@ Public Class cEditView
             End If
         Next
 
-        dataViewSeries_SelectionChanged(New System.Object, New System.EventArgs)
-
-        'pTimeSeriesPlot.SelectingPoints(IDlist)
-        'pTimeSeriesPlot.Refreshing()
+        'Subscribe to SelectionChanged event and fire it
+        AddHandler dgvDataValues.SelectionChanged, AddressOf dgvDataValues_SelectionChanged
+        dgvDataValues_SelectionChanged(Me, EventArgs.Empty)
     End Sub
 
     'Saving changes Method
@@ -986,10 +846,7 @@ Public Class cEditView
         Dim SQLstring As String
         Dim SQLstring2 As String
         Dim datavalue As Double
-        'Dim QualifierCode As String
         Dim ValueID As Integer
-        Dim RowIndexList As New List(Of Integer)
-        Dim RestoreDeletedPoint As Boolean = False
         Dim dt As New DataTable
         Dim ValueIDList As New List(Of Integer)
 
@@ -1142,7 +999,7 @@ Public Class cEditView
 
 
         RefreshDataGridView()
-        pTimeSeriesPlot.ReplotEditingCurve(Editdt)
+        pTimeSeriesPlot.ReplotEditingCurve(Me)
 
         frmloading.Value = 0
         lblstatus.Text = "Ready"
@@ -1212,23 +1069,6 @@ Public Class cEditView
                 End If
             End If
         Next
-
-        'Selecting the background data table
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If LargerThanValue < LessThanValue Then
-                If Editdt.Rows(i)("DataValue") > LargerThanValue And Editdt.Rows(i)("DataValue") < LessThanValue Then
-                    Editdt.Rows(i)("Selected") = 1
-                Else
-                    Editdt.Rows(i)("Selected") = 0
-                End If
-            Else
-                If Editdt.Rows(i)("DataValue") > LargerThanValue Or Editdt.Rows(i)("DataValue") < LessThanValue Then
-                    Editdt.Rows(i)("Selected") = 1
-                Else
-                    Editdt.Rows(i)("Selected") = 0
-                End If
-            End If
-        Next
     End Sub
 
     'Value Change Threshold Filter
@@ -1239,19 +1079,6 @@ Public Class cEditView
             If (Math.Abs(dgvDataValues.Rows(i).Cells("DataValue").Value - dgvDataValues.Rows(i - 1).Cells("DataValue").Value) > ValueChange) Then
                 dgvDataValues.Rows(i).Selected = True
                 dgvDataValues.Rows(i - 1).Selected = True
-            End If
-        Next
-
-
-
-        'Selecting the background data table
-        Editdt.Rows(0)("Selected") = 0
-        For i As Integer = 1 To Editdt.Rows.Count - 1
-            If (Math.Abs(Editdt.Rows(i)("DataValue") - Editdt.Rows(i - 1)("DataValue")) > ValueChange) Then
-                Editdt.Rows(i)("Selected") = 1
-                Editdt.Rows(i - 1)("Selected") = 1
-            Else
-                Editdt.Rows(i)("Selected") = 0
             End If
         Next
     End Sub
@@ -1270,24 +1097,6 @@ Public Class cEditView
                     dgvDataValues.Rows(i).Selected = True
                 Else
                     dgvDataValues.Rows(i).Selected = False
-                End If
-            End If
-        Next
-
-
-        'Selecting the background data table
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If DateAfter > DateBefore Then
-                If Editdt.Rows(i)("LocalDateTime") >= DateAfter.ToOADate Or Editdt.Rows(i)("LocalDateTime") <= DateBefore.ToOADate Then
-                    Editdt.Rows(i)("Selected") = 1
-                Else
-                    Editdt.Rows(i)("Selected") = 0
-                End If
-            Else
-                If Editdt.Rows(i)("LocalDateTime") >= DateAfter.ToOADate And Editdt.Rows(i)("LocalDateTime") <= DateBefore.ToOADate Then
-                    Editdt.Rows(i)("Selected") = 1
-                Else
-                    Editdt.Rows(i)("Selected") = 0
                 End If
             End If
         Next
@@ -1314,23 +1123,6 @@ Public Class cEditView
             End If
 
         Next
-
-
-
-        'Selecting the background data table
-        Editdt.Rows(0)("Selected") = 0
-        For i As Integer = 1 To Editdt.Rows.Count - 1
-            date1 = Editdt.Rows(i)("LocalDateTime")
-            date2 = Editdt.Rows(i - 1)("LocalDateTime")
-            different = DateDiff(DateInterval.Second, date1, date2, FirstDayOfWeek.Monday, FirstWeekOfYear.Jan1)
-
-            If Math.Abs(different) > GapInSecond Then
-                Editdt.Rows(i)("Selected") = 1
-                Editdt.Rows(i - 1)("Selected") = 1
-            Else
-                Editdt.Rows(i)("Selected") = 0
-            End If
-        Next
     End Sub
 
 #End Region
@@ -1338,86 +1130,33 @@ Public Class cEditView
 #Region "Change Value Function"
 
     Public Sub ChangeValueByAddOrMinus(ByVal Adding As Boolean, ByVal values As Double)
-        'For i As Integer = 0 To dgvDataValues.SelectedRows.Count - 1
-        '    'changing value for the data grid view
-        '    If Adding Then
-        '        dgvDataValues.SelectedRows(i).Cells("DataValue").Value += values
-        '    Else
-        '        dgvDataValues.SelectedRows(i).Cells("DataValue").Value -= values
-        '    End If
+        For Each row As DataGridViewRow In GetSelectedRows()
+            If Adding Then
+                row.Cells("DataValue").Value += values
+            Else
+                row.Cells("DataValue").Value -= values
+            End If
 
-        '    'changing value for background curve
-        '    For j As Integer = 0 To pTimeSeriesPlot.EditCurvePointList.Count - 1
-        '        If pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.Substring(0, pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.IndexOf(",")) = dgvDataValues.SelectedRows(i).Cells("ValueID").Value Then
-        '            pTimeSeriesPlot.EditCurvePointList(j).Y = dgvDataValues.SelectedRows(i).Cells("DataValue").Value
-
-        '        End If
-        '    Next
-        'Next
-
-        'changing value for background data table
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If Editdt.Rows(i)("Selected") = 1 Then
-                If Adding Then
-                    Editdt.Rows(i)("DataValue") += values
-                Else
-                    Editdt.Rows(i)("DataValue") -= values
-                End If
-
-                If Not Editdt.Rows(i)("Other") = -1 And Not Editdt.Rows(i)("Other") = 1 Then
-                    Editdt.Rows(i)("Other") = 2
-                End If
-
+            If Not row.Cells("Other").Value = -1 And Not row.Cells("Other").Value = 1 Then
+                row.Cells("Other").Value = 2
             End If
         Next
-
-
-
     End Sub
 
     Public Sub ChangeValueByMultiply(ByVal Multiplier As Double)
-        'For i As Integer = 0 To dgvDataValues.SelectedRows.Count - 1
-        '    dgvDataValues.SelectedRows(i).Cells("DataValue").Value *= Multiplier
-
-        '    For j As Integer = 0 To pTimeSeriesPlot.EditCurvePointList.Count - 1
-        '        If pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.Substring(0, pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.IndexOf(",")) = dgvDataValues.SelectedRows(i).Cells("ValueID").Value Then
-        '            pTimeSeriesPlot.EditCurvePointList(j).Y = dgvDataValues.SelectedRows(i).Cells("DataValue").Value
-
-        '        End If
-        '    Next
-        'Next
-
-        'changing value for background data table
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If Editdt.Rows(i)("Selected") = 1 Then
-                Editdt.Rows(i)("DataValue") *= Multiplier
-                If Not Editdt.Rows(i)("Other") = -1 And Not Editdt.Rows(i)("Other") = 1 Then
-                    Editdt.Rows(i)("Other") = 2
-                End If
+        For Each row As DataGridViewRow In GetSelectedRows()
+            row.Cells("DataValue").Value *= Multiplier
+            If Not row.Cells("Other").Value = -1 And Not row.Cells("Other").Value = 1 Then
+                row.Cells("Other").Value = 2
             End If
         Next
     End Sub
 
     Public Sub ChangeValueBySettingValue(ByVal value As Double)
-        'For i As Integer = 0 To dgvDataValues.SelectedRows.Count - 1
-        '    dgvDataValues.SelectedRows(i).Cells("DataValue").Value = value
-
-        '    For j As Integer = 0 To pTimeSeriesPlot.EditCurvePointList.Count - 1
-        '        If pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.Substring(0, pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.IndexOf(",")) = dgvDataValues.SelectedRows(i).Cells("ValueID").Value Then
-        '            pTimeSeriesPlot.EditCurvePointList(j).Y = dgvDataValues.SelectedRows(i).Cells("DataValue").Value
-
-        '        End If
-        '    Next
-        'Next
-
-
-        'changing value for background data table
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If Editdt.Rows(i)("Selected") = 1 Then
-                Editdt.Rows(i)("DataValue") = value
-                If Not Editdt.Rows(i)("Other") = -1 And Not Editdt.Rows(i)("Other") = 1 Then
-                    Editdt.Rows(i)("Other") = 2
-                End If
+        For Each row As DataGridViewRow In GetSelectedRows()
+            row.Cells("DataValue").Value = value
+            If Not row.Cells("Other").Value = -1 And Not row.Cells("Other").Value = 1 Then
+                row.Cells("Other").Value = 2
             End If
         Next
     End Sub
@@ -1434,45 +1173,10 @@ Public Class cEditView
             Return
         End If
 
-        'Interpolating
-        'Do Until (i >= dgvDataValues.Rows.Count - 2)
-        '    If dgvDataValues.Rows(i).Selected Then
-        '        If dgvDataValues.Rows(i + 1).Selected = False Then
-        '            difference = (dgvDataValues.Rows(i - 1).Cells("DataValue").Value + dgvDataValues.Rows(i + 1).Cells("DataValue").Value)
-        '            dgvDataValues.Rows(i).Cells("DataValue").Value = difference / 2
-        '            i += 1
-        '        Else
-        '            count = 1
-        '            Do Until (dgvDataValues.Rows(i + 1).Selected = False)
-        '                count += 1
-        '                i += 1
-        '            Loop
-        '            difference = (dgvDataValues.Rows(i + 1).Cells("DataValue").Value + dgvDataValues.Rows(i - count).Cells("DataValue").Value)
-        '            For j As Integer = 1 To count
-        '                dgvDataValues.Rows(i + 1 - j).Cells("DataValue").Value = dgvDataValues.Rows(i + 1).Cells("DataValue").Value - difference / (count + 1) * j
-        '            Next
-        '        End If
-        '    Else
-        '        i += 1
-        '    End If
-        'Loop
-
-        'For k As Integer = 0 To dgvDataValues.SelectedRows.Count - 1
-        '    For j As Integer = 0 To pTimeSeriesPlot.EditCurvePointList.Count - 1
-        '        If pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.Substring(0, pTimeSeriesPlot.EditCurvePointList(j).Tag.ToString.IndexOf(",")) = dgvDataValues.SelectedRows(k).Cells("ValueID").Value Then
-        '            pTimeSeriesPlot.EditCurvePointList(j).Y = dgvDataValues.SelectedRows(k).Cells("DataValue").Value
-
-        '        End If
-        '    Next
-        'Next
-
-
-
-        'changing value for background data table
         i = 1
-        Do Until (i >= Editdt.Rows.Count - 2)
-            If Editdt.Rows(i)("Selected") = 1 Then
-                If Not Editdt.Rows(i + 1)("Selected") = 1 Then
+        Do Until (i >= dgvDataValues.Rows.Count - 2)
+            If dgvDataValues.Rows(i).Selected Then
+                If Not dgvDataValues.Rows(i + 1).Selected = 1 Then
                     difference = Editdt.Rows(i - 1)("DataValue") + Editdt.Rows(i + 1)("DataValue")
                     Editdt.Rows(i)("DataValue") = difference / 2
                     If Not Editdt.Rows(i)("Other") = -1 And Not Editdt.Rows(i)("Other") = 1 Then
@@ -1481,7 +1185,7 @@ Public Class cEditView
                     i += 1
                 Else
                     count = 1
-                    Do Until Not (Editdt.Rows(i + 1)("Selected") = 1)
+                    Do Until Not (dgvDataValues.Rows(i + 1).Selected = 1)
                         count += 1
                         i += 1
                     Loop
@@ -1503,10 +1207,15 @@ Public Class cEditView
 #End Region
 
 #End Region
+    
+    Private Sub dgvDataValues_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles dgvDataValues.SelectionChanged
+        Dim selectedRows = GetSelectedRows()
+        Dim IDlist As New List(Of Int32)(selectedRows.Count)
+        IDlist.AddRange(From row As DataGridViewRow In selectedRows Select CType(row.Cells("ValueID").Value, Integer))
 
-
-
-
+        pTimeSeriesPlot.SelectingPoints(IDlist)
+        pTimeSeriesPlot.Refreshing()
+    End Sub
 
 End Class
 'End Namespace

@@ -238,83 +238,11 @@ Public Class fAddNewPoint
                         dt.Rows(dt.Rows.Count - 1)("FileID") = dgvNewPoints.Rows(i).Cells("File").Value
                     End If
                     dt.Rows(dt.Rows.Count - 1)("Other") = 1
-                    dt.Rows(dt.Rows.Count - 1)("Selected") = 0
-
-                    'Arranging points series
-                    'If _cEditView.pTimeSeriesPlot.HasEditingCurve Then
-                    '    With _cEditView.pTimeSeriesPlot.EditingCurve
-
-                    '        tempp = New PointPair
-                    '        tempp.X = -999999
-                    '        k = 1
-                    '        p = New PointPair(New XDate(CDate(dt.Rows(dt.Rows.Count - 1)("LocalDateTime"))), dt.Rows(dt.Rows.Count - 1)("DataValue"))
-                    '        p.Tag = dt.Rows(dt.Rows.Count - 1)("ValueID").ToString + ", " + dt.Rows(dt.Rows.Count - 1)("LocalDateTime").ToString + ": " + dt.Rows(dt.Rows.Count - 1)("DataValue").ToString
-
-                    '        If .Points(0).X > p.X Then
-                    '            tempp.X = .Points(0).X
-                    '            tempp.Y = .Points(0).Y
-                    '            tempp.Tag = .Points(0).Tag
-                    '            .Points(0).X = p.X
-                    '            .Points(0).Y = p.Y
-                    '            .Points(0).Tag = p.Tag
-                    '            p.X = tempp.X
-                    '            p.Y = tempp.Y
-                    '            p.Tag = tempp.Tag
-                    '        Else
-                    '            Do While (tempp.X = -999999)
-                    '                If .Points(k).X > p.X And .Points(k - 1).X <= p.X Then
-                    '                    tempp.X = .Points(k).X
-                    '                    tempp.Y = .Points(k).Y
-                    '                    tempp.Tag = .Points(k).Tag
-                    '                    .Points(k).X = p.X
-                    '                    .Points(k).Y = p.Y
-                    '                    .Points(k).Tag = p.Tag
-                    '                    p.X = tempp.X
-                    '                    p.Y = tempp.Y
-                    '                    p.Tag = tempp.Tag
-                    '                End If
-
-                    '                If k = .Points.Count - 1 Then
-                    '                    tempp.X = p.X
-                    '                    tempp.Y = p.Y
-                    '                    tempp.Tag = p.Tag
-                    '                    k += 2
-                    '                Else
-                    '                    k += 1
-                    '                End If
-                    '            Loop
-
-
-                    '        End If
-
-                    '        If Not k >= .Points.Count Then
-                    '            For j As Integer = k To .Points.Count - 1
-                    '                tempp.X = .Points(j).X
-                    '                tempp.Y = .Points(j).Y
-                    '                tempp.Tag = .Points(j).Tag
-                    '                .Points(j).X = p.X
-                    '                .Points(j).Y = p.Y
-                    '                .Points(j).Tag = p.Tag
-                    '                p.X = tempp.X
-                    '                p.Y = tempp.Y
-                    '                p.Tag = tempp.Tag
-                    '            Next
-                    '        End If
-                    '        .AddPoint(p)
-
-                    '    End With
-
-                    '    _cEditView.pTimeSeriesPlot.Refreshing()
-                    'End If
-
-
                     AddingRowsCount += 1
                 Next
 
-                '_cEditView.dgvDataValues.DataSource = dt
-                '_cEditView.ResetGridViewStyle()
                 _cEditView.RefreshDataGridView()
-                _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView.Editdt)
+                _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView)
 
                 Me.Close()
             Else

@@ -70,7 +70,7 @@ Public Class fChangeYValue
             '    _cEditView.ReflectChanges()
             'End If
             _cEditView.RefreshDataGridView()
-            _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView.Editdt)
+            _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView)
             Me.Close()
         End If
 
