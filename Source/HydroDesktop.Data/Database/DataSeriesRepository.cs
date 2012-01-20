@@ -75,7 +75,7 @@ namespace HydroDesktop.Database
                     sqlIn.Append(",");
                 }
             }
-            string filter = "DataThemes.SeriesID in (" + sqlIn.ToString() + ")";
+            string filter = "DataThemes.SeriesID in (" + sqlIn + ")";
             return GetSeriesTable(filter);
         }
 
@@ -244,15 +244,14 @@ namespace HydroDesktop.Database
             if (tblTheme.Rows.Count != 1) return false;
 
             //otherwise, delete the series
-            Series seriesToDel = GetSeriesByID(seriesID);
+            var seriesToDel = GetSeriesByID(seriesID);
 
             //SQL Queries
-            string sqlSite = "SELECT SiteID from DataSeries where SiteID = " + seriesToDel.Site.Id;
-            string sqlVariable = "SELECT VariableID from DataSeries where VariableID = " + seriesToDel.Variable.Id;
-            string sqlSource = "SELECT SourceID from DataSeries where SourceID = " + seriesToDel.Source.Id;
-            string sqlMethod = "SELECT MethodID from DataSeries where MethodID = " + seriesToDel.Method.Id;
-            string sqlQuality = "SELECT QualityControlLevelID from DataSeries where QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
-
+            var sqlSite = "SELECT count(SiteID) from DataSeries where SiteID = " + seriesToDel.Site.Id;
+            string sqlVariable = "SELECT count(VariableID) from DataSeries where VariableID = " + seriesToDel.Variable.Id;
+            string sqlSource = "SELECT count(SourceID) from DataSeries where SourceID = " + seriesToDel.Source.Id;
+            string sqlMethod = "SELECT count(MethodID) from DataSeries where MethodID = " + seriesToDel.Method.Id;
+            string sqlQuality = "SELECT count(QualityControlLevelID) from DataSeries where QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
 
             //SQL Delete Commands
             string sqlDeleteValues = "DELETE FROM DataValues WHERE SeriesID = " + seriesID;
@@ -264,15 +263,6 @@ namespace HydroDesktop.Database
             string sqlDeleteMethod = "DELETE FROM Methods WHERE MethodID = " + seriesToDel.Method.Id;
             string sqlDeleteSource = "DELETE FROM Sources WHERE SourceID = " + seriesToDel.Source.Id;
             string sqlDeleteQuality = "DELETE FROM QualityControlLevels WHERE QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
-            string sqlDeleteSelection = "DELETE FROM Selection WHERE SeriesID = " + seriesID;
-
-            DataTable tblSite = new DataTable();
-            DataTable tblVariable = new DataTable();
-            DataTable tblSource = new DataTable();
-            DataTable tblMethod = new DataTable();
-            DataTable tblQuality = new DataTable();
-
-            
 
             //Begin Transaction
             using (DbConnection conn = _db.CreateConnection())
@@ -281,43 +271,9 @@ namespace HydroDesktop.Database
 
                 using (DbTransaction tran = conn.BeginTransaction())
                 {
-                    // get site IDs
-                    using (DbCommand cmd01 = conn.CreateCommand())
-                    {
-                        cmd01.CommandText = sqlSite;
-                        tblSite = _db.LoadTable("t1", cmd01);
-                    }
-
-                    // get variable IDs
-                    using (DbCommand cmd02 = conn.CreateCommand())
-                    {
-                        cmd02.CommandText = sqlVariable;
-                        tblVariable = _db.LoadTable("t2", cmd02);
-                    }
-
-                    // get source IDs
-                    using (DbCommand cmd03 = conn.CreateCommand())
-                    {
-                        cmd03.CommandText = sqlSource;
-                        tblSource = _db.LoadTable("t3", cmd03);
-                    }
-
-                    // get method IDs
-                    using (DbCommand cmd04 = conn.CreateCommand())
-                    {
-                        cmd04.CommandText = sqlMethod;
-                        tblMethod = _db.LoadTable("t4", cmd04);
-                    }
-
-                    // get qualityControl IDs
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlQuality;
-                        tblQuality = _db.LoadTable("t5", cmd05);
-                    }
-
                     //delete the site
-                    if (tblSite.Rows.Count == 1)
+                    var sitesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlSite));
+                    if (sitesCount == 1)
                     {
                         using (DbCommand cmdDeleteSite = conn.CreateCommand())
                         {
@@ -327,7 +283,8 @@ namespace HydroDesktop.Database
                     }
 
                     //delete the variable
-                    if (tblVariable.Rows.Count == 1)
+                    var variablesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlVariable));
+                    if (variablesCount == 1)
                     {
                         using (DbCommand cmdDeleteVariable = conn.CreateCommand())
                         {
@@ -337,7 +294,8 @@ namespace HydroDesktop.Database
                     }
 
                     //delete the method
-                    if (tblMethod.Rows.Count == 1)
+                    var methodsCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlMethod));
+                    if (methodsCount == 1)
                     {
                         using (DbCommand cmdDeleteMethod = conn.CreateCommand())
                         {
@@ -347,7 +305,8 @@ namespace HydroDesktop.Database
                     }
 
                     //delete the source
-                    if (tblSource.Rows.Count == 1)
+                    var sourcesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlSource));
+                    if (sourcesCount == 1)
                     {
                         using (DbCommand cmdDeleteSource = conn.CreateCommand())
                         {
@@ -357,7 +316,8 @@ namespace HydroDesktop.Database
                     }
 
                     //delete the quality control level
-                    if (tblQuality.Rows.Count == 1)
+                    var qualitiesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlQuality));
+                    if (qualitiesCount == 1)
                     {
                         using (DbCommand cmdDeleteQuality = conn.CreateCommand())
                         {
