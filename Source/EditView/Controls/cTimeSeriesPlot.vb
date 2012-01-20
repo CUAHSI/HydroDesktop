@@ -1,7 +1,6 @@
-﻿Imports ZedGraph
+﻿Imports System.Windows.Forms
+Imports ZedGraph
 Imports System.Drawing
-Imports HydroDesktop.Database
-Imports HydroDesktop.Interfaces
 
 Public Class cTimeSeriesPlot
 
@@ -49,16 +48,6 @@ Public Class cTimeSeriesPlot
         ccList0.Add(Color.FromArgb(31, 120, 180))
         ccList0.Add(Color.FromArgb(166, 206, 227))
     End Sub
-
-    'the main series selector control
-    'Public Property SeriesSelector() As SeriesSelector3
-    '    Get
-    '        Return m_SeriesSelector
-    '    End Get
-    '    Set(ByVal value As SeriesSelector3)
-    '        m_SeriesSelector = value
-    '    End Set
-    'End Property
 
 
     Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer)
@@ -646,11 +635,13 @@ Public Class cTimeSeriesPlot
         End If
     End Sub
 
-    Public Sub SelectingPoints(ByVal IDlist As ArrayList)
+    Public Sub SelectingPoints(ByVal IDlist As List(Of Int32))
         If HasEditingCurve() Then
             For i As Integer = 0 To EditingCurve.Points.Count - 1
                 If IDlist.Contains(PointValueID(i)) Then
                     EditingCurve.Points(i).Z = 1
+                Else
+                    EditingCurve.Points(i).Z = 0
                 End If
             Next
         End If
@@ -918,7 +909,8 @@ Public Class cTimeSeriesPlot
         Return ID
     End Function
 
-    Public Sub ReplotEditingCurve(ByVal Editdt As DataTable)
+    Public Sub ReplotEditingCurve(ByRef cEditView As cEditView)
+        Dim Editdt = cEditView.Editdt
         Dim CurveListCopy As New CurveList
         Dim curveIndex As Integer
         Dim EditCurveIsY2Axis As Boolean
@@ -1003,13 +995,9 @@ Public Class cTimeSeriesPlot
             curve.YAxisIndex = EditCurveYAxisIndex
         End If
 
-        Dim IDlist As New List(Of Integer)
-
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-            If Editdt.Rows(i)("Selected").ToString = "1" Then
-                IDlist.Add(Editdt.Rows(i)("ValueID"))
-            End If
-        Next
+        Dim selectedRows = cEditView.GetSelectedRows()
+        Dim IDlist As New List(Of Integer)(selectedRows.Count)
+        IDlist.AddRange((From row As DataGridViewRow In cEditView.GetSelectedRows() Select row.Cells("ValueID").Value).Cast (Of Integer)())
 
         For j As Integer = 0 To curve.Points.Count - 1
             If IDlist.Contains(PointValueID(j)) Then
@@ -1025,14 +1013,5 @@ Public Class cTimeSeriesPlot
 
 
 #End Region
-
-    'Public Sub RestoreOriginalData()
-    '    Clear()
-    '    Graph()
-    '    Refreshing()
-    'End Sub
-
-
-
 
 End Class

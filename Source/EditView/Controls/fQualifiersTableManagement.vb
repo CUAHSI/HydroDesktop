@@ -1,7 +1,5 @@
-﻿Imports HydroDesktop.Database
-Imports System.Globalization
-Imports System.Threading
-Imports System.Text
+﻿Imports System.Windows.Forms
+Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 
 
@@ -57,17 +55,15 @@ Public Class fQualifiersTableManagement
             UpdateQualifier()
         End If
 
-        For i As Integer = 0 To _cEditView.Editdt.Rows.Count - 1
-            If _cEditView.Editdt.Rows(i)("Selected") = 1 Then
-                _cEditView.Editdt.Rows(i)("QualifierCode") = txtQualifierCode.Text
-                If Not _cEditView.Editdt.Rows(i)("Other") = -1 And Not _cEditView.Editdt.Rows(i)("Other") = 1 Then
-                    _cEditView.Editdt.Rows(i)("Other") = 2
-                End If
+        For Each row As DataGridViewRow In _cEditView.GetSelectedRows()
+            row.Cells("QualifierCode").Value = txtQualifierCode.Text
+            If Not row.Cells("Other").Value = -1 And Not row.Cells("Other").Value = 1 Then
+                row.Cells("Other").Value = 2
             End If
         Next
 
         _cEditView.RefreshDataGridView()
-        _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView.Editdt)
+        _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView)
 
         Me.Close()
     End Sub
