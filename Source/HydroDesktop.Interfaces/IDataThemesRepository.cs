@@ -13,5 +13,12 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <returns>DataTable with themes</returns>
         DataTable GetThemesForAllSeries();
+
+        /// <summary>
+        /// Get Theme ID by Theme Name
+        /// </summary>
+        /// <param name="themeName">Theme name</param>
+        /// <returns>Theme ID or null, if themeID not found.</returns>
+        int? GetID(string themeName);
     }
 }

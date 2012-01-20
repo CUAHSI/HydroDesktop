@@ -817,7 +817,7 @@ namespace HydroDesktop.Database
         /// <param name="inputString">the SQL query string</param>
         /// <param name="parameters">the values of command parameters</param>
         /// <returns>the query result (value of first matching row and column)</returns>
-        public object ExecuteSingleOutput(String inputString, object[] parameters)
+        public object ExecuteSingleOutput(string inputString, object[] parameters)
         {
             object output = null;
             DbCommand cmd = CreateCommand(inputString);

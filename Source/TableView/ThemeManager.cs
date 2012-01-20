@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using HydroDesktop.Interfaces;
 using DotSpatial.Data;
 using DotSpatial.Topology;
@@ -23,9 +24,9 @@ namespace TableView
     /// </summary>
     public class ThemeManager
     {
-        private readonly ISearchPlugin _searchPlugin;
-
         #region Variables
+
+        private readonly ISearchPlugin _searchPlugin;
         private DbOperations _db;
         private ProjectionInfo _wgs84Projection;
         #endregion
@@ -51,8 +52,8 @@ namespace TableView
         public void RefreshAllThemes(Map mainMap)
         {
             //(1) Find theme names from database and from map
-            List<string> themeNamesInDb = GetThemeNamesFromDb();
-            List<string> themeNamesInMap = GetThemeNamesFromMap(mainMap);
+            var themeNamesInDb = GetThemeNamesFromDb();
+            var themeNamesInMap = GetThemeNamesFromMap(mainMap);
 
             //(2) Find which themes to remove from map and which
             //    themes to check
@@ -115,15 +116,13 @@ namespace TableView
         /// <summary>
         /// Gets a list of all theme names from the DB
         /// </summary>
-        public List<string> GetThemeNamesFromDb()
+        private List<string> GetThemeNamesFromDb()
         {
-            List<string> themeNameList = new List<string>();
-            string query = "SELECT ThemeName FROM DataThemeDescriptions";
-            DataTable resultTable = _db.LoadTable(query);
-            foreach (DataRow row in resultTable.Rows)
-            {
-                themeNameList.Add(row[0].ToString());
-            }
+            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>(_db);
+            
+            var resultTable = repo.GetThemesForAllSeries();
+            var themeNameList = new List<string>(resultTable.Rows.Count);
+            themeNameList.AddRange(from DataRow row in resultTable.Rows select Convert.ToString(row["ThemeName"]));
             return themeNameList;
         }
 
@@ -165,24 +164,6 @@ namespace TableView
      
 
         /// <summary>
-        /// Given a theme, create a feature set.
-        /// The theme already needs to have been saved in
-        /// the database and the themeID needs to be a
-        /// valid ID
-        /// </summary>
-        /// <param name="themeID"></param>
-        /// <returns>the feature set of sites in the theme in the user
-        /// specified projection</returns>
-        public IFeatureSet GetFeatureSet(int themeID, ProjectionInfo projection)
-        {
-            DataTable themeTable = LoadThemeAsTable(themeID);
-            IFeatureSet unprojectedFs = TableToFeatureSet(themeTable);
-            unprojectedFs.Projection = _wgs84Projection;
-            unprojectedFs.Reproject(projection);
-            return unprojectedFs;
-        }
-
-        /// <summary>
         /// Given a theme name, create a feature set.
         /// The theme already needs to be present in the 
         /// database.
@@ -193,49 +174,20 @@ namespace TableView
         /// user specified projection</returns>
         public IFeatureSet GetFeatureSet(string themeName, ProjectionInfo projection)
         {
-            string sql = "SELECT ThemeID from DataThemeDescriptions WHERE ThemeName =?";
-            object objThemeId = null;
-            objThemeId = _db.ExecuteSingleOutput(sql, new string[] { themeName });
+            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>(_db);
+            var themeID = repo.GetID(themeName);
 
-            if (objThemeId == null)
-            {
-                throw new ArgumentException("Theme not found in the database.");
-            }
-            else
-            {
-                int themeID = Convert.ToInt32(objThemeId);
-                return GetFeatureSet(themeID, projection);
-            }
+            var themeTable = LoadThemeAsTable(themeID);
+            var unprojectedFs = TableToFeatureSet(themeTable);
+            unprojectedFs.Projection = _wgs84Projection;
+            unprojectedFs.Reproject(projection);
+            return unprojectedFs;
         }
-
-        /// <summary>
-        /// Loads the 
-        /// </summary>
-        /// <param name="themeID"></param>
-        /// <returns></returns>
-        private DataTable LoadThemeAsTable(int themeID)
+       
+        private DataTable LoadThemeAsTable(int? themeID)
         {
-            string sql =
-                "SELECT src.Organization as 'DataSource', ds.SeriesID, " +
-                "s.SiteName as 'SiteName', s.Latitude as 'Latitude', s.Longitude as 'Longitude', s.SiteCode as 'SiteCode', " +
-                "v.VariableName as 'VariableName', v.VariableName as 'VarName', v.DataType as 'DataType', v.SampleMedium as 'SampleMedium', " +
-                "v.VariableCode as 'VariableCode', u.UnitsName as 'Units', " +
-                "v.VariableCode as 'ServiceCode', " + "v.VariableCode as 'VarCode', " +
-                "m.MethodDescription as 'Method', qc.Definition as 'QualityControl', " +
-                "ds.BeginDateTime as 'BeginDateTime', ds.EndDateTime as 'EndDateTime', ds.ValueCount as 'ValueCount', " +
-                "ds.BeginDateTime as 'StartDate', ds.EndDateTime as 'EndDate', " +
-                "null as 'ServiceURL' " +
-                "FROM DataThemes dt " +
-                "LEFT JOIN DataSeries ds on dt.SeriesID = ds.SeriesID " +
-                "LEFT JOIN Sites s on ds.SiteID = s.SiteID " +
-                "LEFT JOIN Variables v on ds.VariableID = v.VariableID " +
-                "LEFT JOIN Units u on u.UnitsID = v.VariableUnitsID " +
-                "LEFT JOIN Methods m on ds.MethodID = m.MethodID " +
-                "LEFT JOIN Sources src on ds.SourceID = src.SourceID " +
-                "LEFT JOIN QualityControlLevels qc on ds.QualityControlLevelID = qc.QualityControlLevelID " +
-                "WHERE dt.ThemeID = " + themeID;
-
-            DataTable table = _db.LoadTable("ThemeTable", sql);
+            var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
+            var table = repo.GetSeriesForThemeManager(themeID);
 
             //to get the 'ServiceCode'
             foreach (DataRow row in table.Rows)
