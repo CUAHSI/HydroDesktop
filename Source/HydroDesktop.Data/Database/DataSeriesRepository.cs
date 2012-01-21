@@ -38,7 +38,16 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
-        
+     
+        public double GetNoDataValueForSeriesVariable(long seriesID)
+        {
+            var query =
+                "SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE SeriesID = " +
+                seriesID;
+            var result = DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToDouble(result);
+        }
+
         public int GetVariableID(int seriesID)
         {
             var result =

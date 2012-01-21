@@ -1,10 +1,10 @@
-﻿Imports HydroDesktop.Database
-Imports System.Globalization
-Imports System.Threading
+﻿Imports System.Globalization
+Imports HydroDesktop.Database
 Imports System.Text
 Imports System.Windows.Forms
 Imports HydroDesktop.Interfaces
 Imports HydroDesktop.Interfaces.ObjectModel
+Imports System.Threading
 
 
 Public Class fDeriveNewDataSeries
@@ -104,16 +104,6 @@ Public Class fDeriveNewDataSeries
         SetDefaultMethods()
         SetDefaultQualityControlLevel()
         SetDefaultVariable()
-    End Sub
-
-    Private Sub AlgebraicValidation(ByVal Validated As Boolean)
-
-        If Not IsNumeric(txtA.Text) Or Not IsNumeric(txtB.Text) Or Not IsNumeric(txtC.Text) Or _
-        Not IsNumeric(txtD.Text) Or Not IsNumeric(txtE.Text) Or Not IsNumeric(txtF.Text) Then
-            Validated = False
-        End If
-
-
     End Sub
 
     Private Sub InsertNewSeries()
@@ -220,13 +210,6 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Private Sub InsertNewDataValues()
-        Dim SQLstring As StringBuilder = New StringBuilder()
-        Dim SQLstring2 As String
-        Dim newValueID As Integer
-        Dim dt As DataTable
-        Dim currentvalue As Double
-        Dim nodatavalue As Double
-        Dim newvalue As Double
         Dim A As Double = txtA.Text
         Dim B As Double = txtB.Text
         Dim C As Double = txtC.Text
@@ -234,16 +217,38 @@ Public Class fDeriveNewDataSeries
         Dim E As Double = txtE.Text
         Dim F As Double = txtF.Text
 
-        Dim tempstring As String
+        Dim dataSeriesPepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
+        Dim nodatavalue = dataSeriesPepository.GetNoDataValueForSeriesvariable(newSeriesID)
 
-        Try
-            nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & newSeriesID & "')")
-            SQLstring.Append("SELECT * FROM DataValues WHERE SeriesID = " + _SelectedSeriesID.ToString)
-            dt = dbTools.LoadTable("DataValues", SQLstring.ToString)
+        Dim dataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)(dbTools)
+        Dim dt = dataValuesRepository.GetAll(_SelectedSeriesID)
 
-            If rbtnAlgebraic.Checked Then
-                For i As Integer = 0 To dt.Rows.Count - 1
-                    currentvalue = dt.Rows(i).Item("DataValue")
+        Const chunkLength As Integer = 400
+
+        'Setting progress bar
+        Dim frmloading As ProgressBar = _cEditView.pbProgressBar
+        frmloading.Visible = True
+        frmloading.Maximum = dt.Rows.Count - 1
+        frmloading.Minimum = 0
+        frmloading.Value = 0
+        _cEditView.lblstatus.Text = "Creating New Data Values"
+
+        Const insertQuery As String = "INSERT INTO DataValues(ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UtcOffset, DateTimeUtc, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
+                                "VALUES ({0}, {1}, {2}, {3}, '{4}', {5}, '{6}', {7}, {8}, '{9}', {10}, {11}, {12});"
+
+        Dim index As Integer = 0
+        While index <> dt.Rows.Count - 1
+            ' Save values by chunks
+
+            Dim newValueID = dbTools.GetNextID("DataValues", "ValueID")
+            Dim query = New StringBuilder("BEGIN TRANSACTION; ")
+
+            For i = 0 To chunkLength - 1
+
+                ' Calculating value
+                Dim newvalue As Double
+                If rbtnAlgebraic.Checked Then
+                    Dim currentvalue = dt.Rows(index).Item("DataValue")
 
                     If currentvalue <> nodatavalue Then
                         'NOTE: Equation = Fx^5 + Ex^4 + Dx^3 + Cx^2 + Bx + A
@@ -252,123 +257,38 @@ Public Class fDeriveNewDataSeries
                     Else
                         newvalue = nodatavalue
                     End If
-
-                    dt.Rows(i).Item("DataValue") = newvalue
-                Next
-            ElseIf rbtnAggregate.Checked Then
-
-            End If
-
-
-            'Setting progress bar
-            Dim frmloading As ProgressBar = _cEditView.pbProgressBar
-            frmloading.Visible = True
-            frmloading.Maximum = dt.Rows.Count - 1
-            frmloading.Minimum = 0
-            frmloading.Value = 0
-
-            _cEditView.lblstatus.Text = "Creating New Data Values Table"
-
-            SQLstring = New StringBuilder()
-            For i As Integer = 0 To dt.Columns.Count - 1
-                SQLstring.Append(dt.Columns(i).ColumnName.ToString + ",")
-            Next
-            SQLstring.Remove(SQLstring.Length - 1, 1)
-            tempstring = SQLstring.ToString
-
-            newValueID = dbTools.GetNextID("DataValues", "ValueID")
-
-            SQLstring2 = "BEGIN TRANSACTION; "
-
-
-
-
-            For j As Integer = 0 To dt.Rows.Count - 1
-
-                'Making the INSERT SQL string for the new data values
-
-                SQLstring = New StringBuilder()
-                SQLstring.Append("INSERT INTO DataValues(")
-                SQLstring.Append(tempstring)
-                SQLstring.Append(") VALUES (")
-                SQLstring.Append((newValueID + j).ToString + "," + newSeriesID.ToString + ",")
-                SQLstring.Append(dt.Rows(j).Item("DataValue").ToString + ",")
-                If dt.Rows(j).Item("ValueAccuracy").ToString = "" Then
-                    SQLstring.Append("NULL,")
                 Else
-                    SQLstring.Append(dt.Rows(j).Item("ValueAccuracy").ToString + ",")
+                    newvalue = dt.Rows(index).Item("DataValue")
                 End If
-                'SQLstring2 = dt.Rows(j).Item("LocalDateTime").ToString
 
-                SQLstring.Append("'" + DateTime.ParseExact(dt.Rows(j).Item("LocalDateTime").ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss") + "',")
-                SQLstring.Append(dt.Rows(j).Item("UTCOffset").ToString + ",")
-                'SQLstring2 = dt.Rows(j).Item("DateTimeUTC").ToString
+                query.AppendFormat(insertQuery,
+                                  newValueID + i,
+                                  newSeriesID,
+                                  newvalue,
+                                  If(dt.Rows(index).Item("ValueAccuracy").ToString = "", "NULL", dt.Rows(index).Item("ValueAccuracy").ToString),
+                                  DateTime.ParseExact(dt.Rows(index).Item("LocalDateTime").ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss"),
+                                  dt.Rows(index).Item("UTCOffset").ToString,
+                                  DateTime.ParseExact(dt.Rows(index).Item("DateTimeUTC").ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss"),
+                                  If(dt.Rows(index).Item("OffsetValue").ToString = "", "NULL", dt.Rows(index).Item("OffsetValue").ToString),
+                                  If(dt.Rows(index).Item("OffsetTypeID").ToString = "", "NULL", dt.Rows(index).Item("OffsetTypeID").ToString),
+                                  dt.Rows(index).Item("CensorCode").ToString,
+                                  If(dt.Rows(index).Item("QualifierID").ToString = "", "NULL", dt.Rows(index).Item("QualifierID").ToString),
+                                  If(dt.Rows(index).Item("SampleID").ToString = "", "NULL", dt.Rows(index).Item("SampleID").ToString),
+                                  If(dt.Rows(index).Item("FileID").ToString = "", "NULL", dt.Rows(index).Item("FileID").ToString))
+                query.AppendLine()
 
-                SQLstring.Append("'" + DateTime.ParseExact(dt.Rows(j).Item("DateTimeUTC").ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss") + "',")
-                For i As Integer = 7 To 12
-                    If dt.Rows(j).Item(i).ToString = "" Then
-                        SQLstring.Append("NULL,")
-                    Else
-
-                        If i = 9 Then
-                            SQLstring.Append("'" + dt.Rows(j).Item(i).ToString + "',")
-                        Else
-                            SQLstring.Append(dt.Rows(j).Item(i).ToString + ",")
-                        End If
-                    End If
-                Next
-                SQLstring.Remove(SQLstring.Length - 1, 1)
-                SQLstring.Append("); ")
-
-                SQLstring2 += SQLstring.ToString
-
-
-                'Execute the SQL string
-
-                frmloading.Value = j
+                If index = dt.Rows.Count - 1 Then Exit For
+                index = index + 1
             Next
 
-            SQLstring2 += "COMMIT;"
+            query.AppendLine("COMMIT;")
+            dbTools.ExecuteNonQuery(query.ToString())
 
-            dbTools.ExecuteNonQuery(SQLstring2)
+            frmloading.Value = index
+            Application.DoEvents()
+        End While
 
-            _cEditView.lblstatus.Text = "Ready"
-
-            dt.Dispose()
-
-
-            'For i As Integer = 0 To dt.Rows.Count - 1
-            '    dt.Rows(i)("SeriesID") = newSeriesID
-            'Next
-
-
-
-            'Dim tstring() As String = Nothing
-            ''tstring(0) = "ValueID"
-            ''tstring(1) = "SeriesID"
-            ''tstring(2) = "DataValue"
-            ''tstring(3) = "ValueAccuracy"
-            ''tstring(4) = "LocalDateTime"
-            ''tstring(5) = "UTCOffset"
-            ''tstring(6) = "DateTimeUTC"
-            ''tstring(7) = "OffsetValue"
-            ''tstring(8) = "OffsetTypeID"
-            ''tstring(9) = "CensorCode"
-            ''tstring(10) = "QualifierID"
-            ''tstring(11) = "SampleID"
-            ''tstring(12) = "FileID"
-
-
-
-
-
-            'dbTools.SaveTable("DataValues", dt, "ValueID", tstring)
-
-            'dt.Dispose()
-
-        Catch ex As Exception
-            'Throw New Exception("Error Occured in InsertNewValues." & vbCrLf & ex.Message)
-        End Try
+        _cEditView.lblstatus.Text = "Ready"
     End Sub
 
     Private Sub InsertAggregateDataValues()
@@ -385,140 +305,128 @@ Public Class fDeriveNewDataSeries
         Dim lastdate As DateTime
         Dim i As Integer = 0
 
-        Try
-            'Setting values to variables
-            SQLstring = "SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE SeriesID = " + newSeriesID.ToString
-            nodatavalue = dbTools.ExecuteSingleOutput(SQLstring)
-            SQLstring = "SELECT * FROM DataValues WHERE SeriesID = " + _SelectedSeriesID.ToString
-            dt = dbTools.LoadTable("DataValues", SQLstring)
-            SQLstring = "SELECT BeginDateTime FROM DataSeries WHERE SeriesID = " + newSeriesID.ToString
-            firstdate = dbTools.ExecuteSingleOutput(SQLstring)
-            SQLstring = "SELECT EndDateTime FROM DataSeries WHERE SeriesID = " + newSeriesID.ToString
-            lastdate = dbTools.ExecuteSingleOutput(SQLstring)
+        'Setting values to variables
+        SQLstring = "SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE SeriesID = " + newSeriesID.ToString
+        nodatavalue = dbTools.ExecuteSingleOutput(SQLstring)
+        SQLstring = "SELECT * FROM DataValues WHERE SeriesID = " + _SelectedSeriesID.ToString
+        dt = dbTools.LoadTable("DataValues", SQLstring)
+        SQLstring = "SELECT BeginDateTime FROM DataSeries WHERE SeriesID = " + newSeriesID.ToString
+        firstdate = dbTools.ExecuteSingleOutput(SQLstring)
+        SQLstring = "SELECT EndDateTime FROM DataSeries WHERE SeriesID = " + newSeriesID.ToString
+        lastdate = dbTools.ExecuteSingleOutput(SQLstring)
 
-            'Setting current date (first date) to the first day of the month/quarter
+        'Setting current date (first date) to the first day of the month/quarter
+        If rbtnDaily.Checked Then
+            currentdate = New DateTime(firstdate.Year, firstdate.Month, firstdate.Day)
+        ElseIf rbtnMonthly.Checked Then
+            currentdate = New DateTime(firstdate.Year, firstdate.Month, 1)
+        ElseIf rbtnQuarterly.Checked Then
+            Select Case firstdate.Month
+                Case 1 To 3
+                    currentdate = New DateTime(firstdate.Year, 1, 1)
+                Case 4 To 6
+                    currentdate = New DateTime(firstdate.Year, 4, 1)
+                Case 7 To 9
+                    currentdate = New DateTime(firstdate.Year, 7, 1)
+                Case 10 To 12
+                    currentdate = New DateTime(firstdate.Year, 10, 1)
+            End Select
+        End If
+
+
+        'Setting progress bar
+        Dim frmloading As ProgressBar = _cEditView.pbProgressBar
+        frmloading.Visible = True
+        If rbtnDaily.Checked Then
+            frmloading.Maximum = (lastdate - firstdate).TotalDays
+        ElseIf rbtnMonthly.Checked Then
+            frmloading.Maximum = Math.Round((lastdate - firstdate).TotalDays / 30)
+        ElseIf rbtnQuarterly.Checked Then
+            frmloading.Maximum = Math.Round((lastdate - firstdate).TotalDays / 90)
+        End If
+        frmloading.Minimum = 0
+        frmloading.Value = 0
+
+        _cEditView.lblstatus.Text = "Creating New Data Values Table"
+
+        ColumnNames = ""
+        For j As Integer = 0 To dt.Columns.Count - 2
+            ColumnNames += (dt.Columns(j).ColumnName.ToString + ",")
+        Next
+        ColumnNames += dt.Columns(dt.Columns.Count - 1).ColumnName.ToString()
+
+        newValueID = dbTools.GetNextID("DataValues", "ValueID")
+
+        SQLstring2 = "BEGIN TRANSACTION; "
+
+
+        'Create the New Values
+        While currentdate <= lastdate
             If rbtnDaily.Checked Then
-                currentdate = New DateTime(firstdate.Year, firstdate.Month, firstdate.Day)
+                SQLstring = "LocalDateTime >= '" + currentdate.ToString() + "' AND LocalDateTime <= '" + currentdate.AddDays(1).AddMilliseconds(-1).ToString() + "' AND DataValue <> " + nodatavalue.ToString
             ElseIf rbtnMonthly.Checked Then
-                currentdate = New DateTime(firstdate.Year, firstdate.Month, 1)
+                SQLstring = "LocalDateTime >= '" + currentdate.ToString() + "' AND LocalDateTime <= '" + currentdate.AddMonths(1).AddMilliseconds(-1).ToString() + "' AND DataValue <> " + nodatavalue.ToString
             ElseIf rbtnQuarterly.Checked Then
-                Select Case firstdate.Month
-                    Case 1 To 3
-                        currentdate = New DateTime(firstdate.Year, 1, 1)
-                    Case 4 To 6
-                        currentdate = New DateTime(firstdate.Year, 4, 1)
-                    Case 7 To 9
-                        currentdate = New DateTime(firstdate.Year, 7, 1)
-                    Case 10 To 12
-                        currentdate = New DateTime(firstdate.Year, 10, 1)
-                End Select
+                SQLstring = "LocalDateTime >= '" + currentdate.ToString() + "' AND LocalDateTime <= '" + currentdate.AddMonths(3).AddMilliseconds(-1).ToString() + "' AND DataValue <> " + nodatavalue.ToString
             End If
 
+            Try
+                If rbtnMaximum.Checked Then
+                    newvalue = dt.Compute("Max(DataValue)", SQLstring)
+                ElseIf rbtnMinimum.Checked Then
+                    newvalue = dt.Compute("MIN(DataValue)", SQLstring)
+                ElseIf rbtnAverage.Checked Then
+                    newvalue = dt.Compute("AVG(DataValue)", SQLstring)
+                ElseIf rbtnSum.Checked Then
+                    newvalue = dt.Compute("Sum(DataValue)", SQLstring)
+                End If
+                UTC = dt.Compute("AVG(UTCOffset)", SQLstring)
+            Catch
+                newvalue = nodatavalue
+            End Try
 
-            'Setting progress bar
-            Dim frmloading As ProgressBar = _cEditView.pbProgressBar
-            frmloading.Visible = True
-            If rbtnDaily.Checked Then
-                frmloading.Maximum = (lastdate - firstdate).TotalDays
-            ElseIf rbtnMonthly.Checked Then
-                frmloading.Maximum = Math.Round((lastdate - firstdate).TotalDays / 30)
-            ElseIf rbtnQuarterly.Checked Then
-                frmloading.Maximum = Math.Round((lastdate - firstdate).TotalDays / 90)
-            End If
-            frmloading.Minimum = 0
-            frmloading.Value = 0
+            'Making the INSERT SQL string for the new data values
 
-            _cEditView.lblstatus.Text = "Creating New Data Values Table"
-
-            ColumnNames = ""
-            For j As Integer = 0 To dt.Columns.Count - 2
-                ColumnNames += (dt.Columns(j).ColumnName.ToString + ",")
+            SQLstring = "INSERT INTO DataValues("
+            SQLstring += ColumnNames + ") VALUES ("
+            SQLstring += (newValueID + i).ToString + "," + newSeriesID.ToString + ","
+            SQLstring += newvalue.ToString + ",0,"
+            SQLstring += "'" + DateTime.ParseExact(currentdate.ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss") + "',"
+            SQLstring += UTC.ToString + ","
+            SQLstring += "'" + DateTime.ParseExact(currentdate.AddHours(UTC).ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss") + "',"
+            For j As Integer = 7 To 11
+                If j = 9 Then
+                    SQLstring += "'nc',"
+                Else
+                    SQLstring += "NULL,"
+                End If
             Next
-            ColumnNames += dt.Columns(dt.Columns.Count - 1).ColumnName.ToString()
-
-            newValueID = dbTools.GetNextID("DataValues", "ValueID")
-
-            SQLstring2 = "BEGIN TRANSACTION; "
+            SQLstring += "NULL); "
 
 
-            'Create the New Values
-            While currentdate <= lastdate
-                If rbtnDaily.Checked Then
-                    SQLstring = "LocalDateTime >= '" + currentdate.ToString() + "' AND LocalDateTime <= '" + currentdate.AddDays(1).AddMilliseconds(-1).ToString() + "' AND DataValue <> " + nodatavalue.ToString
-                ElseIf rbtnMonthly.Checked Then
-                    SQLstring = "LocalDateTime >= '" + currentdate.ToString() + "' AND LocalDateTime <= '" + currentdate.AddMonths(1).AddMilliseconds(-1).ToString() + "' AND DataValue <> " + nodatavalue.ToString
-                ElseIf rbtnQuarterly.Checked Then
-                    SQLstring = "LocalDateTime >= '" + currentdate.ToString() + "' AND LocalDateTime <= '" + currentdate.AddMonths(3).AddMilliseconds(-1).ToString() + "' AND DataValue <> " + nodatavalue.ToString
-                End If
-
-                Try
-                    If rbtnMaximum.Checked Then
-                        newvalue = dt.Compute("Max(DataValue)", SQLstring)
-                    ElseIf rbtnMinimum.Checked Then
-                        newvalue = dt.Compute("MIN(DataValue)", SQLstring)
-                    ElseIf rbtnAverage.Checked Then
-                        newvalue = dt.Compute("AVG(DataValue)", SQLstring)
-                    ElseIf rbtnSum.Checked Then
-                        newvalue = dt.Compute("Sum(DataValue)", SQLstring)
-                    End If
-                    UTC = dt.Compute("AVG(UTCOffset)", SQLstring)
-                Catch
-                    newvalue = nodatavalue
-                End Try
-
-                'Making the INSERT SQL string for the new data values
-
-                SQLstring = "INSERT INTO DataValues("
-                SQLstring += ColumnNames + ") VALUES ("
-                SQLstring += (newValueID + i).ToString + "," + newSeriesID.ToString + ","
-                SQLstring += newvalue.ToString + ",0,"
-                SQLstring += "'" + DateTime.ParseExact(currentdate.ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss") + "',"
-                SQLstring += UTC.ToString + ","
-                SQLstring += "'" + DateTime.ParseExact(currentdate.AddHours(UTC).ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss") + "',"
-                For j As Integer = 7 To 11
-                    If j = 9 Then
-                        SQLstring += "'nc',"
-                    Else
-                        SQLstring += "NULL,"
-                    End If
-                Next
-                SQLstring += "NULL); "
+            SQLstring2 += SQLstring
 
 
-                SQLstring2 += SQLstring
+            If rbtnDaily.Checked Then
+                currentdate = currentdate.AddDays(1)
+            ElseIf rbtnMonthly.Checked Then
+                currentdate = currentdate.AddMonths(1)
+            ElseIf rbtnQuarterly.Checked Then
+                currentdate = currentdate.AddMonths(3)
+            End If
+
+            i += 1
+            frmloading.Value = i - 1
+        End While
+
+        SQLstring2 += "COMMIT;"
+
+        'Execute the SQL string
+        dbTools.ExecuteNonQuery(SQLstring2)
 
 
-                If rbtnDaily.Checked Then
-                    currentdate = currentdate.AddDays(1)
-                ElseIf rbtnMonthly.Checked Then
-                    currentdate = currentdate.AddMonths(1)
-                ElseIf rbtnQuarterly.Checked Then
-                    currentdate = currentdate.AddMonths(3)
-                End If
-
-                i += 1
-                frmloading.Value = i - 1
-            End While
-
-            SQLstring2 += "COMMIT;"
-
-            'Execute the SQL string
-            dbTools.ExecuteNonQuery(SQLstring2)
-
-
-            _cEditView.lblstatus.Text = "Ready"
-            dt.Dispose()
-
-            'Dim tempstring() As String
-            'tempstring = Nothing
-
-
-
-            'dbTools.SaveTable("DataValues2", dt, "ValueID", tempstring)
-
-        Catch ex As Exception
-            'Throw New Exception("Error Occured in InsertAggregateDataValues." & vbCrLf & ex.Message)
-        End Try
+        _cEditView.lblstatus.Text = "Ready"
+        dt.Dispose()
     End Sub
 
 #Region "Events"
@@ -706,59 +614,26 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Private Sub btnNewSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSeries.Click
+        gboxDeriveOption.Enabled = False
+        gboxgeneral.Enabled = False
+        btnNewSeries.Enabled = False
 
-        Dim ci As CultureInfo = Thread.CurrentThread.CurrentCulture
+        Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-jp")
+        InsertNewSeries()
+        InsertSeriesProvenance()
+        InsertNewDataThemes()
 
-        Dim Validated As Boolean = True
-
-        If rbtnAlgebraic.Checked Then
-
-            AlgebraicValidation(Validated)
-
-        End If
-
-        If Validated Then
-
-            Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-jp")
-
-            InsertNewSeries()
-
-            InsertSeriesProvenance()
-
-            InsertNewDataThemes()
-
-            If rbtnAggregate.Checked Then
-
-                InsertAggregateDataValues()
-
-            Else
-
-                InsertNewDataValues()
-
-            End If
-
-            _cEditView.pTimeSeriesPlot.Clear()
-
-            _cEditView._seriesSelector.RefreshSelection()
-
-            MsgBox("Derive Complete")
-
-            gboxDeriveOption.Enabled = False
-
-            gboxgeneral.Enabled = False
-
-            btnNewSeries.Enabled = False
-
-            btnCancel.Text = "Close"
-
-            _cEditView.pbProgressBar.Value = 0
-
+        If rbtnAggregate.Checked Then
+            InsertAggregateDataValues()
         Else
-
-            MsgBox("Please enter numbers in the Algebraic Equation.")
-
+            InsertNewDataValues()
         End If
 
+        _cEditView._seriesSelector.RefreshSelection()
+
+        MsgBox("Derive Complete", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Edit View")
+        btnCancel.Text = "Close"
+        _cEditView.pbProgressBar.Value = 0
     End Sub
 
 #End Region

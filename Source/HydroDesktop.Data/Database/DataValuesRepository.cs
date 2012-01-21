@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Database
@@ -33,6 +34,13 @@ namespace HydroDesktop.Database
                     minDate.ToString("yyyy-MM-dd HH:mm:ss"), maxDate.ToString("yyyy-MM-dd HH:mm:ss"), 
                     seriesID);
             return Convert.ToDouble(DbOperations.ExecuteSingleOutput(query));
+        }
+      
+        public DataTable GetAll(long seriesID)
+        {
+            var query = "SELECT * FROM DataValues WHERE SeriesID = " + seriesID;
+            var result = DbOperations.LoadTable(TableName, query);
+            return result;
         }
 
         #endregion

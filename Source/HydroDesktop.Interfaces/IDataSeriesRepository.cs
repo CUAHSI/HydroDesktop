@@ -10,6 +10,13 @@ namespace HydroDesktop.Interfaces
     public interface IDataSeriesRepository
     {
         /// <summary>
+        /// Get Variable.NoDataValue for given series
+        /// </summary>
+        /// <param name="seriesID">Series ID</param>
+        /// <returns>NoDataValue</returns>
+        double GetNoDataValueForSeriesVariable(long seriesID);
+
+        /// <summary>
         /// Get VariableID for given SeriesID
         /// </summary>
         /// <param name="seriesID">SeriesID</param>
