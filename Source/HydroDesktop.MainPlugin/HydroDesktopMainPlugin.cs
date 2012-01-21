@@ -201,6 +201,13 @@
 
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
+            //try reset projection!
+            if (App.Map.MapFrame.Projection != DotSpatial.Projections.KnownCoordinateSystems.Projected.World.WebMercator)
+            {
+                //App.Map.MapFrame.Reproject(DotSpatial.Projections.KnownCoordinateSystems.Projected.World.WebMercator);
+                MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, DotSpatial.Projections.KnownCoordinateSystems.Projected.World.WebMercator.ToEsriString());
+            }
+            
             myProjectManager.OpeningProject();
             Shell.Text = string.Format("{0} - {1}", HYDRODESKTOP_NAME, GetProjectShortName());
             //setup new db information
