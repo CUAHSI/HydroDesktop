@@ -38,7 +38,7 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
-     
+
         public double GetNoDataValueForSeriesVariable(long seriesID)
         {
             var query =
@@ -214,16 +214,8 @@ namespace HydroDesktop.Database
             series.Site = newSite;
 
             int variableID = Convert.ToInt32(seriesRow["VariableID"]);
-            string sqlVariables = "SELECT VariableID, VariableCode, VariableName FROM Variables where VariableID = " + variableID;
-            DataTable tblVar = DbOperations.LoadTable("variableTable", sqlVariables);
-            if (tblVar.Rows.Count == 0) return null;
 
-            DataRow variableRow = tblVar.Rows[0];
-            Variable newVar = new Variable();
-            newVar.Id = Convert.ToInt32(variableRow[0]);
-            newVar.Code = Convert.ToString(variableRow[1]);
-            newVar.Name = Convert.ToString(variableRow[2]);
-            series.Variable = newVar;
+            series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>(DbOperations).GetByID(variableID);
 
             Method newMethod = new Method();
             newMethod.Id = Convert.ToInt32(seriesRow["MethodID"]);
