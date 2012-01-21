@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 
 namespace HydroDesktop.Interfaces
 {
@@ -16,5 +17,12 @@ namespace HydroDesktop.Interfaces
         /// <param name="maxDate">Maximum date to aggregate series</param>
         /// <returns>Aggregated value.</returns>
         double AggregateValues(long seriesID, string aggregateFunction, DateTime minDate, DateTime maxDate);
+
+        /// <summary>
+        /// Get all DataValues for specified seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>DataTable with DataValues</returns>
+        DataTable GetAll(long seriesID);
     }
 }
