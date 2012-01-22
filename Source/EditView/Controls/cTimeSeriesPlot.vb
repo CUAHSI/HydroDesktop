@@ -996,8 +996,8 @@ Public Class cTimeSeriesPlot
         End If
 
         Dim selectedRows = cEditView.GetSelectedRows()
-        Dim IDlist As New List(Of Integer)(selectedRows.Count)
-        IDlist.AddRange((From row As DataGridViewRow In cEditView.GetSelectedRows() Select row.Cells("ValueID").Value).Cast (Of Integer)())
+        Dim IDlist As New List(Of Long)(selectedRows.Count)
+        IDlist.AddRange((From row As DataGridViewRow In cEditView.GetSelectedRows() Select row.Cells("ValueID").Value).Cast(Of Long)())
 
         For j As Integer = 0 To curve.Points.Count - 1
             If IDlist.Contains(PointValueID(j)) Then
