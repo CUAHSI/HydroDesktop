@@ -8,12 +8,21 @@ using DotSpatial.Controls.Header;
 
 namespace HydroDesktop.ExportToCSV
 {
+    /// <summary>
+    /// The main data export plugin class
+    /// </summary>
     public class Main : Extension, IDataExportPlugin
     {
         #region Variables
 
         //reference to the main application and it's UI items
+        /// <summary>
+        /// The key of the "Table" ribbon tab
+        /// </summary>
         public const string TableTabKey = "kHydroTable";
+        /// <summary>
+        /// The name of the "Data Export" panel on the table ribbon
+        /// </summary>
         private string _panelName = "Data Export";
                 
         #endregion
@@ -35,9 +44,8 @@ namespace HydroDesktop.ExportToCSV
         #region IPlugin Members
 
         /// <summary>
-        /// Initialize the DotSpatial 6 plugin
+        /// activate the data export plugin
         /// </summary>
-        /// <param name="args">The plugin arguments to access the main application</param>
         public override void Activate()
         {
             //Add "DataExport" button to the new "Data Export" Panel in "Data" ribbon tab
@@ -63,6 +71,10 @@ namespace HydroDesktop.ExportToCSV
 
         #endregion
 
+        /// <summary>
+        /// starts the data export of all series from the layer
+        /// </summary>
+        /// <param name="layer">the feature layer from which to export data</param>
         public void Export(IFeatureLayer layer)
         {
             var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);

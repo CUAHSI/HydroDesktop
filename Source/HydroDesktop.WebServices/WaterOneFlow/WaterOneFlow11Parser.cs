@@ -1264,6 +1264,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// separates it into multiple series.
         /// </summary>
         /// <param name="series">the data series to be checked</param>
+        /// <param name="xmlFileInfo">info about the downloaded xml file</param>
         private void CheckDataSeries(Series series, DataFile xmlFileInfo)
         {
 			//ensure that properties are re-calculated

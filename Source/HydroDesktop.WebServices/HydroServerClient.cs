@@ -200,6 +200,10 @@ namespace HydroDesktop.WebServices
 
 		#region Public Methods
 
+        /// <summary>
+        /// Gets the list of WaterOneFlow services on the HydroServer
+        /// </summary>
+        /// <returns>the list of available WOF services on the server</returns>
 		public IList<DataServiceInfo> GetWaterOneFlowServices ()
 		{
 			//string result = (string)CallWebMethod ( "GetWaterOneFlowServices", null );

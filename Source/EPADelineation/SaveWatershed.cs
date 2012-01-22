@@ -48,6 +48,9 @@ namespace EPADelineation
 
         #endregion Variables
 
+        /// <summary>
+        /// Occurs when saving the watershed is completed
+        /// </summary>
         public event EventHandler Completed;
 
         #region Constructor

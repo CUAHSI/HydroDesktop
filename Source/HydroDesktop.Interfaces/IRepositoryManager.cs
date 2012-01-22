@@ -89,6 +89,12 @@ namespace HydroDesktop.Interfaces
         /// <returns>The list of all themes</returns>
         IList<Theme> GetAllThemes();
 
+        /// <summary>
+        /// Gets the site objects that have both variables.
+        /// </summary>
+        /// <param name="variable1">the first variable</param>
+        /// <param name="variable2">the second variable</param>
+        /// <returns></returns>
         IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2);
 
     }
