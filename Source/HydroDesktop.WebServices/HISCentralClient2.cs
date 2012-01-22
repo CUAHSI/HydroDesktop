@@ -433,6 +433,11 @@ namespace HydroDesktop.WebServices
             return null;
         }
 
+        /// <summary>
+        /// Gets all web services on HIS Central
+        /// (not yet implemented)
+        /// </summary>
+        /// <returns>The list of web services from HIS Central</returns>
         public IList<DataServiceInfo> GetWebServices()
         {
             throw new NotImplementedException();

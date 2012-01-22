@@ -9,8 +9,16 @@ using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices
 {
+    /// <summary>
+    /// This is a helper class providing methods for accessing WaterML SOAP web services
+    /// </summary>
     public static class WebServiceHelper
     {
+        /// <summary>
+        /// Creates a web request for the GetSites method
+        /// </summary>
+        /// <param name="url">the wsdl URL</param>
+        /// <returns>the web request that can be sent to obtain the list of sites</returns>
         public static HttpWebRequest CreateGetSitesRequest(string url)
         {
             url = url.Trim().ToLower();
@@ -50,7 +58,12 @@ namespace HydroDesktop.WebServices
             return req;
         }
 
-
+        /// <summary>
+        /// Creates the web request to get site information (which series are available at the site)
+        /// </summary>
+        /// <param name="url">the web service wsdl url</param>
+        /// <param name="fullSiteCode">the full site code in Network:SiteCode format</param>
+        /// <returns>the web request for getting the site info</returns>
         public static HttpWebRequest CreateGetSiteInfoRequest(string url, string fullSiteCode)
         {
             url = url.Trim().ToLower();
@@ -96,7 +109,7 @@ namespace HydroDesktop.WebServices
         /// <param name="url">URL of the web service</param>
         /// <param name="fullSiteCode">full site code (NetworkPrefix:Site)</param>
         /// <param name="fullVariableCode">full variable code (NetworkPrefix:Variable)</param>
-        /// <param name="beginDate">start date</param>
+        /// <param name="startDate">start date</param>
         /// <param name="endDate">end date</param>
         /// <returns>Returns the fully initialized web request object</returns>
         public static HttpWebRequest CreateGetValuesRequest(string url, string fullSiteCode, string fullVariableCode,
@@ -136,6 +149,11 @@ namespace HydroDesktop.WebServices
             return req;
         }
 
+        /// <summary>
+        /// Given a Series Data cart, creates a GetValues web request
+        /// </summary>
+        /// <param name="dc">the series data cart containing information about the site, variable, begin data and end date</param>
+        /// <returns>the web request for getting the values</returns>
         public static HttpWebRequest CreateGetValuesRequest(SeriesDataCart dc)
         {
             return CreateGetValuesRequest(dc.ServURL, dc.SiteCode, dc.VariableCode, dc.BeginDate, dc.EndDate);
@@ -161,7 +179,13 @@ namespace HydroDesktop.WebServices
                 return 1.0;
             }
         }
-
+        /// <summary>
+        /// Finds out the SOAP namespace (1.0 or 1.1) from the 
+        /// WSDL URL. This function assumes that the url is in format ".../cuahsi_1_0.asmx?wsdl" or
+        /// ".../cuahsi_1_1.asmx?wsdl"
+        /// </summary>
+        /// <param name="url">the wsdl url</param>
+        /// <returns>the correctly formatted SOAP namespace</returns>
         public static string GetCuahsiSoapNamespace(string url)
         {
             string soapNamespace = String.Empty;
@@ -184,11 +208,7 @@ namespace HydroDesktop.WebServices
         /// <summary>
         /// Creates the HTTP SOAP web request for GetValues method
         /// </summary>
-        /// <param name="url">URL of the web service</param>
-        /// <param name="fullSiteCode">full site code (NetworkPrefix:Site)</param>
-        /// <param name="fullVariableCode">full variable code (NetworkPrefix:Variable)</param>
-        /// <param name="beginDate">start date</param>
-        /// <param name="endDate">end date</param>
+        /// <param name="dataCart">The series data cart containing the GetValues parameters</param>
         /// <returns>Returns the fully initialized web request object</returns>
         public static HttpWebRequest CreatePostRequest(SeriesDataCart dataCart)
         {
@@ -231,7 +251,11 @@ namespace HydroDesktop.WebServices
 
             return req;
         }
-
+        /// <summary>
+        /// Gets the name of the data cart
+        /// </summary>
+        /// <param name="cart">the series data cart object</param>
+        /// <returns>the unique name of the series data cart</returns>
         public static string GetDataCartName(SeriesDataCart cart)
         {
             string str = String.Format("{0}-{1}", cart.SiteCode, cart.VariableCode);
@@ -240,7 +264,15 @@ namespace HydroDesktop.WebServices
             string str4 = str3.Replace(":", "_");
             return str4;
         }
-
+        /// <summary>
+        /// Creates the SOAP Envelope for the GetValues request
+        /// </summary>
+        /// <param name="soapNamespace">the SOAP namespace</param>
+        /// <param name="fullSiteCode">full site code in Network:SiteCode format</param>
+        /// <param name="fullVariableCode">full variable code in Vocabulary:VariableCode format</param>
+        /// <param name="startDate">start date</param>
+        /// <param name="endDate">end date</param>
+        /// <returns>The SOAP envelope that needs to be sent with the GetValues request</returns>
         public static string CreateSoapEnvelope(string soapNamespace, string fullSiteCode, string fullVariableCode,
             DateTime startDate, DateTime endDate)
         {
@@ -302,8 +334,7 @@ namespace HydroDesktop.WebServices
         /// Creates a SOAP envelope for the GetSites web method
         /// </summary>
         /// <param name="soapNamespace">the SOAP namespace (1.1 or 1.0)</param>
-        /// <param name="webMethodName"></param>
-        /// <returns></returns>
+        /// <returns>The SOAP envelope that needs to be sent with the GetSites request</returns>
         public static string CreateSoapEnvelopeForGetSites(string soapNamespace)
         {
             string webMethodName = "GetSites";

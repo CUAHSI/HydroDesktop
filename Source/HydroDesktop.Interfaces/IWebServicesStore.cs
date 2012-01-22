@@ -17,9 +17,15 @@ namespace HydroDesktop.Interfaces
         /// <returns>Web services list.</returns>
         IList<DataServiceInfo> GetWebServices();
     }
-
+    /// <summary>
+    /// Provides methods for displaying search results
+    /// </summary>
     public interface ISearchPlugin
     {
+        /// <summary>
+        /// Adds features to the search results layer
+        /// </summary>
+        /// <param name="featuresPerCode">number of features per site code</param>
         void AddFeatures(List<Tuple<string, IFeatureSet>> featuresPerCode);
     }
 }

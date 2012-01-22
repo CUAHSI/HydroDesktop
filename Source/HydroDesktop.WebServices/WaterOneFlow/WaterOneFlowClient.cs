@@ -46,12 +46,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 			DownloadDirectory = Path.Combine ( Path.GetTempPath (), "HydroDesktop" );
 
-			//check if the web service is a valid WaterOneFlow service and determine the
-			//service name and service version from the WSDL
-			//this will throw an exception if the service doesn't have the valid WaterOneFlow
-			//methods.
+			//find out the WaterOneFlow version of this web service
 			_serviceInfo = serviceInfo;
-			CheckWaterOneFlowService ( _serviceInfo );
+			AssignWaterOneFlowVersion ( _serviceInfo );
 
             //assign the waterOneFlow parser
             //the parser is automatically set depending on service version information
@@ -413,92 +410,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		}
 
 		/// <summary>
-		/// This method checks whether the service used by this client is a valid WaterOneFlow service
-		/// It also checks if it contains all valid web service methods.
-		/// This method throws an exception if the service is not a valid WaterOneFlow service.
+		/// This method finds the WaterOneFlow version of the web service and assigns
+        /// this information to the ServiceInfo object
 		/// </summary>
-		/// <param name="serviceProxy"></param>
-		/// <param name="serviceInfo"></param>
-		private void CheckWaterOneFlowService ( DataServiceInfo serviceInfo )
+		/// <param name="serviceInfo">the web service to be checked</param>
+		private void AssignWaterOneFlowVersion ( DataServiceInfo serviceInfo )
 		{
-			string errorMessage = "The service " + _asmxURL + " is not a valid WaterOneFlow service. ";
-
             _serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(_asmxURL);
-            
-            //MethodInfo getValuesMethod = null;
-            //MethodInfo getSiteInfoMethod = null;
-            //MethodInfo getSitesMethod = null;
-            ////object serviceProxy = null;
-            //string getSitesMethodName = "GetSitesXml";
-
-            ////get the names of all service classes in the assembly
-            //IList<string> serviceNames = GetServiceNames ( _assembly );
-
-            //foreach ( string serviceName in serviceNames )
-            //{
-            //    //create the 'service proxy class' object
-            //    if ( _webService == null )
-            //    {
-            //        _webService = _assembly.CreateInstance ( serviceName );
-            //    }
-
-            //    if ( _webService != null )
-            //    {
-            //        //try to find the GetValues method
-            //        getValuesMethod = _webService.GetType ().GetMethod ( "GetValues" );
-
-            //        //try to find the GetSiteInfo() method
-            //        getSiteInfoMethod = _webService.GetType ().GetMethod ( "GetSiteInfo" );
-
-            //        //look for the GetSitesXml() method. If not found, try to check GetSites() instead.
-
-            //        getSitesMethod = _webService.GetType ().GetMethod ( "GetSitesXml" );
-
-            //        if ( getSitesMethod != null )
-            //        {
-            //            getSitesMethodName = "GetSitesXml";
-            //        }
-            //        else
-            //        {
-            //            getSitesMethod = _webService.GetType ().GetMethod ( "GetSites" );
-            //            getSitesMethodName = "GetSites";
-            //        }
-
-            //        //if the service class contains all supported methods, then there is no need to check
-            //        //the other classes.
-            //        if ( getValuesMethod != null && getSitesMethod != null && getSiteInfoMethod != null )
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-
-            ////throw an exception if the web service class or some of its methods don't exist
-            //if ( _webService == null )
-            //    throw new WebException ( errorMessage );
-
-            //if ( getValuesMethod == null )
-            //    throw new WebException ( errorMessage + "GetValues method not found." );
-            //if ( getSiteInfoMethod == null )
-            //    throw new WebException ( errorMessage + "GetSiteInfo method not found." );
-
-            //if ( getSitesMethod == null )
-            //    throw new WebException ( errorMessage + "GetSites method not found." );
-
-            //if ( getSitesMethod.ReturnType != typeof ( string ) )
-            //    throw new WebException ( errorMessage + "GetSites method with return type 'string' not found." );
-
-            ////set properties of the ServiceInfo which can be determined from the WSDL
-            //_serviceInfo.ServiceName = _webService.GetType ().FullName;
-
-            //if ( getSitesMethodName == "GetSitesXml" )
-            //{
-            //    _serviceInfo.Version = 1.0;
-            //}
-            //else
-            //{
-            //    _serviceInfo.Version = 1.1;
-            //}
 		}
 
 		/// <summary>
@@ -545,6 +463,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		#endregion
 	}
 
+    /// <summary>
+    /// Progress handler for calling the GetValues WaterOneFlow service request
+    /// </summary>
     public interface IGetValuesProgressHandler
     {
         /// <summary>
