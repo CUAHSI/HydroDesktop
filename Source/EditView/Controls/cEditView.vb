@@ -4,6 +4,7 @@ Imports System.Data
 Imports System.Linq
 Imports System.Text
 Imports System.Windows.Forms
+Imports System.Globalization
 Imports HydroDesktop.Database
 Imports QualifierHandling
 Imports ZedGraph
@@ -845,7 +846,7 @@ Public Class cEditView
     Public Sub SaveGraphChangesToDatabase()
         Dim SQLstring As New StringBuilder
         Dim SQLstring2 As New StringBuilder
-        Dim datavalue As Double
+        'Dim datavalue As Double
         Dim ValueID As Integer
         Dim dt As New DataTable
         Dim ValueIDList As New List(Of Integer)
@@ -863,6 +864,11 @@ Public Class cEditView
             End If
         Next
 
+        'Setting up format strings
+        Dim updateFormatString As String = "UPDATE DataValues SET DataValue = {0}, QualifierID = {1} WHERE ValueID = {2}; "
+        Dim insertFormatString As String = "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, " & _
+                    "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (" & _
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}) ;"
 
         'Setting progress bar
         Dim frmloading As ProgressBar = pbProgressBar
@@ -888,78 +894,28 @@ Public Class cEditView
                     'Adding point
                 ElseIf Editdt.Rows(i)("Other") = 1 Then
                     If dbTools.ExecuteSingleOutput("Select ValueID FROM DataValues WHERE ValueID = " + ValueID.ToString) = Nothing Then
-                        SQLstring = New StringBuilder("INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, ")
-                        SQLstring.Append("OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (")
-                        'ValueID,SeriesID,DataValue
-                        For j As Integer = 0 To 2
-                            SQLstring.AppendFormat("{0},", Editdt.Rows(i)(j))
-                        Next
-                        'ValueAccuracy
-                        If Editdt.Rows(i)(3) Is DBNull.Value Then
-                            SQLstring.Append("NULL,")
-                        Else
-                            SQLstring.AppendFormat("{0},", Editdt.Rows(i)(3))
-                        End If
-                        'LocalDateTime
-                        SQLstring.AppendFormat("'{0}',", Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss"))
-                        'UTCOffset
-                        SQLstring.Append(Editdt.Rows(i)(5))
-                        'DateTimeUTC
-                        SQLstring.AppendFormat("'{0}',", Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss"))
-                        'OffsetValue
-                        If Editdt.Rows(i)(8) Is DBNull.Value Then
-                            SQLstring.Append("NULL,")
-                        Else
-                            SQLstring.AppendFormat("{0},", Editdt.Rows(i)(8))
-                        End If
-                        'OffsetTypeID
-                        If Editdt.Rows(i)(9) Is DBNull.Value Then
-                            SQLstring.Append("NULL,")
-                        Else
-                            SQLstring.Append(Editdt.Rows(i)(9)).Append(",")
-                        End If
-                        'CensorCode
-                        If Editdt.Rows(i)(10) Is DBNull.Value Then
-                            SQLstring.Append("NULL,")
-                        Else
-                            SQLstring.AppendFormat("'{0}',", Editdt.Rows(i)(10))
-                        End If
-                        'QualifierID
-                        If Editdt.Rows(i)(7) Is DBNull.Value Then
-                            SQLstring.Append("NULL,")
-                        Else
-                            SQLstring.Append(GetQualifierID(Editdt.Rows(i)(7).ToString)).Append(",")
-                        End If
-                        'SampleID
-                        If Editdt.Rows(i)(11) Is DBNull.Value Then
-                            SQLstring.Append("NULL,")
-                        Else
-                            SQLstring.Append(Editdt.Rows(i)(11)).Append(",")
-                        End If
-                        'FileID
-                        If Editdt.Rows(i)(12) Is DBNull.Value Then
-                            SQLstring.Append("NULL)")
-                        Else
-                            SQLstring.Append(Editdt.Rows(i)(12)).Append("); ")
-                        End If
 
-                        SQLstring2.Append(SQLstring)
+                        SQLstring2.AppendFormat(insertFormatString, _
+                                                Editdt.Rows(i)(0), _
+                                                Editdt.Rows(i)(1), _
+                                                Convert.ToString(Editdt.Rows(i)(2), CultureInfo.InvariantCulture), _
+                                                If(Editdt.Rows(i)(3) Is DBNull.Value, "NULL,", Editdt.Rows(i)(3)), _
+                        Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss"), _
+                        Editdt.Rows(i)(5), _
+                        Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss"), _
+                        If(Editdt.Rows(i)(8) Is DBNull.Value, "NULL, ", Convert.ToString(Editdt.Rows(i)(8), CultureInfo.InvariantCulture)), _
+                        If(Editdt.Rows(i)(9) Is DBNull.Value, "NULL, ", Editdt.Rows(i)(9)), _
+                        If(Editdt.Rows(i)(10) Is DBNull.Value, "NULL,", Editdt.Rows(i)(10)), _
+                        If(Editdt.Rows(i)(7) Is DBNull.Value, "NULL,", GetQualifierID(Editdt.Rows(i)(7).ToString)), _
+                        If(Editdt.Rows(i)(11) Is DBNull.Value, "NULL,", Editdt.Rows(i)(11)),
+                        If(Editdt.Rows(i)(12) Is DBNull.Value, "NULL,", Editdt.Rows(i)(12)))
+
                     End If
-
 
                     'updating point
                 ElseIf Editdt.Rows(i)("Other") = 2 Then
-                    'Update 
-                    If Not datavalue = dgvDataValues.Rows(i).Cells("DataValue").Value Then
-                        SQLstring = New StringBuilder("UPDATE DataValues SET DataValue = ")
-                        SQLstring.Append(Editdt.Rows(i)("DataValue")).Append(", QualifierID = ")
-                        SQLstring.Append(GetQualifierID(Editdt.Rows(i)("QualifierCode")))
-                        SQLstring.Append(" WHERE ValueID = ")
-                        SQLstring.Append(ValueID.ToString).Append("; ")
-
-                        SQLstring2.Append(SQLstring)
-
-                    End If
+                    'Update
+                    SQLstring2.AppendFormat(updateFormatString, Convert.ToString(Editdt.Rows(i)("DataValue"), CultureInfo.InvariantCulture), GetQualifierID(Editdt.Rows(i)("QualifierCode")), ValueID)
                 End If
             End If
 
