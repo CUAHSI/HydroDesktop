@@ -56,6 +56,19 @@ namespace HydroDesktop.DataDownload.DataAggregation
 
         #region Public methods
 
+        private static DataColumn FindOrCreateColumn(DataTable dataTable, string columnName, Type columnType)
+        {
+            var dataColumn = dataTable.Columns.Cast<DataColumn>()
+                .FirstOrDefault(column => column.ColumnName == columnName &&
+                                          column.DataType == columnType);
+            if (dataColumn == null)
+            {
+                dataColumn = new DataColumn(columnName, columnType);
+                dataTable.Columns.Add(dataColumn);
+            }
+            return dataColumn;
+        }
+
         /// <summary>
         /// Perform aggregiation using given settings
         /// </summary>
@@ -68,14 +81,8 @@ namespace HydroDesktop.DataDownload.DataAggregation
             ReportProgress(++percentage, "Finding column to store data");
             var columnName = GetColumnName(_settings.AggregationMode);
             var columnType = typeof (double);
-            var dataColumn = _layer.DataSet.DataTable.Columns.Cast<DataColumn>()
-                .FirstOrDefault(column => column.ColumnName == columnName &&
-                                          column.DataType == columnType);
-            if (dataColumn == null)
-            {
-                dataColumn = new DataColumn(columnName, columnType);
-                _layer.DataSet.DataTable.Columns.Add(dataColumn);
-            }
+            var dataColumn = FindOrCreateColumn(_layer.DataSet.DataTable, columnName, columnType);
+            var percAvailableColumn = FindOrCreateColumn(_layer.DataSet.DataTable, "PercAvailable", columnType);
 
             // Call aggregation
             ReportProgress(++percentage, "Finding series to process");
@@ -102,10 +109,16 @@ namespace HydroDesktop.DataDownload.DataAggregation
                 var value = repo.AggregateValues(seriesID, aggregationFunction, minDate, maxDate);
                 feature.DataRow[dataColumn] = value;
 
+                // Calculating PercAvailable
+                var percAvailabe = repo.CalculatePercAvailable(seriesID, minDate, maxDate);
+                feature.DataRow[percAvailableColumn] = percAvailabe;
+
                 // reporting progress
                 ReportProgress(percentage + (i + 1) * (98 - percentage) / idsToProcess.Count,
                                string.Format("Processed {0}/{1} series", i + 1, idsToProcess.Count));
             }
+
+           
 
             // Save update data
             ReportProgress(99, "Saving data");

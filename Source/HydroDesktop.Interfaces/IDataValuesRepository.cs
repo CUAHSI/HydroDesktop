@@ -19,6 +19,15 @@ namespace HydroDesktop.Interfaces
         double AggregateValues(long seriesID, string aggregateFunction, DateTime minDate, DateTime maxDate);
 
         /// <summary>
+        /// Calculates percent of avalible values (not equal NoDataValue) for given seriesID and period
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <param name="minDate">Minimum date of period</param>
+        /// <param name="maxDate">Maximum date of period</param>
+        /// <returns>Percent of avalible values</returns>
+        double CalculatePercAvailable(long seriesID, DateTime minDate, DateTime maxDate);
+
+        /// <summary>
         /// Get all DataValues for specified seriesID
         /// </summary>
         /// <param name="seriesID">SeriesID</param>
