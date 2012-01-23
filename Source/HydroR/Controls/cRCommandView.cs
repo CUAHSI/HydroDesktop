@@ -565,8 +565,8 @@ namespace HydroR
                     string fileLoc = (HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString.Split(';'))[0].Substring(12);
                     DbOperations dbCall = new DbOperations(HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
                     //get the begin and end dates from the database for the current series
-                    DateTime begin = (DateTime)dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
-                    DateTime end = (DateTime)dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]);
+                    DateTime begin = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
+                    DateTime end = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
                     if (fileLoc.Contains(" "))
                         rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
 
