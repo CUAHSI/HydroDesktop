@@ -57,7 +57,6 @@ PrivilegesRequired=poweruser
 MinVersion=,5.01
 ; Necessary setting for the 64bit version
 ArchitecturesInstallIn64BitMode="x64 ia64"
-;
 AppName={#AppName}
 AppVersion={#AppVerStr}
 AppVerName={#AppName} {#AppVerStr}
@@ -69,7 +68,7 @@ AppPublisher="CUAHSI"
 AppPublisherURL="www.cuahsi.org"
 AppSupportURL="www.hydrodesktop.org"
 AppUpdatesURL="www.hydrodesktop.org"
-AppCopyright=Copyright © CUAHSI 2009-2011
+AppCopyright=Copyright © CUAHSI 2009-2012
 AppContact="www.hydrodesktop.org"
 VersionInfoCompany=CUAHSI [www.cuahsi.org]
 VersionInfoCopyright=Mozilla Public License (MPL) 1.1
@@ -131,8 +130,6 @@ Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\ZDataDown
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
-;Source: "..\Binaries\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; DestName: "WeifenLuo.WinFormsUI.Docking.dll"; Flags: ignoreversion;
-
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
@@ -143,8 +140,7 @@ Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreve
 
 Source: "..\Binaries\Maps\*"; DestDir: "{app}\Maps"; Permissions: everyone-modify; Flags: recursesubdirs
 
-;Example Configurations for HydroModeler
-;Uncomment following line after HydroModeler is ready for V 1.2
+;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Permissions: everyone-modify; Flags: recursesubdirs
 Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Permissions: everyone-modify; Flags: recursesubdirs
 
@@ -306,6 +302,33 @@ begin
 	Result := MsiQueryProductState(ProductId) = INSTALLSTATE_DEFAULT;
 end;
 
+//http://download.microsoft.com/download/7/B/6/7B629E05-399A-4A92-B5BC-484C74B5124B/dotNetFx40_Client_setup.exe
+function InstallDotNET40Client(): boolean;
+var
+	ExpectedLocalLocation: String;
+	ErrorCode: Integer;
+begin
+	ExpectedLocalLocation := ExpandConstant('{src}') + '\' + "dotNetFx40_Client_setup";
+	if not FileExists(ExpectedLocalLocation) then
+		ExpectedLocalLocation := ExpandConstant('{src}') + '\' + "dotNetFx40_Client_setup.exe";
+
+	if FileExists(ExpectedLocalLocation) then
+	begin
+		ShellExec('open', ExpectedLocalLocation, '', '', SW_SHOW, ewNoWait, ErrorCode);
+		Result := MsgBox('Ready to continue HydroDesktop installation?' #13#13 '(Click Yes after installing .Net Framework 4.0 Client )', mbConfirmation, MB_YESNO) = idYes;
+	end
+	else
+	begin
+		if MsgBox('The .Net Framework 4.0 Client is required but was not found.' #13#13 'Open the web page for downloading .Net 4.0 Client now?', mbConfirmation, MB_YESNO) = idYes	then
+		begin
+			ShellExec('open', 'http://download.microsoft.com/download/7/B/6/7B629E05-399A-4A92-B5BC-484C74B5124B/dotNetFx40_Client_setup.exe', '', '', SW_SHOW, ewNoWait, ErrorCode)
+			Result := MsgBox('Ready to continue HydroDesktop installation?' #13#13 '(Click Yes after installing .Net Framework 4.0 Client)', mbConfirmation, MB_YESNO) = idYes;
+		end
+		else
+			Result := MsgBox('.Net 4.0 Client Framework is required but was not found.' #13#13 'Continue HydroDesktop installation?', mbConfirmation, MB_YESNO) = idYes;
+	end;
+end;
+
 function InstallDotNET(versionDotNET: string; file1: String; file2: String; urlFamilyID: String): Boolean;
 var
 	ExpectedLocalLocation: String;
@@ -351,8 +374,12 @@ begin
   Result := IsDotNET40Detected();
   if not Result then
   begin
-    Result := InstallDotNET('v4.0', 'dotnetfx40.exe', 'dotnetfx_v4.0.exe', '9cfb2d51-5ff4-4491-b0e5-b386f32c0992');
+    Result := InstallDotNET('v4.0', 'dotnetfx40.exe', 'dotnetfx_v4.0.exe', '7B629E05-399A-4A92-B5BC-484C74B5124B');
   end;
+  
+  
+  
+  
 end;
 
 
