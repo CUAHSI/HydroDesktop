@@ -62,6 +62,16 @@ namespace HydroR
 
         #endregion
 
+        #region Property
+        /// <summary>
+        /// The current path to R
+        /// </summary>
+        public string PathToR
+        {
+            get { return pathToR; }
+        }
+        #endregion
+
         #region Method
 
         //To refresh the themes shown in the series selector
@@ -436,8 +446,6 @@ namespace HydroR
             {
                 //if there is an error p is already closed or was never opened, so ignore request
             }
-            Properties.Settings.Default.PathToR = pathToR;
-            Properties.Settings.Default.Save();
         }
         void SeriesSelector_SeriesCheck(object sender, SeriesEventArgs e)
         {
