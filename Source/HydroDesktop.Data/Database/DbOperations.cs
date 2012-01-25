@@ -28,8 +28,8 @@ namespace HydroDesktop.Database
         {
             _connectionString = connectionString;
             if (databaseType == DatabaseTypes.SQLite)
-            {            
-                dbFactory = new System.Data.SQLite.SQLiteFactory(); 
+            {
+                dbFactory = Community.CsharpSqlite.SQLiteClient.SqliteClientFactory.Instance;
             }
             else if (databaseType == DatabaseTypes.SQLServer)
             {
@@ -67,7 +67,7 @@ namespace HydroDesktop.Database
         {
             get 
             {
-                if (dbFactory is System.Data.SQLite.SQLiteFactory)
+                if (dbFactory is Community.CsharpSqlite.SQLiteClient.SqliteClientFactory)
                 {
                     return DatabaseTypes.SQLite;
                 }
@@ -769,7 +769,7 @@ namespace HydroDesktop.Database
             da.InsertCommand = (DbCommand)((ICloneable)cmdBuilder.GetInsertCommand()).Clone();
 
             //sqLITE - specific...
-            if (dbFactory is System.Data.SQLite.SQLiteFactory)
+            if (DatabaseType == DatabaseTypes.SQLite)
             {
                 string pkColName = 
                 da.InsertCommand.CommandText += String.Format(";SELECT last_insert_rowid() AS [{0}]", primaryKeyName);

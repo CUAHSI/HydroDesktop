@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Community.CsharpSqlite.SQLiteClient</name>
+    </assembly>
+    <members>
+        <member name="T:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatedEventHandler">
+            <summary>
+            Represents the method that will handle the <see cref="E:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.RowUpdated"/> event 
+            of a <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter"/>.
+            </summary>
+        </member>
+        <member name="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter">
+            <summary>
+            Represents a set of data commands and a database connection that are used 
+            to fill the <see cref="T:System.Data.DataSet">DataSet</see> and update the data source.
+            </summary>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter">SqliteDataAdapter</see> class.
+            </summary>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.#ctor(System.Data.Common.DbCommand)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter">SqliteDataAdapter</see> class 
+            with the specified SqliteCommand as the SelectCommand property.
+            </summary>
+            <param name="selectCommand"></param>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.#ctor(System.String,Community.CsharpSqlite.SQLiteClient.SqliteConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter">SqliteDataAdapter</see> class 
+            with a SelectCommand and a SqliteConnection object.
+            </summary>
+            <param name="selectCommandText"></param>
+            <param name="connection"></param>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter">SqliteDataAdapter</see> class 
+            with a SelectCommand and a connection string.
+            </summary>
+            <param name="selectCommandText"></param>
+            <param name="connectionString"></param>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.CreateRowUpdatedEvent(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Data.Common.RowUpdatedEventArgs">RowUpdatedEventArgs</see> class.
+            </summary>
+            <param name="dataRow">The DataRow used to update the data source.</param>
+            <param name="command">The IDbCommand executed during the Update.</param>
+            <param name="statementType">Whether the command is an UPDATE, INSERT, DELETE, or SELECT statement.</param>
+            <param name="tableMapping">A DataTableMapping object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.CreateRowUpdatingEvent(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            
+            </summary>
+            <param name="dataRow">The DataRow used to update the data source.</param>
+            <param name="command">The IDbCommand executed during the Update.</param>
+            <param name="statementType">Whether the command is an UPDATE, INSERT, DELETE, or SELECT statement.</param>
+            <param name="tableMapping">A DataTableMapping object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.OnRowUpdating(System.Data.Common.RowUpdatingEventArgs)">
+            <summary>
+            Raises the RowUpdated event of a Sqlite data provider.
+            </summary>
+            <param name="args">A RowUpdatedEventArgs that contains the event data.</param>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.OnRowUpdated(System.Data.Common.RowUpdatedEventArgs)">
+            <summary>
+            Raises the RowUpdating event of Sqlite data provider.
+            </summary>
+            <param name="args">An RowUpdatingEventArgs that contains the event data.</param>
+        </member>
+        <member name="E:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.RowUpdated">
+            <summary>
+            Occurs during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)">Update</see> after a 
+            command is executed against the data source. The attempt to update 
+            is made, so the event fires.
+            </summary>
+        </member>
+        <member name="E:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.RowUpdating">
+            <summary>
+            Occurs during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)">Update</see> before a 
+            command is executed against the data source. The attempt to update 
+            is made, so the event fires.
+            </summary>
+        </member>
+        <member name="T:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatingEventHandler">
+            <summary>
+            Represents the method that will handle the <see cref="E:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.RowUpdating"/> event 
+            of a <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter"/>.
+            </summary>
+        </member>
+        <member name="T:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatedEventArgs">
+            <summary>
+            Provides data for the <see cref="E:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.RowUpdated"/> event.
+            </summary>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatedEventArgs.#ctor(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatedEventArgs"/> class.
+            </summary>
+        </member>
+        <member name="T:Community.CsharpSqlite.SQLiteClient.SqliteError">
+            <summary>
+            Represents the return values for sqlite_exec() and sqlite_step()
+            </summary>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.OK">
+            <value>Successful result</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.ERROR">
+            <value>SQL error or missing database</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.INTERNAL">
+            <value>An internal logic error in SQLite</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.PERM">
+            <value>Access permission denied</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.ABORT">
+            <value>Callback routine requested an abort</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.BUSY">
+            <value>The database file is locked</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.LOCKED">
+            <value>A table in the database is locked</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.NOMEM">
+            <value>A malloc() failed</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.READONLY">
+            <value>Attempt to write a readonly database</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.INTERRUPT">
+            <value>Operation terminated by public const int interrupt()</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.IOERR">
+            <value>Some kind of disk I/O error occurred</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.CORRUPT">
+            <value>The database disk image is malformed</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.NOTFOUND">
+            <value>(Internal Only) Table or record not found</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.FULL">
+            <value>Insertion failed because database is full</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.CANTOPEN">
+            <value>Unable to open the database file</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.PROTOCOL">
+            <value>Database lock protocol error</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.EMPTY">
+            <value>(Internal Only) Database table is empty</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.SCHEMA">
+            <value>The database schema changed</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.TOOBIG">
+            <value>Too much data for one row of a table</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.CONSTRAINT">
+            <value>Abort due to contraint violation</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.MISMATCH">
+            <value>Data type mismatch</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.MISUSE">
+            <value>Library used incorrectly</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.NOLFS">
+            <value>Uses OS features not supported on host</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.AUTH">
+            <value>Authorization denied</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.FORMAT">
+            <value>Auxiliary database format error</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.RANGE">
+            <value>2nd parameter to sqlite_bind out of range</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.NOTADB">
+            <value>File opened that is not a database file</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.ROW">
+            <value>sqlite_step() has another row ready</value>
+        </member>
+        <member name="F:Community.CsharpSqlite.SQLiteClient.SqliteError.DONE">
+            <value>sqlite_step() has finished executing</value>
+        </member>
+        <member name="T:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatingEventArgs">
+            <summary>
+            Provides data for the <see cref="E:Community.CsharpSqlite.SQLiteClient.SqliteDataAdapter.RowUpdating"/> event. 
+            </summary>
+        </member>
+        <member name="M:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatingEventArgs.#ctor(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Community.CsharpSqlite.SQLiteClient.SqliteRowUpdatingEventArgs"/> class.
+            </summary>
+        </member>
+    </members>
+</doc>

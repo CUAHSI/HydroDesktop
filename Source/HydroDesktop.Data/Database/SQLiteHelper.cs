@@ -7,7 +7,8 @@ using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 using System.IO;
-using System.Data.SQLite;
+using Community.CsharpSqlite;
+using Community.CsharpSqlite.SQLiteClient;
 
 namespace HydroDesktop.Database
 {
@@ -28,7 +29,7 @@ namespace HydroDesktop.Database
             //int endIndex = sqliteConnString.IndexOf(endPart);
             //string dbFileName = sqliteConnString.Substring(startIndex - 1, endIndex - startIndex + 1);
             //return dbFileName;
-            SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder(sqliteConnString);
+            SqliteConnectionStringBuilder conn = new SqliteConnectionStringBuilder(sqliteConnString);
             return conn.DataSource;
         }
         /// <summary>
@@ -37,12 +38,12 @@ namespace HydroDesktop.Database
         public static string GetSQLiteConnectionString(string dbFileName)
         {
           
-         // return "Data Source= " + dbFileName + ";New=False;Compress=True;Version=3";
-            SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder();
+         //return "Data Source= " + dbFileName + ";New=False;Compress=True;Version=3";
+            SqliteConnectionStringBuilder conn = new SqliteConnectionStringBuilder();
             conn.DataSource = dbFileName;
             conn.Version = 3;
-            conn.FailIfMissing = true;
-            conn.Add("Compress", true);
+            //conn.FailIfMissing = true; --not there in Community.CsharpSQLite
+            //conn.Add("Compress", true);
 
             return conn.ConnectionString;
 
