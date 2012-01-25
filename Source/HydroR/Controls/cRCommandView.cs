@@ -56,8 +56,6 @@ namespace HydroR
 
             InitializeComponent();
             _seriesSelector = args;
-            // Event             
-            _seriesSelector.SeriesCheck += new SeriesEventHandler(SeriesSelector_SeriesCheck);
         }
 
         #endregion
@@ -447,14 +445,6 @@ namespace HydroR
                 //if there is an error p is already closed or was never opened, so ignore request
             }
         }
-        void SeriesSelector_SeriesCheck(object sender, SeriesEventArgs e)
-        {
-        }
-        // Clear the Table When Criterion Changed       
-        /* private void SeriesSelector_CriterionChanged(object sender, SeriesEventArgs e)
-         {
-             _hydroArgs.SeriesView.SeriesSelector.CheckedIDList.Clear;
-         }*/
 
         private void cRCommandView_Load(object sender, EventArgs e)
         {
