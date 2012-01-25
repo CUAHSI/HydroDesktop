@@ -126,8 +126,8 @@ namespace HydroDesktop.Main
             App.SerializationManager.OpenProject(projectFileName);
             App.ProgressHandler.Progress("Project opened", 0, "");
 
-            //disable excessive progress reporting
-            DisableProgressReportingForLayers();
+            //disable excessive progress reporting (no longer needed with new DS)
+            //DisableProgressReportingForLayers();
         }
 
         private void DisableProgressReportingForLayers()
