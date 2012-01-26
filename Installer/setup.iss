@@ -108,7 +108,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
 
-Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
+;Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
