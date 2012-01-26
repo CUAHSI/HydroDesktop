@@ -329,6 +329,7 @@ Namespace EditView
                 _mainControl.newseriesID = 0
                 _mainControl.pTimeSeriesPlot.ClearEditMode()
                 _mainControl.dgvDataValues.DataSource = Nothing
+                _mainControl.lblstatus.Text = String.Empty
             End If
         End Sub
 

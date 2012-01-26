@@ -1169,6 +1169,9 @@ Public Class cEditView
 
         pTimeSeriesPlot.SelectingPoints(IDlist)
         pTimeSeriesPlot.Refreshing()
+
+        ' Show info about selection
+        lblstatus.Text = String.Format("{0} out of {1} values selected", selectedRows.Count, Editdt.Rows.Count)
     End Sub
 
 End Class
