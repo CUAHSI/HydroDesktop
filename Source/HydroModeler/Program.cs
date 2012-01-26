@@ -28,10 +28,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private RootItem root = null;
         private bool ignoreRootSelected = false; //used by synchronizing between ribbon and docking
 
-        // reference to the main series view panel
-        [Import("SeriesControl", typeof(ISeriesSelector))]
-        internal ISeriesSelector SeriesControl { get; private set; }
-
         // plugin info
         private const string _pluginName = "HydroModeler";
         private const string kHydroModelerDock = "kHydroModelerDock";
@@ -49,6 +45,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// </summary>
         public override void Deactivate()
         {
+            //detach events
+            App.DockManager.ActivePanelChanged -= HM_Panel_Selected;
+            App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
+            
             // Remove ribbon tab
             App.HeaderControl.RemoveAll();
 
@@ -63,9 +63,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// Occurs when the HydroModeler plugin is loaded
         /// </summary>
         public override void Activate()
-        {
-            // add 'ribbon' button to the 'view' panel in 'home' ribbon tab
-            
+        {           
             root = new RootItem(KHydroModeler, _pluginName);
             root.SortOrder = 150;
             root.Visible = true;
@@ -75,10 +73,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             rps_dict = BuildRibbonPanel();
 
             // Add a dockable panel
-            if (SeriesControl != null)
-            {
-                Add_HM_Panel();      
-            }
+            Add_HM_Panel();      
 
             // activate plugin
             base.Activate();
@@ -87,21 +82,27 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         void Add_HM_Panel()
         {
             // Add a dockable panel
-            if (SeriesControl != null)
-            {
-                hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
-                var hmDockPanel = new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill);
-                hmDockPanel.DefaultSortOrder = 1000; //HydroModeler should be the last dockable panel by default
-                App.DockManager.Add(hmDockPanel);
-            }
+            hydroModelerControl = new mainTab(App, rps_dict, ((TextEntryActionItem)rps_dict["dirbox"]).Text);
+            var hmDockPanel = new DockablePanel(kHydroModelerDock, _pluginName, hydroModelerControl, DockStyle.Fill);
+            hmDockPanel.DefaultSortOrder = 1000; //HydroModeler should be the last dockable panel by default
+            App.DockManager.Add(hmDockPanel);
 
             // set the initial text for the dirbox
-            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
-            string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
-            if (Directory.Exists(start_path))
-                ((TextEntryActionItem)rps_dict["dirbox"]).Text = start_path;
-            else
-                ((TextEntryActionItem)rps_dict["dirbox"]).Text = "C:\\";
+            try
+            {
+                throw new UnauthorizedAccessException("vole");
+                
+                Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+                string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
+                if (Directory.Exists(start_path))
+                    ((TextEntryActionItem)rps_dict["dirbox"]).Text = start_path;
+                else
+                    ((TextEntryActionItem)rps_dict["dirbox"]).Text = "C:\\";
+            }
+            catch
+            {
+                ((TextEntryActionItem)rps_dict["dirbox"]).Text = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins\\HydroModeler\\"); //C:\\";
+            }
 
             // update filelist
             string text = ((TextEntryActionItem)rps_dict["dirbox"]).Text;
