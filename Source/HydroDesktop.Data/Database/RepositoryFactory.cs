@@ -24,8 +24,8 @@ namespace HydroDesktop.Database
             AddRepoCreator<IRepositoryManager>(
                 new RepositoryCreator
                 {
-                    CreatorByConnectionString = (dbType, connStr) => new RepositoryManagerSQL(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new RepositoryManagerSQL(dbOp)
+                    CreatorByConnectionString = (dbType, connStr) => new DbRepositoryManagerSQL(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new DbRepositoryManagerSQL(dbOp)
                 });
             AddRepoCreator<IDataSeriesRepository>(
                 new RepositoryCreator
