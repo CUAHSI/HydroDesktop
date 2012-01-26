@@ -78,7 +78,7 @@ namespace EPADelineation
         #endregion Constructor
 
         private void InitializeShapeFileNames()
-        {
+        {         
             var allLayers = ((Map) _mapArgs.Map).GetAllLayers();
 
             tbwshedpoint.Text = GetOrderedText<IMapPointLayer>(allLayers, "Watershed Point");
@@ -88,8 +88,12 @@ namespace EPADelineation
 
         private static string GetOrderedText<T>(IEnumerable<ILayer> allLayers, string defaultText) where T : ILegendItem
         {
-            var layers = allLayers.OfType<T>().Where(layer => layer.LegendText.StartsWith(defaultText)).ToList();
-            if (layers.Count() == 0)
+            if (allLayers.Count() == 0)
+                return defaultText;
+            var layers = allLayers.OfType<T>()
+                .Where(layer => (!String.IsNullOrEmpty(layer.LegendText)) && layer.LegendText.StartsWith(defaultText));
+            
+            if (!layers.Any())
                 return defaultText;
 
             int number = 0;
@@ -136,8 +140,8 @@ namespace EPADelineation
                     foreach (var fs in result)
                     {
                         fs.Projection = world.WGS1984;
-                        //fs.Reproject(_mapArgs.Map.Projection);
-                        fs.Reproject(projWorld.WebMercator);
+                        fs.Reproject(_mapArgs.Map.Projection);
+                        //fs.Reproject(projWorld.WebMercator);
                     }
 
                     AddEPAShapes(result);
@@ -517,13 +521,15 @@ namespace EPADelineation
                     try
                     {
                         //Save featureset as a MapPointLayer
-                        IMapPointLayer point = new MapPointLayer(fsset);
-                        point.LegendText = Path.GetFileNameWithoutExtension(_wshedpoint);
-                            
+                        fsset.SaveAs(_wshedpoint, true);
+                        _mapArgs.Map.Layers.Add(_wshedpoint);
+
+                        IMapPointLayer point = new MapPointLayer(FeatureSet.Open(_wshedpoint));
+                        point.LegendText = Path.GetFileNameWithoutExtension(_wshedpoint);           
                         _mapArgs.Map.Layers.Insert(indexToInsert, point);
 
-                        fsset.Filename = _wshedpoint;
-                        fsset.SaveAs(_wshedpoint, true);
+                        //fsset.Filename = _wshedpoint;
+                        //fsset.SaveAs(_wshedpoint, true);
                     }
                     catch (Exception ex)
                     {
@@ -537,7 +543,9 @@ namespace EPADelineation
                     try
                     {
                         //Save featureset as a MapLineLayer
-                        IMapLineLayer line = new MapLineLayer(fsset);
+                        fsset.SaveAs(_stream, true);
+                        IMapLineLayer line = new MapLineLayer(FeatureSet.Open(_stream));
+
                         line.LegendText = Path.GetFileNameWithoutExtension(_stream);
 
                         var linesymbol = new LineSymbolizer(Color.Blue, 1);
@@ -545,8 +553,8 @@ namespace EPADelineation
 
                         _mapArgs.Map.Layers.Insert(indexToInsert, line);
 
-                        fsset.Filename = _stream;
-                        fsset.Save();
+                        //fsset.Filename = _stream;
+                        //fsset.Save();
                     }
                     catch (Exception ex)
                     {
@@ -561,13 +569,15 @@ namespace EPADelineation
                     {
                         //Effective in solving projection problem to display polygon
                         string file = _wshed;
+                        
                         //fsset.Reproject(_mapArgs.Map.Projection);
+
                         fsset.SaveAs(file, true);
 
                         IFeatureSet polyfs = FeatureSet.Open(file);
 
-                        polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
-                        polyfs.Reproject(_mapArgs.Map.Projection);
+                        //polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+                        //polyfs.Reproject(_mapArgs.Map.Projection);
 
                         var polysymbol = new PolygonSymbolizer(Color.LightBlue.ToTransparent((float)0.7), Color.DarkBlue);
 
