@@ -308,9 +308,9 @@ var
 	ExpectedLocalLocation: String;
 	ErrorCode: Integer;
 begin
-	ExpectedLocalLocation := ExpandConstant('{src}') + '\' + "dotNetFx40_Client_setup";
+	ExpectedLocalLocation := ExpandConstant('{src}') + '\' + 'dotNetFx40_Client_setup';
 	if not FileExists(ExpectedLocalLocation) then
-		ExpectedLocalLocation := ExpandConstant('{src}') + '\' + "dotNetFx40_Client_setup.exe";
+		ExpectedLocalLocation := ExpandConstant('{src}') + '\' + 'dotNetFx40_Client_setup.exe';
 
 	if FileExists(ExpectedLocalLocation) then
 	begin
