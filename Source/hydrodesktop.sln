@@ -171,6 +171,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelExtension", "ExcelDataProvider\ExcelExtension.csproj", "{32A0B21A-24AB-4E07-90E7-82F9C04C2A9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroModeler", "HydroModeler\HydroModeler.csproj", "{D26B704D-1FC9-4040-A29D-21FB8707ECE1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C} = {5ED7C71D-E89A-41F7-8B34-54C0C099412C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroughtAnalysis", "DroughtAnalysis\DroughtAnalysis.csproj", "{2CAFD6F1-CED6-4E26-8787-16159E9243BB}"
 EndProject
