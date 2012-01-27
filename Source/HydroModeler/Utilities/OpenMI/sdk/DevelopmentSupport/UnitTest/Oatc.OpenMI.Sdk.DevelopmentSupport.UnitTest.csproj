@@ -29,7 +29,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -96,9 +96,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\OpenMI.Standard\src\csharp\bin\OpenMI.Standard.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -136,10 +133,12 @@
     <ProjectReference Include="..\..\Backbone\Oatc.OpenMI.Sdk.Backbone.csproj">
       <Project>{23C206AE-CBEF-4FD1-9928-BF04147B62B2}</Project>
       <Name>Oatc.OpenMI.Sdk.Backbone</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Oatc.OpenMI.Sdk.DevelopmentSupport.csproj">
       <Project>{B7BE8C7F-0679-4022-81A5-6A314C058429}</Project>
       <Name>Oatc.OpenMI.Sdk.DevelopmentSupport</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

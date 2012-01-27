@@ -97,8 +97,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\OpenMI.Standard\src\csharp\bin\OpenMI.Standard.dll</HintPath>
+    <Reference Include="OpenMI.Standard">
+      <HintPath>..\..\..\OpenMI.Standard.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
