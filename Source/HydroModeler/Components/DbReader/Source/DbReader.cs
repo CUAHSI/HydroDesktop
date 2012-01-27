@@ -760,8 +760,8 @@ namespace CUAHSI.HIS
             // 
             // db                                           OpenMI
             // ---                                          -------
-            // Variables.VariableName                       quantity.ID
-            // Variables.VariableCode                       quantity.Description
+            // Variables.VariableCode                       quantity.ID
+            // Variables.VariableName                       quantity.Description
             // [Assume OpenMI.Standard.ValueType.Scalar]    quantity.ValueType
             // Units.UnitAbbreviation                       unit.ID
             // [Not Impemented]                             unit.ConversionFactorToSI
