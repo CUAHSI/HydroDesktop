@@ -5,7 +5,6 @@ using System.Data;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.WebServices;
 
 namespace Search3.Searching
 {
@@ -24,8 +23,8 @@ namespace Search3.Searching
             row["VarCode"] = series.VariableCode;
             row["Keyword"] = series.ConceptKeyword;
             row["ValueCount"] = series.ValueCount;
-            row["StartDate"] = series.BeginDate.ToString("yyyy-MM-dd");
-            row["EndDate"] = series.EndDate.ToString("yyyy-MM-dd");
+            row["StartDate"] = series.BeginDate;
+            row["EndDate"] = series.EndDate;
             row["ServiceURL"] = series.ServURL;
             row["ServiceCode"] = series.ServCode;
             row["DataType"] = series.DataType;
