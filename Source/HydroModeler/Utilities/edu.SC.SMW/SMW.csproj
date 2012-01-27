@@ -16,13 +16,13 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Research\Presentations\2012_AWRA\HydroModeler\bin\</OutputPath>
+    <OutputPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,40 +36,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\NUnit\nunit.framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Gui.Controls">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Gui.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Gui.Core">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Gui.Core.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+      <HintPath>..\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Buffer">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
+      <HintPath>..\OpenMI\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+      <HintPath>..\OpenMI\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
     </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Spatial, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\Oatc.OpenMI.Sdk.Spatial.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Wrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
+      <HintPath>..\OpenMI\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="OpenMI.Standard">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\OpenMI.Standard.dll</HintPath>
+      <HintPath>..\OpenMI\OpenMI.Standard.dll</HintPath>
     </Reference>
     <Reference Include="SharpMap">
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SharpMap.dll</HintPath>
+      <HintPath>..\SharpMap\SharpMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

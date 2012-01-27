@@ -17,7 +17,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,20 +37,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+    <Reference Include="Oatc.OpenMI.Sdk.Backbone">
+      <HintPath>..\..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+    <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
+      <HintPath>..\..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
     </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Wrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+    <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
+      <HintPath>..\..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMI.Standard, Version=1.4.0.0, Culture=neutral, PublicKeyToken=82bbb00ca5ab39e4, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll</HintPath>
+    <Reference Include="OpenMI.Standard">
+      <HintPath>..\..\..\Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
     </Reference>
-    <Reference Include="SharpMap, Version=0.9.2423.31552, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SharpMap.dll</HintPath>
+    <Reference Include="SharpMap">
+      <HintPath>..\..\..\Utilities\SharpMap\SharpMap.dll</HintPath>
     </Reference>
     <Reference Include="SMW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>

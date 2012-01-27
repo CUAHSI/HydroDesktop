@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSUnitHydrograph", "SCSUnitHydrographMethod\Source\SCSUnitHydrograph.csproj", "{0C53478E-B10B-4D30-A416-0D415940B713}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolarRadiation", "SolarRadiation\source\SolarRadiation.csproj", "{D4F30A35-8C6C-45CF-B439-8C318C6C2A98}"
+	ProjectSection(ProjectDependencies) = postProject
+		{96C23728-CA20-47F8-A85C-AE76A31085FB} = {96C23728-CA20-47F8-A85C-AE76A31085FB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtmpReader", "wtmpReader\Source\wtmpReader.csproj", "{14CC9A9C-DD25-438A-9A08-B0F6B2B274DA}"
 EndProject
