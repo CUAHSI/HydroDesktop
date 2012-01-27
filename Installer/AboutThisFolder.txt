@@ -1,0 +1,6 @@
+- This folder contains the INNO Setup files and configuration files for the Installer for HydroDesktop
+- Installers get posted on the CodePlex Downloads page, but this folder is used to maintain the installer
+- To rebuild the installer:
+    1. Download the free InnoSetup program
+    2. In InnoSetup, open the file setup.iss and select build - compile.
+    3. This will create the installation file Installer\bin\HydroDesktopSetup.exe
