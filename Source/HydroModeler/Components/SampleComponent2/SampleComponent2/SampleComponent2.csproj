@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EB47C62A-9858-418C-BC83-0122BD082064}</ProjectGuid>
+    <ProjectGuid>{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DiffusiveWave</RootNamespace>
-    <AssemblyName>DiffusiveWave</AssemblyName>
+    <RootNamespace>SampleComponent</RootNamespace>
+    <AssemblyName>SampleComponent</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,30 +46,27 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
-      <HintPath>..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
-    </Reference>
-    <Reference Include="Oatc.OpenMI.Sdk.Buffer">
-      <HintPath>..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Buffer.dll</HintPath>
+      <HintPath>..\..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
-      <HintPath>..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
+      <HintPath>..\..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Wrapper">
-      <HintPath>..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
+      <HintPath>..\..\..\Utilities\OpenMI\Oatc.OpenMI.Sdk.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="OpenMI.Standard">
-      <HintPath>..\..\Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
+      <HintPath>..\..\..\Utilities\OpenMI\OpenMI.Standard.dll</HintPath>
     </Reference>
     <Reference Include="SMW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
+      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -85,17 +82,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Discretization.cs" />
-    <Compile Include="Source\Engine.cs" />
-    <Compile Include="Source\ModelEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Wrapper.cs" />
+    <Compile Include="source\SampleClass2.cs" />
+    <Compile Include="source\SampleLinkableComponent2.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\2dDiffusiveWaveConfig.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\2dDiffusiveWave.omi" />
+    <Content Include="data\config.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -114,6 +106,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="data\sample2.omi" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -122,8 +117,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
