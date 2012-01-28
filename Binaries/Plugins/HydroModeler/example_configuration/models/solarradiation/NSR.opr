@@ -1,11 +1,11 @@
 <guiComposition version="1.0">
   <models>
-    <model omi="NSR.omi" rect_x="30" rect_y="30" rect_width="100" rect_height="51" />
+    <model omi="NSR.omi" rect_x="30" rect_y="29" rect_width="100" rect_height="51" />
     <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="178" rect_y="33" rect_width="100" rect_height="51" />
   </models>
   <links>
     <uilink model_providing="Solar Radiation" model_accepting="Oatc.OpenMI.Gui.Trigger">
-      <link id="2" source_elementset="NetRad" source_quantity="NSR" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+      <link id="2" source_elementset="SC_NC Study" source_quantity="NSR" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
     </uilink>
   </links>
   <runproperties listenedeventtypes="11111111111" triggerinvoke="12/31/1983 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />

@@ -61,7 +61,7 @@
     </OutputExchangeItem>
     <InputExchangeItem>
       <ElementSet>
-        <ID>SC_NC Study</ID>
+        <ID>NetRadiation</ID>
         <Description>NetRadiation</Description>
         <Version>1</Version>
         <ShapefilePath>./data/PeTgauges.shp</ShapefilePath>
