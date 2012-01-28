@@ -5,7 +5,7 @@
   </models>
   <links>
     <uilink model_providing="PET: Penman-Monteith" model_accepting="Oatc.OpenMI.Gui.Trigger">
-      <link id="2" source_elementset="ETsz" source_quantity="StandardizedET" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+      <link id="2" source_elementset="SC_NC Study" source_quantity="StandardizedET" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
     </uilink>
   </links>
   <runproperties listenedeventtypes="11111111111" triggerinvoke="12/31/1983 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />

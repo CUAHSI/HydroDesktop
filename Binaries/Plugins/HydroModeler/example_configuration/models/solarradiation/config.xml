@@ -3,7 +3,7 @@
   <ExchangeItems>
     <OutputExchangeItem>
       <ElementSet>
-        <ID>SC_NC Study</ID>
+        <ID>NetRad</ID>
         <Description>Net Solar Radiation</Description>
         <ShapefilePath>./data/SRgauges.shp</ShapefilePath>
         <Version>1</Version>
