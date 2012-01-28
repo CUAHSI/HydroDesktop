@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMW", "..\Utilities\edu.SC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Numerics", "..\Utilities\edu.SC.Numerics\Numerics.csproj", "{41D16632-EC8E-4F82-8CB2-0346481959C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleComponent2", "SampleComponent2\SampleComponent2\SampleComponent2.csproj", "{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -196,6 +198,12 @@ Global
 		{41D16632-EC8E-4F82-8CB2-0346481959C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41D16632-EC8E-4F82-8CB2-0346481959C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{41D16632-EC8E-4F82-8CB2-0346481959C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F2EBAE9-51A9-4A5F-A468-2C12BFCF89EF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
