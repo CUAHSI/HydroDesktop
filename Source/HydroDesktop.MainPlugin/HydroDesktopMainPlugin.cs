@@ -325,7 +325,7 @@
 
                 //if the clicked root item was 'search', then don't select the map root item
                 //(the user intended to show search tab and map panel)
-                if (App.SerializationManager.GetCustomSetting<bool>("SearchRootClicked", false))
+                if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
                 {
                     App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
                 }
