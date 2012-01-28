@@ -278,8 +278,8 @@ namespace HydroDesktop.WebServices
         {
 
             //to format the beginDate and endDate
-            string startDateStr = startDate.ToString("yyyy-MM-ddThh:mm");
-            string endDateStr = endDate.ToString("yyyy-MM-ddThh:mm");
+            string startDateStr = startDate.ToString("yyyy-MM-ddTHH:mm");
+            string endDateStr = endDate.ToString("yyyy-MM-ddTHH:mm");
 
             //create the AuthToken (currently, only empty AuthToken is supported)
             string authToken = String.Empty;
