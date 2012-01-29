@@ -977,12 +977,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     else if (r.Name.ToLower() == "definition")
                     {
                         r.Read();
-                        qc.Definition = r.Value;
+                        qc.Definition = r.Value.Trim();
                     }
                     else if (r.Name == "explanation")
                     {
                         r.Read();
-                        qc.Explanation = r.Value;
+                        qc.Explanation = r.Value.Trim();
                     }
                 }
                 else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "qualitycontrollevel")
