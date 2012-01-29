@@ -1,6 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.ComponentModel
+Imports Controls
 Imports DotSpatial.Controls
 Imports System.Globalization
 Imports HydroDesktop.Database
@@ -21,7 +22,7 @@ Namespace GraphView
         <Import("SeriesControl", GetType(ISeriesSelector))>
         Private appSeriesView As ISeriesSelector
 
-        Private _mainControl As cTSA
+        Private _mainControl As MainControl
 
         Private firstTimeLoaded As Boolean = True
 
@@ -99,14 +100,8 @@ Namespace GraphView
             'End If
 
 
-
-            If Not appSeriesView Is Nothing Then
-                _mainControl = New cTSA(appSeriesView)
-            Else
-                _mainControl = New cTSA()
-            End If
+            _mainControl = New MainControl(appSeriesView)
             _mainControl.Dock = DockStyle.Fill
-
 
             InitializeRibbonButtons()
 
@@ -412,7 +407,7 @@ Namespace GraphView
             Dim endDate = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, True)
             If (endDate Is Nothing) Then Return
             ' end of validation
-                
+
             _mainControl.StartDateTime = startDate
             _mainControl.EndDateTime = endDate
             _mainControl.IsDisplayFullDate = False
@@ -540,7 +535,7 @@ Namespace GraphView
         End Sub
 
         Sub rbColorSetting_Click()
-            Dim frmCC = New frmColorCollection(_mainControl.linecolorlist, _mainControl.pointcolorlist)
+            Dim frmCC = New ColorSettingsDialog(_mainControl.linecolorlist, _mainControl.pointcolorlist)
             frmCC._CTSA = _mainControl
             frmCC.ShowDialog()
         End Sub
@@ -600,7 +595,7 @@ Namespace GraphView
 
             'rckbDisplayFullDateRange.Checked = False
             _mainControl.IsDisplayFullDate = False
-            Dim frmDateTimeSetting = New fDateTimeSetting(_mainControl)
+            Dim frmDateTimeSetting = New DateTimeSettingsDialog(_mainControl)
             frmDateTimeSetting.ShowDialog()
         End Sub
 

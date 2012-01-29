@@ -23,8 +23,6 @@ Public Class cTimeSeriesPlot
     Private Const YColumn As String = "DataValue"
 
     Private m_SeriesSelector As ISeriesSelector
-
-    'the main series selector control
     Public Property SeriesSelector() As ISeriesSelector
         Get
             Return m_SeriesSelector
@@ -353,10 +351,11 @@ Public Class cTimeSeriesPlot
     Protected Sub ExportToTextFile()
 
         'Error checking
-        If SeriesSelector Is Nothing Then Exit Sub
+        Dim sSelector = SeriesSelector
+        If sSelector Is Nothing Then Exit Sub
 
         'Check selected series
-        Dim checkedSeries As Integer = SeriesSelector.CheckedIDList.Count()
+        Dim checkedSeries As Integer = sSelector.CheckedIDList.Count()
 
         'Check if there is any series to export
         If (checkedSeries <= 0) Then
@@ -377,9 +376,7 @@ Public Class cTimeSeriesPlot
                 Dim sql As String
 
                 'Error checking
-                If SeriesSelector Is Nothing Then Exit Sub
-
-                Dim checkedSeriesID As Integer = SeriesSelector.CheckedIDList(count - 1)
+                Dim checkedSeriesID As Integer = sSelector.CheckedIDList(count - 1)
 
                 sql = "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.DataValue, dv.LocalDateTime, U.UnitsName FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U WHERE v.VariableID = ds.VariableID AND s.SiteID = ds.SiteID AND dv.SeriesID = ds.SeriesID AND U.UnitsID = v.VariableUnitsID AND ds.SeriesID = " & checkedSeriesID
                 totalData = dbOperation.LoadTable("DataValues", sql)
