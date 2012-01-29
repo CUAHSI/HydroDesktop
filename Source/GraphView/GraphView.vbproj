@@ -122,10 +122,10 @@
     <Compile Include="Controls\cDataSummary.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ColorCollection.Designer.vb">
-      <DependentUpon>ColorCollection.vb</DependentUpon>
+    <Compile Include="Controls\ColorSettingsDialog.Designer.vb">
+      <DependentUpon>ColorSettingsDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ColorCollection.vb">
+    <Compile Include="Controls\ColorSettingsDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\cSummaryplot.Designer.vb">
@@ -134,10 +134,10 @@
     <Compile Include="Controls\cSummaryplot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\fDateTimeSetting.Designer.vb">
-      <DependentUpon>fDateTimeSetting.vb</DependentUpon>
+    <Compile Include="Controls\DateTimeSettingsDialog.Designer.vb">
+      <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fDateTimeSetting.vb">
+    <Compile Include="Controls\DateTimeSettingsDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\IChart.vb" />
@@ -183,10 +183,10 @@
     <Compile Include="Controls\cTimeSeriesPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\cTSA.Designer.vb">
-      <DependentUpon>cTSA.vb</DependentUpon>
+    <Compile Include="Controls\MainControl.Designer.vb">
+      <DependentUpon>MainControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cTSA.vb">
+    <Compile Include="Controls\MainControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GraphViewPlugin.vb" />
@@ -227,8 +227,8 @@
       <DependentUpon>cHistogramPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ColorCollection.resx">
-      <DependentUpon>ColorCollection.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\ColorSettingsDialog.resx">
+      <DependentUpon>ColorSettingsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\cSummaryplot.resx">
@@ -251,12 +251,12 @@
       <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cTSA.resx">
-      <DependentUpon>cTSA.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\MainControl.resx">
+      <DependentUpon>MainControl.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fDateTimeSetting.resx">
-      <DependentUpon>fDateTimeSetting.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\DateTimeSettingsDialog.resx">
+      <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

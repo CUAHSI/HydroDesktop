@@ -176,10 +176,10 @@ namespace HydroDesktop.Database
 
         public Series GetSeriesByID(int seriesID)
         {
-            Series series = new Series();
-            DataTable seriesTable = DbOperations.LoadTable("seriesTable", "select * from DataSeries where seriesID=" + seriesID);
+            var seriesTable = DbOperations.LoadTable("seriesTable", "select * from DataSeries where seriesID=" + seriesID);
             if (seriesTable.Rows.Count == 0) return null;
 
+            var series = new Series();
             DataRow seriesRow = seriesTable.Rows[0];
             series.BeginDateTime = Convert.ToDateTime(seriesRow["BeginDateTime"]);
             series.EndDateTime = Convert.ToDateTime(seriesRow["EndDateTime"]);
