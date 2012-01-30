@@ -86,7 +86,7 @@ AlwaysShowComponentsList=false
 ;InfoBeforeFile=Source\..\..\Documents\Pre-install.txt
 ;InfoAfterFile=Source\..\..\Documents\Post-install.txt
 OutputDir=Releases
-OutputBaseFilename="HydroDesktop13_Beta_Installer"
+OutputBaseFilename="HydroDesktop14_Beta_Installer"
 ;SetupIconFile=Source\..\..\Documents\MapWindow.ico
 ;UninstallDisplayIcon=Source\..\..\Documents\MapWindow.ico
 ChangesAssociations=true
@@ -128,6 +128,8 @@ Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; F
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\ZDataDownload"; Flags: ignoreversion;
 
+Source: "extra_plugins\GeostatisticalTool\*"; DestDir: "{app}\Plugins\GeostatisticalTool"; Flags: ignoreversion;
+
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
@@ -143,12 +145,6 @@ Source: "..\Binaries\Maps\*"; DestDir: "{app}\Maps"; Permissions: everyone-modif
 ;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Permissions: everyone-modify; Flags: recursesubdirs
 Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Permissions: everyone-modify; Flags: recursesubdirs
-
-;Source: "hydromodeler_example_configurations\example_configuration_01"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_01"; Permissions: everyone-modify
-;Source: "hydromodeler_example_configurations\example_configuration_02"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_02"; Permissions: everyone-modify
-;Source: "hydromodeler_example_configurations\example_configuration_03"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations\example_configuration_03"; Permissions: everyone-modify
-
-
 
 [Icons]
 Name: "{group}\HydroDesktop"; Filename: "{app}\HydroDesktop.exe"
