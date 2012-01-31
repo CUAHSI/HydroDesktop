@@ -57,6 +57,8 @@ Public Class cSummaryPlot
     Private Const db_outFld_ValDTDay As String = "DateDay"
 #End Region
 
+    Private Const NO_DATA_TO_PLOT As String = "No Data To Plot"
+
     Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, Optional ByVal e_StdDev As Double = 0)
         Try
             Dim master As MasterPane = zgSummaryPlot.MasterPane
@@ -129,7 +131,7 @@ Public Class cSummaryPlot
             gPane4.XAxis.IsVisible = False
             gPane4.YAxis.IsVisible = False
 
-            zgSummaryPlot.MasterPane.Title.Text = "No Data To Plot"
+            zgSummaryPlot.MasterPane.Title.Text = NO_DATA_TO_PLOT
             zgSummaryPlot.RestoreScale(gPane1)
             zgSummaryPlot.RestoreScale(gPane2)
             zgSummaryPlot.RestoreScale(gPane3)
@@ -161,7 +163,7 @@ Public Class cSummaryPlot
             If (m_Data Is Nothing) Or (m_Data.Rows.Count <= 0) Then
                 gPane1.XAxis.IsVisible = False
                 gPane1.YAxis.IsVisible = False
-                gPane1.Title.Text = "No Data To Plot"
+                gPane1.Title.Text = NO_DATA_TO_PLOT
             Else
 
                 'Setting Scroll and scale
@@ -319,57 +321,9 @@ Public Class cSummaryPlot
         Dim curX As Double
         Dim curFreq As Double
         Try
-
-            '1. Set the Graph Pane, graphics object
-            'gPane2 = zgSummaryPlot.GraphPane
-            'gPane2.CurveList.Clear()
-            'g = zg5Probability.CreateGraphics
-
-            '2. Validate data
-            'If m_Data Is Nothing Then
-            'reset Title = No Data
-            'gPane2.Title.Text = "No Data To Plot"
-            'zgSummaryPlot.Refresh()
-            'release resources
-            'If Not (g Is Nothing) Then
-            '	g.Dispose()
-            '	g = Nothing
-            'End If
-
-            'exit
-            'Exit Try
-            'End If
-
-            '3. let user know something is being plotted
-
-
-            '4.get the data
-            ''get all the rows from the table that are not censored, order by Value
-            'validRows = m_VisPlotData.Select(db_fld_ValCensorCode & " <> " & db_val_valCensorCode_lt, db_fld_ValValue & " ASC") 'selected rows from m_VisPlotData that have censorcode <> "lt"
-
             'get all data(even censored ones), order by Value
             validRows = m_Data.Select("", "DataValue ASC")
             numRows = validRows.GetLength(0)
-            'make sure data was selected
-            'If (numRows = 0) Or (m_Data Is Nothing) Then
-            '    'reset Title = No Data
-            '    gPane2.Title.Text = "No Data To Plot"
-            '    gPane2.XAxis.IsVisible = False
-            '    gPane2.YAxis.IsVisible = False
-            '    gPane2.GraphObjList.Clear()
-            '    zgSummaryPlot.Refresh()
-            '    'release resources
-            '    'If Not (g Is Nothing) Then
-            '    '	g.Dispose()
-            '    '	g = Nothing
-            '    'End If
-            '    'exit
-
-
-
-            '    '5. Set Graph Properties
-            'Else
-
 
             If gPane2.IsZoomed() = True Then
                 zgSummaryPlot.ZoomOutAll(gPane2)
@@ -835,170 +789,6 @@ Public Class cSummaryPlot
 
             End With
 
-
-
-
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            ''Old(code)
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            'If ((m_Data Is Nothing) OrElse (m_Data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
-            '    Dim gPane3 As ZedGraph.GraphPane = zgHistogramPlot.GraphPane
-            '    gPane3.CurveList.Clear()
-            '    gPane3.Title.Text = "No Data To Plot"
-            '    zgHistogramPlot.IsShowVScrollBar = False
-            '    zgHistogramPlot.IsShowHScrollBar = False
-            '    gPane3.XAxis.IsVisible = False
-            '    gPane3.YAxis.IsVisible = False
-            'Else
-            '    Dim i As Integer 'counter
-            '    Dim gPane3 As GraphPane  'GraphPane of the zg5Histogram plot object -> used to set data and characteristics
-            '    Dim ptList As ZedGraph.PointPairList 'collection of points fro the Histogram chart
-            '    Dim histBars As ZedGraph.BarItem 'Bar Item curve -> Histogram bars on the plot
-            '    Dim numValid As Integer 'number of valid rows returned
-            '    Dim numBins As Integer 'number of bars in the bar chart
-            '    Dim minValue As Double 'lowest valid value
-            '    Dim maxValue As Double 'highest valid value
-            '    Dim xRange As Double 'range of Values with padding
-            '    Dim dX As Double 'distance between bins
-            '    Dim totalCount As Integer
-            '    Dim maxTotal As Integer
-            '    Dim lastValue As Double
-            '    Dim xValue As Double
-            '    Dim nextXValue As Double
-
-            '    '1. set the Graph Pane, graphics object
-            '    gPane3 = zgHistogramPlot.GraphPane
-            '    gPane3.CurveList.Clear()
-            '    ''ture on scroll bar
-            '    zgHistogramPlot.IsShowVScrollBar = True
-            '    zgHistogramPlot.IsShowHScrollBar = True
-            '    zgHistogramPlot.IsAutoScrollRange = False ' IsAutoScrollRange = true does not work in Histogram
-
-            '    'g = zg5Histogram.CreateGraphics
-
-            '    '' '' '' '' '' '' ''2. Set Graph Properties
-            '    '' '' '' '' '' '' ''x-axis
-            '    gPane3.XAxis.IsVisible = True
-            '    gPane3.XAxis.MajorGrid.IsVisible = True
-            '    gPane3.XAxis.MajorGrid.Color = Color.Gray
-            '    ' '' '' '' '' '' ''gPane3.XAxis.MinorTic.Size = 0
-            '    ' '' '' '' '' '' ''gPane3.XAxis.Type = ZedGraph.AxisType.Linear
-            '    gPane3.XAxis.Title.Text = m_Var
-            '    ' '' '' '' '' '' ''gPane3.XAxis.Title.Gap = 0.2
-            '    'gPane3.XAxis.Scale.IsVisible = False
-            '    ' '' '' '' '' '' ''gPane3.XAxis.Scale.MinGrace = 0.025 '2.5% padding on front
-            '    ' '' '' '' '' '' ''gPane3.XAxis.Scale.MaxGrace = 0.025 '2.5% padding on back
-            '    '' '' '' '' '' '' ''gPane3.XAxis.Scale.Mag = 0
-            '    '' '' '' '' '' '' ''y-axis
-            '    ' '' '' '' '' '' ''gPane3.YAxis.IsVisible = True
-            '    gPane3.YAxis.MajorGrid.IsVisible = True
-            '    gPane3.YAxis.MajorGrid.Color = Color.Gray
-            '    gPane3.YAxis.Title.Text = "Number of Observations"
-            '    ' '' '' '' '' '' ''gPane3.YAxis.Scale.MinGrace = 0.025 '2.5% padding on front
-            '    ' '' '' '' '' '' ''gPane3.YAxis.Scale.MaxGrace = 0.025 '2.5% padding on back
-            '    '' '' '' '' '' '' ''Title
-            '    gPane3.Title.Text = m_Site
-
-            '    '6. Create the Pts for the Bars
-            '    'TODO: Michelle: Track the number of bins created -> set the tboxHPNumBins.Text value
-
-            '    'set min,max,range values
-            '    minValue = Math.Floor(CDbl(m_Data.Compute("Min( DataValue )", "")) - (0.2 * m_StdDev))
-            '    maxValue = Math.Ceiling(CDbl(m_Data.Compute("Max( DataValue )", "")) + (0.2 * m_StdDev))
-            '    numValid = m_Data.Rows.Count
-
-            '    'gPane3.XAxis.Scale.Min = Int(minValue)
-            '    'gPane3.XAxis.Scale.Max = Int(maxValue + 1)
-
-            '    xRange = (maxValue - minValue) 'Math.Round(maxValue - minValue, 3)
-            '    'get the number of bins -> bars, tic marks
-            '    'figure out for self
-            '    numBins = CalculateHistogramNumBins(numValid)
-            '    If numBins > m_MaxHistBins Then
-            '        numBins = m_MaxHistBins
-            '    End If
-
-
-            '    'dx = range/(#bins - 1)
-            '    dX = (xRange / (numBins)).ToString("0.###e0")   'Math.Round(xRange / (numBins), 3)
-            '    'modify dX so is a discreet value (a whole number) value -> modified dX will always be smaller than calculated to ensure the correct number of bins!
-            '    'If dX > Math.Floor(dX) + 0.5 Then
-            '    '    dX = Math.Ceiling(dX)
-            '    'Else
-            '    '    dX = Math.Floor(dX)
-            '    'End If
-            '    'Do a check if dx = 0, make it minimum of 1
-            '    If dX <= 0 Then
-            '        dX = 1
-            '    End If
-
-            '    'get the count of values for each value, add it to ptList
-            '    ptList = New ZedGraph.PointPairList
-
-            '    lastValue = 0
-            '    xValue = minValue
-            '    nextXValue = Math.Round(xValue + dX, 3)
-            '    totalCount = 0
-            '    maxTotal = 0
-
-            '    Dim xLabels(numBins) As String
-            '    For i = 0 To numBins - 1
-            '        If xValue <= maxValue Then
-            '            '1. get the count of values in range
-            '            totalCount = m_Data.Compute("Count( DataValue )", "(( DataValue >= " & xValue & ") AND (DataValue < " & nextXValue & "))")
-            '            '2. add the point to the list
-            '            'ptList.Add(xValue, totalCount, xValue & " - " & nextXValue)
-            '            ptList.Add(CDbl((xValue + (dX / 2)).ToString("0.###e0")), totalCount, xValue & " - " & nextXValue)
-            '            '3. create the tic mark,lable
-            '            'xLabels(i) = xValue
-            '            '4. see if totalCount > maxTotal
-            '            If totalCount > maxTotal Then
-            '                maxTotal = totalCount
-            '            End If
-            '            '5. calculate next xValue,nextXValue
-            '            xValue = nextXValue
-            '            nextXValue = Math.Round(xValue + dX, 3)
-            '        End If
-            '        xLabels(i) = ""
-            '    Next i
-
-            '    'Set scroll bar range manually 
-            '    zgHistogramPlot.ScrollMaxX = maxValue + 0.5 * m_StdDev
-            '    zgHistogramPlot.ScrollMinX = minValue - 0.5 * m_StdDev
-            '    zgHistogramPlot.ScrollMaxY = maxTotal * 1.05
-            '    zgHistogramPlot.ScrollMinY = 0
-
-            '    'Set the scale
-            '    gPane3.XAxis.Scale.Min = minValue
-            '    gPane3.XAxis.Scale.Max = maxValue
-            '    'gPane3.XAxis.Scale.MinGrace = 0.001
-            '    'gPane3.XAxis.Scale.MaxGrace = 0.001
-            '    gPane3.XAxis.Scale.MajorStep = dX
-            '    gPane3.XAxis.MinorTic.Color = Color.Transparent
-            '    gPane3.XAxis.Type = AxisType.Linear
-            '    gPane3.BarSettings.MinBarGap = 0
-            '    gPane3.BarSettings.MinClusterGap = 0
-            '    gPane3.BarSettings.Type = BarType.Overlay
-            '    gPane3.YAxis.Scale.Min = 0
-
-
-            '    'gPane3.XAxis.Scale.TextLabels = xLabels
-
-
-            '    '7. Plot the Data
-            '    'create the bars
-            '    histBars = gPane3.AddBar("histogram", ptList, Color.Black)
-
-            '    'set bar settings
-            '    gPane3.XAxis.MajorTic.IsBetweenLabels = True
-            '    ' '' '' '' '' ''gPane3.XAxis.Scale.IsLabelsInside = False
-
-            '    'draw the plot
-            '    gPane3.XAxis.IsVisible = True
-            '    gPane3.YAxis.IsVisible = True
-            'End If
-            'zgSummaryPlot.RestoreScale(zgSummaryPlot.GraphPane)
-
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGHistogram.RenderGraph" & vbCrLf & ex.Message)
         End Try
@@ -1157,33 +947,6 @@ Public Class cSummaryPlot
 
     End Sub
 #End Region
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    ''Old(code)
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'Private Function CalculateHistogramNumBins(ByVal numValues As Double) As Integer
-    '    'this function calculates the number of Bins -> Bars for the Histogram Chart on the Visualize Tab
-    '    'Inputs:  numValues -> the total number of valid values
-    '    'Outputs: Integer -> the number of bins needed
-    '    Try
-    '        Dim numBins As Integer = 0
-    '        Dim top As Double   'top half of the equation
-    '        Dim bottom As Double 'bottom half of the equation
-    '        '#bins = ((2.303*squareRoot(n))/(natural log(n)))*(2)
-
-    '        top = 2.303 * Math.Sqrt(numValues)
-    '        bottom = Math.Log(numValues)
-    '        numBins = Math.Floor((top / bottom) * 2)
-
-    '        If numBins < 5 Then
-    '            numBins = 5
-    '        End If
-
-    '        Return numBins
-    '    Catch ex As Exception
-    '        Throw New Exception("Error Occured in ZGHistogram.CalculateHistogramNumBins" & vbCrLf & ex.Message)
-    '    End Try
-    'End Function
-
 
     Private Function CalculateHistogramNumBins(ByVal numValues As Double) As Integer
         'this function calculates the number of Bins -> Bars for the Histogram Chart on the Visualize Tab
@@ -1216,7 +979,7 @@ Public Class cSummaryPlot
             If ((m_Data Is Nothing) OrElse (m_Data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
                 gPane4.CurveList.Clear()
                 gPane4.GraphObjList.Clear()
-                gPane4.Title.Text = "No Data To Plot"
+                gPane4.Title.Text = NO_DATA_TO_PLOT
                 gPane4.XAxis.IsVisible = False
                 gPane4.YAxis.IsVisible = False
                 gPane4.Legend.IsVisible = False

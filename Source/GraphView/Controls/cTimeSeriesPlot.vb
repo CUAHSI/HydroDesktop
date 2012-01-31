@@ -21,6 +21,7 @@ Public Class cTimeSeriesPlot
 
     Private Const XColumn As String = "LocalDateTime"
     Private Const YColumn As String = "DataValue"
+    Private Const NO_DATA_TO_PLOT As String = "No Data To Plot"
 
     Private m_SeriesSelector As ISeriesSelector
     Public Property SeriesSelector() As ISeriesSelector
@@ -32,6 +33,9 @@ Public Class cTimeSeriesPlot
         End Set
     End Property
 
+    Public Function CurveCount() As Int32
+        Return zgTimeSeries.GraphPane.CurveList.Count
+    End Function
 
     Public Sub Plot(ByRef options As TimeSeriesPlotOptions)
         Try
@@ -39,6 +43,10 @@ Public Class cTimeSeriesPlot
         Catch ex As Exception
             Throw New Exception("Error Occurred in ZGTimeSeries.Plot" & vbCrLf & ex.Message)
         End Try
+    End Sub
+
+    Public Sub SetGraphPaneTitle(ByVal title As String)
+        zgTimeSeries.GraphPane.Title.Text = title
     End Sub
 
 
@@ -53,7 +61,7 @@ Public Class cTimeSeriesPlot
             If gPane.GraphObjList Is Nothing Then Return
 
             gPane.CurveList.Clear()
-            gPane.Title.Text = "No Data To Plot"
+            SetGraphPaneTitle(NO_DATA_TO_PLOT)
             gPane.XAxis.IsVisible = False
             gPane.YAxis.IsVisible = False
             gPane.GraphObjList.Clear()
@@ -80,7 +88,7 @@ Public Class cTimeSeriesPlot
                 gPane.YAxis.IsVisible = False
                 zgTimeSeries.IsShowVScrollBar = False
                 zgTimeSeries.IsShowHScrollBar = False
-                gPane.Title.Text = "No Data To Plot"
+                SetGraphPaneTitle(NO_DATA_TO_PLOT)
             Else
                 'Setting Legend
                 If m_Options.ShowLegend Then
@@ -91,36 +99,15 @@ Public Class cTimeSeriesPlot
                 End If
 
                 'Setting Scroll and scale
-                'zgTimeSeries.ZoomOutAll(gPane)
                 zgTimeSeries.IsShowVScrollBar = True
                 zgTimeSeries.IsShowHScrollBar = True
                 zgTimeSeries.IsAutoScrollRange = True
                 'Setting X Axis
                 gPane.XAxis.IsVisible = True
                 gPane.XAxis.Title.Text = "Date and Time"
-
-                'Setting Title
-                'If Not (gPane.Title.Text = "Alarm! It is not good comparison (Different variables)") Then
-                '    If (gPane.Title.Text Like (m_Var + "*")) Then
-                '        gPane.Title.Text = m_Var
-                '    ElseIf (gPane.Title.Text = "Title") Or _
-                '    (gPane.Title.Text = "No Data To Plot") Then
-                gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
-                '        gPane.Legend.IsVisible = False
-                '    Else
-                '        gPane.Title.Text = "Alarm! It is not good comparison (Different variables)"
-                '    End If
-                'End If
-
-                'Dim pointList As New ZedGraph.DataSourcePointList
-                'pointList.XDataMember = XColumn
-                'pointList.YDataMember = YColumn
-                'pointList.DataSource = m_Data
-                'pointList.TagDataMember = "CensorCode"
+                SetGraphPaneTitle(m_VariableWithUnits & vbCrLf & " at " & m_Site)
 
                 Dim pointList As New PointPairList
-
-
                 For Each row As DataRow In m_Data.Rows
                     Dim p As New PointPair(New XDate(CDate(row.Item(XColumn))), row.Item(YColumn))
                     p.Tag = row.Item("CensorCode").ToString
@@ -169,10 +156,12 @@ Public Class cTimeSeriesPlot
                 Dim needShowDataType = False
                 For Each c In zgTimeSeries.GraphPane.CurveList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                    If cOptions Is Nothing Then Continue For
 
                     For Each cc In zgTimeSeries.GraphPane.CurveList
                         If Not ReferenceEquals(c, cc) Then
                             Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                            If ccOptions Is Nothing Then Continue For
 
                             If ccOptions.SiteName = cOptions.SiteName And
                                ccOptions.VariableName = cOptions.VariableName Then
@@ -189,118 +178,21 @@ Public Class cTimeSeriesPlot
                     ' Update legend for all curves
                     For Each c In zgTimeSeries.GraphPane.CurveList
                         Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                        c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                        If Not cOptions Is Nothing Then
+                            c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                        Else
+                            c.Label.Text = String.Empty
+                        End If
                     Next
                 End If
 
 
                 'Setting Y Axis
                 curve.Link.Title = m_VariableWithUnits
-                '    If gPane.CurveList.Count = 1 Then
-                '        With gPane.YAxis
-                '            .Scale.MagAuto = False
-                '            .IsVisible = True
-                '            .Title.Text = m_Var
-                '            '.Scale.FontSpec.FontColor = curve.Color
-                '            '.Title.FontSpec.FontColor = curve.Color
-                '            '.Color = curve.Color
-                '            curve.IsY2Axis = False
-                '            curve.YAxisIndex = 0
-                '        End With
-                '    End If
-                '    While Not i >= gPane.YAxisList.Count
-                '        If gPane.YAxisList(i).Title.Text = curve.Link.Title Then
-                '            curve.IsY2Axis = False
-                '            curve.YAxisIndex = i
-                '            IsInYAxis = True
-                '        End If
-                '        i += 1
-                '    End While
-                '    i = 0
-                '    While Not i >= gPane.Y2AxisList.Count
-                '        If gPane.Y2AxisList(i).Title.Text = curve.Link.Title Then
-                '            curve.IsY2Axis = True
-                '            curve.YAxisIndex = i
-                '            IsInYAxis = True
-                '        End If
-                '        i += 1
-                '    End While
-                '    If IsInYAxis = False Then
-                '        If gPane.Y2AxisList(0).Title.Text = "" Then
-
-                '            With gPane.Y2AxisList(0)
-
-
-                '                '.Scale.FontSpec.FontColor = curve.Color
-                '                '.Title.FontSpec.FontColor = curve.Color
-                '                '.Color = curve.Color
-                '                .IsVisible = True
-                '                .Scale.MagAuto = False
-
-                '                .MajorTic.IsInside = False
-                '                .MinorTic.IsInside = False
-                '                .MajorTic.IsOpposite = False
-                '                .MinorTic.IsOpposite = False
-
-                '                .Scale.Align = AlignP.Inside
-
-                '                .Title.Text = curve.Link.Title
-
-                '                curve.IsY2Axis = True
-                '                curve.YAxisIndex = 0
-                '            End With
-                '        ElseIf gPane.YAxisList.Count > gPane.Y2AxisList.Count Then
-                '            Dim newYAxis As New Y2Axis(curve.Link.Title)
-                '            gPane.Y2AxisList.Add(newYAxis)
-                '            'newYAxis.Scale.FontSpec.FontColor = curve.Color
-                '            'newYAxis.Title.FontSpec.FontColor = curve.Color
-                '            'newYAxis.Color = curve.Color
-                '            newYAxis.IsVisible = True
-                '            newYAxis.Scale.MagAuto = False
-
-                '            newYAxis.MajorTic.IsInside = False
-                '            newYAxis.MinorTic.IsInside = False
-                '            newYAxis.MajorTic.IsOpposite = False
-                '            newYAxis.MinorTic.IsOpposite = False
-
-                '            newYAxis.Scale.Align = AlignP.Inside
-
-                '            newYAxis.Title.Text = curve.Link.Title
-
-                '            curve.IsY2Axis = True
-                '            curve.YAxisIndex = gPane.Y2AxisList.Count - 1
-                '        Else
-                '            Dim newYAxis As New YAxis(curve.Link.Title)
-                '            gPane.YAxisList.Add(newYAxis)
-                '            'newYAxis.Scale.FontSpec.FontColor = curve.Color
-                '            'newYAxis.Title.FontSpec.FontColor = curve.Color
-                '            'newYAxis.Color = curve.Color
-                '            newYAxis.IsVisible = True
-                '            newYAxis.Scale.MagAuto = False
-
-                '            newYAxis.MajorTic.IsInside = False
-                '            newYAxis.MinorTic.IsInside = False
-                '            newYAxis.MajorTic.IsOpposite = False
-                '            newYAxis.MinorTic.IsOpposite = False
-
-                '            newYAxis.Scale.Align = AlignP.Inside
-
-                '            newYAxis.Title.Text = curve.Link.Title
-
-                '            curve.IsY2Axis = False
-                '            curve.YAxisIndex = gPane.YAxisList.Count - 1
-                '        End If
-
-                '    End If
-                '        'gPane.Legend.Fill = New Fill(m_Options.GetLineColor, Brushes.AliceBlue, FillType.None)
-                '        'gPane.Legend.FontSpec.
             End If
 
             SettingYAsixs()
             SettingTitle()
-
-            'zgTimeSeries.AxisChange()
-            'zgTimeSeries.Refresh()
 
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGTimeSeries.Graph" & vbCrLf & ex.Message)
@@ -439,45 +331,7 @@ Public Class cTimeSeriesPlot
 
         Next
 
-        'Remove Y Axis
-        'With zgTimeSeries.GraphPane
-        '    For i = 0 To .YAxisList.Count - 1
-        '        IsExist = False
-        '        For j = 0 To .CurveList.Count - 1
-        '            If .CurveList(j).Link.Title = .YAxisList(i).Title.Text Then
-        '                IsExist = True
-        '            End If
-        '        Next
-        '        If Not IsExist Then
-        '            If .YAxisList.Count = 1 Then
-        '                .YAxisList.Remove(.YAxisList(i))
-        '                .YAxisList.Add("")
-        '            Else
-        '                .YAxisList.Remove(.YAxisList(i))
-        '            End If
-        '        End If
-        '    Next
-        '    For i = 0 To .Y2AxisList.Count - 1
-        '        IsExist = False
-        '        For j = 0 To .CurveList.Count - 1
-        '            If .CurveList(j).Link.Title = .Y2AxisList(i).Title.Text Then
-        '                IsExist = True
-        '            End If
-        '        Next
-        '        If Not IsExist Then
-        '            If .Y2AxisList.Count = 1 Then
-        '                .Y2AxisList.Remove(.Y2AxisList(i))
-        '                .Y2AxisList.Add("")
-        '            Else
-        '                .Y2AxisList.Remove(.Y2AxisList(i))
-        '            End If
-        '        End If
-        '    Next
-        'End With
-
-
         SettingYAsixs()
-
         SettingTitle()
 
     End Sub
@@ -502,7 +356,7 @@ Public Class cTimeSeriesPlot
                 '.Title.Text = .CurveList(0).Link.Title
                 .Legend.IsVisible = False
             ElseIf .CurveList.Count = 0 Then
-                .Title.Text = "No Data To Plot"
+                .Title.Text = NO_DATA_TO_PLOT
             End If
 
         End With

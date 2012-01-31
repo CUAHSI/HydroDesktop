@@ -10,7 +10,7 @@ Public Class cProbabilityPlot
     
     Private Shared m_VarList As New List(Of String)
     Private m_SeriesSelector As ISeriesSelector
-    Dim m_StdDev
+    Private Const NO_DATA_TO_PLOT As String = "No Data To Plot"
 
     'the main series selector control
     Public Property SeriesSelector() As ISeriesSelector
@@ -22,17 +22,18 @@ Public Class cProbabilityPlot
         End Set
     End Property
 
+    Public Function CurveCount() As Int32
+        Return zgProbabilityPlot.GraphPane.CurveList.Count
+    End Function
+
+    Public Sub SetGraphPaneTitle(ByVal title As String)
+        zgProbabilityPlot.GraphPane.Title.Text = title
+    End Sub
+
     Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
         Try
-            Dim m_Data = options.DataTable
             Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
             m_VarList.Add(m_VariableWithUnits)
-
-            If (e_StdDev = 0) And (Not (m_Data Is Nothing)) And (m_Data.Rows.Count > 0) Then
-                m_StdDev = Statistics.StandardDeviation(m_Data)
-            Else
-                m_StdDev = e_StdDev
-            End If
             PlotProbability(options)
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGProbability.Plot" & vbCrLf & ex.Message)
@@ -43,7 +44,7 @@ Public Class cProbabilityPlot
         Try
             Dim gPane As GraphPane = zgProbabilityPlot.GraphPane
             gPane.CurveList.Clear()
-            gPane.Title.Text = "No Data To Plot"
+            gPane.Title.Text = NO_DATA_TO_PLOT
             gPane.XAxis.IsVisible = False
             gPane.YAxis.IsVisible = False
             gPane.GraphObjList.Clear()
@@ -82,52 +83,10 @@ Public Class cProbabilityPlot
 
             '1. Set the Graph Pane, graphics object
             gPane = zgProbabilityPlot.GraphPane
-            'gPane.CurveList.Clear()
-            'g = zg5Probability.CreateGraphics
-
-            '2. Validate data
-            'If m_Data Is Nothing Then
-            'reset Title = No Data
-            'gPane.Title.Text = "No Data To Plot"
-            'zgProbabilityPlot.Refresh()
-            'release resources
-            'If Not (g Is Nothing) Then
-            '	g.Dispose()
-            '	g = Nothing
-            'End If
-
-            'exit
-            'Exit Try
-            'End If
-
-            '3. let user know something is being plotted
-
-
-            '4.get the data
-            ''get all the rows from the table that are not censored, order by Value
-            'validRows = m_VisPlotData.Select(db_fld_ValCensorCode & " <> " & db_val_valCensorCode_lt, db_fld_ValValue & " ASC") 'selected rows from m_VisPlotData that have censorcode <> "lt"
 
             'get all data(even censored ones), order by Value
             validRows = m_Data.Select("", "DataValue ASC")
             numRows = validRows.GetLength(0)
-            'make sure data was selected
-            'If (numRows = 0) Or (m_Data Is Nothing) Then
-            '    'reset Title = No Data
-            '    gPane.Title.Text = "No Data To Plot"
-            '    gPane.XAxis.IsVisible = False
-            '    gPane.YAxis.IsVisible = False
-            '    gPane.GraphObjList.Clear()
-            '    zgProbabilityPlot.IsShowVScrollBar = False
-            '    zgProbabilityPlot.IsShowHScrollBar = False
-            '    zgProbabilityPlot.Refresh()
-            '    'release resources
-            '    'If Not (g Is Nothing) Then
-            '    '	g.Dispose()
-            '    '	g = Nothing
-            '    'End If
-            '    'exit
-
-
 
             '    '5. Set Graph Properties
             'Else
@@ -158,33 +117,15 @@ Public Class cProbabilityPlot
             gPane.XAxis.MajorTic.IsAllTics = False
             gPane.XAxis.Scale.MinGrace = 0
             gPane.XAxis.Scale.MaxGrace = 0
-            ''y-axis
-            'gPane.YAxis.IsVisible = True
-            'gPane.YAxis.MajorGrid.IsVisible = True
-            'gPane.YAxis.MajorGrid.Color = Drawing.Color.Gray
-            'gPane.YAxis.Title.Text = variable & "  " & varUnits
-            'gPane.YAxis.Type = ZedGraph.AxisType.Linear
-            'gPane.YAxis.Scale.MinGrace = 0.025
-            'gPane.YAxis.Scale.MaxGrace = 0.025
-            'gPane.YAxis.Scale.MagAuto = False
+           
             'Title
             While (GetStringLen(m_Site, gPane.Title.FontSpec.GetFont(gPane.CalcScaleFactor)) > zgProbabilityPlot.Width)
                 m_Site = GraphTitleBreaks(m_Site)
             End While
 
             'Setting title
-            'If Not (gPane.Title.Text = "Alarm! It is not good comparison (Different variables)") Then
-            '    If (gPane.Title.Text Like (m_Var + "*")) Then
-            '        gPane.Title.Text = m_Var
-            '    ElseIf (gPane.Title.Text = "Title") Or _
-            '    (gPane.Title.Text = "No Data To Plot") Then
             gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
-            '        gPane.Legend.IsVisible = False
-            '    Else
-            '        gPane.Title.Text = "Alarm! It is not good comparison (Different variables)"
-            '    End If
-            'End If
-
+            
             '6. Create the Pts for the Line
             ptList = New ZedGraph.PointPairList
 
@@ -249,10 +190,12 @@ Public Class cProbabilityPlot
             Dim needShowDataType = False
             For Each c In zgProbabilityPlot.GraphPane.CurveList
                 Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                If cOptions Is Nothing Then Continue For
 
                 For Each cc In zgProbabilityPlot.GraphPane.CurveList
                     If Not ReferenceEquals(c, cc) Then
                         Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                        If ccOptions Is Nothing Then Continue For
 
                         If ccOptions.SiteName = cOptions.SiteName And
                            ccOptions.VariableName = cOptions.VariableName Then
@@ -269,111 +212,17 @@ Public Class cProbabilityPlot
                 ' Update legend for all curves
                 For Each c In zgProbabilityPlot.GraphPane.CurveList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                    c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                    If Not cOptions Is Nothing Then
+                        c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                    Else
+                        c.Label.Text = String.Empty
+                    End If
+
                 Next
             End If
 
             'Setting Y Axis
             probLine.Link.Title = m_VariableWithUnits
-            'If gPane.CurveList.Count = 1 Then
-            '    With gPane.YAxis
-            '        .Scale.MagAuto = False
-            '        .IsVisible = True
-            '        .Title.Text = m_Var
-            '        '.Scale.FontSpec.FontColor = probLine.Color
-            '        '.Title.FontSpec.FontColor = probLine.Color
-            '        '.Color = probLine.Color
-            '        probLine.IsY2Axis = False
-            '        probLine.YAxisIndex = 0
-            '    End With
-            'End If
-            'i = 0
-            'While Not i >= gPane.YAxisList.Count
-            '    If gPane.YAxisList(i).Title.Text = probLine.Link.Title Then
-            '        probLine.IsY2Axis = False
-            '        probLine.YAxisIndex = i
-            '        IsInYAxis = True
-            '    End If
-            '    i += 1
-            'End While
-            'i = 0
-            'While Not i >= gPane.Y2AxisList.Count
-            '    If gPane.Y2AxisList(i).Title.Text = probLine.Link.Title Then
-            '        probLine.IsY2Axis = True
-            '        probLine.YAxisIndex = i
-            '        IsInYAxis = True
-            '    End If
-            '    i += 1
-            'End While
-            'If IsInYAxis = False Then
-            '    If gPane.Y2AxisList(0).Title.Text = "" Then
-
-            '        With gPane.Y2AxisList(0)
-
-
-            '            '.Scale.FontSpec.FontColor = probLine.Color
-            '            '.Title.FontSpec.FontColor = probLine.Color
-            '            '.Color = probLine.Color
-            '            .IsVisible = True
-            '            .Scale.MagAuto = False
-
-            '            .MajorTic.IsInside = False
-            '            .MinorTic.IsInside = False
-            '            .MajorTic.IsOpposite = False
-            '            .MinorTic.IsOpposite = False
-
-            '            .Scale.Align = AlignP.Inside
-
-            '            .Title.Text = probLine.Link.Title
-
-            '            probLine.IsY2Axis = True
-            '            probLine.YAxisIndex = 0
-            '        End With
-            '    ElseIf gPane.YAxisList.Count > gPane.Y2AxisList.Count Then
-            '        Dim newYAxis As New Y2Axis(probLine.Link.Title)
-            '        gPane.Y2AxisList.Add(newYAxis)
-            '        'newYAxis.Scale.FontSpec.FontColor = probLine.Color
-            '        'newYAxis.Title.FontSpec.FontColor = probLine.Color
-            '        'newYAxis.Color = probLine.Color
-            '        newYAxis.IsVisible = True
-            '        newYAxis.Scale.MagAuto = False
-
-            '        newYAxis.MajorTic.IsInside = False
-            '        newYAxis.MinorTic.IsInside = False
-            '        newYAxis.MajorTic.IsOpposite = False
-            '        newYAxis.MinorTic.IsOpposite = False
-
-            '        newYAxis.Scale.Align = AlignP.Inside
-
-            '        newYAxis.Title.Text = probLine.Link.Title
-
-            '        probLine.IsY2Axis = True
-            '        probLine.YAxisIndex = gPane.Y2AxisList.Count - 1
-            '    Else
-            '        Dim newYAxis As New YAxis(probLine.Link.Title)
-            '        gPane.YAxisList.Add(newYAxis)
-            '        'newYAxis.Scale.FontSpec.FontColor = probLine.Color
-            '        'newYAxis.Title.FontSpec.FontColor = probLine.Color
-            '        'newYAxis.Color = probLine.Color
-            '        newYAxis.IsVisible = True
-            '        newYAxis.Scale.MagAuto = False
-
-            '        newYAxis.MajorTic.IsInside = False
-            '        newYAxis.MinorTic.IsInside = False
-            '        newYAxis.MajorTic.IsOpposite = False
-            '        newYAxis.MinorTic.IsOpposite = False
-
-            '        newYAxis.Scale.Align = AlignP.Inside
-
-            '        newYAxis.Title.Text = probLine.Link.Title
-
-            '        probLine.IsY2Axis = False
-            '        probLine.YAxisIndex = gPane.YAxisList.Count - 1
-            '    End If
-            'End If
-
-
-
 
             '8. set up Tic Marks
 
@@ -433,61 +282,6 @@ Public Class cProbabilityPlot
             Return Math.Round((rank - 0.375) / (numRows + 1 - 2 * (0.375)), 3)
         Catch ex As Exception
 
-        End Try
-    End Function
-
-    Private Function CreateProbabilityXAxisLabels(ByVal pane As ZedGraph.GraphPane, ByVal axis As ZedGraph.Axis, ByVal val As Double, ByVal index As Integer) As String
-        Try
-            'pane.XAxis.IsVisible = True
-            'Select Case val
-            '	Case -3.892
-            '		Return "0.01"
-            '	Case -3.5
-            '		Return "0.02"
-            '	Case -3.095
-            '		Return "0.1"
-            '	Case -2.323
-            '		Return "1"
-            '	Case -2.055
-            '		Return "2"
-            '	Case -1.645
-            '		Return "5"
-            '	Case -1.282
-            '		Return "10"
-            '	Case -0.842
-            '		Return "20"
-            '	Case -0.524
-            '		Return "30"
-            '	Case -0.254
-            '		Return "40"
-            '	Case 0
-            '		Return "50"
-            '	Case 0.254
-            '		Return "60"
-            '	Case 0.524
-            '		Return "70"
-            '	Case 0.842
-            '		Return "80"
-            '	Case 1.282
-            '		Return "90"
-            '	Case 1.645
-            '		Return "95"
-            '	Case 2.055
-            '		Return "98"
-            '	Case 2.323
-            '		Return "99"
-            '	Case 3.095
-            '		Return "99.9"
-            '	Case 3.5
-            '		Return "99.98"
-            '	Case 3.892
-            '		Return "99.99"
-            '	Case Else
-            '		Return ""
-            'End Select
-            Return ""
-        Catch ex As Exception
-            Return ""
         End Try
     End Function
 
@@ -787,47 +581,6 @@ Public Class cProbabilityPlot
                 zgProbabilityPlot.GraphPane.CurveList.Add(CurveListCopy(i))
             End If
         Next
-
-        'Remove Y Axis
-        'With zgProbabilityPlot.GraphPane
-        '    For i = 0 To .YAxisList.Count - 1
-        '        IsExist = False
-        '        For j = 0 To .CurveList.Count - 1
-        '            If .CurveList(j).Link.Title = .YAxisList(i).Title.Text Then
-        '                IsExist = True
-        '            End If
-        '        Next
-        '        If Not IsExist Then
-        '            If .YAxisList.Count = 1 Then
-        '                .YAxisList.Remove(.YAxisList(i))
-        '                .YAxisList.Add("")
-        '                Exit For
-        '            Else
-        '                .YAxisList.Remove(.YAxisList(i))
-        '                Exit For
-        '            End If
-        '        End If
-        '    Next
-        '    For i = 0 To .Y2AxisList.Count - 1
-        '        IsExist = False
-        '        For j = 0 To .CurveList.Count - 1
-        '            If .CurveList(j).Link.Title = .Y2AxisList(i).Title.Text Then
-        '                IsExist = True
-        '            End If
-        '        Next
-        '        If Not IsExist Then
-        '            If .Y2AxisList.Count = 1 Then
-        '                .Y2AxisList.Remove(.Y2AxisList(i))
-        '                .Y2AxisList.Add("")
-        '                Exit For
-        '            Else
-        '                .Y2AxisList.Remove(.Y2AxisList(i))
-        '                Exit For
-        '            End If
-        '        End If
-        '    Next
-        'End With
-
         SettingYAsixs()
         SettingTitle()
     End Sub
@@ -852,7 +605,7 @@ Public Class cProbabilityPlot
                 '.Title.Text = .CurveList(0).Link.Title
                 .Legend.IsVisible = False
             ElseIf .CurveList.Count = 0 Then
-                .Title.Text = "No Data To Plot"
+                .Title.Text = NO_DATA_TO_PLOT
             End If
 
         End With

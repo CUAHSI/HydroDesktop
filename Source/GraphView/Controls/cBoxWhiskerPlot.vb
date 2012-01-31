@@ -11,6 +11,7 @@ Public Class cBoxWhiskerPlot
     Private Const db_outFld_ValDTMonth As String = "DateMonth"
     Private Const db_outFld_ValDTYear As String = "DateYear"
     Private Const db_outFld_ValDTDay As String = "DateDay"
+    Private Const NO_DATA_TO_PLOT As String = "No Data To Plot"
 
     Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
         Try
@@ -18,7 +19,7 @@ Public Class cBoxWhiskerPlot
             Dim i As Integer
 
             If zgBoxWhiskerPlot.MasterPane.PaneList.Count <> 0 Then
-                If zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = "Title" Or zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = "No Data To Plot" Then
+                If zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = "Title" Or zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = NO_DATA_TO_PLOT Then
                     zgBoxWhiskerPlot.MasterPane.PaneList.Clear()
                 End If
             End If
@@ -48,17 +49,20 @@ Public Class cBoxWhiskerPlot
         End Try
     End Sub
 
+    Public Function CurveCount() As Int32
+        Return zgBoxWhiskerPlot.GraphPane.CurveList.Count
+    End Function
+
+    Public Sub SetGraphPaneTitle(ByVal title As String)
+        zgBoxWhiskerPlot.GraphPane.Title.Text = title
+    End Sub
+
     Public Sub Clear()
         Try
-            'gPane.CurveList.Clear()
-            'gPane.GraphObjList.Clear()
-            'gPane.Title.Text = "No Data To Plot"
-            'gPane.XAxis.IsVisible = False
-            'gPane.YAxis.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.PaneList.Clear()
             zgBoxWhiskerPlot.MasterPane.PaneList.Add(New GraphPane)
             zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.IsVisible = True
-            zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = "No Data To Plot"
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = NO_DATA_TO_PLOT
             zgBoxWhiskerPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.PaneList(0).Border.IsVisible = False
@@ -81,7 +85,7 @@ Public Class cBoxWhiskerPlot
             If ((m_Data Is Nothing) OrElse (m_Data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
                 gPane.CurveList.Clear()
                 gPane.GraphObjList.Clear()
-                gPane.Title.Text = "No Data To Plot"
+                gPane.Title.Text = NO_DATA_TO_PLOT
                 gPane.XAxis.IsVisible = False
                 gPane.YAxis.IsVisible = False
                 zgBoxWhiskerPlot.IsShowVScrollBar = False
@@ -186,10 +190,12 @@ Public Class cBoxWhiskerPlot
                 Dim needShowDataType = False
                 For Each c In zgBoxWhiskerPlot.MasterPane.PaneList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                    If cOptions Is Nothing Then Continue For
 
                     For Each cc In zgBoxWhiskerPlot.MasterPane.PaneList
                         If Not ReferenceEquals(c, cc) Then
                             Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                            If ccOptions Is Nothing Then Continue For
 
                             If ccOptions.SiteName = cOptions.SiteName And
                                ccOptions.VariableName = cOptions.VariableName Then
@@ -206,7 +212,11 @@ Public Class cBoxWhiskerPlot
                     ' Update legend for all curves
                     For Each c In zgBoxWhiskerPlot.MasterPane.PaneList()
                         Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                        c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                        If Not cOptions Is Nothing Then
+                            c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                        Else
+                            c.Title.Text = String.Empty
+                        End If
                     Next
                 End If
 
@@ -866,30 +876,6 @@ Public Class cBoxWhiskerPlot
                 ReDim hourglassPts(0)
                 'hourglassPts = Nothing
             End If
-            'If Not (hourglassOutline Is Nothing) Then
-            'hourglassOutline = Nothing
-            'End If
-            'If Not (upperBoxShaded Is Nothing) Then
-            'upperBoxShaded = Nothing
-            'End If
-            'If Not (lowerBoxShaded Is Nothing) Then
-            'lowerBoxShaded = Nothing
-            'End If
-            'If Not (confIntervalLine Is Nothing) Then
-            'IntervalLine = Nothing
-            'End If
-            'If Not (whisker_Upper Is Nothing) Then
-            'whisker_Upper = Nothing
-            'End If
-            'If Not (lineToWhisker_Upper Is Nothing) Then
-            'lineToWhisker_Upper = Nothing
-            'End If
-            'If Not (whisker_Lower Is Nothing) Then
-            'whisker_Lower = Nothing
-            'End If
-            'If Not (lineToWhisker_Lower Is Nothing) Then
-            'lineToWhisker_Lower = Nothing
-            'End If
         Catch ex As Exception
             Clear()
             'ShowError("An Error occurred while drawing a Box/Whisker for the Box Plot. " & vbCrLf & "Message = " & ex.Message)
@@ -1099,25 +1085,6 @@ Public Class cBoxWhiskerPlot
             End If
 
         Next
-
-
-
-
-        'For i = 0 To PaneListCopy.Count - 1
-        '    If Not (i = paneIndex) Then
-        '        'zgTimeSeries.GraphPane.AddCurve(CurveListCopy(i).Label.ToString, CurveListCopy(i).Points, CurveListCopy(i).Color)
-        '        'Dim curve As LineItem = zgTimeSeries.GraphPane.AddCurve(CurveListCopy(i).Label.ToString, CurveListCopy(i).Points, CurveListCopy(i).Color, SymbolType.Circle)
-        '        'curve.Symbol.Fill = New Fill(m_Options.GetPointColor)
-        '        'curve.Symbol.Fill.RangeMin = 0
-        '        'curve.Symbol.Fill.RangeMax = 1
-        '        'curve.Symbol.Size = 4
-        '        'curve.Symbol.Fill.SecondaryValueGradientColor = Color.Empty
-        '        'curve.Symbol.Fill.Type = FillType.GradientByColorValue
-        '        'curve.Symbol.Border.IsVisible = False
-        '        'curve.Symbol.Border.IsVisible = False
-        '        zgBoxWhiskerPlot.MasterPane.PaneList.Add(PaneListCopy(i))
-        '    End If
-        'Next
     End Sub
 
     Public Function PaneID(ByVal pane As GraphPane) As Integer

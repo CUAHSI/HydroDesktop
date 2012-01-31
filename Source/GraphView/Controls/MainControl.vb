@@ -139,19 +139,16 @@ Namespace Controls
         Private Sub SeriesSelector_SeriesCheck() 'ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs)
 
             'Declaring all variables
-
-            Dim count As Integer = 0
-            Dim SeriesSelector = _seriesMenu
             Dim curveIndex As Integer = 0
             Dim removedSeriesID As Integer = 0
             Dim CheckedSeriesState As Boolean = False
 
-            If Not (selectedSeriesIdList.Contains(SeriesSelector.SelectedSeriesID)) Then
-                selectedSeriesIdList.Add(SeriesSelector.SelectedSeriesID)
+            If Not (selectedSeriesIdList.Contains(_seriesMenu.SelectedSeriesID)) Then
+                selectedSeriesIdList.Add(_seriesMenu.SelectedSeriesID)
                 CheckedSeriesState = True
             Else
                 For i As Integer = 0 To selectedSeriesIdList.Count - 1
-                    If Not SeriesSelector.CheckedIDList.Contains(selectedSeriesIdList(i)) Then
+                    If Not _seriesMenu.CheckedIDList.Contains(selectedSeriesIdList(i)) Then
                         removedSeriesID = selectedSeriesIdList(i)
                         curveIndex = i
                     End If
@@ -162,7 +159,6 @@ Namespace Controls
                     'Clear the graph and repolt the whole graph
                     Summary.ClearStatistics()
                     pDataSummary.ClearStatTables()
-                    'pSummaryPlot.Clear()
                     pTimeSeries.Remove(0)
                     pProbability.Remove(0)
                     pTimeSeries.Clear()
@@ -170,9 +166,6 @@ Namespace Controls
                     pHistogram.Clear()
                     pProbability.Clear()
                     colorcount = 0
-                    count = 0
-                    'rlblStratDate.Text = "Start Date: "
-                    'rlblEndDate.Text = "End Date:   "
                     StartDateLimit = Today.AddYears(-150)
                     EndDateLimit = Today
                 Else
@@ -188,9 +181,7 @@ Namespace Controls
             End If
 
 
-            If (CheckedSeriesState = True) Or (selectedSeriesIdList.Count = 1) Then 'And (CPlotOptions1.dtpStartDatePicker.Value = lastStartDate) And (CPlotOptions1.dtpEndDatePicker.Value = lastEndDate) Then
-
-                count += selectedSeriesIdList.Cast(Of Integer)().Count()
+            If (CheckedSeriesState = True) Or (selectedSeriesIdList.Count = 1) Then
 
                 'progress bar setting
                 ProgressBar.Visible = True
@@ -198,34 +189,10 @@ Namespace Controls
                 ProgressBar.Minimum = 0
                 ProgressBar.Value = 0
 
-                Dim seriesID = selectedSeriesIdList(count - 1)
-
-                'Date Range setting
-                DateRangeSelection(seriesID)
-
-                'get data
-                Dim timeSeriesOptions = GetTimeSeriesPlotOptions(seriesID)
-
-                'Set different color to each curve if the color option is not selected
-                ColorChooser(timeSeriesOptions.PlotOptions)
-
-                Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-                pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, seriesID, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-                pDataSummary.StatTableStyling()
-
-                If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
-                    pTimeSeries.Plot(timeSeriesOptions)
-                    ProgressBar.Value += 1
-                    'pTimeSeries.zgTimeSeries.GraphPane.Title.Text = strStartDate
-                    pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                    ProgressBar.Value += 1
-                    pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                    ProgressBar.Value += 1
-                    pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                    ProgressBar.Value += 1
-                    'pSummaryPlot.Plot(data, siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
-                End If
+                Dim seriesID = selectedSeriesIdList(selectedSeriesIdList.Count - 1)
+                PlotGraps(seriesID)
                 colorcount += 1
+
             End If
 
             pDataSummary.StatTableStyling()
@@ -272,19 +239,56 @@ Namespace Controls
 
             Return timeSeriesOptions
         End Function
+        
+        Private Sub PlotGraps(ByVal seriesID As Int32)
 
+            'Date Range setting
+            DateRangeSelection(seriesID)
+
+            'get data
+            Dim timeSeriesOptions = GetTimeSeriesPlotOptions(seriesID)
+
+            'Set different color to each curve if the color option is not selected
+            ColorChooser(timeSeriesOptions.PlotOptions)
+
+            Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
+            pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, seriesID, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
+            pDataSummary.StatTableStyling()
+
+            If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
+
+                pTimeSeries.Plot(timeSeriesOptions)
+                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
+
+                pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
+                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
+
+                pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
+                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
+
+                pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
+                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
+
+            ElseIf Summary.Statistic_NumberOfObservations = Summary.Statistic_NumberOfCensoredObservations Then
+
+                Const ALL_CENSORED As String = "All data is censored, so there is no data do display"
+
+                If pTimeSeries.CurveCount = 0 Then pTimeSeries.SetGraphPaneTitle(ALL_CENSORED)
+                If pBoxWhisker.CurveCount = 0 Then pBoxWhisker.SetGraphPaneTitle(ALL_CENSORED)
+                If pProbability.CurveCount = 0 Then pProbability.SetGraphPaneTitle(ALL_CENSORED)
+                If pHistogram.CurveCount = 0 Then pHistogram.SetGraphPaneTitle(ALL_CENSORED)
+
+            End If
+
+        End Sub
 
         Public Sub ApplyOptions()
 
-            Dim count As Integer = selectedSeriesIdList.Count
-
             'progress bar setting
             ProgressBar.Visible = True
-            ProgressBar.Maximum = count * 10
+            ProgressBar.Maximum = selectedSeriesIdList.Count * 10
             ProgressBar.Minimum = 0
             ProgressBar.Value = 0
-
-            count = 0
             colorcount = 0
 
             'Clear the graph and plot it again
@@ -297,37 +301,10 @@ Namespace Controls
 
             'Ploting the Time Series graph and Probability graph
             For Each s As Integer In selectedSeriesIdList
-                count += 1
-
-                'setting Date Range
-                DateRangeSelection(selectedSeriesIdList(count - 1))
-
-                ' Get data
-                Dim timeSeriesOptions = GetTimeSeriesPlotOptions(s)
-
-
-                'Set different color to each curve if the color option is not selected
-                ColorChooser(timeSeriesOptions.PlotOptions)
-
-
-                If timeSeriesOptions.DataTable.Rows.Count > 0 Then
-                    Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-                    pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, s, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-                    If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
-                        'pSummaryPlot.Plot(data, siteName, variableName, unitsName, options, Summary.Statistic_StandardDeviation)
-                        pTimeSeries.Plot(timeSeriesOptions)
-                        If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-                        pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                        If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-                        pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                        If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-                        pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                        If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-                    End If
-                End If
+                PlotGraps(s)
                 colorcount += 1
-
             Next
+
             pDataSummary.StatTableStyling()
             pTimeSeries.Refreshing()
             pProbability.Refreshing()
