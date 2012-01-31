@@ -5,9 +5,8 @@ Imports ZedGraph
 Public Class cHistogramPlot
     Implements IChart
 
-    Private Shared m_Data As Data.DataTable
-    
-    Private Const m_MaxHistBins As Integer = 20 'holds the maximum number of Bins for a Histogram plot, 20 = selected due to spacing of values on the plot
+    Private Shared m_Data As DataTable
+
     Private m_StdDev As Double = 0
 
     Private yValue() As Double
@@ -27,12 +26,10 @@ Public Class cHistogramPlot
     Public Sub Plot(ByRef options As TimeSeriesPlotOptions, ByVal e_StdDev As Double)
         Try
             m_Data = options.DataTable.Copy
-          
-
-            Dim i As Integer
 
             If zgHistogramPlot.MasterPane.PaneList.Count <> 0 Then
-                If zgHistogramPlot.MasterPane.PaneList(0).Title.Text = "Title" Or zgHistogramPlot.MasterPane.PaneList(0).Title.Text = NO_DATA_TO_PLOT Then
+                Dim cOptions = DirectCast(zgHistogramPlot.MasterPane.PaneList(0).Tag, TimeSeriesPlotOptions)
+                If cOptions Is Nothing Then
                     zgHistogramPlot.MasterPane.PaneList.Clear()
                 End If
             End If
@@ -47,8 +44,7 @@ Public Class cHistogramPlot
 
             Dim gPane As GraphPane = New GraphPane
             zgHistogramPlot.MasterPane.PaneList.Add(gPane)
-            i = zgHistogramPlot.MasterPane.PaneList.Count - 1
-            Graph(zgHistogramPlot.MasterPane.PaneList(i), options)
+            Graph(gPane, options)
 
             If zgHistogramPlot.MasterPane.PaneList.Count > 1 Then
                 zgHistogramPlot.IsShowHScrollBar = False
@@ -75,9 +71,7 @@ Public Class cHistogramPlot
             zgHistogramPlot.IsShowVScrollBar = False
             zgHistogramPlot.Refresh()
             zgHistogramPlot.AxisChange()
-
-            'gPane.XAxis.IsVisible = False
-            'gPane.YAxis.IsVisible = False
+            
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGHistogram.Clear" & vbCrLf & ex.Message)
         End Try
@@ -85,12 +79,8 @@ Public Class cHistogramPlot
 
     Protected Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
         Try
-            Dim m_Site = options.SiteName
-            Dim m_Variable = options.VariableName
             Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
             Dim m_Options = options.PlotOptions
-            Dim m_ID = options.SeriesID
-
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'New code
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -126,8 +116,6 @@ Public Class cHistogramPlot
                 gPane.XAxis.Scale.IsLabelsInside = False
                 gPane.Border.IsVisible = False
 
-                Dim Vector(1) As Double
-
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 ' Scaling the X axis better
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -150,10 +138,6 @@ Public Class cHistogramPlot
                 gPane.XAxis.Scale.MajorStep = .xMajor
                 gPane.XAxis.Scale.MagAuto = False
 
-                'If (.xMax - .xMin) / .xMajor > 15 Then
-                '    gPane.XAxis.Scale.MajorStep = (.xMax - .xMin) / 15
-                'End If
-
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 ' Scaling the Y axis better
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -167,12 +151,10 @@ Public Class cHistogramPlot
                 Dim needShowDataType = False
                 For Each c In zgHistogramPlot.MasterPane.PaneList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                    If cOptions Is Nothing Then Continue For
 
                     For Each cc In zgHistogramPlot.MasterPane.PaneList
                         If Not ReferenceEquals(c, cc) Then
                             Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
-                            If ccOptions Is Nothing Then Continue For
 
                             If ccOptions.SiteName = cOptions.SiteName And
                                ccOptions.VariableName = cOptions.VariableName Then
@@ -189,11 +171,7 @@ Public Class cHistogramPlot
                     ' Update legend for all curves
                     For Each c In zgHistogramPlot.MasterPane.PaneList()
                         Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                        If Not cOptions Is Nothing Then
-                            c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
-                        Else
-                            c.Title.Text = String.Empty
-                        End If
+                        c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                     Next
                 End If
 
@@ -215,14 +193,7 @@ Public Class cHistogramPlot
                     End If
                 Next
                 list1 = Pretty.PrettyP(0, max)
-
-
-
-                'If min > 0 Then
-                '    gPane.YAxis.Scale.Min = 0
-                'Else
-                '    gPane.YAxis.Scale.Min = min - m_StdDev * 0.2
-                'End If
+            
                 gPane.YAxis.Scale.Min = 0
                 gPane.YAxis.Scale.MajorStep = list1.Item(2)
                 gPane.YAxis.Scale.MinorStep = gPane.YAxis.Scale.MajorStep / 5
@@ -319,11 +290,7 @@ Public Class cHistogramPlot
             dX = xLimits(2)
             pOptions.numBins = (xLimits(1) - xLimits(0)) / xLimits(2)
             pOptions.binWidth = dX
-
-
         End If
-
-
 
         With pOptions
             .xMax = xLimits(1)
@@ -490,13 +457,9 @@ Public Class cHistogramPlot
     End Sub
 
     Public Function PaneID(ByVal pane As GraphPane) As Integer
-        Dim ID As Integer
-        Dim StartIndex As Integer
-        Dim IDLength As Integer
-        StartIndex = pane.Title.Text.ToString.IndexOf("ID:") + 4
-        IDLength = pane.Title.Text.ToString.Length - StartIndex
-        ID = (pane.Title.Text.ToString.Substring(StartIndex, IDLength))
-        Return ID
+        Dim cOptions = DirectCast(pane.Tag, TimeSeriesPlotOptions)
+        If cOptions Is Nothing Then Return Nothing
+        Return cOptions.SeriesID
     End Function
 
     Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues

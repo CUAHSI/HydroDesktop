@@ -19,7 +19,8 @@ Public Class cBoxWhiskerPlot
             Dim i As Integer
 
             If zgBoxWhiskerPlot.MasterPane.PaneList.Count <> 0 Then
-                If zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = "Title" Or zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = NO_DATA_TO_PLOT Then
+                Dim cOptions = DirectCast(zgBoxWhiskerPlot.MasterPane.PaneList(0).Tag, TimeSeriesPlotOptions)
+                If cOptions Is Nothing Then
                     zgBoxWhiskerPlot.MasterPane.PaneList.Clear()
                 End If
             End If
@@ -29,7 +30,6 @@ Public Class cBoxWhiskerPlot
             Else
                 m_StdDev = e_StdDev
             End If
-
 
             zgBoxWhiskerPlot.MasterPane.Title.IsVisible = False
 
@@ -42,7 +42,6 @@ Public Class cBoxWhiskerPlot
                 zgBoxWhiskerPlot.IsShowHScrollBar = False
                 zgBoxWhiskerPlot.IsShowVScrollBar = False
             End If
-
 
         Catch ex As Exception
             Throw New Exception("Error Occured in ZGBoxWhisker.Plot" & vbCrLf & ex.Message)
@@ -190,13 +189,10 @@ Public Class cBoxWhiskerPlot
                 Dim needShowDataType = False
                 For Each c In zgBoxWhiskerPlot.MasterPane.PaneList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                    If cOptions Is Nothing Then Continue For
 
                     For Each cc In zgBoxWhiskerPlot.MasterPane.PaneList
                         If Not ReferenceEquals(c, cc) Then
                             Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
-                            If ccOptions Is Nothing Then Continue For
-
                             If ccOptions.SiteName = cOptions.SiteName And
                                ccOptions.VariableName = cOptions.VariableName Then
                                 needShowDataType = True
@@ -212,11 +208,7 @@ Public Class cBoxWhiskerPlot
                     ' Update legend for all curves
                     For Each c In zgBoxWhiskerPlot.MasterPane.PaneList()
                         Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                        If Not cOptions Is Nothing Then
-                            c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
-                        Else
-                            c.Title.Text = String.Empty
-                        End If
+                        c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                     Next
                 End If
 
@@ -1087,14 +1079,10 @@ Public Class cBoxWhiskerPlot
         Next
     End Sub
 
-    Public Function PaneID(ByVal pane As GraphPane) As Integer
-        Dim ID As Integer
-        Dim StartIndex As Integer
-        Dim IDLength As Integer
-        StartIndex = pane.Title.Text.ToString.IndexOf("ID:") + 4
-        IDLength = pane.Title.Text.ToString.Length - StartIndex
-        ID = (pane.Title.Text.ToString.Substring(StartIndex, IDLength))
-        Return ID
+    Private Function PaneID(ByVal pane As GraphPane) As Integer
+        Dim cOptions = DirectCast(pane.Tag, TimeSeriesPlotOptions)
+        If cOptions Is Nothing Then Return Nothing
+        Return cOptions.SeriesID
     End Function
 
     Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
