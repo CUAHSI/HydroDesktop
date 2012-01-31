@@ -78,7 +78,6 @@ Public Class cProbabilityPlot
         Dim curValue As Double
         Dim curX As Double
         Dim curFreq As Double
-        Dim IsInYAxis As Boolean = False
         Try
 
             '1. Set the Graph Pane, graphics object
@@ -190,13 +189,10 @@ Public Class cProbabilityPlot
             Dim needShowDataType = False
             For Each c In zgProbabilityPlot.GraphPane.CurveList
                 Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                If cOptions Is Nothing Then Continue For
 
                 For Each cc In zgProbabilityPlot.GraphPane.CurveList
                     If Not ReferenceEquals(c, cc) Then
                         Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
-                        If ccOptions Is Nothing Then Continue For
-
                         If ccOptions.SiteName = cOptions.SiteName And
                            ccOptions.VariableName = cOptions.VariableName Then
                             needShowDataType = True
@@ -212,12 +208,7 @@ Public Class cProbabilityPlot
                 ' Update legend for all curves
                 For Each c In zgProbabilityPlot.GraphPane.CurveList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                    If Not cOptions Is Nothing Then
-                        c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
-                    Else
-                        c.Label.Text = String.Empty
-                    End If
-
+                    c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                 Next
             End If
 

@@ -156,12 +156,10 @@ Public Class cTimeSeriesPlot
                 Dim needShowDataType = False
                 For Each c In zgTimeSeries.GraphPane.CurveList
                     Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                    If cOptions Is Nothing Then Continue For
 
                     For Each cc In zgTimeSeries.GraphPane.CurveList
                         If Not ReferenceEquals(c, cc) Then
                             Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
-                            If ccOptions Is Nothing Then Continue For
 
                             If ccOptions.SiteName = cOptions.SiteName And
                                ccOptions.VariableName = cOptions.VariableName Then
@@ -178,11 +176,7 @@ Public Class cTimeSeriesPlot
                     ' Update legend for all curves
                     For Each c In zgTimeSeries.GraphPane.CurveList
                         Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
-                        If Not cOptions Is Nothing Then
-                            c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
-                        Else
-                            c.Label.Text = String.Empty
-                        End If
+                        c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                     Next
                 End If
 
@@ -307,13 +301,11 @@ Public Class cTimeSeriesPlot
             Return
         End If
 
-        Dim IsExist As Boolean = False
         Dim CurveListCopy As New CurveList
         For i = 0 To zgTimeSeries.GraphPane.CurveList.Count - 1
             CurveListCopy.Add(zgTimeSeries.GraphPane.CurveList(i))
         Next
         Try
-            'zgTimeSeries.GraphPane.CurveList(curveIndex).Clear()
             zgTimeSeries.GraphPane.CurveList.Clear()
         Catch
         End Try
@@ -323,12 +315,6 @@ Public Class cTimeSeriesPlot
                 zgTimeSeries.GraphPane.CurveList.Add(CurveListCopy(i))
 
             End If
-
-            'If Not (i = curveIndex) Then
-            '    zgTimeSeries.GraphPane.CurveList.Add(CurveListCopy(i))
-
-            'End If
-
         Next
 
         SettingYAsixs()
@@ -422,18 +408,12 @@ Public Class cTimeSeriesPlot
 
             .Y2Axis.IsVisible = True
         End With
-
-
     End Sub
 
-    Public Function CurveID(ByVal curve As CurveItem) As Integer
-        Dim ID As Integer
-        Dim StartIndex As Integer
-        Dim IDLength As Integer
-        StartIndex = curve.Label.Text.ToString.IndexOf("ID:") + 4
-        IDLength = curve.Label.Text.ToString.Length - StartIndex
-        ID = (curve.Label.Text.ToString.Substring(StartIndex, IDLength))
-        Return ID
+    Private Function CurveID(ByVal curve As CurveItem) As Integer
+        Dim cOptions = DirectCast(curve.Tag, TimeSeriesPlotOptions)
+        If cOptions Is Nothing Then Return Nothing
+        Return cOptions.SeriesID
     End Function
 
     Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
