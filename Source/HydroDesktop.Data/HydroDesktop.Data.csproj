@@ -84,18 +84,6 @@
     <Compile Include="ImportExport\CsvStreamReader.cs" />
     <Compile Include="ImportExport\DelimitedFormatOptions.cs" />
     <Compile Include="ImportExport\DelimitedTextWriter.cs" />
-    <Compile Include="ImportExport\ExportDataTableToTextFileDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ImportExport\ExportDataTableToTextFileDialog.Designer.cs">
-      <DependentUpon>ExportDataTableToTextFileDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ImportExport\GetExportOptionsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ImportExport\GetExportOptionsDialog.Designer.cs">
-      <DependentUpon>GetExportOptionsDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -131,14 +119,6 @@
     <EmbeddedResource Include="Resources\defaultDatabase.sqlite" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ImportExport\ExportDataTableToTextFileDialog.resx">
-      <DependentUpon>ExportDataTableToTextFileDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ImportExport\GetExportOptionsDialog.resx">
-      <DependentUpon>GetExportOptionsDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

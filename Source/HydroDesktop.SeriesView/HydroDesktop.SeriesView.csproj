@@ -100,6 +100,7 @@
     <Compile Include="DisplayOptionsForm.Designer.cs">
       <DependentUpon>DisplayOptionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

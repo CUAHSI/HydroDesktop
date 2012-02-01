@@ -478,8 +478,10 @@ Public Class cProbabilityPlot
             Next count
 
             'Export Data
-            Dim exportForm As HydroDesktop.ImportExport.ExportDataTableToTextFileDialog = New HydroDesktop.ImportExport.ExportDataTableToTextFileDialog(exportTable)
-            exportForm.ShowDialog()
+            Dim exportPlugin = Common.PluginEntryPoint.App.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
+            If Not exportPlugin Is Nothing Then
+                exportPlugin.Export(exportTable)
+            End If
 
         End If
     End Sub

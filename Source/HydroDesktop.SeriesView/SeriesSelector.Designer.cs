@@ -50,7 +50,6 @@ namespace SeriesView
             this.cbBoxContent = new System.Windows.Forms.ComboBox();
             this.radComplex = new System.Windows.Forms.RadioButton();
             this.radSimple = new System.Windows.Forms.RadioButton();
-            this.bgwTable2Txt = new System.ComponentModel.BackgroundWorker();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panelComplexFilter.SuspendLayout();
@@ -207,26 +206,26 @@ namespace SeriesView
             this.deleteToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(141, 70);
             // 
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.deleteToolStripMenuItem.Text = "Delete Series";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.exportToolStripMenuItem.Text = "Export Series";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -284,13 +283,6 @@ namespace SeriesView
             this.radSimple.Text = "Simple Filter";
             this.radSimple.UseVisualStyleBackColor = true;
             // 
-            // bgwTable2Txt
-            // 
-            this.bgwTable2Txt.WorkerReportsProgress = true;
-            this.bgwTable2Txt.WorkerSupportsCancellation = true;
-            this.bgwTable2Txt.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTable2Txt_DoWork);
-            this.bgwTable2Txt.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTable2Txt_RunWorkerCompleted);
-            // 
             // SeriesSelector
             // 
             this.Controls.Add(this.panel1);
@@ -328,7 +320,6 @@ namespace SeriesView
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.Button btnRefresh;
-        private System.ComponentModel.BackgroundWorker bgwTable2Txt;
         private System.Windows.Forms.Button btnOptions;
     }
 }

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Text;
+using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections;
 using System.Linq;
-
 using HydroDesktop.Database;
 using HydroDesktop.Help;
 using HydroDesktop.Interfaces;
@@ -17,30 +15,55 @@ namespace HydroDesktop.ExportToCSV
     /// <summary>
     /// Export Data Form with BackgroundWorker and allow users to select themes to export.
     /// </summary>
-    public partial class ThemeExportDialog : Form
+    public partial class ExportDialog : Form
     {
-        #region Variables
+        #region Fields
 
         private readonly DbOperations _dboperation;
+        private readonly DataTable _dataToExport;
         private readonly IEnumerable<string> _selectedThemes;
         private bool _formIsClosing;
-        private DataTable _dtList = new DataTable();
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
-        /// Initialize the ExportData form, and create a connection for building datatable.
+        /// Initialize the ExportData form with themes to export
         /// </summary>
-        public ThemeExportDialog(DbOperations dbOperation, IEnumerable<string> selectedThemes = null)
+        public ExportDialog(DbOperations dbOperation, IEnumerable<string> selectedThemes = null)
         {
             if (dbOperation == null) throw new ArgumentNullException("dbOperation");
+            Contract.EndContractBlock();
 
-            InitializeComponent();
             _dboperation = dbOperation;
             _selectedThemes = selectedThemes;
+
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Initialize the ExportData form with data table to export
+        /// </summary>
+        public ExportDialog(DbOperations dbOperation, DataTable dataToExport)
+        {
+            if (dbOperation == null) throw new ArgumentNullException("dbOperation");
+            if (dataToExport == null) throw new ArgumentNullException("dataToExport");
+            if (dataToExport.Columns.Count == 0)
+            {
+                throw new ArgumentException("Data table for export must have at least one column.");
+            }
+            if (dataToExport.Rows.Count == 0)
+            {
+                throw new ArgumentException("Data table for export must have at least one row.");
+            }
+            Contract.EndContractBlock();
+
+            _dboperation = dbOperation;
+            _dataToExport = dataToExport;
+
+            InitializeComponent();
         }
 
         #endregion
@@ -54,19 +77,31 @@ namespace HydroDesktop.ExportToCSV
         {
             Cursor = Cursors.WaitCursor;
 
-            //populate list box with list of themes
-            var repository = RepositoryFactory.Instance.Get <IDataThemesRepository>(_dboperation);
-            var dtThemes = repository.GetThemesForAllSeries();
-
-            clbThemes.Items.Clear();
-            foreach (DataRow row in dtThemes.Rows)
+            if (ExpotThemes)
             {
-                var themeName = row["ThemeName"].ToString();
-                var check = _selectedThemes == null || _selectedThemes.Contains(themeName);
-                var themeID = row["ThemeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(row["ThemeID"]);
-                clbThemes.Items.Add(new ThemeDescription(themeID, themeName), check);
-            }
+                //populate list box with list of themes
+                var repository = RepositoryFactory.Instance.Get<IDataThemesRepository>(_dboperation);
+                var dtThemes = repository.GetThemesForAllSeries();
 
+                clbThemes.Items.Clear();
+                foreach (DataRow row in dtThemes.Rows)
+                {
+                    var themeName = row["ThemeName"].ToString();
+                    var check = _selectedThemes == null || _selectedThemes.Contains(themeName);
+                    var themeID = row["ThemeID"] == DBNull.Value ? (int?) null : Convert.ToInt32(row["ThemeID"]);
+                    clbThemes.Items.Add(new ThemeDescription(themeID, themeName), check);
+                }
+            }
+            else
+            {
+                gbxThemes.Visible = false;
+                var themesHeight = gbxThemes.Height;
+                gbxThemes.Height = 0;
+                Height -= themesHeight;
+                gbxFields.Location = gbxThemes.Location;
+                gbxFields.Height = gbxDelimiters.Location.Y - 10 - gbxFields.Location.Y;
+                tcMain.TabPages.Remove(tpAdvancedOptions);
+            }
 
             // Populate checked list box with list of fields to export
             LoadFieldList();
@@ -80,34 +115,28 @@ namespace HydroDesktop.ExportToCSV
         private void LoadFieldList()
         {
             //Set fields in CheckListBox
-            string list;
-            list =
-                "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, dv.CensorCode, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
-                "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
-                "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
-                "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
-                "WHERE v.VariableID = ds.VariableID " +
-                "AND s.SiteID = ds.SiteID " +
-                "AND m.MethodID = ds.MethodID " +
-                "AND q.QualityControlLevelID = ds.QualityControlLevelID " +
-                "AND S.SourceID = ds.SourceID " +
-                "AND dv.SeriesID = ds.SeriesID " +
-                "AND U1.UnitsID = v.VariableUnitsID " +
-                "AND U2.UnitsID = v.TimeUnitsID " +
-                "AND ds.SeriesID = 1";
+            DataTable dtList;
 
-            _dtList = _dboperation.LoadTable("dtList", list);
+            if (ExpotThemes)
+            {
+                var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(_dboperation);
+                dtList = repo.GetTableForExport(-1);
+            }else
+            {
+                dtList = _dataToExport;
+            }
 
             //Headers shown in CheckListBox
-            string[] headers = new string[_dtList.Columns.Count];
-            for (int i = 0; i < _dtList.Columns.Count; i++)
+            for (int i = 0; i < dtList.Columns.Count; i++)
             {
-                headers[i] = _dtList.Columns[i].ToString();
+                var header = dtList.Columns[i].ToString();
+                var ind = clbExportItems.Items.Add(header);
+                clbExportItems.SetItemChecked(ind, true);
             }
 
             // Fill DateTime columns
             cmbDateTimeColumns.Items.Clear();
-            foreach (DataColumn column in _dtList.Columns)
+            foreach (DataColumn column in dtList.Columns)
             {
                 if (column.DataType == typeof (DateTime))
                 {
@@ -119,116 +148,77 @@ namespace HydroDesktop.ExportToCSV
                 cmbDateTimeColumns.SelectedIndex = 0;
             }
             chbUseDateRange_CheckedChanged(this, EventArgs.Empty); // To update "use date range" controls
-
-            //Initialize items in CheckedlistBox
-            clbExportItems.Items.AddRange(headers);
-            for (int h = 0; h < clbExportItems.Items.Count; h++)
-            {
-                clbExportItems.SetItemChecked(h, true);
-            }
         }
 
         #endregion
 
         #region Private Methods
 
+        private bool ExpotThemes
+        {
+            get { return _dataToExport == null; }
+        }
+
         /// <summary>
         /// BackgroundWorker method used to create a datatable including data queried from Databasein in all the fields selected.
         /// </summary>
         /// <param name="parameters"> BackgroundWorker parameters passed from Export Button Click Event</param>
-        /// <param name="exportdlg_worker"> BackgroundWorker (may be null), in order to show progress</param>
+        /// <param name="exportdlgWorker"> BackgroundWorker (may be null), in order to show progress</param>
         /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
         /// <returns>Return the BackgroundWorker result.</returns>
-        private string Exportdlg(object[] parameters, BackgroundWorker exportdlg_worker, DoWorkEventArgs e)
+        private string Exportdlg(BwParameters parameters, BackgroundWorker exportdlgWorker, DoWorkEventArgs e)
         {
-            bool includeHeaders = true;
-            bool append = true;
+            if (ExpotThemes)
+            {
+                return ExportDataSeriesTable(parameters, exportdlgWorker, e);
+            }
+            return ExportAnyDataTable(parameters, exportdlgWorker, e);
+        }
 
+        private string ExportDataSeriesTable(BwParameters parameters, BackgroundWorker backgroundWorker, DoWorkEventArgs e)
+        {
             //get parameters
-            string fileName = (string) parameters[0];
-            DataTable dtSeries = (DataTable) parameters[1];
-            bool checkNodata = (bool) parameters[2];
-            string delimiter = (string) parameters[3];
-            Hashtable checkedItems = (Hashtable) parameters[4];
-            DbOperations dbOperations = (DbOperations) parameters[5];
-            DatesRange datesRange = (DatesRange) parameters[6];
+            var fileName = parameters.OutputFileName;
+            var dtSeries = parameters.Series;
+            var checkNodata = parameters.CheckNoData;
+            var delimiter = parameters.Delimiter;
+            var checkedItems = parameters.Columns;
+            var datesRange = parameters.DatesRange;
 
-            //get count for ProgressReport
-            int totalSeriesCount = dtSeries.Rows.Count;
-            int count = 0;
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(_dboperation);
 
             //export data row by row
-            foreach (DataRow row in dtSeries.Rows)
+            for (int r = 0; r < dtSeries.Rows.Count; r++)
             {
+                var row = dtSeries.Rows[r];
+
                 //Check for cancel
-                if (exportdlg_worker.CancellationPending)
+                if (backgroundWorker.CancellationPending)
                 {
                     e.Cancel = true;
                     return "Data Export Cancelled.";
                 }
 
-                object objNoData = row["NoDataValue"];
-                double noDataValue = Convert.ToDouble(objNoData);
+                var noDataValue = !checkNodata? Convert.ToDouble(row["NoDataValue"]) : (double?) null;
 
-                int seriesID = Convert.ToInt32(row["SeriesID"]);
-
-
-                string sql;
-                if (checkNodata)
-                {
-                    sql =
-                        "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
-                        "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
-                        "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, dv.CensorCode, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
-                        "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
-                        "WHERE v.VariableID = ds.VariableID " +
-                        "AND s.SiteID = ds.SiteID " +
-                        "AND m.MethodID = ds.MethodID " +
-                        "AND q.QualityControlLevelID = ds.QualityControlLevelID " +
-                        "AND S.SourceID = ds.SourceID " +
-                        "AND dv.SeriesID = ds.SeriesID " +
-                        "AND U1.UnitsID = v.VariableUnitsID " +
-                        "AND U2.UnitsID = v.TimeUnitsID " +
-                        "AND ds.SeriesID = " + row["SeriesID"].ToString();
-                }
-                else
-                {
-                    sql =
-                        "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
-                        "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
-                        "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, dv.CensorCode, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
-                        "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
-                        "WHERE dv.DataValue != " + noDataValue + " " +
-                        "AND v.VariableID = ds.VariableID " +
-                        "AND U1.UnitsID = v.VariableUnitsID " +
-                        "AND U2.UnitsID = v.TimeUnitsID " +
-                        "AND q.QualityControlLevelID = ds.QualityControlLevelID " +
-                        "AND S.SourceID = ds.SourceID " +
-                        "AND s.SiteID = ds.SiteID " +
-                        "AND m.MethodID = ds.MethodID " +
-                        "AND dv.SeriesID = ds.SeriesID " +
-                        "AND ds.SeriesID = " + row["SeriesID"].ToString();
-                }
-                var cmd = dbOperations.CreateCommand(sql);
-
-                // Append date range filter
+                // Date range filter
+                string dateColumn = null;
+                DateTime? firstDate = null;
+                DateTime? lastDate = null;
                 if (datesRange != null)
                 {
-                    cmd.CommandText += string.Format(" AND ({0} >=  @p1 and {0} <=  @p2)", datesRange.ColumnName);
-                    var startDateParameter = dbOperations.AddParameter(cmd, "@p1", DbType.DateTime);
-                    var endDateParemater = dbOperations.AddParameter(cmd, "@p2", DbType.DateTime);
-
-                    startDateParameter.Value = datesRange.StartDate;
-                    endDateParemater.Value = datesRange.EndDate;
+                    dateColumn = datesRange.ColumnName;
+                    firstDate = datesRange.StartDate;
+                    lastDate = datesRange.EndDate;
                 }
-
-                var tbl = dbOperations.LoadTable("values", cmd);
+                var tbl = repo.GetTableForExport(Convert.ToInt64(row["SeriesID"]), noDataValue, dateColumn, firstDate,
+                                                 lastDate);
 
                 //Construct columns that were selected
                 for (int i = 0; i < tbl.Columns.Count; i++)
                 {
-                    DataColumn column = tbl.Columns[i];
-                    if (checkedItems.ContainsKey(column.ColumnName) == false)
+                    var column = tbl.Columns[i];
+                    if (!checkedItems.Contains(column.ColumnName))
                     {
                         tbl.Columns.Remove(column);
                         i--;
@@ -236,39 +226,101 @@ namespace HydroDesktop.ExportToCSV
                 }
 
                 //Check for cancel
-                if (exportdlg_worker.CancellationPending == true)
+                if (backgroundWorker.CancellationPending)
                 {
                     e.Cancel = true;
                     return "Data Export Cancelled.";
                 }
 
-                HydroDesktop.ImportExport.DelimitedTextWriter.DataTableToDelimitedFile(tbl, fileName, delimiter,
-                                                                                       includeHeaders, append,
-                                                                                       exportdlg_worker, e,
-                                                                                       HydroDesktop.ImportExport.
-                                                                                           BackgroundWorkerReportingOptions
-                                                                                           .UserStateAndProgress);
-
-                if (includeHeaders == true)
-                {
-                    includeHeaders = false;
-                }
+                var includeHeaders = r == 0;
+                ImportExport.DelimitedTextWriter.DataTableToDelimitedFile(tbl, fileName, delimiter,
+                                                                          includeHeaders, true,
+                                                                          backgroundWorker, e,
+                                                                          ImportExport.BackgroundWorkerReportingOptions.UserStateAndProgress);
 
                 //progress report
-                count++;
-                int percent = (int) (((float) count/(float) totalSeriesCount)*100);
-                string userState = "Writing series " + count + " of " + totalSeriesCount + "...";
-                exportdlg_worker.ReportProgress(percent, userState);
+                var percent = (int)(((float)r / dtSeries.Rows.Count) * 100);
+                var userState = "Writing series " + r + " of " + dtSeries.Rows.Count + "...";
+                backgroundWorker.ReportProgress(percent, userState);
             }
 
             //Check for cancel
-            if (exportdlg_worker.CancellationPending == true)
+            if (backgroundWorker.CancellationPending)
             {
                 e.Cancel = true;
                 return "Data Export Cancelled.";
             }
 
-            else return "Export completed. Series exported: " + dtSeries.Rows.Count.ToString();
+            return "Export completed. Series exported: " + dtSeries.Rows.Count.ToString();
+        }
+
+        private string ExportAnyDataTable(BwParameters parameters, BackgroundWorker backgroundWorker, DoWorkEventArgs e)
+        {
+            var filename = parameters.OutputFileName;
+            var checkedItems = parameters.Columns;
+            var delimiter = parameters.Delimiter;
+            var originalDataTable = parameters.Series;
+
+            //Report status
+            backgroundWorker.ReportProgress(0, "Preparing output...");
+
+            DataTable exportDataTable;
+            if (checkedItems.Count == originalDataTable.Rows.Count)
+            {
+                exportDataTable = originalDataTable;
+            }
+            else
+            {
+                //Build a new datatable to accept selected columns in the original datatable and used to export.
+                exportDataTable = originalDataTable.Copy(); // copy
+
+                //Check for cancel
+                if (backgroundWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return "Data Export Cancelled.";
+                }
+
+                //Report status
+                backgroundWorker.ReportProgress(0, "Checking columns...");
+
+                //Remove unwanted columns
+                foreach (DataColumn column in originalDataTable.Columns)
+                {
+                    //Check for cancel
+                    if (backgroundWorker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return "Data Export Cancelled.";
+                    }
+
+                    var columnName = column.ColumnName;
+                    if (!checkedItems.Contains(columnName))
+                    {
+                        exportDataTable.Columns.Remove(columnName);
+                    }
+
+                    exportDataTable.AcceptChanges();
+                }
+            }
+
+            // Check for cancel
+            if (backgroundWorker.CancellationPending)
+            {
+                e.Cancel = true;
+                return "Data Export Cancelled.";
+            }
+            
+            ImportExport.DelimitedTextWriter.DataTableToDelimitedFile(exportDataTable, filename, delimiter,
+                true, false, backgroundWorker, e,
+                ImportExport.BackgroundWorkerReportingOptions.UserStateAndProgress);
+
+            if (backgroundWorker.CancellationPending == true)
+            {
+                e.Cancel = true;
+                return "Data Export Cancelled.";
+            }
+            else return "Export complete.  Rows exported: " + exportDataTable.Rows.Count.ToString();
         }
 
         #endregion
@@ -280,8 +332,8 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         private void bgwMain_DoWork(object sender, DoWorkEventArgs e)
         {
-            object[] parameters = e.Argument as object[];
-            BackgroundWorker worker = sender as BackgroundWorker;
+            var parameters = e.Argument as BwParameters;
+            var worker = sender as BackgroundWorker;
             e.Result = Exportdlg(parameters, worker, e);
         }
 
@@ -290,8 +342,8 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         private void bgwMain_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.pgsBar.Value = e.ProgressPercentage;
-            this.gbxProgress.Text = e.UserState.ToString();
+            pgsBar.Value = e.ProgressPercentage;
+            gbxProgress.Text = e.UserState.ToString();
         }
 
         /// <summary>
@@ -299,7 +351,7 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         private void bgwMain_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
 
             // Restore controls to their regular state
             UpdateControlsState(false);
@@ -309,13 +361,13 @@ namespace HydroDesktop.ExportToCSV
                 MessageBox.Show(e.Error.Message);
             }
 
-            else if (e.Cancelled == true || e.Result.ToString() == "Data Export Cancelled.")
+            else if (e.Cancelled  || e.Result.ToString() == "Data Export Cancelled.")
             {
                 btncancel.Enabled = true;
                 // Close the form if the user clicked the X to close it.
-                if (_formIsClosing == true)
+                if (_formIsClosing)
                 {
-                    this.DialogResult = DialogResult.Cancel;
+                    DialogResult = DialogResult.Cancel;
                 }
             }
             else
@@ -333,15 +385,15 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            using (var _saveFileDlg = new SaveFileDialog())
+            using (var saveFileDlg = new SaveFileDialog())
             {
-                _saveFileDlg.Title = "Select file";
-                _saveFileDlg.OverwritePrompt = false;
-                _saveFileDlg.Filter = rdoComma.Checked ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt" : "Text (*.txt)|*.txt";
+                saveFileDlg.Title = "Select file";
+                saveFileDlg.OverwritePrompt = false;
+                saveFileDlg.Filter = rdoComma.Checked ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt" : "Text (*.txt)|*.txt";
 
-                if (_saveFileDlg.ShowDialog() == DialogResult.OK)
+                if (saveFileDlg.ShowDialog() == DialogResult.OK)
                 {
-                    tbOutPutFileName.Text = _saveFileDlg.FileName;
+                    tbOutPutFileName.Text = saveFileDlg.FileName;
                 }
             }
         }
@@ -352,7 +404,7 @@ namespace HydroDesktop.ExportToCSV
         private void btnExport_Click(object sender, EventArgs e)
         {
             // Make sure we aren't still working on a previous task
-            if (bgwMain.IsBusy == true)
+            if (bgwMain.IsBusy)
             {
                 MessageBox.Show("The background worker is busy now. Please try later.", "Export To Text File",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -360,7 +412,7 @@ namespace HydroDesktop.ExportToCSV
             }
 
             //Check the themes  for export.  There should be at least one item selected.
-            if (clbThemes.CheckedItems.Count == 0)
+            if (ExpotThemes && clbThemes.CheckedItems.Count == 0)
             {
                 MessageBox.Show("Please choose at least one theme to export", "Export To Text File",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -387,7 +439,7 @@ namespace HydroDesktop.ExportToCSV
             {
                 if (tbOther.Text.Length != 0)
                 {
-                    delimiter = tbOther.Text.ToString();
+                    delimiter = tbOther.Text;
                 }
                 else
                 {
@@ -404,26 +456,30 @@ namespace HydroDesktop.ExportToCSV
                 MessageBox.Show("Please specify output filename", "Export To Text File");
                 return;
             }
-            else if (Directory.Exists(Path.GetDirectoryName(outputFilename)) == false)
+            if (Directory.Exists(Path.GetDirectoryName(outputFilename)) == false)
             {
                 MessageBox.Show("The directory for the output filename does not exist", "Export To Text File");
                 return;
             }
 
             // Construct DataTable of all the series in the selected theme
-            var themeIds = (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
-            var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_dboperation);
-            var dtSeries = repository.GetSeriesIDsWithNoDataValueTable(themeIds);
-
-            var checkNoData = chkNodata.Checked;
-            //Add all checked items into the HashTable
-            Hashtable checkedItems = new Hashtable();
-            foreach (string item in clbExportItems.CheckedItems)
+            DataTable dtSeries;
+            if (ExpotThemes)
             {
-                if (checkedItems.Contains(item) == false)
-                {
-                    checkedItems.Add(item, item);
-                }
+                var themeIds =
+                    (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
+                var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_dboperation);
+                dtSeries = repository.GetSeriesIDsWithNoDataValueTable(themeIds);
+            }
+            else
+            {
+                dtSeries = _dataToExport;
+            }
+           
+            var checkedItems = new List<string>();
+            foreach (var item in clbExportItems.CheckedItems.Cast<string>().Where(item => !checkedItems.Contains(item)))
+            {
+                checkedItems.Add(item);
             }
 
             DatesRange datesRange = null;
@@ -442,31 +498,27 @@ namespace HydroDesktop.ExportToCSV
             UpdateControlsState(true);
 
             // Show hourglass
-            this.Cursor = Cursors.WaitCursor;
+            Cursor = Cursors.WaitCursor;
 
             //pass parameters to BackgroundWorker
-            var parameters = new object[]
+            var parameters = new BwParameters
                                  {
-                                     outputFilename,
-                                     dtSeries,
-                                     checkNoData,
-                                     delimiter,
-                                     checkedItems,
-                                     _dboperation,
-                                     datesRange,
+                                     CheckNoData = chkNodata.Checked,
+                                     Columns = checkedItems,
+                                     DatesRange = datesRange,
+                                     Delimiter = delimiter,
+                                     OutputFileName = outputFilename,
+                                     Series = dtSeries,
                                  };
 
             // Check for overwrite
-            if (File.Exists(outputFilename) == true)
+            if (File.Exists(outputFilename))
             {
-                string message = "File " + outputFilename + " already exists.\nWould you like to replace it?";
-
-                DialogResult replace = MessageBox.Show(message, "Export To Text File", MessageBoxButtons.YesNo,
-                                                       MessageBoxIcon.Question);
-
+                var message = "File " + outputFilename + " already exists.\nWould you like to replace it?";
+                var replace = MessageBox.Show(message, "Export To Text File", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (replace == DialogResult.No)
                 {
-                    this.Cursor = Cursors.Default;
+                    Cursor = Cursors.Default;
 
                     // Restore controls to their regular state
                     UpdateControlsState(false);
@@ -565,7 +617,6 @@ namespace HydroDesktop.ExportToCSV
             }
         }
 
-
         private void chbUseDateRange_CheckedChanged(object sender, EventArgs e)
         {
             var useDateRange = chbUseDateRange.Checked;
@@ -594,13 +645,10 @@ namespace HydroDesktop.ExportToCSV
         /// </summary>
         private void ExportDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (bgwMain.IsBusy)
-            {
-                Cancel_worker();
-                _formIsClosing = true;
-                e.Cancel = true;
-                return;
-            }
+            if (!bgwMain.IsBusy) return;
+            Cancel_worker();
+            _formIsClosing = true;
+            e.Cancel = true;
         }
 
         /// <summary>
@@ -646,6 +694,16 @@ namespace HydroDesktop.ExportToCSV
             public string ColumnName { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
+        }
+
+        private class BwParameters
+        {
+            public string OutputFileName { get; set; }
+            public DataTable Series { get; set; }
+            public bool CheckNoData { get; set; }
+            public string Delimiter { get; set; }
+            public List<string> Columns { get; set; }
+            public DatesRange DatesRange { get; set; }
         }
 
         #endregion

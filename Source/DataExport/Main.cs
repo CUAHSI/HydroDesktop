@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using HydroDesktop.Database;
@@ -66,20 +67,27 @@ namespace HydroDesktop.ExportToCSV
 
         void dataExportBtn_Click(object sender, EventArgs e)
         {
-            Export(null);
+            Export((IFeatureLayer)null);
         }
 
         #endregion
 
-        /// <summary>
-        /// starts the data export of all series from the layer
-        /// </summary>
-        /// <param name="layer">the feature layer from which to export data</param>
+        #region IDataExportPlugin implementation
+
         public void Export(IFeatureLayer layer)
         {
             var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            var dlg_3 = new ThemeExportDialog(db, layer == null? null : new []{layer.LegendText});
-            dlg_3.ShowDialog();
+            var dialog = new ExportDialog(db, layer == null? null : new []{layer.LegendText});
+            dialog.ShowDialog();
         }
+
+        public void Export(DataTable dataTable)
+        {
+            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+            var dialog = new ExportDialog(db, dataTable);
+            dialog.ShowDialog();
+        }
+
+        #endregion
     }
 }

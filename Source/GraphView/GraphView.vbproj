@@ -72,8 +72,16 @@
       <HintPath>..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Configuration">
@@ -145,6 +153,7 @@
     <Compile Include="Controls\ZedGraphControlEx.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Common.vb" />
     <Compile Include="Pretty.vb" />
     <Compile Include="BoxPlot.vb" />
     <Compile Include="Controls\cBoxWhiskerPlot.Designer.vb">

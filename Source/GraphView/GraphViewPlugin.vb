@@ -118,6 +118,8 @@ Namespace GraphView
             'show graph ribbon tab and series view
             AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
 
+            Common.PluginEntryPoint = Me
+
             MyBase.Activate()
         End Sub
 
@@ -132,6 +134,8 @@ Namespace GraphView
 
             RemoveHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
             RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
+
+            Common.PluginEntryPoint = Nothing
 
             'important line to deactivate the plugin
             MyBase.Deactivate()

@@ -711,23 +711,6 @@ namespace SeriesView
 
         #region Data Export
 
-        private void bgwTable2Txt_DoWork(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
-
-            e.Result = RunDataExport((DataTable) e.Argument, worker, e);
-        }
-
-        private void bgwTable2Txt_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                MessageBox.Show("Export Failed" + e.Error.Message, "Hint",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information,
-                                MessageBoxDefaultButton.Button2);
-            }
-        }
-
         /// <summary>
         /// Export the Selected Series to *.txt File
         /// </summary>
@@ -735,14 +718,8 @@ namespace SeriesView
         /// <param name="e"></param>
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (bgwTable2Txt.IsBusy)
-            {
-                MessageBox.Show("The background worker is busy now, please try later.");
-                return;
-            }
-
             //Get the checked IDs
-            int[] checkedIDs = new int[this.CheckedIDList.Length];
+            var checkedIDs = new int[CheckedIDList.Length];
             if (checkedIDs.Length > 0)
             {
                 Array.Copy(this.CheckedIDList, checkedIDs, checkedIDs.Length);
@@ -763,60 +740,29 @@ namespace SeriesView
                 }
             }
 
-            DbOperations dboperation;
-            dboperation = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-
-            //Export DataValues of the selected series instead of just series list!!
-            string sql =
-                "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
-                "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
-                "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
-                "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
-                "WHERE v.VariableID = ds.VariableID " +
-                "AND s.SiteID = ds.SiteID " +
-                "AND m.MethodID = ds.MethodID " +
-                "AND q.QualityControlLevelID = ds.QualityControlLevelID " +
-                "AND S.SourceID = ds.SourceID " +
-                "AND dv.SeriesID = ds.SeriesID " +
-                "AND U1.UnitsID = v.VariableUnitsID " +
-                "AND U2.UnitsID = v.TimeUnitsID " +
-                "AND ds.SeriesID = ";
-            //initial table to get the schema
-            DataTable table = dboperation.LoadTable(sql + "-1");
-
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(DatabaseTypes.SQLite,Settings.Instance.DataRepositoryConnectionString);
+            DataTable table = null;
             for (int i = 0; i < checkedIDs.Length; i++)
             {
-                String list;
-
-                list = sql + checkedIDs[i].ToString();
-
-                DataTable exportTable = dboperation.LoadTable("seriesTable", list);
-
-                foreach (DataRow row in exportTable.Rows)
+                var exportTable = repo.GetTableForExport(checkedIDs[i]);
+                if (table == null)
                 {
-                    table.ImportRow(row);
+                    table = exportTable;
+                }
+                else
+                {
+                    foreach (DataRow row in exportTable.Rows)
+                    {
+                        table.ImportRow(row);
+                    }
                 }
             }
 
-            HydroDesktop.ImportExport.ExportDataTableToTextFileDialog exportForm =
-                new HydroDesktop.ImportExport.ExportDataTableToTextFileDialog(table);
-            exportForm.ShowDialog();
-
-            //bgwTable2Txt.RunWorkerAsync(allSeriesList);
-
-        }
-
-        private string RunDataExport(DataTable SeriesList, BackgroundWorker exportdlg_worker, DoWorkEventArgs e)
-        {
-            if (CheckedIDList.Length == 0)
+            var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+            if (exportPlugin != null)
             {
-                MessageBox.Show("No series are checked. Please check the series to export.");
-                return "series are exported.";
+                exportPlugin.Export(table);
             }
-
-
-            // todo: Complete Data Export codes here if "GetExportOptionsDialog" is used.
-            return "series are exported.";
         }
 
         #endregion

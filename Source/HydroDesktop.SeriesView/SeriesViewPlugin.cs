@@ -25,13 +25,15 @@
         
         public override void Activate()
         {
-            App.DockManager.ActivePanelChanged += new EventHandler<DockablePanelEventArgs>(DockManager_ActivePanelChanged);
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             
             AddSeriesDockPanel();
 
             tableRoot = new RootItem("kHydroTable", "Table");
             tableRoot.SortOrder = 20;
             App.HeaderControl.Add(tableRoot);
+
+            Global.PluginEntryPoint = this;
 
             base.Activate();
         }
@@ -51,6 +53,8 @@
 
             App.DockManager.PanelAdded -= DockManager_PanelAdded;
             App.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
+
+            Global.PluginEntryPoint = null;
             
             base.Deactivate();
         }
