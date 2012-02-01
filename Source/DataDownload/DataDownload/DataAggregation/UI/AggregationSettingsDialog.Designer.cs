@@ -38,13 +38,17 @@
             this.dtpEndTime = new System.Windows.Forms.DateTimePicker();
             this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.paSettings = new System.Windows.Forms.Panel();
+            this.lblVariable = new System.Windows.Forms.Label();
+            this.cmbVariable = new System.Windows.Forms.ComboBox();
+            this.chbCreateNewLayer = new System.Windows.Forms.CheckBox();
+            this.lblProgress = new System.Windows.Forms.Label();
             this.paSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(152, 230);
+            this.btnOK.Location = new System.Drawing.Point(153, 273);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -56,7 +60,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(233, 230);
+            this.btnCancel.Location = new System.Drawing.Point(234, 273);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -66,7 +70,7 @@
             // lblType
             // 
             this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(8, 21);
+            this.lblType.Location = new System.Drawing.Point(14, 21);
             this.lblType.Name = "lblType";
             this.lblType.Size = new System.Drawing.Size(105, 13);
             this.lblType.TabIndex = 2;
@@ -84,7 +88,7 @@
             // lblStartTime
             // 
             this.lblStartTime.AutoSize = true;
-            this.lblStartTime.Location = new System.Drawing.Point(11, 63);
+            this.lblStartTime.Location = new System.Drawing.Point(14, 90);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(58, 13);
             this.lblStartTime.TabIndex = 4;
@@ -93,7 +97,7 @@
             // dtpStartTime
             // 
             this.dtpStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStartTime.Location = new System.Drawing.Point(119, 63);
+            this.dtpStartTime.Location = new System.Drawing.Point(119, 90);
             this.dtpStartTime.Name = "dtpStartTime";
             this.dtpStartTime.Size = new System.Drawing.Size(168, 20);
             this.dtpStartTime.TabIndex = 5;
@@ -101,7 +105,7 @@
             // lblEndTime
             // 
             this.lblEndTime.AutoSize = true;
-            this.lblEndTime.Location = new System.Drawing.Point(11, 109);
+            this.lblEndTime.Location = new System.Drawing.Point(14, 124);
             this.lblEndTime.Name = "lblEndTime";
             this.lblEndTime.Size = new System.Drawing.Size(55, 13);
             this.lblEndTime.TabIndex = 6;
@@ -110,21 +114,29 @@
             // dtpEndTime
             // 
             this.dtpEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEndTime.Location = new System.Drawing.Point(119, 109);
+            this.dtpEndTime.Location = new System.Drawing.Point(119, 124);
             this.dtpEndTime.Name = "dtpEndTime";
             this.dtpEndTime.Size = new System.Drawing.Size(168, 20);
             this.dtpEndTime.TabIndex = 7;
             // 
             // pbProgress
             // 
-            this.pbProgress.Location = new System.Drawing.Point(12, 162);
+            this.pbProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbProgress.Location = new System.Drawing.Point(12, 216);
             this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(296, 23);
+            this.pbProgress.Size = new System.Drawing.Size(297, 23);
             this.pbProgress.TabIndex = 8;
             this.pbProgress.Visible = false;
             // 
             // paSettings
             // 
+            this.paSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.paSettings.Controls.Add(this.chbCreateNewLayer);
+            this.paSettings.Controls.Add(this.lblVariable);
+            this.paSettings.Controls.Add(this.cmbVariable);
             this.paSettings.Controls.Add(this.lblType);
             this.paSettings.Controls.Add(this.cmbMode);
             this.paSettings.Controls.Add(this.dtpEndTime);
@@ -133,14 +145,54 @@
             this.paSettings.Controls.Add(this.dtpStartTime);
             this.paSettings.Location = new System.Drawing.Point(12, 12);
             this.paSettings.Name = "paSettings";
-            this.paSettings.Size = new System.Drawing.Size(296, 144);
+            this.paSettings.Size = new System.Drawing.Size(297, 193);
             this.paSettings.TabIndex = 9;
+            // 
+            // lblVariable
+            // 
+            this.lblVariable.AutoSize = true;
+            this.lblVariable.Location = new System.Drawing.Point(14, 55);
+            this.lblVariable.Name = "lblVariable";
+            this.lblVariable.Size = new System.Drawing.Size(48, 13);
+            this.lblVariable.TabIndex = 8;
+            this.lblVariable.Text = "Variable:";
+            // 
+            // cmbVariable
+            // 
+            this.cmbVariable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbVariable.FormattingEnabled = true;
+            this.cmbVariable.Location = new System.Drawing.Point(119, 55);
+            this.cmbVariable.Name = "cmbVariable";
+            this.cmbVariable.Size = new System.Drawing.Size(168, 21);
+            this.cmbVariable.TabIndex = 9;
+            // 
+            // chbCreateNewLayer
+            // 
+            this.chbCreateNewLayer.AutoSize = true;
+            this.chbCreateNewLayer.Location = new System.Drawing.Point(14, 155);
+            this.chbCreateNewLayer.Name = "chbCreateNewLayer";
+            this.chbCreateNewLayer.Size = new System.Drawing.Size(105, 17);
+            this.chbCreateNewLayer.TabIndex = 10;
+            this.chbCreateNewLayer.Text = "Create new layer";
+            this.chbCreateNewLayer.UseVisualStyleBackColor = true;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(9, 249);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(93, 13);
+            this.lblProgress.TabIndex = 10;
+            this.lblProgress.Text = "Current Operation:";
+            this.lblProgress.Visible = false;
             // 
             // AggregationSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 275);
+            this.ClientSize = new System.Drawing.Size(321, 318);
+            this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.paSettings);
             this.Controls.Add(this.pbProgress);
             this.Controls.Add(this.btnCancel);
@@ -154,6 +206,7 @@
             this.paSettings.ResumeLayout(false);
             this.paSettings.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -169,5 +222,9 @@
         private System.Windows.Forms.DateTimePicker dtpEndTime;
         private System.Windows.Forms.ProgressBar pbProgress;
         private System.Windows.Forms.Panel paSettings;
+        private System.Windows.Forms.Label lblVariable;
+        private System.Windows.Forms.ComboBox cmbVariable;
+        private System.Windows.Forms.CheckBox chbCreateNewLayer;
+        private System.Windows.Forms.Label lblProgress;
     }
 }
