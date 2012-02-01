@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using HydroDesktop.Common.Tools;
 
 namespace Search3.Searching
 {
@@ -128,47 +129,23 @@ namespace Search3.Searching
 
         private void ThreadSafeAddItemToLog(ListBox listBox, object value)
         {
-            if (listBox.InvokeRequired)
-            {
-                listBox.BeginInvoke((Action<ListBox, object>)AddItemToLog, listBox, value);
-            }
-            else
-                AddItemToLog(listBox, value);
-        }
-        private void AddItemToLog(ListBox listBox, object value)
-        {
-            listBox.Items.Add(value);
+            listBox.UIThread(delegate
+                                 {
+                                     listBox.Items.Add(value);
 
-            // scroll to last item
-            listBox.SelectedIndex = listBox.Items.Count - 1;
+                                     // scroll to last item
+                                     listBox.SelectedIndex = listBox.Items.Count - 1;
+                                 });
         }
-
+        
         private static void ThreadSafeChangeProgressBarValue(ProgressBar pb, int value)
         {
-            if (pb.InvokeRequired)
-            {
-                pb.BeginInvoke((Action<ProgressBar, int>)ChangeProgressBarValue, pb, value);
-            }
-            else
-                ChangeProgressBarValue(pb, value);
-        }
-        private static void ChangeProgressBarValue(ProgressBar pb, int value)
-        {
-            pb.Value = value;
+            pb.UIThread(() => pb.Value = value);
         }
 
         private static void ThreadSafeSetText(Label label, string value)
         {
-            if (label.InvokeRequired)
-            {
-                label.BeginInvoke((Action<Label, string>)SetTextToLabel, label, value);
-            }
-            else
-                SetTextToLabel(label, value);
-        }
-        private static void SetTextToLabel(Label label, string value)
-        {
-            label.Text = value;
+            label.UIThread(() => label.Text = value);
         }
 
         #endregion
