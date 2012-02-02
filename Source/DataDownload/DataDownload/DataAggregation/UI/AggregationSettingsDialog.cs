@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -168,8 +169,9 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                                                  else
                                                  {
                                                      // This actions must be executed only in UI thread
-
-                                                     var featureSet = (IFeatureSet)args.Result;
+                                                     var result = (AggregationResult) args.Result;
+                                                     var featureSet = result.FeatureSet;
+                                                     var columnName = result.ResultColumnName;
 
                                                      // Save updated data
                                                      ReportProgress(98, "Saving data");
@@ -184,6 +186,9 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                                                          
                                                          var mapLayer = new MapPointLayer(featureSet) { LegendText = Path.GetFileNameWithoutExtension(featureSet.Filename) };
                                                          _layer.MapFrame.Add(mapLayer);
+                                                         
+                                                         UpdateLabeling(mapLayer, columnName);
+                                                         UpdateSymbology(mapLayer, columnName);
                                                      }
 
                                                      ReportProgress(100, "Finished");
@@ -193,6 +198,40 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                                                  }
                                              };
             _backgroundWorker.RunWorkerAsync();
+        }
+
+        private void UpdateLabeling(IFeatureLayer mapLayer, string columnName)
+        {
+            var symbolizer = new LabelSymbolizer
+            {
+                FontColor = Color.Black,
+                FontSize = 8,
+                FontFamily = "Arial Unicode MS",
+                PreventCollisions = true,
+                HaloEnabled = true,
+                HaloColor = Color.White,
+                Orientation = ContentAlignment.MiddleRight,
+            };
+            ((Map)((IMapFrame)_layer.MapFrame).Parent).AddLabels(mapLayer, string.Format("[{0}]", columnName), string.Empty, symbolizer, "Category Default");
+        }
+
+        private void UpdateSymbology(IFeatureLayer mapLayer, string columnName)
+        {
+            // Updating layer symbology
+            var scheme = new PointScheme();
+            scheme.ClearCategories();
+
+            var settings = scheme.EditorSettings;
+            settings.ClassificationType = ClassificationType.Quantities;
+            settings.UseColorRange = false;
+            settings.UseSizeRange = true;
+            settings.RampColors = false;
+            settings.StartSize = 10;
+            settings.EndSize = 25;
+            settings.FieldName = columnName;
+
+            scheme.CreateCategories(mapLayer.DataSet.DataTable);
+            mapLayer.Symbology = scheme;
         }
 
         private void SetControlsToCalculation()
