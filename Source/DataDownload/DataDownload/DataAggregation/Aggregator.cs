@@ -75,8 +75,8 @@ namespace HydroDesktop.DataDownload.DataAggregation
         /// <summary>
         /// Perform aggregation using given settings
         /// </summary>
-        /// <returns>Feature set with aggregated values</returns>
-        public IFeatureSet Calculate()
+        /// <returns>Aggregation result</returns>
+        public AggregationResult Calculate()
         {
             int percentage = 0;
             ReportProgress(++percentage, "Starting calculation");
@@ -90,7 +90,9 @@ namespace HydroDesktop.DataDownload.DataAggregation
             {
                 ReportProgress(++percentage, "Creating new layer");
 
-                var featuresToAdd = new List<IFeature>();
+                featureSet = new FeatureSet { Projection = _layer.DataSet.Projection };
+                featureSet.DataTable.Columns.Add("SeriesID", typeof(long));
+                
                 // Find features to add to new feature set
                 foreach (var feature in _layer.DataSet.Features)
                 {
@@ -106,10 +108,11 @@ namespace HydroDesktop.DataDownload.DataAggregation
                     {
                         continue;
                     }
-                    featuresToAdd.Add(feature);
+                    
+                    var newFeature = featureSet.AddFeature(feature.BasicGeometry);
+                    newFeature.DataRow["SeriesID"] = seriesID;
                 }
-
-                featureSet = new FeatureSet(featuresToAdd) { Projection = _layer.DataSet.Projection };
+                
                 var fileName = Path.Combine(Settings.Instance.CurrentProjectDirectory,
                                             string.Format("{0}-{1}-{2}.shp",
                                                           _settings.AggregationMode,
@@ -174,7 +177,12 @@ namespace HydroDesktop.DataDownload.DataAggregation
                                string.Format("Processed {0}/{1} series", i + 1, idsToProcess.Count));
             }
 
-            return featureSet;
+            var result = new AggregationResult
+                             {
+                                 FeatureSet = featureSet,
+                                 ResultColumnName = dataColumn.ColumnName,
+                             };
+            return result;
         }
 
         #endregion
@@ -212,5 +220,21 @@ namespace HydroDesktop.DataDownload.DataAggregation
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Contains results of aggregation
+    /// </summary>
+    public class AggregationResult
+    {
+        /// <summary>
+        /// Resulted FeatureSet
+        /// </summary>
+        public IFeatureSet FeatureSet { get; set; }
+
+        /// <summary>
+        /// Name of column, which contains aggregation values
+        /// </summary>
+        public string ResultColumnName { get; set; }
     }
 }
