@@ -40,5 +40,27 @@ namespace HydroDesktop.DataDownload.DataAggregation
                 NotifyPropertyChanged(x => EndTime);
             }
         }
+
+        private string _variableCode;
+        public string VariableCode
+        {
+            get { return _variableCode; }
+            set
+            {
+                _variableCode = value;
+                NotifyPropertyChanged(x => VariableCode);
+            }
+        }
+
+        private bool _createNewLayer;
+        public bool CreateNewLayer
+        {
+            get { return _createNewLayer; }
+            set
+            {
+                _createNewLayer = value;
+                NotifyPropertyChanged(x => CreateNewLayer);
+            }
+        }
     }
 }

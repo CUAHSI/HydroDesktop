@@ -174,7 +174,7 @@ namespace HydroDesktop.Database
             return SeriesListFromTable(seriesTable);
         }
 
-        public Series GetSeriesByID(int seriesID)
+        public Series GetSeriesByID(long seriesID)
         {
             var seriesTable = DbOperations.LoadTable("seriesTable", "select * from DataSeries where seriesID=" + seriesID);
             if (seriesTable.Rows.Count == 0) return null;

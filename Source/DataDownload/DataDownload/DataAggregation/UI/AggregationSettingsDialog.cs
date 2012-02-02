@@ -1,16 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+using DotSpatial.Controls;
+using DotSpatial.Data;
 using DotSpatial.Symbology;
-using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
+using HydroDesktop.Configuration;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
+using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 
 namespace HydroDesktop.DataDownload.DataAggregation.UI
 {
     /// <summary>
     /// Settings form for aggregation
     /// </summary>
-    public partial class AggregationSettingsDialog : Form
+    public partial class AggregationSettingsDialog : Form, IProgressHandler
     {
         #region Fields
 
@@ -24,20 +33,28 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
         /// <summary>
         /// Create new instance of <see cref="AggregationSettingsDialog"/>
         /// </summary>
-        /// <param name="layer"></param>
+        /// <param name="layer">Layer to aggregate</param>
         public AggregationSettingsDialog(IFeatureLayer layer)
         {
+            if (layer == null) throw new ArgumentNullException("layer");
+            Contract.EndContractBlock();
+
             InitializeComponent();
 
             _layer = layer;
             _settings = new AggregationSettings();
 
+            Load += OnLoad;
+        }
+
+        private void OnLoad(object sender, EventArgs eventArgs)
+        {
             // Set bindings
             cmbMode.DataSource = Enum.GetValues(typeof(AggregationMode));
-            cmbMode.Format += delegate(object sender, ListControlConvertEventArgs args)
-                                  {
-                                      args.Value = ((AggregationMode) args.ListItem).Description();
-                                  };
+            cmbMode.Format += delegate(object s, ListControlConvertEventArgs args)
+            {
+                args.Value = ((AggregationMode)args.ListItem).Description();
+            };
             cmbMode.DataBindings.Clear();
             cmbMode.DataBindings.Add("SelectedItem", _settings, "AggregationMode", true,
                                      DataSourceUpdateMode.OnPropertyChanged);
@@ -48,11 +65,22 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
             dtpEndTime.DataBindings.Clear();
             dtpEndTime.DataBindings.Add("Value", _settings, "EndTime", true, DataSourceUpdateMode.OnPropertyChanged);
 
+            cmbVariable.DataBindings.Clear();
+            cmbVariable.DataBindings.Add("SelectedItem", _settings, "VariableCode", true,
+                                         DataSourceUpdateMode.OnPropertyChanged);
+
+            chbCreateNewLayer.DataBindings.Clear();
+            chbCreateNewLayer.DataBindings.Add("Checked", _settings, "CreateNewLayer", true,
+                                               DataSourceUpdateMode.OnPropertyChanged);
+
+            // Set initial CreateNewLayer
+            _settings.CreateNewLayer = true;
+
             // Set initial StartTime, EndTime
             var minStartTime = DateTime.MaxValue;
             var maxEndTime = DateTime.MinValue;
 
-            foreach (var feature in layer.DataSet.Features)
+            foreach (var feature in _layer.DataSet.Features)
             {
                 var startDateRow = feature.DataRow["StartDate"];
                 var endDateRow = feature.DataRow["EndDate"];
@@ -79,77 +107,162 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
             }
             _settings.StartTime = minStartTime;
             _settings.EndTime = maxEndTime;
+
+            // Get all variables associated with current layer
+            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
+                                                                                   Settings.Instance.
+                                                                                       DataRepositoryConnectionString);
+            var uniqueVariables = new List<string>();
+            foreach (var feature in _layer.DataSet.Features)
+            {
+                var seriesIDValue = feature.DataRow["SeriesID"];
+                if (seriesIDValue == null || seriesIDValue == DBNull.Value)
+                    continue;
+                var seriesID = Convert.ToInt64(seriesIDValue);
+                var series = seriesRepo.GetSeriesByID(seriesID);
+                if (series == null) continue;
+
+                var curVar = series.Variable.Code;
+                if (!uniqueVariables.Contains(curVar))
+                {
+                    uniqueVariables.Add(curVar);
+                }
+            }
+            if (uniqueVariables.Count > 0)
+            {
+                _settings.VariableCode = uniqueVariables[0];
+            }
+            cmbVariable.DataSource = uniqueVariables;
+
+            //
+            btnOK.Enabled = _layer.DataSet.Features.Count > 0;
         }
 
         #endregion
 
         #region Private methods
 
+        private BackgroundWorker _backgroundWorker;
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             SetControlsToCalculation();
 
-            var worker = new BackgroundWorker {WorkerReportsProgress = true};
-            worker.ProgressChanged += delegate(object o, ProgressChangedEventArgs args)
-                                          {
-                                              pbProgress.Value = args.ProgressPercentage;
-                                              pbProgress.Text = args.UserState != null
-                                                                    ? args.UserState.ToString()
-                                                                    : string.Empty;
-                                          };
-            worker.DoWork += delegate
+            _backgroundWorker = new BackgroundWorker { WorkerReportsProgress = true };
+            _backgroundWorker.DoWork += delegate(object o, DoWorkEventArgs args)
                                  {
                                      var aggregator = new Aggregator(_settings, _layer)
                                                           {
-                                                              ProgressHandler = new ProgressHandler(worker),
+                                                              ProgressHandler = this,
+                                                              MaxPercentage = 97,
                                                           };
-                                     aggregator.Calculate();
+                                     args.Result = aggregator.Calculate();
                                  };
-            worker.RunWorkerCompleted += delegate
+            _backgroundWorker.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
                                              {
-                                                 DialogResult = DialogResult.OK;
-                                                 Close();
+                                                 if (args.Error != null)
+                                                 {
+                                                     MessageBox.Show("Error occured:" + Environment.NewLine + 
+                                                                     args.Error.Message, "Aggregation",
+                                                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                 }
+                                                 else
+                                                 {
+                                                     // This actions must be executed only in UI thread
+                                                     var result = (AggregationResult) args.Result;
+                                                     var featureSet = result.FeatureSet;
+                                                     var columnName = result.ResultColumnName;
+
+                                                     // Save updated data
+                                                     ReportProgress(98, "Saving data");
+                                                     if (!string.IsNullOrEmpty(featureSet.Filename))
+                                                     {
+                                                         featureSet.Save();
+                                                     }
+                                                     
+                                                     if (_settings.CreateNewLayer)
+                                                     {
+                                                         ReportProgress(99, "Adding layer to map");
+                                                         
+                                                         var mapLayer = new MapPointLayer(featureSet) { LegendText = Path.GetFileNameWithoutExtension(featureSet.Filename) };
+                                                         _layer.MapFrame.Add(mapLayer);
+                                                         
+                                                         UpdateLabeling(mapLayer, columnName);
+                                                         UpdateSymbology(mapLayer, columnName);
+                                                     }
+
+                                                     ReportProgress(100, "Finished");
+
+                                                     DialogResult = DialogResult.OK;
+                                                     Close();   
+                                                 }
                                              };
-            worker.RunWorkerAsync();
+            _backgroundWorker.RunWorkerAsync();
+        }
+
+        private void UpdateLabeling(IFeatureLayer mapLayer, string columnName)
+        {
+            var symbolizer = new LabelSymbolizer
+            {
+                FontColor = Color.Black,
+                FontSize = 8,
+                FontFamily = "Arial Unicode MS",
+                PreventCollisions = true,
+                HaloEnabled = true,
+                HaloColor = Color.White,
+                Orientation = ContentAlignment.MiddleRight,
+            };
+            ((Map)((IMapFrame)_layer.MapFrame).Parent).AddLabels(mapLayer, string.Format("[{0}]", columnName), string.Empty, symbolizer, "Category Default");
+        }
+
+        private void UpdateSymbology(IFeatureLayer mapLayer, string columnName)
+        {
+            // Updating layer symbology
+            var scheme = new PointScheme();
+            scheme.ClearCategories();
+
+            var settings = scheme.EditorSettings;
+            settings.ClassificationType = ClassificationType.Quantities;
+            settings.UseColorRange = false;
+            settings.UseSizeRange = true;
+            settings.RampColors = false;
+            settings.StartSize = 10;
+            settings.EndSize = 25;
+            settings.FieldName = columnName;
+
+            scheme.CreateCategories(mapLayer.DataSet.DataTable);
+            mapLayer.Symbology = scheme;
         }
 
         private void SetControlsToCalculation()
         {
             paSettings.Enabled = false;
-            pbProgress.Visible = true;
+            pbProgress.Visible = lblProgress.Visible = true;
             btnOK.Enabled = btnCancel.Enabled = false;
         }
 
         #endregion
 
-        #region Nested types
+        #region IProgressHandler implementation
 
-        private class ProgressHandler : IProgressHandler
+        public void ReportProgress(int persentage, object state)
         {
-            private readonly BackgroundWorker _parent;
+            pbProgress.UIThread(() => pbProgress.Value = persentage);
+            lblProgress.UIThread(() => lblProgress.Text = state != null ? state.ToString() : string.Empty);
+        }
 
-            public ProgressHandler(BackgroundWorker parent)
+        public void CheckForCancel()
+        {
+            var bw = _backgroundWorker;
+            if (bw != null && bw.WorkerSupportsCancellation)
             {
-                _parent = parent;
+                bw.CancelAsync();
             }
+        }
 
-            public void ReportProgress(int persentage, object state)
-            {
-                if (_parent.WorkerReportsProgress)
-                {
-                    _parent.ReportProgress(persentage, state);
-                }
-            }
-
-            public void CheckForCancel()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void ReportMessage(string message)
-            {
-                throw new NotImplementedException();
-            }
+        public void ReportMessage(string message)
+        {
+            lblProgress.UIThread(() => lblProgress.Text = message);
         }
 
         #endregion
