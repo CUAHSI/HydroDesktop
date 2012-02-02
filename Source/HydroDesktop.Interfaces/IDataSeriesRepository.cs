@@ -79,7 +79,7 @@ namespace HydroDesktop.Interfaces
         /// <returns>The Series object</returns>
         /// <remarks>This method only returns the series metadata. It doesn't return the full list of data
         /// values to save memory space.</remarks>
-        Series GetSeriesByID(int seriesID);
+        Series GetSeriesByID(long seriesID);
 
 
         /// <summary>

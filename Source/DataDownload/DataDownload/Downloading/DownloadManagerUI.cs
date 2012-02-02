@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using HydroDesktop.Common.Tools;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
@@ -257,17 +258,9 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private static void ThreadSafeSetText(Label label, string value)
         {
-            if (label.InvokeRequired)
-            {
-                label.BeginInvoke((Action<Label, string>)SetTextToLabel, label, value);
-            }
-            else
-                SetTextToLabel(label, value);
+            label.UIThread(() => label.Text = value);
         }
-        private static void SetTextToLabel(Label label, string value)
-        {
-            label.Text = value;
-        }
+
 
         private void InitDownloadInfoTable()
         {
@@ -315,25 +308,21 @@ namespace HydroDesktop.DataDownload.Downloading
                     ThreadSafeAddItemToLog(lbOutput, "Inner exception: " + e.Exception.InnerException.Message);
             }
         }
-        
+
         private void ThreadSafeAddItemToLog(ListBox listBox, object value)
         {
-            if (listBox.InvokeRequired)
-            {
-                listBox.BeginInvoke((Action<ListBox, object>)AddItemToLog, listBox, value);
-            }
-            else
-                AddItemToLog(listBox, value);
-        }
-        private void AddItemToLog(ListBox listBox, object value)
-        {
-            listBox.Items.Add(value);
+            listBox.UIThread
+                (delegate
+                     {
+                         listBox.Items.Add(value);
 
-            // scroll to last item if need
-            if (IsAutoScrollDetailsLog)
-            {
-                listBox.SelectedIndex = listBox.Items.Count - 1;
-            }
+                         // scroll to last item if need
+                         if (IsAutoScrollDetailsLog)
+                         {
+                             listBox.SelectedIndex = listBox.Items.Count - 1;
+                         }
+                     }
+                );
         }
 
         void _manager_Canceled(object sender, EventArgs e)
