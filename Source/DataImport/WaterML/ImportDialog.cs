@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using System.IO;
 using HydroDesktop.Configuration;
 
 namespace ImportFromWaterML
 {
     public partial class ImportDialog : Form
     {
-        public ImportDialog()
+        private readonly string _fileName;
+
+        public ImportDialog(string fileName)
         {
+            _fileName = fileName;
             InitializeComponent();
         }
 
@@ -30,6 +28,8 @@ namespace ImportFromWaterML
             cbTheme.DataSource = themeTable;
             cbTheme.DisplayMember = "ThemeName";
             cbTheme.ValueMember = "ThemeId";
+
+            txtFileName.Text = _fileName;
         }
 
         private void btnExport_Click(object sender, EventArgs e)
