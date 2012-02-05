@@ -66,6 +66,9 @@
       <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Excel">
+      <HintPath>Lib\ExcelDataReader\Excel.dll</HintPath>
+    </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
       <Private>False</Private>
@@ -97,6 +100,12 @@
   <ItemGroup>
     <Compile Include="Csv\CsvImporter.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
+    <Compile Include="Excel\FormatOptionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Excel\FormatOptionsPage.Designer.cs">
+      <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="IDataImporter.cs" />
     <Compile Include="ImportSeriesWizard.cs">
       <SubType>Form</SubType>
@@ -137,6 +146,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Excel\FormatOptionsPage.resx">
+      <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
