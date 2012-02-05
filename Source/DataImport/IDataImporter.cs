@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Wizard.UI;
 
 namespace DataImport
@@ -24,6 +25,7 @@ namespace DataImport
         IDataImportSettings GetDefaultSettings();
         void Import(IDataImportSettings settings);
         ICollection<Func<DataImportContext, WizardPage>> GePageCreators();
+        DataTable GetPreview(IDataImportSettings settings);
     }
 
     public class DataImportContext
@@ -34,7 +36,6 @@ namespace DataImport
 
     public interface IDataImportSettings
     {
-        //public string ThemeName { get; set; }
         string PathToFile { get; set; }
     }
 }

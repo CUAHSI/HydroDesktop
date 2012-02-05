@@ -99,7 +99,7 @@ namespace HydroDesktop.ExportToCSV
                 gbxThemes.Height = 0;
                 Height -= themesHeight;
                 gbxFields.Location = gbxThemes.Location;
-                gbxFields.Height = gbxDelimiters.Location.Y - 10 - gbxFields.Location.Y;
+                gbxFields.Height = delimiterSelector1.Location.Y - 10 - gbxFields.Location.Y;
                 tcMain.TabPages.Remove(tpAdvancedOptions);
             }
 
@@ -389,7 +389,9 @@ namespace HydroDesktop.ExportToCSV
             {
                 saveFileDlg.Title = "Select file";
                 saveFileDlg.OverwritePrompt = false;
-                saveFileDlg.Filter = rdoComma.Checked ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt" : "Text (*.txt)|*.txt";
+                saveFileDlg.Filter = delimiterSelector1.CurrentDelimiter == ","
+                                         ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt"
+                                         : "Text (*.txt)|*.txt";
 
                 if (saveFileDlg.ShowDialog() == DialogResult.OK)
                 {
@@ -428,24 +430,11 @@ namespace HydroDesktop.ExportToCSV
             }
 
             //Check whether a delimiter is checked
-            string delimiter = "";
-            if (rdoComma.Checked) delimiter = ",";
-            if (rdoTab.Checked) delimiter = "\t";
-            if (rdoSpace.Checked) delimiter = "\0";
-            if (rdoPipe.Checked) delimiter = "|";
-            if (rdoSemicolon.Checked) delimiter = ";";
-
-            if (rdoOthers.Checked)
+            var delimiter = delimiterSelector1.CurrentDelimiter;
+            if (String.IsNullOrEmpty(delimiter))
             {
-                if (tbOther.Text.Length != 0)
-                {
-                    delimiter = tbOther.Text;
-                }
-                else
-                {
-                    MessageBox.Show("Please input delimiter.", "Export To Text File");
-                    return;
-                }
+                MessageBox.Show("Please input delimiter.", "Export To Text File");
+                return;
             }
 
             //Check the output file path
@@ -541,7 +530,7 @@ namespace HydroDesktop.ExportToCSV
             gbxExport.Enabled = !isExporting;
             btnSelectAllFields.Enabled = !isExporting;
             btnSelectNoneFields.Enabled = !isExporting;
-            gbxDelimiters.Enabled = !isExporting;
+            delimiterSelector1.Enabled = !isExporting;
             gbxFields.Enabled = !isExporting;
             gbxProgress.Enabled = isExporting;
             gbxProgress.Visible = isExporting;
@@ -549,17 +538,6 @@ namespace HydroDesktop.ExportToCSV
             {
                 pgsBar.Value = 0;
                 gbxProgress.Text = "Processing...";
-            }
-        }
-
-        /// <summary>
-        ///Set the "Others" radiobutton be selected automatically when the textbox is changed.
-        /// </summary>        
-        private void other_TextChanged(object sender, EventArgs e)
-        {
-            if (tbOther.Text.Length != 0)
-            {
-                rdoOthers.Checked = true;
             }
         }
 

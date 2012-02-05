@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using Wizard.UI;
 
@@ -32,6 +33,11 @@ namespace DataImport.Excel
         public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
         {
             throw new NotImplementedException();
-        } 
+        }
+
+        public DataTable GetPreview(IDataImportSettings settings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

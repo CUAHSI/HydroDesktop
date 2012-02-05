@@ -98,7 +98,7 @@
     <Compile Include="Csv\CsvImporter.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
     <Compile Include="IDataImporter.cs" />
-    <Compile Include="ImportWizard\ImportSeriesWizard.cs">
+    <Compile Include="ImportSeriesWizard.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
