@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using DataImport;
 using DataImport.Csv;
 using DataImport.Excel;
+using DataImport.ImportWizard;
 using DataImport.Properties;
 using DataImport.Txt;
 using DataImport.WaterML;
@@ -71,7 +72,14 @@ namespace ImportFromWaterML
                 var fileName = dialog.FileName;
                 foreach (var imp in importers.Where(imp => imp.CanImportFromFile(fileName)))
                 {
-                    imp.Import(fileName);
+                    var context = new DataImportContext();
+                    context.Importer = imp;
+                    context.Settings = imp.GetDefaultSettings();
+                    context.Settings.PathToFile = fileName;
+
+                    var wizard = new ImportSeriesWizard(context);
+                    wizard.ShowDialog();
+                    
                     break;
                 }
             }

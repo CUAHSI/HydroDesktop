@@ -77,7 +77,7 @@
             // btnExport
             // 
             this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExport.Location = new System.Drawing.Point(231, 500);
+            this.btnExport.Location = new System.Drawing.Point(255, 479);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 28);
             this.btnExport.TabIndex = 21;
@@ -88,7 +88,7 @@
             // btncancel
             // 
             this.btncancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btncancel.Location = new System.Drawing.Point(312, 500);
+            this.btncancel.Location = new System.Drawing.Point(336, 479);
             this.btncancel.Name = "btncancel";
             this.btncancel.Size = new System.Drawing.Size(75, 28);
             this.btncancel.TabIndex = 22;
@@ -101,9 +101,9 @@
             this.gbxProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxProgress.Controls.Add(this.pgsBar);
-            this.gbxProgress.Location = new System.Drawing.Point(12, 484);
+            this.gbxProgress.Location = new System.Drawing.Point(12, 463);
             this.gbxProgress.Name = "gbxProgress";
-            this.gbxProgress.Size = new System.Drawing.Size(213, 46);
+            this.gbxProgress.Size = new System.Drawing.Size(237, 46);
             this.gbxProgress.TabIndex = 21;
             this.gbxProgress.TabStop = false;
             this.gbxProgress.Text = "Processing...";
@@ -115,7 +115,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pgsBar.Location = new System.Drawing.Point(9, 18);
             this.pgsBar.Name = "pgsBar";
-            this.pgsBar.Size = new System.Drawing.Size(198, 21);
+            this.pgsBar.Size = new System.Drawing.Size(222, 21);
             this.pgsBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pgsBar.TabIndex = 1;
             // 
@@ -137,7 +137,7 @@
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(375, 464);
+            this.tcMain.Size = new System.Drawing.Size(399, 443);
             this.tcMain.TabIndex = 11;
             // 
             // tpMainOptions
@@ -149,7 +149,7 @@
             this.tpMainOptions.Location = new System.Drawing.Point(4, 22);
             this.tpMainOptions.Name = "tpMainOptions";
             this.tpMainOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMainOptions.Size = new System.Drawing.Size(367, 438);
+            this.tpMainOptions.Size = new System.Drawing.Size(391, 417);
             this.tpMainOptions.TabIndex = 0;
             this.tpMainOptions.Text = "Main";
             this.tpMainOptions.UseVisualStyleBackColor = true;
@@ -164,7 +164,7 @@
             this.gbxThemes.Controls.Add(this.chkNodata);
             this.gbxThemes.Location = new System.Drawing.Point(3, 6);
             this.gbxThemes.Name = "gbxThemes";
-            this.gbxThemes.Size = new System.Drawing.Size(355, 143);
+            this.gbxThemes.Size = new System.Drawing.Size(379, 143);
             this.gbxThemes.TabIndex = 1;
             this.gbxThemes.TabStop = false;
             this.gbxThemes.Text = "Select Themes";
@@ -199,14 +199,14 @@
             this.clbThemes.FormattingEnabled = true;
             this.clbThemes.Location = new System.Drawing.Point(6, 19);
             this.clbThemes.Name = "clbThemes";
-            this.clbThemes.Size = new System.Drawing.Size(343, 79);
+            this.clbThemes.Size = new System.Drawing.Size(367, 79);
             this.clbThemes.TabIndex = 5;
             // 
             // chkNodata
             // 
             this.chkNodata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkNodata.AutoSize = true;
-            this.chkNodata.Location = new System.Drawing.Point(206, 120);
+            this.chkNodata.Location = new System.Drawing.Point(230, 120);
             this.chkNodata.Name = "chkNodata";
             this.chkNodata.Size = new System.Drawing.Size(143, 17);
             this.chkNodata.TabIndex = 4;
@@ -223,7 +223,7 @@
             this.gbxFields.Controls.Add(this.clbExportItems);
             this.gbxFields.Location = new System.Drawing.Point(3, 152);
             this.gbxFields.Name = "gbxFields";
-            this.gbxFields.Size = new System.Drawing.Size(355, 149);
+            this.gbxFields.Size = new System.Drawing.Size(379, 128);
             this.gbxFields.TabIndex = 5;
             this.gbxFields.TabStop = false;
             this.gbxFields.Text = "Select Fields to Export";
@@ -231,7 +231,7 @@
             // btnSelectNoneFields
             // 
             this.btnSelectNoneFields.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectNoneFields.Location = new System.Drawing.Point(87, 162);
+            this.btnSelectNoneFields.Location = new System.Drawing.Point(87, 141);
             this.btnSelectNoneFields.Name = "btnSelectNoneFields";
             this.btnSelectNoneFields.Size = new System.Drawing.Size(75, 23);
             this.btnSelectNoneFields.TabIndex = 8;
@@ -242,7 +242,7 @@
             // btnSelectAllFields
             // 
             this.btnSelectAllFields.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAllFields.Location = new System.Drawing.Point(6, 162);
+            this.btnSelectAllFields.Location = new System.Drawing.Point(6, 141);
             this.btnSelectAllFields.Name = "btnSelectAllFields";
             this.btnSelectAllFields.Size = new System.Drawing.Size(75, 23);
             this.btnSelectAllFields.TabIndex = 7;
@@ -257,7 +257,7 @@
             this.clbExportItems.FormattingEnabled = true;
             this.clbExportItems.Location = new System.Drawing.Point(3, 16);
             this.clbExportItems.Name = "clbExportItems";
-            this.clbExportItems.Size = new System.Drawing.Size(349, 130);
+            this.clbExportItems.Size = new System.Drawing.Size(373, 109);
             this.clbExportItems.TabIndex = 6;
             this.clbExportItems.ThreeDCheckBoxes = true;
             // 
@@ -271,9 +271,9 @@
             this.gbxDelimiters.Controls.Add(this.rdoOthers);
             this.gbxDelimiters.Controls.Add(this.tbOther);
             this.gbxDelimiters.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbxDelimiters.Location = new System.Drawing.Point(3, 309);
+            this.gbxDelimiters.Location = new System.Drawing.Point(3, 288);
             this.gbxDelimiters.Name = "gbxDelimiters";
-            this.gbxDelimiters.Size = new System.Drawing.Size(361, 74);
+            this.gbxDelimiters.Size = new System.Drawing.Size(385, 74);
             this.gbxDelimiters.TabIndex = 9;
             this.gbxDelimiters.TabStop = false;
             this.gbxDelimiters.Text = "Select a Delimiter";
@@ -359,9 +359,9 @@
             this.gbxExport.Controls.Add(this.btnBrowse);
             this.gbxExport.Controls.Add(this.tbOutPutFileName);
             this.gbxExport.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbxExport.Location = new System.Drawing.Point(3, 383);
+            this.gbxExport.Location = new System.Drawing.Point(3, 362);
             this.gbxExport.Name = "gbxExport";
-            this.gbxExport.Size = new System.Drawing.Size(361, 52);
+            this.gbxExport.Size = new System.Drawing.Size(385, 52);
             this.gbxExport.TabIndex = 17;
             this.gbxExport.TabStop = false;
             this.gbxExport.Text = "Specify Output File";
@@ -369,7 +369,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(292, 17);
+            this.btnBrowse.Location = new System.Drawing.Point(316, 17);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(63, 23);
             this.btnBrowse.TabIndex = 19;
@@ -383,7 +383,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbOutPutFileName.Location = new System.Drawing.Point(6, 19);
             this.tbOutPutFileName.Name = "tbOutPutFileName";
-            this.tbOutPutFileName.Size = new System.Drawing.Size(276, 20);
+            this.tbOutPutFileName.Size = new System.Drawing.Size(300, 20);
             this.tbOutPutFileName.TabIndex = 18;
             // 
             // tpAdvancedOptions
@@ -392,7 +392,7 @@
             this.tpAdvancedOptions.Location = new System.Drawing.Point(4, 22);
             this.tpAdvancedOptions.Name = "tpAdvancedOptions";
             this.tpAdvancedOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAdvancedOptions.Size = new System.Drawing.Size(397, 444);
+            this.tpAdvancedOptions.Size = new System.Drawing.Size(391, 417);
             this.tpAdvancedOptions.TabIndex = 1;
             this.tpAdvancedOptions.Text = "Advanced options";
             this.tpAdvancedOptions.UseVisualStyleBackColor = true;
@@ -461,7 +461,7 @@
             this.AcceptButton = this.btnExport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 542);
+            this.ClientSize = new System.Drawing.Size(418, 521);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.btncancel);

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Wizard.UI;
 
 namespace DataImport.Csv
 {
@@ -15,9 +17,27 @@ namespace DataImport.Csv
             return string.Equals(Path.GetExtension(pathToFile), ".csv", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public void Import(string pathToFile)
+        public IDataImportSettings GetDefaultSettings()
+        {
+            return new CsvImportSettings();
+        }
+
+        public void Import(IDataImportSettings settings)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class CsvImportSettings : IDataImportSettings
+    {
+        public string PathToFile
+        {
+            get;set;
         }
     }
 }
