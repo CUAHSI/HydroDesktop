@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Binaries\Plugins\ImportFromWaterML\DataImport.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -89,28 +90,49 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
-    <Reference Include="WizardBase">
-      <HintPath>Lib\WizardControl\WizardBase.dll</HintPath>
+    <Reference Include="Wizard.UI">
+      <HintPath>Lib\WinFormsWizard\Wizard.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Csv\CsvImporter.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
     <Compile Include="IDataImporter.cs" />
+    <Compile Include="ImportWizard\ImportSeriesWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Txt\FormatOptionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Txt\FormatOptionsPage.Designer.cs">
+      <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Txt\TxtImporter.cs" />
+    <Compile Include="WaterML\CompletePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WaterML\CompletePage.Designer.cs">
+      <DependentUpon>CompletePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WaterML\OptionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WaterML\OptionsPage.Designer.cs">
+      <DependentUpon>OptionsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WaterML\ProgressPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WaterML\ProgressPage.Designer.cs">
+      <DependentUpon>ProgressPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="WaterML\WaterMLImporter.cs" />
     <Compile Include="WaterML\Downloader.cs" />
-    <Compile Include="WaterML\ImportDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WaterML\ImportDialog.designer.cs">
-      <DependentUpon>ImportDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -119,15 +141,30 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="WaterML\ImportDialog.resx">
-      <DependentUpon>ImportDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Txt\FormatOptionsPage.resx">
+      <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WaterML\CompletePage.resx">
+      <DependentUpon>CompletePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WaterML\OptionsPage.resx">
+      <DependentUpon>OptionsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WaterML\ProgressPage.resx">
+      <DependentUpon>ProgressPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="package.nuspec" />
     <None Include="Resources\waterml_import1.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

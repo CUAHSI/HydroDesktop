@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Wizard.UI;
 
 namespace DataImport.Excel
 {
@@ -17,9 +19,19 @@ namespace DataImport.Excel
                    string.Equals(extension, ".xls", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public void Import(string pathToFile)
+        public IDataImportSettings GetDefaultSettings()
         {
             throw new NotImplementedException();
         }
+
+        public void Import(IDataImportSettings settings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
+        {
+            throw new NotImplementedException();
+        } 
     }
 }
