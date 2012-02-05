@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using DataImport;
 using DataImport.Csv;
 using DataImport.Excel;
-using DataImport.ImportWizard;
 using DataImport.Properties;
 using DataImport.Txt;
 using DataImport.WaterML;

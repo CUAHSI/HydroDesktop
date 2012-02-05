@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Forms;
 using Wizard.UI;
 
-namespace DataImport.ImportWizard
+namespace DataImport
 {
     /// <summary>
     /// Data Series Import Wizard
     /// </summary>
-    public class ImportSeriesWizard : WizardSheet
+    public partial class ImportSeriesWizard : WizardSheet
     {
         #region Fields
 
@@ -32,6 +29,12 @@ namespace DataImport.ImportWizard
             {
                 Pages.Add(pageCreator(context));
             }
+
+            // Wizard display options
+            StartPosition = FormStartPosition.CenterScreen;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            base.Text = "Time Series Data Import Wizard";
         }
 
         #endregion

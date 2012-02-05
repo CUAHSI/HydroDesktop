@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -71,6 +72,11 @@ namespace DataImport.WaterML
                            c => new ProgressPage(c),
                            c => new CompletePage(),
                        };
+        }
+
+        public DataTable GetPreview(IDataImportSettings settings)
+        {
+            throw new NotImplementedException();
         }
     }
 

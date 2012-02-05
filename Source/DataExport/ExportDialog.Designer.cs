@@ -45,14 +45,6 @@
             this.btnSelectNoneFields = new System.Windows.Forms.Button();
             this.btnSelectAllFields = new System.Windows.Forms.Button();
             this.clbExportItems = new System.Windows.Forms.CheckedListBox();
-            this.gbxDelimiters = new System.Windows.Forms.GroupBox();
-            this.rdoComma = new System.Windows.Forms.RadioButton();
-            this.rdoTab = new System.Windows.Forms.RadioButton();
-            this.rdoSpace = new System.Windows.Forms.RadioButton();
-            this.rdoPipe = new System.Windows.Forms.RadioButton();
-            this.rdoSemicolon = new System.Windows.Forms.RadioButton();
-            this.rdoOthers = new System.Windows.Forms.RadioButton();
-            this.tbOther = new System.Windows.Forms.TextBox();
             this.gbxExport = new System.Windows.Forms.GroupBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.tbOutPutFileName = new System.Windows.Forms.TextBox();
@@ -63,12 +55,12 @@
             this.chbUseDateRange = new System.Windows.Forms.CheckBox();
             this.cmbDateTimeColumns = new System.Windows.Forms.ComboBox();
             this.dtpStartDateRange = new System.Windows.Forms.DateTimePicker();
+            this.delimiterSelector1 = new HydroDesktop.Common.Controls.DelimiterSelector();
             this.gbxProgress.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.tpMainOptions.SuspendLayout();
             this.gbxThemes.SuspendLayout();
             this.gbxFields.SuspendLayout();
-            this.gbxDelimiters.SuspendLayout();
             this.gbxExport.SuspendLayout();
             this.tpAdvancedOptions.SuspendLayout();
             this.gbxDatesRange.SuspendLayout();
@@ -142,9 +134,9 @@
             // 
             // tpMainOptions
             // 
+            this.tpMainOptions.Controls.Add(this.delimiterSelector1);
             this.tpMainOptions.Controls.Add(this.gbxThemes);
             this.tpMainOptions.Controls.Add(this.gbxFields);
-            this.tpMainOptions.Controls.Add(this.gbxDelimiters);
             this.tpMainOptions.Controls.Add(this.gbxExport);
             this.tpMainOptions.Location = new System.Drawing.Point(4, 22);
             this.tpMainOptions.Name = "tpMainOptions";
@@ -261,99 +253,6 @@
             this.clbExportItems.TabIndex = 6;
             this.clbExportItems.ThreeDCheckBoxes = true;
             // 
-            // gbxDelimiters
-            // 
-            this.gbxDelimiters.Controls.Add(this.rdoComma);
-            this.gbxDelimiters.Controls.Add(this.rdoTab);
-            this.gbxDelimiters.Controls.Add(this.rdoSpace);
-            this.gbxDelimiters.Controls.Add(this.rdoPipe);
-            this.gbxDelimiters.Controls.Add(this.rdoSemicolon);
-            this.gbxDelimiters.Controls.Add(this.rdoOthers);
-            this.gbxDelimiters.Controls.Add(this.tbOther);
-            this.gbxDelimiters.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbxDelimiters.Location = new System.Drawing.Point(3, 288);
-            this.gbxDelimiters.Name = "gbxDelimiters";
-            this.gbxDelimiters.Size = new System.Drawing.Size(385, 74);
-            this.gbxDelimiters.TabIndex = 9;
-            this.gbxDelimiters.TabStop = false;
-            this.gbxDelimiters.Text = "Select a Delimiter";
-            // 
-            // rdoComma
-            // 
-            this.rdoComma.AutoSize = true;
-            this.rdoComma.Checked = true;
-            this.rdoComma.Location = new System.Drawing.Point(11, 23);
-            this.rdoComma.Name = "rdoComma";
-            this.rdoComma.Size = new System.Drawing.Size(90, 17);
-            this.rdoComma.TabIndex = 10;
-            this.rdoComma.TabStop = true;
-            this.rdoComma.Text = "&Comma (CSV)";
-            this.rdoComma.UseVisualStyleBackColor = true;
-            // 
-            // rdoTab
-            // 
-            this.rdoTab.AutoSize = true;
-            this.rdoTab.Location = new System.Drawing.Point(116, 23);
-            this.rdoTab.Name = "rdoTab";
-            this.rdoTab.Size = new System.Drawing.Size(44, 17);
-            this.rdoTab.TabIndex = 11;
-            this.rdoTab.TabStop = true;
-            this.rdoTab.Text = "&Tab";
-            this.rdoTab.UseVisualStyleBackColor = true;
-            // 
-            // rdoSpace
-            // 
-            this.rdoSpace.AutoSize = true;
-            this.rdoSpace.Location = new System.Drawing.Point(203, 23);
-            this.rdoSpace.Name = "rdoSpace";
-            this.rdoSpace.Size = new System.Drawing.Size(56, 17);
-            this.rdoSpace.TabIndex = 12;
-            this.rdoSpace.TabStop = true;
-            this.rdoSpace.Text = "&Space";
-            this.rdoSpace.UseVisualStyleBackColor = true;
-            // 
-            // rdoPipe
-            // 
-            this.rdoPipe.AutoSize = true;
-            this.rdoPipe.Location = new System.Drawing.Point(11, 41);
-            this.rdoPipe.Name = "rdoPipe";
-            this.rdoPipe.Size = new System.Drawing.Size(46, 17);
-            this.rdoPipe.TabIndex = 13;
-            this.rdoPipe.TabStop = true;
-            this.rdoPipe.Text = "&Pipe";
-            this.rdoPipe.UseVisualStyleBackColor = true;
-            // 
-            // rdoSemicolon
-            // 
-            this.rdoSemicolon.AutoSize = true;
-            this.rdoSemicolon.Location = new System.Drawing.Point(116, 41);
-            this.rdoSemicolon.Name = "rdoSemicolon";
-            this.rdoSemicolon.Size = new System.Drawing.Size(74, 17);
-            this.rdoSemicolon.TabIndex = 14;
-            this.rdoSemicolon.TabStop = true;
-            this.rdoSemicolon.Text = "Se&micolon";
-            this.rdoSemicolon.UseVisualStyleBackColor = true;
-            // 
-            // rdoOthers
-            // 
-            this.rdoOthers.AutoSize = true;
-            this.rdoOthers.Location = new System.Drawing.Point(203, 41);
-            this.rdoOthers.Name = "rdoOthers";
-            this.rdoOthers.Size = new System.Drawing.Size(54, 17);
-            this.rdoOthers.TabIndex = 15;
-            this.rdoOthers.TabStop = true;
-            this.rdoOthers.Text = "&Other:";
-            this.rdoOthers.UseVisualStyleBackColor = true;
-            // 
-            // tbOther
-            // 
-            this.tbOther.Location = new System.Drawing.Point(269, 38);
-            this.tbOther.MaxLength = 1;
-            this.tbOther.Name = "tbOther";
-            this.tbOther.Size = new System.Drawing.Size(27, 20);
-            this.tbOther.TabIndex = 16;
-            this.tbOther.TextChanged += new System.EventHandler(this.other_TextChanged);
-            // 
             // gbxExport
             // 
             this.gbxExport.Controls.Add(this.btnBrowse);
@@ -456,6 +355,14 @@
             this.dtpStartDateRange.Size = new System.Drawing.Size(147, 20);
             this.dtpStartDateRange.TabIndex = 3;
             // 
+            // delimiterSelector1
+            // 
+            this.delimiterSelector1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.delimiterSelector1.Location = new System.Drawing.Point(3, 284);
+            this.delimiterSelector1.Name = "delimiterSelector1";
+            this.delimiterSelector1.Size = new System.Drawing.Size(385, 78);
+            this.delimiterSelector1.TabIndex = 18;
+            // 
             // ExportDialog
             // 
             this.AcceptButton = this.btnExport;
@@ -485,8 +392,6 @@
             this.gbxThemes.ResumeLayout(false);
             this.gbxThemes.PerformLayout();
             this.gbxFields.ResumeLayout(false);
-            this.gbxDelimiters.ResumeLayout(false);
-            this.gbxDelimiters.PerformLayout();
             this.gbxExport.ResumeLayout(false);
             this.gbxExport.PerformLayout();
             this.tpAdvancedOptions.ResumeLayout(false);
@@ -518,19 +423,12 @@
         private System.Windows.Forms.GroupBox gbxExport;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.TextBox tbOutPutFileName;
-        private System.Windows.Forms.GroupBox gbxDelimiters;
-        private System.Windows.Forms.RadioButton rdoComma;
-        private System.Windows.Forms.RadioButton rdoTab;
-        private System.Windows.Forms.RadioButton rdoSpace;
-        private System.Windows.Forms.RadioButton rdoPipe;
-        private System.Windows.Forms.RadioButton rdoSemicolon;
-        private System.Windows.Forms.RadioButton rdoOthers;
-        private System.Windows.Forms.TextBox tbOther;
         private System.Windows.Forms.DateTimePicker dtpEndDateRange;
         private System.Windows.Forms.DateTimePicker dtpStartDateRange;
         private System.Windows.Forms.ComboBox cmbDateTimeColumns;
         private System.Windows.Forms.CheckBox chbUseDateRange;
         private System.Windows.Forms.Label lblAndRange;
         private System.Windows.Forms.GroupBox gbxDatesRange;
+        private Common.Controls.DelimiterSelector delimiterSelector1;
     }
 }
