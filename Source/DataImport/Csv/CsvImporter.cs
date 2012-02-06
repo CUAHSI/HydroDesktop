@@ -33,7 +33,7 @@ namespace DataImport.Csv
             throw new NotImplementedException();
         }
 
-        public DataTable GetPreview(IDataImportSettings settings)
+        public void SetPreview(IDataImportSettings settings)
         {
             throw new NotImplementedException();
         }
@@ -41,9 +41,7 @@ namespace DataImport.Csv
 
     public class CsvImportSettings : IDataImportSettings
     {
-        public string PathToFile
-        {
-            get;set;
-        }
+        public string PathToFile{get;set;}
+        public DataTable Preview { get; set; }
     }
 }

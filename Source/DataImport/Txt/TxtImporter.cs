@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Xml;
+using DataImport.CommonPages;
 using HydroDesktop.Common;
 using Wizard.UI;
 
@@ -37,34 +38,36 @@ namespace DataImport.Txt
             return new Collection<Func<DataImportContext, WizardPage>>
                        {
                            c => new FormatOptionsPage(c),
+                           c => new FieldPropertiesPage(c),
                        };
         }
 
-        public DataTable GetPreview(IDataImportSettings settings)
+        public void SetPreview(IDataImportSettings settings)
         {
             var txtSettings = (TxtImportSettings) settings;
-
             var fileName = txtSettings.PathToFile;
-            if (!File.Exists(fileName))
-            {
-                return new DataTable();
-            }
 
             DataTable result;
-            switch (txtSettings.FileType)
+            if (!File.Exists(fileName))
             {
-                case TxtFileType.Delimited:
-                    result = GetPreviewForDelimitedFile(txtSettings);
-                    break;
-                case TxtFileType.FixedWidth:
-                    result = GetPreviewForFixedWidthFile(txtSettings);
-                    break;
-                default:
-                    result = new DataTable();
-                    break;
+                result = new DataTable();
             }
-
-            return result;
+            else
+            {
+                switch (txtSettings.FileType)
+                {
+                    case TxtFileType.Delimited:
+                        result = GetPreviewForDelimitedFile(txtSettings);
+                        break;
+                    case TxtFileType.FixedWidth:
+                        result = GetPreviewForFixedWidthFile(txtSettings);
+                        break;
+                    default:
+                        result = new DataTable();
+                        break;
+                }
+            }
+            settings.Preview = result;
         }
 
         #region Private methods
@@ -147,9 +150,14 @@ namespace DataImport.Txt
                         var row = result.NewRow();
                         for(int i = 0; i<columnLengths.Length; i++)
                         {
-                            var value = line.Substring(0, columnLengths[i]).Trim();
+                            if (line.Length == 0)
+                            {
+                                break;
+                            }
+                            var curLen = Math.Min(columnLengths[i], line.Length);
+                            var value = line.Substring(0, curLen).Trim();
                             row[i] = value;
-                            line = line.Substring(columnLengths[i]);
+                            line = line.Substring(curLen);
                         }
                         result.Rows.Add(row);
                     }
@@ -162,31 +170,12 @@ namespace DataImport.Txt
         #endregion
     }
 
-    public class TxtImportSettings : ObservableObject<TxtImportSettings>, IDataImportSettings
+    public class TxtImportSettings : IDataImportSettings
     {
         public string PathToFile{get; set;}
-
-        private TxtFileType _fileType;
-        public TxtFileType FileType
-        {
-            get { return _fileType; }
-            set
-            {
-                _fileType = value;
-                NotifyPropertyChanged(x => x.FileType);
-            }
-        }
-
-        private string _delimiter;
-        public string Delimiter
-        {
-            get { return _delimiter; }
-            set
-            {
-                _delimiter = value;
-                NotifyPropertyChanged(x => x.Delimiter);
-            }
-        }
+        public TxtFileType FileType { get; set; }
+        public string Delimiter { get; set; }
+        public DataTable Preview { get; set; }
     }
 
     public enum TxtFileType

@@ -25,7 +25,7 @@ namespace DataImport
         IDataImportSettings GetDefaultSettings();
         void Import(IDataImportSettings settings);
         ICollection<Func<DataImportContext, WizardPage>> GePageCreators();
-        DataTable GetPreview(IDataImportSettings settings);
+        void SetPreview(IDataImportSettings settings);
     }
 
     public class DataImportContext
@@ -37,5 +37,6 @@ namespace DataImport
     public interface IDataImportSettings
     {
         string PathToFile { get; set; }
+        DataTable Preview { get; set; }
     }
 }
