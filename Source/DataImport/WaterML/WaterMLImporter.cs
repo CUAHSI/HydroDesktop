@@ -74,7 +74,7 @@ namespace DataImport.WaterML
                        };
         }
 
-        public DataTable GetPreview(IDataImportSettings settings)
+        public void SetPreview(IDataImportSettings settings)
         {
             throw new NotImplementedException();
         }
@@ -84,5 +84,6 @@ namespace DataImport.WaterML
     {
         public string PathToFile{get;set;}
         public string ThemeName { get; set; }
+        public DataTable Preview { get; set; }
     }
 }

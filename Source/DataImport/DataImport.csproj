@@ -98,6 +98,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonPages\FieldPropertiesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\FieldPropertiesPage.Designer.cs">
+      <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Csv\CsvImporter.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
     <Compile Include="Excel\FormatOptionsPage.cs">
@@ -146,6 +152,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CommonPages\FieldPropertiesPage.resx">
+      <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Excel\FormatOptionsPage.resx">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </EmbeddedResource>

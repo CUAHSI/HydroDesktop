@@ -45,8 +45,8 @@ namespace DataImport.Txt
 
         private void ShowPreview()
         {
-            var preview = _context.Importer.GetPreview(_settings);
-            dgvPreview.DataSource = preview;
+            _context.Importer.SetPreview(_settings);
+            dgvPreview.DataSource = _settings.Preview;
         }
 
         private void CmbFileTypeOnSelectedValueChanged(object sender, EventArgs eventArgs)
@@ -75,6 +75,8 @@ namespace DataImport.Txt
         private void FormatOptionsPage_SetActive(object sender, CancelEventArgs e)
         {
             SetWizardButtons(WizardButtons.Next);
+
+            ShowPreview();
         }
     }
 }
