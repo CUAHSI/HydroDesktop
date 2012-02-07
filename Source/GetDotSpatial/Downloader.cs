@@ -100,9 +100,12 @@ namespace GetDotSpatial
                     string source = defaultPackageSource;
                     string target = defaultPackageTarget;
 
-                    if (child.HasAttribute("source") && child.HasAttribute("target"))
+                    if (child.HasAttribute("source"))
                     {
-                        source = child.GetAttribute("source");
+                        source = child.GetAttribute("source");                 
+                    }
+                    if (child.HasAttribute("target"))
+                    {
                         target = child.GetAttribute("target");
                     }
                     DownloadNugetPackage(id, version, source, target);
@@ -150,82 +153,88 @@ namespace GetDotSpatial
         /// <param name="packageVersion">the package version</param>
         public static void DownloadNugetPackage(string packageId, string packageVersion, string packageSource, string packageTarget)
         {
-            string targetFolder; //target folder where files will be copied
-            
-            //find the 'Packages' folder
-            string packagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, defaultPackageTarget);
-            //string packagesFolder = FindPackagesFolder(packageTarget);
-
-            //generate name of the .nupkg zip file
-            string packageUrl;
-
-            string zipFileToDownload = Path.Combine(packagesFolder, String.Format("{0}.{1}{2}{0}.{1}.nupkg", packageId, packageVersion, Path.DirectorySeparatorChar));
-
-            if (packageTarget == defaultPackageTarget)
-            {
-                packageUrl = String.Format("{0}/Package/Download/{1}/{2}", packageSource, packageId, packageVersion);
-                targetFolder = Path.GetDirectoryName(zipFileToDownload);
-            }
-            else if (packageId.Contains("DotSpatial_x86"))
-            {
-                //SDSC.EDU package source is using a special naming convention for package naming
-                packageUrl = String.Format("{0}/DotSpatial_x86.{1}.nupkg", packageSource, packageVersion);
-                targetFolder = FindTargetFolder(packageTarget);
-            }
-            else if (packageSource.Contains("hydro10.sdsc.edu"))
-            {
-                //SDSC.EDU package source is using a special naming convention for package naming
-                packageUrl = String.Format("{0}/{1}.{2}.nupkg", packageSource, packageId, packageVersion);
-                targetFolder = FindTargetFolder(packageTarget);
-            }
-            else
-            {
-                packageUrl = String.Format("{0}/{1}/{2}", packageSource, packageId, packageVersion);
-                targetFolder = FindTargetFolder(packageTarget);
-            }
-
-
-            //check if the package file already exists - this also checks the version
-            if (File.Exists(zipFileToDownload))
-            {
-                Console.WriteLine(String.Format("package file {0} already downloaded.", zipFileToDownload));
-                UnzipNugetPackage(zipFileToDownload, targetFolder, packageId, packageVersion);
-                return;
-            }
-
-            //create directory if necessary
-            string downloadDirectory = Path.GetDirectoryName(zipFileToDownload);
-            if (!Directory.Exists(downloadDirectory))
-            {
-                try
-                {
-                    Directory.CreateDirectory(downloadDirectory);
-                }
-                catch (Exception ex)
-                {
-                    throw new UnauthorizedAccessException("Unable to create directory " + downloadDirectory);
-                }
-            }
-
             try
             {
-                using (WebClient wc = new WebClient())
-                {
-                    Console.WriteLine("Downloading package " + packageUrl);
-                    wc.DownloadFile(packageUrl, zipFileToDownload);
-                }
-            }
-            catch (WebException ex1)
-            {
-                throw new WebException("Error downloading package " + packageUrl + " - " + ex1.Message);
-            }
-            catch (UnauthorizedAccessException ex2)
-            {
-                throw new WebException("Access denied to folder " + Path.GetDirectoryName(zipFileToDownload) + " - " + ex2.Message);
-            }
 
-            //also try to unzip the package already downloaded
-            UnzipNugetPackage(zipFileToDownload, targetFolder, packageId, packageVersion);
+                string targetFolder; //target folder where files will be copied
+
+                //find the 'Packages' folder
+                string packagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, defaultPackageTarget);
+                //string packagesFolder = FindPackagesFolder(packageTarget);
+
+                //generate name of the .nupkg zip file
+                string packageUrl;
+
+                string zipFileToDownload = Path.Combine(packagesFolder, String.Format("{0}.{1}{2}{0}.{1}.nupkg", packageId, packageVersion, Path.DirectorySeparatorChar));
+
+                if (packageSource.Contains("packages.nuget.org"))
+                {
+                    packageUrl = String.Format("{0}/Package/Download/{1}/{2}", packageSource, packageId, packageVersion);
+                }
+                else if (packageId.Contains("DotSpatial_x86"))
+                {
+                    //SDSC.EDU package source is using a special naming convention for package naming
+                    packageUrl = String.Format("{0}/DotSpatial_x86.{1}.nupkg", packageSource, packageVersion);
+                }
+                else if (packageSource.Contains("hydro10.sdsc.edu"))
+                {
+                    //SDSC.EDU package source is using a special naming convention for package naming
+                    packageUrl = String.Format("{0}/{1}.{2}.nupkg", packageSource, packageId, packageVersion);
+                }
+                else
+                {
+                    packageUrl = String.Format("{0}/{1}/{2}", packageSource, packageId, packageVersion);
+                }
+                targetFolder = FindTargetFolder(packageTarget);
+
+
+                //check if the package file already exists - this also checks the version
+                if (File.Exists(zipFileToDownload))
+                {
+                    Console.WriteLine(String.Format("package file {0} already downloaded.", zipFileToDownload));
+                    UnzipNugetPackage(zipFileToDownload, targetFolder, packageId, packageVersion);
+                    return;
+                }
+
+                //create directory if necessary
+                string downloadDirectory = Path.GetDirectoryName(zipFileToDownload);
+                if (!Directory.Exists(downloadDirectory))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(downloadDirectory);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new UnauthorizedAccessException("Unable to create directory " + downloadDirectory);
+                    }
+                }
+
+                try
+                {
+                    using (WebClient wc = new WebClient())
+                    {
+                        Console.WriteLine("Downloading package " + packageUrl);
+                        wc.DownloadFile(packageUrl, zipFileToDownload);
+                    }
+                }
+                catch (WebException ex1)
+                {
+                    throw new WebException("Error downloading package " + packageUrl + " - " + ex1.Message);
+                }
+                catch (UnauthorizedAccessException ex2)
+                {
+                    throw new WebException("Access denied to folder " + Path.GetDirectoryName(zipFileToDownload) + " - " + ex2.Message);
+                }
+
+                //also try to unzip the package already downloaded
+                UnzipNugetPackage(zipFileToDownload, targetFolder, packageId, packageVersion);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error downloading package " + ex.InnerException.Message);
+            }
         }
 
         private static void UnzipNugetPackage(string zipFile, string targetFolder, string packageId, string packageVersion)
