@@ -8,4 +8,5 @@
 ../Binaries/Plugins/WebMap/DotSpatial.Plugins.ExtensionManager.dll
 ../Binaries/Icons/*
 ../Binaries/Plugins/DroughtAnalysis/*
+../Binaries/Plugins/DroughtAnalysis.dll
 ../Binaries/Plugins/FacetedSearch3/*
