@@ -89,9 +89,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             // set the initial text for the dirbox
             try
-            {
-                throw new UnauthorizedAccessException("vole");
-                
+            {              
                 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
                 string start_path = Path.GetFullPath(HydroModeler.Properties.Resources.startpath);
                 if (Directory.Exists(start_path))
