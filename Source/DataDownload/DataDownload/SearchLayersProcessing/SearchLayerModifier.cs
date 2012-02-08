@@ -65,7 +65,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         public void AddCustomFeaturesToSearchLayer(IFeatureLayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
-
             if (!IsSearchLayer(layer)) return;
 
             SetUpLabeling(layer, _map);
@@ -84,8 +83,11 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             UpdateContextMenu(searchLayer);
         }
 
-        private void UpdateContextMenu(IFeatureLayer searchLayer)
+        public void UpdateContextMenu(IFeatureLayer searchLayer)
         {
+            if (searchLayer == null) throw new ArgumentNullException("searchLayer");
+            if (!IsSearchLayer(searchLayer)) return;
+
             const string dataGroupName = "Data";
             var dataGroupMenu = searchLayer.ContextMenuItems.FirstOrDefault(item => item.Name == dataGroupName);
             if (dataGroupMenu == null)
