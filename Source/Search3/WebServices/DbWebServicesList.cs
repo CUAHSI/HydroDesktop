@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HydroDesktop.WebServices;
 using Search3.Searching;
 using Search3.Settings;
 
@@ -12,7 +13,9 @@ namespace Search3.WebServices
             return new MetadataCacheSearcher().GetWebServices().Select(
                 service =>
                 new WebServiceNode(service.ServiceTitle,
-                    service.ServiceCode, (int)service.Id, service.DescriptionURL, service.EndpointURL, null)).ToList();
+                                   service.ServiceCode, (int) service.Id, service.DescriptionURL, service.EndpointURL,
+                                   new Box(service.WestLongitude, service.EastLongitude,
+                                           service.SouthLatitude, service.NorthLatitude))).ToList();
         }
     }
 }

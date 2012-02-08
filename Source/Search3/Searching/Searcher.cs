@@ -195,7 +195,9 @@ namespace Search3.Searching
             }
 
             SearchResult result;
-            var webServices = settings.WebServicesSettings.TotalCount == settings.WebServicesSettings.CheckedCount
+            
+            var webServices = settings.WebServicesSettings.TotalCount == settings.WebServicesSettings.CheckedCount &&
+                              settings.WebServicesSettings.TotalCount > 1
                                   ? new WebServiceNode[] {}
                                   : settings.WebServicesSettings.WebServices.Where(item => item.Checked).ToArray();
 

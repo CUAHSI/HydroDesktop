@@ -140,7 +140,7 @@ namespace Search3.Searching
                     foreach (var keyword in keywords)
                     {
                         bgWorker.ReportMessage(
-                            string.Format("Retreiving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
+                            string.Format("Retrieving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
                                           currentTileIndex + 1, totalTilesCount));
                         bgWorker.CheckForCancel();
                         tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY,
