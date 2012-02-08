@@ -128,6 +128,33 @@ namespace Search3.Searching
             return newList;
         }
 
+        /// <summary>
+        /// Updates  BeginDate/EndDate/ValueCount in the SeriesDataCart to the user-specified range
+        /// </summary>
+        /// <param name="series">Series to update</param>
+        /// <param name="startDate">User-specified startDate</param>
+        /// <param name="endDate">User-specified endDate</param>
+        public static void UpdateDataCartToDateInterval(SeriesDataCart series, DateTime startDate, DateTime endDate)
+        {
+            // Update BeginDate/EndDate/ValueCount to the user-specified range
+            var seriesStartDate = series.BeginDate < startDate ? startDate : series.BeginDate;
+            var seriesEndDate = series.EndDate > endDate ? endDate : series.EndDate;
+
+            var serverDateRange = series.EndDate.Subtract(series.BeginDate);
+            var userDateRange = seriesEndDate.Subtract(seriesStartDate);
+
+            var userFromServerPercentage = serverDateRange.TotalDays > 0
+                                               ? userDateRange.TotalDays / serverDateRange.TotalDays
+                                               : 1.0;
+            if (userFromServerPercentage > 1.0)
+                userFromServerPercentage = 1.0;
+            var esimatedValueCount = (int)(series.ValueCount * userFromServerPercentage);
+
+            series.ValueCount = esimatedValueCount;
+            series.BeginDate = seriesStartDate;
+            series.EndDate = seriesEndDate;
+        }
+
 	    /// <summary>
 	    /// Adds the necessary attribute columns to the featureSet's attribute table
 	    /// </summary>

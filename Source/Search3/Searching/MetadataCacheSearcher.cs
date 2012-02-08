@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces;
@@ -47,7 +48,20 @@ namespace Search3.Searching
         protected override IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string keyword,
             DateTime startDate, DateTime endDate, int[] networkIDs)
         {
-            return _db.GetSeriesListInBox(xMin, xMax, yMin, yMax, new []{keyword}, startDate, endDate, networkIDs);
+            var dt = _db.GetSeriesDataTableInBox(xMin, xMax, yMin, yMax, new []{keyword}, startDate, endDate, networkIDs);
+
+            var seriesList = new List<SeriesDataCart>(dt.Rows.Count);
+            foreach (DataRow row in dt.Rows)
+            {
+                var series = _db.SeriesDataCartFromRow(row);
+                if (series != null)
+                {
+                    // Update BeginDate/EndDate/ValueCount to the user-specified range
+                    SearchHelper.UpdateDataCartToDateInterval(series, startDate, endDate);
+                    seriesList.Add(series);
+                }
+            }
+            return seriesList;
         }
     }
 }

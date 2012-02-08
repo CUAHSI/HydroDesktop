@@ -291,10 +291,14 @@ namespace HydroDesktop.Database
             return newSeries;
         }
 
-        private SeriesDataCart SeriesDataCartFromRow(DataRow row)
+        /// <summary>
+        /// Converts DataRow into SeriesDataCart
+        /// </summary>
+        /// <param name="row">DataRow to convert</param>
+        /// <returns>SeriesDataCart</returns>
+        public SeriesDataCart SeriesDataCartFromRow(DataRow row)
         {
-            //Site site = new Site();
-            SeriesDataCart result = new SeriesDataCart();
+            var result = new SeriesDataCart();
             result.SiteName = Convert.ToString(row["SiteName"]);
             result.SiteCode = Convert.ToString(row["SiteCode"]);
             result.Latitude = Convert.ToDouble(row["Latitude"], CultureInfo.InvariantCulture);
@@ -310,8 +314,6 @@ namespace HydroDesktop.Database
             result.TimeSupport = Convert.ToDouble(row["TimeSupport"], CultureInfo.InvariantCulture);
             result.GeneralCategory = Convert.ToString(row["GeneralCategory"]);
             result.TimeUnit = Convert.ToString(row["TimeUnitsName"]);
-
-            Source src = Source.Unknown;
 
             result.BeginDate = Convert.ToDateTime(row["BeginDateTime"], CultureInfo.InvariantCulture);
             result.EndDate = Convert.ToDateTime(row["EndDateTime"], CultureInfo.InvariantCulture);
@@ -361,8 +363,9 @@ namespace HydroDesktop.Database
 
             return lst;
 		}
+
         /// <summary>
-        /// Gets a list of all data series within the bounding box
+        /// Gets a data table of all data series within the bounding box
         /// </summary>
         /// <param name="xMin">minimum X (longitude)</param>
         /// <param name="xMax">maximum X (longitude)</param>
@@ -373,7 +376,7 @@ namespace HydroDesktop.Database
         /// <param name="endDate">end date</param>
         /// <param name="networkIDs">larray of service codes</param>
         /// <returns>the list of data series metadata matching the search criteria</returns>
-		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs )
+		public DataTable GetSeriesDataTableInBox ( double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs )
 		{
             string sql1 = DetailedSeriesSQLQuery();
             string sqlWhere1 = " WHERE Latitude > @minlat AND Latitude < @maxlat AND Longitude > @minlon AND Longitude < @maxlon";
@@ -454,19 +457,29 @@ namespace HydroDesktop.Database
             cmd.Parameters[4].Value = startDate;
             cmd.Parameters[5].Value = endDate;
             
-            DataTable seriesTable = _db.LoadTable("seriesTable", cmd);
-
-            IList<SeriesDataCart> lst = new List<SeriesDataCart>();
-            foreach (DataRow row in seriesTable.Rows)
-            {
-                SeriesDataCart newSeries = SeriesDataCartFromRow(row);
-                lst.Add(newSeries);
-            }
-
-            return lst;
+            var seriesTable = _db.LoadTable("seriesTable", cmd);
+            return seriesTable;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Gets a list of all data series within the bounding box
+        /// </summary>
+        /// <param name="xMin">minimum X (longitude)</param>
+        /// <param name="xMax">maximum X (longitude)</param>
+        /// <param name="yMin">minimum Y (latitude)</param>
+        /// <param name="yMax">maximum Y (latitude)</param>
+        /// <param name="conceptCodes">array of Concept keywords</param>
+        /// <param name="startDate">start date</param>
+        /// <param name="endDate">end date</param>
+        /// <param name="networkIDs">larray of service codes</param>
+        /// <returns>the list of data series metadata matching the search criteria</returns>
+        public IList<SeriesDataCart> GetSeriesListInBox(double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs)
+        {
+            var dt = GetSeriesDataTableInBox(xMin, xMax, yMin, yMax, conceptCodes, startDate, endDate, networkIDs);
+            return (from DataRow row in dt.Rows select SeriesDataCartFromRow(row)).ToList();
+        }
+
+	    /// <summary>
 		/// Gets all variables that are currently stored in the metadata cache database
 		/// </summary>
 		public IList<Variable> GetVariables()
