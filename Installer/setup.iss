@@ -133,7 +133,7 @@ Source: "..\Binaries\extra_plugins\GeostatisticalTool\*"; DestDir: "{app}\Plugin
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
+;Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
