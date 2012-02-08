@@ -52,9 +52,6 @@
     <Reference Include="SharpMap">
       <HintPath>..\..\..\Utilities\SharpMap\SharpMap.dll</HintPath>
     </Reference>
-    <Reference Include="SMW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -78,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ET.omi" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Utilities\edu.SC.SMW\SMW.csproj">
+      <Project>{96C23728-CA20-47F8-A85C-AE76A31085FB}</Project>
+      <Name>SMW</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

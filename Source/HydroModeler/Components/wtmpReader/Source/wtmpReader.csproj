@@ -55,8 +55,9 @@
     <Reference Include="SharpMap">
       <HintPath>..\..\..\Utilities\SharpMap\SharpMap.dll</HintPath>
     </Reference>
-    <Reference Include="SMW">
-      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
+    <Reference Include="SMW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

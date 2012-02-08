@@ -44,6 +44,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			CheckWebService ( serviceInfo.EndpointURL );
 			_asmxURL = serviceInfo.EndpointURL;
 
+            //TODO make this path an optional user setting
 			DownloadDirectory = Path.Combine ( Path.GetTempPath (), "HydroDesktop" );
 
 			//find out the WaterOneFlow version of this web service
@@ -100,11 +101,19 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			get { return _downloadDirectory; }
 			set
 			{
-				if ( Directory.Exists ( _downloadDirectory ) )
+				if ( !Directory.Exists ( _downloadDirectory ) )
 				{
-					Directory.CreateDirectory ( _downloadDirectory );
+                    try
+                    {
+                        Directory.CreateDirectory(_downloadDirectory);
+                        _downloadDirectory = value;
+                    }
+                    catch
+                    {
+                        _downloadDirectory = Path.GetTempPath();
+                    }
 				}
-				_downloadDirectory = value;
+				
 			}
 		}
 
