@@ -182,7 +182,7 @@ namespace HydroDesktop.DataDownload
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             foreach (var layer in App.Map.MapFrame.Layers)
-                AttachLayerToPlugin(layer, false);
+                AttachLayerToPlugin(layer, true);
         }
 
         private void Map_LayerAdded(object sender, LayerEventArgs e)
@@ -196,7 +196,7 @@ namespace HydroDesktop.DataDownload
             UnattachLayerFromPlugin(e.Layer);
         }
 
-        private void AttachLayerToPlugin(ILayer layer, bool addCustomFeatures = true)
+        private void AttachLayerToPlugin(ILayer layer, bool isDeserializing = false)
         {
             if (SearchLayerModifier.IsSearchLayer(layer))
             {
@@ -207,10 +207,16 @@ namespace HydroDesktop.DataDownload
                     _searchLayerInformer = new SearchLayerInformer(extractor, (Map) App.Map);
                 }
 
-                if (addCustomFeatures)
+                if (!isDeserializing)
                 {
                     SearchLayerModifier.AddCustomFeaturesToSearchLayer((IFeatureLayer) layer);
                 }
+                else
+                {
+                    SearchLayerModifier.UpdateContextMenu((IFeatureLayer)layer);
+                }
+
+
                 btnDownload.Enabled = true;
             }
 
@@ -221,7 +227,7 @@ namespace HydroDesktop.DataDownload
                 group.LayerRemoved += Layers_LayerRemoved;
 
                 foreach (var child in group.GetLayers())
-                    AttachLayerToPlugin(child, addCustomFeatures);
+                    AttachLayerToPlugin(child, isDeserializing);
             }
         }
 

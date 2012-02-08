@@ -177,6 +177,7 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
 
                                                      // Save updated data
                                                      ReportProgress(98, "Saving data");
+                                                     Application.DoEvents();
                                                      if (!string.IsNullOrEmpty(featureSet.Filename))
                                                      {
                                                          featureSet.Save();
@@ -185,6 +186,7 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                                                      if (_settings.CreateNewLayer)
                                                      {
                                                          ReportProgress(99, "Adding layer to map");
+                                                         Application.DoEvents();
                                                          
                                                          var mapLayer = new MapPointLayer(featureSet) { LegendText = Path.GetFileNameWithoutExtension(featureSet.Filename) };
                                                          _layer.MapFrame.Add(mapLayer);
@@ -194,6 +196,7 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                                                      }
 
                                                      ReportProgress(100, "Finished");
+                                                     Application.DoEvents();
 
                                                      DialogResult = DialogResult.OK;
                                                      Close();   
