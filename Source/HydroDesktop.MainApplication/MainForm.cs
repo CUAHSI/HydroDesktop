@@ -34,6 +34,7 @@ namespace HydroDesktop.MainApplication
                     // added to the DockManager before any other dockable panels.
                     this.appManager.DockManager.Add(new DockablePanel("kLegend", "Legend", (Legend)appManager.Legend, DockStyle.Left) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.legend_16x16 });
                     this.appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.map_16x16 });
+                    this.appManager.Map.Legend = this.appManager.Legend; //links map with legend
                 };
 
             Shell = this;
