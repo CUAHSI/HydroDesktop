@@ -271,17 +271,17 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
             {
                 var min = minValue + categorieStep*i;
                 var max = min + categorieStep;
-                if (max > maxValue)
-                    max = maxValue;
+                if (max >= maxValue)
+                    max = maxValue + 1;
 
                 min = Math.Round(min, fracLength);
                 max = Math.Round(max, fracLength);
 
                 imageSize += imageStep;
-                var baseFilter = string.Format("[{0}] > {1} and [{0}] <= {2}", columnName,
+                var baseFilter = string.Format("[{0}] >= {1} and [{0}] < {2}", columnName,
                                                fracLength == 0 ? (int)min : min,
                                                fracLength == 0 ? (int)max : max);
-                var legendText = string.Format("({0}, {1}]",
+                var legendText = string.Format("[{0}, {1})",
                                                fracLength == 0 ? (int)min : min,
                                                fracLength == 0 ? (int)max : max);
                 var mySymbolizer = new PointSymbolizer(imageColor, PointShape.Ellipse, imageSize);
