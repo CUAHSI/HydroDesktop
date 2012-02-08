@@ -91,7 +91,10 @@ namespace HydroDesktop.DataDownload.DataAggregation
                 ReportProgress(++percentage, "Creating new layer");
 
                 featureSet = new FeatureSet { Projection = _layer.DataSet.Projection };
-                featureSet.DataTable.Columns.Add("SeriesID", typeof(long));
+                var seriesIDCol = featureSet.DataTable.Columns.Add("SeriesID", typeof(long));
+                var siteNameCol = featureSet.DataTable.Columns.Add("SiteName", typeof(string));
+                var siteCodeCol = featureSet.DataTable.Columns.Add("SiteCode", typeof(string));
+
                 
                 // Find features to add to new feature set
                 foreach (var feature in _layer.DataSet.Features)
@@ -110,7 +113,9 @@ namespace HydroDesktop.DataDownload.DataAggregation
                     }
                     
                     var newFeature = featureSet.AddFeature(feature.BasicGeometry);
-                    newFeature.DataRow["SeriesID"] = seriesID;
+                    newFeature.DataRow[seriesIDCol] = seriesID;
+                    newFeature.DataRow[siteNameCol] = series.Site.Name;
+                    newFeature.DataRow[siteCodeCol] = series.Site.Code;
                 }
                 
                 var fileName = Path.Combine(Settings.Instance.CurrentProjectDirectory,
