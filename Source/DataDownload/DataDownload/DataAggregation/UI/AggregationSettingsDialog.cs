@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
@@ -13,6 +14,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
+using PointShape = DotSpatial.Symbology.PointShape;
 
 namespace HydroDesktop.DataDownload.DataAggregation.UI
 {
@@ -217,20 +219,77 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
 
         private void UpdateSymbology(IFeatureLayer mapLayer, string columnName)
         {
-            // Updating layer symbology
             var scheme = new PointScheme();
             scheme.ClearCategories();
 
             var settings = scheme.EditorSettings;
-            settings.ClassificationType = ClassificationType.Quantities;
-            settings.UseColorRange = false;
-            settings.UseSizeRange = true;
-            settings.RampColors = false;
-            settings.StartSize = 10;
-            settings.EndSize = 25;
-            settings.FieldName = columnName;
+            settings.ClassificationType = ClassificationType.Custom;
 
-            scheme.CreateCategories(mapLayer.DataSet.DataTable);
+            var colors = new[]
+                             {
+                                 Color.Aqua, Color.Blue, Color.Brown, Color.Cyan, Color.Fuchsia, Color.LightSalmon,
+                                 Color.Olive, Color.Wheat, Color.DodgerBlue
+                             };
+            
+            // Find min/max value in valueField 
+            var minValue = double.MaxValue;
+            var maxValue = double.MinValue;
+            foreach (DataRow row in mapLayer.DataSet.DataTable.Rows)
+            {
+                double value;
+                try
+                {
+                    value = Convert.ToDouble(row[columnName]);
+                }
+                catch
+                {
+                    value = 0;
+                }
+                if (value < minValue)
+                    minValue = value;
+                if (value > maxValue)
+                    maxValue = value;
+            }
+            const double EPSILON = 0.00001;
+            if (Math.Abs(minValue - double.MaxValue) < EPSILON) minValue = 0.0;
+            if (Math.Abs(maxValue - double.MinValue) < EPSILON) maxValue = 0.0;
+
+            var fracLength = maxValue - minValue > 10? 0 : 1;
+            
+            // Set number of categories
+            int categoriesCount  = 3;
+            var categorieStep = (maxValue - minValue) / categoriesCount;    // value step in filter
+
+            const int imageStep = 5;
+            var imageSize = 10; // start image size
+
+            var imageColor = colors[new Random().Next(0, colors.Length - 1)];
+            for (int i = 0; i < categoriesCount; i++)
+            {
+                var min = minValue + categorieStep*i;
+                var max = min + categorieStep;
+                if (max > maxValue)
+                    max = maxValue;
+
+                min = Math.Round(min, fracLength);
+                max = Math.Round(max, fracLength);
+
+                imageSize += imageStep;
+                var baseFilter = string.Format("[{0}] > {1} and [{0}] <= {2}", columnName,
+                                               fracLength == 0 ? (int)min : min,
+                                               fracLength == 0 ? (int)max : max);
+                var legendText = string.Format("({0}, {1}]",
+                                               fracLength == 0 ? (int)min : min,
+                                               fracLength == 0 ? (int)max : max);
+                var mySymbolizer = new PointSymbolizer(imageColor, PointShape.Ellipse, imageSize);
+                var myCategory = new PointCategory(mySymbolizer)
+                {
+                    FilterExpression = baseFilter,
+                    LegendText = legendText,
+                };
+                scheme.AddCategory(myCategory);
+            }
+
             mapLayer.Symbology = scheme;
         }
 
