@@ -105,10 +105,6 @@
       <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Modeling">
-      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Modeling.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
       <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
       <Private>False</Private>
