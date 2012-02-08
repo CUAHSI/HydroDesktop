@@ -149,24 +149,7 @@ namespace Search3.Searching
                             if (series != null)
                             {
                                 // Update BeginDate/EndDate/ValueCount to the user-specified range
-                                var seriesStartDate = series.BeginDate < startDate ? startDate : series.BeginDate;
-                                var seriesEndDate = series.EndDate > endDate ? endDate : series.EndDate;
-
-                                var serverDateRange = series.EndDate.Subtract(series.BeginDate);
-                                var userDateRange = seriesEndDate.Subtract(seriesStartDate);
-
-                                var userFromServerPercentage = serverDateRange.TotalDays > 0
-                                                                   ? userDateRange.TotalDays/serverDateRange.TotalDays
-                                                                   : 1.0;
-                                if (userFromServerPercentage > 1.0)
-                                    userFromServerPercentage = 1.0;
-                                var esimatedValueCount = (int) (series.ValueCount*userFromServerPercentage);
-
-                                series.ValueCount = esimatedValueCount;
-                                series.BeginDate = seriesStartDate;
-                                series.EndDate = seriesEndDate;
-                                //---
-
+                                SearchHelper.UpdateDataCartToDateInterval(series, startDate, endDate);
                                 seriesList.Add(series);
                             }
                         }
