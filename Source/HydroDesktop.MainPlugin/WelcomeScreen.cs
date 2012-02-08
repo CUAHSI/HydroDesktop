@@ -31,7 +31,7 @@ namespace HydroDesktop.Main
         private ProjectManager myProjectManager;
 
         const string SampleProjectsDirectory = "hydrodesktop_sample_projects";
-        const string QuickStartGuideFile = "HydroDesktop_Quick_Start_Guide_1.3.pdf";
+        const string QuickStartGuideFile = "HydroDesktop_Quick_Start_Guide_1.4.pdf";
         
         #endregion
 
