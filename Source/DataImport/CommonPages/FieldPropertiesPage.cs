@@ -29,14 +29,16 @@ namespace DataImport.CommonPages
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using(var createSiteform = new CreateSiteForm())
-            {
-                if (createSiteform.ShowDialog() == DialogResult.OK)
-                {
-                    var site = createSiteform.Entity;
-                }
-            }
-            
+            var createSiteform = new CreateSiteForm();
+            createSiteform.ShowDialog();
+            var site = createSiteform.Entity;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var form = new DetailsForm();
+            form.ShowDialog();
+            var q = form.QualityControlLevel;
         }
     }
 }
