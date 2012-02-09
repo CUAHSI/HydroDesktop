@@ -16,7 +16,7 @@ namespace HydroDesktop.Interfaces
         /// <param name="minDate">Minimum date to aggregate series</param>
         /// <param name="maxDate">Maximum date to aggregate series</param>
         /// <returns>Aggregated value.</returns>
-        double AggregateValues(long seriesID, string aggregateFunction, DateTime minDate, DateTime maxDate);
+        double? AggregateValues(long seriesID, string aggregateFunction, DateTime minDate, DateTime maxDate);
 
         /// <summary>
         /// Calculates percent of avalible values (not equal NoDataValue) for given seriesID and period

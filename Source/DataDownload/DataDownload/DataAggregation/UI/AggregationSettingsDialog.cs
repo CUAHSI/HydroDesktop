@@ -15,6 +15,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 using PointShape = DotSpatial.Symbology.PointShape;
+using System.Globalization;
 
 namespace HydroDesktop.DataDownload.DataAggregation.UI
 {
@@ -84,11 +85,13 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
 
             foreach (var feature in _layer.DataSet.Features)
             {
-                var startDateRow = feature.DataRow["StartDate"];
-                var endDateRow = feature.DataRow["EndDate"];
+                var startDateRow = feature.DataRow["BeginDateTi"];
+                var endDateRow = feature.DataRow["EndDateTime"];
 
-                var startDate = Convert.ToDateTime(startDateRow);
-                var endDate = Convert.ToDateTime(endDateRow);
+                if (startDateRow == DBNull.Value || endDateRow == DBNull.Value) continue;
+
+                var startDate = Convert.ToDateTime(startDateRow, CultureInfo.InvariantCulture);
+                var endDate = Convert.ToDateTime(endDateRow, CultureInfo.InvariantCulture);
 
                 if (minStartTime > startDate)
                 {
@@ -287,7 +290,7 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                 var mySymbolizer = new PointSymbolizer(imageColor, PointShape.Ellipse, imageSize);
                 var myCategory = new PointCategory(mySymbolizer)
                 {
-                    FilterExpression = baseFilter,
+                    FilterExpression = baseFilter.Replace(",","."),
                     LegendText = legendText,
                 };
                 scheme.AddCategory(myCategory);

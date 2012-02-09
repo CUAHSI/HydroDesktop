@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Text;
 using System.Diagnostics;
 using HydroDesktop.Interfaces;
+using System.Globalization;
 
 namespace HydroDesktop.Database
 {
@@ -792,9 +793,9 @@ namespace HydroDesktop.Database
                 cmd.Connection.Open();               
                 cmd.CommandText = sqlString;
                 output = cmd.ExecuteScalar();
-                if (output != null)
+                if (output != DBNull.Value)
                 {
-                    output = output.ToString();
+                    output = Convert.ToString(output, CultureInfo.InvariantCulture);
                 }
             }
             catch
