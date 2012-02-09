@@ -900,9 +900,9 @@ Public Class cEditView
                                                 Editdt.Rows(i)(1), _
                                                 Convert.ToString(Editdt.Rows(i)(2), CultureInfo.InvariantCulture), _
                                                 If(Editdt.Rows(i)(3) Is DBNull.Value, "NULL,", Editdt.Rows(i)(3)), _
-                        Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss"), _
+                        Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), _
                         Editdt.Rows(i)(5), _
-                        Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss"), _
+                        Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), _
                         If(Editdt.Rows(i)(8) Is DBNull.Value, "NULL, ", Convert.ToString(Editdt.Rows(i)(8), CultureInfo.InvariantCulture)), _
                         If(Editdt.Rows(i)(9) Is DBNull.Value, "NULL, ", Editdt.Rows(i)(9)), _
                         If(Editdt.Rows(i)(10) Is DBNull.Value, "NULL,", Editdt.Rows(i)(10)), _

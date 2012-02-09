@@ -14,6 +14,7 @@ using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterOneFlow;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Configuration;
+using System.Globalization;
 namespace ImportFromWaterML
 {
     /// <summary>
@@ -141,7 +142,7 @@ namespace ImportFromWaterML
 
             string timeStr = timeObj.ToString();
             timeStr = timeStr.Replace("T", " ");
-            return Convert.ToDateTime(timeStr);
+            return Convert.ToDateTime(timeStr, CultureInfo.InvariantCulture);
         }
 
         #endregion

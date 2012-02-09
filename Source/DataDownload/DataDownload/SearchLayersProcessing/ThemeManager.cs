@@ -12,6 +12,7 @@ using HydroDesktop.Database;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 using System.IO;
+using System.Globalization;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
@@ -668,7 +669,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
         private string ConvertTime(DateTime time)
         {
-            return time.ToString("yyyy-MM-dd hh:mm");
+            return time.ToString("yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -755,7 +756,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             }
 
             //to save the feature set to a file with unique name
-            string uniqueID = DateTime.Now.ToString("yyyyMMdd_hhmmss");
+            string uniqueID = DateTime.Now.ToString("yyyyMMdd_hhmmss", CultureInfo.InvariantCulture);
             Random rnd = new Random();
             uniqueID += rnd.Next(100).ToString("000");
             string filename = Path.Combine(Settings.Instance.CurrentProjectDirectory, "theme_" + uniqueID + ".shp");
