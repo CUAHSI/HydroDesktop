@@ -11,6 +11,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
+using System.Globalization;
 
 namespace HydroDesktop.DataDownload.DataAggregation
 {
@@ -111,6 +112,17 @@ namespace HydroDesktop.DataDownload.DataAggregation
                     {
                         continue;
                     }
+                    // Filter by overlapping date / time
+                    var startDateValue = feature.DataRow["BeginDateTi"];
+                    var endDateValue = feature.DataRow["EndDateTime"];
+                    if (startDateValue == null || startDateValue == DBNull.Value)
+                        continue;
+                    if (endDateValue == null || endDateValue == DBNull.Value)
+                        continue;
+                    DateTime startTimeInSeries = Convert.ToDateTime(startDateValue, CultureInfo.InvariantCulture);
+                    DateTime endTimeInSeries = Convert.ToDateTime(endDateValue, CultureInfo.InvariantCulture);
+                    if (!TimeIntervalsOverlap(_settings.StartTime, _settings.EndTime, startTimeInSeries, endTimeInSeries))
+                        continue;
                     
                     var newFeature = featureSet.AddFeature(feature.BasicGeometry);
                     newFeature.DataRow[seriesIDCol] = seriesID;
@@ -121,8 +133,8 @@ namespace HydroDesktop.DataDownload.DataAggregation
                 var fileName = Path.Combine(Settings.Instance.CurrentProjectDirectory,
                                             string.Format("{0}-{1}-{2}.shp",
                                                           _settings.AggregationMode,
-                                                          _settings.StartTime.ToString("yyyyMMdd"),
-                                                          _settings.EndTime.ToString("yyyyMMdd")));
+                                                          _settings.StartTime.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
+                                                          _settings.EndTime.ToString("yyyyMMdd", CultureInfo.InvariantCulture)));
                 featureSet.Filename = fileName;
             }
             else
@@ -145,7 +157,8 @@ namespace HydroDesktop.DataDownload.DataAggregation
             {
                 var seriesIDValue = feature.DataRow["SeriesID"];
                 if (seriesIDValue == null || seriesIDValue == DBNull.Value)
-                    continue;
+                    continue;    
+
                 var seriesID = Convert.ToInt64(seriesIDValue);
                 var series = seriesRepo.GetSeriesByID(seriesID);
                 if (series == null) continue;
@@ -171,7 +184,12 @@ namespace HydroDesktop.DataDownload.DataAggregation
                 var feature = tuple.Item1;
                 var seriesID = tuple.Item2;
                 var value = repo.AggregateValues(seriesID, aggregationFunction, minDate, maxDate);
-                feature.DataRow[dataColumn] = value;
+
+                // todo: if the value is null (no value found) then the feature shouldn't be added to the new layer.
+                if (value != null)
+                    feature.DataRow[dataColumn] = value;
+                else
+                    feature.DataRow[dataColumn] = 0;
 
                 // Calculating PercAvailable
                 var percAvailabe = repo.CalculatePercAvailable(seriesID, minDate, maxDate);
@@ -193,6 +211,13 @@ namespace HydroDesktop.DataDownload.DataAggregation
         #endregion
 
         #region Private methods
+
+        private bool TimeIntervalsOverlap(DateTime startDate1, DateTime endDate1, DateTime startDate2, DateTime endDate2)
+        {
+            if (startDate2 <= endDate1 && endDate2 >= startDate1)
+                return true;
+            return false;
+        }
 
         private void ReportProgress(int percentage, object state)
         {

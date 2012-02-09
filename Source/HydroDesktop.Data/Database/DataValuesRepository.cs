@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using HydroDesktop.Interfaces;
+using System.Globalization;
 
 namespace HydroDesktop.Database
 {
@@ -25,7 +26,7 @@ namespace HydroDesktop.Database
 
         #region Public methods
 
-        public double AggregateValues(long seriesID, string aggregateFunction, DateTime minDate, DateTime maxDate)
+        public double? AggregateValues(long seriesID, string aggregateFunction, DateTime minDate, DateTime maxDate)
         {
             var query =
                 string.Format(
@@ -36,8 +37,15 @@ namespace HydroDesktop.Database
                     aggregateFunction, TableName, 
                     minDate.ToString("yyyy-MM-dd HH:mm:ss"), maxDate.ToString("yyyy-MM-dd HH:mm:ss"), 
                     seriesID);
-            var value =  Convert.ToDouble(DbOperations.ExecuteSingleOutput(query));
-            return value;
+            var value =  DbOperations.ExecuteSingleOutput(query);
+            if (value != DBNull.Value)
+            {
+                return Convert.ToDouble(value, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public double CalculatePercAvailable(long seriesID, DateTime minDate, DateTime maxDate)
@@ -49,18 +57,18 @@ namespace HydroDesktop.Database
                   "LEFT JOIN Variables v ON v.VariableID = ds.VariableID " +
                   "WHERE DateTimeUTC >= '{1}' and DateTimeUTC <= '{2}' and main.SeriesID = {3} and DataValue <> v.NoDataValue ",
                   TableName,
-                  minDate.ToString("yyyy-MM-dd HH:mm:ss"), maxDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                  minDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), maxDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                   seriesID);
-            var hasValues = Convert.ToDouble(DbOperations.ExecuteSingleOutput(query));
+            var hasValues = Convert.ToDouble(DbOperations.ExecuteSingleOutput(query), CultureInfo.InvariantCulture);
 
             query =
               string.Format(
                   "select count(DataValue) from {0} main " +
                   "WHERE DateTimeUTC >= '{1}' and DateTimeUTC <= '{2}' and main.SeriesID = {3} ",
                   TableName,
-                  minDate.ToString("yyyy-MM-dd HH:mm:ss"), maxDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                  minDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), maxDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                   seriesID);
-            var totalValues = Convert.ToDouble(DbOperations.ExecuteSingleOutput(query));
+            var totalValues = Convert.ToDouble(DbOperations.ExecuteSingleOutput(query), CultureInfo.InvariantCulture);
 
             var value = hasValues*100.0/totalValues;
             return value;
