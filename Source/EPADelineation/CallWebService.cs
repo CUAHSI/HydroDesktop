@@ -17,6 +17,7 @@ using DotSpatial.Topology;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace EPADelineation
 {
@@ -158,7 +159,7 @@ namespace EPADelineation
                         if (reader.NodeType == XmlNodeType.Element && reader.Name == "fmeasure")
                         {
                             string measureStr = reader.ReadInnerXml();
-                            measure = Convert.ToDouble(measureStr);
+                            measure = Convert.ToDouble(measureStr, CultureInfo.InvariantCulture);
                             break;
                         }
                     }
@@ -524,8 +525,8 @@ namespace EPADelineation
                             lon = latlongcoord[0].ToString();
                             lat = latlongcoord[1].ToString();
 
-                            coord.X = Convert.ToDouble(lon);
-                            coord.Y = Convert.ToDouble(lat);
+                            coord.X = Convert.ToDouble(lon, CultureInfo.InvariantCulture);
+                            coord.Y = Convert.ToDouble(lat, CultureInfo.InvariantCulture);
 
                             coords.Add(coord);
                         }
