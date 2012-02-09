@@ -98,17 +98,59 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonPages\CreateVariableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommonPages\CreateVariableForm.Designer.cs">
+      <DependentUpon>CreateVariableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\MethodView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\MethodView.Designer.cs">
+      <DependentUpon>MethodView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\SiteView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\SiteView.Designer.cs">
+      <DependentUpon>SiteView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\SourceView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\SourceView.Designer.cs">
+      <DependentUpon>SourceView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\QualityControlLevelView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\QualityControlLevelView.Designer.cs">
+      <DependentUpon>QualityControlLevelView.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommonPages\CreateSiteForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CommonPages\CreateSiteForm.Designer.cs">
       <DependentUpon>CreateSiteForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommonPages\DetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommonPages\DetailsForm.Designer.cs">
+      <DependentUpon>DetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommonPages\FieldPropertiesPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CommonPages\FieldPropertiesPage.Designer.cs">
       <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\VariableView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\VariableView.Designer.cs">
+      <DependentUpon>VariableView.cs</DependentUpon>
     </Compile>
     <Compile Include="Csv\CsvImporter.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
@@ -158,11 +200,32 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CommonPages\CreateVariableForm.resx">
+      <DependentUpon>CreateVariableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\MethodView.resx">
+      <DependentUpon>MethodView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\QualityControlLevelView.resx">
+      <DependentUpon>QualityControlLevelView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\SiteView.resx">
+      <DependentUpon>SiteView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\SourceView.resx">
+      <DependentUpon>SourceView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\CreateSiteForm.resx">
       <DependentUpon>CreateSiteForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\DetailsForm.resx">
+      <DependentUpon>DetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldPropertiesPage.resx">
       <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\VariableView.resx">
+      <DependentUpon>VariableView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Excel\FormatOptionsPage.resx">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
