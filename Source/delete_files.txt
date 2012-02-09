@@ -1,0 +1,12 @@
+../Binaries/Application Extensions/DotSpatial.Plugins.DockManager.dll
+../Binaries/Application Extensions/SeriesView.dll
+../Binaries/Plugins/1_SeriesView/*
+../Binaries/Plugins/TSA/*
+../Binaries/Plugins/Toolbox/*
+../Binaries/Plugins/TRMM/*
+../Binaries/Plugins/FetchBasemap/*
+../Binaries/Plugins/WebMap/DotSpatial.Plugins.ExtensionManager.dll
+../Binaries/Icons/*
+../Binaries/Plugins/DroughtAnalysis/*
+../Binaries/Plugins/DroughtAnalysis.dll
+../Binaries/Plugins/FacetedSearch3/*
