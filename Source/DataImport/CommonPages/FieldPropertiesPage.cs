@@ -26,5 +26,17 @@ namespace DataImport.CommonPages
 
             dgvPreview.DataSource = _context.Settings.Preview;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using(var createSiteform = new CreateSiteForm())
+            {
+                if (createSiteform.ShowDialog() == DialogResult.OK)
+                {
+                    var site = createSiteform.Entity;
+                }
+            }
+            
+        }
     }
 }
