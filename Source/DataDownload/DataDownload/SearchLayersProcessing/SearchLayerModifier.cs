@@ -21,6 +21,12 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
     class SearchLayerModifier
     {
         private readonly Map _map;
+        private static readonly string[] _searchColumns = new[]
+                                                       {
+                                                           "SiteCode", "VarCode", "ServiceCode", "ServiceURL", "StartDate",
+                                                           "EndDate", "ValueCount"
+                                                       };
+
 
         public SearchLayerModifier(Map map)
         {
@@ -45,16 +51,11 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             var featureLayer = layer as PointLayer;
             if (featureLayer == null) return false;
 
-            var searchColumns = new[] { "SiteCode", "VarCode", "ServiceCode", "ServiceURL", "StartDate", "EndDate", "ValueCount" };
             var layerColumns = featureLayer.DataSet.GetColumns();
-            
-            foreach (var sColumn in searchColumns)
-            {
-                var hasColumn = layerColumns.Any(dataColumn => dataColumn.ColumnName == sColumn);
-                if (!hasColumn)
-                    return false;
-            }
-            return true;
+
+            return
+                _searchColumns.Select(sColumn => layerColumns.Any(dataColumn => dataColumn.ColumnName == sColumn)).All(
+                    hasColumn => hasColumn);
         }
 
         /// <summary>
