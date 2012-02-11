@@ -10,3 +10,4 @@
 ../Binaries/Plugins/DroughtAnalysis/*
 ../Binaries/Plugins/DroughtAnalysis.dll
 ../Binaries/Plugins/FacetedSearch3/*
+../Binaries/extra_plugins/GeostatisticalTool/*

@@ -129,7 +129,7 @@ Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; F
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\ZDataDownload"; Flags: ignoreversion;
 
-Source: "..\Binaries\extra_plugins\GeostatisticalTool\*"; DestDir: "{app}\Plugins\GeostatisticalTool"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\GeostatisticalTool\*"; DestDir: "{app}\Plugins\GeostatisticalTool"; Flags: ignoreversion;
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
