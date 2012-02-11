@@ -1,0 +1,800 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+using System.Data;
+using System.ComponentModel;
+using HydroDesktop.Configuration;
+using HydroDesktop.Database;
+using System.Drawing;
+using HydroDesktop.Interfaces;
+
+namespace SeriesView
+{
+    public partial class SeriesSelector : UserControl, ISeriesSelector
+    {
+        #region Private Variables
+
+        //Private Six Criterion Tables
+        private DataTable _themeTable;
+        private DataTable _siteTable;
+        private DataTable _variableTable;
+        private DataTable _methodTable;
+        private DataTable _sourceTable;
+        private DataTable _qcLevelTable;
+
+        //private clicked series and selected seriesID
+        private int _clickedSeriesID;
+
+        private bool _checkedAllChanging; //checked all indicator
+        //private checkboxes visible indicator
+        private bool _checkBoxesVisible = true;
+
+        private bool _needShowVariableNameWithDataType;
+
+        #endregion
+
+        #region Constructor
+
+        public SeriesSelector()
+        {
+            InitializeComponent();
+
+            //to assign the events
+            dgvSeries.CellMouseDown += dgvSeries_CellMouseDown;
+            dgvSeries.CurrentCellDirtyStateChanged += dgvSeries_CurrentCellDirtyStateChanged;
+            dgvSeries.CellValueChanged += dgvSeries_CellValueChanged;
+            dgvSeries.CellFormatting += dgvSeries_CellFormatting;
+
+            //filter option events
+            radAll.Click += radAll_Click;
+            radSimple.Click += radSimple_Click;
+            radComplex.Click += radComplex_Click;
+            cbBoxCriterion.SelectedIndexChanged += cbBoxCriterion_SelectedIndexChanged;
+            cbBoxContent.SelectedIndexChanged += cbBoxContent_SelectedIndexChanged;
+
+            Settings.Instance.DatabaseChanged += Instance_DatabaseChanged;
+            Disposed += SeriesSelector_Disposed;
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (_needShowVariableNameWithDataType &&
+                dgvSeries.Columns[e.ColumnIndex].Name == "VariableName")
+            {
+                e.Value = string.Format("{0}, {1}",
+                                        dgvSeries.Rows[e.RowIndex].Cells["VariableName"].Value,
+                                        dgvSeries.Rows[e.RowIndex].Cells["DataType"].Value);
+                e.FormattingApplied = true;
+            }
+        }
+
+        private void SeriesSelector_Disposed(object sender, EventArgs e)
+        {
+            Settings.Instance.DatabaseChanged -= Instance_DatabaseChanged;
+        }
+
+        private void Instance_DatabaseChanged(object sender, EventArgs e)
+        {
+            RefreshSelection();
+        }
+
+        private void dgvSeries_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                _clickedSeriesID = Convert.ToInt32(dgvSeries.Rows[e.RowIndex].Cells["SeriesID"].Value);
+
+                if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+                {
+                    dgvSeries.Rows[e.RowIndex].Selected = true;
+                }
+            }
+        }
+
+        private void btnUncheckAll_Click(object sender, EventArgs e)
+        {
+            SetEnableToButtons(false);
+            SetChecked(false);
+            SetEnableToButtons(true);
+        }
+
+        private void SetEnableToButtons(bool enable)
+        {
+            btnCheckAll.Enabled = enable;
+            btnUncheckAll.Enabled = enable;
+            btnRefresh.Enabled = enable;
+            btnOptions.Enabled = enable;
+            radAll.Enabled = enable;
+            radSimple.Enabled = enable;
+            radComplex.Enabled = enable;
+            panelComplexFilter.Enabled = enable;
+        }
+
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            SetEnableToButtons(false);
+            SetChecked(true);
+            SetEnableToButtons(true);
+        }
+
+        private void radAll_Click(object sender, EventArgs e)
+        {
+            SetFilterOption(FilterTypes.All);
+            MainView.RowFilter = "";
+        }
+
+        private void radComplex_Click(object sender, EventArgs e)
+        {
+            SetFilterOption(FilterTypes.Complex);
+        }
+
+        private void radSimple_Click(object sender, EventArgs e)
+        {
+            SetFilterOption(FilterTypes.Simple);
+        }
+
+        private void dgvSeries_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_checkedAllChanging) return;
+
+            DataGridViewRow row = dgvSeries.Rows[e.RowIndex];
+            int seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
+            bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
+            OnSeriesCheck(seriesID, isChecked);
+        }
+
+        private void dgvSeries_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgvSeries.IsCurrentCellDirty)
+            {
+                dgvSeries.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void cbBoxCriterion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string criterionType = cbBoxCriterion.Text;
+            switch (criterionType)
+            {
+                case "Themes":
+                    cbBoxContent.DataSource = _themeTable;
+                    cbBoxContent.DisplayMember = "ThemeName";
+                    cbBoxContent.ValueMember = "ThemeID";
+                    break;
+
+                case "Site":
+                    cbBoxContent.DataSource = null;
+                    cbBoxContent.DisplayMember = SiteDisplayColumn;
+                    cbBoxContent.ValueMember = "SiteID";
+                    cbBoxContent.DataSource = _siteTable;                    
+                    break;
+
+                case "Variable":
+                    cbBoxContent.DataSource = _variableTable;
+                    cbBoxContent.DisplayMember = "VariableName";
+                    cbBoxContent.ValueMember = "VariableID";
+                    break;
+
+                case "Method":
+                    cbBoxContent.DataSource = _methodTable;
+                    cbBoxContent.DisplayMember = "MethodDescription";
+                    cbBoxContent.ValueMember = "MethodID";
+                    break;
+
+                case "Source":
+                    cbBoxContent.DataSource = _sourceTable;
+                    cbBoxContent.DisplayMember = "Organization";
+                    cbBoxContent.ValueMember = "SourceID";
+                    break;
+
+                case "QCLevel":
+                    cbBoxContent.DataSource = _qcLevelTable;
+                    cbBoxContent.DisplayMember = "Definition";
+                    cbBoxContent.ValueMember = "QualityControlLevelID";
+                    break;
+
+                default:
+                    Console.WriteLine("Default case");
+                    break;
+            }
+            dgvSeries.ClearSelection();
+        }
+
+        private void cbBoxContent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //when the user didn't select the criterion
+            if (cbBoxContent.SelectedIndex <= 0) return;
+
+            if (radSimple.Checked == true)
+            {
+                //simple filter
+                DataRowView selectedRow = cbBoxContent.SelectedItem as DataRowView;
+                string selectedID = selectedRow[0].ToString();
+                string criterionType = cbBoxCriterion.Text;
+                string filter = "";
+
+                switch (criterionType)
+                {
+                    case "Themes":
+                        filter = "ThemeID=" + selectedID;
+                        break;
+                    case "Site":
+                        filter = "SiteID=" + selectedID;
+                        break;
+                    case "Variable":
+                        filter = "VariableID=" + selectedID;
+                        break;
+                    case "Method":
+                        filter = "MethodID=" + selectedID;
+                        break;
+                    case "Source":
+                        filter = "SourceID=" + selectedID;
+                        break;
+                    case "QCLevel":
+                        filter = "QualityControlLevelID=" + selectedID;
+                        break;
+                }
+
+                MainView.RowFilter = filter;
+            }
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tableRows = MainView.Table.Select("SeriesID=" + _clickedSeriesID);
+            if (tableRows.Length > 0)
+            {
+                var f = new frmProperty(tableRows[0]);
+                f.Show();
+            }
+        }
+
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
+                                "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
+            {
+                var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
+                                                       Settings.Instance.DataRepositoryConnectionString);
+                manager.DeleteSeries(_clickedSeriesID);
+                RefreshSelection();
+            }
+        }
+
+        private void btnApplyFilter_Click(object sender, EventArgs e)
+        {
+            string currentFilter = FilterExpression;
+
+            if (String.IsNullOrEmpty(txtFilter.Text.Trim()))
+            {
+                MessageBox.Show("Please enter a valid filter expression.");
+                return;
+            }
+
+            try
+            {
+                FilterExpression = txtFilter.Text;
+            }
+            catch
+            {
+                FilterExpression = currentFilter;
+                MessageBox.Show("Unable to apply filter. Please change the filter expression.");
+            }
+        }
+
+        #endregion
+
+        #region ISeriesSelector Members
+
+        private string _siteDisplayColumn = "SiteName";
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string SiteDisplayColumn
+        {
+            get { return _siteDisplayColumn; }
+            private set
+            {
+                _siteDisplayColumn = value;
+                SetupDatabase();
+            }
+        }
+
+        /// <summary>
+        /// Get the array of all checked series IDs
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int[] CheckedIDList
+        {
+            get { return GetCheckedIDs(); }
+        }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int[] VisibleIDList
+        {
+            get { return GetVisibleIDs(); }
+        }
+
+        /// <summary>
+        /// Get the context menu that appears on right-click of a series
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool CheckBoxesVisible
+        {
+            get { return _checkBoxesVisible; }
+            set
+            {
+                _checkBoxesVisible = value;
+                dgvSeries.Columns["Checked"].Visible = _checkBoxesVisible;
+            }
+        }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int SelectedSeriesID
+        {
+            get
+            {
+                return _clickedSeriesID;
+
+                //if (dgvSeries.SelectedRows.Count > 0)
+                //{   
+                //    int seriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
+                //    return seriesID;
+                //}
+                //else
+                //{
+                //    return _clickedSeriesID;
+                //}
+            }
+            set
+            {
+                dgvSeries.ClearSelection();
+                foreach (DataGridViewRow dr in dgvSeries.Rows)
+                {
+                    int rowSeriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
+                    if (rowSeriesID == value)
+                    {
+                        dr.Selected = true;
+                        _clickedSeriesID = rowSeriesID;
+                        break;
+                    }
+                }
+                //if no match found, don't select any rows
+            }
+        }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string FilterExpression
+        {
+            get
+            {
+                var view = MainView;
+                return view != null ? view.RowFilter : String.Empty;
+            }
+            set
+            {
+                var view = MainView;
+                if (view != null)
+                {
+                    view.RowFilter = value;
+                }
+            }
+        }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public FilterTypes FilterType
+        {
+            get { return GetFilterType(FilterExpression); }
+        }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public override System.Windows.Forms.ContextMenuStrip ContextMenuStrip
+        {
+            get { return contextMenuStrip1; }
+        }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public void RefreshSelection()
+        {
+            //refresh all the series, according to the new database.
+            //before  refreshing, any check boxes are unchecked.
+            SetChecked(false);
+            SetupDatabase();
+        }
+
+        public event SeriesEventHandler SeriesCheck;
+        public event EventHandler Refreshed;
+
+        #endregion
+
+        #region Methods
+
+        private void SetChecked(bool isCheckedValue)
+        {
+            if (_checkedAllChanging) return; // to avoid multiply checking/un-checking
+
+            _checkedAllChanging = true;
+            try
+            {
+                // Get all rows to process
+                var rowsToProcess = dgvSeries.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(row => Convert.ToBoolean(row.Cells["Checked"].Value) != isCheckedValue)
+                    .ToList();
+
+                // If rows to process is to many, ask user for confirmation
+                if (isCheckedValue && rowsToProcess.Count > 20)
+                {
+                    var dialogResult = MessageBox.Show(
+                        string.Format("Do you really want to check {0} series?", rowsToProcess.Count) +
+                        Environment.NewLine
+                        + "It make take a long time.", "Series View", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button2
+                        );
+                    if (dialogResult != DialogResult.Yes) return;
+                }
+
+                // Process series...
+                foreach (var row in rowsToProcess)
+                {
+                    row.Cells["Checked"].Value = isCheckedValue;
+                    var seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
+                    _clickedSeriesID = seriesID;
+                    OnSeriesCheck(seriesID, isCheckedValue);
+                    Application.DoEvents();
+                }
+            }
+            finally
+            {
+                _checkedAllChanging = false;
+            }
+        }
+
+        private DataView MainView
+        {
+            get { return dgvSeries.DataSource as DataView; }
+        }
+
+        public void SetupDatabase()
+        {
+            //Settings.Instance.Load();
+            var conString = Settings.Instance.DataRepositoryConnectionString;
+
+            //if the connection string is not set, exit
+            if (String.IsNullOrEmpty(conString)) return;
+
+            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite, conString);
+            var tbl = manager.GetDetailedSeriesTable();
+
+            // Add Checked column
+            var columnChecked = new DataColumn("Checked", typeof (bool)) {DefaultValue = false,};
+            tbl.Columns.Add(columnChecked);
+
+            dgvSeries.DataSource = new DataView(tbl);
+            //datagridview representation
+            foreach (DataGridViewColumn col in dgvSeries.Columns)
+            {
+                if (col.Name != "Checked" &&
+                    col.Name != SiteDisplayColumn &&
+                    col.Name != "VariableName" &&
+                    col.Name != "SeriesID")
+                {
+                    col.Visible = false;
+                }
+                else
+                    col.Visible = true;
+            }
+
+            // Determine necessity to show VariableName with DataType in UI
+            _needShowVariableNameWithDataType = false;
+            foreach (DataRow row in tbl.Rows)
+            {
+                var variable = row["VariableName"].ToString();
+                var site = row["SiteID"].ToString();
+                if (tbl.Select(string.Format("VariableName = '{0}' and SiteID = '{1}'", variable, site)).Length >= 2)
+                {
+                    _needShowVariableNameWithDataType = true;
+                    break;
+                }
+            }
+
+            dgvSeries.Columns["Checked"].DisplayIndex = 0;
+            dgvSeries.Columns["Checked"].Width = 25;
+            dgvSeries.Columns["Checked"].ReadOnly = false;
+
+            dgvSeries.Columns["SeriesID"].DisplayIndex = 1;
+            dgvSeries.Columns["SeriesID"].Width = 35;
+            dgvSeries.Columns["SeriesID"].ReadOnly = true;
+
+            dgvSeries.Columns["VariableName"].DisplayIndex = 2;
+            dgvSeries.Columns["VariableName"].ReadOnly = true;
+            dgvSeries.Columns["VariableName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dgvSeries.Columns[SiteDisplayColumn].DisplayIndex = 3;
+            dgvSeries.Columns[SiteDisplayColumn].ReadOnly = true;
+            dgvSeries.Columns[SiteDisplayColumn].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+
+
+            //setup the filter option to "default all"
+            SetFilterOption(FilterType);
+
+            //to populate the 'Simple filter' criteria combo boxes
+            AddSimpleFilterOptions();
+
+            MainView.RowFilter = "";
+
+            OnSelectionRefreshed();
+        }
+
+
+        /// <summary>
+        /// Resets the filter options
+        /// </summary>
+        private void SetFilterOption(FilterTypes newFilterType)
+        {
+            if (newFilterType == FilterTypes.All)
+            {
+                //show all
+                Point listLocation = new Point();
+                listLocation.X = 6;
+                listLocation.Y = cbBoxCriterion.Top;
+                dgvSeries.Location = listLocation; //new Point(6, 34);
+                dgvSeries.Height = groupBox1.Height - 25;
+                //dgvSeries.HorizontalScrollbar = true;
+                radSimple.Checked = false;
+                radComplex.Checked = false;
+                radAll.Checked = true;
+                panelComplexFilter.Visible = false;
+            }
+            else if (newFilterType == FilterTypes.Simple)
+            {
+                dgvSeries.Location = new System.Drawing.Point(6, 90);
+                ;
+                dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
+                radSimple.Checked = true;
+                radComplex.Checked = false;
+                radAll.Checked = false;
+                panelComplexFilter.Visible = false;
+
+                //re-set the filter options
+                if (newFilterType != FilterType)
+                {
+                    cbBoxCriterion.SelectedIndex = 0;
+                    cbBoxContent.SelectedIndex = -1;
+                }
+            }
+            else if (newFilterType == FilterTypes.Complex)
+            {
+                dgvSeries.Location = new System.Drawing.Point(6, 90);
+                ;
+                dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
+                radSimple.Checked = false;
+                radComplex.Checked = true;
+                radAll.Checked = false;
+                panelComplexFilter.Visible = true;
+                txtFilter.Text = this.FilterExpression;
+            }
+        }
+
+        private void AddSimpleFilterOptions()
+        {
+            //Fill the cbBoxCriterion with 6 items
+            cbBoxCriterion.Items.Clear();
+            cbBoxCriterion.Items.Add("Please select a filter criterion");
+            cbBoxCriterion.Items.Add("Themes");
+            cbBoxCriterion.Items.Add("Site");
+            cbBoxCriterion.Items.Add("Variable");
+            cbBoxCriterion.Items.Add("Method");
+            cbBoxCriterion.Items.Add("Source");
+            cbBoxCriterion.Items.Add("QCLevel");
+            cbBoxCriterion.SelectedIndex = 0;
+
+            string conString = Settings.Instance.DataRepositoryConnectionString;
+            DbOperations db = new DbOperations(conString, DatabaseTypes.SQLite);
+
+            string sqlTheme = "SELECT ThemeID, ThemeName FROM DataThemeDescriptions";
+            string sqlSite = string.Format("SELECT SiteID, {0} FROM Sites", SiteDisplayColumn);
+            string sqlVariable = "SELECT VariableID, VariableName, UnitsAbbreviation " +
+                                 "FROM Variables INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID";
+            string sqlMethod = "SELECT MethodID, MethodDescription FROM Methods";
+            string sqlSource = "SELECT SourceID, Organization FROM Sources";
+            string sqlQcLevel = "SELECT QualityControlLevelID, Definition FROM QualityControlLevels";
+
+            _themeTable = db.LoadTable(sqlTheme);
+            _siteTable = db.LoadTable(sqlSite);
+            _variableTable = db.LoadTable(sqlVariable);
+            _sourceTable = db.LoadTable(sqlSource);
+            _methodTable = db.LoadTable(sqlMethod);
+            _qcLevelTable = db.LoadTable(sqlQcLevel);
+
+            //set variable unit names
+            foreach (DataRow row in _variableTable.Rows)
+            {
+                row["VariableName"] = row["VariableName"] + " (" + row["UnitsAbbreviation"] + ")";
+            }
+
+            AddFilterOptionRow(_themeTable);
+            AddFilterOptionRow(_siteTable);
+            AddFilterOptionRow(_variableTable);
+            AddFilterOptionRow(_sourceTable);
+            AddFilterOptionRow(_methodTable);
+            AddFilterOptionRow(_qcLevelTable);
+        }
+
+        //adds the 'please select filter option' item to the ComboBox
+        private void AddFilterOptionRow(DataTable table)
+        {
+            string filterText = "Please select filter option";
+
+            DataRow row = table.NewRow();
+            row[0] = 0;
+            row[1] = filterText;
+            table.Rows.InsertAt(row, 0);
+        }
+
+        //gets the filter type (all, simple, complex) based on the filter
+        //expression
+        private FilterTypes GetFilterType(string filterExpression)
+        {
+            //empty filter expression means 'filter all'.
+            if (String.IsNullOrEmpty(filterExpression)) return FilterTypes.All;
+
+            //other filter types --> simple uses the ID and has only one '='.
+            string[] parts = filterExpression.Split(new char[] {'='});
+            int numParts = parts.Length;
+            if (numParts == 2)
+            {
+                string firstPart = parts[0].Trim();
+                if (firstPart == "ThemeID" || firstPart == "SiteID" || firstPart == "VariableID" ||
+                    firstPart == "SourceID" || firstPart == "MethodID" || firstPart == "QualityControlLevelID")
+                {
+                    return FilterTypes.Simple;
+                }
+            }
+
+            //otherwise: the filter is 'Complex Filter'
+            return FilterTypes.Complex;
+        }
+
+        private void OnSeriesCheck(int seriesID, bool checkState)
+        {
+            var handler = SeriesCheck;
+            if (handler != null)
+            {
+                handler(this, new SeriesEventArgs(seriesID, checkState));
+            }
+        }
+
+        private void OnSelectionRefreshed()
+        {
+            if (Refreshed != null)
+            {
+                Refreshed(this, null);
+            }
+        }
+
+        private int[] GetCheckedIDs()
+        {
+            var seriesIDs = new List<int>();
+            foreach (DataGridViewRow dr in dgvSeries.Rows)
+            {
+                var isChecked = Convert.ToBoolean(dr.Cells["Checked"].Value);
+                if (isChecked)
+                {
+                    int seriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
+                    seriesIDs.Add(seriesID);
+                }
+            }
+            return seriesIDs.ToArray();
+        }
+
+        private int[] GetVisibleIDs()
+        {
+            var seriesIDs = new List<int>();
+            foreach (DataGridViewRow dr in dgvSeries.Rows)
+            {
+                if (dr.Visible)
+                {
+                    int seriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
+                    seriesIDs.Add(seriesID);
+                }
+            }
+            return seriesIDs.ToArray();
+        }
+
+        #endregion
+
+        #region Data Export
+
+        /// <summary>
+        /// Export the Selected Series to *.txt File
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Get the checked IDs
+            var checkedIDs = new int[CheckedIDList.Length];
+            if (checkedIDs.Length > 0)
+            {
+                Array.Copy(this.CheckedIDList, checkedIDs, checkedIDs.Length);
+            }
+
+            if (checkedIDs.Length == 0)
+            {
+                //If no series are checked, export the clicked series only.
+                _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
+                if (_clickedSeriesID > 0)
+                {
+                    checkedIDs = new int[] {_clickedSeriesID};
+                }
+                else
+                {
+                    MessageBox.Show("Please select at least one series");
+                    return;
+                }
+            }
+
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(DatabaseTypes.SQLite,Settings.Instance.DataRepositoryConnectionString);
+            DataTable table = null;
+            for (int i = 0; i < checkedIDs.Length; i++)
+            {
+                var exportTable = repo.GetTableForExport(checkedIDs[i]);
+                if (table == null)
+                {
+                    table = exportTable;
+                }
+                else
+                {
+                    foreach (DataRow row in exportTable.Rows)
+                    {
+                        table.ImportRow(row);
+                    }
+                }
+            }
+
+            var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+            if (exportPlugin != null)
+            {
+                exportPlugin.Export(table);
+            }
+        }
+
+        #endregion
+
+        private void btnEditFilter_Click(object sender, EventArgs e)
+        {
+            var frm = new frmComplexSelection(MainView.Table);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                txtFilter.Text = frm.FilterExpression;
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            SetEnableToButtons(false);
+            RefreshSelection();
+            SetEnableToButtons(true);
+        }
+
+        private void btnOptions_Click(object sender, EventArgs e)
+        {
+            var ds = new DisplaySettings
+                         {
+                             SiteDisplayColumn = SiteDisplayColumn,
+                         };
+
+            if (DisplayOptionsForm.ShowDialog(ds) == DialogResult.OK)
+            {
+                SiteDisplayColumn = ds.SiteDisplayColumn;
+            }
+        }
+    }
+}
+
