@@ -6,6 +6,7 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
 using System.Linq;
+using HydroDesktop.DataDownload.SearchLayersProcessing;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -67,7 +68,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
         void _map_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             var visibleLayers = _map.GetAllLayers().OfType<IFeatureLayer>()
-                                                   .Where(layer => layer.IsVisible).ToList();
+                                                   .Where(layer => layer.IsVisible && SearchLayerModifier.IsSearchLayer(layer))
+                                                   .ToList();
             if (visibleLayers.Count == 0)
             {
                 HideToolTip();

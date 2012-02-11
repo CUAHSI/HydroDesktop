@@ -280,6 +280,16 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                 min = Math.Round(min, fracLength);
                 max = Math.Round(max, fracLength);
 
+                // Fix possible round problems on interval borders
+                if (i == 0 && min > minValue)
+                {
+                    min--;
+                }
+                if (i == categoriesCount-1 && max < maxValue)
+                {
+                    max++;
+                }
+
                 imageSize += imageStep;
                 var baseFilter = string.Format("[{0}] >= {1} and [{0}] < {2}", columnName,
                                                fracLength == 0 ? (int)min : min,
