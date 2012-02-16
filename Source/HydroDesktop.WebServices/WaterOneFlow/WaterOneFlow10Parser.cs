@@ -271,28 +271,49 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// </summary>
         private TimeZoneInfo ReadTimeZoneInfo(XmlReader r)
         {
+            string zoneAbbrev = string.Empty;
+            string zoneOffset = string.Empty;
+            TimeZoneInfo defaultTz = TimeZoneInfo.Utc;
+
             while (r.Read())
             {
                 if (r.NodeType == XmlNodeType.Element)
                 {
                     if (r.Name == "defaultTimeZone")
                     {
-                        string zoneAbbrev = r.GetAttribute("ZoneAbbreviation");
-                        string zoneOffset = r.GetAttribute("ZoneOffset");
-                        int offsetHours = Convert.ToInt32(zoneOffset.Substring(0, zoneOffset.IndexOf(":")));
-                        int offsetMinutes = Convert.ToInt32(zoneOffset.Substring(zoneOffset.IndexOf(":") + 1));
-                        TimeSpan offsetTimeSpan = new TimeSpan(offsetHours, offsetMinutes, 0);
-                        TimeZoneInfo defaultTz = TimeZoneInfo.CreateCustomTimeZone(zoneAbbrev, offsetTimeSpan, zoneAbbrev, zoneAbbrev);
-                        //TimeZoneInfo.CreateCustomTimeZone(
-                        return defaultTz;
+                        if (r.HasAttributes)
+                        {
+                            while(r.MoveToNextAttribute())
+                            {
+                                if (r.Name.ToLower() == "zoneabbreviation")
+                                {
+                                    zoneAbbrev = r.Value;
+                                }
+
+                                if (r.Name.ToLower() == "zoneoffset")
+                                {
+                                    zoneOffset = r.Value;
+                                }
+                            }
+                            r.MoveToElement();
+                        }
+
+                        if (!string.IsNullOrEmpty(zoneAbbrev) && !string.IsNullOrEmpty(zoneOffset))
+                        {
+                            int offsetHours = Convert.ToInt32(zoneOffset.Substring(0, zoneOffset.IndexOf(":")));
+                            int offsetMinutes = Convert.ToInt32(zoneOffset.Substring(zoneOffset.IndexOf(":") + 1));
+                            TimeSpan offsetTimeSpan = new TimeSpan(offsetHours, offsetMinutes, 0);
+                            defaultTz = TimeZoneInfo.CreateCustomTimeZone(zoneAbbrev, offsetTimeSpan, zoneAbbrev, zoneAbbrev);
+                            return defaultTz;
+                        }
                     }
                 }
                 else if (r.NodeType == XmlNodeType.EndElement && r.Name == "timeZoneInfo")
                 {
-                    return TimeZoneInfo.Utc;
+                    return defaultTz;
                 }
             }
-            return TimeZoneInfo.Utc;
+            return defaultTz;
         }
 
         /// <summary>
