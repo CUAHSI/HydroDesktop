@@ -46,7 +46,7 @@ namespace HydroDesktop.DataDownload
         private SearchLayerModifier _searchLayerModifier;
         private SearchLayerModifier SearchLayerModifier
         {
-            get { return _searchLayerModifier ?? (_searchLayerModifier = new SearchLayerModifier((Map) App.Map)); }
+            get { return _searchLayerModifier ?? (_searchLayerModifier = new SearchLayerModifier((Map) App.Map, this)); }
         }
 
         private SearchLayerInformer _searchLayerInformer;
@@ -78,9 +78,13 @@ namespace HydroDesktop.DataDownload
         /// Starts downloading
         /// </summary>
         /// <param name="featureLayer">Layer with features to download</param>
-        /// <param name="featuresToDownload">Features to download</param>
-        public void StartDownloading(IFeatureLayer featureLayer, IEnumerable<IFeature> featuresToDownload)
+        /// <param name="featuresToDownload">Features to download. If this null, then all features from layer will be processed.</param>
+        public void StartDownloading(IFeatureLayer featureLayer, IEnumerable<IFeature> featuresToDownload = null)
         {
+            if (featuresToDownload == null)
+            {
+                featuresToDownload = featureLayer.DataSet.Features;
+            }
             var dataThemeName = featureLayer.LegendText;
             var oneSeriesList = featuresToDownload.Select(f => ClassConvertor.IFeatureToOneSeriesDownloadInfo(f, featureLayer)).ToList();
             var startArgs = new StartDownloadArg(oneSeriesList, dataThemeName);
