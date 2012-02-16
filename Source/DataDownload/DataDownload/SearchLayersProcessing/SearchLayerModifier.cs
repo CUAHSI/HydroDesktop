@@ -21,6 +21,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
     class SearchLayerModifier
     {
         private readonly Map _map;
+        private readonly DataDownloadPlugin _downloadPlugin;
+
         private static readonly string[] _searchColumns = new[]
                                                        {
                                                            "SiteCode", "VarCode", "ServiceCode", "ServiceURL", "StartDate",
@@ -28,11 +30,13 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                                                        };
 
 
-        public SearchLayerModifier(Map map)
+        public SearchLayerModifier(Map map, DataDownloadPlugin downloadPlugin)
         {
             if (map == null) throw new ArgumentNullException("map");
+            if (downloadPlugin == null) throw new ArgumentNullException("downloadPlugin");
 
             _map = map;
+            _downloadPlugin = downloadPlugin;
         }
 
         #region Public methods
@@ -88,34 +92,20 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
         {
             if (searchLayer == null) throw new ArgumentNullException("searchLayer");
             if (!IsSearchLayer(searchLayer)) return;
-
-            const string dataGroupName = "Data";
-            var dataGroupMenu = searchLayer.ContextMenuItems.FirstOrDefault(item => item.Name == dataGroupName);
+            
+            var dataGroupMenu = searchLayer.ContextMenuItems.FirstOrDefault(item => item.Name == "Data");
             if (dataGroupMenu == null)
                 return;
 
-            const string exportTimeSeries = "Export Time Series Data";
-            if (!dataGroupMenu.MenuItems.Exists(item => item.Name == exportTimeSeries))
+            var exportPlugin = _downloadPlugin.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+            if (exportPlugin != null)
             {
-                var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
-                // TODO: replace line above with MEF if need
-                if (exportPlugin != null)
-                {
-                    var menuItem = new SymbologyMenuItem(exportTimeSeries, delegate { exportPlugin.Export(searchLayer); });
-                    dataGroupMenu.MenuItems.Add(menuItem);
-                }
+                dataGroupMenu.AddMenuItem("Export Time Series Data", delegate { exportPlugin.Export(searchLayer); });
             }
-
-            const string showDataValuesInMap = "Show Data Values in Map";
-            if (!dataGroupMenu.MenuItems.Exists(item => item.Name == showDataValuesInMap))
-            {
-                var menuItem = new SymbologyMenuItem(showDataValuesInMap, delegate
-                                                                              {
-                                                                                  new AggregationSettingsDialog(searchLayer).ShowDialog();
-                                                                              });
-                dataGroupMenu.MenuItems.Add(menuItem);
-            }
-            
+            dataGroupMenu.AddMenuItem("Show Data Values in Map",
+                                      delegate { new AggregationSettingsDialog(searchLayer).ShowDialog(); });
+            dataGroupMenu.AddMenuItem("Update Values from Server",
+                                      delegate { _downloadPlugin.StartDownloading(searchLayer); });
         }
 
         public void RemoveCustomFeaturesFromLayer(ILayer layer)
