@@ -233,7 +233,7 @@ namespace GetDotSpatial
             }
             catch (Exception ex)
             {
-                Console.WriteLine("error downloading package " + ex.InnerException.Message);
+                Console.WriteLine("error downloading package " + (ex.InnerException != null? ex.InnerException.Message: ex.Message));
             }
         }
 
