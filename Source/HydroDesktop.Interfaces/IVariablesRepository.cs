@@ -9,10 +9,16 @@ namespace HydroDesktop.Interfaces
     public interface IVariablesRepository
     {
         /// <summary>
+        /// Get all variables.
+        /// </summary>
+        /// <returns>All variables.</returns>
+        Variable[] GetAll();
+
+        /// <summary>
         /// Get all
         /// </summary>
         /// <returns>Data Table with all data</returns>
-        DataTable GetAll();
+        DataTable GetAllAsDataTable();
 
         /// <summary>
         /// Get <see cref="Variable"/> by ID
@@ -39,5 +45,12 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <param name="variable">Variable to update</param>
         void Update(Variable variable);
+
+        /// <summary>
+        /// Check that variable already exists in the database
+        /// </summary>
+        /// <param name="site">Variable to check.</param>
+        /// <returns>True - if Variable exists, False - otherwise.</returns>
+        bool Exists(Variable site);
     }
 }

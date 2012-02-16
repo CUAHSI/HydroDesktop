@@ -25,6 +25,8 @@ namespace DataImport.CommonPages
         {
             InitializeComponent();
 
+            if (DesignMode) return;
+
             Entity = Method.Unknown;
 
             // Set bindings
@@ -40,6 +42,7 @@ namespace DataImport.CommonPages
         /// Current Entity
         /// </summary>
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Method Entity
         {
             get { return _entity; }
@@ -48,7 +51,6 @@ namespace DataImport.CommonPages
                 _entity = value;
 
                 bindingSource1.DataSource = value;
-                bindingSource1.ResetBindings(false);
             }
         }
 

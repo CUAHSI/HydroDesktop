@@ -25,8 +25,22 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
-        
-        public DataTable GetAll()
+
+        public Variable[] GetAll()
+        {
+            var table = GetAllAsDataTable();
+            var result = new Variable[table.Rows.Count];
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                var row = table.Rows[i];
+                var variable = DataRowToVariable(row);
+                result[i] = variable;
+            }
+
+            return result;
+        }
+
+        public DataTable GetAllAsDataTable()
         {
             var dt = DbOperations.LoadTable(TableName, "Select * FROM Variables");
             return dt;
@@ -39,24 +53,7 @@ namespace HydroDesktop.Database
                 return null;
 
             var row = dt.Rows[0];
-            var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>(DbOperations);
-            var res = new Variable
-                          {
-                              Id = Convert.ToInt64(row["VariableID"]),
-                              Code = Convert.ToString(row["VariableCode"]),
-                              Name = Convert.ToString(row["VariableName"]),
-                              Speciation = Convert.ToString(row["Speciation"]),
-                              SampleMedium = Convert.ToString(row["SampleMedium"]),
-                              ValueType = Convert.ToString(row["ValueType"]),
-                              IsRegular = Convert.ToBoolean(row["IsRegular"]),
-                              IsCategorical = Convert.ToBoolean(row["IsCategorical"]),
-                              TimeSupport = Convert.ToSingle(row["TimeSupport"]),
-                              DataType = Convert.ToString(row["DataType"]),
-                              GeneralCategory = Convert.ToString(row["GeneralCategory"]),
-                              NoDataValue = Convert.ToDouble(row["NoDataValue"]),
-                              TimeUnit = unitsRepo.GetByID(Convert.ToInt64(row["TimeUnitsID"])),
-                              VariableUnit = unitsRepo.GetByID(Convert.ToInt64(row["VariableUnitsID"])),
-                          };
+            var res = DataRowToVariable(row);
             return res;
         }
        
@@ -112,7 +109,39 @@ namespace HydroDesktop.Database
             DbOperations.ExecuteNonQuery(query);
         }
 
+        public bool Exists(Variable entity)
+        {
+            if (entity == null) return false;
+
+            const string query = "select count(*) from {0} where VariableID = {1} and VariableCode = '{2}'";
+            var result = DbOperations.ExecuteSingleOutput(string.Format(query, TableName, entity.Id, entity.Code));
+            return Convert.ToInt32(result) > 0;
+        }
+
         #endregion
+
+        private Variable DataRowToVariable(DataRow row)
+        {
+            var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>(DbOperations);
+              var res = new Variable
+                          {
+                              Id = Convert.ToInt64(row["VariableID"]),
+                              Code = Convert.ToString(row["VariableCode"]),
+                              Name = Convert.ToString(row["VariableName"]),
+                              Speciation = Convert.ToString(row["Speciation"]),
+                              SampleMedium = Convert.ToString(row["SampleMedium"]),
+                              ValueType = Convert.ToString(row["ValueType"]),
+                              IsRegular = Convert.ToBoolean(row["IsRegular"]),
+                              IsCategorical = Convert.ToBoolean(row["IsCategorical"]),
+                              TimeSupport = Convert.ToSingle(row["TimeSupport"]),
+                              DataType = Convert.ToString(row["DataType"]),
+                              GeneralCategory = Convert.ToString(row["GeneralCategory"]),
+                              NoDataValue = Convert.ToDouble(row["NoDataValue"]),
+                              TimeUnit = unitsRepo.GetByID(Convert.ToInt64(row["TimeUnitsID"])),
+                              VariableUnit = unitsRepo.GetByID(Convert.ToInt64(row["VariableUnitsID"])),
+                          };
+            return res;
+        }
 
         public override string TableName
         {

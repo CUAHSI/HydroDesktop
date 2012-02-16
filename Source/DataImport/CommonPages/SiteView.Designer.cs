@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.nudElevation = new System.Windows.Forms.NumericUpDown();
+            this.nudElevation = new DataImport.CommonPages.NumericUpDownEx();
             this.lblElevation = new System.Windows.Forms.Label();
             this.tbSiteCode = new System.Windows.Forms.TextBox();
             this.lblSiteCode = new System.Windows.Forms.Label();
-            this.nudLng = new System.Windows.Forms.NumericUpDown();
-            this.nudLat = new System.Windows.Forms.NumericUpDown();
+            this.nudLng = new DataImport.CommonPages.NumericUpDownEx();
+            this.nudLat = new DataImport.CommonPages.NumericUpDownEx();
             this.lblLongitude = new System.Windows.Forms.Label();
             this.lblLatitude = new System.Windows.Forms.Label();
             this.tbSiteName = new System.Windows.Forms.TextBox();
@@ -51,6 +51,7 @@
             this.nudElevation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudElevation.DecimalPlaces = 4;
+            this.nudElevation.FullReadOnly = false;
             this.nudElevation.Location = new System.Drawing.Point(74, 151);
             this.nudElevation.Name = "nudElevation";
             this.nudElevation.Size = new System.Drawing.Size(145, 20);
@@ -88,7 +89,18 @@
             this.nudLng.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudLng.DecimalPlaces = 4;
+            this.nudLng.FullReadOnly = false;
             this.nudLng.Location = new System.Drawing.Point(74, 116);
+            this.nudLng.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nudLng.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
             this.nudLng.Name = "nudLng";
             this.nudLng.Size = new System.Drawing.Size(144, 20);
             this.nudLng.TabIndex = 3;
@@ -98,7 +110,18 @@
             this.nudLat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudLat.DecimalPlaces = 4;
+            this.nudLat.FullReadOnly = false;
             this.nudLat.Location = new System.Drawing.Point(74, 84);
+            this.nudLat.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+            this.nudLat.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
             this.nudLat.Name = "nudLat";
             this.nudLat.Size = new System.Drawing.Size(144, 20);
             this.nudLat.TabIndex = 2;
@@ -166,12 +189,12 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown nudElevation;
+        private NumericUpDownEx nudElevation;
         private System.Windows.Forms.Label lblElevation;
         private System.Windows.Forms.TextBox tbSiteCode;
         private System.Windows.Forms.Label lblSiteCode;
-        private System.Windows.Forms.NumericUpDown nudLng;
-        private System.Windows.Forms.NumericUpDown nudLat;
+        private NumericUpDownEx nudLng;
+        private NumericUpDownEx nudLat;
         private System.Windows.Forms.Label lblLongitude;
         private System.Windows.Forms.Label lblLatitude;
         private System.Windows.Forms.TextBox tbSiteName;
