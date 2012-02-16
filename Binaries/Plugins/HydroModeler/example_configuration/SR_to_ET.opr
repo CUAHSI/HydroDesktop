@@ -1,0 +1,17 @@
+<guiComposition version="1.0">
+  <models>
+    <model omi="models\SolarRadiation\NSR.omi" rect_x="30" rect_y="30" rect_width="100" rect_height="51" />
+    <model omi="models\EvapoTranspiration\PenmanMonteith\ET.omi" rect_x="202" rect_y="31" rect_width="100" rect_height="51" />
+    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="201" rect_y="136" rect_width="100" rect_height="51" />
+  </models>
+  <links>
+    <uilink model_providing="Solar Radiation" model_accepting="PET: Penman-Monteith">
+      <link id="2" source_elementset="NetRad" source_quantity="NSR" target_elementset="NetRadiation" target_quantity="NSR" />
+      <link id="3" source_elementset="StationID" source_quantity="StID" target_elementset="Station_ID" target_quantity="St_ID" />
+    </uilink>
+    <uilink model_providing="PET: Penman-Monteith" model_accepting="Oatc.OpenMI.Gui.Trigger">
+      <link id="5" source_elementset="ETsz" source_quantity="StandardizedET" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+    </uilink>
+  </links>
+  <runproperties listenedeventtypes="11111111111" triggerinvoke="12/31/1983 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+</guiComposition>
