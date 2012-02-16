@@ -25,11 +25,12 @@ namespace DataImport.CommonPages
         public SiteView()
         {
             InitializeComponent();
+
+            if (DesignMode) return;
             
             Entity = new Site();
 
             // Set Bindings
-
             tbSiteName.AddBinding<TextBox, Site>(x => x.Text, bindingSource1, x => x.Name);
             tbSiteCode.AddBinding<TextBox, Site>(x => x.Text, bindingSource1, x => x.Code);
             nudLat.AddBinding<NumericUpDown, Site>(x => x.Value, bindingSource1, x => x.Latitude);
@@ -45,6 +46,7 @@ namespace DataImport.CommonPages
         /// Current Entity
         /// </summary>
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Site Entity
         {
             get { return _entity; }
@@ -53,7 +55,23 @@ namespace DataImport.CommonPages
                 _entity = value;
 
                 bindingSource1.DataSource = value;
-                bindingSource1.ResetBindings(false);
+            }
+        }
+
+        private bool _readOnly;
+        [Browsable(false)]
+        public bool ReadOnly
+        {
+            get { return _readOnly; }
+            set
+            {
+                _readOnly = value;
+
+                tbSiteName.ReadOnly = value;
+                tbSiteCode.ReadOnly = value;
+                nudLat.FullReadOnly = value;
+                nudLng.FullReadOnly = value;
+                nudElevation.FullReadOnly = value;
             }
         }
 

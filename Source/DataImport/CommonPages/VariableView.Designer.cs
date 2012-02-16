@@ -41,8 +41,8 @@
             this.tbValueType = new System.Windows.Forms.TextBox();
             this.lblValueType = new System.Windows.Forms.Label();
             this.lblTimeSupport = new System.Windows.Forms.Label();
-            this.nudTimeSupport = new System.Windows.Forms.NumericUpDown();
-            this.nudNoDataValue = new System.Windows.Forms.NumericUpDown();
+            this.nudTimeSupport = new NumericUpDownEx();
+            this.nudNoDataValue = new NumericUpDownEx();
             this.lblNoDataValue = new System.Windows.Forms.Label();
             this.cmbName = new System.Windows.Forms.ComboBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -243,8 +243,8 @@
         private System.Windows.Forms.TextBox tbValueType;
         private System.Windows.Forms.Label lblValueType;
         private System.Windows.Forms.Label lblTimeSupport;
-        private System.Windows.Forms.NumericUpDown nudTimeSupport;
-        private System.Windows.Forms.NumericUpDown nudNoDataValue;
+        private NumericUpDownEx nudTimeSupport;
+        private NumericUpDownEx nudNoDataValue;
         private System.Windows.Forms.Label lblNoDataValue;
         private System.Windows.Forms.ComboBox cmbName;
     }

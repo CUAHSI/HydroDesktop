@@ -7,7 +7,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Factory to get repositories
     /// </summary>
-    public class RepositoryFactory
+    public partial class RepositoryFactory
     {
         #region Fields
 
@@ -20,50 +20,10 @@ namespace HydroDesktop.Database
         private RepositoryFactory()
         {
             _repositoryCreators = new Dictionary<Type, RepositoryCreator>();
-
-            AddRepoCreator<IRepositoryManager>(
-                new RepositoryCreator
-                {
-                    CreatorByConnectionString = (dbType, connStr) => new DbRepositoryManagerSQL(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new DbRepositoryManagerSQL(dbOp)
-                });
-            AddRepoCreator<IDataSeriesRepository>(
-                new RepositoryCreator
-                {
-                    CreatorByConnectionString = (dbType, connStr) => new DataSeriesRepository(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new DataSeriesRepository(dbOp)
-                });
-            AddRepoCreator<IDataThemesRepository>(
-                new RepositoryCreator
-                {
-                    CreatorByConnectionString = (dbType, connStr) => new DataThemesRepository(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new DataThemesRepository(dbOp)
-                });
-            AddRepoCreator<IMethodsRepository>(
-                new RepositoryCreator
-                {
-                    CreatorByConnectionString = (dbType, connStr) => new MethodsRepository(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new MethodsRepository(dbOp)
-                });
-            AddRepoCreator<IVariablesRepository>(
-                new RepositoryCreator
-                {
-                    CreatorByConnectionString = (dbType, connStr) => new VariablesRepository(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new VariablesRepository(dbOp)
-                });
-            AddRepoCreator<IUnitsRepository>(
-                new RepositoryCreator
-                {
-                    CreatorByConnectionString = (dbType, connStr) => new UnitsRepository(dbType, connStr),
-                    CreatorByDbOperations = dbOp => new UnitsRepository(dbOp)
-                });
-            AddRepoCreator<IDataValuesRepository>(
-               new RepositoryCreator
-               {
-                   CreatorByConnectionString = (dbType, connStr) => new DataValuesRepository(dbType, connStr),
-                   CreatorByDbOperations = dbOp => new DataValuesRepository(dbOp)
-               });
+            Register();
         }
+
+        partial void Register();
 
         #endregion
 
@@ -129,7 +89,7 @@ namespace HydroDesktop.Database
 
         #region Private methods
 
-        private void AddRepoCreator<T>(RepositoryCreator creator)
+        private void Add<T>(RepositoryCreator creator)
         {
             _repositoryCreators.Add(typeof(T), creator);
         }

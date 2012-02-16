@@ -82,7 +82,7 @@ Public Class fDeriveNewDataSeries
         _derivedVariable.ValueType = "Derived Value"
 
         'Fill up Variable drop down list
-        Dim dt = variablesRepository.GetAll()
+        Dim dt = variablesRepository.GetAllAsDataTable()
         dt.Rows.Add()
         dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Variables", "VariableID").ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Variable..."

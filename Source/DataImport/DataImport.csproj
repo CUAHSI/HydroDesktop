@@ -104,11 +104,20 @@
     <Compile Include="CommonPages\CreateVariableForm.Designer.cs">
       <DependentUpon>CreateVariableForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommonPages\FieldPropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommonPages\FieldPropertiesForm.Designer.cs">
+      <DependentUpon>FieldPropertiesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommonPages\MethodView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CommonPages\MethodView.Designer.cs">
       <DependentUpon>MethodView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\NumericUpDownEx.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CommonPages\SiteView.cs">
       <SubType>UserControl</SubType>
@@ -202,6 +211,9 @@
   <ItemGroup>
     <EmbeddedResource Include="CommonPages\CreateVariableForm.resx">
       <DependentUpon>CreateVariableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\FieldPropertiesForm.resx">
+      <DependentUpon>FieldPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\MethodView.resx">
       <DependentUpon>MethodView.cs</DependentUpon>
