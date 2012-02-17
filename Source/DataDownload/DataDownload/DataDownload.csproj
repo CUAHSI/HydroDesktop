@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="SearchLayersProcessing\SearchLayerModifier.cs" />
     <Compile Include="SearchLayersProcessing\SymbologyCreator.cs" />
+    <Compile Include="SearchLayersProcessing\SymbologyHelper.cs" />
     <Compile Include="SearchLayersProcessing\ThemeManager.cs" />
   </ItemGroup>
   <ItemGroup>
