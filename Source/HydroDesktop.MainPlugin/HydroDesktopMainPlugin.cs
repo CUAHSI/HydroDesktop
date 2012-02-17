@@ -10,6 +10,7 @@
     using System.IO;
     using HydroDesktop.Interfaces;
     using HydroDesktop.Database;
+    using System.Diagnostics;
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
@@ -31,6 +32,11 @@
 
         public override void Activate()
         {
+            //startup logging
+            TraceLogger logger = new TraceLogger();
+            logger.CreateTraceFile();
+
+            
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             myProjectManager = new ProjectManager(App);
 
@@ -54,6 +60,9 @@
 
         void HydroDesktopMainPlugin_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //write the log file from trace
+            Trace.Flush();
+            
             var projectExists = App.SerializationManager.CurrentProjectFile != null;
             if (!projectExists)
             {
