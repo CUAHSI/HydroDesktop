@@ -158,9 +158,9 @@ Root: HKCR; Subkey: "HD_Project"; ValueType: string; ValueName: ""; ValueData: "
 Root: HKCR; Subkey: "HD_Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\HydroDesktop.exe,0"
 Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\HydroDesktop.exe"" ""%1"""
 
-[Run]
+;[Run]
 ;Start HydroDesktop
-Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop}"; Flags: nowait postinstall skipifsilent
+;Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop}"; Flags: nowait postinstall skipifsilent
 
 [InstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
