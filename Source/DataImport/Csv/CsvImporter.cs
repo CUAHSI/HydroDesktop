@@ -18,12 +18,12 @@ namespace DataImport.Csv
             return string.Equals(Path.GetExtension(pathToFile), ".csv", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IDataImportSettings GetDefaultSettings()
+        public IFileImportSettings GetDefaultSettings()
         {
             return new CsvImportSettings();
         }
 
-        public void Import(IDataImportSettings settings)
+        public void Import(IFileImportSettings settings)
         {
             throw new NotImplementedException();
         }
@@ -33,15 +33,21 @@ namespace DataImport.Csv
             throw new NotImplementedException();
         }
 
-        public void SetPreview(IDataImportSettings settings)
+        public void SetPreview(IFileImportSettings settings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetData(IFileImportSettings settings)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class CsvImportSettings : IDataImportSettings
+    public class CsvImportSettings : IFileImportSettings
     {
         public string PathToFile{get;set;}
         public DataTable Preview { get; set; }
+        public DataTable Data { get; set; }
     }
 }

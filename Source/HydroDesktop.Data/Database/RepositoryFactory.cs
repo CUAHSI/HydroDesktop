@@ -1,4 +1,5 @@
 using System;
+using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces;
 using System.Collections.Generic;
 
@@ -41,6 +42,15 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
+
+        /// <summary>
+        /// Get instance of <see cref="T"/> using default settings
+        /// </summary>
+        /// <returns>Instance of <see cref="T"/></returns>
+        public T Get<T>()
+        {
+            return Get<T>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+        }
 
         /// <summary>
         /// Get instance of <see cref="T"/> using connection string

@@ -19,5 +19,11 @@ namespace HydroDesktop.Interfaces
         /// <param name="site">Site to check.</param>
         /// <returns>True - if site exists, False - otherwise.</returns>
         bool Exists(Site site);
+
+        /// <summary>
+        /// Add site.
+        /// </summary>
+        /// <param name="site">Site to add.</param>
+        void AddSite(Site site);
     }
 }

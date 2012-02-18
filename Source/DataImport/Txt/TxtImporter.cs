@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Xml;
@@ -23,12 +22,12 @@ namespace DataImport.Txt
             return string.Equals(Path.GetExtension(pathToFile), ".txt", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IDataImportSettings GetDefaultSettings()
+        public IFileImportSettings GetDefaultSettings()
         {
             return new TxtImportSettings();
         }
 
-        public void Import(IDataImportSettings settings)
+        public void Import(IFileImportSettings settings)
         {
             throw new NotImplementedException();
         }
@@ -42,10 +41,25 @@ namespace DataImport.Txt
                        };
         }
 
-        public void SetPreview(IDataImportSettings settings)
+        public void SetPreview(IFileImportSettings settings)
+        {
+            var txtSettings = (TxtImportSettings)settings;
+            var table = ReadData(txtSettings, 10);
+            txtSettings.Preview = table;
+        }
+
+        public void SetData(IFileImportSettings settings)
         {
             var txtSettings = (TxtImportSettings) settings;
-            var fileName = txtSettings.PathToFile;
+            var table = ReadData(txtSettings, -1);
+            txtSettings.Data = table;
+        }
+
+        #region Private methods
+
+        private DataTable ReadData(TxtImportSettings settings, int maxRowsCount)
+        {
+            var fileName = settings.PathToFile;
 
             DataTable result;
             if (!File.Exists(fileName))
@@ -54,34 +68,33 @@ namespace DataImport.Txt
             }
             else
             {
-                switch (txtSettings.FileType)
+                switch (settings.FileType)
                 {
                     case TxtFileType.Delimited:
-                        result = GetPreviewForDelimitedFile(txtSettings);
+                        result = GetPreviewForDelimitedFile(settings, maxRowsCount);
                         break;
                     case TxtFileType.FixedWidth:
-                        result = GetPreviewForFixedWidthFile(txtSettings);
+                        result = GetPreviewForFixedWidthFile(settings, maxRowsCount);
                         break;
                     default:
                         result = new DataTable();
                         break;
                 }
             }
-            settings.Preview = result;
+
+            return result;
         }
 
-        #region Private methods
-
-        private DataTable GetPreviewForDelimitedFile(TxtImportSettings settings)
+        private static DataTable GetPreviewForDelimitedFile(TxtImportSettings settings, int maxRowsCount)
         {
             var fileName = settings.PathToFile;
 
             var result = new DataTable();
-            const int MAX_ROWS_COUNT = 10;
             using (var streamReader = new StreamReader(fileName))
             {
                 while (streamReader.Peek() != -1 &&
-                       result.Rows.Count < MAX_ROWS_COUNT)
+                       (maxRowsCount < 0 ||
+                        result.Rows.Count < maxRowsCount))
                 {
                     var line = streamReader.ReadLine();
                     if (String.IsNullOrEmpty(line)) continue;
@@ -112,17 +125,17 @@ namespace DataImport.Txt
             return result;
         }
 
-        private DataTable GetPreviewForFixedWidthFile(TxtImportSettings settings)
+        private static DataTable GetPreviewForFixedWidthFile(TxtImportSettings settings, int maxRowsCount)
         {
             var fileName = settings.PathToFile;
 
             var result = new DataTable();
-            const int MAX_ROWS_COUNT = 10;
             int[] columnLengths = null;
             using (var streamReader = new StreamReader(fileName))
             {
                 while (streamReader.Peek() != -1 &&
-                       result.Rows.Count < MAX_ROWS_COUNT)
+                       (maxRowsCount < 0 ||
+                        result.Rows.Count < maxRowsCount))
                 {
                     var line = streamReader.ReadLine();
                     if (String.IsNullOrEmpty(line)) continue;
@@ -168,22 +181,5 @@ namespace DataImport.Txt
         }
 
         #endregion
-    }
-
-    public class TxtImportSettings : IDataImportSettings
-    {
-        public string PathToFile{get; set;}
-        public TxtFileType FileType { get; set; }
-        public string Delimiter { get; set; }
-        public DataTable Preview { get; set; }
-    }
-
-    public enum TxtFileType
-    {
-        [Description("Fixed width")]
-        FixedWidth,
-
-        [Description("Delimited")]
-        Delimited,
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -22,12 +21,12 @@ namespace DataImport.WaterML
             return string.Equals(Path.GetExtension(pathToFile), ".xml", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IDataImportSettings GetDefaultSettings()
+        public IFileImportSettings GetDefaultSettings()
         {
             throw new NotImplementedException();
         }
 
-        public void Import(IDataImportSettings settings)
+        public void Import(IFileImportSettings settings)
         {
             var wmlSettings = (WaterMLImportSettings) settings;
 
@@ -74,16 +73,14 @@ namespace DataImport.WaterML
                        };
         }
 
-        public void SetPreview(IDataImportSettings settings)
+        public void SetPreview(IFileImportSettings settings)
         {
             throw new NotImplementedException();
         }
-    }
 
-    public class WaterMLImportSettings : IDataImportSettings
-    {
-        public string PathToFile{get;set;}
-        public string ThemeName { get; set; }
-        public DataTable Preview { get; set; }
+        public void SetData(IFileImportSettings settings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
