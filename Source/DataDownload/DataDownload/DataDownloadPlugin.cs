@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel.Composition;
@@ -41,12 +42,6 @@ namespace HydroDesktop.DataDownload
         private DownloadManager DownloadManager
         {
             get { return DownloadManager.Instance; }
-        }
-
-        private SearchLayerModifier _searchLayerModifier;
-        private SearchLayerModifier SearchLayerModifier
-        {
-            get { return _searchLayerModifier ?? (_searchLayerModifier = new SearchLayerModifier((Map) App.Map, this)); }
         }
 
         private SearchLayerInformer _searchLayerInformer;
@@ -144,6 +139,7 @@ namespace HydroDesktop.DataDownload
             if (_searchLayerInformer != null)
             {
                 _searchLayerInformer.Stop();
+                _searchLayerInformer = null;
             }
 
             Global.PluginEntryPoint = null;
@@ -211,15 +207,15 @@ namespace HydroDesktop.DataDownload
                     _searchLayerInformer = new SearchLayerInformer(extractor, (Map) App.Map);
                 }
 
+                var lm = SearchLayerModifier.Create(layer, (Map) App.Map, this);
+                Debug.Assert(lm != null);
+
                 if (!isDeserializing)
                 {
-                    SearchLayerModifier.AddCustomFeaturesToSearchLayer((IFeatureLayer) layer);
+                    lm.UpdateLabeling();
+                    lm.UpdateSymbolizing();
                 }
-                else
-                {
-                    SearchLayerModifier.UpdateContextMenu((IFeatureLayer)layer);
-                }
-
+                lm.UpdateContextMenu();
 
                 btnDownload.Enabled = true;
             }
@@ -237,8 +233,6 @@ namespace HydroDesktop.DataDownload
 
         private void UnattachLayerFromPlugin(ILayer layer)
         {
-            SearchLayerModifier.RemoveCustomFeaturesFromLayer(layer);
-
             var group = layer as IGroup;
             if (group != null)
             {
@@ -304,7 +298,12 @@ namespace HydroDesktop.DataDownload
             featureSet.FillAttributes();
 
             var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
-            SearchLayerModifier.UpdateSearchLayerAfterDownloading(sourceLayer, featureSet, DownloadManager);
+            var lm = SearchLayerModifier.Create(sourceLayer, (Map) App.Map, this);
+            Debug.Assert(lm != null);
+
+            lm.UpdateDataTable(featureSet, DownloadManager);
+            lm.UpdateSymbolizing();
+            lm.UpdateContextMenu();
 
             // Refresh list of the time series in the table and graph in the main form
             SeriesControl.RefreshSelection();
