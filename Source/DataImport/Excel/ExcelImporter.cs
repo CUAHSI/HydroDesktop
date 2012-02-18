@@ -4,12 +4,13 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using DataImport.CommonPages;
+using DataImport.DataTableImport;
 using Excel;
 using Wizard.UI;
 
 namespace DataImport.Excel
 {
-    class ExcelImporter : IDataImporter
+    class ExcelImporter : IWizardImporter
     {
         public string Filter
         {
@@ -23,26 +24,26 @@ namespace DataImport.Excel
                    string.Equals(extension, ".xls", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IFileImportSettings GetDefaultSettings()
+        public IWizardImporterSettings GetDefaultSettings()
         {
             return new ExcelImportSettings();
         }
 
-        public void Import(IFileImportSettings settings)
+        public IImporter GetImporter()
         {
-            throw new NotImplementedException();
+            return new DataTableImporterImpl();
         }
 
-        public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
+        public ICollection<WizardPage> GetWizardPages(WizardContext context)
         {
-            return new Collection<Func<DataImportContext, WizardPage>>
+            return new Collection<WizardPage>
                        {
-                           c => new FormatOptionsPage(c),
-                           c => new FieldPropertiesPage(c),
+                           new FormatOptionsPage(context),
+                           new FieldPropertiesPage(context),
                        };
         }
 
-        public void SetPreview(IFileImportSettings settings)
+        public void SetPreview(IWizardImporterSettings settings)
         {
             var excelSettings = (ExcelImportSettings)settings;
             if (excelSettings.DataSet == null)
@@ -58,18 +59,17 @@ namespace DataImport.Excel
             var result = excelSettings.DataSet.Tables.Contains(excelSettings.SheetName)
                              ? excelSettings.DataSet.Tables[excelSettings.SheetName]
                              : new DataTable();
-            excelSettings.Preview = result;
+            settings.Preview = result;
         }
 
-        public void SetData(IFileImportSettings settings)
+        public void SetData(IWizardImporterSettings settings)
         {
-            var excelSettings = (ExcelImportSettings)settings;
-            excelSettings.Data = excelSettings.Preview;
+            settings.Data = settings.Preview;
         }
 
         #region Private methods
 
-        private DataSet AsDataSet(IFileImportSettings settings)
+        private DataSet AsDataSet(IWizardImporterSettings settings)
         {
             var fileName = settings.PathToFile;
 

@@ -16,7 +16,7 @@ namespace DataImport.CommonPages
     {
         #region Fields
 
-        private readonly ColumnData _columnData;
+        private readonly ColumnInfo _columnData;
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace DataImport.CommonPages
         /// Create new instance of <see cref="FieldPropertiesForm"/>
         /// </summary>
         /// <param name="columnData">Column data</param>
-        public FieldPropertiesForm(ColumnData columnData)
+        public FieldPropertiesForm(ColumnInfo columnData)
         {
             if (columnData == null) throw new ArgumentNullException("columnData");
             Contract.EndContractBlock();
@@ -37,7 +37,7 @@ namespace DataImport.CommonPages
             if (DesignMode) return;
 
             // Set bindings.......
-            chApplyToAllCoumns.AddBinding<CheckBox, ColumnData>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
+            chApplyToAllCoumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
 
             // Site
             siteView1.ReadOnly = true;
@@ -81,7 +81,7 @@ namespace DataImport.CommonPages
         /// <summary>
         /// Current column data
         /// </summary>
-        public ColumnData ColumnData
+        public ColumnInfo ColumnData
         {
             get { return _columnData; }
         }

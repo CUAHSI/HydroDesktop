@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows.Forms;
-using HydroDesktop.Interfaces.ObjectModel;
-using ImportFromWaterML;
+using DataImport.CommonPages;
 using Wizard.UI;
 
 namespace DataImport.WaterML
 {
-    class WaterMLImporter : IDataImporter
+    class WaterMLImporter : IWizardImporter
     {
         public string Filter
         {
@@ -21,66 +19,34 @@ namespace DataImport.WaterML
             return string.Equals(Path.GetExtension(pathToFile), ".xml", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IFileImportSettings GetDefaultSettings()
+        public IWizardImporterSettings GetDefaultSettings()
+        {
+            return new WaterMLImportSettings();
+        }
+
+        public IImporter GetImporter()
+        {
+            return new WaterMLImporterImpl();
+        }
+
+        public void SetPreview(IWizardImporterSettings settings)
         {
             throw new NotImplementedException();
         }
 
-        public void Import(IFileImportSettings settings)
+        public void SetData(IWizardImporterSettings settings)
         {
-            var wmlSettings = (WaterMLImportSettings) settings;
-
-            var objDownloader = new Downloader();
-            string fileName = wmlSettings.PathToFile;
-            var themeName = wmlSettings.ThemeName;
-
-            string shortFileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-            string siteName = shortFileName;
-            string variableName = shortFileName;
-
-            int separatorIndex = shortFileName.IndexOf("_");
-            if (separatorIndex > 0 && separatorIndex < shortFileName.Length - 1)
-            {
-                siteName = shortFileName.Substring(0, shortFileName.IndexOf("_"));
-                variableName = shortFileName.Substring(shortFileName.IndexOf("_"));
-            }
-
-
-            IList<Series> seriesList = objDownloader.DataSeriesFromXml(fileName);
-            if (seriesList == null)
-            {
-                MessageBox.Show("error converting xml file");
-                return;
-            }
-            if (objDownloader.ValidateSeriesList(seriesList))
-            {
-
-                foreach (Series series in seriesList)
-                {
-                    objDownloader.SaveDataSeries(series, themeName, siteName, variableName);
-                }
-            }
-
+            throw new NotImplementedException();
         }
 
-        public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
+        public ICollection<WizardPage> GetWizardPages(WizardContext context)
         {
-            return new Collection<Func<DataImportContext, WizardPage>>
+            return new Collection<WizardPage>
                        {
-                           c => new OptionsPage(c),
-                           c => new ProgressPage(c),
-                           c => new CompletePage(),
+                           new OptionsPage(context),
+                           new ProgressPage(context),
+                           new CompletePage(),
                        };
-        }
-
-        public void SetPreview(IFileImportSettings settings)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetData(IFileImportSettings settings)
-        {
-            throw new NotImplementedException();
         }
     }
 }

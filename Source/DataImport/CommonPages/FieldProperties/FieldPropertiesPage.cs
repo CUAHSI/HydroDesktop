@@ -10,24 +10,36 @@ using Wizard.UI;
 
 namespace DataImport.CommonPages
 {
+    /// <summary>
+    /// Properties page
+    /// </summary>
     public partial class FieldPropertiesPage : InternalWizardPage
     {
-        private readonly IColumnDataImportSettings _settings;
+        #region Fields
+
+        private readonly IWizardImporterSettings _settings;
         private readonly int _columnHeight;
         private readonly List<Control> _addedControls = new List<Control>();
 
-        public FieldPropertiesPage(DataImportContext context)
-        {
-            _settings = context.Settings as IColumnDataImportSettings;
-            if (_settings == null)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+        #endregion
 
+        #region Constructors
+
+        /// <summary>
+        /// Create new instance of <see cref="FieldPropertiesPage"/>
+        /// </summary>
+        /// <param name="context">Context</param>
+        public FieldPropertiesPage(WizardContext context)
+        {
+            _settings = context.Settings;
             InitializeComponent();
 
             _columnHeight = dgvPreview.ColumnHeadersHeight;
         }
+
+        #endregion
+
+        #region Private methods
 
         private void FieldPropertiesPage_SetActive(object sender, CancelEventArgs e)
         {
@@ -41,7 +53,7 @@ namespace DataImport.CommonPages
             _addedControls.Clear();
 
             dgvPreview.DataSource = _settings.Preview;
-            _settings.ColumnDatas = new List<ColumnData>(dgvPreview.Columns.Count);
+            _settings.ColumnDatas = new List<ColumnInfo>(dgvPreview.Columns.Count);
 
             var columnNames = _settings.Preview.Columns.Cast<DataColumn>()
                                                                .Select(c => c.ColumnName)
@@ -61,7 +73,7 @@ namespace DataImport.CommonPages
                 var columnSize = column.HeaderCell.Size;
                 var columnLocation = dgvPreview.GetCellDisplayRectangle(i, -1, true).Location;
 
-                var columnData = new ColumnData
+                var columnData = new ColumnInfo
                                      {
                                          ColumnIndex = i,
                                          ColumnName = columnName,
@@ -95,7 +107,7 @@ namespace DataImport.CommonPages
                                         var cDatas = _settings.ColumnDatas;
 
                                         var cData = cDatas[index];
-                                        using (var form = new FieldPropertiesForm((ColumnData) cData.Clone()))
+                                        using (var form = new FieldPropertiesForm((ColumnInfo) cData.Clone()))
                                         {
                                             var res = form.ShowDialog();
                                             if (res != DialogResult.OK) return;
@@ -172,5 +184,7 @@ namespace DataImport.CommonPages
                 MessageBox.Show(this, error, "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #endregion
     }
 }

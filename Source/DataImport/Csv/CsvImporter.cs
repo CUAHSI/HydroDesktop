@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
+using DataImport.DataTableImport;
 using Wizard.UI;
 
 namespace DataImport.Csv
 {
-    class CsvImporter : IDataImporter
+    class CsvImporter : IWizardImporter
     {
         public string Filter
         {
@@ -18,36 +18,29 @@ namespace DataImport.Csv
             return string.Equals(Path.GetExtension(pathToFile), ".csv", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IFileImportSettings GetDefaultSettings()
+        public IWizardImporterSettings GetDefaultSettings()
         {
             return new CsvImportSettings();
         }
+        
+        public IImporter GetImporter()
+        {
+            return new DataTableImporterImpl();
+        }
 
-        public void Import(IFileImportSettings settings)
+        public void SetPreview(IWizardImporterSettings settings)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
+        public void SetData(IWizardImporterSettings settings)
         {
             throw new NotImplementedException();
         }
 
-        public void SetPreview(IFileImportSettings settings)
+        public ICollection<WizardPage> GetWizardPages(WizardContext context)
         {
             throw new NotImplementedException();
         }
-
-        public void SetData(IFileImportSettings settings)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class CsvImportSettings : IFileImportSettings
-    {
-        public string PathToFile{get;set;}
-        public DataTable Preview { get; set; }
-        public DataTable Data { get; set; }
     }
 }

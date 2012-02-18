@@ -3,24 +3,32 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
 using Wizard.UI;
 
 namespace DataImport.Excel
 {
+    /// <summary>
+    /// Format options page for Excel
+    /// </summary>
     public partial class FormatOptionsPage : InternalWizardPage
     {
         #region Fields
-
-        private readonly DataImportContext _context;
+        
         private readonly ExcelImportSettings _settings;
+        private readonly IWizardImporter _importer;
 
         #endregion
 
-        public FormatOptionsPage(DataImportContext context)
+        #region Constructors
+
+        /// <summary>
+        /// Create new instance of <see cref="FormatOptionsPage"/>
+        /// </summary>
+        /// <param name="context">Context</param>
+        public FormatOptionsPage(WizardContext context)
         {
-            _context = context;
             _settings = (ExcelImportSettings)context.Settings;
+            _importer = context.Importer;
 
             InitializeComponent();
 
@@ -33,9 +41,14 @@ namespace DataImport.Excel
             cmbExcelSheet.DataSource = excelSheets;
             cmbExcelSheet.SelectedValueChanged += CmbFileTypeOnSelectedValueChanged;
         }
+
+        #endregion
+
+        #region Private methods
+
         private void ShowPreview()
         {
-            _context.Importer.SetPreview(_settings);
+            _importer.SetPreview(_settings);
             dgvPreview.DataSource = _settings.Preview;
         }
 
@@ -51,5 +64,7 @@ namespace DataImport.Excel
 
             ShowPreview();
         }
+
+        #endregion
     }
 }

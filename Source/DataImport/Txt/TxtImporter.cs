@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
-using System.Xml;
 using DataImport.CommonPages;
-using HydroDesktop.Common;
+using DataImport.DataTableImport;
 using Wizard.UI;
 
 namespace DataImport.Txt
 {
-    class TxtImporter : IDataImporter
+    class TxtImporter : IWizardImporter
     {
         public string Filter
         {
@@ -22,33 +21,33 @@ namespace DataImport.Txt
             return string.Equals(Path.GetExtension(pathToFile), ".txt", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IFileImportSettings GetDefaultSettings()
+        public IWizardImporterSettings GetDefaultSettings()
         {
             return new TxtImportSettings();
         }
 
-        public void Import(IFileImportSettings settings)
+        public IImporter GetImporter()
         {
-            throw new NotImplementedException();
+            return new DataTableImporterImpl();
         }
 
-        public ICollection<Func<DataImportContext, WizardPage>> GePageCreators()
+        public ICollection<WizardPage> GetWizardPages(WizardContext context)
         {
-            return new Collection<Func<DataImportContext, WizardPage>>
+            return new Collection<WizardPage>
                        {
-                           c => new FormatOptionsPage(c),
-                           c => new FieldPropertiesPage(c),
+                           new FormatOptionsPage(context),
+                           new FieldPropertiesPage(context),
                        };
         }
 
-        public void SetPreview(IFileImportSettings settings)
+        public void SetPreview(IWizardImporterSettings settings)
         {
             var txtSettings = (TxtImportSettings)settings;
             var table = ReadData(txtSettings, 10);
             txtSettings.Preview = table;
         }
 
-        public void SetData(IFileImportSettings settings)
+        public void SetData(IWizardImporterSettings settings)
         {
             var txtSettings = (TxtImportSettings) settings;
             var table = ReadData(txtSettings, -1);

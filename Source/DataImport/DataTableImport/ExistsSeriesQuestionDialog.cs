@@ -1,10 +1,18 @@
 ﻿using System.Windows.Forms;
 using HydroDesktop.Interfaces;
 
-namespace DataImport
+namespace DataImport.DataTableImport
 {
+    /// <summary>
+    /// Question dialog in case when series exists
+    /// </summary>
     public partial class ExistsSeriesQuestionDialog : Form
     {
+        /// <summary>
+        /// Create new instance of <see cref="ExistsSeriesQuestionDialog"/>
+        /// </summary>
+        /// <param name="siteName">Site name</param>
+        /// <param name="varName">Variable name</param>
         public ExistsSeriesQuestionDialog(string siteName, string varName)
         {
             InitializeComponent();
@@ -13,6 +21,9 @@ namespace DataImport
                                          siteName, varName);
         }
 
+        /// <summary>
+        /// Current Overwrite option
+        /// </summary>
         public OverwriteOptions CurrentOption
         {
             get
