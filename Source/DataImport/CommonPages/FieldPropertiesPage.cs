@@ -15,6 +15,7 @@ namespace DataImport.CommonPages
     {
         private readonly DataImportContext _context;
         private readonly int _columnHeight;
+        private List<ColumnData> _columnOptions;
 
         public FieldPropertiesPage(DataImportContext context)
         {
@@ -30,6 +31,7 @@ namespace DataImport.CommonPages
 
             dgvPreview.Controls.Clear();
             dgvPreview.DataSource = _context.Settings.Preview;
+            _columnOptions = new List<ColumnData>(dgvPreview.Columns.Count);
             
             dgvPreview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dgvPreview.ColumnHeadersHeight = 3 * _columnHeight;
@@ -44,6 +46,7 @@ namespace DataImport.CommonPages
                 var columnLocation = dgvPreview.GetCellDisplayRectangle(i, -1, true).Location;
 
                 var columnData = new ColumnData {ColumnIndex = i};
+                _columnOptions.Add(columnData);
 
                 // Label with column name
                 var label = new Label {Text = columnName, Visible = true};
@@ -64,17 +67,31 @@ namespace DataImport.CommonPages
                 button.Size = new Size(columnSize.Width, _columnHeight);
                 button.Click += delegate
                                     {
-                                        var cData = (ColumnData) button.Tag;
+                                        var index = (int)button.Tag;
+
+                                        var cData = _columnOptions[index];
                                         using (var form = new FieldPropertiesForm((ColumnData) cData.Clone()))
                                         {
                                             var res = form.ShowDialog();
-                                            if (res == DialogResult.OK)
+                                            if (res != DialogResult.OK) return;
+
+                                            var cd = form.ColumnData;
+                                            _columnOptions[index] = cd;
+
+                                            // Apply site to all columns if need
+                                            if (cd.ApplySiteToAllColumns)
                                             {
-                                                button.Tag = form.ColumnData;
+                                                for (int k = 0; k < _columnOptions.Count; k++)
+                                                {
+                                                    if (k == index) continue;
+
+                                                    var option = _columnOptions[k];
+                                                    option.Site = (Site) cd.Site.Clone();
+                                                }
                                             }
                                         }
                                     };
-                button.Tag = columnData;
+                button.Tag = i;
 
                 checkBox.CheckedChanged += delegate
                                                {
@@ -103,6 +120,7 @@ namespace DataImport.CommonPages
     {
         public bool ImportColumn { get; set; }
         public int ColumnIndex { get; set; }
+        public bool ApplySiteToAllColumns { get; set; }
 
         public Site Site { get; set; }
         public Variable Variable { get; set; }

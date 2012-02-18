@@ -45,6 +45,7 @@
             this.btnDetails = new System.Windows.Forms.Button();
             this.sitesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.variablesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.chApplyToAllCoumns = new System.Windows.Forms.CheckBox();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
@@ -67,6 +68,7 @@
             // 
             // tbSite
             // 
+            this.tbSite.Controls.Add(this.chApplyToAllCoumns);
             this.tbSite.Controls.Add(this.btnCreateNewSite);
             this.tbSite.Controls.Add(this.siteView1);
             this.tbSite.Controls.Add(this.cmbSites);
@@ -97,7 +99,7 @@
             this.siteView1.Location = new System.Drawing.Point(10, 39);
             this.siteView1.Name = "siteView1";
             this.siteView1.ReadOnly = false;
-            this.siteView1.Size = new System.Drawing.Size(414, 255);
+            this.siteView1.Size = new System.Drawing.Size(414, 186);
             this.siteView1.TabIndex = 2;
             // 
             // cmbSites
@@ -203,6 +205,17 @@
             this.btnDetails.TabIndex = 3;
             this.btnDetails.Text = "Details...";
             this.btnDetails.UseVisualStyleBackColor = true;
+            this.btnDetails.Click += new System.EventHandler(this.btnDetails_Click);
+            // 
+            // chApplyToAllCoumns
+            // 
+            this.chApplyToAllCoumns.AutoSize = true;
+            this.chApplyToAllCoumns.Location = new System.Drawing.Point(10, 231);
+            this.chApplyToAllCoumns.Name = "chApplyToAllCoumns";
+            this.chApplyToAllCoumns.Size = new System.Drawing.Size(157, 17);
+            this.chApplyToAllCoumns.TabIndex = 4;
+            this.chApplyToAllCoumns.Text = "Apply this site to all columns";
+            this.chApplyToAllCoumns.UseVisualStyleBackColor = true;
             // 
             // FieldPropertiesForm
             // 
@@ -213,8 +226,11 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tbProperties);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FieldPropertiesForm";
-            this.Text = "FieldPropertiesForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Field properties";
             this.tbProperties.ResumeLayout(false);
             this.tbSite.ResumeLayout(false);
             this.tbSite.PerformLayout();
@@ -244,5 +260,6 @@
         private System.Windows.Forms.Button btnCreateNewVariable;
         private System.Windows.Forms.BindingSource sitesBindingSource;
         private System.Windows.Forms.BindingSource variablesBindingSource;
+        private System.Windows.Forms.CheckBox chApplyToAllCoumns;
     }
 }
