@@ -47,7 +47,7 @@ namespace ImportFromWaterML
 
         void menu_Click(object sender, EventArgs e)
         {
-            var importers = new List<IDataImporter>
+            var importers = new List<IWizardImporter>
                                 {
                                     new WaterMLImporter(),
                                     new CsvImporter(),
@@ -71,7 +71,7 @@ namespace ImportFromWaterML
                 var fileName = dialog.FileName;
                 foreach (var imp in importers.Where(imp => imp.CanImportFromFile(fileName)))
                 {
-                    var context = new DataImportContext();
+                    var context = new WizardContext();
                     context.Importer = imp;
                     context.Settings = imp.GetDefaultSettings();
                     context.Settings.PathToFile = fileName;

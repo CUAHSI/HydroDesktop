@@ -10,7 +10,7 @@ namespace DataImport
     {
         #region Fields
 
-        private readonly DataImportContext _context;
+        private readonly WizardContext _context;
 
         #endregion
 
@@ -20,18 +20,18 @@ namespace DataImport
         /// Create new instance of <see cref="ImportSeriesWizard"/>
         /// </summary>
         /// <param name="context">DataImporter</param>
-        public ImportSeriesWizard(DataImportContext context)
+        public ImportSeriesWizard(WizardContext context)
         {
             _context = context;
 
             // Add pages
-            foreach (var pageCreator in _context.Importer.GePageCreators())
+            foreach (var page in _context.Importer.GetWizardPages(context))
             {
-                Pages.Add(pageCreator(context));
+                Pages.Add(page);
             }
 
             // Wizard display options
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             MaximizeBox = false;
             MinimizeBox = false;
             base.Text = "Time Series Data Import Wizard";

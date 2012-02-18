@@ -1,4 +1,4 @@
-﻿namespace DataImport
+﻿namespace DataImport.DataTableImport
 {
     partial class ExistsSeriesQuestionDialog
     {

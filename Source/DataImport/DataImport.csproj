@@ -98,73 +98,74 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnDataImporter.cs" />
-    <Compile Include="CommonPages\ColumnData.cs" />
-    <Compile Include="CommonPages\CreateVariableForm.cs">
+    <Compile Include="Csv\CsvImportSettings.cs" />
+    <Compile Include="DataTableImport\DataTableImporterImpl.cs" />
+    <Compile Include="ColumnInfo.cs" />
+    <Compile Include="CommonPages\FieldProperties\CreateVariableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommonPages\CreateVariableForm.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\CreateVariableForm.Designer.cs">
       <DependentUpon>CreateVariableForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\FieldPropertiesForm.cs">
+    <Compile Include="CommonPages\FieldProperties\FieldPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommonPages\FieldPropertiesForm.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\FieldPropertiesForm.Designer.cs">
       <DependentUpon>FieldPropertiesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\MethodView.cs">
+    <Compile Include="CommonPages\FieldProperties\MethodView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CommonPages\MethodView.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\MethodView.Designer.cs">
       <DependentUpon>MethodView.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\NumericUpDownEx.cs">
+    <Compile Include="CommonPages\FieldProperties\NumericUpDownEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CommonPages\SiteView.cs">
+    <Compile Include="CommonPages\FieldProperties\SiteView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CommonPages\SiteView.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\SiteView.Designer.cs">
       <DependentUpon>SiteView.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\SourceView.cs">
+    <Compile Include="CommonPages\FieldProperties\SourceView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CommonPages\SourceView.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\SourceView.Designer.cs">
       <DependentUpon>SourceView.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\QualityControlLevelView.cs">
+    <Compile Include="CommonPages\FieldProperties\QualityControlLevelView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CommonPages\QualityControlLevelView.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\QualityControlLevelView.Designer.cs">
       <DependentUpon>QualityControlLevelView.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\CreateSiteForm.cs">
+    <Compile Include="CommonPages\FieldProperties\CreateSiteForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommonPages\CreateSiteForm.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\CreateSiteForm.Designer.cs">
       <DependentUpon>CreateSiteForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\DetailsForm.cs">
+    <Compile Include="CommonPages\FieldProperties\DetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommonPages\DetailsForm.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\DetailsForm.Designer.cs">
       <DependentUpon>DetailsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\FieldPropertiesPage.cs">
+    <Compile Include="CommonPages\FieldProperties\FieldPropertiesPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CommonPages\FieldPropertiesPage.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\FieldPropertiesPage.Designer.cs">
       <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonPages\VariableView.cs">
+    <Compile Include="CommonPages\FieldProperties\VariableView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CommonPages\VariableView.Designer.cs">
+    <Compile Include="CommonPages\FieldProperties\VariableView.Designer.cs">
       <DependentUpon>VariableView.cs</DependentUpon>
     </Compile>
     <Compile Include="Csv\CsvImporter.cs" />
-    <Compile Include="DataImportContext.cs" />
+    <Compile Include="WizardContext.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
     <Compile Include="Excel\ExcelImportSettings.cs" />
     <Compile Include="Excel\FormatOptionsPage.cs">
@@ -173,14 +174,16 @@
     <Compile Include="Excel\FormatOptionsPage.Designer.cs">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExistsSeriesQuestionDialog.cs">
+    <Compile Include="DataTableImport\ExistsSeriesQuestionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExistsSeriesQuestionDialog.Designer.cs">
+    <Compile Include="DataTableImport\ExistsSeriesQuestionDialog.Designer.cs">
       <DependentUpon>ExistsSeriesQuestionDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="IDataImporter.cs" />
-    <Compile Include="IDataImportSettings.cs" />
+    <Compile Include="IImporter.cs" />
+    <Compile Include="IImporterSettings.cs" />
+    <Compile Include="IWizardImporter.cs" />
+    <Compile Include="IWizardImporterSettings.cs" />
     <Compile Include="ImportSeriesWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,7 +198,6 @@
     <Compile Include="Txt\FormatOptionsPage.Designer.cs">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="IColumnDataImportSettings.cs" />
     <Compile Include="Txt\TxtFileType.cs" />
     <Compile Include="Txt\TxtImporter.cs" />
     <Compile Include="Txt\TxtImportSettings.cs" />
@@ -211,53 +213,54 @@
     <Compile Include="WaterML\OptionsPage.Designer.cs">
       <DependentUpon>OptionsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="WaterML\ProgressPage.cs">
+    <Compile Include="CommonPages\Progress\ProgressPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WaterML\ProgressPage.Designer.cs">
+    <Compile Include="CommonPages\Progress\ProgressPage.Designer.cs">
       <DependentUpon>ProgressPage.cs</DependentUpon>
     </Compile>
     <Compile Include="WaterML\WaterMLImporter.cs" />
     <Compile Include="WaterML\Downloader.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WaterML\WaterMLImporterImpl.cs" />
     <Compile Include="WaterML\WaterMLImportSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommonPages\CreateVariableForm.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\CreateVariableForm.resx">
       <DependentUpon>CreateVariableForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\FieldPropertiesForm.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\FieldPropertiesForm.resx">
       <DependentUpon>FieldPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\MethodView.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\MethodView.resx">
       <DependentUpon>MethodView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\QualityControlLevelView.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\QualityControlLevelView.resx">
       <DependentUpon>QualityControlLevelView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\SiteView.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\SiteView.resx">
       <DependentUpon>SiteView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\SourceView.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\SourceView.resx">
       <DependentUpon>SourceView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\CreateSiteForm.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\CreateSiteForm.resx">
       <DependentUpon>CreateSiteForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\DetailsForm.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\DetailsForm.resx">
       <DependentUpon>DetailsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\FieldPropertiesPage.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\FieldPropertiesPage.resx">
       <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\VariableView.resx">
+    <EmbeddedResource Include="CommonPages\FieldProperties\VariableView.resx">
       <DependentUpon>VariableView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Excel\FormatOptionsPage.resx">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExistsSeriesQuestionDialog.resx">
+    <EmbeddedResource Include="DataTableImport\ExistsSeriesQuestionDialog.resx">
       <DependentUpon>ExistsSeriesQuestionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -273,7 +276,7 @@
     <EmbeddedResource Include="WaterML\OptionsPage.resx">
       <DependentUpon>OptionsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WaterML\ProgressPage.resx">
+    <EmbeddedResource Include="CommonPages\Progress\ProgressPage.resx">
       <DependentUpon>ProgressPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -288,6 +291,7 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

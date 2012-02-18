@@ -1,17 +1,31 @@
 using System.Collections.Generic;
 using System.Data;
-using DataImport.CommonPages;
 
 namespace DataImport.Txt
 {
-    public class TxtImportSettings : IColumnDataImportSettings
+    /// <summary>
+    /// Settings for txt
+    /// </summary>
+    public class TxtImportSettings : IWizardImporterSettings
     {
-        public string PathToFile{get; set;}
+        /// <summary>
+        /// File type
+        /// </summary>
         public TxtFileType FileType { get; set; }
+
+        /// <summary>
+        /// Delimiter
+        /// </summary>
         public string Delimiter { get; set; }
+
+        #region  Implementation of IWizardImporterSettings
+
+        public string PathToFile{get; set;}
         public DataTable Preview { get; set; }
-        public IList<ColumnData> ColumnDatas { get; set; }
+        public IList<ColumnInfo> ColumnDatas { get; set; }
         public string DateTimeColumn { get; set; }
         public DataTable Data { get; set; }
+
+        #endregion
     }
 }

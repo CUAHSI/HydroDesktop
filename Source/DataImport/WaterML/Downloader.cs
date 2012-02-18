@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
-using System.Data.Common;
 using System.IO;
-using System.Xml;
 using System.Windows.Forms;
-using DotSpatial.Controls;
 using HydroDesktop.Database;
-using HydroDesktop.WebServices;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterOneFlow;
 using HydroDesktop.Interfaces;
-using HydroDesktop.Configuration;
 using System.Globalization;
 namespace ImportFromWaterML
 {
@@ -23,8 +15,6 @@ namespace ImportFromWaterML
     /// </summary>
     public class Downloader
     {
-        
-
         #region File I/O Methods
         /// <summary>
         /// Gets the temporary directory for xml files downloaded

@@ -9,13 +9,13 @@ namespace DataImport.Txt
 {
     public partial class FormatOptionsPage : InternalWizardPage
     {
-        private readonly DataImportContext _context;
         private readonly TxtImportSettings _settings;
+        private readonly IWizardImporter _importer;
 
-        public FormatOptionsPage(DataImportContext context)
+        public FormatOptionsPage(WizardContext context)
         {
-            _context = context;
             _settings = (TxtImportSettings) context.Settings;
+            _importer = context.Importer;
 
             InitializeComponent();
             
@@ -45,7 +45,7 @@ namespace DataImport.Txt
 
         private void ShowPreview()
         {
-            _context.Importer.SetPreview(_settings);
+            _importer.SetPreview(_settings);
             dgvPreview.DataSource = _settings.Preview;
         }
 

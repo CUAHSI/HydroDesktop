@@ -3,31 +3,23 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using DataImport.CommonPages;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport
+namespace DataImport.DataTableImport
 {
-    public class ColumnDataImporter
+    class DataTableImporterImpl : IImporter
     {
-        private readonly IColumnDataImportSettings _settings;
-
-        public ColumnDataImporter(IColumnDataImportSettings settings)
-        {
-            _settings = settings;
-        }
-
-        public void Import()
+        public void Import(IImporterSettings settings)
         {
             var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var sitesRepo = RepositoryFactory.Instance.Get<ISitesRepository>();
             var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
             var repoManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
 
-            var toImport = new List<Tuple<ColumnData, Series, OverwriteOptions>> ();
-            foreach (var cData in _settings.ColumnDatas.Where(c => c.ImportColumn && c.ColumnName != _settings.DateTimeColumn))
+            var toImport = new List<Tuple<ColumnInfo, Series, OverwriteOptions>> ();
+            foreach (var cData in settings.ColumnDatas.Where(c => c.ImportColumn && c.ColumnName != settings.DateTimeColumn))
             {
                 var site = cData.Site;
                 var variable = cData.Variable;
@@ -60,14 +52,14 @@ namespace DataImport
                 }
 
                 var series = new Series(site, variable, null, null, null);
-                toImport.Add(new Tuple<ColumnData, Series, OverwriteOptions>(cData, series, options));
+                toImport.Add(new Tuple<ColumnInfo, Series, OverwriteOptions>(cData, series, options));
             }
 
 
-            foreach (DataRow row in _settings.Data.Rows)
+            foreach (DataRow row in settings.Data.Rows)
             {
                 DateTime dateTime;
-                if (!DateTime.TryParse(row[_settings.DateTimeColumn].ToString(), out dateTime))
+                if (!DateTime.TryParse(row[settings.DateTimeColumn].ToString(), out dateTime))
                     continue;
 
                 foreach (var tuple in toImport)
@@ -83,7 +75,7 @@ namespace DataImport
                 }
             }
 
-            var theme = new Theme(Path.GetFileNameWithoutExtension(_settings.PathToFile));
+            var theme = new Theme(Path.GetFileNameWithoutExtension(settings.PathToFile));
             foreach (var tuple in toImport)
             {
                 repoManager.SaveSeries(tuple.Item2, theme, tuple.Item3);

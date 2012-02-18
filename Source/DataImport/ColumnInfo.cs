@@ -1,9 +1,9 @@
 using System;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages
+namespace DataImport
 {
-    public class ColumnData : ICloneable
+    public class ColumnInfo : ICloneable
     {
         public bool ImportColumn { get; set; }
         public int ColumnIndex { get; set; }
@@ -19,7 +19,7 @@ namespace DataImport.CommonPages
 
         public object Clone()
         {
-            var copy = (ColumnData) MemberwiseClone();
+            var copy = (ColumnInfo) MemberwiseClone();
 
             if (copy.Site != null) copy.Site = (Site) copy.Site.Clone();
             if (copy.Variable != null) copy.Variable = (Variable) copy.Variable.Clone();

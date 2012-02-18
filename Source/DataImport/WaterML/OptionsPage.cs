@@ -15,10 +15,10 @@ namespace DataImport.WaterML
 {
     public partial class OptionsPage : InternalWizardPage
     {
-        private readonly DataImportContext _context;
+        private readonly WizardContext _context;
         private readonly WaterMLImportSettings _settings;
 
-        public OptionsPage(DataImportContext context)
+        public OptionsPage(WizardContext context)
         {
             _context = context;
             _settings = (WaterMLImportSettings) context.Settings;
