@@ -234,8 +234,7 @@ namespace TableView
 
         private void DeleteTheme()
         {
-            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            using (var frm = new DeleteThemeForm(db))
+            using (var frm = new DeleteThemeForm())
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {

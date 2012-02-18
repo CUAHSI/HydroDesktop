@@ -42,7 +42,7 @@ namespace DataImport.CommonPages
             // Site
             siteView1.ReadOnly = true;
             cmbSites.SelectedIndexChanged += CmbSitesOnSelectedIndexChanged;
-            var sitesRepo = RepositoryFactory.Instance.Get<ISitesRepository>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var sitesRepo = RepositoryFactory.Instance.Get<ISitesRepository>();
             var sites = sitesRepo.GetAll();
             if (_columnData.Site != null &&
                 !Array.Exists(sites, site => _columnData.Site == site))
@@ -59,7 +59,7 @@ namespace DataImport.CommonPages
             // Variable
             variableView1.ReadOnly = true;
             cmbVariables.SelectedIndexChanged += CmbVariablesOnSelectedIndexChanged;
-            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
             var variables = variablesRepo.GetAll();
             if (_columnData.Variable != null &&
                !Array.Exists(variables, v => _columnData.Variable == v))
@@ -92,7 +92,7 @@ namespace DataImport.CommonPages
 
         private void CmbVariablesOnSelectedIndexChanged(object sender, EventArgs e)
         {
-            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
 
             var currentVar = (Variable)cmbVariables.SelectedItem;
             variableView1.Entity = currentVar;
@@ -101,7 +101,7 @@ namespace DataImport.CommonPages
 
         private void CmbSitesOnSelectedIndexChanged(object sender, EventArgs eventArgs)
         {
-            var sitesRepo = RepositoryFactory.Instance.Get<ISitesRepository>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var sitesRepo = RepositoryFactory.Instance.Get<ISitesRepository>();
 
             var currentSite = (Site)cmbSites.SelectedItem;
             siteView1.Entity = currentSite;

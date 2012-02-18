@@ -27,19 +27,16 @@ namespace TableView
         #region Variables
 
         private readonly ISearchPlugin _searchPlugin;
-        private DbOperations _db;
         private ProjectionInfo _wgs84Projection;
         #endregion
 
         #region Constructors
         /// <summary>
-        /// Creates a new ThemeManager, using the database connection string
+        /// Creates a new ThemeManager
         /// </summary>
-        /// <param name="dbConnectionString">the SQLite database connection string</param>
-        public ThemeManager(string dbConnectionString, ISearchPlugin searchPlugin)
+        public ThemeManager(ISearchPlugin searchPlugin)
         {
             _searchPlugin = searchPlugin;
-            _db = new DbOperations(dbConnectionString, DatabaseTypes.SQLite);
             _wgs84Projection = ProjectionInfo.FromEsriString(Properties.Resources.Wgs84ProjectionString);
         }
         
@@ -118,7 +115,7 @@ namespace TableView
         /// </summary>
         private List<string> GetThemeNamesFromDb()
         {
-            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>(_db);
+            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>();
             
             var resultTable = repo.GetThemesForAllSeries();
             var themeNameList = new List<string>(resultTable.Rows.Count);
@@ -174,7 +171,7 @@ namespace TableView
         /// user specified projection</returns>
         public IFeatureSet GetFeatureSet(string themeName, ProjectionInfo projection)
         {
-            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>(_db);
+            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>();
             var themeID = repo.GetID(themeName);
 
             var themeTable = LoadThemeAsTable(themeID);
@@ -186,7 +183,7 @@ namespace TableView
        
         private DataTable LoadThemeAsTable(int? themeID)
         {
-            var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
+            var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var table = repo.GetSeriesForThemeManager(themeID);
 
             //to get the 'ServiceCode'

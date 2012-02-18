@@ -8,8 +8,10 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
+using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.DataDownload.LayerInformation;
 
@@ -273,7 +275,7 @@ namespace HydroDesktop.DataDownload
             var dManager = DownloadManager;
             var themeName = dManager.Information.StartArgs.DataTheme.Name;
 
-            var _themeManager = new ThemeManager(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
+            var _themeManager = new ThemeManager(new DbOperations(Settings.Instance.DataRepositoryConnectionString,DatabaseTypes.SQLite));
             IFeatureSet featureSet;
             try
             {

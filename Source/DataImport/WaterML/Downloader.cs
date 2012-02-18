@@ -116,7 +116,7 @@ namespace ImportFromWaterML
             //check if the series has values
             if (series.ValueCount == 0) return false;
 
-            var db = RepositoryFactory.Instance.Get<IRepositoryManager>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var db = RepositoryFactory.Instance.Get<IRepositoryManager>();
 
             Theme theme = new Theme(themeName, "");
 

@@ -63,7 +63,7 @@ namespace HydroDesktop.Database
             {
                 int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
 
-                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
+                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 seriesRepository.DeleteSeries(seriesID);
             }
 
@@ -117,7 +117,7 @@ namespace HydroDesktop.Database
                 
                 int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
 
-                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
+                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 seriesRepository.DeleteSeries(seriesID);
 
                 //progress report

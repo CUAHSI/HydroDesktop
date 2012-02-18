@@ -260,8 +260,7 @@ namespace SeriesView
             if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
                                 "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
-                var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
-                                                       Settings.Instance.DataRepositoryConnectionString);
+                var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 manager.DeleteSeries(_clickedSeriesID);
                 RefreshSelection();
             }
@@ -461,13 +460,7 @@ namespace SeriesView
 
         public void SetupDatabase()
         {
-            //Settings.Instance.Load();
-            var conString = Settings.Instance.DataRepositoryConnectionString;
-
-            //if the connection string is not set, exit
-            if (String.IsNullOrEmpty(conString)) return;
-
-            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite, conString);
+            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var tbl = manager.GetDetailedSeriesTable();
 
             // Add Checked column
@@ -740,7 +733,7 @@ namespace SeriesView
                 }
             }
 
-            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(DatabaseTypes.SQLite,Settings.Instance.DataRepositoryConnectionString);
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
             DataTable table = null;
             for (int i = 0; i < checkedIDs.Length; i++)
             {

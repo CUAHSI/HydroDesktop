@@ -122,7 +122,7 @@ namespace HydroDesktop.Database
 
         private Variable DataRowToVariable(DataRow row)
         {
-            var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>(DbOperations);
+            var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
               var res = new Variable
                           {
                               Id = Convert.ToInt64(row["VariableID"]),

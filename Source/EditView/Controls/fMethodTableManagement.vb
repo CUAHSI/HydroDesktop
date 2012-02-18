@@ -27,7 +27,7 @@ Public Class fMethodTableManagement
             btnSubmit.Text = "Add"
         Else
             txtID.Text = _MethodID.ToString
-            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
             Dim method = repo.GetMethod(_MethodID)
             txtDescription.Text = method.Description
             txtLink.Text = method.Link
@@ -38,7 +38,7 @@ Public Class fMethodTableManagement
 
     Private Sub InsertNewMethod()
         Try
-            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
             repo.InsertMethod(txtDescription.Text.ToString, txtLink.Text.ToString, Int32.Parse(txtID.Text))
         Catch ex As Exception
             Throw New Exception("Error Occurred when Inserting new methods." & vbCrLf & ex.Message)
@@ -47,7 +47,7 @@ Public Class fMethodTableManagement
 
     Private Sub UpdateMethod()
         Try
-            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
             repo.UpdateMethod(Int32.Parse(txtID.Text), txtDescription.Text.ToString, txtLink.Text.ToString)
         Catch ex As Exception
             Throw New Exception("Error Occured when Updating methods." & vbCrLf & ex.Message)
