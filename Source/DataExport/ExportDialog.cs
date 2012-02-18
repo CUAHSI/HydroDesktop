@@ -19,7 +19,6 @@ namespace HydroDesktop.ExportToCSV
     {
         #region Fields
 
-        private readonly DbOperations _dboperation;
         private readonly DataTable _dataToExport;
         private readonly IEnumerable<string> _selectedThemes;
         private bool _formIsClosing;
@@ -32,23 +31,17 @@ namespace HydroDesktop.ExportToCSV
         /// <summary>
         /// Initialize the ExportData form with themes to export
         /// </summary>
-        public ExportDialog(DbOperations dbOperation, IEnumerable<string> selectedThemes = null)
+        public ExportDialog(IEnumerable<string> selectedThemes = null)
         {
-            if (dbOperation == null) throw new ArgumentNullException("dbOperation");
-            Contract.EndContractBlock();
-
-            _dboperation = dbOperation;
             _selectedThemes = selectedThemes;
-
             InitializeComponent();
         }
 
         /// <summary>
         /// Initialize the ExportData form with data table to export
         /// </summary>
-        public ExportDialog(DbOperations dbOperation, DataTable dataToExport)
+        public ExportDialog(DataTable dataToExport)
         {
-            if (dbOperation == null) throw new ArgumentNullException("dbOperation");
             if (dataToExport == null) throw new ArgumentNullException("dataToExport");
             if (dataToExport.Columns.Count == 0)
             {
@@ -60,7 +53,6 @@ namespace HydroDesktop.ExportToCSV
             }
             Contract.EndContractBlock();
 
-            _dboperation = dbOperation;
             _dataToExport = dataToExport;
 
             InitializeComponent();
@@ -80,7 +72,7 @@ namespace HydroDesktop.ExportToCSV
             if (ExpotThemes)
             {
                 //populate list box with list of themes
-                var repository = RepositoryFactory.Instance.Get<IDataThemesRepository>(_dboperation);
+                var repository = RepositoryFactory.Instance.Get<IDataThemesRepository>();
                 var dtThemes = repository.GetThemesForAllSeries();
 
                 clbThemes.Items.Clear();
@@ -119,7 +111,7 @@ namespace HydroDesktop.ExportToCSV
 
             if (ExpotThemes)
             {
-                var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(_dboperation);
+                var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
                 dtList = repo.GetTableForExport(-1);
             }else
             {
@@ -185,7 +177,7 @@ namespace HydroDesktop.ExportToCSV
             var checkedItems = parameters.Columns;
             var datesRange = parameters.DatesRange;
 
-            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(_dboperation);
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
 
             //export data row by row
             for (int r = 0; r < dtSeries.Rows.Count; r++)
@@ -457,7 +449,7 @@ namespace HydroDesktop.ExportToCSV
             {
                 var themeIds =
                     (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
-                var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_dboperation);
+                var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 dtSeries = repository.GetSeriesIDsWithNoDataValueTable(themeIds);
             }
             else

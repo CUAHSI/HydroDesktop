@@ -58,6 +58,7 @@ namespace HydroDesktop.Database
         /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
         /// <param name="connectionString">The connection string</param>
         /// <returns>Instance of <see cref="T"/></returns>
+        [Obsolete("Use Get<T>() instead")]
         public T Get<T>(DatabaseTypes dbType, string connectionString)
         {
             RepositoryCreator repoCreator;
@@ -79,6 +80,7 @@ namespace HydroDesktop.Database
         /// </summary>
         /// <param name="dbOperations">The DbOperations object for handling the database</param>
         /// <returns>Instance of <see cref="T"/></returns>
+        [Obsolete("Use Get<T>() instead")]
         public T Get<T>(IHydroDbOperations dbOperations)
         {
             RepositoryCreator repoCreator;

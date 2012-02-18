@@ -114,9 +114,7 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
             _settings.EndTime = maxEndTime;
 
             // Get all variables associated with current layer
-            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
-                                                                                   Settings.Instance.
-                                                                                       DataRepositoryConnectionString);
+            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var uniqueVariables = new List<string>();
             foreach (var feature in _layer.DataSet.Features)
             {

@@ -52,7 +52,7 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub FillMethods()
-        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
 
         ' Check for Derived method 
         Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
@@ -72,8 +72,8 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub FillVariable()
-        Dim variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)(dbTools)
-        Dim dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
+        Dim variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
+        Dim dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
 
         'Create derived variable
         Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
@@ -217,10 +217,10 @@ Public Class fDeriveNewDataSeries
         Dim E As Double = txtE.Text
         Dim F As Double = txtF.Text
 
-        Dim dataSeriesPepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
+        Dim dataSeriesPepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
         Dim nodatavalue = dataSeriesPepository.GetNoDataValueForSeriesvariable(newSeriesID)
 
-        Dim dataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)(dbTools)
+        Dim dataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
         Dim dt = dataValuesRepository.GetAll(_SelectedSeriesID)
 
         Const chunkLength As Integer = 400
@@ -294,14 +294,14 @@ Public Class fDeriveNewDataSeries
     Private Sub InsertAggregateDataValues()
 
         'Setting values to variables
-        Dim dataSeriesPepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(dbTools)
+        Dim dataSeriesPepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
         Dim series = dataSeriesPepository.GetSeriesByID(newSeriesID)
 
         Dim nodatavalue = series.Variable.NoDataValue
         Dim firstDate = series.BeginDateTime
         Dim lastdate = series.EndDateTime
 
-        Dim dataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)(dbTools)
+        Dim dataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
         Dim dt = dataValuesRepository.GetAll(_SelectedSeriesID)
 
         'Setting current date (first date) to the first day of the month/quarter
@@ -477,7 +477,7 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Public Sub SetDefaultMethods()
-        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
+        Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
         Dim derivedMethod = repo.GetMethodID(DERIVED_METHOD_DESCRIPTION)
         ddlMethods.SelectedValue = derivedMethod
     End Sub
@@ -594,7 +594,7 @@ Public Class fDeriveNewDataSeries
         End If
 
         'Save changes
-        Dim repo = RepositoryFactory.Instance.Get(Of IVariablesRepository)(dbTools)
+        Dim repo = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
         repo.Update(_derivedVariable)
     End Sub
 

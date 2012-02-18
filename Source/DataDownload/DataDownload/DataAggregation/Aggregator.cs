@@ -82,9 +82,7 @@ namespace HydroDesktop.DataDownload.DataAggregation
             int percentage = 0;
             ReportProgress(++percentage, "Starting calculation");
 
-            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
-                                                                               Settings.Instance.
-                                                                                   DataRepositoryConnectionString);
+            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
 
             IFeatureSet featureSet;
             if (_settings.CreateNewLayer)
@@ -173,8 +171,7 @@ namespace HydroDesktop.DataDownload.DataAggregation
             }
 
             // Calculating...
-            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(DatabaseTypes.SQLite,
-                                                                             Settings.Instance.DataRepositoryConnectionString);
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
             var aggregationFunction = GetSQLAggregationFunction(_settings.AggregationMode);
             var minDate = _settings.StartTime;
             var maxDate = _settings.EndTime;

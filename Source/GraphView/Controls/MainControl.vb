@@ -348,7 +348,7 @@ Namespace Controls
         End Sub
 
         Private Sub DateRangeSelection(ByVal serieID As Integer)
-            Dim repository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString)
+            Dim repository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
             Dim series = repository.GetSeriesByID(serieID)
             If series = Nothing Then Return
 

@@ -10,17 +10,14 @@ namespace TableView
 {
     public partial class DeleteThemeForm : Form
     {
-        private DbOperations _db = null;
         //private bool _formIsClosing = false;
 
         //used as a lookup - which themes are deleted
         private Dictionary<string, Theme> _themeLookup = new Dictionary<string, Theme>();
         
-        public DeleteThemeForm(IHydroDbOperations db)
+        public DeleteThemeForm()
         {
             InitializeComponent();
-
-            _db = db as DbOperations;
 
             this.FormClosing +=new FormClosingEventHandler(DeleteThemeForm_FormClosing);
             //checkListThemes.ItemCheck += new ItemCheckEventHandler(checkListThemes_ItemCheck);
@@ -43,7 +40,7 @@ namespace TableView
 
         private void DeleteThemeForm_Load(object sender, EventArgs e)
         {
-            var repoManager = RepositoryFactory.Instance.Get<IRepositoryManager>(_db);
+            var repoManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
             IList<Theme> themeList = repoManager.GetAllThemes();
 
             foreach (Theme theme in themeList)
@@ -91,7 +88,7 @@ namespace TableView
                     index++;
                 }
 
-                var manager = RepositoryFactory.Instance.Get<IRepositoryManager>(_db);
+                var manager = RepositoryFactory.Instance.Get<IRepositoryManager>();
                 object[] parameters = new object[2];
                 parameters[0] = themeIDList;
                 parameters[1] = manager;

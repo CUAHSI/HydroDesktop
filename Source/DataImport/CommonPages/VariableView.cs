@@ -39,7 +39,7 @@ namespace DataImport.CommonPages
                          };
 
             // Set Bindings
-            var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
             var units = unitRepo.GetAll();
 
             cmbVariableUnits.DataSource = units;
@@ -52,7 +52,7 @@ namespace DataImport.CommonPages
             if (Entity.TimeUnit != null)
                 cmbTimeUnits.SelectedItem = Entity.TimeUnit;
 
-            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
             var variables = variablesRepo.GetAll();
 
             cmbName.DataSource = variables;
