@@ -37,6 +37,7 @@ namespace DataImport.CommonPages
             if (DesignMode) return;
 
             // Set bindings.......
+            chApplyToAllCoumns.AddBinding<CheckBox, ColumnData>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
 
             // Site
             siteView1.ReadOnly = true;
@@ -180,6 +181,17 @@ namespace DataImport.CommonPages
             {
                 // In this case need manually to fire SelectedIndexChanged event
                 CmbVariablesOnSelectedIndexChanged(cmbSites, EventArgs.Empty);
+            }
+        }
+
+        private void btnDetails_Click(object sender, EventArgs e)
+        {
+            using(var details = new DetailsForm())
+            {
+                if (details.ShowDialog(this) == DialogResult.OK)
+                {
+                    // Save details
+                }
             }
         }
 

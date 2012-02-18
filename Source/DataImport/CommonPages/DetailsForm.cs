@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace DataImport.CommonPages
@@ -16,6 +18,9 @@ namespace DataImport.CommonPages
         public DetailsForm()
         {
             InitializeComponent();
+
+            if (DesignMode) return;
+            // Set bindings.......
         }
 
         #endregion
