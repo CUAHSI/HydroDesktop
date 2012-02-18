@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using Wizard.UI;
 
 namespace DataImport
@@ -22,21 +21,10 @@ namespace DataImport
         /// <returns></returns>
         bool CanImportFromFile(string pathToFile);
 
-        IDataImportSettings GetDefaultSettings();
-        void Import(IDataImportSettings settings);
+        IFileImportSettings GetDefaultSettings();
+        void Import(IFileImportSettings settings);
         ICollection<Func<DataImportContext, WizardPage>> GePageCreators();
-        void SetPreview(IDataImportSettings settings);
-    }
-
-    public class DataImportContext
-    {
-        public IDataImporter Importer { get; set; }
-        public IDataImportSettings Settings { get; set; }
-    }
-
-    public interface IDataImportSettings
-    {
-        string PathToFile { get; set; }
-        DataTable Preview { get; set; }
+        void SetPreview(IFileImportSettings settings);
+        void SetData(IFileImportSettings settings);
     }
 }

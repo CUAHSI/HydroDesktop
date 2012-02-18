@@ -102,5 +102,12 @@ namespace HydroDesktop.Interfaces
         /// <returns>true if series was deleted, false otherwise</returns>
         bool DeleteSeries(int seriesID);
 
+        /// <summary>
+        /// Check that exists series with given Site and Variable.
+        /// </summary>
+        /// <param name="site">Site</param>
+        /// <param name="variable">Variable</param>
+        /// <returns>True - exists, otherwise - false.</returns>
+        bool ExistsSeries(Site site, Variable variable);
     }
 }

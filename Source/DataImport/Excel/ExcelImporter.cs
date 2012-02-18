@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
-using System.Linq;
 using DataImport.CommonPages;
 using Excel;
 using Wizard.UI;
@@ -24,12 +23,12 @@ namespace DataImport.Excel
                    string.Equals(extension, ".xls", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IDataImportSettings GetDefaultSettings()
+        public IFileImportSettings GetDefaultSettings()
         {
             return new ExcelImportSettings();
         }
 
-        public void Import(IDataImportSettings settings)
+        public void Import(IFileImportSettings settings)
         {
             throw new NotImplementedException();
         }
@@ -43,7 +42,7 @@ namespace DataImport.Excel
                        };
         }
 
-        public void SetPreview(IDataImportSettings settings)
+        public void SetPreview(IFileImportSettings settings)
         {
             var excelSettings = (ExcelImportSettings)settings;
             if (excelSettings.DataSet == null)
@@ -59,12 +58,18 @@ namespace DataImport.Excel
             var result = excelSettings.DataSet.Tables.Contains(excelSettings.SheetName)
                              ? excelSettings.DataSet.Tables[excelSettings.SheetName]
                              : new DataTable();
-            settings.Preview = result;
+            excelSettings.Preview = result;
+        }
+
+        public void SetData(IFileImportSettings settings)
+        {
+            var excelSettings = (ExcelImportSettings)settings;
+            excelSettings.Data = excelSettings.Preview;
         }
 
         #region Private methods
 
-        private DataSet AsDataSet(IDataImportSettings settings)
+        private DataSet AsDataSet(IFileImportSettings settings)
         {
             var fileName = settings.PathToFile;
 
@@ -105,13 +110,5 @@ namespace DataImport.Excel
         }
 
         #endregion
-    }
-
-    public class ExcelImportSettings : IDataImportSettings
-    {
-        public string PathToFile {get;set;}
-        public string SheetName { get; set; }
-        public DataSet DataSet { get; set; }
-        public DataTable Preview { get; set; }
     }
 }

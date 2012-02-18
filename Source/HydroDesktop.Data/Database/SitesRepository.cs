@@ -65,5 +65,21 @@ namespace HydroDesktop.Database
             var result  = DbOperations.ExecuteSingleOutput(string.Format(query, TableName, site.Id, site.Code));
             return Convert.ToInt32(result) > 0;
         }
+
+        public void AddSite(Site site)
+        {
+            site.Id = DbOperations.GetNextID(TableName, "SiteID");
+            const string query = "INSERT INTO Sites(SiteID, SiteCode, SiteName, Latitude, Longitude, Elevation_m, Comments, County, State, PosAccuracy_m, LocalX, LocalY, VerticalDatum) "
+                                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            DbOperations.ExecuteNonQuery(query,
+                                         new object[]
+                                             {
+                                                 site.Id, site.Code, site.Name, site.Latitude, site.Longitude,
+                                                 site.Elevation_m, site.Comments, site.County, site.State,
+                                                 site.PosAccuracy_m, site.LocalX, site.LocalX, site.VerticalDatum
+                                             });
+
+        }
     }
 }

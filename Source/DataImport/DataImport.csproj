@@ -98,6 +98,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColumnDataImporter.cs" />
+    <Compile Include="CommonPages\ColumnData.cs" />
     <Compile Include="CommonPages\CreateVariableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,14 +164,23 @@
       <DependentUpon>VariableView.cs</DependentUpon>
     </Compile>
     <Compile Include="Csv\CsvImporter.cs" />
+    <Compile Include="DataImportContext.cs" />
     <Compile Include="Excel\ExcelImporter.cs" />
+    <Compile Include="Excel\ExcelImportSettings.cs" />
     <Compile Include="Excel\FormatOptionsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Excel\FormatOptionsPage.Designer.cs">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExistsSeriesQuestionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExistsSeriesQuestionDialog.Designer.cs">
+      <DependentUpon>ExistsSeriesQuestionDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="IDataImporter.cs" />
+    <Compile Include="IDataImportSettings.cs" />
     <Compile Include="ImportSeriesWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,7 +195,10 @@
     <Compile Include="Txt\FormatOptionsPage.Designer.cs">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="IColumnDataImportSettings.cs" />
+    <Compile Include="Txt\TxtFileType.cs" />
     <Compile Include="Txt\TxtImporter.cs" />
+    <Compile Include="Txt\TxtImportSettings.cs" />
     <Compile Include="WaterML\CompletePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -207,6 +221,7 @@
     <Compile Include="WaterML\Downloader.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WaterML\WaterMLImportSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CommonPages\CreateVariableForm.resx">
@@ -241,6 +256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Excel\FormatOptionsPage.resx">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExistsSeriesQuestionDialog.resx">
+      <DependentUpon>ExistsSeriesQuestionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

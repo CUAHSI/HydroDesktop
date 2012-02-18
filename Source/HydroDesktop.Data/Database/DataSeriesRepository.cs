@@ -232,7 +232,15 @@ namespace HydroDesktop.Database
 
             return series;
         }
-        
+
+        public bool ExistsSeries(Site site, Variable variable)
+        {
+            var query = string.Format("select count(*) from DataSeries where SiteID={0} and VariableID={1}", site.Id,
+                                      variable.Id);
+            var res = DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToInt64(res) > 0;
+        }
+
         public bool DeleteSeries(int seriesID)
         {
             var _db = DbOperations;
