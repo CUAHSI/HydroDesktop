@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Controls;
@@ -62,6 +63,17 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                     hasColumn => hasColumn);
         }
 
+        public static bool LayerHaveDownlodedData(IFeatureLayer layer)
+        {
+            if (layer == null) throw new ArgumentNullException("layer");
+            Contract.EndContractBlock();
+
+            if (!IsSearchLayer(layer)) return false;
+
+            return layer.DataSet.DataTable.Columns.Contains("SeriesID") &&
+                   layer.DataSet.Features.Any(f => f.DataRow["SeriesID"] != DBNull.Value);
+        }
+
         /// <summary>
         /// Add some specific features to layer, if this layer is search results layer
         /// </summary>
@@ -97,15 +109,18 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             if (dataGroupMenu == null)
                 return;
 
-            var exportPlugin = _downloadPlugin.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
-            if (exportPlugin != null)
+            if (LayerHaveDownlodedData(searchLayer))
             {
-                dataGroupMenu.AddMenuItem("Export Time Series Data", delegate { exportPlugin.Export(searchLayer); });
+                var exportPlugin = _downloadPlugin.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+                if (exportPlugin != null)
+                {
+                    dataGroupMenu.AddMenuItem("Export Time Series Data", delegate { exportPlugin.Export(searchLayer); });
+                }
+                dataGroupMenu.AddMenuItem("Show Data Values in Map",
+                                          delegate { new AggregationSettingsDialog(searchLayer).ShowDialog(); });
+                dataGroupMenu.AddMenuItem("Update Values from Server",
+                                          delegate { _downloadPlugin.StartDownloading(searchLayer); });
             }
-            dataGroupMenu.AddMenuItem("Show Data Values in Map",
-                                      delegate { new AggregationSettingsDialog(searchLayer).ShowDialog(); });
-            dataGroupMenu.AddMenuItem("Update Values from Server",
-                                      delegate { _downloadPlugin.StartDownloading(searchLayer); });
         }
 
         public void RemoveCustomFeaturesFromLayer(ILayer layer)
