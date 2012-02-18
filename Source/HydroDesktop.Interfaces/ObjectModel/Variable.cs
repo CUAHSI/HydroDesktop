@@ -112,7 +112,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns>hash code</returns>
         public override int GetHashCode()
         {
-            return Code.GetHashCode();
+            return Code != null? Code.GetHashCode() : 0;
         }
         #endregion
     }
