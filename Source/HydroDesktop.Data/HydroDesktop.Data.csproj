@@ -77,7 +77,11 @@
     </Compile>
     <Compile Include="Database\MethodsRepository.cs" />
     <Compile Include="Database\RepositoryFactory.cs" />
+    <Compile Include="Database\RepositoryFactory.Register.cs">
+      <DependentUpon>RepositoryFactory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\RepositoryManagerSQL.cs" />
+    <Compile Include="Database\SitesRepository.cs" />
     <Compile Include="Database\UnitsRepository.cs" />
     <Compile Include="Database\VariablesRepository.cs" />
     <Compile Include="ImportExport\CsvFileParser.cs" />
