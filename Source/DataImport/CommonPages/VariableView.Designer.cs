@@ -41,8 +41,8 @@
             this.tbValueType = new System.Windows.Forms.TextBox();
             this.lblValueType = new System.Windows.Forms.Label();
             this.lblTimeSupport = new System.Windows.Forms.Label();
-            this.nudTimeSupport = new NumericUpDownEx();
-            this.nudNoDataValue = new NumericUpDownEx();
+            this.nudTimeSupport = new DataImport.CommonPages.NumericUpDownEx();
+            this.nudNoDataValue = new DataImport.CommonPages.NumericUpDownEx();
             this.lblNoDataValue = new System.Windows.Forms.Label();
             this.cmbName = new System.Windows.Forms.ComboBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -91,6 +91,7 @@
             // 
             this.cmbVariableUnits.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbVariableUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbVariableUnits.FormattingEnabled = true;
             this.cmbVariableUnits.Location = new System.Drawing.Point(103, 70);
             this.cmbVariableUnits.Name = "cmbVariableUnits";
@@ -101,6 +102,7 @@
             // 
             this.cmbTimeUnits.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbTimeUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTimeUnits.FormattingEnabled = true;
             this.cmbTimeUnits.Location = new System.Drawing.Point(103, 186);
             this.cmbTimeUnits.Name = "cmbTimeUnits";
@@ -165,7 +167,18 @@
             // 
             this.nudTimeSupport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudTimeSupport.FullReadOnly = false;
             this.nudTimeSupport.Location = new System.Drawing.Point(103, 158);
+            this.nudTimeSupport.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            0});
+            this.nudTimeSupport.Minimum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            -2147483648});
             this.nudTimeSupport.Name = "nudTimeSupport";
             this.nudTimeSupport.Size = new System.Drawing.Size(143, 20);
             this.nudTimeSupport.TabIndex = 5;
@@ -174,7 +187,18 @@
             // 
             this.nudNoDataValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudNoDataValue.FullReadOnly = false;
             this.nudNoDataValue.Location = new System.Drawing.Point(103, 216);
+            this.nudNoDataValue.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            0});
+            this.nudNoDataValue.Minimum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            -2147483648});
             this.nudNoDataValue.Name = "nudNoDataValue";
             this.nudNoDataValue.Size = new System.Drawing.Size(143, 20);
             this.nudNoDataValue.TabIndex = 7;

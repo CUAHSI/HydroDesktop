@@ -142,13 +142,9 @@ namespace DataImport.CommonPages
             }*/
 
             var site =  new Site { Name = "NewSite", Code = "Site1" };
-            var sites = new Site[sitesBindingSource.Count + 1];
-            sitesBindingSource.CopyTo(sites, 0);
-            sites[sites.Length - 1] = site;
-            
-            sitesBindingSource.DataSource = sites;
-            cmbSites.SelectedIndex = sites.Length - 1;
-            if (sites.Length == 1)
+            AddNewItemInBindingSource(sitesBindingSource, site);
+            cmbSites.SelectedIndex = sitesBindingSource.Count - 1;
+            if (sitesBindingSource.Count == 1)
             {
                 // In this case need manually to fire SelectedIndexChanged event
                 CmbSitesOnSelectedIndexChanged(cmbSites, EventArgs.Empty);
@@ -171,17 +167,21 @@ namespace DataImport.CommonPages
             */
 
             var variable = new Variable { Name = "NewVariable", Code = "Variable1" };
-            var variables = new Variable[variablesBindingSource.Count + 1];
-            variablesBindingSource.CopyTo(variables, 0);
-            variables[variables.Length - 1] = variable;
-
-            variablesBindingSource.DataSource = variable;
-            cmbVariables.SelectedIndex = variables.Length - 1;
-            if (variables.Length == 1)
+            AddNewItemInBindingSource(variablesBindingSource, variable);
+            cmbVariables.SelectedIndex = variablesBindingSource.Count - 1;
+            if (variablesBindingSource.Count == 1)
             {
                 // In this case need manually to fire SelectedIndexChanged event
-                CmbVariablesOnSelectedIndexChanged(cmbSites, EventArgs.Empty);
+                CmbVariablesOnSelectedIndexChanged(cmbVariables, EventArgs.Empty);
             }
+        }
+
+        private static void AddNewItemInBindingSource(BindingSource bindingSource, object newItem)
+        {
+            var newDataSource = new object[bindingSource.Count + 1];
+            bindingSource.CopyTo(newDataSource, 0);
+            newDataSource[newDataSource.Length - 1] = newItem;
+            bindingSource.DataSource = newDataSource;
         }
 
         private void btnDetails_Click(object sender, EventArgs e)

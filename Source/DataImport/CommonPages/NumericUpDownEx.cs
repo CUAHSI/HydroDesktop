@@ -7,6 +7,15 @@ namespace DataImport.CommonPages
     /// </summary>
     public class NumericUpDownEx : NumericUpDown
     {
+        /// <summary>
+        /// Create new instance of <see cref="NumericUpDownEx"/>
+        /// </summary>
+        public NumericUpDownEx()
+        {
+            Maximum = decimal.MaxValue;
+            Minimum = decimal.MinValue;
+        }
+
         public override void DownButton()
         {
             if (FullReadOnly)
