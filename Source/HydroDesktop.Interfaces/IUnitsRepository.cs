@@ -13,5 +13,11 @@ namespace HydroDesktop.Interfaces
         /// <param name="id">UnitID</param>
         /// <returns>Instance of <see cref="Unit"/> or null, if entity not found.</returns>
         Unit GetByID(long id);
+
+        /// <summary>
+        /// Get all units.
+        /// </summary>
+        /// <returns>All units.</returns>
+        Unit[] GetAll();
     }
 }

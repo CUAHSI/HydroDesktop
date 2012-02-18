@@ -40,7 +40,7 @@ namespace HydroDesktop.Common.Tools
             where T : Control
         {
             control.DataBindings.Add(new Binding(NameHelper.Name(controlProperty),
-                                                 source, NameHelper.Name(sourceProperty),
+                                                 source, NameHelper.Name(sourceProperty, true),
                                                  true, DataSourceUpdateMode.OnPropertyChanged));
         }
     }
