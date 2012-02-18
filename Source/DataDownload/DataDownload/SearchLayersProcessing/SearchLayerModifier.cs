@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Controls;
@@ -20,6 +21,9 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
     /// </summary>
     class SearchLayerModifier
     {
+        #region Fields
+
+        private readonly FeatureLayer _layer;
         private readonly Map _map;
         private readonly DataDownloadPlugin _downloadPlugin;
 
@@ -29,17 +33,31 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                                                            "EndDate", "ValueCount"
                                                        };
 
+        #endregion
 
-        public SearchLayerModifier(Map map, DataDownloadPlugin downloadPlugin)
+        #region Constructors
+
+        private SearchLayerModifier(FeatureLayer layer, Map map, DataDownloadPlugin downloadPlugin)
         {
+            if (layer == null) throw new ArgumentNullException("layer");
             if (map == null) throw new ArgumentNullException("map");
             if (downloadPlugin == null) throw new ArgumentNullException("downloadPlugin");
+            Contract.EndContractBlock();
 
+            _layer = layer;
             _map = map;
             _downloadPlugin = downloadPlugin;
         }
 
+        #endregion
+
         #region Public methods
+
+        public static SearchLayerModifier Create(ILayer layer, Map map, DataDownloadPlugin downloadPlugin)
+        {
+            if (!IsSearchLayer(layer)) return null;
+            return new SearchLayerModifier((FeatureLayer)layer, map, downloadPlugin);
+        }
 
         /// <summary>
         /// Check layer for search attributes
@@ -62,66 +80,42 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                     hasColumn => hasColumn);
         }
 
-        /// <summary>
-        /// Add some specific features to layer, if this layer is search results layer
-        /// </summary>
-        /// <param name="layer">Layer</param>
-        /// <exception cref="ArgumentNullException"><para>layer</para>, <para>map</para> must be not null.</exception>
-        public void AddCustomFeaturesToSearchLayer(IFeatureLayer layer)
+        public static bool LayerHaveDownlodedData(IFeatureLayer layer)
         {
             if (layer == null) throw new ArgumentNullException("layer");
-            if (!IsSearchLayer(layer)) return;
+            Contract.EndContractBlock();
 
-            SetUpLabeling(layer, _map);
-            UpdateSymbolizing(layer);
-        }
-
-        public void UpdateSearchLayerAfterDownloading(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, 
-                                                      DownloadManager downloadManager)
-        {
-            if (searchLayer == null) throw new ArgumentNullException("searchLayer");
-            if (downloadedFeatureSet == null) throw new ArgumentNullException("downloadedFeatureSet");
-            if (downloadManager == null) throw new ArgumentNullException("downloadManager");
-
-            UpdateDataTable(searchLayer, downloadedFeatureSet, downloadManager);
-            UpdateSymbolizing(searchLayer);
-            UpdateContextMenu(searchLayer);
-        }
-
-        public void UpdateContextMenu(IFeatureLayer searchLayer)
-        {
-            if (searchLayer == null) throw new ArgumentNullException("searchLayer");
-            if (!IsSearchLayer(searchLayer)) return;
+            if (!IsSearchLayer(layer)) return false;
             
+            return layer.DataSet.DataTable.Columns.Contains("SeriesID") &&
+                   layer.DataSet.Features.Any(f => f.DataRow["SeriesID"] != DBNull.Value);
+        }
+
+        public void UpdateContextMenu()
+        {
+            var searchLayer = _layer;
             var dataGroupMenu = searchLayer.ContextMenuItems.FirstOrDefault(item => item.Name == "Data");
             if (dataGroupMenu == null)
                 return;
 
-            var exportPlugin = _downloadPlugin.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
-            if (exportPlugin != null)
+            if (LayerHaveDownlodedData(searchLayer))
             {
-                dataGroupMenu.AddMenuItem("Export Time Series Data", delegate { exportPlugin.Export(searchLayer); });
+                var exportPlugin = _downloadPlugin.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+                if (exportPlugin != null)
+                {
+                    dataGroupMenu.AddMenuItem("Export Time Series Data", delegate { exportPlugin.Export(searchLayer); });
+                }
+                dataGroupMenu.AddMenuItem("Show Data Values in Map",
+                                          delegate { new AggregationSettingsDialog(searchLayer).ShowDialog(); });
+                dataGroupMenu.AddMenuItem("Update Values from Server",
+                                          delegate { _downloadPlugin.StartDownloading(searchLayer); });
             }
-            dataGroupMenu.AddMenuItem("Show Data Values in Map",
-                                      delegate { new AggregationSettingsDialog(searchLayer).ShowDialog(); });
-            dataGroupMenu.AddMenuItem("Update Values from Server",
-                                      delegate { _downloadPlugin.StartDownloading(searchLayer); });
         }
 
-        public void RemoveCustomFeaturesFromLayer(ILayer layer)
+        public void UpdateDataTable(IFeatureSet downloadedFeatureSet, DownloadManager downloadManager)
         {
-            if (layer == null) throw new ArgumentNullException("layer");
-            if (!IsSearchLayer(layer)) return;
+            var searchLayer = _layer;
 
-            //todo: Undo of SetUpLabeling, UpdateSymbolizing
-        }
-
-        #endregion
-
-        #region Private methods
-
-        private void UpdateDataTable(IFeatureLayer searchLayer, IFeatureSet downloadedFeatureSet, DownloadManager downloadManager)
-        {
             // Add all columns from downloadedFeatureSet, which not exists in searchLayer
             foreach (DataColumn column in downloadedFeatureSet.DataTable.Columns)
             {
@@ -137,7 +131,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             {
                 var seriesToProcess = new List<Series>();
                 // Find all series with different Method/QualityControlLevel
-                foreach(var series in dInfo.ResultSeries)
+                foreach (var series in dInfo.ResultSeries)
                 {
                     if (!seriesToProcess.Exists(s => s.Site.Code == series.Site.Code &&
                                                      s.Variable.Code == series.Variable.Code &&
@@ -161,11 +155,11 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 else
                     firstSeries = seriesToProcess.First();
                 seriesToProcess.Remove(firstSeries);
-                
+
                 UpdateFeatureFromFeature(searchFeature, downloadedFeatureSet, firstSeries);
 
                 // Additional series...
-                foreach(var series in seriesToProcess)
+                foreach (var series in seriesToProcess)
                 {
                     var sFeature = searchLayer.DataSet.Features.FirstOrDefault(
                        feature =>
@@ -177,7 +171,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                                   feature.DataRow["QualityCont"] != DBNull.Value && (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition
                        );
                     // If no such feature in Search shapeFile, then add it...
-                    if (sFeature == null) 
+                    if (sFeature == null)
                     {
                         sFeature = searchFeature.Copy();
                         searchLayer.DataSet.Features.Add(sFeature);
@@ -194,30 +188,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             }
         }
 
-        private void UpdateFeatureFromFeature(IFeature searchFeature, IFeatureSet featureSet, Series series)
+        public void UpdateSymbolizing()
         {
-            // Find downloaded feature
-            var downloadedFeature = featureSet.Features.FirstOrDefault(feature =>
-                                (string)feature.DataRow["SiteCode"] == series.Site.Code &&
-                                (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
-                                (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
-                                (string)feature.DataRow["DataType"] == series.Variable.DataType &&
-                                (string)feature.DataRow["Method"] == series.Method.Description &&
-                                (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition);
-            if (downloadedFeature == null) return;
-
-            // updating...
-            foreach (DataColumn column in featureSet.DataTable.Columns)
-            {
-                searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
-            }
-        }
-     
-        private static void UpdateSymbolizing(IFeatureLayer layer)
-        {
-            Debug.Assert(layer != null);
-            
-            if (layer.DataSet.NumRows() > 0 && 
+            var layer = _layer;
+            if (layer.DataSet.NumRows() > 0 &&
                 layer.DataSet.GetColumn("ServiceCode") != null)
             {
                 // assume that layer has same data source in all rows
@@ -236,11 +210,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             }
         }
 
-        private static void SetUpLabeling(IFeatureLayer layer, IMap map)
+        public void UpdateLabeling()
         {
-            Debug.Assert(layer != null);
-            Debug.Assert(map != null);
-
             const string attributeName = "SiteName";
 
             var symb = new LabelSymbolizer
@@ -256,9 +227,32 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 OffsetY = 0.0f,
             };
 
-            map.AddLabels(layer, string.Format("[{0}]", attributeName),
+            _map.AddLabels(_layer, string.Format("[{0}]", attributeName),
                                           string.Format("[ValueCount] > {0}", 10),
                                           symb, "Category Default");
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void UpdateFeatureFromFeature(IFeature searchFeature, IFeatureSet featureSet, Series series)
+        {
+            // Find downloaded feature
+            var downloadedFeature = featureSet.Features.FirstOrDefault(feature =>
+                                (string)feature.DataRow["SiteCode"] == series.Site.Code &&
+                                (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
+                                (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
+                                (string)feature.DataRow["DataType"] == series.Variable.DataType &&
+                                (string)feature.DataRow["Method"] == series.Method.Description &&
+                                (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition);
+            if (downloadedFeature == null) return;
+
+            // updating...
+            foreach (DataColumn column in featureSet.DataTable.Columns)
+            {
+                searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
+            }
         }
 
         private static IPointScheme CreateSymbology(string servCode, IFeatureSet featureSet)
