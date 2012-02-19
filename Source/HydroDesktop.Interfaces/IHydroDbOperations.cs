@@ -203,17 +203,10 @@ namespace HydroDesktop.Interfaces
         /// <summary>
         /// Executes an SQL query with a single output value
         /// </summary>
-        /// <param name="sqlString">the SQL query string</param>
-        /// <returns>the query result (value of first matching row and column)</returns>
-        object ExecuteSingleOutput(String sqlString);
-
-        /// <summary>
-        /// Executes an SQL query with a single output value
-        /// </summary>
         /// <param name="inputString">the SQL query string</param>
         /// <param name="parameters">the values of command parameters</param>
         /// <returns>the query result (value of first matching row and column)</returns>
-        object ExecuteSingleOutput(string inputString, object[] parameters);
+        object ExecuteSingleOutput(string inputString, params object[] parameters);
         
         
         /// <summary>

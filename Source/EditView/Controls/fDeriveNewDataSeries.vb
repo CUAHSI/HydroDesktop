@@ -78,7 +78,8 @@ Public Class fDeriveNewDataSeries
         'Create derived variable
         Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
         _selectedSeriesVariable = variablesRepository.GetByID(currentVariableID)
-        _derivedVariable = variablesRepository.CreateCopy(_selectedSeriesVariable)
+        _derivedVariable = DirectCast(_selectedSeriesVariable.Clone(), Variable)
+        variablesRepository.AddVariable(_derivedVariable)
         _derivedVariable.ValueType = "Derived Value"
 
         'Fill up Variable drop down list

@@ -460,6 +460,11 @@ namespace SeriesView
 
         public void SetupDatabase()
         {
+            var conString = Settings.Instance.DataRepositoryConnectionString;
+
+            //if the connection string is not set, exit
+            if (String.IsNullOrEmpty(conString)) return;
+
             var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var tbl = manager.GetDetailedSeriesTable();
 

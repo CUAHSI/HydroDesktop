@@ -22,13 +22,7 @@ namespace HydroDesktop.Database
         /// </summary>
         public static string GetSQLiteFileName(string sqliteConnString)
         {
-            //string startPart = "Data Source= ";
-            //string endPart = ";New=False;";
-            //int startIndex = startPart.Length;
-            //int endIndex = sqliteConnString.IndexOf(endPart);
-            //string dbFileName = sqliteConnString.Substring(startIndex - 1, endIndex - startIndex + 1);
-            //return dbFileName;
-            SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder(sqliteConnString);
+            var conn = new SQLiteConnectionStringBuilder(sqliteConnString);
             return conn.DataSource;
         }
         /// <summary>
@@ -36,12 +30,7 @@ namespace HydroDesktop.Database
         /// </summary>
         public static string GetSQLiteConnectionString(string dbFileName)
         {
-          
-         // return "Data Source= " + dbFileName + ";New=False;Compress=True;Version=3";
-            SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder();
-            conn.DataSource = dbFileName;
-            conn.Version = 3;
-            conn.FailIfMissing = true;
+            var conn = new SQLiteConnectionStringBuilder {DataSource = dbFileName, Version = 3, FailIfMissing = true};
             conn.Add("Compress", true);
 
             return conn.ConnectionString;

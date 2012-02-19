@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using DataImport.CommonPages;
+using DataImport.CommonPages.Complete;
+using DataImport.CommonPages.Progress;
 using DataImport.DataTableImport;
 using Excel;
 using Wizard.UI;
@@ -40,10 +42,12 @@ namespace DataImport.Excel
                        {
                            new FormatOptionsPage(context),
                            new FieldPropertiesPage(context),
+                           new ProgressPage(context),
+                           new CompletePage(),
                        };
         }
 
-        public void SetPreview(IWizardImporterSettings settings)
+        public void UpdatePreview(IWizardImporterSettings settings)
         {
             var excelSettings = (ExcelImportSettings)settings;
             if (excelSettings.DataSet == null)
@@ -62,7 +66,7 @@ namespace DataImport.Excel
             settings.Preview = result;
         }
 
-        public void SetData(IWizardImporterSettings settings)
+        public void UpdateData(IWizardImporterSettings settings)
         {
             settings.Data = settings.Preview;
         }

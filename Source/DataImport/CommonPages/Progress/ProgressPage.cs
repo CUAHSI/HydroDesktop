@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Wizard.UI;
 
-namespace DataImport.CommonPages
+namespace DataImport.CommonPages.Progress
 {
     public partial class ProgressPage : InternalWizardPage
     {
@@ -17,6 +17,7 @@ namespace DataImport.CommonPages
         {
             SetWizardButtons(WizardButtons.None);
 
+            _context.Importer.UpdateData(_context.Settings);
             var importer = _context.Importer.GetImporter();
             importer.Import(_context.Settings);
 

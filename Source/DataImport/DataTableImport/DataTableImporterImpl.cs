@@ -33,7 +33,7 @@ namespace DataImport.DataTableImport
                 // Save Variable if need
                 if (!variablesRepo.Exists(variable))
                 {
-                    variablesRepo.Insert(variable);
+                    variablesRepo.AddVariable(variable);
                 }
 
                 //

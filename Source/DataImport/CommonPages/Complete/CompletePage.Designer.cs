@@ -1,4 +1,4 @@
-﻿namespace DataImport.WaterML
+﻿namespace DataImport.CommonPages.Complete
 {
     partial class CompletePage
     {
