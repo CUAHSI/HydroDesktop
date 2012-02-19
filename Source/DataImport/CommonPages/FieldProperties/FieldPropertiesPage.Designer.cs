@@ -44,17 +44,14 @@
             // 
             this.dgvPreview.AllowUserToAddRows = false;
             this.dgvPreview.AllowUserToDeleteRows = false;
-            this.dgvPreview.AllowUserToResizeColumns = false;
             this.dgvPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvPreview.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.dgvPreview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPreview.Location = new System.Drawing.Point(19, 109);
             this.dgvPreview.MultiSelect = false;
             this.dgvPreview.Name = "dgvPreview";
             this.dgvPreview.ReadOnly = true;
-            this.dgvPreview.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvPreview.Size = new System.Drawing.Size(464, 214);
             this.dgvPreview.TabIndex = 1;
             // 
