@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 using Wizard.UI;
 
-namespace DataImport.WaterML
+namespace DataImport.CommonPages.Complete
 {
     public partial class CompletePage : ExternalWizardPage
     {

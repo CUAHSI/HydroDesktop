@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
+﻿using System.ComponentModel;
 using Wizard.UI;
 
-namespace DataImport.Excel
+namespace DataImport.Csv
 {
     /// <summary>
-    /// Format options page for Excel
+    /// Format options page for Csv
     /// </summary>
     public partial class FormatOptionsPage : InternalWizardPage
     {
         #region Fields
         
-        private readonly ExcelImportSettings _settings;
+        private readonly CsvImportSettings _settings;
         private readonly IWizardImporter _importer;
 
         #endregion
@@ -27,12 +23,10 @@ namespace DataImport.Excel
         /// <param name="context">Context</param>
         public FormatOptionsPage(WizardContext context)
         {
-            _settings = (ExcelImportSettings)context.Settings;
+            _settings = (CsvImportSettings)context.Settings;
             _importer = context.Importer;
 
             InitializeComponent();
-            
-            cmbExcelSheet.SelectedValueChanged += CmbFileTypeOnSelectedValueChanged;
         }
 
         #endregion
@@ -43,21 +37,6 @@ namespace DataImport.Excel
         {
             _importer.UpdatePreview(_settings);
             dgvPreview.DataSource = _settings.Preview;
-
-            // Excel sheet combo box
-            if (cmbExcelSheet.DataSource == null)
-            {
-                var ds = _settings.DataSet;
-                var excelSheets = new List<string>(ds.Tables.Count);
-                excelSheets.AddRange(from DataTable dt in ds.Tables select dt.TableName);
-                cmbExcelSheet.DataSource = excelSheets;
-            }
-        }
-
-        private void CmbFileTypeOnSelectedValueChanged(object sender, EventArgs eventArgs)
-        {
-            _settings.SheetName = (string)cmbExcelSheet.SelectedItem;
-            ShowPreview();
         }
 
         private void FormatOptionsPage_SetActive(object sender, CancelEventArgs e)

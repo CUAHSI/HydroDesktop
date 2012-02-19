@@ -1,4 +1,4 @@
-﻿namespace DataImport.CommonPages
+﻿namespace DataImport.CommonPages.Progress
 {
     partial class ProgressPage
     {

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
@@ -15,12 +9,10 @@ namespace DataImport.WaterML
 {
     public partial class OptionsPage : InternalWizardPage
     {
-        private readonly WizardContext _context;
         private readonly WaterMLImportSettings _settings;
 
         public OptionsPage(WizardContext context)
         {
-            _context = context;
             _settings = (WaterMLImportSettings) context.Settings;
 
             InitializeComponent();

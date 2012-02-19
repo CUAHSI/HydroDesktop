@@ -99,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Csv\CsvImportSettings.cs" />
+    <Compile Include="Csv\FormatOptionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Csv\FormatOptionsPage.Designer.cs">
+      <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataTableImport\DataTableImporterImpl.cs" />
     <Compile Include="ColumnInfo.cs" />
     <Compile Include="CommonPages\FieldProperties\CreateVariableForm.cs">
@@ -201,10 +207,10 @@
     <Compile Include="Txt\TxtFileType.cs" />
     <Compile Include="Txt\TxtImporter.cs" />
     <Compile Include="Txt\TxtImportSettings.cs" />
-    <Compile Include="WaterML\CompletePage.cs">
+    <Compile Include="CommonPages\Complete\CompletePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WaterML\CompletePage.Designer.cs">
+    <Compile Include="CommonPages\Complete\CompletePage.Designer.cs">
       <DependentUpon>CompletePage.cs</DependentUpon>
     </Compile>
     <Compile Include="WaterML\OptionsPage.cs">
@@ -257,6 +263,9 @@
     <EmbeddedResource Include="CommonPages\FieldProperties\VariableView.resx">
       <DependentUpon>VariableView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Csv\FormatOptionsPage.resx">
+      <DependentUpon>FormatOptionsPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Excel\FormatOptionsPage.resx">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -270,7 +279,7 @@
     <EmbeddedResource Include="Txt\FormatOptionsPage.resx">
       <DependentUpon>FormatOptionsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WaterML\CompletePage.resx">
+    <EmbeddedResource Include="CommonPages\Complete\CompletePage.resx">
       <DependentUpon>CompletePage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WaterML\OptionsPage.resx">

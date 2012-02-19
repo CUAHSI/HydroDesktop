@@ -64,6 +64,11 @@ namespace HydroDesktop.Database
         /// </summary>
         public abstract string TableName { get; }
 
+        public string LastRowIDSelect
+        {
+            get { return "; SELECT LAST_INSERT_ROWID();"; }
+        }
+
         #endregion
 
         #region Private Methods

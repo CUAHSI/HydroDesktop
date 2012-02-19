@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using DataImport.CommonPages;
+using DataImport.CommonPages.Complete;
+using DataImport.CommonPages.Progress;
 using Wizard.UI;
 
 namespace DataImport.WaterML
@@ -29,14 +31,14 @@ namespace DataImport.WaterML
             return new WaterMLImporterImpl();
         }
 
-        public void SetPreview(IWizardImporterSettings settings)
+        public void UpdatePreview(IWizardImporterSettings settings)
         {
-            throw new NotImplementedException();
+            // do nothing for WaterML
         }
 
-        public void SetData(IWizardImporterSettings settings)
+        public void UpdateData(IWizardImporterSettings settings)
         {
-            throw new NotImplementedException();
+            // do nothing for WaterML
         }
 
         public ICollection<WizardPage> GetWizardPages(WizardContext context)

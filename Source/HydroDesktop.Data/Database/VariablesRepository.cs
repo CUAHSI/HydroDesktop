@@ -56,33 +56,10 @@ namespace HydroDesktop.Database
             var res = DataRowToVariable(row);
             return res;
         }
-       
-        public Variable CreateCopy(Variable source)
-        {
-            var copy = new Variable
-                            {
-                                Id = DbOperations.GetNextID(TableName, "VariableID"),
-                                Code = source.Code,
-                                DataType = source.DataType,
-                                GeneralCategory = source.GeneralCategory,
-                                IsCategorical = source.IsCategorical,
-                                IsRegular = source.IsRegular,
-                                Name = source.Name,
-                                NoDataValue = source.NoDataValue,
-                                SampleMedium = source.SampleMedium,
-                                Speciation = source.Speciation,
-                                TimeSupport = source.TimeSupport,
-                                TimeUnit = source.TimeUnit,
-                                ValueType = source.ValueType,
-                                VariableUnit = source.VariableUnit,
-                                VocabularyPrefix = source.VocabularyPrefix
-                            };
-            Insert(copy);
-            return copy;
-        }
         
-        public void Insert(Variable variable)
+        public void AddVariable(Variable variable)
         {
+            variable.Id = DbOperations.GetNextID(TableName, "VariableID");
             var query =
                 string.Format(
                     @"INSERT INTO {0}(VariableID, VariableCode, VariableName, Speciation, SampleMedium, ValueType, IsRegular, IsCategorical, TimeSupport, DataType, GeneralCategory, NoDataValue, TimeUnitsID, VariableUnitsID)
@@ -90,8 +67,9 @@ namespace HydroDesktop.Database
                     TableName,
                     variable.Id, variable.Code, variable.Name, variable.Speciation, variable.SampleMedium,
                     variable.ValueType, Convert.ToInt32(variable.IsRegular), Convert.ToInt32(variable.IsCategorical), variable.TimeSupport,
-                    variable.DataType, variable.GeneralCategory, variable.NoDataValue, variable.TimeUnit.Id,
-                    variable.VariableUnit.Id);
+                    variable.DataType, variable.GeneralCategory, variable.NoDataValue,
+                    variable.TimeUnit != null? variable.TimeUnit.Id : 0,
+                    variable.VariableUnit != null? variable.VariableUnit.Id : 0);
             DbOperations.ExecuteNonQuery(query);
         }
         
@@ -104,7 +82,8 @@ namespace HydroDesktop.Database
                     TableName,
                     variable.Code, variable.Name, variable.Speciation, variable.SampleMedium,
                     variable.ValueType, Convert.ToInt32(variable.IsRegular), Convert.ToInt32(variable.IsCategorical), variable.TimeSupport,
-                    variable.DataType, variable.GeneralCategory, variable.NoDataValue, variable.TimeUnit.Id,
+                    variable.DataType, variable.GeneralCategory, variable.NoDataValue, 
+                    variable.TimeUnit.Id,
                     variable.VariableUnit.Id, variable.Id);
             DbOperations.ExecuteNonQuery(query);
         }

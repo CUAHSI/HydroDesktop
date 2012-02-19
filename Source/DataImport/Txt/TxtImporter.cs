@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using DataImport.CommonPages;
+using DataImport.CommonPages.Complete;
+using DataImport.CommonPages.Progress;
 using DataImport.DataTableImport;
 using Wizard.UI;
 
@@ -37,17 +39,19 @@ namespace DataImport.Txt
                        {
                            new FormatOptionsPage(context),
                            new FieldPropertiesPage(context),
+                           new ProgressPage(context),
+                           new CompletePage(),
                        };
         }
 
-        public void SetPreview(IWizardImporterSettings settings)
+        public void UpdatePreview(IWizardImporterSettings settings)
         {
             var txtSettings = (TxtImportSettings)settings;
             var table = ReadData(txtSettings, 10);
             txtSettings.Preview = table;
         }
 
-        public void SetData(IWizardImporterSettings settings)
+        public void UpdateData(IWizardImporterSettings settings)
         {
             var txtSettings = (TxtImportSettings) settings;
             var table = ReadData(txtSettings, -1);

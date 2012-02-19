@@ -32,9 +32,17 @@ namespace DataImport
         /// <returns>Importer</returns>
         IImporter GetImporter();
 
-        void SetPreview(IWizardImporterSettings settings);
+        /// <summary>
+        /// Set preview
+        /// </summary>
+        /// <param name="settings">Settings with preview</param>
+        void UpdatePreview(IWizardImporterSettings settings);
 
-        void SetData(IWizardImporterSettings settings);
+        /// <summary>
+        /// Set data
+        /// </summary>
+        /// <param name="settings">Settings with data</param>
+        void UpdateData(IWizardImporterSettings settings);
       
 
         /// <summary>

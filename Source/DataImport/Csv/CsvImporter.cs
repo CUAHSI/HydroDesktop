@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using DataImport.CommonPages;
+using DataImport.CommonPages.Complete;
+using DataImport.CommonPages.Progress;
 using DataImport.DataTableImport;
+using HydroDesktop.ImportExport;
 using Wizard.UI;
 
 namespace DataImport.Csv
@@ -28,19 +33,27 @@ namespace DataImport.Csv
             return new DataTableImporterImpl();
         }
 
-        public void SetPreview(IWizardImporterSettings settings)
+        public void UpdatePreview(IWizardImporterSettings settings)
         {
-            throw new NotImplementedException();
+            var preview = CsvFileParser.ParseFileToDataTable(settings.PathToFile, true, null, null, 10);
+            settings.Preview = preview;
         }
 
-        public void SetData(IWizardImporterSettings settings)
+        public void UpdateData(IWizardImporterSettings settings)
         {
-            throw new NotImplementedException();
+            var data = CsvFileParser.ParseFileToDataTable(settings.PathToFile, true);
+            settings.Data = data;
         }
 
         public ICollection<WizardPage> GetWizardPages(WizardContext context)
         {
-            throw new NotImplementedException();
+            return new Collection<WizardPage>
+                       {
+                           new FormatOptionsPage(context),
+                           new FieldPropertiesPage(context),
+                           new ProgressPage(context),
+                           new CompletePage(),
+                       };
         }
     }
 }

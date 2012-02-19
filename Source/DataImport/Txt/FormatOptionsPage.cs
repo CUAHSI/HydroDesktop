@@ -45,7 +45,7 @@ namespace DataImport.Txt
 
         private void ShowPreview()
         {
-            _importer.SetPreview(_settings);
+            _importer.UpdatePreview(_settings);
             dgvPreview.DataSource = _settings.Preview;
         }
 
