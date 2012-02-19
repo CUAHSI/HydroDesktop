@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HydroDesktop.Interfaces.ObjectModel;
+﻿using HydroDesktop.Interfaces.ObjectModel;
 using System.Data;
-using System.ComponentModel;
 
 namespace HydroDesktop.Interfaces
 {
@@ -13,29 +8,6 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public interface IRepositoryManager
     {
-        /// <summary>
-        /// DbOperations
-        /// </summary>
-        IHydroDbOperations DbOperations { get; }
-
-        /// <summary>
-        /// Deletes a theme and all its series as long as the series don't belong to any other theme.
-        /// </summary>
-        /// <param name="themeID">The Theme ID</param>
-        /// <returns>true if successful, false otherwise</returns>
-        bool DeleteTheme(int themeID);
-
-
-        /// <summary>
-        /// Delete a theme - a background worker and progress bar is used
-        /// </summary>
-        /// <param name="themeID">The themeID (this needs to be a valid ID)</param>
-        /// <param name="worker">The background worker component</param>
-        /// <param name="e">The arguments for background worker</param>
-        /// <returns>true if the theme was successfully deleted</returns>
-        bool DeleteTheme(int themeID, BackgroundWorker worker, DoWorkEventArgs e);
-
-
         /// <summary>
         /// Simplified version of SaveSeries (for HydroForecaster)
         /// </summary>
@@ -72,22 +44,6 @@ namespace HydroDesktop.Interfaces
         /// <param name="theme">The associated theme</param>
         /// <returns>Number of DataValue saved</returns>
         int SaveSeriesAsCopy(Series series, Theme theme);
-        
-
-
-        /// <summary>
-        /// Gets all themes from the database ordered by the theme name
-        /// </summary>
-        /// <returns>The list of all themes</returns>
-        IList<Theme> GetAllThemes();
-
-        /// <summary>
-        /// Gets the site objects that have both variables.
-        /// </summary>
-        /// <param name="variable1">the first variable</param>
-        /// <param name="variable2">the second variable</param>
-        /// <returns></returns>
-        IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2);
 
     }
 }
