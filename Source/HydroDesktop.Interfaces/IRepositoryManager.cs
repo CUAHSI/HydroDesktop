@@ -34,14 +34,6 @@ namespace HydroDesktop.Interfaces
         /// <param name="e">The arguments for background worker</param>
         /// <returns>true if the theme was successfully deleted</returns>
         bool DeleteTheme(int themeID, BackgroundWorker worker, DoWorkEventArgs e);
-        
-
-        /// <summary>
-        /// Adds an existing series to an existing theme
-        /// </summary>
-        /// <param name="series">The existing Series object</param>
-        /// <param name="theme">The existing Theme object</param>
-        void AddSeriesToTheme(Series series, Theme theme);
 
 
         /// <summary>
