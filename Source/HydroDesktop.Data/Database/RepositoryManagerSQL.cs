@@ -582,19 +582,16 @@ namespace HydroDesktop.Database
             {
                 return SaveSeriesAppend(seriesToSave, theme);
             }
-            else if (overwrite == OverwriteOptions.Copy)
+            if (overwrite == OverwriteOptions.Copy)
             {
                 return SaveSeriesAsCopy(seriesToSave, theme);
             }
-            else if (overwrite == OverwriteOptions.Overwrite)
+            if (overwrite == OverwriteOptions.Overwrite)
             {
                 return SaveSeriesOverwrite(seriesToSave, theme);
             }
-            else
-            {
-                //default option is 'append'...
-                return SaveSeriesAppend(seriesToSave, theme);
-            }
+            //default option is 'append'...
+            return SaveSeriesAppend(seriesToSave, theme);
         }
 
         /// <summary>
@@ -609,8 +606,7 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesAppend(Series series, Theme theme)
         {
-            string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
@@ -621,11 +617,6 @@ namespace HydroDesktop.Database
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
 
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -652,17 +643,12 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
             int themeID = 0;
             
-            object variableIDResult = null;
-            object variableUnitsIDResult = null;
-            object timeUnitsIDResult = null;
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -699,99 +685,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 3 Variable
                     //****************************************************************
-                    Variable variable = series.Variable;
-
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlVariable;
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                        cmd05.Parameters[0].Value = variable.Code;
-                        cmd05.Parameters[1].Value = variable.DataType;
-                        variableIDResult = cmd05.ExecuteScalar();
-                        if (variableIDResult != null)
-                        {
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
-
-                    if (variableID == 0) //New variable needs to be created
-                    {
-                        using (DbCommand cmd06 = conn.CreateCommand())
-                        {
-                            cmd06.CommandText = sqlUnits;
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                            variableUnitsIDResult = cmd06.ExecuteScalar();
-                            if (variableUnitsIDResult != null)
-                            {
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-
-                            cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                            cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                            cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                            timeUnitsIDResult = cmd06.ExecuteScalar();
-                            if (timeUnitsIDResult != null)
-                            {
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        if (variableUnitsID == 0)
-                        {
-                            //save the variable units
-                            using (DbCommand cmd07 = conn.CreateCommand())
-                            {
-                                //Save the variable units
-                                cmd07.CommandText = sqlSaveUnits;
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                                variableUnitsIDResult = cmd07.ExecuteScalar();
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-                        }
-
-                        if (timeUnitsID == 0)
-                        {
-                            //save the time units
-                            using (DbCommand cmd08 = conn.CreateCommand())
-                            {
-                                //Save the time units
-                                cmd08.CommandText = sqlSaveUnits;
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                                timeUnitsIDResult = cmd08.ExecuteScalar();
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        //Insert the variable to the database
-                        using (DbCommand cmd09 = conn.CreateCommand())
-                        {
-                            cmd09.CommandText = sqlSaveVariable;
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
-
-                            variableIDResult = cmd09.ExecuteScalar();
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
+                    variableID = GetOrCreateVariableID(series.Variable, conn);
 
                     //****************************************************************
                     //*** Step 4 Method
@@ -1354,7 +1248,6 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesOverwrite(Series series, Theme theme)
         {
-            string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
             string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
@@ -1366,11 +1259,6 @@ namespace HydroDesktop.Database
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
 
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -1399,17 +1287,12 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
             int themeID = 0;
             
-            object variableIDResult = null;
-            object variableUnitsIDResult = null;
-            object timeUnitsIDResult = null;
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -1446,99 +1329,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 3 Variable
                     //****************************************************************
-                    Variable variable = series.Variable;
-
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlVariable;
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                        cmd05.Parameters[0].Value = variable.Code;
-                        cmd05.Parameters[1].Value = variable.DataType;
-                        variableIDResult = cmd05.ExecuteScalar();
-                        if (variableIDResult != null)
-                        {
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
-
-                    if (variableID == 0) //New variable needs to be created
-                    {
-                        using (DbCommand cmd06 = conn.CreateCommand())
-                        {
-                            cmd06.CommandText = sqlUnits;
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                            variableUnitsIDResult = cmd06.ExecuteScalar();
-                            if (variableUnitsIDResult != null)
-                            {
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-
-                            cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                            cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                            cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                            timeUnitsIDResult = cmd06.ExecuteScalar();
-                            if (timeUnitsIDResult != null)
-                            {
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        if (variableUnitsID == 0)
-                        {
-                            //save the variable units
-                            using (DbCommand cmd07 = conn.CreateCommand())
-                            {
-                                //Save the variable units
-                                cmd07.CommandText = sqlSaveUnits;
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                                variableUnitsIDResult = cmd07.ExecuteScalar();
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-                        }
-
-                        if (timeUnitsID == 0)
-                        {
-                            //save the time units
-                            using (DbCommand cmd08 = conn.CreateCommand())
-                            {
-                                //Save the time units
-                                cmd08.CommandText = sqlSaveUnits;
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                                timeUnitsIDResult = cmd08.ExecuteScalar();
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        //Insert the variable to the database
-                        using (DbCommand cmd09 = conn.CreateCommand())
-                        {
-                            cmd09.CommandText = sqlSaveVariable;
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
-
-                            variableIDResult = cmd09.ExecuteScalar();
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
+                    variableID = GetOrCreateVariableID(series.Variable, conn);
 
                     //****************************************************************
                     //*** Step 4 Method
@@ -2101,7 +1892,6 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         public int SaveSeriesAsCopy(Series series, Theme theme)
         {
-            string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
             string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
@@ -2112,11 +1902,6 @@ namespace HydroDesktop.Database
 
             
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -2140,18 +1925,12 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
             int themeID = 0;
             
-            
-            object variableIDResult = null;
-            object variableUnitsIDResult = null;
-            object timeUnitsIDResult = null;
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -2181,99 +1960,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 3 Variable
                     //****************************************************************
-                    Variable variable = series.Variable;
-
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlVariable;
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                        cmd05.Parameters[0].Value = variable.Code;
-                        cmd05.Parameters[1].Value = variable.DataType;
-                        variableIDResult = cmd05.ExecuteScalar();
-                        if (variableIDResult != null)
-                        {
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
-
-                    if (variableID == 0) //New variable needs to be created
-                    {
-                        using (DbCommand cmd06 = conn.CreateCommand())
-                        {
-                            cmd06.CommandText = sqlUnits;
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                            
-                            variableUnitsIDResult = cmd06.ExecuteScalar();
-                            if (variableUnitsIDResult != null)
-                            {
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-
-                            cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                            cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                            cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                            timeUnitsIDResult = cmd06.ExecuteScalar();
-                            if (timeUnitsIDResult != null)
-                            {
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        if (variableUnitsID == 0)
-                        {
-                            //save the variable units
-                            using (DbCommand cmd07 = conn.CreateCommand())
-                            {
-                                //Save the variable units
-                                cmd07.CommandText = sqlSaveUnits;
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                                variableUnitsIDResult = cmd07.ExecuteScalar();
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-                        }
-
-                        if (timeUnitsID == 0)
-                        {
-                            //save the time units
-                            using (DbCommand cmd08 = conn.CreateCommand())
-                            {
-                                //Save the time units
-                                cmd08.CommandText = sqlSaveUnits;
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                                timeUnitsIDResult = cmd08.ExecuteScalar();
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        //Insert the variable to the database
-                        using (DbCommand cmd09 = conn.CreateCommand())
-                        {
-                            cmd09.CommandText = sqlSaveVariable;
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
-
-                            variableIDResult = cmd09.ExecuteScalar();
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
+                    variableID = GetOrCreateVariableID(series.Variable, conn);
 
                     //****************************************************************
                     //*** Step 4 Method
@@ -2809,15 +2496,20 @@ namespace HydroDesktop.Database
                 using (DbCommand cmd02 = conn.CreateCommand())
                 {
                     cmd02.CommandText = sqlSpatialReference;
-                    cmd02.Parameters.Add(_db.CreateParameter(DbType.Int32, site.SpatialReference.SRSID));
-                    cmd02.Parameters.Add(_db.CreateParameter(DbType.String, site.SpatialReference.SRSName));
+                    cmd02.Parameters.Add(_db.CreateParameter(DbType.Int32));
+                    cmd02.Parameters.Add(_db.CreateParameter(DbType.String));
 
-                    var spatialReferenceIDResult = cmd02.ExecuteScalar();
-                    if (spatialReferenceIDResult != null)
+                    if (site.SpatialReference != null)
                     {
-                        spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                    }
+                        cmd02.Parameters[0].Value = site.SpatialReference.SRSID;
+                        cmd02.Parameters[1].Value = site.SpatialReference.SRSName;
 
+                        var spatialReferenceIDResult = cmd02.ExecuteScalar();
+                        if (spatialReferenceIDResult != null)
+                        {
+                            spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
+                        }
+                    }
                     if (site.LocalProjection != null)
                     {
                         cmd02.Parameters[0].Value = site.LocalProjection.SRSID;
@@ -2831,9 +2523,10 @@ namespace HydroDesktop.Database
                     }
                 }
 
-                if (spatialReferenceID == 0)
+                //save spatial reference
+                if (spatialReferenceID == 0 && 
+                    site.SpatialReference != null)
                 {
-                    //save spatial reference and the local projection
                     using (DbCommand cmd03 = conn.CreateCommand())
                     {
                         //Save the spatial reference (Lat / Long Datum)
@@ -2842,25 +2535,27 @@ namespace HydroDesktop.Database
                         cmd03.Parameters.Add(_db.CreateParameter(DbType.String, site.SpatialReference.SRSName));
 
                         var spatialReferenceIDResult = cmd03.ExecuteScalar();
-
-                        if (spatialReferenceIDResult != null)
-                        {
-                            spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                        }
-
-                        //Save the local projection
-                        if (site.LocalProjection != null)
-                        {
-                            if (localProjectionID == 0)
-                            {
-                                cmd03.Parameters[0].Value = site.LocalProjection.SRSID;
-                                cmd03.Parameters[1].Value = site.LocalProjection.SRSName;
-                                var localProjectionIDResult = cmd03.ExecuteScalar();
-                                localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                            }
-                        }
+                        spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
                     }
                 }
+
+                //save local projection
+                if (localProjectionID == 0 && 
+                    site.LocalProjection != null)
+                {
+                    //save spatial reference and the local projection
+                    using (DbCommand cmd03 = conn.CreateCommand())
+                    {
+                        //Save the spatial reference (Lat / Long Datum)
+                        cmd03.CommandText = sqlSaveSpatialReference;
+                        cmd03.Parameters.Add(_db.CreateParameter(DbType.Int32, site.LocalProjection.SRSID));
+                        cmd03.Parameters.Add(_db.CreateParameter(DbType.String, site.LocalProjection.SRSName));
+
+                        var localProjectionIDResult = cmd03.ExecuteScalar();
+                        localProjectionID = Convert.ToInt32(localProjectionIDResult);
+                    }
+                }
+                
 
                 //Insert the site to the database
                 using (DbCommand cmd04 = conn.CreateCommand())
@@ -2885,7 +2580,6 @@ namespace HydroDesktop.Database
                     siteID = Convert.ToInt32(siteIDResult);
                 }
             }
-
             return siteID;
         }
 
@@ -2968,6 +2662,115 @@ namespace HydroDesktop.Database
             }
 
             return sourceID;
+        }
+
+        private int GetOrCreateVariableID(Variable variable, DbConnection conn)
+        {
+            const string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
+
+            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + LastRowIDSelect;
+            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
+                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
+
+            int variableID = 0;
+            int variableUnitsID = 0;
+            int timeUnitsID = 0;
+
+            using (DbCommand cmd05 = conn.CreateCommand())
+            {
+                cmd05.CommandText = sqlVariable;
+                cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
+                cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
+                cmd05.Parameters[0].Value = variable.Code;
+                cmd05.Parameters[1].Value = variable.DataType;
+                var variableIDResult = cmd05.ExecuteScalar();
+                if (variableIDResult != null)
+                {
+                    variableID = Convert.ToInt32(variableIDResult);
+                }
+            }
+
+            if (variableID == 0) //New variable needs to be created
+            {
+                using (DbCommand cmd06 = conn.CreateCommand())
+                {
+                    cmd06.CommandText = sqlUnits;
+                    cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
+                    cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
+                    cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
+
+                    var variableUnitsIDResult = cmd06.ExecuteScalar();
+                    if (variableUnitsIDResult != null)
+                    {
+                        variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
+                    }
+
+                    cmd06.Parameters[0].Value = variable.TimeUnit.Name;
+                    cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
+                    cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
+                    var timeUnitsIDResult = cmd06.ExecuteScalar();
+                    if (timeUnitsIDResult != null)
+                    {
+                        timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
+                    }
+                }
+
+                if (variableUnitsID == 0)
+                {
+                    //save the variable units
+                    using (DbCommand cmd07 = conn.CreateCommand())
+                    {
+                        //Save the variable units
+                        cmd07.CommandText = sqlSaveUnits;
+                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
+                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
+                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
+                        var variableUnitsIDResult = cmd07.ExecuteScalar();
+                        variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
+                    }
+                }
+
+                if (timeUnitsID == 0)
+                {
+                    //save the time units
+                    using (DbCommand cmd08 = conn.CreateCommand())
+                    {
+                        //Save the time units
+                        cmd08.CommandText = sqlSaveUnits;
+                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
+                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
+                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
+                        var timeUnitsIDResult = cmd08.ExecuteScalar();
+                        timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
+                    }
+                }
+
+                //Insert the variable to the database
+                using (DbCommand cmd09 = conn.CreateCommand())
+                {
+                    cmd09.CommandText = sqlSaveVariable;
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
+
+                    var variableIDResult = cmd09.ExecuteScalar();
+                    variableID = Convert.ToInt32(variableIDResult);
+                }
+            }
+
+            return variableID;
         }
 
         private void GetLookups(Series series, out Dictionary<string, Qualifier> qualifierLookup,
