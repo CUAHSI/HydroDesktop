@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,8 +17,6 @@ namespace DataImport.CommonPages
         #region Fields
 
         private readonly IWizardImporterSettings _settings;
-        private readonly int _columnHeight;
-        private readonly List<Control> _addedControls = new List<Control>();
 
         #endregion
 
@@ -34,24 +31,72 @@ namespace DataImport.CommonPages
             _settings = context.Settings;
             InitializeComponent();
 
-            _columnHeight = dgvPreview.ColumnHeadersHeight;
+            dgvPreview.MouseDown += DgvPreviewOnMouseDown;
         }
 
         #endregion
 
         #region Private methods
 
+        private void DgvPreviewOnMouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+
+            var hitTest = dgvPreview.HitTest(e.X, e.Y);
+            if (hitTest.Type == DataGridViewHitTestType.ColumnHeader)
+            {
+                var index = hitTest.ColumnIndex;
+                var cData = _settings.ColumnDatas[index];
+
+                var detailsItem = new ToolStripButton("Details...");
+                detailsItem.Click += delegate
+                                         {
+                                             using (var form = new FieldPropertiesForm((ColumnInfo)cData.Clone()))
+                                             {
+                                                 var res = form.ShowDialog();
+                                                 if (res != DialogResult.OK) return;
+
+                                                 var cDatas = _settings.ColumnDatas;
+
+                                                 var cd = form.ColumnData;
+                                                 cDatas[index] = cd;
+
+                                                 // Apply site to all columns if need
+                                                 if (cd.ApplySiteToAllColumns)
+                                                 {
+                                                     for (int k = 0; k < cDatas.Count; k++)
+                                                     {
+                                                         if (k == index) continue;
+
+                                                         var option = cDatas[k];
+                                                         option.Site = (Site)cd.Site.Clone();
+                                                     }
+                                                 }
+                                             }
+                                         };
+
+                var importItem = new ToolStripMenuItem("Import");
+                importItem.CheckOnClick = true;
+                importItem.Checked = cData.ImportColumn;
+                importItem.CheckedChanged += delegate
+                                                 {
+                                                     cData.ImportColumn = importItem.Checked;
+                                                     detailsItem.Enabled = importItem.Checked;
+                                                 };
+                detailsItem.Enabled = importItem.Checked;
+
+                var popup = new ContextMenuStrip();
+                popup.Items.Add(importItem);
+                popup.Items.Add(detailsItem);
+
+                popup.Show(dgvPreview.PointToScreen(e.Location));
+            }
+        }
+       
         private void FieldPropertiesPage_SetActive(object sender, CancelEventArgs e)
         {
             SetWizardButtons(WizardButtons.Next | WizardButtons.Back);
             
-            foreach (var control in _addedControls)
-            {
-                dgvPreview.Controls.Remove(control);
-                control.Dispose();
-            }
-            _addedControls.Clear();
-
             dgvPreview.DataSource = _settings.Preview;
             _settings.ColumnDatas = new List<ColumnInfo>(dgvPreview.Columns.Count);
 
@@ -61,80 +106,19 @@ namespace DataImport.CommonPages
             cmbDateTimeColumn.DataSource = columnNames;
             cmbDateTimeColumn.SelectedItem = FindColumnWithDateTime(_settings.Preview);
             
-            dgvPreview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvPreview.ColumnHeadersHeight = 3 * _columnHeight;
-            dgvPreview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             for (int i = 0; i < dgvPreview.Columns.Count; i++)
             {
                 var column = dgvPreview.Columns[i];
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                
                 var columnName = column.Name;
-                var columnSize = column.HeaderCell.Size;
-                var columnLocation = dgvPreview.GetCellDisplayRectangle(i, -1, true).Location;
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 var columnData = new ColumnInfo
-                                     {
-                                         ColumnIndex = i,
-                                         ColumnName = columnName,
-                                         ImportColumn = true
-                                     };
+                {
+                    ColumnIndex = i,
+                    ColumnName = columnName,
+                    ImportColumn = true
+                };
                 _settings.ColumnDatas.Add(columnData);
-
-                // Label with column name
-                var label = new Label {Text = columnName, Visible = true};
-                dgvPreview.Controls.Add(label);
-                _addedControls.Add(label);
-                label.Location = new Point(columnLocation.X, columnLocation.Y);
-                label.Size = new Size(columnSize.Width, _columnHeight);
-
-                // "Import column" checkbox
-                var checkBox = new CheckBox { Text = "Import", Checked = columnData.ImportColumn, Visible = true };
-                dgvPreview.Controls.Add(checkBox);
-                _addedControls.Add(checkBox);
-                checkBox.Location = new Point(columnLocation.X, columnLocation.Y + _columnHeight);
-                checkBox.Size = new Size(columnSize.Width, _columnHeight);
-                
-                // Additional properties button
-                var button = new Button {Text = "...", Visible = true};
-                dgvPreview.Controls.Add(button);
-                _addedControls.Add(button);
-                button.Location = new Point(columnLocation.X, columnLocation.Y + _columnHeight * 2);
-                button.Size = new Size(columnSize.Width, _columnHeight);
-                button.Click += delegate
-                                    {
-                                        var index = (int)button.Tag;
-                                        var cDatas = _settings.ColumnDatas;
-
-                                        var cData = cDatas[index];
-                                        using (var form = new FieldPropertiesForm((ColumnInfo) cData.Clone()))
-                                        {
-                                            var res = form.ShowDialog();
-                                            if (res != DialogResult.OK) return;
-
-                                            var cd = form.ColumnData;
-                                            cDatas[index] = cd;
-
-                                            // Apply site to all columns if need
-                                            if (cd.ApplySiteToAllColumns)
-                                            {
-                                                for (int k = 0; k < cDatas.Count; k++)
-                                                {
-                                                    if (k == index) continue;
-
-                                                    var option = cDatas[k];
-                                                    option.Site = (Site) cd.Site.Clone();
-                                                }
-                                            }
-                                        }
-                                    };
-                button.Tag = i;
-
-                checkBox.CheckedChanged += delegate
-                                               {
-                                                   columnData.ImportColumn = checkBox.Checked;
-                                                   button.Enabled = checkBox.Checked;
-                                               };
             }
         }
 
@@ -186,5 +170,7 @@ namespace DataImport.CommonPages
         }
 
         #endregion
+
+       
     }
 }

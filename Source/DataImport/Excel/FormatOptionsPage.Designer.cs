@@ -43,7 +43,7 @@
             // lblExcelSheet
             // 
             this.lblExcelSheet.AutoSize = true;
-            this.lblExcelSheet.Location = new System.Drawing.Point(16, 88);
+            this.lblExcelSheet.Location = new System.Drawing.Point(19, 78);
             this.lblExcelSheet.Name = "lblExcelSheet";
             this.lblExcelSheet.Size = new System.Drawing.Size(62, 13);
             this.lblExcelSheet.TabIndex = 1;
@@ -53,7 +53,7 @@
             // 
             this.cmbExcelSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbExcelSheet.FormattingEnabled = true;
-            this.cmbExcelSheet.Location = new System.Drawing.Point(86, 85);
+            this.cmbExcelSheet.Location = new System.Drawing.Point(87, 75);
             this.cmbExcelSheet.Name = "cmbExcelSheet";
             this.cmbExcelSheet.Size = new System.Drawing.Size(121, 21);
             this.cmbExcelSheet.TabIndex = 2;
@@ -66,7 +66,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvPreview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPreview.Location = new System.Drawing.Point(19, 112);
+            this.dgvPreview.Location = new System.Drawing.Point(19, 109);
             this.dgvPreview.Name = "dgvPreview";
             this.dgvPreview.ReadOnly = true;
             this.dgvPreview.Size = new System.Drawing.Size(505, 216);
