@@ -147,6 +147,8 @@ namespace DataImport.CommonPages
                 error = "Variable should have a Name";
             else if (String.IsNullOrEmpty(variable.Code))
                 error = "Variable should have a Code";
+            else if (String.IsNullOrEmpty(variable.DataType))
+                error = "Variable should have a DataType";
             else
                 error = string.Empty;
 
