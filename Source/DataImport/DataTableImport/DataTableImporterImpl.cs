@@ -27,13 +27,13 @@ namespace DataImport.DataTableImport
                 // Save site if need
                 if (!sitesRepo.Exists(site))
                 {
-                    sitesRepo.AddSite(site);
+                    //sitesRepo.AddSite(site);
                 }
 
                 // Save Variable if need
                 if (!variablesRepo.Exists(variable))
                 {
-                    variablesRepo.AddVariable(variable);
+                    //variablesRepo.AddVariable(variable);
                 }
 
                 //
