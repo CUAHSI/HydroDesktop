@@ -1,4 +1,5 @@
-﻿using HydroDesktop.Interfaces.ObjectModel;
+﻿using System.Collections.Generic;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
 {
@@ -25,5 +26,14 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <param name="site">Site to add.</param>
         void AddSite(Site site);
+
+
+        /// <summary>
+        /// Gets the site objects that have both variables.
+        /// </summary>
+        /// <param name="variable1">the first variable</param>
+        /// <param name="variable2">the second variable</param>
+        /// <returns></returns>
+        IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2);
     }
 }
