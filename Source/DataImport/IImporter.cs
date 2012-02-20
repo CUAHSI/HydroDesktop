@@ -1,3 +1,5 @@
+using HydroDesktop.Common;
+
 namespace DataImport
 {
     /// <summary>
@@ -10,5 +12,10 @@ namespace DataImport
         /// </summary>
         /// <param name="settings">Setting for import</param>
         void Import(IImporterSettings settings);
+
+        /// <summary>
+        /// Progress handler
+        /// </summary>
+        IProgressHandler ProgressHandler { get; set; }
     }
 }

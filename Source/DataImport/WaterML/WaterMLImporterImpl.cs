@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using HydroDesktop.Common;
 using HydroDesktop.Interfaces.ObjectModel;
 using ImportFromWaterML;
 
@@ -42,6 +43,11 @@ namespace DataImport.WaterML
                     objDownloader.SaveDataSeries(series, themeName, siteName, variableName);
                 }
             }
+        }
+
+        public IProgressHandler ProgressHandler
+        {
+            get;set;
         }
     }
 }
