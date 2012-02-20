@@ -2694,35 +2694,48 @@ namespace HydroDesktop.Database
 
             if (variableID == 0) //New variable needs to be created
             {
-                using (DbCommand cmd06 = conn.CreateCommand())
+                // Get Variable unit
+                if (variable.VariableUnit != null)
                 {
-                    cmd06.CommandText = sqlUnits;
-                    cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                    cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                    cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                    var variableUnitsIDResult = cmd06.ExecuteScalar();
-                    if (variableUnitsIDResult != null)
+                    using (DbCommand cmd06 = conn.CreateCommand())
                     {
-                        variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                    }
+                        cmd06.CommandText = sqlUnits;
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
 
-                    cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                    cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                    cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                    var timeUnitsIDResult = cmd06.ExecuteScalar();
-                    if (timeUnitsIDResult != null)
-                    {
-                        timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
+                        var variableUnitsIDResult = cmd06.ExecuteScalar();
+                        if (variableUnitsIDResult != null)
+                        {
+                            variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
+                        }
                     }
                 }
 
-                if (variableUnitsID == 0)
+                // Get Time Unit
+                if (variable.TimeUnit != null)
                 {
-                    //save the variable units
+                    using (DbCommand cmd06 = conn.CreateCommand())
+                    {
+                        cmd06.CommandText = sqlUnits;
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
+                        
+                        var timeUnitsIDResult = cmd06.ExecuteScalar();
+                        if (timeUnitsIDResult != null)
+                        {
+                            timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
+                        }
+                    }
+                }
+
+                // Save the variable units
+                if (variableUnitsID == 0 &&
+                    variable.VariableUnit != null)
+                {
                     using (DbCommand cmd07 = conn.CreateCommand())
                     {
-                        //Save the variable units
                         cmd07.CommandText = sqlSaveUnits;
                         cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
                         cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
@@ -2732,12 +2745,12 @@ namespace HydroDesktop.Database
                     }
                 }
 
-                if (timeUnitsID == 0)
+                // Save the time units
+                if (timeUnitsID == 0 &&
+                    variable.TimeUnit != null)
                 {
-                    //save the time units
                     using (DbCommand cmd08 = conn.CreateCommand())
                     {
-                        //Save the time units
                         cmd08.CommandText = sqlSaveUnits;
                         cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
                         cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));

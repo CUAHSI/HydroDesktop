@@ -36,6 +36,11 @@ namespace DataImport.CommonPages
                          {
                              VariableUnit = Unit.Unknown,
                              TimeUnit = Unit.UnknownTimeUnit,
+                             Speciation = "Not Applicable",
+                             SampleMedium = "Unknown",
+                             ValueType = "Unknown",
+                             DataType = "Unknown",
+                             GeneralCategory = "Unknown",
                          };
 
             // Set Bindings
@@ -149,6 +154,8 @@ namespace DataImport.CommonPages
                 error = "Variable should have a Code";
             else if (String.IsNullOrEmpty(variable.DataType))
                 error = "Variable should have a DataType";
+            else if (String.IsNullOrEmpty(variable.ValueType))
+                error = "Variable should have a ValueType";
             else
                 error = string.Empty;
 
