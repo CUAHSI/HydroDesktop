@@ -166,7 +166,16 @@ namespace DataImport.CommonPages
             }
             */
 
-            var variable = new Variable { Name = "NewVariable", Code = "Variable1" };
+            var variable = new Variable
+                               {
+                                   Name = "NewVariable",
+                                   Code = "Variable1",
+                                   Speciation = "Not Applicable",
+                                   SampleMedium = "Unknown",
+                                   ValueType = "Unknown",
+                                   DataType = "Unknown",
+                                   GeneralCategory = "Unknown",
+                               };
             AddNewItemInBindingSource(variablesBindingSource, variable);
             cmbVariables.SelectedIndex = variablesBindingSource.Count - 1;
             if (variablesBindingSource.Count == 1)
