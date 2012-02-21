@@ -141,11 +141,11 @@ Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreve
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsIA64;
 
-Source: "..\Binaries\Maps\*"; DestDir: "{app}\Maps"; Permissions: everyone-modify; Flags: recursesubdirs
+Source: "..\Binaries\Maps\*"; DestDir: "{app}\Maps"; Flags: recursesubdirs
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
-Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Permissions: everyone-modify; Flags: recursesubdirs
-Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Permissions: everyone-modify; Flags: recursesubdirs
+Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: recursesubdirs
+Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
 Name: "{group}\HydroDesktop"; Filename: "{app}\HydroDesktop.exe"

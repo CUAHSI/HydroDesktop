@@ -34,16 +34,17 @@ namespace TableView
         {
             //settings for DataRepository
             _oldDataRepositoryConnString = Settings.Instance.DataRepositoryConnectionString;
-            txtDataRepository.Text = SQLiteHelper.GetSQLiteFileName(_oldDataRepositoryConnString);
+            if (!String.IsNullOrEmpty(_oldDataRepositoryConnString))
+            {
+                txtDataRepository.Text = SQLiteHelper.GetSQLiteFileName(_oldDataRepositoryConnString);
+            }
 
             //settings for MetadataCache
             _oldMetadataCacheConnString = Settings.Instance.MetadataCacheConnectionString;
-            txtMetadataCache.Text = SQLiteHelper.GetSQLiteFileName(_oldMetadataCacheConnString);
-        }
-
-        private void SaveSettings()
-        {
-            //Settings.Instance.Save();
+            if (!String.IsNullOrEmpty(_oldMetadataCacheConnString))
+            {
+                txtMetadataCache.Text = SQLiteHelper.GetSQLiteFileName(_oldMetadataCacheConnString);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
