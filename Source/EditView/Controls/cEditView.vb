@@ -346,8 +346,8 @@ Public Class cEditView
             dgvDataValues.DataSource = Editdt
 
             'get the begin and end datetime of the series
-            Dim BeginDateTime As Date = dbTools.ExecuteSingleOutput("SELECT BeginDateTime FROM DataSeries WHERE (SeriesID = '" & newseriesID.ToString & "')")
-            Dim EndDateTime As Date = dbTools.ExecuteSingleOutput("SELECT EndDateTime FROM DataSeries WHERE (SeriesID = '" & newseriesID.ToString & "')")
+            Dim BeginDateTime As Date = Convert.ToDateTime(dbTools.ExecuteSingleOutput("SELECT BeginDateTime FROM DataSeries WHERE (SeriesID = '" & newseriesID.ToString & "')"), CultureInfo.InvariantCulture)
+            Dim EndDateTime As Date = Convert.ToDateTime(dbTools.ExecuteSingleOutput("SELECT EndDateTime FROM DataSeries WHERE (SeriesID = '" & newseriesID.ToString & "')"), CultureInfo.InvariantCulture)
             'setting the datetime constrint to larger range
 
             dtpBefore.MinDate = Today.AddYears(-150)
