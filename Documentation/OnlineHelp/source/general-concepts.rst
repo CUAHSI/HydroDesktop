@@ -22,6 +22,13 @@ Temporal data are stored in a relational database called the Data Repository.  B
 
 HydroDesktop also has the ability to query a given data service to figure out what data are available through the service.  It stores this catalog of available data in another database called the Metadata Cache.  To keep things clean, this database is kept separate from the Data Repository.  Think of the Metadata Cache as a description of all data from all remote data sources that your installation of HydroDesktop knows about, and the Data Repository as a collection of data that you've actually downloaded from data sources and saved.
 
+For more information on data management see :doc:`working-with-databases`.
+
+Map
+---
+
+HydroDesktop displays spatial data in the map. For more information on working with the map see :doc:`guide-books/Map/Map`.
+
 Search
 ------
 
