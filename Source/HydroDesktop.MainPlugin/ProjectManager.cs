@@ -288,7 +288,10 @@ namespace HydroDesktop.Main
                     IMapFeatureLayer fl = layer as IMapFeatureLayer;
                     if (fl != null)
                     {
-                        fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)), true);
+                        if (!String.IsNullOrEmpty(fl.DataSet.Filename))
+                        {
+                            fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)), true);
+                        }
                     }
                     IMapRasterLayer rl = layer as IMapRasterLayer;
                     if (rl != null)
