@@ -280,8 +280,6 @@ namespace HydroDesktop.Main
         
                 //Also save the files of all map layers 
                 IMapGroup dataSitesGroup = FindGroupByName(LayerConstants.SearchGroupName);
-                if (dataSitesGroup == null) return;
-                if (dataSitesGroup.Layers.Count == 0) return;
 
                 string projDir = App.SerializationManager.CurrentProjectDirectory;
 
@@ -298,15 +296,6 @@ namespace HydroDesktop.Main
                         rl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(rl.DataSet.Filename)));
                     }
                 }
-
-                //foreach (IMapLayer layer in dataSitesGroup.Layers)
-                //{
-                //    IFeatureLayer fl = layer as IFeatureLayer;
-                //    if (fl != null)
-                //    {
-                //        fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)),true);
-                //    }
-                //}
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
 
