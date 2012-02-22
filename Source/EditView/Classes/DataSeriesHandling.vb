@@ -1,6 +1,7 @@
 ﻿Imports HydroDesktop.Database
 Imports HydroDesktop.Configuration
 Imports HydroDesktop.Interfaces
+Imports System.Globalization
 
 Public Class DataSeriesHandling
 
@@ -16,13 +17,13 @@ Public Class DataSeriesHandling
         Dim ValueCount As Integer
 
         SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime ASC"
-        BeginDateTime = dbTools.ExecuteSingleOutput(SQLstring)
+        BeginDateTime = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime DESC"
-        EndDateTime = dbTools.ExecuteSingleOutput(SQLstring)
+        EndDateTime = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime ASC"
-        BeginDateTimeUTC = dbTools.ExecuteSingleOutput(SQLstring)
+        BeginDateTimeUTC = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime DESC"
-        EndDateTimeUTC = dbTools.ExecuteSingleOutput(SQLstring)
+        EndDateTimeUTC = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT COUNT(*) FROM DataValues WHERE SeriesID = " + SeriesID.ToString
         ValueCount = dbTools.ExecuteSingleOutput(SQLstring)
 

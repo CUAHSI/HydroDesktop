@@ -7,6 +7,42 @@
 Version History
 ===============
 
+Release 1.4 Build 6 (Feb 21, 2012)
+----------------------------------
+
+* Showing aggregated data values in map
+* Geostatistical tool (kriging and IDW interpolation)
+* Option to update all time series from server.
+* Additional extensions available using the extension manager
+
+* Fixed issue 8417 Saving project doesn't save all files to user-specified folder
+* Fixed issue 8410 User with limited privileges cannot modify sample projects
+* Fixed issue 8414 Change database fails if current database doesn't exist
+* Fixed issue 8307 Add tool for unselecting features
+* Fixed issue 8388 File - new doesn't reset the basemap
+* Fixed issue 8363 Startup logging
+* Fixed issue 8411 Change Database - Context menu items not added to map layer
+* Fixed issue 8412 Incorrect context menu of Data Sites layer after opening project
+* Fixed issue 8363 Startup Logging
+* Fixed issue 8400 Metadata fetcher - incorrect start date and end date in search results
+* Fixed issue 8399 Metadata fetcher - improve speed
+* Fixed issue 8404 Data download fails when download directory doesn't exist
+* Fixed issue 8351 Update Unpublished Web Services Tutorial
+* Fixed issue 8391 Data Download: Time is Truncated from DateTime
+* Fixed issue 8396 Incorrect Lat / Lon display in status bar after creating new empty project
+* Fixed issue 8352 Clicking on Search Tab goes to Map Tab
+* Fixed issue 8257 Edit View - Data Filter - Show number of selected values
+* Fixed issue 8366 File - New doesn't do anything
+* Fixed issue 8371 Unhandled error when opening project file that includes delineated watersheds
+* Fixed issue 8384 Project always opens in WGS 84 Projection
+* Fixed issue 8375 Show Observation Data Values in Map and in Layer Attribute Table
+* Fixed issue 8379 Series without a Theme are not shown in the map
+* Fixed issue 8374 Edit Plug-in fails to Add Point
+* Fixed issue 8361 File association with dspx project file not working
+* Fixed issue 8370 HydroDesktop shows Welcome screen if I double-click a project file
+* Fixed issue 8279 Series Selector does not show all series
+* Fixed issue 8332 Change database - Data Sites are not shown in map
+
 Release 1.3 Build 246 (Dec 15, 2011)
 ------------------------------------
 
