@@ -167,7 +167,7 @@
             this.gbxThemes.Size = new System.Drawing.Size(355, 143);
             this.gbxThemes.TabIndex = 1;
             this.gbxThemes.TabStop = false;
-            this.gbxThemes.Text = "Select Themes";
+            this.gbxThemes.Text = "Select Data Sites Layers";
             // 
             // btnSelectNoneThemes
             // 
@@ -392,7 +392,7 @@
             this.tpAdvancedOptions.Location = new System.Drawing.Point(4, 22);
             this.tpAdvancedOptions.Name = "tpAdvancedOptions";
             this.tpAdvancedOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAdvancedOptions.Size = new System.Drawing.Size(397, 444);
+            this.tpAdvancedOptions.Size = new System.Drawing.Size(367, 438);
             this.tpAdvancedOptions.TabIndex = 1;
             this.tpAdvancedOptions.Text = "Advanced options";
             this.tpAdvancedOptions.UseVisualStyleBackColor = true;

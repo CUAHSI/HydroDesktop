@@ -522,14 +522,9 @@ namespace EPADelineation
                     {
                         //Save featureset as a MapPointLayer
                         fsset.SaveAs(_wshedpoint, true);
-                        _mapArgs.Map.Layers.Add(_wshedpoint);
-
                         IMapPointLayer point = new MapPointLayer(FeatureSet.Open(_wshedpoint));
                         point.LegendText = Path.GetFileNameWithoutExtension(_wshedpoint);           
                         _mapArgs.Map.Layers.Insert(indexToInsert, point);
-
-                        //fsset.Filename = _wshedpoint;
-                        //fsset.SaveAs(_wshedpoint, true);
                     }
                     catch (Exception ex)
                     {

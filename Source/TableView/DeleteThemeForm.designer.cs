@@ -45,11 +45,11 @@
             // btnOK
             // 
             this.btnOK.Enabled = false;
-            this.btnOK.Location = new System.Drawing.Point(105, 12);
+            this.btnOK.Location = new System.Drawing.Point(83, 12);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(87, 27);
+            this.btnOK.Size = new System.Drawing.Size(109, 27);
             this.btnOK.TabIndex = 0;
-            this.btnOK.Text = "Delete Themes";
+            this.btnOK.Text = "Delete Data Sites";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -68,9 +68,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 13);
+            this.label1.Size = new System.Drawing.Size(185, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Select the theme(s) to delete";
+            this.label1.Text = "Select the Data sites layer(s) to delete";
             // 
             // bgwMain
             // 
@@ -79,8 +79,8 @@
             // 
             // gbxProgress
             // 
-            this.gbxProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbxProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxProgress.Controls.Add(this.btnPgsCancel);
             this.gbxProgress.Controls.Add(this.pgsBar);
             this.gbxProgress.Location = new System.Drawing.Point(6, 172);
@@ -110,8 +110,8 @@
             // 
             // gbxDelete
             // 
-            this.gbxDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbxDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxDelete.Controls.Add(this.btnOK);
             this.gbxDelete.Controls.Add(this.btnCancel);
             this.gbxDelete.Location = new System.Drawing.Point(6, 172);
@@ -122,9 +122,9 @@
             // 
             // checkListThemes
             // 
-            this.checkListThemes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkListThemes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkListThemes.CheckOnClick = true;
             this.checkListThemes.FormattingEnabled = true;
             this.checkListThemes.Location = new System.Drawing.Point(6, 33);
@@ -145,7 +145,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DeleteThemeForm";
-            this.Text = "Delete Themes from Database";
+            this.Text = "Delete Data Sites from Database";
             this.Load += new System.EventHandler(this.DeleteThemeForm_Load);
             this.gbxProgress.ResumeLayout(false);
             this.gbxDelete.ResumeLayout(false);

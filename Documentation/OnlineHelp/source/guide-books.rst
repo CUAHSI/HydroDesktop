@@ -10,6 +10,7 @@ Guide Books:
 .. toctree::
    :maxdepth: 2
 
+   guide-books/Map/Map
    guide-books/Search/Search
    guide-books/ExportingTimeSeries/time-series-export
    guide-books/TableView/TableView
