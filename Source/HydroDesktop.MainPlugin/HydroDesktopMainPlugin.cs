@@ -30,6 +30,8 @@
 
         private CoordinateDisplay latLongDisplay;
 
+        private SelectionStatusDisplay selectionDisplay;
+
         public override void Activate()
         {
             //startup logging
@@ -54,6 +56,8 @@
 
             //show latitude, longitude coordinate display
             latLongDisplay = new CoordinateDisplay(App);
+            //show selection status display
+            //selectionDisplay = new SelectionStatusDisplay(App);
 
             base.Activate();
         }
