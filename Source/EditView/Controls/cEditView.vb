@@ -615,14 +615,14 @@ Public Class cEditView
                     ValueThresholdFilter(Val(txtValueLarger.Text), Val(txtValueLess.Text))
                 End If
             ElseIf txtValueLarger.Text = Nothing And Not (txtValueLess.Text = Nothing) Then
-                Dim largest As Decimal = Convert.ToDecimal(dbTools.ExecuteSingleOutput("SELECT MAX(DataValue) FROM DataValues WHERE SeriesID = " + newseriesID.ToString))
+                Dim largest As Decimal = Convert.ToDecimal(dbTools.ExecuteSingleOutput("SELECT MAX(DataValue) FROM DataValues WHERE SeriesID = " + newseriesID.ToString), CultureInfo.InvariantCulture)
                 If pTimeSeriesPlot.HasEditingCurve() Then
                     pTimeSeriesPlot.ChangeZvalueWithValueThreshold(largest, Val(txtValueLess.Text))
                 Else
                     ValueThresholdFilter(largest, Val(txtValueLess.Text))
                 End If
             ElseIf txtValueLess.Text = Nothing And Not (txtValueLarger.Text = Nothing) Then
-                Dim smallest As Decimal = Convert.ToDecimal(dbTools.ExecuteSingleOutput("SELECT MIN(DataValue) FROM DataValues WHERE SeriesID = " + newseriesID.ToString))
+                Dim smallest As Decimal = Convert.ToDecimal(dbTools.ExecuteSingleOutput("SELECT MIN(DataValue) FROM DataValues WHERE SeriesID = " + newseriesID.ToString), CultureInfo.InvariantCulture)
                 If pTimeSeriesPlot.HasEditingCurve() Then
                     pTimeSeriesPlot.ChangeZvalueWithValueThreshold(Val(txtValueLarger.Text), smallest)
                 Else
@@ -978,13 +978,13 @@ Public Class cEditView
         Dim EndDateTimeUTC As DateTime
 
         SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime"
-        BeginDateTime = dbTools.ExecuteSingleOutput(SQLstring)
+        BeginDateTime = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime DESC"
-        EndDateTime = dbTools.ExecuteSingleOutput(SQLstring)
+        EndDateTime = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY DateTimeUTC"
-        BeginDateTimeUTC = dbTools.ExecuteSingleOutput(SQLstring)
+        BeginDateTimeUTC = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
         SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY DateTimeUTC DESC"
-        EndDateTimeUTC = dbTools.ExecuteSingleOutput(SQLstring)
+        EndDateTimeUTC = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
 
         SQLstring = "UPDATE DataSeries SET ValueCount = " + SeriesRowsCount(SeriesID).ToString + ", "
         SQLstring += "BeginDateTime = '" + BeginDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', "
