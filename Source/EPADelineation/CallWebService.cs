@@ -154,7 +154,7 @@ namespace EPADelineation
                         if (reader.NodeType == XmlNodeType.Element && reader.Name == "comid")
                         {
                             string comidStr = reader.ReadInnerXml();
-                            comid = Convert.ToInt32(comidStr);
+                            comid = Convert.ToInt32(comidStr, CultureInfo.InvariantCulture);
                         }
                         if (reader.NodeType == XmlNodeType.Element && reader.Name == "fmeasure")
                         {
@@ -175,8 +175,8 @@ namespace EPADelineation
             {
 
                 string[] startpt = new string[2];
-                startpt[0] = comid.ToString();
-                startpt[1] = measure.ToString();
+                startpt[0] = comid.ToString(CultureInfo.InvariantCulture);
+                startpt[1] = measure.ToString(CultureInfo.InvariantCulture);
 
                 return startpt;
             }
@@ -199,7 +199,7 @@ namespace EPADelineation
                 "&pInputGeometrySrid=8265&pReachresolution=3&pPointIndexingMethod=Distance" +
                 "&pPointIndexingFcodeAllow=&pPointIndexingFcodeDeny=&pPointIndexingMaxDist=100" +
                 "&pPointIndexingRaindropDist=100&pOutputPathFlag=&pTolerance=5",
-                _PointIndexingUrl, stPoint.X, stPoint.Y);
+                _PointIndexingUrl, stPoint.X.ToString(CultureInfo.InvariantCulture), stPoint.Y.ToString(CultureInfo.InvariantCulture));
             return uri;
         }
 
