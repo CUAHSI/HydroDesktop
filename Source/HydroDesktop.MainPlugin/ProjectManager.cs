@@ -278,20 +278,35 @@ namespace HydroDesktop.Main
                 Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newCachePath);
                 Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
         
-                //Also save any data sites layers 
+                //Also save the files of all map layers 
                 IMapGroup dataSitesGroup = FindGroupByName(LayerConstants.SearchGroupName);
                 if (dataSitesGroup == null) return;
                 if (dataSitesGroup.Layers.Count == 0) return;
 
                 string projDir = App.SerializationManager.CurrentProjectDirectory;
-                foreach (IMapLayer layer in dataSitesGroup.Layers)
+
+                foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
                 {
-                    IFeatureLayer fl = layer as IFeatureLayer;
+                    IMapFeatureLayer fl = layer as IMapFeatureLayer;
                     if (fl != null)
                     {
-                        fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)),true);
+                        fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)), true);
+                    }
+                    IMapRasterLayer rl = layer as IMapRasterLayer;
+                    if (rl != null)
+                    {
+                        rl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(rl.DataSet.Filename)));
                     }
                 }
+
+                //foreach (IMapLayer layer in dataSitesGroup.Layers)
+                //{
+                //    IFeatureLayer fl = layer as IFeatureLayer;
+                //    if (fl != null)
+                //    {
+                //        fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)),true);
+                //    }
+                //}
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
 
