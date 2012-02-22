@@ -30,6 +30,8 @@
 
         private CoordinateDisplay latLongDisplay;
 
+        private SelectionStatusDisplay selectionDisplay;
+
         public override void Activate()
         {
             //startup logging
@@ -54,6 +56,8 @@
 
             //show latitude, longitude coordinate display
             latLongDisplay = new CoordinateDisplay(App);
+            //show selection status display
+            //selectionDisplay = new SelectionStatusDisplay(App);
 
             base.Activate();
         }
@@ -63,7 +67,7 @@
             //write the log file from trace
             Trace.Flush();
             
-            var projectExists = App.SerializationManager.CurrentProjectFile != null;
+            var projectExists = (!String.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile));
             if (!projectExists)
             {
                 var res = MessageBox.Show(string.Format("Save changes to new project?"),
@@ -205,7 +209,14 @@
 
         void SerializationManager_NewProjectCreated(object sender, SerializingEventArgs e)
         {
-            //throw new NotImplementedException();
+            SetupDatabases();
+            Shell.Text = HYDRODESKTOP_NAME;
+            //setup new db information
+            //SeriesControl.SetupDatabase();
+            if (App.Map.Projection != null)
+            {
+                latLongDisplay.MapProjectionString = App.Map.Projection.ToEsriString();
+            }
         }
 
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
