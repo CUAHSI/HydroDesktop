@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Text;
 using System.Diagnostics;
 using HydroDesktop.Interfaces;
@@ -735,6 +736,27 @@ namespace HydroDesktop.Database
             Debug.WriteLine("LoadTable:" + sqlQuery + " " + _sw.ElapsedMilliseconds + "ms");
 
             return dt;
+        }
+
+        public List<T> Read<T>(string query, Func<DbDataReader, T> rowReader)
+        {
+            var result = new List<T>();
+            var cmd = CreateCommand(query);
+            try
+            {
+                cmd.Connection.Open();
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(rowReader(reader));
+                }
+                reader.Close();
+            }
+            finally
+            {
+                cmd.Connection.Close();
+                cmd.Dispose();
+            }
         }
 
         /// <summary>

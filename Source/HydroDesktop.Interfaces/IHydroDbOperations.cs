@@ -179,6 +179,15 @@ namespace HydroDesktop.Interfaces
         /// <param name="sqlQuery">the SQL query string</param>
         /// <returns>The resulting data table</returns>
         DataTable LoadTable(string tableName, string sqlQuery);
+
+        /// <summary>
+        /// Gets the collection of entities
+        /// </summary>
+        /// <typeparam name="T">Type of collection</typeparam>
+        /// <param name="query">Query to select any data</param>
+        /// <param name="rowReader">Delegate that converted row into entity</param>
+        /// <returns>Collection of entities</returns>
+        List<T> Read<T>(string query, Func<DbDataReader, T> rowReader);
         
 
         /// <summary>
