@@ -86,15 +86,20 @@ namespace DataImport.CommonPages
                 var cd = form.ColumnData;
                 cDatas[index] = cd;
 
-                // Apply site to all columns if need
-                if (cd.ApplySiteToAllColumns)
+                // Apply site/variable to all columns if need
+                for (int k = 0; k < cDatas.Count; k++)
                 {
-                    for (int k = 0; k < cDatas.Count; k++)
-                    {
-                        if (k == index) continue;
+                    if (k == index) continue;
 
-                        var option = cDatas[k];
-                        option.Site = (Site)cd.Site.Clone();
+                    var option = cDatas[k];
+
+                    if (cd.ApplySiteToAllColumns)
+                    {
+                        option.Site = (Site) cd.Site.Clone();
+                    }
+                    if (cd.ApplyVariableToAllColumns)
+                    {
+                        option.Variable = (Variable) cd.Variable.Clone();
                     }
                 }
             }

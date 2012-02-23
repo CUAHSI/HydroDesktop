@@ -2,7 +2,6 @@
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -33,13 +32,14 @@ namespace DataImport.CommonPages
 
             _columnData = columnData;
             InitializeComponent();
-
-            if (DesignMode) return;
+            
+            if (this.IsDesignMode()) return;
 
             base.Text = string.Format("Column properties - {0}", _columnData.ColumnName);
 
             // Set bindings.......
-            chApplyToAllCoumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
+            chApplySiteToAllCoumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
+            chApplyVariableToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyVariableToAllColumns);
 
             // Site
             siteView1.ReadOnly = true;

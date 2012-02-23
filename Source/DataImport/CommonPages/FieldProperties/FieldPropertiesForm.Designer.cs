@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tbProperties = new System.Windows.Forms.TabControl();
             this.tbSite = new System.Windows.Forms.TabPage();
+            this.chApplySiteToAllCoumns = new System.Windows.Forms.CheckBox();
             this.btnCreateNewSite = new System.Windows.Forms.Button();
             this.siteView1 = new DataImport.CommonPages.SiteView();
             this.cmbSites = new System.Windows.Forms.ComboBox();
@@ -45,7 +46,7 @@
             this.btnDetails = new System.Windows.Forms.Button();
             this.sitesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.variablesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.chApplyToAllCoumns = new System.Windows.Forms.CheckBox();
+            this.chApplyVariableToAllColumns = new System.Windows.Forms.CheckBox();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
@@ -63,12 +64,12 @@
             this.tbProperties.Location = new System.Drawing.Point(12, 12);
             this.tbProperties.Name = "tbProperties";
             this.tbProperties.SelectedIndex = 0;
-            this.tbProperties.Size = new System.Drawing.Size(449, 345);
+            this.tbProperties.Size = new System.Drawing.Size(449, 377);
             this.tbProperties.TabIndex = 0;
             // 
             // tbSite
             // 
-            this.tbSite.Controls.Add(this.chApplyToAllCoumns);
+            this.tbSite.Controls.Add(this.chApplySiteToAllCoumns);
             this.tbSite.Controls.Add(this.btnCreateNewSite);
             this.tbSite.Controls.Add(this.siteView1);
             this.tbSite.Controls.Add(this.cmbSites);
@@ -76,10 +77,20 @@
             this.tbSite.Location = new System.Drawing.Point(4, 22);
             this.tbSite.Name = "tbSite";
             this.tbSite.Padding = new System.Windows.Forms.Padding(3);
-            this.tbSite.Size = new System.Drawing.Size(441, 319);
+            this.tbSite.Size = new System.Drawing.Size(441, 351);
             this.tbSite.TabIndex = 0;
             this.tbSite.Text = "Site";
             this.tbSite.UseVisualStyleBackColor = true;
+            // 
+            // chApplySiteToAllCoumns
+            // 
+            this.chApplySiteToAllCoumns.AutoSize = true;
+            this.chApplySiteToAllCoumns.Location = new System.Drawing.Point(10, 231);
+            this.chApplySiteToAllCoumns.Name = "chApplySiteToAllCoumns";
+            this.chApplySiteToAllCoumns.Size = new System.Drawing.Size(157, 17);
+            this.chApplySiteToAllCoumns.TabIndex = 4;
+            this.chApplySiteToAllCoumns.Text = "Apply this site to all columns";
+            this.chApplySiteToAllCoumns.UseVisualStyleBackColor = true;
             // 
             // btnCreateNewSite
             // 
@@ -93,13 +104,12 @@
             // 
             // siteView1
             // 
-            this.siteView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.siteView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.siteView1.Location = new System.Drawing.Point(10, 39);
+            this.siteView1.Location = new System.Drawing.Point(10, 37);
             this.siteView1.Name = "siteView1";
             this.siteView1.ReadOnly = false;
-            this.siteView1.Size = new System.Drawing.Size(414, 186);
+            this.siteView1.Size = new System.Drawing.Size(414, 176);
             this.siteView1.TabIndex = 2;
             // 
             // cmbSites
@@ -122,6 +132,7 @@
             // 
             // tbVariable
             // 
+            this.tbVariable.Controls.Add(this.chApplyVariableToAllColumns);
             this.tbVariable.Controls.Add(this.btnCreateNewVariable);
             this.tbVariable.Controls.Add(this.cmbVariables);
             this.tbVariable.Controls.Add(this.lblSelectVariable);
@@ -129,7 +140,7 @@
             this.tbVariable.Location = new System.Drawing.Point(4, 22);
             this.tbVariable.Name = "tbVariable";
             this.tbVariable.Padding = new System.Windows.Forms.Padding(3);
-            this.tbVariable.Size = new System.Drawing.Size(441, 319);
+            this.tbVariable.Size = new System.Drawing.Size(441, 351);
             this.tbVariable.TabIndex = 1;
             this.tbVariable.Text = "Variable";
             this.tbVariable.UseVisualStyleBackColor = true;
@@ -164,20 +175,19 @@
             // 
             // variableView1
             // 
-            this.variableView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.variableView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.variableView1.Location = new System.Drawing.Point(10, 39);
             this.variableView1.Name = "variableView1";
             this.variableView1.ReadOnly = false;
-            this.variableView1.Size = new System.Drawing.Size(415, 261);
+            this.variableView1.Size = new System.Drawing.Size(415, 276);
             this.variableView1.TabIndex = 4;
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(305, 367);
+            this.btnOK.Location = new System.Drawing.Point(305, 399);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 1;
@@ -189,7 +199,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(386, 367);
+            this.btnCancel.Location = new System.Drawing.Point(386, 399);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -199,7 +209,7 @@
             // btnDetails
             // 
             this.btnDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDetails.Location = new System.Drawing.Point(12, 367);
+            this.btnDetails.Location = new System.Drawing.Point(12, 399);
             this.btnDetails.Name = "btnDetails";
             this.btnDetails.Size = new System.Drawing.Size(75, 23);
             this.btnDetails.TabIndex = 3;
@@ -207,21 +217,21 @@
             this.btnDetails.UseVisualStyleBackColor = true;
             this.btnDetails.Click += new System.EventHandler(this.btnDetails_Click);
             // 
-            // chApplyToAllCoumns
+            // chApplyVariableToAllColumns
             // 
-            this.chApplyToAllCoumns.AutoSize = true;
-            this.chApplyToAllCoumns.Location = new System.Drawing.Point(10, 231);
-            this.chApplyToAllCoumns.Name = "chApplyToAllCoumns";
-            this.chApplyToAllCoumns.Size = new System.Drawing.Size(157, 17);
-            this.chApplyToAllCoumns.TabIndex = 4;
-            this.chApplyToAllCoumns.Text = "Apply this site to all columns";
-            this.chApplyToAllCoumns.UseVisualStyleBackColor = true;
+            this.chApplyVariableToAllColumns.AutoSize = true;
+            this.chApplyVariableToAllColumns.Location = new System.Drawing.Point(10, 321);
+            this.chApplyVariableToAllColumns.Name = "chApplyVariableToAllColumns";
+            this.chApplyVariableToAllColumns.Size = new System.Drawing.Size(178, 17);
+            this.chApplyVariableToAllColumns.TabIndex = 6;
+            this.chApplyVariableToAllColumns.Text = "Apply this variable to all columns";
+            this.chApplyVariableToAllColumns.UseVisualStyleBackColor = true;
             // 
             // FieldPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(473, 407);
+            this.ClientSize = new System.Drawing.Size(473, 439);
             this.Controls.Add(this.btnDetails);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
@@ -260,6 +270,7 @@
         private System.Windows.Forms.Button btnCreateNewVariable;
         private System.Windows.Forms.BindingSource sitesBindingSource;
         private System.Windows.Forms.BindingSource variablesBindingSource;
-        private System.Windows.Forms.CheckBox chApplyToAllCoumns;
+        private System.Windows.Forms.CheckBox chApplySiteToAllCoumns;
+        private System.Windows.Forms.CheckBox chApplyVariableToAllColumns;
     }
 }

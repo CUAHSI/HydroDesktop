@@ -92,6 +92,15 @@ namespace HydroDesktop.Interfaces.ObjectModel
             return Name;
         }
 
+        protected override void OnCopy(BaseEntity copy)
+        {
+            base.OnCopy(copy);
+
+            var entity = (Variable)copy;
+            if (VariableUnit != null) entity.VariableUnit = (Unit) VariableUnit.Clone();
+            if (TimeUnit != null) entity.TimeUnit = (Unit) TimeUnit.Clone();
+        }
+
         #region Equality
         /// <summary>
         /// Two units are considered equal if they have the same unit code
