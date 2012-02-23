@@ -213,6 +213,8 @@ namespace DataImport.CommonPages
                 error = "Variable should have a DataType";
             else if (String.IsNullOrEmpty(variable.ValueType))
                 error = "Variable should have a ValueType";
+            else if (String.IsNullOrEmpty(variable.SampleMedium))
+                error = "Variable should have a SampleMedium";
             else
                 error = string.Empty;
 

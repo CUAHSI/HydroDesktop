@@ -25,6 +25,9 @@ namespace DataImport.DataTableImport
             {
                 var site = cData.Site;
                 var variable = cData.Variable;
+                var method = cData.Method;
+                var source = cData.Source;
+                var qualityControl = cData.QualityControlLevel;
 
                 //
                 OverwriteOptions options;
@@ -41,7 +44,7 @@ namespace DataImport.DataTableImport
                     options = OverwriteOptions.Overwrite;
                 }
 
-                var series = new Series(site, variable, null, null, null);
+                var series = new Series(site, variable, method, qualityControl, source);
                 toImport.Add(new Tuple<ColumnInfo, Series, OverwriteOptions>(cData, series, options));
             }
 
