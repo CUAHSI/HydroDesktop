@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Windows.Forms;
 
@@ -42,6 +43,23 @@ namespace HydroDesktop.Common.Tools
             control.DataBindings.Add(new Binding(NameHelper.Name(controlProperty),
                                                  source, NameHelper.Name(sourceProperty, true),
                                                  true, DataSourceUpdateMode.OnPropertyChanged));
+        }
+
+        /// <summary>
+        /// Detecting Design Mode In Visual Studio
+        /// </summary>
+        /// <param name="control">Control</param>
+        /// <returns>True - Design Mode, otherwise - False.</returns>
+        public static bool IsDesignMode(this Control control)
+        {
+            var isDesignMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
+            if (isDesignMode) return true;
+
+            var site = control.Site;
+            if (site != null)
+                isDesignMode = site.DesignMode;
+
+            return isDesignMode;
         }
     }
 }

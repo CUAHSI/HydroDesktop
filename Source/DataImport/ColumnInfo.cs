@@ -9,6 +9,7 @@ namespace DataImport
         public int ColumnIndex { get; set; }
         public string ColumnName { get; set; }
         public bool ApplySiteToAllColumns { get; set; }
+        public bool ApplyVariableToAllColumns { get; set; }
 
         public Site Site { get; set; }
         public Variable Variable { get; set; }

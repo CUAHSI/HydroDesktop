@@ -30,7 +30,7 @@ namespace DataImport.CommonPages
         {
             InitializeComponent();
 
-            if (DesignMode) return;
+            if (this.IsDesignMode()) return;
 
             Entity = new Variable
                          {
