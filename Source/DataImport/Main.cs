@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DataImport;
@@ -55,7 +56,7 @@ namespace ImportFromWaterML
                                     new WaterMLImporter(),
                                 };
 
-            using(var dialog = new OpenFileDialog())
+            using (var dialog = new OpenFileDialog())
             {
                 var filter = string.Join("|", importers.Select(item => item.Filter)) +
                              "|All files (*.*)|*.*";
@@ -69,18 +70,17 @@ namespace ImportFromWaterML
                 if (dialog.ShowDialog() != DialogResult.OK) return;
 
                 var fileName = dialog.FileName;
-                foreach (var imp in importers.Where(imp => imp.CanImportFromFile(fileName)))
-                {
-                    var context = new WizardContext();
-                    context.Importer = imp;
-                    context.Settings = imp.GetDefaultSettings();
-                    context.Settings.PathToFile = fileName;
+                var importer = importers.FirstOrDefault(imp => imp.CanImportFromFile(fileName)) ??
+                               importers.OfType<TxtImporter>().First();
+                Debug.Assert(importer != null);
 
-                    var wizard = new ImportSeriesWizard(context);
-                    wizard.ShowDialog();
-                    
-                    break;
-                }
+                var context = new WizardContext();
+                context.Importer = importer;
+                context.Settings = importer.GetDefaultSettings();
+                context.Settings.PathToFile = fileName;
+
+                var wizard = new ImportSeriesWizard(context);
+                wizard.ShowDialog();
             }
         }
 
