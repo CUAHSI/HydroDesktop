@@ -142,7 +142,10 @@ namespace DataImport.CommonPages
                 {
                     ColumnIndex = i,
                     ColumnName = columnName,
-                    ImportColumn = false
+                    ImportColumn = false,
+                    Method = Method.Unknown,
+                    Source = Source.Unknown,
+                    QualityControlLevel = QualityControlLevel.Unknown,
                 };
                 _settings.ColumnDatas.Add(columnData);
             }
