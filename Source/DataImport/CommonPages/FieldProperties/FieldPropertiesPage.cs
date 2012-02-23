@@ -116,7 +116,7 @@ namespace DataImport.CommonPages
                 {
                     ColumnIndex = i,
                     ColumnName = columnName,
-                    ImportColumn = true
+                    ImportColumn = false
                 };
                 _settings.ColumnDatas.Add(columnData);
             }
