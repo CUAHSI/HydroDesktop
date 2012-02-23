@@ -38,7 +38,6 @@
             this.lblTimeUnits = new System.Windows.Forms.Label();
             this.tbDataType = new System.Windows.Forms.TextBox();
             this.lblDataType = new System.Windows.Forms.Label();
-            this.tbValueType = new System.Windows.Forms.TextBox();
             this.lblValueType = new System.Windows.Forms.Label();
             this.lblTimeSupport = new System.Windows.Forms.Label();
             this.nudTimeSupport = new DataImport.CommonPages.NumericUpDownEx();
@@ -46,6 +45,7 @@
             this.lblNoDataValue = new System.Windows.Forms.Label();
             this.cmbName = new System.Windows.Forms.ComboBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.cmbValueType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -136,15 +136,6 @@
             this.lblDataType.TabIndex = 8;
             this.lblDataType.Text = "Data type";
             // 
-            // tbValueType
-            // 
-            this.tbValueType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbValueType.Location = new System.Drawing.Point(103, 128);
-            this.tbValueType.Name = "tbValueType";
-            this.tbValueType.Size = new System.Drawing.Size(143, 20);
-            this.tbValueType.TabIndex = 4;
-            // 
             // lblValueType
             // 
             this.lblValueType.AutoSize = true;
@@ -222,16 +213,27 @@
             this.cmbName.Size = new System.Drawing.Size(143, 21);
             this.cmbName.TabIndex = 0;
             // 
+            // cmbValueType
+            // 
+            this.cmbValueType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbValueType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbValueType.FormattingEnabled = true;
+            this.cmbValueType.Location = new System.Drawing.Point(103, 125);
+            this.cmbValueType.Name = "cmbValueType";
+            this.cmbValueType.Size = new System.Drawing.Size(143, 21);
+            this.cmbValueType.TabIndex = 15;
+            // 
             // VariableView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cmbValueType);
             this.Controls.Add(this.cmbName);
             this.Controls.Add(this.nudNoDataValue);
             this.Controls.Add(this.lblNoDataValue);
             this.Controls.Add(this.nudTimeSupport);
             this.Controls.Add(this.lblTimeSupport);
-            this.Controls.Add(this.tbValueType);
             this.Controls.Add(this.lblValueType);
             this.Controls.Add(this.tbDataType);
             this.Controls.Add(this.lblDataType);
@@ -264,12 +266,12 @@
         private System.Windows.Forms.Label lblTimeUnits;
         private System.Windows.Forms.TextBox tbDataType;
         private System.Windows.Forms.Label lblDataType;
-        private System.Windows.Forms.TextBox tbValueType;
         private System.Windows.Forms.Label lblValueType;
         private System.Windows.Forms.Label lblTimeSupport;
         private NumericUpDownEx nudTimeSupport;
         private NumericUpDownEx nudNoDataValue;
         private System.Windows.Forms.Label lblNoDataValue;
         private System.Windows.Forms.ComboBox cmbName;
+        private System.Windows.Forms.ComboBox cmbValueType;
     }
 }
