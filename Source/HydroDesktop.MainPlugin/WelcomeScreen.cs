@@ -12,6 +12,7 @@ using DotSpatial.Projections;
 using HydroDesktop.Configuration;
 using System.Reflection;
 using HydroDesktop.Help;
+using System.Diagnostics;
 
 namespace HydroDesktop.Main
 {
@@ -251,22 +252,79 @@ namespace HydroDesktop.Main
                 }
             }
 
-            //also add the project files from hd_sample_projects folder
-            string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SampleProjectsDirectory);
-            if (Directory.Exists(projDir))
-            {
-                string[] projFiles = Directory.GetFiles(projDir, "*.dspx", SearchOption.AllDirectories);
-                foreach (string projFile in projFiles)
-                {
-                    ProjectFileInfo projFileInfo = new ProjectFileInfo(projFile);
-                    if (!RecentProjectFiles.Contains(projFileInfo))
-                        RecentProjectFiles.Add(projFileInfo);
-                }
-            }
+            SetupSampleProjects();
 
             bsRecentFiles.ResetBindings(false);
             lstRecentProjects.SelectedIndex = -1;
         }
+
+        private void SetupSampleProjects()
+        {
+            string userProjDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HydroDesktop");
+
+            if (!Directory.Exists(userProjDir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(userProjDir);
+                }
+                catch (Exception ex)
+                {
+                    Trace.Write("error creating directory " + userProjDir + " " + ex.Message);
+                }
+            }
+            if (!Directory.Exists(userProjDir))
+            {
+                try
+                {
+                    userProjDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "HydroDesktop");
+                    Directory.CreateDirectory(userProjDir);
+                }
+                catch (Exception ex)
+                {
+                    Trace.Write("error creating directory " + userProjDir + " " + ex.Message);
+                }
+            }
+            if (!Directory.Exists(userProjDir))
+            {
+                try
+                {
+                    userProjDir = Path.Combine(Path.GetTempPath(), "HydroDesktop");
+                    Directory.CreateDirectory(userProjDir);
+                }
+                catch { }
+            }
+
+            if (Directory.Exists(userProjDir))
+            {
+                //also add the project files from hd_sample_projects folder
+                string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SampleProjectsDirectory);
+
+                string userSampleProjectDir = Path.Combine(userProjDir, "hydroDesktop_sample_projects");
+                if (!Directory.Exists(userSampleProjectDir))
+                {
+                    foreach (string dirPath in Directory.GetDirectories(projDir, "*", SearchOption.AllDirectories))
+                        Directory.CreateDirectory(dirPath.Replace(projDir, userSampleProjectDir));
+
+                    //Copy all the files
+                    foreach (string newPath in Directory.GetFiles(projDir, "*.*",
+                        SearchOption.AllDirectories))
+                        File.Copy(newPath, newPath.Replace(projDir, userSampleProjectDir));
+
+                }
+                if (Directory.Exists(userSampleProjectDir))
+                {
+                    string[] projFiles = Directory.GetFiles(userSampleProjectDir, "*.dspx", SearchOption.AllDirectories);
+                    foreach (string projFile in projFiles)
+                    {
+                        ProjectFileInfo projFileInfo = new ProjectFileInfo(projFile);
+                        if (!RecentProjectFiles.Contains(projFileInfo))
+                            RecentProjectFiles.Add(projFileInfo);
+                    }
+                }
+            }
+        }
+
         #endregion
 
         private void linkLabelQuickStart_click(object sender, LinkLabelLinkClickedEventArgs e)
