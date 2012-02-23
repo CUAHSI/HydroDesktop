@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Forms;
 using Wizard.UI;
 
 namespace DataImport.Csv
@@ -44,6 +45,18 @@ namespace DataImport.Csv
             SetWizardButtons(WizardButtons.Next);
 
             ShowPreview();
+        }
+
+        private void FormatOptionsPage_WizardNext(object sender, WizardPageEventArgs e)
+        {
+            if (string.IsNullOrEmpty(tbSeparator.Text))
+            {
+                MessageBox.Show(this, "Decimal separator should be non-empty.", "Error", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                e.Cancel = true;
+                return;
+            }
+            _settings.ValuesNumberDecimalSeparator = tbSeparator.Text;
         }
 
         #endregion

@@ -31,6 +31,8 @@
             this.lblExcelSheet = new System.Windows.Forms.Label();
             this.cmbExcelSheet = new System.Windows.Forms.ComboBox();
             this.dgvPreview = new System.Windows.Forms.DataGridView();
+            this.tbSeparator = new System.Windows.Forms.TextBox();
+            this.lblDecimalSeparator = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,20 +74,42 @@
             this.dgvPreview.Size = new System.Drawing.Size(505, 216);
             this.dgvPreview.TabIndex = 11;
             // 
+            // tbSeparator
+            // 
+            this.tbSeparator.Location = new System.Drawing.Point(335, 75);
+            this.tbSeparator.Name = "tbSeparator";
+            this.tbSeparator.Size = new System.Drawing.Size(33, 20);
+            this.tbSeparator.TabIndex = 15;
+            this.tbSeparator.Text = ".";
+            // 
+            // lblDecimalSeparator
+            // 
+            this.lblDecimalSeparator.AutoSize = true;
+            this.lblDecimalSeparator.Location = new System.Drawing.Point(232, 78);
+            this.lblDecimalSeparator.Name = "lblDecimalSeparator";
+            this.lblDecimalSeparator.Size = new System.Drawing.Size(94, 13);
+            this.lblDecimalSeparator.TabIndex = 14;
+            this.lblDecimalSeparator.Text = "Decimal Separator";
+            // 
             // FormatOptionsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tbSeparator);
+            this.Controls.Add(this.lblDecimalSeparator);
             this.Controls.Add(this.dgvPreview);
             this.Controls.Add(this.lblExcelSheet);
             this.Controls.Add(this.cmbExcelSheet);
             this.Name = "FormatOptionsPage";
             this.Size = new System.Drawing.Size(540, 342);
             this.SetActive += new System.ComponentModel.CancelEventHandler(this.FormatOptionsPage_SetActive);
+            this.WizardNext += new Wizard.UI.WizardPageEventHandler(this.FormatOptionsPage_WizardNext);
             this.Controls.SetChildIndex(this.cmbExcelSheet, 0);
             this.Controls.SetChildIndex(this.lblExcelSheet, 0);
             this.Controls.SetChildIndex(this.Banner, 0);
             this.Controls.SetChildIndex(this.dgvPreview, 0);
+            this.Controls.SetChildIndex(this.lblDecimalSeparator, 0);
+            this.Controls.SetChildIndex(this.tbSeparator, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -97,5 +121,7 @@
         private System.Windows.Forms.Label lblExcelSheet;
         private System.Windows.Forms.ComboBox cmbExcelSheet;
         private System.Windows.Forms.DataGridView dgvPreview;
+        private System.Windows.Forms.TextBox tbSeparator;
+        private System.Windows.Forms.Label lblDecimalSeparator;
     }
 }

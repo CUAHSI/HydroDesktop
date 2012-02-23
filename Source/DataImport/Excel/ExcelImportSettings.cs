@@ -25,6 +25,7 @@ namespace DataImport.Excel
         public string DateTimeColumn { get; set; }
         public DataTable Preview { get; set; }
         public DataTable Data { get; set; }
+        public string ValuesNumberDecimalSeparator { get; set; }
 
         #endregion
     }
