@@ -40,6 +40,9 @@ namespace DataImport.CommonPages
             // Set bindings.......
             chApplySiteToAllCoumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
             chApplyVariableToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyVariableToAllColumns);
+            chApplySourceToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySourceToAllColumns);
+            chApplyMethodToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyMethodToAllColumns);
+            chApplyQualityControlToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyQualityControlToAllColumns);
 
             // Site
             siteView1.ReadOnly = true;
