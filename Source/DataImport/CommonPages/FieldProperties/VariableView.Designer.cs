@@ -46,6 +46,8 @@
             this.nudNoDataValue = new DataImport.CommonPages.NumericUpDownEx();
             this.nudTimeSupport = new DataImport.CommonPages.NumericUpDownEx();
             this.cmbDataType = new System.Windows.Forms.ComboBox();
+            this.cmbSampleMedium = new System.Windows.Forms.ComboBox();
+            this.lblSampleMedium = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).BeginInit();
@@ -104,7 +106,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbTimeUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTimeUnits.FormattingEnabled = true;
-            this.cmbTimeUnits.Location = new System.Drawing.Point(103, 186);
+            this.cmbTimeUnits.Location = new System.Drawing.Point(103, 210);
             this.cmbTimeUnits.Name = "cmbTimeUnits";
             this.cmbTimeUnits.Size = new System.Drawing.Size(143, 21);
             this.cmbTimeUnits.TabIndex = 6;
@@ -112,7 +114,7 @@
             // lblTimeUnits
             // 
             this.lblTimeUnits.AutoSize = true;
-            this.lblTimeUnits.Location = new System.Drawing.Point(13, 189);
+            this.lblTimeUnits.Location = new System.Drawing.Point(13, 213);
             this.lblTimeUnits.Name = "lblTimeUnits";
             this.lblTimeUnits.Size = new System.Drawing.Size(55, 13);
             this.lblTimeUnits.TabIndex = 6;
@@ -139,7 +141,7 @@
             // lblTimeSupport
             // 
             this.lblTimeSupport.AutoSize = true;
-            this.lblTimeSupport.Location = new System.Drawing.Point(13, 160);
+            this.lblTimeSupport.Location = new System.Drawing.Point(13, 184);
             this.lblTimeSupport.Name = "lblTimeSupport";
             this.lblTimeSupport.Size = new System.Drawing.Size(68, 13);
             this.lblTimeSupport.TabIndex = 12;
@@ -148,7 +150,7 @@
             // lblNoDataValue
             // 
             this.lblNoDataValue.AutoSize = true;
-            this.lblNoDataValue.Location = new System.Drawing.Point(13, 218);
+            this.lblNoDataValue.Location = new System.Drawing.Point(13, 242);
             this.lblNoDataValue.Name = "lblNoDataValue";
             this.lblNoDataValue.Size = new System.Drawing.Size(74, 13);
             this.lblNoDataValue.TabIndex = 14;
@@ -180,7 +182,7 @@
             this.nudNoDataValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudNoDataValue.FullReadOnly = false;
-            this.nudNoDataValue.Location = new System.Drawing.Point(103, 216);
+            this.nudNoDataValue.Location = new System.Drawing.Point(103, 240);
             this.nudNoDataValue.Maximum = new decimal(new int[] {
             -1,
             -1,
@@ -200,7 +202,7 @@
             this.nudTimeSupport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudTimeSupport.FullReadOnly = false;
-            this.nudTimeSupport.Location = new System.Drawing.Point(103, 158);
+            this.nudTimeSupport.Location = new System.Drawing.Point(103, 182);
             this.nudTimeSupport.Maximum = new decimal(new int[] {
             -1,
             -1,
@@ -226,10 +228,32 @@
             this.cmbDataType.Size = new System.Drawing.Size(143, 21);
             this.cmbDataType.TabIndex = 16;
             // 
+            // cmbSampleMedium
+            // 
+            this.cmbSampleMedium.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbSampleMedium.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSampleMedium.FormattingEnabled = true;
+            this.cmbSampleMedium.Location = new System.Drawing.Point(103, 153);
+            this.cmbSampleMedium.Name = "cmbSampleMedium";
+            this.cmbSampleMedium.Size = new System.Drawing.Size(143, 21);
+            this.cmbSampleMedium.TabIndex = 18;
+            // 
+            // lblSampleMedium
+            // 
+            this.lblSampleMedium.AutoSize = true;
+            this.lblSampleMedium.Location = new System.Drawing.Point(14, 159);
+            this.lblSampleMedium.Name = "lblSampleMedium";
+            this.lblSampleMedium.Size = new System.Drawing.Size(82, 13);
+            this.lblSampleMedium.TabIndex = 17;
+            this.lblSampleMedium.Text = "Sample Medium";
+            // 
             // VariableView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cmbSampleMedium);
+            this.Controls.Add(this.lblSampleMedium);
             this.Controls.Add(this.cmbDataType);
             this.Controls.Add(this.cmbValueType);
             this.Controls.Add(this.cmbName);
@@ -247,7 +271,7 @@
             this.Controls.Add(this.lblCode);
             this.Controls.Add(this.lblName);
             this.Name = "VariableView";
-            this.Size = new System.Drawing.Size(260, 251);
+            this.Size = new System.Drawing.Size(260, 277);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).EndInit();
@@ -275,5 +299,7 @@
         private System.Windows.Forms.ComboBox cmbName;
         private System.Windows.Forms.ComboBox cmbValueType;
         private System.Windows.Forms.ComboBox cmbDataType;
+        private System.Windows.Forms.ComboBox cmbSampleMedium;
+        private System.Windows.Forms.Label lblSampleMedium;
     }
 }

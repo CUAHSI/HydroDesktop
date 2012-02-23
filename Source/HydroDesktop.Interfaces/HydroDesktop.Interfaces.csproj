@@ -100,6 +100,7 @@
     <Compile Include="ObjectModel\QueryInfo.cs" />
     <Compile Include="ObjectModel\RuleViolation.cs" />
     <Compile Include="ObjectModel\Sample.cs" />
+    <Compile Include="ObjectModel\SampleMediumCV.cs" />
     <Compile Include="ObjectModel\Series.cs" />
     <Compile Include="ObjectModel\SeriesDataCart.cs" />
     <Compile Include="ObjectModel\SeriesMetadata.cs" />
