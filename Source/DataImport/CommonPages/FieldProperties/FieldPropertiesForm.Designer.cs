@@ -37,19 +37,27 @@
             this.cmbSites = new System.Windows.Forms.ComboBox();
             this.lblSelectSite = new System.Windows.Forms.Label();
             this.tbVariable = new System.Windows.Forms.TabPage();
+            this.chApplyVariableToAllColumns = new System.Windows.Forms.CheckBox();
             this.btnCreateNewVariable = new System.Windows.Forms.Button();
             this.cmbVariables = new System.Windows.Forms.ComboBox();
             this.lblSelectVariable = new System.Windows.Forms.Label();
             this.variableView1 = new DataImport.CommonPages.VariableView();
+            this.tpSource = new System.Windows.Forms.TabPage();
+            this.sourceView1 = new DataImport.CommonPages.SourceView();
+            this.tpMethod = new System.Windows.Forms.TabPage();
+            this.methodView1 = new DataImport.CommonPages.MethodView();
+            this.tpQualityControl = new System.Windows.Forms.TabPage();
+            this.qualityControlLevelView1 = new DataImport.CommonPages.QualityControlLevelView();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnDetails = new System.Windows.Forms.Button();
             this.sitesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.variablesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.chApplyVariableToAllColumns = new System.Windows.Forms.CheckBox();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
+            this.tpSource.SuspendLayout();
+            this.tpMethod.SuspendLayout();
+            this.tpQualityControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sitesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.variablesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -61,10 +69,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbProperties.Controls.Add(this.tbSite);
             this.tbProperties.Controls.Add(this.tbVariable);
+            this.tbProperties.Controls.Add(this.tpSource);
+            this.tbProperties.Controls.Add(this.tpMethod);
+            this.tbProperties.Controls.Add(this.tpQualityControl);
             this.tbProperties.Location = new System.Drawing.Point(12, 12);
             this.tbProperties.Name = "tbProperties";
             this.tbProperties.SelectedIndex = 0;
-            this.tbProperties.Size = new System.Drawing.Size(449, 377);
+            this.tbProperties.Size = new System.Drawing.Size(449, 415);
             this.tbProperties.TabIndex = 0;
             // 
             // tbSite
@@ -77,7 +88,7 @@
             this.tbSite.Location = new System.Drawing.Point(4, 22);
             this.tbSite.Name = "tbSite";
             this.tbSite.Padding = new System.Windows.Forms.Padding(3);
-            this.tbSite.Size = new System.Drawing.Size(441, 351);
+            this.tbSite.Size = new System.Drawing.Size(441, 389);
             this.tbSite.TabIndex = 0;
             this.tbSite.Text = "Site";
             this.tbSite.UseVisualStyleBackColor = true;
@@ -140,10 +151,20 @@
             this.tbVariable.Location = new System.Drawing.Point(4, 22);
             this.tbVariable.Name = "tbVariable";
             this.tbVariable.Padding = new System.Windows.Forms.Padding(3);
-            this.tbVariable.Size = new System.Drawing.Size(441, 351);
+            this.tbVariable.Size = new System.Drawing.Size(441, 389);
             this.tbVariable.TabIndex = 1;
             this.tbVariable.Text = "Variable";
             this.tbVariable.UseVisualStyleBackColor = true;
+            // 
+            // chApplyVariableToAllColumns
+            // 
+            this.chApplyVariableToAllColumns.AutoSize = true;
+            this.chApplyVariableToAllColumns.Location = new System.Drawing.Point(10, 321);
+            this.chApplyVariableToAllColumns.Name = "chApplyVariableToAllColumns";
+            this.chApplyVariableToAllColumns.Size = new System.Drawing.Size(178, 17);
+            this.chApplyVariableToAllColumns.TabIndex = 6;
+            this.chApplyVariableToAllColumns.Text = "Apply this variable to all columns";
+            this.chApplyVariableToAllColumns.UseVisualStyleBackColor = true;
             // 
             // btnCreateNewVariable
             // 
@@ -183,11 +204,72 @@
             this.variableView1.Size = new System.Drawing.Size(415, 276);
             this.variableView1.TabIndex = 4;
             // 
+            // tpSource
+            // 
+            this.tpSource.Controls.Add(this.sourceView1);
+            this.tpSource.Location = new System.Drawing.Point(4, 22);
+            this.tpSource.Name = "tpSource";
+            this.tpSource.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSource.Size = new System.Drawing.Size(441, 389);
+            this.tpSource.TabIndex = 2;
+            this.tpSource.Text = "Source";
+            this.tpSource.UseVisualStyleBackColor = true;
+            // 
+            // sourceView1
+            // 
+            this.sourceView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sourceView1.Location = new System.Drawing.Point(6, 6);
+            this.sourceView1.MinimumSize = new System.Drawing.Size(200, 355);
+            this.sourceView1.Name = "sourceView1";
+            this.sourceView1.Size = new System.Drawing.Size(429, 355);
+            this.sourceView1.TabIndex = 0;
+            // 
+            // tpMethod
+            // 
+            this.tpMethod.Controls.Add(this.methodView1);
+            this.tpMethod.Location = new System.Drawing.Point(4, 22);
+            this.tpMethod.Name = "tpMethod";
+            this.tpMethod.Padding = new System.Windows.Forms.Padding(3);
+            this.tpMethod.Size = new System.Drawing.Size(441, 389);
+            this.tpMethod.TabIndex = 3;
+            this.tpMethod.Text = "Method";
+            this.tpMethod.UseVisualStyleBackColor = true;
+            // 
+            // methodView1
+            // 
+            this.methodView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.methodView1.Location = new System.Drawing.Point(6, 6);
+            this.methodView1.Name = "methodView1";
+            this.methodView1.Size = new System.Drawing.Size(429, 260);
+            this.methodView1.TabIndex = 0;
+            // 
+            // tpQualityControl
+            // 
+            this.tpQualityControl.Controls.Add(this.qualityControlLevelView1);
+            this.tpQualityControl.Location = new System.Drawing.Point(4, 22);
+            this.tpQualityControl.Name = "tpQualityControl";
+            this.tpQualityControl.Padding = new System.Windows.Forms.Padding(3);
+            this.tpQualityControl.Size = new System.Drawing.Size(441, 389);
+            this.tpQualityControl.TabIndex = 4;
+            this.tpQualityControl.Text = "Quality Control";
+            this.tpQualityControl.UseVisualStyleBackColor = true;
+            // 
+            // qualityControlLevelView1
+            // 
+            this.qualityControlLevelView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.qualityControlLevelView1.Location = new System.Drawing.Point(6, 6);
+            this.qualityControlLevelView1.Name = "qualityControlLevelView1";
+            this.qualityControlLevelView1.Size = new System.Drawing.Size(429, 108);
+            this.qualityControlLevelView1.TabIndex = 0;
+            // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(305, 399);
+            this.btnOK.Location = new System.Drawing.Point(305, 437);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 1;
@@ -199,40 +281,18 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(386, 399);
+            this.btnCancel.Location = new System.Drawing.Point(386, 437);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // btnDetails
-            // 
-            this.btnDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDetails.Location = new System.Drawing.Point(12, 399);
-            this.btnDetails.Name = "btnDetails";
-            this.btnDetails.Size = new System.Drawing.Size(75, 23);
-            this.btnDetails.TabIndex = 3;
-            this.btnDetails.Text = "Details...";
-            this.btnDetails.UseVisualStyleBackColor = true;
-            this.btnDetails.Click += new System.EventHandler(this.btnDetails_Click);
-            // 
-            // chApplyVariableToAllColumns
-            // 
-            this.chApplyVariableToAllColumns.AutoSize = true;
-            this.chApplyVariableToAllColumns.Location = new System.Drawing.Point(10, 321);
-            this.chApplyVariableToAllColumns.Name = "chApplyVariableToAllColumns";
-            this.chApplyVariableToAllColumns.Size = new System.Drawing.Size(178, 17);
-            this.chApplyVariableToAllColumns.TabIndex = 6;
-            this.chApplyVariableToAllColumns.Text = "Apply this variable to all columns";
-            this.chApplyVariableToAllColumns.UseVisualStyleBackColor = true;
-            // 
             // FieldPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(473, 439);
-            this.Controls.Add(this.btnDetails);
+            this.ClientSize = new System.Drawing.Size(473, 477);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tbProperties);
@@ -246,6 +306,9 @@
             this.tbSite.PerformLayout();
             this.tbVariable.ResumeLayout(false);
             this.tbVariable.PerformLayout();
+            this.tpSource.ResumeLayout(false);
+            this.tpMethod.ResumeLayout(false);
+            this.tpQualityControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sitesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.variablesBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -259,7 +322,6 @@
         private System.Windows.Forms.TabPage tbVariable;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnDetails;
         private System.Windows.Forms.ComboBox cmbSites;
         private System.Windows.Forms.Label lblSelectSite;
         private System.Windows.Forms.ComboBox cmbVariables;
@@ -272,5 +334,11 @@
         private System.Windows.Forms.BindingSource variablesBindingSource;
         private System.Windows.Forms.CheckBox chApplySiteToAllCoumns;
         private System.Windows.Forms.CheckBox chApplyVariableToAllColumns;
+        private System.Windows.Forms.TabPage tpSource;
+        private System.Windows.Forms.TabPage tpMethod;
+        private System.Windows.Forms.TabPage tpQualityControl;
+        private SourceView sourceView1;
+        private MethodView methodView1;
+        private QualityControlLevelView qualityControlLevelView1;
     }
 }

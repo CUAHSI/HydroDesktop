@@ -74,6 +74,15 @@ namespace DataImport.CommonPages
             cmbVariables.DisplayMember = NameHelper.Name<Variable, object>(s => s.Name);
             if (_columnData.Variable != null)
                 cmbVariables.SelectedItem = _columnData.Variable;
+
+            // Source
+            sourceView1.Entity = _columnData.Source;
+
+            // Method
+            methodView1.Entity = _columnData.Method;
+
+            // Quality Control
+            qualityControlLevelView1.Entity = _columnData.QualityControlLevel;
         }
 
         #endregion
@@ -170,17 +179,6 @@ namespace DataImport.CommonPages
             bindingSource.CopyTo(newDataSource, 0);
             newDataSource[newDataSource.Length - 1] = newItem;
             bindingSource.DataSource = newDataSource;
-        }
-
-        private void btnDetails_Click(object sender, EventArgs e)
-        {
-            using(var details = new DetailsForm())
-            {
-                if (details.ShowDialog(this) == DialogResult.OK)
-                {
-                    // Save details
-                }
-            }
         }
 
         #endregion

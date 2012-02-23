@@ -58,8 +58,10 @@ namespace DataImport.CommonPages
             get { return _entity; }
             set
             {
-                _entity = value;
+                if (value == null)
+                    value = Source.Unknown;
 
+                _entity = value;
                 bindingSource1.DataSource = value;
             }
         }
