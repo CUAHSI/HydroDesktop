@@ -45,6 +45,14 @@
             this.btnSelectNoneFields = new System.Windows.Forms.Button();
             this.btnSelectAllFields = new System.Windows.Forms.Button();
             this.clbExportItems = new System.Windows.Forms.CheckedListBox();
+            this.gbxDelimiters = new System.Windows.Forms.GroupBox();
+            this.rdoComma = new System.Windows.Forms.RadioButton();
+            this.rdoTab = new System.Windows.Forms.RadioButton();
+            this.rdoSpace = new System.Windows.Forms.RadioButton();
+            this.rdoPipe = new System.Windows.Forms.RadioButton();
+            this.rdoSemicolon = new System.Windows.Forms.RadioButton();
+            this.rdoOthers = new System.Windows.Forms.RadioButton();
+            this.tbOther = new System.Windows.Forms.TextBox();
             this.gbxExport = new System.Windows.Forms.GroupBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.tbOutPutFileName = new System.Windows.Forms.TextBox();
@@ -55,12 +63,12 @@
             this.chbUseDateRange = new System.Windows.Forms.CheckBox();
             this.cmbDateTimeColumns = new System.Windows.Forms.ComboBox();
             this.dtpStartDateRange = new System.Windows.Forms.DateTimePicker();
-            this.delimiterSelector1 = new HydroDesktop.Common.Controls.DelimiterSelector();
             this.gbxProgress.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.tpMainOptions.SuspendLayout();
             this.gbxThemes.SuspendLayout();
             this.gbxFields.SuspendLayout();
+            this.gbxDelimiters.SuspendLayout();
             this.gbxExport.SuspendLayout();
             this.tpAdvancedOptions.SuspendLayout();
             this.gbxDatesRange.SuspendLayout();
@@ -69,7 +77,7 @@
             // btnExport
             // 
             this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExport.Location = new System.Drawing.Point(255, 479);
+            this.btnExport.Location = new System.Drawing.Point(231, 500);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 28);
             this.btnExport.TabIndex = 21;
@@ -80,7 +88,7 @@
             // btncancel
             // 
             this.btncancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btncancel.Location = new System.Drawing.Point(336, 479);
+            this.btncancel.Location = new System.Drawing.Point(312, 500);
             this.btncancel.Name = "btncancel";
             this.btncancel.Size = new System.Drawing.Size(75, 28);
             this.btncancel.TabIndex = 22;
@@ -93,9 +101,9 @@
             this.gbxProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxProgress.Controls.Add(this.pgsBar);
-            this.gbxProgress.Location = new System.Drawing.Point(12, 463);
+            this.gbxProgress.Location = new System.Drawing.Point(12, 484);
             this.gbxProgress.Name = "gbxProgress";
-            this.gbxProgress.Size = new System.Drawing.Size(237, 46);
+            this.gbxProgress.Size = new System.Drawing.Size(213, 46);
             this.gbxProgress.TabIndex = 21;
             this.gbxProgress.TabStop = false;
             this.gbxProgress.Text = "Processing...";
@@ -107,7 +115,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pgsBar.Location = new System.Drawing.Point(9, 18);
             this.pgsBar.Name = "pgsBar";
-            this.pgsBar.Size = new System.Drawing.Size(222, 21);
+            this.pgsBar.Size = new System.Drawing.Size(198, 21);
             this.pgsBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pgsBar.TabIndex = 1;
             // 
@@ -129,19 +137,19 @@
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(399, 443);
+            this.tcMain.Size = new System.Drawing.Size(375, 464);
             this.tcMain.TabIndex = 11;
             // 
             // tpMainOptions
             // 
-            this.tpMainOptions.Controls.Add(this.delimiterSelector1);
             this.tpMainOptions.Controls.Add(this.gbxThemes);
             this.tpMainOptions.Controls.Add(this.gbxFields);
+            this.tpMainOptions.Controls.Add(this.gbxDelimiters);
             this.tpMainOptions.Controls.Add(this.gbxExport);
             this.tpMainOptions.Location = new System.Drawing.Point(4, 22);
             this.tpMainOptions.Name = "tpMainOptions";
             this.tpMainOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMainOptions.Size = new System.Drawing.Size(391, 417);
+            this.tpMainOptions.Size = new System.Drawing.Size(367, 438);
             this.tpMainOptions.TabIndex = 0;
             this.tpMainOptions.Text = "Main";
             this.tpMainOptions.UseVisualStyleBackColor = true;
@@ -156,10 +164,10 @@
             this.gbxThemes.Controls.Add(this.chkNodata);
             this.gbxThemes.Location = new System.Drawing.Point(3, 6);
             this.gbxThemes.Name = "gbxThemes";
-            this.gbxThemes.Size = new System.Drawing.Size(379, 143);
+            this.gbxThemes.Size = new System.Drawing.Size(355, 143);
             this.gbxThemes.TabIndex = 1;
             this.gbxThemes.TabStop = false;
-            this.gbxThemes.Text = "Select Themes";
+            this.gbxThemes.Text = "Select Data Sites Layers";
             // 
             // btnSelectNoneThemes
             // 
@@ -191,14 +199,14 @@
             this.clbThemes.FormattingEnabled = true;
             this.clbThemes.Location = new System.Drawing.Point(6, 19);
             this.clbThemes.Name = "clbThemes";
-            this.clbThemes.Size = new System.Drawing.Size(367, 79);
+            this.clbThemes.Size = new System.Drawing.Size(343, 79);
             this.clbThemes.TabIndex = 5;
             // 
             // chkNodata
             // 
             this.chkNodata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkNodata.AutoSize = true;
-            this.chkNodata.Location = new System.Drawing.Point(230, 120);
+            this.chkNodata.Location = new System.Drawing.Point(206, 120);
             this.chkNodata.Name = "chkNodata";
             this.chkNodata.Size = new System.Drawing.Size(143, 17);
             this.chkNodata.TabIndex = 4;
@@ -215,7 +223,7 @@
             this.gbxFields.Controls.Add(this.clbExportItems);
             this.gbxFields.Location = new System.Drawing.Point(3, 152);
             this.gbxFields.Name = "gbxFields";
-            this.gbxFields.Size = new System.Drawing.Size(379, 128);
+            this.gbxFields.Size = new System.Drawing.Size(355, 149);
             this.gbxFields.TabIndex = 5;
             this.gbxFields.TabStop = false;
             this.gbxFields.Text = "Select Fields to Export";
@@ -223,7 +231,7 @@
             // btnSelectNoneFields
             // 
             this.btnSelectNoneFields.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectNoneFields.Location = new System.Drawing.Point(87, 141);
+            this.btnSelectNoneFields.Location = new System.Drawing.Point(87, 162);
             this.btnSelectNoneFields.Name = "btnSelectNoneFields";
             this.btnSelectNoneFields.Size = new System.Drawing.Size(75, 23);
             this.btnSelectNoneFields.TabIndex = 8;
@@ -234,7 +242,7 @@
             // btnSelectAllFields
             // 
             this.btnSelectAllFields.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAllFields.Location = new System.Drawing.Point(6, 141);
+            this.btnSelectAllFields.Location = new System.Drawing.Point(6, 162);
             this.btnSelectAllFields.Name = "btnSelectAllFields";
             this.btnSelectAllFields.Size = new System.Drawing.Size(75, 23);
             this.btnSelectAllFields.TabIndex = 7;
@@ -249,18 +257,111 @@
             this.clbExportItems.FormattingEnabled = true;
             this.clbExportItems.Location = new System.Drawing.Point(3, 16);
             this.clbExportItems.Name = "clbExportItems";
-            this.clbExportItems.Size = new System.Drawing.Size(373, 109);
+            this.clbExportItems.Size = new System.Drawing.Size(349, 130);
             this.clbExportItems.TabIndex = 6;
             this.clbExportItems.ThreeDCheckBoxes = true;
+            // 
+            // gbxDelimiters
+            // 
+            this.gbxDelimiters.Controls.Add(this.rdoComma);
+            this.gbxDelimiters.Controls.Add(this.rdoTab);
+            this.gbxDelimiters.Controls.Add(this.rdoSpace);
+            this.gbxDelimiters.Controls.Add(this.rdoPipe);
+            this.gbxDelimiters.Controls.Add(this.rdoSemicolon);
+            this.gbxDelimiters.Controls.Add(this.rdoOthers);
+            this.gbxDelimiters.Controls.Add(this.tbOther);
+            this.gbxDelimiters.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gbxDelimiters.Location = new System.Drawing.Point(3, 309);
+            this.gbxDelimiters.Name = "gbxDelimiters";
+            this.gbxDelimiters.Size = new System.Drawing.Size(361, 74);
+            this.gbxDelimiters.TabIndex = 9;
+            this.gbxDelimiters.TabStop = false;
+            this.gbxDelimiters.Text = "Select a Delimiter";
+            // 
+            // rdoComma
+            // 
+            this.rdoComma.AutoSize = true;
+            this.rdoComma.Checked = true;
+            this.rdoComma.Location = new System.Drawing.Point(11, 23);
+            this.rdoComma.Name = "rdoComma";
+            this.rdoComma.Size = new System.Drawing.Size(90, 17);
+            this.rdoComma.TabIndex = 10;
+            this.rdoComma.TabStop = true;
+            this.rdoComma.Text = "&Comma (CSV)";
+            this.rdoComma.UseVisualStyleBackColor = true;
+            // 
+            // rdoTab
+            // 
+            this.rdoTab.AutoSize = true;
+            this.rdoTab.Location = new System.Drawing.Point(116, 23);
+            this.rdoTab.Name = "rdoTab";
+            this.rdoTab.Size = new System.Drawing.Size(44, 17);
+            this.rdoTab.TabIndex = 11;
+            this.rdoTab.TabStop = true;
+            this.rdoTab.Text = "&Tab";
+            this.rdoTab.UseVisualStyleBackColor = true;
+            // 
+            // rdoSpace
+            // 
+            this.rdoSpace.AutoSize = true;
+            this.rdoSpace.Location = new System.Drawing.Point(203, 23);
+            this.rdoSpace.Name = "rdoSpace";
+            this.rdoSpace.Size = new System.Drawing.Size(56, 17);
+            this.rdoSpace.TabIndex = 12;
+            this.rdoSpace.TabStop = true;
+            this.rdoSpace.Text = "&Space";
+            this.rdoSpace.UseVisualStyleBackColor = true;
+            // 
+            // rdoPipe
+            // 
+            this.rdoPipe.AutoSize = true;
+            this.rdoPipe.Location = new System.Drawing.Point(11, 41);
+            this.rdoPipe.Name = "rdoPipe";
+            this.rdoPipe.Size = new System.Drawing.Size(46, 17);
+            this.rdoPipe.TabIndex = 13;
+            this.rdoPipe.TabStop = true;
+            this.rdoPipe.Text = "&Pipe";
+            this.rdoPipe.UseVisualStyleBackColor = true;
+            // 
+            // rdoSemicolon
+            // 
+            this.rdoSemicolon.AutoSize = true;
+            this.rdoSemicolon.Location = new System.Drawing.Point(116, 41);
+            this.rdoSemicolon.Name = "rdoSemicolon";
+            this.rdoSemicolon.Size = new System.Drawing.Size(74, 17);
+            this.rdoSemicolon.TabIndex = 14;
+            this.rdoSemicolon.TabStop = true;
+            this.rdoSemicolon.Text = "Se&micolon";
+            this.rdoSemicolon.UseVisualStyleBackColor = true;
+            // 
+            // rdoOthers
+            // 
+            this.rdoOthers.AutoSize = true;
+            this.rdoOthers.Location = new System.Drawing.Point(203, 41);
+            this.rdoOthers.Name = "rdoOthers";
+            this.rdoOthers.Size = new System.Drawing.Size(54, 17);
+            this.rdoOthers.TabIndex = 15;
+            this.rdoOthers.TabStop = true;
+            this.rdoOthers.Text = "&Other:";
+            this.rdoOthers.UseVisualStyleBackColor = true;
+            // 
+            // tbOther
+            // 
+            this.tbOther.Location = new System.Drawing.Point(269, 38);
+            this.tbOther.MaxLength = 1;
+            this.tbOther.Name = "tbOther";
+            this.tbOther.Size = new System.Drawing.Size(27, 20);
+            this.tbOther.TabIndex = 16;
+            this.tbOther.TextChanged += new System.EventHandler(this.other_TextChanged);
             // 
             // gbxExport
             // 
             this.gbxExport.Controls.Add(this.btnBrowse);
             this.gbxExport.Controls.Add(this.tbOutPutFileName);
             this.gbxExport.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbxExport.Location = new System.Drawing.Point(3, 362);
+            this.gbxExport.Location = new System.Drawing.Point(3, 383);
             this.gbxExport.Name = "gbxExport";
-            this.gbxExport.Size = new System.Drawing.Size(385, 52);
+            this.gbxExport.Size = new System.Drawing.Size(361, 52);
             this.gbxExport.TabIndex = 17;
             this.gbxExport.TabStop = false;
             this.gbxExport.Text = "Specify Output File";
@@ -268,7 +369,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(316, 17);
+            this.btnBrowse.Location = new System.Drawing.Point(292, 17);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(63, 23);
             this.btnBrowse.TabIndex = 19;
@@ -282,7 +383,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbOutPutFileName.Location = new System.Drawing.Point(6, 19);
             this.tbOutPutFileName.Name = "tbOutPutFileName";
-            this.tbOutPutFileName.Size = new System.Drawing.Size(300, 20);
+            this.tbOutPutFileName.Size = new System.Drawing.Size(276, 20);
             this.tbOutPutFileName.TabIndex = 18;
             // 
             // tpAdvancedOptions
@@ -291,7 +392,7 @@
             this.tpAdvancedOptions.Location = new System.Drawing.Point(4, 22);
             this.tpAdvancedOptions.Name = "tpAdvancedOptions";
             this.tpAdvancedOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAdvancedOptions.Size = new System.Drawing.Size(391, 417);
+            this.tpAdvancedOptions.Size = new System.Drawing.Size(367, 438);
             this.tpAdvancedOptions.TabIndex = 1;
             this.tpAdvancedOptions.Text = "Advanced options";
             this.tpAdvancedOptions.UseVisualStyleBackColor = true;
@@ -355,20 +456,12 @@
             this.dtpStartDateRange.Size = new System.Drawing.Size(147, 20);
             this.dtpStartDateRange.TabIndex = 3;
             // 
-            // delimiterSelector1
-            // 
-            this.delimiterSelector1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.delimiterSelector1.Location = new System.Drawing.Point(3, 284);
-            this.delimiterSelector1.Name = "delimiterSelector1";
-            this.delimiterSelector1.Size = new System.Drawing.Size(385, 78);
-            this.delimiterSelector1.TabIndex = 18;
-            // 
             // ExportDialog
             // 
             this.AcceptButton = this.btnExport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 521);
+            this.ClientSize = new System.Drawing.Size(394, 542);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.btncancel);
@@ -392,6 +485,8 @@
             this.gbxThemes.ResumeLayout(false);
             this.gbxThemes.PerformLayout();
             this.gbxFields.ResumeLayout(false);
+            this.gbxDelimiters.ResumeLayout(false);
+            this.gbxDelimiters.PerformLayout();
             this.gbxExport.ResumeLayout(false);
             this.gbxExport.PerformLayout();
             this.tpAdvancedOptions.ResumeLayout(false);
@@ -423,12 +518,19 @@
         private System.Windows.Forms.GroupBox gbxExport;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.TextBox tbOutPutFileName;
+        private System.Windows.Forms.GroupBox gbxDelimiters;
+        private System.Windows.Forms.RadioButton rdoComma;
+        private System.Windows.Forms.RadioButton rdoTab;
+        private System.Windows.Forms.RadioButton rdoSpace;
+        private System.Windows.Forms.RadioButton rdoPipe;
+        private System.Windows.Forms.RadioButton rdoSemicolon;
+        private System.Windows.Forms.RadioButton rdoOthers;
+        private System.Windows.Forms.TextBox tbOther;
         private System.Windows.Forms.DateTimePicker dtpEndDateRange;
         private System.Windows.Forms.DateTimePicker dtpStartDateRange;
         private System.Windows.Forms.ComboBox cmbDateTimeColumns;
         private System.Windows.Forms.CheckBox chbUseDateRange;
         private System.Windows.Forms.Label lblAndRange;
         private System.Windows.Forms.GroupBox gbxDatesRange;
-        private Common.Controls.DelimiterSelector delimiterSelector1;
     }
 }
