@@ -98,6 +98,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonPages\FieldProperties\CreateUnitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommonPages\FieldProperties\CreateUnitForm.Designer.cs">
+      <DependentUpon>CreateUnitForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\FieldProperties\UnitView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\FieldProperties\UnitView.Designer.cs">
+      <DependentUpon>UnitView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Csv\CsvImportSettings.cs" />
     <Compile Include="Csv\FormatOptionsPage.cs">
       <SubType>UserControl</SubType>
@@ -107,12 +119,6 @@
     </Compile>
     <Compile Include="DataTableImport\DataTableImporterImpl.cs" />
     <Compile Include="ColumnInfo.cs" />
-    <Compile Include="CommonPages\FieldProperties\CreateVariableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CommonPages\FieldProperties\CreateVariableForm.Designer.cs">
-      <DependentUpon>CreateVariableForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CommonPages\FieldProperties\FieldPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,12 +151,6 @@
     </Compile>
     <Compile Include="CommonPages\FieldProperties\QualityControlLevelView.Designer.cs">
       <DependentUpon>QualityControlLevelView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CommonPages\FieldProperties\CreateSiteForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CommonPages\FieldProperties\CreateSiteForm.Designer.cs">
-      <DependentUpon>CreateSiteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CommonPages\FieldProperties\DetailsForm.cs">
       <SubType>Form</SubType>
@@ -233,8 +233,8 @@
     <Compile Include="WaterML\WaterMLImportSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommonPages\FieldProperties\CreateVariableForm.resx">
-      <DependentUpon>CreateVariableForm.cs</DependentUpon>
+    <EmbeddedResource Include="CommonPages\FieldProperties\CreateUnitForm.resx">
+      <DependentUpon>CreateUnitForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\FieldPropertiesForm.resx">
       <DependentUpon>FieldPropertiesForm.cs</DependentUpon>
@@ -251,14 +251,14 @@
     <EmbeddedResource Include="CommonPages\FieldProperties\SourceView.resx">
       <DependentUpon>SourceView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommonPages\FieldProperties\CreateSiteForm.resx">
-      <DependentUpon>CreateSiteForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\DetailsForm.resx">
       <DependentUpon>DetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\FieldPropertiesPage.resx">
       <DependentUpon>FieldPropertiesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\FieldProperties\UnitView.resx">
+      <DependentUpon>UnitView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\VariableView.resx">
       <DependentUpon>VariableView.cs</DependentUpon>
