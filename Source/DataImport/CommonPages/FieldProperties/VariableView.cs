@@ -92,10 +92,16 @@ namespace DataImport.CommonPages
                                            args.Value = ((ValueTypeCV) args.ListItem).Description();
                                        };
 
+            cmbDataType.DataSource = Enum.GetValues(typeof (DataTypeCV));
+            cmbDataType.Format += delegate(object s, ListControlConvertEventArgs args)
+                                      {
+                                          args.Value = ((DataTypeCV) args.ListItem).Description();
+                                      };
+
             cmbName.AddBinding<ComboBox, Variable>(x => x.Text, bindingSource1, x => x.Name);
             tbCode.AddBinding<TextBox, Variable>(x => x.Text, bindingSource1, x => x.Code);
             cmbVariableUnits.AddBinding<ComboBox, Variable>(x => x.SelectedItem, bindingSource1, x => x.VariableUnit);
-            tbDataType.AddBinding<TextBox, Variable>(x => x.Text, bindingSource1, x => x.DataType);
+            cmbDataType.AddBinding<ComboBox, Variable>(x => x.Text, bindingSource1, x => x.DataType);
             cmbValueType.AddBinding<ComboBox, Variable>(x => x.Text, bindingSource1, x => x.ValueType);
             nudTimeSupport.AddBinding<NumericUpDown, Variable>(x => x.Value, bindingSource1, x => x.TimeSupport);
             cmbTimeUnits.AddBinding<ComboBox, Variable>(x => x.SelectedItem, bindingSource1, x => x.TimeUnit);
@@ -134,7 +140,7 @@ namespace DataImport.CommonPages
                 cmbName.Enabled = !value;
                 tbCode.ReadOnly = value;
                 cmbVariableUnits.Enabled = !value;
-                tbDataType.ReadOnly = value;
+                cmbDataType.Enabled = !value;
                 cmbValueType.Enabled = !value;
                 nudTimeSupport.FullReadOnly = value;
                 cmbTimeUnits.Enabled = !value;

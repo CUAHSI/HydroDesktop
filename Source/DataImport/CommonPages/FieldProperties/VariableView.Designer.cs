@@ -36,19 +36,19 @@
             this.cmbVariableUnits = new System.Windows.Forms.ComboBox();
             this.cmbTimeUnits = new System.Windows.Forms.ComboBox();
             this.lblTimeUnits = new System.Windows.Forms.Label();
-            this.tbDataType = new System.Windows.Forms.TextBox();
             this.lblDataType = new System.Windows.Forms.Label();
             this.lblValueType = new System.Windows.Forms.Label();
             this.lblTimeSupport = new System.Windows.Forms.Label();
-            this.nudTimeSupport = new DataImport.CommonPages.NumericUpDownEx();
-            this.nudNoDataValue = new DataImport.CommonPages.NumericUpDownEx();
             this.lblNoDataValue = new System.Windows.Forms.Label();
             this.cmbName = new System.Windows.Forms.ComboBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.cmbValueType = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).BeginInit();
+            this.nudNoDataValue = new DataImport.CommonPages.NumericUpDownEx();
+            this.nudTimeSupport = new DataImport.CommonPages.NumericUpDownEx();
+            this.cmbDataType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).BeginInit();
             this.SuspendLayout();
             // 
             // lblName
@@ -118,15 +118,6 @@
             this.lblTimeUnits.TabIndex = 6;
             this.lblTimeUnits.Text = "Time units";
             // 
-            // tbDataType
-            // 
-            this.tbDataType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDataType.Location = new System.Drawing.Point(103, 99);
-            this.tbDataType.Name = "tbDataType";
-            this.tbDataType.Size = new System.Drawing.Size(143, 20);
-            this.tbDataType.TabIndex = 3;
-            // 
             // lblDataType
             // 
             this.lblDataType.AutoSize = true;
@@ -153,46 +144,6 @@
             this.lblTimeSupport.Size = new System.Drawing.Size(68, 13);
             this.lblTimeSupport.TabIndex = 12;
             this.lblTimeSupport.Text = "Time support";
-            // 
-            // nudTimeSupport
-            // 
-            this.nudTimeSupport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudTimeSupport.FullReadOnly = false;
-            this.nudTimeSupport.Location = new System.Drawing.Point(103, 158);
-            this.nudTimeSupport.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            -1,
-            0});
-            this.nudTimeSupport.Minimum = new decimal(new int[] {
-            -1,
-            -1,
-            -1,
-            -2147483648});
-            this.nudTimeSupport.Name = "nudTimeSupport";
-            this.nudTimeSupport.Size = new System.Drawing.Size(143, 20);
-            this.nudTimeSupport.TabIndex = 5;
-            // 
-            // nudNoDataValue
-            // 
-            this.nudNoDataValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudNoDataValue.FullReadOnly = false;
-            this.nudNoDataValue.Location = new System.Drawing.Point(103, 216);
-            this.nudNoDataValue.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            -1,
-            0});
-            this.nudNoDataValue.Minimum = new decimal(new int[] {
-            -1,
-            -1,
-            -1,
-            -2147483648});
-            this.nudNoDataValue.Name = "nudNoDataValue";
-            this.nudNoDataValue.Size = new System.Drawing.Size(143, 20);
-            this.nudNoDataValue.TabIndex = 7;
             // 
             // lblNoDataValue
             // 
@@ -224,10 +175,62 @@
             this.cmbValueType.Size = new System.Drawing.Size(143, 21);
             this.cmbValueType.TabIndex = 15;
             // 
+            // nudNoDataValue
+            // 
+            this.nudNoDataValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudNoDataValue.FullReadOnly = false;
+            this.nudNoDataValue.Location = new System.Drawing.Point(103, 216);
+            this.nudNoDataValue.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            0});
+            this.nudNoDataValue.Minimum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            -2147483648});
+            this.nudNoDataValue.Name = "nudNoDataValue";
+            this.nudNoDataValue.Size = new System.Drawing.Size(143, 20);
+            this.nudNoDataValue.TabIndex = 7;
+            // 
+            // nudTimeSupport
+            // 
+            this.nudTimeSupport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudTimeSupport.FullReadOnly = false;
+            this.nudTimeSupport.Location = new System.Drawing.Point(103, 158);
+            this.nudTimeSupport.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            0});
+            this.nudTimeSupport.Minimum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            -2147483648});
+            this.nudTimeSupport.Name = "nudTimeSupport";
+            this.nudTimeSupport.Size = new System.Drawing.Size(143, 20);
+            this.nudTimeSupport.TabIndex = 5;
+            // 
+            // cmbDataType
+            // 
+            this.cmbDataType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDataType.FormattingEnabled = true;
+            this.cmbDataType.Location = new System.Drawing.Point(103, 98);
+            this.cmbDataType.Name = "cmbDataType";
+            this.cmbDataType.Size = new System.Drawing.Size(143, 21);
+            this.cmbDataType.TabIndex = 16;
+            // 
             // VariableView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cmbDataType);
             this.Controls.Add(this.cmbValueType);
             this.Controls.Add(this.cmbName);
             this.Controls.Add(this.nudNoDataValue);
@@ -235,7 +238,6 @@
             this.Controls.Add(this.nudTimeSupport);
             this.Controls.Add(this.lblTimeSupport);
             this.Controls.Add(this.lblValueType);
-            this.Controls.Add(this.tbDataType);
             this.Controls.Add(this.lblDataType);
             this.Controls.Add(this.cmbTimeUnits);
             this.Controls.Add(this.lblTimeUnits);
@@ -246,9 +248,9 @@
             this.Controls.Add(this.lblName);
             this.Name = "VariableView";
             this.Size = new System.Drawing.Size(260, 251);
-            ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,7 +266,6 @@
         private System.Windows.Forms.ComboBox cmbVariableUnits;
         private System.Windows.Forms.ComboBox cmbTimeUnits;
         private System.Windows.Forms.Label lblTimeUnits;
-        private System.Windows.Forms.TextBox tbDataType;
         private System.Windows.Forms.Label lblDataType;
         private System.Windows.Forms.Label lblValueType;
         private System.Windows.Forms.Label lblTimeSupport;
@@ -273,5 +274,6 @@
         private System.Windows.Forms.Label lblNoDataValue;
         private System.Windows.Forms.ComboBox cmbName;
         private System.Windows.Forms.ComboBox cmbValueType;
+        private System.Windows.Forms.ComboBox cmbDataType;
     }
 }

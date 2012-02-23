@@ -89,6 +89,7 @@
     <Compile Include="ObjectModel\Constants.cs" />
     <Compile Include="ObjectModel\DataFile.cs" />
     <Compile Include="ObjectModel\DataServiceInfo.cs" />
+    <Compile Include="ObjectModel\DataTypeCV.cs" />
     <Compile Include="ObjectModel\DataValue.cs" />
     <Compile Include="ObjectModel\ISOMetadata.cs" />
     <Compile Include="ObjectModel\LabMethod.cs" />
