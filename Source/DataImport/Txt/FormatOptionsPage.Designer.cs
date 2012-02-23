@@ -32,6 +32,8 @@
             this.cmbFileType = new System.Windows.Forms.ComboBox();
             this.dgvPreview = new System.Windows.Forms.DataGridView();
             this.delimiterSelector = new HydroDesktop.Common.Controls.DelimiterSelector();
+            this.tbSeparator = new System.Windows.Forms.TextBox();
+            this.lblDecimalSeparator = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,10 +83,29 @@
             this.delimiterSelector.Size = new System.Drawing.Size(313, 78);
             this.delimiterSelector.TabIndex = 12;
             // 
+            // tbSeparator
+            // 
+            this.tbSeparator.Location = new System.Drawing.Point(445, 172);
+            this.tbSeparator.Name = "tbSeparator";
+            this.tbSeparator.Size = new System.Drawing.Size(33, 20);
+            this.tbSeparator.TabIndex = 17;
+            this.tbSeparator.Text = ".";
+            // 
+            // lblDecimalSeparator
+            // 
+            this.lblDecimalSeparator.AutoSize = true;
+            this.lblDecimalSeparator.Location = new System.Drawing.Point(342, 175);
+            this.lblDecimalSeparator.Name = "lblDecimalSeparator";
+            this.lblDecimalSeparator.Size = new System.Drawing.Size(94, 13);
+            this.lblDecimalSeparator.TabIndex = 16;
+            this.lblDecimalSeparator.Text = "Decimal Separator";
+            // 
             // FormatOptionsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tbSeparator);
+            this.Controls.Add(this.lblDecimalSeparator);
             this.Controls.Add(this.delimiterSelector);
             this.Controls.Add(this.dgvPreview);
             this.Controls.Add(this.lblFileType);
@@ -92,11 +113,14 @@
             this.Name = "FormatOptionsPage";
             this.Size = new System.Drawing.Size(540, 342);
             this.SetActive += new System.ComponentModel.CancelEventHandler(this.FormatOptionsPage_SetActive);
+            this.WizardNext += new Wizard.UI.WizardPageEventHandler(this.FormatOptionsPage_WizardNext);
             this.Controls.SetChildIndex(this.cmbFileType, 0);
             this.Controls.SetChildIndex(this.lblFileType, 0);
             this.Controls.SetChildIndex(this.Banner, 0);
             this.Controls.SetChildIndex(this.dgvPreview, 0);
             this.Controls.SetChildIndex(this.delimiterSelector, 0);
+            this.Controls.SetChildIndex(this.lblDecimalSeparator, 0);
+            this.Controls.SetChildIndex(this.tbSeparator, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -109,5 +133,7 @@
         private System.Windows.Forms.ComboBox cmbFileType;
         private System.Windows.Forms.DataGridView dgvPreview;
         private HydroDesktop.Common.Controls.DelimiterSelector delimiterSelector;
+        private System.Windows.Forms.TextBox tbSeparator;
+        private System.Windows.Forms.Label lblDecimalSeparator;
     }
 }

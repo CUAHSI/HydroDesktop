@@ -27,5 +27,10 @@ namespace DataImport
         /// Data table with data to import
         /// </summary>
         DataTable Data { get; set; }
+
+        /// <summary>
+        /// Get or sets the string to use as a decimal separator when parsing values
+        /// </summary>
+        string ValuesNumberDecimalSeparator { get; set; }
     }
 }

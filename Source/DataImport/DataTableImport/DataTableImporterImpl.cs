@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using HydroDesktop.Common;
@@ -48,6 +49,9 @@ namespace DataImport.DataTableImport
                 toImport.Add(new Tuple<ColumnInfo, Series, OverwriteOptions>(cData, series, options));
             }
 
+            var cultureToParseValues = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            cultureToParseValues.NumberFormat.NumberDecimalSeparator = settings.ValuesNumberDecimalSeparator;
+
             progress = 10;
             ReportProgress(progress, "Parsing values...");
             foreach (DataRow row in settings.Data.Rows)
@@ -59,9 +63,11 @@ namespace DataImport.DataTableImport
                 foreach (var tuple in toImport)
                 {
                     var columnIndex = tuple.Item1.ColumnIndex;
-
+                    
                     Double value;
-                    if (!Double.TryParse(row[columnIndex].ToString(), out value))
+                    if (!Double.TryParse(Convert.ToString(row[columnIndex], cultureToParseValues),
+                                         NumberStyles.Float,
+                                         cultureToParseValues, out value))
                         continue;
 
                     var series = tuple.Item2;

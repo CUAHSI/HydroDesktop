@@ -25,6 +25,7 @@ namespace DataImport.Txt
         public IList<ColumnInfo> ColumnDatas { get; set; }
         public string DateTimeColumn { get; set; }
         public DataTable Data { get; set; }
+        public string ValuesNumberDecimalSeparator { get; set; }
 
         #endregion
     }

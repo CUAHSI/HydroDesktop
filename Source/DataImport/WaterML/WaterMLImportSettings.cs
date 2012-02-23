@@ -38,5 +38,11 @@ namespace DataImport.WaterML
             get { throw new System.NotImplementedException(); }
             set { throw new System.NotImplementedException(); }
         }
+
+        public string ValuesNumberDecimalSeparator
+        {
+            get { throw new System.NotImplementedException(); }
+            set { throw new System.NotImplementedException(); }
+        }
     }
 }
