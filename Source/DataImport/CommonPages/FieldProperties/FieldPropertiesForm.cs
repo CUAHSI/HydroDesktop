@@ -36,6 +36,8 @@ namespace DataImport.CommonPages
 
             if (DesignMode) return;
 
+            base.Text = string.Format("Column properties - {0}", _columnData.ColumnName);
+
             // Set bindings.......
             chApplyToAllCoumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
 
