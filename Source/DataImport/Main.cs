@@ -49,10 +49,10 @@ namespace ImportFromWaterML
         {
             var importers = new List<IWizardImporter>
                                 {
-                                    new WaterMLImporter(),
                                     new CsvImporter(),
+                                    new ExcelImporter(),
                                     new TxtImporter(),
-                                    new ExcelImporter()
+                                    new WaterMLImporter(),
                                 };
 
             using(var dialog = new OpenFileDialog())
