@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -32,6 +33,7 @@ namespace DataImport.CommonPages
             InitializeComponent();
 
             dgvPreview.MouseDown += DgvPreviewOnMouseDown;
+            dgvPreview.CellPainting += DgvPreviewOnCellPainting;
         }
 
         #endregion
@@ -82,6 +84,7 @@ namespace DataImport.CommonPages
                                                  {
                                                      cData.ImportColumn = importItem.Checked;
                                                      detailsItem.Enabled = importItem.Checked;
+                                                     dgvPreview.InvalidateColumn(cData.ColumnIndex);
                                                  };
                 detailsItem.Enabled = importItem.Checked;
 
@@ -90,6 +93,20 @@ namespace DataImport.CommonPages
                 popup.Items.Add(detailsItem);
 
                 popup.Show(dgvPreview.PointToScreen(e.Location));
+            }
+        }
+
+        private void DgvPreviewOnCellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex == -1)
+            {
+                if (e.ColumnIndex >= 0 &&
+                    _settings.ColumnDatas[e.ColumnIndex].ImportColumn)
+                {
+                    e.Graphics.FillRectangle(Brushes.LightGreen, e.CellBounds);
+                    e.Paint(e.ClipBounds, (DataGridViewPaintParts.All & ~DataGridViewPaintParts.Background));
+                    e.Handled = true;
+                }
             }
         }
        
