@@ -49,33 +49,10 @@ namespace DataImport.CommonPages
             {
                 var index = hitTest.ColumnIndex;
                 var cData = _settings.ColumnDatas[index];
+                
 
                 var detailsItem = new ToolStripButton("Details...");
-                detailsItem.Click += delegate
-                                         {
-                                             using (var form = new FieldPropertiesForm((ColumnInfo)cData.Clone()))
-                                             {
-                                                 var res = form.ShowDialog();
-                                                 if (res != DialogResult.OK) return;
-
-                                                 var cDatas = _settings.ColumnDatas;
-
-                                                 var cd = form.ColumnData;
-                                                 cDatas[index] = cd;
-
-                                                 // Apply site to all columns if need
-                                                 if (cd.ApplySiteToAllColumns)
-                                                 {
-                                                     for (int k = 0; k < cDatas.Count; k++)
-                                                     {
-                                                         if (k == index) continue;
-
-                                                         var option = cDatas[k];
-                                                         option.Site = (Site)cd.Site.Clone();
-                                                     }
-                                                 }
-                                             }
-                                         };
+                detailsItem.Click += delegate { DoDetailsItemOnClick(cData); };
 
                 var importItem = new ToolStripMenuItem("Import");
                 importItem.CheckOnClick = true;
@@ -84,7 +61,7 @@ namespace DataImport.CommonPages
                                                  {
                                                      cData.ImportColumn = importItem.Checked;
                                                      detailsItem.Enabled = importItem.Checked;
-                                                     dgvPreview.InvalidateColumn(cData.ColumnIndex);
+                                                     dgvPreview.InvalidateCell(cData.ColumnIndex, -1);
                                                  };
                 detailsItem.Enabled = importItem.Checked;
 
@@ -93,6 +70,33 @@ namespace DataImport.CommonPages
                 popup.Items.Add(detailsItem);
 
                 popup.Show(dgvPreview.PointToScreen(e.Location));
+            }
+        }
+
+        private void DoDetailsItemOnClick(ColumnInfo cData)
+        {
+            var index = cData.ColumnIndex;
+            using (var form = new FieldPropertiesForm((ColumnInfo)cData.Clone()))
+            {
+                var res = form.ShowDialog();
+                if (res != DialogResult.OK) return;
+
+                var cDatas = _settings.ColumnDatas;
+
+                var cd = form.ColumnData;
+                cDatas[index] = cd;
+
+                // Apply site to all columns if need
+                if (cd.ApplySiteToAllColumns)
+                {
+                    for (int k = 0; k < cDatas.Count; k++)
+                    {
+                        if (k == index) continue;
+
+                        var option = cDatas[k];
+                        option.Site = (Site)cd.Site.Clone();
+                    }
+                }
             }
         }
 
