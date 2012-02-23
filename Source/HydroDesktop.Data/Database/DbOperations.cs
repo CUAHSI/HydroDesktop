@@ -757,6 +757,8 @@ namespace HydroDesktop.Database
                 cmd.Connection.Close();
                 cmd.Dispose();
             }
+
+            return result;
         }
 
         /// <summary>
