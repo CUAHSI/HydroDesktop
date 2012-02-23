@@ -131,18 +131,6 @@ namespace DataImport.CommonPages
 
         private void btnCreateNewSite_Click(object sender, EventArgs e)
         {
-            //Note: model form case
-            /*
-            Site site;
-            using (var form = new CreateSiteForm())
-            {
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-                site = form.Entity;
-            }*/
-
             var site =  new Site { Name = "NewSite", Code = "Site1" };
             AddNewItemInBindingSource(sitesBindingSource, site);
             cmbSites.SelectedIndex = sitesBindingSource.Count - 1;
@@ -155,19 +143,6 @@ namespace DataImport.CommonPages
 
         private void btnCreateNewVariable_Click(object sender, EventArgs e)
         {
-            //Note: modal form case
-            /*
-            Variable variable;
-            using (var form = new CreateVariableForm())
-            {
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-                variable = form.Entity;
-            }
-            */
-
             var variable = new Variable
                                {
                                    Name = "NewVariable",
@@ -177,6 +152,8 @@ namespace DataImport.CommonPages
                                    ValueType = "Unknown",
                                    DataType = "Unknown",
                                    GeneralCategory = "Unknown",
+                                   TimeUnit = Unit.UnknownTimeUnit,
+                                   VariableUnit = Unit.Unknown,
                                };
             AddNewItemInBindingSource(variablesBindingSource, variable);
             cmbVariables.SelectedIndex = variablesBindingSource.Count - 1;

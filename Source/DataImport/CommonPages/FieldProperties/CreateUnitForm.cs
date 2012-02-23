@@ -1,32 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages
+namespace DataImport.CommonPages.FieldProperties
 {
-    public partial class CreateVariableForm : Form
+    /// <summary>
+    /// Allow to create new Unit
+    /// </summary>
+    public partial class CreateUnitForm : Form
     {
-        public CreateVariableForm()
+        #region Constructors
+
+        /// <summary>
+        /// Create new instance of <see cref="CreateUnitForm"/>
+        /// </summary>
+        public CreateUnitForm()
         {
             InitializeComponent();
-
-            variableView1.Entity = new Variable { Name = "Variable1" };
         }
+
+        #endregion
 
         #region Properties
 
         /// <summary>
-        /// Current Entity
+        /// Gets or sets current Entity
         /// </summary>
-        public Variable Entity
+        public Unit Entity
         {
-            get { return variableView1.Entity; }
+            get { return unitView1.Entity; }
+            set { unitView1.Entity = value; }
         }
 
         #endregion
@@ -35,7 +38,7 @@ namespace DataImport.CommonPages
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            var error = variableView1.EntityValidate();
+            var error = unitView1.EntityValidate();
             if (!string.IsNullOrEmpty(error))
             {
                 MessageBox.Show(error, "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -48,6 +48,8 @@
             this.cmbDataType = new System.Windows.Forms.ComboBox();
             this.cmbSampleMedium = new System.Windows.Forms.ComboBox();
             this.lblSampleMedium = new System.Windows.Forms.Label();
+            this.btnCreateNewVariableUnit = new System.Windows.Forms.Button();
+            this.btnCreateNewTimeUnit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).BeginInit();
@@ -68,7 +70,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbCode.Location = new System.Drawing.Point(103, 41);
             this.tbCode.Name = "tbCode";
-            this.tbCode.Size = new System.Drawing.Size(143, 20);
+            this.tbCode.Size = new System.Drawing.Size(186, 20);
             this.tbCode.TabIndex = 1;
             // 
             // lblCode
@@ -97,7 +99,7 @@
             this.cmbVariableUnits.FormattingEnabled = true;
             this.cmbVariableUnits.Location = new System.Drawing.Point(103, 70);
             this.cmbVariableUnits.Name = "cmbVariableUnits";
-            this.cmbVariableUnits.Size = new System.Drawing.Size(143, 21);
+            this.cmbVariableUnits.Size = new System.Drawing.Size(97, 21);
             this.cmbVariableUnits.TabIndex = 2;
             // 
             // cmbTimeUnits
@@ -108,7 +110,7 @@
             this.cmbTimeUnits.FormattingEnabled = true;
             this.cmbTimeUnits.Location = new System.Drawing.Point(103, 210);
             this.cmbTimeUnits.Name = "cmbTimeUnits";
-            this.cmbTimeUnits.Size = new System.Drawing.Size(143, 21);
+            this.cmbTimeUnits.Size = new System.Drawing.Size(97, 21);
             this.cmbTimeUnits.TabIndex = 6;
             // 
             // lblTimeUnits
@@ -163,7 +165,7 @@
             this.cmbName.FormattingEnabled = true;
             this.cmbName.Location = new System.Drawing.Point(103, 12);
             this.cmbName.Name = "cmbName";
-            this.cmbName.Size = new System.Drawing.Size(143, 21);
+            this.cmbName.Size = new System.Drawing.Size(186, 21);
             this.cmbName.TabIndex = 0;
             // 
             // cmbValueType
@@ -174,7 +176,7 @@
             this.cmbValueType.FormattingEnabled = true;
             this.cmbValueType.Location = new System.Drawing.Point(103, 125);
             this.cmbValueType.Name = "cmbValueType";
-            this.cmbValueType.Size = new System.Drawing.Size(143, 21);
+            this.cmbValueType.Size = new System.Drawing.Size(186, 21);
             this.cmbValueType.TabIndex = 15;
             // 
             // nudNoDataValue
@@ -194,7 +196,7 @@
             -1,
             -2147483648});
             this.nudNoDataValue.Name = "nudNoDataValue";
-            this.nudNoDataValue.Size = new System.Drawing.Size(143, 20);
+            this.nudNoDataValue.Size = new System.Drawing.Size(186, 20);
             this.nudNoDataValue.TabIndex = 7;
             // 
             // nudTimeSupport
@@ -214,7 +216,7 @@
             -1,
             -2147483648});
             this.nudTimeSupport.Name = "nudTimeSupport";
-            this.nudTimeSupport.Size = new System.Drawing.Size(143, 20);
+            this.nudTimeSupport.Size = new System.Drawing.Size(186, 20);
             this.nudTimeSupport.TabIndex = 5;
             // 
             // cmbDataType
@@ -225,7 +227,7 @@
             this.cmbDataType.FormattingEnabled = true;
             this.cmbDataType.Location = new System.Drawing.Point(103, 98);
             this.cmbDataType.Name = "cmbDataType";
-            this.cmbDataType.Size = new System.Drawing.Size(143, 21);
+            this.cmbDataType.Size = new System.Drawing.Size(186, 21);
             this.cmbDataType.TabIndex = 16;
             // 
             // cmbSampleMedium
@@ -236,7 +238,7 @@
             this.cmbSampleMedium.FormattingEnabled = true;
             this.cmbSampleMedium.Location = new System.Drawing.Point(103, 153);
             this.cmbSampleMedium.Name = "cmbSampleMedium";
-            this.cmbSampleMedium.Size = new System.Drawing.Size(143, 21);
+            this.cmbSampleMedium.Size = new System.Drawing.Size(186, 21);
             this.cmbSampleMedium.TabIndex = 18;
             // 
             // lblSampleMedium
@@ -248,10 +250,34 @@
             this.lblSampleMedium.TabIndex = 17;
             this.lblSampleMedium.Text = "Sample Medium";
             // 
+            // btnCreateNewVariableUnit
+            // 
+            this.btnCreateNewVariableUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreateNewVariableUnit.Location = new System.Drawing.Point(208, 70);
+            this.btnCreateNewVariableUnit.Name = "btnCreateNewVariableUnit";
+            this.btnCreateNewVariableUnit.Size = new System.Drawing.Size(81, 23);
+            this.btnCreateNewVariableUnit.TabIndex = 19;
+            this.btnCreateNewVariableUnit.Text = "Create New...";
+            this.btnCreateNewVariableUnit.UseVisualStyleBackColor = true;
+            this.btnCreateNewVariableUnit.Click += new System.EventHandler(this.btnCreateNewVariableUnit_Click);
+            // 
+            // btnCreateNewTimeUnit
+            // 
+            this.btnCreateNewTimeUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreateNewTimeUnit.Location = new System.Drawing.Point(208, 208);
+            this.btnCreateNewTimeUnit.Name = "btnCreateNewTimeUnit";
+            this.btnCreateNewTimeUnit.Size = new System.Drawing.Size(81, 23);
+            this.btnCreateNewTimeUnit.TabIndex = 20;
+            this.btnCreateNewTimeUnit.Text = "Create New...";
+            this.btnCreateNewTimeUnit.UseVisualStyleBackColor = true;
+            this.btnCreateNewTimeUnit.Click += new System.EventHandler(this.btnCreateNewTimeUnit_Click);
+            // 
             // VariableView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnCreateNewTimeUnit);
+            this.Controls.Add(this.btnCreateNewVariableUnit);
             this.Controls.Add(this.cmbSampleMedium);
             this.Controls.Add(this.lblSampleMedium);
             this.Controls.Add(this.cmbDataType);
@@ -271,7 +297,7 @@
             this.Controls.Add(this.lblCode);
             this.Controls.Add(this.lblName);
             this.Name = "VariableView";
-            this.Size = new System.Drawing.Size(260, 277);
+            this.Size = new System.Drawing.Size(303, 277);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoDataValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeSupport)).EndInit();
@@ -301,5 +327,7 @@
         private System.Windows.Forms.ComboBox cmbDataType;
         private System.Windows.Forms.ComboBox cmbSampleMedium;
         private System.Windows.Forms.Label lblSampleMedium;
+        private System.Windows.Forms.Button btnCreateNewVariableUnit;
+        private System.Windows.Forms.Button btnCreateNewTimeUnit;
     }
 }

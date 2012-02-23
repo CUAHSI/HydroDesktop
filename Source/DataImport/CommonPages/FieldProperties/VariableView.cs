@@ -2,8 +2,8 @@
 using System.Linq;
 using System.ComponentModel;
 using System.Windows.Forms;
+using DataImport.CommonPages.FieldProperties;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -46,13 +46,25 @@ namespace DataImport.CommonPages
             // Set Bindings
             var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
             var units = unitRepo.GetAll();
-
+            if (Entity.VariableUnit != null &&
+               !Array.Exists(units, u => Entity.VariableUnit == u))
+            {
+                Array.Resize(ref units, units.Length + 1);
+                units[units.Length - 1] = Entity.VariableUnit;
+            }
             cmbVariableUnits.DataSource = units;
             cmbVariableUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
             if (Entity.VariableUnit != null)
                 cmbVariableUnits.SelectedItem = Entity.VariableUnit;
 
-            cmbTimeUnits.DataSource = units.Select(u => u).ToArray();
+            units = unitRepo.GetAll();
+            if (Entity.TimeUnit != null &&
+               !Array.Exists(units, u => Entity.TimeUnit == u))
+            {
+                Array.Resize(ref units, units.Length + 1);
+                units[units.Length - 1] = Entity.TimeUnit;
+            }
+            cmbTimeUnits.DataSource = units;
             cmbTimeUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
             if (Entity.TimeUnit != null)
                 cmbTimeUnits.SelectedItem = Entity.TimeUnit;
@@ -131,7 +143,27 @@ namespace DataImport.CommonPages
             {
                 _entity = value;
 
+                // Update Unit Combos
+                if (value != null)
+                {
+                    UpdateUnitCombo(cmbVariableUnits, Entity.VariableUnit);
+                    UpdateUnitCombo(cmbTimeUnits, Entity.TimeUnit);
+                }
+
                 bindingSource1.DataSource = value;
+            }
+        }
+
+        private static void UpdateUnitCombo(ComboBox comboBox, Unit unit)
+        {
+            var units = (Unit[])comboBox.DataSource;
+            if (units != null && unit != null &&
+                !units.Contains(unit))
+            {
+                Array.Resize(ref units, units.Length + 1);
+                units[units.Length - 1] = unit;
+                comboBox.DataSource = units;
+                comboBox.SelectedIndex = units.Length - 1;
             }
         }
 
@@ -153,11 +185,16 @@ namespace DataImport.CommonPages
                 nudTimeSupport.FullReadOnly = value;
                 cmbTimeUnits.Enabled = !value;
                 nudNoDataValue.FullReadOnly = value;
+
+                btnCreateNewTimeUnit.Enabled = !value;
+                btnCreateNewVariableUnit.Enabled = !value;
             }
         }
 
 
         #endregion
+
+        #region Public methods
 
         /// <summary>
         /// Validate Current Entity
@@ -181,5 +218,43 @@ namespace DataImport.CommonPages
 
             return error;
         }
+
+        #endregion
+
+        #region Private methods
+
+        private void btnCreateNewVariableUnit_Click(object sender, EventArgs e)
+        {
+            using (var form = new CreateUnitForm())
+            {
+                form.Entity = Unit.Unknown;
+
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    Entity.VariableUnit = form.Entity;
+                    // Update Unit Combos
+                    UpdateUnitCombo(cmbVariableUnits, Entity.VariableUnit);
+                    UpdateUnitCombo(cmbTimeUnits, Entity.TimeUnit);
+                }
+            }
+        }
+
+        private void btnCreateNewTimeUnit_Click(object sender, EventArgs e)
+        {
+            using (var form = new CreateUnitForm())
+            {
+                form.Entity = Unit.UnknownTimeUnit;
+
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    Entity.TimeUnit = form.Entity;
+                    // Update Unit Combos
+                    UpdateUnitCombo(cmbVariableUnits, Entity.VariableUnit);
+                    UpdateUnitCombo(cmbTimeUnits, Entity.TimeUnit);
+                }
+            }
+        }
+
+        #endregion
     }
 }
