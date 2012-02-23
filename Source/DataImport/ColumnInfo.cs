@@ -8,12 +8,15 @@ namespace DataImport
         public bool ImportColumn { get; set; }
         public int ColumnIndex { get; set; }
         public string ColumnName { get; set; }
+
         public bool ApplySiteToAllColumns { get; set; }
         public bool ApplyVariableToAllColumns { get; set; }
+        public bool ApplySourceToAllColumns { get; set; }
+        public bool ApplyMethodToAllColumns { get; set; }
+        public bool ApplyQualityControlToAllColumns { get; set; }
 
         public Site Site { get; set; }
         public Variable Variable { get; set; }
-
         public QualityControlLevel QualityControlLevel { get; set; }
         public Method Method { get; set; }
         public Source Source { get; set; }

@@ -52,6 +52,9 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.sitesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.variablesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.chApplySourceToAllColumns = new System.Windows.Forms.CheckBox();
+            this.chApplyMethodToAllColumns = new System.Windows.Forms.CheckBox();
+            this.chApplyQualityControlToAllColumns = new System.Windows.Forms.CheckBox();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
@@ -206,6 +209,7 @@
             // 
             // tpSource
             // 
+            this.tpSource.Controls.Add(this.chApplySourceToAllColumns);
             this.tpSource.Controls.Add(this.sourceView1);
             this.tpSource.Location = new System.Drawing.Point(4, 22);
             this.tpSource.Name = "tpSource";
@@ -227,6 +231,7 @@
             // 
             // tpMethod
             // 
+            this.tpMethod.Controls.Add(this.chApplyMethodToAllColumns);
             this.tpMethod.Controls.Add(this.methodView1);
             this.tpMethod.Location = new System.Drawing.Point(4, 22);
             this.tpMethod.Name = "tpMethod";
@@ -247,6 +252,7 @@
             // 
             // tpQualityControl
             // 
+            this.tpQualityControl.Controls.Add(this.chApplyQualityControlToAllColumns);
             this.tpQualityControl.Controls.Add(this.qualityControlLevelView1);
             this.tpQualityControl.Location = new System.Drawing.Point(4, 22);
             this.tpQualityControl.Name = "tpQualityControl";
@@ -288,6 +294,36 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // chApplySourceToAllColumns
+            // 
+            this.chApplySourceToAllColumns.AutoSize = true;
+            this.chApplySourceToAllColumns.Location = new System.Drawing.Point(10, 366);
+            this.chApplySourceToAllColumns.Name = "chApplySourceToAllColumns";
+            this.chApplySourceToAllColumns.Size = new System.Drawing.Size(173, 17);
+            this.chApplySourceToAllColumns.TabIndex = 7;
+            this.chApplySourceToAllColumns.Text = "Apply this source to all columns";
+            this.chApplySourceToAllColumns.UseVisualStyleBackColor = true;
+            // 
+            // chApplyMethodToAllColumns
+            // 
+            this.chApplyMethodToAllColumns.AutoSize = true;
+            this.chApplyMethodToAllColumns.Location = new System.Drawing.Point(10, 281);
+            this.chApplyMethodToAllColumns.Name = "chApplyMethodToAllColumns";
+            this.chApplyMethodToAllColumns.Size = new System.Drawing.Size(176, 17);
+            this.chApplyMethodToAllColumns.TabIndex = 8;
+            this.chApplyMethodToAllColumns.Text = "Apply this method to all columns";
+            this.chApplyMethodToAllColumns.UseVisualStyleBackColor = true;
+            // 
+            // chApplyQualityControlToAllColumns
+            // 
+            this.chApplyQualityControlToAllColumns.AutoSize = true;
+            this.chApplyQualityControlToAllColumns.Location = new System.Drawing.Point(10, 120);
+            this.chApplyQualityControlToAllColumns.Name = "chApplyQualityControlToAllColumns";
+            this.chApplyQualityControlToAllColumns.Size = new System.Drawing.Size(206, 17);
+            this.chApplyQualityControlToAllColumns.TabIndex = 9;
+            this.chApplyQualityControlToAllColumns.Text = "Apply this quality control to all columns";
+            this.chApplyQualityControlToAllColumns.UseVisualStyleBackColor = true;
+            // 
             // FieldPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -307,8 +343,11 @@
             this.tbVariable.ResumeLayout(false);
             this.tbVariable.PerformLayout();
             this.tpSource.ResumeLayout(false);
+            this.tpSource.PerformLayout();
             this.tpMethod.ResumeLayout(false);
+            this.tpMethod.PerformLayout();
             this.tpQualityControl.ResumeLayout(false);
+            this.tpQualityControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sitesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.variablesBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -340,5 +379,8 @@
         private SourceView sourceView1;
         private MethodView methodView1;
         private QualityControlLevelView qualityControlLevelView1;
+        private System.Windows.Forms.CheckBox chApplySourceToAllColumns;
+        private System.Windows.Forms.CheckBox chApplyMethodToAllColumns;
+        private System.Windows.Forms.CheckBox chApplyQualityControlToAllColumns;
     }
 }

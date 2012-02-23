@@ -86,7 +86,7 @@ namespace DataImport.CommonPages
                 var cd = form.ColumnData;
                 cDatas[index] = cd;
 
-                // Apply site/variable to all columns if need
+                // Apply site/variable/source/method/qualityControl to all columns if need
                 for (int k = 0; k < cDatas.Count; k++)
                 {
                     if (k == index) continue;
@@ -100,6 +100,18 @@ namespace DataImport.CommonPages
                     if (cd.ApplyVariableToAllColumns)
                     {
                         option.Variable = (Variable) cd.Variable.Clone();
+                    }
+                    if (cd.ApplySourceToAllColumns)
+                    {
+                        option.Source = (Source) cd.Source.Clone();
+                    }
+                    if (cd.ApplyMethodToAllColumns)
+                    {
+                        option.Method = (Method) cd.Method.Clone();
+                    }
+                    if (cd.ApplyQualityControlToAllColumns)
+                    {
+                        option.QualityControlLevel = (QualityControlLevel) cd.QualityControlLevel.Clone();
                     }
                 }
             }
