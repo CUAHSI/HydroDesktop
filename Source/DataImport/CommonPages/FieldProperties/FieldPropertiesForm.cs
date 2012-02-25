@@ -166,6 +166,7 @@ namespace DataImport.CommonPages
                                    GeneralCategory = "Unknown",
                                    TimeUnit = Unit.UnknownTimeUnit,
                                    VariableUnit = Unit.Unknown,
+                                   NoDataValue = -9999,
                                };
             AddNewItemInBindingSource(variablesBindingSource, variable);
             cmbVariables.SelectedIndex = variablesBindingSource.Count - 1;
