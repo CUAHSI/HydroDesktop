@@ -38,11 +38,24 @@ namespace ImportFromWaterML
 
         public override void Activate()
         {
-            var btnWaterML = new SimpleActionItem("WaterML", menu_Click);
-            btnWaterML.RootKey = TableTabKey;
-            btnWaterML.LargeImage = Resources.waterml_import1;
-            btnWaterML.GroupCaption = "Data Import";
-            App.HeaderControl.Add(btnWaterML);
+            var importButtonTabKey = new SimpleActionItem("Import", menu_Click)
+                                 {
+                                     RootKey = TableTabKey,
+                                     SmallImage = Resources.waterml_import1,
+                                     LargeImage = Resources.waterml_import1,
+                                     GroupCaption = "Data Import",
+                                     ToolTipText = "Import data series into database.",
+                                 };
+            App.HeaderControl.Add(importButtonTabKey);
+
+            var importButton = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Import...", menu_Click)
+                                   {
+                                       GroupCaption = HeaderControl.ApplicationMenuKey,
+                                       SmallImage = Resources.waterml_import1,
+                                       LargeImage = Resources.waterml_import1,
+                                       ToolTipText = "Import data series into database."
+                                   };
+            App.HeaderControl.Add(importButton);
 
             base.Activate();
         }
