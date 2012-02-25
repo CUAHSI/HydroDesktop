@@ -62,9 +62,22 @@ namespace HydroDesktop.ArcGisOnline
 
         private void DoRunArcGISOnline(Object sender, EventArgs e)
         {
-            ArcGISOnlineForm frm = new ArcGISOnlineForm();
-            frm.App = App;
-            frm.Show();
+            string path = App.SerializationManager.CurrentProjectDirectory;
+            var fd = new OpenFileDialog();
+
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                string fn = fd.FileName;
+
+                FeatureSet fs = new FeatureSet();
+                fs.FilePath = fn;
+                int nf = fs.Features.Count;
+            }
+
+            
+            //ArcGISOnlineForm frm = new ArcGISOnlineForm();
+            //frm.App = App;
+            //frm.Show();
         }
 
         #endregion

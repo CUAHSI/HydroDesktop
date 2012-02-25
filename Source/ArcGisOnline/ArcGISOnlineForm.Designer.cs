@@ -52,6 +52,7 @@
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // textBox1
             // 
@@ -60,7 +61,7 @@
             this.textBox1.Size = new System.Drawing.Size(499, 20);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "http://maps.usu.edu/ArcGIS/rest/services/LittleBearRiver/LBRObservationsMetadata/" +
-                "MapServer";
+    "MapServer";
             // 
             // label1
             // 
