@@ -181,21 +181,27 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
                                                      // Save updated data
                                                      ReportProgress(98, "Saving data");
                                                      Application.DoEvents();
+                                                     var resultFileName = featureSet.Filename;
                                                      if (!string.IsNullOrEmpty(featureSet.Filename))
                                                      {
                                                          featureSet.Save();
+                                                         featureSet = null; //remove the featureSet and force it to be re-loaded
                                                      }
                                                      
                                                      if (_settings.CreateNewLayer)
                                                      {
                                                          ReportProgress(99, "Adding layer to map");
                                                          Application.DoEvents();
-                                                         
-                                                         var mapLayer = new MapPointLayer(featureSet) { LegendText = Path.GetFileNameWithoutExtension(featureSet.Filename) };
-                                                         _layer.MapFrame.Add(mapLayer);
-                                                         
-                                                         UpdateLabeling(mapLayer, columnName);
-                                                         UpdateSymbology(mapLayer, columnName);
+
+                                                         if (File.Exists(resultFileName))
+                                                         {
+                                                             featureSet = FeatureSet.Open(resultFileName); //re-open the featureSet from the file
+                                                             var mapLayer = new MapPointLayer(featureSet) { LegendText = Path.GetFileNameWithoutExtension(featureSet.Filename) };
+                                                             _layer.MapFrame.Add(mapLayer);
+
+                                                             UpdateLabeling(mapLayer, columnName);
+                                                             UpdateSymbology(mapLayer, columnName);
+                                                         }
                                                      }
 
                                                      ReportProgress(100, "Finished");

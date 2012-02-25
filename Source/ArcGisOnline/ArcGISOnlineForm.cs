@@ -30,5 +30,10 @@ namespace HydroDesktop.ArcGisOnline
 
             App.Map.Layers.Add(fs);
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
