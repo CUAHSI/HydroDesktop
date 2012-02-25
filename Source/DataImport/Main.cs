@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ using DataImport.Txt;
 using DataImport.WaterML;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using HydroDesktop.Interfaces;
 
 namespace ImportFromWaterML
 {
@@ -19,6 +21,16 @@ namespace ImportFromWaterML
         #region Variables
         
         private const string TableTabKey = "kHydroTable";
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Series View
+        /// </summary>
+        [Import("SeriesControl", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
 
         #endregion
 
@@ -81,6 +93,8 @@ namespace ImportFromWaterML
 
                 var wizard = new ImportSeriesWizard(context);
                 wizard.ShowDialog();
+
+                SeriesControl.RefreshSelection();
             }
         }
 
