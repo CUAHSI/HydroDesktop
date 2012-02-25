@@ -37,7 +37,7 @@
             // Banner
             // 
             this.Banner.Size = new System.Drawing.Size(503, 64);
-            this.Banner.Subtitle = "Specify properties of imported fields.";
+            this.Banner.Subtitle = "Right-click on a column to specify properties.";
             this.Banner.Title = "Properties of imported fields";
             // 
             // dgvPreview

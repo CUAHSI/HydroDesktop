@@ -18,6 +18,7 @@ namespace DataImport.CommonPages
         #region Fields
 
         private Variable _entity;
+        private bool _readOnly;
 
         #endregion
 
@@ -32,42 +33,17 @@ namespace DataImport.CommonPages
 
             if (this.IsDesignMode()) return;
 
-            Entity = new Variable
-                         {
-                             VariableUnit = Unit.Unknown,
-                             TimeUnit = Unit.UnknownTimeUnit,
-                             Speciation = "Not Applicable",
-                             SampleMedium = "Unknown",
-                             ValueType = "Unknown",
-                             DataType = "Unknown",
-                             GeneralCategory = "Unknown",
-                         };
+            bindingSource1.DataSource = typeof (Variable);
 
             // Set Bindings
             var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
             var units = unitRepo.GetAll();
-            if (Entity.VariableUnit != null &&
-               !Array.Exists(units, u => Entity.VariableUnit == u))
-            {
-                Array.Resize(ref units, units.Length + 1);
-                units[units.Length - 1] = Entity.VariableUnit;
-            }
             cmbVariableUnits.DataSource = units;
             cmbVariableUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
-            if (Entity.VariableUnit != null)
-                cmbVariableUnits.SelectedItem = Entity.VariableUnit;
 
             units = unitRepo.GetAll();
-            if (Entity.TimeUnit != null &&
-               !Array.Exists(units, u => Entity.TimeUnit == u))
-            {
-                Array.Resize(ref units, units.Length + 1);
-                units[units.Length - 1] = Entity.TimeUnit;
-            }
             cmbTimeUnits.DataSource = units;
             cmbTimeUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
-            if (Entity.TimeUnit != null)
-                cmbTimeUnits.SelectedItem = Entity.TimeUnit;
 
             var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
             var variables = variablesRepo.GetAll();
@@ -80,6 +56,7 @@ namespace DataImport.CommonPages
                                                     if (variable != null)
                                                     {
                                                         var ent = Entity;
+                                                        if (ent == null) return;
                                                         ent.Code = variable.Code;
                                                         ent.DataType = variable.DataType;
                                                         ent.GeneralCategory = variable.GeneralCategory;
@@ -150,7 +127,14 @@ namespace DataImport.CommonPages
                     UpdateUnitCombo(cmbTimeUnits, Entity.TimeUnit);
                 }
 
-                bindingSource1.DataSource = value;
+                if (value == null)
+                {
+                    bindingSource1.DataSource = typeof(Variable);
+                }
+                else
+                {
+                    bindingSource1.DataSource = value;    
+                }
             }
         }
 
@@ -167,7 +151,9 @@ namespace DataImport.CommonPages
             }
         }
 
-        private bool _readOnly;
+        /// <summary>
+        /// Gets or sets value indicating whether all editors is read-only.
+        /// </summary>
         [Browsable(false)]
         public bool ReadOnly
         {
