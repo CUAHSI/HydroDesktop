@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
@@ -143,7 +145,11 @@ namespace DataImport.CommonPages
 
         private void btnCreateNewSite_Click(object sender, EventArgs e)
         {
-            var site =  new Site { Name = "NewSite", Code = "Site1" };
+            var site = new Site
+                           {
+                               Name = "NewSite",
+                               Code = GetUniqueName(sitesBindingSource.List.Cast<Site>(), "Site", v => v.Code),
+                           };
             AddNewItemInBindingSource(sitesBindingSource, site);
             cmbSites.SelectedIndex = sitesBindingSource.Count - 1;
             if (sitesBindingSource.Count == 1)
@@ -158,7 +164,7 @@ namespace DataImport.CommonPages
             var variable = new Variable
                                {
                                    Name = "NewVariable",
-                                   Code = "Variable1",
+                                   Code = GetUniqueName(variablesBindingSource.List.Cast<Variable>(), "Variable", v => v.Code),
                                    Speciation = "Not Applicable",
                                    SampleMedium = "Unknown",
                                    ValueType = "Unknown",
@@ -183,6 +189,20 @@ namespace DataImport.CommonPages
             bindingSource.CopyTo(newDataSource, 0);
             newDataSource[newDataSource.Length - 1] = newItem;
             bindingSource.DataSource = newDataSource;
+        }
+
+        private static string GetUniqueName<T>(IEnumerable<T> enumerable, string initial, Func<T, string> nameGetter)
+        {
+            var list = enumerable.ToList();
+            var uniqueNumber = 1;
+            string uniqueName;
+            do
+            {
+                uniqueName = initial + uniqueNumber;
+                uniqueNumber++;
+            } while (list.Any(item => nameGetter(item) == uniqueName));
+
+            return uniqueName;
         }
 
         #endregion
