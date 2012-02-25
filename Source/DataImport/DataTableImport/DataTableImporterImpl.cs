@@ -82,7 +82,10 @@ namespace DataImport.DataTableImport
             var theme = new Theme(Path.GetFileNameWithoutExtension(settings.PathToFile));
             foreach (var tuple in toImport)
             {
-                repoManager.SaveSeries(tuple.Item2, theme, tuple.Item3);
+                var series = tuple.Item2;
+                series.UpdateProperties();
+
+                repoManager.SaveSeries(series, theme, tuple.Item3);
 
                 progress += pStep;
                 ReportProgress(progress, "Saving values into local database...");
