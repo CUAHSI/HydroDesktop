@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DataImport.CommonPages.FieldProperties;
 using HydroDesktop.Interfaces.ObjectModel;
 using Wizard.UI;
 
@@ -18,6 +19,7 @@ namespace DataImport.CommonPages
         #region Fields
 
         private readonly IWizardImporterSettings _settings;
+        private List<DataValuesColumnControl> _columnControls;
 
         #endregion
 
@@ -161,6 +163,22 @@ namespace DataImport.CommonPages
                 };
                 _settings.ColumnDatas.Add(columnData);
             }
+
+            if (_columnControls != null)
+            {
+                foreach (var control in _columnControls)
+                {
+                    Controls.Remove(control);
+                    control.Dispose();
+                }
+            }
+            _columnControls = new List<DataValuesColumnControl>(dgvPreview.Columns.Count);
+            RefreshColumnControls();
+        }
+
+        private void RefreshColumnControls()
+        {
+            
         }
 
         private static string FindColumnWithDateTime(DataTable table)

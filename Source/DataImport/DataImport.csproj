@@ -104,6 +104,12 @@
     <Compile Include="CommonPages\FieldProperties\CreateUnitForm.Designer.cs">
       <DependentUpon>CreateUnitForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommonPages\FieldProperties\DataValuesColumnControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\FieldProperties\DataValuesColumnControl.Designer.cs">
+      <DependentUpon>DataValuesColumnControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommonPages\FieldProperties\UnitView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -229,6 +235,9 @@
   <ItemGroup>
     <EmbeddedResource Include="CommonPages\FieldProperties\CreateUnitForm.resx">
       <DependentUpon>CreateUnitForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\FieldProperties\DataValuesColumnControl.resx">
+      <DependentUpon>DataValuesColumnControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\FieldPropertiesForm.resx">
       <DependentUpon>FieldPropertiesForm.cs</DependentUpon>
