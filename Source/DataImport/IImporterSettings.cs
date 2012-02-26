@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
+using DotSpatial.Controls;
+using HydroDesktop.Interfaces;
 
 namespace DataImport
 {
@@ -29,8 +31,20 @@ namespace DataImport
         DataTable Data { get; set; }
 
         /// <summary>
-        /// Get or sets the string to use as a decimal separator when parsing values
+        /// Gets or sets the string to use as a decimal separator when parsing values
         /// </summary>
         string ValuesNumberDecimalSeparator { get; set; }
+
+        /// <summary>
+        /// Gets or sets max progress percent when importing
+        /// </summary>
+        int MaxProgressPercentWhenImport { get; set; }
+
+        /// <summary>
+        /// Gets or sets SeriesSelector
+        /// </summary>
+        ISeriesSelector SeriesSelector { get; set; }
+
+        IMap Map { get; set; }
     }
 }

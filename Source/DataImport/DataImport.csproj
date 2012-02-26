@@ -62,8 +62,24 @@
       <HintPath>..\..\Binaries\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\Binaries\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\Binaries\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Excel">

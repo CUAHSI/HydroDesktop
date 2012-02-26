@@ -532,7 +532,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             table.Columns.Add("Method", typeof(string));
             table.Columns.Add("QualityControl", typeof(string));
             table.Columns.Add("ServiceCode", typeof(string));
-            Field fld = new Field("BeginDateTime", 'C', 16, 0);
+            var fld = new Field("BeginDateTime", 'C', 16, 0);
             table.Columns.Add(fld);
             fld = new Field("EndDateTime", 'C', 16, 0);
             table.Columns.Add(fld);
@@ -546,10 +546,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             {
                 double lat = series.Site.Latitude;
                 double lon = series.Site.Longitude;
-                DotSpatial.Topology.Point pt = new DotSpatial.Topology.Point(lon, lat);
-                IFeature newFeature = fs.AddFeature(pt);
+                var pt = new Point(lon, lat);
+                var newFeature = fs.AddFeature(pt);
 
-                DataRow featureRow = newFeature.DataRow;
+                var featureRow = newFeature.DataRow;
                 featureRow["DataSource"] = series.Source.Organization;
                 featureRow["SeriesID"] = (series.Id > 0) ? series.Id : newFeature.Fid;
                 featureRow["SiteName"] = series.Site.Name;

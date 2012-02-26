@@ -13,7 +13,7 @@ namespace DataImport.DataTableImport
 {
     class DataTableImporterImpl : IImporter
     {
-        public void Import(IImporterSettings settings)
+        public IList<Series> Import(IImporterSettings settings)
         {
             int progress = 0;
             ReportProgress(progress, "Starting importing...");
@@ -78,7 +78,7 @@ namespace DataImport.DataTableImport
             progress = 15;
             ReportProgress(progress, "Saving values into local database...");
 
-            var pStep = (int)((99.0 - progress)/toImport.Count);
+            var pStep = (int)((settings.MaxProgressPercentWhenImport - progress) / toImport.Count);
             var theme = new Theme(Path.GetFileNameWithoutExtension(settings.PathToFile));
             foreach (var tuple in toImport)
             {
@@ -90,9 +90,8 @@ namespace DataImport.DataTableImport
                 progress += pStep;
                 ReportProgress(progress, "Saving values into local database...");
             }
-
-            progress = 100;
-            ReportProgress(progress, "Finished");
+            
+            return toImport.Select(item => item.Item2).ToList();
         }
 
         public IProgressHandler ProgressHandler { get; set; }

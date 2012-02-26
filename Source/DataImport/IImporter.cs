@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using HydroDesktop.Common;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace DataImport
 {
@@ -11,7 +13,8 @@ namespace DataImport
         /// Import data using settings
         /// </summary>
         /// <param name="settings">Setting for import</param>
-        void Import(IImporterSettings settings);
+        /// <returns>Imported series.</returns>
+        IList<Series> Import(IImporterSettings settings);
 
         /// <summary>
         /// Progress handler

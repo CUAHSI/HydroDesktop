@@ -9,9 +9,9 @@ namespace DataImport.WaterML
 {
     class WaterMLImporterImpl : IImporter
     {
-        public void Import(IImporterSettings settings)
+        public IList<Series> Import(IImporterSettings settings)
         {
-            var wmlSettings = (WaterMLImportSettings)settings;
+            var wmlSettings = (WaterMLImportSettings) settings;
 
             var objDownloader = new Downloader();
             string fileName = wmlSettings.PathToFile;
@@ -33,16 +33,26 @@ namespace DataImport.WaterML
             if (seriesList == null)
             {
                 MessageBox.Show("error converting xml file");
-                return;
             }
-            if (objDownloader.ValidateSeriesList(seriesList))
+            else
             {
-
-                foreach (var series in seriesList)
+                if (objDownloader.ValidateSeriesList(seriesList))
                 {
-                    objDownloader.SaveDataSeries(series, themeName, siteName, variableName);
+                    foreach (var series in seriesList)
+                    {
+                        objDownloader.SaveDataSeries(series, themeName, siteName, variableName);
+                    }
+                }
+                else
+                {
+                    seriesList = null;
                 }
             }
+
+            if (seriesList == null)
+                return new List<Series>(0);
+
+            return seriesList;
         }
 
         public IProgressHandler ProgressHandler
