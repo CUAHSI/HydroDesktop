@@ -13,7 +13,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for DataSeries
     /// </summary>
-    class DataSeriesRepository : BaseRepository, IDataSeriesRepository
+    class DataSeriesRepository : BaseRepository<Series>, IDataSeriesRepository
     {
         #region Constructors
         

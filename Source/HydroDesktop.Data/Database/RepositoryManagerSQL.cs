@@ -11,7 +11,7 @@ namespace HydroDesktop.Database
     /// Helper class for reading and writing HydroDesktop objects to
     /// and from the HydroDesktop data repository SQLite database
     /// </summary>
-    public class DbRepositoryManagerSQL : BaseRepository, IRepositoryManager
+    public class DbRepositoryManagerSQL : BaseRepository<Series>, IRepositoryManager
     {
         #region Constructor
         /// <summary>

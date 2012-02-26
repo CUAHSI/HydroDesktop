@@ -9,7 +9,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for <see cref="Site"/>
     /// </summary>
-    class SitesRepository : BaseRepository, ISitesRepository
+    class SitesRepository : BaseRepository<Site>, ISitesRepository
     {
         #region Constructors
 
@@ -28,35 +28,26 @@ namespace HydroDesktop.Database
             get { return "Sites"; }
         }
 
-        public Site[] GetAll()
+        protected override Site DataRowToEntity(DataRow row)
         {
-            var table = AsDataTable();
-            var result = new Site[table.Rows.Count];
-            for(int i = 0; i<table.Rows.Count; i++)
-            {
-                var row = table.Rows[i];
-                var site = new Site
-                               {
-                                   Id = Convert.ToInt64(row["SiteID"]),
-                                   Code = Convert.ToString(row["SiteCode"]),
-                                   Name = Convert.ToString(row["SiteName"]),
-                                   Latitude = Convert.ToDouble(row["Latitude"]),
-                                   Longitude = Convert.ToDouble(row["Longitude"]),
-                                   Elevation_m = Convert.ToDouble(row["Elevation_m"]),
-                                   Comments = Convert.ToString(row["Comments"]),
-                                   County = Convert.ToString(row["County"]),
-                                   State = Convert.ToString(row["State"]),
-                                   PosAccuracy_m = Convert.ToDouble(row["PosAccuracy_m"]),
-                                   LocalX = Convert.ToDouble(row["LocalX"]),
-                                   LocalY = Convert.ToDouble(row["LocalY"]),
-                                   VerticalDatum = Convert.ToString(row["VerticalDatum"]),
-                                   // todo: load other fields
-                               };
-
-                result[i] = site;
-            }
-
-            return result;
+            var site = new Site
+                           {
+                               Id = Convert.ToInt64(row["SiteID"]),
+                               Code = Convert.ToString(row["SiteCode"]),
+                               Name = Convert.ToString(row["SiteName"]),
+                               Latitude = Convert.ToDouble(row["Latitude"]),
+                               Longitude = Convert.ToDouble(row["Longitude"]),
+                               Elevation_m = Convert.ToDouble(row["Elevation_m"]),
+                               Comments = Convert.ToString(row["Comments"]),
+                               County = Convert.ToString(row["County"]),
+                               State = Convert.ToString(row["State"]),
+                               PosAccuracy_m = Convert.ToDouble(row["PosAccuracy_m"]),
+                               LocalX = Convert.ToDouble(row["LocalX"]),
+                               LocalY = Convert.ToDouble(row["LocalY"]),
+                               VerticalDatum = Convert.ToString(row["VerticalDatum"]),
+                               // todo: load other fields
+                           };
+            return site;
         }
 
         public bool Exists(Site site)

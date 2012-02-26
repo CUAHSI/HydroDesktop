@@ -1,12 +1,16 @@
+using System;
 using System.Data;
+using System.Linq;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database
 {
     /// <summary>
     /// Base Repository
     /// </summary>
-    public abstract class BaseRepository : IRepository
+    public abstract class BaseRepository<T> : IRepository<T>
+        where T : BaseEntity
     {
         #region Fields
 
@@ -48,16 +52,6 @@ namespace HydroDesktop.Database
             _db = db;
         }
 
-        /// <summary>
-        /// Get all values from current repository as DataTable.
-        /// </summary>
-        /// <returns>DataTable with data.</returns>
-        public DataTable AsDataTable()
-        {
-            var table = DbOperations.LoadTable(TableName, string.Format("Select * from {0}", TableName));
-            return table;
-        }
-
         #endregion
 
         #region Properties
@@ -75,6 +69,17 @@ namespace HydroDesktop.Database
         /// </summary>
         public abstract string TableName { get; }
 
+        /// <summary>
+        /// Name of primary key column
+        /// </summary>
+        public virtual string PrimaryKeyName
+        {
+            get
+            {
+                throw new NotImplementedException("Implement me in child class.");   
+            }
+        }
+
         public string LastRowIDSelect
         {
             get { return "; SELECT LAST_INSERT_ROWID();"; }
@@ -82,7 +87,34 @@ namespace HydroDesktop.Database
 
         #endregion
 
+        #region Public methods
+
+        public DataTable AsDataTable()
+        {
+            var table = DbOperations.LoadTable(TableName, string.Format("Select * from {0}", TableName));
+            return table;
+        }
+
+        public long GetNextID()
+        {
+            return DbOperations.GetNextID(TableName, PrimaryKeyName);
+        }
+
+        public T[] GetAll()
+        {
+            var dt = AsDataTable();
+            var res = dt.Rows.Cast<DataRow>().Select(DataRowToEntity).ToArray();
+            return res;
+        }
+
+        #endregion
+
         #region Private Methods
+
+        protected virtual T DataRowToEntity (DataRow row)
+        {
+            throw new NotImplementedException("Implement me in child class.");
+        }
 
         /// <summary>
         /// Checks if the SQLite db file exists. if it doesn't exist,

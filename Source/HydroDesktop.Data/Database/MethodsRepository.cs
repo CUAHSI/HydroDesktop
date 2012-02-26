@@ -8,7 +8,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for Methods
     /// </summary>
-    class MethodsRepository : BaseRepository, IMethodsRepository
+    class MethodsRepository : BaseRepository<Method>, IMethodsRepository
     {
         #region Constructors
         

@@ -3,10 +3,9 @@ using HydroDesktop.Interfaces.ObjectModel;
 namespace HydroDesktop.Interfaces
 {
     /// <summary>
-    /// Interface for <see cref="Source"/> Repository
+    /// Interface for <see cref="OffsetType"/> Repository
     /// </summary>
-    public interface ISourcesRepository : IRepository<Source>
+    public interface IOffsetTypesRepository : IRepository<OffsetType>
     {
-        
     }
 }

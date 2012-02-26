@@ -6,14 +6,8 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for <see cref="Site"/> repository
     /// </summary>
-    public interface ISitesRepository : IRepository
+    public interface ISitesRepository : IRepository<Site>
     {
-        /// <summary>
-        /// Get all sites.
-        /// </summary>
-        /// <returns>All sites.</returns>
-        Site[] GetAll();
-
         /// <summary>
         /// Check that site already exists in the database
         /// </summary>
