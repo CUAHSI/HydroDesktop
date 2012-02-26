@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces;
 using System.Globalization;
@@ -81,7 +82,24 @@ namespace HydroDesktop.Database
             var result = DbOperations.LoadTable(TableName, query);
             return result;
         }
-       
+
+        public IList<double> GetValues(long seriesID)
+        {
+            var list = DbOperations.Read("SELECT DataValue FROM DataValues WHERE SeriesID = " + seriesID,
+                                                 r => r.GetDouble(0));
+            return list;
+        }
+
+        public DataTable GetTableForExportFromTimeSeriesPlot(long seriesID)
+        {
+            var query =
+                "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.DataValue, dv.LocalDateTime, U.UnitsName " +
+                "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U " +
+                "WHERE v.VariableID = ds.VariableID AND s.SiteID = ds.SiteID AND dv.SeriesID = ds.SeriesID AND U.UnitsID = v.VariableUnitsID AND ds.SeriesID = " +
+                seriesID;
+            return DbOperations.LoadTable(TableName, query);
+        }
+
         public DataTable GetTableForExport(long seriesID, double? noDataValue = null, string dateColumn = null, DateTime? firstDate = null, DateTime? lastDate = null)
         {
             var sql =
@@ -122,6 +140,19 @@ namespace HydroDesktop.Database
             return tbl;
         }
 
+        public DataTable GetTableForGraphView(long seriesID, double nodatavalue, DateTime startDate, DateTime endDate)
+        {
+            var strStartDate = startDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var strEndDate = endDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+            var query =
+                "SELECT DataValue, LocalDateTime, CensorCode, strftime('%m', LocalDateTime) as DateMonth, strftime('%Y', LocalDateTime) as DateYear FROM DataValues WHERE (SeriesID = " +
+                + seriesID + ") AND (DataValue <> " + nodatavalue + ") AND (LocalDateTime between '" + strStartDate +
+                "' AND '" + strEndDate + "')  ORDER BY LocalDateTime";
+            var table = DbOperations.LoadTable("DataValues", query);
+            return table;
+        }
+
         #endregion
 
         public override string TableName
@@ -131,10 +162,7 @@ namespace HydroDesktop.Database
 
         public override string PrimaryKeyName
         {
-            get
-            {
-                return "ValueID";
-            }
+            get { return "ValueID"; }
         }
     }
 }

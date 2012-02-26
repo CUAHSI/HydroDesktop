@@ -557,14 +557,17 @@ namespace HydroR
             {
                 //nrs = nrs.Distinct().ToArray();
                 //int[] ids = GetDistinctValues(Convert.seriesSelector31.CheckedIDList.ToArray());
+                var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 for (int i = 0; i < _seriesSelector.CheckedIDList.Length; i++)
                 {
                     //get the DB connection from HydroDesktop
                     string fileLoc = (HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString.Split(';'))[0].Substring(12);
-                    DbOperations dbCall = new DbOperations(HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+
                     //get the begin and end dates from the database for the current series
-                    DateTime begin = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
-                    DateTime end = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
+                    var dates = repo.GetDateTimes(_seriesSelector.CheckedIDList[i]);
+                    var begin = dates.Item1;
+                    var end = dates.Item2;
+
                     if (fileLoc.Contains(" "))
                         rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
 

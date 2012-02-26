@@ -404,11 +404,12 @@ Public Class cProbabilityPlot
             Dim exportTable As DataTable = New DataTable
 
             'Build datatable for each series and then add all series' datatable to the exportTable
+
+            Dim repo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
             For count As Integer = 1 To checkedSeries
 
                 'Build a datatable as "totalData" for each series
-                Dim conn = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-                Dim dbOperation As New DbOperations(conn, DatabaseTypes.SQLite)
+
                 Dim totalData As DataTable = New DataTable
 
                 'Add columns in the table
@@ -440,23 +441,16 @@ Public Class cProbabilityPlot
                 totalData.Rows.Add(row)
 
                 'Select datavalue from database
-                Dim dataValue As DataTable = New DataTable
-                Dim sql As String
-                sql = "SELECT DataValue FROM DataValues WHERE SeriesID = " & SeriesSelector.CheckedIDList(count - 1)
-                dataValue = dbOperation.LoadTable("value", sql)
 
-                Dim validRow() As DataRow
-                Dim numRow As Integer
-                'Order all values in ascending sequence
-                validRow = dataValue.Select("", "DataValue ASC")
-                numRow = validRow.GetLength(0)
+                Dim values = repo.GetValues(SeriesSelector.CheckedIDList(count - 1)).OrderBy(Function(x) x)
+                Dim numRow = values.Count()
 
                 'Add non-repeated frequency data into "totalData" datatable
                 For r As Integer = 0 To numRow - 1
                     Dim row_count As Integer = totalData.Rows.Count()
                     row = totalData.NewRow()
                     row(0) = row_count - 2
-                    row(1) = validRow(r).Item("DataValue")
+                    row(1) = values(r)
                     row(2) = CalculateProbabilityFreq(r + 1, numRow) * 100
 
                     If r = 0 Then
