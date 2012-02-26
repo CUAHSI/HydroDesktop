@@ -369,6 +369,13 @@ namespace HydroDesktop.Database
             return true;
         }
 
+        public Tuple<DateTime, DateTime> GetDateTimes(long seriesID)
+        {
+            var begin = Convert.ToDateTime(DbOperations.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + seriesID));
+            var end = Convert.ToDateTime(DbOperations.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + seriesID));
+            return new Tuple<DateTime, DateTime>(begin, end);
+        }
+
         #endregion
 
         #region Private methods

@@ -206,24 +206,25 @@ Namespace Controls
         End Sub
 
         Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As TimeSeriesPlotOptions
-            Dim connString = Settings.Instance.DataRepositoryConnectionString
-            Dim dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
+            Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
+            Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
+            Dim series = dataSeriesRepo.GetSeriesByID(seriesID)
 
-            Dim strStartDate = StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")
-            Dim strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1).ToString("yyyy-MM-dd HH:mm:ss")
+            Dim strStartDate = StartDateTime
+            Dim strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1)
             ProgressBar.Value += 1
 
-            Dim nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & seriesID & "')")
+            Dim nodatavalue = series.Variable.NoDataValue
             ProgressBar.Value += 1
-            Dim data = dbTools.LoadTable("DataValues", "SELECT DataValue, LocalDateTime, CensorCode, strftime('%m', LocalDateTime) as DateMonth, strftime('%Y', LocalDateTime) as DateYear FROM DataValues WHERE (SeriesID = '" & seriesID & "') AND (DataValue <> '" & nodatavalue & "') AND (LocalDateTime between '" & strStartDate & "' AND '" & strEndDate & "')  ORDER BY LocalDateTime")
+            Dim data = dataValuesRepo.GetTableForGraphView(seriesID, nodatavalue, strStartDate, strEndDate)
             ProgressBar.Value += 1
-            Dim variableName = dbTools.ExecuteSingleOutput("SELECT VariableName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & seriesID & "'")
+            Dim variableName = series.Variable.Name
             ProgressBar.Value += 1
-            Dim unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & seriesID & "'")
+            Dim unitsName = series.Variable.VariableUnit.Name
             ProgressBar.Value += 1
-            Dim siteName = dbTools.ExecuteSingleOutput("SELECT " & _seriesMenu.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & seriesID & "'")
+            Dim siteName = If(_seriesMenu.SiteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
             ProgressBar.Value += 1
-            Dim dataType = dbTools.ExecuteSingleOutput("SELECT DataType FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & seriesID & "'")
+            Dim dataType = series.Variable.DataType
             ProgressBar.Value += 1
 
             Dim options = CPlotOptions1.Options

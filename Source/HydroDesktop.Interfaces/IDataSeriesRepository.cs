@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -109,5 +110,12 @@ namespace HydroDesktop.Interfaces
         /// <param name="variable">Variable</param>
         /// <returns>True - exists, otherwise - false.</returns>
         bool ExistsSeries(Site site, Variable variable);
+
+        /// <summary>
+        /// Get BeginDateTime and EndDateTime for given seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>BeginDateTime and EndDateTime</returns>
+        Tuple<DateTime, DateTime> GetDateTimes(long seriesID);
     }
 }

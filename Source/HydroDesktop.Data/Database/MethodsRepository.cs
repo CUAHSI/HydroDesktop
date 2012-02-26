@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
@@ -25,18 +24,15 @@ namespace HydroDesktop.Database
 
         #region Public methods
 
-        public int InsertMethod(string methodDescription, string methodLink, int? methodID = null)
+        public int InsertMethod(string methodDescription, string methodLink)
         {
-            if (methodID == null)
-            {
-                methodID = DbOperations.GetNextID(TableName, "MethodID");
-            }
+            var methodID = DbOperations.GetNextID(TableName, "MethodID");
             DbOperations.ExecuteNonQuery(
                 string.Format(
                     "INSERT INTO Methods(MethodID, MethodDescription, MethodLink) VALUES ({0}, '{1}', '{2}')", methodID,
                     methodDescription, methodLink));
 
-            return methodID.Value;
+            return methodID;
         }
        
         public void UpdateMethod(int methodID, string methodDescription, string methodLink)

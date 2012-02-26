@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
 
@@ -36,6 +37,13 @@ namespace HydroDesktop.Interfaces
         DataTable GetAll(long seriesID);
 
         /// <summary>
+        /// Get all values for specified seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>List of values.</returns>
+        IList<double> GetValues(long seriesID);
+
+        /// <summary>
         /// Get DataTable for export
         /// </summary>
         /// <param name="seriesID">SeriesID</param>
@@ -46,5 +54,22 @@ namespace HydroDesktop.Interfaces
         /// <returns>DataTable for export</returns>
         DataTable GetTableForExport(long seriesID, double? noDataValue = null, string dateColumn = null,
                                     DateTime? firstDate = null, DateTime? lastDate = null);
+
+        /// <summary>
+        /// Get DataTable for export for time series plot
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>DataTable for export.</returns>
+        DataTable GetTableForExportFromTimeSeriesPlot(long seriesID);
+
+        /// <summary>
+        /// Get DataTable with values for GraphView
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <param name="nodatavalue">NoDataValue</param>
+        /// <param name="startDate">StartDate.</param>
+        /// <param name="endDate">EndDate.</param>
+        /// <returns>DataTable for export.</returns>
+        DataTable GetTableForGraphView(long seriesID, double nodatavalue, DateTime startDate, DateTime endDate);
     }
 }

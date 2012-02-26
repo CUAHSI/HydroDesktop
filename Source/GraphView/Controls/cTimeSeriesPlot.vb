@@ -251,21 +251,12 @@ Public Class cTimeSeriesPlot
 
             'Build a datatable to export
             Dim exportTable As DataTable = New DataTable
-
-            Dim conn = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-            Dim dbOperation As New DbOperations(conn, DatabaseTypes.SQLite)
-            Dim totalData As New Data.DataTable
-
+            Dim repo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
             'Build datatable for each series and then add all series' datatable to the exportTable
             For count As Integer = 1 To checkedSeries
-
-                Dim sql As String
-
                 'Error checking
                 Dim checkedSeriesID As Integer = sSelector.CheckedIDList(count - 1)
-
-                sql = "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.DataValue, dv.LocalDateTime, U.UnitsName FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U WHERE v.VariableID = ds.VariableID AND s.SiteID = ds.SiteID AND dv.SeriesID = ds.SeriesID AND U.UnitsID = v.VariableUnitsID AND ds.SeriesID = " & checkedSeriesID
-                totalData = dbOperation.LoadTable("DataValues", sql)
+                Dim totalData = repo.GetTableForExportFromTimeSeriesPlot(checkedSeriesID)
 
                 If count = 1 Then
                     exportTable = totalData.Copy()
