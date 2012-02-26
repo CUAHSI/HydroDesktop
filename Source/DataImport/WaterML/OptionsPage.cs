@@ -31,8 +31,7 @@ namespace DataImport.WaterML
             SetWizardButtons(WizardButtons.None);
 
             //populate combo box
-            var dbTools = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            var themeTable = dbTools.LoadTable("themes", "select * from DataThemeDescriptions");
+            var themeTable = RepositoryFactory.Instance.Get<IDataThemesRepository>().AsDataTable();
 
             cbTheme.DataSource = themeTable;
             cbTheme.DisplayMember = "ThemeName";

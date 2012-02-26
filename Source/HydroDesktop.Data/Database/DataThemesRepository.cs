@@ -152,31 +152,28 @@ namespace HydroDesktop.Database
         /// <returns>The list of all themes</returns>
         public IList<Theme> GetAllThemes()
         {
-            string sql = "SELECT ThemeID, ThemeName, ThemeDescription FROM DataThemeDescriptions";
-            DataTable table = DbOperations.LoadTable("tblThemes", sql);
+            var table = AsDataTable();
 
-            if (table.Rows.Count == 0)
+            var themeList = new List<Theme>(table.Rows.Count);
+            foreach (DataRow row in table.Rows)
             {
-                return new List<Theme>();
+                var newTheme = new Theme
+                                   {
+                                       Name = Convert.ToString(row["ThemeName"]),
+                                       Description = Convert.ToString(row["ThemeDescription"]),
+                                       Id = Convert.ToInt64(row["ThemeID"]),
+                                       DateCreated = Convert.ToDateTime(row["DateCreated"]),
+                                   };
+                themeList.Add(newTheme);
             }
-            else
-            {
-                List<Theme> themeList = new List<Theme>();
-                foreach (DataRow row in table.Rows)
-                {
-                    Theme newTheme = new Theme(row[1].ToString(), row[2].ToString());
-                    newTheme.Id = Convert.ToInt32(row[0]);
-                    themeList.Add(newTheme);
-                }
-                return themeList;
-            }
+            return themeList;
         }
 
         #endregion
 
         public override string TableName
         {
-            get { return "DataThemes"; }
+            get { return "DataThemeDescriptions"; }
         }
     }
 }

@@ -6,7 +6,7 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for Methods Repository
     /// </summary>
-    public interface IMethodsRepository
+    public interface IMethodsRepository : IRepository
     {
         /// <summary>
         /// Insert method
@@ -24,12 +24,6 @@ namespace HydroDesktop.Interfaces
         /// <param name="methodDescription">Method description</param>
         /// <param name="methodLink">Method link</param>
         void UpdateMethod(int methodID, string methodDescription, string methodLink);
-
-        /// <summary>
-        /// Get Data Table with all methods
-        /// </summary>
-        /// <returns>Data Table with all methods</returns>
-        DataTable GetAllMethods();
 
 
         /// <summary>

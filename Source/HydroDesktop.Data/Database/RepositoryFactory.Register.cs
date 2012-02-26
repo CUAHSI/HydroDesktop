@@ -54,6 +54,18 @@ namespace HydroDesktop.Database
                         CreatorByConnectionString = (dbType, connStr) => new SitesRepository(dbType, connStr),
                         CreatorByDbOperations = dbOp => new SitesRepository(dbOp)
                     });
+            Add<ISourcesRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new SourcesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new SourcesRepository(dbOp)
+                });
+            Add<IQualityControlLevelsRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new QualityControlLevelsRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new QualityControlLevelsRepository(dbOp)
+                });
         }
     }
 }

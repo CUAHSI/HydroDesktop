@@ -28,7 +28,7 @@ namespace HydroDesktop.Database
 
         public Variable[] GetAll()
         {
-            var table = GetAllAsDataTable();
+            var table = AsDataTable();
             var result = new Variable[table.Rows.Count];
             for (int i = 0; i < table.Rows.Count; i++)
             {
@@ -38,12 +38,6 @@ namespace HydroDesktop.Database
             }
 
             return result;
-        }
-
-        public DataTable GetAllAsDataTable()
-        {
-            var dt = DbOperations.LoadTable(TableName, "Select * FROM Variables");
-            return dt;
         }
 
         public Variable GetByID(long id)
@@ -102,7 +96,7 @@ namespace HydroDesktop.Database
         private Variable DataRowToVariable(DataRow row)
         {
             var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
-              var res = new Variable
+            var res = new Variable
                           {
                               Id = Convert.ToInt64(row["VariableID"]),
                               Code = Convert.ToString(row["VariableCode"]),

@@ -8,7 +8,7 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for DataThemes Repository
     /// </summary>
-    public interface IDataThemesRepository
+    public interface IDataThemesRepository : IRepository
     {
         /// <summary>
         /// Get themes for all series.

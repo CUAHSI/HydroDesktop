@@ -79,9 +79,12 @@
     <Compile Include="IHydroDbOperations.cs" />
     <Compile Include="IMetadataCacheManager.cs" />
     <Compile Include="IMethodsRepository.cs" />
+    <Compile Include="IQualityControlLevelsRepository.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryManager.cs" />
     <Compile Include="ISeriesSelector.cs" />
     <Compile Include="ISitesRepository.cs" />
+    <Compile Include="ISourcesRepository.cs" />
     <Compile Include="IUnitsRepository.cs" />
     <Compile Include="IVariablesRepository.cs" />
     <Compile Include="IWebServicesStore.cs" />
