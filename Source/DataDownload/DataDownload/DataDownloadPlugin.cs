@@ -275,7 +275,7 @@ namespace HydroDesktop.DataDownload
             var dManager = DownloadManager;
             var themeName = dManager.Information.StartArgs.DataTheme.Name;
 
-            var _themeManager = new ThemeManager(new DbOperations(Settings.Instance.DataRepositoryConnectionString,DatabaseTypes.SQLite));
+            var _themeManager = new ThemeManager();
             IFeatureSet featureSet;
             try
             {

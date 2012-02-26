@@ -18,6 +18,12 @@ namespace HydroDesktop.Interfaces
         DataTable GetThemesForAllSeries();
 
         /// <summary>
+        /// Get DataTable which contains some specific columns for ThemeManager
+        /// </summary>
+        /// <returns>DataTable with data.</returns>
+        DataTable GetThemesTableForThemeManager(long themeId);
+
+        /// <summary>
         /// Get Theme ID by Theme Name
         /// </summary>
         /// <param name="themeName">Theme name</param>
