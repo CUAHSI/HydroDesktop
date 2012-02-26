@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
+using DotSpatial.Controls;
+using HydroDesktop.Interfaces;
 
 namespace DataImport.WaterML
 {
@@ -14,6 +16,10 @@ namespace DataImport.WaterML
         /// Theme name
         /// </summary>
         public string ThemeName { get; set; }
+
+        public int MaxProgressPercentWhenImport { get; set; }
+        public ISeriesSelector SeriesSelector { get; set; }
+        public IMap Map { get; set; }
 
         public IList<ColumnInfo> ColumnDatas
         {

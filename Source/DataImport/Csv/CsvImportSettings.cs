@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
+using DotSpatial.Controls;
+using HydroDesktop.Interfaces;
 
 namespace DataImport.Csv
 {
@@ -16,7 +18,10 @@ namespace DataImport.Csv
         public string ValuesNumberDecimalSeparator { get; set; }
         public IList<ColumnInfo> ColumnDatas { get; set; }
         public string DateTimeColumn { get; set; }
-
+        public int MaxProgressPercentWhenImport { get; set; }
+        public ISeriesSelector SeriesSelector { get; set; }
+        public IMap Map { get; set; }
+    
         #endregion
     }
 }

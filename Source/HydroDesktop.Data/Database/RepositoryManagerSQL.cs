@@ -1233,6 +1233,9 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
+
+            series.Id = seriesID;
+
             return numSavedValues;
         }
 
@@ -1879,6 +1882,8 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
+            series.Id = seriesID;
+
             return numSavedValues;
         }
 
@@ -2388,6 +2393,8 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
+            series.Id = seriesID;
+
             return numSavedValues;
         }
        

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
+using DotSpatial.Controls;
+using HydroDesktop.Interfaces;
 
 namespace DataImport.Excel
 {
@@ -26,6 +28,9 @@ namespace DataImport.Excel
         public DataTable Preview { get; set; }
         public DataTable Data { get; set; }
         public string ValuesNumberDecimalSeparator { get; set; }
+        public int MaxProgressPercentWhenImport { get; set; }
+        public ISeriesSelector SeriesSelector { get; set; }
+        public IMap Map { get; set; }
 
         #endregion
     }

@@ -103,11 +103,11 @@ namespace ImportFromWaterML
                 context.Importer = importer;
                 context.Settings = importer.GetDefaultSettings();
                 context.Settings.PathToFile = fileName;
+                context.Settings.SeriesSelector = SeriesControl;
+                context.Settings.Map = App.Map;
 
                 var wizard = new ImportSeriesWizard(context);
                 wizard.ShowDialog();
-
-                SeriesControl.RefreshSelection();
             }
         }
 
