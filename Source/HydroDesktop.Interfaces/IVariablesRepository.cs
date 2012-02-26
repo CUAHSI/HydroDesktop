@@ -6,19 +6,13 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for Variables Repository
     /// </summary>
-    public interface IVariablesRepository
+    public interface IVariablesRepository : IRepository
     {
         /// <summary>
         /// Get all variables.
         /// </summary>
         /// <returns>All variables.</returns>
         Variable[] GetAll();
-
-        /// <summary>
-        /// Get all
-        /// </summary>
-        /// <returns>Data Table with all data</returns>
-        DataTable GetAllAsDataTable();
 
         /// <summary>
         /// Get <see cref="Variable"/> by ID

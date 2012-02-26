@@ -62,7 +62,7 @@ Public Class fDeriveNewDataSeries
         End If
 
         'Fill up Method drop down list
-        Dim dt = repo.GetAllMethods()
+        Dim dt = repo.AsDataTable()
         dt.Rows.Add()
         dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Methods", "MethodID").ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Method..."
@@ -83,7 +83,7 @@ Public Class fDeriveNewDataSeries
         _derivedVariable.ValueType = "Derived Value"
 
         'Fill up Variable drop down list
-        Dim dt = variablesRepository.GetAllAsDataTable()
+        Dim dt = variablesRepository.AsDataTable()
         dt.Rows.Add()
         dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Variables", "VariableID").ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Variable..."

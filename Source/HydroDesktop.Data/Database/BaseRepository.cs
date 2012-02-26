@@ -1,3 +1,4 @@
+using System.Data;
 using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Database
@@ -5,7 +6,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Base Repository
     /// </summary>
-    public abstract class BaseRepository
+    public abstract class BaseRepository : IRepository
     {
         #region Fields
 
@@ -45,6 +46,16 @@ namespace HydroDesktop.Database
             }
 
             _db = db;
+        }
+
+        /// <summary>
+        /// Get all values from current repository as DataTable.
+        /// </summary>
+        /// <returns>DataTable with data.</returns>
+        public DataTable AsDataTable()
+        {
+            var table = DbOperations.LoadTable(TableName, string.Format("Select * from {0}", TableName));
+            return table;
         }
 
         #endregion

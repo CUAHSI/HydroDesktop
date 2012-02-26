@@ -46,12 +46,6 @@ namespace HydroDesktop.Database
                               methodDescription, methodLink, methodID)
                 );
         }
-        
-        public DataTable GetAllMethods()
-        {
-            var dt = DbOperations.LoadTable("Methods", "Select * FROM Methods");
-            return dt;
-        }
       
         public int? GetMethodID(string methodDescription)
         {

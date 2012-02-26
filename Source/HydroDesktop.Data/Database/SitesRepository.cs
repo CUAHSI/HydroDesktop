@@ -30,7 +30,7 @@ namespace HydroDesktop.Database
 
         public Site[] GetAll()
         {
-            var table = DbOperations.LoadTable(TableName, "Select * from Sites");
+            var table = AsDataTable();
             var result = new Site[table.Rows.Count];
             for(int i = 0; i<table.Rows.Count; i++)
             {
