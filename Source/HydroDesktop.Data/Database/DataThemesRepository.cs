@@ -10,7 +10,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for DataThemes
     /// </summary>
-    class DataThemesRepository : BaseRepository, IDataThemesRepository
+    class DataThemesRepository : BaseRepository<Theme>, IDataThemesRepository
     {
         #region Constants
 
@@ -169,30 +169,19 @@ namespace HydroDesktop.Database
             return true;
         }
 
-        /// <summary>
-        /// Gets all themes from the database ordered by the theme name
-        /// </summary>
-        /// <returns>The list of all themes</returns>
-        public IList<Theme> GetAllThemes()
-        {
-            var table = AsDataTable();
-
-            var themeList = new List<Theme>(table.Rows.Count);
-            foreach (DataRow row in table.Rows)
-            {
-                var newTheme = new Theme
-                                   {
-                                       Name = Convert.ToString(row["ThemeName"]),
-                                       Description = Convert.ToString(row["ThemeDescription"]),
-                                       Id = Convert.ToInt64(row["ThemeID"]),
-                                       DateCreated = Convert.ToDateTime(row["DateCreated"]),
-                                   };
-                themeList.Add(newTheme);
-            }
-            return themeList;
-        }
-
         #endregion
+
+        protected override Theme DataRowToEntity(DataRow row)
+        {
+            var newTheme = new Theme
+            {
+                Name = Convert.ToString(row["ThemeName"]),
+                Description = Convert.ToString(row["ThemeDescription"]),
+                Id = Convert.ToInt64(row["ThemeID"]),
+                DateCreated = Convert.ToDateTime(row["DateCreated"]),
+            };
+            return newTheme;
+        }
 
         public override string TableName
         {

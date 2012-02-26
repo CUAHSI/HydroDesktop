@@ -2,13 +2,14 @@ using System;
 using System.Data;
 using HydroDesktop.Interfaces;
 using System.Globalization;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database
 {
     /// <summary>
     /// Repository for DataValues
     /// </summary>
-    class DataValuesRepository : BaseRepository, IDataValuesRepository
+    class DataValuesRepository : BaseRepository<DataValue>, IDataValuesRepository
     {
         #region Constructors
 
@@ -126,6 +127,14 @@ namespace HydroDesktop.Database
         public override string TableName
         {
             get { return "DataValues"; }
+        }
+
+        public override string PrimaryKeyName
+        {
+            get
+            {
+                return "ValueID";
+            }
         }
     }
 }

@@ -1,8 +1,9 @@
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database
 {
-    class QualityControlLevelsRepository : BaseRepository, IQualityControlLevelsRepository
+    class QualityControlLevelsRepository : BaseRepository<QualityControlLevel>, IQualityControlLevelsRepository
     {
         #region Constructors
 

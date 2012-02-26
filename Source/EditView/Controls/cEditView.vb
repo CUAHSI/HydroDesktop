@@ -868,7 +868,7 @@ Public Class cEditView
         Dim updateFormatString As String = "UPDATE DataValues SET DataValue = {0}, QualifierID = {1} WHERE ValueID = {2}; "
         Dim insertFormatString As String = "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, " & _
                     "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (" & _
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}) ;"
+                    "{0},{1},{2},'{3}','{4}',{5},'{6}',{7},{8},'{9}',{10},{11},{12}) ;"
 
         'Setting progress bar
         Dim frmloading As ProgressBar = pbProgressBar
@@ -895,20 +895,20 @@ Public Class cEditView
                 ElseIf Editdt.Rows(i)("Other") = 1 Then
                     If dbTools.ExecuteSingleOutput("Select ValueID FROM DataValues WHERE ValueID = " + ValueID.ToString) = Nothing Then
 
-                        SQLstring2.AppendFormat(insertFormatString, _
-                                                Editdt.Rows(i)(0), _
-                                                Editdt.Rows(i)(1), _
-                                                Convert.ToString(Editdt.Rows(i)(2), CultureInfo.InvariantCulture), _
-                                                If(Editdt.Rows(i)(3) Is DBNull.Value, "NULL,", Editdt.Rows(i)(3)), _
-                        Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), _
-                        Editdt.Rows(i)(5), _
-                        Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), _
-                        If(Editdt.Rows(i)(8) Is DBNull.Value, "NULL, ", Convert.ToString(Editdt.Rows(i)(8), CultureInfo.InvariantCulture)), _
-                        If(Editdt.Rows(i)(9) Is DBNull.Value, "NULL, ", Editdt.Rows(i)(9)), _
-                        If(Editdt.Rows(i)(10) Is DBNull.Value, "NULL,", Editdt.Rows(i)(10)), _
-                        If(Editdt.Rows(i)(7) Is DBNull.Value, "NULL,", GetQualifierID(Editdt.Rows(i)(7).ToString)), _
-                        If(Editdt.Rows(i)(11) Is DBNull.Value, "NULL,", Editdt.Rows(i)(11)),
-                        If(Editdt.Rows(i)(12) Is DBNull.Value, "NULL,", Editdt.Rows(i)(12)))
+                        SQLstring2.AppendFormat(insertFormatString,
+                                                Editdt.Rows(i)(0),
+                                                Editdt.Rows(i)(1),
+                                                Convert.ToString(Editdt.Rows(i)(2), CultureInfo.InvariantCulture),
+                                                If(Editdt.Rows(i)(3) Is DBNull.Value, "NULL,", Editdt.Rows(i)(3)),
+                        Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                        Editdt.Rows(i)(5),
+                        Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                        If(Editdt.Rows(i)(8) Is DBNull.Value, "NULL", Convert.ToString(Editdt.Rows(i)(8), CultureInfo.InvariantCulture)),
+                        If(Editdt.Rows(i)(9) Is DBNull.Value, "NULL", Editdt.Rows(i)(9)),
+                        If(Editdt.Rows(i)(10) Is DBNull.Value, "NULL", Editdt.Rows(i)(10)),
+                        If(Editdt.Rows(i)(7) Is DBNull.Value, "NULL", GetQualifierID(Editdt.Rows(i)(7).ToString)),
+                        If(Editdt.Rows(i)(11) Is DBNull.Value, "NULL", Editdt.Rows(i)(11)),
+                        If(Editdt.Rows(i)(12) Is DBNull.Value, "NULL", Editdt.Rows(i)(12)))
 
                     End If
 

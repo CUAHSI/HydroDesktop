@@ -1,17 +1,9 @@
 ﻿Imports HydroDesktop.Database
-Imports System.Globalization
-Imports System.Threading
-Imports System.Text
 Imports QualifierHandling
-Imports ZedGraph
 Imports HydroDesktop.Interfaces
 
 
 Public Class fAddNewPoint
-
-    Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-    Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
-
     Public Sub New()
 
         InitializeComponent()
@@ -22,8 +14,7 @@ Public Class fAddNewPoint
     Public Sub initialize()
 
         'OffsetType Column
-        Dim dtOffsetTypes As DataTable
-        dtOffsetTypes = dbTools.LoadTable("OffsetTypes", "SELECT * FROM OffsetTypes")
+        Dim dtOffsetTypes = RepositoryFactory.Instance.Get(Of IOffsetTypesRepository)().AsDataTable()
         dtOffsetTypes.Rows.Add()
         dtOffsetTypes.Rows(dtOffsetTypes.Rows.Count - 1)("OffsetDescription") = "No Offset Type"
         dtOffsetTypes.Rows(dtOffsetTypes.Rows.Count - 1)("OffsetTypeID") = 0
@@ -37,8 +28,7 @@ Public Class fAddNewPoint
         dgvNewPoints.Columns.Add(OffsetType)
 
         'Qualifier Column
-        Dim dtQualifiers As DataTable
-        dtQualifiers = dbTools.LoadTable("Qualifiers", "SELECT * FROM Qualifiers")
+        Dim dtQualifiers = RepositoryFactory.Instance.Get(Of IQualifiersRepository).AsDataTable()
         dtQualifiers.Rows.Add()
         dtQualifiers.Rows(dtQualifiers.Rows.Count - 1)("QualifierCode") = "No Qualifier"
         dtQualifiers.Rows(dtQualifiers.Rows.Count - 1)("QualifierID") = 0
@@ -52,8 +42,7 @@ Public Class fAddNewPoint
         dgvNewPoints.Columns.Add(Qualifier)
 
         'Sample Column
-        Dim dtSamples As DataTable
-        dtSamples = dbTools.LoadTable("Samples", "SELECT * FROM Samples")
+        Dim dtSamples = RepositoryFactory.Instance.Get(Of ISamplesRepository).AsDataTable()
         dtSamples.Rows.Add()
         dtSamples.Rows(dtSamples.Rows.Count - 1)("SampleType") = "No Sample"
         dtSamples.Rows(dtSamples.Rows.Count - 1)("SampleID") = 0
@@ -67,8 +56,7 @@ Public Class fAddNewPoint
         dgvNewPoints.Columns.Add(Sample)
 
         'File Column
-        Dim dtFiles As DataTable
-        dtFiles = dbTools.LoadTable("DataFiles", "SELECT * FROM DataFiles")
+        Dim dtFiles = RepositoryFactory.Instance.Get(Of IDataFilesRepository).AsDataTable()
         dtFiles.Rows.Add()
         dtFiles.Rows(dtFiles.Rows.Count - 1)("FileName") = "No File"
         dtFiles.Rows(dtFiles.Rows.Count - 1)("FileID") = 0
@@ -202,11 +190,11 @@ Public Class fAddNewPoint
 
                 Next
 
-
+                Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
                 For i As Integer = BeginningRow To dgvNewPoints.Rows.Count - 2
 
                     dt.Rows.Add()
-                    dt.Rows(dt.Rows.Count - 1)("ValueID") = dbTools.GetNextID("DataValues", "ValueID") + AddingRowsCount
+                    dt.Rows(dt.Rows.Count - 1)("ValueID") = dataValuesRepo.GetNextID() + AddingRowsCount
                     dt.Rows(dt.Rows.Count - 1)("SeriesID") = _cEditView.newseriesID
                     dt.Rows(dt.Rows.Count - 1)("DataValue") = dgvNewPoints.Rows(i).Cells("DataValue").Value
                     If Not dgvNewPoints.Rows(i).Cells("ValueAccuracy").Value = Nothing Then

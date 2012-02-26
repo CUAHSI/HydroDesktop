@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -8,7 +7,7 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for DataThemes Repository
     /// </summary>
-    public interface IDataThemesRepository : IRepository
+    public interface IDataThemesRepository : IRepository<Theme>
     {
         /// <summary>
         /// Get themes for all series.
@@ -46,11 +45,6 @@ namespace HydroDesktop.Interfaces
         /// <param name="e">The arguments for background worker</param>
         /// <returns>true if the theme was successfully deleted</returns>
         bool DeleteTheme(int themeID, BackgroundWorker worker, DoWorkEventArgs e);
-
-        /// <summary>
-        /// Gets all themes from the database ordered by the theme name
-        /// </summary>
-        /// <returns>The list of all themes</returns>
-        IList<Theme> GetAllThemes();
+     
     }
 }

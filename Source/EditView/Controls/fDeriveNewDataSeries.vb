@@ -18,6 +18,8 @@ Public Class fDeriveNewDataSeries
     Private ReadOnly _cEditView As cEditView
     Private _derivedVariable As Variable
     Private _selectedSeriesVariable As Variable
+    ReadOnly variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
+    ReadOnly dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
 
     Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
 
@@ -34,7 +36,15 @@ Public Class fDeriveNewDataSeries
         'fill all lists of this form
         FillQualityControlLevel()
         FillMethods()
+
+        'Create derived variable
+        Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
+        _selectedSeriesVariable = variablesRepository.GetByID(currentVariableID)
+        _derivedVariable = DirectCast(_selectedSeriesVariable.Clone(), Variable)
+        variablesRepository.AddVariable(_derivedVariable)
+        _derivedVariable.ValueType = "Derived Value"
         FillVariable()
+
         rbtnCopy.Checked = True
     End Sub
 
@@ -71,17 +81,7 @@ Public Class fDeriveNewDataSeries
         ddlMethods.ValueMember = "MethodID"
     End Sub
 
-    Public Sub FillVariable()
-        Dim variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
-        Dim dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
-
-        'Create derived variable
-        Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
-        _selectedSeriesVariable = variablesRepository.GetByID(currentVariableID)
-        _derivedVariable = DirectCast(_selectedSeriesVariable.Clone(), Variable)
-        variablesRepository.AddVariable(_derivedVariable)
-        _derivedVariable.ValueType = "Derived Value"
-
+    Private Sub FillVariable()
         'Fill up Variable drop down list
         Dim dt = variablesRepository.AsDataTable()
         dt.Rows.Add()
@@ -498,8 +498,15 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Private Sub ShowVariablesTableManagment(ByVal variableID As Integer)
-        Dim variablesTableManagement As fVariablesTableManagement = New fVariablesTableManagement(variableID, Me)
-        variablesTableManagement.Show()
+        Dim variablesTableManagement As fVariablesTableManagement = New fVariablesTableManagement(variableID)
+        If variablesTableManagement.ShowDialog() = DialogResult.OK Then
+            FillVariable()
+            Dim count As Integer = 0
+            While Not (ddlVariable.SelectedValue = variablesTableManagement.VariableID)
+                ddlVariable.SelectedItem = ddlVariable.Items.Item(count)
+                count += 1
+            End While
+        End If
     End Sub
 
     Public Sub SetDefaultVariable()

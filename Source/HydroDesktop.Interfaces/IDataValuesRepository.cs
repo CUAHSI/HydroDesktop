@@ -1,12 +1,13 @@
 using System;
 using System.Data;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
 {
     /// <summary>
     /// Interface for DataValues Repository
     /// </summary>
-    public interface IDataValuesRepository
+    public interface IDataValuesRepository : IRepository<DataValue>
     {
         /// <summary>
         /// Aggregate values for series

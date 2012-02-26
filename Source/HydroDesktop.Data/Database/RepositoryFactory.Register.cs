@@ -66,6 +66,36 @@ namespace HydroDesktop.Database
                     CreatorByConnectionString = (dbType, connStr) => new QualityControlLevelsRepository(dbType, connStr),
                     CreatorByDbOperations = dbOp => new QualityControlLevelsRepository(dbOp)
                 });
+            Add<IOffsetTypesRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new OffsetTypesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new OffsetTypesRepository(dbOp)
+                });
+            Add<IQualifiersRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new QualifiersRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new QualifiersRepository(dbOp)
+                });
+            Add<IDataServicesRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new DataServicesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new DataServicesRepository(dbOp)
+                });
+            Add<ISamplesRepository>(
+                new RepositoryCreator
+                {
+                    CreatorByConnectionString = (dbType, connStr) => new SamplesRepository(dbType, connStr),
+                    CreatorByDbOperations = dbOp => new SamplesRepository(dbOp)
+                });
+            Add<IDataFilesRepository>(
+              new RepositoryCreator
+              {
+                  CreatorByConnectionString = (dbType, connStr) => new DataFilesRepository(dbType, connStr),
+                  CreatorByDbOperations = dbOp => new DataFilesRepository(dbOp)
+              });
         }
     }
 }

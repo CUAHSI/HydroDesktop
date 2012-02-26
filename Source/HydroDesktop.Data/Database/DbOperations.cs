@@ -35,7 +35,7 @@ namespace HydroDesktop.Database
             }
             else if (databaseType == DatabaseTypes.SQLServer)
             {
-                dbFactory = System.Data.SqlClient.SqlClientFactory.Instance;
+                dbFactory = SqlClientFactory.Instance;
             }
         }
 
@@ -722,7 +722,6 @@ namespace HydroDesktop.Database
             
             DbConnection conn = CreateConnection();
             conn.Open();
-            string CommandText = sqlQuery;
             DbDataAdapter da = dbFactory.CreateDataAdapter();
             da.SelectCommand = dbFactory.CreateCommand();
             da.SelectCommand.CommandText = sqlQuery;

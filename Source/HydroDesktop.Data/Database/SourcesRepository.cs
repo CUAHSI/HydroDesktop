@@ -1,9 +1,9 @@
-﻿using System.Data;
-using HydroDesktop.Interfaces;
+﻿using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database
 {
-    class SourcesRepository : BaseRepository, ISourcesRepository
+    class SourcesRepository : BaseRepository<Source>, ISourcesRepository
     {
         #region Constructors
 

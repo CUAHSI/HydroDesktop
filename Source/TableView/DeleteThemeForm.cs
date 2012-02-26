@@ -38,7 +38,7 @@ namespace TableView
         private void DeleteThemeForm_Load(object sender, EventArgs e)
         {
             var repoManager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
-            IList<Theme> themeList = repoManager.GetAllThemes();
+            var themeList = repoManager.GetAll();
 
             foreach (Theme theme in themeList)
             {

@@ -8,7 +8,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for Variables
     /// </summary>
-    class VariablesRepository : BaseRepository, IVariablesRepository
+    class VariablesRepository : BaseRepository<Variable>, IVariablesRepository
     {
         #region Constructors
 
@@ -25,21 +25,7 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
-
-        public Variable[] GetAll()
-        {
-            var table = AsDataTable();
-            var result = new Variable[table.Rows.Count];
-            for (int i = 0; i < table.Rows.Count; i++)
-            {
-                var row = table.Rows[i];
-                var variable = DataRowToVariable(row);
-                result[i] = variable;
-            }
-
-            return result;
-        }
-
+      
         public Variable GetByID(long id)
         {
             var dt = DbOperations.LoadTable(TableName, "Select * FROM Variables where VariableID=" + id);
@@ -47,7 +33,7 @@ namespace HydroDesktop.Database
                 return null;
 
             var row = dt.Rows[0];
-            var res = DataRowToVariable(row);
+            var res = DataRowToEntity(row);
             return res;
         }
         
@@ -93,7 +79,7 @@ namespace HydroDesktop.Database
 
         #endregion
 
-        private Variable DataRowToVariable(DataRow row)
+        protected override Variable DataRowToEntity(DataRow row)
         {
             var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
             var res = new Variable

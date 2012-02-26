@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Data;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -9,7 +8,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for <see cref="Unit"/>
     /// </summary>
-    class UnitsRepository : BaseRepository, IUnitsRepository
+    class UnitsRepository : BaseRepository<Unit>, IUnitsRepository
     {
         #region Constructors
         
@@ -35,19 +34,12 @@ namespace HydroDesktop.Database
             var res = DataRowToEntity(dt.Rows[0]);
             return res;
         }
-
-        public Unit[] GetAll()
-        {
-            var dt = DbOperations.LoadTable(TableName, "Select * FROM Units");
-            var res = dt.Rows.Cast<DataRow>().Select(DataRowToEntity).ToArray();
-            return res;
-        }
-
+     
         #endregion
 
         #region Private methods
 
-        private Unit DataRowToEntity(DataRow row)
+        protected override Unit DataRowToEntity(DataRow row)
         {
             var res = new Unit
             {
