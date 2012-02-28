@@ -35,11 +35,55 @@ namespace DataImport.CommonPages
 
             dgvPreview.MouseDown += DgvPreviewOnMouseDown;
             dgvPreview.CellPainting += DgvPreviewOnCellPainting;
+
+            columnsToImportControl1.RemoveClick += ColumnsToImportControlOnRemoveClick;
+            columnsToImportControl1.EditClick += ColumnsToImportControlOnEditClick;
+            columnsToImportControl1.AddClick += ColumnsToImportControlOnAddClick;
         }
 
         #endregion
 
         #region Private methods
+
+        private void ColumnsToImportControlOnEditClick(object sender, ColumnsToProcessEventArgs args)
+        {
+            if (args.Columns.Count == 0)
+                return;
+
+            DoDetailsItemOnClick(args.Columns[0]);
+        }
+
+        private void ColumnsToImportControlOnRemoveClick(object sender, ColumnsToProcessEventArgs args)
+        {
+            foreach (var info in args.Columns)
+            {
+                info.ImportColumn = false;
+                dgvPreview.InvalidateCell(info.ColumnIndex, -1);
+            }
+            columnsToImportControl1.RefreshData();
+        }
+
+        private void ColumnsToImportControlOnAddClick(object sender, EventArgs eventArgs)
+        {
+            var availableColumns = _settings.ColumnDatas.Where(c => !c.ImportColumn).ToList();
+            using (var selectForm = new SelectColumnForm(availableColumns))
+            {
+                if (selectForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    var item = selectForm.SelectedItem;
+                    if (item != null)
+                    {
+                        item.ImportColumn = true;
+                        var res = DoDetailsItemOnClick(item);
+                        if (res != DialogResult.OK)
+                        {
+                            item.ImportColumn = false;
+                        }
+                        dgvPreview.InvalidateCell(item.ColumnIndex, -1);
+                    }
+                }
+            }
+        }
 
         private void DgvPreviewOnMouseDown(object sender, MouseEventArgs e)
         {
@@ -63,6 +107,8 @@ namespace DataImport.CommonPages
                                                      cData.ImportColumn = importItem.Checked;
                                                      detailsItem.Enabled = importItem.Checked;
                                                      dgvPreview.InvalidateCell(cData.ColumnIndex, -1);
+                                                    
+                                                     columnsToImportControl1.RefreshData();
                                                  };
                 detailsItem.Enabled = importItem.Checked;
 
@@ -74,17 +120,17 @@ namespace DataImport.CommonPages
             }
         }
 
-        private void DoDetailsItemOnClick(ColumnInfo cData)
+        private DialogResult DoDetailsItemOnClick(ColumnInfo cData)
         {
-            var index = cData.ColumnIndex;
             using (var form = new FieldPropertiesForm((ColumnInfo)cData.Clone()))
             {
                 var res = form.ShowDialog();
-                if (res != DialogResult.OK) return;
+                if (res != DialogResult.OK) return res;
 
                 var cDatas = _settings.ColumnDatas;
-
+                var index = cData.ColumnIndex;
                 var cd = form.ColumnData;
+
                 cDatas[index] = cd;
 
                 // Apply site/variable/source/method/qualityControl to all columns if need
@@ -120,6 +166,9 @@ namespace DataImport.CommonPages
                         option.OffsetValue = cd.OffsetValue;
                     }
                 }
+
+                columnsToImportControl1.RefreshData();
+                return res;
             }
         }
 
@@ -143,6 +192,7 @@ namespace DataImport.CommonPages
             
             dgvPreview.DataSource = _settings.Preview;
             _settings.ColumnDatas = new List<ColumnInfo>(dgvPreview.Columns.Count);
+            columnsToImportControl1.SetDataSource(_settings.ColumnDatas);
 
             var columnNames = _settings.Preview.Columns.Cast<DataColumn>()
                                                                .Select(c => c.ColumnName)
