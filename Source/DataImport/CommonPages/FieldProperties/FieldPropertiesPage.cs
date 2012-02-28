@@ -19,7 +19,6 @@ namespace DataImport.CommonPages
         #region Fields
 
         private readonly IWizardImporterSettings _settings;
-        private List<DataValuesColumnControl> _columnControls;
 
         #endregion
 
@@ -115,6 +114,11 @@ namespace DataImport.CommonPages
                     {
                         option.QualityControlLevel = (QualityControlLevel) cd.QualityControlLevel.Clone();
                     }
+                    if (cd.ApplyOffsetToAllColumns)
+                    {
+                        option.OffsetType = (OffsetType)cd.OffsetType.Clone();
+                        option.OffsetValue = cd.OffsetValue;
+                    }
                 }
             }
         }
@@ -160,25 +164,10 @@ namespace DataImport.CommonPages
                     Method = Method.Unknown,
                     Source = Source.Unknown,
                     QualityControlLevel = QualityControlLevel.Unknown,
+                    OffsetType = OffsetType.Unknown,
                 };
                 _settings.ColumnDatas.Add(columnData);
             }
-
-            if (_columnControls != null)
-            {
-                foreach (var control in _columnControls)
-                {
-                    Controls.Remove(control);
-                    control.Dispose();
-                }
-            }
-            _columnControls = new List<DataValuesColumnControl>(dgvPreview.Columns.Count);
-            RefreshColumnControls();
-        }
-
-        private void RefreshColumnControls()
-        {
-            
         }
 
         private static string FindColumnWithDateTime(DataTable table)

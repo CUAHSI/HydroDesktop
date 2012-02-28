@@ -28,7 +28,7 @@ namespace DataImport.CommonPages.FieldProperties
 
             if (this.IsDesignMode()) return;
 
-            Entity = Unit.Unknown;
+            bindingSource1.DataSource = typeof (Unit);
 
             // Set bindings
             tbName.AddBinding<TextBox, Unit>(x => x.Text, bindingSource1, x => x.Name);
@@ -50,11 +50,8 @@ namespace DataImport.CommonPages.FieldProperties
             get { return _entity; }
             set
             {
-                if (value == null)
-                    value = Unit.Unknown;
-
                 _entity = value;
-                bindingSource1.DataSource = value;
+                bindingSource1.DataSource = value ?? (object) typeof (Unit);
             }
         }
 

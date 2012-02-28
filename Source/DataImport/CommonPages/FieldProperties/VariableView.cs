@@ -126,15 +126,7 @@ namespace DataImport.CommonPages
                     UpdateUnitCombo(cmbVariableUnits, Entity.VariableUnit);
                     UpdateUnitCombo(cmbTimeUnits, Entity.TimeUnit);
                 }
-
-                if (value == null)
-                {
-                    bindingSource1.DataSource = typeof(Variable);
-                }
-                else
-                {
-                    bindingSource1.DataSource = value;    
-                }
+                bindingSource1.DataSource = value ?? (object)typeof(Variable);
             }
         }
 
@@ -191,7 +183,9 @@ namespace DataImport.CommonPages
             var variable = Entity;
 
             string error;
-            if (String.IsNullOrEmpty(variable.Name))
+            if (variable == null)
+                error = "Your should specify Variable";
+            else if (String.IsNullOrEmpty(variable.Name))
                 error = "Variable should have a Name";
             else if (String.IsNullOrEmpty(variable.Code))
                 error = "Variable should have a Code";

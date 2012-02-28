@@ -45,6 +45,7 @@ namespace DataImport.CommonPages
             chApplySourceToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySourceToAllColumns);
             chApplyMethodToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyMethodToAllColumns);
             chApplyQualityControlToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyQualityControlToAllColumns);
+            chApplyOffsetToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyOffsetToAllColumns);
 
             // Site
             siteView1.ReadOnly = true;
@@ -88,6 +89,10 @@ namespace DataImport.CommonPages
 
             // Quality Control
             qualityControlLevelView1.Entity = _columnData.QualityControlLevel;
+
+            // Offset
+            offsetTypeView1.Entity = _columnData.OffsetType;
+            nudOffsetValue.AddBinding<NumericUpDown, ColumnInfo>(x => x.Value, _columnData, c => c.OffsetValue);
         }
 
         #endregion
@@ -129,6 +134,8 @@ namespace DataImport.CommonPages
             var error = siteView1.EntityValidate();
             if (string.IsNullOrEmpty(error))
                 error = variableView1.EntityValidate();
+            if (string.IsNullOrEmpty(error))
+                error = offsetTypeView1.EntityValidate();
 
             if (!string.IsNullOrEmpty(error))
             {

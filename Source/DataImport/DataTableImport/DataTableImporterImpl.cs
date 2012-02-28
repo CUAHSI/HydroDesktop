@@ -62,7 +62,8 @@ namespace DataImport.DataTableImport
 
                 foreach (var tuple in toImport)
                 {
-                    var columnIndex = tuple.Item1.ColumnIndex;
+                    var columnInfo = tuple.Item1;
+                    var columnIndex = columnInfo.ColumnIndex;
                     
                     Double value;
                     if (!Double.TryParse(Convert.ToString(row[columnIndex], cultureToParseValues),
@@ -71,14 +72,18 @@ namespace DataImport.DataTableImport
                         continue;
 
                     var series = tuple.Item2;
-                    series.DataValueList.Add(new DataValue(value, dateTime, 0));
+                    series.DataValueList.Add(new DataValue(value, dateTime, 0)
+                                                 {
+                                                     OffsetValue = columnInfo.OffsetValue,
+                                                     OffsetType = columnInfo.OffsetType,
+                                                 });
                 }
             }
 
             progress = 15;
             ReportProgress(progress, "Saving values into local database...");
 
-            var pStep = (int)((settings.MaxProgressPercentWhenImport - progress) / toImport.Count);
+            var pStep = (settings.MaxProgressPercentWhenImport - progress) / toImport.Count;
             var theme = new Theme(Path.GetFileNameWithoutExtension(settings.PathToFile));
             foreach (var tuple in toImport)
             {
