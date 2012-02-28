@@ -6,7 +6,7 @@ namespace DataImport
     /// <summary>
     /// Contains info about column to import
     /// </summary>
-    public class ColumnInfo : ICloneable
+    public class ColumnInfo : ICloneable, IEquatable<ColumnInfo>
     {
         /// <summary>
         /// Gets or sets value indicating that this column should be imported into database.
@@ -101,6 +101,24 @@ namespace DataImport
             if (copy.OffsetType != null) copy.OffsetType = (OffsetType) copy.OffsetType.Clone();
 
             return copy;
+        }
+
+        public virtual bool Equals(ColumnInfo other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            
+            return other.ColumnIndex == ColumnIndex && other.ColumnName == ColumnName;
+        }
+        
+        public override bool Equals(object obj)
+        {
+            return Equals((ColumnInfo)obj);
+        }
+       
+        public override int GetHashCode()
+        {
+            return (ColumnName + ColumnIndex).GetHashCode();
         }
     }
 }
