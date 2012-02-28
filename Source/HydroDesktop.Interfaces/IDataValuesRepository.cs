@@ -71,5 +71,11 @@ namespace HydroDesktop.Interfaces
         /// <param name="endDate">EndDate.</param>
         /// <returns>DataTable for export.</returns>
         DataTable GetTableForGraphView(long seriesID, double nodatavalue, DateTime startDate, DateTime endDate);
+
+        long GetCountForAllFieldsInSequence(IList<int> seriesIDs);
+        long GetCountForJustValuesInParallel(IList<int> seriesIDs);
+
+        DataTable GetTableForAllFieldsInSequence(IList<int> seriesIDs, int valuesPerPage, int currentPage);
+        DataTable GetTableForJustValuesInParallel(IList<int> seriesIDs, int valuesPerPage, int currentPage);
     }
 }

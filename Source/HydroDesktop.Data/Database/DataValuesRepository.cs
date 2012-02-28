@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using HydroDesktop.Interfaces;
 using System.Globalization;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -153,7 +154,89 @@ namespace HydroDesktop.Database
             return table;
         }
 
+        public long GetCountForAllFieldsInSequence(IList<int> seriesIDs)
+        {
+            var whereClause = GetWhereClauseForIds(seriesIDs);
+            var countQuery = "select count(*) from DataValues WHERE " + whereClause;
+            var res = DbOperations.ExecuteSingleOutput(countQuery);
+            return Convert.ToInt64(res);
+        }
+
+        public long GetCountForJustValuesInParallel(IList<int> seriesIDs)
+        {
+            var whereClause = GetWhereClauseForIds(seriesIDs);
+            var countQuery =
+                string.Format("select count(*) from (select distinct LocalDateTime from DataValues where {0}) A",
+                              whereClause);
+            var res = DbOperations.ExecuteSingleOutput(countQuery);
+            return Convert.ToInt64(res);
+        }
+
+        public DataTable GetTableForAllFieldsInSequence(IList<int> seriesIDs, int valuesPerPage, int currentPage)
+        {
+            var whereClause = GetWhereClauseForIds(seriesIDs);
+            var dataQuery =
+                "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE " +
+                whereClause;
+            var table = DbOperations.LoadTable(string.Format("{0} limit {1} offset {2}", dataQuery, valuesPerPage, currentPage * valuesPerPage));
+            return table;
+        }
+
+        public DataTable GetTableForJustValuesInParallel(IList<int> seriesIDs, int valuesPerPage, int currentPage)
+        {
+            /*
+             Example of builded query:            
+            
+             select
+                 A.LocalDateTime as DateTime, 
+                 (select  DV1.DataValue from DataValues DV1 where DV1.LocalDateTime = A.LocalDateTime and DV1.seriesId = 1 limit 1) as D1,
+                 (select  DV2.DataValue from DataValues DV2 where DV2.LocalDateTime = A.LocalDateTime and DV2.seriesId = 2 limit 1) as D2
+             from
+                 (select distinct LocalDateTime from DataValues where seriesId in (1,2)) A
+             order by LocalDateTime
+            
+             */
+
+
+            var whereClause = GetWhereClauseForIds(seriesIDs);
+            var dataQueryBuilder = new StringBuilder();
+            dataQueryBuilder.Append("select A.LocalDateTime as DateTime");
+            foreach (var id in seriesIDs)
+            {
+                dataQueryBuilder.AppendFormat(
+                    ", (select DV{0}.DataValue from DataValues DV{0} where DV{0}.LocalDateTime = A.LocalDateTime and DV{0}.seriesId = {0} limit 1) as D{0}",
+                    id);
+            }
+            dataQueryBuilder.AppendFormat(" from (select distinct LocalDateTime  from DataValues where {0}) A",
+                                          whereClause);
+            dataQueryBuilder.Append(" order by LocalDateTime");
+
+            var dataQuery = dataQueryBuilder.ToString();
+
+            var table = DbOperations.LoadTable(string.Format("{0} limit {1} offset {2}", dataQuery, valuesPerPage, currentPage * valuesPerPage));
+            return table;
+        }
+
         #endregion
+
+        private static string GetWhereClauseForIds(ICollection<int> seriesIDs)
+        {
+            string whereClause;
+            if (seriesIDs.Count == 0)
+            {
+                whereClause = "1 = 0";
+            }
+            else
+            {
+                var sb = new StringBuilder("SeriesID in (");
+                foreach (var id in seriesIDs)
+                    sb.AppendFormat(" {0},", id);
+                sb.Remove(sb.Length - 1, 1);
+                sb.Append(")");
+                whereClause = sb.ToString();
+            }
+            return whereClause;
+        }
 
         public override string TableName
         {

@@ -376,6 +376,17 @@ namespace HydroDesktop.Database
             return new Tuple<DateTime, DateTime>(begin, end);
         }
 
+        public DataTable GetUnitSiteVarForFirstSeries(long seriesID)
+        {
+            var sqlQuery = string.Format("SELECT UnitsName, SiteName, VariableName FROM DataSeries " +
+                                          "INNER JOIN Variables ON Variables.VariableID = DataSeries.VariableID " +
+                                          "INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID " +
+                                          "INNER JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = {0} limit 1",
+                                          seriesID);
+            var seriesNameTable = DbOperations.LoadTable("table", sqlQuery);
+            return seriesNameTable;
+        }
+
         #endregion
 
         #region Private methods

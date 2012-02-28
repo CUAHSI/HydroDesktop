@@ -117,5 +117,12 @@ namespace HydroDesktop.Interfaces
         /// <param name="seriesID">SeriesID</param>
         /// <returns>BeginDateTime and EndDateTime</returns>
         Tuple<DateTime, DateTime> GetDateTimes(long seriesID);
+
+        /// <summary>
+        /// Get UnitsName, SiteName, VariableName for first series with given seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>Table with UnitsName, SiteName, VariableName</returns>
+        DataTable GetUnitSiteVarForFirstSeries(long seriesID);
     }
 }
