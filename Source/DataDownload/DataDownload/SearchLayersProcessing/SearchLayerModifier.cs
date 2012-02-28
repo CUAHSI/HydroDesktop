@@ -9,7 +9,6 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Configuration;
-using HydroDesktop.DataDownload.DataAggregation.UI;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -105,8 +104,6 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 {
                     dataGroupMenu.AddMenuItem("Export Time Series Data", delegate { exportPlugin.Export(searchLayer); });
                 }
-                dataGroupMenu.AddMenuItem("Show Data Values in Map",
-                                          delegate { new AggregationSettingsDialog(searchLayer).ShowDialog(); });
                 dataGroupMenu.AddMenuItem("Update Values from Server",
                                           delegate { _downloadPlugin.StartDownloading(searchLayer); });
             }

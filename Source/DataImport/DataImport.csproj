@@ -145,6 +145,7 @@
     <Compile Include="CommonPages\FieldProperties\UnitView.Designer.cs">
       <DependentUpon>UnitView.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommonPages\Progress\AfterDataImportsHelper.cs" />
     <Compile Include="Csv\CsvImportSettings.cs" />
     <Compile Include="Csv\FormatOptionsPage.cs">
       <SubType>UserControl</SubType>

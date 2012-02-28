@@ -8,10 +8,9 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using HydroDesktop.Configuration;
+using HydroDesktop.DataDownload.DataAggregation;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
-using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.DataDownload.LayerInformation;
 
@@ -222,6 +221,12 @@ namespace HydroDesktop.DataDownload
                 btnDownload.Enabled = true;
             }
 
+            // Check for DataAggregation 
+            if (Aggregator.CanAggregateLayer(layer))
+            {
+                Aggregator.UpdateContextMenu((IFeatureLayer)layer);
+            }
+
             var group = layer as IGroup;
             if (group != null)
             {
@@ -306,6 +311,12 @@ namespace HydroDesktop.DataDownload
             lm.UpdateDataTable(featureSet, DownloadManager);
             lm.UpdateSymbolizing();
             lm.UpdateContextMenu();
+
+            // Check for DataAggregation 
+            if (Aggregator.CanAggregateLayer(sourceLayer))
+            {
+                Aggregator.UpdateContextMenu(sourceLayer);
+            }
 
             // Refresh list of the time series in the table and graph in the main form
             SeriesControl.RefreshSelection();
