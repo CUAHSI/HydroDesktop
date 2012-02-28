@@ -107,7 +107,7 @@ namespace TableView
         /// <returns>The group named 'Themes'</returns>
         private IMapGroup FindThemeGroup(Map mainMap)
         {
-            return FindGroupLayerByName(mainMap, LayerConstants.SearchGroupName);
+            return mainMap.GetDataSitesLayer();
         }
 
         /// <summary>
@@ -121,21 +121,6 @@ namespace TableView
             var themeNameList = new List<string>(resultTable.Rows.Count);
             themeNameList.AddRange(from DataRow row in resultTable.Rows select Convert.ToString(row["ThemeName"]));
             return themeNameList;
-        }
-
-        private MapGroup FindGroupLayerByName(IMap map, string layerName)
-        {
-            MapGroup layer = null;
-            foreach (var lay in map.Layers)
-            {
-                if (lay is MapGroup &&
-                    lay.LegendText.ToLower() == layerName.ToLower())
-                {
-                    layer = lay as MapGroup;
-                    break;
-                }
-            }
-            return layer;
         }
 
         /// <summary>
