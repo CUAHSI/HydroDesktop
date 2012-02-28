@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace HydroDesktop.Interfaces.ObjectModel
+﻿namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>
     /// Information about the type of the vertical offset
@@ -27,6 +24,22 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The distance units of the vertical offset
         /// </summary>
         public virtual Unit Unit { get; set; }
+
+        /// <summary>
+        /// When the offset is unknown
+        /// </summary>
+        public static OffsetType Unknown
+        {
+            get
+            {
+                return new OffsetType
+                           {
+                               Description = Constants.Unknown,
+                               Unit = Unit.Unknown,
+                           };
+            }
+        }
+
         /// <summary>
         /// Shows the description of the offset type
         /// </summary>

@@ -127,6 +127,12 @@
     <Compile Include="CommonPages\FieldProperties\DataValuesColumnControl.Designer.cs">
       <DependentUpon>DataValuesColumnControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommonPages\FieldProperties\OffsetTypeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommonPages\FieldProperties\OffsetTypeView.Designer.cs">
+      <DependentUpon>OffsetTypeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommonPages\FieldProperties\UnitView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -261,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\MethodView.resx">
       <DependentUpon>MethodView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommonPages\FieldProperties\OffsetTypeView.resx">
+      <DependentUpon>OffsetTypeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommonPages\FieldProperties\QualityControlLevelView.resx">
       <DependentUpon>QualityControlLevelView.cs</DependentUpon>

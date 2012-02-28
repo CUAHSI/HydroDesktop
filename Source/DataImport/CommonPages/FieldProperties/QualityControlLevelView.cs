@@ -25,9 +25,9 @@ namespace DataImport.CommonPages
         {
             InitializeComponent();
 
-            if (DesignMode) return;
+            if (this.IsDesignMode()) return;
 
-            Entity = QualityControlLevel.Unknown;
+            bindingSource1.DataSource = typeof(QualityControlLevel);
 
             // Set bindings
             tbCode.AddBinding<TextBox, QualityControlLevel>(x => x.Text, bindingSource1, x => x.Code);
@@ -50,8 +50,7 @@ namespace DataImport.CommonPages
             set
             {
                 _entity = value;
-
-                bindingSource1.DataSource = value;
+                bindingSource1.DataSource = value ?? (object)typeof(QualityControlLevel);
             }
         }
 

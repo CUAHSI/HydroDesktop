@@ -26,9 +26,9 @@ namespace DataImport.CommonPages
         {
             InitializeComponent();
 
-            if (DesignMode) return;
-            
-            Entity = new Site();
+            if (this.IsDesignMode()) return;
+
+            bindingSource1.DataSource = typeof(Site);
 
             // Set Bindings
             tbSiteName.AddBinding<TextBox, Site>(x => x.Text, bindingSource1, x => x.Name);
@@ -53,8 +53,7 @@ namespace DataImport.CommonPages
             set
             {
                 _entity = value;
-
-                bindingSource1.DataSource = value;
+                bindingSource1.DataSource = value ?? (object)typeof(Site);
             }
         }
 
@@ -89,7 +88,9 @@ namespace DataImport.CommonPages
             const double EPSILON = 0.00001;
 
             string error;
-            if (String.IsNullOrEmpty(site.Name))
+            if (site == null)
+                error = "You should specify Site";
+            else if (String.IsNullOrEmpty(site.Name))
                 error = "Site should have a Name";
             else if (String.IsNullOrEmpty(site.Code))
                 error = "Site should have a Code";

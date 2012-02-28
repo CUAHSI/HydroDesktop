@@ -25,9 +25,9 @@ namespace DataImport.CommonPages
         {
             InitializeComponent();
 
-            if (DesignMode) return;
-
-            Entity = Method.Unknown;
+            if (this.IsDesignMode()) return;
+            
+            bindingSource1.DataSource = typeof (Method);
 
             // Set bindings
             tbDescription.AddBinding<TextBox, Method>(x => x.Text, bindingSource1, x => x.Description);
@@ -49,8 +49,7 @@ namespace DataImport.CommonPages
             set
             {
                 _entity = value;
-
-                bindingSource1.DataSource = value;
+                bindingSource1.DataSource = value ?? (object)typeof(Method);
             }
         }
 

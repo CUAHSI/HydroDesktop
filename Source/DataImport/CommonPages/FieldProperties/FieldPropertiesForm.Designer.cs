@@ -43,24 +43,31 @@
             this.lblSelectVariable = new System.Windows.Forms.Label();
             this.variableView1 = new DataImport.CommonPages.VariableView();
             this.tpSource = new System.Windows.Forms.TabPage();
+            this.chApplySourceToAllColumns = new System.Windows.Forms.CheckBox();
             this.sourceView1 = new DataImport.CommonPages.SourceView();
             this.tpMethod = new System.Windows.Forms.TabPage();
+            this.chApplyMethodToAllColumns = new System.Windows.Forms.CheckBox();
             this.methodView1 = new DataImport.CommonPages.MethodView();
             this.tpQualityControl = new System.Windows.Forms.TabPage();
+            this.chApplyQualityControlToAllColumns = new System.Windows.Forms.CheckBox();
             this.qualityControlLevelView1 = new DataImport.CommonPages.QualityControlLevelView();
+            this.tpOffset = new System.Windows.Forms.TabPage();
+            this.offsetTypeView1 = new DataImport.CommonPages.FieldProperties.OffsetTypeView();
+            this.lblValue = new System.Windows.Forms.Label();
+            this.nudOffsetValue = new DataImport.CommonPages.NumericUpDownEx();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.sitesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.variablesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.chApplySourceToAllColumns = new System.Windows.Forms.CheckBox();
-            this.chApplyMethodToAllColumns = new System.Windows.Forms.CheckBox();
-            this.chApplyQualityControlToAllColumns = new System.Windows.Forms.CheckBox();
+            this.chApplyOffsetToAllColumns = new System.Windows.Forms.CheckBox();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
             this.tpSource.SuspendLayout();
             this.tpMethod.SuspendLayout();
             this.tpQualityControl.SuspendLayout();
+            this.tpOffset.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudOffsetValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sitesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.variablesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -75,6 +82,7 @@
             this.tbProperties.Controls.Add(this.tpSource);
             this.tbProperties.Controls.Add(this.tpMethod);
             this.tbProperties.Controls.Add(this.tpQualityControl);
+            this.tbProperties.Controls.Add(this.tpOffset);
             this.tbProperties.Location = new System.Drawing.Point(12, 12);
             this.tbProperties.Name = "tbProperties";
             this.tbProperties.SelectedIndex = 0;
@@ -219,6 +227,16 @@
             this.tpSource.Text = "Source";
             this.tpSource.UseVisualStyleBackColor = true;
             // 
+            // chApplySourceToAllColumns
+            // 
+            this.chApplySourceToAllColumns.AutoSize = true;
+            this.chApplySourceToAllColumns.Location = new System.Drawing.Point(10, 366);
+            this.chApplySourceToAllColumns.Name = "chApplySourceToAllColumns";
+            this.chApplySourceToAllColumns.Size = new System.Drawing.Size(173, 17);
+            this.chApplySourceToAllColumns.TabIndex = 7;
+            this.chApplySourceToAllColumns.Text = "Apply this source to all columns";
+            this.chApplySourceToAllColumns.UseVisualStyleBackColor = true;
+            // 
             // sourceView1
             // 
             this.sourceView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -241,6 +259,16 @@
             this.tpMethod.Text = "Method";
             this.tpMethod.UseVisualStyleBackColor = true;
             // 
+            // chApplyMethodToAllColumns
+            // 
+            this.chApplyMethodToAllColumns.AutoSize = true;
+            this.chApplyMethodToAllColumns.Location = new System.Drawing.Point(10, 281);
+            this.chApplyMethodToAllColumns.Name = "chApplyMethodToAllColumns";
+            this.chApplyMethodToAllColumns.Size = new System.Drawing.Size(176, 17);
+            this.chApplyMethodToAllColumns.TabIndex = 8;
+            this.chApplyMethodToAllColumns.Text = "Apply this method to all columns";
+            this.chApplyMethodToAllColumns.UseVisualStyleBackColor = true;
+            // 
             // methodView1
             // 
             this.methodView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -262,6 +290,16 @@
             this.tpQualityControl.Text = "Quality Control";
             this.tpQualityControl.UseVisualStyleBackColor = true;
             // 
+            // chApplyQualityControlToAllColumns
+            // 
+            this.chApplyQualityControlToAllColumns.AutoSize = true;
+            this.chApplyQualityControlToAllColumns.Location = new System.Drawing.Point(10, 120);
+            this.chApplyQualityControlToAllColumns.Name = "chApplyQualityControlToAllColumns";
+            this.chApplyQualityControlToAllColumns.Size = new System.Drawing.Size(206, 17);
+            this.chApplyQualityControlToAllColumns.TabIndex = 9;
+            this.chApplyQualityControlToAllColumns.Text = "Apply this quality control to all columns";
+            this.chApplyQualityControlToAllColumns.UseVisualStyleBackColor = true;
+            // 
             // qualityControlLevelView1
             // 
             this.qualityControlLevelView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -270,6 +308,59 @@
             this.qualityControlLevelView1.Name = "qualityControlLevelView1";
             this.qualityControlLevelView1.Size = new System.Drawing.Size(429, 108);
             this.qualityControlLevelView1.TabIndex = 0;
+            // 
+            // tpOffset
+            // 
+            this.tpOffset.Controls.Add(this.chApplyOffsetToAllColumns);
+            this.tpOffset.Controls.Add(this.offsetTypeView1);
+            this.tpOffset.Controls.Add(this.lblValue);
+            this.tpOffset.Controls.Add(this.nudOffsetValue);
+            this.tpOffset.Location = new System.Drawing.Point(4, 22);
+            this.tpOffset.Name = "tpOffset";
+            this.tpOffset.Padding = new System.Windows.Forms.Padding(3);
+            this.tpOffset.Size = new System.Drawing.Size(441, 389);
+            this.tpOffset.TabIndex = 5;
+            this.tpOffset.Text = "Offset";
+            this.tpOffset.UseVisualStyleBackColor = true;
+            // 
+            // offsetTypeView1
+            // 
+            this.offsetTypeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.offsetTypeView1.Location = new System.Drawing.Point(6, 6);
+            this.offsetTypeView1.Name = "offsetTypeView1";
+            this.offsetTypeView1.Size = new System.Drawing.Size(429, 65);
+            this.offsetTypeView1.TabIndex = 8;
+            // 
+            // lblValue
+            // 
+            this.lblValue.AutoSize = true;
+            this.lblValue.Location = new System.Drawing.Point(19, 79);
+            this.lblValue.Name = "lblValue";
+            this.lblValue.Size = new System.Drawing.Size(65, 13);
+            this.lblValue.TabIndex = 7;
+            this.lblValue.Text = "Offset Value";
+            // 
+            // nudOffsetValue
+            // 
+            this.nudOffsetValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudOffsetValue.DecimalPlaces = 3;
+            this.nudOffsetValue.FullReadOnly = false;
+            this.nudOffsetValue.Location = new System.Drawing.Point(100, 77);
+            this.nudOffsetValue.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            0});
+            this.nudOffsetValue.Minimum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            -2147483648});
+            this.nudOffsetValue.Name = "nudOffsetValue";
+            this.nudOffsetValue.Size = new System.Drawing.Size(326, 20);
+            this.nudOffsetValue.TabIndex = 6;
             // 
             // btnOK
             // 
@@ -294,35 +385,15 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // chApplySourceToAllColumns
+            // chApplyOffsetToAllColumns
             // 
-            this.chApplySourceToAllColumns.AutoSize = true;
-            this.chApplySourceToAllColumns.Location = new System.Drawing.Point(10, 366);
-            this.chApplySourceToAllColumns.Name = "chApplySourceToAllColumns";
-            this.chApplySourceToAllColumns.Size = new System.Drawing.Size(173, 17);
-            this.chApplySourceToAllColumns.TabIndex = 7;
-            this.chApplySourceToAllColumns.Text = "Apply this source to all columns";
-            this.chApplySourceToAllColumns.UseVisualStyleBackColor = true;
-            // 
-            // chApplyMethodToAllColumns
-            // 
-            this.chApplyMethodToAllColumns.AutoSize = true;
-            this.chApplyMethodToAllColumns.Location = new System.Drawing.Point(10, 281);
-            this.chApplyMethodToAllColumns.Name = "chApplyMethodToAllColumns";
-            this.chApplyMethodToAllColumns.Size = new System.Drawing.Size(176, 17);
-            this.chApplyMethodToAllColumns.TabIndex = 8;
-            this.chApplyMethodToAllColumns.Text = "Apply this method to all columns";
-            this.chApplyMethodToAllColumns.UseVisualStyleBackColor = true;
-            // 
-            // chApplyQualityControlToAllColumns
-            // 
-            this.chApplyQualityControlToAllColumns.AutoSize = true;
-            this.chApplyQualityControlToAllColumns.Location = new System.Drawing.Point(10, 120);
-            this.chApplyQualityControlToAllColumns.Name = "chApplyQualityControlToAllColumns";
-            this.chApplyQualityControlToAllColumns.Size = new System.Drawing.Size(206, 17);
-            this.chApplyQualityControlToAllColumns.TabIndex = 9;
-            this.chApplyQualityControlToAllColumns.Text = "Apply this quality control to all columns";
-            this.chApplyQualityControlToAllColumns.UseVisualStyleBackColor = true;
+            this.chApplyOffsetToAllColumns.AutoSize = true;
+            this.chApplyOffsetToAllColumns.Location = new System.Drawing.Point(10, 109);
+            this.chApplyOffsetToAllColumns.Name = "chApplyOffsetToAllColumns";
+            this.chApplyOffsetToAllColumns.Size = new System.Drawing.Size(167, 17);
+            this.chApplyOffsetToAllColumns.TabIndex = 10;
+            this.chApplyOffsetToAllColumns.Text = "Apply this offset to all columns";
+            this.chApplyOffsetToAllColumns.UseVisualStyleBackColor = true;
             // 
             // FieldPropertiesForm
             // 
@@ -348,6 +419,9 @@
             this.tpMethod.PerformLayout();
             this.tpQualityControl.ResumeLayout(false);
             this.tpQualityControl.PerformLayout();
+            this.tpOffset.ResumeLayout(false);
+            this.tpOffset.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudOffsetValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sitesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.variablesBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -382,5 +456,10 @@
         private System.Windows.Forms.CheckBox chApplySourceToAllColumns;
         private System.Windows.Forms.CheckBox chApplyMethodToAllColumns;
         private System.Windows.Forms.CheckBox chApplyQualityControlToAllColumns;
+        private System.Windows.Forms.TabPage tpOffset;
+        private System.Windows.Forms.Label lblValue;
+        private NumericUpDownEx nudOffsetValue;
+        private FieldProperties.OffsetTypeView offsetTypeView1;
+        private System.Windows.Forms.CheckBox chApplyOffsetToAllColumns;
     }
 }
