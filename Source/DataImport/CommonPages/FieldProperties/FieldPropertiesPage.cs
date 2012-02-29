@@ -65,7 +65,9 @@ namespace DataImport.CommonPages
 
         private void ColumnsToImportControlOnAddClick(object sender, EventArgs eventArgs)
         {
-            var availableColumns = _settings.ColumnDatas.Where(c => !c.ImportColumn).ToList();
+            var dateTimeColumn = (string)cmbDateTimeColumn.SelectedItem;
+            var availableColumns = _settings.ColumnDatas.Where(c => !c.ImportColumn &&
+                                                                    c.ColumnName != dateTimeColumn).ToList();
             using (var selectForm = new SelectColumnForm(availableColumns))
             {
                 if (selectForm.ShowDialog(this) == DialogResult.OK)
