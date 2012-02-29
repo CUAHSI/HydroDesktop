@@ -108,12 +108,12 @@ Public Class cEditView
 
     Public Sub PlotGraph(ByVal SeriesID As Integer)
         Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Line, ccList0(colorcount Mod 10), CurveEditingColor, False, True)
-        'Dim nodatavalue As Double
         Dim data As DataTable
         Dim variableName As String = ""
         Dim unitsName As String = ""
         Dim siteName As String = ""
 
+        Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
         'nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & SeriesID & "')")
         'data = dbTools.LoadTable("DataValues", "SELECT ValueID, DataValue, LocalDateTime, CensorCode FROM DataValues WHERE (SeriesID = '" & SeriesID & "') AND (DataValue <> '" & nodatavalue & "') ORDER BY LocalDateTime")
         'data = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE (SeriesID = '" & SeriesID & "') AND (DataValue <> '" & nodatavalue & "') ORDER BY LocalDateTime")
@@ -122,7 +122,7 @@ Public Class cEditView
         unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & SeriesID & "'")
         siteName = dbTools.ExecuteSingleOutput("SELECT " & _seriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & SeriesID & "'")
 
-        data = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE (SeriesID = '" & SeriesID & "') ORDER BY LocalDateTime")
+        data = dataValuesRepo.GetAllOrderByLocalDateTime(SeriesID)
         If data.Rows.Count = 1 Then
             options.TimeSeriesMethod = PlotOptions.TimeSeriesType.Point
         End If

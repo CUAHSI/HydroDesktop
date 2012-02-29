@@ -37,6 +37,13 @@ namespace HydroDesktop.Interfaces
         DataTable GetAll(long seriesID);
 
         /// <summary>
+        /// Get all DataValues (ordered by LocalDateTime) for specified seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>DataTable with DataValues</returns>
+        DataTable GetAllOrderByLocalDateTime(long seriesID);
+
+        /// <summary>
         /// Get all values for specified seriesID
         /// </summary>
         /// <param name="seriesID">SeriesID</param>
