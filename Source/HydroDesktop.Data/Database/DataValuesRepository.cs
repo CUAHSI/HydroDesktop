@@ -84,6 +84,13 @@ namespace HydroDesktop.Database
             return result;
         }
 
+        public DataTable GetAllOrderByLocalDateTime(long seriesID)
+        {
+            var query = "SELECT * FROM DataValues WHERE SeriesID = " + seriesID +  " ORDER BY LocalDateTime";
+            var result = DbOperations.LoadTable(TableName, query);
+            return result;
+        }
+
         public IList<double> GetValues(long seriesID)
         {
             var list = DbOperations.Read("SELECT DataValue FROM DataValues WHERE SeriesID = " + seriesID,
@@ -145,10 +152,11 @@ namespace HydroDesktop.Database
         {
             var strStartDate = startDate.ToString("yyyy-MM-dd HH:mm:ss");
             var strEndDate = endDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var strNoDataValue = nodatavalue.ToString(CultureInfo.InvariantCulture);
 
             var query =
                 "SELECT DataValue, LocalDateTime, CensorCode, strftime('%m', LocalDateTime) as DateMonth, strftime('%Y', LocalDateTime) as DateYear FROM DataValues WHERE (SeriesID = " +
-                + seriesID + ") AND (DataValue <> " + nodatavalue + ") AND (LocalDateTime between '" + strStartDate +
+                +seriesID + ") AND (DataValue <> " + strNoDataValue + ") AND (LocalDateTime between '" + strStartDate +
                 "' AND '" + strEndDate + "')  ORDER BY LocalDateTime";
             var table = DbOperations.LoadTable("DataValues", query);
             return table;
