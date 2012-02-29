@@ -23,7 +23,7 @@ Public Class cEditView
 
     Public _seriesSelector As ISeriesSelector
 
-    Private Originaldt As Data.DataTable
+    Private Originaldt As DataTable
     Public Editdt As DataTable
     Public newseriesID As Integer = 0
     Public Editing As Boolean = False
@@ -32,7 +32,6 @@ Public Class cEditView
     Private nodataseriescount As Integer = 0
     Private colorcount As Integer = 0
     Public ShowLegend As Boolean
-    Public Canceled As Boolean = False
 
     Private Const ErrMsgForNotEditing As String = "Please select a series to edit first."
     Private Const ErrMsgForNotPointSelected As String = "Please select a point for editing."
@@ -59,16 +58,6 @@ Public Class cEditView
         ccList0.Add(Color.FromArgb(166, 206, 227))
     End Sub
 
-
-    Public Sub New()
-
-        ' This call is required by the designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        RefreshDbTools()
-    End Sub
-
     Public Sub New(ByVal seriesSelector As ISeriesSelector)
         'InitializeComponent()
 
@@ -87,7 +76,6 @@ Public Class cEditView
         lblstatus.Text = "Ready"
         SettingColor()
         pTimeSeriesPlot.Clear()
-        RefreshDbTools()
     End Sub
 
     Public Sub initialize()
@@ -101,28 +89,18 @@ Public Class cEditView
 #Region "Views"
 
 #Region "Method"
-    'To refresh the themes shown in the series selector
-    Public Sub RefreshView()
-        _seriesSelector.RefreshSelection()
-    End Sub
 
     Public Sub PlotGraph(ByVal SeriesID As Integer)
         Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Line, ccList0(colorcount Mod 10), CurveEditingColor, False, True)
         Dim data As DataTable
-        Dim variableName As String = ""
-        Dim unitsName As String = ""
-        Dim siteName As String = ""
 
-        Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-        'nodatavalue = dbTools.ExecuteSingleOutput("SELECT NoDataValue FROM DataSeries LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID WHERE (SeriesID = '" & SeriesID & "')")
-        'data = dbTools.LoadTable("DataValues", "SELECT ValueID, DataValue, LocalDateTime, CensorCode FROM DataValues WHERE (SeriesID = '" & SeriesID & "') AND (DataValue <> '" & nodatavalue & "') ORDER BY LocalDateTime")
-        'data = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE (SeriesID = '" & SeriesID & "') AND (DataValue <> '" & nodatavalue & "') ORDER BY LocalDateTime")
+        Dim series = _dataSeriesRepo.GetSeriesByID(SeriesID)
 
-        variableName = dbTools.ExecuteSingleOutput("SELECT VariableName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID WHERE SeriesID = '" & SeriesID & "'")
-        unitsName = dbTools.ExecuteSingleOutput("SELECT UnitsName FROM DataSeries LEFT JOIN Variables ON Variables.VariableID = DataSeries.VariableID LEFT JOIN Units ON Variables.VariableUnitsID = Units.UnitsID WHERE SeriesID = '" & SeriesID & "'")
-        siteName = dbTools.ExecuteSingleOutput("SELECT " & _seriesSelector.SiteDisplayColumn & " FROM DataSeries LEFT JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = '" & SeriesID & "'")
+        Dim variableName = series.Variable.Name
+        Dim unitsName = series.Variable.VariableUnit.Name
+        Dim siteName = If(_seriesSelector.SiteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
 
-        data = dataValuesRepo.GetAllOrderByLocalDateTime(SeriesID)
+        data = _dataValuesRepo.GetAllOrderByLocalDateTime(SeriesID)
         If data.Rows.Count = 1 Then
             options.TimeSeriesMethod = PlotOptions.TimeSeriesType.Point
         End If
@@ -137,86 +115,12 @@ Public Class cEditView
 
         data.Dispose()
 
-        'ckbShowLegend_CheckedChanged()
-
         colorcount += 1
-    End Sub
-
-    Private Sub RemoveSeriesFromDataGridView(ByVal SeriesID As Integer)
-        Dim removedRows As Integer = 0
-        pbProgressBar.Minimum = 0
-        pbProgressBar.Maximum = dgvDataValues.Rows.Count - 1
-        pbProgressBar.Visible = True
-        pbProgressBar.Value = 0
-        lblstatus.Text = "Removing Series"
-
-        For i As Integer = 0 To dgvDataValues.Rows.Count - 1
-            If dgvDataValues.Rows(i - removedRows).Cells("SeriesID").Value = SeriesID Then
-                dgvDataValues.Rows.Remove(dgvDataValues.Rows(i - removedRows))
-                removedRows += 1
-            End If
-            pbProgressBar.Value = i
-        Next
-
-        lblstatus.Text = "Ready"
-    End Sub
-
-    Public Sub AddSeriesToDataGridView(ByVal SeriesID As Integer)
-        Originaldt = New DataTable
-        Dim dt As New DataTable
-        Dim dtdgvDataSource As DataTable
-        Dim SQLString As New StringBuilder
-
-        SQLString.Append("SELECT ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UTCOffset, ")
-        SQLString.Append("DateTimeUTC, QualifierCode, OffsetValue, OffsetTypeID, CensorCode, SampleID, ")
-        SQLString.Append("FileID FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) ")
-        SQLString.Append("WHERE SeriesID = " + SeriesID.ToString)
-
-        dt = dbTools.LoadTable("DataValues", SQLString.ToString)
-
-        dt.Columns.Add("Other")
-        If dgvDataValues.Rows.Count = 0 Then
-            For i As Integer = 0 To dt.Rows.Count - 1
-                dt.Rows(i)("Other") = 0
-            Next
-            dgvDataValues.DataSource = dt
-            dgvDataValues.AllowUserToAddRows = False
-        Else
-            dtdgvDataSource = dgvDataValues.DataSource
-            For i As Integer = 0 To dt.Rows.Count - 1
-                dt.Rows(i)("Other") = 0
-            Next
-            dtdgvDataSource.Merge(dt)
-        End If
-
-        Originaldt = dt.Copy
-
-        ResetGridViewStyle()
     End Sub
 
 #End Region
 
 #Region "Event"
-
-    Private Sub cEditView_Load(ByVal sender As Object, ByVal e As EventArgs)
-        'populate the series selector control
-        'seriesSelector1.PopulateTreeView2();
-        dgvDataValues.ColumnHeadersVisible = True
-        'dataViewSeries.Columns.ToString
-        ' Set the column header style.
-        'DataGridViewCellStyle columnHeaderStyle =new DataGridViewCellStyle();
-        'dataViewSeries.ColumnHeadersDefaultCellStyle.BackColor = Color.Aqua;
-        'dataViewSeries.ColumnHeadersDefaultCellStyle.Font = new Font("Verdana", 10, FontStyle.Regular);
-        'dataViewSeries.ColumnHeadersDefaultCellStyle =columnHeaderStyle;
-        dgvDataValues.ColumnHeadersBorderStyle = ProperColumnHeadersBorderStyle
-        'rbSequenceTime = 0;
-    End Sub
-
-    Private Shared ReadOnly Property ProperColumnHeadersBorderStyle() As DataGridViewHeaderBorderStyle
-        Get
-            Return If((SystemFonts.MessageBoxFont.Name = "Segoe UI"), DataGridViewHeaderBorderStyle.None, DataGridViewHeaderBorderStyle.Raised)
-        End Get
-    End Property
 
     Private Sub SeriesSelector_Refreshed()
 
@@ -226,23 +130,22 @@ Public Class cEditView
 
     End Sub
 
+    Dim _dataValuesRepo As IDataValuesRepository
+    Dim _dataSeriesRepo As IDataSeriesRepository
+
     Private Sub RefreshDbTools()
         connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
         dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
+
+        _dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
+        _dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
     End Sub
 
 
     Private Sub SeriesSelector_SeriesCheck()
         'Declaring all variables
-        Dim data As DataTable = New DataTable()
-        Dim variableName As String = ""
-        Dim unitsName As String = ""
-        Dim siteName As String = ""
-        Dim count As Integer = 0
         Dim curveIndex As Integer
         Dim SeriesSelector = _seriesSelector
-
-
 
         If Not SeriesSelector.CheckedIDList.Length > selectedSeriesIdList.Count Then
 
@@ -295,8 +198,6 @@ Public Class cEditView
                 Return 'added by jiri to correct error when SeriesCheck event occurs multiple times
             End If
 
-            curveIndex = selectedSeriesIdList.IndexOf(SeriesSelector.SelectedSeriesID)
-
             If SeriesRowsCount(SeriesSelector.SelectedSeriesID) = 0 Then
                 nodataseriescount += 1
             ElseIf Not SeriesSelector.SelectedSeriesID = newseriesID Then
@@ -317,26 +218,21 @@ Public Class cEditView
     End Sub
 
     Public Sub btnSelectSeries_Click()
-        Dim SQLString As StringBuilder = New StringBuilder
-        Dim SeriesSelector = _seriesSelector
+        Dim seriesSelector = _seriesSelector
 
 
-        If Not SeriesSelector.SelectedSeriesID = 0 Then
+        If Not seriesSelector.SelectedSeriesID = 0 Then
 
             dgvDataValues.DataSource = Nothing
 
             initialize()
 
-            newseriesID = SeriesSelector.SelectedSeriesID
+            newseriesID = _seriesSelector.SelectedSeriesID
 
             Editdt = Nothing
 
-            SQLString.Append("SELECT ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UTCOffset, ")
-            SQLString.Append("DateTimeUTC, QualifierCode, OffsetValue, OffsetTypeID, CensorCode, SampleID, ")
-            SQLString.Append("FileID FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) ")
-            SQLString.Append("WHERE SeriesID = " + newseriesID.ToString)
+            Editdt = _dataValuesRepo.GetTableForEditView(newseriesID)
 
-            Editdt = dbTools.LoadTable(SQLString.ToString)
             Editdt.Columns.Add("Other")
             For i As Integer = 0 To Editdt.Rows.Count - 1
                 Editdt.Rows(i)("Other") = 0
@@ -346,8 +242,10 @@ Public Class cEditView
             dgvDataValues.DataSource = Editdt
 
             'get the begin and end datetime of the series
-            Dim BeginDateTime As Date = Convert.ToDateTime(dbTools.ExecuteSingleOutput("SELECT BeginDateTime FROM DataSeries WHERE (SeriesID = '" & newseriesID.ToString & "')"), CultureInfo.InvariantCulture)
-            Dim EndDateTime As Date = Convert.ToDateTime(dbTools.ExecuteSingleOutput("SELECT EndDateTime FROM DataSeries WHERE (SeriesID = '" & newseriesID.ToString & "')"), CultureInfo.InvariantCulture)
+            Dim series = _dataSeriesRepo.GetSeriesByID(newseriesID)
+            Dim beginDateTime As Date = series.BeginDateTime
+            Dim endDateTime As Date = series.EndDateTime
+
             'setting the datetime constrint to larger range
 
             dtpBefore.MinDate = Today.AddYears(-150)
@@ -355,19 +253,19 @@ Public Class cEditView
             dtpAfter.MinDate = Today.AddYears(-150)
             dtpAfter.MaxDate = Today
 
-            If BeginDateTime <> Nothing Then
+            If beginDateTime <> Nothing Then
                 'setting the default datetime values
-                dtpAfter.Value = BeginDateTime
+                dtpAfter.Value = beginDateTime
                 'setting the datetime constrint by the begin and end datetime
-                dtpBefore.MinDate = BeginDateTime
-                dtpAfter.MinDate = BeginDateTime
+                dtpBefore.MinDate = beginDateTime
+                dtpAfter.MinDate = beginDateTime
             End If
-            If EndDateTime <> Nothing Then
+            If endDateTime <> Nothing Then
                 'setting the default datetime values
-                dtpBefore.Value = EndDateTime
+                dtpBefore.Value = endDateTime
                 'setting the datetime constrint by the begin and end datetime
-                dtpBefore.MaxDate = EndDateTime
-                dtpAfter.MaxDate = EndDateTime
+                dtpBefore.MaxDate = endDateTime
+                dtpAfter.MaxDate = endDateTime
             End If
 
             If dbTools.ExecuteSingleOutput("SELECT QualityControlLevelCode FROM DataSeries AS d LEFT JOIN QualityControlLevels AS q ON (d.QualityControlLevelID = q.QualityControlLevelID) WHERE SeriesID = " + newseriesID.ToString).ToString = "Raw Data" Then
@@ -379,13 +277,13 @@ Public Class cEditView
             ResetGridViewStyle()
 
             Try
-                Dim curveIndex As Integer = selectedSeriesIdList.IndexOf(SeriesSelector.SelectedSeriesID)
+                Dim curveIndex As Integer = selectedSeriesIdList.IndexOf(seriesSelector.SelectedSeriesID)
 
-                If SeriesSelector.CheckedIDList.Contains(SeriesSelector.SelectedSeriesID) Then
+                If seriesSelector.CheckedIDList.Contains(seriesSelector.SelectedSeriesID) Then
                     pTimeSeriesPlot.EnterEditMode(curveIndex - nodataseriescount)
                     pTimeSeriesPlot.RemoveSelectedPoints()
                 Else
-                    PlotGraph(SeriesSelector.SelectedSeriesID)
+                    PlotGraph(seriesSelector.SelectedSeriesID)
                     pTimeSeriesPlot.EnterEditMode(pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count - 1)
                     pTimeSeriesPlot.Remove(pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count - 1)
                     pTimeSeriesPlot.Refreshing()
@@ -407,49 +305,15 @@ Public Class cEditView
         End If
     End Sub
 
-    'Private Sub SeriesSelector_CriterionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles SeriesSelector.CriterionChanged
-    '    'dgvDataValues.DataSource = Nothing
-    '    'dgvDataValues.Columns.Clear()
-    '    'SeriesSelector.CheckedIDList.Clear()
-    '    'selectedSeriesIdList.Clear()
-    'End Sub
-
     Public Sub ckbShowLegend_Click()
         If ShowLegend Then
-
             pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
             ShowLegend = False
-
         Else
-
             pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = True
             ShowLegend = True
-
         End If
         pTimeSeriesPlot.Refreshing()
-
-        'If ShowLegend Then
-        '    pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = True
-        'Else
-        '    pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
-        'End If
-        'If pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count <= 1 Then
-        '    pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
-        'End If
-        'pTimeSeriesPlot.Refreshing()
-    End Sub
-
-    Private Sub EditingReminder(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        If Editing And Not Canceled Then
-            Dim result As Integer
-
-            result = MsgBox("You are editing a series. Do you want to save before leaving?", MsgBoxStyle.YesNo, "Save?")
-            If result = 7 Then
-
-            Else
-                SaveGraphChangesToDatabase()
-            End If
-        End If
     End Sub
 
 #End Region
@@ -504,30 +368,7 @@ Public Class cEditView
 
     'Restore Data
     Public Sub btnRestoreData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        'Dim dt As New DataTable
 
-        ''Setting the Data Grid View back to original data
-        'dt = Originaldt.Copy
-        ''pTimeSeriesPlot.RestoreOriginalData()
-        'dgvDataValues.DataSource = dt
-        'ResetGridViewStyle()
-        'SaveGraphChangesToDatabase()
-
-        ''Setting the Graph
-        'selectedSeriesIdList.Remove(newseriesID)
-        'selectedSeriesIdList.Add(newseriesID)
-        'With pTimeSeriesPlot.zgTimeSeries.GraphPane
-        '    For j As Integer = 0 To .CurveList.Count - 1
-        '        If .CurveList(j).Color = CurveEditingColor Then
-        '            .CurveList.Remove(.CurveList(j))
-        '        End If
-        '    Next
-        'End With
-        'PlotGraph(newseriesID)
-        'Dim curveIndex As Integer = selectedSeriesIdList.IndexOf(newseriesID)
-        'pTimeSeriesPlot.EnterEditMode(curveIndex - nodataseriescount)
-
-        'initialize()
         If MsgBox("Are You Sure You Want to Restore the Data to the Original?", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
 
             Editdt = Originaldt.Copy
@@ -615,14 +456,14 @@ Public Class cEditView
                     ValueThresholdFilter(Val(txtValueLarger.Text), Val(txtValueLess.Text))
                 End If
             ElseIf txtValueLarger.Text = Nothing And Not (txtValueLess.Text = Nothing) Then
-                Dim largest As Decimal = Convert.ToDecimal(dbTools.ExecuteSingleOutput("SELECT MAX(DataValue) FROM DataValues WHERE SeriesID = " + newseriesID.ToString), CultureInfo.InvariantCulture)
+                Dim largest As Decimal = Convert.ToDecimal(_dataValuesRepo.GetMaxValue(newseriesID))
                 If pTimeSeriesPlot.HasEditingCurve() Then
                     pTimeSeriesPlot.ChangeZvalueWithValueThreshold(largest, Val(txtValueLess.Text))
                 Else
                     ValueThresholdFilter(largest, Val(txtValueLess.Text))
                 End If
             ElseIf txtValueLess.Text = Nothing And Not (txtValueLarger.Text = Nothing) Then
-                Dim smallest As Decimal = Convert.ToDecimal(dbTools.ExecuteSingleOutput("SELECT MIN(DataValue) FROM DataValues WHERE SeriesID = " + newseriesID.ToString), CultureInfo.InvariantCulture)
+                Dim smallest As Decimal = Convert.ToDecimal(_dataValuesRepo.GetMinValue(newseriesID))
                 If pTimeSeriesPlot.HasEditingCurve() Then
                     pTimeSeriesPlot.ChangeZvalueWithValueThreshold(Val(txtValueLarger.Text), smallest)
                 Else
@@ -729,13 +570,6 @@ Public Class cEditView
                     Else
                         ChangeValueByInterpolating(returned)
                     End If
-
-                    'If Not returned Then
-
-                    '    If pTimeSeriesPlot.HasEditingCurve Then
-                    '        ReflectChanges()
-                    '    End If
-                    'End If
 
                     RefreshDataGridView()
                 Else
@@ -930,24 +764,6 @@ Public Class cEditView
 
         dbTools.ExecuteNonQuery(SQLstring2.ToString())
 
-        'Update DataSeries
-        'UpdateDataSeries(newseriesID)
-
-        ''Remove rows from dgvDataValues where is deleted
-        'For i As Integer = 0 To dgvDataValues.Rows.Count - 1
-        '    If dgvDataValues.Rows(i).Cells("Other").Value = -1 Then
-        '        RowIndexList.Add(i)
-        '    End If
-        'Next
-
-        'If RowIndexList.Count > 0 Then
-        '    For i As Integer = RowIndexList.Count - 1 To 0
-        '        dgvDataValues.Rows.Remove(dgvDataValues.Rows(RowIndexList(i)))
-        '    Next
-        'End If
-
-
-
         'Update Data Series
         DataSeriesHandling.UpdateDataSeriesFromDataValues(newseriesID)
 
@@ -961,41 +777,10 @@ Public Class cEditView
     End Sub
 
     'Count the rows of a series
-    Public Function SeriesRowsCount(ByVal SeriesID As Integer) As Integer
-        'Dim dt As New DataTable
-        'dt = dbTools.LoadTable("DataValues", "SELECT * FROM DataValues WHERE SeriesID = " + SeriesID.ToString)
-        'Return dt.Rows.Count
-        Dim rowCount As Object = dbTools.ExecuteSingleOutput("SELECT ValueCount FROM DataSeries WHERE SeriesID = '" + SeriesID.ToString() + "'")
-        Return CInt(rowCount)
+    Private Function SeriesRowsCount(ByVal SeriesID As Integer) As Integer
+        Dim series = _dataSeriesRepo.GetSeriesByID(SeriesID)
+        Return series.ValueCount
     End Function
-
-    'Update DataSeries Table in the database
-    Private Sub UpdateDataSeries(ByVal SeriesID As Integer)
-        Dim SQLstring As String
-        Dim BeginDateTime As DateTime
-        Dim EndDateTime As DateTime
-        Dim BeginDateTimeUTC As DateTime
-        Dim EndDateTimeUTC As DateTime
-
-        SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime"
-        BeginDateTime = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
-        SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY LocalDateTime DESC"
-        EndDateTime = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
-        SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY DateTimeUTC"
-        BeginDateTimeUTC = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
-        SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + SeriesID.ToString + " ORDER BY DateTimeUTC DESC"
-        EndDateTimeUTC = Convert.ToDateTime(dbTools.ExecuteSingleOutput(SQLstring), CultureInfo.InvariantCulture)
-
-        SQLstring = "UPDATE DataSeries SET ValueCount = " + SeriesRowsCount(SeriesID).ToString + ", "
-        SQLstring += "BeginDateTime = '" + BeginDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', "
-        SQLstring += "EndDateTime = '" + EndDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', "
-        SQLstring += "BeginDateTimeUTC = '" + BeginDateTimeUTC.ToString("yyyy-MM-dd HH:mm:ss") + "', "
-        SQLstring += "EndDateTimeUTC = '" + EndDateTimeUTC.ToString("yyyy-MM-dd HH:mm:ss") + "', "
-        SQLstring += "UpdateDateTime = '" + Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
-        SQLstring += "WHERE SeriesID = " + SeriesID.ToString
-
-        dbTools.ExecuteNonQuery(SQLstring)
-    End Sub
 
     'Reload the Data Grid View
     Public Sub RefreshDataGridView()
@@ -1161,7 +946,7 @@ Public Class cEditView
 #End Region
 
 #End Region
-    
+
     Private Sub dgvDataValues_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles dgvDataValues.SelectionChanged
         Dim selectedRows = GetSelectedRows()
         Dim IDlist As New List(Of Int32)(selectedRows.Count)

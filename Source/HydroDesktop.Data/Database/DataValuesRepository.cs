@@ -162,6 +162,30 @@ namespace HydroDesktop.Database
             return table;
         }
 
+        public double GetMaxValue(long seriesID)
+        {
+            var query = "SELECT MAX(DataValue) FROM DataValues WHERE SeriesID = " + seriesID;
+            var res = DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToDouble(res);
+        }
+
+        public double GetMinValue(long seriesID)
+        {
+            var query = "SELECT MIN(DataValue) FROM DataValues WHERE SeriesID = " + seriesID;
+            var res = DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToDouble(res);
+        }
+
+        public DataTable GetTableForEditView(long seriesID)
+        {
+            var query = "SELECT ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UTCOffset, " +
+                        "DateTimeUTC, QualifierCode, OffsetValue, OffsetTypeID, CensorCode, SampleID, " +
+                        "FileID FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) " +
+                        "WHERE SeriesID = " + seriesID;
+            var table = DbOperations.LoadTable(TableName, query);
+            return table;
+        }
+
         public long GetCountForAllFieldsInSequence(IList<int> seriesIDs)
         {
             var whereClause = GetWhereClauseForIds(seriesIDs);
