@@ -76,8 +76,18 @@ namespace HydroDesktop.Interfaces
         /// <param name="nodatavalue">NoDataValue</param>
         /// <param name="startDate">StartDate.</param>
         /// <param name="endDate">EndDate.</param>
-        /// <returns>DataTable for export.</returns>
+        /// <returns>DataTable for GraphView.</returns>
         DataTable GetTableForGraphView(long seriesID, double nodatavalue, DateTime startDate, DateTime endDate);
+
+        /// <summary>
+        /// Get DataTable with values for EditView
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>DataTable for EditView.</returns>
+        DataTable GetTableForEditView(long seriesID);
+
+        double GetMaxValue(long seriesID);
+        double GetMinValue(long seriesID);
 
         long GetCountForAllFieldsInSequence(IList<int> seriesIDs);
         long GetCountForJustValuesInParallel(IList<int> seriesIDs);
