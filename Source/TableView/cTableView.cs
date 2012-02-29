@@ -18,6 +18,7 @@ namespace TableView
         #region Fields
 
         private readonly ISeriesSelector _seriesSelector;
+        private bool _needToRefresh;
 
         #endregion
 
@@ -37,6 +38,7 @@ namespace TableView
             _seriesSelector.SeriesCheck += seriesSelector_Refreshed;
             _seriesSelector.Refreshed += seriesSelector_Refreshed;
             Disposed += OnDisposed;
+            VisibleChanged += OnVisibleChanged;
         }
 
         private void OnDisposed(object sender, EventArgs eventArgs)
@@ -127,9 +129,25 @@ namespace TableView
                                         unitsName;
             }
         }
+        
+        private void OnVisibleChanged(object sender, EventArgs eventArgs)
+        {
+            if (!Visible) return;
+            if (_needToRefresh)
+            {
+                seriesSelector_Refreshed(this, EventArgs.Empty);
+                _needToRefresh = false;
+            }
+        }
 
         private void seriesSelector_Refreshed(object sender, EventArgs e)
         {
+            if (!Visible)
+            {
+                _needToRefresh = true;
+                return;
+            }
+
             UpdateViewMode();
             UpdateDatabasePath();
         }
