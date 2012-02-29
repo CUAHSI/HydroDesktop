@@ -124,5 +124,7 @@ namespace HydroDesktop.Interfaces
         /// <param name="seriesID">SeriesID</param>
         /// <returns>Table with UnitsName, SiteName, VariableName</returns>
         DataTable GetUnitSiteVarForFirstSeries(long seriesID);
+
+        void UpdateDataSeriesFromDataValues(long seriesID);
     }
 }

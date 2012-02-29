@@ -107,6 +107,15 @@ namespace HydroDesktop.Database
             return res;
         }
 
+        public T GetByKey(object key)
+        {
+             var table = DbOperations.LoadTable(TableName,
+                                    string.Format("select * from {0} where {1}={2}", TableName, PrimaryKeyName, key));
+             if (table.Rows.Count == 0)
+                 return default(T);
+            return DataRowToEntity(table.Rows[0]);
+        }
+
         #endregion
 
         #region Private Methods

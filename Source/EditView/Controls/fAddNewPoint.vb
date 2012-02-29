@@ -191,6 +191,7 @@ Public Class fAddNewPoint
                 Next
 
                 Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
+                Dim qualifiersRepo = RepositoryFactory.Instance.Get(Of IQualifiersRepository)()
                 For i As Integer = BeginningRow To dgvNewPoints.Rows.Count - 2
 
                     dt.Rows.Add()
@@ -215,7 +216,7 @@ Public Class fAddNewPoint
                         dt.Rows(dt.Rows.Count - 1)("OffsetType") = dgvNewPoints.Rows(i).Cells("OffsetType").Value
                     End If
                     If Not dgvNewPoints.Rows(i).Cells("Qualifier").Value = Nothing And Not dgvNewPoints.Rows(i).Cells("Qualifier").Value = 0 Then
-                        dt.Rows(dt.Rows.Count - 1)("QualifierCode") = GetQualifierCode(dgvNewPoints.Rows(i).Cells("Qualifier").Value)
+                        dt.Rows(dt.Rows.Count - 1)("QualifierCode") = qualifiersRepo.GetByKey(dgvNewPoints.Rows(i).Cells("Qualifier").Value).Code
                     Else
                         dt.Rows(dt.Rows.Count - 1)("QualifierCode") = "Added point"
                     End If

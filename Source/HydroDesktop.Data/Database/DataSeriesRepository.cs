@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using HydroDesktop.Interfaces;
@@ -385,6 +386,36 @@ namespace HydroDesktop.Database
                                           seriesID);
             var seriesNameTable = DbOperations.LoadTable("table", sqlQuery);
             return seriesNameTable;
+        }
+
+        public void UpdateDataSeriesFromDataValues(long seriesID)
+        {
+            var SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID +
+                            " ORDER BY LocalDateTime ASC";
+            var BeginDateTime = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                   CultureInfo.InvariantCulture);
+
+            SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID +
+                        " ORDER BY LocalDateTime DESC";
+            var EndDateTime = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                 CultureInfo.InvariantCulture);
+            SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + seriesID +
+                        " ORDER BY LocalDateTime ASC";
+            var BeginDateTimeUTC = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                  CultureInfo.InvariantCulture);
+            SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + seriesID +
+                        " ORDER BY LocalDateTime DESC";
+            var EndDateTimeUTC = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                CultureInfo.InvariantCulture);
+            SQLstring = "SELECT COUNT(*) FROM DataValues WHERE SeriesID = " + seriesID;
+            var ValueCount = DbOperations.ExecuteSingleOutput(SQLstring);
+
+            SQLstring = "UPDATE DataSeries SET BeginDateTime = '" + BeginDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "EndDateTime = '" + EndDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "BeginDateTimeUTC = '" + BeginDateTimeUTC.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "EndDateTimeUTC = '" + EndDateTimeUTC.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "ValueCount = " + ValueCount + " WHERE SeriesID = " + seriesID;
+            DbOperations.ExecuteNonQuery(SQLstring);
         }
 
         #endregion
