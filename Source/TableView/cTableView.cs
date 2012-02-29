@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -25,6 +26,7 @@ namespace TableView
         public cTableView(ISeriesSelector seriesSelector)
         {
             if (seriesSelector == null) throw new ArgumentNullException("seriesSelector");
+            Contract.EndContractBlock();
 
             InitializeComponent();
 
@@ -34,6 +36,14 @@ namespace TableView
 
             _seriesSelector.SeriesCheck += seriesSelector_Refreshed;
             _seriesSelector.Refreshed += seriesSelector_Refreshed;
+            Disposed += OnDisposed;
+        }
+
+        private void OnDisposed(object sender, EventArgs eventArgs)
+        {
+            _seriesSelector.SeriesCheck -= seriesSelector_Refreshed;
+            _seriesSelector.Refreshed -= seriesSelector_Refreshed;
+            Disposed -= OnDisposed;
         }
 
         #endregion

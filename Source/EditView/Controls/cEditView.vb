@@ -71,6 +71,7 @@ Public Class cEditView
         _seriesSelector = seriesSelector
 
         'assign the events
+        AddHandler Disposed, AddressOf OnDisposing
         AddHandler _seriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
         AddHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
 
@@ -80,6 +81,15 @@ Public Class cEditView
         SettingColor()
         pTimeSeriesPlot.Clear()
     End Sub
+
+    Private Sub OnDisposing(ByVal sender As Object, ByVal e As EventArgs)
+        ' Unsubscribe from events
+        RemoveHandler Disposed, AddressOf OnDisposing
+        RemoveHandler _seriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+        RemoveHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
+        _seriesSelector = Nothing
+    End Sub
+
 
     Public Sub initialize()
         gboxDataFilter.Enabled = False
@@ -125,7 +135,7 @@ Public Class cEditView
 
 #Region "Event"
 
-    Private Sub SeriesSelector_Refreshed()
+    Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
 
         RefreshDbTools()
         pTimeSeriesPlot.Clear()
@@ -142,7 +152,7 @@ Public Class cEditView
     End Sub
 
 
-    Private Sub SeriesSelector_SeriesCheck()
+    Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
         'Declaring all variables
         Dim curveIndex As Integer
         Dim SeriesSelector = _seriesSelector

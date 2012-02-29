@@ -15,24 +15,23 @@ Namespace Controls
         Private ReadOnly ccList0 As New List(Of Color)
         Private colorcount As Integer = 0
         Private ReadOnly selectedSeriesIdList As New List(Of Int32) 'the list of the series which is selected
-        Private ReadOnly _seriesMenu As ISeriesSelector
+        Private _seriesMenu As ISeriesSelector
         Public Event DatesChanged As EventHandler
         Public IsDisplayFullDate As Boolean = True
 
 #End Region
 
 #Region "Constructors"
-        Public Sub New(Optional ByVal seriesSelector As ISeriesSelector = Nothing)
+        Public Sub New(ByVal seriesSelector As ISeriesSelector)
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
             _seriesMenu = seriesSelector
 
             'assign the events
-            If Not _seriesMenu Is Nothing Then
-                AddHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
-                AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
-            End If
+            AddHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
+            AddHandler Disposed, AddressOf OnDisposing
 
             pProbability.SeriesSelector = seriesSelector
             pTimeSeries.SeriesSelector = seriesSelector
@@ -43,6 +42,15 @@ Namespace Controls
 
             StartDateLimit = Today.AddYears(-150)
             EndDateLimit = Today
+        End Sub
+
+
+        Private Sub OnDisposing(ByVal sender As Object, ByVal e As EventArgs)
+            ' Unsubscribe from events
+            RemoveHandler Disposed, AddressOf OnDisposing
+            RemoveHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            RemoveHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
+            _seriesMenu = Nothing
         End Sub
 
 #End Region
@@ -127,7 +135,8 @@ Namespace Controls
             Next
         End Sub
 
-        Private Sub SeriesSelector_Refreshed()
+        Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
+
             pTimeSeries.Clear()
             pBoxWhisker.Clear()
             pProbability.Clear()
@@ -136,7 +145,7 @@ Namespace Controls
         End Sub
 
         'when a series is checked in the series selector control
-        Private Sub SeriesSelector_SeriesCheck() 'ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs)
+        Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
 
             'Declaring all variables
             Dim curveIndex As Integer = 0
