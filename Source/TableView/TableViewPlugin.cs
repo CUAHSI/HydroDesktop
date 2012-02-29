@@ -38,6 +38,7 @@ namespace TableView
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove(kTableView);
 
+            tableViewControl = null;
             if (SeriesControl != null)
             {
                 SeriesControl.Refreshed -= SeriesControl_Refreshed;

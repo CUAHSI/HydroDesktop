@@ -202,8 +202,8 @@ Namespace EditView
         Public Overrides Sub Deactivate()
 
             App.HeaderControl.RemoveAll()
-
             App.DockManager.Remove(kEditView)
+            _mainControl = Nothing
 
             'Remove event handlers
             RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
