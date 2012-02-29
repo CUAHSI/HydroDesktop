@@ -33,6 +33,9 @@ Public Class cEditView
     Private colorcount As Integer = 0
     Public ShowLegend As Boolean
 
+    Dim _dataValuesRepo As IDataValuesRepository
+    Dim _dataSeriesRepo As IDataSeriesRepository
+
     Private Const ErrMsgForNotEditing As String = "Please select a series to edit first."
     Private Const ErrMsgForNotPointSelected As String = "Please select a point for editing."
 #End Region
@@ -129,9 +132,6 @@ Public Class cEditView
         selectedSeriesIdList.Clear()
 
     End Sub
-
-    Dim _dataValuesRepo As IDataValuesRepository
-    Dim _dataSeriesRepo As IDataSeriesRepository
 
     Private Sub RefreshDbTools()
         connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
@@ -713,6 +713,8 @@ Public Class cEditView
 
         lblstatus.Text = "Saving..."
         SQLstring2.Append("BEGIN TRANSACTION; ")
+
+        Dim qualifierRepo = RepositoryFactory.Instance.Get(Of IQualifiersRepository)()
         'saving by table
         For i As Integer = 0 To Editdt.Rows.Count - 1
 
@@ -740,7 +742,7 @@ Public Class cEditView
                         If(Editdt.Rows(i)(8) Is DBNull.Value, "NULL", Convert.ToString(Editdt.Rows(i)(8), CultureInfo.InvariantCulture)),
                         If(Editdt.Rows(i)(9) Is DBNull.Value, "NULL", Editdt.Rows(i)(9)),
                         If(Editdt.Rows(i)(10) Is DBNull.Value, "NULL", Editdt.Rows(i)(10)),
-                        If(Editdt.Rows(i)(7) Is DBNull.Value, "NULL", GetQualifierID(Editdt.Rows(i)(7).ToString)),
+                        If(Editdt.Rows(i)(7) Is DBNull.Value, "NULL", qualifierRepo.FindByCodeOrCreate(Editdt.Rows(i)(7).ToString).Id),
                         If(Editdt.Rows(i)(11) Is DBNull.Value, "NULL", Editdt.Rows(i)(11)),
                         If(Editdt.Rows(i)(12) Is DBNull.Value, "NULL", Editdt.Rows(i)(12)))
 
@@ -749,7 +751,8 @@ Public Class cEditView
                     'updating point
                 ElseIf Editdt.Rows(i)("Other") = 2 Then
                     'Update
-                    SQLstring2.AppendFormat(updateFormatString, Convert.ToString(Editdt.Rows(i)("DataValue"), CultureInfo.InvariantCulture), GetQualifierID(Editdt.Rows(i)("QualifierCode")), ValueID)
+                    SQLstring2.AppendFormat(updateFormatString, Convert.ToString(Editdt.Rows(i)("DataValue"), CultureInfo.InvariantCulture),
+                                            qualifierRepo.FindByCodeOrCreate(Editdt.Rows(i)("QualifierCode")).Id, ValueID)
                 End If
             End If
 
@@ -765,8 +768,7 @@ Public Class cEditView
         dbTools.ExecuteNonQuery(SQLstring2.ToString())
 
         'Update Data Series
-        DataSeriesHandling.UpdateDataSeriesFromDataValues(newseriesID)
-
+        _dataSeriesRepo.UpdateDataSeriesFromDataValues(newseriesID)
 
         RefreshDataGridView()
         pTimeSeriesPlot.ReplotEditingCurve(Me)

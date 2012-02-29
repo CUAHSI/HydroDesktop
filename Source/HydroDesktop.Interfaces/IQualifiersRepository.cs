@@ -7,5 +7,9 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public interface IQualifiersRepository : IRepository<Qualifier>
     {
+        Qualifier FindByCode(string qualifierCode);
+        Qualifier FindByCodeOrCreate(string qualifierCode);
+        void AddQualifier(Qualifier entity);
+        void Update(Qualifier entity);
     }
 }

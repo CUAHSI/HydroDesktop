@@ -34,5 +34,12 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <returns>Array of entities.</returns>
         T[] GetAll();
+
+        /// <summary>
+        /// Get entity by key
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <returns>Entity or null, if it not found.</returns>
+        T GetByKey(object key);
     }
 }
