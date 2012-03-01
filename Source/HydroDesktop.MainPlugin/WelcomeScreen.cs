@@ -260,6 +260,12 @@ namespace HydroDesktop.Main
 
         private void SetupSampleProjects()
         {
+            //copies sample projects to the user's documents folder
+            //projDir is the original sample projects directory
+            string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SampleProjectsDirectory);
+
+            if (!Directory.Exists(projDir)) return;
+            
             string userProjDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HydroDesktop");
 
             if (!Directory.Exists(userProjDir))
@@ -297,9 +303,6 @@ namespace HydroDesktop.Main
 
             if (Directory.Exists(userProjDir))
             {
-                //also add the project files from hd_sample_projects folder
-                string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SampleProjectsDirectory);
-
                 string userSampleProjectDir = Path.Combine(userProjDir, "hydroDesktop_sample_projects");
                 if (!Directory.Exists(userSampleProjectDir))
                 {
