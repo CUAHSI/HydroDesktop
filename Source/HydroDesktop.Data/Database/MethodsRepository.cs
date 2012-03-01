@@ -74,5 +74,13 @@ namespace HydroDesktop.Database
         {
             get { return "Methods"; }
         }
+
+        public override string PrimaryKeyName
+        {
+            get
+            {
+                return "MethodID";
+            }
+        }
     }
 }

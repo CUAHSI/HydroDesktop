@@ -20,6 +20,8 @@ Public Class fDeriveNewDataSeries
     Private _selectedSeriesVariable As Variable
     ReadOnly variablesRepository As IVariablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
     ReadOnly dataSeriesRepository As IDataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
+    ReadOnly dataThemesRepository As IDataThemesRepository = RepositoryFactory.Instance.Get(Of IDataThemesRepository)()
+    ReadOnly qualityControlLevelsRepository As IQualityControlLevelsRepository = RepositoryFactory.Instance.Get(Of IQualityControlLevelsRepository)()
 
     Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
 
@@ -52,9 +54,9 @@ Public Class fDeriveNewDataSeries
         Dim dt As DataTable
 
         'Fill up Quality Control Level drop down list
-        dt = dbTools.LoadTable("QualityControlLevels", "SELECT * FROM QualityControlLevels")
+        dt = qualityControlLevelsRepository.AsDataTable()
         dt.Rows.Add()
-        dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("QualityControlLevels", "QualityControlLevelID").ToString
+        dt.Rows(dt.Rows.Count - 1).Item(0) = qualityControlLevelsRepository.GetNextID()
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Qulity Control Level..."
         ddlQualityControlLevel.DataSource = dt
         ddlQualityControlLevel.DisplayMember = "QualityControlLevelCode"
@@ -74,7 +76,7 @@ Public Class fDeriveNewDataSeries
         'Fill up Method drop down list
         Dim dt = repo.AsDataTable()
         dt.Rows.Add()
-        dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Methods", "MethodID").ToString
+        dt.Rows(dt.Rows.Count - 1).Item(0) = repo.GetNextID().ToString
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Method..."
         ddlMethods.DataSource = dt
         ddlMethods.DisplayMember = "MethodDescription"
@@ -85,7 +87,7 @@ Public Class fDeriveNewDataSeries
         'Fill up Variable drop down list
         Dim dt = variablesRepository.AsDataTable()
         dt.Rows.Add()
-        dt.Rows(dt.Rows.Count - 1).Item(0) = dbTools.GetNextID("Variables", "VariableID").ToString
+        dt.Rows(dt.Rows.Count - 1).Item(0) = variablesRepository.GetNextID()
         dt.Rows(dt.Rows.Count - 1).Item(1) = "New Variable..."
         ddlVariable.DataSource = dt
         ddlVariable.DisplayMember = "VariableCode"
@@ -143,7 +145,6 @@ Public Class fDeriveNewDataSeries
             SQLstring.Append(tempstring + ", ")
             'BeginDateTime, EndDateTime, BeginDateTimeUTC and EndDateTimeUTC values
             For i As Integer = 7 To 10
-                tempstring = dt.Rows(0).Item(i).ToString
                 tempstring = DateTime.ParseExact(dt.Rows(0).Item(i).ToString, "yyyy/MM/dd H:mm:ss", Nothing).ToString("yyyy-MM-dd HH:mm:ss")
                 SQLstring.Append("'" + tempstring + "', ")
             Next
@@ -163,51 +164,21 @@ Public Class fDeriveNewDataSeries
     End Sub
 
     Private Sub InsertSeriesProvenance()
-        Dim SQLstring As StringBuilder = New StringBuilder()
+        Dim entity = New SeriesProvenance()
+        entity.ProvenanceDateTime = DateTime.Today
+        entity.InputSeries = New Series()
+        entity.InputSeries.Id = _SelectedSeriesID
+        entity.OutputSeries = New Series()
+        entity.OutputSeries.Id = newSeriesID
+        entity.Method = New Method()
+        entity.Method.Id = ddlMethods.SelectedValue
+        entity.Comment = txtComment.Text
 
-        Try
-            SQLstring.Append("INSERT INTO SeriesProvenance(ProvenanceID, ProvenanceDateTime, InputSeriesID, OutputSeriesID, MethodID, Comment) VALUES (")
-            'ProvenanceID value
-            SQLstring.Append(dbTools.GetNextID("SeriesProvenance", "ProvenanceID").ToString + ",")
-            'ProvenanceDateTime value
-            SQLstring.Append("'" + todaystring.ToString + "',")
-            'InputSeriesID value
-            SQLstring.Append(_SelectedSeriesID.ToString + ",")
-            'OutputSeriesID value
-            SQLstring.Append(newSeriesID.ToString + ",")
-            'MethodID value
-            SQLstring.Append(ddlMethods.SelectedValue.ToString + ",")
-            'Comment value
-            If txtComment.Text = Nothing Then
-                SQLstring.Append("NULL)")
-            Else
-                SQLstring.Append("'" + txtComment.Text.ToString + "')")
-            End If
-
-
-            dbTools.ExecuteNonQuery(SQLstring.ToString)
-
-        Catch ex As Exception
-            Throw New Exception("Error Occured in InsertSeriesProvenance." & vbCrLf & ex.Message)
-        End Try
+        RepositoryFactory.Instance.Get(Of ISeriesProvenanceRepository).AddNew(entity)
     End Sub
 
     Private Sub InsertNewDataThemes()
-        Try
-
-            Dim SQLstring As String
-            SQLstring = "SELECT ThemeID FROM DataThemes WHERE SeriesID = " + _SelectedSeriesID.ToString
-            Dim ThemeID As Integer = dbTools.ExecuteSingleOutput(SQLstring)
-
-            SQLstring = "INSERT INTO DataThemes(ThemeID, SeriesID) VALUES ("
-            SQLstring += ThemeID.ToString + "," + newSeriesID.ToString + ")"
-
-            dbTools.ExecuteNonQuery(SQLstring)
-
-        Catch ex As Exception
-            Throw New Exception("Error Occured in InsertNewDataThemes." & vbCrLf & ex.Message)
-        End Try
-
+        dataThemesRepository.InsertNewTheme(_SelectedSeriesID, newSeriesID)
     End Sub
 
     Private Sub InsertNewDataValues()
