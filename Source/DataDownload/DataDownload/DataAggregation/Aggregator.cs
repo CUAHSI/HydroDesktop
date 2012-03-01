@@ -8,6 +8,8 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Configuration;
+using HydroDesktop.DataDownload.DataAggregation.UI;
+using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
@@ -20,6 +22,24 @@ namespace HydroDesktop.DataDownload.DataAggregation
     /// </summary>
     internal class Aggregator
     {
+        public static bool CanAggregateLayer(ILayer layer)
+        {
+            var featureLayer = layer as IFeatureLayer;
+            if (featureLayer == null) return false;
+
+            return new[] {"SeriesID", "BeginDateTi", "EndDateTime"}.All(fieldName => featureLayer.DataSet.DataTable.Columns.Contains(fieldName));
+        }
+
+        public static void UpdateContextMenu(IFeatureLayer layer)
+        {
+            var dataGroupMenu = layer.ContextMenuItems.FirstOrDefault(item => item.Name == "Data");
+            if (dataGroupMenu == null)
+                return;
+
+            dataGroupMenu.AddMenuItem("Show Data Values in Map",
+                                        delegate { new AggregationSettingsDialog(layer).ShowDialog(); });
+        }
+
         #region Fields
 
         private readonly AggregationSettings _settings;
@@ -82,9 +102,7 @@ namespace HydroDesktop.DataDownload.DataAggregation
             int percentage = 0;
             ReportProgress(++percentage, "Starting calculation");
 
-            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
-                                                                               Settings.Instance.
-                                                                                   DataRepositoryConnectionString);
+            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
 
             IFeatureSet featureSet;
             if (_settings.CreateNewLayer)
@@ -173,8 +191,7 @@ namespace HydroDesktop.DataDownload.DataAggregation
             }
 
             // Calculating...
-            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(DatabaseTypes.SQLite,
-                                                                             Settings.Instance.DataRepositoryConnectionString);
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
             var aggregationFunction = GetSQLAggregationFunction(_settings.AggregationMode);
             var minDate = _settings.StartTime;
             var maxDate = _settings.EndTime;

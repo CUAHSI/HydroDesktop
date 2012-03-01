@@ -87,7 +87,7 @@ namespace TableView
             //(3) Update map layers
             if (_mainMap != null)
             {
-                var manager = new ThemeManager(Settings.Instance.DataRepositoryConnectionString, _searchPlugin);
+                var manager = new ThemeManager(_searchPlugin);
                 manager.RefreshAllThemes(_mainMap);
             }
 

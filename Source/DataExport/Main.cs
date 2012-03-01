@@ -76,15 +76,13 @@ namespace HydroDesktop.ExportToCSV
 
         public void Export(IFeatureLayer layer)
         {
-            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            var dialog = new ExportDialog(db, layer == null? null : new []{layer.LegendText});
+            var dialog = new ExportDialog(layer == null? null : new []{layer.LegendText});
             dialog.ShowDialog();
         }
 
         public void Export(DataTable dataTable)
         {
-            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            var dialog = new ExportDialog(db, dataTable);
+            var dialog = new ExportDialog(dataTable);
             dialog.ShowDialog();
         }
 

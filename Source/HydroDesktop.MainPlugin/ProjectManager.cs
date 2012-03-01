@@ -279,7 +279,6 @@ namespace HydroDesktop.Main
                 Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
         
                 //Also save the files of all map layers 
-                IMapGroup dataSitesGroup = FindGroupByName(LayerConstants.SearchGroupName);
 
                 string projDir = App.SerializationManager.CurrentProjectDirectory;
 
@@ -301,25 +300,6 @@ namespace HydroDesktop.Main
                 }
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
-
-        }
-
-        /// <summary>
-        /// Finds the map group with the specific name
-        /// </summary>
-        /// <param name="map">the map to search</param>
-        /// <param name="groupLegendText">the legend text of the map  group</param>
-        /// <returns></returns>
-        private IMapGroup FindGroupByName(string groupLegendText)
-        {
-            foreach (LegendItem item in App.Map.Layers)
-            {
-                if (item is IMapGroup && item.LegendText.ToLower() == groupLegendText.ToLower())
-                {
-                    return (IMapGroup)item;
-                }
-            }
-            return null;
         }
 
         public static string GetMapDirectory()
