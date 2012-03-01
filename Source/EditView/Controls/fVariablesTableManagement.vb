@@ -51,7 +51,7 @@ Public Class fVariablesTableManagement
             btnSubmit.Text = "Add"
             rbtnRegularYes.Checked = True
         Else
-            Dim variable = _variablesRepo.GetByID(_VariableID)
+            Dim variable = _variablesRepo.GetByKey(_VariableID)
 
             txtVariableCode.Text = variable.Code
             txtVariableName.Text = variable.Name

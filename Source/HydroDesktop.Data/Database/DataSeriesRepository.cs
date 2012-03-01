@@ -216,7 +216,7 @@ namespace HydroDesktop.Database
 
             int variableID = Convert.ToInt32(seriesRow["VariableID"]);
 
-            series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>().GetByID(variableID);
+            series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>().GetByKey(variableID);
 
             Method newMethod = new Method();
             newMethod.Id = Convert.ToInt32(seriesRow["MethodID"]);

@@ -18,8 +18,8 @@ Public Class fDeriveNewDataSeries
     Private ReadOnly _cEditView As cEditView
     Private _derivedVariable As Variable
     Private _selectedSeriesVariable As Variable
-    ReadOnly variablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
-    ReadOnly dataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
+    ReadOnly variablesRepository As IVariablesRepository = RepositoryFactory.Instance.Get(Of IVariablesRepository)()
+    ReadOnly dataSeriesRepository As IDataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
 
     Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
 
@@ -39,7 +39,7 @@ Public Class fDeriveNewDataSeries
 
         'Create derived variable
         Dim currentVariableID = dataSeriesRepository.GetVariableID(_SelectedSeriesID)
-        _selectedSeriesVariable = variablesRepository.GetByID(currentVariableID)
+        _selectedSeriesVariable = variablesRepository.GetByKey(currentVariableID)
         _derivedVariable = DirectCast(_selectedSeriesVariable.Clone(), Variable)
         variablesRepository.AddVariable(_derivedVariable)
         _derivedVariable.ValueType = "Derived Value"
