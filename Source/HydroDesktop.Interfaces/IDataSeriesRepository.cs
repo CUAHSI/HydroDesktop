@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.Common;
 
 namespace HydroDesktop.Interfaces
 {
@@ -128,7 +129,36 @@ namespace HydroDesktop.Interfaces
         void UpdateDataSeriesFromDataValues(long seriesID);
 
         string GetQualityControlLevelCode(long seriesID);
+        long GetQualityControlLevelID(long seriesID);
 
         IList<long> GetDataValuesIDs(long seriesID);
+
+        int InsertNewSeries(long sourceSeriesID, long variableID, long methodID, long qualityControlLevelID);
+
+        void DeriveInsertAggregateDataValues(DataTable dt,
+                                             long newSeriesID,
+                                             DateTime currentdate, DateTime lastdate, DeriveAggregateMode mode,
+                                             DeriveComputeMode computeMode,
+                                             double nodatavalue, IProgressHandler progressHandler);
+
+        void DeriveInsertDataValues(double A, double B, double C, double D, double E, double F,
+                                    DataTable dt,
+                                    long newSeriesID, long sourceSeriesID, bool isAlgebraic,
+                                    IProgressHandler progressHandler);
+    }
+
+    public enum DeriveAggregateMode
+    {
+        Daily,
+        Monthly,
+        Quarterly,
+    }
+
+    public enum DeriveComputeMode
+    {
+        Maximum,
+        Minimum,
+        Average,
+        Sum
     }
 }

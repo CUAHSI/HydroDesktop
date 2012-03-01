@@ -67,20 +67,17 @@ namespace HydroDesktop.Database
         /// </summary>
         public DatabaseTypes DatabaseType
         {
-            get 
+            get
             {
                 if (dbFactory is System.Data.SQLite.SQLiteFactory)
                 {
                     return DatabaseTypes.SQLite;
                 }
-                else if (dbFactory is System.Data.SqlClient.SqlClientFactory)
+                if (dbFactory is SqlClientFactory)
                 {
                     return DatabaseTypes.SQLServer;
                 }
-                else
-                {
-                    return DatabaseTypes.Unknown;
-                }
+                return DatabaseTypes.Unknown;
             }
         }
 

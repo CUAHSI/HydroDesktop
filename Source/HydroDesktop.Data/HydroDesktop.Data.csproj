@@ -137,6 +137,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>
