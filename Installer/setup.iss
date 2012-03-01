@@ -75,8 +75,8 @@ VersionInfoCopyright=Mozilla Public License (MPL) 1.1
 VersionInfoDescription=HydroDesktop [www.HydroDesktop.org]
 VersionInfoProductName="{#AppName} {#AppVerStr}
 VersionInfoProductVersion={#AppVerStr}
-DefaultDirName={pf}\CUAHSI HIS\HydroDesktop
-DefaultGroupName=CUAHSI HIS\HydroDesktop
+DefaultDirName={pf}\CUAHSI HIS\HydroDesktop 1.4
+DefaultGroupName=CUAHSI HIS\HydroDesktop 1.4
 ;If this is set to auto, at startup Setup will look in the registry
 ;to see if the same application is already installed, and if so, it
 ;will not show the Select Start Menu Folder wizard page.
@@ -178,6 +178,7 @@ Type: files; Name: "{app}\Plugins\TSA.*"
 Type: files; Name: "{app}\Plugins\Toolbox.*"
 Type: files; Name: "{app}\Plugins\Search2\*"
 Type: files; Name: "{app}\Plugins\Search\search.*"
+Type: files; Name: "{app}\Plugins\HelpTab\DataDownload.dll"
 Type: files; Name: "{app}\Plugins\MetadataFetcher\HIS_Database.*"
 Type: files; Name: "{app}\Plugins\DataFetcher\HIS_Database.*"
 Type: files; Name: "{app}\Plugins\ImportFromWaterML\ImportFromWaterML.*"
