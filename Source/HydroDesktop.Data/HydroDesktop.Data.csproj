@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="Database\RepositoryManagerSQL.cs" />
     <Compile Include="Database\SamplesRepository.cs" />
+    <Compile Include="Database\SeriesProvenanceRepository.cs" />
     <Compile Include="Database\SitesRepository.cs" />
     <Compile Include="Database\SourcesRepository.cs" />
     <Compile Include="Database\UnitsRepository.cs" />

@@ -96,6 +96,12 @@ namespace HydroDesktop.Database
                   CreatorByConnectionString = (dbType, connStr) => new DataFilesRepository(dbType, connStr),
                   CreatorByDbOperations = dbOp => new DataFilesRepository(dbOp)
               });
+            Add<ISeriesProvenanceRepository>(
+                    new RepositoryCreator
+                        {
+                                CreatorByConnectionString = (dbType, connStr) => new SeriesProvenanceRepository(dbType, connStr),
+                                CreatorByDbOperations = dbOp => new SeriesProvenanceRepository(dbOp)
+                        });
         }
     }
 }

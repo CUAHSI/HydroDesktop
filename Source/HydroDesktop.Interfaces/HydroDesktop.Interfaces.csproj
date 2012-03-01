@@ -87,6 +87,7 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryManager.cs" />
     <Compile Include="ISamplesRepository.cs" />
+    <Compile Include="ISeriesProvenanceRepository.cs" />
     <Compile Include="ISeriesSelector.cs" />
     <Compile Include="ISitesRepository.cs" />
     <Compile Include="ISourcesRepository.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="ObjectModel\Series.cs" />
     <Compile Include="ObjectModel\SeriesDataCart.cs" />
     <Compile Include="ObjectModel\SeriesMetadata.cs" />
+    <Compile Include="ObjectModel\SeriesProvenance.cs" />
     <Compile Include="ObjectModel\Site.cs" />
     <Compile Include="ObjectModel\Source.cs" />
     <Compile Include="ObjectModel\SpatialReference.cs" />

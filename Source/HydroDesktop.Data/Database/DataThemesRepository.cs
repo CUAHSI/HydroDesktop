@@ -169,6 +169,17 @@ namespace HydroDesktop.Database
             return true;
         }
 
+        public void InsertNewTheme(long seriesID, long newSeriesID)
+        {
+            var SQLstring = "SELECT ThemeID FROM DataThemes WHERE SeriesID = " + seriesID;
+            var ThemeID = Convert.ToInt64(DbOperations.ExecuteSingleOutput(SQLstring));
+
+            SQLstring = "INSERT INTO DataThemes(ThemeID, SeriesID) VALUES (";
+            SQLstring += ThemeID + "," + newSeriesID + ")";
+
+            DbOperations.ExecuteNonQuery(SQLstring);
+        }
+
         #endregion
 
         protected override Theme DataRowToEntity(DataRow row)
