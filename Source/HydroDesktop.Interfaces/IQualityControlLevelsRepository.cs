@@ -7,5 +7,7 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public interface IQualityControlLevelsRepository : IRepository<QualityControlLevel>
     {
+        void AddNew(QualityControlLevel entity);
+        void Update(QualityControlLevel entity);
     }
 }

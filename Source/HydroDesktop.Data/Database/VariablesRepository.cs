@@ -25,47 +25,47 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
-      
-        public Variable GetByID(long id)
-        {
-            var dt = DbOperations.LoadTable(TableName, "Select * FROM Variables where VariableID=" + id);
-            if (dt == null || dt.Rows.Count == 0)
-                return null;
-
-            var row = dt.Rows[0];
-            var res = DataRowToEntity(row);
-            return res;
-        }
         
         public void AddVariable(Variable variable)
         {
-            variable.Id = DbOperations.GetNextID(TableName, "VariableID");
             var query =
                 string.Format(
-                    @"INSERT INTO {0}(VariableID, VariableCode, VariableName, Speciation, SampleMedium, ValueType, IsRegular, IsCategorical, TimeSupport, DataType, GeneralCategory, NoDataValue, TimeUnitsID, VariableUnitsID)
-                                       VALUES ({1}, '{2}', '{3}', '{4}', '{5}', '{6}', {7}, {8}, {9}, '{10}', '{11}', {12}, {13}, {14})",
-                    TableName,
-                    variable.Id, variable.Code, variable.Name, variable.Speciation, variable.SampleMedium,
-                    variable.ValueType, Convert.ToInt32(variable.IsRegular), Convert.ToInt32(variable.IsCategorical), variable.TimeSupport,
-                    variable.DataType, variable.GeneralCategory, variable.NoDataValue,
-                    variable.TimeUnit != null? variable.TimeUnit.Id : 0,
-                    variable.VariableUnit != null? variable.VariableUnit.Id : 0);
-            DbOperations.ExecuteNonQuery(query);
+                    @"INSERT INTO {0}(VariableCode, VariableName, Speciation, SampleMedium, ValueType, IsRegular, IsCategorical, TimeSupport, DataType, GeneralCategory, NoDataValue, TimeUnitsID, VariableUnitsID)
+                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    TableName) + LastRowIDSelect;
+            var res = DbOperations.ExecuteSingleOutput(query,
+                                         new object[]
+                                             {
+                                                     variable.Code, variable.Name, variable.Speciation,
+                                                     variable.SampleMedium,
+                                                     variable.ValueType, Convert.ToInt32(variable.IsRegular),
+                                                     Convert.ToInt32(variable.IsCategorical), variable.TimeSupport,
+                                                     variable.DataType, variable.GeneralCategory, variable.NoDataValue,
+                                                     variable.TimeUnit != null ? variable.TimeUnit.Id : 0,
+                                                     variable.VariableUnit != null ? variable.VariableUnit.Id : 0
+                                             });
+            variable.Id = Convert.ToInt64(res);
         }
         
         public void Update(Variable variable)
         {
             var query =
                 string.Format(
-                    @"UPDATE {0} SET VariableCode='{1}', VariableName='{2}', Speciation='{3}', SampleMedium='{4}', ValueType='{5}', IsRegular={6}, IsCategorical={7}, TimeSupport={8}, DataType='{9}', GeneralCategory='{10}', NoDataValue={11}, TimeUnitsID={12}, VariableUnitsID={13}
-                    WHERE VariableID={14}",
-                    TableName,
-                    variable.Code, variable.Name, variable.Speciation, variable.SampleMedium,
-                    variable.ValueType, Convert.ToInt32(variable.IsRegular), Convert.ToInt32(variable.IsCategorical), variable.TimeSupport,
-                    variable.DataType, variable.GeneralCategory, variable.NoDataValue, 
-                    variable.TimeUnit.Id,
-                    variable.VariableUnit.Id, variable.Id);
-            DbOperations.ExecuteNonQuery(query);
+                    @"UPDATE {0} SET VariableCode=?, VariableName=?, Speciation=?, SampleMedium=?, ValueType=?, IsRegular=?, IsCategorical=?, TimeSupport=?, DataType=?, GeneralCategory=?, NoDataValue=?, TimeUnitsID=?, VariableUnitsID=?
+                    WHERE VariableID=?",
+                    TableName);
+            DbOperations.ExecuteNonQuery(query, new object[]
+                                                    {
+                                                            variable.Code, variable.Name, variable.Speciation,
+                                                            variable.SampleMedium,
+                                                            variable.ValueType, Convert.ToInt32(variable.IsRegular),
+                                                            Convert.ToInt32(variable.IsCategorical),
+                                                            variable.TimeSupport,
+                                                            variable.DataType, variable.GeneralCategory,
+                                                            variable.NoDataValue,
+                                                            variable.TimeUnit.Id,
+                                                            variable.VariableUnit.Id, variable.Id
+                                                    });
         }
 
         public bool Exists(Variable entity)
@@ -100,6 +100,14 @@ namespace HydroDesktop.Database
                               VariableUnit = unitsRepo.GetByID(Convert.ToInt64(row["VariableUnitsID"])),
                           };
             return res;
+        }
+
+        public override string PrimaryKeyName
+        {
+            get
+            {
+                return "VariableID";
+            }
         }
 
         public override string TableName

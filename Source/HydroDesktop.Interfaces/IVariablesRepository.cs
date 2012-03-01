@@ -1,4 +1,3 @@
-using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
@@ -8,14 +7,6 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public interface IVariablesRepository : IRepository<Variable>
     {
-        /// <summary>
-        /// Get <see cref="Variable"/> by ID
-        /// </summary>
-        /// <param name="id">VariableID</param>
-        /// <returns>Instance of <see cref="Variable"/> or null, if entity not found.</returns>
-        Variable GetByID(long id);
-        
-
         /// <summary>
         /// Insert Variable
         /// </summary>
