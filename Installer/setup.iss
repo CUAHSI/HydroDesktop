@@ -148,9 +148,9 @@ Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroMo
 Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
-Name: "{group}\HydroDesktop"; Filename: "{app}\HydroDesktop.exe"
+Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"
 Name: "{group}\{cm:UninstallProgram,HydroDesktop}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\HydroDesktop"; Filename: "{app}\HydroDesktop.exe"; Tasks: desktopicon
+Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"; Tasks: desktopicon
 
 [Registry]
 Root: HKCR; Subkey: ".dspx"; ValueType: string; ValueName: ""; ValueData: "HD_Project"; Flags: uninsdeletevalue
