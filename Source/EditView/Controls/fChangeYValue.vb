@@ -1,25 +1,14 @@
-﻿Imports HydroDesktop.Database
-Imports System.Globalization
-Imports System.Threading
-Imports System.Text
-Imports HydroDesktop.Interfaces
+﻿
 
 
 Public Class fChangeYValue
-
-    Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-    Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
-
     Public Sub New()
 
         InitializeComponent()
         ddlMethod.SelectedItem = ddlMethod.Items(0)
-
     End Sub
 
     Public Sub initialize()
-
-
     End Sub
 
     Private Sub btnApplyChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApplyChange.Click
@@ -73,8 +62,6 @@ Public Class fChangeYValue
             _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView)
             Me.Close()
         End If
-
-
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
@@ -84,5 +71,4 @@ Public Class fChangeYValue
     Private Sub Leaving() Handles Me.Deactivate
         'Me.Close()
     End Sub
-
 End Class

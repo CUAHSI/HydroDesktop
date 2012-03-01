@@ -69,15 +69,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\BaseRepository.cs" />
+    <Compile Include="Database\DataFilesRepository.cs" />
     <Compile Include="Database\DataSeriesRepository.cs" />
+    <Compile Include="Database\DataServicesRepository.cs" />
     <Compile Include="Database\DataThemesRepository.cs" />
     <Compile Include="Database\DataValuesRepository.cs" />
     <Compile Include="Database\MetadataCacheManagerSQL.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\MethodsRepository.cs" />
+    <Compile Include="Database\OffsetTypesRepository.cs" />
+    <Compile Include="Database\QualifiersRepository.cs" />
+    <Compile Include="Database\QualityControlLevelsRepository.cs" />
     <Compile Include="Database\RepositoryFactory.cs" />
+    <Compile Include="Database\RepositoryFactory.Register.cs">
+      <DependentUpon>RepositoryFactory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\RepositoryManagerSQL.cs" />
+    <Compile Include="Database\SamplesRepository.cs" />
+    <Compile Include="Database\SeriesProvenanceRepository.cs" />
+    <Compile Include="Database\SitesRepository.cs" />
+    <Compile Include="Database\SourcesRepository.cs" />
     <Compile Include="Database\UnitsRepository.cs" />
     <Compile Include="Database\VariablesRepository.cs" />
     <Compile Include="ImportExport\CsvFileParser.cs" />
@@ -125,6 +137,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>

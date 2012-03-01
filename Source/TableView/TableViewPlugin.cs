@@ -38,6 +38,7 @@ namespace TableView
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove(kTableView);
 
+            tableViewControl = null;
             if (SeriesControl != null)
             {
                 SeriesControl.Refreshed -= SeriesControl_Refreshed;
@@ -234,8 +235,7 @@ namespace TableView
 
         private void DeleteTheme()
         {
-            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            using (var frm = new DeleteThemeForm(db))
+            using (var frm = new DeleteThemeForm())
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {

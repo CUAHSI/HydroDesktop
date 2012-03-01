@@ -260,8 +260,7 @@ namespace SeriesView
             if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
                                 "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
-                var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
-                                                       Settings.Instance.DataRepositoryConnectionString);
+                var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 manager.DeleteSeries(_clickedSeriesID);
                 RefreshSelection();
             }
@@ -461,13 +460,12 @@ namespace SeriesView
 
         public void SetupDatabase()
         {
-            //Settings.Instance.Load();
             var conString = Settings.Instance.DataRepositoryConnectionString;
 
             //if the connection string is not set, exit
             if (String.IsNullOrEmpty(conString)) return;
 
-            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite, conString);
+            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var tbl = manager.GetDetailedSeriesTable();
 
             // Add Checked column
@@ -594,29 +592,22 @@ namespace SeriesView
             cbBoxCriterion.Items.Add("QCLevel");
             cbBoxCriterion.SelectedIndex = 0;
 
-            string conString = Settings.Instance.DataRepositoryConnectionString;
-            DbOperations db = new DbOperations(conString, DatabaseTypes.SQLite);
-
-            string sqlTheme = "SELECT ThemeID, ThemeName FROM DataThemeDescriptions";
-            string sqlSite = string.Format("SELECT SiteID, {0} FROM Sites", SiteDisplayColumn);
-            string sqlVariable = "SELECT VariableID, VariableName, UnitsAbbreviation " +
-                                 "FROM Variables INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID";
-            string sqlMethod = "SELECT MethodID, MethodDescription FROM Methods";
-            string sqlSource = "SELECT SourceID, Organization FROM Sources";
-            string sqlQcLevel = "SELECT QualityControlLevelID, Definition FROM QualityControlLevels";
-
-            _themeTable = db.LoadTable(sqlTheme);
-            _siteTable = db.LoadTable(sqlSite);
-            _variableTable = db.LoadTable(sqlVariable);
-            _sourceTable = db.LoadTable(sqlSource);
-            _methodTable = db.LoadTable(sqlMethod);
-            _qcLevelTable = db.LoadTable(sqlQcLevel);
-
-            //set variable unit names
-            foreach (DataRow row in _variableTable.Rows)
+            _themeTable = RepositoryFactory.Instance.Get<IDataThemesRepository>().AsDataTable();
+            _siteTable = RepositoryFactory.Instance.Get<ISitesRepository>().AsDataTable();
+            var variables = RepositoryFactory.Instance.Get<IVariablesRepository>().GetAll();
+            _variableTable = new DataTable();
+            _variableTable.Columns.Add("VariableID", typeof (long));
+            _variableTable.Columns.Add("VariableName", typeof(string));
+            foreach (var variable in variables)
             {
-                row["VariableName"] = row["VariableName"] + " (" + row["UnitsAbbreviation"] + ")";
+                var row = _variableTable.NewRow();
+                row["VariableID"] = variable.Id;
+                row["VariableName"] = variable.Name  + " (" + variable.VariableUnit.Abbreviation + ")";;
+                _variableTable.Rows.Add(row);
             }
+            _sourceTable = RepositoryFactory.Instance.Get<ISourcesRepository>().AsDataTable();
+            _methodTable = RepositoryFactory.Instance.Get<IMethodsRepository>().AsDataTable();
+            _qcLevelTable = RepositoryFactory.Instance.Get<IQualityControlLevelsRepository>().AsDataTable();
 
             AddFilterOptionRow(_themeTable);
             AddFilterOptionRow(_siteTable);
@@ -740,7 +731,7 @@ namespace SeriesView
                 }
             }
 
-            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(DatabaseTypes.SQLite,Settings.Instance.DataRepositoryConnectionString);
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
             DataTable table = null;
             for (int i = 0; i < checkedIDs.Length; i++)
             {

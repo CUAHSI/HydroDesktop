@@ -185,8 +185,7 @@ namespace HydroDesktop.ImportExport
 		/// <returns>String array of data items parsed from the stream, or null if the end of the stream has been reached</returns>
 		public string[] ReadLine ()
 		{
-			ArrayList line = new ArrayList ();
-
+			var line = new List<string> ();
 			string data = ReadData ();
 
 			while ( data != null )
@@ -199,10 +198,8 @@ namespace HydroDesktop.ImportExport
 			{
 				return null;
 			}
-			else
-			{
-				return (string[])line.ToArray ( typeof ( string ) );
-			}
+
+		    return line.ToArray();
 		}
 
 		#endregion

@@ -1,6 +1,4 @@
 using System;
-using System.Data;
-using System.Text;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
@@ -9,7 +7,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for Methods
     /// </summary>
-    class MethodsRepository : BaseRepository, IMethodsRepository
+    class MethodsRepository : BaseRepository<Method>, IMethodsRepository
     {
         #region Constructors
         
@@ -26,18 +24,15 @@ namespace HydroDesktop.Database
 
         #region Public methods
 
-        public int InsertMethod(string methodDescription, string methodLink, int? methodID = null)
+        public int InsertMethod(string methodDescription, string methodLink)
         {
-            if (methodID == null)
-            {
-                methodID = DbOperations.GetNextID(TableName, "MethodID");
-            }
+            var methodID = DbOperations.GetNextID(TableName, "MethodID");
             DbOperations.ExecuteNonQuery(
                 string.Format(
                     "INSERT INTO Methods(MethodID, MethodDescription, MethodLink) VALUES ({0}, '{1}', '{2}')", methodID,
                     methodDescription, methodLink));
 
-            return methodID.Value;
+            return methodID;
         }
        
         public void UpdateMethod(int methodID, string methodDescription, string methodLink)
@@ -46,12 +41,6 @@ namespace HydroDesktop.Database
                 string.Format("UPDATE Methods SET MethodDescription='{0}', MethodLink='{1}' Where MethodID = {2}",
                               methodDescription, methodLink, methodID)
                 );
-        }
-        
-        public DataTable GetAllMethods()
-        {
-            var dt = DbOperations.LoadTable("Methods", "Select * FROM Methods");
-            return dt;
         }
       
         public int? GetMethodID(string methodDescription)
@@ -84,6 +73,14 @@ namespace HydroDesktop.Database
         public override string TableName
         {
             get { return "Methods"; }
+        }
+
+        public override string PrimaryKeyName
+        {
+            get
+            {
+                return "MethodID";
+            }
         }
     }
 }

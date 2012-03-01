@@ -10,7 +10,6 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
@@ -114,9 +113,7 @@ namespace HydroDesktop.DataDownload.DataAggregation.UI
             _settings.EndTime = maxEndTime;
 
             // Get all variables associated with current layer
-            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite,
-                                                                                   Settings.Instance.
-                                                                                       DataRepositoryConnectionString);
+            var seriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
             var uniqueVariables = new List<string>();
             foreach (var feature in _layer.DataSet.Features)
             {
