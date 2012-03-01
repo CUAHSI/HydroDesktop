@@ -94,5 +94,8 @@ namespace HydroDesktop.Interfaces
 
         DataTable GetTableForAllFieldsInSequence(IList<int> seriesIDs, int valuesPerPage, int currentPage);
         DataTable GetTableForJustValuesInParallel(IList<int> seriesIDs, int valuesPerPage, int currentPage);
+
+        void DeleteById(long valueID);
+        void UpdateValuesForEditView(DataTable table);
     }
 }

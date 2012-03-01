@@ -2,11 +2,8 @@
 Imports System.Drawing
 Imports System.Data
 Imports System.Linq
-Imports System.Text
 Imports System.Windows.Forms
-Imports System.Globalization
 Imports HydroDesktop.Database
-Imports QualifierHandling
 Imports ZedGraph
 Imports HydroDesktop.Interfaces
 
@@ -16,9 +13,7 @@ Public Class cEditView
     'Inherits UserControl
 
 #Region "privateDeclaration"
-
-    Private connString
-    Private dbTools
+    
     Private ReadOnly CurveEditingColor As Color = Color.Black
 
     Public _seriesSelector As ISeriesSelector
@@ -144,9 +139,6 @@ Public Class cEditView
     End Sub
 
     Private Sub RefreshDbTools()
-        connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-        dbTools = New DbOperations(connString, DatabaseTypes.SQLite)
-
         _dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
         _dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
     End Sub
@@ -278,7 +270,7 @@ Public Class cEditView
                 dtpAfter.MaxDate = endDateTime
             End If
 
-            If dbTools.ExecuteSingleOutput("SELECT QualityControlLevelCode FROM DataSeries AS d LEFT JOIN QualityControlLevels AS q ON (d.QualityControlLevelID = q.QualityControlLevelID) WHERE SeriesID = " + newseriesID.ToString).ToString = "Raw Data" Then
+            If _dataSeriesRepo.GetQualityControlLevelCode(newseriesID) = "Raw Data" Then
                 gboxDataFilter.Enabled = False
             Else
                 gboxDataFilter.Enabled = True
@@ -688,31 +680,19 @@ Public Class cEditView
 
     'Saving changes Method
     Public Sub SaveGraphChangesToDatabase()
-        Dim SQLstring As New StringBuilder
-        Dim SQLstring2 As New StringBuilder
-        'Dim datavalue As Double
-        Dim ValueID As Integer
-        Dim dt As New DataTable
+
         Dim ValueIDList As New List(Of Integer)
-
-
         'Deleting added points after restore data
         For i As Integer = 0 To dgvDataValues.Rows.Count - 1
             ValueIDList.Add(dgvDataValues.Rows(i).Cells("ValueID").Value)
         Next
-        dt = dbTools.LoadTable("SELECT ValueID FROM DataValues WHERE SeriesID = " + newseriesID.ToString)
-        For i As Integer = 0 To dt.Rows.Count - 1
-            If Not ValueIDList.Contains(dt.Rows(i)("ValueID")) Then
-                SQLstring.AppendFormat("DELETE FROM DataValues WHERE ValueID ={0}", dt.Rows(i))
-                dbTools.ExecuteNonQuery(SQLstring)
+
+        Dim dv = _dataSeriesRepo.GetDataValuesIDs(newseriesID)
+        For i As Integer = 0 To dv.Count - 1
+            If Not ValueIDList.Contains(dv(i)) Then
+                _dataValuesRepo.DeleteById(dv(i))
             End If
         Next
-
-        'Setting up format strings
-        Dim updateFormatString As String = "UPDATE DataValues SET DataValue = {0}, QualifierID = {1} WHERE ValueID = {2}; "
-        Dim insertFormatString As String = "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, " & _
-                    "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (" & _
-                    "{0},{1},{2},'{3}','{4}',{5},'{6}',{7},{8},'{9}',{10},{11},{12}) ;"
 
         'Setting progress bar
         Dim frmloading As ProgressBar = pbProgressBar
@@ -722,61 +702,8 @@ Public Class cEditView
         frmloading.Value = 0
 
         lblstatus.Text = "Saving..."
-        SQLstring2.Append("BEGIN TRANSACTION; ")
-
-        Dim qualifierRepo = RepositoryFactory.Instance.Get(Of IQualifiersRepository)()
-        'saving by table
-        For i As Integer = 0 To Editdt.Rows.Count - 1
-
-            ValueID = Editdt.Rows(i)("ValueID")
-
-            'deleting point
-
-            If Not Editdt.Rows(i)("Other") = 0 Then
-                'Deleteing point
-                If Editdt.Rows(i)("Other") = -1 Then
-                    SQLstring2.AppendFormat("DELETE FROM DataValues WHERE ValueID = {0}; ", ValueID)
-
-                    'Adding point
-                ElseIf Editdt.Rows(i)("Other") = 1 Then
-                    If dbTools.ExecuteSingleOutput("Select ValueID FROM DataValues WHERE ValueID = " + ValueID.ToString) = Nothing Then
-
-                        SQLstring2.AppendFormat(insertFormatString,
-                                                Editdt.Rows(i)(0),
-                                                Editdt.Rows(i)(1),
-                                                Convert.ToString(Editdt.Rows(i)(2), CultureInfo.InvariantCulture),
-                                                If(Editdt.Rows(i)(3) Is DBNull.Value, "NULL,", Editdt.Rows(i)(3)),
-                        Convert.ToDateTime(Editdt.Rows(i)(4)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                        Editdt.Rows(i)(5),
-                        Convert.ToDateTime(Editdt.Rows(i)(6)).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                        If(Editdt.Rows(i)(8) Is DBNull.Value, "NULL", Convert.ToString(Editdt.Rows(i)(8), CultureInfo.InvariantCulture)),
-                        If(Editdt.Rows(i)(9) Is DBNull.Value, "NULL", Editdt.Rows(i)(9)),
-                        If(Editdt.Rows(i)(10) Is DBNull.Value, "NULL", Editdt.Rows(i)(10)),
-                        If(Editdt.Rows(i)(7) Is DBNull.Value, "NULL", qualifierRepo.FindByCodeOrCreate(Editdt.Rows(i)(7).ToString).Id),
-                        If(Editdt.Rows(i)(11) Is DBNull.Value, "NULL", Editdt.Rows(i)(11)),
-                        If(Editdt.Rows(i)(12) Is DBNull.Value, "NULL", Editdt.Rows(i)(12)))
-
-                    End If
-
-                    'updating point
-                ElseIf Editdt.Rows(i)("Other") = 2 Then
-                    'Update
-                    SQLstring2.AppendFormat(updateFormatString, Convert.ToString(Editdt.Rows(i)("DataValue"), CultureInfo.InvariantCulture),
-                                            qualifierRepo.FindByCodeOrCreate(Editdt.Rows(i)("QualifierCode")).Id, ValueID)
-                End If
-            End If
-
-            frmloading.Value = i
-        Next
-
-        If Not SQLstring2.ToString().TrimEnd().EndsWith(";") Then
-            SQLstring2.Append(";")
-
-        End If
-        SQLstring2.Append("COMMIT;")
-
-        dbTools.ExecuteNonQuery(SQLstring2.ToString())
-
+        _dataValuesRepo.UpdateValuesForEditView(Editdt)
+        
         'Update Data Series
         _dataSeriesRepo.UpdateDataSeriesFromDataValues(newseriesID)
 

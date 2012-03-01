@@ -249,6 +249,83 @@ namespace HydroDesktop.Database
             return table;
         }
 
+        public void DeleteById(long valueID)
+        {
+            DbOperations.ExecuteNonQuery("DELETE FROM DataValues WHERE ValueID =" + valueID);
+        }
+
+        public void UpdateValuesForEditView(DataTable table)
+        {
+            var updateFormatString = "UPDATE DataValues SET DataValue = {0}, QualifierID = {1} WHERE ValueID = {2}; ";
+            var insertFormatString =
+                    "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, " +
+                    "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (" +
+                    "{0},{1},{2},'{3}','{4}',{5},'{6}',{7},{8},'{9}',{10},{11},{12}) ;";
+
+            var sqLstring2 = new StringBuilder();
+            sqLstring2.Append("BEGIN TRANSACTION; ");
+
+            var qualifierRepo = RepositoryFactory.Instance.Get<IQualifiersRepository>();
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                var row = table.Rows[i];
+                var valueID = Convert.ToInt64(row["ValueID"]);
+                var other = Convert.ToInt64(row["Other"]);
+                if (other != 0)
+                {
+                    //Deleteing point
+                    if (other == -1)
+                    {
+                        sqLstring2.AppendFormat("DELETE FROM DataValues WHERE ValueID = {0}; ", valueID);
+                    }
+                    else if (other == 1)
+                    {
+                        if (
+                                String.IsNullOrEmpty(
+                                        DbOperations.ExecuteSingleOutput(
+                                                "Select ValueID FROM DataValues WHERE ValueID = " + valueID).ToString()))
+                        {
+                            sqLstring2.AppendFormat(insertFormatString,
+                                                    row[0],
+                                                    row[1],
+                                                    Convert.ToString(row[2], CultureInfo.InvariantCulture),
+                                                    row[3] == DBNull.Value ? "NULL" : row[3],
+                                                    Convert.ToDateTime(row[4]).ToString("yyyy-MM-dd HH:mm:ss",
+                                                                                        CultureInfo.InvariantCulture),
+                                                    row[5],
+                                                    Convert.ToDateTime(row[6]).ToString("yyyy-MM-dd HH:mm:ss",
+                                                                                        CultureInfo.InvariantCulture),
+                                                    row[8] == DBNull.Value
+                                                            ? "NULL"
+                                                            : Convert.ToString(row[8], CultureInfo.InvariantCulture),
+                                                    row[9] == DBNull.Value ? "NULL" : row[9],
+                                                    row[10] == DBNull.Value ? "NULL" : row[10],
+                                                    row[7] == DBNull.Value
+                                                            ? "NULL"
+                                                            : qualifierRepo.FindByCodeOrCreate(row[7].ToString()).Id.
+                                                                      ToString(),
+                                                    row[11] == DBNull.Value ? "NULL" : row[11],
+                                                    row[12] == DBNull.Value ? "NULL" : row[12]);
+                        }
+                    }
+                    else if (other == 2)
+                    {
+                        sqLstring2.AppendFormat(updateFormatString,
+                                                Convert.ToString(row["DataValue"], CultureInfo.InvariantCulture),
+                                                qualifierRepo.FindByCodeOrCreate(row["QualifierCode"].ToString()).Id,
+                                                valueID);
+                    }
+                }
+            }
+
+            if (!sqLstring2.ToString().TrimEnd().EndsWith(";"))
+                sqLstring2.Append(";");
+
+
+            sqLstring2.Append("COMMIT;");
+            DbOperations.ExecuteNonQuery(sqLstring2.ToString());
+        }
+
         #endregion
 
         private static string GetWhereClauseForIds(ICollection<int> seriesIDs)

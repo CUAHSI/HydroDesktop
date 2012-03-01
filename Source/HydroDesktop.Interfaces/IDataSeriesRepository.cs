@@ -126,5 +126,9 @@ namespace HydroDesktop.Interfaces
         DataTable GetUnitSiteVarForFirstSeries(long seriesID);
 
         void UpdateDataSeriesFromDataValues(long seriesID);
+
+        string GetQualityControlLevelCode(long seriesID);
+
+        IList<long> GetDataValuesIDs(long seriesID);
     }
 }

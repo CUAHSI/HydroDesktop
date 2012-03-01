@@ -418,6 +418,23 @@ namespace HydroDesktop.Database
             DbOperations.ExecuteNonQuery(SQLstring);
         }
 
+        public string GetQualityControlLevelCode (long seriesID)
+        {
+            var query =
+                    "SELECT QualityControlLevelCode FROM DataSeries AS d LEFT JOIN QualityControlLevels AS q ON (d.QualityControlLevelID = q.QualityControlLevelID) WHERE SeriesID = " +
+                    seriesID;
+            var res =  DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToString(res);
+        }
+
+        public IList<long>  GetDataValuesIDs(long seriesID)
+        {
+            var query = "SELECT ValueID FROM DataValues WHERE SeriesID = " + seriesID;
+            var res = DbOperations.Read(query,
+                              r => r.GetInt64(0));
+            return res;
+        }
+
         #endregion
 
         #region Private methods
