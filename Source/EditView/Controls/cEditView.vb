@@ -10,7 +10,6 @@ Imports HydroDesktop.Interfaces
 
 'Namespace EditView
 Public Class cEditView
-    'Inherits UserControl
 
 #Region "privateDeclaration"
     
@@ -36,11 +35,6 @@ Public Class cEditView
 #End Region
 
 #Region "Constructor"
-
-    Public Sub RefreshSelection()
-        pTimeSeriesPlot.Clear()
-        RefreshDbTools()
-    End Sub
 
     Private Sub SettingColor()
         ccList0.Clear()

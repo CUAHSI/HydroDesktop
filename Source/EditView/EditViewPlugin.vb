@@ -86,10 +86,6 @@ Namespace EditView
             AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
 
             InitializeRibbonButtons()
-
-            'opening project event
-            AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
-
         End Sub
 
         Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
@@ -289,10 +285,6 @@ Namespace EditView
         '    'End If
         '    _mainControl.ckbShowLegend_CheckedChanged()
         'End Sub
-
-        Private Sub SerializationManager_Deserializing(ByVal sender As Object, ByVal e As SerializingEventArgs)
-            _mainControl.RefreshSelection()
-        End Sub
 
 #End Region
 
