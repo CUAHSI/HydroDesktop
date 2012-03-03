@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace HydroDesktop.DataDownload.DataAggregation
+namespace DataAggregation
 {
     /// <summary>
     /// Aggregation mode for calculating data values.

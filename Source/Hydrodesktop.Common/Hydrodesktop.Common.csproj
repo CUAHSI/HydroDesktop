@@ -35,6 +35,10 @@
   <ItemGroup>
     <Reference Include="DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL" />
     <Reference Include="DotSpatial.Data, Version=0.11.9.6, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL" />
+    <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,9 +67,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AppManagerHelper.cs" />
     <Compile Include="Tools\ControlHelper.cs" />
     <Compile Include="Tools\EnumHelper.cs" />
     <Compile Include="Tools\NameHelper.cs" />
+    <Compile Include="Tools\SymbologyHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\DelimiterSelector.resx">

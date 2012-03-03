@@ -8,6 +8,7 @@ using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using HydroDesktop.Common.Tools;
 using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.Interfaces;

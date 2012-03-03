@@ -1,7 +1,7 @@
 using System;
 using HydroDesktop.Common;
 
-namespace HydroDesktop.DataDownload.DataAggregation
+namespace DataAggregation
 {
     /// <summary>
     /// Contains settings for aggregation
