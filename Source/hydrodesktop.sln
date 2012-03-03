@@ -170,6 +170,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oatc.OpenMI.Gui.Core", "Hyd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.MainApplication", "HydroDesktop.MainApplication\HydroDesktop.MainApplication.csproj", "{A064E7D2-5730-4214-A29F-FDB790691E47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAggregation", "DataAggregation\DataAggregation.csproj", "{68883359-0DB6-4938-A35F-A8514810F04A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -466,6 +468,16 @@ Global
 		{A064E7D2-5730-4214-A29F-FDB790691E47}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A064E7D2-5730-4214-A29F-FDB790691E47}.Release|x86.ActiveCfg = Release|x86
 		{A064E7D2-5730-4214-A29F-FDB790691E47}.Release|x86.Build.0 = Release|x86
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

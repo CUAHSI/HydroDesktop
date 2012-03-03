@@ -1,9 +1,12 @@
-using System;
+﻿using System;
 using DotSpatial.Symbology;
 
-namespace HydroDesktop.DataDownload.SearchLayersProcessing
+namespace HydroDesktop.Common.Tools
 {
-    static class SymbologyHelper
+    /// <summary>
+    /// Contains extension methods for DotSpatial.Symbology namespace
+    /// </summary>
+    public static class SymbologyHelper
     {
         /// <summary>
         /// Add sub-menu item into parent menu item.

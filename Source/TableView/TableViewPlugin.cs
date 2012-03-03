@@ -8,6 +8,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using DotSpatial.Controls.Docking;
+using HydroDesktop.Common.Tools;
 
 namespace TableView
 {
@@ -250,7 +251,7 @@ namespace TableView
 
         private void rbChangeDatabase_Click(object sender, EventArgs e)
         {
-            using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.Extensions.OfType<ISearchPlugin>().FirstOrDefault()))
+            using (var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.GetExtension<ISearchPlugin>()))
             {
                 frmChangeDatabase.ShowDialog();
             }

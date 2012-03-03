@@ -6,22 +6,22 @@ using System.IO;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using System.Globalization;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Configuration;
-using HydroDesktop.DataDownload.DataAggregation.UI;
-using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
-using System.Globalization;
 
-namespace HydroDesktop.DataDownload.DataAggregation
+namespace DataAggregation
 {
     /// <summary>
     /// Used for aggregating data values.
     /// </summary>
     internal class Aggregator
     {
+        private const string MENU_ITEM_NAME = "Show Data Values in Map";
+
         public static bool CanAggregateLayer(ILayer layer)
         {
             var featureLayer = layer as IFeatureLayer;
@@ -36,8 +36,19 @@ namespace HydroDesktop.DataDownload.DataAggregation
             if (dataGroupMenu == null)
                 return;
 
-            dataGroupMenu.AddMenuItem("Show Data Values in Map",
-                                        delegate { new AggregationSettingsDialog(layer).ShowDialog(); });
+            dataGroupMenu.AddMenuItem(MENU_ITEM_NAME, delegate { new AggregationSettingsDialog(layer).ShowDialog(); });
+        }
+
+        public  static void RemoveContextMenu(ILayer layer)
+        {
+            var dataGroupMenu = layer.ContextMenuItems.FirstOrDefault(item => item.Name == "Data");
+            if (dataGroupMenu == null)
+                return;
+
+            foreach (var menuItem in dataGroupMenu.MenuItems.Where(m => m.Name == MENU_ITEM_NAME).ToList())
+            {
+                dataGroupMenu.MenuItems.Remove(menuItem);
+            }
         }
 
         #region Fields

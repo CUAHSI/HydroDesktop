@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.DataDownload.DataAggregation.UI
+﻿namespace DataAggregation
 {
     partial class AggregationSettingsDialog
     {

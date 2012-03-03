@@ -13,7 +13,6 @@ using DotSpatial.Projections;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using Hydrodesktop.Common;
 using Search3.Area;
 using Search3.Properties;
 using Search3.Searching;
