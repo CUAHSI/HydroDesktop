@@ -57,7 +57,7 @@
             // 
             // btnNext
             // 
-            this.btnNext.Location = new System.Drawing.Point(167, 3);
+            this.btnNext.Location = new System.Drawing.Point(173, 3);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(54, 23);
             this.btnNext.TabIndex = 2;
@@ -66,7 +66,7 @@
             // 
             // btnLast
             // 
-            this.btnLast.Location = new System.Drawing.Point(227, 3);
+            this.btnLast.Location = new System.Drawing.Point(233, 3);
             this.btnLast.Name = "btnLast";
             this.btnLast.Size = new System.Drawing.Size(54, 23);
             this.btnLast.TabIndex = 3;
@@ -91,7 +91,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(284, 31);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(290, 31);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // lblInfo
@@ -100,19 +100,17 @@
             this.lblInfo.Location = new System.Drawing.Point(123, 8);
             this.lblInfo.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(35, 13);
+            this.lblInfo.Size = new System.Drawing.Size(40, 13);
             this.lblInfo.TabIndex = 4;
-            this.lblInfo.Text = "label1";
+            this.lblInfo.Text = "0 of 10";
             // 
             // DataGridViewNavigator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.MaximumSize = new System.Drawing.Size(0, 31);
-            this.MinimumSize = new System.Drawing.Size(280, 31);
             this.Name = "DataGridViewNavigator";
-            this.Size = new System.Drawing.Size(284, 31);
+            this.Size = new System.Drawing.Size(290, 31);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

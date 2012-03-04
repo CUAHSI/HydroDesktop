@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Text;
+using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 using System.Globalization;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -189,7 +191,7 @@ namespace HydroDesktop.Database
         public long GetCountForAllFieldsInSequence(IList<int> seriesIDs)
         {
             var whereClause = GetWhereClauseForIds(seriesIDs);
-            var countQuery = "select count(*) from DataValues WHERE " + whereClause;
+            var countQuery = "select count(ValueID) from DataValues WHERE " + whereClause;
             var res = DbOperations.ExecuteSingleOutput(countQuery);
             return Convert.ToInt64(res);
         }
@@ -210,7 +212,10 @@ namespace HydroDesktop.Database
             var dataQuery =
                 "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE " +
                 whereClause;
-            var table = DbOperations.LoadTable(string.Format("{0} limit {1} offset {2}", dataQuery, valuesPerPage, currentPage * valuesPerPage));
+            var limitQuery = string.Format("{0} limit {1} offset {2}", dataQuery, valuesPerPage,
+                                           currentPage*valuesPerPage);
+
+            var table = DbOperations.LoadTable(limitQuery);
             return table;
         }
 
