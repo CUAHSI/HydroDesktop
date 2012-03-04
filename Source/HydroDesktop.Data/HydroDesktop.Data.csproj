@@ -119,6 +119,7 @@
   <ItemGroup>
     <Content Include="ClassDiagrams\DataManagerClassDiagram.png" />
     <Content Include="ClassDiagrams\ObjectModelClassDiagram.png" />
+    <Content Include="Resources\ChangeLog_DefaultDatabase.txt" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

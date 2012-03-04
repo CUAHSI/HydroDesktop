@@ -71,19 +71,26 @@ namespace TableView
         #endregion
 
         #region Private methods
-
+        
         private void UpdateViewMode()
         {
             if (String.IsNullOrEmpty(Settings.Instance.DataRepositoryConnectionString)) return;
 
-            switch (ViewMode)
+            try
             {
-                case TableViewMode.SequenceView:
-                    ShowAllFieldsinSequence();
-                    break;
-                case TableViewMode.JustValuesInParallel:
-                    ShowJustValuesinParallel();
-                    break;
+                switch (ViewMode)
+                {
+                    case TableViewMode.SequenceView:
+                        ShowAllFieldsinSequence();
+                        break;
+                    case TableViewMode.JustValuesInParallel:
+                        ShowJustValuesinParallel();
+                        break;
+                }
+            }
+            catch (InvalidOperationException) // this throws by DataGridViewNavigator if it work not finished
+            {
+                _needToRefresh = true;
             }
         }
 
@@ -97,7 +104,43 @@ namespace TableView
 
         private void dataGridViewNavigator1_PageChanged(object sender, PageChangedEventArgs e)
         {
+            if (!Visible)
+            {
+                _needToRefresh = true;
+                return;
+            }
+
+            if (_needToRefresh)
+            {
+                _needToRefresh = false;
+                UpdateViewMode();
+                return;
+            }
+
             dataViewSeries.DataSource = e.DataTable;
+
+            if (ViewMode == TableViewMode.JustValuesInParallel)
+            {
+                // Update columns headers
+                var dataSeriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
+                var columnDateTime = dataViewSeries.Columns["DateTime"];
+                Debug.Assert(columnDateTime != null);
+                columnDateTime.HeaderText = "DateTime" + Environment.NewLine + "Unit";
+                foreach (var id in _seriesSelector.CheckedIDList)
+                {
+                    var seriesNameTable = dataSeriesRepo.GetUnitSiteVarForFirstSeries(id);
+                    var row1 = seriesNameTable.Rows[0];
+                    var unitsName = Convert.ToString(row1[0]);
+                    var siteName = Convert.ToString(row1[1]);
+                    var variableName = Convert.ToString(row1[2]);
+
+                    var columnD_id = dataViewSeries.Columns["D" + id];
+                    Debug.Assert(columnD_id != null);
+                    columnD_id.HeaderText = siteName + " * " + id + Environment.NewLine +
+                                            variableName + Environment.NewLine +
+                                            unitsName;
+                }
+            }
         }
 
         private void ShowAllFieldsinSequence()
@@ -108,26 +151,6 @@ namespace TableView
         private void ShowJustValuesinParallel()
         {
             dataGridViewNavigator1.Initialize(new ValuesInParallelGetter(_seriesSelector.CheckedIDList));
-            
-            // Update columns headers
-            var dataSeriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
-            var columnDateTime = dataViewSeries.Columns["DateTime"];
-            Debug.Assert(columnDateTime != null);
-            columnDateTime.HeaderText = "DateTime" + Environment.NewLine + "Unit";
-            foreach (var id in _seriesSelector.CheckedIDList)
-            {
-                var seriesNameTable = dataSeriesRepo.GetUnitSiteVarForFirstSeries(id);
-                var row1 = seriesNameTable.Rows[0];
-                var unitsName = Convert.ToString(row1[0]);
-                var siteName = Convert.ToString(row1[1]);
-                var variableName = Convert.ToString(row1[2]);
-
-                var columnD_id = dataViewSeries.Columns["D" + id];
-                Debug.Assert(columnD_id != null);
-                columnD_id.HeaderText = siteName + " * " + id + Environment.NewLine +
-                                        variableName + Environment.NewLine +
-                                        unitsName;
-            }
         }
         
         private void OnVisibleChanged(object sender, EventArgs eventArgs)
@@ -135,12 +158,12 @@ namespace TableView
             if (!Visible) return;
             if (_needToRefresh)
             {
-                seriesSelector_Refreshed(this, EventArgs.Empty);
                 _needToRefresh = false;
+                RefreshTableView();
             }
         }
 
-        private void seriesSelector_Refreshed(object sender, EventArgs e)
+        private void RefreshTableView()
         {
             if (!Visible)
             {
@@ -150,6 +173,11 @@ namespace TableView
 
             UpdateViewMode();
             UpdateDatabasePath();
+        }
+
+        private void seriesSelector_Refreshed(object sender, EventArgs e)
+        {
+            RefreshTableView();
         }
 
         private void cTableView_Load(object sender, EventArgs e)

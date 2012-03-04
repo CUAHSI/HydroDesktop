@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -8,6 +9,8 @@ namespace TableView
     public partial class DataGridViewNavigator : UserControl
     {
         #region Fields
+
+        private IPagedTableGetter _tableGetter;
 
         #endregion
 
@@ -23,7 +26,7 @@ namespace TableView
         {
             InitializeComponent();
 
-            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = false;
+            DisableNavButtons();
             btnFirst.BackColor = btnPrev.BackColor = btnNext.BackColor = btnLast.BackColor = SystemColors.Control;
             lblInfo.Text = string.Empty;
 
@@ -39,9 +42,14 @@ namespace TableView
 
         #region Private methods
 
+        private void DisableNavButtons()
+        {
+            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = false;
+        }
+
         void DataGridViewNavigator_PageChanged(object sender, EventArgs e)
         {
-            // Update naivagation buttons
+            // Update navigation buttons
             btnFirst.Enabled = CurrentPage != 0;
             btnPrev.Enabled = CurrentPage > 0;
             btnNext.Enabled = CurrentPage != PagesCount - 1 && PagesCount > 0;
@@ -49,6 +57,7 @@ namespace TableView
 
             lblInfo.Text = string.Format("{0} of {1}", PagesCount > 0? CurrentPage + 1 : 0, PagesCount);
         }
+
 
         #endregion
 
@@ -72,9 +81,9 @@ namespace TableView
         }
 
         private int _currentPage;
-        private IPagedTableGetter _tableGetter;
+
         /// <summary>
-        /// Current page number
+        /// Current page number (zero-based)
         /// </summary>
         public int CurrentPage
         {
@@ -84,12 +93,24 @@ namespace TableView
                 if (value < 0 || value > PagesCount ||
                     (value == PagesCount && PagesCount != 0)) return;
 
-                _currentPage = value;
+                CheckNavigatorState();
+                DisableNavButtons();
 
-                var table = _tableGetter.GetTable(ValuesPerPage, CurrentPage);
-                var handler = PageChanged;
-                if (handler != null)
-                    handler(this, new PageChangedEventArgs(table));
+                _currentPage = value;
+                _worker = new BackgroundWorker();
+                _worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                                      {
+                                          var table = _tableGetter.GetTable(ValuesPerPage, CurrentPage);
+                                          args.Result = table;
+                                      };
+                _worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                                             {
+                                                 var table = (DataTable) args.Result;
+                                                 var handler = PageChanged;
+                                                 if (handler != null)
+                                                     handler(this, new PageChangedEventArgs(table));  
+                                             };
+                _worker.RunWorkerAsync();
             }
         }
 
@@ -102,23 +123,41 @@ namespace TableView
 
         #region Public methods
 
+        private BackgroundWorker _worker;
+        private void CheckNavigatorState()
+        {
+            if (_worker != null && _worker.IsBusy)
+            {
+                throw new InvalidOperationException("Previous navigator's call is not finished.");
+            }
+        }
+
         /// <summary>
         /// Initialize navigator with queries to load data
         /// </summary>
         /// <param name="tableGetter">Class that returns data table for given ValuesPerPage and  CurrentPage.</param>
         public void Initialize(IPagedTableGetter tableGetter)
         {
+            CheckNavigatorState();
+            DisableNavButtons();
+
             _tableGetter = tableGetter;
-            var rowsCount = tableGetter.GetTotalCount();
-            
-            var needNavigation = rowsCount > ValuesPerPage;
-            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = needNavigation;
 
-            long remainder;
-            var div = (int)Math.DivRem(rowsCount, ValuesPerPage, out remainder);
-            PagesCount = remainder == 0 ? div : div + 1;
-
-            CurrentPage = 0;
+            _worker = new BackgroundWorker();
+            _worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                                  {
+                                      var rowsCount = tableGetter.GetTotalCount();
+                                      args.Result = rowsCount;
+                                  };
+            _worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                                              {
+                                                  var rowsCount = (long) args.Result;
+                                                  long remainder;
+                                                  var div = (int) Math.DivRem(rowsCount, ValuesPerPage, out remainder);
+                                                  PagesCount = remainder == 0 ? div : div + 1;
+                                                  CurrentPage = 0;
+                                              };
+            _worker.RunWorkerAsync();
         }
 
         #endregion
