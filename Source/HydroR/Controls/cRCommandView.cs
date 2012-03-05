@@ -84,7 +84,7 @@ namespace HydroR
             char[] inputchar = input.ToCharArray();
             for (int i = 0; i < inputchar.Length; i++)
             {
-                PostMessage(p.MainWindowHandle, WM_CHAR, (int)inputchar[i], 0);
+                PostMessage(p.MainWindowHandle, WM_CHAR, (int)inputchar[i], 0);                
             }
         }
 
@@ -114,10 +114,13 @@ namespace HydroR
             catch (Exception e)
             {
                 if (e.Message.Contains("Object reference not set to an instance of an object."))
-                    MessageBox.Show("You must start R before you can Send Commands");
+                {
+                    MessageBox.Show("You must start R before you can Send Commands");                  
+                }
                 else
                     MessageBox.Show("Input Error: " + e.Message);
                 rtCommands.Line--;
+                throw e;
 
             }
         }
@@ -531,7 +534,12 @@ namespace HydroR
         {
             try
             {
-                sendLineToR(rtCommands.SelectedText);
+                //sendLineToR(rtCommands.SelectedText)              
+                foreach (string line in rtCommands.SelectedText.Split('\n'))
+                {
+                    sendLineToR(line);
+                }
+
             }
             catch { }
         }
@@ -541,7 +549,11 @@ namespace HydroR
         {
             try
             {
-                sendLineToR(rtCommands.Text);
+                //sendLineToR(rtCommands.Text);
+                foreach (string line in rtCommands.Lines)
+                {
+                    sendLineToR(line);
+                }
             }
             catch { }
         }
