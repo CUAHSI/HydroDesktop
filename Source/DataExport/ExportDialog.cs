@@ -19,7 +19,6 @@ namespace HydroDesktop.ExportToCSV
     {
         #region Fields
 
-        private readonly DbOperations _dboperation;
         private readonly DataTable _dataToExport;
         private readonly IEnumerable<string> _selectedThemes;
         private bool _formIsClosing;
@@ -32,23 +31,17 @@ namespace HydroDesktop.ExportToCSV
         /// <summary>
         /// Initialize the ExportData form with themes to export
         /// </summary>
-        public ExportDialog(DbOperations dbOperation, IEnumerable<string> selectedThemes = null)
+        public ExportDialog(IEnumerable<string> selectedThemes = null)
         {
-            if (dbOperation == null) throw new ArgumentNullException("dbOperation");
-            Contract.EndContractBlock();
-
-            _dboperation = dbOperation;
             _selectedThemes = selectedThemes;
-
             InitializeComponent();
         }
 
         /// <summary>
         /// Initialize the ExportData form with data table to export
         /// </summary>
-        public ExportDialog(DbOperations dbOperation, DataTable dataToExport)
+        public ExportDialog(DataTable dataToExport)
         {
-            if (dbOperation == null) throw new ArgumentNullException("dbOperation");
             if (dataToExport == null) throw new ArgumentNullException("dataToExport");
             if (dataToExport.Columns.Count == 0)
             {
@@ -60,7 +53,6 @@ namespace HydroDesktop.ExportToCSV
             }
             Contract.EndContractBlock();
 
-            _dboperation = dbOperation;
             _dataToExport = dataToExport;
 
             InitializeComponent();
@@ -80,7 +72,7 @@ namespace HydroDesktop.ExportToCSV
             if (ExpotThemes)
             {
                 //populate list box with list of themes
-                var repository = RepositoryFactory.Instance.Get<IDataThemesRepository>(_dboperation);
+                var repository = RepositoryFactory.Instance.Get<IDataThemesRepository>();
                 var dtThemes = repository.GetThemesForAllSeries();
 
                 clbThemes.Items.Clear();
@@ -99,7 +91,7 @@ namespace HydroDesktop.ExportToCSV
                 gbxThemes.Height = 0;
                 Height -= themesHeight;
                 gbxFields.Location = gbxThemes.Location;
-                gbxFields.Height = gbxDelimiters.Location.Y - 10 - gbxFields.Location.Y;
+                gbxFields.Height = delimiterSelector1.Location.Y - 10 - gbxFields.Location.Y;
                 tcMain.TabPages.Remove(tpAdvancedOptions);
             }
 
@@ -119,7 +111,7 @@ namespace HydroDesktop.ExportToCSV
 
             if (ExpotThemes)
             {
-                var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(_dboperation);
+                var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
                 dtList = repo.GetTableForExport(-1);
             }else
             {
@@ -185,7 +177,7 @@ namespace HydroDesktop.ExportToCSV
             var checkedItems = parameters.Columns;
             var datesRange = parameters.DatesRange;
 
-            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>(_dboperation);
+            var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
 
             //export data row by row
             for (int r = 0; r < dtSeries.Rows.Count; r++)
@@ -389,7 +381,9 @@ namespace HydroDesktop.ExportToCSV
             {
                 saveFileDlg.Title = "Select file";
                 saveFileDlg.OverwritePrompt = false;
-                saveFileDlg.Filter = rdoComma.Checked ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt" : "Text (*.txt)|*.txt";
+                saveFileDlg.Filter = delimiterSelector1.CurrentDelimiter == ","
+                                         ? "CSV (Comma delimited) (*.csv)|*.csv|Text (*.txt)|*.txt"
+                                         : "Text (*.txt)|*.txt";
 
                 if (saveFileDlg.ShowDialog() == DialogResult.OK)
                 {
@@ -428,24 +422,11 @@ namespace HydroDesktop.ExportToCSV
             }
 
             //Check whether a delimiter is checked
-            string delimiter = "";
-            if (rdoComma.Checked) delimiter = ",";
-            if (rdoTab.Checked) delimiter = "\t";
-            if (rdoSpace.Checked) delimiter = "\0";
-            if (rdoPipe.Checked) delimiter = "|";
-            if (rdoSemicolon.Checked) delimiter = ";";
-
-            if (rdoOthers.Checked)
+            var delimiter = delimiterSelector1.CurrentDelimiter;
+            if (String.IsNullOrEmpty(delimiter))
             {
-                if (tbOther.Text.Length != 0)
-                {
-                    delimiter = tbOther.Text;
-                }
-                else
-                {
-                    MessageBox.Show("Please input delimiter.", "Export To Text File");
-                    return;
-                }
+                MessageBox.Show("Please input delimiter.", "Export To Text File");
+                return;
             }
 
             //Check the output file path
@@ -468,7 +449,7 @@ namespace HydroDesktop.ExportToCSV
             {
                 var themeIds =
                     (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
-                var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_dboperation);
+                var repository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 dtSeries = repository.GetSeriesIDsWithNoDataValueTable(themeIds);
             }
             else
@@ -541,7 +522,7 @@ namespace HydroDesktop.ExportToCSV
             gbxExport.Enabled = !isExporting;
             btnSelectAllFields.Enabled = !isExporting;
             btnSelectNoneFields.Enabled = !isExporting;
-            gbxDelimiters.Enabled = !isExporting;
+            delimiterSelector1.Enabled = !isExporting;
             gbxFields.Enabled = !isExporting;
             gbxProgress.Enabled = isExporting;
             gbxProgress.Visible = isExporting;
@@ -549,17 +530,6 @@ namespace HydroDesktop.ExportToCSV
             {
                 pgsBar.Value = 0;
                 gbxProgress.Text = "Processing...";
-            }
-        }
-
-        /// <summary>
-        ///Set the "Others" radiobutton be selected automatically when the textbox is changed.
-        /// </summary>        
-        private void other_TextChanged(object sender, EventArgs e)
-        {
-            if (tbOther.Text.Length != 0)
-            {
-                rdoOthers.Checked = true;
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Common.Tools;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -48,7 +48,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 {
                     _services = new Dictionary<string, string>();
 
-                    var wss = Global.PluginEntryPoint.App.Extensions.OfType<IWebServicesStore>().FirstOrDefault();
+                    var wss = Global.PluginEntryPoint.App.GetExtension<IWebServicesStore>();
                     if (wss != null)
                     {
                         var infos = wss.GetWebServices();

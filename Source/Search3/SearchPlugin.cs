@@ -13,7 +13,6 @@ using DotSpatial.Projections;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using Hydrodesktop.Common;
 using Search3.Area;
 using Search3.Properties;
 using Search3.Searching;
@@ -415,7 +414,7 @@ namespace Search3
                 loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));
             }
 
-            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), LayerConstants.SearchGroupName);
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures));
             searchLayerCreator.Create();
         }
 
@@ -827,7 +826,7 @@ namespace Search3
             var loadedFeatures = new List<SearchResultItem>(featuresPerCode.Count());
             loadedFeatures.AddRange(featuresPerCode.Select(item => new SearchResultItem(item.Item1, item.Item2)));
 
-            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), LayerConstants.SearchGroupName);
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures));
             searchLayerCreator.Create();
         }
 

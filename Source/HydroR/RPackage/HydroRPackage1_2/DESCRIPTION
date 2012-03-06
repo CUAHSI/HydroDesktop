@@ -1,0 +1,11 @@
+Package: HydroR
+Type: Package
+Title: CUAHSI HIS HydroDesktop Plugin
+Version: 1.0
+Date: 2010-08-18
+Author: Utah State University
+Depends: DBI, RSQLite, tcltk
+Maintainer: Utah State University <yourfault@somewhere.net>
+Description: HydroDesktop Data Interface
+License: GPL-2 | GPL-3
+LazyLoad: yes

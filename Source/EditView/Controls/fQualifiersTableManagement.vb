@@ -1,22 +1,21 @@
 ﻿Imports System.Windows.Forms
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
+Imports HydroDesktop.Interfaces.ObjectModel
 
 
 Public Class fQualifiersTableManagement
-
-    Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-    Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
+    Private ReadOnly _qualifierRepo As IQualifiersRepository = RepositoryFactory.Instance.Get(Of IQualifiersRepository)()
 
     Public Sub New()
         InitializeComponent()
+        initialize()
     End Sub
 
-    Public Sub initialize()
-        Dim dt As New DataTable
-        dt = dbTools.LoadTable("Qualifiers", "SELECT * FROM Qualifiers")
+    Private Sub initialize()
+        Dim dt = _qualifierRepo.AsDataTable()
         dt.Rows.Add()
-        dt.Rows(dt.Rows.Count - 1).Item("QualifierID") = dbTools.GetNextID("Qualifiers", "QualifierID").ToString
+        dt.Rows(dt.Rows.Count - 1).Item("QualifierID") = 0
         dt.Rows(dt.Rows.Count - 1).Item("QualifierCode") = "New Qualifier..."
 
         ddlQualifiers.DataSource = dt
@@ -27,32 +26,16 @@ Public Class fQualifiersTableManagement
 
     End Sub
 
-    Private Sub InsertNewQualifier()
-        Dim SQLstring As String
-
-        If ddlQualifiers.SelectedValue Is Nothing Then
-            SQLstring = "INSERT INTO Qualifiers (QualifierCode, QualifierDescription) VALUES ('"
-            SQLstring += txtQualifierCode.Text + "','" + txtDescription.Text + "')"
-        Else
-            SQLstring = "INSERT INTO Qualifiers (QualifierID, QualifierCode, QualifierDescription) VALUES ("
-            SQLstring += ddlQualifiers.SelectedValue.ToString + ",'" + txtQualifierCode.Text + "','" + txtDescription.Text + "')"
-        End If
-
-        dbTools.ExecuteNonQuery(SQLstring)
-    End Sub
-
-    Private Sub UpdateQualifier()
-        Dim SQLstring As String
-        SQLstring = "UPDATE Qualifiers SET QualifierCode = '" + txtQualifierCode.Text + "', QualifierDescription = '" + txtDescription.Text + "' WHERE "
-        SQLstring += "QualifierID = " + ddlQualifiers.SelectedValue.ToString
-        dbTools.ExecuteNonQuery(SQLstring)
-    End Sub
-
     Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
+        Dim entity = New Qualifier()
+        entity.Id = ddlQualifiers.SelectedValue
+        entity.Code = txtQualifierCode.Text
+        entity.Description = txtDescription.Text
+
         If ddlQualifiers.SelectedIndex = ddlQualifiers.Items.Count - 1 Then
-            InsertNewQualifier()
+            _qualifierRepo.AddQualifier(entity)
         Else
-            UpdateQualifier()
+            _qualifierRepo.Update(entity)
         End If
 
         For Each row As DataGridViewRow In _cEditView.GetSelectedRows()
@@ -71,14 +54,10 @@ Public Class fQualifiersTableManagement
     Private Sub ddlQualifiers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlQualifiers.SelectedIndexChanged
         If ddlQualifiers.SelectedIndex = ddlQualifiers.Items.Count - 1 Then
         Else
-            txtDescription.Text = dbTools.ExecuteSingleOutput("SELECT QualifierDescription FROM Qualifiers WHERE QualifierID = " + ddlQualifiers.SelectedValue.ToString)
-            txtQualifierCode.Text = dbTools.ExecuteSingleOutput("SELECT QualifierCode FROM Qualifiers WHERE QualifierID = " + ddlQualifiers.SelectedValue.ToString)
+            txtDescription.Text = DirectCast(ddlQualifiers.DataSource, DataTable).Rows(ddlQualifiers.SelectedIndex)("QualifierDescription")
+            txtQualifierCode.Text = DirectCast(ddlQualifiers.DataSource, DataTable).Rows(ddlQualifiers.SelectedIndex)("QualifierCode")
         End If
     End Sub
-
-    'Private Sub Leaving() Handles Me.Deactivate
-    '    Me.Close()
-    'End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
