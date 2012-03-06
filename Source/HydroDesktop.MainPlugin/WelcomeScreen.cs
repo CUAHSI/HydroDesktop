@@ -244,12 +244,24 @@ namespace HydroDesktop.Main
         {
             this.RecentProjectFiles.Clear();
 
+            List<string> existingRecentFiles = new List<string>();
+                
             foreach (string recentFile in Settings.Instance.RecentProjectFiles)
-            {
+            {              
                 if (File.Exists(recentFile))
                 {
-                    this.RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
+                    if (!existingRecentFiles.Contains(recentFile)) //add to list only if not exists
+                    {
+                        existingRecentFiles.Add(recentFile);
+                    }
                 }
+            }
+
+            Settings.Instance.RecentProjectFiles.Clear();
+            foreach (string recentFile in existingRecentFiles)
+            {
+                Settings.Instance.RecentProjectFiles.Add(recentFile);
+                RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
             }
 
             SetupSampleProjects();
@@ -258,8 +270,11 @@ namespace HydroDesktop.Main
             lstRecentProjects.SelectedIndex = -1;
         }
 
+
         private void SetupSampleProjects()
         {
+            //string[] predefinedSampleProjects = new string[] { "elbe.dspx", "jacobs_well_spring.dspx" };
+            
             string userProjDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HydroDesktop");
 
             if (!Directory.Exists(userProjDir))
@@ -318,8 +333,11 @@ namespace HydroDesktop.Main
                     foreach (string projFile in projFiles)
                     {
                         ProjectFileInfo projFileInfo = new ProjectFileInfo(projFile);
-                        if (!RecentProjectFiles.Contains(projFileInfo))
+                        if (!Settings.Instance.RecentProjectFiles.Contains(projFile))
+                        {
+                            Settings.Instance.RecentProjectFiles.Add(projFile);
                             RecentProjectFiles.Add(projFileInfo);
+                        }
                     }
                 }
             }
@@ -362,6 +380,11 @@ namespace HydroDesktop.Main
         public override string ToString()
         {
             return Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.ToString().Equals(obj.ToString());
         }
     }
 }
