@@ -145,6 +145,8 @@ namespace SeriesView
             DataGridViewRow row = dgvSeries.Rows[e.RowIndex];
             int seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
             bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
+            dgvSeries.Refresh();
+
             OnSeriesCheck(seriesID, isChecked);
         }
 
@@ -338,16 +340,6 @@ namespace SeriesView
             get
             {
                 return _clickedSeriesID;
-
-                //if (dgvSeries.SelectedRows.Count > 0)
-                //{   
-                //    int seriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
-                //    return seriesID;
-                //}
-                //else
-                //{
-                //    return _clickedSeriesID;
-                //}
             }
             set
             {
@@ -443,6 +435,8 @@ namespace SeriesView
                     row.Cells["Checked"].Value = isCheckedValue;
                     var seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
                     _clickedSeriesID = seriesID;
+
+                    dgvSeries.Refresh();
                     OnSeriesCheck(seriesID, isCheckedValue);
                     Application.DoEvents();
                 }
