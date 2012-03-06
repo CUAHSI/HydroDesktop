@@ -85,7 +85,7 @@
             // 
             this.dataGridViewNavigator1.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewNavigator1.Name = "dataGridViewNavigator1";
-            this.dataGridViewNavigator1.Size = new System.Drawing.Size(352, 31);
+            this.dataGridViewNavigator1.Size = new System.Drawing.Size(439, 31);
             this.dataGridViewNavigator1.TabIndex = 10;
             this.dataGridViewNavigator1.ValuesPerPage = 1000;
             // 

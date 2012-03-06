@@ -10,6 +10,7 @@ namespace TableView
     {
         #region Fields
 
+        private const string LOADING_DATA = "Loading data...";
         private IPagedTableGetter _tableGetter;
 
         #endregion
@@ -58,6 +59,16 @@ namespace TableView
             lblInfo.Text = string.Format("{0} of {1}", PagesCount > 0? CurrentPage + 1 : 0, PagesCount);
         }
 
+        private void HideStatus()
+        {
+            lblStatus.Visible = false;
+        }
+
+        private void ShowStatus()
+        {
+            lblStatus.Text = LOADING_DATA;
+            lblStatus.Visible = true;
+        }
 
         #endregion
 
@@ -95,6 +106,7 @@ namespace TableView
 
                 CheckNavigatorState();
                 DisableNavButtons();
+                ShowStatus();
 
                 _currentPage = value;
                 _worker = new BackgroundWorker();
@@ -108,7 +120,9 @@ namespace TableView
                                                  var table = (DataTable) args.Result;
                                                  var handler = PageChanged;
                                                  if (handler != null)
-                                                     handler(this, new PageChangedEventArgs(table));  
+                                                     handler(this, new PageChangedEventArgs(table));
+
+                                                 HideStatus();
                                              };
                 _worker.RunWorkerAsync();
             }
@@ -140,6 +154,7 @@ namespace TableView
         {
             CheckNavigatorState();
             DisableNavButtons();
+            ShowStatus();
 
             _tableGetter = tableGetter;
 
