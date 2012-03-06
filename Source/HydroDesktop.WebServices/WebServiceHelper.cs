@@ -44,6 +44,8 @@ namespace HydroDesktop.WebServices
             string soapAction = "GetSites";
             if (soapNamespace == Properties.Resources.CUAHSI_1_1_Namespace)
                 soapAction = soapNamespace + "GetSitesObject";
+            else
+                soapAction = soapNamespace + "GetSites";
 
             req.Headers.Add("SOAPAction", soapAction);
             //req.Headers.Add("Content-Type", "text/xml");
@@ -86,9 +88,7 @@ namespace HydroDesktop.WebServices
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
 
             //this is the valid SoapAction header for GetValues web method
-            string soapAction = "GetSiteInfoObject";
-            if (soapNamespace == Properties.Resources.CUAHSI_1_1_Namespace)
-                soapAction = soapNamespace + "GetSiteInfoObject";
+            string soapAction = soapNamespace + "GetSiteInfoObject";
 
             req.Headers.Add("SOAPAction", soapAction);
 
