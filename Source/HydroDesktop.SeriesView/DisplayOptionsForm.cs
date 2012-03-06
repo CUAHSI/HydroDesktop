@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SeriesView
@@ -17,10 +11,8 @@ namespace SeriesView
         {
             _settings = settings;
             InitializeComponent();
-
-            cmbSiteDisplayName.Items.Clear();
-            cmbSiteDisplayName.Items.Add("SiteName");
-            cmbSiteDisplayName.Items.Add("SiteCode");
+            
+            cmbSiteDisplayName.DataSource = Enum.GetNames(typeof (SiteDisplayColumns));
             cmbSiteDisplayName.DataBindings.Clear();
             cmbSiteDisplayName.DataBindings.Add("SelectedItem", _settings, "SiteDisplayColumn");
         }
@@ -40,6 +32,12 @@ namespace SeriesView
                 return dialogResult;
             }
         }
+    }
+
+    public enum SiteDisplayColumns
+    {
+        SiteName,
+        SiteCode,
     }
 
     public class DisplaySettings
@@ -70,5 +68,6 @@ namespace SeriesView
 
             SiteDisplayColumn = source.SiteDisplayColumn;
         }
+
     }
 }

@@ -84,7 +84,7 @@ namespace HydroR
             char[] inputchar = input.ToCharArray();
             for (int i = 0; i < inputchar.Length; i++)
             {
-                PostMessage(p.MainWindowHandle, WM_CHAR, (int)inputchar[i], 0);
+                PostMessage(p.MainWindowHandle, WM_CHAR, (int)inputchar[i], 0);                
             }
         }
 
@@ -114,10 +114,13 @@ namespace HydroR
             catch (Exception e)
             {
                 if (e.Message.Contains("Object reference not set to an instance of an object."))
-                    MessageBox.Show("You must start R before you can Send Commands");
+                {
+                    MessageBox.Show("You must start R before you can Send Commands");                  
+                }
                 else
                     MessageBox.Show("Input Error: " + e.Message);
                 rtCommands.Line--;
+                throw e;
 
             }
         }
@@ -531,7 +534,12 @@ namespace HydroR
         {
             try
             {
-                sendLineToR(rtCommands.SelectedText);
+                //sendLineToR(rtCommands.SelectedText)              
+                foreach (string line in rtCommands.SelectedText.Split('\n'))
+                {
+                    sendLineToR(line);
+                }
+
             }
             catch { }
         }
@@ -541,7 +549,11 @@ namespace HydroR
         {
             try
             {
-                sendLineToR(rtCommands.Text);
+                //sendLineToR(rtCommands.Text);
+                foreach (string line in rtCommands.Lines)
+                {
+                    sendLineToR(line);
+                }
             }
             catch { }
         }
@@ -557,14 +569,17 @@ namespace HydroR
             {
                 //nrs = nrs.Distinct().ToArray();
                 //int[] ids = GetDistinctValues(Convert.seriesSelector31.CheckedIDList.ToArray());
+                var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 for (int i = 0; i < _seriesSelector.CheckedIDList.Length; i++)
                 {
                     //get the DB connection from HydroDesktop
                     string fileLoc = (HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString.Split(';'))[0].Substring(12);
-                    DbOperations dbCall = new DbOperations(HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+
                     //get the begin and end dates from the database for the current series
-                    DateTime begin = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
-                    DateTime end = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
+                    var dates = repo.GetDateTimes(_seriesSelector.CheckedIDList[i]);
+                    var begin = dates.Item1;
+                    var end = dates.Item2;
+
                     if (fileLoc.Contains(" "))
                         rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
 

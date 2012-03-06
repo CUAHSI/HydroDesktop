@@ -73,14 +73,24 @@
     <Compile Include="Enums.cs" />
     <Compile Include="FilterTypes.cs" />
     <Compile Include="IDataExportPlugin.cs" />
+    <Compile Include="IDataFilesRepository.cs" />
     <Compile Include="IDataSeriesRepository.cs" />
+    <Compile Include="IDataServicesRepository.cs" />
     <Compile Include="IDataThemesRepository.cs" />
     <Compile Include="IDataValuesRepository.cs" />
     <Compile Include="IHydroDbOperations.cs" />
     <Compile Include="IMetadataCacheManager.cs" />
     <Compile Include="IMethodsRepository.cs" />
+    <Compile Include="IOffsetTypesRepository.cs" />
+    <Compile Include="IQualifiersRepository.cs" />
+    <Compile Include="IQualityControlLevelsRepository.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryManager.cs" />
+    <Compile Include="ISamplesRepository.cs" />
+    <Compile Include="ISeriesProvenanceRepository.cs" />
     <Compile Include="ISeriesSelector.cs" />
+    <Compile Include="ISitesRepository.cs" />
+    <Compile Include="ISourcesRepository.cs" />
     <Compile Include="IUnitsRepository.cs" />
     <Compile Include="IVariablesRepository.cs" />
     <Compile Include="IWebServicesStore.cs" />
@@ -88,6 +98,7 @@
     <Compile Include="ObjectModel\Constants.cs" />
     <Compile Include="ObjectModel\DataFile.cs" />
     <Compile Include="ObjectModel\DataServiceInfo.cs" />
+    <Compile Include="ObjectModel\DataTypeCV.cs" />
     <Compile Include="ObjectModel\DataValue.cs" />
     <Compile Include="ObjectModel\ISOMetadata.cs" />
     <Compile Include="ObjectModel\LabMethod.cs" />
@@ -98,14 +109,17 @@
     <Compile Include="ObjectModel\QueryInfo.cs" />
     <Compile Include="ObjectModel\RuleViolation.cs" />
     <Compile Include="ObjectModel\Sample.cs" />
+    <Compile Include="ObjectModel\SampleMediumCV.cs" />
     <Compile Include="ObjectModel\Series.cs" />
     <Compile Include="ObjectModel\SeriesDataCart.cs" />
     <Compile Include="ObjectModel\SeriesMetadata.cs" />
+    <Compile Include="ObjectModel\SeriesProvenance.cs" />
     <Compile Include="ObjectModel\Site.cs" />
     <Compile Include="ObjectModel\Source.cs" />
     <Compile Include="ObjectModel\SpatialReference.cs" />
     <Compile Include="ObjectModel\Theme.cs" />
     <Compile Include="ObjectModel\Unit.cs" />
+    <Compile Include="ObjectModel\ValueTypeCV.cs" />
     <Compile Include="ObjectModel\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeriesEventArgs.cs" />
@@ -114,6 +128,12 @@
     <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

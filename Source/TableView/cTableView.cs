@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Database;
@@ -15,6 +18,7 @@ namespace TableView
         #region Fields
 
         private readonly ISeriesSelector _seriesSelector;
+        private bool _needToRefresh;
 
         #endregion
 
@@ -23,6 +27,7 @@ namespace TableView
         public cTableView(ISeriesSelector seriesSelector)
         {
             if (seriesSelector == null) throw new ArgumentNullException("seriesSelector");
+            Contract.EndContractBlock();
 
             InitializeComponent();
 
@@ -32,6 +37,15 @@ namespace TableView
 
             _seriesSelector.SeriesCheck += seriesSelector_Refreshed;
             _seriesSelector.Refreshed += seriesSelector_Refreshed;
+            Disposed += OnDisposed;
+            VisibleChanged += OnVisibleChanged;
+        }
+
+        private void OnDisposed(object sender, EventArgs eventArgs)
+        {
+            _seriesSelector.SeriesCheck -= seriesSelector_Refreshed;
+            _seriesSelector.Refreshed -= seriesSelector_Refreshed;
+            Disposed -= OnDisposed;
         }
 
         #endregion
@@ -57,19 +71,26 @@ namespace TableView
         #endregion
 
         #region Private methods
-
+        
         private void UpdateViewMode()
         {
             if (String.IsNullOrEmpty(Settings.Instance.DataRepositoryConnectionString)) return;
 
-            switch (ViewMode)
+            try
             {
-                case TableViewMode.SequenceView:
-                    ShowAllFieldsinSequence();
-                    break;
-                case TableViewMode.JustValuesInParallel:
-                    ShowJustValuesinParallel();
-                    break;
+                switch (ViewMode)
+                {
+                    case TableViewMode.SequenceView:
+                        ShowAllFieldsinSequence();
+                        break;
+                    case TableViewMode.JustValuesInParallel:
+                        ShowJustValuesinParallel();
+                        break;
+                }
+            }
+            catch (InvalidOperationException) // this throws by DataGridViewNavigator if it work not finished
+            {
+                _needToRefresh = true;
             }
         }
 
@@ -83,109 +104,80 @@ namespace TableView
 
         private void dataGridViewNavigator1_PageChanged(object sender, PageChangedEventArgs e)
         {
+            if (!Visible)
+            {
+                _needToRefresh = true;
+                return;
+            }
+
+            if (_needToRefresh)
+            {
+                _needToRefresh = false;
+                UpdateViewMode();
+                return;
+            }
+
             dataViewSeries.DataSource = e.DataTable;
-        }
 
-        private static DbOperations GetDbOperations()
-        {
-            return new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-        }
-
-        private string GetWhereClauseForIds()
-        {
-            string whereClause;
-            if (_seriesSelector.CheckedIDList.Length == 0)
+            if (ViewMode == TableViewMode.JustValuesInParallel)
             {
-                whereClause = "1 = 0";
-            }
-            else
-            {
-                var sb = new StringBuilder("SeriesID in (");
+                // Update columns headers
+                var dataSeriesRepo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
+                var columnDateTime = dataViewSeries.Columns["DateTime"];
+                Debug.Assert(columnDateTime != null);
+                columnDateTime.HeaderText = "DateTime" + Environment.NewLine + "Unit";
                 foreach (var id in _seriesSelector.CheckedIDList)
-                    sb.AppendFormat(" {0},", id);
-                sb.Remove(sb.Length - 1, 1);
-                sb.Append(")");
-                whereClause = sb.ToString();
+                {
+                    var seriesNameTable = dataSeriesRepo.GetUnitSiteVarForFirstSeries(id);
+                    var row1 = seriesNameTable.Rows[0];
+                    var unitsName = Convert.ToString(row1[0]);
+                    var siteName = Convert.ToString(row1[1]);
+                    var variableName = Convert.ToString(row1[2]);
+
+                    var columnD_id = dataViewSeries.Columns["D" + id];
+                    Debug.Assert(columnD_id != null);
+                    columnD_id.HeaderText = siteName + " * " + id + Environment.NewLine +
+                                            variableName + Environment.NewLine +
+                                            unitsName;
+                }
             }
-            return whereClause;
         }
 
         private void ShowAllFieldsinSequence()
         {
-            var whereClause = GetWhereClauseForIds();
-            var dbTools = GetDbOperations();
-            var dataQuery =
-                "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE " +
-                whereClause;
-            var countQuery = "select count(*) from DataValues WHERE " + whereClause;
-            dataGridViewNavigator1.Initialize(dbTools, dataQuery, countQuery);
+            dataGridViewNavigator1.Initialize(new FieldsInSequenceGetter(_seriesSelector.CheckedIDList));
         }
 
         private void ShowJustValuesinParallel()
         {
-            /*
-             Example of builded query:            
-            
-             select
-                 A.LocalDateTime as DateTime, 
-                 (select  DV1.DataValue from DataValues DV1 where DV1.LocalDateTime = A.LocalDateTime and DV1.seriesId = 1 limit 1) as D1,
-                 (select  DV2.DataValue from DataValues DV2 where DV2.LocalDateTime = A.LocalDateTime and DV2.seriesId = 2 limit 1) as D2
-             from
-                 (select distinct LocalDateTime from DataValues where seriesId in (1,2)) A
-             order by LocalDateTime
-            
-             */
-
-            var whereClause = GetWhereClauseForIds();
-            var dataQueryBuilder = new StringBuilder();
-            dataQueryBuilder.Append("select A.LocalDateTime as DateTime");
-            foreach (var id in _seriesSelector.CheckedIDList)
+            dataGridViewNavigator1.Initialize(new ValuesInParallelGetter(_seriesSelector.CheckedIDList));
+        }
+        
+        private void OnVisibleChanged(object sender, EventArgs eventArgs)
+        {
+            if (!Visible) return;
+            if (_needToRefresh)
             {
-                dataQueryBuilder.AppendFormat(
-                    ", (select DV{0}.DataValue from DataValues DV{0} where DV{0}.LocalDateTime = A.LocalDateTime and DV{0}.seriesId = {0} limit 1) as D{0}",
-                    id);
+                _needToRefresh = false;
+                RefreshTableView();
             }
-            dataQueryBuilder.AppendFormat(" from (select distinct LocalDateTime  from DataValues where {0}) A",
-                                          whereClause);
-            dataQueryBuilder.Append(" order by LocalDateTime");
+        }
 
-            var countQuery =
-                string.Format("select count(*) from (select distinct LocalDateTime from DataValues where {0}) A",
-                              whereClause);
-
-            var dbTools = GetDbOperations();
-            dataGridViewNavigator1.Initialize(dbTools, dataQueryBuilder.ToString(), countQuery);
-
-            // Update columns headers
-            var columnDateTime = dataViewSeries.Columns["DateTime"];
-            Debug.Assert(columnDateTime != null);
-            columnDateTime.HeaderText = "DateTime" + Environment.NewLine + "Unit";
-            foreach (var id in _seriesSelector.CheckedIDList)
+        private void RefreshTableView()
+        {
+            if (!Visible)
             {
-                var sqlQuery = string.Format("SELECT UnitsName, SiteName, VariableName FROM DataSeries " +
-                                             "INNER JOIN Variables ON Variables.VariableID = DataSeries.VariableID " +
-                                             "INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID " +
-                                             "INNER JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = {0} limit 1",
-                                             id);
-
-                var seriesNameTable = dbTools.LoadTable("table", sqlQuery);
-                var row1 = seriesNameTable.Rows[0];
-                var unitsName = Convert.ToString(row1[0]);
-                var siteName = Convert.ToString(row1[1]);
-                var variableName = Convert.ToString(row1[2]);
-
-                var columnD_id = dataViewSeries.Columns["D" + id];
-                Debug.Assert(columnD_id != null);
-                columnD_id.HeaderText = siteName + " * " + id + Environment.NewLine +
-                                        variableName + Environment.NewLine +
-                                        unitsName;
+                _needToRefresh = true;
+                return;
             }
+
+            UpdateViewMode();
+            UpdateDatabasePath();
         }
 
         private void seriesSelector_Refreshed(object sender, EventArgs e)
         {
-            UpdateViewMode();
-            UpdateDatabasePath();
+            RefreshTableView();
         }
 
         private void cTableView_Load(object sender, EventArgs e)
@@ -212,6 +204,50 @@ namespace TableView
         }
 
         #endregion
+
+        private class ValuesInParallelGetter : IPagedTableGetter
+        {
+            private readonly IDataValuesRepository _dataValuesRepository;
+            private readonly IList<int> _selectedIds;
+
+            public ValuesInParallelGetter(IEnumerable<int> selectedIds)
+            {
+                _dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
+                _selectedIds = selectedIds.Select(s => s).ToList();
+            }
+
+            public DataTable GetTable(int valuesPerPage, int currentPage)
+            {
+                return _dataValuesRepository.GetTableForJustValuesInParallel(_selectedIds, valuesPerPage, currentPage);
+            }
+
+            public long GetTotalCount()
+            {
+                return _dataValuesRepository.GetCountForJustValuesInParallel(_selectedIds);
+            }
+        }
+
+        private class FieldsInSequenceGetter : IPagedTableGetter
+        {
+            private readonly IDataValuesRepository _dataValuesRepository;
+            private readonly IList<int> _selectedIds;
+
+            public FieldsInSequenceGetter(IEnumerable<int> selectedIds)
+            {
+                _dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
+                _selectedIds = selectedIds.Select(s => s).ToList();
+            }
+
+            public DataTable GetTable(int valuesPerPage, int currentPage)
+            {
+                return _dataValuesRepository.GetTableForAllFieldsInSequence(_selectedIds, valuesPerPage, currentPage);
+            }
+
+            public long GetTotalCount()
+            {
+                return _dataValuesRepository.GetCountForAllFieldsInSequence(_selectedIds);
+            }
+        }
     }
 
     public enum TableViewMode

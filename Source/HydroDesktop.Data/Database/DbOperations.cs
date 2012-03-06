@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Text;
 using System.Diagnostics;
 using HydroDesktop.Interfaces;
@@ -34,7 +35,7 @@ namespace HydroDesktop.Database
             }
             else if (databaseType == DatabaseTypes.SQLServer)
             {
-                dbFactory = System.Data.SqlClient.SqlClientFactory.Instance;
+                dbFactory = SqlClientFactory.Instance;
             }
         }
 
@@ -66,20 +67,17 @@ namespace HydroDesktop.Database
         /// </summary>
         public DatabaseTypes DatabaseType
         {
-            get 
+            get
             {
                 if (dbFactory is System.Data.SQLite.SQLiteFactory)
                 {
                     return DatabaseTypes.SQLite;
                 }
-                else if (dbFactory is System.Data.SqlClient.SqlClientFactory)
+                if (dbFactory is SqlClientFactory)
                 {
                     return DatabaseTypes.SQLServer;
                 }
-                else
-                {
-                    return DatabaseTypes.Unknown;
-                }
+                return DatabaseTypes.Unknown;
             }
         }
 
@@ -253,6 +251,7 @@ namespace HydroDesktop.Database
             {
                 DbParameter param = dbFactory.CreateParameter();
                 param.Value = parameterValues[p];
+                param.DbType = GetDbTypeFromValue(parameterValues[p]);
                 param.ParameterName = "@p" + p.ToString();
                 cmd.Parameters.Add(param);
             }
@@ -261,6 +260,21 @@ namespace HydroDesktop.Database
             conn.Close();
             cmd.Dispose();
             conn.Dispose();
+        }
+
+        private DbType GetDbTypeFromValue(object value)
+        {
+            if (value is long)
+                return DbType.Int64;
+            if (value is int)
+                return DbType.Int32;
+            if (value is double)
+                return DbType.Double;
+            if (value is DateTime)
+                return DbType.DateTime;
+            if (value is string)
+                return DbType.String;
+            return DbType.String;
         }
 
         /// <summary>
@@ -705,7 +719,6 @@ namespace HydroDesktop.Database
             
             DbConnection conn = CreateConnection();
             conn.Open();
-            string CommandText = sqlQuery;
             DbDataAdapter da = dbFactory.CreateDataAdapter();
             da.SelectCommand = dbFactory.CreateCommand();
             da.SelectCommand.CommandText = sqlQuery;
@@ -719,6 +732,29 @@ namespace HydroDesktop.Database
             Debug.WriteLine("LoadTable:" + sqlQuery + " " + _sw.ElapsedMilliseconds + "ms");
 
             return dt;
+        }
+
+        public List<T> Read<T>(string query, Func<DbDataReader, T> rowReader)
+        {
+            var result = new List<T>();
+            var cmd = CreateCommand(query);
+            try
+            {
+                cmd.Connection.Open();
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(rowReader(reader));
+                }
+                reader.Close();
+            }
+            finally
+            {
+                cmd.Connection.Close();
+                cmd.Dispose();
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -782,69 +818,33 @@ namespace HydroDesktop.Database
         /// <summary>
         /// Executes an SQL query with a single output value
         /// </summary>
-        /// <param name="sqlString">the SQL query string</param>
-        /// <returns>the query result (value of first matching row and column)</returns>
-        public object ExecuteSingleOutput(String sqlString)
-        {
-            object output;
-            var cmd = CreateCommand(sqlString);
-            try
-            {
-                cmd.Connection.Open();               
-                cmd.CommandText = sqlString;
-                output = cmd.ExecuteScalar();
-                if (output != DBNull.Value)
-                {
-                    output = Convert.ToString(output, CultureInfo.InvariantCulture);
-                }
-            }
-            catch
-            {
-                output = null;
-            }
-            finally
-            {
-                cmd.Connection.Close();
-                cmd.Dispose();
-            }
-
-            return output;
-
-        }
-
-        /// <summary>
-        /// Executes an SQL query with a single output value
-        /// </summary>
         /// <param name="inputString">the SQL query string</param>
         /// <param name="parameters">the values of command parameters</param>
         /// <returns>the query result (value of first matching row and column)</returns>
-        public object ExecuteSingleOutput(string inputString, object[] parameters)
+        public object ExecuteSingleOutput(string inputString, params object[] parameters)
         {
-            object output = null;
-            DbCommand cmd = CreateCommand(inputString);
+            object output;
+            var cmd = CreateCommand(inputString);
             try
             {
-
                 cmd.Connection.Open();     
                 cmd.CommandText = inputString;
 
                 for (int p = 0; p < parameters.Length; p++)
                 {
-                    DbParameter param = dbFactory.CreateParameter();
+                    var param = dbFactory.CreateParameter();
+                    Debug.Assert(param != null);
                     param.Value = parameters[p];
-                    param.ParameterName = "@p" + p.ToString();
+                    param.DbType = GetDbTypeFromValue(parameters[p]);
+                    param.ParameterName = "@p" + p.ToString(CultureInfo.InvariantCulture);
 
                     cmd.Parameters.Add(param);
                 }
 
-                if (cmd.ExecuteScalar().ToString() == "")
+                output = cmd.ExecuteScalar();
+                if (output != DBNull.Value)
                 {
-                    output = null;
-                }
-                else
-                {
-                    output = cmd.ExecuteScalar();
-                    cmd.Connection.Close();
+                    output = Convert.ToString(output, CultureInfo.InvariantCulture);
                 }
             }
             catch
