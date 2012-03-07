@@ -305,7 +305,7 @@ The configuration file defines the input and output exchange items of the compon
 
 2. Add the following lines to the config.xml file to provide the overall structure. 
 
-.. code-block:: XML
+.. code-block:: xml
 
 	<Configuration>
 	  <ExchangeItems> </ExchangeItems>
@@ -315,7 +315,7 @@ The configuration file defines the input and output exchange items of the compon
 
 3. Add the following output exchange item within the ExchangeItems element.  
 
-.. code-block:: XML
+.. code-block:: xml
 
     <OutputExchangeItem>
       <ElementSet>
@@ -351,7 +351,7 @@ The configuration file defines the input and output exchange items of the compon
 
 4. Add the following input exchange item for average temperature as well. 
 
-.. code-block:: XML
+.. code-block:: xml
 
     <InputExchangeItem>
       <ElementSet>
@@ -418,7 +418,7 @@ You have completed the steps to create the component.  Next we will show how to 
 
 1. Start HydroDesktop.
 
-2. Add the HydroModeler extension by selecting the orb button --> Extensions --> HydroModeler.
+2. Select the HydroModeler extension by selecting the HydroModeler tab.
 
 .. figure:: ./images/Tutorial03/HM_fig50.png
    :align: center
