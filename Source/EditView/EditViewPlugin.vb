@@ -1,6 +1,5 @@
 ﻿Imports System.Windows.Forms
 Imports DotSpatial.Controls
-Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
@@ -46,8 +45,6 @@ Namespace EditView
 
         Private btnDeletePoint As SimpleActionItem
 
-        Private firstTimeLoading As Boolean = True
-
 #End Region
 
 #Region "IExtension Members"
@@ -89,10 +86,6 @@ Namespace EditView
             AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
 
             InitializeRibbonButtons()
-
-            'opening project event
-            AddHandler App.SerializationManager.Deserializing, AddressOf SerializationManager_Deserializing
-
         End Sub
 
         Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
@@ -205,8 +198,8 @@ Namespace EditView
         Public Overrides Sub Deactivate()
 
             App.HeaderControl.RemoveAll()
-
             App.DockManager.Remove(kEditView)
+            _mainControl = Nothing
 
             'Remove event handlers
             RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
@@ -214,24 +207,6 @@ Namespace EditView
 
             MyBase.Deactivate()
 
-        End Sub
-
-        Private Sub LeavingEditView()
-            _mainControl.pTimeSeriesPlot.Clear()
-            _mainControl.dgvDataValues.DataSource = Nothing
-            _mainControl.Editing = False
-            _mainControl.Canceled = False
-            _mainControl.newseriesID = 0
-            _mainControl.gboxDataFilter.Enabled = False
-            btnAddNewPoint.Enabled = False
-            btnApplyToDatabase.Enabled = False
-            btnChangeYValue.Enabled = False
-            btnDeletePoint.Enabled = False
-            btnFlag.Enabled = False
-            btnInterpolate.Enabled = False
-            btnRestoreData.Enabled = False
-
-            btnSelectSeries.Caption = "Edit Series"
         End Sub
 
 #End Region
@@ -253,38 +228,6 @@ Namespace EditView
             'End If
 
         End Sub
-
-
-        'old code from Ribbon_ActiveChanged..
-        'If Not _mainControl.Editing Then
-        '    If _EditView.Active Then
-        '        _mapArgs.PanelManager.SelectedTabName = _pluginName
-        '        _mainControl.RefreshSelection()
-        '    Else
-        '        _mapArgs.PanelManager.SelectedTabName = "MapView"
-        '        LeavingEditView()
-        '    End If
-        'Else
-        '    If Not _EditView.Active Then
-        '        _mapArgs.PanelManager.SelectedTabName = "MapView"
-        '        If _mainControl.Canceled Then
-        '            _mainControl.Canceled = False
-        '            _mapArgs.Ribbon.ActiveTab = _EditView
-
-        '            '_mainControl.pTimeSeriesPlot.Clear()
-        '            '_mapArgs.Ribbon.ActiveTab = _EditView
-        '            'With _mainControl.pTimeSeriesPlot.zgTimeSeries.GraphPane
-        '            '    For i As Integer = 0 To .CurveList.Count - 1
-        '            '        If _mainControl.newseriesID = _mainControl.pTimeSeriesPlot.CurveID(i) Then
-        '            '            _mainControl.pTimeSeriesPlot.EnterEditMode(i)
-        '            '        End If
-        '            '    Next
-        '            'End With
-        '        Else
-        '            LeavingEditView()
-        '        End If
-        '    End If
-        'End If
 
         Sub btnSelectSeries_Click()
             If Not _mainControl.Editing Then
@@ -342,10 +285,6 @@ Namespace EditView
         '    'End If
         '    _mainControl.ckbShowLegend_CheckedChanged()
         'End Sub
-
-        Private Sub SerializationManager_Deserializing(ByVal sender As Object, ByVal e As SerializingEventArgs)
-            _mainControl.RefreshSelection()
-        End Sub
 
 #End Region
 

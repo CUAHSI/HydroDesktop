@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using System.Linq;
+using Hydrodesktop.Common;
 
 namespace Search3.Searching
 {
@@ -12,7 +13,6 @@ namespace Search3.Searching
 
         private readonly IMap _map;
         private readonly SearchResult _searchResult;
-        private readonly string _searchGroupName;
 
         #endregion
 
@@ -23,16 +23,13 @@ namespace Search3.Searching
         /// </summary>
         /// <param name="map">Map</param>
         /// <param name="searchResult">Search result</param>
-        /// <param name="searchGroupName">Name of search layers group.</param>
-        public SearchLayerCreator(IMap map, SearchResult searchResult, string searchGroupName)
+        public SearchLayerCreator(IMap map, SearchResult searchResult)
         {
             if (map == null) throw new ArgumentNullException("map");
             if (searchResult == null) throw new ArgumentNullException("searchResult");
-            if (searchGroupName == null) throw new ArgumentNullException("searchGroupName");
 
             _map = map;
             _searchResult = searchResult;
-            _searchGroupName = searchGroupName;
         }
 
         #endregion
@@ -46,7 +43,7 @@ namespace Search3.Searching
         {
             if (!_searchResult.ResultItems.Any()) return;
 
-            var root = GetSearchResultLayerGroup() ?? new MapGroup(_map, _searchGroupName);
+            var root = _map.GetDataSitesLayer(true);
 
             var layersToSelect = new List<MapPointLayer>();
             foreach(var item in _searchResult.ResultItems)
@@ -83,7 +80,7 @@ namespace Search3.Searching
 
         #region Private methods
 
-        private MapPointLayer CreateSearchResultLayer(SearchResultItem item, MapGroup root)
+        private MapPointLayer CreateSearchResultLayer(SearchResultItem item, IMapGroup root)
         {
             var myLayer = new MapPointLayer(item.FeatureSet);
 
@@ -112,22 +109,7 @@ namespace Search3.Searching
             myLayer.LegendText = legendText;
             return myLayer;
         }
-        
-        private MapGroup GetSearchResultLayerGroup()
-        {
-            MapGroup layer = null;
-            foreach (var lay in _map.Layers)
-            {
-                if (lay is MapGroup &&
-                    lay.LegendText.ToLower() == _searchGroupName.ToLower())
-                {
-                    layer = lay as MapGroup;
-                    break;
-                }
-            }
-            return layer;
-        }
-
+       
         #endregion
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using DotSpatial.Data;
-using HydroDesktop.Interfaces.ObjectModel;
 
 namespace Search3.Searching
 {

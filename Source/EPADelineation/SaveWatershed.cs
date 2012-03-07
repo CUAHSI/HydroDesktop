@@ -588,17 +588,10 @@ namespace EPADelineation
         private int GetPositionToInsertWatershedLayer()
         {
             // Watershed layers must be inserted below the "Data Sites" group
-            var dataSitesName = LayerConstants.SearchGroupName;
+            var dsg = _mapArgs.Map.GetDataSitesLayer();
+            if (dsg != null)
+                return _mapArgs.Map.Layers.IndexOf(dsg);
 
-            for (int i = 0; i < _mapArgs.Map.Layers.Count; i++)
-            {
-                var layer = _mapArgs.Map.Layers[i];
-                if (layer is IMapGroup &&
-                    layer.LegendText == dataSitesName)
-                {
-                    return i;
-                }
-            }
             return _mapArgs.Map.Layers.Count;
         }
 

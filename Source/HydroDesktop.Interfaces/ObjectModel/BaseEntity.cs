@@ -12,7 +12,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
     /// </summary>
     /// <remarks>From http://pastie.org/434198</remarks>
     [Serializable]
-    public class BaseEntity : IEquatable<BaseEntity>
+    public class BaseEntity : IEquatable<BaseEntity>, ICloneable
     {
         /// <summary>
         /// Id (primary key) of the entity
@@ -118,6 +118,19 @@ namespace HydroDesktop.Interfaces.ObjectModel
             yield break; // basically, empty
         }
         #endregion
+
+
+        public object Clone()
+        {
+            var result = (BaseEntity)MemberwiseClone();
+            OnCopy(result);
+            return result;
+        }
+
+        protected  virtual void OnCopy(BaseEntity copy)
+        {
+            // do nothing here
+        }
     }
 
     //Tried and extension. This just ends up calling the BaseEntity GetRuleViolations

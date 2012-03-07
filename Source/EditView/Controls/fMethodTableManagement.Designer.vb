@@ -31,8 +31,6 @@ Partial Class fMethodTableManagement
         Me.txtDescription = New System.Windows.Forms.TextBox()
         Me.txtLink = New System.Windows.Forms.TextBox()
         Me.lblDescription = New System.Windows.Forms.Label()
-        Me.txtID = New System.Windows.Forms.TextBox()
-        Me.lblID = New System.Windows.Forms.Label()
         Me.lblLink = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
         CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -44,7 +42,7 @@ Partial Class fMethodTableManagement
         '
         'btnSubmit
         '
-        Me.btnSubmit.Location = New System.Drawing.Point(12, 157)
+        Me.btnSubmit.Location = New System.Drawing.Point(12, 129)
         Me.btnSubmit.Name = "btnSubmit"
         Me.btnSubmit.Size = New System.Drawing.Size(202, 31)
         Me.btnSubmit.TabIndex = 17
@@ -52,7 +50,7 @@ Partial Class fMethodTableManagement
         '
         'txtDescription
         '
-        Me.txtDescription.Location = New System.Drawing.Point(82, 41)
+        Me.txtDescription.Location = New System.Drawing.Point(82, 17)
         Me.txtDescription.Multiline = True
         Me.txtDescription.Name = "txtDescription"
         Me.txtDescription.Size = New System.Drawing.Size(343, 59)
@@ -60,7 +58,7 @@ Partial Class fMethodTableManagement
         '
         'txtLink
         '
-        Me.txtLink.Location = New System.Drawing.Point(82, 116)
+        Me.txtLink.Location = New System.Drawing.Point(82, 92)
         Me.txtLink.Name = "txtLink"
         Me.txtLink.Size = New System.Drawing.Size(343, 20)
         Me.txtLink.TabIndex = 14
@@ -68,33 +66,16 @@ Partial Class fMethodTableManagement
         'lblDescription
         '
         Me.lblDescription.AutoSize = True
-        Me.lblDescription.Location = New System.Drawing.Point(13, 44)
+        Me.lblDescription.Location = New System.Drawing.Point(13, 20)
         Me.lblDescription.Name = "lblDescription"
         Me.lblDescription.Size = New System.Drawing.Size(63, 13)
         Me.lblDescription.TabIndex = 13
         Me.lblDescription.Text = "Description:"
         '
-        'txtID
-        '
-        Me.txtID.Location = New System.Drawing.Point(40, 5)
-        Me.txtID.Name = "txtID"
-        Me.txtID.ReadOnly = True
-        Me.txtID.Size = New System.Drawing.Size(82, 20)
-        Me.txtID.TabIndex = 10
-        '
-        'lblID
-        '
-        Me.lblID.AutoSize = True
-        Me.lblID.Location = New System.Drawing.Point(13, 8)
-        Me.lblID.Name = "lblID"
-        Me.lblID.Size = New System.Drawing.Size(21, 13)
-        Me.lblID.TabIndex = 9
-        Me.lblID.Text = "ID:"
-        '
         'lblLink
         '
         Me.lblLink.AutoSize = True
-        Me.lblLink.Location = New System.Drawing.Point(13, 119)
+        Me.lblLink.Location = New System.Drawing.Point(13, 95)
         Me.lblLink.Name = "lblLink"
         Me.lblLink.Size = New System.Drawing.Size(30, 13)
         Me.lblLink.TabIndex = 18
@@ -102,7 +83,7 @@ Partial Class fMethodTableManagement
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(220, 157)
+        Me.btnCancel.Location = New System.Drawing.Point(220, 129)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(205, 31)
         Me.btnCancel.TabIndex = 19
@@ -113,15 +94,13 @@ Partial Class fMethodTableManagement
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(437, 188)
+        Me.ClientSize = New System.Drawing.Size(437, 170)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.lblLink)
         Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.txtDescription)
         Me.Controls.Add(Me.txtLink)
         Me.Controls.Add(Me.lblDescription)
-        Me.Controls.Add(Me.txtID)
-        Me.Controls.Add(Me.lblID)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -139,8 +118,6 @@ Partial Class fMethodTableManagement
     Friend WithEvents txtDescription As System.Windows.Forms.TextBox
     Friend WithEvents txtLink As System.Windows.Forms.TextBox
     Friend WithEvents lblDescription As System.Windows.Forms.Label
-    Friend WithEvents txtID As System.Windows.Forms.TextBox
-    Friend WithEvents lblID As System.Windows.Forms.Label
     Friend WithEvents lblLink As System.Windows.Forms.Label
     Friend WithEvents btnCancel As System.Windows.Forms.Button
 End Class

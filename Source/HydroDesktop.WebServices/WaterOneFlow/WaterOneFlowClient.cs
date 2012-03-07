@@ -113,7 +113,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                         _downloadDirectory = Path.GetTempPath();
                     }
 				}
-				
 			}
 		}
 

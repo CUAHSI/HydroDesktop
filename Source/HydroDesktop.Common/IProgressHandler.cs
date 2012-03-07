@@ -8,9 +8,9 @@ namespace HydroDesktop.Common
         /// <summary>
         /// Report progress
         /// </summary>
-        /// <param name="persentage">Percentage of progress</param>
+        /// <param name="percentage">Percentage of progress</param>
         /// <param name="state">State of progress</param>
-        void ReportProgress(int persentage, object state);
+        void ReportProgress(int percentage, object state);
 
         /// <summary>
         /// Check for cancel

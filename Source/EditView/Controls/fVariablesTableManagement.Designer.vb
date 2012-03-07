@@ -25,8 +25,6 @@ Partial Class fVariablesTableManagement
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.btnSubmit = New System.Windows.Forms.Button()
-        Me.txtID = New System.Windows.Forms.TextBox()
-        Me.lblID = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.lblVariableCode = New System.Windows.Forms.Label()
         Me.txtVariableCode = New System.Windows.Forms.TextBox()
@@ -67,32 +65,15 @@ Partial Class fVariablesTableManagement
         '
         'btnSubmit
         '
-        Me.btnSubmit.Location = New System.Drawing.Point(12, 250)
+        Me.btnSubmit.Location = New System.Drawing.Point(12, 227)
         Me.btnSubmit.Name = "btnSubmit"
         Me.btnSubmit.Size = New System.Drawing.Size(202, 31)
         Me.btnSubmit.TabIndex = 17
         Me.btnSubmit.UseVisualStyleBackColor = True
         '
-        'txtID
-        '
-        Me.txtID.Location = New System.Drawing.Point(40, 5)
-        Me.txtID.Name = "txtID"
-        Me.txtID.ReadOnly = True
-        Me.txtID.Size = New System.Drawing.Size(82, 20)
-        Me.txtID.TabIndex = 10
-        '
-        'lblID
-        '
-        Me.lblID.AutoSize = True
-        Me.lblID.Location = New System.Drawing.Point(13, 8)
-        Me.lblID.Name = "lblID"
-        Me.lblID.Size = New System.Drawing.Size(21, 13)
-        Me.lblID.TabIndex = 9
-        Me.lblID.Text = "ID:"
-        '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(220, 250)
+        Me.btnCancel.Location = New System.Drawing.Point(220, 227)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(205, 31)
         Me.btnCancel.TabIndex = 19
@@ -102,7 +83,7 @@ Partial Class fVariablesTableManagement
         'lblVariableCode
         '
         Me.lblVariableCode.AutoSize = True
-        Me.lblVariableCode.Location = New System.Drawing.Point(13, 37)
+        Me.lblVariableCode.Location = New System.Drawing.Point(13, 13)
         Me.lblVariableCode.Name = "lblVariableCode"
         Me.lblVariableCode.Size = New System.Drawing.Size(76, 13)
         Me.lblVariableCode.TabIndex = 20
@@ -110,14 +91,14 @@ Partial Class fVariablesTableManagement
         '
         'txtVariableCode
         '
-        Me.txtVariableCode.Location = New System.Drawing.Point(95, 34)
+        Me.txtVariableCode.Location = New System.Drawing.Point(95, 10)
         Me.txtVariableCode.Name = "txtVariableCode"
         Me.txtVariableCode.Size = New System.Drawing.Size(80, 20)
         Me.txtVariableCode.TabIndex = 21
         '
         'txtVariableName
         '
-        Me.txtVariableName.Location = New System.Drawing.Point(272, 34)
+        Me.txtVariableName.Location = New System.Drawing.Point(272, 10)
         Me.txtVariableName.Name = "txtVariableName"
         Me.txtVariableName.Size = New System.Drawing.Size(153, 20)
         Me.txtVariableName.TabIndex = 23
@@ -125,7 +106,7 @@ Partial Class fVariablesTableManagement
         'lblVariableName
         '
         Me.lblVariableName.AutoSize = True
-        Me.lblVariableName.Location = New System.Drawing.Point(194, 37)
+        Me.lblVariableName.Location = New System.Drawing.Point(194, 13)
         Me.lblVariableName.Name = "lblVariableName"
         Me.lblVariableName.Size = New System.Drawing.Size(79, 13)
         Me.lblVariableName.TabIndex = 22
@@ -133,7 +114,7 @@ Partial Class fVariablesTableManagement
         '
         'txtSpeciation
         '
-        Me.txtSpeciation.Location = New System.Drawing.Point(272, 60)
+        Me.txtSpeciation.Location = New System.Drawing.Point(272, 36)
         Me.txtSpeciation.Name = "txtSpeciation"
         Me.txtSpeciation.Size = New System.Drawing.Size(153, 20)
         Me.txtSpeciation.TabIndex = 25
@@ -141,7 +122,7 @@ Partial Class fVariablesTableManagement
         'lblSpeciation
         '
         Me.lblSpeciation.AutoSize = True
-        Me.lblSpeciation.Location = New System.Drawing.Point(213, 63)
+        Me.lblSpeciation.Location = New System.Drawing.Point(213, 39)
         Me.lblSpeciation.Name = "lblSpeciation"
         Me.lblSpeciation.Size = New System.Drawing.Size(60, 13)
         Me.lblSpeciation.TabIndex = 24
@@ -149,7 +130,7 @@ Partial Class fVariablesTableManagement
         '
         'txtSampleMedium
         '
-        Me.txtSampleMedium.Location = New System.Drawing.Point(272, 86)
+        Me.txtSampleMedium.Location = New System.Drawing.Point(272, 62)
         Me.txtSampleMedium.Name = "txtSampleMedium"
         Me.txtSampleMedium.Size = New System.Drawing.Size(153, 20)
         Me.txtSampleMedium.TabIndex = 27
@@ -157,7 +138,7 @@ Partial Class fVariablesTableManagement
         'lblSampleMedium
         '
         Me.lblSampleMedium.AutoSize = True
-        Me.lblSampleMedium.Location = New System.Drawing.Point(188, 89)
+        Me.lblSampleMedium.Location = New System.Drawing.Point(188, 65)
         Me.lblSampleMedium.Name = "lblSampleMedium"
         Me.lblSampleMedium.Size = New System.Drawing.Size(85, 13)
         Me.lblSampleMedium.TabIndex = 26
@@ -168,7 +149,7 @@ Partial Class fVariablesTableManagement
         Me.gboxVariableUnits.Controls.Add(Me.ddlUnitsName)
         Me.gboxVariableUnits.Controls.Add(Me.lblVUnitsAbbreviation)
         Me.gboxVariableUnits.Controls.Add(Me.lblVUnitsType)
-        Me.gboxVariableUnits.Location = New System.Drawing.Point(12, 60)
+        Me.gboxVariableUnits.Location = New System.Drawing.Point(12, 36)
         Me.gboxVariableUnits.Name = "gboxVariableUnits"
         Me.gboxVariableUnits.Size = New System.Drawing.Size(163, 71)
         Me.gboxVariableUnits.TabIndex = 28
@@ -205,7 +186,7 @@ Partial Class fVariablesTableManagement
         'lblValueType
         '
         Me.lblValueType.AutoSize = True
-        Me.lblValueType.Location = New System.Drawing.Point(209, 113)
+        Me.lblValueType.Location = New System.Drawing.Point(209, 89)
         Me.lblValueType.Name = "lblValueType"
         Me.lblValueType.Size = New System.Drawing.Size(64, 13)
         Me.lblValueType.TabIndex = 29
@@ -215,7 +196,7 @@ Partial Class fVariablesTableManagement
         '
         Me.ddlValueType.FormattingEnabled = True
         Me.ddlValueType.Items.AddRange(New Object() {"Field Observation", "Derived Value", "Unknown", "Others..."})
-        Me.ddlValueType.Location = New System.Drawing.Point(272, 110)
+        Me.ddlValueType.Location = New System.Drawing.Point(272, 86)
         Me.ddlValueType.Name = "ddlValueType"
         Me.ddlValueType.Size = New System.Drawing.Size(153, 21)
         Me.ddlValueType.TabIndex = 31
@@ -223,7 +204,7 @@ Partial Class fVariablesTableManagement
         'lblRegular
         '
         Me.lblRegular.AutoSize = True
-        Me.lblRegular.Location = New System.Drawing.Point(226, 143)
+        Me.lblRegular.Location = New System.Drawing.Point(226, 119)
         Me.lblRegular.Name = "lblRegular"
         Me.lblRegular.Size = New System.Drawing.Size(47, 13)
         Me.lblRegular.TabIndex = 32
@@ -233,7 +214,7 @@ Partial Class fVariablesTableManagement
         '
         Me.Panel1.Controls.Add(Me.rbtnRegularNo)
         Me.Panel1.Controls.Add(Me.rbtnRegularYes)
-        Me.Panel1.Location = New System.Drawing.Point(272, 137)
+        Me.Panel1.Location = New System.Drawing.Point(272, 113)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(153, 23)
         Me.Panel1.TabIndex = 33
@@ -267,7 +248,7 @@ Partial Class fVariablesTableManagement
         Me.gboxTimeSupport.Controls.Add(Me.ddlTUnitsName)
         Me.gboxTimeSupport.Controls.Add(Me.lblTUnitsAbbreviation)
         Me.gboxTimeSupport.Controls.Add(Me.lblTUnitsType)
-        Me.gboxTimeSupport.Location = New System.Drawing.Point(12, 137)
+        Me.gboxTimeSupport.Location = New System.Drawing.Point(12, 113)
         Me.gboxTimeSupport.Name = "gboxTimeSupport"
         Me.gboxTimeSupport.Size = New System.Drawing.Size(163, 96)
         Me.gboxTimeSupport.TabIndex = 29
@@ -325,7 +306,7 @@ Partial Class fVariablesTableManagement
         '
         Me.ddlDataType.FormattingEnabled = True
         Me.ddlDataType.Items.AddRange(New Object() {"Average", "Maximum", "Minimum", "Sum", "Continuous", "Unknown", "Others..."})
-        Me.ddlDataType.Location = New System.Drawing.Point(272, 166)
+        Me.ddlDataType.Location = New System.Drawing.Point(272, 142)
         Me.ddlDataType.Name = "ddlDataType"
         Me.ddlDataType.Size = New System.Drawing.Size(153, 21)
         Me.ddlDataType.TabIndex = 35
@@ -333,7 +314,7 @@ Partial Class fVariablesTableManagement
         'lblDataType
         '
         Me.lblDataType.AutoSize = True
-        Me.lblDataType.Location = New System.Drawing.Point(213, 169)
+        Me.lblDataType.Location = New System.Drawing.Point(213, 145)
         Me.lblDataType.Name = "lblDataType"
         Me.lblDataType.Size = New System.Drawing.Size(60, 13)
         Me.lblDataType.TabIndex = 34
@@ -341,7 +322,7 @@ Partial Class fVariablesTableManagement
         '
         'txtNoDataValue
         '
-        Me.txtNoDataValue.Location = New System.Drawing.Point(272, 193)
+        Me.txtNoDataValue.Location = New System.Drawing.Point(272, 169)
         Me.txtNoDataValue.Name = "txtNoDataValue"
         Me.txtNoDataValue.Size = New System.Drawing.Size(153, 20)
         Me.txtNoDataValue.TabIndex = 37
@@ -349,7 +330,7 @@ Partial Class fVariablesTableManagement
         'lblNoDataValue
         '
         Me.lblNoDataValue.AutoSize = True
-        Me.lblNoDataValue.Location = New System.Drawing.Point(190, 196)
+        Me.lblNoDataValue.Location = New System.Drawing.Point(190, 172)
         Me.lblNoDataValue.Name = "lblNoDataValue"
         Me.lblNoDataValue.Size = New System.Drawing.Size(83, 13)
         Me.lblNoDataValue.TabIndex = 36
@@ -357,7 +338,7 @@ Partial Class fVariablesTableManagement
         '
         'txtGeneralCategory
         '
-        Me.txtGeneralCategory.Location = New System.Drawing.Point(272, 219)
+        Me.txtGeneralCategory.Location = New System.Drawing.Point(272, 195)
         Me.txtGeneralCategory.Name = "txtGeneralCategory"
         Me.txtGeneralCategory.Size = New System.Drawing.Size(153, 20)
         Me.txtGeneralCategory.TabIndex = 39
@@ -365,7 +346,7 @@ Partial Class fVariablesTableManagement
         'lblGeneralCategory
         '
         Me.lblGeneralCategory.AutoSize = True
-        Me.lblGeneralCategory.Location = New System.Drawing.Point(181, 222)
+        Me.lblGeneralCategory.Location = New System.Drawing.Point(181, 198)
         Me.lblGeneralCategory.Name = "lblGeneralCategory"
         Me.lblGeneralCategory.Size = New System.Drawing.Size(92, 13)
         Me.lblGeneralCategory.TabIndex = 38
@@ -375,7 +356,7 @@ Partial Class fVariablesTableManagement
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(437, 283)
+        Me.ClientSize = New System.Drawing.Size(437, 268)
         Me.Controls.Add(Me.txtGeneralCategory)
         Me.Controls.Add(Me.lblGeneralCategory)
         Me.Controls.Add(Me.txtNoDataValue)
@@ -398,8 +379,6 @@ Partial Class fVariablesTableManagement
         Me.Controls.Add(Me.lblVariableCode)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSubmit)
-        Me.Controls.Add(Me.txtID)
-        Me.Controls.Add(Me.lblID)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -420,8 +399,6 @@ Partial Class fVariablesTableManagement
     End Sub
     Friend WithEvents ConfigBindingSource As System.Windows.Forms.BindingSource
     Friend WithEvents btnSubmit As System.Windows.Forms.Button
-    Friend WithEvents txtID As System.Windows.Forms.TextBox
-    Friend WithEvents lblID As System.Windows.Forms.Label
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents lblVariableCode As System.Windows.Forms.Label
     Friend WithEvents txtVariableCode As System.Windows.Forms.TextBox
