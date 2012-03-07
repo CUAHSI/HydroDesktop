@@ -10,23 +10,17 @@ namespace TableView
 {
     public partial class DeleteThemeForm : Form
     {
-        private DbOperations _db = null;
-        //private bool _formIsClosing = false;
-
-        //used as a lookup - which themes are deleted
         private Dictionary<string, Theme> _themeLookup = new Dictionary<string, Theme>();
         
-        public DeleteThemeForm(IHydroDbOperations db)
+        public DeleteThemeForm()
         {
             InitializeComponent();
 
-            _db = db as DbOperations;
-
-            this.FormClosing +=new FormClosingEventHandler(DeleteThemeForm_FormClosing);
+            this.FormClosing +=DeleteThemeForm_FormClosing;
             //checkListThemes.ItemCheck += new ItemCheckEventHandler(checkListThemes_ItemCheck);
-            bgwMain.DoWork +=new DoWorkEventHandler(bgwMain_DoWork);
-            bgwMain.RunWorkerCompleted +=new RunWorkerCompletedEventHandler(bgwMain_RunWorkerCompleted);
-            bgwMain.ProgressChanged +=new ProgressChangedEventHandler(bgwMain_ProgressChanged);
+            bgwMain.DoWork +=bgwMain_DoWork;
+            bgwMain.RunWorkerCompleted +=bgwMain_RunWorkerCompleted;
+            bgwMain.ProgressChanged +=bgwMain_ProgressChanged;
         }
 
         private void checkListThemes_SelectedIndexChanged(object sender, EventArgs e)
@@ -43,8 +37,8 @@ namespace TableView
 
         private void DeleteThemeForm_Load(object sender, EventArgs e)
         {
-            var repoManager = RepositoryFactory.Instance.Get<IRepositoryManager>(_db);
-            IList<Theme> themeList = repoManager.GetAllThemes();
+            var repoManager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
+            var themeList = repoManager.GetAll();
 
             foreach (Theme theme in themeList)
             {
@@ -91,7 +85,7 @@ namespace TableView
                     index++;
                 }
 
-                var manager = RepositoryFactory.Instance.Get<IRepositoryManager>(_db);
+                var manager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
                 object[] parameters = new object[2];
                 parameters[0] = themeIDList;
                 parameters[1] = manager;
@@ -145,9 +139,8 @@ namespace TableView
             object[] parameters = e.Argument as object[];
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            int[] themeIdList = parameters[0] as int[];
-            //int themeId = Convert.ToInt32(parameters[0]);
-            var manager = parameters[1] as IRepositoryManager;
+            var themeIdList = (int[])parameters[0];
+            var manager = (IDataThemesRepository)parameters[1];
 
             foreach (int themeId in themeIdList)
             {

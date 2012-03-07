@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HydroDesktop.Common.Properties;
+﻿using HydroDesktop.Common.Properties;
 
 namespace Hydrodesktop.Common
 {

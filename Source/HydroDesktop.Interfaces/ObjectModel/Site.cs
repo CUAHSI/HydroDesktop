@@ -115,5 +115,14 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             return Name;
         }
+
+        protected override void OnCopy(BaseEntity copy)
+        {
+            base.OnCopy(copy);
+
+            var entity = (Site) copy;
+            if (entity.SpatialReference != null) entity.SpatialReference = (SpatialReference) SpatialReference.Clone();
+            if (entity.LocalProjection != null) entity.LocalProjection = (SpatialReference)LocalProjection.Clone();
+        }
     }
 }

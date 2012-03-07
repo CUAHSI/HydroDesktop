@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
@@ -13,7 +15,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for DataSeries
     /// </summary>
-    class DataSeriesRepository : BaseRepository, IDataSeriesRepository
+    class DataSeriesRepository : BaseRepository<Series>, IDataSeriesRepository
     {
         #region Constructors
         
@@ -215,7 +217,7 @@ namespace HydroDesktop.Database
 
             int variableID = Convert.ToInt32(seriesRow["VariableID"]);
 
-            series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>(DbOperations).GetByID(variableID);
+            series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>().GetByKey(variableID);
 
             Method newMethod = new Method();
             newMethod.Id = Convert.ToInt32(seriesRow["MethodID"]);
@@ -232,7 +234,15 @@ namespace HydroDesktop.Database
 
             return series;
         }
-        
+
+        public bool ExistsSeries(Site site, Variable variable)
+        {
+            var query = string.Format("select count(*) from DataSeries where SiteID={0} and VariableID={1}", site.Id,
+                                      variable.Id);
+            var res = DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToInt64(res) > 0;
+        }
+
         public bool DeleteSeries(int seriesID)
         {
             var _db = DbOperations;
@@ -360,6 +370,316 @@ namespace HydroDesktop.Database
             catch { }
             return true;
         }
+
+        public Tuple<DateTime, DateTime> GetDateTimes(long seriesID)
+        {
+            var begin = Convert.ToDateTime(DbOperations.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + seriesID));
+            var end = Convert.ToDateTime(DbOperations.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + seriesID));
+            return new Tuple<DateTime, DateTime>(begin, end);
+        }
+
+        public DataTable GetUnitSiteVarForFirstSeries(long seriesID)
+        {
+            var sqlQuery = string.Format("SELECT UnitsName, SiteName, VariableName FROM DataSeries " +
+                                          "INNER JOIN Variables ON Variables.VariableID = DataSeries.VariableID " +
+                                          "INNER JOIN Units ON Variables.VariableUnitsID = Units.UnitsID " +
+                                          "INNER JOIN Sites ON Sites.SiteID = DataSeries.SiteID WHERE SeriesID = {0} limit 1",
+                                          seriesID);
+            var seriesNameTable = DbOperations.LoadTable("table", sqlQuery);
+            return seriesNameTable;
+        }
+
+        public void UpdateDataSeriesFromDataValues(long seriesID)
+        {
+            var SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID +
+                            " ORDER BY LocalDateTime ASC";
+            var BeginDateTime = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                   CultureInfo.InvariantCulture);
+
+            SQLstring = "SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID +
+                        " ORDER BY LocalDateTime DESC";
+            var EndDateTime = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                 CultureInfo.InvariantCulture);
+            SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + seriesID +
+                        " ORDER BY LocalDateTime ASC";
+            var BeginDateTimeUTC = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                  CultureInfo.InvariantCulture);
+            SQLstring = "SELECT DateTimeUTC FROM DataValues WHERE SeriesID = " + seriesID +
+                        " ORDER BY LocalDateTime DESC";
+            var EndDateTimeUTC = Convert.ToDateTime(DbOperations.ExecuteSingleOutput(SQLstring),
+                                                CultureInfo.InvariantCulture);
+            SQLstring = "SELECT COUNT(*) FROM DataValues WHERE SeriesID = " + seriesID;
+            var ValueCount = DbOperations.ExecuteSingleOutput(SQLstring);
+
+            SQLstring = "UPDATE DataSeries SET BeginDateTime = '" + BeginDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "EndDateTime = '" + EndDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "BeginDateTimeUTC = '" + BeginDateTimeUTC.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "EndDateTimeUTC = '" + EndDateTimeUTC.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
+            SQLstring += "ValueCount = " + ValueCount + " WHERE SeriesID = " + seriesID;
+            DbOperations.ExecuteNonQuery(SQLstring);
+        }
+
+        public string GetQualityControlLevelCode (long seriesID)
+        {
+            var query =
+                    "SELECT QualityControlLevelCode FROM DataSeries AS d LEFT JOIN QualityControlLevels AS q ON (d.QualityControlLevelID = q.QualityControlLevelID) WHERE SeriesID = " +
+                    seriesID;
+            var res =  DbOperations.ExecuteSingleOutput(query);
+            return Convert.ToString(res);
+        }
+
+        public long GetQualityControlLevelID(long seriesID)
+        {
+            var res =
+                DbOperations.ExecuteSingleOutput("SELECT QualityControlLevelID FROM DataSeries WHERE SeriesID = " +
+                                                 seriesID);
+            return Convert.ToInt64(res);
+        }
+
+        public IList<long>  GetDataValuesIDs(long seriesID)
+        {
+            var query = "SELECT ValueID FROM DataValues WHERE SeriesID = " + seriesID;
+            var res = DbOperations.Read(query,
+                              r => r.GetInt64(0));
+            return res;
+        }
+
+        public int InsertNewSeries(long sourceSeriesID, long variableID, long methodID, long qualityControlLevelID)
+        {
+            var newSeriesID = DbOperations.GetNextID("DataSeries", "SeriesID");
+            var dt = DbOperations.LoadTable("DataSeries", "SELECT * FROM DataSeries WHERE SeriesID = " + sourceSeriesID);
+            var row = dt.Rows[0];
+
+            //Making the INSERT SQL string for the new data series
+            var sqlString = new StringBuilder();
+            sqlString.Append("INSERT INTO DataSeries(SeriesID, SiteID, VariableID, IsCategorical, MethodID, SourceID, ");
+            sqlString.Append("QualityControlLevelID, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ");
+            sqlString.Append("ValueCount, CreationDateTime, Subscribed, UpdateDateTime, LastcheckedDateTime) Values (");
+            //SeriesID value
+            sqlString.Append(newSeriesID + ", ");
+            //SiteID value
+            sqlString.Append(Convert.ToInt64(row[1]) + ", ");
+            //VariableID values
+            sqlString.Append(variableID + ", ");
+            //IsCategorical value
+            if (row[3].ToString() == "True")
+                sqlString.Append("1, ");
+            else
+                sqlString.Append("0, ");
+            //MethodID value
+            sqlString.Append(methodID + ", ");
+            //SourceID value
+            sqlString.Append(Convert.ToInt64(row[5]) + ", ");
+            //QualityControlLevelID value
+            sqlString.Append(qualityControlLevelID + ", ");
+            //BeginDateTime, EndDateTime, BeginDateTimeUTC and EndDateTimeUTC values
+            for(int i =7; i<=10; i++)
+            {
+                var tempstring = Convert.ToDateTime(row[i]).ToString("yyyy-MM-dd HH:mm:ss");
+                sqlString.Append("'" + tempstring + "', ");
+            }
+            var todaystring = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss");
+            //ValueCount, CreationDateTime, Subscribed, UpdateDateTime and LastcheckedDateTime values
+            sqlString.Append(row[11] + ", '" + todaystring + "', 0, '" + todaystring + "','" + todaystring +
+                             "')");
+            //Execute the SQL string
+            DbOperations.ExecuteNonQuery(sqlString.ToString());
+
+            return newSeriesID;
+        }
+    
+        public void DeriveInsertAggregateDataValues(DataTable dt,
+            long newSeriesID,
+            DateTime currentdate, DateTime lastdate, DeriveAggregateMode mode,
+            DeriveComputeMode computeMode,
+            double nodatavalue, IProgressHandler progressHandler)
+        {
+            const string insertQuery =
+                "INSERT INTO DataValues(ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UtcOffset, DateTimeUtc, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
+                "VALUES ({0}, {1}, {2}, {3}, '{4}', {5}, '{6}', {7}, {8}, '{9}', {10}, {11}, {12});";
+
+            const int chunkLength = 400;
+            var index = 0;
+
+            while (currentdate <= lastdate)
+            {
+                // Save values by chunks
+
+                var newValueID = DbOperations.GetNextID("DataValues", "ValueID");
+                var query = new StringBuilder("BEGIN TRANSACTION; ");
+
+
+                for (int i = 0; i <= chunkLength - 1; i++)
+                {
+                    double newvalue = 0.0;
+                    string sqlString = string.Empty;
+                    double UTC = 0.0;
+
+                    switch (mode)
+                    {
+                        case DeriveAggregateMode.Daily:
+                            sqlString = "LocalDateTime >= '" + currentdate.ToString(CultureInfo.InvariantCulture) + "' AND LocalDateTime <= '" +
+                                        currentdate.AddDays(1).AddMilliseconds(-1).ToString(CultureInfo.InvariantCulture) + "' AND DataValue <> " +
+                                        nodatavalue.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        case DeriveAggregateMode.Monthly:
+                            sqlString = "LocalDateTime >= '" + currentdate.ToString(CultureInfo.InvariantCulture) + "' AND LocalDateTime <= '" +
+                                        currentdate.AddMonths(1).AddMilliseconds(-1).ToString(CultureInfo.InvariantCulture) + "' AND DataValue <> " +
+                                        nodatavalue.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        case DeriveAggregateMode.Quarterly:
+                            sqlString = "LocalDateTime >= '" + currentdate.ToString(CultureInfo.InvariantCulture) +
+                                        "' AND LocalDateTime <= '" +
+                                        currentdate.AddMonths(3).AddMilliseconds(-1).ToString(
+                                            CultureInfo.InvariantCulture) + "' AND DataValue <> " +
+                                        nodatavalue.ToString(CultureInfo.InvariantCulture);
+                            break;
+                    }
+                    try
+                    {
+                        switch (computeMode)
+                        {
+                            case DeriveComputeMode.Maximum:
+                                newvalue = Convert.ToDouble(dt.Compute("Max(DataValue)", sqlString));
+                                break;
+                            case DeriveComputeMode.Minimum:
+                                newvalue = Convert.ToDouble(dt.Compute("MIN(DataValue)", sqlString));
+                                break;
+                            case DeriveComputeMode.Average:
+                                newvalue = Convert.ToDouble(dt.Compute("AVG(DataValue)", sqlString));
+                                break;
+                            case DeriveComputeMode.Sum:
+                                newvalue = Convert.ToDouble(dt.Compute("Sum(DataValue)", sqlString));
+                                break;
+                        }
+
+                        UTC = Convert.ToDouble(dt.Compute("AVG(UTCOffset)", sqlString));
+                    }
+                    catch (Exception)
+                    {
+                        newvalue = nodatavalue;
+                    }
+
+                    query.AppendFormat(insertQuery,
+                                       newValueID + i,
+                                       newSeriesID,
+                                       newvalue,
+                                       0,
+                                       Convert.ToDateTime(dt.Rows[index]["LocalDateTime"]).ToString("yyyy-MM-dd HH:mm:ss"),
+                                       UTC.ToString(CultureInfo.InvariantCulture),
+                                       currentdate.AddHours(UTC).ToString("yyyy-MM-dd HH:mm:ss"),
+                                       "NULL",
+                                       "NULL",
+                                       "nc",
+                                       "NULL",
+                                       "NULL",
+                                       "NULL");
+                    query.AppendLine();
+
+                    switch (mode)
+                    {
+                        case DeriveAggregateMode.Daily:
+                            currentdate = currentdate.AddDays(1);
+                            break;
+                        case DeriveAggregateMode.Monthly:
+                            currentdate = currentdate.AddMonths(1);
+                            break;
+                        case DeriveAggregateMode.Quarterly:
+                            currentdate = currentdate.AddMonths(3);
+                            break;
+
+                    }
+
+                    if (currentdate > lastdate) break;
+                    index = index + 1;
+
+                    //Report progress
+                    progressHandler.ReportProgress(index - 1, null);
+                }
+
+                query.AppendLine("COMMIT;");
+                DbOperations.ExecuteNonQuery(query.ToString());
+
+                progressHandler.ReportProgress(index - 1, null);
+            }
+        }
+
+        public void DeriveInsertDataValues(double A, double B, double C, double D, double E, double F,
+            DataTable dt,
+            long newSeriesID, long sourceSeriesID, bool isAlgebraic, IProgressHandler progressHandler)
+        {
+            const int chunkLength = 400;
+            var nodatavalue = GetNoDataValueForSeriesVariable(newSeriesID);
+
+            const string insertQuery =
+                "INSERT INTO DataValues(ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UtcOffset, DateTimeUtc, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
+                "VALUES ({0}, {1}, {2}, {3}, '{4}', {5}, '{6}', {7}, {8}, '{9}', {10}, {11}, {12});";
+
+            var index = 0;
+            while (index != dt.Rows.Count - 1)
+            {
+                //Save values by chunks       
+
+                var newValueID = DbOperations.GetNextID("DataValues", "ValueID");
+                var query = new StringBuilder("BEGIN TRANSACTION; ");
+
+
+                for (int i = 0; i < chunkLength; i++)
+                {
+                    // Calculating value
+                    double newvalue = 0.0;
+                    if (isAlgebraic)
+                    {
+                        var currentvalue = Convert.ToDouble(dt.Rows[index]["DataValue"]);
+                        if (currentvalue != nodatavalue)
+                        {
+
+                            //NOTE:Equation = Fx ^ 5 + Ex ^ 4 + Dx ^ 3 + Cx ^ 2 + Bx + A
+                            newvalue = (F*(Math.Pow(currentvalue, 5))) + (E*(Math.Pow(currentvalue, 4))) +
+                                       (D*(Math.Pow(currentvalue, 3))) + (C*(Math.Pow(currentvalue, 2))) +
+                                       (B*currentvalue) +
+                                       A;
+                            newvalue = Math.Round(newvalue, 5);
+                        }
+                        else
+                        {
+                            newvalue = nodatavalue;
+                        }
+
+                    }
+                    else
+                    {
+                        newvalue = Convert.ToDouble(dt.Rows[index]["DataValue"]);
+                    }
+
+                    var row = dt.Rows[index];
+                    query.AppendFormat(insertQuery,
+                                       newValueID + i,
+                                       newSeriesID,
+                                       newvalue,
+                                       row["ValueAccuracy"].ToString() == "" ? "NULL" : row["ValueAccuracy"].ToString(),
+                                       Convert.ToDateTime(row["LocalDateTime"]).ToString("yyyy-MM-dd HH:mm:ss"),
+                                       row["UTCOffset"].ToString(),
+                                       Convert.ToDateTime(row["DateTimeUTC"]).ToString("yyyy-MM-dd HH:mm:ss"),
+                                       row["OffsetValue"].ToString() == "" ? "NULL" : row["OffsetValue"].ToString(),
+                                       row["OffsetTypeID"].ToString() == "" ? "NULL" : row["OffsetTypeID"].ToString(),
+                                       row["CensorCode"].ToString(),
+                                       row["QualifierID"].ToString() == "" ? "NULL" : row["QualifierID"].ToString(),
+                                       row["SampleID"].ToString() == "" ? "NULL" : row["SampleID"].ToString(),
+                                       row["FileID"].ToString() == "" ? "NULL" : row["FileID"].ToString());
+                    query.AppendLine();
+
+                    if (index == dt.Rows.Count - 1) break;
+                    index = index + 1;
+                }
+
+                query.AppendLine("COMMIT;");
+                DbOperations.ExecuteNonQuery(query.ToString());
+
+                progressHandler.ReportProgress(index, null);
+            }
+        }
+
 
         #endregion
 
