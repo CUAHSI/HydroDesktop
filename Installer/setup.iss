@@ -75,8 +75,8 @@ VersionInfoCopyright=Mozilla Public License (MPL) 1.1
 VersionInfoDescription=HydroDesktop [www.HydroDesktop.org]
 VersionInfoProductName="{#AppName} {#AppVerStr}
 VersionInfoProductVersion={#AppVerStr}
-DefaultDirName={pf}\CUAHSI HIS\HydroDesktop 1.4
-DefaultGroupName=CUAHSI HIS\HydroDesktop 1.4
+DefaultDirName={pf}\CUAHSI HIS\{#AppName}
+DefaultGroupName=CUAHSI HIS\{#AppName}
 ;If this is set to auto, at startup Setup will look in the registry
 ;to see if the same application is already installed, and if so, it
 ;will not show the Select Start Menu Folder wizard page.
@@ -155,7 +155,7 @@ Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroMo
 Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
-Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"
+Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop_1_4.exe"
 Name: "{group}\{cm:UninstallProgram,HydroDesktop 1.4}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"; Tasks: desktopicon
 
@@ -200,6 +200,9 @@ Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
+Type: files; Name: "{userappdata}\HydroDesktop_log.txt"
 
 [UninstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
@@ -231,6 +234,9 @@ Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
+Type: files; Name: "{userappdata}\HydroDesktop_log.txt"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify
