@@ -114,10 +114,13 @@ namespace HydroR
             catch (Exception e)
             {
                 if (e.Message.Contains("Object reference not set to an instance of an object."))
+                {
                     MessageBox.Show("You must start R before you can Send Commands");
+                }
                 else
                     MessageBox.Show("Input Error: " + e.Message);
                 rtCommands.Line--;
+                throw e;
 
             }
         }
@@ -531,7 +534,12 @@ namespace HydroR
         {
             try
             {
-                sendLineToR(rtCommands.SelectedText);
+                //sendLineToR(rtCommands.SelectedText)              
+                foreach (string line in rtCommands.SelectedText.Split('\n'))
+                {
+                    sendLineToR(line);
+                }
+
             }
             catch { }
         }
@@ -541,7 +549,11 @@ namespace HydroR
         {
             try
             {
-                sendLineToR(rtCommands.Text);
+                //sendLineToR(rtCommands.Text);
+                foreach (string line in rtCommands.Lines)
+                {
+                    sendLineToR(line);
+                }
             }
             catch { }
         }
@@ -557,20 +569,31 @@ namespace HydroR
             {
                 //nrs = nrs.Distinct().ToArray();
                 //int[] ids = GetDistinctValues(Convert.seriesSelector31.CheckedIDList.ToArray());
+                var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>(DatabaseTypes.SQLite, HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString);
                 for (int i = 0; i < _seriesSelector.CheckedIDList.Length; i++)
                 {
                     //get the DB connection from HydroDesktop
                     string fileLoc = (HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString.Split(';'))[0].Substring(12);
-                    DbOperations dbCall = new DbOperations(HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+
                     //get the begin and end dates from the database for the current series
-                    DateTime begin = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
-                    DateTime end = Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i]));
+                    //var dates = repo.GetDateTimes(_seriesSelector.CheckedIDList[i]);
+                    //var begin = dates.Item1;
+                    //var end = dates.Item2;
+
+                    var dbCall=new HydroDesktop.Database.DbOperations(HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+	
+                    //get·the·begin·and·end·dates·from·the·database·for·the·current·series
+  	
+                    DateTime begin=Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select BeginDateTime FROM DataSeries WHERE SeriesID= " + _seriesSelector.CheckedIDList[i]));
+  	
+                    DateTime end=Convert.ToDateTime(dbCall.ExecuteSingleOutput("Select EndDateTime FROM DataSeries WHERE SeriesID = " + _seriesSelector.CheckedIDList[i])); 
+
                     if (fileLoc.Contains(" "))
                         rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=" + changeSlash(fileLoc).Trim() + "," + "\n");
 
                     else
                     {
-                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");                        
+                        rtCommands.AppendText("data" + count + " <- getDataSeries(connectionString=\"" + changeSlash(fileLoc).Trim() + "\"," + "\n");
                     }
                     rtCommands.AppendText("\tseriesID=" + _seriesSelector.CheckedIDList[i] + "," + "\n"
                                             + "\tSQLite=TRUE," + "\n"
@@ -601,7 +624,7 @@ namespace HydroR
 
         }
 
-        public void btnSetRPath_Click(object sender, EventArgs e) 
+        public void btnSetRPath_Click(object sender, EventArgs e)
         {
             frmInstallR frmR = new frmInstallR();
             frmR.ShowDialog(this);
@@ -651,15 +674,5 @@ namespace HydroR
         }
 
         #endregion
-
-
-        
-
-       
-
-        
-    
     }
 }
-
-
