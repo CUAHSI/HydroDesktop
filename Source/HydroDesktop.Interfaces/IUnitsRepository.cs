@@ -5,7 +5,7 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for Units Repository
     /// </summary>
-    public interface IUnitsRepository
+    public interface IUnitsRepository : IRepository<Unit>
     {
         /// <summary>
         /// Get <see cref="Unit"/> by ID

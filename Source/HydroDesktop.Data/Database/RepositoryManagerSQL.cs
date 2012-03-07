@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Data.Common;
-using System.ComponentModel;
 using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Database
@@ -12,7 +11,7 @@ namespace HydroDesktop.Database
     /// Helper class for reading and writing HydroDesktop objects to
     /// and from the HydroDesktop data repository SQLite database
     /// </summary>
-    public class DbRepositoryManagerSQL : BaseRepository, IRepositoryManager
+    public class DbRepositoryManagerSQL : BaseRepository<Series>, IRepositoryManager
     {
         #region Constructor
         /// <summary>
@@ -44,159 +43,14 @@ namespace HydroDesktop.Database
             get { return (DbOperations)DbOperations; }
         }
 
-        #endregion
-
-        #region Public Methods
-
-        #region Delete Series or Theme
-        /// <summary>
-        /// Deletes a theme and all its series as long as the series don't belong to any other theme.
-        /// </summary>
-        /// <param name="themeID">The Theme ID</param>
-        /// <returns>true if successful, false otherwise</returns>
-        public bool DeleteTheme(int themeID)
+        public override string TableName
         {
-            string sqlTheme = "SELECT SeriesID FROM DataThemes where ThemeID = " + themeID;
-            DataTable tblSeries = _db.LoadTable("tblSeries", sqlTheme);
-
-            foreach (DataRow seriesRow in tblSeries.Rows)
-            {
-                int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
-
-                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
-                seriesRepository.DeleteSeries(seriesID);
-            }
-
-            //delete the actual theme
-            string sqlDeleteTheme = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + themeID;
-            try
-            {
-                _db.ExecuteNonQuery(sqlDeleteTheme);
-            }
-            catch { };
-
-            //re-check the number of series in the theme
-
-            //theme deleted event
-            OnThemeDeleted();
-            
-            return true;
-        }
-
-        /// <summary>
-        /// Delete a theme - a background worker and progress bar is used
-        /// </summary>
-        /// <param name="themeID">The themeID (this needs to be a valid ID)</param>
-        /// <param name="worker">The background worker component</param>
-        /// <param name="e">The arguments for background worker</param>
-        /// <returns></returns>
-        public bool DeleteTheme(int themeID, BackgroundWorker worker, DoWorkEventArgs e)
-        {
-            string sqlTheme = "SELECT SeriesID FROM DataThemes where ThemeID = " + themeID;
-            DataTable tblSeries = _db.LoadTable("tblSeries", sqlTheme);
-
-            int numSeries = tblSeries.Rows.Count;
-            int count = 0;
-
-            if (numSeries == 0)
-            {
-                return false;
-            }
-
-            foreach (DataRow seriesRow in tblSeries.Rows)
-            {
-                if (worker != null)
-                {
-                    //check cancellation
-                    if (e != null && worker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        return false;
-                    }
-                }
-                
-                int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
-
-                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>(_db);
-                seriesRepository.DeleteSeries(seriesID);
-
-                //progress report
-                count++;
-
-                if (worker != null && worker.WorkerReportsProgress)
-                {
-                    int percent = (int)(((float)count / (float)numSeries) * 100);
-                    string userState = "Deleting series " + count + " of " + numSeries + "...";
-                    worker.ReportProgress(percent, userState);
-                }
-            }
-
-            //delete the actual theme
-
-            string sqlDeleteTheme = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + themeID;
-            try
-            {
-                _db.ExecuteNonQuery(sqlDeleteTheme);
-                e.Result = "Theme deleted successfully";
-            }
-            catch { };
-
-            return true;
-        }
-        
-      
-        #endregion
-
-        #region SQL Queries
-
-        public IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2)
-        {
-            if (variable1.Id <= 0) throw new ArgumentException("variable1 must have a valid ID");
-            if (variable2.Id <= 0) throw new ArgumentException("variable2 must have a valid ID");
-
-            string sqlQuery = String.Format("select s1.SeriesID as 'SeriesID1', s2.SeriesID as 'SeriesID2', " +
-                "site.SiteID, site.SiteName, site.SiteCode, site.Latitude, site.Longitude " +
-                "FROM DataSeries s1 INNER JOIN DataSeries s2 ON s1.SiteID = s2.SiteID " +
-                "INNER JOIN Sites site ON s1.SiteID = site.SiteID " +
-                "WHERE s1.VariableID = {0} AND s2.VariableID = {1}", variable1.Id, variable2.Id);
-
-            DataTable tbl = _db.LoadTable(sqlQuery);
-            List<Site> siteList = new List<Site>();
-
-            foreach (DataRow r in tbl.Rows)
-            {
-                Site s = new Site();
-                s.Id = (long)r["SiteID"];
-                s.Code = (string)r["SiteCode"];
-                s.Latitude = (double)r["Latitude"];
-                s.Longitude = (double)r["Longitude"];
-                s.Name = (string)r["SiteName"];
-
-                Series s1 = new Series(s, variable1, Method.Unknown, QualityControlLevel.Unknown, Source.Unknown);
-                s1.Id = (long)r["SeriesID1"];
-                s.AddDataSeries(s1);
-
-                Series s2 = new Series(s, variable2, Method.Unknown, QualityControlLevel.Unknown, Source.Unknown);
-                s2.Id = (long)r["SeriesID2"];
-                s.AddDataSeries(s2);
-
-                siteList.Add(s);
-            }
-            return siteList;
+            get { throw new NotImplementedException(); }
         }
 
         #endregion
 
         #region Save Series
-        /// <summary>
-        /// Adds an existing series to an existing theme
-        /// </summary>
-        /// <param name="series"></param>
-        /// <param name="theme"></param>
-        public void AddSeriesToTheme(Series series, Theme theme)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Simplified version of SaveSeries (for HydroForecaster)
@@ -210,10 +64,6 @@ namespace HydroDesktop.Database
         public int SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues)
         { 
             string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlMethod = "SELECT MethodID FROM Methods WHERE MethodDescription = ?";
-            string sqlSource = "SELECT SourceID FROM Sources WHERE Organization = ?";
-            string sqlISOMetadata = "SELECT MetadataID FROM ISOMetadata WHERE Title = ? AND MetadataLink = ?";
-            string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevels WHERE Definition = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
@@ -221,30 +71,8 @@ namespace HydroDesktop.Database
             string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
 
-            string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
-                                                   "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
-                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
+            
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveMethod = "INSERT INTO Methods(MethodDescription, MethodLink) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveQualityControl = "INSERT INTO QualityControlLevels(QualityControlLevelCode, Definition, Explanation) " +
-                "VALUES(?,?,?)" + sqlRowID;
-
-            string sqlSaveSource = "INSERT INTO Sources(Organization, SourceDescription, SourceLink, ContactName, Phone, " +
-                                   "Email, Address, City, State, ZipCode, Citation, MetadataID) " +
-                                   "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
-
-            string sqlSaveISOMetadata = "INSERT INTO ISOMetadata(TopicCategory, Title, Abstract, ProfileVersion, MetadataLink) " +
-                                    "VALUES(?,?,?,?,?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -266,27 +94,13 @@ namespace HydroDesktop.Database
             string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + sqlRowID;
             string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
 
-            //int spatialReferenceID = 0;
-            //int localProjectionID = 0;
-            //int variableUnitsID = 0;
-            //int timeUnitsID = 0;
+            
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
-            int isoMetadataID = 0;
             int seriesID = 0;
             int themeID = 0;
             
-            //object siteIDResult = null;
-            //object spatialReferenceIDResult = null;
-            //object localProjectionIDResult = null;
-            //object variableIDResult = null;
-            //object variableUnitsIDResult = null;
-            //object timeUnitsIDResult = null;
-            object methodIDResult = null;
-            object qualityControlLevelIDResult = null;
-            object sourceIDResult = null;
-            object isoMetadataIDResult = null;
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -295,9 +109,9 @@ namespace HydroDesktop.Database
             object offsetTypeIDResult = null;
             object offsetUnitIDResult = null;
 
-            Dictionary<string, Qualifier> qualifierLookup = new Dictionary<string, Qualifier>();
-            Dictionary<string, Sample> sampleLookup = new Dictionary<string, Sample>();
-            Dictionary<string, OffsetType> offsetLookup = new Dictionary<string, OffsetType>();
+            var qualifierLookup = new Dictionary<string, Qualifier>();
+            var sampleLookup = new Dictionary<string, Sample>();
+            var offsetLookup = new Dictionary<string, OffsetType>();
 
             //create the series object
             Series series = new Series();
@@ -325,126 +139,17 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 4 Method
                     //****************************************************************
-                    Method method = series.Method;
-
-                    using (DbCommand cmd10 = conn.CreateCommand())
-                    {
-                        cmd10.CommandText = sqlMethod;
-                        cmd10.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                        methodIDResult = cmd10.ExecuteScalar();
-                        if (methodIDResult != null)
-                        {
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
-
-                    if (methodID == 0)
-                    {
-                        using (DbCommand cmd11 = conn.CreateCommand())
-                        {
-                            cmd11.CommandText = sqlSaveMethod;
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Link));
-                            methodIDResult = cmd11.ExecuteScalar();
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
+                    methodID = GetOrCreateMethodID(series.Method, conn);
 
                     //****************************************************************
                     //*** Step 5 Quality Control Level
                     //****************************************************************
-                    QualityControlLevel qc = series.QualityControlLevel;
-
-                    using (DbCommand cmd12 = conn.CreateCommand())
-                    {
-                        cmd12.CommandText = sqlQuality;
-                        cmd12.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                        qualityControlLevelIDResult = cmd12.ExecuteScalar();
-                        if (qualityControlLevelIDResult != null)
-                        {
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
-
-                    if (qualityControlLevelID == 0)
-                    {
-                        using (DbCommand cmd13 = conn.CreateCommand())
-                        {
-                            cmd13.CommandText = sqlSaveQualityControl;
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Code));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Explanation));
-                            qualityControlLevelIDResult = cmd13.ExecuteScalar();
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
+                    qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
 
                     //****************************************************************
                     //*** Step 6 Source
                     //****************************************************************
-                    Source source = series.Source;
-
-                    using (DbCommand cmd14 = conn.CreateCommand())
-                    {
-                        cmd14.CommandText = sqlSource;
-                        cmd14.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                        sourceIDResult = cmd14.ExecuteScalar();
-                        if (sourceIDResult != null)
-                        {
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
-
-                    if (sourceID == 0)
-                    {
-                        ISOMetadata isoMetadata = source.ISOMetadata;
-
-                        using (DbCommand cmd15 = conn.CreateCommand())
-                        {
-                            cmd15.CommandText = sqlISOMetadata;
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                            isoMetadataIDResult = cmd15.ExecuteScalar();
-                            if (isoMetadataIDResult != null)
-                            {
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        if (isoMetadataID == 0)
-                        {
-                            using (DbCommand cmd16 = conn.CreateCommand())
-                            {
-                                cmd16.CommandText = sqlSaveISOMetadata;
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.TopicCategory));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Abstract));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.ProfileVersion));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                                isoMetadataIDResult = cmd16.ExecuteScalar();
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        using (DbCommand cmd17 = conn.CreateCommand())
-                        {
-                            cmd17.CommandText = sqlSaveSource;
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Description));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Link));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.ContactName));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Phone));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Email));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Address));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.City));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.State));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.Int32, source.ZipCode));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Citation));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadataID));
-                            sourceIDResult = cmd17.ExecuteScalar();
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
+                    sourceID = GetOrCreateSourceID(series.Source, conn);
 
                     //****************************************************************
                     //*** Step 7 Series
@@ -476,31 +181,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 8 Qualifier and Sample Lookup
                     //****************************************************************
-                    foreach (DataValue val in series.DataValueList)
-                    {
-                        if (val.Qualifier != null)
-                        {
-                            if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
-                            {
-                                qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
-                            }
-                        }
-
-                        if (val.Sample != null)
-                        {
-                            if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
-                            {
-                                sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
-                            }
-                        }
-                        if (val.OffsetType != null)
-                        {
-                            if (!offsetLookup.ContainsKey(val.OffsetType.Description))
-                            {
-                                offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
-                            }
-                        }
-                    }
+                    GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
 
                     //****************************************************************
                     //*** Step 9 Qualifiers
@@ -901,19 +582,16 @@ namespace HydroDesktop.Database
             {
                 return SaveSeriesAppend(seriesToSave, theme);
             }
-            else if (overwrite == OverwriteOptions.Copy)
+            if (overwrite == OverwriteOptions.Copy)
             {
                 return SaveSeriesAsCopy(seriesToSave, theme);
             }
-            else if (overwrite == OverwriteOptions.Overwrite)
+            if (overwrite == OverwriteOptions.Overwrite)
             {
                 return SaveSeriesOverwrite(seriesToSave, theme);
             }
-            else
-            {
-                //default option is 'append'...
-                return SaveSeriesAppend(seriesToSave, theme);
-            }
+            //default option is 'append'...
+            return SaveSeriesAppend(seriesToSave, theme);
         }
 
         /// <summary>
@@ -928,14 +606,7 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesAppend(Series series, Theme theme)
         {
-            string sqlSite = "SELECT SiteID FROM Sites WHERE SiteCode = ?";
-            string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
-            string sqlSpatialReference = "SELECT SpatialReferenceID FROM SpatialReferences WHERE SRSID = ? AND SRSName = ?";
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlMethod = "SELECT MethodID FROM Methods WHERE MethodDescription = ?";
-            string sqlSource = "SELECT SourceID FROM Sources WHERE Organization = ?";
-            string sqlISOMetadata = "SELECT MetadataID FROM ISOMetadata WHERE Title = ? AND MetadataLink = ?";
-            string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevels WHERE Definition = ?";
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
@@ -945,30 +616,7 @@ namespace HydroDesktop.Database
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
 
-            string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
-                                                   "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
-                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveMethod = "INSERT INTO Methods(MethodDescription, MethodLink) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveQualityControl = "INSERT INTO QualityControlLevels(QualityControlLevelCode, Definition, Explanation) " +
-                "VALUES(?,?,?)" + sqlRowID;
-
-            string sqlSaveSource = "INSERT INTO Sources(Organization, SourceDescription, SourceLink, ContactName, Phone, " +
-                                   "Email, Address, City, State, ZipCode, Citation, MetadataID) " +
-                                   "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
-
-            string sqlSaveISOMetadata = "INSERT INTO ISOMetadata(TopicCategory, Title, Abstract, ProfileVersion, MetadataLink) " +
-                                    "VALUES(?,?,?,?,?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -995,28 +643,12 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            int spatialReferenceID = 0;
-            int localProjectionID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
-            int isoMetadataID = 0;
             int seriesID = 0;
             int themeID = 0;
-            //int offsetTypeID = 0;
-
-            object siteIDResult = null;
-            object spatialReferenceIDResult = null;
-            object localProjectionIDResult = null;
-            object variableIDResult = null;
-            object variableUnitsIDResult = null;
-            object timeUnitsIDResult = null;
-            object methodIDResult = null;
-            object qualityControlLevelIDResult = null;
-            object sourceIDResult = null;
-            object isoMetadataIDResult = null;
+            
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -1025,9 +657,9 @@ namespace HydroDesktop.Database
             object offsetTypeIDResult = null;
             object offsetUnitIDResult = null;
 
-            Dictionary<string, Qualifier> qualifierLookup = new Dictionary<string, Qualifier>();
-            Dictionary<string, Sample> sampleLookup = new Dictionary<string, Sample>();
-            Dictionary<string, OffsetType> offsetLookup = new Dictionary<string, OffsetType>();
+            var qualifierLookup = new Dictionary<string, Qualifier>();
+            var sampleLookup = new Dictionary<string, Sample>();
+            var offsetLookup = new Dictionary<string, OffsetType>();
 
             int numSavedValues = 0;
 
@@ -1048,321 +680,27 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 2 Site
                     //****************************************************************
-                    using (DbCommand cmd01 = conn.CreateCommand())
-                    {
-                        cmd01.CommandText = sqlSite;
-                        cmd01.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.Code));
-                        siteIDResult = cmd01.ExecuteScalar();
-                        if (siteIDResult != null)
-                        {
-                            siteID = Convert.ToInt32(siteIDResult);
-                        }
-                    }
-
-                    if (siteID == 0) //New Site needs to be created
-                    {
-                        using (DbCommand cmd02 = conn.CreateCommand())
-                        {
-                            cmd02.CommandText = sqlSpatialReference;
-                            cmd02.Parameters.Add(_db.CreateParameter(DbType.Int32, series.Site.SpatialReference.SRSID));
-                            cmd02.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.SpatialReference.SRSName));
-
-                            spatialReferenceIDResult = cmd02.ExecuteScalar();
-                            if (spatialReferenceIDResult != null)
-                            {
-                                spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                            }
-
-                            if (series.Site.LocalProjection != null)
-                            {
-                                cmd02.Parameters[0].Value = series.Site.LocalProjection.SRSID;
-                                cmd02.Parameters[1].Value = series.Site.LocalProjection.SRSName;
-
-                                localProjectionIDResult = cmd02.ExecuteScalar();
-                                if (localProjectionIDResult != null)
-                                {
-                                    localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                                }
-                            }
-                        }
-
-                        if (spatialReferenceID == 0)
-                        {
-                            //save spatial reference and the local projection
-                            using (DbCommand cmd03 = conn.CreateCommand())
-                            {
-                                //Save the spatial reference (Lat / Long Datum)
-                                cmd03.CommandText = sqlSaveSpatialReference;
-                                cmd03.Parameters.Add(_db.CreateParameter(DbType.Int32, series.Site.SpatialReference.SRSID));
-                                cmd03.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.SpatialReference.SRSName));
-
-                                spatialReferenceIDResult = cmd03.ExecuteScalar();
-
-                                if (spatialReferenceIDResult != null)
-                                {
-                                    spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                                }
-
-                                //Save the local projection
-                                if (series.Site.LocalProjection != null)
-                                {
-                                    if (localProjectionID == 0)
-                                    {
-                                        cmd03.Parameters[0].Value = series.Site.LocalProjection.SRSID;
-                                        cmd03.Parameters[1].Value = series.Site.LocalProjection.SRSName;
-                                        localProjectionIDResult = cmd03.ExecuteScalar();
-                                        localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //Insert the site to the database
-                        using (DbCommand cmd04 = conn.CreateCommand())
-                        {
-                            Site site = series.Site;
-
-                            cmd04.CommandText = sqlSaveSite;
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Code));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Name));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Latitude));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Longitude));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, spatialReferenceID));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Elevation_m));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.VerticalDatum));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalX));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalY));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, localProjectionID));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.PosAccuracy_m));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.State));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.County));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Comments));
-
-                            siteIDResult = cmd04.ExecuteScalar();
-                            siteID = Convert.ToInt32(siteIDResult);
-                        }
-                    }
+                    siteID = GetOrCreateSiteID(series.Site, conn);
 
                     //****************************************************************
                     //*** Step 3 Variable
                     //****************************************************************
-                    Variable variable = series.Variable;
-
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlVariable;
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                        cmd05.Parameters[0].Value = variable.Code;
-                        cmd05.Parameters[1].Value = variable.DataType;
-                        variableIDResult = cmd05.ExecuteScalar();
-                        if (variableIDResult != null)
-                        {
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
-
-                    if (variableID == 0) //New variable needs to be created
-                    {
-                        using (DbCommand cmd06 = conn.CreateCommand())
-                        {
-                            cmd06.CommandText = sqlUnits;
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                            variableUnitsIDResult = cmd06.ExecuteScalar();
-                            if (variableUnitsIDResult != null)
-                            {
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-
-                            cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                            cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                            cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                            timeUnitsIDResult = cmd06.ExecuteScalar();
-                            if (timeUnitsIDResult != null)
-                            {
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        if (variableUnitsID == 0)
-                        {
-                            //save the variable units
-                            using (DbCommand cmd07 = conn.CreateCommand())
-                            {
-                                //Save the variable units
-                                cmd07.CommandText = sqlSaveUnits;
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                                variableUnitsIDResult = cmd07.ExecuteScalar();
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-                        }
-
-                        if (timeUnitsID == 0)
-                        {
-                            //save the time units
-                            using (DbCommand cmd08 = conn.CreateCommand())
-                            {
-                                //Save the time units
-                                cmd08.CommandText = sqlSaveUnits;
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                                timeUnitsIDResult = cmd08.ExecuteScalar();
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        //Insert the variable to the database
-                        using (DbCommand cmd09 = conn.CreateCommand())
-                        {
-                            cmd09.CommandText = sqlSaveVariable;
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
-
-                            variableIDResult = cmd09.ExecuteScalar();
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
+                    variableID = GetOrCreateVariableID(series.Variable, conn);
 
                     //****************************************************************
                     //*** Step 4 Method
                     //****************************************************************
-                    Method method = series.Method;
-
-                    using (DbCommand cmd10 = conn.CreateCommand())
-                    {
-                        cmd10.CommandText = sqlMethod;
-                        cmd10.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                        methodIDResult = cmd10.ExecuteScalar();
-                        if (methodIDResult != null)
-                        {
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
-
-                    if (methodID == 0)
-                    {
-                        using (DbCommand cmd11 = conn.CreateCommand())
-                        {
-                            cmd11.CommandText = sqlSaveMethod;
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Link));
-                            methodIDResult = cmd11.ExecuteScalar();
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
+                    methodID = GetOrCreateMethodID(series.Method, conn);
 
                     //****************************************************************
                     //*** Step 5 Quality Control Level
                     //****************************************************************
-                    QualityControlLevel qc = series.QualityControlLevel;
-
-                    using (DbCommand cmd12 = conn.CreateCommand())
-                    {
-                        cmd12.CommandText = sqlQuality;
-                        cmd12.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                        qualityControlLevelIDResult = cmd12.ExecuteScalar();
-                        if (qualityControlLevelIDResult != null)
-                        {
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
-
-                    if (qualityControlLevelID == 0)
-                    {
-                        using (DbCommand cmd13 = conn.CreateCommand())
-                        {
-                            cmd13.CommandText = sqlSaveQualityControl;
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Code));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Explanation));
-                            qualityControlLevelIDResult = cmd13.ExecuteScalar();
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
+                    qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
 
                     //****************************************************************
                     //*** Step 6 Source
                     //****************************************************************
-                    Source source = series.Source;
-
-                    using (DbCommand cmd14 = conn.CreateCommand())
-                    {
-                        cmd14.CommandText = sqlSource;
-                        cmd14.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                        sourceIDResult = cmd14.ExecuteScalar();
-                        if (sourceIDResult != null)
-                        {
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
-
-                    if (sourceID == 0)
-                    {
-                        ISOMetadata isoMetadata = source.ISOMetadata;
-
-                        using (DbCommand cmd15 = conn.CreateCommand())
-                        {
-                            cmd15.CommandText = sqlISOMetadata;
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                            isoMetadataIDResult = cmd15.ExecuteScalar();
-                            if (isoMetadataIDResult != null)
-                            {
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        if (isoMetadataID == 0)
-                        {
-                            using (DbCommand cmd16 = conn.CreateCommand())
-                            {
-                                cmd16.CommandText = sqlSaveISOMetadata;
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.TopicCategory));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Abstract));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.ProfileVersion));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                                isoMetadataIDResult = cmd16.ExecuteScalar();
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        using (DbCommand cmd17 = conn.CreateCommand())
-                        {
-                            cmd17.CommandText = sqlSaveSource;
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Description));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Link));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.ContactName));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Phone));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Email));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Address));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.City));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.State));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.Int32, source.ZipCode));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Citation));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadataID));
-                            sourceIDResult = cmd17.ExecuteScalar();
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
+                    sourceID = GetOrCreateSourceID(series.Source, conn);
 
                     //****************************************************************
                     //*** Step 7 Series
@@ -1454,31 +792,7 @@ namespace HydroDesktop.Database
                         //****************************************************************
                         //*** Step 8 Qualifier and Sample Lookup
                         //****************************************************************
-                        foreach (DataValue val in series.DataValueList)
-                        {
-                            if (val.Qualifier != null)
-                            {
-                                if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
-                                {
-                                    qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
-                                }
-                            }
-
-                            if (val.Sample != null)
-                            {
-                                if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
-                                {
-                                    sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
-                                }
-                            }
-                            if (val.OffsetType != null)
-                            {
-                                if (!offsetLookup.ContainsKey(val.OffsetType.Description))
-                                {
-                                    offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
-                                }
-                            }
-                        }
+                        GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
 
                         //****************************************************************
                         //*** Step 9 Qualifiers
@@ -1919,6 +1233,9 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
+
+            series.Id = seriesID;
+
             return numSavedValues;
         }
 
@@ -1934,14 +1251,7 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesOverwrite(Series series, Theme theme)
         {
-            string sqlSite = "SELECT SiteID FROM Sites WHERE SiteCode = ?";
-            string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
-            string sqlSpatialReference = "SELECT SpatialReferenceID FROM SpatialReferences WHERE SRSID = ? AND SRSName = ?";
             string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlMethod = "SELECT MethodID FROM Methods WHERE MethodDescription = ?";
-            string sqlSource = "SELECT SourceID FROM Sources WHERE Organization = ?";
-            string sqlISOMetadata = "SELECT MetadataID FROM ISOMetadata WHERE Title = ? AND MetadataLink = ?";
-            string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevels WHERE Definition = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
@@ -1951,30 +1261,7 @@ namespace HydroDesktop.Database
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
 
-            string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
-                                                   "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
-                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveMethod = "INSERT INTO Methods(MethodDescription, MethodLink) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveQualityControl = "INSERT INTO QualityControlLevels(QualityControlLevelCode, Definition, Explanation) " +
-                "VALUES(?,?,?)" + sqlRowID;
-
-            string sqlSaveSource = "INSERT INTO Sources(Organization, SourceDescription, SourceLink, ContactName, Phone, " +
-                                   "Email, Address, City, State, ZipCode, Citation, MetadataID) " +
-                                   "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
-
-            string sqlSaveISOMetadata = "INSERT INTO ISOMetadata(TopicCategory, Title, Abstract, ProfileVersion, MetadataLink) " +
-                                    "VALUES(?,?,?,?,?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -2003,28 +1290,12 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            int spatialReferenceID = 0;
-            int localProjectionID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
-            int isoMetadataID = 0;
             int seriesID = 0;
             int themeID = 0;
-            //int offsetTypeID = 0;
-
-            object siteIDResult = null;
-            object spatialReferenceIDResult = null;
-            object localProjectionIDResult = null;
-            object variableIDResult = null;
-            object variableUnitsIDResult = null;
-            object timeUnitsIDResult = null;
-            object methodIDResult = null;
-            object qualityControlLevelIDResult = null;
-            object sourceIDResult = null;
-            object isoMetadataIDResult = null;
+            
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -2033,9 +1304,9 @@ namespace HydroDesktop.Database
             object offsetTypeIDResult = null;
             object offsetUnitIDResult = null;
 
-            Dictionary<string, Qualifier> qualifierLookup = new Dictionary<string, Qualifier>();
-            Dictionary<string, Sample> sampleLookup = new Dictionary<string, Sample>();
-            Dictionary<string, OffsetType> offsetLookup = new Dictionary<string, OffsetType>();
+            var qualifierLookup = new Dictionary<string, Qualifier>();
+            var sampleLookup = new Dictionary<string, Sample>();
+            var offsetLookup = new Dictionary<string, OffsetType>();
 
             int numSavedValues = 0;
 
@@ -2056,321 +1327,27 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 2 Site
                     //****************************************************************
-                    using (DbCommand cmd01 = conn.CreateCommand())
-                    {
-                        cmd01.CommandText = sqlSite;
-                        cmd01.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.Code));
-                        siteIDResult = cmd01.ExecuteScalar();
-                        if (siteIDResult != null)
-                        {
-                            siteID = Convert.ToInt32(siteIDResult);
-                        }
-                    }
-
-                    if (siteID == 0) //New Site needs to be created
-                    {
-                        using (DbCommand cmd02 = conn.CreateCommand())
-                        {
-                            cmd02.CommandText = sqlSpatialReference;
-                            cmd02.Parameters.Add(_db.CreateParameter(DbType.Int32, series.Site.SpatialReference.SRSID));
-                            cmd02.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.SpatialReference.SRSName));
-
-                            spatialReferenceIDResult = cmd02.ExecuteScalar();
-                            if (spatialReferenceIDResult != null)
-                            {
-                                spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                            }
-
-                            if (series.Site.LocalProjection != null)
-                            {
-                                cmd02.Parameters[0].Value = series.Site.LocalProjection.SRSID;
-                                cmd02.Parameters[1].Value = series.Site.LocalProjection.SRSName;
-
-                                localProjectionIDResult = cmd02.ExecuteScalar();
-                                if (localProjectionIDResult != null)
-                                {
-                                    localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                                }
-                            }
-                        }
-
-                        if (spatialReferenceID == 0)
-                        {
-                            //save spatial reference and the local projection
-                            using (DbCommand cmd03 = conn.CreateCommand())
-                            {
-                                //Save the spatial reference (Lat / Long Datum)
-                                cmd03.CommandText = sqlSaveSpatialReference;
-                                cmd03.Parameters.Add(_db.CreateParameter(DbType.Int32, series.Site.SpatialReference.SRSID));
-                                cmd03.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.SpatialReference.SRSName));
-
-                                spatialReferenceIDResult = cmd03.ExecuteScalar();
-
-                                if (spatialReferenceIDResult != null)
-                                {
-                                    spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                                }
-
-                                //Save the local projection
-                                if (series.Site.LocalProjection != null)
-                                {
-                                    if (localProjectionID == 0)
-                                    {
-                                        cmd03.Parameters[0].Value = series.Site.LocalProjection.SRSID;
-                                        cmd03.Parameters[1].Value = series.Site.LocalProjection.SRSName;
-                                        localProjectionIDResult = cmd03.ExecuteScalar();
-                                        localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //Insert the site to the database
-                        using (DbCommand cmd04 = conn.CreateCommand())
-                        {
-                            Site site = series.Site;
-
-                            cmd04.CommandText = sqlSaveSite;
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Code));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Name));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Latitude));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Longitude));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, spatialReferenceID));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Elevation_m));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.VerticalDatum));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalX));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalY));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, localProjectionID));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.PosAccuracy_m));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.State));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.County));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Comments));
-
-                            siteIDResult = cmd04.ExecuteScalar();
-                            siteID = Convert.ToInt32(siteIDResult);
-                        }
-                    }
+                    siteID = GetOrCreateSiteID(series.Site, conn);
 
                     //****************************************************************
                     //*** Step 3 Variable
                     //****************************************************************
-                    Variable variable = series.Variable;
-
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlVariable;
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                        cmd05.Parameters[0].Value = variable.Code;
-                        cmd05.Parameters[1].Value = variable.DataType;
-                        variableIDResult = cmd05.ExecuteScalar();
-                        if (variableIDResult != null)
-                        {
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
-
-                    if (variableID == 0) //New variable needs to be created
-                    {
-                        using (DbCommand cmd06 = conn.CreateCommand())
-                        {
-                            cmd06.CommandText = sqlUnits;
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                            variableUnitsIDResult = cmd06.ExecuteScalar();
-                            if (variableUnitsIDResult != null)
-                            {
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-
-                            cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                            cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                            cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                            timeUnitsIDResult = cmd06.ExecuteScalar();
-                            if (timeUnitsIDResult != null)
-                            {
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        if (variableUnitsID == 0)
-                        {
-                            //save the variable units
-                            using (DbCommand cmd07 = conn.CreateCommand())
-                            {
-                                //Save the variable units
-                                cmd07.CommandText = sqlSaveUnits;
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                                variableUnitsIDResult = cmd07.ExecuteScalar();
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-                        }
-
-                        if (timeUnitsID == 0)
-                        {
-                            //save the time units
-                            using (DbCommand cmd08 = conn.CreateCommand())
-                            {
-                                //Save the time units
-                                cmd08.CommandText = sqlSaveUnits;
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                                timeUnitsIDResult = cmd08.ExecuteScalar();
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        //Insert the variable to the database
-                        using (DbCommand cmd09 = conn.CreateCommand())
-                        {
-                            cmd09.CommandText = sqlSaveVariable;
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
-
-                            variableIDResult = cmd09.ExecuteScalar();
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
+                    variableID = GetOrCreateVariableID(series.Variable, conn);
 
                     //****************************************************************
                     //*** Step 4 Method
                     //****************************************************************
-                    Method method = series.Method;
-
-                    using (DbCommand cmd10 = conn.CreateCommand())
-                    {
-                        cmd10.CommandText = sqlMethod;
-                        cmd10.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                        methodIDResult = cmd10.ExecuteScalar();
-                        if (methodIDResult != null)
-                        {
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
-
-                    if (methodID == 0)
-                    {
-                        using (DbCommand cmd11 = conn.CreateCommand())
-                        {
-                            cmd11.CommandText = sqlSaveMethod;
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Link));
-                            methodIDResult = cmd11.ExecuteScalar();
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
+                    methodID = GetOrCreateMethodID(series.Method, conn);
 
                     //****************************************************************
                     //*** Step 5 Quality Control Level
                     //****************************************************************
-                    QualityControlLevel qc = series.QualityControlLevel;
-
-                    using (DbCommand cmd12 = conn.CreateCommand())
-                    {
-                        cmd12.CommandText = sqlQuality;
-                        cmd12.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                        qualityControlLevelIDResult = cmd12.ExecuteScalar();
-                        if (qualityControlLevelIDResult != null)
-                        {
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
-
-                    if (qualityControlLevelID == 0)
-                    {
-                        using (DbCommand cmd13 = conn.CreateCommand())
-                        {
-                            cmd13.CommandText = sqlSaveQualityControl;
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Code));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Explanation));
-                            qualityControlLevelIDResult = cmd13.ExecuteScalar();
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
+                    qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
 
                     //****************************************************************
                     //*** Step 6 Source
                     //****************************************************************
-                    Source source = series.Source;
-
-                    using (DbCommand cmd14 = conn.CreateCommand())
-                    {
-                        cmd14.CommandText = sqlSource;
-                        cmd14.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                        sourceIDResult = cmd14.ExecuteScalar();
-                        if (sourceIDResult != null)
-                        {
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
-
-                    if (sourceID == 0)
-                    {
-                        ISOMetadata isoMetadata = source.ISOMetadata;
-
-                        using (DbCommand cmd15 = conn.CreateCommand())
-                        {
-                            cmd15.CommandText = sqlISOMetadata;
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                            isoMetadataIDResult = cmd15.ExecuteScalar();
-                            if (isoMetadataIDResult != null)
-                            {
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        if (isoMetadataID == 0)
-                        {
-                            using (DbCommand cmd16 = conn.CreateCommand())
-                            {
-                                cmd16.CommandText = sqlSaveISOMetadata;
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.TopicCategory));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Abstract));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.ProfileVersion));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                                isoMetadataIDResult = cmd16.ExecuteScalar();
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        using (DbCommand cmd17 = conn.CreateCommand())
-                        {
-                            cmd17.CommandText = sqlSaveSource;
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Description));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Link));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.ContactName));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Phone));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Email));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Address));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.City));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.State));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.Int32, source.ZipCode));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Citation));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadataID));
-                            sourceIDResult = cmd17.ExecuteScalar();
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
+                    sourceID = GetOrCreateSourceID(series.Source, conn);
 
                     //****************************************************************
                     //*** Step 7 Series
@@ -2464,31 +1441,7 @@ namespace HydroDesktop.Database
                         //****************************************************************
                         //*** Step 8 Qualifier and Sample Lookup
                         //****************************************************************
-                        foreach (DataValue val in series.DataValueList)
-                        {
-                            if (val.Qualifier != null)
-                            {
-                                if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
-                                {
-                                    qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
-                                }
-                            }
-
-                            if (val.Sample != null)
-                            {
-                                if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
-                                {
-                                    sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
-                                }
-                            }
-                            if (val.OffsetType != null)
-                            {
-                                if (!offsetLookup.ContainsKey(val.OffsetType.Description))
-                                {
-                                    offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
-                                }
-                            }
-                        }
+                        GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
 
                         //****************************************************************
                         //*** Step 9 Qualifiers
@@ -2929,6 +1882,8 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
+            series.Id = seriesID;
+
             return numSavedValues;
         }
 
@@ -2942,46 +1897,16 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         public int SaveSeriesAsCopy(Series series, Theme theme)
         {
-            string sqlSite = "SELECT SiteID FROM Sites WHERE SiteCode = ?";
-            string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
-            string sqlSpatialReference = "SELECT SpatialReferenceID FROM SpatialReferences WHERE SRSID = ? AND SRSName = ?";
             string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlMethod = "SELECT MethodID FROM Methods WHERE MethodDescription = ?";
-            string sqlSource = "SELECT SourceID FROM Sources WHERE Organization = ?";
-            string sqlISOMetadata = "SELECT MetadataID FROM ISOMetadata WHERE Title = ? AND MetadataLink = ?";
-            string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevels WHERE Definition = ?";
             string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
             string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
             string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
-            //string sqlSeries = "SELECT SeriesID FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
 
-            string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
-                                                   "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
-                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
+            
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
-
-            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
-                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveMethod = "INSERT INTO Methods(MethodDescription, MethodLink) VALUES(?, ?)" + sqlRowID;
-
-            string sqlSaveQualityControl = "INSERT INTO QualityControlLevels(QualityControlLevelCode, Definition, Explanation) " +
-                "VALUES(?,?,?)" + sqlRowID;
-
-            string sqlSaveSource = "INSERT INTO Sources(Organization, SourceDescription, SourceLink, ContactName, Phone, " +
-                                   "Email, Address, City, State, ZipCode, Citation, MetadataID) " +
-                                   "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
-
-            string sqlSaveISOMetadata = "INSERT INTO ISOMetadata(TopicCategory, Title, Abstract, ProfileVersion, MetadataLink) " +
-                                    "VALUES(?,?,?,?,?)" + sqlRowID;
-
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -3005,28 +1930,12 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            int spatialReferenceID = 0;
-            int localProjectionID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
-            int isoMetadataID = 0;
             int seriesID = 0;
             int themeID = 0;
-            //int offsetTypeID = 0;
             
-            object siteIDResult = null;
-            object spatialReferenceIDResult = null;
-            object localProjectionIDResult = null;
-            object variableIDResult = null;
-            object variableUnitsIDResult = null;
-            object timeUnitsIDResult = null;
-            object methodIDResult = null;
-            object qualityControlLevelIDResult = null;
-            object sourceIDResult = null;
-            object isoMetadataIDResult = null;
             object seriesIDResult = null;
             object qualifierIDResult = null;
             object themeIDResult = null;
@@ -3035,9 +1944,9 @@ namespace HydroDesktop.Database
             object offsetTypeIDResult = null;
             object offsetUnitIDResult = null;
 
-            Dictionary<string, Qualifier> qualifierLookup = new Dictionary<string, Qualifier>();
-            Dictionary<string, Sample> sampleLookup = new Dictionary<string, Sample>();
-            Dictionary<string, OffsetType> offsetLookup = new Dictionary<string, OffsetType>();
+            var qualifierLookup = new Dictionary<string, Qualifier>();
+            var sampleLookup = new Dictionary<string, Sample>();
+            var offsetLookup = new Dictionary<string, OffsetType>();
 
             int numSavedValues = 0;
             
@@ -3051,322 +1960,28 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 2 Site
                     //****************************************************************
-                    using (DbCommand cmd01 = conn.CreateCommand())
-                    {
-                        cmd01.CommandText = sqlSite;
-                        cmd01.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.Code));
-                        siteIDResult = cmd01.ExecuteScalar();
-                        if (siteIDResult != null)
-                        {
-                            siteID = Convert.ToInt32(siteIDResult);
-                        }
-                    }
-
-                    if (siteID == 0) //New Site needs to be created
-                    {
-                        using (DbCommand cmd02 = conn.CreateCommand())
-                        {
-                            cmd02.CommandText = sqlSpatialReference;
-                            cmd02.Parameters.Add(_db.CreateParameter(DbType.Int32, series.Site.SpatialReference.SRSID));
-                            cmd02.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.SpatialReference.SRSName));
-                            
-                            spatialReferenceIDResult = cmd02.ExecuteScalar();
-                            if (spatialReferenceIDResult != null)
-                            {
-                                spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                            }
-                            
-                            if (series.Site.LocalProjection != null)
-                            {
-                                cmd02.Parameters[0].Value = series.Site.LocalProjection.SRSID;
-                                cmd02.Parameters[1].Value = series.Site.LocalProjection.SRSName;
-
-                                localProjectionIDResult = cmd02.ExecuteScalar();
-                                if (localProjectionIDResult != null)
-                                {
-                                    localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                                }
-                            }
-                        }
-
-                        if (spatialReferenceID == 0)
-                        {
-                            //save spatial reference and the local projection
-                            using (DbCommand cmd03 = conn.CreateCommand())
-                            {
-                                //Save the spatial reference (Lat / Long Datum)
-                                cmd03.CommandText = sqlSaveSpatialReference;
-                                cmd03.Parameters.Add(_db.CreateParameter(DbType.Int32, series.Site.SpatialReference.SRSID));
-                                cmd03.Parameters.Add(_db.CreateParameter(DbType.String, series.Site.SpatialReference.SRSName));
-                                
-                                spatialReferenceIDResult = cmd03.ExecuteScalar();
-
-                                if (spatialReferenceIDResult != null)
-                                {
-                                    spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
-                                }
-
-                                //Save the local projection
-                                if (series.Site.LocalProjection != null)
-                                {
-                                    if (localProjectionID == 0)
-                                    {
-                                        cmd03.Parameters[0].Value = series.Site.LocalProjection.SRSID;
-                                        cmd03.Parameters[1].Value = series.Site.LocalProjection.SRSName;
-                                        localProjectionIDResult = cmd03.ExecuteScalar();
-                                        localProjectionID = Convert.ToInt32(localProjectionIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //Insert the site to the database
-                        using (DbCommand cmd04 = conn.CreateCommand())
-                        {
-                            Site site = series.Site;
-
-                            cmd04.CommandText = sqlSaveSite;
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Code));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Name));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Latitude));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Longitude));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, spatialReferenceID));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Elevation_m));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.VerticalDatum));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalX));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalY));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, localProjectionID));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.PosAccuracy_m));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.State));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.County));
-                            cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Comments));
-
-                            siteIDResult = cmd04.ExecuteScalar();
-                            siteID = Convert.ToInt32(siteIDResult);
-                        }
-                    }
-
+                    siteID = GetOrCreateSiteID(series.Site, conn);
+                   
                     //****************************************************************
                     //*** Step 3 Variable
                     //****************************************************************
-                    Variable variable = series.Variable;
-
-                    using (DbCommand cmd05 = conn.CreateCommand())
-                    {
-                        cmd05.CommandText = sqlVariable;
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                        cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                        cmd05.Parameters[0].Value = variable.Code;
-                        cmd05.Parameters[1].Value = variable.DataType;
-                        variableIDResult = cmd05.ExecuteScalar();
-                        if (variableIDResult != null)
-                        {
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
-
-                    if (variableID == 0) //New variable needs to be created
-                    {
-                        using (DbCommand cmd06 = conn.CreateCommand())
-                        {
-                            cmd06.CommandText = sqlUnits;
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                            cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                            
-                            variableUnitsIDResult = cmd06.ExecuteScalar();
-                            if (variableUnitsIDResult != null)
-                            {
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-
-                            cmd06.Parameters[0].Value = variable.TimeUnit.Name;
-                            cmd06.Parameters[1].Value = variable.TimeUnit.UnitsType;
-                            cmd06.Parameters[2].Value = variable.TimeUnit.Abbreviation;
-                            timeUnitsIDResult = cmd06.ExecuteScalar();
-                            if (timeUnitsIDResult != null)
-                            {
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        if (variableUnitsID == 0)
-                        {
-                            //save the variable units
-                            using (DbCommand cmd07 = conn.CreateCommand())
-                            {
-                                //Save the variable units
-                                cmd07.CommandText = sqlSaveUnits;
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                                cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                                variableUnitsIDResult = cmd07.ExecuteScalar();
-                                variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                            }
-                        }
-
-                        if (timeUnitsID == 0)
-                        {
-                            //save the time units
-                            using (DbCommand cmd08 = conn.CreateCommand())
-                            {
-                                //Save the time units
-                                cmd08.CommandText = sqlSaveUnits;
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                                cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                                timeUnitsIDResult = cmd08.ExecuteScalar();
-                                timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                            }
-                        }
-
-                        //Insert the variable to the database
-                        using (DbCommand cmd09 = conn.CreateCommand())
-                        {
-                            cmd09.CommandText = sqlSaveVariable;
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
-                            cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
-
-                            variableIDResult = cmd09.ExecuteScalar();
-                            variableID = Convert.ToInt32(variableIDResult);
-                        }
-                    }
+                    variableID = GetOrCreateVariableID(series.Variable, conn);
 
                     //****************************************************************
                     //*** Step 4 Method
                     //****************************************************************
-                    Method method = series.Method;
-
-                    using (DbCommand cmd10 = conn.CreateCommand())
-                    {
-                        cmd10.CommandText = sqlMethod;
-                        cmd10.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                        methodIDResult = cmd10.ExecuteScalar();
-                        if (methodIDResult != null)
-                        {
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
-
-                    if (methodID == 0)
-                    {
-                        using (DbCommand cmd11 = conn.CreateCommand())
-                        {
-                            cmd11.CommandText = sqlSaveMethod;
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
-                            cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Link));
-                            methodIDResult = cmd11.ExecuteScalar();
-                            methodID = Convert.ToInt32(methodIDResult);
-                        }
-                    }
+                    methodID = GetOrCreateMethodID(series.Method, conn);
 
                     //****************************************************************
                     //*** Step 5 Quality Control Level
                     //****************************************************************
-                    QualityControlLevel qc = series.QualityControlLevel;
-
-                    using (DbCommand cmd12 = conn.CreateCommand())
-                    {
-                        cmd12.CommandText = sqlQuality;
-                        cmd12.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                        qualityControlLevelIDResult = cmd12.ExecuteScalar();
-                        if (qualityControlLevelIDResult != null)
-                        {
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
-
-                    if (qualityControlLevelID == 0)
-                    {
-                        using (DbCommand cmd13 = conn.CreateCommand())
-                        {
-                            cmd13.CommandText = sqlSaveQualityControl;
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Code));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
-                            cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Explanation));
-                            qualityControlLevelIDResult = cmd13.ExecuteScalar();
-                            qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
-                        }
-                    }
-
+                    qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
+                   
                     //****************************************************************
                     //*** Step 6 Source
                     //****************************************************************
-                    Source source = series.Source;
-
-                    using (DbCommand cmd14 = conn.CreateCommand())
-                    {
-                        cmd14.CommandText = sqlSource;
-                        cmd14.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                        sourceIDResult = cmd14.ExecuteScalar();
-                        if (sourceIDResult != null)
-                        {
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
-
-                    if (sourceID == 0)
-                    {
-                        ISOMetadata isoMetadata = source.ISOMetadata;
-                        
-                        using (DbCommand cmd15 = conn.CreateCommand())
-                        {
-                            cmd15.CommandText = sqlISOMetadata;
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                            cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                            isoMetadataIDResult = cmd15.ExecuteScalar();
-                            if (isoMetadataIDResult != null)
-                            {
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-
-                        if (isoMetadataID == 0)
-                        {
-                            using (DbCommand cmd16 = conn.CreateCommand())
-                            {
-                                cmd16.CommandText = sqlSaveISOMetadata;
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.TopicCategory));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Abstract));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.ProfileVersion));
-                                cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
-                                isoMetadataIDResult = cmd16.ExecuteScalar();
-                                isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
-                            }
-                        }
-                        
-                        using (DbCommand cmd17 = conn.CreateCommand())
-                        {
-                            cmd17.CommandText = sqlSaveSource;
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Description));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Link));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.ContactName));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Phone));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Email));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Address));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.City));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.State));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.Int32, source.ZipCode));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Citation));
-                            cmd17.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadataID));
-                            sourceIDResult = cmd17.ExecuteScalar();
-                            sourceID = Convert.ToInt32(sourceIDResult);
-                        }
-                    }
-
+                    sourceID = GetOrCreateSourceID(series.Source, conn);
+                   
                     //****************************************************************
                     //*** Step 7 Series
                     //****************************************************************
@@ -3397,31 +2012,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 8 Qualifier and Sample Lookup
                     //****************************************************************
-                    foreach (DataValue val in series.DataValueList)
-                    {
-                        if (val.Qualifier != null)
-                        {
-                            if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
-                            {
-                                qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
-                            }
-                        }
-
-                        if (val.Sample != null)
-                        {
-                            if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
-                            {
-                                sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
-                            }
-                        }
-                        if (val.OffsetType != null)
-                        {
-                            if (!offsetLookup.ContainsKey(val.OffsetType.Description))
-                            {
-                                offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
-                            }
-                        }
-                    }
+                    GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
 
                     //****************************************************************
                     //*** Step 9 Qualifiers
@@ -3802,95 +2393,443 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
+            series.Id = seriesID;
+
             return numSavedValues;
         }
+       
         #endregion
+      
+        #region Private methods
 
-        #region Theme Management
-        /// <summary>
-        /// Saves a theme to the database including the association
-        /// between any of its series.
-        /// </summary>
-        /// <param name="themeToSave">The theme to be saved</param>
-        public void SaveTheme(Theme themeToSave)
+        private int GetOrCreateMethodID(Method method, DbConnection conn)
         {
-            throw new NotImplementedException();
-           
-        }
+            const string sqlMethod = "SELECT MethodID FROM Methods WHERE MethodDescription = ?";
+            string sqlSaveMethod = "INSERT INTO Methods(MethodDescription, MethodLink) VALUES(?, ?)" + LastRowIDSelect;
 
-        /// <summary>
-        /// Gets all themes from the database ordered by the theme name
-        /// </summary>
-        /// <returns>The list of all themes</returns>
-        public IList<Theme> GetAllThemes()
-        {
-            string sql = "SELECT ThemeID, ThemeName, ThemeDescription FROM DataThemeDescriptions";
-            DataTable table = _db.LoadTable("tblThemes", sql);
-            
-            if (table.Rows.Count == 0)
+            int methodID = 0;
+            if (method != null)
             {
-                return new List<Theme>();
-            }
-            else
-            {
-                List<Theme> themeList = new List<Theme>();
-                foreach(DataRow row in table.Rows)
+                using (DbCommand cmd10 = conn.CreateCommand())
                 {
-                    Theme newTheme = new Theme(row[1].ToString(), row[2].ToString());
-                    newTheme.Id = Convert.ToInt32(row[0]);
-                    themeList.Add(newTheme);
+                    cmd10.CommandText = sqlMethod;
+                    cmd10.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
+                    var methodIDResult = cmd10.ExecuteScalar();
+                    if (methodIDResult != null)
+                    {
+                        methodID = Convert.ToInt32(methodIDResult);
+                    }
                 }
-                return themeList;
+
+                if (methodID == 0)
+                {
+                    using (DbCommand cmd11 = conn.CreateCommand())
+                    {
+                        cmd11.CommandText = sqlSaveMethod;
+                        cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Description));
+                        cmd11.Parameters.Add(_db.CreateParameter(DbType.String, method.Link));
+                        var methodIDResult = cmd11.ExecuteScalar();
+                        methodID = Convert.ToInt32(methodIDResult);
+                    }
+                }
+            }
+
+            return methodID;
+        }
+
+        private int GetOrCreateQualityControlLevelID(QualityControlLevel qc, DbConnection conn)
+        {
+            const string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevels WHERE Definition = ?";
+            string sqlSaveQualityControl = "INSERT INTO QualityControlLevels(QualityControlLevelCode, Definition, Explanation) " +
+               "VALUES(?,?,?)" + LastRowIDSelect;
+
+            int qualityControlLevelID = 0;
+            if (qc != null)
+            {
+                using (DbCommand cmd12 = conn.CreateCommand())
+                {
+                    cmd12.CommandText = sqlQuality;
+                    cmd12.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
+                    var qualityControlLevelIDResult = cmd12.ExecuteScalar();
+                    if (qualityControlLevelIDResult != null)
+                    {
+                        qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
+                    }
+                }
+
+                if (qualityControlLevelID == 0)
+                {
+                    using (DbCommand cmd13 = conn.CreateCommand())
+                    {
+                        cmd13.CommandText = sqlSaveQualityControl;
+                        cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Code));
+                        cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Definition));
+                        cmd13.Parameters.Add(_db.CreateParameter(DbType.String, qc.Explanation));
+                        var qualityControlLevelIDResult = cmd13.ExecuteScalar();
+                        qualityControlLevelID = Convert.ToInt32(qualityControlLevelIDResult);
+                    }
+                }
+            }
+            return qualityControlLevelID;
+        }
+
+        private int GetOrCreateSiteID(Site site, DbConnection conn)
+        {
+            const string sqlSite = "SELECT SiteID FROM Sites WHERE SiteCode = ?";
+            const string sqlSpatialReference = "SELECT SpatialReferenceID FROM SpatialReferences WHERE SRSID = ? AND SRSName = ?";
+
+            string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + LastRowIDSelect;
+            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
+                                                  "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
+                                                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
+
+            int siteID = 0;
+            int spatialReferenceID = 0;
+            int localProjectionID = 0;
+
+            using (DbCommand cmd01 = conn.CreateCommand())
+            {
+                cmd01.CommandText = sqlSite;
+                cmd01.Parameters.Add(_db.CreateParameter(DbType.String, site.Code));
+                var siteIDResult = cmd01.ExecuteScalar();
+                if (siteIDResult != null)
+                {
+                    siteID = Convert.ToInt32(siteIDResult);
+                }
+            }
+
+            if (siteID == 0) //New Site needs to be created
+            {
+                using (DbCommand cmd02 = conn.CreateCommand())
+                {
+                    cmd02.CommandText = sqlSpatialReference;
+                    cmd02.Parameters.Add(_db.CreateParameter(DbType.Int32));
+                    cmd02.Parameters.Add(_db.CreateParameter(DbType.String));
+
+                    if (site.SpatialReference != null)
+                    {
+                        cmd02.Parameters[0].Value = site.SpatialReference.SRSID;
+                        cmd02.Parameters[1].Value = site.SpatialReference.SRSName;
+
+                        var spatialReferenceIDResult = cmd02.ExecuteScalar();
+                        if (spatialReferenceIDResult != null)
+                        {
+                            spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
+                        }
+                    }
+                    if (site.LocalProjection != null)
+                    {
+                        cmd02.Parameters[0].Value = site.LocalProjection.SRSID;
+                        cmd02.Parameters[1].Value = site.LocalProjection.SRSName;
+
+                        var localProjectionIDResult = cmd02.ExecuteScalar();
+                        if (localProjectionIDResult != null)
+                        {
+                            localProjectionID = Convert.ToInt32(localProjectionIDResult);
+                        }
+                    }
+                }
+
+                //save spatial reference
+                if (spatialReferenceID == 0 && 
+                    site.SpatialReference != null)
+                {
+                    using (DbCommand cmd03 = conn.CreateCommand())
+                    {
+                        //Save the spatial reference (Lat / Long Datum)
+                        cmd03.CommandText = sqlSaveSpatialReference;
+                        cmd03.Parameters.Add(_db.CreateParameter(DbType.Int32, site.SpatialReference.SRSID));
+                        cmd03.Parameters.Add(_db.CreateParameter(DbType.String, site.SpatialReference.SRSName));
+
+                        var spatialReferenceIDResult = cmd03.ExecuteScalar();
+                        spatialReferenceID = Convert.ToInt32(spatialReferenceIDResult);
+                    }
+                }
+
+                //save local projection
+                if (localProjectionID == 0 && 
+                    site.LocalProjection != null)
+                {
+                    //save spatial reference and the local projection
+                    using (DbCommand cmd03 = conn.CreateCommand())
+                    {
+                        //Save the spatial reference (Lat / Long Datum)
+                        cmd03.CommandText = sqlSaveSpatialReference;
+                        cmd03.Parameters.Add(_db.CreateParameter(DbType.Int32, site.LocalProjection.SRSID));
+                        cmd03.Parameters.Add(_db.CreateParameter(DbType.String, site.LocalProjection.SRSName));
+
+                        var localProjectionIDResult = cmd03.ExecuteScalar();
+                        localProjectionID = Convert.ToInt32(localProjectionIDResult);
+                    }
+                }
+                
+
+                //Insert the site to the database
+                using (DbCommand cmd04 = conn.CreateCommand())
+                {
+                    cmd04.CommandText = sqlSaveSite;
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Code));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Name));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Latitude));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Longitude));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, spatialReferenceID));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.Elevation_m));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.VerticalDatum));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalX));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.LocalY));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Int32, localProjectionID));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.Double, site.PosAccuracy_m));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.State));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.County));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Comments));
+
+                    var siteIDResult = cmd04.ExecuteScalar();
+                    siteID = Convert.ToInt32(siteIDResult);
+                }
+            }
+            return siteID;
+        }
+
+        private int GetOrCreateSourceID(Source source, DbConnection conn)
+        {
+            const string sqlSource = "SELECT SourceID FROM Sources WHERE Organization = ?";
+            const string sqlISOMetadata = "SELECT MetadataID FROM ISOMetadata WHERE Title = ? AND MetadataLink = ?";
+
+            string sqlSaveSource = "INSERT INTO Sources(Organization, SourceDescription, SourceLink, ContactName, Phone, " +
+                                  "Email, Address, City, State, ZipCode, Citation, MetadataID) " +
+                                  "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" + LastRowIDSelect;
+            string sqlSaveISOMetadata = "INSERT INTO ISOMetadata(TopicCategory, Title, Abstract, ProfileVersion, MetadataLink) " +
+                                    "VALUES(?,?,?,?,?)" + LastRowIDSelect;
+
+            int sourceID = 0;
+            int isoMetadataID = 0;
+            if (source != null)
+            {
+                using (DbCommand cmd14 = conn.CreateCommand())
+                {
+                    cmd14.CommandText = sqlSource;
+                    cmd14.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
+                    var sourceIDResult = cmd14.ExecuteScalar();
+                    if (sourceIDResult != null)
+                    {
+                        sourceID = Convert.ToInt32(sourceIDResult);
+                    }
+                }
+
+                if (sourceID == 0)
+                {
+                    ISOMetadata isoMetadata = source.ISOMetadata;
+
+                    using (DbCommand cmd15 = conn.CreateCommand())
+                    {
+                        cmd15.CommandText = sqlISOMetadata;
+                        cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
+                        cmd15.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
+                        var isoMetadataIDResult = cmd15.ExecuteScalar();
+                        if (isoMetadataIDResult != null)
+                        {
+                            isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
+                        }
+                    }
+
+                    if (isoMetadataID == 0)
+                    {
+                        using (DbCommand cmd16 = conn.CreateCommand())
+                        {
+                            cmd16.CommandText = sqlSaveISOMetadata;
+                            cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.TopicCategory));
+                            cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Title));
+                            cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.Abstract));
+                            cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.ProfileVersion));
+                            cmd16.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadata.MetadataLink));
+                            var isoMetadataIDResult = cmd16.ExecuteScalar();
+                            isoMetadataID = Convert.ToInt32(isoMetadataIDResult);
+                        }
+                    }
+
+                    using (DbCommand cmd17 = conn.CreateCommand())
+                    {
+                        cmd17.CommandText = sqlSaveSource;
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Organization));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Description));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Link));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.ContactName));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Phone));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Email));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Address));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.City));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.State));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.Int32, source.ZipCode));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, source.Citation));
+                        cmd17.Parameters.Add(_db.CreateParameter(DbType.String, isoMetadataID));
+                        var sourceIDResult = cmd17.ExecuteScalar();
+                        sourceID = Convert.ToInt32(sourceIDResult);
+                    }
+                }
+            }
+
+            return sourceID;
+        }
+
+        private int GetOrCreateVariableID(Variable variable, DbConnection conn)
+        {
+            const string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
+
+            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + LastRowIDSelect;
+            string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
+                "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
+
+            int variableID = 0;
+            int variableUnitsID = 0;
+            int timeUnitsID = 0;
+
+            using (DbCommand cmd05 = conn.CreateCommand())
+            {
+                cmd05.CommandText = sqlVariable;
+                cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
+                cmd05.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
+                cmd05.Parameters[0].Value = variable.Code;
+                cmd05.Parameters[1].Value = variable.DataType;
+                var variableIDResult = cmd05.ExecuteScalar();
+                if (variableIDResult != null)
+                {
+                    variableID = Convert.ToInt32(variableIDResult);
+                }
+            }
+
+            if (variableID == 0) //New variable needs to be created
+            {
+                // Get Variable unit
+                if (variable.VariableUnit != null)
+                {
+                    using (DbCommand cmd06 = conn.CreateCommand())
+                    {
+                        cmd06.CommandText = sqlUnits;
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
+
+                        var variableUnitsIDResult = cmd06.ExecuteScalar();
+                        if (variableUnitsIDResult != null)
+                        {
+                            variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
+                        }
+                    }
+                }
+
+                // Get Time Unit
+                if (variable.TimeUnit != null)
+                {
+                    using (DbCommand cmd06 = conn.CreateCommand())
+                    {
+                        cmd06.CommandText = sqlUnits;
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
+                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
+                        
+                        var timeUnitsIDResult = cmd06.ExecuteScalar();
+                        if (timeUnitsIDResult != null)
+                        {
+                            timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
+                        }
+                    }
+                }
+
+                // Save the variable units
+                if (variableUnitsID == 0 &&
+                    variable.VariableUnit != null)
+                {
+                    using (DbCommand cmd07 = conn.CreateCommand())
+                    {
+                        cmd07.CommandText = sqlSaveUnits;
+                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
+                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
+                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
+                        var variableUnitsIDResult = cmd07.ExecuteScalar();
+                        variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
+                    }
+                }
+
+                // Save the time units
+                if (timeUnitsID == 0 &&
+                    variable.TimeUnit != null)
+                {
+                    using (DbCommand cmd08 = conn.CreateCommand())
+                    {
+                        cmd08.CommandText = sqlSaveUnits;
+                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
+                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
+                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
+                        var timeUnitsIDResult = cmd08.ExecuteScalar();
+                        timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
+                    }
+                }
+
+                //Insert the variable to the database
+                using (DbCommand cmd09 = conn.CreateCommand())
+                {
+                    cmd09.CommandText = sqlSaveVariable;
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Code));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Name));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.Speciation));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, variableUnitsID));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.SampleMedium));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.ValueType));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsRegular));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Boolean, variable.IsCategorical));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.TimeSupport));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, timeUnitsID));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.DataType));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.GeneralCategory));
+                    cmd09.Parameters.Add(_db.CreateParameter(DbType.Double, variable.NoDataValue));
+
+                    var variableIDResult = cmd09.ExecuteScalar();
+                    variableID = Convert.ToInt32(variableIDResult);
+                }
+            }
+
+            return variableID;
+        }
+
+        private void GetLookups(Series series, out Dictionary<string, Qualifier> qualifierLookup,
+                                               out Dictionary<string, Sample> sampleLookup,
+                                               out Dictionary<string, OffsetType> offsetLookup)
+        {
+            qualifierLookup = new Dictionary<string, Qualifier>();
+            sampleLookup = new Dictionary<string, Sample>();
+            offsetLookup = new Dictionary<string, OffsetType>();
+
+            foreach (var val in series.DataValueList)
+            {
+                if (val.Qualifier != null)
+                {
+                    if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
+                    {
+                        qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
+                    }
+                }
+
+                if (val.Sample != null)
+                {
+                    if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
+                    {
+                        sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
+                    }
+                }
+                if (val.OffsetType != null)
+                {
+                    if (!offsetLookup.ContainsKey(val.OffsetType.Description))
+                    {
+                        offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
+                    }
+                }
             }
         }
-        #endregion
 
         #endregion
 
-        #region Events
-        /// <summary>
-        /// Event occurs when a theme is saved
-        /// </summary>
-        public event EventHandler ThemeSaved;
-        /// <summary>
-        /// Event occurs when a theme is deleted
-        /// </summary>
-        public event EventHandler ThemeDeleted;
-        /// <summary>
-        /// Event occurs when a series is added to database
-        /// </summary>
-        public event EventHandler SeriesAdded;
-        #endregion
-
-        #region Protected Methods
-        /// <summary>
-        /// When a theme is saved to database
-        /// </summary>
-        protected void OnThemeSaved()
-        {
-            if (ThemeSaved != null) ThemeSaved(this, null);
-        }
-        /// <summary>
-        /// When a series is added to a theme
-        /// </summary>
-        protected void OnSeriesAdded()
-        {
-            if (SeriesAdded != null) SeriesAdded(this, null);
-        }
-        /// <summary>
-        /// When a theme is deleted from the database
-        /// </summary>
-        protected void OnThemeDeleted()
-        {
-            if (ThemeDeleted != null) ThemeDeleted(this, null);
-        }
-
-        #endregion
-
-        public override string TableName
-        {
-            get { throw new NotImplementedException(); }
-        }
     }
 
     [Obsolete("Use  HydroDesktop.Database.RepositoryFactory.Get<IRepositoryManager>() to retreive RepositoryManagerSQL")] 

@@ -132,6 +132,8 @@ Namespace GraphView
             'remove the dock panel
             App.DockManager.Remove(kGraph)
 
+            _mainControl = Nothing
+
             RemoveHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
             RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
 

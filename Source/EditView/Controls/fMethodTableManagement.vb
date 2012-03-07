@@ -6,8 +6,7 @@ Imports HydroDesktop.Interfaces
 
 Public Class fMethodTableManagement
 
-    Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
-    Private dbTools As New DbOperations(connString, DatabaseTypes.SQLite)
+    ReadOnly repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
 
     Public Sub New()
         InitializeComponent()
@@ -20,14 +19,17 @@ Public Class fMethodTableManagement
         End If
     End Sub
 
+    Public ReadOnly Property MethodID() As Integer
+        Get
+            Return _MethodID
+        End Get
+    End Property
+
     Public Sub initialize()
 
         If _MethodID = Nothing Then
-            txtID.Text = dbTools.GetNextID("Methods", "MethodID").ToString
             btnSubmit.Text = "Add"
         Else
-            txtID.Text = _MethodID.ToString
-            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
             Dim method = repo.GetMethod(_MethodID)
             txtDescription.Text = method.Description
             txtLink.Text = method.Link
@@ -37,21 +39,11 @@ Public Class fMethodTableManagement
     End Sub
 
     Private Sub InsertNewMethod()
-        Try
-            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
-            repo.InsertMethod(txtDescription.Text.ToString, txtLink.Text.ToString, Int32.Parse(txtID.Text))
-        Catch ex As Exception
-            Throw New Exception("Error Occurred when Inserting new methods." & vbCrLf & ex.Message)
-        End Try
+        _MethodID = repo.InsertMethod(txtDescription.Text.ToString, txtLink.Text.ToString)
     End Sub
 
     Private Sub UpdateMethod()
-        Try
-            Dim repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)(dbTools)
-            repo.UpdateMethod(Int32.Parse(txtID.Text), txtDescription.Text.ToString, txtLink.Text.ToString)
-        Catch ex As Exception
-            Throw New Exception("Error Occured when Updating methods." & vbCrLf & ex.Message)
-        End Try
+        repo.UpdateMethod(_MethodID, txtDescription.Text.ToString, txtLink.Text.ToString)
     End Sub
 
     Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
@@ -73,7 +65,7 @@ Public Class fMethodTableManagement
 
         _fDeriveNewDataSeries.FillMethods()
 
-        While Not (_fDeriveNewDataSeries.ddlMethods.SelectedValue = Val(txtID.Text))
+        While Not (_fDeriveNewDataSeries.ddlMethods.SelectedValue = _MethodID)
             _fDeriveNewDataSeries.ddlMethods.SelectedItem = _fDeriveNewDataSeries.ddlMethods.Items.Item(count)
             count += 1
         End While

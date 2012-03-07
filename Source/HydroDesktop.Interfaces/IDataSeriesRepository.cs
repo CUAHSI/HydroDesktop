@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.Common;
 
 namespace HydroDesktop.Interfaces
 {
@@ -102,5 +104,61 @@ namespace HydroDesktop.Interfaces
         /// <returns>true if series was deleted, false otherwise</returns>
         bool DeleteSeries(int seriesID);
 
+        /// <summary>
+        /// Check that exists series with given Site and Variable.
+        /// </summary>
+        /// <param name="site">Site</param>
+        /// <param name="variable">Variable</param>
+        /// <returns>True - exists, otherwise - false.</returns>
+        bool ExistsSeries(Site site, Variable variable);
+
+        /// <summary>
+        /// Get BeginDateTime and EndDateTime for given seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>BeginDateTime and EndDateTime</returns>
+        Tuple<DateTime, DateTime> GetDateTimes(long seriesID);
+
+        /// <summary>
+        /// Get UnitsName, SiteName, VariableName for first series with given seriesID
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <returns>Table with UnitsName, SiteName, VariableName</returns>
+        DataTable GetUnitSiteVarForFirstSeries(long seriesID);
+
+        void UpdateDataSeriesFromDataValues(long seriesID);
+
+        string GetQualityControlLevelCode(long seriesID);
+        long GetQualityControlLevelID(long seriesID);
+
+        IList<long> GetDataValuesIDs(long seriesID);
+
+        int InsertNewSeries(long sourceSeriesID, long variableID, long methodID, long qualityControlLevelID);
+
+        void DeriveInsertAggregateDataValues(DataTable dt,
+                                             long newSeriesID,
+                                             DateTime currentdate, DateTime lastdate, DeriveAggregateMode mode,
+                                             DeriveComputeMode computeMode,
+                                             double nodatavalue, IProgressHandler progressHandler);
+
+        void DeriveInsertDataValues(double A, double B, double C, double D, double E, double F,
+                                    DataTable dt,
+                                    long newSeriesID, long sourceSeriesID, bool isAlgebraic,
+                                    IProgressHandler progressHandler);
+    }
+
+    public enum DeriveAggregateMode
+    {
+        Daily,
+        Monthly,
+        Quarterly,
+    }
+
+    public enum DeriveComputeMode
+    {
+        Maximum,
+        Minimum,
+        Average,
+        Sum
     }
 }

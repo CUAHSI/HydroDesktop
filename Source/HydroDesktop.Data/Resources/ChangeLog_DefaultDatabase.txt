@@ -1,0 +1,3 @@
+﻿-- These indexes need to optimize queries in tableView
+CREATE INDEX ix_dataValues_SeriesID ON DataValues(SeriesID ASC);
+CREATE INDEX ix_dataValues_SeriesID_LocalDateTime ON DataValues(SeriesID ASC, LocalDateTime ASC);

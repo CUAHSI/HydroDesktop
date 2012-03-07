@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Data", "HydroD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Configuration", "HydroDesktop.Configuration\HydroDesktop.Configuration.csproj", "{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGisOnline", "ArcGisOnline\ArcGisOnline.csproj", "{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0B9BA90B-2016-4754-915A-0AD74FD0067A} = {0B9BA90B-2016-4754-915A-0AD74FD0067A}
+		{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB} = {0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}
+		{2FAAF21B-10DD-4430-87DC-54E981495485} = {2FAAF21B-10DD-4430-87DC-54E981495485}
+		{5B5ACBB1-74AE-4F51-890D-649309AD4E9C} = {5B5ACBB1-74AE-4F51-890D-649309AD4E9C}
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataExport", "DataExport\DataExport.csproj", "{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0B9BA90B-2016-4754-915A-0AD74FD0067A} = {0B9BA90B-2016-4754-915A-0AD74FD0067A}
@@ -162,6 +170,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oatc.OpenMI.Gui.Core", "Hyd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.MainApplication", "HydroDesktop.MainApplication\HydroDesktop.MainApplication.csproj", "{A064E7D2-5730-4214-A29F-FDB790691E47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAggregation", "DataAggregation\DataAggregation.csproj", "{68883359-0DB6-4938-A35F-A8514810F04A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -196,6 +206,16 @@ Global
 		{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}.Release|x86.ActiveCfg = Release|x86
 		{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}.Release|x86.Build.0 = Release|x86
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Debug|x86.ActiveCfg = Debug|x86
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Debug|x86.Build.0 = Debug|x86
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Release|x86.ActiveCfg = Release|x86
+		{F53FFFDC-CFCC-4F2D-BA53-BB008B7AD07D}.Release|x86.Build.0 = Release|x86
 		{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F73BC93-7B63-4D69-993A-03A0B2D0E2B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -448,6 +468,16 @@ Global
 		{A064E7D2-5730-4214-A29F-FDB790691E47}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A064E7D2-5730-4214-A29F-FDB790691E47}.Release|x86.ActiveCfg = Release|x86
 		{A064E7D2-5730-4214-A29F-FDB790691E47}.Release|x86.Build.0 = Release|x86
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

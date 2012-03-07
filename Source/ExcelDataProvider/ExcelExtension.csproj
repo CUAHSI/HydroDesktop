@@ -22,12 +22,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Binaries\Plugins\ExcelExtension\ExcelExtension.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Plugins\ExcelExtension\ExcelExtension.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Binaries\Plugins\ExcelDataProvider\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\ExcelExtension\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
