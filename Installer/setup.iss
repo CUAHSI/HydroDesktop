@@ -141,8 +141,8 @@ Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignorever
 ;Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.exe"; DestDir: "{app}"; DestName: "HydroDesktop_1_4.exe"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; DestName: "HydroDesktop_1_4.exe.config"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe"; DestDir: "{app}"; DestName: "{#SrcApp}.exe"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.exe.config"; Flags: ignoreversion;
 
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
@@ -155,15 +155,15 @@ Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroMo
 Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
-Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop_1_4.exe"
-Name: "{group}\{cm:UninstallProgram,HydroDesktop 1.4}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop_1_4.exe"; Tasks: desktopicon
+Name: "{group}\{#AppName}"; Filename: "{app}\{#SrcApp}"
+Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\{#AppName}"; Filename: "{app}\{#SrcApp}"; Tasks: desktopicon
 
 [Registry]
 Root: HKCR; Subkey: ".dspx"; ValueType: string; ValueName: ""; ValueData: "HD_Project"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: "HD_Project"; ValueType: string; ValueName: ""; ValueData: "HydroDesktop Project"; Flags: uninsdeletekey 
-Root: HKCR; Subkey: "HD_Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\HydroDesktop.exe,0"
-Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\HydroDesktop.exe"" ""%1"""
+Root: HKCR; Subkey: "HD_Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#SrcApp},0"
+Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#SrcApp}"" ""%1"""
 
 ;[Run]
 ;Start HydroDesktop
@@ -198,6 +198,7 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
+Type: files; Name: "{app}\HydroDesktop_log.txt"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
@@ -232,6 +233,7 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
+Type: files; Name: "{app}\HydroDesktop_log.txt"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
