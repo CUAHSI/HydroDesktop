@@ -251,7 +251,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             // updating...
             foreach (DataColumn column in featureSet.DataTable.Columns)
             {
-                searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
+                if (column.ColumnName != "ServiceCode")
+                    searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
             }
         }
 
