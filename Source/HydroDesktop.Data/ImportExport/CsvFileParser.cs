@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace HydroDesktop.ImportExport
@@ -79,26 +76,16 @@ namespace HydroDesktop.ImportExport
 			return lineCount;
 		}
 
-		/// <summary>
-		/// Parses a comma separated file into a DataTable
-		/// </summary>
-		/// <param name="fileToParse">The full path to and name of the CSV file to parse</param>
-		/// <param name="hasHeaders">True if the file has column headers; false otherwise</param>
-		/// <returns>DataTable of the parsed data</returns>
-		public static DataTable ParseFileToDataTable ( string fileToParse, bool hasHeaders )
-		{
-			return ParseFileToDataTable ( fileToParse, hasHeaders, null, null );
-		}
-
-		/// <summary>
-		/// Parses a comma separated file into a DataTable
-		/// </summary>
-		/// <param name="fileToParse">The full path to and name of the CSV file to parse</param>
-		/// <param name="hasHeaders">True if the file has column headers; false otherwise</param>
-		/// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
-		/// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
-		/// <returns>DataTable of the parsed data</returns>
-		public static DataTable ParseFileToDataTable ( string fileToParse, bool hasHeaders, BackgroundWorker bgWorker, DoWorkEventArgs e )
+	    /// <summary>
+	    /// Parses a comma separated file into a DataTable
+	    /// </summary>
+	    /// <param name="fileToParse">The full path to and name of the CSV file to parse</param>
+	    /// <param name="hasHeaders">True if the file has column headers; false otherwise</param>
+	    /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
+	    /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
+	    /// <param name="maxRowsCount">Max rows count in result DataTable </param>
+	    /// <returns>DataTable of the parsed data</returns>
+	    public static DataTable ParseFileToDataTable ( string fileToParse, bool hasHeaders, BackgroundWorker bgWorker = null, DoWorkEventArgs e = null, int maxRowsCount = -1)
 		{
 			DataTable dataTable = new DataTable ();
 
@@ -213,8 +200,16 @@ namespace HydroDesktop.ImportExport
 					}
 
 					// Add the row to the data table
-					dataTable.Rows.Add ( line );
-					line = csv.ReadLine ();
+                    if (maxRowsCount < 0 ||
+                        dataTable.Rows.Count < maxRowsCount)
+                    {
+                        dataTable.Rows.Add(line);
+                    }
+                    else
+                    {
+                        break;
+                    }
+				    line = csv.ReadLine ();
 				}
 
 			}

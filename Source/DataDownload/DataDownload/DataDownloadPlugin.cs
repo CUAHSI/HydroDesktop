@@ -12,6 +12,7 @@ using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
 using HydroDesktop.DataDownload.LayerInformation;
+using HydroDesktop.Common.Tools;
 
 namespace HydroDesktop.DataDownload
 {
@@ -273,7 +274,7 @@ namespace HydroDesktop.DataDownload
             var dManager = DownloadManager;
             var themeName = dManager.Information.StartArgs.DataTheme.Name;
 
-            var _themeManager = new ThemeManager(DatabaseManager.Instance.GetDbOperationsForCurrentProject());
+            var _themeManager = new ThemeManager();
             IFeatureSet featureSet;
             try
             {
@@ -304,6 +305,13 @@ namespace HydroDesktop.DataDownload
             lm.UpdateDataTable(featureSet, DownloadManager);
             lm.UpdateSymbolizing();
             lm.UpdateContextMenu();
+
+            // Check for DataAggregation 
+            var aggPlugin = App.GetExtension<IDataAggregationPlugin>();
+            if (aggPlugin != null)
+            {
+                aggPlugin.AttachLayerToPlugin(sourceLayer);
+            }
 
             // Refresh list of the time series in the table and graph in the main form
             SeriesControl.RefreshSelection();

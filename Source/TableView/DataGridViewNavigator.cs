@@ -1,8 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using HydroDesktop.Database;
 
 namespace TableView
 {
@@ -10,9 +10,8 @@ namespace TableView
     {
         #region Fields
 
-        private DbOperations _dbOperations;
-        private string _dataQuery;
-        private string _countQuery;
+        private const string LOADING_DATA = "Loading data...";
+        private IPagedTableGetter _tableGetter;
 
         #endregion
 
@@ -28,7 +27,7 @@ namespace TableView
         {
             InitializeComponent();
 
-            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = false;
+            DisableNavButtons();
             btnFirst.BackColor = btnPrev.BackColor = btnNext.BackColor = btnLast.BackColor = SystemColors.Control;
             lblInfo.Text = string.Empty;
 
@@ -44,15 +43,31 @@ namespace TableView
 
         #region Private methods
 
+        private void DisableNavButtons()
+        {
+            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = false;
+        }
+
         void DataGridViewNavigator_PageChanged(object sender, EventArgs e)
         {
-            // Update naivagation buttons
+            // Update navigation buttons
             btnFirst.Enabled = CurrentPage != 0;
             btnPrev.Enabled = CurrentPage > 0;
             btnNext.Enabled = CurrentPage != PagesCount - 1 && PagesCount > 0;
             btnLast.Enabled = CurrentPage < PagesCount - 1;
 
             lblInfo.Text = string.Format("{0} of {1}", PagesCount > 0? CurrentPage + 1 : 0, PagesCount);
+        }
+
+        private void HideStatus()
+        {
+            lblStatus.Visible = false;
+        }
+
+        private void ShowStatus()
+        {
+            lblStatus.Text = LOADING_DATA;
+            lblStatus.Visible = true;
         }
 
         #endregion
@@ -69,14 +84,17 @@ namespace TableView
             set
             {
                 _valuesPerPage = value;
-                if (_dbOperations != null && _dataQuery != null && _countQuery != null)
-                    Initialize(_dbOperations, _dataQuery, _countQuery);
+                if (_tableGetter != null)
+                {
+                    Initialize(_tableGetter);
+                }
             }
         }
 
         private int _currentPage;
+
         /// <summary>
-        /// Current page number
+        /// Current page number (zero-based)
         /// </summary>
         public int CurrentPage
         {
@@ -86,13 +104,27 @@ namespace TableView
                 if (value < 0 || value > PagesCount ||
                     (value == PagesCount && PagesCount != 0)) return;
 
-                _currentPage = value;
-               
-                var table = _dbOperations.LoadTable(string.Format("{0} limit {1} offset {2}", _dataQuery, ValuesPerPage, CurrentPage * ValuesPerPage));
+                CheckNavigatorState();
+                DisableNavButtons();
+                ShowStatus();
 
-                var handler = PageChanged;
-                if (handler != null)
-                    handler(this, new PageChangedEventArgs(table));
+                _currentPage = value;
+                _worker = new BackgroundWorker();
+                _worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                                      {
+                                          var table = _tableGetter.GetTable(ValuesPerPage, CurrentPage);
+                                          args.Result = table;
+                                      };
+                _worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                                             {
+                                                 var table = (DataTable) args.Result;
+                                                 var handler = PageChanged;
+                                                 if (handler != null)
+                                                     handler(this, new PageChangedEventArgs(table));
+
+                                                 HideStatus();
+                                             };
+                _worker.RunWorkerAsync();
             }
         }
 
@@ -105,34 +137,51 @@ namespace TableView
 
         #region Public methods
 
+        private BackgroundWorker _worker;
+        private void CheckNavigatorState()
+        {
+            if (_worker != null && _worker.IsBusy)
+            {
+                throw new InvalidOperationException("Previous navigator's call is not finished.");
+            }
+        }
+
         /// <summary>
         /// Initialize navigator with queries to load data
         /// </summary>
-        /// <param name="dbOperations">DbOperations</param>
-        /// <param name="dataQuery">Query to select data</param>
-        /// <param name="countQuery">Query to count data</param>
-        public void Initialize(DbOperations dbOperations, string dataQuery, string countQuery)
+        /// <param name="tableGetter">Class that returns data table for given ValuesPerPage and  CurrentPage.</param>
+        public void Initialize(IPagedTableGetter tableGetter)
         {
-            if (dbOperations == null) throw new ArgumentNullException("dbOperations");
-            if (dataQuery == null) throw new ArgumentNullException("dataQuery");
-            if (countQuery == null) throw new ArgumentNullException("countQuery");
-            
-            _dbOperations = dbOperations;
-            _dataQuery = dataQuery;
-            _countQuery = countQuery;
+            CheckNavigatorState();
+            DisableNavButtons();
+            ShowStatus();
 
-            var count = Convert.ToInt32(dbOperations.ExecuteSingleOutput(countQuery));
-            var needNavigation = count > ValuesPerPage;
-            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = needNavigation;
+            _tableGetter = tableGetter;
 
-            int remainder;
-            var div = Math.DivRem(count, ValuesPerPage, out remainder);
-            PagesCount = remainder == 0 ? div : div + 1;
-
-            CurrentPage = 0;
+            _worker = new BackgroundWorker();
+            _worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                                  {
+                                      var rowsCount = tableGetter.GetTotalCount();
+                                      args.Result = rowsCount;
+                                  };
+            _worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                                              {
+                                                  var rowsCount = (long) args.Result;
+                                                  long remainder;
+                                                  var div = (int) Math.DivRem(rowsCount, ValuesPerPage, out remainder);
+                                                  PagesCount = remainder == 0 ? div : div + 1;
+                                                  CurrentPage = 0;
+                                              };
+            _worker.RunWorkerAsync();
         }
 
         #endregion
+    }
+
+    public interface IPagedTableGetter
+    {
+        DataTable GetTable(int valuesPerPage, int currentPage);
+        long GetTotalCount();
     }
 
     public class PageChangedEventArgs : EventArgs

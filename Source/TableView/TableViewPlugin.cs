@@ -8,6 +8,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using DotSpatial.Controls.Docking;
+using HydroDesktop.Common.Tools;
 
 namespace TableView
 {
@@ -38,6 +39,7 @@ namespace TableView
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove(kTableView);
 
+            tableViewControl = null;
             if (SeriesControl != null)
             {
                 SeriesControl.Refreshed -= SeriesControl_Refreshed;
@@ -234,8 +236,7 @@ namespace TableView
 
         private void DeleteTheme()
         {
-            var db = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
-            using (var frm = new DeleteThemeForm(db))
+            using (var frm = new DeleteThemeForm())
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
@@ -250,7 +251,7 @@ namespace TableView
 
         private void rbChangeDatabase_Click(object sender, EventArgs e)
         {
-            using(var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.Extensions.OfType<ISearchPlugin>().FirstOrDefault()))
+            using (var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.GetExtension<ISearchPlugin>()))
             {
                 frmChangeDatabase.ShowDialog();
             }
