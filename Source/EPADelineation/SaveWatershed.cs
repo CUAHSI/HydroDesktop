@@ -564,15 +564,10 @@ namespace EPADelineation
                     {
                         //Effective in solving projection problem to display polygon
                         string file = _wshed;
-                        
-                        //fsset.Reproject(_mapArgs.Map.Projection);
 
                         fsset.SaveAs(file, true);
 
                         IFeatureSet polyfs = FeatureSet.Open(file);
-
-                        //polyfs.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
-                        //polyfs.Reproject(_mapArgs.Map.Projection);
 
                         var polysymbol = new PolygonSymbolizer(Color.LightBlue.ToTransparent((float)0.7), Color.DarkBlue);
 
