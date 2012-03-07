@@ -22,8 +22,6 @@ namespace EPADelineation
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-
-            // This line ensures that "Enabled" is set to false.
             base.Deactivate();
         }
 
@@ -68,6 +66,7 @@ namespace EPADelineation
         void saveWS_Completed(object sender, EventArgs e)
         {
             var saveWS = (SaveWatershed) sender;
+            action.Toggle(); //un-toggles the Delineate button
             saveWS.Completed -= saveWS_Completed;
             App.Map.FunctionMode = FunctionMode.Select;
         }
