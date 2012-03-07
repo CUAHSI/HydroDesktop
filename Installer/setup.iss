@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop"
-#define SrcApp "HydroDesktop.exe"
+#define AppName "HydroDesktop 1.4"
+#define SrcApp "HydroDesktop_1_4.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -87,6 +87,10 @@ AlwaysShowComponentsList=false
 ;InfoAfterFile=Source\..\..\Documents\Post-install.txt
 OutputDir=Releases
 OutputBaseFilename="HydroDesktop14_Beta_Installer"
+
+;install to a separate directory
+UsePreviousAppDir=no
+
 ;SetupIconFile=Source\..\..\Documents\MapWindow.ico
 ;UninstallDisplayIcon=Source\..\..\Documents\MapWindow.ico
 ChangesAssociations=true
@@ -105,8 +109,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
 ;Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
@@ -136,7 +140,10 @@ Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Exte
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
+;Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe"; DestDir: "{app}"; DestName: "HydroDesktop_1_4.exe"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; DestName: "HydroDesktop_1_4.exe.config"; Flags: ignoreversion;
+
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsIA64;
@@ -149,7 +156,7 @@ Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_pr
 
 [Icons]
 Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"
-Name: "{group}\{cm:UninstallProgram,HydroDesktop}"; Filename: "{uninstallexe}"
+Name: "{group}\{cm:UninstallProgram,HydroDesktop 1.4}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"; Tasks: desktopicon
 
 [Registry]
