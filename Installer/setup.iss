@@ -52,7 +52,8 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{B3FF6BFE-3E8A-4acb-AD61-5C4304FD754B}
+AppID={{2FED1FC9-5CBE-42CB-8F30-F8E1AAEEED52}
+
 PrivilegesRequired=poweruser
 MinVersion=,5.01
 ; Necessary setting for the 64bit version
@@ -141,8 +142,8 @@ Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignorever
 ;Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.exe"; DestDir: "{app}"; DestName: "{#SrcApp}.exe"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.exe.config"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
@@ -198,12 +199,12 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
-Type: files; Name: "{app}\HydroDesktop_log.txt"
+Type: files; Name: "{app}\hydrodesktop_log.txt"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
-Type: files; Name: "{userappdata}\HydroDesktop_log.txt"
+Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
 [UninstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
@@ -233,12 +234,12 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
-Type: files; Name: "{app}\HydroDesktop_log.txt"
+Type: files; Name: "{app}\Hhydrodesktop_log.txt"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
-Type: files; Name: "{userappdata}\HydroDesktop_log.txt"
+Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify
