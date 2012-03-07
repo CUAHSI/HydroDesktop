@@ -157,7 +157,7 @@ Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_pr
 [Icons]
 Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop_1_4.exe"
 Name: "{group}\{cm:UninstallProgram,HydroDesktop 1.4}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"; Tasks: desktopicon
+Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop_1_4.exe"; Tasks: desktopicon
 
 [Registry]
 Root: HKCR; Subkey: ".dspx"; ValueType: string; ValueName: ""; ValueData: "HD_Project"; Flags: uninsdeletevalue
@@ -439,9 +439,7 @@ begin
   case CurUninstallStep of
     usPostUninstall:
       begin
-        mres := MsgBox('Do you want to delete extension packages?', mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
-        if mres = IDYES then
-          DelTree(ExpandConstant('{userappdata}\Hydrodesktop.exe'), True, True, True);
+        DelTree(ExpandConstant('{userappdata}\Hydrodesktop.exe'), True, True, True);
       end;  
   end;
 end;	
