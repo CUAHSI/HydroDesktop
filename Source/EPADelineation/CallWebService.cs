@@ -325,9 +325,17 @@ namespace EPADelineation
                             }
 
                             //Save polygon[] into a multipolygon
-                            IMultiPolygon multipolys = new MultiPolygon(polys);
+                            if (polys.Length > 1)
+                            {
+                                IMultiPolygon multipolys = new MultiPolygon(polys);
 
-                            multipolyf = new Feature(multipolys);
+                                multipolyf = new Feature(multipolys);
+                            }
+                            else
+                            {
+                                // special case: A multipolygon with one part
+                                multipolyf = new Feature(polys[0]);
+                            }
 
                             //Save features into a featureset
                             if (polyfs.Features.Count == 0)
