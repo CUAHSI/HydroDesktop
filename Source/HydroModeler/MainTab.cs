@@ -149,8 +149,8 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             fileList = new ListView();
             
             //initialize the composition
-            InitializeComponentRibbon();
             _composition = new CompositionManager();
+            InitializeComponentRibbon();          
             
             //define mouse variables
             _prevMouse = new Point(0, 0);

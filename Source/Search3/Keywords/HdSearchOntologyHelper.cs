@@ -55,7 +55,7 @@ namespace Search3.Keywords
         /// </summary>
         /// <param name="KeywordList">List of input keywords to refine.</param>
         /// <param name="OntologyXml">XML of the CUAHSI hydrologic ontology.</param>
-        public static void RefineKeywordList(List<string> KeywordList, XmlDocument OntologyXml)
+        public static void RefineKeywordList(List<string> KeywordList, XmlDocument OntologyXml, ArrayOfOntologyPath synonyms)
         {
             // Refactoring. This is the entry point
             // If searching 1st tier keywords, clear the list.
@@ -76,6 +76,15 @@ namespace Search3.Keywords
                 KeywordList.Clear();
                 KeywordList.AddRange(tmpList);
             }
+
+            // Remove any "spaces" in keywords
+            for (int i = 0; i < KeywordList.Count; i++)
+            {
+                KeywordList[i] = KeywordList[i].Trim();
+            }
+
+            // Replace any "synonym" keywords
+            ReplaceSynonymKeywords(KeywordList, synonyms);
 
             // Remove keywords that don't have a match in the ontology.
             RemoveUnmatchedKeywords(KeywordList, OntologyXml);
@@ -101,6 +110,21 @@ namespace Search3.Keywords
                         {
                             KeywordList.Add(tier3keyword);
                         }
+                    }
+                }
+            }
+        }
+
+        private static void ReplaceSynonymKeywords(List<string> keywordList, ArrayOfOntologyPath synonyms)
+        {
+            for (int i = 0; i < keywordList.Count; i++)
+            {
+                foreach (OntologyPath path in synonyms)
+                {
+                    if (path.SearchableKeyword == keywordList[i])
+                    {
+                        keywordList[i] = path.ConceptName;
+                        break;
                     }
                 }
             }
