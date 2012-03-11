@@ -13,43 +13,6 @@ Public Class cPlotOptions
 
     Public Property Options() As PlotOptions
         Get
-
-
-
-            'If rbtnTSLine.Checked Then
-            '    tsType = PlotOptions.TimeSeriesType.Line
-            'ElseIf rbtnTSPoint.Checked Then
-            '    tsType = PlotOptions.TimeSeriesType.Point
-            'Else
-            '    tsType = PlotOptions.TimeSeriesType.Both
-            'End If
-
-            'If rbtnBPMonthly.Checked Then
-            '    bwType = PlotOptions.BoxWhiskerType.Monthly
-            'ElseIf rbtnBPSeasonal.Checked Then
-            '    bwType = PlotOptions.BoxWhiskerType.Seasonal
-            'ElseIf rbtnBPYearly.Checked Then
-            '    bwType = PlotOptions.BoxWhiskerType.Yearly
-            'Else
-            '    bwType = PlotOptions.BoxWhiskerType.Overall
-            'End If
-
-            'If rbtnHPCount.Checked Then
-            '    hpType = PlotOptions.HistogramType.Count
-            'ElseIf rbtnHPProbability.Checked Then
-            '    hpType = PlotOptions.HistogramType.Probability
-            'ElseIf rbtnHPRelative.Checked Then
-            '    hpType = PlotOptions.HistogramType.Relative
-            'End If
-
-            'If rbtnHPScotts.Checked Then
-            '    hpAlgo = PlotOptions.HistorgramAlgorithms.Scott
-            'ElseIf rbtnHPSturges.Checked Then
-            '    hpAlgo = PlotOptions.HistorgramAlgorithms.Sturges
-            'ElseIf rbtnHPFreedman.Checked Then
-            '    hpAlgo = PlotOptions.HistorgramAlgorithms.Freedman
-            'End If
-
             Return New PlotOptions(tsType, hpType, hpAlgo, 0, 0, 0, 0, 0, 0, 0, bwType, _
                                     Drawing.Color.Black, btnSetPointColor.BackColor, _
                                    IsShowLegend, Now, _

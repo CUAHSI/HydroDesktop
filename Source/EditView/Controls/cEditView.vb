@@ -32,6 +32,9 @@ Public Class cEditView
 
     Private Const ErrMsgForNotEditing As String = "Please select a series to edit first."
     Private Const ErrMsgForNotPointSelected As String = "Please select a point for editing."
+
+    Private _needToRefresh As Boolean
+
 #End Region
 
 #Region "Constructor"
@@ -63,6 +66,7 @@ Public Class cEditView
         AddHandler Disposed, AddressOf OnDisposing
         AddHandler _seriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
         AddHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
+        AddHandler VisibleChanged, AddressOf OnMeVisibleChanged
 
         gboxDataFilter.Enabled = False
         ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
@@ -92,7 +96,7 @@ Public Class cEditView
 
 #Region "Method"
 
-    Public Sub PlotGraph(ByVal SeriesID As Integer)
+    Private Sub PlotGraph(ByVal SeriesID As Integer)
         Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Line, ccList0(colorcount Mod 10), CurveEditingColor, False, True)
         Dim data As DataTable
 
@@ -115,8 +119,6 @@ Public Class cEditView
 
         pTimeSeriesPlot.Refreshing()
 
-        data.Dispose()
-
         colorcount += 1
     End Sub
 
@@ -137,8 +139,12 @@ Public Class cEditView
         _dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
     End Sub
 
+    Private Sub DoSeriesCheck()
+        If (Not Visible) Then
+            _needToRefresh = True
+            Return
+        End If
 
-    Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
         'Declaring all variables
         Dim curveIndex As Integer
         Dim SeriesSelector = _seriesSelector
@@ -211,6 +217,19 @@ Public Class cEditView
         End If
 
         pTimeSeriesPlot.Refreshing()
+    End Sub
+
+    Private Sub OnMeVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If (Not Visible) Then Return
+
+        If (_needToRefresh) Then
+            _needToRefresh = False
+            DoSeriesCheck()
+        End If
+    End Sub
+
+    Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
+        DoSeriesCheck()
     End Sub
 
     Public Sub btnSelectSeries_Click()

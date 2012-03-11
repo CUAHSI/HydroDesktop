@@ -20,7 +20,6 @@ Public Class cTimeSeriesPlot
 
     Private Const XColumn As String = "LocalDateTime"
     Private Const YColumn As String = "DataValue"
-    Private connString = HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString
 
     Private Shared m_Data As DataTable
     Private Shared m_Site As String
@@ -50,9 +49,9 @@ Public Class cTimeSeriesPlot
     End Sub
 
 
-    Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer)
+    Public Sub Plot(ByVal objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, ByRef intSeriesID As Integer)
         Try
-            m_Data = objDataTable.Copy
+            m_Data = objDataTable
             m_Site = strSiteName
             m_Variable = strVariableName
             m_VariableWithUnits = strVariableName & " - " & strVariableUnits
