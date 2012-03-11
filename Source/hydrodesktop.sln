@@ -172,6 +172,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.MainApplicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAggregation", "DataAggregation\DataAggregation.csproj", "{68883359-0DB6-4938-A35F-A8514810F04A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{AC270CF7-EA4B-4FDE-A9EA-B19F649FF9C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Data.Shell", "HydroDesktop.Data.Shell\HydroDesktop.Data.Shell.csproj", "{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -478,8 +482,21 @@ Global
 		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{68883359-0DB6-4938-A35F-A8514810F04A}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Debug|x86.ActiveCfg = Debug|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Debug|x86.Build.0 = Debug|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Release|Any CPU.ActiveCfg = Release|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Release|x86.ActiveCfg = Release|x86
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1} = {AC270CF7-EA4B-4FDE-A9EA-B19F649FF9C3}
 	EndGlobalSection
 EndGlobal
