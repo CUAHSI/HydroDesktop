@@ -182,7 +182,7 @@ namespace HydroDesktop.Database
         {
             var query = "SELECT ValueID, SeriesID, DataValue, ValueAccuracy, LocalDateTime, UTCOffset, " +
                         "DateTimeUTC, QualifierCode, OffsetValue, OffsetTypeID, CensorCode, SampleID, " +
-                        "FileID FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) " +
+                        "FileID, 0 as Other FROM DataValues AS d LEFT JOIN Qualifiers AS q ON (d.QualifierID = q.QualifierID) " +
                         "WHERE SeriesID = " + seriesID;
             var table = DbOperations.LoadTable(TableName, query);
             return table;
