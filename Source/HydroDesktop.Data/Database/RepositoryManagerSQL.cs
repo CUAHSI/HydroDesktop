@@ -38,9 +38,9 @@ namespace HydroDesktop.Database
 
         #region Properties
 
-        private DbOperations _db
+        private IHydroDbOperations _db
         {
-            get { return (DbOperations)DbOperations; }
+            get { return DbOperations; }
         }
 
         public override string TableName
