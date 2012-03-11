@@ -96,8 +96,8 @@ namespace HydroDesktop.Database
                               DataType = Convert.ToString(row["DataType"]),
                               GeneralCategory = Convert.ToString(row["GeneralCategory"]),
                               NoDataValue = Convert.ToDouble(row["NoDataValue"]),
-                              TimeUnit = unitsRepo.GetByID(Convert.ToInt64(row["TimeUnitsID"])),
-                              VariableUnit = unitsRepo.GetByID(Convert.ToInt64(row["VariableUnitsID"])),
+                              TimeUnit = unitsRepo.GetByKey(Convert.ToInt64(row["TimeUnitsID"])),
+                              VariableUnit = unitsRepo.GetByKey(Convert.ToInt64(row["VariableUnitsID"])),
                           };
             return res;
         }
