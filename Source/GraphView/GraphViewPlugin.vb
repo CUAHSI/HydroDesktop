@@ -529,15 +529,11 @@ Namespace GraphView
         End Sub
 
         Sub rbShowLegend_Click()
-            If rbShowLegend.Caption = "Close Legend" Then
-                _mainControl.CPlotOptions1.IsShowLegend = False
-                _mainControl.ApplyOptions()
-                rbShowLegend.Caption = "Show Legend"
-            Else
-                _mainControl.CPlotOptions1.IsShowLegend = True
-                _mainControl.ApplyOptions()
-                rbShowLegend.Caption = "Close Legend"
-            End If
+            Dim text = If(_mainControl.CPlotOptions1.IsShowLegend, "Show Legend", "Close Legend")
+
+            _mainControl.CPlotOptions1.IsShowLegend = Not _mainControl.CPlotOptions1.IsShowLegend
+            _mainControl.ApplyOptions()
+            rbShowLegend.Caption = text
         End Sub
 
         Sub rbColorSetting_Click()

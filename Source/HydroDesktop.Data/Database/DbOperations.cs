@@ -734,13 +734,24 @@ namespace HydroDesktop.Database
             return dt;
         }
 
-        public List<T> Read<T>(string query, Func<DbDataReader, T> rowReader)
+        public List<T> Read<T>(string query, Func<DbDataReader, T> rowReader, params object[] parameters)
         {
             var result = new List<T>();
             var cmd = CreateCommand(query);
             try
             {
                 cmd.Connection.Open();
+                for (int p = 0; p < parameters.Length; p++)
+                {
+                    var param = dbFactory.CreateParameter();
+                    Debug.Assert(param != null);
+                    param.Value = parameters[p];
+                    param.DbType = GetDbTypeFromValue(parameters[p]);
+                    param.ParameterName = "@p" + p.ToString(CultureInfo.InvariantCulture);
+
+                    cmd.Parameters.Add(param);
+                }
+
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {

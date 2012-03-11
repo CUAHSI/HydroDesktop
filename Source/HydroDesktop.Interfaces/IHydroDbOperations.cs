@@ -186,8 +186,9 @@ namespace HydroDesktop.Interfaces
         /// <typeparam name="T">Type of collection</typeparam>
         /// <param name="query">Query to select any data</param>
         /// <param name="rowReader">Delegate that converted row into entity</param>
+        /// <param name="parameters">The values of command parameters.</param>
         /// <returns>Collection of entities</returns>
-        List<T> Read<T>(string query, Func<DbDataReader, T> rowReader);
+        List<T> Read<T>(string query, Func<DbDataReader, T> rowReader, params object[] parameters);
         
 
         /// <summary>
