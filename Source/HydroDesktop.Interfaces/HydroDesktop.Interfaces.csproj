@@ -91,6 +91,7 @@
     <Compile Include="ISeriesSelector.cs" />
     <Compile Include="ISitesRepository.cs" />
     <Compile Include="ISourcesRepository.cs" />
+    <Compile Include="IUnitConversionsRepository.cs" />
     <Compile Include="IUnitsRepository.cs" />
     <Compile Include="IVariablesRepository.cs" />
     <Compile Include="IWebServicesStore.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="ObjectModel\SpatialReference.cs" />
     <Compile Include="ObjectModel\Theme.cs" />
     <Compile Include="ObjectModel\Unit.cs" />
+    <Compile Include="ObjectModel\UnitConversion.cs" />
     <Compile Include="ObjectModel\ValueTypeCV.cs" />
     <Compile Include="ObjectModel\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

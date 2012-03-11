@@ -90,6 +90,7 @@
     <Compile Include="Database\SeriesProvenanceRepository.cs" />
     <Compile Include="Database\SitesRepository.cs" />
     <Compile Include="Database\SourcesRepository.cs" />
+    <Compile Include="Database\UnitConversionsRepository.cs" />
     <Compile Include="Database\UnitsRepository.cs" />
     <Compile Include="Database\VariablesRepository.cs" />
     <Compile Include="ImportExport\CsvFileParser.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Database\DataReader.cs" />
     <Compile Include="Database\DbOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitConversions\UnitConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\DataManagerClassDiagram.cd" />
