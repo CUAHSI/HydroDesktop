@@ -24,16 +24,6 @@ namespace HydroDesktop.Database
         #endregion
 
         #region Public methods
-        
-        public Unit GetByID(long id)
-        {
-            var dt = DbOperations.LoadTable(TableName, "Select * FROM Units where UnitsID=" + id);
-            if (dt == null || dt.Rows.Count == 0)
-                return null;
-
-            var res = DataRowToEntity(dt.Rows[0]);
-            return res;
-        }
 
         public Unit GetByName(string name)
         {
@@ -80,6 +70,11 @@ namespace HydroDesktop.Database
         public override string TableName
         {
             get { return "Units"; }
+        }
+
+        public override string PrimaryKeyName
+        {
+            get { return "UnitsID"; }
         }
     }
 }

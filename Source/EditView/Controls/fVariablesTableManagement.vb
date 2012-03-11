@@ -160,7 +160,7 @@ Public Class fVariablesTableManagement
 
     Private Sub ddlUnitsName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlUnitsName.SelectionChangeCommitted
         Dim ID As Integer = ddlUnitsName.SelectedValue.ToString
-        Dim unit = _unitsRepo.GetByID(ID)
+        Dim unit = _unitsRepo.GetByKey(ID)
 
         lblVUnitsType.Text = unit.UnitsType
         lblVUnitsType.Text = "Units Type: " + lblVUnitsType.Text
@@ -171,7 +171,7 @@ Public Class fVariablesTableManagement
 
     Private Sub ddlTUnitsName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlTUnitsName.SelectionChangeCommitted
         Dim ID As Integer = ddlTUnitsName.SelectedValue.ToString
-        Dim unit = _unitsRepo.GetByID(ID)
+        Dim unit = _unitsRepo.GetByKey(ID)
 
         lblTUnitsType.Text = unit.UnitsType
         lblTUnitsType.Text = "Units Type: " + lblTUnitsType.Text
