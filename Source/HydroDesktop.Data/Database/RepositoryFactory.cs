@@ -44,7 +44,7 @@ namespace HydroDesktop.Database
         #region Public methods
 
         /// <summary>
-        /// Get instance of <see cref="T"/> using default settings
+        /// Get instance of repository of type <see cref="T"/> using default settings
         /// </summary>
         /// <returns>Instance of <see cref="T"/></returns>
         public T Get<T>()
@@ -58,7 +58,6 @@ namespace HydroDesktop.Database
         /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
         /// <param name="connectionString">The connection string</param>
         /// <returns>Instance of <see cref="T"/></returns>
-        [Obsolete("Use Get<T>() instead")]
         public T Get<T>(DatabaseTypes dbType, string connectionString)
         {
             RepositoryCreator repoCreator;
@@ -80,7 +79,6 @@ namespace HydroDesktop.Database
         /// </summary>
         /// <param name="dbOperations">The DbOperations object for handling the database</param>
         /// <returns>Instance of <see cref="T"/></returns>
-        [Obsolete("Use Get<T>() instead")]
         public T Get<T>(IHydroDbOperations dbOperations)
         {
             RepositoryCreator repoCreator;

@@ -9,7 +9,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Base Repository
     /// </summary>
-    public abstract class BaseRepository<T> : IRepository<T>
+    abstract class BaseRepository<T> : IRepository<T>
         where T : BaseEntity
     {
         #region Fields

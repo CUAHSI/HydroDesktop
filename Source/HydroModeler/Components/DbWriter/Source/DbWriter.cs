@@ -110,13 +110,10 @@ namespace CUAHSI.HIS
         /// </summary>
         public void Finish()
         {
-            RepositoryManagerSQL db = null; 
-            
             //check to see if the database path is overridden
-            if (conn != null)
-                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, conn);
-            else
-                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+            var db = conn != null
+                     ? RepositoryFactory.Instance.Get<IRepositoryManager>(DatabaseTypes.SQLite, conn)
+                     : RepositoryFactory.Instance.Get<IRepositoryManager>();
 
             //write each series to the database
             foreach (Series series in serieses.Values)
@@ -655,16 +652,16 @@ namespace CUAHSI.HIS
 
             #region Build Sites
 
-            RepositoryManagerSQL db = null;
+            //RepositoryManagerSQL db = null;
 
             //check to see if the database path is overridden
             if (conn != null)
             {
-                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, conn);
+              //  db = new RepositoryManagerSQL(DatabaseTypes.SQLite, conn);
             }
             else
             {
-                db = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
+                //db = new RepositoryManagerSQL(DatabaseTypes.SQLite, Settings.Instance.DataRepositoryConnectionString);
                 //conn = Settings.Instance.DataRepositoryConnectionString;
             }
 
