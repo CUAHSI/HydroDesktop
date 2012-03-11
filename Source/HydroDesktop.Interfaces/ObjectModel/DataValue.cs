@@ -215,6 +215,17 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual OffsetType OffsetType { get; set; }
 
+        public bool IsCensoredValue
+        {
+            get { return IsCensored(CensorCode); }
+        }
+
+        public static bool IsCensored(string censorCode)
+        {
+            return !(string.Equals(censorCode, "nc", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(censorCode, "unknown", StringComparison.OrdinalIgnoreCase));
+        }
+
         /// <summary>
         /// Creates a copy of the data value. The copied value is not associated with any series.
         /// </summary>
