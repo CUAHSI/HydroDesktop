@@ -6,7 +6,7 @@ namespace HydroDesktop.Database
     /// <summary>
     /// Repository for <see cref="SeriesProvenance"/>
     /// </summary>
-    public class SeriesProvenanceRepository : BaseRepository<SeriesProvenance>, ISeriesProvenanceRepository
+    class SeriesProvenanceRepository : BaseRepository<SeriesProvenance>, ISeriesProvenanceRepository
     {
         public SeriesProvenanceRepository(DatabaseTypes dbType, string connectionString) : base(dbType, connectionString)
         {

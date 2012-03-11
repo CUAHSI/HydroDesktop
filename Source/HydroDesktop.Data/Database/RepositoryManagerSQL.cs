@@ -11,7 +11,7 @@ namespace HydroDesktop.Database
     /// Helper class for reading and writing HydroDesktop objects to
     /// and from the HydroDesktop data repository SQLite database
     /// </summary>
-    public class DbRepositoryManagerSQL : BaseRepository<Series>, IRepositoryManager
+    class DbRepositoryManagerSQL : BaseRepository<Series>, IRepositoryManager
     {
         #region Constructor
         /// <summary>
@@ -2830,33 +2830,5 @@ namespace HydroDesktop.Database
 
         #endregion
 
-    }
-
-    [Obsolete("Use  HydroDesktop.Database.RepositoryFactory.Get<IRepositoryManager>() to retreive RepositoryManagerSQL")] 
-    public class RepositoryManagerSQL : DbRepositoryManagerSQL
-    {
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of the manager given a connection string
-        /// </summary>
-        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
-        /// <param name="connectionString">The connection string</param>
-        public RepositoryManagerSQL(DatabaseTypes dbType, string connectionString)
-            : base(dbType, connectionString)
-        {
-            
-        }
-
-        /// <summary>
-        /// Creates a new RepositoryManager associated with the specified database
-        /// </summary>
-        /// <param name="db">The DbOperations object for handling the database</param>
-        public RepositoryManagerSQL(IHydroDbOperations db)
-            :base(db)
-        {
-        }
-
-        #endregion
     }
 }
