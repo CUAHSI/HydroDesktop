@@ -34,7 +34,31 @@ namespace HydroDesktop.Database
             var res = DataRowToEntity(dt.Rows[0]);
             return res;
         }
-     
+
+        public Unit GetByName(string name)
+        {
+            var dt = DbOperations.LoadTable(TableName, string.Format("Select * FROM Units where UnitsName='{0}'", name));
+            if (dt == null || dt.Rows.Count == 0)
+                return null;
+
+            var res = DataRowToEntity(dt.Rows[0]);
+            return res;
+        }
+
+        public void AddUnit(Unit unit)
+        {
+            var query = "INSERT INTO Units(UnitsAbbreviation, UnitsName, UnitsType)"
+                       + "VALUES (?, ?, ?)" + LastRowIDSelect;
+            var id = DbOperations.ExecuteSingleOutput(query,
+                                                      new object[]
+                                                          {
+                                                              unit.Abbreviation,
+                                                              unit.Name,
+                                                              unit.UnitsType,
+                                                          });
+            unit.Id = Convert.ToInt64(id);
+        }
+
         #endregion
 
         #region Private methods
