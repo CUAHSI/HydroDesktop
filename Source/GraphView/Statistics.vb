@@ -1,10 +1,11 @@
 ﻿Option Strict On
-Public Class Statistics
-    Public Const NotCensored As String = "nc"
-    Public Const Unknown As String = "unknown"
 
+Imports HydroDesktop.Interfaces.ObjectModel
+
+Public Class Statistics
     Shared Function ArithmeticMean(ByRef objDataTable As Data.DataTable) As Double
         Try
+            If objDataTable.Rows.Count = 0 Then Return 0
             Return Convert.ToDouble(objDataTable.Compute("Avg(DataValue)", ""))
         Catch ex As Exception
             Throw New Exception("Error Occured in Statistics.ArithmeticMean" & vbCrLf & ex.Message)
@@ -49,6 +50,7 @@ Public Class Statistics
 
     Shared Function Minimum(ByRef objDataTable As Data.DataTable) As Double
         Try
+            If objDataTable.Rows.Count = 0 Then Return 0
             Return Convert.ToDouble(objDataTable.Compute("MIN(DataValue)", ""))
         Catch ex As Exception
             Throw New Exception("Error Occured in Statistics.Minimum" & vbCrLf & ex.Message)
@@ -57,6 +59,7 @@ Public Class Statistics
 
     Shared Function Maximum(ByRef objDataTable As Data.DataTable) As Double
         Try
+            If objDataTable.Rows.Count = 0 Then Return 0
             Return Convert.ToDouble(objDataTable.Compute("MAX(DataValue)", ""))
         Catch ex As Exception
             Throw New Exception("Error Occured in Statistics.Maximum" & vbCrLf & ex.Message)
@@ -153,6 +156,7 @@ Public Class Statistics
 
     Shared Function Percentile(ByRef objDataTable As Data.DataTable, ByVal intPercentile As Integer) As Double
         Try
+            If objDataTable.Rows.Count = 0 Then Return 0
             Dim intRow As Integer = Convert.ToInt32(Math.Floor(Count(objDataTable) * (intPercentile / 100)))
             Dim rows() As DataRow = objDataTable.Select("", "DataValue ASC")
             Return Convert.ToDouble(rows(intRow).Item("DataValue"))
@@ -193,13 +197,7 @@ Public Class Statistics
         End Try
     End Function
 
-    Shared Function CountCensored(ByRef objDataTable As Data.DataTable) As Integer
-        Try
-            objDataTable.CaseSensitive = False
-            Dim rows() As DataRow = objDataTable.Select("(CensorCode <> '" & Statistics.NotCensored & "') AND (CensorCode <> '" & Statistics.Unknown & "')")
-            Return rows.Count
-        Catch ex As Exception
-            Throw New Exception("Error Occured in Statistics.Count" & vbCrLf & ex.Message)
-        End Try
+    Shared Function CountCensored(ByRef objDataTable As DataTable) As Integer
+        Return objDataTable.Rows.Cast(Of DataRow).Count(Function(row) DataValue.IsCensored(CType(row("CensorCode"), String)))
     End Function
 End Class

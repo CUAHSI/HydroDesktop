@@ -1,4 +1,5 @@
 ﻿Imports Controls
+Imports HydroDesktop.Interfaces.ObjectModel
 Imports ZedGraph
 Imports System.Drawing
 Imports HydroDesktop.Database
@@ -112,7 +113,7 @@ Public Class cTimeSeriesPlot
                     Dim p As New PointPair(New XDate(CDate(row.Item(XColumn))), row.Item(YColumn))
                     p.Tag = row.Item("CensorCode").ToString
                     If m_Options.IsPlotCensored Then
-                        If (p.Tag.ToString.ToLower = Statistics.NotCensored) Or (p.Tag.ToString.ToLower = Statistics.Unknown) Then
+                        If Not DataValue.IsCensored(p.Tag.ToString) Then
                             p.ColorValue = 0
                         Else
                             p.ColorValue = 1
@@ -120,7 +121,7 @@ Public Class cTimeSeriesPlot
                         p.Tag = row.Item("LocalDateTime").ToString + ": " + row.Item("DataValue").ToString
                         pointList.Add(p)
                     Else
-                        If Not ((p.Tag.ToString.ToLower = Statistics.NotCensored) Or (p.Tag.ToString.ToLower = Statistics.Unknown)) Then
+                        If DataValue.IsCensored(p.Tag.ToString) Then
                             pointList.Add(p)
                             p.Tag = row.Item("LocalDateTime").ToString + ": " + row.Item("DataValue").ToString
                         End If
@@ -128,14 +129,14 @@ Public Class cTimeSeriesPlot
                 Next row
 
                 Dim curve As LineItem = gPane.AddCurve(m_Site, pointList, m_Options.GetLineColor, SymbolType.Circle)
+
                 curve.Tag = options
-                curve.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
+                curve.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
                 curve.Symbol.Fill.RangeMin = 0
                 curve.Symbol.Fill.RangeMax = 1
                 curve.Symbol.Size = 4
                 curve.Symbol.Fill.SecondaryValueGradientColor = Color.Empty
                 curve.Symbol.Fill.Type = FillType.GradientByColorValue
-                curve.Symbol.Border.IsVisible = False
                 curve.Symbol.Border.IsVisible = False
                 Select Case m_Options.TimeSeriesMethod
                     Case PlotOptions.TimeSeriesType.Line

@@ -1,4 +1,6 @@
-﻿Public Class cSummaryStatistics
+﻿Imports HydroDesktop.Interfaces.ObjectModel
+
+Public Class cSummaryStatistics
 
 
     Public Sub ClearStatistics()
@@ -17,48 +19,35 @@
         Statistic_75thPercentile = 0
         Statistic_90thPercentile = 0
     End Sub
-    Public Sub GetStatistics(ByVal data As DataTable, ByVal options As PlotOptions)
+    Public Sub GetStatistics(ByVal table As DataTable, ByVal options As PlotOptions)
 
-        Statistic_NumberOfObservations = Statistics.Count(data)
-        Statistic_NumberOfCensoredObservations = Statistics.CountCensored(data)
-        If options.UseCensoredData = True Then
-            Statistic_ArithmeticMean = Statistics.ArithmeticMean(data)
-            Statistic_GeometricMean = Statistics.GeometricMean(data)
-            Statistic_Maximum = Statistics.Maximum(data)
-            Statistic_Minimum = Statistics.Minimum(data)
-            Statistic_StandardDeviation = Statistics.StandardDeviation(data)
-            Statistic_CoefficientOfVariation = Statistics.CoefficientOfVariation(data)
+        Statistic_NumberOfObservations = Statistics.Count(table)
+        Statistic_NumberOfCensoredObservations = Statistics.CountCensored(table)
 
-            Statistic_10thPercentile = Statistics.Percentile(data, 10)
-            Statistic_25thPercentile = Statistics.Percentile(data, 25)
-            Statistic_50thPercentile = Statistics.Percentile(data, 50)
-            Statistic_75thPercentile = Statistics.Percentile(data, 75)
-            Statistic_90thPercentile = Statistics.Percentile(data, 90)
-        Else
-            Dim temp As DataTable = data.Copy
-            If (Not options.UseCensoredData) Then
-                temp.CaseSensitive = False
-                Dim censoredRows() As DataRow = temp.Select("(CensorCode <> '" & Statistics.NotCensored & "') AND (CensorCode <> '" & Statistics.Unknown & "')")
+        Dim data = table
+        If (Not options.UseCensoredData) Then
+            Dim temp As DataTable = table.Copy
+            Dim censoredRows() As DataRow = temp.Rows.Cast(Of DataRow).Where(Function(row) DataValue.IsCensored(row("CensorCode"))).ToArray()
 
-                For Each censoredRow As DataRow In censoredRows
-                    temp.Rows.Remove(censoredRow)
-                Next censoredRow
-            End If
-            If temp.Rows.Count > 0 Then
-                Statistic_ArithmeticMean = Statistics.ArithmeticMean(temp)
-                Statistic_GeometricMean = Statistics.GeometricMean(temp)
-                Statistic_Maximum = Statistics.Maximum(temp)
-                Statistic_Minimum = Statistics.Minimum(temp)
-                Statistic_StandardDeviation = Statistics.StandardDeviation(temp)
-                Statistic_CoefficientOfVariation = Statistics.CoefficientOfVariation(temp)
+            For Each censoredRow As DataRow In censoredRows
+                temp.Rows.Remove(censoredRow)
+            Next censoredRow
 
-                Statistic_10thPercentile = Statistics.Percentile(temp, 10)
-                Statistic_25thPercentile = Statistics.Percentile(temp, 25)
-                Statistic_50thPercentile = Statistics.Percentile(temp, 50)
-                Statistic_75thPercentile = Statistics.Percentile(temp, 75)
-                Statistic_90thPercentile = Statistics.Percentile(temp, 90)
-            End If
+            data = temp
         End If
+
+        Statistic_ArithmeticMean = Statistics.ArithmeticMean(data)
+        Statistic_GeometricMean = Statistics.GeometricMean(data)
+        Statistic_Maximum = Statistics.Maximum(data)
+        Statistic_Minimum = Statistics.Minimum(data)
+        Statistic_StandardDeviation = Statistics.StandardDeviation(data)
+        Statistic_CoefficientOfVariation = Statistics.CoefficientOfVariation(data)
+
+        Statistic_10thPercentile = Statistics.Percentile(data, 10)
+        Statistic_25thPercentile = Statistics.Percentile(data, 25)
+        Statistic_50thPercentile = Statistics.Percentile(data, 50)
+        Statistic_75thPercentile = Statistics.Percentile(data, 75)
+        Statistic_90thPercentile = Statistics.Percentile(data, 90)
     End Sub
 
     'Public Property Statistic_UseCensoredData() As Boolean

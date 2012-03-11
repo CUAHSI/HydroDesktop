@@ -1,4 +1,5 @@
 ﻿Imports Controls
+Imports HydroDesktop.Interfaces.ObjectModel
 Imports ZedGraph
 Imports System.Drawing
 Imports HydroDesktop.Database
@@ -142,14 +143,14 @@ Public Class cProbabilityPlot
                     Dim p As New PointPair(curX, curValue, "(" & curFreq * 100 & ", " & curValue & ")")
                     p.Tag = validRows(i).Item("CensorCode").ToString
                     If m_Options.IsPlotCensored Then
-                        If (p.Tag.ToString.ToLower = Statistics.NotCensored) Or (p.Tag.ToString.ToLower = Statistics.Unknown) Then
+                        If Not DataValue.IsCensored(p.Tag.ToString) Then
                             p.ColorValue = 0
                         Else
                             p.ColorValue = 1
                         End If
                         ptList.Add(p)
                     Else
-                        If Not ((p.Tag.ToString.ToLower = Statistics.NotCensored) Or (p.Tag.ToString.ToLower = Statistics.Unknown)) Then
+                        If DataValue.IsCensored(p.Tag.ToString) Then
                             ptList.Add(p)
                         End If
                     End If
@@ -161,7 +162,7 @@ Public Class cProbabilityPlot
             'probLine = New ZedGraph.LineItem("ProbCurve")
             probLine = gPane.AddCurve(m_Site, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
             probLine.Tag = options
-            probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, m_Options.GetPointColor)
+            probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
             probLine.Symbol.Fill.RangeMin = 0
             probLine.Symbol.Fill.RangeMax = 1
             probLine.Symbol.Size = 4
