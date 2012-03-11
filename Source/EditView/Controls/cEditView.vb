@@ -16,8 +16,7 @@ Public Class cEditView
     Private ReadOnly CurveEditingColor As Color = Color.Black
 
     Public _seriesSelector As ISeriesSelector
-
-    Private Originaldt As DataTable
+    Private OriginalDt As DataTable
     Public Editdt As DataTable
     Public newseriesID As Integer = 0
     Public Editing As Boolean = False
@@ -68,9 +67,7 @@ Public Class cEditView
         AddHandler _seriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
         AddHandler VisibleChanged, AddressOf OnMeVisibleChanged
 
-        gboxDataFilter.Enabled = False
-        ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
-        lblstatus.Text = "Ready"
+        initialize()
         SettingColor()
         pTimeSeriesPlot.Clear()
     End Sub
@@ -84,7 +81,7 @@ Public Class cEditView
     End Sub
 
 
-    Public Sub initialize()
+    Private Sub initialize()
         gboxDataFilter.Enabled = False
         ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
         lblstatus.Text = "Ready"
@@ -127,11 +124,7 @@ Public Class cEditView
 #Region "Event"
 
     Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
-
         RefreshDbTools()
-        pTimeSeriesPlot.Clear()
-        selectedSeriesIdList.Clear()
-
     End Sub
 
     Private Sub RefreshDbTools()
@@ -233,28 +226,14 @@ Public Class cEditView
     End Sub
 
     Public Sub btnSelectSeries_Click()
-        Dim seriesSelector = _seriesSelector
-
-
-        If Not seriesSelector.SelectedSeriesID = 0 Then
-
-            dgvDataValues.DataSource = Nothing
-
+        If Not _seriesSelector.SelectedSeriesID = 0 Then
             initialize()
 
             newseriesID = _seriesSelector.SelectedSeriesID
-
-            Editdt = Nothing
-
             Editdt = _dataValuesRepo.GetTableForEditView(newseriesID)
-
-            Editdt.Columns.Add("Other")
-            For i As Integer = 0 To Editdt.Rows.Count - 1
-                Editdt.Rows(i)("Other") = 0
-            Next
-
-            Originaldt = Editdt.Copy
             dgvDataValues.DataSource = Editdt
+
+            OriginalDt = Editdt.Copy()
 
             'get the begin and end datetime of the series
             Dim series = _dataSeriesRepo.GetSeriesByID(newseriesID)
@@ -292,13 +271,13 @@ Public Class cEditView
             ResetGridViewStyle()
 
             Try
-                Dim curveIndex As Integer = selectedSeriesIdList.IndexOf(seriesSelector.SelectedSeriesID)
+                Dim curveIndex As Integer = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
 
-                If seriesSelector.CheckedIDList.Contains(seriesSelector.SelectedSeriesID) Then
+                If _seriesSelector.CheckedIDList.Contains(_seriesSelector.SelectedSeriesID) Then
                     pTimeSeriesPlot.EnterEditMode(curveIndex - nodataseriescount)
                     pTimeSeriesPlot.RemoveSelectedPoints()
                 Else
-                    PlotGraph(seriesSelector.SelectedSeriesID)
+                    PlotGraph(_seriesSelector.SelectedSeriesID)
                     pTimeSeriesPlot.EnterEditMode(pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count - 1)
                     pTimeSeriesPlot.Remove(pTimeSeriesPlot.zgTimeSeries.GraphPane.CurveList.Count - 1)
                     pTimeSeriesPlot.Refreshing()
@@ -308,12 +287,7 @@ Public Class cEditView
                 MsgBox("The Selected Series has no curve")
             End Try
 
-            If SeriesRowsCount(newseriesID) < 1 Then
-                gboxDataFilter.Enabled = False
-            Else
-                gboxDataFilter.Enabled = True
-            End If
-
+            gboxDataFilter.Enabled = SeriesRowsCount(newseriesID) >= 1
             Editing = True
         Else
             MsgBox("Please select a series for editing.")
@@ -321,13 +295,8 @@ Public Class cEditView
     End Sub
 
     Public Sub ckbShowLegend_Click()
-        If ShowLegend Then
-            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = False
-            ShowLegend = False
-        Else
-            pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = True
-            ShowLegend = True
-        End If
+        ShowLegend = Not ShowLegend
+        pTimeSeriesPlot.zgTimeSeries.GraphPane.Legend.IsVisible = ShowLegend
         pTimeSeriesPlot.Refreshing()
     End Sub
 
@@ -368,34 +337,20 @@ Public Class cEditView
 
     'Apply Changes to Database
     Public Sub btnApplyToDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-        If MsgBox("Are You Sure You Want to Apply the Changes to the Database", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
+        If MsgBox("Are You Sure You Want to Apply the Changes to the Database", MsgBoxStyle.YesNo Or vbDefaultButton2 Or MsgBoxStyle.Question, "Question") = MsgBoxResult.Yes Then
             SaveGraphChangesToDatabase()
+            gboxDataFilter.Enabled = SeriesRowsCount(newseriesID) >= 1
             MsgBox("Save finished!")
-            If SeriesRowsCount(newseriesID) < 1 Then
-                gboxDataFilter.Enabled = False
-            Else
-                gboxDataFilter.Enabled = True
-            End If
         End If
-
     End Sub
 
     'Restore Data
     Public Sub btnRestoreData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-        If MsgBox("Are You Sure You Want to Restore the Data to the Original?", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
-
-            Editdt = Originaldt.Copy
+        If MsgBox("Are You Sure You Want to Restore the Data to the Original?", MsgBoxStyle.YesNo Or vbDefaultButton2 Or MsgBoxStyle.Question, "Question") = MsgBoxResult.Yes Then
+            Editdt = OriginalDt
             RefreshDataGridView()
             pTimeSeriesPlot.ReplotEditingCurve(Me)
-
-            If SeriesRowsCount(newseriesID) < 1 Then
-                gboxDataFilter.Enabled = False
-            Else
-                gboxDataFilter.Enabled = True
-            End If
-
+            gboxDataFilter.Enabled = SeriesRowsCount(newseriesID) >= 1
             MsgBox("Restore Complete!")
         End If
 
@@ -546,8 +501,6 @@ Public Class cEditView
         If pTimeSeriesPlot.HasEditingCurve() Then
             ReflectZvalue()
         End If
-
-
 
         pTimeSeriesPlot.Refreshing()
 
