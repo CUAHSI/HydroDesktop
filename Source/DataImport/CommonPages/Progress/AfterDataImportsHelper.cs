@@ -111,7 +111,7 @@ namespace DataImport.CommonPages.Progress
 
         private static string ConvertTime(DateTime time)
         {
-            return time.ToString("yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
+            return time.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
         }
     }
 }
