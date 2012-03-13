@@ -204,7 +204,7 @@ namespace TableView
 
         private string ConvertTime(DateTime time)
         {
-            return time.ToString("yyyy-MM-dd hh:mm");
+            return time.ToString("yyyy-MM-dd HH:mm");
         }
 
         /// <summary>
