@@ -27,6 +27,31 @@ namespace HydroDesktop.Database
 
         #endregion
 
+        #region Public methods
+
+        public bool ExistsConversion(Unit unitA, Unit unitB)
+        {
+            var res = DbOperations.ExecuteSingleOutput
+                    (
+                            "select count(*) from UnitConversions where FromUnitsID = ? and ToUnitsID = ?",
+                            new object[] {unitA.Id, unitB.Id}
+                    );
+            return Convert.ToInt64(res) > 0;
+        }
+
+        public UnitConversion GetConversion(Unit unitA, Unit unitB)
+        {
+            var table = DbOperations.LoadTable(
+                    string.Format("select * from UnitConversions where FromUnitsID = {0} and ToUnitsID = {1}",
+                                  unitA.Id, unitB.Id));
+            if (table.Rows.Count == 0)
+                return null;
+
+            return DataRowToEntity(table.Rows[0]);
+        }
+
+        #endregion
+
         #region Overrides of BaseRepository<UnitConversion>
 
         public override string TableName

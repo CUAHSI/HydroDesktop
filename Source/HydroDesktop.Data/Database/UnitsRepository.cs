@@ -56,12 +56,22 @@ namespace HydroDesktop.Database
         protected override Unit DataRowToEntity(DataRow row)
         {
             var res = new Unit
-            {
-                Id = Convert.ToInt64(row["UnitsID"]),
-                Abbreviation = Convert.ToString(row["UnitsAbbreviation"]),
-                Name = Convert.ToString(row["UnitsName"]),
-                UnitsType = Convert.ToString(row["UnitsType"]),
-            };
+                        {
+                                Id = Convert.ToInt64(row["UnitsID"]),
+                                Abbreviation = Convert.ToString(row["UnitsAbbreviation"]),
+                                Name = Convert.ToString(row["UnitsName"]),
+                                UnitsType = Convert.ToString(row["UnitsType"]),
+                                // Test for column existence for backward compatibility
+                                ConversionFactorToSI = !row.Table.Columns.Contains("ConversionFactorToSI") ||row["ConversionFactorToSI"] == DBNull.Value
+                                                ? (double?) null
+                                                : Convert.ToDouble(row["ConversionFactorToSI"]),
+                                Dimension = !row.Table.Columns.Contains("Dimension") || row["Dimension"] == DBNull.Value
+                                                ? null
+                                                : Convert.ToString(row["Dimension"]),
+                                OffsetToSI = !row.Table.Columns.Contains("OffsetToSI") || row["OffsetToSI"] == DBNull.Value
+                                                ? (double?) null
+                                                : Convert.ToDouble(row["OffsetToSI"]),
+                        };
             return res;
         }
 
