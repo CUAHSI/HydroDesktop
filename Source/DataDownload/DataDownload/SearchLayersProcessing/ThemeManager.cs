@@ -669,7 +669,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
         private string ConvertTime(DateTime time)
         {
-            return time.ToString("yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
+            return time.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
