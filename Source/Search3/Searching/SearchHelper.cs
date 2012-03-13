@@ -24,8 +24,8 @@ namespace Search3.Searching
             row["VarCode"] = series.VariableCode;
             row["Keyword"] = series.ConceptKeyword;
             row["ValueCount"] = series.ValueCount;
-            row["StartDate"] = series.BeginDate.ToString("yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
-            row["EndDate"] = series.EndDate.ToString("yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
+            row["StartDate"] = series.BeginDate.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            row["EndDate"] = series.EndDate.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
             row["ServiceURL"] = series.ServURL;
             row["ServiceCode"] = series.ServCode;
             row["DataType"] = series.DataType;
