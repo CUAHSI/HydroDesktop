@@ -27,7 +27,7 @@ namespace HydroDesktop.DataDownload
                 FullSiteCode = serviceInfo.SiteCode,
                 FullVariableCode = serviceInfo.VarCode,
                 Wsdl = serviceInfo.ServiceUrl,
-                StartDate = serviceInfo.StartDate,
+                StartDate = !serviceInfo.IsDownloaded? serviceInfo.StartDate : serviceInfo.EndDate,
                 EndDate = !serviceInfo.IsDownloaded? serviceInfo.EndDate : DateTime.Now,
                 VariableName = serviceInfo.VarName,
                 Latitude = serviceInfo.Latitude,
