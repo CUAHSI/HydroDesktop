@@ -100,17 +100,19 @@ namespace HydroDesktop.Database
             return list;
         }
 
-        public IList<double> GetValuesOrderByLocalDateTime(long seriesID)
+        public IList<double> GetValuesOrderByLocalDateTime(long seriesID, DateTime firstDate, DateTime lastDate)
         {
-            var list = DbOperations.Read("SELECT DataValue FROM DataValues WHERE SeriesID = " + seriesID + " ORDER BY LocalDateTime",
-                                                 r => r.GetDouble(0));
+            var list = DbOperations.Read("SELECT DataValue FROM DataValues WHERE SeriesID = " + seriesID + 
+                "AND LocalDateTime >=@p1 AND LocalDateTime <= @p2 ORDER BY LocalDateTime",
+                                                 r => r.GetDouble(0), new object[] {firstDate, lastDate} );
             return list;
         }
 
-        public IList<DateTime> GetTimesOrderByLocalDateTime(long seriesID)
+        public IList<DateTime> GetTimesOrderByLocalDateTime(long seriesID, DateTime firstDate, DateTime lastDate)
         {
-            var list = DbOperations.Read("SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID + " ORDER BY LocalDateTime",
-                                                 r => r.GetDateTime(0));
+            var list = DbOperations.Read("SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID + 
+                "AND LocalDateTime >=@p1 AND LocalDateTime <= @p2 ORDER BY LocalDateTime",
+                                                 r => r.GetDateTime(0), new object[] { firstDate, lastDate} );
             return list;
         }
 

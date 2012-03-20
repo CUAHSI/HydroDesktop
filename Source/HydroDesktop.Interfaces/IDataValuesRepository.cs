@@ -52,6 +52,24 @@ namespace HydroDesktop.Interfaces
         IList<double> GetValues(long seriesID);
 
         /// <summary>
+        /// Gets all values for specified seriesID in the time range ordered by time
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <param name="firstDate">First date from localDateTime column filter</param>
+        /// <param name="lastDate">Last date from localDateTime column filter</param>
+        /// <returns>List of values</returns>
+        IList<double> GetValuesOrderByLocalDateTime(long seriesID, DateTime firstDate, DateTime lastDate);
+
+        /// <summary>
+        /// Gets all times for specified seriesID in the time range ordered by time
+        /// </summary>
+        /// <param name="seriesID">SeriesID</param>
+        /// <param name="firstDate">First date from localDateTime column filter</param>
+        /// <param name="lastDate">Last date from localDateTime column filter</param>
+        /// <returns>List of DateTime's</returns>
+        IList<DateTime> GetTimesOrderByLocalDateTime(long seriesID, DateTime firstDate, DateTime lastDate);
+
+        /// <summary>
         /// Get DataTable for export
         /// </summary>
         /// <param name="seriesID">SeriesID</param>
