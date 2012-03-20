@@ -103,7 +103,7 @@ namespace HydroDesktop.Database
         public IList<double> GetValuesOrderByLocalDateTime(long seriesID, DateTime firstDate, DateTime lastDate)
         {
             var list = DbOperations.Read("SELECT DataValue FROM DataValues WHERE SeriesID = " + seriesID + 
-                "AND LocalDateTime >=@p1 AND LocalDateTime <= @p2 ORDER BY LocalDateTime",
+                " AND LocalDateTime >=@p1 AND LocalDateTime <= @p2 ORDER BY LocalDateTime",
                                                  r => r.GetDouble(0), new object[] {firstDate, lastDate} );
             return list;
         }
@@ -111,7 +111,7 @@ namespace HydroDesktop.Database
         public IList<DateTime> GetTimesOrderByLocalDateTime(long seriesID, DateTime firstDate, DateTime lastDate)
         {
             var list = DbOperations.Read("SELECT LocalDateTime FROM DataValues WHERE SeriesID = " + seriesID + 
-                "AND LocalDateTime >=@p1 AND LocalDateTime <= @p2 ORDER BY LocalDateTime",
+                " AND LocalDateTime >=@p1 AND LocalDateTime <= @p2 ORDER BY LocalDateTime",
                                                  r => r.GetDateTime(0), new object[] { firstDate, lastDate} );
             return list;
         }
