@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>GraphView</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
+    <DocumentationFile>GraphView.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
+    <DocumentationFile>GraphView.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
+    <DocumentationFile>GraphView.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
+    <DocumentationFile>GraphView.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\Binaries\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\Binaries\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="ZedGraph, Version=5.1.4.31904, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\cDataSummary.Designer.vb">
+      <DependentUpon>cDataSummary.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cDataSummary.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ColorSettingsDialog.Designer.vb">
+      <DependentUpon>ColorSettingsDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorSettingsDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\cSummaryplot.Designer.vb">
+      <DependentUpon>cSummaryplot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cSummaryplot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DateTimeSettingsDialog.Designer.vb">
+      <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DateTimeSettingsDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\IChart.vb" />
+    <Compile Include="Controls\TimeSeriesPlotOptions.vb" />
+    <Compile Include="Controls\ZedGraphControlEx.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common.vb" />
+    <Compile Include="Pretty.vb" />
+    <Compile Include="BoxPlot.vb" />
+    <Compile Include="Controls\cBoxWhiskerPlot.Designer.vb">
+      <DependentUpon>cBoxWhiskerPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cBoxWhiskerPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\cHistogramPlot.Designer.vb">
+      <DependentUpon>cHistogramPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cHistogramPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\cPlotOptions.Designer.vb">
+      <DependentUpon>cPlotOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cPlotOptions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\cProbabilityPlot.Designer.vb">
+      <DependentUpon>cProbabilityPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cProbabilityPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\cSummaryStatistics.Designer.vb">
+      <DependentUpon>cSummaryStatistics.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cSummaryStatistics.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\cTimeSeriesPlot.Designer.vb">
+      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\cTimeSeriesPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MainControl.Designer.vb">
+      <DependentUpon>MainControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MainControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GraphViewPlugin.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OrderChange.Designer.vb">
+      <DependentUpon>OrderChange.vb</DependentUpon>
+    </Compile>
+    <Compile Include="OrderChange.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlotOptions.vb" />
+    <Compile Include="Statistics.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\cBoxWhiskerPlot.resx">
+      <DependentUpon>cBoxWhiskerPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cDataSummary.resx">
+      <DependentUpon>cDataSummary.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cHistogramPlot.resx">
+      <DependentUpon>cHistogramPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ColorSettingsDialog.resx">
+      <DependentUpon>ColorSettingsDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cSummaryplot.resx">
+      <DependentUpon>cSummaryplot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cPlotOptions.resx">
+      <DependentUpon>cPlotOptions.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cProbabilityPlot.resx">
+      <DependentUpon>cProbabilityPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cSummaryStatistics.resx">
+      <DependentUpon>cSummaryStatistics.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\cTimeSeriesPlot.resx">
+      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MainControl.resx">
+      <DependentUpon>MainControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DateTimeSettingsDialog.resx">
+      <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrderChange.resx">
+      <DependentUpon>OrderChange.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="package.nuspec" />
+    <None Include="Resources\TSA_icon.png" />
+    <None Include="Icons\box.png" />
+    <None Include="Icons\Histogram graph.png" />
+    <None Include="Icons\prob.png" />
+    <None Include="Icons\table.png" />
+    <None Include="Icons\ts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TSAType.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DateSetting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TSA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Binning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ColorSetting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Histogram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HisType.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Legend.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlotType.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Probability.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BoxWhiskerType.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BoxWisker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Summary.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FullDateRange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FullDateRange_16.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
