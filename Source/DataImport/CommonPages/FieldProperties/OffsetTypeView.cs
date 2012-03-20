@@ -37,7 +37,7 @@ namespace DataImport.CommonPages.FieldProperties
             tbDescription.AddBinding<TextBox, OffsetType>(x => x.Text, bindingSource1, x => x.Description);
 
             var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
-            var units = unitRepo.GetAll();
+            var units = unitRepo.AsQueryable().OrderBy(u => u.Name).ToArray();
             cmbUnits.DataSource = units;
             cmbUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
         }

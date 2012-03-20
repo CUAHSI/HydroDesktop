@@ -100,6 +100,14 @@ namespace HydroDesktop.Database
             return DbOperations.GetNextID(TableName, PrimaryKeyName);
         }
 
+        public IQueryable<T> AsQueryable()
+        {
+            //TODO: in current implementation it is not "really" IQueryable.
+            //Real will be in EF.
+
+            return GetAll().AsQueryable();
+        }
+
         public T[] GetAll()
         {
             var dt = AsDataTable();
