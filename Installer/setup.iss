@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop"
-#define SrcApp "HydroDesktop.exe"
+#define AppName "HydroDesktop 1.5"
+#define SrcApp "HydroDesktop_1_5.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -52,7 +52,8 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{B3FF6BFE-3E8A-4acb-AD61-5C4304FD754B}
+AppID={{A914416C-9FC5-49FB-B740-70D7F4B6DC07}
+
 PrivilegesRequired=poweruser
 MinVersion=,5.01
 ; Necessary setting for the 64bit version
@@ -75,8 +76,8 @@ VersionInfoCopyright=Mozilla Public License (MPL) 1.1
 VersionInfoDescription=HydroDesktop [www.HydroDesktop.org]
 VersionInfoProductName="{#AppName} {#AppVerStr}
 VersionInfoProductVersion={#AppVerStr}
-DefaultDirName={pf}\CUAHSI HIS\HydroDesktop 1.4
-DefaultGroupName=CUAHSI HIS\HydroDesktop 1.4
+DefaultDirName={pf}\CUAHSI HIS\{#AppName}
+DefaultGroupName=CUAHSI HIS\{#AppName}
 ;If this is set to auto, at startup Setup will look in the registry
 ;to see if the same application is already installed, and if so, it
 ;will not show the Select Start Menu Folder wizard page.
@@ -86,7 +87,11 @@ AlwaysShowComponentsList=false
 ;InfoBeforeFile=Source\..\..\Documents\Pre-install.txt
 ;InfoAfterFile=Source\..\..\Documents\Post-install.txt
 OutputDir=Releases
-OutputBaseFilename="HydroDesktop14_Beta_Installer"
+OutputBaseFilename="HydroDesktop15_Beta_Installer"
+
+;install to a separate directory
+UsePreviousAppDir=no
+
 ;SetupIconFile=Source\..\..\Documents\MapWindow.ico
 ;UninstallDisplayIcon=Source\..\..\Documents\MapWindow.ico
 ChangesAssociations=true
@@ -105,8 +110,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\Binaries\HydroDesktop.*"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\DotSpatial.*"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
 ;Source: "..\Binaries\log4net.*"; DestDir: "{app}"; Flags: ignoreversion;
 ;Source: "..\Binaries\EurekaLog.*"; DestDir: "{app}"; Flags: ignoreversion;
@@ -128,15 +133,18 @@ Source: "..\Binaries\Plugins\TableView\*"; DestDir: "{app}\Plugins\TableView"; F
 Source: "..\Binaries\Plugins\GraphView\*"; DestDir: "{app}\Plugins\GraphView"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\*"; DestDir: "{app}\Plugins\HelpTab"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ZDataDownload\*"; DestDir: "{app}\Plugins\ZDataDownload"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\DataAggregation\*"; DestDir: "{app}\Plugins\DataAggregation"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\ImportFromWaterML\*"; DestDir: "{app}\Plugins\DataImport"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\GeostatisticalTool\*"; DestDir: "{app}\Plugins\GeostatisticalTool"; Flags: ignoreversion;
 
 Source: "..\Binaries\Application Extensions\*"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
-;Source: "..\Binaries\HydroDesktop.ico"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
+
 ;Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: not Is64BitInstallMode;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsX64;
 ;Source: "..\Binaries\System.Data.SQLite64bit.dll"; DestDir: "{app}"; DestName: "System.Data.SQLite.dll"; Check: IsIA64;
@@ -148,15 +156,15 @@ Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroMo
 Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
-Name: "{group}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"
-Name: "{group}\{cm:UninstallProgram,HydroDesktop}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\HydroDesktop 1.4"; Filename: "{app}\HydroDesktop.exe"; Tasks: desktopicon
+Name: "{group}\{#AppName}"; Filename: "{app}\{#SrcApp}"
+Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\{#AppName}"; Filename: "{app}\{#SrcApp}"; Tasks: desktopicon
 
 [Registry]
 Root: HKCR; Subkey: ".dspx"; ValueType: string; ValueName: ""; ValueData: "HD_Project"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: "HD_Project"; ValueType: string; ValueName: ""; ValueData: "HydroDesktop Project"; Flags: uninsdeletekey 
-Root: HKCR; Subkey: "HD_Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\HydroDesktop.exe,0"
-Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\HydroDesktop.exe"" ""%1"""
+Root: HKCR; Subkey: "HD_Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#SrcApp},0"
+Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#SrcApp}"" ""%1"""
 
 ;[Run]
 ;Start HydroDesktop
@@ -191,8 +199,12 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
+Type: files; Name: "{app}\hydrodesktop_log.txt"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
+Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
 [UninstallDelete]
 Type: files; Name: "{app}\Application Extensions\*"
@@ -222,8 +234,12 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
+Type: files; Name: "{app}\Hhydrodesktop_log.txt"
 Type: files; Name: "{userappdata}\HydroDesktop.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
+Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify
@@ -426,9 +442,7 @@ begin
   case CurUninstallStep of
     usPostUninstall:
       begin
-        mres := MsgBox('Do you want to delete extension packages?', mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
-        if mres = IDYES then
-          DelTree(ExpandConstant('{userappdata}\Hydrodesktop.exe'), True, True, True);
+        DelTree(ExpandConstant('{userappdata}\Hydrodesktop.exe'), True, True, True);
       end;  
   end;
 end;	
