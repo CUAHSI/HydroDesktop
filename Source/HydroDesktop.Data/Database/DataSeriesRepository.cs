@@ -100,12 +100,11 @@ namespace HydroDesktop.Database
             var sql =
                 "SELECT src.Organization as 'DataSource', ds.SeriesID, " +
                 "s.SiteName as 'SiteName', s.Latitude as 'Latitude', s.Longitude as 'Longitude', s.SiteCode as 'SiteCode', " +
-                "v.VariableName as 'VariableName', v.VariableName as 'VarName', v.DataType as 'DataType', v.SampleMedium as 'SampleMedium', " +
-                "v.VariableCode as 'VariableCode', u.UnitsName as 'Units', " +
-                "v.VariableCode as 'ServiceCode', " + "v.VariableCode as 'VarCode', " +
-                "m.MethodDescription as 'Method', qc.Definition as 'QualityControl', " +
-                "ds.BeginDateTime as 'BeginDateTime', ds.EndDateTime as 'EndDateTime', ds.ValueCount as 'ValueCount', " +
-                "ds.BeginDateTime as 'StartDate', ds.EndDateTime as 'EndDate', " +
+                "v.VariableName as 'VarName', v.DataType as 'DataType', v.SampleMedium as 'SampleMed', " +
+                "v.VariableCode as 'VarCode', u.UnitsName as 'Units', " +
+                "v.VariableCode as 'ServiceCode', " +
+                "m.MethodDescription as 'Method', qc.Definition as 'QCLevel', " +
+                "ds.BeginDateTime as 'StartDate', ds.EndDateTime as 'EndDate', ds.ValueCount as 'ValueCount', " +
                 "null as 'ServiceURL' " +
                 "FROM DataSeries ds " +
                 "LEFT JOIN DataThemes dt on dt.SeriesID = ds.SeriesID " +
