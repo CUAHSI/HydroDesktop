@@ -82,7 +82,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 string sCode = Convert.ToString(row["SiteCode"]);
                 if (sCode.StartsWith("NWIS"))
                 {
-                    sCode = Convert.ToString(row["VariableCode"]);
+                    sCode = Convert.ToString(row["VarCode"]);
                     row["DataSource"] = "USGS";
                 }
                 else if (sCode.StartsWith("EPA"))

@@ -143,7 +143,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 var searchFeature = dInfo.SourceFeature;
                 Series firstSeries;
                 if (searchFeature.DataRow["Method"] != DBNull.Value &&
-                    searchFeature.DataRow["QualityCont"] != DBNull.Value)
+                    searchFeature.DataRow["QCLevel"] != DBNull.Value)
                 {
                     firstSeries = seriesToProcess.First(s =>
                                                         (string)searchFeature.DataRow["SiteCode"] == s.Site.Code &&
@@ -166,7 +166,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                                   (string)feature.DataRow["VarName"] == series.Variable.Name &&
                                   (string)feature.DataRow["DataType"] == series.Variable.DataType &&
                                   feature.DataRow["Method"] != DBNull.Value && (string)feature.DataRow["Method"] == series.Method.Description &&
-                                  feature.DataRow["QualityCont"] != DBNull.Value && (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition
+                                  feature.DataRow["QCLevel"] != DBNull.Value && (string)feature.DataRow["QCLevel"] == series.QualityControlLevel.Definition
                        );
                     // If no such feature in Search shapeFile, then add it...
                     if (sFeature == null)
@@ -239,11 +239,11 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             // Find downloaded feature
             var downloadedFeature = featureSet.Features.FirstOrDefault(feature =>
                                 (string)feature.DataRow["SiteCode"] == series.Site.Code &&
-                                (string)feature.DataRow["VariableCod"] == series.Variable.Code &&
-                                (string)feature.DataRow["VariableNam"] == series.Variable.Name &&
+                                (string)feature.DataRow["VarCode"] == series.Variable.Code &&
+                                (string)feature.DataRow["VarName"] == series.Variable.Name &&
                                 (string)feature.DataRow["DataType"] == series.Variable.DataType &&
                                 (string)feature.DataRow["Method"] == series.Method.Description &&
-                                (string)feature.DataRow["QualityCont"] == series.QualityControlLevel.Definition);
+                                (string)feature.DataRow["QCLevel"] == series.QualityControlLevel.Definition);
             if (downloadedFeature == null) return;
 
             // updating...

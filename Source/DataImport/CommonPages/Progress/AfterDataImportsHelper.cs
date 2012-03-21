@@ -64,18 +64,16 @@ namespace DataImport.CommonPages.Progress
             table.Columns.Add("Latitude", typeof(double));
             table.Columns.Add("Longitude", typeof(double));
             table.Columns.Add("SiteCode", typeof(string));
-            table.Columns.Add("VariableName", typeof(string));
+            table.Columns.Add("VarName", typeof(string));
             table.Columns.Add("DataType", typeof(string));
-            table.Columns.Add("SampleMedium", typeof(string));
-            table.Columns.Add("VariableCode", typeof(string));
+            table.Columns.Add("SampleMed", typeof(string));
+            table.Columns.Add("VarCode", typeof(string));
             table.Columns.Add("Units", typeof(string));
             table.Columns.Add("Method", typeof(string));
-            table.Columns.Add("QualityControl", typeof(string));
+            table.Columns.Add("QCLevel", typeof(string));
             table.Columns.Add("ServiceCode", typeof(string));
             table.Columns.Add("StartDate", typeof(string));
             table.Columns.Add("EndDate", typeof(string));
-            table.Columns.Add("BeginDateTi", typeof(string)); // it need for data aggregation
-            table.Columns.Add("EndDateTime", typeof(string)); // it need for data aggregation
             table.Columns.Add("ValueCount", typeof(int));
             return fs;
         }
@@ -94,17 +92,15 @@ namespace DataImport.CommonPages.Progress
             featureRow["Latitude"] = series.Site.Latitude;
             featureRow["Longitude"] = series.Site.Longitude;
             featureRow["SiteCode"] = series.Site.Code;
-            featureRow["VariableName"] = series.Variable.Name;
+            featureRow["VarName"] = series.Variable.Name;
             featureRow["DataType"] = series.Variable.DataType;
-            featureRow["SampleMedium"] = series.Variable.SampleMedium;
-            featureRow["VariableCode"] = series.Variable.Code;
+            featureRow["SampleMed"] = series.Variable.SampleMedium;
+            featureRow["VarCode"] = series.Variable.Code;
             featureRow["Units"] = series.Variable.VariableUnit.Name;
             featureRow["Method"] = series.Method.Description;
-            featureRow["QualityControl"] = series.QualityControlLevel.Definition;
+            featureRow["QCLevel"] = series.QualityControlLevel.Definition;
             featureRow["StartDate"] = ConvertTime(series.BeginDateTime);
             featureRow["EndDate"] = ConvertTime(series.EndDateTime);
-            featureRow["BeginDateTi"] = ConvertTime(series.BeginDateTime);
-            featureRow["EndDateTime"] = ConvertTime(series.EndDateTime);
             featureRow["ValueCount"] = series.ValueCount;
             featureRow["ServiceCode"] = series.Variable.Code;
         }

@@ -84,8 +84,8 @@ namespace DataAggregation
 
             foreach (var feature in _layer.DataSet.Features)
             {
-                var startDateRow = feature.DataRow["BeginDateTi"];
-                var endDateRow = feature.DataRow["EndDateTime"];
+                var startDateRow = feature.DataRow["StartDate"];
+                var endDateRow = feature.DataRow["EndDate"];
 
                 if (startDateRow == DBNull.Value || endDateRow == DBNull.Value) continue;
 

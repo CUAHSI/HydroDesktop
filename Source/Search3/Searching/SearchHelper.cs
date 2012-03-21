@@ -30,6 +30,7 @@ namespace Search3.Searching
             row["ServiceCode"] = series.ServCode;
             row["DataType"] = series.DataType;
             row["ValueType"] = series.ValueType;
+            row["SampleMed"] = series.SampleMedium;
             row["TimeUnits"] = series.TimeUnit;
             row["TimeSupport"] = series.TimeSupport;
             row["Latitude"] = series.Latitude;
@@ -176,7 +177,8 @@ namespace Search3.Searching
             tab.Columns.Add(new DataColumn("ServiceURL", typeof(string)));
             tab.Columns.Add(new DataColumn("ServiceCode", typeof(string)));
             tab.Columns.Add(new DataColumn("DataType", typeof(string)));
-            tab.Columns.Add(new DataColumn("ValueType", typeof(string)));           
+            tab.Columns.Add(new DataColumn("ValueType", typeof(string)));
+            tab.Columns.Add(new DataColumn("SampleMed", typeof(string)));           
             tab.Columns.Add(new DataColumn("TimeUnits", typeof(string)));
             tab.Columns.Add(new DataColumn("TimeSupport", typeof(double)));
             tab.Columns.Add(new DataColumn("Latitude", typeof(double)));

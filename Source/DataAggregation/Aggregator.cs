@@ -27,7 +27,7 @@ namespace DataAggregation
             var featureLayer = layer as IFeatureLayer;
             if (featureLayer == null) return false;
 
-            return new[] {"SeriesID", "BeginDateTi", "EndDateTime"}.All(fieldName => featureLayer.DataSet.DataTable.Columns.Contains(fieldName));
+            return new[] {"SeriesID", "StartDate", "EndDate"}.All(fieldName => featureLayer.DataSet.DataTable.Columns.Contains(fieldName));
         }
 
         public static void UpdateContextMenu(IFeatureLayer layer)
@@ -142,8 +142,8 @@ namespace DataAggregation
                         continue;
                     }
                     // Filter by overlapping date / time
-                    var startDateValue = feature.DataRow["BeginDateTi"];
-                    var endDateValue = feature.DataRow["EndDateTime"];
+                    var startDateValue = feature.DataRow["StartDate"];
+                    var endDateValue = feature.DataRow["EndDate"];
                     if (startDateValue == null || startDateValue == DBNull.Value)
                         continue;
                     if (endDateValue == null || endDateValue == DBNull.Value)
