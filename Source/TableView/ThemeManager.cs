@@ -168,8 +168,8 @@ namespace TableView
        
         private DataTable LoadThemeAsTable(int? themeID)
         {
-            var repo = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
-            var table = repo.GetSeriesForThemeManager(themeID);
+            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>();
+            var table = repo.GetThemesTableForThemeManager(themeID);
 
             //to get the 'ServiceCode'
             foreach (DataRow row in table.Rows)
