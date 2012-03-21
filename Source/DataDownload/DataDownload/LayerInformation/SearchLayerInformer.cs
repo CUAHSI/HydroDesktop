@@ -45,8 +45,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
             toolTip.AutoClose = false;
             toolTip.FocusOnOpen = false;
             toolTip.ShowingAnimation = toolTip.HidingAnimation = PopupAnimations.Blend;
-
+            
             _map.MouseMove += _map_MouseMove;
+            _map.VisibleChanged += MapOnVisibleChanged;
+            if (_map.Parent != null)
+                _map.Parent.VisibleChanged += MapOnVisibleChanged;
         }
 
         #endregion
@@ -59,11 +62,22 @@ namespace HydroDesktop.DataDownload.LayerInformation
         public void Stop()
         {
             _map.MouseMove -= _map_MouseMove;
+            _map.VisibleChanged -= MapOnVisibleChanged;
+            if (_map.Parent != null)
+                _map.Parent.VisibleChanged -= MapOnVisibleChanged;
         }
     
         #endregion
 
         #region Private methods
+
+        private void MapOnVisibleChanged(object sender, EventArgs eventArgs)
+        {
+            if (!_map.Visible || (_map.Parent != null && !_map.Parent.Visible))
+            {
+                HideToolTip();
+            }
+        }
 
         void _map_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
