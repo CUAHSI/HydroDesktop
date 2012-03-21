@@ -94,31 +94,6 @@ namespace HydroDesktop.Database
         {
             return GetSeriesTable(string.Format("DataSeries.SeriesID={0}", seriesID));
         }
-       
-        public DataTable GetSeriesForThemeManager(int? themeID)
-        {
-            var sql =
-                "SELECT src.Organization as 'DataSource', ds.SeriesID, " +
-                "s.SiteName as 'SiteName', s.Latitude as 'Latitude', s.Longitude as 'Longitude', s.SiteCode as 'SiteCode', " +
-                "v.VariableName as 'VarName', v.DataType as 'DataType', v.SampleMedium as 'SampleMed', " +
-                "v.VariableCode as 'VarCode', u.UnitsName as 'Units', " +
-                "v.VariableCode as 'ServiceCode', " +
-                "m.MethodDescription as 'Method', qc.Definition as 'QCLevel', " +
-                "ds.BeginDateTime as 'StartDate', ds.EndDateTime as 'EndDate', ds.ValueCount as 'ValueCount', " +
-                "null as 'ServiceURL' " +
-                "FROM DataSeries ds " +
-                "LEFT JOIN DataThemes dt on dt.SeriesID = ds.SeriesID " +
-                "LEFT JOIN Sites s on ds.SiteID = s.SiteID " +
-                "LEFT JOIN Variables v on ds.VariableID = v.VariableID " +
-                "LEFT JOIN Units u on u.UnitsID = v.VariableUnitsID " +
-                "LEFT JOIN Methods m on ds.MethodID = m.MethodID " +
-                "LEFT JOIN Sources src on ds.SourceID = src.SourceID " +
-                "LEFT JOIN QualityControlLevels qc on ds.QualityControlLevelID = qc.QualityControlLevelID " +
-                (themeID.HasValue ? "WHERE dt.ThemeID = " + themeID : "WHERE dt.ThemeID is null");
-
-            var table = DbOperations.LoadTable("ThemeTable", sql);
-            return table;
-        }
         
         public DataTable GetSeriesIDsWithNoDataValueTable(IEnumerable<int?> themeIDs)
         {
