@@ -8,6 +8,7 @@ namespace HydroDesktop.Interfaces
     public interface IUnitsRepository : IRepository<Unit>
     {
         Unit GetByName(string name);
+        bool Exists(string name);
         void AddUnit(Unit unit);
     }
 }

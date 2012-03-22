@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.UnitConversions
 {
+    /// <summary>
+    /// Contains methods for units conversion.
+    /// </summary>
     public static class UnitConverter
     {
         #region Public methods
@@ -21,7 +22,7 @@ namespace HydroDesktop.UnitConversions
         /// <returns></returns>
         public static bool CanConvertUnits(Unit unitA, Unit unitB)
         {
-            // Check that given units hase same base SI unit
+            // Check that given units has same base SI unit
             if (unitA.Dimension != unitB.Dimension ||
                 unitA.UnitsType != unitB.UnitsType)
             {
@@ -74,19 +75,41 @@ namespace HydroDesktop.UnitConversions
             return series;
         }
 
+        /// <summary>
+        /// Ensure that all columns need to unit conversion are present in the current database.
+        /// Also it populates units from default database into current database.  
+        /// </summary>
         public static void UpdateDefaultUnits()
         {
-            throw new NotImplementedException();
+            var connectionString = Settings.Instance.DataRepositoryConnectionString;
+            EnsureColumnsForUnitConversions(connectionString);
+            var unitsSource = new DefaultDatabaseUnitsSource();
+            UpdateUnits(connectionString, unitsSource);
         }
 
+        /// <summary>
+        /// Updates units table from "ODM Controlled Vocabulary"
+        /// </summary>
+        /// <param name="connectionString">Connection string to database to update. By default it is Settings.Instance.DataRepositoryConnectionString</param>
         public static void UpdateDefaultUnitsFromWeb(string connectionString = null)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrEmpty(connectionString))
+            {
+                connectionString = Settings.Instance.DataRepositoryConnectionString;
+            }
+            EnsureColumnsForUnitConversions(connectionString);
+            var unitsSource = new WebUnitsSource();
+            UpdateUnits(connectionString, unitsSource);
         }
 
         #endregion
 
         #region Private methods
+
+        private static void EnsureColumnsForUnitConversions(string connectionString)
+        {
+            //todo: implement me
+        }
 
         private static Func<double, double> GetConversionFunc(Unit originalUnit, Unit newUnit)
         {
@@ -111,6 +134,19 @@ namespace HydroDesktop.UnitConversions
                            Debug.Assert(res != null, "res != null");
                            return (double) res;
                        };
+        }
+
+        private static void UpdateUnits(string connectionString, IUnitsSource source)
+        {
+            var unitsRepo = RepositoryFactory.Instance.Get<IUnitsRepository>(DatabaseTypes.SQLite, connectionString);
+            foreach (var unit in source.GetUnits())
+            {
+                if (String.IsNullOrEmpty(unit.Name)) continue;
+                if (!unitsRepo.Exists(unit.Name))
+                {
+                    unitsRepo.AddUnit(unit);
+                }
+            }
         }
 
         #endregion
