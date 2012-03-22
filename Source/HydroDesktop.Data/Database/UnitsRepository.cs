@@ -25,6 +25,12 @@ namespace HydroDesktop.Database
 
         #region Public methods
 
+        public bool Exists(string name)
+        {
+            var res = DbOperations.ExecuteSingleOutput("Select count(*) FROM Units where UnitsName=?", new object[]{name});
+            return Convert.ToInt64(res) > 0;
+        }
+
         public Unit GetByName(string name)
         {
             var dt = DbOperations.LoadTable(TableName, string.Format("Select * FROM Units where UnitsName='{0}'", name));

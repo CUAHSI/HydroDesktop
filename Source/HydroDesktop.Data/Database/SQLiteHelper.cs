@@ -43,7 +43,7 @@ namespace HydroDesktop.Database
         /// <returns>true if database was created, false otherwise</returns>
         public static Boolean CreateSQLiteDatabase(string dbPath)
         {
-            Assembly asm = Assembly.GetAssembly(typeof(HydroDesktop.Database.DbOperations));
+            var asm = Assembly.GetAssembly(typeof(DbOperations));
 
             //to create the default.sqlite database file
             try
@@ -68,14 +68,7 @@ namespace HydroDesktop.Database
                     ". Error details: " + ex.Message);
                 return false;
             }
-            if (File.Exists(dbPath))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return File.Exists(dbPath);
         }
 
 

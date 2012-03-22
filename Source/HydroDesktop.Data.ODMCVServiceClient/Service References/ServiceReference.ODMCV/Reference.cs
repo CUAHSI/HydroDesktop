@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
+namespace HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -17,51 +17,51 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
         
         // CODEGEN: Generating message contract since element name GetCensorCodeCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetCensorCodeCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVResponse GetCensorCodeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVResponse GetCensorCodeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetDataTypeCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetDataTypeCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVResponse GetDataTypeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVResponse GetDataTypeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetGeneralCategoryCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetGeneralCategoryCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVResponse GetGeneralCategoryCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVResponse GetGeneralCategoryCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetSampleMediumCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetSampleMediumCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVResponse GetSampleMediumCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVResponse GetSampleMediumCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetSampleTypeCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetSampleTypeCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVResponse GetSampleTypeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVResponse GetSampleTypeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetTopicCategoryCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetTopicCategoryCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVResponse GetTopicCategoryCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVResponse GetTopicCategoryCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetValueTypeCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetValueTypeCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVResponse GetValueTypeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVResponse GetValueTypeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetVariableNameCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetVariableNameCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVResponse GetVariableNameCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVResponse GetVariableNameCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetVerticalDatumCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetVerticalDatumCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVResponse GetVerticalDatumCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVResponse GetVerticalDatumCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequest request);
         
         // CODEGEN: Generating message contract since element name GetSpatialReferencesResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetSpatialReferences", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesResponse GetSpatialReferences(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesResponse GetSpatialReferences(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequest request);
         
         // CODEGEN: Generating message contract since element name GetUnitsResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetUnits", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsResponse GetUnits(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsResponse GetUnits(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequest request);
         
         // CODEGEN: Generating message contract since element name GetSpeciationCVResult from namespace http://his.cuahsi.org/his/1.1/ws/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://his.cuahsi.org/his/1.1/ws/GetSpeciationCV", ReplyAction="*")]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVResponse GetSpeciationCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequest request);
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVResponse GetSpeciationCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -71,12 +71,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetCensorCodeCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCensorCodeCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequestBody Body;
         
         public GetCensorCodeCVRequest() {
         }
         
-        public GetCensorCodeCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequestBody Body) {
+        public GetCensorCodeCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -98,12 +98,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetCensorCodeCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCensorCodeCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVResponseBody Body;
         
         public GetCensorCodeCVResponse() {
         }
         
-        public GetCensorCodeCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVResponseBody Body) {
+        public GetCensorCodeCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -132,12 +132,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetDataTypeCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDataTypeCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequestBody Body;
         
         public GetDataTypeCVRequest() {
         }
         
-        public GetDataTypeCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequestBody Body) {
+        public GetDataTypeCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -159,12 +159,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetDataTypeCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDataTypeCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVResponseBody Body;
         
         public GetDataTypeCVResponse() {
         }
         
-        public GetDataTypeCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVResponseBody Body) {
+        public GetDataTypeCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -193,12 +193,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetGeneralCategoryCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetGeneralCategoryCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequestBody Body;
         
         public GetGeneralCategoryCVRequest() {
         }
         
-        public GetGeneralCategoryCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequestBody Body) {
+        public GetGeneralCategoryCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -220,12 +220,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetGeneralCategoryCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetGeneralCategoryCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVResponseBody Body;
         
         public GetGeneralCategoryCVResponse() {
         }
         
-        public GetGeneralCategoryCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVResponseBody Body) {
+        public GetGeneralCategoryCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -254,12 +254,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSampleMediumCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSampleMediumCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequestBody Body;
         
         public GetSampleMediumCVRequest() {
         }
         
-        public GetSampleMediumCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequestBody Body) {
+        public GetSampleMediumCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -281,12 +281,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSampleMediumCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSampleMediumCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVResponseBody Body;
         
         public GetSampleMediumCVResponse() {
         }
         
-        public GetSampleMediumCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVResponseBody Body) {
+        public GetSampleMediumCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -315,12 +315,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSampleTypeCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSampleTypeCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequestBody Body;
         
         public GetSampleTypeCVRequest() {
         }
         
-        public GetSampleTypeCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequestBody Body) {
+        public GetSampleTypeCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -342,12 +342,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSampleTypeCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSampleTypeCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVResponseBody Body;
         
         public GetSampleTypeCVResponse() {
         }
         
-        public GetSampleTypeCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVResponseBody Body) {
+        public GetSampleTypeCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -376,12 +376,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetTopicCategoryCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetTopicCategoryCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequestBody Body;
         
         public GetTopicCategoryCVRequest() {
         }
         
-        public GetTopicCategoryCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequestBody Body) {
+        public GetTopicCategoryCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -403,12 +403,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetTopicCategoryCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetTopicCategoryCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVResponseBody Body;
         
         public GetTopicCategoryCVResponse() {
         }
         
-        public GetTopicCategoryCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVResponseBody Body) {
+        public GetTopicCategoryCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -437,12 +437,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetValueTypeCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetValueTypeCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequestBody Body;
         
         public GetValueTypeCVRequest() {
         }
         
-        public GetValueTypeCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequestBody Body) {
+        public GetValueTypeCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -464,12 +464,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetValueTypeCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetValueTypeCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVResponseBody Body;
         
         public GetValueTypeCVResponse() {
         }
         
-        public GetValueTypeCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVResponseBody Body) {
+        public GetValueTypeCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -498,12 +498,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetVariableNameCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetVariableNameCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequestBody Body;
         
         public GetVariableNameCVRequest() {
         }
         
-        public GetVariableNameCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequestBody Body) {
+        public GetVariableNameCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -525,12 +525,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetVariableNameCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetVariableNameCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVResponseBody Body;
         
         public GetVariableNameCVResponse() {
         }
         
-        public GetVariableNameCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVResponseBody Body) {
+        public GetVariableNameCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -559,12 +559,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetVerticalDatumCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetVerticalDatumCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequestBody Body;
         
         public GetVerticalDatumCVRequest() {
         }
         
-        public GetVerticalDatumCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequestBody Body) {
+        public GetVerticalDatumCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -586,12 +586,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetVerticalDatumCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetVerticalDatumCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVResponseBody Body;
         
         public GetVerticalDatumCVResponse() {
         }
         
-        public GetVerticalDatumCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVResponseBody Body) {
+        public GetVerticalDatumCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -620,12 +620,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSpatialReferencesRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSpatialReferences", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequestBody Body;
         
         public GetSpatialReferencesRequest() {
         }
         
-        public GetSpatialReferencesRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequestBody Body) {
+        public GetSpatialReferencesRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -647,12 +647,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSpatialReferencesResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSpatialReferencesResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesResponseBody Body;
         
         public GetSpatialReferencesResponse() {
         }
         
-        public GetSpatialReferencesResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesResponseBody Body) {
+        public GetSpatialReferencesResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -681,12 +681,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetUnitsRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUnits", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequestBody Body;
         
         public GetUnitsRequest() {
         }
         
-        public GetUnitsRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequestBody Body) {
+        public GetUnitsRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -708,12 +708,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetUnitsResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUnitsResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsResponseBody Body;
         
         public GetUnitsResponse() {
         }
         
-        public GetUnitsResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsResponseBody Body) {
+        public GetUnitsResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -742,12 +742,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSpeciationCVRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSpeciationCV", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequestBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequestBody Body;
         
         public GetSpeciationCVRequest() {
         }
         
-        public GetSpeciationCVRequest(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequestBody Body) {
+        public GetSpeciationCVRequest(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -769,12 +769,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     public partial class GetSpeciationCVResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetSpeciationCVResponse", Namespace="http://his.cuahsi.org/his/1.1/ws/", Order=0)]
-        public HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVResponseBody Body;
+        public HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVResponseBody Body;
         
         public GetSpeciationCVResponse() {
         }
         
-        public GetSpeciationCVResponse(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVResponseBody Body) {
+        public GetSpeciationCVResponse(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -797,12 +797,12 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ODMCVServiceSoapChannel : HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap, System.ServiceModel.IClientChannel {
+    public interface ODMCVServiceSoapChannel : HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ODMCVServiceSoapClient : System.ServiceModel.ClientBase<HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap>, HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap {
+    public partial class ODMCVServiceSoapClient : System.ServiceModel.ClientBase<HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap>, HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap {
         
         public ODMCVServiceSoapClient() {
         }
@@ -824,146 +824,146 @@ namespace HydroDesktop.Data.Shell.ServiceReference.ODMCV {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetCensorCodeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetCensorCodeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequest request) {
             return base.Channel.GetCensorCodeCV(request);
         }
         
         public string GetCensorCodeCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetCensorCodeCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetCensorCodeCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetCensorCodeCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetCensorCodeCV(inValue);
             return retVal.Body.GetCensorCodeCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetDataTypeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetDataTypeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequest request) {
             return base.Channel.GetDataTypeCV(request);
         }
         
         public string GetDataTypeCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetDataTypeCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetDataTypeCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetDataTypeCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetDataTypeCV(inValue);
             return retVal.Body.GetDataTypeCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetGeneralCategoryCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetGeneralCategoryCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequest request) {
             return base.Channel.GetGeneralCategoryCV(request);
         }
         
         public string GetGeneralCategoryCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetGeneralCategoryCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetGeneralCategoryCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetGeneralCategoryCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetGeneralCategoryCV(inValue);
             return retVal.Body.GetGeneralCategoryCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetSampleMediumCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetSampleMediumCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequest request) {
             return base.Channel.GetSampleMediumCV(request);
         }
         
         public string GetSampleMediumCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleMediumCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSampleMediumCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleMediumCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSampleMediumCV(inValue);
             return retVal.Body.GetSampleMediumCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetSampleTypeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetSampleTypeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequest request) {
             return base.Channel.GetSampleTypeCV(request);
         }
         
         public string GetSampleTypeCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSampleTypeCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSampleTypeCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSampleTypeCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSampleTypeCV(inValue);
             return retVal.Body.GetSampleTypeCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetTopicCategoryCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetTopicCategoryCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequest request) {
             return base.Channel.GetTopicCategoryCV(request);
         }
         
         public string GetTopicCategoryCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetTopicCategoryCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetTopicCategoryCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetTopicCategoryCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetTopicCategoryCV(inValue);
             return retVal.Body.GetTopicCategoryCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetValueTypeCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetValueTypeCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequest request) {
             return base.Channel.GetValueTypeCV(request);
         }
         
         public string GetValueTypeCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetValueTypeCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetValueTypeCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetValueTypeCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetValueTypeCV(inValue);
             return retVal.Body.GetValueTypeCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetVariableNameCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetVariableNameCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequest request) {
             return base.Channel.GetVariableNameCV(request);
         }
         
         public string GetVariableNameCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVariableNameCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetVariableNameCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVariableNameCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetVariableNameCV(inValue);
             return retVal.Body.GetVariableNameCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetVerticalDatumCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetVerticalDatumCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequest request) {
             return base.Channel.GetVerticalDatumCV(request);
         }
         
         public string GetVerticalDatumCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetVerticalDatumCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetVerticalDatumCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetVerticalDatumCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetVerticalDatumCV(inValue);
             return retVal.Body.GetVerticalDatumCVResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetSpatialReferences(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetSpatialReferences(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequest request) {
             return base.Channel.GetSpatialReferences(request);
         }
         
         public string GetSpatialReferences() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpatialReferencesResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSpatialReferences(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpatialReferencesResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSpatialReferences(inValue);
             return retVal.Body.GetSpatialReferencesResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetUnits(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetUnits(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequest request) {
             return base.Channel.GetUnits(request);
         }
         
         public string GetUnits() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetUnitsResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetUnits(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetUnitsResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetUnits(inValue);
             return retVal.Body.GetUnitsResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVResponse HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap.GetSpeciationCV(HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequest request) {
+        HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVResponse HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap.GetSpeciationCV(HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequest request) {
             return base.Channel.GetSpeciationCV(request);
         }
         
         public string GetSpeciationCV() {
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequest inValue = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequest();
-            inValue.Body = new HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVRequestBody();
-            HydroDesktop.Data.Shell.ServiceReference.ODMCV.GetSpeciationCVResponse retVal = ((HydroDesktop.Data.Shell.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSpeciationCV(inValue);
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequest inValue = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequest();
+            inValue.Body = new HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVRequestBody();
+            HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.GetSpeciationCVResponse retVal = ((HydroDesktop.Data.ODMCVServiceClient.ServiceReference.ODMCV.ODMCVServiceSoap)(this)).GetSpeciationCV(inValue);
             return retVal.Body.GetSpeciationCVResult;
         }
     }

@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Binaries\HydroDesktop.Data.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -112,7 +113,10 @@
     <Compile Include="Database\DataReader.cs" />
     <Compile Include="Database\DbOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitConversions\DefaultDatabaseUnitsSource.cs" />
+    <Compile Include="UnitConversions\IUnitsSource.cs" />
     <Compile Include="UnitConversions\UnitConverter.cs" />
+    <Compile Include="UnitConversions\WebUnitsSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\DataManagerClassDiagram.cd" />
@@ -148,6 +152,10 @@
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data.ODMCVServiceClient\HydroDesktop.Data.ODMCVServiceClient.csproj">
+      <Project>{7E4B6C24-4526-4995-9BDA-410CC41C7512}</Project>
+      <Name>HydroDesktop.Data.ODMCVServiceClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
       <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
