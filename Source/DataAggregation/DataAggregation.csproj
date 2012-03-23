@@ -89,6 +89,7 @@
     <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
       <Project>{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}</Project>
       <Name>HydroDesktop.Configuration</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
