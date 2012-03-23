@@ -682,9 +682,9 @@ Public Class cEditView
     End Sub
 
     'Count the rows of a series
-    Private Function SeriesRowsCount(ByVal SeriesID As Integer) As Integer
-        Dim series = _dataSeriesRepo.GetSeriesByID(SeriesID)
-        Return series.ValueCount
+    Private Function SeriesRowsCount(ByVal seriesID As Integer) As Integer
+        Dim series = _dataSeriesRepo.GetSeriesByID(seriesID)
+        Return If(series Is Nothing, 0, series.ValueCount)
     End Function
 
     'Reload the Data Grid View
