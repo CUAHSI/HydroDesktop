@@ -249,6 +249,9 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             // updating...
             foreach (DataColumn column in featureSet.DataTable.Columns)
             {
+                // Do not update ServiceURL
+                if (column.ColumnName == "ServiceURL") continue;
+                
                 searchFeature.DataRow[column.ColumnName] = downloadedFeature.DataRow[column.ColumnName];
             }
         }

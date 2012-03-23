@@ -54,7 +54,8 @@ namespace HydroDesktop.Database
                 "v.VariableCode as 'VarCode', u.UnitsName as 'Units', " +
                 "v.VariableCode as 'ServiceCode', " +
                 "m.MethodDescription as 'Method', qc.Definition as 'QCLevel', " +
-                "ds.BeginDateTime as 'StartDate', ds.EndDateTime as 'EndDate', ds.ValueCount as 'ValueCount' " +
+                "ds.BeginDateTime as 'StartDate', ds.EndDateTime as 'EndDate', ds.ValueCount as 'ValueCount', " +
+                "null as 'ServiceURL' " +
                 "FROM DataSeries ds " +
                 "LEFT JOIN DataThemes dt on dt.SeriesID = ds.SeriesID " +
                 "LEFT JOIN Sites s on ds.SiteID = s.SiteID " +
