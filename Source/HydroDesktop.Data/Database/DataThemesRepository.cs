@@ -190,7 +190,7 @@ namespace HydroDesktop.Database
                 Name = Convert.ToString(row["ThemeName"]),
                 Description = Convert.ToString(row["ThemeDescription"]),
                 Id = Convert.ToInt64(row["ThemeID"]),
-                DateCreated = Convert.ToDateTime(row["DateCreated"]),
+                DateCreated = row["DateCreated"] != DBNull.Value? Convert.ToDateTime(row["DateCreated"]) : DateTime.MinValue,
             };
             return newTheme;
         }
