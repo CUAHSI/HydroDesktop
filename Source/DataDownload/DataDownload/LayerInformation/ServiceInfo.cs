@@ -118,6 +118,9 @@ namespace HydroDesktop.DataDownload.LayerInformation
             get { return Equals(Unknown); }
         }
 
+        /// <summary>
+        /// Site code.
+        /// </summary>
         public string SiteCode { get; set; }
 
         private string _varCode;

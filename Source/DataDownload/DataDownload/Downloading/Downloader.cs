@@ -5,7 +5,6 @@ using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.Configuration;
 using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading
@@ -144,7 +143,7 @@ namespace HydroDesktop.DataDownload.Downloading
         /// <param name="overwriteOption">Option to how save series</param>
         /// <returns>The number of saved data values</returns>
         /// <exception cref="SaveDataSeriesException">Something wrong during SaveDataSeries</exception>
-        public int SaveDataSeries(Series series, Theme theme, OverwriteOptions overwriteOption)
+        private int SaveDataSeries(Series series, Theme theme, OverwriteOptions overwriteOption)
         {
             if (series.GetValueCount() == 0) return 0;
 
@@ -158,6 +157,13 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
 
+        /// <summary>
+        /// Saves collection of series into database
+        /// </summary>
+        /// <param name="series">Collection of series</param>
+        /// <param name="theme">The theme associated with data series</param>
+        /// <param name="overwriteOption">Option to how save series</param>
+        /// <returns>The number of saved data values</returns>
         public int SaveDataSeries(IEnumerable<Series> series, Theme theme, OverwriteOptions overwriteOption)
         {
             var result = 0;

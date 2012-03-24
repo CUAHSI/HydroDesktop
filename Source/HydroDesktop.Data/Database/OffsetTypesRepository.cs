@@ -24,7 +24,7 @@ namespace HydroDesktop.Database
 
         #endregion
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "OffsetTypes"; }
         }

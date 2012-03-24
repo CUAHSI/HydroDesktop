@@ -40,7 +40,7 @@ namespace Search3.Searching
         /// <summary>
         /// Get a list of all web services registered in the metadata cache database
         /// </summary>
-        public IList<DataServiceInfo> GetWebServices()
+        public IEnumerable<DataServiceInfo> GetWebServices()
         {
             return _db.GetAllServices();
         }

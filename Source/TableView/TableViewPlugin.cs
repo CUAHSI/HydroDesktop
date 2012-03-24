@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
-using HydroDesktop.Configuration;
 using System.ComponentModel.Composition;
 using DotSpatial.Controls.Docking;
 using HydroDesktop.Common.Tools;
@@ -62,40 +59,49 @@ namespace TableView
             #region initialize the Table Ribbon TabPage and related controls
 
             //RefreshTheme
-            var refreshThemeButton = new SimpleActionItem("Refresh", rbRefreshTheme_Click);
-            refreshThemeButton.RootKey = kTableView;
-            refreshThemeButton.LargeImage = Properties.Resources.refreshTheme;
-            refreshThemeButton.SmallImage = Properties.Resources.refreshTheme_16x16;
-            refreshThemeButton.ToolTipText = "Refresh Themes";
-            refreshThemeButton.GroupCaption = _tablePanelName;
+            var refreshThemeButton = new SimpleActionItem("Refresh", rbRefreshTheme_Click)
+                                         {
+                                             RootKey = kTableView,
+                                             LargeImage = Properties.Resources.refreshTheme,
+                                             SmallImage = Properties.Resources.refreshTheme_16x16,
+                                             ToolTipText = "Refresh Themes",
+                                             GroupCaption = _tablePanelName
+                                         };
             App.HeaderControl.Add(refreshThemeButton);
 
             //DeleteTheme
-            var deleteThemeButton = new SimpleActionItem("Delete", rbDeleteTheme_Click);
-            deleteThemeButton.RootKey = kTableView;        
-            deleteThemeButton.LargeImage = Properties.Resources.delete;
-            deleteThemeButton.SmallImage = Properties.Resources.delete_16x16;
-            deleteThemeButton.ToolTipText = "Delete Theme from Database";
-            deleteThemeButton.GroupCaption = _tablePanelName;
+            var deleteThemeButton = new SimpleActionItem("Delete", rbDeleteTheme_Click)
+                                        {
+                                            RootKey = kTableView,
+                                            LargeImage = Properties.Resources.delete,
+                                            SmallImage = Properties.Resources.delete_16x16,
+                                            ToolTipText = "Delete Theme from Database",
+                                            GroupCaption = _tablePanelName
+                                        };
+
             App.HeaderControl.Add(deleteThemeButton);
 
             //Current database
-            dbTextBox = new TextEntryActionItem();
-            dbTextBox.Caption = "";
-            dbTextBox.GroupCaption = "Current Database Path";
-            dbTextBox.RootKey = kTableView;
-            dbTextBox.Width = 300;
-            dbTextBox.ToolTipText = "Path to current database";
-            dbTextBox.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(dbTextBox_PropertyChanged);
+            dbTextBox = new TextEntryActionItem
+                            {
+                                Caption = "",
+                                GroupCaption = "Current Database Path",
+                                RootKey = kTableView,
+                                Width = 300,
+                                ToolTipText = "Path to current database"
+                            };
+            dbTextBox.PropertyChanged += dbTextBox_PropertyChanged;
             App.HeaderControl.Add(dbTextBox);
 
             //Change Database
-            var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click);
-            changeDatabaseButton.RootKey = kTableView;
-            changeDatabaseButton.ToolTipText = "Change Database";
-            changeDatabaseButton.LargeImage = Properties.Resources.changeDatabase;
-            changeDatabaseButton.SmallImage = Properties.Resources.changeDatabase_16x16;
-            changeDatabaseButton.GroupCaption = "Current Database Path";
+            var changeDatabaseButton = new SimpleActionItem("Change", rbChangeDatabase_Click)
+                                           {
+                                               RootKey = kTableView,
+                                               ToolTipText = "Change Database",
+                                               LargeImage = Properties.Resources.changeDatabase,
+                                               SmallImage = Properties.Resources.changeDatabase_16x16,
+                                               GroupCaption = "Current Database Path"
+                                           };
             App.HeaderControl.Add(changeDatabaseButton);
 
             ////New Database
@@ -108,22 +114,26 @@ namespace TableView
             //App.HeaderControl.Add(newDatabaseButton);
 
             // Options buttons
-            var sequenceModeAction = new SimpleActionItem(_optionsSequenceMode, TableViewModeChanged);
-            sequenceModeAction.RootKey = kTableView;
-            sequenceModeAction.ToolTipText = "Show all fields in sequence";
-            sequenceModeAction.LargeImage = Properties.Resources.series_sequence_32;
-            sequenceModeAction.SmallImage = Properties.Resources.series_sequence_32;
-            sequenceModeAction.GroupCaption = _optionsGroupCaption;
-            sequenceModeAction.ToggleGroupKey = _optionsToggleGroupButtonKey;
+            var sequenceModeAction = new SimpleActionItem(_optionsSequenceMode, TableViewModeChanged)
+                                         {
+                                             RootKey = kTableView,
+                                             ToolTipText = "Show all fields in sequence",
+                                             LargeImage = Properties.Resources.series_sequence_32,
+                                             SmallImage = Properties.Resources.series_sequence_32,
+                                             GroupCaption = _optionsGroupCaption,
+                                             ToggleGroupKey = _optionsToggleGroupButtonKey
+                                         };
             App.HeaderControl.Add(sequenceModeAction);
 
-            var parallelModeAction = new SimpleActionItem(_optionsParallelMode, TableViewModeChanged);
-            parallelModeAction.RootKey = kTableView;
-            parallelModeAction.ToolTipText = "Show just values in parallel";
-            parallelModeAction.LargeImage = Properties.Resources.series_parallel_32;
-            parallelModeAction.SmallImage = Properties.Resources.series_parallel_32;
-            parallelModeAction.GroupCaption = _optionsGroupCaption;
-            parallelModeAction.ToggleGroupKey = _optionsToggleGroupButtonKey;
+            var parallelModeAction = new SimpleActionItem(_optionsParallelMode, TableViewModeChanged)
+                                         {
+                                             RootKey = kTableView,
+                                             ToolTipText = "Show just values in parallel",
+                                             LargeImage = Properties.Resources.series_parallel_32,
+                                             SmallImage = Properties.Resources.series_parallel_32,
+                                             GroupCaption = _optionsGroupCaption,
+                                             ToggleGroupKey = _optionsToggleGroupButtonKey
+                                         };
             App.HeaderControl.Add(parallelModeAction);
             //-----
              
@@ -134,7 +144,7 @@ namespace TableView
             SeriesControl.Refreshed += SeriesControl_Refreshed;
 
             //event when ribbon tab is changed
-            App.HeaderControl.RootItemSelected += new EventHandler<RootItemEventArgs>(HeaderControl_RootItemSelected);
+            App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
 
             base.Activate();
         }
@@ -163,8 +173,7 @@ namespace TableView
         void AddTableViewPanel()
         {
             // Add "Table View Plugin" dock panel to the SeriesView
-            tableViewControl = new cTableView(SeriesControl);
-            tableViewControl.Dock = DockStyle.Fill;
+            tableViewControl = new cTableView(SeriesControl) {Dock = DockStyle.Fill};
             var tableViewPanel = new DockablePanel
             {
                 Key = kTableView,
@@ -204,7 +213,7 @@ namespace TableView
             SeriesControl.RefreshSelection();
         }
 
-        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        void DockManager_ActivePanelChanged(object sender, DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == kTableView)
             {
@@ -251,7 +260,7 @@ namespace TableView
 
         private void rbChangeDatabase_Click(object sender, EventArgs e)
         {
-            using (var frmChangeDatabase = new ChangeDatabaseForm(SeriesControl, App.Map as Map, App.GetExtension<ISearchPlugin>()))
+            using (var frmChangeDatabase = new ChangeDatabaseForm(App.Map as Map, App.GetExtension<ISearchPlugin>()))
             {
                 frmChangeDatabase.ShowDialog();
             }

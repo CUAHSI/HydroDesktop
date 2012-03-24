@@ -7,15 +7,15 @@
     End Enum
 #Region " Member Variables "
     Private _TimeSeriesMethod As TimeSeriesType
-    Private _IsPlotCensored As Boolean
-    Private _GetLineColor As System.Drawing.Color
-    Private _GetPointColor As System.Drawing.Color
-    Private _ShowLegend As Boolean
-    Private _UseCensoredData As Boolean
+    Private ReadOnly _IsPlotCensored As Boolean
+    Private _GetLineColor As Drawing.Color
+    Private _GetPointColor As Drawing.Color
+    Private ReadOnly _ShowLegend As Boolean
+    Private ReadOnly _UseCensoredData As Boolean
 #End Region
 
-    Public Sub New(ByVal TimeSeriesMethod As TimeSeriesType, ByVal GetLineColor As System.Drawing.Color, _
-                   ByVal GetPointColor As System.Drawing.Color, ByVal ShowLegend As Boolean, _
+    Public Sub New(ByVal TimeSeriesMethod As TimeSeriesType, ByVal GetLineColor As Drawing.Color, _
+                   ByVal GetPointColor As Drawing.Color, ByVal ShowLegend As Boolean, _
                    ByVal UseCensoredData As Boolean, Optional ByVal IsPlotCensored As Boolean = True)
         _TimeSeriesMethod = TimeSeriesMethod
         _IsPlotCensored = IsPlotCensored
@@ -39,19 +39,19 @@
             Return _IsPlotCensored
         End Get
     End Property
-    Public Property GetLineColor() As System.Drawing.Color
+    Public Property GetLineColor() As Drawing.Color
         Get
             Return _GetLineColor
         End Get
-        Set(ByVal value As System.Drawing.Color)
+        Set(ByVal value As Drawing.Color)
             _GetLineColor = value
         End Set
     End Property
-    Public Property GetPointColor() As System.Drawing.Color
+    Public Property GetPointColor() As Drawing.Color
         Get
             Return _GetPointColor
         End Get
-        Set(ByVal value As System.Drawing.Color)
+        Set(ByVal value As Drawing.Color)
             _GetPointColor = value
         End Set
     End Property

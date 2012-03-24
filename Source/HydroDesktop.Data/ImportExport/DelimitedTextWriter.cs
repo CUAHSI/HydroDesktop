@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Data;
 using System.Globalization;
@@ -56,23 +53,17 @@ namespace HydroDesktop.ImportExport
 			{
 				throw new ArgumentNullException ( "Null text stream provided to DelimitedTextWriter" );
 			}
-			else
-			{
-				_textStream = textStream;
-			}
+		    _textStream = textStream;
 
-			if ( delimiter == null )
+		    if ( delimiter == null )
 			{
 				throw new ArgumentNullException ( "Null delimiter provided to DelimitedTextWriter" );
 			}
-			else if ( delimiter == String.Empty )
-			{
-				throw new ArgumentException ( "Empty delimiter provided to DelimitedTextWriter" );
-			}
-			else
-			{
-				_delimiter = delimiter;
-			}
+		    if ( delimiter == String.Empty )
+		    {
+		        throw new ArgumentException ( "Empty delimiter provided to DelimitedTextWriter" );
+		    }
+		    _delimiter = delimiter;
 		}
 
 		/// <summary>
@@ -146,12 +137,12 @@ namespace HydroDesktop.ImportExport
 		/// <returns>Properly formatted string for writing to a delimited file</returns>
 		private static string FormatDataItem ( string dataItem, string delimiter )
 		{
-			char[] charactersRequiringQuotes = new char[3];
+			var charactersRequiringQuotes = new char[3];
 			charactersRequiringQuotes[0] = '\"';
 			charactersRequiringQuotes[1] = '\x0A';
 			charactersRequiringQuotes[2] = '\x0D';
 
-			if ( dataItem.IndexOfAny ( charactersRequiringQuotes ) > -1 || dataItem.IndexOf ( delimiter ) > -1 )
+			if ( dataItem.IndexOfAny ( charactersRequiringQuotes ) > -1 || dataItem.IndexOf(delimiter, StringComparison.Ordinal) > -1 )
 			{
 				dataItem = "\"" + dataItem.Replace ( "\"", "\"\"" ) + "\"";
 			}
@@ -214,24 +205,17 @@ namespace HydroDesktop.ImportExport
 		/// <param name="formatItems">True if each item should be formatted for delimited file compatibility</param>
 		public void WriteLine ( DataRow row, bool formatItems )
 		{
-			ArrayList itemArray = new ArrayList ( row.ItemArray.Length );
+			var itemArray = new ArrayList ( row.ItemArray.Length );
 
 			object[] rowItems = row.ItemArray;
 
 			for ( int i = 0; i < rowItems.Length; i++ )
 			{
-				object rowItem = rowItems[i];
-				if ( rowItem == null )
-				{
-					itemArray.Add ( "" );
-				}
-				else
-				{
-					itemArray.Add ( rowItem.ToString () );
-				}
+			    object rowItem = rowItems[i];
+			    itemArray.Add(rowItem == null ? "" : rowItem.ToString());
 			}
 
-			string[] items = (string[])itemArray.ToArray ( typeof ( string ) );
+		    var items = (string[])itemArray.ToArray ( typeof ( string ) );
 
 			WriteLine ( items, formatItems );
 		}
@@ -241,18 +225,14 @@ namespace HydroDesktop.ImportExport
 		/// </summary>
 		/// <param name="items">The items which should be written as a delimited list in a single line</param>
 		/// <param name="formatItems">True if each item should be formatted for delimited file compatibility</param>
-		public void WriteLine ( string[] items, bool formatItems )
+		private void WriteLine ( string[] items, bool formatItems )
 		{
 			// Write data from each column for the current row
 			for ( int i = 0; i < items.Length; i++ )
 			{
-				string item = items[i];
-				if ( item == null )
-				{
-					item = String.Empty;
-				}
+				string item = items[i] ?? String.Empty;
 
-				if ( formatItems == true )
+			    if ( formatItems )
 				{
 					item = FormatDataItem ( item, _delimiter );
 				}
@@ -290,7 +270,7 @@ namespace HydroDesktop.ImportExport
         /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
         /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
         /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
-        public static void DataTableToStream(DataTable dataTable, TextWriter outputStream, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
+        private static void DataTableToStream(DataTable dataTable, TextWriter outputStream, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
         {          
             // Check that columns are present
             int columnCount = dataTable.Columns.Count;
@@ -302,7 +282,6 @@ namespace HydroDesktop.ImportExport
             // Get the number of rows in the table
             long totalSteps = 0;
             long currentStep = 0;
-            int percentComplete = 0;
             int previousPercentComplete = 0;
 
             // Background worker updates
@@ -333,7 +312,7 @@ namespace HydroDesktop.ImportExport
 
             
             // Write the column headers
-            if (formatOptions.IncludeHeaders == true)
+            if (formatOptions.IncludeHeaders)
             {
                 // Background worker updates
                 if (bgWorker != null)
@@ -346,7 +325,7 @@ namespace HydroDesktop.ImportExport
                     }
 
                     // Report progress
-                    if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                    if (bgWorker.WorkerReportsProgress && reportingOption != BackgroundWorkerReportingOptions.None)
                     {
                         if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
                         {
@@ -364,7 +343,7 @@ namespace HydroDesktop.ImportExport
                 // Write each column name from the data table
                 for (int i = 0; i < columnCount; i++)
                 {
-                    string item = FormatDataItem(dataTable.Columns[i].ColumnName, formatOptions.Delimiter);
+                    var item = FormatDataItem(dataTable.Columns[i].ColumnName, formatOptions.Delimiter);
                     if (i > 0)
                     {
                         outputStream.Write(formatOptions.Delimiter + item);
@@ -375,7 +354,7 @@ namespace HydroDesktop.ImportExport
                     }
                 }
 
-                outputStream.Write(System.Environment.NewLine);
+                outputStream.Write(Environment.NewLine);
             }
 
             //date time column index
@@ -414,7 +393,7 @@ namespace HydroDesktop.ImportExport
                     if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
                     {
                         currentStep++;
-                        percentComplete = (int)(100 * currentStep / totalSteps);
+                        int percentComplete = (int)(100 * currentStep / totalSteps);
                         if (percentComplete > previousPercentComplete)
                         {
                             if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
@@ -434,12 +413,7 @@ namespace HydroDesktop.ImportExport
                 // write data for each row
                 for (int i = 0; i < columnCount; i++)
                 {
-                    object rowValue = row[i];
-
-                    if (rowValue == null)
-                    {
-                        rowValue = String.Empty;
-                    }
+                    var rowValue = row[i] ?? String.Empty;
 
                     string item;
 
@@ -484,7 +458,7 @@ namespace HydroDesktop.ImportExport
                 }
 
                 // Report progress
-                if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                if (bgWorker.WorkerReportsProgress && reportingOption != BackgroundWorkerReportingOptions.None)
                 {
                     if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
                     {
@@ -494,8 +468,6 @@ namespace HydroDesktop.ImportExport
                     {
                         bgWorker.ReportProgress(100);
                     }
-
-                    totalSteps = dataTable.Rows.Count;
                 }
             }
         }
@@ -554,11 +526,11 @@ namespace HydroDesktop.ImportExport
 		/// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
         public static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, string delimiter, bool includeHeaders, bool append, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
         {
-            DelimitedFormatOptions formatOptions = new DelimitedFormatOptions { Append = append, Delimiter = delimiter, IncludeHeaders = includeHeaders };
+            var formatOptions = new DelimitedFormatOptions { Append = append, Delimiter = delimiter, IncludeHeaders = includeHeaders };
             DataTableToDelimitedFile(dataTable, outputFilename, formatOptions, bgWorker, e, reportingOption);
         }
 
-        /// <summary>
+	    /// <summary>
         /// Writes data from a data table to a delimited text file
         /// </summary>
         /// <param name="dataTable">The data table with the data to write</param>
@@ -567,21 +539,7 @@ namespace HydroDesktop.ImportExport
         /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
         /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
         /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
-        public static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, DelimitedFormatOptions formatOptions)
-        {
-            DataTableToDelimitedFile(dataTable, outputFilename, formatOptions, null, null, BackgroundWorkerReportingOptions.None);
-        }
-
-        /// <summary>
-        /// Writes data from a data table to a delimited text file
-        /// </summary>
-        /// <param name="dataTable">The data table with the data to write</param>
-        /// <param name="outputFilename">Full path and filename for the output  file</param>
-        /// <param name="formatOptions">Delimited text formatting options</param>
-        /// <param name="bgWorker">BackgroundWorker (may be null), in order to show progress</param>
-        /// <param name="e">Arguments from a BackgroundWorker (may be null), in order to support canceling</param>
-        /// <param name="reportingOption">Indicates how the BackgroundWorker should report progress</param>
-        public static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker, DoWorkEventArgs e, BackgroundWorkerReportingOptions reportingOption)
+	    private static void DataTableToDelimitedFile(DataTable dataTable, string outputFilename, DelimitedFormatOptions formatOptions, BackgroundWorker bgWorker = null, DoWorkEventArgs e = null, BackgroundWorkerReportingOptions reportingOption = BackgroundWorkerReportingOptions.None)
         {
 			// Check that the folder exists
 			try
@@ -598,15 +556,15 @@ namespace HydroDesktop.ImportExport
 			}
 
 			// Attempt to create the output file
-			TextWriter outputStream = null;
-			try
+	        try
 			{
-				using ( outputStream = new StreamWriter ( outputFilename, formatOptions.Append ) as TextWriter )
+			    TextWriter outputStream;
+			    using ( outputStream = new StreamWriter ( outputFilename, formatOptions.Append ) as TextWriter )
 				{
 					try
 					{
 						// Write the data
-						DelimitedTextWriter.DataTableToStream ( dataTable, outputStream, formatOptions, bgWorker, e, reportingOption );
+						DataTableToStream ( dataTable, outputStream, formatOptions, bgWorker, e, reportingOption );
 					}
 					catch ( Exception ex )
 					{
@@ -642,7 +600,7 @@ namespace HydroDesktop.ImportExport
 		{
 			if ( _isDisposed == false )
 			{
-				if ( disposing == true )
+				if ( disposing )
 				{
 					// Code to dispose the managed resources of the class
 				}

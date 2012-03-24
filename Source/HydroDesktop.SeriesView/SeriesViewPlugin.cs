@@ -1,9 +1,5 @@
 ﻿namespace SeriesView
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Windows.Forms;
 
     using DotSpatial.Controls;
@@ -14,12 +10,12 @@
 
     public class SeriesViewPlugin : Extension
     {
-        public const string SeriesViewKey = "kHydroSeriesView";
+        private const string SeriesViewKey = "kHydroSeriesView";
 
         [Export("SeriesControl")]
         private ISeriesSelector MainSeriesSelector = new SeriesSelector();
 
-        private RootItem tableRoot = null;
+        private RootItem tableRoot;
 
         bool firstTimeActivating = true;
         
@@ -29,8 +25,7 @@
             
             AddSeriesDockPanel();
 
-            tableRoot = new RootItem("kHydroTable", "Table");
-            tableRoot.SortOrder = 20;
+            tableRoot = new RootItem("kHydroTable", "Table") {SortOrder = 20};
             App.HeaderControl.Add(tableRoot);
 
             Global.PluginEntryPoint = this;

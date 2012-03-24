@@ -14,7 +14,7 @@ namespace Search3.Area
 
         private readonly Map _map;
 
-        private bool _changesApplied = false;
+        private bool _changesApplied;
 
         #endregion
 
@@ -27,8 +27,6 @@ namespace Search3.Area
             _map = map;
 
             InitializeComponent();
-            
-
             BindMapToForm();
         }
 
@@ -183,10 +181,5 @@ namespace Search3.Area
         }
 
         #endregion
-
-        private void lbValues_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _changesApplied = false;
-        }
     }
 }

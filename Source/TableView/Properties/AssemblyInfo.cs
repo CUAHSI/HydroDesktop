@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // It is necessary to add the DotSpatial.Plugins namespace to correctly
 // recognize plugin attributes
-using DotSpatial.Controls;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information

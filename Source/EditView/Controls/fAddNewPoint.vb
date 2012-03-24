@@ -1,5 +1,4 @@
 ﻿Imports HydroDesktop.Database
-Imports QualifierHandling
 Imports HydroDesktop.Interfaces
 
 
@@ -122,7 +121,7 @@ Public Class fAddNewPoint
         End If
     End Sub
 
-    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnAdd.Click
         Dim BeginningRow As Integer = 0
         Dim validate As Boolean = True
         Dim dt As DataTable
@@ -233,7 +232,7 @@ Public Class fAddNewPoint
                 _cEditView.RefreshDataGridView()
                 _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView)
 
-                Me.Close()
+                Close()
             Else
                 lblError.Text = "The red boxes have problems. Please fix them and then try again."
                 lblError.BackColor = Drawing.Color.Red
@@ -245,15 +244,15 @@ Public Class fAddNewPoint
     End Sub
 
     'setting default value of some columns
-    Private Sub dgvNewPoints_RowsAdded(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewRowsAddedEventArgs) Handles dgvNewPoints.RowsAdded
+    Private Sub dgvNewPoints_RowsAdded(ByVal sender As System.Object, ByVal e As Windows.Forms.DataGridViewRowsAddedEventArgs) Handles dgvNewPoints.RowsAdded
         With dgvNewPoints.Rows(e.RowIndex)
             '.Cells("UTCOffset").Value = 0
             .Cells("CensorCode").Value = "nc"
         End With
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.Close()
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnCancel.Click
+        Close()
     End Sub
 
     Private Function IsDateTime(ByVal value As String) As Boolean
@@ -265,7 +264,7 @@ Public Class fAddNewPoint
         End Try
     End Function
 
-    Private Sub dgvNewPoints_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvNewPoints.CellValueChanged
+    Private Sub dgvNewPoints_CellValueChanged(ByVal sender As System.Object, ByVal e As Windows.Forms.DataGridViewCellEventArgs) Handles dgvNewPoints.CellValueChanged
         If e.ColumnIndex <= 6 And e.ColumnIndex >= 4 And e.RowIndex >= 0 Then
             Dim LocalDateTime As DateTime
             Dim UTCOffset As Double

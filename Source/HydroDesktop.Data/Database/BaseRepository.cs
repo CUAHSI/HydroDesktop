@@ -67,12 +67,12 @@ namespace HydroDesktop.Database
         /// <summary>
         /// Table (Entity) name for which this repository used
         /// </summary>
-        public abstract string TableName { get; }
+        protected abstract string TableName { get; }
 
         /// <summary>
         /// Name of primary key column
         /// </summary>
-        public virtual string PrimaryKeyName
+        protected virtual string PrimaryKeyName
         {
             get
             {
@@ -80,7 +80,7 @@ namespace HydroDesktop.Database
             }
         }
 
-        public string LastRowIDSelect
+        protected string LastRowIDSelect
         {
             get { return "; SELECT LAST_INSERT_ROWID();"; }
         }

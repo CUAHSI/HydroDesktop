@@ -80,7 +80,7 @@ namespace HydroDesktop.Database
             var sqlIn = new StringBuilder();
             for (int i = 0; i < seriesIDs.Length; i++)
             {
-                sqlIn.Append(seriesIDs[i].ToString());
+                sqlIn.Append(seriesIDs[i].ToString(CultureInfo.InvariantCulture));
                 if (i < seriesIDs.Length - 1)
                 {
                     sqlIn.Append(",");
@@ -177,7 +177,7 @@ namespace HydroDesktop.Database
             if (siteTable.Rows.Count == 0) return null;
 
             DataRow siteRow = siteTable.Rows[0];
-            Site newSite = new Site();
+            var newSite = new Site();
             newSite.Id = Convert.ToInt32(siteRow[0]);
             newSite.Code = Convert.ToString(siteRow[1]);
             newSite.Name = Convert.ToString(siteRow[2]);
@@ -193,16 +193,13 @@ namespace HydroDesktop.Database
 
             series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>().GetByKey(variableID);
 
-            Method newMethod = new Method();
-            newMethod.Id = Convert.ToInt32(seriesRow["MethodID"]);
+            var newMethod = new Method {Id = Convert.ToInt32(seriesRow["MethodID"])};
             series.Method = newMethod;
 
-            Source newSource = new Source();
-            newSource.Id = Convert.ToInt32(seriesRow["SourceID"]);
+            var newSource = new Source {Id = Convert.ToInt32(seriesRow["SourceID"])};
             series.Source = newSource;
 
-            QualityControlLevel newQC = new QualityControlLevel();
-            newQC.Id = Convert.ToInt32(seriesRow["QualityControlLevelID"]);
+            var newQC = new QualityControlLevel {Id = Convert.ToInt32(seriesRow["QualityControlLevelID"])};
             series.QualityControlLevel = newQC;
 
 
@@ -250,17 +247,17 @@ namespace HydroDesktop.Database
             string sqlDeleteQuality = "DELETE FROM QualityControlLevels WHERE QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
 
             //Begin Transaction
-            using (DbConnection conn = _db.CreateConnection())
+            using (var conn = _db.CreateConnection())
             {
                 conn.Open();
 
-                using (DbTransaction tran = conn.BeginTransaction())
+                using (var tran = conn.BeginTransaction())
                 {
                     //delete the site
                     var sitesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlSite));
                     if (sitesCount == 1)
                     {
-                        using (DbCommand cmdDeleteSite = conn.CreateCommand())
+                        using (var cmdDeleteSite = conn.CreateCommand())
                         {
                             cmdDeleteSite.CommandText = sqlDeleteSite;
                             cmdDeleteSite.ExecuteNonQuery();
@@ -436,10 +433,7 @@ namespace HydroDesktop.Database
             //VariableID values
             sqlString.Append(variableID + ", ");
             //IsCategorical value
-            if (row[3].ToString() == "True")
-                sqlString.Append("1, ");
-            else
-                sqlString.Append("0, ");
+            sqlString.Append(row[3].ToString() == "True" ? "1, " : "0, ");
             //MethodID value
             sqlString.Append(methodID + ", ");
             //SourceID value
@@ -661,26 +655,26 @@ namespace HydroDesktop.Database
 
         private string DetailedSeriesSQLQuery()
         {
-            string sql = "SELECT DataSeries.SeriesID, " +
-                "DataThemes.ThemeID, DataSeries.SiteID, DataSeries.VariableID, DataSeries.MethodID, DataSeries.SourceID, DataSeries.QualityControlLevelID, " +
-                "SiteName, SiteCode, Latitude, Longitude, " +
-                "VariableName, VariableCode, DataType, ValueType, Speciation, SampleMedium, " +
-                "TimeSupport, GeneralCategory, NoDataValue, " +
-                "units1.UnitsName as 'VariableUnitsName', units2.UnitsName as 'TimeUnitsName', " +
-                "MethodDescription, " +
-                "SourceDescription, Organization, Citation, " +
-                "QualityControlLevelCode, Definition as 'QualityControlLevelDefinition', " +
-                "BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, ThemeName " +
-                "FROM DataSeries " +
-                "LEFT JOIN DataThemes ON DataThemes.SeriesID = DataSeries.SeriesID " +
-                "LEFT JOIN DataThemeDescriptions ON DataThemes.ThemeID = DataThemeDescriptions.ThemeID " +
-                "LEFT JOIN Sites ON DataSeries.SiteID = Sites.SiteID " +
-                "LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID " +
-                "LEFT JOIN Units units1 ON Variables.VariableUnitsID = units1.UnitsID " +
-                "LEFT JOIN Units units2 ON Variables.TimeUnitsID = units2.UnitsID " +
-                "LEFT JOIN Methods  ON DataSeries.MethodID = Methods.MethodID " +
-                "LEFT JOIN Sources ON DataSeries.SourceID = Sources.SourceID " +
-                "LEFT JOIN QualityControlLevels ON DataSeries.QualityControlLevelID = QualityControlLevels.QualityControlLevelID ";
+            const string sql = "SELECT DataSeries.SeriesID, " +
+                               "DataThemes.ThemeID, DataSeries.SiteID, DataSeries.VariableID, DataSeries.MethodID, DataSeries.SourceID, DataSeries.QualityControlLevelID, " +
+                               "SiteName, SiteCode, Latitude, Longitude, " +
+                               "VariableName, VariableCode, DataType, ValueType, Speciation, SampleMedium, " +
+                               "TimeSupport, GeneralCategory, NoDataValue, " +
+                               "units1.UnitsName as 'VariableUnitsName', units2.UnitsName as 'TimeUnitsName', " +
+                               "MethodDescription, " +
+                               "SourceDescription, Organization, Citation, " +
+                               "QualityControlLevelCode, Definition as 'QualityControlLevelDefinition', " +
+                               "BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, ThemeName " +
+                               "FROM DataSeries " +
+                               "LEFT JOIN DataThemes ON DataThemes.SeriesID = DataSeries.SeriesID " +
+                               "LEFT JOIN DataThemeDescriptions ON DataThemes.ThemeID = DataThemeDescriptions.ThemeID " +
+                               "LEFT JOIN Sites ON DataSeries.SiteID = Sites.SiteID " +
+                               "LEFT JOIN Variables ON DataSeries.VariableID = Variables.VariableID " +
+                               "LEFT JOIN Units units1 ON Variables.VariableUnitsID = units1.UnitsID " +
+                               "LEFT JOIN Units units2 ON Variables.TimeUnitsID = units2.UnitsID " +
+                               "LEFT JOIN Methods  ON DataSeries.MethodID = Methods.MethodID " +
+                               "LEFT JOIN Sources ON DataSeries.SourceID = Sources.SourceID " +
+                               "LEFT JOIN QualityControlLevels ON DataSeries.QualityControlLevelID = QualityControlLevels.QualityControlLevelID ";
 
             return sql;
         }
@@ -692,20 +686,20 @@ namespace HydroDesktop.Database
 
         private Series CreateSeriesFromSeriesRow(DataRow row)
         {
-            Site st = new Site();
+            var st = new Site();
             st.Id = (long)row["SiteID"];
             st.Latitude = (double)row["Latitude"];
             st.Longitude = (double)row["Longitude"];
             st.Name = (string)row["SiteName"];
             st.Code = (string)row["SiteCode"];
 
-            Unit timeUnit = Unit.UnknownTimeUnit;
+            var timeUnit = Unit.UnknownTimeUnit;
             timeUnit.Name = (string)row["TimeUnitsName"];
 
-            Unit variableUnit = Unit.Unknown;
+            var variableUnit = Unit.Unknown;
             variableUnit.Abbreviation = (string)row["VariableUnitsName"];
 
-            Variable v = new Variable();
+            var v = new Variable();
             v.Id = (long)row["VariableID"];
             v.Name = (string)row["VariableName"];
             v.Code = (string)row["VariableCode"];
@@ -719,19 +713,18 @@ namespace HydroDesktop.Database
             v.GeneralCategory = row["GeneralCategory"] == DBNull.Value ? null : (string)row["GeneralCategory"];
             v.NoDataValue = (double)row["NoDataValue"];
 
-            Method m = new Method();
-            m.Description = (string)row["MethodDescription"];
+            var m = new Method {Description = (string) row["MethodDescription"]};
 
-            Source src = Source.Unknown;
+            var src = Source.Unknown;
             src.Description = (string)row["SourceDescription"];
             src.Citation = (string)row["Citation"];
             src.Organization = (string)row["Organization"];
 
-            QualityControlLevel qc = QualityControlLevel.Unknown;
+            var qc = QualityControlLevel.Unknown;
             qc.Code = (string)row["QualityControlLevelCode"];
             qc.Definition = (string)row["QualityControlLevelDefinition"];
 
-            Series ser = new Series(st, v, m, qc, src);
+            var ser = new Series(st, v, m, qc, src);
             ser.BeginDateTime = Convert.ToDateTime(row["BeginDateTime"]);
             ser.EndDateTime = Convert.ToDateTime(row["EndDateTime"]);
             ser.BeginDateTimeUTC = Convert.ToDateTime(row["BeginDateTimeUTC"]);
@@ -744,7 +737,7 @@ namespace HydroDesktop.Database
 
         #endregion
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "DataSeries"; }
         }

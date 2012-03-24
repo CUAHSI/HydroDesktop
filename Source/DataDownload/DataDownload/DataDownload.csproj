@@ -144,7 +144,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="SearchLayersProcessing\SearchLayerModifier.cs" />
-    <Compile Include="SearchLayersProcessing\SymbologyCreator.cs" />
     <Compile Include="SearchLayersProcessing\ThemeManager.cs" />
   </ItemGroup>
   <ItemGroup>

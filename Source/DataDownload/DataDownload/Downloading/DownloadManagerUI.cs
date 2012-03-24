@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -123,10 +124,7 @@ namespace HydroDesktop.DataDownload.Downloading
             {
                 // get rows from SelectedRows
                 var rows = new List<int>(dgvDownloadData.SelectedRows.Count);
-                foreach (DataGridViewRow row in dgvDownloadData.SelectedRows)
-                {
-                    rows.Add(row.Index);
-                }
+                rows.AddRange(from DataGridViewRow row in dgvDownloadData.SelectedRows select row.Index);
                 indeces = rows;
             }
             else
@@ -234,23 +232,23 @@ namespace HydroDesktop.DataDownload.Downloading
         void dpInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var dpInfo = _manager.Information; // to avoid long names
-            if (e.PropertyName == "DownloadedAndSaved")
+            if (e.PropertyName == NameHelper.Name<ManagerInformation, int>(x => x.DownloadedAndSaved))
             {
-                ThreadSafeSetText(lcDownloadedAndSavedInfo, dpInfo.DownloadedAndSaved.ToString());
+                ThreadSafeSetText(lcDownloadedAndSavedInfo, dpInfo.DownloadedAndSaved.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == "WithError")
+            else if (e.PropertyName == NameHelper.Name<ManagerInformation, int>(x => x.WithError))
             {
-                ThreadSafeSetText(lcWithErrorInfo, dpInfo.WithError.ToString());
+                ThreadSafeSetText(lcWithErrorInfo, dpInfo.WithError.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == "TotalSeries")
+            else if (e.PropertyName ==  NameHelper.Name<ManagerInformation, int>(x => x.TotalSeries))
             {
-                ThreadSafeSetText(lcTotalSeriesInfo, dpInfo.TotalSeries.ToString());
+                ThreadSafeSetText(lcTotalSeriesInfo, dpInfo.TotalSeries.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == "RemainingSeries")
+            else if (e.PropertyName == NameHelper.Name<ManagerInformation, int>(x => x.RemainingSeries))
             {
-                ThreadSafeSetText(lcRemainingSeriesInfo, dpInfo.RemainingSeries.ToString());
+                ThreadSafeSetText(lcRemainingSeriesInfo, dpInfo.RemainingSeries.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == "EstimatedTime")
+            else if (e.PropertyName == NameHelper.Name<ManagerInformation, TimeSpan>(x => x.EstimatedTime))
             {
                 ThreadSafeSetText(lcEstimatedTimeInfo, dpInfo.EstimatedTime.ToString());
             }
@@ -261,18 +259,17 @@ namespace HydroDesktop.DataDownload.Downloading
             label.UIThread(() => label.Text = value);
         }
 
-
         private void InitDownloadInfoTable()
         {
             dgvDownloadData.DataSource = null;
             dgvDownloadData.AutoGenerateColumns = false;
 
-            var serviceUrlColumn = new DataGridViewTextBoxColumn { DataPropertyName = "Wsdl", HeaderText = "ServiceUrl" };
-            var fullSiteCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = "FullSiteCode", HeaderText = "SiteCode" };
-            var fullVariableCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = "FullVariableCode", HeaderText = "VariableCode" };
-            var siteNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = "SiteName", HeaderText = "SiteName" };
-            var variableNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = "VariableName", HeaderText = "VariableName" };
-            var statusColumn = new DataGridViewTextBoxColumn { DataPropertyName = "StatusAsString", HeaderText = "Status" };
+            var serviceUrlColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.Wsdl), HeaderText = "ServiceUrl" };
+            var fullSiteCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.FullSiteCode), HeaderText = "SiteCode" };
+            var fullVariableCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.FullVariableCode), HeaderText = "VariableCode" };
+            var siteNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.SiteName), HeaderText = "SiteName" };
+            var variableNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.VariableName), HeaderText = "VariableName" };
+            var statusColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.StatusAsString), HeaderText = "Status" };
 
             dgvDownloadData.Columns.Clear();
             dgvDownloadData.Columns.Add(serviceUrlColumn);
@@ -298,7 +295,7 @@ namespace HydroDesktop.DataDownload.Downloading
             {
                 var message = string.Format("Exception details:" + Environment.NewLine +
                                             "Message: {0}" + Environment.NewLine + 
-                                            "Stacktrace: {1}", e.Exception.Message,
+                                            "Stack trace: {1}", e.Exception.Message,
                                             e.Exception.StackTrace);
                 split = message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 foreach (var mes in split)

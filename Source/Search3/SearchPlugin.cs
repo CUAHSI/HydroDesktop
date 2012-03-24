@@ -85,9 +85,8 @@ namespace Search3
             var head = App.HeaderControl;
             
             //Search ribbon tab
-            var root = new RootItem(kHydroSearch3, "Search");
             //setting the sort order to small positive number to display it to the right of home tab
-            root.SortOrder = -10; 
+            var root = new RootItem(kHydroSearch3, "Search") {SortOrder = -10};
             head.Add(root);
 
             #region Area group
@@ -95,35 +94,41 @@ namespace Search3
             const string grpArea = "Area";
 
             //to get area select mode
-            App.Map.FunctionModeChanged +=new EventHandler(Map_FunctionModeChanged);
+            App.Map.FunctionModeChanged +=Map_FunctionModeChanged;
             App.Map.SelectionChanged += Map_SelectionChanged;
 
             //Draw Box
-            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Rectangle", rbDrawBox_Click);
-            rbDrawBox.LargeImage = Resources.Draw_Box_32;
-            rbDrawBox.SmallImage = Resources.Draw_Box_16;
-            rbDrawBox.GroupCaption = grpArea;
-            rbDrawBox.ToggleGroupKey = grpArea;
+            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Rectangle", rbDrawBox_Click)
+                            {
+                                LargeImage = Resources.Draw_Box_32,
+                                SmallImage = Resources.Draw_Box_16,
+                                GroupCaption = grpArea,
+                                ToggleGroupKey = grpArea
+                            };
             head.Add(rbDrawBox);
             SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             //Select
-            rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click);
-            rbSelect.ToolTipText = "Select Region";
-            rbSelect.LargeImage = Resources.select_poly_32;
-            rbSelect.SmallImage = Resources.select_poly_16;
-            rbSelect.GroupCaption = grpArea;
-            rbSelect.ToggleGroupKey = grpArea;
+            rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click)
+                           {
+                               ToolTipText = "Select Region",
+                               LargeImage = Resources.select_poly_32,
+                               SmallImage = Resources.select_poly_16,
+                               GroupCaption = grpArea,
+                               ToggleGroupKey = grpArea
+                           };
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
             //AttributeTable
-            rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click);
-            rbAttribute.ToolTipText = "Select by Attribute";
-            rbAttribute.GroupCaption = grpArea;
-            rbAttribute.ToggleGroupKey = grpArea;
-            rbAttribute.LargeImage = Resources.select_table_32;
-            rbAttribute.SmallImage = Resources.select_table_16;
+            rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click)
+                              {
+                                  ToolTipText = "Select by Attribute",
+                                  GroupCaption = grpArea,
+                                  ToggleGroupKey = grpArea,
+                                  LargeImage = Resources.select_table_32,
+                                  SmallImage = Resources.select_table_16
+                              };
             head.Add(rbAttribute);
 
             #endregion
@@ -138,12 +143,14 @@ namespace Search3
             UpdateKeywordsCaption();
 
             //Keyword more options
-            var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click);       
-            rbKeyword2.LargeImage = Resources.keyword_32;
-            rbKeyword2.SmallImage = Resources.keyword_16;
-            rbKeyword2.GroupCaption = "Keyword";
-            rbKeyword2.ToolTipText = "Show Keyword Ontology Tree";
-            rbKeyword2.RootKey = kHydroSearch3;
+            var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click)
+                                 {
+                                     LargeImage = Resources.keyword_32,
+                                     SmallImage = Resources.keyword_16,
+                                     GroupCaption = "Keyword",
+                                     ToolTipText = "Show Keyword Ontology Tree",
+                                     RootKey = kHydroSearch3
+                                 };
             head.Add(rbKeyword2);
 
             #endregion
@@ -151,28 +158,24 @@ namespace Search3
             #region Dates group
 
             const string grpDates = "Time Range";
-            rbStartDate = new TextEntryActionItem();
-            rbStartDate.Caption = "Start";
-            rbStartDate.GroupCaption = grpDates;
-            rbStartDate.RootKey = kHydroSearch3;
-            rbStartDate.Width = 60;
+            rbStartDate = new TextEntryActionItem
+                              {Caption = "Start", GroupCaption = grpDates, RootKey = kHydroSearch3, Width = 60};
             rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
-            head.Add(rbStartDate);        
+            head.Add(rbStartDate);
 
-            rbEndDate = new TextEntryActionItem();
-            rbEndDate.Caption = " End";
-            rbEndDate.GroupCaption = grpDates;
-            rbEndDate.RootKey = kHydroSearch3;
-            rbEndDate.Width = 60;
+            rbEndDate = new TextEntryActionItem
+                            {Caption = " End", GroupCaption = grpDates, RootKey = kHydroSearch3, Width = 60};
             head.Add(rbEndDate);
             rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
             UpdateDatesCaption();
 
-            var rbDate = new SimpleActionItem("Select Time", rbDate_Click);
-            rbDate.GroupCaption = grpDates;
-            rbDate.RootKey = kHydroSearch3;
-            rbDate.LargeImage = Resources.select_date_v1_32;
-            rbDate.SmallImage = Resources.select_date_v1_16;
+            var rbDate = new SimpleActionItem("Select Time", rbDate_Click)
+                             {
+                                 GroupCaption = grpDates,
+                                 RootKey = kHydroSearch3,
+                                 LargeImage = Resources.select_date_v1_32,
+                                 SmallImage = Resources.select_date_v1_16
+                             };
             head.Add(rbDate);
 
             #endregion
@@ -187,12 +190,14 @@ namespace Search3
             rbServices.RootKey = kHydroSearch3;
             head.Add(rbServices);
 
-            rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click);
-            rbCatalog.LargeImage = Resources.option_32;
-            rbCatalog.SmallImage = Resources.option_16;
-            rbCatalog.ToolTipText = "Select the Search Catalog";
-            rbCatalog.GroupCaption = grpDataSources;
-            rbCatalog.RootKey = kHydroSearch3;
+            rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click)
+                            {
+                                LargeImage = Resources.option_32,
+                                SmallImage = Resources.option_16,
+                                ToolTipText = "Select the Search Catalog",
+                                GroupCaption = grpDataSources,
+                                RootKey = kHydroSearch3
+                            };
             head.Add(rbCatalog);
             UpdateCatalogCaption();
 
@@ -200,21 +205,26 @@ namespace Search3
 
             #region Search and download buttons
 
-            string grpSearch = "Search";
-            var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click);
-            rbSearch.LargeImage = Resources.search_32;
-            rbSearch.SmallImage = Resources.search_16;
-            rbSearch.ToolTipText = "Run Search based on selected criteria";
-            rbSearch.GroupCaption = grpSearch;
-            rbSearch.RootKey = kHydroSearch3;
+            const string grpSearch = "Search";
+            var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click)
+                               {
+                                   LargeImage = Resources.search_32,
+                                   SmallImage = Resources.search_16,
+                                   ToolTipText = "Run Search based on selected criteria",
+                                   GroupCaption = grpSearch,
+                                   RootKey = kHydroSearch3
+                               };
             head.Add(rbSearch);
-            
-            var btnDownload = new SimpleActionItem("Download", rbDownload_Click);
-            btnDownload.Enabled = false;
-            btnDownload.RootKey = kHydroSearch3;
-            btnDownload.GroupCaption = grpSearch;
-            btnDownload.LargeImage = Resources.download_32;
-            btnDownload.SmallImage = Resources.download_16;
+
+            /*
+            var btnDownload = new SimpleActionItem("Download", rbDownload_Click)
+                                  {
+                                      Enabled = false,
+                                      RootKey = kHydroSearch3,
+                                      GroupCaption = grpSearch,
+                                      LargeImage = Resources.download_32,
+                                      SmallImage = Resources.download_16
+                                  };*/
             //App.HeaderControl.Add(btnDownload);
 
             #endregion
@@ -233,13 +243,15 @@ namespace Search3
             if (rbKeyword == null)
             {
                 const string grpKeyword = "Keyword";
-                rbKeyword = new DropDownActionItem();
-                rbKeyword.AllowEditingText = true;
-                rbKeyword.GroupCaption = grpKeyword;
-                rbKeyword.RootKey = kHydroSearch3;
-                rbKeyword.Width = 150;
-                rbKeyword.Enabled = false;
-                rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
+                rbKeyword = new DropDownActionItem
+                                {
+                                    AllowEditingText = true,
+                                    GroupCaption = grpKeyword,
+                                    RootKey = kHydroSearch3,
+                                    Width = 150,
+                                    Enabled = false,
+                                    NullValuePrompt = TYPE_IN_KEYWORD
+                                };
             }
 
             // Populate items by keywords
@@ -307,8 +319,7 @@ namespace Search3
         //void rbZoomIn_Click(object sender, EventArgs e) { }
         //void rbZoomOut_Click(object sender, EventArgs e) { }
         //void rbFullExtent_Click(object sender, EventArgs e) { }
-        
-        void rbDownload_Click(object sender, EventArgs e) { }
+        //void rbDownload_Click(object sender, EventArgs e) { }
 
         #region Search
         
@@ -508,7 +519,7 @@ namespace Search3
             
             App.Map.FunctionMode = FunctionMode.Select;
 
-            string isWorldTemplate = App.SerializationManager.GetCustomSetting<string>("world_template", "false");
+            var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
             //App.Map.MapFrame.IsSelected = true;
         }
@@ -700,7 +711,7 @@ namespace Search3
             }else if (checkedCount == 1)
             {
                 // Get single checked item
-                var items = webservicesSettings.WebServices.Where((w) => w.Checked).ToList();
+                var items = webservicesSettings.WebServices.Where(w => w.Checked).ToList();
                 Debug.Assert(items.Count == 1);
                 webServiceNode = items[0];
                 caption = items[0].Title;

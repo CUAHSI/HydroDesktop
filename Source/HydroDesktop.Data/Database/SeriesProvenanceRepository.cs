@@ -19,8 +19,7 @@ namespace HydroDesktop.Database
         public void AddNew(SeriesProvenance entity)
         {
             entity.Id = DbOperations.GetNextID("SeriesProvenance", "ProvenanceID");
-            var query =
-                    "INSERT INTO SeriesProvenance(ProvenanceID, ProvenanceDateTime, InputSeriesID, OutputSeriesID, MethodID, Comment) VALUES (?, ?,?,?,?,?)";
+        const string query = "INSERT INTO SeriesProvenance(ProvenanceID, ProvenanceDateTime, InputSeriesID, OutputSeriesID, MethodID, Comment) VALUES (?, ?,?,?,?,?)";
             DbOperations.ExecuteNonQuery(query, new object[]
                                                                   {
                                                                           entity.Id,
@@ -32,7 +31,7 @@ namespace HydroDesktop.Database
                                                                   });
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "SeriesProvenance"; }
         }

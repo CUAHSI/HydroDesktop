@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
@@ -243,7 +244,7 @@ namespace HydroDesktop.ExportToCSV
                 return "Data Export Cancelled.";
             }
 
-            return "Export completed. Series exported: " + dtSeries.Rows.Count.ToString();
+            return "Export completed. Series exported: " + dtSeries.Rows.Count.ToString(CultureInfo.InvariantCulture);
         }
 
         private string ExportAnyDataTable(BwParameters parameters, BackgroundWorker backgroundWorker, DoWorkEventArgs e)
@@ -307,12 +308,12 @@ namespace HydroDesktop.ExportToCSV
                 true, false, backgroundWorker, e,
                 ImportExport.BackgroundWorkerReportingOptions.UserStateAndProgress);
 
-            if (backgroundWorker.CancellationPending == true)
+            if (backgroundWorker.CancellationPending)
             {
                 e.Cancel = true;
                 return "Data Export Cancelled.";
             }
-            else return "Export complete.  Rows exported: " + exportDataTable.Rows.Count.ToString();
+            return "Export complete.  Rows exported: " + exportDataTable.Rows.Count.ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion

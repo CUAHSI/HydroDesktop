@@ -15,12 +15,12 @@ namespace HydroDesktop.Database
     /// </summary>
     public class DbOperations : IHydroDbOperations
     {
-        private DbProviderFactory dbFactory;
+        private readonly DbProviderFactory dbFactory;
         
-        private string _connectionString;
+        private readonly string _connectionString;
         private string _errorMessage = "";
 
-        private Stopwatch _sw = new Stopwatch();
+        private readonly Stopwatch _sw = new Stopwatch();
         /// <summary>
         /// Creates a new instance of the dbOperations object. 
         /// </summary>
@@ -94,8 +94,8 @@ namespace HydroDesktop.Database
             try
             {
                 connection1.Open();
-                string commandText = "SELECT * FROM DataThemeDescriptions";
-                DbDataAdapter da = dbFactory.CreateDataAdapter();
+                const string commandText = "SELECT * FROM DataThemeDescriptions";
+                var da = dbFactory.CreateDataAdapter();
                 da.SelectCommand = dbFactory.CreateCommand();
                 da.SelectCommand.CommandText = commandText;
                 da.SelectCommand.Connection = connection1;
@@ -252,7 +252,7 @@ namespace HydroDesktop.Database
                 DbParameter param = dbFactory.CreateParameter();
                 param.Value = parameterValues[p];
                 param.DbType = GetDbTypeFromValue(parameterValues[p]);
-                param.ParameterName = "@p" + p.ToString();
+                param.ParameterName = "@p" + p.ToString(CultureInfo.InvariantCulture);
                 cmd.Parameters.Add(param);
             }
 
@@ -335,8 +335,6 @@ namespace HydroDesktop.Database
         {
             if (rowIndices.Count == 0) return;
 
-            int[] columnIndices;
-
             //create the command
             using (DbConnection conn = CreateConnection())
             {
@@ -344,8 +342,6 @@ namespace HydroDesktop.Database
 
                 using (DbTransaction tran = conn.BeginTransaction())
                 {
-                    
-                    int rowIndex, columnIndex;
                     bool isInsertCommand = false;
                     if (sqlString.ToLower().StartsWith("insert"))
                     {
@@ -354,6 +350,7 @@ namespace HydroDesktop.Database
                     }
 
                     //get the indices of parameters to be inserted or updated
+                    int[] columnIndices;
                     if (isInsertCommand)
                     {
                         columnIndices = new int[table.Columns.Count - 1];
@@ -397,12 +394,12 @@ namespace HydroDesktop.Database
                         //execute the command for each item
                         for (int r = 0; r < rowIndices.Count; r++)
                         {
-                            rowIndex = rowIndices[r];
+                            int rowIndex = rowIndices[r];
 
                             //populate command parameter values
                             for (int c = 0; c < columnIndices.Length; c++)
                             {
-                                columnIndex = columnIndices[c];
+                                int columnIndex = columnIndices[c];
 
                                 cmd1.Parameters[c].Value = table.Rows[rowIndex][columnIndex];
                             }
@@ -437,8 +434,8 @@ namespace HydroDesktop.Database
         /// <returns>the insert sql string (parametric query)</returns>
         public string GenerateInsertCommand(string tableName, DataTable table)
         {
-            StringBuilder sql = new StringBuilder("insert into " + tableName + " (");
-            StringBuilder sqlValues = new StringBuilder(" values(");
+            var sql = new StringBuilder("insert into " + tableName + " (");
+            var sqlValues = new StringBuilder(" values(");
 
             for(int c = 1; c < table.Columns.Count - 1; c++)
             {
@@ -460,7 +457,7 @@ namespace HydroDesktop.Database
         /// <param name="primaryKeyName">name of the primary key column</param>
         /// <param name="table">corresponding DataTable object</param>
         /// <returns>the update sql string (parametric query)</returns>
-        public string GenerateUpdateCommand(string tableName, string primaryKeyName, DataTable table)
+        private string GenerateUpdateCommand(string tableName, string primaryKeyName, DataTable table)
         {
             string sqlUpdate = "update " + tableName + " set ";
 
@@ -479,7 +476,7 @@ namespace HydroDesktop.Database
         /// <param name="primaryKeyName">primary key name</param>
         /// <param name="uniqueFields">list of unique columnhs</param>
         /// <returns>the DB command object that can be used for running the query</returns>
-        public string GenerateUniqueQueryCommand(string tableName, string primaryKeyName, string[] uniqueFields)
+        private string GenerateUniqueQueryCommand(string tableName, string primaryKeyName, string[] uniqueFields)
         {         
             string uniqueSQL = "select " + primaryKeyName + " from " + tableName + " where ";
            
@@ -505,7 +502,6 @@ namespace HydroDesktop.Database
         public void SaveTable(string tableName, DataTable table, string primaryKey, string[] uniqueFields)
         {
             int nr = table.Rows.Count;
-            int nc = table.Columns.Count;
 
             //create an 'insert command'
             string sqlInsert = GenerateInsertCommand(tableName, table);
@@ -572,8 +568,8 @@ namespace HydroDesktop.Database
                 }
             }
             
-            List<int> insertRowIndices = new List<int>(numRowsToInsert);
-            List<int> updateRowIndices = new List<int>(numRowsToUpdate);
+            var insertRowIndices = new List<int>(numRowsToInsert);
+            var updateRowIndices = new List<int>(numRowsToUpdate);
 
             for (int r=0; r<primaryKeys.Length; r++)
             {
@@ -643,10 +639,7 @@ namespace HydroDesktop.Database
             {
                 return 1;
             }
-            else
-            {
-                return Convert.ToInt32(obj) + 1;
-            }        
+            return Convert.ToInt32(obj) + 1;
         }
 
         /// <summary>
@@ -658,17 +651,15 @@ namespace HydroDesktop.Database
         /// <returns></returns>
         public DataTable LoadTable(string sqlQuery, DataTable table)
         {
-            DbConnection conn = CreateConnection();
+            var conn = CreateConnection();
             conn.Open();
-            string CommandText = sqlQuery;
-            DbDataAdapter da = dbFactory.CreateDataAdapter();
+            var da = dbFactory.CreateDataAdapter();
             da.SelectCommand = dbFactory.CreateCommand();
             da.SelectCommand.CommandText = sqlQuery;
             da.SelectCommand.Connection = conn;
             if (table == null)
             {
-                table = new DataTable();
-                table.TableName = "table";
+                table = new DataTable {TableName = "table"};
             }
             
             da.Fill(table);
@@ -687,14 +678,13 @@ namespace HydroDesktop.Database
             _sw.Reset();
             _sw.Start();
             
-            DbConnection conn = CreateConnection();
+            var conn = CreateConnection();
             conn.Open();
-            string CommandText = sqlQuery;
-            DbDataAdapter da = dbFactory.CreateDataAdapter();
+            var da = dbFactory.CreateDataAdapter();
             da.SelectCommand = dbFactory.CreateCommand();
             da.SelectCommand.CommandText = sqlQuery;
             da.SelectCommand.Connection = conn;
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.TableName = "table";
             da.Fill(dt);
             conn.Close();
@@ -717,14 +707,13 @@ namespace HydroDesktop.Database
             _sw.Reset();
             _sw.Start();
             
-            DbConnection conn = CreateConnection();
+            var conn = CreateConnection();
             conn.Open();
-            DbDataAdapter da = dbFactory.CreateDataAdapter();
+            var da = dbFactory.CreateDataAdapter();
             da.SelectCommand = dbFactory.CreateCommand();
             da.SelectCommand.CommandText = sqlQuery;
             da.SelectCommand.Connection = conn;
-            DataTable dt = new DataTable();
-            dt.TableName = tableName;
+            var dt = new DataTable {TableName = tableName};
             da.Fill(dt);
             conn.Close();
 

@@ -14,7 +14,7 @@ Public Class Statistics
     Shared Function GeometricMean(ByRef objDataTable As Data.DataTable) As Double
         Try
             Dim dblTotal As Double = 0
-            Dim objDataRow As Data.DataRow
+            Dim objDataRow As DataRow
             For Each objDataRow In objDataTable.Rows
                 If Convert.ToInt32(objDataRow.Item("DataValue")) > 0 Then
                     dblTotal += Math.Log10(Convert.ToDouble(objDataRow.Item("DataValue")))
@@ -161,7 +161,7 @@ Public Class Statistics
         End Try
     End Function
 
-    Shared Function StandardDeviation(ByRef objDataTable As Data.DataTable) As Double
+    Shared Function StandardDeviation(ByRef objDataTable As DataTable) As Double
         Try
             If objDataTable.Rows.Count > 1 Then
                 Return Convert.ToDouble(objDataTable.Compute("STDEV(DataValue)", ""))

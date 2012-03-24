@@ -20,12 +20,8 @@ namespace HydroDesktop.DataDownload.Downloading.Exceptions
         {
 
         }
-        public SaveDataSeriesException(string message)
-            : this(message, null)
-        {
 
-        }
-        public SaveDataSeriesException(string message, Exception inner)
+        public SaveDataSeriesException(string message, Exception inner = null)
             : base(message, inner)
         {
 

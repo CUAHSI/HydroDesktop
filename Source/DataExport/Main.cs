@@ -2,8 +2,6 @@
 using System.Data;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
-using HydroDesktop.Database;
-using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
 
@@ -20,12 +18,13 @@ namespace HydroDesktop.ExportToCSV
         /// <summary>
         /// The key of the "Table" ribbon tab
         /// </summary>
-        public const string TableTabKey = "kHydroTable";
+        private const string TableTabKey = "kHydroTable";
+
         /// <summary>
         /// The name of the "Data Export" panel on the table ribbon
         /// </summary>
-        private string _panelName = "Data Export";
-                
+        private const string _panelName = "Data Export";
+
         #endregion
 
         #region IExtension Members
@@ -50,12 +49,14 @@ namespace HydroDesktop.ExportToCSV
         public override void Activate()
         {
             //Add "DataExport" button to the new "Data Export" Panel in "Data" ribbon tab
-            var dataExportBtn = new SimpleActionItem("Export", dataExportBtn_Click);
-            dataExportBtn.RootKey = TableTabKey;
-            dataExportBtn.LargeImage = Properties.Resources.archive;
-            dataExportBtn.SmallImage = Properties.Resources.archive_16;
-            dataExportBtn.ToolTipText = "Export Time Series Data";
-            dataExportBtn.GroupCaption = _panelName;
+            var dataExportBtn = new SimpleActionItem("Export", dataExportBtn_Click)
+                                    {
+                                        RootKey = TableTabKey,
+                                        LargeImage = Properties.Resources.archive,
+                                        SmallImage = Properties.Resources.archive_16,
+                                        ToolTipText = "Export Time Series Data",
+                                        GroupCaption = _panelName
+                                    };
             App.HeaderControl.Add(dataExportBtn);
 
             base.Activate();

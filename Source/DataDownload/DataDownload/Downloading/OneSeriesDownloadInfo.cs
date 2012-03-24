@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using DotSpatial.Data;
 using HydroDesktop.Common;
 using HydroDesktop.Configuration;
@@ -23,6 +22,9 @@ namespace HydroDesktop.DataDownload.Downloading
 
         #region Constructors
 
+        /// <summary>
+        /// Creates new instance of <see cref="OneSeriesDownloadInfo"/>
+        /// </summary>
         public OneSeriesDownloadInfo()
         {
             Status = DownloadInfoStatus.Pending;
@@ -216,7 +218,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private string _errorMessage;
         /// <summary>
-        /// Error mesage. May be not null, if Status == DownloadInfoStatus.Error
+        /// Error message. May be not null, if Status == DownloadInfoStatus.Error
         /// </summary>
         public string ErrorMessage
         {

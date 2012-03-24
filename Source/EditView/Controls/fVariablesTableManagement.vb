@@ -112,7 +112,7 @@ Public Class fVariablesTableManagement
         Return variable
     End Function
 
-    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
+    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSubmit.Click
         Dim Validated As Boolean = True
 
         'Validation
@@ -158,7 +158,7 @@ Public Class fVariablesTableManagement
         Close()
     End Sub
 
-    Private Sub ddlUnitsName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlUnitsName.SelectionChangeCommitted
+    Private Sub ddlUnitsName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlUnitsName.SelectionChangeCommitted
         Dim ID As Integer = ddlUnitsName.SelectedValue.ToString
         Dim unit = _unitsRepo.GetByKey(ID)
 
@@ -180,13 +180,13 @@ Public Class fVariablesTableManagement
 
     End Sub
 
-    Private Sub ddlValueType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlValueType.SelectionChangeCommitted
+    Private Sub ddlValueType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlValueType.SelectionChangeCommitted
         If ddlValueType.SelectedIndex = ddlValueType.Items.Count - 1 Then
             ddlValueType.Text = ""
         End If
     End Sub
 
-    Private Sub ddlDataType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlDataType.SelectionChangeCommitted
+    Private Sub ddlDataType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlDataType.SelectionChangeCommitted
         If ddlDataType.SelectedIndex = ddlDataType.Items.Count - 1 Then
             ddlDataType.Text = ""
         End If

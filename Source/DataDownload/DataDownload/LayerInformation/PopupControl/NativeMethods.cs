@@ -52,7 +52,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
         private static HandleRef HWND_TOPMOST = new HandleRef(null, new IntPtr(-1));
 
         [Flags]
-        internal enum AnimationFlags : int
+        internal enum AnimationFlags
         {
             Roll = 0x0000, // Uses a roll animation.
             HorizontalPositive = 0x00001, // Animates the window from left to right. This flag can be used with roll or slide animation.

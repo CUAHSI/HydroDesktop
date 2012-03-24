@@ -6,7 +6,6 @@ using HydroDesktop.Interfaces;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using DotSpatial.Controls;
-using DotSpatial.Symbology;
 using HydroDesktop.Database;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
@@ -27,7 +26,7 @@ namespace TableView
         #region Variables
 
         private readonly ISearchPlugin _searchPlugin;
-        private ProjectionInfo _wgs84Projection;
+        private readonly ProjectionInfo _wgs84Projection;
         #endregion
 
         #region Constructors
@@ -54,7 +53,7 @@ namespace TableView
 
             //(2) Find which themes to remove from map and which
             //    themes to check
-            List<string> themesToRemove = themeNamesInMap;
+            IEnumerable<string> themesToRemove = themeNamesInMap;
 
             //(3) Find which new themes to add to the map from the database
             List<string> themesToAdd = themeNamesInDb;
@@ -80,19 +79,11 @@ namespace TableView
 
         private void RemoveThemeFromMap(Map mainMap, string themeName)
         {
-            List<ILayer> layers = mainMap.GetAllLayers();
-            IMapLayer themeLayer = null;
-            foreach (ILayer layer in layers)
-            {
-                if (layer.LegendText == themeName)
-                {
-                    themeLayer = layer as IMapLayer;
-                    break;
-                }
-            }
+            var layers = mainMap.GetAllLayers();
+            var themeLayer = (from layer in layers where layer.LegendText == themeName select layer as IMapLayer).FirstOrDefault();
             if (themeLayer != null)
             {
-                IMapGroup parentItem = themeLayer.GetParentItem() as IMapGroup;
+                var parentItem = themeLayer.GetParentItem() as IMapGroup;
                 if (parentItem != null)
                 {
                     parentItem.Remove(themeLayer);
@@ -103,9 +94,9 @@ namespace TableView
         /// <summary>
         /// Finds the map group with the name 'Themes'
         /// </summary>
-        /// <param name="map">the map to search</param>
+        /// <param name="mainMap">the map to search</param>
         /// <returns>The group named 'Themes'</returns>
-        private IMapGroup FindThemeGroup(Map mainMap)
+        private IMapGroup FindThemeGroup(IMap mainMap)
         {
             return mainMap.GetDataSitesLayer();
         }
@@ -126,15 +117,15 @@ namespace TableView
         /// <summary>
         /// Gets a list of all theme names from the Map
         /// </summary>
-        private List<string> GetThemeNamesFromMap(Map mainMap)
+        private IEnumerable<string> GetThemeNamesFromMap(Map mainMap)
         {
-            List<string> themeNameList = new List<string>();
-            IMapGroup themeGroup = FindThemeGroup(mainMap);
+            var themeNameList = new List<string>();
+            var themeGroup = FindThemeGroup(mainMap);
             if (themeGroup != null)
             {
-                foreach (ILayer lay in themeGroup.Layers)
+                foreach (var lay in themeGroup.Layers)
                 {
-                    MapPointLayer pl = lay as MapPointLayer;
+                    var pl = lay as MapPointLayer;
                     if (pl != null)
                     {
                         themeNameList.Add(pl.LegendText);
@@ -154,7 +145,7 @@ namespace TableView
         /// <param name="projection">The desired projection of the theme</param>
         /// <returns>the feature set with sites of the theme in the
         /// user specified projection</returns>
-        public IFeatureSet GetFeatureSet(string themeName, ProjectionInfo projection)
+        private IFeatureSet GetFeatureSet(string themeName, ProjectionInfo projection)
         {
             var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>();
             var themeID = repo.GetID(themeName);
@@ -213,23 +204,10 @@ namespace TableView
         /// columns
         /// </summary>
         /// <param name="themeTable">The table of distinct series</param>
-        /// <returns>A point FeatureSet in the WGS-84 coordinate system
-        /// All columns of the data table will be converted to atrribute fields</returns>
-        private IFeatureSet TableToFeatureSet(DataTable themeTable)
-        {
-            return TableToFeatureSet(themeTable, null);
-        }
-
-        /// <summary>
-        /// given a data table, create an in-memory point feature set.
-        /// The feature set must have the 'Latitude' and 'Longitude' numeric
-        /// columns
-        /// </summary>
-        /// <param name="themeTable">The table of distinct series</param>
         /// <param name="projection">The projection of the theme feature set</param>
         /// <returns>A point FeatureSet in the WGS-84 coordinate system
         /// All columns of the data table will be converted to atrribute fields</returns>
-        private IFeatureSet TableToFeatureSet(DataTable themeTable, ProjectionInfo projection)
+        private IFeatureSet TableToFeatureSet(DataTable themeTable, ProjectionInfo projection = null)
         {
             //index of the Latitude column
             int latColIndex = -1;
@@ -253,18 +231,13 @@ namespace TableView
             if (lonColIndex == -1) throw new ArgumentException("The table doesn't have a column 'Longitude'");
 
             //generate attribute table schema
-            FeatureSet fs = new FeatureSet(FeatureType.Point);
-            DataTable attributeTable = fs.DataTable;
+            var fs = new FeatureSet(FeatureType.Point);
+            var attributeTable = fs.DataTable;
             foreach (DataColumn column in themeTable.Columns)
             {
-                if (column.DataType == typeof(DateTime))
-                {
-                    attributeTable.Columns.Add(new Field(column.ColumnName, 'C', 16, 0));
-                }
-                else
-                {
-                    attributeTable.Columns.Add(new DataColumn(column.ColumnName, column.DataType));
-                }
+                attributeTable.Columns.Add(column.DataType == typeof (DateTime)
+                                               ? new Field(column.ColumnName, 'C', 16, 0)
+                                               : new DataColumn(column.ColumnName, column.DataType));
             }
 
             //generate features
@@ -272,36 +245,30 @@ namespace TableView
             {
                 double lat = Convert.ToDouble(row[latColIndex]);
                 double lon = Convert.ToDouble(row[lonColIndex]);
-                Coordinate coord = new Coordinate(lon, lat);
-                Feature newFeature = new Feature(FeatureType.Point, new Coordinate[] { coord });
+                var coord = new Coordinate(lon, lat);
+                var newFeature = new Feature(FeatureType.Point, new[] { coord });
                 fs.Features.Add(newFeature);
 
-                DataRow featureRow = newFeature.DataRow;
+                var featureRow = newFeature.DataRow;
                 for (int c = 0; c < attributeTable.Columns.Count; c++)
                 {
-                    if (themeTable.Columns[c].DataType == typeof(DateTime))
-                    {
-                        featureRow[c] = ConvertTime((DateTime)row[c]);
-                    }
-                    else
-                    {
-                        featureRow[c] = row[c];
-                    }
+                    featureRow[c] = themeTable.Columns[c].DataType == typeof (DateTime)
+                                        ? ConvertTime((DateTime) row[c])
+                                        : row[c];
                 }
             }
 
             //to save the feature set to a file with unique name
             string uniqueID = DateTime.Now.ToString("yyyyMMdd_hhmmss");
-            Random rnd = new Random();
+            var rnd = new Random();
             uniqueID += rnd.Next(100).ToString("000");
-            string filename = Path.Combine(Settings.Instance.CurrentProjectDirectory, "theme_" + uniqueID + ".shp");
+            var filename = Path.Combine(Settings.Instance.CurrentProjectDirectory, "theme_" + uniqueID + ".shp");
             fs.Filename = filename;
             fs.Projection = _wgs84Projection;
             fs.Save();
             fs.Dispose();
-            fs = null;
 
-            IFeatureSet fs2 = FeatureSet.OpenFile(filename);
+            var fs2 = FeatureSet.OpenFile(filename);
 
             //to reproject the feature set
             if (projection != null)

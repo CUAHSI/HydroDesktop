@@ -20,16 +20,9 @@ namespace HydroDesktop.Database
 		#region Variables
 
         //helper class which communicates with the database
-        private DbOperations _db;
+        private readonly DbOperations _db;
 
-		// lookup caches used by the SaveSeries method
-		private Dictionary<string, Site> _siteCache = new Dictionary<string, Site> ();
-		private Dictionary<string, Variable> _variableCache = new Dictionary<string, Variable> ();
-		private Dictionary<string, Method> _methodCache = new Dictionary<string, Method> ();
-		private Dictionary<string, QualityControlLevel> _qualControlCache = new Dictionary<string, QualityControlLevel> ();
-		private Dictionary<string, Source> _sourcesCache = new Dictionary<string, Source> ();
-
-		#endregion
+	    #endregion
 
 		#region Constructor
 		/// <summary>
@@ -66,14 +59,9 @@ namespace HydroDesktop.Database
 				upperBound = bounds2;
 			}
 
-			if ( inclusiveAtBounds == true )
-			{
-				return (numberToCheck >= lowerBound && numberToCheck <= upperBound);
-			}
-			else
-			{
-				return (numberToCheck > lowerBound && numberToCheck < upperBound);
-			}
+		    return inclusiveAtBounds
+		               ? numberToCheck >= lowerBound && numberToCheck <= upperBound
+		               : numberToCheck > lowerBound && numberToCheck < upperBound;
 		}
 
 		private bool EnvelopesIntersect ( double env1xMin, double env1xMax, double env1yMin, double env1yMax, double env2xMin, double env2xMax, double env2yMin, double env2yMax )
@@ -106,16 +94,16 @@ namespace HydroDesktop.Database
 		/// </summary>
 		public IList<DataServiceInfo> GetAllServices ()
 		{
-			string sql = "SELECT * FROM DataServices";
+			const string sql = "SELECT * FROM DataServices";
 
-            System.Data.DataTable tbl = _db.LoadTable("services", sql);
+            var tbl = _db.LoadTable("services", sql);
 
             IList<DataServiceInfo> services = null;
 
 			services = new List<DataServiceInfo> ();
 			if ( tbl.Rows.Count > 0 )
             {
-                foreach(System.Data.DataRow row in tbl.Rows)
+                foreach(DataRow row in tbl.Rows)
                 {
                     services.Add(ServiceFromDataRow(row));
                 }
@@ -136,18 +124,8 @@ namespace HydroDesktop.Database
         }
 
 	    #endregion
-        /// <summary>
-        /// Gets all sites in box (not implemented)
-        /// </summary>
-        /// <param name="xMin">minimum x (longitude)</param>
-        /// <param name="xMax">maximum x (lognitude)</param>
-        /// <param name="yMin">minimum y (latitude)</param>
-        /// <param name="yMax">maximum y (latitude)</param>
-		public void GetSitesInBox ( double xMin, double xMax, double yMin, double yMax )
-		{
-			throw new System.NotImplementedException ();
-		}
-        /// <summary>
+
+	    /// <summary>
         /// Gets a list of all services within the bounding box
         /// </summary>
         /// <param name="xMin">minimum x (longitude)</param>
@@ -182,20 +160,20 @@ namespace HydroDesktop.Database
 
         private string DetailedSeriesSQLQuery()
         {
-            string sql = "SELECT SeriesID, " +
-                "SiteName, SiteCode, Latitude, Longitude, " +
-                "VariableName, VariableCode, DataType, ValueType, Speciation, SampleMedium, " +
-                "TimeSupport, GeneralCategory, " +
-                "TimeUnitsName, " +
-                "BeginDateTime, EndDateTime, DataSeriesCache.ValueCount, ServiceTitle, ServiceEndpointURL " +
-                "FROM DataSeriesCache " +
-                "LEFT JOIN SitesCache ON DataSeriesCache.SiteID = SitesCache.SiteID " +
-                "LEFT JOIN VariablesCache ON DataSeriesCache.VariableID = VariablesCache.VariableID " + 
-                "LEFT JOIN DataServices ON DataSeriesCache.ServiceID = DataServices.ServiceID";
+            const string sql = "SELECT SeriesID, " +
+                               "SiteName, SiteCode, Latitude, Longitude, " +
+                               "VariableName, VariableCode, DataType, ValueType, Speciation, SampleMedium, " +
+                               "TimeSupport, GeneralCategory, " +
+                               "TimeUnitsName, " +
+                               "BeginDateTime, EndDateTime, DataSeriesCache.ValueCount, ServiceTitle, ServiceEndpointURL " +
+                               "FROM DataSeriesCache " +
+                               "LEFT JOIN SitesCache ON DataSeriesCache.SiteID = SitesCache.SiteID " +
+                               "LEFT JOIN VariablesCache ON DataSeriesCache.VariableID = VariablesCache.VariableID " + 
+                               "LEFT JOIN DataServices ON DataSeriesCache.ServiceID = DataServices.ServiceID";
             return sql;
         }
 
-        private DataServiceInfo ServiceFromDataRow(System.Data.DataRow row)
+	    private DataServiceInfo ServiceFromDataRow(System.Data.DataRow row)
         {
             DataServiceInfo dsi = new DataServiceInfo();
             dsi.Id = DataReader.ReadInteger(row["ServiceID"]);
@@ -335,7 +313,7 @@ namespace HydroDesktop.Database
 		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax )
 		{
             string sql1 = DetailedSeriesSQLQuery();
-            string sqlWhere = " WHERE Latitude > @minlat AND Latitude <= @maxlat AND Longitude > @minlon AND Longitude <= @maxlon";
+            const string sqlWhere = " WHERE Latitude > @minlat AND Latitude <= @maxlat AND Longitude > @minlon AND Longitude <= @maxlon";
             string sql = sql1 + sqlWhere;
 
             DbCommand cmd = _db.CreateCommand(sql);
@@ -354,14 +332,7 @@ namespace HydroDesktop.Database
             
             //DataTable seriesTable = _db.LoadTable("seriesTable", sql);
 
-            IList<SeriesDataCart> lst = new List<SeriesDataCart>();
-            foreach (DataRow row in seriesTable.Rows)
-            {
-                SeriesDataCart newSeries = SeriesDataCartFromRow(row);
-                lst.Add(newSeries);
-            }
-
-            return lst;
+            return (from DataRow row in seriesTable.Rows select SeriesDataCartFromRow(row)).ToList();
 		}
 
         /// <summary>
@@ -414,7 +385,7 @@ namespace HydroDesktop.Database
             }
 
             //date and time
-            string sqlWhere3 = " AND ( (BeginDateTime < @p1 AND EndDateTime > @p2) OR (BeginDateTime > @p1 AND BeginDateTime <= @p2) OR (EndDateTime > @p1 AND EndDateTime <= @p2) )";
+            const string sqlWhere3 = " AND ( (BeginDateTime < @p1 AND EndDateTime > @p2) OR (BeginDateTime > @p1 AND BeginDateTime <= @p2) OR (EndDateTime > @p1 AND EndDateTime <= @p2) )";
             
             //network IDs
             string sqlWhere4 = "";
@@ -427,11 +398,7 @@ namespace HydroDesktop.Database
                 }
                 else if (networkIDs.Length > 1)
                 {
-                    sqlWhere4 = " AND DataSeriesCache.ServiceID IN (";
-                    foreach (int servID in networkIDs)
-                    {
-                        sqlWhere4 += servID.ToString() + ",";
-                    }
+                    sqlWhere4 = networkIDs.Aggregate(" AND DataSeriesCache.ServiceID IN (", (current, servID) => current + (servID.ToString(CultureInfo.InvariantCulture) + ","));
                     if (sqlWhere4.EndsWith(","))
                     {
                         sqlWhere4 = sqlWhere4.Substring(0, sqlWhere4.Length - 1);
@@ -487,7 +454,7 @@ namespace HydroDesktop.Database
             string sql = "SELECT * FROM VariablesCache";
 
             DataTable tbl = _db.LoadTable(sql);
-            List<Variable> variables = new List<Variable>();
+            var variables = new List<Variable>();
             foreach (DataRow row in tbl.Rows)
             {
                 Variable v = VariableFromDataRow(row);
@@ -552,14 +519,13 @@ namespace HydroDesktop.Database
 		/// <param name="service">the ServiceInfo object to be saved to the DB</param>
 		public void SaveDataService ( DataServiceInfo service )
 		{
-            string sqlInsert =
-                "INSERT INTO DataServices(" +
-                "ServiceCode, ServiceName, ServiceType, ServiceVersion, ServiceProtocol, " +
-                "ServiceEndpointURL, ServiceDescriptionURL, NorthLatitude, SouthLatitude, EastLongitude, WestLongitude, " +
-                "Abstract, ContactName, ContactEmail, Citation, IsHarvested, HarveDateTime, ServiceTitle) " +
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            
-            using (DbConnection conn = _db.CreateConnection())
+		    const string sqlInsert = "INSERT INTO DataServices(" +
+		                             "ServiceCode, ServiceName, ServiceType, ServiceVersion, ServiceProtocol, " +
+		                             "ServiceEndpointURL, ServiceDescriptionURL, NorthLatitude, SouthLatitude, EastLongitude, WestLongitude, " +
+		                             "Abstract, ContactName, ContactEmail, Citation, IsHarvested, HarveDateTime, ServiceTitle) " +
+		                             "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+		    using (DbConnection conn = _db.CreateConnection())
             {
                 conn.Open();
 
@@ -594,7 +560,7 @@ namespace HydroDesktop.Database
             }
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Deletes all entries in the metadata cache database that were
 		/// added by the data service
 		/// </summary>
@@ -605,7 +571,7 @@ namespace HydroDesktop.Database
 		/// <returns>The total number of records deleted</returns>
 		public int DeleteRecordsForService ( DataServiceInfo service, bool deleteService )
 		{
-            string serviceID = service.Id.ToString();
+            string serviceID = service.Id.ToString(CultureInfo.InvariantCulture);
 
             string sqlDelete = "DELETE FROM DataSeriesCache WHERE ServiceID = " + serviceID + "; " +
                 "DELETE FROM SitesCache WHERE ServiceID = " + serviceID + "; " +
@@ -620,13 +586,13 @@ namespace HydroDesktop.Database
 				sqlDelete += "DELETE FROM DataServices WHERE ServiceID = " + serviceID + ";";
 			}
 
-            using (DbConnection conn = _db.CreateConnection())
+            using (var conn = _db.CreateConnection())
             {
                 conn.Open();
 
-                using (DbTransaction tran = conn.BeginTransaction())
+                using (var tran = conn.BeginTransaction())
                 {
-                    using (DbCommand cmd01 = conn.CreateCommand())
+                    using (var cmd01 = conn.CreateCommand())
                     {
                         cmd01.CommandText = sqlDelete;
                         cmd01.ExecuteNonQuery();

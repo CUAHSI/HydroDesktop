@@ -54,12 +54,12 @@ namespace HydroDesktop.Database
 
         #region Overrides of BaseRepository<UnitConversion>
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "UnitConversions"; }
         }
 
-        public override string PrimaryKeyName
+        protected override string PrimaryKeyName
         {
             get { return "ConversionID"; }
         }

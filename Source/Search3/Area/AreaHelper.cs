@@ -58,7 +58,7 @@ namespace Search3.Area
             if (hasSelected)
                 return;
 
-            foreach (var layer in GetAllPolygonLayers(map).Where(subLayer => subLayer.IsVisible).Reverse<IMapPolygonLayer>())
+            foreach (var layer in GetAllPolygonLayers(map).Where(subLayer => subLayer.IsVisible).Reverse())
             {
                 layer.IsSelected = true;
                 map.Legend.RefreshNodes();

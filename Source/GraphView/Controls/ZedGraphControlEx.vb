@@ -7,7 +7,7 @@ Namespace Controls
 
         Public Sub ZoomIn()
             ZedGraphControl_MouseWheel(Me, New MouseEventArgs(Windows.Forms.MouseButtons.None,
-                                                              1, Me.Width / 2.0, Me.Height / 2.0, 1.0))
+                                                              1, Width / 2.0, Height / 2.0, 1.0))
         End Sub
 
     End Class

@@ -65,10 +65,7 @@ namespace Search3.Area
                     IFeature polyF = _rectangleLayer.DataSet.Features[0];
                     return polyF.Envelope.ToExtent();
                 }
-                else
-                {
-                    return new Extent(_mainMap.ViewExtents.ToEnvelope());
-                }
+                return new Extent(_mainMap.ViewExtents.ToEnvelope());
             }
         }
 
@@ -154,19 +151,19 @@ namespace Search3.Area
             
             if (_numClicks == 1)
             {
-                Coordinate endPoint = new Coordinate(_mainMap.PixelToProj(e.Location));
+                var endPoint = new Coordinate(_mainMap.PixelToProj(e.Location));
 
                 _rectangleLayer.DataSet.Features.Clear();
 
-                Coordinate[] array = new Coordinate[5];
+                var array = new Coordinate[5];
                 array[0] = _startPoint;
                 array[1] = new Coordinate(_startPoint.X, endPoint.Y);
                 array[2] = endPoint;
                 array[3] = new Coordinate(endPoint.X, _startPoint.Y);
                 array[4] = _startPoint;
-                LinearRing shell = new LinearRing(array);
-                Polygon poly = new Polygon(shell);
-                IFeature newF = _rectangleLayer.DataSet.AddFeature(poly);
+                var shell = new LinearRing(array);
+                var poly = new Polygon(shell);
+                var newF = _rectangleLayer.DataSet.AddFeature(poly);
                 newF.DataRow["ID"] = 1;
                 _numClicks = 0;
                 
@@ -211,8 +208,8 @@ namespace Search3.Area
                 double minLon1 = Math.Min(minLon, maxLon);
 
                 //reproject the points
-                int numPoints = 4;
-                double[] array = new double[8];
+                const int numPoints = 4;
+                var array = new double[8];
                 array[0] = minLon1;
                 array[1] = minLat1;
                 array[2] = minLon1;
@@ -226,7 +223,7 @@ namespace Search3.Area
                 Reproject.ReprojectPoints(array, new double[] { 0, 0, 0, 0 }, wgs84, _mainMap.Projection, 0, numPoints);
 
                 //form the coordinate array and add rectangle feature
-                Coordinate[] coords = new Coordinate[5];
+                var coords = new Coordinate[5];
                 coords[0] = new Coordinate(array[0], array[1]);
                 coords[1] = new Coordinate(array[2], array[3]);
                 coords[2] = new Coordinate(array[4], array[5]);
@@ -235,9 +232,9 @@ namespace Search3.Area
                 coords[4] = new Coordinate(array[0], array[1]);
 
                 //create a polygon feature from the coordinate array
-                LinearRing shell = new LinearRing(coords);
-                Polygon poly = new Polygon(shell);
-                IFeature newF = _rectangleLayer.DataSet.AddFeature(poly);
+                var shell = new LinearRing(coords);
+                var poly = new Polygon(shell);
+                var newF = _rectangleLayer.DataSet.AddFeature(poly);
                 newF.DataRow["ID"] = 1;
                 _numClicks = 0;
 
@@ -255,9 +252,7 @@ namespace Search3.Area
             //check for the rectangle layer
             if (_rectangleLayer == null)
             {
-                _rectangleLayer = _mainMap.GetAllLayers().OfType<MapPolygonLayer>()
-                                                         .Where(lay => lay.LegendText == Properties.Resources.RectangleLayerName)
-                                                         .FirstOrDefault();
+                _rectangleLayer = _mainMap.GetAllLayers().OfType<MapPolygonLayer>().FirstOrDefault(lay => lay.LegendText == Properties.Resources.RectangleLayerName);
             }
             if (_rectangleLayer == null)
             {

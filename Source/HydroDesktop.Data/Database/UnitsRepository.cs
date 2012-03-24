@@ -83,12 +83,12 @@ namespace HydroDesktop.Database
 
         #endregion
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "Units"; }
         }
 
-        public override string PrimaryKeyName
+        protected override string PrimaryKeyName
         {
             get { return "UnitsID"; }
         }

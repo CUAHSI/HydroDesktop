@@ -99,7 +99,7 @@ namespace Search3.Searching
                         servicesToSearch.Add(new Tuple<WebServiceNode[], Extent>(new[] { webService }, extent));
                         continue;
                     }
-                    var eps = 0.05; //tolerance (0.05 deg) used for services whose bounding box is one point
+                    const double eps = 0.05; //tolerance (0.05 deg) used for services whose bounding box is one point
                     var wsBox = webService.ServiceBoundingBox;
                     var wsExtent = new Extent(wsBox.XMin - eps, wsBox.YMin - eps, wsBox.XMax + eps, wsBox.YMax + eps);
                     if (wsExtent.Intersects(extent))

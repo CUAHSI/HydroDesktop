@@ -10,13 +10,13 @@ namespace TableView
 {
     public partial class DeleteThemeForm : Form
     {
-        private Dictionary<string, Theme> _themeLookup = new Dictionary<string, Theme>();
+        private readonly Dictionary<string, Theme> _themeLookup = new Dictionary<string, Theme>();
         
         public DeleteThemeForm()
         {
             InitializeComponent();
 
-            this.FormClosing +=DeleteThemeForm_FormClosing;
+            FormClosing +=DeleteThemeForm_FormClosing;
             //checkListThemes.ItemCheck += new ItemCheckEventHandler(checkListThemes_ItemCheck);
             bgwMain.DoWork +=bgwMain_DoWork;
             bgwMain.RunWorkerCompleted +=bgwMain_RunWorkerCompleted;
@@ -25,14 +25,7 @@ namespace TableView
 
         private void checkListThemes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (checkListThemes.CheckedItems.Count > 0)
-            {
-                btnOK.Enabled = true;
-            }
-            else
-            {
-                btnOK.Enabled = false;
-            }
+            btnOK.Enabled = checkListThemes.CheckedItems.Count > 0;
         }
 
         private void DeleteThemeForm_Load(object sender, EventArgs e)
@@ -40,7 +33,7 @@ namespace TableView
             var repoManager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
             var themeList = repoManager.GetAll();
 
-            foreach (Theme theme in themeList)
+            foreach (var theme in themeList)
             {
                 _themeLookup.Add(theme.Name, theme);
                 checkListThemes.Items.Add(theme.Name);
@@ -49,14 +42,14 @@ namespace TableView
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             // Make sure we aren't still working on a previous task
-            if (bgwMain.IsBusy == true)
+            if (bgwMain.IsBusy)
             {
                 MessageBox.Show("The background worker is busy now, please try later.");
                 return;
@@ -75,7 +68,7 @@ namespace TableView
                 gbxProgress.Visible = true;
 
                 //get the list of checked themes to delete
-                int[] themeIDList = new int[numCheckedThemes];
+                var themeIDList = new int[numCheckedThemes];
                 int index = 0;
                 foreach (object checkedItem in checkListThemes.CheckedItems)
                 {  
@@ -86,7 +79,7 @@ namespace TableView
                 }
 
                 var manager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
-                object[] parameters = new object[2];
+                var parameters = new object[2];
                 parameters[0] = themeIDList;
                 parameters[1] = manager;
                 
@@ -105,7 +98,6 @@ namespace TableView
                 Cancel_worker();
                 //_formIsClosing = true;
                 e.Cancel = true;
-                return;
             }
         }
 
@@ -136,8 +128,8 @@ namespace TableView
         /// </summary>
         private void bgwMain_DoWork(object sender, DoWorkEventArgs e)
         {
-            object[] parameters = e.Argument as object[];
-            BackgroundWorker worker = sender as BackgroundWorker;
+            var parameters = (object[])e.Argument;
+            var worker = sender as BackgroundWorker;
 
             var themeIdList = (int[])parameters[0];
             var manager = (IDataThemesRepository)parameters[1];
@@ -153,8 +145,8 @@ namespace TableView
         /// </summary>
         private void bgwMain_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.pgsBar.Value = e.ProgressPercentage;
-            this.gbxProgress.Text = e.UserState.ToString();
+            pgsBar.Value = e.ProgressPercentage;
+            gbxProgress.Text = e.UserState.ToString();
         }
 
         /// <summary>
@@ -162,7 +154,7 @@ namespace TableView
         /// </summary>
         private void bgwMain_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
 
             // Restore controls to their regular state
             
@@ -170,18 +162,18 @@ namespace TableView
             gbxProgress.Text = "Processing...";
             gbxProgress.Enabled = false;
             gbxProgress.Visible = false;
-            this.btnPgsCancel.Enabled = true;
+            btnPgsCancel.Enabled = true;
 
             if (e.Error != null)
             {
                 MessageBox.Show(e.Error.Message);
             }
 
-            else if (e.Cancelled == true || e.Result.ToString() == "Data Export Cancelled.")
+            else if (e.Cancelled || e.Result.ToString() == "Data Export Cancelled.")
             {
                 MessageBox.Show("Operation was cancelled.");
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
                 
                 // Close the form if the user clicked the X to close it.
 
@@ -193,8 +185,8 @@ namespace TableView
             else
             {
                 MessageBox.Show(e.Result.ToString());
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 
