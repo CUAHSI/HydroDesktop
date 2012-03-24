@@ -143,7 +143,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
         #region " Constructors "
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HydroDesktop.Search.LayerInformation.PopupControl.Popup"/> class.
+        /// Initializes a new instance of the <see cref="HydroDesktop.DataDownload.LayerInformation.PopupControl.Popup"/> class.
         /// </summary>
         /// <param name="content">The content of the pop-up.</param>
         /// <remarks>
@@ -271,10 +271,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
                 {
                     return false;
                 }
-                else
-                {
-                    Close();
-                }
+                Close();
             }
             bool processed = base.ProcessDialogKey(keyData);
             if (!processed && (keyData == Keys.Tab || keyData == (Keys.Tab | Keys.Shift)))
@@ -392,7 +389,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
                 OwnerItem = popupControl.Items[0];
                 return;
             }
-            else if (_opener == null)
+            if (_opener == null)
             {
                 _opener = control;
             }
@@ -533,7 +530,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
             {
                 return OnNcHitTest(ref m, contentControl);
             }
-            else if (m.Msg == NativeMethods.WM_GETMINMAXINFO)
+            if (m.Msg == NativeMethods.WM_GETMINMAXINFO)
             {
                 return OnGetMinMaxInfo(ref m);
             }
@@ -624,7 +621,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
         /// <param name="e">The <see cref="System.Windows.Forms.PaintEventArgs" /> instance containing the event data.</param>
         public void PaintSizeGrip(PaintEventArgs e)
         {
-            if (e == null || e.Graphics == null || !_resizable)
+            if (e == null || !_resizable)
             {
                 return;
             }

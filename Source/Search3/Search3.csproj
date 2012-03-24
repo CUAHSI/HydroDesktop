@@ -104,7 +104,6 @@
     <Compile Include="Searching\SearchHelper.cs" />
     <Compile Include="Searching\SearchLayerCreator.cs" />
     <Compile Include="Searching\SearchResult.cs" />
-    <Compile Include="Searching\Exceptions\HydrodesktopSearchException.cs" />
     <Compile Include="Searching\Exceptions\NoAreaToSearchException.cs" />
     <Compile Include="Searching\Exceptions\NoSelectedKeywordsException.cs" />
     <Compile Include="Searching\Exceptions\NoWebServicesException.cs" />

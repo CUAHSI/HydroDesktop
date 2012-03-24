@@ -307,7 +307,7 @@ Public Class cEditView
 #Region "Editing"
 
     'Reset style of data grid view
-    Public Sub ResetGridViewStyle() Handles dgvDataValues.Sorted
+    Private Sub ResetGridViewStyle() Handles dgvDataValues.Sorted
         For i As Integer = 0 To dgvDataValues.Columns.Count - 1
             dgvDataValues.Columns(i).ReadOnly = True
         Next
@@ -336,7 +336,7 @@ Public Class cEditView
     End Sub
 
     'Apply Changes to Database
-    Public Sub btnApplyToDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Public Sub btnApplyToDatabase_Click(ByVal sender As System.Object, ByVal e As EventArgs)
         If MsgBox("Are You Sure You Want to Apply the Changes to the Database", MsgBoxStyle.YesNo Or vbDefaultButton2 Or MsgBoxStyle.Question, "Question") = MsgBoxResult.Yes Then
             SaveGraphChangesToDatabase()
             gboxDataFilter.Enabled = SeriesRowsCount(newseriesID) >= 1
@@ -345,7 +345,7 @@ Public Class cEditView
     End Sub
 
     'Restore Data
-    Public Sub btnRestoreData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Public Sub btnRestoreData_Click(ByVal sender As System.Object, ByVal e As EventArgs)
         If MsgBox("Are You Sure You Want to Restore the Data to the Original?", MsgBoxStyle.YesNo Or vbDefaultButton2 Or MsgBoxStyle.Question, "Question") = MsgBoxResult.Yes Then
             Editdt = OriginalDt
             RefreshDataGridView()
@@ -357,7 +357,7 @@ Public Class cEditView
     End Sub
 
     'Clear Filter
-    Private Sub btnClearFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearFilter.Click
+    Private Sub btnClearFilter_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnClearFilter.Click
         'Make all text boxes blank
         ddlTimePeriod.SelectedItem = ddlTimePeriod.Items(0)
         txtDataGapValue.Text = ""
@@ -403,7 +403,7 @@ Public Class cEditView
     End Sub
 
     'Filter
-    Private Sub btnApplyFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApplyFilter.Click
+    Private Sub btnApplyFilter_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnApplyFilter.Click
         'check which method the user wanted to choose the range of data
         'Value Threshold Filter
         If rbtnValueThreshold.Checked Then

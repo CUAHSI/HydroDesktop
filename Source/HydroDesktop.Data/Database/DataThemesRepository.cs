@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using HydroDesktop.Interfaces;
@@ -152,8 +151,8 @@ namespace HydroDesktop.Database
 
                 if (worker != null && worker.WorkerReportsProgress)
                 {
-                    int percent = (int)(((float)count / (float)numSeries) * 100);
-                    string userState = "Deleting series " + count + " of " + numSeries + "...";
+                    var percent = (int)(((float)count / (float)numSeries) * 100);
+                    var userState = "Deleting series " + count + " of " + numSeries + "...";
                     worker.ReportProgress(percent, userState);
                 }
             }
@@ -196,7 +195,7 @@ namespace HydroDesktop.Database
             return newTheme;
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "DataThemeDescriptions"; }
         }

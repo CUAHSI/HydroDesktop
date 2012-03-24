@@ -196,7 +196,7 @@ Public Class cTimeSeriesPlot
 
     End Sub
 
-    Private Sub zgTimeSeries_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As System.Drawing.Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgTimeSeries.ContextMenuBuilder
+    Private Sub zgTimeSeries_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgTimeSeries.ContextMenuBuilder
         ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
 
         ' Add item to export to text file
@@ -221,8 +221,8 @@ Public Class cTimeSeriesPlot
         menuStrip.Items.Add(item)
     End Sub
 
-    Private Function PromptForColor(ByVal defaultColor As System.Drawing.Color) As System.Drawing.Color
-        Dim dlgColor As System.Windows.Forms.ColorDialog = New System.Windows.Forms.ColorDialog()
+    Private Function PromptForColor(ByVal defaultColor As Color) As System.Drawing.Color
+        Dim dlgColor As Windows.Forms.ColorDialog = New Windows.Forms.ColorDialog()
 
         If Not IsDBNull(defaultColor) Then
             dlgColor.Color = defaultColor

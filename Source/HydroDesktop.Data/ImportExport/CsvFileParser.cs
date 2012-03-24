@@ -31,7 +31,7 @@ namespace HydroDesktop.ImportExport
 		private static string GetUniqueColumnName ( DataTable dataTable, string baseColumnName )
 		{
 			// Check the input column name
-			if ( baseColumnName == null || baseColumnName == String.Empty )
+			if ( string.IsNullOrEmpty(baseColumnName) )
 			{
 				baseColumnName = "Column";
 			}
@@ -62,13 +62,12 @@ namespace HydroDesktop.ImportExport
 		/// </summary>
 		/// <param name="fileName">The full path to and name of the file to count lines in</param>
 		/// <returns>The number of lines in the file</returns>
-		public static long CountLinesInFile ( string fileName )
+		private static long CountLinesInFile ( string fileName )
 		{
 			long lineCount = 0;
-			using ( StreamReader reader = new StreamReader ( fileName ) )
+			using ( var reader = new StreamReader ( fileName ) )
 			{
-				string line;
-				while ( (line = reader.ReadLine ()) != null )
+			    while ( (reader.ReadLine ()) != null )
 				{
 					lineCount++;
 				}
@@ -92,8 +91,7 @@ namespace HydroDesktop.ImportExport
 			// Get the number of lines in the file
 			long totalSteps = 0;
 			long currentStep = 0;
-			int percentComplete = 0;
-			int previousPercentComplete = 0;
+	        int previousPercentComplete = 0;
 
 			if ( e != null && bgWorker != null )
 			{
@@ -105,7 +103,7 @@ namespace HydroDesktop.ImportExport
 				}
 
 				// Report progress
-				if ( bgWorker.WorkerReportsProgress == true )
+				if ( bgWorker.WorkerReportsProgress )
 				{
 					bgWorker.ReportProgress ( 0, "Opening file..." );
 					totalSteps = CountLinesInFile ( fileToParse );
@@ -115,7 +113,7 @@ namespace HydroDesktop.ImportExport
 
 			using ( TextReader stream = new StreamReader ( fileToParse ) )
 			{
-				CsvStreamReader csv = new CsvStreamReader ( stream );
+				var csv = new CsvStreamReader ( stream );
 				string[] line = csv.ReadLine ();
 				if ( line == null )
 				{
@@ -123,7 +121,8 @@ namespace HydroDesktop.ImportExport
 				}
 
 				// Get the column headers
-				if ( hasHeaders == true )
+			    int percentComplete;
+			    if ( hasHeaders )
 				{
 					// Check for cancel
 					if ( e != null && bgWorker != null )
@@ -135,7 +134,7 @@ namespace HydroDesktop.ImportExport
 						}
 
 						// Report progress
-						if ( bgWorker.WorkerReportsProgress == true )
+						if ( bgWorker.WorkerReportsProgress )
 						{
 							currentStep++;
 							percentComplete = (int)(100 * currentStep / totalSteps);
@@ -152,11 +151,11 @@ namespace HydroDesktop.ImportExport
 						// Get a unique column header
 						string columnHeader = part;
 
-						if ( columnHeader == null || columnHeader == String.Empty )
+						if ( string.IsNullOrEmpty(columnHeader) )
 						{
 							columnHeader = GetUniqueColumnName ( dataTable );
 						}
-						else if ( dataTable.Columns.Contains ( columnHeader ) == true )
+						else if ( dataTable.Columns.Contains ( columnHeader ) )
 						{
 							columnHeader = GetUniqueColumnName ( dataTable, columnHeader );
 						}

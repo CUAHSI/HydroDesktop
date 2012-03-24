@@ -10,7 +10,6 @@ Public Class cBoxWhiskerPlot
 
     Private Const db_outFld_ValDTMonth As String = "DateMonth"
     Private Const db_outFld_ValDTYear As String = "DateYear"
-    Private Const db_outFld_ValDTDay As String = "DateDay"
     Private Const NO_DATA_TO_PLOT As String = "No Data To Plot"
 
     Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
@@ -76,7 +75,7 @@ Public Class cBoxWhiskerPlot
         End Try
     End Sub
 
-    Protected Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
+    Private Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
         Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
         Dim m_Options = options.PlotOptions
 

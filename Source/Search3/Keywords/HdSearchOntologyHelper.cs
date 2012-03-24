@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using System.Xml.Serialization;
-using Search3.Settings;
 
 namespace Search3.Keywords
 {
@@ -59,14 +56,11 @@ namespace Search3.Keywords
         {
             // Refactoring. This is the entry point
             // If searching 1st tier keywords, clear the list.
-            List<string> tier1Keywords = GetKeywordsAtTier(1, OntologyXml);
-            foreach (string tier1keyword in tier1Keywords)
+            var tier1Keywords = GetKeywordsAtTier(1, OntologyXml);
+            if (tier1Keywords.Any(KeywordList.Contains))
             {
-                if (KeywordList.Contains(tier1keyword) == true)
-                {
-                    KeywordList.Clear();
-                    return;
-                }
+                KeywordList.Clear();
+                return;
             }
 
             // Remove repeated keywords.
@@ -85,22 +79,19 @@ namespace Search3.Keywords
 
             // Replace 2nd tier keywords with their 3rd tier child keywords.
             // 2nd tier keywords cannot be searched at HIS Central.
-            List<string> tier2Keywords = GetKeywordsAtTier(2, OntologyXml);
+            IEnumerable<string> tier2Keywords = GetKeywordsAtTier(2, OntologyXml);
             foreach (string tier2keyword in tier2Keywords)
             {
-                if (KeywordList.Contains(tier2keyword) == true)
+                if (KeywordList.Contains(tier2keyword))
                 {
                     // Remove 2nd tier keyword
                     RemoveAllFromList(KeywordList, tier2keyword);
 
                     // Add 3rd tier keywords that are children of the removed 2nd tier keyword.
-                    List<string> tier3Keywords = GetChildKeywords(tier2keyword, OntologyXml);
-                    foreach (string tier3keyword in tier3Keywords)
+                    var tier3Keywords = GetChildKeywords(tier2keyword, OntologyXml);
+                    foreach (var tier3keyword in tier3Keywords.Where(tier3keyword => KeywordList.Contains(tier3keyword) == false))
                     {
-                        if (KeywordList.Contains(tier3keyword) == false)
-                        {
-                            KeywordList.Add(tier3keyword);
-                        }
+                        KeywordList.Add(tier3keyword);
                     }
                 }
             }
@@ -112,11 +103,11 @@ namespace Search3.Keywords
         /// <param name="Keyword">The keyword for which child keywords are sought.</param>
         /// <param name="OntologyXml">XML of the CUAHSI hydrologic ontology.</param>
         /// <returns>List of child keywords for the given keyword from the ontology XML.</returns>
-        private static List<string> GetChildKeywords(string Keyword, XmlDocument OntologyXml)
+        private static IEnumerable<string> GetChildKeywords(string Keyword, XmlDocument OntologyXml)
         {
             // Create a namespace manager to enable XPath searching.  Otherwise, no results are returned if a namespace is present.
             // This works even if no namespace is present.
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
+            var nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
             nsmgr.AddNamespace("x", OntologyXml.DocumentElement.NamespaceURI);
 
             // Create an XPath expression to find all child keywords of the given keyword.
@@ -124,7 +115,7 @@ namespace Search3.Keywords
                                      "']/x:childNodes/x:OntologyNode/x:keyword";
 
             // Select all nodes that match the XPath expression.
-            XmlNodeList keywordNodes = OntologyXml.SelectNodes(xpathExpression, nsmgr);
+            var keywordNodes = OntologyXml.SelectNodes(xpathExpression, nsmgr);
 
             // Return a list of the parent keywords.
             return NodeListToStringList(keywordNodes);
@@ -136,7 +127,7 @@ namespace Search3.Keywords
         /// <param name="Tier">The tier for which keywords are sought. The highlest level is tier 1, the next level is tier 2, and so on.</param>
         /// <param name="OntologyXml">XML of the CUAHSI hydrologic ontology.</param>
         /// <returns>List of keywords at the given tier in the ontology XML.</returns>
-        private static List<string> GetKeywordsAtTier(int Tier, XmlDocument OntologyXml)
+        private static IEnumerable<string> GetKeywordsAtTier(int Tier, XmlDocument OntologyXml)
         {
             // Validate inputs.
             if (Tier < 1)
@@ -146,11 +137,11 @@ namespace Search3.Keywords
 
             // Create a namespace manager to enable XPath searching.  Otherwise, no results are returned if a namespace is present.
             // This works even if no namespace is present.
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
+            var nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
             nsmgr.AddNamespace("x", OntologyXml.DocumentElement.NamespaceURI);
 
             // Create an XPath expression to find all keywords at the given tier.
-            StringBuilder expressionBuilder = new StringBuilder(Tier*25);
+            var expressionBuilder = new StringBuilder(Tier*25);
             for (int i = 2; i <= Tier; i++)
             {
                 expressionBuilder.Append("/x:OntologyNode/x:childNodes");
@@ -171,11 +162,11 @@ namespace Search3.Keywords
         /// <param name="Keyword">The keyword for which ancestor keywords are sought.</param>
         /// <param name="OntologyXml">XML of the CUAHSI hydrologic ontology.</param>
         /// <returns>List of ancestor keywords for the given keyword from the ontology XML.</returns>
-        private static List<string> GetAncestorKeywords(string Keyword, XmlDocument OntologyXml)
+        private static IEnumerable<string> GetAncestorKeywords(string Keyword, XmlDocument OntologyXml)
         {
             // Create a namespace manager to enable XPath searching.  Otherwise, no results are returned if a namespace is present.
             // This works even if no namespace is present.
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
+            var nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
             nsmgr.AddNamespace("x", OntologyXml.DocumentElement.NamespaceURI);
 
             // Create an XPath expression to find all parent keywords of the given keyword.
@@ -198,7 +189,7 @@ namespace Search3.Keywords
         {
             // Create a namespace manager to enable XPath searching.  Otherwise, no results are returned if a namespace is present.
             // This works even if no namespace is present.
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
+            var nsmgr = new XmlNamespaceManager(OntologyXml.NameTable);
             nsmgr.AddNamespace("x", OntologyXml.DocumentElement.NamespaceURI);
 
             // Create an XPath expression to find the given keyword.
@@ -216,18 +207,18 @@ namespace Search3.Keywords
         private static void RemoveRedundantChildKeywords(List<string> KeywordList, XmlDocument OntologyXml)
         {
             // Find parents for each keyword.  If parent also exists in the keyword list, mark the keyword for removal.
-            List<string> keywordsToRemove = new List<string>();
+            var keywordsToRemove = new List<string>();
             foreach (string keyword in KeywordList)
             {
-                List<string> parentKeywords = GetAncestorKeywords(keyword, OntologyXml);
-                if (parentKeywords.Intersect(KeywordList).Count() > 0)
+                var parentKeywords = GetAncestorKeywords(keyword, OntologyXml);
+                if (parentKeywords.Intersect(KeywordList).Any())
                 {
                     keywordsToRemove.Add(keyword);
                 }
             }
 
             // Remove unnecessary keywords.
-            foreach (string keywordToRemove in keywordsToRemove)
+            foreach (var keywordToRemove in keywordsToRemove)
             {
                 RemoveAllFromList(KeywordList, keywordToRemove);
             }
@@ -244,7 +235,7 @@ namespace Search3.Keywords
             var keywordsToRemove = new List<string>();
             foreach (string keyword in KeywordList)
             {
-                XmlNodeList matchingNodes = GetKeywordNodes(keyword, OntologyXml);
+                var matchingNodes = GetKeywordNodes(keyword, OntologyXml);
                 if (matchingNodes.Count == 0)
                 {
                     keywordsToRemove.Add(keyword);
@@ -276,7 +267,7 @@ namespace Search3.Keywords
         /// </summary>
         /// <param name="NodeList">XML node list whose InnerText values will be added to a string list.</param>
         /// <returns>String list of InnerText values from the input XML list.</returns>
-        private static List<string> NodeListToStringList(XmlNodeList NodeList)
+        private static IEnumerable<string> NodeListToStringList(XmlNodeList NodeList)
         {
             return (from XmlNode node in NodeList select node.InnerText).ToList();
         }

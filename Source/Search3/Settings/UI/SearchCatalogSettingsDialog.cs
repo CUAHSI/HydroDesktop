@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Forms;
-using Search3.WebServices;
 
 namespace Search3.Settings.UI
 {
@@ -49,7 +46,7 @@ namespace Search3.Settings.UI
                     break;
             }
 
-            txtCustomUrl.TextChanged += new EventHandler(txtCustomUrl_TextChanged);
+            txtCustomUrl.TextChanged += txtCustomUrl_TextChanged;
             rbHisCentral1.Tag = CatalogSettings.HISCENTRAL_URL_1;
             rbHisCentral2.Tag = CatalogSettings.HISCENTRAL_URL_2;
             rbHisCentral1.CheckedChanged += rbHisCentral_CheckedChanged;
@@ -77,7 +74,7 @@ namespace Search3.Settings.UI
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
             if (webServicesSettings == null) throw new ArgumentNullException("webServicesSettings");
-            if (keywordsSettings == null) throw new ArgumentNullException("keywordSettings");
+            if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
             using (var form = new SearchCatalogSettingsDialog(catalogSettings.Copy(), 
                                                               webServicesSettings.Copy(), 

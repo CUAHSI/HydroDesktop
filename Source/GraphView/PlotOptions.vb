@@ -22,19 +22,19 @@
         Freedman
     End Enum
 #Region " Member Variables "
-    Private _TimeSeriesMethod As TimeSeriesType
+    Private ReadOnly _TimeSeriesMethod As TimeSeriesType
     'Private _IsBarsManual As Boolean
     'Private _NumberOfBars As Integer
     'Private _IsDiscreteBars As Boolean
-    Private _BoxWhiskerMethod As BoxWhiskerType
-    Private _IsPlotCensored As Boolean
+    Private ReadOnly _BoxWhiskerMethod As BoxWhiskerType
+    Private ReadOnly _IsPlotCensored As Boolean
     Private _GetLineColor As System.Drawing.Color
     Private _GetPointColor As System.Drawing.Color
     Private _LineColorList As Integer
     Private _PointColorList As Integer
-    Private _StartDate As Date
+    Private ReadOnly _StartDate As Date
     Private _EndDate As Date
-    Private _ChangeDateRange As Boolean
+    Private ReadOnly _ChangeDateRange As Boolean
     Private _ShowLegend As Boolean
     Private _UseCensoredData As Boolean
 

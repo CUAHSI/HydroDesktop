@@ -43,7 +43,7 @@ namespace HydroDesktop.Database
             get { return DbOperations; }
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { throw new NotImplementedException(); }
         }

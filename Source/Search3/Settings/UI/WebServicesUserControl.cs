@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Search3.Settings.UI
@@ -76,7 +77,7 @@ namespace Search3.Settings.UI
                         ForeColor = clrBule,
                         NodeFont = font,
                         Text = webNode.Title,
-                        Name = webNode.ServiceID.ToString(),
+                        Name = webNode.ServiceID.ToString(CultureInfo.InvariantCulture),
                         Checked = webNode.Checked,
                         Tag = webNode
                     };

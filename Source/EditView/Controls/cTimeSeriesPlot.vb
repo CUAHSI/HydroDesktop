@@ -32,7 +32,7 @@ Public Class cTimeSeriesPlot
     Public EditCurveLable As String
     Public EditCurveTitle As String
 
-    Private ccList0 As New ArrayList()
+    Private ReadOnly ccList0 As New ArrayList()
 
     Private Sub SettingColor()
         ccList0.Clear()
@@ -838,34 +838,6 @@ Public Class cTimeSeriesPlot
         Loop
         Refreshing()
 
-    End Sub
-
-    Public Sub ChangeValueBySettingValue(ByVal value As Double)
-        For i As Integer = 0 To EditingCurve.Points.Count - 1
-
-            If EditingCurve.Points(i).Z = 1 Then
-                EditingCurve.Points(i).Y = value
-            End If
-        Next
-        Refreshing()
-    End Sub
-
-    Public Sub DeletingPoints()
-        Dim PointIndexList As New List(Of Integer)
-        Dim removedPoints As Integer = 0
-
-        For i As Integer = 0 To EditingCurve.Points.Count - 1
-            If EditingCurve.Points(i).Z = 1 Then
-                PointIndexList.Add(i)
-            End If
-        Next
-
-        For i As Integer = 0 To PointIndexList.Count - 1
-            EditingCurve.RemovePoint(PointIndexList(i) - removedPoints)
-            removedPoints += 1
-        Next
-
-        Refreshing()
     End Sub
 
     Public Function HasEditingCurve() As Boolean

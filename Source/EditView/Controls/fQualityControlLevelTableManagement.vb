@@ -16,7 +16,7 @@ Public Class fQualityControlLevelTableManagement
     End Sub
 
     Private Sub CloseMe() Handles Me.Leave, btnCancel.Click
-        Me.Close()
+        Close()
         If _fDeriveNewDataSeries.ddlQualityControlLevel.SelectedIndex = _fDeriveNewDataSeries.ddlQualityControlLevel.Items.Count - 1 Then
             _fDeriveNewDataSeries.SetDefaultQualityControlLevel()
         End If
@@ -37,7 +37,7 @@ Public Class fQualityControlLevelTableManagement
         End If
     End Sub
 
-    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
+    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSubmit.Click
         Dim count As Integer
 
         If txtCode.Text = Nothing Then
@@ -71,7 +71,7 @@ Public Class fQualityControlLevelTableManagement
             count += 1
         End While
 
-        Me.Close()
+        Close()
 
     End Sub
 

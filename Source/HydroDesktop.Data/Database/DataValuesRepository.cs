@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Text;
-using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 using System.Globalization;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -43,14 +41,7 @@ namespace HydroDesktop.Database
                     minDate.ToString("yyyy-MM-dd HH:mm:ss"), maxDate.ToString("yyyy-MM-dd HH:mm:ss"), 
                     seriesID);
             var value =  DbOperations.ExecuteSingleOutput(query);
-            if (value != DBNull.Value)
-            {
-                return Convert.ToDouble(value, CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                return null;
-            }
+            return value != DBNull.Value ? (double?) Convert.ToDouble(value, CultureInfo.InvariantCulture) : null;
         }
 
         public double CalculatePercAvailable(long seriesID, DateTime minDate, DateTime maxDate)
@@ -277,11 +268,10 @@ namespace HydroDesktop.Database
 
         public void UpdateValuesForEditView(DataTable table)
         {
-            var updateFormatString = "UPDATE DataValues SET DataValue = {0}, QualifierID = {1} WHERE ValueID = {2}; ";
-            var insertFormatString =
-                    "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, " +
-                    "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (" +
-                    "{0},{1},{2},'{3}','{4}',{5},'{6}',{7},{8},'{9}',{10},{11},{12}) ;";
+            const string updateFormatString = "UPDATE DataValues SET DataValue = {0}, QualifierID = {1} WHERE ValueID = {2}; ";
+            const string insertFormatString = "INSERT INTO DataValues (ValueID,SeriesID,DataValue,ValueAccuracy,LocalDateTime,UTCOffset,DateTimeUTC, " +
+                                              "OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) VALUES (" +
+                                              "{0},{1},{2},'{3}','{4}',{5},'{6}',{7},{8},'{9}',{10},{11},{12}) ;";
 
             var sqLstring2 = new StringBuilder();
             sqLstring2.Append("BEGIN TRANSACTION; ");
@@ -324,7 +314,7 @@ namespace HydroDesktop.Database
                                                     row[7] == DBNull.Value
                                                             ? "NULL"
                                                             : qualifierRepo.FindByCodeOrCreate(row[7].ToString()).Id.
-                                                                      ToString(),
+                                                                      ToString(CultureInfo.InvariantCulture),
                                                     row[11] == DBNull.Value ? "NULL" : row[11],
                                                     row[12] == DBNull.Value ? "NULL" : row[12]);
                         }
@@ -368,12 +358,12 @@ namespace HydroDesktop.Database
             return whereClause;
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "DataValues"; }
         }
 
-        public override string PrimaryKeyName
+        protected override string PrimaryKeyName
         {
             get { return "ValueID"; }
         }

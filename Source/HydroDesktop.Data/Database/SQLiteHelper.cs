@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Reflection;
@@ -79,12 +77,12 @@ namespace HydroDesktop.Database
         /// <returns>true if database was created, false otherwise</returns>
         public static Boolean CreateMetadataCacheDb(string dbPath)
         {
-            Assembly asm = Assembly.GetAssembly(typeof(HydroDesktop.Database.DbOperations));
+            var asm = Assembly.GetAssembly(typeof(DbOperations));
 
             //to create the default.sqlite database file
             try
             {
-                using (Stream input = asm.GetManifestResourceStream("HydroDesktop.Resources.MetadataCache.sqlite"))
+                using (var input = asm.GetManifestResourceStream("HydroDesktop.Resources.MetadataCache.sqlite"))
                 {
                     using (Stream output = File.Create(dbPath))
                     {
@@ -104,19 +102,12 @@ namespace HydroDesktop.Database
                     ". Error details: " + ex.Message);
                 return false;
             }
-            if (File.Exists(dbPath))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return File.Exists(dbPath);
         }
 
         private static void CopyStream(Stream input, Stream output)
         {
-            byte[] buffer = new byte[8192];
+            var buffer = new byte[8192];
 
             int bytesRead;
             while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
@@ -136,13 +127,10 @@ namespace HydroDesktop.Database
             {
                 return false;
             }
-            else
+            var dbFileInfo = new FileInfo(dbPath);
+            if (dbFileInfo.Length == 0)
             {
-                FileInfo dbFileInfo = new FileInfo(dbPath);
-                if (dbFileInfo.Length == 0)
-                {
-                    return false;
-                }
+                return false;
             }
             return true;
         }
@@ -215,7 +203,6 @@ namespace HydroDesktop.Database
                         if (columnRows.Length == 0)
                         {
                             sbErrors.AppendLine(string.Format("Table '{0}': column '{1}' not found", tableName, columnName));
-                            continue;
                         }
                     }
                 }
@@ -262,21 +249,13 @@ namespace HydroDesktop.Database
         public InvalidDatabaseSchemaException()
         {
         }
-        /// <summary>
-        /// invalid database schema exception with message
-        /// </summary>
-        /// <param name="message">the error message</param>
-        public InvalidDatabaseSchemaException(string message)
-            : this(message, null)
-        {
 
-        }
         /// <summary>
         /// invalid database schema exception with message and inner exception
         /// </summary>
         /// <param name="message">the error messsage</param>
         /// <param name="inner">the inner exception</param>
-        public InvalidDatabaseSchemaException(string message, Exception inner)
+        public InvalidDatabaseSchemaException(string message, Exception inner = null)
             : base(message, inner)
         {
 

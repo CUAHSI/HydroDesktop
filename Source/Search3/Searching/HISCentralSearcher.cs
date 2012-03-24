@@ -5,7 +5,6 @@ using HydroDesktop.Interfaces.ObjectModel;
 using System.Net;
 using System.IO;
 using System.Globalization;
-using System.Web;
 using System.Xml;
 
 namespace Search3.Searching
@@ -93,19 +92,19 @@ namespace Search3.Searching
             url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
-            url.Append(System.Uri.EscapeDataString(xMin.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(xMin.ToString(usaFormat)));
             url.Append("&xmax=");
-            url.Append(System.Uri.EscapeDataString(xMax.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(xMax.ToString(usaFormat)));
             url.Append("&ymin=");
-            url.Append(System.Uri.EscapeDataString(yMin.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(yMin.ToString(usaFormat)));
             url.Append("&ymax=");
-            url.Append(System.Uri.EscapeDataString(yMax.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(yMax.ToString(usaFormat)));
 
             //to append the keyword
             url.Append("&conceptKeyword=");
             if (!String.IsNullOrEmpty(keyword))
             {
-                url.Append(System.Uri.EscapeDataString(keyword));
+                url.Append(Uri.EscapeDataString(keyword));
             }
 
             //to append the list of networkIDs separated by comma
@@ -122,14 +121,14 @@ namespace Search3.Searching
                 {
                     serviceParam.Append(networkIDs[networkIDs.Length - 1]);
                 }
-                url.Append(System.Uri.EscapeDataString(serviceParam.ToString()));
+                url.Append(Uri.EscapeDataString(serviceParam.ToString()));
             }
 
             //to append the start and end date
             url.Append("&beginDate=");
-            url.Append(System.Uri.EscapeDataString(startDate.ToString("MM/dd/yyyy")));
+            url.Append(Uri.EscapeDataString(startDate.ToString("MM/dd/yyyy")));
             url.Append("&endDate=");
-            url.Append(System.Uri.EscapeDataString(endDate.ToString("MM/dd/yyyy")));
+            url.Append(Uri.EscapeDataString(endDate.ToString("MM/dd/yyyy")));
 
             //to encode the URL
             string finalURL = url.ToString();

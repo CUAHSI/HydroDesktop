@@ -555,7 +555,6 @@ Public Class cProbabilityPlot
         If zgProbabilityPlot.GraphPane.CurveList.Count = 0 Then
             Return
         End If
-        Dim IsExist As Boolean = False
 
         Dim CurveListCopy As New CurveList
         For i = 0 To zgProbabilityPlot.GraphPane.CurveList.Count - 1

@@ -21,7 +21,7 @@ Public Class fDeriveNewDataSeries
     ReadOnly dataSeriesRepository As IDataSeriesRepository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
     ReadOnly dataThemesRepository As IDataThemesRepository = RepositoryFactory.Instance.Get(Of IDataThemesRepository)()
     ReadOnly qualityControlLevelsRepository As IQualityControlLevelsRepository = RepositoryFactory.Instance.Get(Of IQualityControlLevelsRepository)()
-    Dim dataValuesRepository As IDataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
+    ReadOnly dataValuesRepository As IDataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
 
     Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
 
@@ -227,7 +227,7 @@ Public Class fDeriveNewDataSeries
 
 #Region "QualityControlLevel data accesses"
 
-    Private Sub btnQualityControlLevel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnQualityControlLevel.Click
+    Private Sub btnQualityControlLevel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnQualityControlLevel.Click
         Dim QualityControlLevelTableManagement As fQualityControlLevelTableManagement = New fQualityControlLevelTableManagement()
         QualityControlLevelTableManagement.Show()
         QualityControlLevelTableManagement._fDeriveNewDataSeries = Me
@@ -235,7 +235,7 @@ Public Class fDeriveNewDataSeries
         QualityControlLevelTableManagement.initialize()
     End Sub
 
-    Private Sub ddlQualityControlLevel_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlQualityControlLevel.SelectedIndexChanged
+    Private Sub ddlQualityControlLevel_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlQualityControlLevel.SelectedIndexChanged
         If ddlQualityControlLevel.SelectedIndex = ddlQualityControlLevel.Items.Count - 1 Then
             Dim QualityControlLevelTableManagement As fQualityControlLevelTableManagement = New fQualityControlLevelTableManagement()
             QualityControlLevelTableManagement.initialize()
@@ -321,7 +321,7 @@ Public Class fDeriveNewDataSeries
 
 #End Region
 
-    Private Sub AlgebraicTextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtA.TextChanged, txtB.TextChanged, txtC.TextChanged, txtD.TextChanged, txtE.TextChanged, txtF.TextChanged
+    Private Sub AlgebraicTextChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtA.TextChanged, txtB.TextChanged, txtC.TextChanged, txtD.TextChanged, txtE.TextChanged, txtF.TextChanged
         If txtA.Text = Nothing Then
             txtA.Text = "0"
             txtA.Select(0, 1)
@@ -354,11 +354,11 @@ Public Class fDeriveNewDataSeries
 
     End Sub
 
-    Private Sub btnBackToOriginal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackToOriginal.Click
+    Private Sub btnBackToOriginal_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBackToOriginal.Click
         SetDefault()
     End Sub
 
-    Private Sub rbtnCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbtnCopy.CheckedChanged, rbtnAlgebraic.CheckedChanged, rbtnAggregate.CheckedChanged
+    Private Sub rbtnCheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbtnCopy.CheckedChanged, rbtnAlgebraic.CheckedChanged, rbtnAggregate.CheckedChanged
         If rbtnAlgebraic.Checked Then
             gboxAggregate.Enabled = False
             gboxAlgebraic.Enabled = True

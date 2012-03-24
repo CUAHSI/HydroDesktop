@@ -32,10 +32,6 @@ Public Class OrderChange
         Next i
     End Sub
 
-    Private Sub OrderChange_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
-
     Private Sub dropDowns_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim ddl As ComboBox = sender
         Dim index As Integer = Array.IndexOf(dropDowns, ddl)
@@ -71,14 +67,14 @@ Public Class OrderChange
             End If
         Next ddl
         If valid Then
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            DialogResult = Windows.Forms.DialogResult.OK
         Else
             MsgBox("All values must be selected", , "Error")
         End If
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        DialogResult = Windows.Forms.DialogResult.Cancel
     End Sub
 
     Public ReadOnly Property Order() As String()

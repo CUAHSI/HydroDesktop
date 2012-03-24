@@ -182,7 +182,6 @@ namespace DataAggregation
                                                      if (!string.IsNullOrEmpty(featureSet.Filename))
                                                      {
                                                          featureSet.Save();
-                                                         featureSet = null; //remove the featureSet and force it to be re-loaded
                                                      }
                                                      
                                                      if (_settings.CreateNewLayer)
@@ -266,7 +265,7 @@ namespace DataAggregation
             var fracLength = maxValue - minValue > 10? 0 : 1;
             
             // Set number of categories
-            int categoriesCount  = 3;
+            const int categoriesCount = 3;
             var categorieStep = (maxValue - minValue) / categoriesCount;    // value step in filter
 
             const int imageStep = 5;

@@ -8,10 +8,7 @@ Public Class fChangeYValue
         ddlMethod.SelectedItem = ddlMethod.Items(0)
     End Sub
 
-    Public Sub initialize()
-    End Sub
-
-    Private Sub btnApplyChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApplyChange.Click
+    Private Sub btnApplyChange_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnApplyChange.Click
         Dim changed As Boolean = False
 
         'Validation
@@ -60,12 +57,12 @@ Public Class fChangeYValue
             'End If
             _cEditView.RefreshDataGridView()
             _cEditView.pTimeSeriesPlot.ReplotEditingCurve(_cEditView)
-            Me.Close()
+            Close()
         End If
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.Close()
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnCancel.Click
+        Close()
     End Sub
 
     Private Sub Leaving() Handles Me.Deactivate

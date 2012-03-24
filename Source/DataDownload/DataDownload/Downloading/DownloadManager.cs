@@ -11,6 +11,9 @@ using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading
 {
+    /// <summary>
+    /// Download manager. It downloads and saves data series.
+    /// </summary>
     public class DownloadManager
     {
         #region Fields
@@ -24,7 +27,10 @@ namespace HydroDesktop.DataDownload.Downloading
 
         #region Constructors
 
-        private DownloadManager()
+        /// <summary>
+        /// Creates new instance of <see cref="DownloadManager"/>
+        /// </summary>
+        public DownloadManager()
         {
             _worker.DoWork += _worker_DoWork;
             _worker.ProgressChanged += _worker_ProgressChanged;
@@ -35,24 +41,23 @@ namespace HydroDesktop.DataDownload.Downloading
 
         #endregion
 
-        #region Singleton implementation
-        
-        private static readonly Lazy<DownloadManager> _instance = new Lazy<DownloadManager>(() => new DownloadManager(), true);
-        public static DownloadManager Instance
-        {
-            get
-            {  
-                return _instance.Value;
-            }
-        }
-
-        #endregion
-
         #region Events
 
+        /// <summary>
+        /// Raised when download progress is changed
+        /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
+        /// <summary>
+        /// Raised when downloading is completed
+        /// </summary>
         public event EventHandler<RunWorkerCompletedEventArgs> Completed;
+        /// <summary>
+        /// Raised when downloading is cancelled
+        /// </summary>
         public event EventHandler Canceled;
+        /// <summary>
+        /// Raised when download manager log message 
+        /// </summary>
         public event EventHandler<LogMessageEventArgs> OnMessage;
 
         #endregion
@@ -473,7 +478,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 }
                 finally
                 {
-                    // Calculcate estimated time
+                    // Calculate estimated time
                     var endTime = DateTime.Now;
                     var diff = endTime.Subtract(startTime).TotalSeconds;
                     var interval = diff * Information.RemainingSeries + 1;
@@ -608,11 +613,26 @@ namespace HydroDesktop.DataDownload.Downloading
         #endregion
     }
 
+    /// <summary>
+    /// Event arguments for <see cref="DownloadManager.OnMessage"/> event
+    /// </summary>
     public class LogMessageEventArgs : EventArgs
     {
+        /// <summary>
+        /// Message
+        /// </summary>
         public string Message {get;private set;}
+
+        /// <summary>
+        /// Exception
+        /// </summary>
         public Exception Exception { get; private set; }
 
+        /// <summary>
+        /// Creates new instance of M<see cref="LogMessageEventArgs"/>
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="exception">Exception</param>
         public LogMessageEventArgs(string message, Exception exception = null)
         {
             Message = message;

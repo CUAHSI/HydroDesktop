@@ -20,12 +20,8 @@ namespace HydroDesktop.DataDownload.Downloading.Exceptions
         {
 
         }
-        public DownloadXmlException(string message)
-            : this(message, null)
-        {
 
-        }
-        public DownloadXmlException(string message, Exception inner)
+        public DownloadXmlException(string message, Exception inner = null)
             : base(message, inner)
         {
 

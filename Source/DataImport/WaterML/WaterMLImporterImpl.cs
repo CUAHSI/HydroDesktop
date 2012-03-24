@@ -21,7 +21,7 @@ namespace DataImport.WaterML
             string siteName = shortFileName;
             string variableName = shortFileName;
 
-            int separatorIndex = shortFileName.IndexOf("_");
+            int separatorIndex = shortFileName.IndexOf("_", System.StringComparison.Ordinal);
             if (separatorIndex > 0 && separatorIndex < shortFileName.Length - 1)
             {
                 siteName = shortFileName.Substring(0, shortFileName.IndexOf("_"));

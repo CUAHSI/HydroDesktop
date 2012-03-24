@@ -62,7 +62,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         /// </summary>
         /// <param name="infos">Info to set</param>
         /// <exception cref="ArgumentNullException"><paramref name="infos"/>must be not null</exception>
-        public void SetInfo(List<ServiceInfoGroup> infos)
+        public void SetInfo(IEnumerable<ServiceInfoGroup> infos)
         {
             if (infos == null) throw new ArgumentNullException("infos");
             _serviceInfo.Clear();

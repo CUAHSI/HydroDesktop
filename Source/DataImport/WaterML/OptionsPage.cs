@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using Wizard.UI;

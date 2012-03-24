@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -61,12 +60,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             if (pi._data.Count != _data.Count) return false;
 
-            foreach(var el in pi._data)
-            {
-                var find = _data.FirstOrDefault(item => item.Equals(el));
-                if (find == null) return false;
-            }
-            return true;
+            return pi._data.Select(el => _data.FirstOrDefault(item => item.Equals(el))).All(find => find != null);
         }
         public override int GetHashCode()
         {

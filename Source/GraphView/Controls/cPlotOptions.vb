@@ -2,9 +2,6 @@
 
 Public Class cPlotOptions
     'Inherits Windows.Forms.UserControl
-    Public Event Changed()
-    Public Event OpenColorCollection()
-
     Public tsType As PlotOptions.TimeSeriesType = PlotOptions.TimeSeriesType.Both
     Public bwType As PlotOptions.BoxWhiskerType = PlotOptions.BoxWhiskerType.Monthly
     Public hpType As PlotOptions.HistogramType = PlotOptions.HistogramType.Count
@@ -13,10 +10,7 @@ Public Class cPlotOptions
 
     Public Property Options() As PlotOptions
         Get
-            Return New PlotOptions(tsType, hpType, hpAlgo, 0, 0, 0, 0, 0, 0, 0, bwType, _
-                                    Drawing.Color.Black, btnSetPointColor.BackColor, _
-                                   IsShowLegend, Now, _
-                                   Now, True, False)
+            Return New PlotOptions(tsType, hpType, hpAlgo, 0, 0, 0, 0, 0, 0, 0, bwType, Drawing.Color.Black, btnSetPointColor.BackColor, IsShowLegend, Now, Now, True, False)
         End Get
         Set(ByVal value As PlotOptions)
             Select Case value.TimeSeriesMethod
@@ -25,8 +19,6 @@ Public Class cPlotOptions
                 Case PlotOptions.TimeSeriesType.Point
 
                 Case PlotOptions.TimeSeriesType.Both
-
-                Case Else
 
             End Select
 
@@ -39,8 +31,6 @@ Public Class cPlotOptions
 
                 Case PlotOptions.BoxWhiskerType.Overall
 
-                Case Else
-
             End Select
 
             Select Case value.HistTypeMethod
@@ -50,8 +40,6 @@ Public Class cPlotOptions
 
                 Case PlotOptions.HistogramType.Relative
 
-                Case Else
-
             End Select
 
             Select Case value.HistAlgorothmsMethod
@@ -60,8 +48,6 @@ Public Class cPlotOptions
                 Case PlotOptions.HistorgramAlgorithms.Sturges
 
                 Case PlotOptions.HistorgramAlgorithms.Freedman
-
-                Case Else
 
             End Select
 
@@ -73,7 +59,6 @@ Public Class cPlotOptions
             'ckbShowLegend.Checked = value.ShowLegend
             'txtLineccNumber.Text = value.LineColorList
             'txtPointccNumber.Text = value.PointColorList
-
         End Set
     End Property
 
@@ -83,7 +68,6 @@ Public Class cPlotOptions
         If Not IsDBNull(newColor) Then
             btnSetLineColor.BackColor = newColor
         End If
-        RaiseEvent Changed()
     End Sub
 
     Private Sub btnSetPointColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPointColor.Click
@@ -92,7 +76,6 @@ Public Class cPlotOptions
         If Not IsDBNull(newColor) Then
             btnSetPointColor.BackColor = newColor
         End If
-        RaiseEvent Changed()
     End Sub
 
     Private Function PromptForColor(ByVal defaultColor As System.Drawing.Color) As System.Drawing.Color
@@ -110,16 +93,12 @@ Public Class cPlotOptions
     End Function
 
 
+    Private Sub OptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbtnTSLine.Click, rbtnTSPoint.Click, rbtnTSBoth.Click, rbtnBPMonthly.Click, rbtnBPOverall.Click, rbtnBPSeasonal.Click, rbtnBPYearly.Click, rbtnHPCount.Click, rbtnHPFreedman.Click, rbtnHPProbability.Click, rbtnHPRelative.Click, rbtnHPScotts.Click, rbtnHPSturges.Click, ckbShowLegend.CheckedChanged, btnplot.Click, txtLineccNumber.Leave, txtPointccNumber.Leave
 
-    Private Sub OptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-    rbtnTSLine.Click, rbtnTSPoint.Click, rbtnTSBoth.Click, rbtnBPMonthly.Click, rbtnBPOverall.Click, rbtnBPSeasonal.Click, _
-    rbtnBPYearly.Click, rbtnHPCount.Click, rbtnHPFreedman.Click, rbtnHPProbability.Click, rbtnHPRelative.Click, rbtnHPScotts.Click, _
-    rbtnHPSturges.Click, ckbShowLegend.CheckedChanged, btnplot.Click, txtLineccNumber.Leave, txtPointccNumber.Leave
-        RaiseEvent Changed()
     End Sub
 
     Private Sub btnColorConnections_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnColorConnections.Click
-        RaiseEvent OpenColorCollection()
+
     End Sub
 
     Public Sub ColorCollectionChosen(ByVal _lineColorList As Integer, ByVal _pointColorList As Integer)
@@ -131,8 +110,6 @@ Public Class cPlotOptions
         End If
         btnSetLineColor.BackColor = Drawing.Color.Black
         btnSetPointColor.BackColor = Drawing.Color.Black
-        RaiseEvent Changed()
-
     End Sub
 
     Private Sub ckbDateRangeChange_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbDateRangeChange.CheckedChanged

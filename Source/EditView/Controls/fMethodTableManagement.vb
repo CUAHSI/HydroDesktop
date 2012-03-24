@@ -13,17 +13,11 @@ Public Class fMethodTableManagement
     End Sub
 
     Private Sub CloseMe() Handles Me.Leave, btnCancel.Click
-        Me.Close()
+        Close()
         If _fDeriveNewDataSeries.ddlMethods.SelectedIndex = _fDeriveNewDataSeries.ddlMethods.Items.Count - 1 Then
             _fDeriveNewDataSeries.SetDefaultMethods()
         End If
     End Sub
-
-    Public ReadOnly Property MethodID() As Integer
-        Get
-            Return _MethodID
-        End Get
-    End Property
 
     Public Sub initialize()
 
@@ -46,7 +40,7 @@ Public Class fMethodTableManagement
         repo.UpdateMethod(_MethodID, txtDescription.Text.ToString, txtLink.Text.ToString)
     End Sub
 
-    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
+    Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSubmit.Click
         Dim count As Integer
 
         'If the user did not enter things in text boxes, some action will be acted before making any changes in the database
@@ -70,7 +64,7 @@ Public Class fMethodTableManagement
             count += 1
         End While
 
-        Me.Close()
+        Close()
 
     End Sub
 

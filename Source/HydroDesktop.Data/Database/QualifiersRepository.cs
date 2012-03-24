@@ -59,12 +59,12 @@ namespace HydroDesktop.Database
             entity.Id = Convert.ToInt64(id);
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "Qualifiers"; }
         }
 
-        public override string PrimaryKeyName
+        protected override string PrimaryKeyName
         {
             get { return "QualifierID"; }
         }

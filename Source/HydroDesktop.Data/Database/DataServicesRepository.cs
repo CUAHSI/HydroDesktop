@@ -13,7 +13,7 @@ namespace HydroDesktop.Database
         {
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "DataServices"; }
         }

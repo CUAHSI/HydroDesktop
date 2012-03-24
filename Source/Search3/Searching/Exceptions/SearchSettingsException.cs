@@ -15,13 +15,7 @@ namespace Search3.Searching.Exceptions
 
         }
 
-        protected SearchSettingsException(string message)
-            : this(message, null)
-        {
-
-        }
-
-        protected SearchSettingsException(string message, Exception inner)
+        protected SearchSettingsException(string message, Exception inner = null)
             : base(message, inner)
         {
 

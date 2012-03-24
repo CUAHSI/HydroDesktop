@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
 
 namespace HydroDesktop.Database
 {
@@ -18,12 +14,9 @@ namespace HydroDesktop.Database
         /// <returns>Null if the value in DB is NULL, string if the value is a valid string</returns>
         public static string ReadString(object obj)
         {
-            if (obj != DBNull.Value)
-            {
-                return (string)obj;
-            }
-            return string.Empty;
+            return obj != DBNull.Value ? (string) obj : string.Empty;
         }
+
         /// <summary>
         /// Convert object in data reader result to Integer
         /// </summary>
@@ -32,15 +25,9 @@ namespace HydroDesktop.Database
         /// Integer if the value is a valid Integer number</returns>
         public static int ReadInteger(object obj)
         {
-            if (obj != DBNull.Value)
-            {
-                return Convert.ToInt32(obj);
-            }
-            else
-            {
-                return 0;
-            }
+            return obj != DBNull.Value ? Convert.ToInt32(obj) : 0;
         }
+
         /// <summary>
         /// Convert object in data reader result to Double
         /// </summary>
@@ -49,15 +36,9 @@ namespace HydroDesktop.Database
         /// Double if the value in the DB is a valid Double number</returns>
         public static double ReadDouble(object obj)
         {
-            if (obj != DBNull.Value)
-            {
-                return Convert.ToDouble(obj);
-            }
-            else
-            {
-                return 0.0;
-            }
+            return obj != DBNull.Value ? Convert.ToDouble(obj) : 0.0;
         }
+
         /// <summary>
         /// Convert object in data reader result to boolean
         /// </summary>
@@ -66,15 +47,9 @@ namespace HydroDesktop.Database
         /// a boolean value if the value in the DB is a valid boolean value</returns>
         public static bool ReadBoolean(object obj)
         {
-            if (obj != DBNull.Value)
-            {
-                return Convert.ToBoolean(obj);
-            }
-            else
-            {
-                return false;
-            }
+            return obj != DBNull.Value && Convert.ToBoolean(obj);
         }
+
         /// <summary>
         /// Convert object in data reader result to DateTime
         /// </summary>
@@ -83,14 +58,7 @@ namespace HydroDesktop.Database
         /// DateTime if the value in the DB is a valid date time</returns>
         public static DateTime ReadDateTime(object obj)
         {
-            if (obj != DBNull.Value)
-            {
-                return Convert.ToDateTime(obj);
-            }
-            else
-            {
-                return DateTime.MinValue;
-            }
+            return obj != DBNull.Value ? Convert.ToDateTime(obj) : DateTime.MinValue;
         }
     }
 }

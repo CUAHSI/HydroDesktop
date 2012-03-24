@@ -213,7 +213,7 @@ Namespace EditView
 
 #Region "Event Handlers"
 
-        Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As Docking.DockablePanelEventArgs)
+        Private Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As DockablePanelEventArgs)
 
             'activate the Edit ribbon tab and the series view panel
             If e.ActivePanelKey = kEditView Then
@@ -229,7 +229,7 @@ Namespace EditView
 
         End Sub
 
-        Sub btnSelectSeries_Click()
+        Private Sub btnSelectSeries_Click()
             If Not _mainControl.Editing Then
                 If Not _seriesSelector.SelectedSeriesID = 0 Then
                     _mainControl.btnSelectSeries_Click()

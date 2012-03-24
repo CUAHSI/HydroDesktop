@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.Database
 {
@@ -12,7 +9,7 @@ namespace HydroDesktop.Database
 	/// </summary>
     public class CaseInsensitiveEqualityComparer : IEqualityComparer<string>
 	{
-		private CaseInsensitiveComparer myComparer;
+		private readonly CaseInsensitiveComparer myComparer;
         /// <summary>
         /// creates a new instance of the comparer
         /// </summary>
@@ -52,7 +49,7 @@ namespace HydroDesktop.Database
         /// <returns>true if lowercase strings have identical hash codes</returns>
 		public int GetHashCode ( string obj )
 		{
-			return obj.ToString ().ToLower ().GetHashCode ();
+			return obj.ToLower ().GetHashCode ();
 		}
 	}
 }

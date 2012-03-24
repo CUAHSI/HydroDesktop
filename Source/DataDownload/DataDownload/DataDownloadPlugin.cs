@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel.Composition;
@@ -23,7 +24,6 @@ namespace HydroDesktop.DataDownload
     {
         #region Fields
 
-        private const string TableTabKey = "kHome";
         private SimpleActionItem btnDownload;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
 
@@ -40,9 +40,10 @@ namespace HydroDesktop.DataDownload
         /// <summary>
         /// Download manager
         /// </summary>
+        private DownloadManager _downloadManager;
         private DownloadManager DownloadManager
         {
-            get { return DownloadManager.Instance; }
+            get { return _downloadManager?? (_downloadManager = new DownloadManager()); }
         }
 
         private SearchLayerInformer _searchLayerInformer;
@@ -54,8 +55,8 @@ namespace HydroDesktop.DataDownload
         /// <summary>
         /// Starts downloading
         /// </summary>
-        /// <param name="startArgs">Args to start</param>
-        /// <param name="layer">Layer, wich contains points to download</param>
+        /// <param name="startArgs">Start arguments</param>
+        /// <param name="layer">Layer, which contains points to download</param>
         public void StartDownloading(StartDownloadArg startArgs, IFeatureLayer layer)
         {
             if (startArgs == null) throw new ArgumentNullException("startArgs");
@@ -94,7 +95,7 @@ namespace HydroDesktop.DataDownload
         /// <ingeritdoc/>
         public override void Activate()
         {
-            if (App == null) throw new ArgumentNullException("App");
+            if (App == null) throw new Exception("App");
 
             // Initialize menu
             btnDownload = new SimpleActionItem("Download", DoDownload)
@@ -172,7 +173,7 @@ namespace HydroDesktop.DataDownload
 
                 var featureToDownload = featureLayer.DataSet.Features
                     .FirstOrDefault(feature => feature.DataRow["SeriesID"] != DBNull.Value &&
-                                               feature.DataRow["SeriesID"].ToString() == selectedSeriesID.ToString());
+                                               feature.DataRow["SeriesID"].ToString() == selectedSeriesID.ToString(CultureInfo.InvariantCulture));
                 if (featureToDownload != null)
                 {
                     StartDownloading(featureLayer, new[] { featureToDownload });

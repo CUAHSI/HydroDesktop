@@ -11,21 +11,17 @@ namespace TableView
     public partial class ChangeDatabaseForm : Form
     {
         private string _oldDataRepositoryConnString;
-        private string _newDataRepositoryConnString;
 
         private string _oldMetadataCacheConnString;
-        private string _newMetadataCacheConnString;
 
-        private ISeriesSelector _seriesView;
-        private Map _mainMap;
+        private readonly Map _mainMap;
         private readonly ISearchPlugin _searchPlugin;
 
-        public ChangeDatabaseForm(ISeriesSelector seriesView, Map mainMap, ISearchPlugin searchPlugin)
+        public ChangeDatabaseForm(Map mainMap, ISearchPlugin searchPlugin)
         {
             InitializeComponent();
             LoadSettings();
 
-            _seriesView = seriesView;
             _mainMap = mainMap;
             _searchPlugin = searchPlugin;
         }
@@ -129,26 +125,30 @@ namespace TableView
 
         private void btnDataRepositoryFileDialog_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "SQLite databases|*.sqlite";
-            fileDialog.FileName = txtDataRepository.Text;
-            fileDialog.Title = "Select the Data Repository Database";
+            var fileDialog = new OpenFileDialog
+                                 {
+                                     Filter = "SQLite databases|*.sqlite",
+                                     FileName = txtDataRepository.Text,
+                                     Title = "Select the Data Repository Database"
+                                 };
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
-                _newDataRepositoryConnString = SQLiteHelper.GetSQLiteConnectionString(fileDialog.FileName);
+                SQLiteHelper.GetSQLiteConnectionString(fileDialog.FileName);
                 txtDataRepository.Text = fileDialog.FileName;
             }
         }
 
         private void btnMetadataCacheFileDialog_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "SQLite databases|*.sqlite";
-            fileDialog.FileName = txtDataRepository.Text;
-            fileDialog.Title = "Select the Metadata Cache Database";
+            var fileDialog = new OpenFileDialog
+                                 {
+                                     Filter = "SQLite databases|*.sqlite",
+                                     FileName = txtDataRepository.Text,
+                                     Title = "Select the Metadata Cache Database"
+                                 };
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
-                _newMetadataCacheConnString = SQLiteHelper.GetSQLiteConnectionString(fileDialog.FileName);
+                SQLiteHelper.GetSQLiteConnectionString(fileDialog.FileName);
                 txtMetadataCache.Text = fileDialog.FileName;
             }
         }

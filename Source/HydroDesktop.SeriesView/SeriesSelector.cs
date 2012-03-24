@@ -212,10 +212,10 @@ namespace SeriesView
             //when the user didn't select the criterion
             if (cbBoxContent.SelectedIndex <= 0) return;
 
-            if (radSimple.Checked == true)
+            if (radSimple.Checked)
             {
                 //simple filter
-                DataRowView selectedRow = cbBoxContent.SelectedItem as DataRowView;
+                var selectedRow = (DataRowView)cbBoxContent.SelectedItem;
                 string selectedID = selectedRow[0].ToString();
                 string criterionType = cbBoxCriterion.Text;
                 string filter = "";
@@ -383,7 +383,7 @@ namespace SeriesView
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override System.Windows.Forms.ContextMenuStrip ContextMenuStrip
+        public override ContextMenuStrip ContextMenuStrip
         {
             get { return contextMenuStrip1; }
         }
@@ -532,7 +532,7 @@ namespace SeriesView
             if (newFilterType == FilterTypes.All)
             {
                 //show all
-                Point listLocation = new Point();
+                var listLocation = new Point();
                 listLocation.X = 6;
                 listLocation.Y = cbBoxCriterion.Top;
                 dgvSeries.Location = listLocation; //new Point(6, 34);
@@ -545,8 +545,7 @@ namespace SeriesView
             }
             else if (newFilterType == FilterTypes.Simple)
             {
-                dgvSeries.Location = new System.Drawing.Point(6, 90);
-                ;
+                dgvSeries.Location = new Point(6, 90);
                 dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
                 radSimple.Checked = true;
                 radComplex.Checked = false;
@@ -562,14 +561,13 @@ namespace SeriesView
             }
             else if (newFilterType == FilterTypes.Complex)
             {
-                dgvSeries.Location = new System.Drawing.Point(6, 90);
-                ;
+                dgvSeries.Location = new Point(6, 90);
                 dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
                 radSimple.Checked = false;
                 radComplex.Checked = true;
                 radAll.Checked = false;
                 panelComplexFilter.Visible = true;
-                txtFilter.Text = this.FilterExpression;
+                txtFilter.Text = FilterExpression;
             }
         }
 
@@ -596,7 +594,7 @@ namespace SeriesView
             {
                 var row = _variableTable.NewRow();
                 row["VariableID"] = variable.Id;
-                row["VariableName"] = variable.Name  + " (" + variable.VariableUnit.Abbreviation + ")";;
+                row["VariableName"] = variable.Name  + " (" + variable.VariableUnit.Abbreviation + ")";
                 _variableTable.Rows.Add(row);
             }
             _sourceTable = RepositoryFactory.Instance.Get<ISourcesRepository>().AsDataTable();
@@ -612,11 +610,11 @@ namespace SeriesView
         }
 
         //adds the 'please select filter option' item to the ComboBox
-        private void AddFilterOptionRow(DataTable table)
+        private static void AddFilterOptionRow(DataTable table)
         {
-            string filterText = "Please select filter option";
+            const string filterText = "Please select filter option";
 
-            DataRow row = table.NewRow();
+            var row = table.NewRow();
             row[0] = 0;
             row[1] = filterText;
             table.Rows.InsertAt(row, 0);
@@ -630,7 +628,7 @@ namespace SeriesView
             if (String.IsNullOrEmpty(filterExpression)) return FilterTypes.All;
 
             //other filter types --> simple uses the ID and has only one '='.
-            string[] parts = filterExpression.Split(new char[] {'='});
+            string[] parts = filterExpression.Split(new[] {'='});
             int numParts = parts.Length;
             if (numParts == 2)
             {
@@ -707,7 +705,7 @@ namespace SeriesView
             var checkedIDs = new int[CheckedIDList.Length];
             if (checkedIDs.Length > 0)
             {
-                Array.Copy(this.CheckedIDList, checkedIDs, checkedIDs.Length);
+                Array.Copy(CheckedIDList, checkedIDs, checkedIDs.Length);
             }
 
             if (checkedIDs.Length == 0)
@@ -716,7 +714,7 @@ namespace SeriesView
                 _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
                 if (_clickedSeriesID > 0)
                 {
-                    checkedIDs = new int[] {_clickedSeriesID};
+                    checkedIDs = new[] {_clickedSeriesID};
                 }
                 else
                 {
@@ -727,9 +725,9 @@ namespace SeriesView
 
             var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
             DataTable table = null;
-            for (int i = 0; i < checkedIDs.Length; i++)
+            foreach (var t in checkedIDs)
             {
-                var exportTable = repo.GetTableForExport(checkedIDs[i]);
+                var exportTable = repo.GetTableForExport(t);
                 if (table == null)
                 {
                     table = exportTable;

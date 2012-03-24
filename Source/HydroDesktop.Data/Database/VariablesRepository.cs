@@ -102,7 +102,7 @@ namespace HydroDesktop.Database
             return res;
         }
 
-        public override string PrimaryKeyName
+        protected override string PrimaryKeyName
         {
             get
             {
@@ -110,7 +110,7 @@ namespace HydroDesktop.Database
             }
         }
 
-        public override string TableName
+        protected override string TableName
         {
             get { return "Variables"; }
         }

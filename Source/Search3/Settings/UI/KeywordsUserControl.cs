@@ -57,7 +57,7 @@ namespace Search3.Settings.UI
 
             // Selected keywords
             AddSelectedKeywords(keywordsSettings.SelectedKeywords);
-            if (keywordsSettings.SelectedKeywords.Count() > 0)
+            if (keywordsSettings.SelectedKeywords.Any())
             {
                 UpdateKeywordTextBox(keywordsSettings.SelectedKeywords.First());
             }
@@ -68,7 +68,7 @@ namespace Search3.Settings.UI
         /// </summary>
         /// <param name="keywords">Keywords to add.</param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="keywords"/> is null.</exception>
-        public void AddSelectedKeywords(IEnumerable<string> keywords)
+        private void AddSelectedKeywords(IEnumerable<string> keywords)
         {
             if (keywords == null) throw new ArgumentNullException("keywords");
 
@@ -82,7 +82,7 @@ namespace Search3.Settings.UI
         /// Remove selected keywords.
         /// </summary>
         /// <param name="keywords">Keywords to remove. If parameter is null - removes all selected keywords.</param>
-        public void RemoveSelectedKeywords(IEnumerable<string> keywords = null)
+        private void RemoveSelectedKeywords(IEnumerable<string> keywords = null)
         {
             if (keywords == null)
             {

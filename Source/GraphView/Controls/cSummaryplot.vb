@@ -40,7 +40,7 @@ Public Class cSummaryPlot
     ' Public Shared m_DataSet As Data.DataSet
     Public Shared m_Site As String
     Public Shared m_Var As String
-    Public Shared m_Options As PlotOptions
+    Private Shared m_Options As PlotOptions
     Public Shared m_Units As String
     Private m_StdDev As Double
 

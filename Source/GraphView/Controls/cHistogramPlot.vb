@@ -77,7 +77,7 @@ Public Class cHistogramPlot
         End Try
     End Sub
 
-    Protected Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
+    Private Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
         Try
             Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
             Dim m_Options = options.PlotOptions
@@ -193,7 +193,7 @@ Public Class cHistogramPlot
                     End If
                 Next
                 list1 = Pretty.PrettyP(0, max)
-            
+
                 gPane.YAxis.Scale.Min = 0
                 gPane.YAxis.Scale.MajorStep = list1.Item(2)
                 gPane.YAxis.Scale.MinorStep = gPane.YAxis.Scale.MajorStep / 5
@@ -228,7 +228,8 @@ Public Class cHistogramPlot
     End Sub
 
 #Region "Calculation for Main Histogram Algorithm"
-    Public Sub Histogram_Calc(ByRef HistTable As DataTable, ByRef pOptions As PlotOptions) ', ByVal SS As Statistics)
+
+    Private Sub Histogram_Calc(ByRef HistTable As DataTable, ByRef pOptions As PlotOptions) ', ByVal SS As Statistics)
 
         Dim i, j As Integer
 

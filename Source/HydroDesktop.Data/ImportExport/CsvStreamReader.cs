@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Data;
 using System.IO;
 
 namespace HydroDesktop.ImportExport
@@ -12,12 +8,12 @@ namespace HydroDesktop.ImportExport
 	{
 		#region Variables
 
-		private TextReader _csvStream;
-		private char[] _buffer = new char[4096];
-		private int _currentPositionInBuffer = 0;
-		private int _lengthReadFromStream = 0;
-		private bool _endOfStream = false;
-		private bool _endOfLine = false;
+		private readonly TextReader _csvStream;
+		private readonly char[] _buffer = new char[4096];
+		private int _currentPositionInBuffer;
+		private int _lengthReadFromStream;
+		private bool _endOfStream;
+		private bool _endOfLine;
 
 		#endregion
 
@@ -38,10 +34,10 @@ namespace HydroDesktop.ImportExport
 		/// <returns>A string representing the data item, or null if the end of the line was already reached in the stream</returns>
 		private string ReadData ()
 		{
-			StringBuilder data = new StringBuilder ();
+			var data = new StringBuilder ();
 
 			// See if we're at the end of a line
-			if ( _endOfLine == true )
+			if ( _endOfLine )
 			{
 				_endOfLine = false;
 				return null;
@@ -58,27 +54,24 @@ namespace HydroDesktop.ImportExport
 				char currentCharacter = ReadCharacter ();
 
 				// Check for end of stream
-				if ( _endOfStream == true )
+				if ( _endOfStream )
 				{
-					if ( data.Length > 0 )
+				    if ( data.Length > 0 )
 					{
 						return data.ToString ();
 					}
-					else
-					{
-						return null;
-					}
+				    return null;
 				}
 
-				// Check for end of data item
-				if ( (exitingData == true || isQuoted == false)
+			    // Check for end of data item
+				if ( (exitingData || isQuoted == false)
 					&& (currentCharacter == ',') )
 				{
 					return data.ToString ();
 				}
 
 				// Check for end of line
-				if ( (enteringData == true || exitingData == true || isQuoted == false)
+				if ( (enteringData || exitingData || isQuoted == false)
 					&& (currentCharacter == '\x0A' || currentCharacter == '\x0D') )
 				{
 					_endOfLine = true;
@@ -91,7 +84,7 @@ namespace HydroDesktop.ImportExport
 				}
 
 				// See if we're entering a data item
-				if ( enteringData == true )
+				if ( enteringData )
 				{
 					// See if data item begins with quotes
 					if ( currentCharacter == '"' )
@@ -107,7 +100,7 @@ namespace HydroDesktop.ImportExport
 				}
 
 				// Check for end of quoted data item
-				if ( currentCharacter == '"' && isQuoted == true )
+				if ( currentCharacter == '"' && isQuoted )
 				{
 					if ( Peek () == '"' )
 					{
