@@ -14,12 +14,12 @@ namespace GetDotSpatial
     /// </summary>
     public class Downloader
     {
-        private const string packageXmlFile = "packages.config";
+        private const string packageXmlFile = "my_packages.config";
         private const string versionNumberTextFile = "dotspatial_version.txt";
         private const string deleteFilesTextFile = "delete_files.txt";
 
         private const string defaultPackageSource = @"http://packages.nuget.org/v1";
-        private const string defaultPackageTarget = "Packages";
+        private const string defaultPackageTarget = "My_Packages";
         
         static void Main(string[] args)
         {

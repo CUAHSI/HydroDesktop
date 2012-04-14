@@ -1,4 +1,5 @@
 ../Binaries/Application Extensions/DotSpatial.Plugins.DockManager.dll
+../Binaries/Application Extensions/DotSpatial.Plugins.TableEditor.dll
 ../Binaries/Application Extensions/SeriesView.dll
 ../Binaries/Plugins/1_SeriesView/*
 ../Binaries/Plugins/TSA/*

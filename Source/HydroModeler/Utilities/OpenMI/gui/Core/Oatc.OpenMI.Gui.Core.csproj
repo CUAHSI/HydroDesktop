@@ -46,6 +46,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\</OutputPath>
@@ -94,24 +96,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Controls.1.1\lib\net40\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Data.1.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Data.Forms.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Data.Forms.1.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Extensions.1.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
-      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Modeling.Forms.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Modeling.Forms.1.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Projections.1.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Projections.Forms.1.1\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Serialization.1.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\..\..\..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Symbology.1.1\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms">
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Symbology.Forms.1.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\..\..\packages\DotSpatial.Topology.1.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -192,6 +207,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\deselect_16x16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -199,4 +220,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

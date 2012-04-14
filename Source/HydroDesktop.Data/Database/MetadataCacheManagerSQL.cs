@@ -350,7 +350,7 @@ namespace HydroDesktop.Database
 		public DataTable GetSeriesDataTableInBox ( double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs )
 		{
             string sql1 = DetailedSeriesSQLQuery();
-            string sqlWhere1 = " WHERE Latitude > @minlat AND Latitude < @maxlat AND Longitude > @minlon AND Longitude < @maxlon";
+            string sqlWhere1 = " WHERE Latitude >= @minlat AND Latitude <= @maxlat AND Longitude >= @minlon AND Longitude <= @maxlon";
             string sqlWhere2 = "";
 
             //concept keywords | variable names

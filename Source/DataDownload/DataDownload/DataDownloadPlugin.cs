@@ -98,6 +98,15 @@ namespace HydroDesktop.DataDownload
             if (App == null) throw new Exception("App");
 
             // Initialize menu
+            
+            // if the search root item is not present, add it
+            var searchRoot = new RootItem("kHydroSearchV3", "Search") { SortOrder = -10 };
+            try
+            {
+                App.HeaderControl.Add(searchRoot);
+            }
+            catch(ArgumentException) { } //in this case root item has been already added
+
             btnDownload = new SimpleActionItem("Download", DoDownload)
                                   {
                                       RootKey = "kHydroSearchV3",
