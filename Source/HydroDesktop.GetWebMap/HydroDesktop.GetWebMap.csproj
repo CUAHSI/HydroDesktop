@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BruTile">
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1119\lib\net40\BruTile.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap">
       <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1119\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
