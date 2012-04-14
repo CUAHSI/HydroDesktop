@@ -87,7 +87,14 @@ namespace Search3
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
             var root = new RootItem(kHydroSearch3, "Search") {SortOrder = -10};
-            head.Add(root);
+            try
+            {
+                head.Add(root);
+            }
+            catch(ArgumentException)
+            {
+                //catch exception in case the root item has been already added
+            } 
 
             #region Area group
 

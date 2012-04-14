@@ -12,49 +12,60 @@
     <AssemblyName>DataDownload</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\ZDataDownload\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\DataDownload\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Binaries\Plugins\ZDataDownload\DataDownload.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Plugins\DataDownload\DataDownload.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\ZDataDownload\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\DataDownload\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\..\Binaries\DotSpatial.Controls.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\DotSpatial.Controls.1.1\lib\net40\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\..\Binaries\DotSpatial.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\DotSpatial.Data.1.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\..\packages\DotSpatial.Data.Forms.1.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
-      <HintPath>..\..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\DotSpatial.Extensions.1.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\..\packages\DotSpatial.Modeling.Forms.1.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
-      <HintPath>..\..\..\Binaries\DotSpatial.Projections.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\DotSpatial.Projections.1.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\..\packages\DotSpatial.Projections.Forms.1.1\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\..\packages\DotSpatial.Serialization.1.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\DotSpatial.Symbology.1.1\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms">
+      <HintPath>..\..\packages\DotSpatial.Symbology.Forms.1.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Topology">
-      <HintPath>..\..\..\Binaries\DotSpatial.Topology.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\DotSpatial.Topology.1.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
     </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
@@ -167,6 +178,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="package.nuspec" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -188,7 +200,11 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\deselect_16x16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
