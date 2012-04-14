@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+  <Product Id="4EF6EC80-8C76-4db7-8BCD-348B4F9F3751" 
+           Name="Oatc.OpenMI.Gui.ConfigurationEditor 1.4 Alpha5" 
+           Language="1033" 
+           Version="1.4.0.0" 
+           Manufacturer="OpenMI Association">
+    <Package Id="3345A1B4-6265-4197-8F85-67BB78F2ADE6" 
+             Description="Oatc.OpenMI.Gui.ConfigurationEditor" 
+             Comments="Gui.ConfigurationEditor" 
+             InstallerVersion="200" 
+             Compressed="yes" />
+
+    <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" 
+                   Name="OmEd14A5" 
+                   LongName="Oatc.OpenMI.Gui.ConfigurationEditor 1.4 Alpha5">
+
+          <Component Id="ProductComponent" 
+                     Guid="97696379-24F9-4895-874E-C7A1E4A916E5"
+                     DiskId="1">
+            <!-- TODO: Insert your files, registry keys, and other resources here. -->
+            <File
+              Id="Gui_Exe"
+              Name="OmiEd.exe" 
+              LongName="Oatc.OpenMI.Gui.ConfigurationEditor.exe"
+              Source="..\ConfigurationEditor\bin\Release\Oatc.OpenMI.Gui.ConfigurationEditor.exe"/>
+            <File
+              Id="Gui_Controls"
+              Name="Controls.dll" 
+              LongName="Oatc.OpenMI.Gui.Controls.dll"
+              Source="..\ConfigurationEditor\bin\Release\Oatc.OpenMI.Gui.Controls.dll"/>
+            <File
+              Id="Gui_Core"
+              Name="Core.dll" 
+              LongName="Oatc.OpenMI.Gui.Core.dll"
+              Source="..\ConfigurationEditor\bin\Release\Oatc.OpenMI.Gui.Core.dll"/>
+            <File
+              Id="Sdk_Backbone"
+              Name="Backbone.dll" 
+              LongName="Oatc.OpenMI.Sdk.Backbone.dll"
+              Source="..\..\Sdk\Backbone\bin\Release\Oatc.OpenMI.Sdk.Backbone.dll"/>
+            <File
+              Id="Sdk_DevelopmentSupport"
+              Name="DevSup.dll" 
+              LongName="Oatc.OpenMI.Sdk.DevelopmentSupport.dll"
+              Source="..\..\Sdk\DevelopmentSupport\bin\Release\Oatc.OpenMI.Sdk.DevelopmentSupport.dll"/>
+            <File
+              Id="Sdk_Spatial"
+              Name="Spatial.dll" 
+              LongName="Oatc.OpenMI.Sdk.Spatial.dll"
+              Source="..\..\Sdk\Spatial\bin\Release\Oatc.OpenMI.Sdk.Spatial.dll"/>
+            <File
+              Id="OpenMI_Standard"
+              Name="Standard.dll" 
+              LongName="OpenMI.Standard.dll"
+              Source="..\..\..\..\..\OpenMI.Standard\src\csharp\bin\OpenMI.Standard.dll"/>
+            <File
+              Id="Gui_Help"
+              Name="Help.htm"
+              LongName="Help.html"
+              Source="..\Help\Help.html"/>
+            <Shortcut
+              Id="Shortcut_Gui_Exe"
+              Name="OmiEd" 
+              LongName="Gui.ConfigurationEditor"
+              Directory="ProgramMenuDir"
+              WorkingDirectory="INSTALLLOCATION"
+              Target="[!Gui_Exe]"/>
+          </Component>
+          <Directory Id="DHelpResources" 
+                     Name="Resource"
+                     LongName="Resources">
+            <Component Id="HelpResources"
+                       Guid="C33EDB7B-1952-4595-A20A-8BE061E9CAC4"
+                       DiskId="1">
+              <File
+                Id="Gui_HelpRes_add_connection"
+                Name="add_con.png"
+                LongName="add_connection.png"
+                Source="..\Help\resources\add_connection.png"/>
+              <File
+                Id="Gui_HelpRes_add_model"
+                Name="add_mod.png"
+                LongName="add_model.png"
+                Source="..\Help\resources\add_model.png"/>
+              <File
+                Id="Gui_HelpRes_connection_added"
+                Name="con_add.png"
+                LongName="connection_added.png"
+                Source="..\Help\resources\connection_added.png"/>
+              <File
+                Id="Gui_HelpRes_connection_properties"
+                Name="con_prop.png"
+                LongName="connection_properties.png"
+                Source="..\Help\resources\connection_properties.png"/>
+              <File
+                Id="Gui_HelpRes_elementset_viewer"
+                Name="es_view.png"
+                LongName="elementset_viewer.png"
+                Source="..\Help\resources\elementset_viewer.png"/>
+              <File
+                Id="Gui_HelpRes_lgpl"
+                Name="lgpl.htm"
+                LongName="lgpl.html"
+                Source="..\Help\resources\lgpl.html"/>
+              <File
+                Id="Gui_HelpRes_LogoOpenMI"
+                Name="Logo.jpg"
+                LongName="LogoOpenMI.jpg"
+                Source="..\Help\resources\LogoOpenMI.jpg"/>
+              <File
+                Id="Gui_HelpRes_model_added"
+                Name="mod_add.png"
+                LongName="model_added.png"
+                Source="..\Help\resources\model_added.png"/>
+              <File
+                Id="Gui_HelpRes_model_properties"
+                Name="mod_prop.png"
+                LongName="model_properties.png"
+                Source="..\Help\resources\model_properties.png"/>
+              <File
+                Id="Gui_HelpRes_OpenMI_titleonly"
+                Name="tit_only.png"
+                LongName="OpenMI-titleonly.jpg"
+                Source="..\Help\resources\OpenMI-titleonly.jpg"/>
+              <File
+                Id="Gui_HelpRes_reload_question"
+                Name="reload.png"
+                LongName="reload_question.png"
+                Source="..\Help\resources\reload_question.png"/>
+              <File
+                Id="Gui_HelpRes_run"
+                Name="run.png"
+                Source="..\Help\resources\run.png"/>
+              <File
+                Id="Gui_HelpRes_arun_properties"
+                Name="run_prop.png"
+                LongName="run_properties.png"
+                Source="..\Help\resources\run_properties.png"/>
+              <File
+                Id="Gui_HelpRes_style"
+                Name="style.css"
+                Source="..\Help\resources\style.css"/>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="PMFolder">
+        <Directory Id="ProgramMenuDir" 
+                   Name='Oatc14A5'
+                   LongName='Oatc.OpenMI 1.4 Alpha5' />
+      </Directory>
+
+    </Directory>
+
+    <Feature Id="ProductFeature" Title="Gui.ConfigurationEditor" Level="1">
+      <ComponentRef Id="ProductComponent" />
+      <ComponentRef Id="HelpResources" />
+    </Feature>
+
+    <Condition Message='This setup requires the .NET Framework 2.0 or higher.'>
+      <![CDATA[MsiNetAssemblySupport >= "2.0.50727"]]>
+    </Condition>
+    
+    <UIRef Id="WixUI_FeatureTree" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+
+  </Product>
+</Wix>
