@@ -184,8 +184,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.GetWebMap", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDestkop.GetGeostatisticalTool", "HydroDestkop.GetGeostatisticalTool\HydroDestkop.GetGeostatisticalTool.csproj", "{99EC0F33-B74E-44DB-8600-A4F6230B6E23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDestkop.GetMaps", "HydroDestkop.GetMaps\HydroDestkop.GetMaps.csproj", "{10F94386-8DD5-4B5A-B944-75B892F4BF07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.GetApplicationExtensions", "HydroDesktop.GetApplicationExtensions\HydroDesktop.GetApplicationExtensions.csproj", "{6957285E-8D27-456D-A517-8AE09F67E9CE}"
 EndProject
 Global
@@ -534,16 +532,6 @@ Global
 		{99EC0F33-B74E-44DB-8600-A4F6230B6E23}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{99EC0F33-B74E-44DB-8600-A4F6230B6E23}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{99EC0F33-B74E-44DB-8600-A4F6230B6E23}.Release|x86.ActiveCfg = Release|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{10F94386-8DD5-4B5A-B944-75B892F4BF07}.Release|x86.ActiveCfg = Release|Any CPU
 		{6957285E-8D27-456D-A517-8AE09F67E9CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6957285E-8D27-456D-A517-8AE09F67E9CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6957285E-8D27-456D-A517-8AE09F67E9CE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
