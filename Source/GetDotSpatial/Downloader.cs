@@ -109,7 +109,6 @@ namespace GetDotSpatial
                         target = child.GetAttribute("target");
                     }
                     DownloadNugetPackage(id, version, source, target);
-
                 }
 
             }
