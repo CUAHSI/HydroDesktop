@@ -24,7 +24,9 @@ namespace HydroDesktop.DataDownload
     {
         #region Fields
 
-        private SimpleActionItem btnDownload;
+        private SimpleActionItem btnDownload1;
+        private SimpleActionItem btnDownload2;
+        private RootItem metadataRootItem;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
 
         #endregion
@@ -98,6 +100,10 @@ namespace HydroDesktop.DataDownload
             if (App == null) throw new Exception("App");
 
             // Initialize menu
+
+            //add the "metadata" tab
+            var metadataRoot = new RootItem("kHydroMetadata", "Metadata") { SortOrder = -5 };
+            App.HeaderControl.Add(metadataRoot);
             
             // if the search root item is not present, add it
             var searchRoot = new RootItem("kHydroSearchV3", "Search") { SortOrder = -10 };
@@ -107,7 +113,7 @@ namespace HydroDesktop.DataDownload
             }
             catch(ArgumentException) { } //in this case root item has been already added
 
-            btnDownload = new SimpleActionItem("Download", DoDownload)
+            btnDownload1 = new SimpleActionItem("Download", DoDownload)
                                   {
                                       RootKey = "kHydroSearchV3",
                                       GroupCaption = "Search",
@@ -116,7 +122,18 @@ namespace HydroDesktop.DataDownload
                                       ToolTipText = "Click to download all selected series",
                                       Enabled = false
                                   };
-            App.HeaderControl.Add(btnDownload);
+            App.HeaderControl.Add(btnDownload1);
+
+            btnDownload2 = new SimpleActionItem("Download", DoDownload)
+            {
+                RootKey = "kHydroMetadata",
+                GroupCaption = "Download Data",
+                LargeImage = Properties.Resources.download_32,
+                SmallImage = Properties.Resources.download_16,
+                ToolTipText = "Click to download all selected series",
+                Enabled = false
+            };
+            App.HeaderControl.Add(btnDownload2);
 
             Global.PluginEntryPoint = this;
 
@@ -125,6 +142,7 @@ namespace HydroDesktop.DataDownload
             App.Map.Layers.LayerRemoved += Layers_LayerRemoved;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             DownloadManager.Completed += DownloadManager_Completed;
+            App.HeaderControl.RootItemSelected +=new EventHandler<RootItemEventArgs>(RootItemSelected);
             //----
 
             // Update SeriesControl ContextMenu
@@ -165,6 +183,23 @@ namespace HydroDesktop.DataDownload
         #endregion
 
         #region Private methods
+
+        private void RootItemSelected(object sender, RootItemEventArgs e)
+        {
+            var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
+            if (ext == null) return;
+
+            if (e.SelectedRootKey == "kHydroMetadata")
+            {
+                if (!ext.IsActive)
+                    ext.Activate();
+            }
+            else
+            {
+                if (ext.IsActive)
+                    ext.Deactivate();
+            }
+        }
 
         private void DoSeriesControlUpdateValues(object sender, EventArgs e)
         {
@@ -228,7 +263,8 @@ namespace HydroDesktop.DataDownload
                 }
                 lm.UpdateContextMenu();
 
-                btnDownload.Enabled = true;
+                btnDownload1.Enabled = true;
+                btnDownload2.Enabled = true;
             }
 
             var group = layer as IGroup;
