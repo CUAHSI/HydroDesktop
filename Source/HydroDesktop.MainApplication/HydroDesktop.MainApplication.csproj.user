@@ -6,5 +6,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <StartArguments>
     </StartArguments>
+    <StartAction>Project</StartAction>
   </PropertyGroup>
 </Project>
