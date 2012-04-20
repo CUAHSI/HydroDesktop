@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright © 2010 François Karman
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+See <license.txt> for the complete license of the software.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+         ToolsVersion="3.5"
+         DefaultTargets="TestBuild">
+
+  <!--
+    Define the current starting part of the version.
+  -->
+  <PropertyGroup>
+    <AssemblyVersionBase>0.1.0</AssemblyVersionBase>
+  </PropertyGroup>
+
+  <!--
+    Include MSBuild Community Tasks.
+  -->
+  <Choose>
+    <When Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>true</MSBuildCommunityTasksAvailable>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>false</MSBuildCommunityTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"
+          Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "/>
+
+  <!--
+    Include MSBuild Mercurial Tasks.
+  -->
+  <Choose>
+    <When Condition="Exists('$(MSBuildExtensionsPath)\MSBuild.Mercurial\MSBuild.Mercurial.Tasks')">
+      <PropertyGroup>
+        <MSBuildMercurialTasksAvailable>true</MSBuildMercurialTasksAvailable>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildMercurialTasksAvailable>false</MSBuildMercurialTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuild.Mercurial\MSBuild.Mercurial.Tasks"
+          Condition=" '$(MSBuildMercurialTasksAvailable)' == 'true' "/>
+
+  <!--
+    Generate a file Property\AssemblyInfo.Generated.cs for the project
+    that contains both the AssemblyVersion and the AssemblyFileVersion
+    based on the current Mercurial Revision.
+  -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      GenerateAssemblyInfo;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="ExtractRevision"
+          Condition=" '$(MSBuildMercurialTasksAvailable)' == 'true' ">
+    <HgVersion LocalPath="$(MSBuildProjectDirectory)"
+               Timeout="5000">
+      <Output TaskParameter="Revision" PropertyName="AssemblyVersionRevision" />
+    </HgVersion>
+  </Target>
+
+  <Target Name="GenerateAssemblyInfo"
+          Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "
+          DependsOnTargets="ExtractRevision">
+    <PropertyGroup Condition=" '$(AssemblyVersionRevision)' == '' ">
+      <AssemblyVersionRevision>0</AssemblyVersionRevision>
+    </PropertyGroup>
+    <CreateProperty Value="$(AssemblyVersionBase).$(AssemblyVersionRevision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
+    </CreateProperty>
+    <AssemblyInfo CodeLanguage="CS"
+                  OutputFile="$(MSBuildProjectDirectory)\AssemblyInfo.Generated.cs"
+                  AssemblyVersion="$(AssemblyVersion)"
+                  AssemblyFileVersion="$(AssemblyVersion)" />
+  </Target>
+
+  <!--
+    Generate messages (informations, warnings and errors) depending of
+    the current configuration and environment.
+  -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      ExtendedChecks;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="ExtendedChecks">
+    <Warning Condition=" '$(MSBuildCommunityTasksAvailable)' == 'false' "
+             Text="MSBuild Community Tasks are not available" />
+    <Warning Condition=" '$(MSBuildMercurialTasksAvailable)' == 'false' "
+             Text="MSBuild Mercurial Tasks are not available" />
+  </Target>
+
+  <!--
+    Test this script if not used with a Visual Studio project.
+  -->
+  <Target Name="TestBuild"
+          DependsOnTargets="$(BuildDependsOn)">
+
+  </Target>
+</Project>
