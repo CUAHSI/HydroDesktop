@@ -60,6 +60,20 @@ namespace HydroDesktop.DataDownload.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap deselect_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("deselect_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap deselect_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("deselect_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap download_16 {
             get {
                 object obj = ResourceManager.GetObject("download_16", resourceCulture);
@@ -91,6 +105,34 @@ namespace HydroDesktop.DataDownload.Properties {
         internal static System.Drawing.Bitmap hand_32x32 {
             get {
                 object obj = ResourceManager.GetObject("hand_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap info_rhombus_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("info_rhombus_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap info_rhombus_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("info_rhombus_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("select_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("select_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

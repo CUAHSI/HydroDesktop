@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Deselect" xml:space="preserve">
+    <value>Deselect All</value>
+  </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="Download_Tools_Group" xml:space="preserve">
     <value>Download tool</value>
+  </data>
+  <data name="Identify" xml:space="preserve">
+    <value>Identify</value>
   </data>
   <data name="Map_Tools_Group" xml:space="preserve">
     <value>Map Tool</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
   </data>
   <data name="ShowPopups" xml:space="preserve">
     <value>Show Popups</value>

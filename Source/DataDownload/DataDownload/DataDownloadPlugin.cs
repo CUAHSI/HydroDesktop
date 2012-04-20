@@ -157,7 +157,11 @@ namespace HydroDesktop.DataDownload
             header.Add(_ZoomPrevious = new SimpleActionItem(metadataRootKey, Msg.Zoom_Previous, ZoomPrevious_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Previous_Tooltip, SmallImage = Resources.zoom_to_previous_16, LargeImage = Resources.zoom_to_previous, Enabled = false });
             header.Add(_ZoomNext = new SimpleActionItem(metadataRootKey, Msg.Zoom_Next, ZoomNext_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Resources.zoom_to_next_16, LargeImage = Resources.zoom_to_next, Enabled = false });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32 });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = null, LargeImage = null });
+
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.info_rhombus_16x16, LargeImage = Resources.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = null, LargeImage = null });
 
             showPopups.Toggling += ShowPopups_Click;
             showPopups.Toggle();
@@ -216,6 +220,37 @@ namespace HydroDesktop.DataDownload
             if (mapFrame == null) return;
             _ZoomNext.Enabled = mapFrame.CanZoomToNext();
             _ZoomPrevious.Enabled = mapFrame.CanZoomToPrevious();
+        }
+
+        /// <summary>
+        /// Identifier Tool
+        /// </summary>
+        private void IdentifierTool_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Info;
+        }
+
+        /// <summary>
+        /// Select or deselect Features
+        /// </summary>
+        private void SelectionTool_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Select;
+        }
+
+        /// <summary>
+        /// Deselect all features in all layers
+        /// </summary>
+        private void DeselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
+            {
+                var mapFeatureLayer = layer as IMapFeatureLayer;
+                {
+                    if (mapFeatureLayer != null)
+                        mapFeatureLayer.UnSelectAll();
+                }
+            }
         }
 
         private void ShowPopups_Click(object sender, EventArgs e)
