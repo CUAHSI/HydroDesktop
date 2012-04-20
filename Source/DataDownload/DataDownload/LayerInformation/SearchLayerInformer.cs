@@ -21,6 +21,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
         private readonly Map _map;
         private readonly Popup toolTip;
         private readonly CustomToolTipControl customToolTip;
+        private readonly DataDownloadPlugin _parentPlugin;
 
         #endregion
 
@@ -29,23 +30,27 @@ namespace HydroDesktop.DataDownload.LayerInformation
         /// <summary>
         /// Create instance of <see cref="SearchLayerInformer"/>
         /// </summary>
+        /// <param name="parentPlugin">DataDownload plugin</param>
         /// <param name="serviceInfoExtractor">Instance of IServiceInfoExtractor</param>
         /// <param name="map">Map</param>
         /// <exception cref="ArgumentNullException">serviceInfoExtractor must be not null.</exception>
-        public SearchLayerInformer(IServiceInfoExtractor serviceInfoExtractor, Map map)
+        public SearchLayerInformer(DataDownloadPlugin parentPlugin, IServiceInfoExtractor serviceInfoExtractor, Map map)
         {
+            if (parentPlugin == null) throw new ArgumentNullException("parentPlugin");
             if (serviceInfoExtractor == null) throw new ArgumentNullException("serviceInfoExtractor");
             if (map == null) throw new ArgumentNullException("map");
 
+            _parentPlugin = parentPlugin;
             _serviceInfoExtractor = serviceInfoExtractor;
             _map = map;
 
-            toolTip = new Popup(customToolTip = new CustomToolTipControl());
+            toolTip = new Popup(customToolTip = new CustomToolTipControl(_parentPlugin));
             customToolTip.Popup = toolTip;
             toolTip.AutoClose = false;
             toolTip.FocusOnOpen = false;
             toolTip.ShowingAnimation = toolTip.HidingAnimation = PopupAnimations.Blend;
-            
+
+            _parentPlugin.ShowPopupsChanged += OnParentPluginOnShowPopupsChanged;
             _map.MouseMove += _map_MouseMove;
             _map.VisibleChanged += MapOnVisibleChanged;
             if (_map.Parent != null)
@@ -57,19 +62,28 @@ namespace HydroDesktop.DataDownload.LayerInformation
         #region Public methods
 
         /// <summary>
-        /// Stop engine
+        /// Deactivate SearchLayerInformer
         /// </summary>
-        public void Stop()
+        public void Deactivate()
         {
             _map.MouseMove -= _map_MouseMove;
             _map.VisibleChanged -= MapOnVisibleChanged;
             if (_map.Parent != null)
                 _map.Parent.VisibleChanged -= MapOnVisibleChanged;
+            _parentPlugin.ShowPopupsChanged -= OnParentPluginOnShowPopupsChanged;
         }
     
         #endregion
 
         #region Private methods
+
+        private void OnParentPluginOnShowPopupsChanged(object sender, EventArgs e)
+        {
+            if (!_parentPlugin.ShowPopups)
+            {
+                HideToolTip();
+            }
+        }
 
         private void MapOnVisibleChanged(object sender, EventArgs eventArgs)
         {
@@ -81,6 +95,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         void _map_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (!_parentPlugin.ShowPopups)
+            {
+                return;
+            }
+
             var visibleLayers = _map.GetAllLayers().OfType<IFeatureLayer>()
                                                    .Where(layer => layer.IsVisible && SearchLayerModifier.IsSearchLayer(layer))
                                                    .ToList();

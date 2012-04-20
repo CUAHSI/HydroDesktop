@@ -12,8 +12,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
 {
     public partial class CustomToolTipControl : UserControl
     {
+        
+
         #region Fields
 
+        private readonly DataDownloadPlugin _parentPlugin;
         private GraphicsPath graphicsPath;
         private readonly List<ServiceInfoGroup> _serviceInfo = new List<ServiceInfoGroup>();
 
@@ -26,8 +29,9 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         #region Constructors
 
-        public CustomToolTipControl()
+        public CustomToolTipControl(DataDownloadPlugin parentPlugin)
         {
+            _parentPlugin = parentPlugin;
             InitializeComponent();
 
             SizeChanged += CustomToolTipControl_SizeChanged;
@@ -243,7 +247,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             var dataThemeName = layer.LegendText;
             var startArgs = new StartDownloadArg(seriesList, dataThemeName);
-            Global.PluginEntryPoint.StartDownloading(startArgs, layer);
+            _parentPlugin.StartDownloading(startArgs, layer);
         }
 
 

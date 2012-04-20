@@ -122,7 +122,6 @@
       <DependentUpon>RedownloadControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Downloading\StartDownloadArg.cs" />
-    <Compile Include="Global.cs" />
     <Compile Include="LayerInformation\CustomToolTipControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

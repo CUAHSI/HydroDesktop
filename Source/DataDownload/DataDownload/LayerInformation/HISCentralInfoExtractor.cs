@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotSpatial.Controls;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Common.Tools;
 
@@ -37,10 +38,17 @@ namespace HydroDesktop.DataDownload.LayerInformation
         }
     }
 
-    internal static class HisCentralServices
+    internal class HisCentralServices
     {
-        private static Dictionary<string, string> _services;
-        public static Dictionary<string, string> Services
+        private readonly AppManager _appManager;
+
+        public HisCentralServices(AppManager appManager)
+        {
+            _appManager = appManager;
+        }
+
+        private Dictionary<string, string> _services;
+        public Dictionary<string, string> Services
         {
             get
             {
@@ -48,7 +56,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 {
                     _services = new Dictionary<string, string>();
 
-                    var wss = Global.PluginEntryPoint.App.GetExtension<IWebServicesStore>();
+                    var wss = _appManager.GetExtension<IWebServicesStore>();
                     if (wss != null)
                     {
                         var infos = wss.GetWebServices();
