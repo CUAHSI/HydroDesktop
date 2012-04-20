@@ -117,71 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="download32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\download32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
   </data>
-  <data name="Wgs84ProjectionString" xml:space="preserve">
-    <value>GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223562997]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]]</value>
+  <data name="DownloadTooTip" xml:space="preserve">
+    <value>Click to download all selected series</value>
   </data>
-  <data name="download_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\download_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Download_Tools_Group" xml:space="preserve">
+    <value>Download tool</value>
   </data>
-  <data name="download_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\download_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Map_Tools_Group" xml:space="preserve">
+    <value>Map Tool</value>
   </data>
-  <data name="hand_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\hand_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Metadata" xml:space="preserve">
+    <value>Metadata</value>
   </data>
-  <data name="hand_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\hand_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Pan" xml:space="preserve">
+    <value>Pan</value>
   </data>
-  <data name="zoom_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="zoom_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ShowPopups" xml:space="preserve">
+    <value>Show Popups</value>
   </data>
-  <data name="zoom_extend_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_extend_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
   </data>
-  <data name="zoom_extend_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_extend_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="View_Group" xml:space="preserve">
+    <value>View</value>
   </data>
-  <data name="zoom_in_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_in_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Group" xml:space="preserve">
+    <value>Zoom</value>
   </data>
-  <data name="zoom_in_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_in_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_In" xml:space="preserve">
+    <value>In</value>
   </data>
-  <data name="zoom_layer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_layer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_In_Tooltip" xml:space="preserve">
+    <value>Zoom In</value>
   </data>
-  <data name="zoom_layer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_layer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Next" xml:space="preserve">
+    <value>Next</value>
   </data>
-  <data name="zoom_out_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_out_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Next_Tooltip" xml:space="preserve">
+    <value>Zoom Next</value>
   </data>
-  <data name="zoom_out_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_out_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Out" xml:space="preserve">
+    <value>Out</value>
   </data>
-  <data name="zoom_selection_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_selection_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Out_Tooltip" xml:space="preserve">
+    <value>Zoom Out</value>
   </data>
-  <data name="zoom_selection_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_selection_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Previous" xml:space="preserve">
+    <value>Previous</value>
   </data>
-  <data name="zoom_to_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_to_next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_Previous_Tooltip" xml:space="preserve">
+    <value>Zoom Previous</value>
   </data>
-  <data name="zoom_to_next_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_to_next_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_To_Extents" xml:space="preserve">
+    <value>To Extents</value>
   </data>
-  <data name="zoom_to_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_to_previous.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_To_Extents_Tooltip" xml:space="preserve">
+    <value>Zoom to Extents</value>
   </data>
-  <data name="zoom_to_previous_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_to_previous_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_To_Layer" xml:space="preserve">
+    <value>Zoom To Layer</value>
+  </data>
+  <data name="Zoom_To_Selection" xml:space="preserve">
+    <value>Zoom To Selection</value>
   </data>
 </root>
