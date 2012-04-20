@@ -190,6 +190,10 @@
     <Reference Include="Oatc.OpenMI.Gui.Controls">
       <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Oatc.OpenMI.Gui.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Utilities\OpenMI\Oatc.OpenMI.Gui.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
       <HintPath>Utilities\OpenMI\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
@@ -214,12 +218,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Utilities\OpenMI\gui\Core\Oatc.OpenMI.Gui.Core.csproj">
-      <Project>{5ED7C71D-E89A-41F7-8B34-54C0C099412C}</Project>
-      <Name>Oatc.OpenMI.Gui.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
