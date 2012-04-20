@@ -61,6 +61,15 @@ namespace HydroDesktop.DataDownload {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deselect All.
+        /// </summary>
+        internal static string Deselect {
+            get {
+                return ResourceManager.GetString("Deselect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         internal static string Download {
@@ -84,6 +93,15 @@ namespace HydroDesktop.DataDownload {
         internal static string DownloadTooTip {
             get {
                 return ResourceManager.GetString("DownloadTooTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify.
+        /// </summary>
+        internal static string Identify {
+            get {
+                return ResourceManager.GetString("Identify", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace HydroDesktop.DataDownload {
         internal static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
