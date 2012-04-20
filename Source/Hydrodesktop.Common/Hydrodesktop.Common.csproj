@@ -95,6 +95,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SharedConstants.cs" />
     <Compile Include="Tools\AppManagerHelper.cs" />
     <Compile Include="Tools\ControlHelper.cs" />
     <Compile Include="Tools\EnumHelper.cs" />

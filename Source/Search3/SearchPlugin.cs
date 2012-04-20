@@ -10,6 +10,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Projections;
+using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -411,6 +412,9 @@ namespace Search3
                 item.FeatureSet.Projection = wgs84;
 
             ShowSearchResults(result);
+
+            // Activate metadata ribbon tab
+            App.HeaderControl.SelectRoot(SharedConstants.MetadataRootKey);
         }
 
         /// <summary>

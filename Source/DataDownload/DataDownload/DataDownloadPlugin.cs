@@ -9,25 +9,30 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using DotSpatial.Topology;
+using HydroDesktop.Common;
 using HydroDesktop.DataDownload.Downloading;
+using HydroDesktop.DataDownload.Properties;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
 using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.Common.Tools;
+using Msg = HydroDesktop.DataDownload.MessageStrings;
 
 namespace HydroDesktop.DataDownload
 {
     /// <summary>
-    /// Plugin that allows to download Features data.
+    /// Plug-in that allows to download Features data.
     /// </summary>
     public class DataDownloadPlugin : Extension
     {
         #region Fields
 
-        private SimpleActionItem btnDownload1;
-        private SimpleActionItem btnDownload2;
-        private RootItem metadataRootItem;
+        private SimpleActionItem _btnDownload1;
+        private SimpleActionItem _btnDownload2;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
+        private SimpleActionItem _ZoomNext;
+        private SimpleActionItem _ZoomPrevious;
 
         #endregion
 
@@ -101,48 +106,42 @@ namespace HydroDesktop.DataDownload
 
             // Initialize menu
 
+            var metadataRootKey = SharedConstants.MetadataRootKey;
+            var searchRootKey = SharedConstants.SearchRootkey;
+            var header = App.HeaderControl;
+            SimpleActionItem showPopups;
+
             //add the "metadata" tab
-            var metadataRoot = new RootItem("kHydroMetadata", "Metadata") { SortOrder = -5 };
-            App.HeaderControl.Add(metadataRoot);
+            header.Add(new RootItem(metadataRootKey, Msg.Metadata) { SortOrder = -5 });
             
             // if the search root item is not present, add it
-            var searchRoot = new RootItem("kHydroSearchV3", "Search") { SortOrder = -10 };
-            try
-            {
-                App.HeaderControl.Add(searchRoot);
-            }
-            catch(ArgumentException) { } //in this case root item has been already added
+            try{header.Add(new RootItem(searchRootKey, Msg.Search) { SortOrder = -10 });} catch(ArgumentException) { } //in this case root item has been already added
+            
+            header.Add(_btnDownload1 = new SimpleActionItem(Msg.Download, DoDownload){ RootKey = searchRootKey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false});
+            header.Add(_btnDownload2 = new SimpleActionItem(Msg.Download, DoDownload){ RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false});
+            header.Add(new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = null, SmallImage = null, Enabled = false});
+            header.Add(showPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = null, SmallImage = null, ToggleGroupKey = Msg.Download_Tools_Group });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group});
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, LargeImage = Resources.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Extents, ZoomToMaxExtents_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_To_Extents_Tooltip, SmallImage = Resources.zoom_extend_16x16, LargeImage = Resources.zoom_extend_32x32 });
+            header.Add(_ZoomPrevious = new SimpleActionItem(metadataRootKey, Msg.Zoom_Previous, ZoomPrevious_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Previous_Tooltip, SmallImage = Resources.zoom_to_previous_16, LargeImage = Resources.zoom_to_previous, Enabled = false });
+            header.Add(_ZoomNext = new SimpleActionItem(metadataRootKey, Msg.Zoom_Next, ZoomNext_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Resources.zoom_to_next_16, LargeImage = Resources.zoom_to_next, Enabled = false });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32 });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = null, LargeImage = null });
 
-            btnDownload1 = new SimpleActionItem("Download", DoDownload)
-                                  {
-                                      RootKey = "kHydroSearchV3",
-                                      GroupCaption = "Search",
-                                      LargeImage = Properties.Resources.download_32,
-                                      SmallImage = Properties.Resources.download_16,
-                                      ToolTipText = "Click to download all selected series",
-                                      Enabled = false
-                                  };
-            App.HeaderControl.Add(btnDownload1);
-
-            btnDownload2 = new SimpleActionItem("Download", DoDownload)
-            {
-                RootKey = "kHydroMetadata",
-                GroupCaption = "Download Data",
-                LargeImage = Properties.Resources.download_32,
-                SmallImage = Properties.Resources.download_16,
-                ToolTipText = "Click to download all selected series",
-                Enabled = false
-            };
-            App.HeaderControl.Add(btnDownload2);
+            showPopups.Toggling += delegate(object sender, EventArgs args) {  };
+            showPopups.Toggle();
 
             Global.PluginEntryPoint = this;
 
             // Subscribe to events
             App.Map.LayerAdded += Map_LayerAdded;
             App.Map.Layers.LayerRemoved += Layers_LayerRemoved;
+            App.Map.MapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             DownloadManager.Completed += DownloadManager_Completed;
-            App.HeaderControl.RootItemSelected +=new EventHandler<RootItemEventArgs>(RootItemSelected);
+            App.HeaderControl.RootItemSelected += RootItemSelected;
             //----
 
             // Update SeriesControl ContextMenu
@@ -150,7 +149,7 @@ namespace HydroDesktop.DataDownload
 
             base.Activate();
         }
-       
+
         /// <summary>
         /// Fires when the plug-in should become inactive
         /// </summary>
@@ -160,8 +159,10 @@ namespace HydroDesktop.DataDownload
 
             App.Map.LayerAdded -= Map_LayerAdded;
             App.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
+            App.Map.MapFrame.ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
+            App.HeaderControl.RootItemSelected -= RootItemSelected;
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
@@ -184,12 +185,118 @@ namespace HydroDesktop.DataDownload
 
         #region Private methods
 
+        private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs e)
+        {
+            var mapFrame = sender as MapFrame;
+            if (mapFrame == null) return;
+            _ZoomNext.Enabled = mapFrame.CanZoomToNext();
+            _ZoomPrevious.Enabled = mapFrame.CanZoomToPrevious();
+        }
+
+        private void ShowPopups_Click(object sender, EventArgs e)
+        {
+            //todo: implement me
+        }
+
+        private void Update_Click(object sender, EventArgs e)
+        {
+            //todo: implement me
+        }
+
+        private void ZoomToSelection_Click(object sender, EventArgs e)
+        {
+            //todo: implement me
+        }
+
+        /// <summary>
+        /// Move (Pan) the map
+        /// </summary>
+        private void PanTool_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Pan;
+        }
+
+        /// <summary>
+        /// Zoom In
+        /// </summary>
+        private void ZoomIn_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.ZoomIn;
+        }
+
+        /// <summary>
+        /// Zoom to previous extent
+        /// </summary>
+        private void ZoomNext_Click(object sender, EventArgs e)
+        {
+            App.Map.MapFrame.ZoomToNext();
+        }
+
+        /// <summary>
+        /// Zoom Out
+        /// </summary>
+        private void ZoomOut_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.ZoomOut;
+        }
+
+        /// <summary>
+        /// Zoom to previous extent
+        /// </summary>
+        private void ZoomPrevious_Click(object sender, EventArgs e)
+        {
+            App.Map.MapFrame.ZoomToPrevious();
+        }
+
+        /// <summary>
+        /// Zoom to maximum extents
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void ZoomToMaxExtents_Click(object sender, EventArgs e)
+        {
+            App.Map.ZoomToMaxExtent();
+        }
+
+
+        /// <summary>
+        /// Zoom to the currently selected layer
+        /// </summary>
+        private void ZoomToLayer_Click(object sender, EventArgs e)
+        {
+            var layer = App.Map.Layers.SelectedLayer;
+            if (layer != null)
+            {
+                ZoomToLayer(layer);
+            }
+        }
+
+        private void ZoomToLayer(IMapLayer layerToZoom)
+        {
+            const double eps = 1e-7;
+            var layerEnvelope = layerToZoom.Extent.ToEnvelope();
+            if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
+            {
+                layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84
+            }
+            else
+            {
+                double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                double newExtentWidth = App.Map.ViewExtents.Width * zoomInFactor;
+                double newExtentHeight = App.Map.ViewExtents.Height * zoomInFactor;
+                layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);
+            }
+
+            App.Map.ViewExtents = layerEnvelope.ToExtent();
+        }
+
+
         private void RootItemSelected(object sender, RootItemEventArgs e)
         {
             var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
             if (ext == null) return;
 
-            if (e.SelectedRootKey == "kHydroMetadata")
+            if (e.SelectedRootKey == SharedConstants.MetadataRootKey)
             {
                 if (!ext.IsActive)
                     ext.Activate();
@@ -263,8 +370,8 @@ namespace HydroDesktop.DataDownload
                 }
                 lm.UpdateContextMenu();
 
-                btnDownload1.Enabled = true;
-                btnDownload2.Enabled = true;
+                _btnDownload1.Enabled = true;
+                _btnDownload2.Enabled = true;
             }
 
             var group = layer as IGroup;
