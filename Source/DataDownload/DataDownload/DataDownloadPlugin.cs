@@ -33,6 +33,7 @@ namespace HydroDesktop.DataDownload
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
         private SimpleActionItem _ZoomNext;
         private SimpleActionItem _ZoomPrevious;
+        private SearchLayerInformer _searchLayerInformer;
 
         #endregion
 
@@ -53,7 +54,35 @@ namespace HydroDesktop.DataDownload
             get { return _downloadManager?? (_downloadManager = new DownloadManager()); }
         }
 
-        private SearchLayerInformer _searchLayerInformer;
+        private bool _showPopups;
+
+        /// <summary>
+        /// Gets or sets a boolean indicating whether pop-ups should be shown in the map
+        /// </summary>
+        public bool ShowPopups
+        {
+            get { return _showPopups; }
+            set
+            {
+                if (_showPopups == value) return;
+                _showPopups = value;
+
+                var handler = ShowPopupsChanged;
+                if (handler != null)
+                {
+                    handler(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Raised when <see cref="ShowPopups"/> changed
+        /// </summary>
+        public event EventHandler ShowPopupsChanged;
 
         #endregion
 
@@ -130,10 +159,8 @@ namespace HydroDesktop.DataDownload
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32 });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = null, LargeImage = null });
 
-            showPopups.Toggling += delegate(object sender, EventArgs args) {  };
+            showPopups.Toggling += ShowPopups_Click;
             showPopups.Toggle();
-
-            Global.PluginEntryPoint = this;
 
             // Subscribe to events
             App.Map.LayerAdded += Map_LayerAdded;
@@ -168,11 +195,9 @@ namespace HydroDesktop.DataDownload
                 UnattachLayerFromPlugin(layer);
             if (_searchLayerInformer != null)
             {
-                _searchLayerInformer.Stop();
+                _searchLayerInformer.Deactivate();
                 _searchLayerInformer = null;
             }
-
-            Global.PluginEntryPoint = null;
 
             // Remove added menu items from SeriesControl ContextMenu
             SeriesControl.ContextMenuStrip.Items.Remove(_seriesControlUpdateValuesMenuItem);
@@ -195,7 +220,7 @@ namespace HydroDesktop.DataDownload
 
         private void ShowPopups_Click(object sender, EventArgs e)
         {
-            //todo: implement me
+            ShowPopups = !ShowPopups;
         }
 
         private void Update_Click(object sender, EventArgs e)
@@ -356,8 +381,8 @@ namespace HydroDesktop.DataDownload
                 if (_searchLayerInformer == null)
                 {
                     // Create popup-informer
-                    var extractor = new HISCentralInfoExtractor(new Lazy<Dictionary<string, string>>(() => HisCentralServices.Services));
-                    _searchLayerInformer = new SearchLayerInformer(extractor, (Map) App.Map);
+                    var extractor = new HISCentralInfoExtractor(new Lazy<Dictionary<string, string>>(() => new HisCentralServices(App).Services));
+                    _searchLayerInformer = new SearchLayerInformer(this, extractor, (Map) App.Map);
                 }
 
                 var lm = SearchLayerModifier.Create(layer, (Map) App.Map, this);
