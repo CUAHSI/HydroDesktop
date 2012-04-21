@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using DotSpatial.Symbology;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.DataDownload.Downloading
@@ -46,8 +47,8 @@ namespace HydroDesktop.DataDownload.Downloading
         public Theme DataTheme { get; private set; }
 
         /// <summary>
-        /// Gets or sets object that contains additional data about StartDownloadArg
+        /// Gets or sets source feature layer
         /// </summary>
-        public object Tag { get; set; }
+        public IFeatureLayer FeatureLayer { get; set; }
     }
 }

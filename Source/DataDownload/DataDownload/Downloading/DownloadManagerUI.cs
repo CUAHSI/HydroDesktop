@@ -331,6 +331,7 @@ namespace HydroDesktop.DataDownload.Downloading
         {
             UnSubcribeFromManagerEvents();
 
+            Show();
             btnCancel.Enabled = false;
             redownloadControl1.Enabled = true;
             
