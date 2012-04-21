@@ -210,6 +210,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\deselect_16x16.png" />
+    <None Include="Resources\refresh_32x32.png" />
+    <None Include="Resources\refresh_16x16.png" />
+    <None Include="Resources\popup_32x32.png" />
+    <None Include="Resources\popup_16x16.png" />
     <None Include="Resources\select_32x32.png" />
     <None Include="Resources\select_16x16.png" />
     <None Include="Resources\info_rhombus_32x32.png" />
