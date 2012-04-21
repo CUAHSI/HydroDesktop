@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -97,15 +98,10 @@ namespace HydroDesktop.DataDownload
         public void StartDownloading(StartDownloadArg startArgs, IFeatureLayer layer)
         {
             if (startArgs == null) throw new ArgumentNullException("startArgs");
+            if (ShowIfBusy()) return;
 
-            var downloadManager = DownloadManager;
-            if (downloadManager.IsBusy)
-            {
-                //todo: inform user about "busy" state?
-                return;
-            }
-            startArgs.Tag = layer; // put layer into tag, we need it in DownloadManager_Completed method
-            downloadManager.Start(startArgs);
+            startArgs.FeatureLayer = layer;
+            DownloadManager.Start(startArgs);
         }
 
         /// <summary>
@@ -259,9 +255,47 @@ namespace HydroDesktop.DataDownload
             ShowPopups = !ShowPopups;
         }
 
+        private readonly IList<IFeatureLayer> _layersToUpdate = new List<IFeatureLayer>();
         private void Update_Click(object sender, EventArgs e)
         {
-            //todo: implement me
+            if (ShowIfBusy()) return;
+
+            var dataSitesGroup = App.Map.GetDataSitesLayer();
+            if (dataSitesGroup == null) return;
+
+            _layersToUpdate.Clear();
+            foreach (var layer in dataSitesGroup.Layers)
+            {
+                var featureLayer = layer as IFeatureLayer;
+                if (!layer.Checked || !SearchLayerModifier.IsSearchLayer(layer)) continue;
+                _layersToUpdate.Add(featureLayer);
+            }
+            
+            DownloadManager.Completed += OnDownloadManagerOnCompleted;
+            ProcessUpdate();
+        }
+
+        private void OnDownloadManagerOnCompleted(object o, RunWorkerCompletedEventArgs args)
+        {
+            if (args.Cancelled)
+            {
+                _layersToUpdate.Clear();
+            }
+            ProcessUpdate();
+        }
+
+        private void ProcessUpdate()
+        {
+            if (_layersToUpdate.Count == 0)
+            {
+                DownloadManager.Completed -= OnDownloadManagerOnCompleted;
+                return;
+            }
+
+            var layerPos = _layersToUpdate.Count - 1;
+            var layer = _layersToUpdate[layerPos];
+            _layersToUpdate.RemoveAt(layerPos);
+            StartDownloading(layer);
         }
 
         private void ZoomToSelection_Click(object sender, EventArgs e)
@@ -277,7 +311,7 @@ namespace HydroDesktop.DataDownload
             foreach (var layer in dataSitesGroup.Layers)
             {
                 var featureLayer = layer as IFeatureLayer;
-                if (featureLayer == null || !featureLayer.IsVisible || featureLayer.Selection.Count == 0) continue;
+                if (featureLayer == null || !featureLayer.Checked || featureLayer.Selection.Count == 0) continue;
 
                 var env = featureLayer.Selection.Envelope;
                 envelope = envelope == null ? env : envelope.Union(env);
@@ -377,7 +411,7 @@ namespace HydroDesktop.DataDownload
             }
             else
             {
-                double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
                 double newExtentWidth = App.Map.ViewExtents.Width * zoomInFactor;
                 double newExtentHeight = App.Map.ViewExtents.Height * zoomInFactor;
                 layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);
@@ -495,8 +529,21 @@ namespace HydroDesktop.DataDownload
             }
         }
 
+        private bool ShowIfBusy()
+        {
+            var downloadManager = DownloadManager;
+            if (downloadManager.IsBusy)
+            {
+                downloadManager.ShowUI();
+                return true;
+            }
+            return false;
+        }
+
         private void DoDownload(object sender, EventArgs args)
         {
+            if (ShowIfBusy()) return;
+
             var hasPointsToDownload = false;
             foreach (var layer in App.Map.MapFrame.GetAllLayers())
             {
@@ -517,7 +564,7 @@ namespace HydroDesktop.DataDownload
             }
         }
 
-        private void DownloadManager_Completed(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void DownloadManager_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled) return;
 
@@ -548,7 +595,7 @@ namespace HydroDesktop.DataDownload
 
             featureSet.FillAttributes();
 
-            var sourceLayer = (IFeatureLayer) dManager.Information.StartArgs.Tag;
+            var sourceLayer = dManager.Information.StartArgs.FeatureLayer;
             var lm = SearchLayerModifier.Create(sourceLayer, (Map) App.Map, this);
             Debug.Assert(lm != null);
 
