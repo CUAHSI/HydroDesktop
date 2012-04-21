@@ -123,6 +123,34 @@ namespace HydroDesktop.DataDownload.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap popup_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("popup_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap popup_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("popup_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap refresh_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("refresh_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap refresh_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("refresh_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap select_16x16 {
             get {
                 object obj = ResourceManager.GetObject("select_16x16", resourceCulture);

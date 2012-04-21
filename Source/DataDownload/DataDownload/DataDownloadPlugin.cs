@@ -17,6 +17,7 @@ using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
 using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.Common.Tools;
+using Hydrodesktop.Common;
 using Msg = HydroDesktop.DataDownload.MessageStrings;
 
 namespace HydroDesktop.DataDownload
@@ -148,8 +149,8 @@ namespace HydroDesktop.DataDownload
             
             header.Add(_btnDownload1 = new SimpleActionItem(Msg.Download, DoDownload){ RootKey = searchRootKey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false});
             header.Add(_btnDownload2 = new SimpleActionItem(Msg.Download, DoDownload){ RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false});
-            header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = null, SmallImage = null, Enabled = false});
-            header.Add(showPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = null, SmallImage = null, ToggleGroupKey = Msg.Download_Tools_Group });
+            header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
+            header.Add(showPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group});
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, LargeImage = Resources.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
@@ -161,7 +162,7 @@ namespace HydroDesktop.DataDownload
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.info_rhombus_16x16, LargeImage = Resources.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = null, LargeImage = null });
+            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.zoom_selection_16x16, LargeImage = Resources.zoom_selection_32x32 });
 
             showPopups.Toggling += ShowPopups_Click;
             showPopups.Toggle();
@@ -265,7 +266,42 @@ namespace HydroDesktop.DataDownload
 
         private void ZoomToSelection_Click(object sender, EventArgs e)
         {
-            //todo: implement me
+            var dataSitesGroup = App.Map.GetDataSitesLayer();
+            if (dataSitesGroup == null) return;
+
+            const double distanceX = 2;
+            const double distanceY = 2;
+            const double EPS = 1e-7;
+
+            IEnvelope envelope = null;
+            foreach (var layer in dataSitesGroup.Layers)
+            {
+                var featureLayer = layer as IFeatureLayer;
+                if (featureLayer == null || !featureLayer.IsVisible || featureLayer.Selection.Count == 0) continue;
+
+                var env = featureLayer.Selection.Envelope;
+                envelope = envelope == null ? env : envelope.Union(env);
+            }
+            if (envelope == null) return;
+
+            if (Math.Abs(envelope.Width - 0) < EPS || Math.Abs(envelope.Height - 0) < EPS)
+            {
+                envelope.ExpandBy(distanceX, distanceY);
+            }
+
+            if (envelope.Width > EPS && envelope.Height > EPS)
+            {
+                envelope.ExpandBy(envelope.Width / 10, envelope.Height / 10); // work item #84
+            }
+            else
+            {
+                const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                var newExtentWidth = App.Map.ViewExtents.Width*zoomInFactor;
+                var newExtentHeight = App.Map.ViewExtents.Height*zoomInFactor;
+                envelope.ExpandBy(newExtentWidth, newExtentHeight);
+            }
+
+            App.Map.ViewExtents = envelope.ToExtent();
         }
 
         /// <summary>
