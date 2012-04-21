@@ -231,7 +231,7 @@ Partial Class cSummaryStatistics
         Me.lblCoeffVar.Name = "lblCoeffVar"
         Me.lblCoeffVar.Size = New System.Drawing.Size(122, 16)
         Me.lblCoeffVar.TabIndex = 46
-        Me.lblCoeffVar.Text = "Coefficiant of Variation:"
+        Me.lblCoeffVar.Text = "Coefficient of Variation:"
         Me.lblCoeffVar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'tboxGeoMean

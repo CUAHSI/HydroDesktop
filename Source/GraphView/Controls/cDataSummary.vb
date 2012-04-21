@@ -31,7 +31,7 @@ Public Class cDataSummary
         dgvStatSummary.Rows.Add("Maximum", Statistics.Maximum(data))
         dgvStatSummary.Rows.Add("Minimum", Statistics.Minimum(data))
         dgvStatSummary.Rows.Add("Standard Deviation", Statistics.StandardDeviation(data))
-        dgvStatSummary.Rows.Add("Coefficiant of Variation", Statistics.CoefficientOfVariation(data))
+        dgvStatSummary.Rows.Add("Coefficient of Variation", Statistics.CoefficientOfVariation(data))
         dgvStatSummary.Rows.Add("Percentiles 10%", Statistics.Percentile(data, 10))
         dgvStatSummary.Rows.Add("Percentiles 25%", Statistics.Percentile(data, 25))
         dgvStatSummary.Rows.Add("Percentiles 50%(median)", Statistics.Percentile(data, 50))
