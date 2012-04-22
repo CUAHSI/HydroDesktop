@@ -21,14 +21,14 @@ using Search3.Searching.Exceptions;
 using Search3.Settings;
 using Search3.Settings.UI;
 using HydroDesktop.WebServices;
+using Msg = Search3.MessageStrings;
 
 namespace Search3
 {
     public class SearchPlugin : Extension, IWebServicesStore, ISearchPlugin
     {
         #region Fields
-
-        const string kHydroSearch3 = "kHydroSearchV3";
+        
         const string TYPE_IN_KEYWORD = "Type-in a Keyword";
 
         private SimpleActionItem rbServices;
@@ -38,12 +38,11 @@ namespace Search3
         private DropDownActionItem rbKeyword;
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
-        private SimpleActionItem rbAttribute;
-
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+        private readonly string _searchKey = SharedConstants.SearchRootkey;
 
         #endregion
 
@@ -87,7 +86,7 @@ namespace Search3
             
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
-            var root = new RootItem(kHydroSearch3, "Search") {SortOrder = -10};
+            var root = new RootItem(_searchKey, "Search") { SortOrder = -10 };
             try
             {
                 head.Add(root);
@@ -106,7 +105,7 @@ namespace Search3
             App.Map.SelectionChanged += Map_SelectionChanged;
 
             //Draw Box
-            rbDrawBox = new SimpleActionItem(kHydroSearch3, "Draw Rectangle", rbDrawBox_Click)
+            rbDrawBox = new SimpleActionItem(_searchKey, "Draw Rectangle", rbDrawBox_Click)
                             {
                                 LargeImage = Resources.Draw_Box_32,
                                 SmallImage = Resources.Draw_Box_16,
@@ -117,7 +116,7 @@ namespace Search3
             SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             //Select
-            rbSelect = new SimpleActionItem(kHydroSearch3, "Select Polygons", rbSelect_Click)
+            rbSelect = new SimpleActionItem(_searchKey, "Select Polygons", rbSelect_Click)
                            {
                                ToolTipText = "Select Region",
                                LargeImage = Resources.select_poly_32,
@@ -128,16 +127,10 @@ namespace Search3
             head.Add(rbSelect);
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
-            //AttributeTable
-            rbAttribute = new SimpleActionItem(kHydroSearch3, "Select by Attribute", rbAttribute_Click)
-                              {
-                                  ToolTipText = "Select by Attribute",
-                                  GroupCaption = grpArea,
-                                  ToggleGroupKey = grpArea,
-                                  LargeImage = Resources.select_table_32,
-                                  SmallImage = Resources.select_table_16
-                              };
-            head.Add(rbAttribute);
+            head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = grpArea, LargeImage = Resources.select_table_32, SmallImage = Resources.select_table_16 });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, PanTool_Click) { GroupCaption = grpArea, SmallImage = Resources.hand_16x16, ToggleGroupKey = grpArea });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = grpArea, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = grpArea });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = grpArea, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = grpArea });
 
             #endregion
 
@@ -157,7 +150,7 @@ namespace Search3
                                      SmallImage = Resources.keyword_16,
                                      GroupCaption = "Keyword",
                                      ToolTipText = "Show Keyword Ontology Tree",
-                                     RootKey = kHydroSearch3
+                                     RootKey = _searchKey
                                  };
             head.Add(rbKeyword2);
 
@@ -166,13 +159,11 @@ namespace Search3
             #region Dates group
 
             const string grpDates = "Time Range";
-            rbStartDate = new TextEntryActionItem
-                              {Caption = "Start", GroupCaption = grpDates, RootKey = kHydroSearch3, Width = 60};
+            rbStartDate = new TextEntryActionItem { Caption = "Start", GroupCaption = grpDates, RootKey = _searchKey, Width = 60 };
             rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
             head.Add(rbStartDate);
 
-            rbEndDate = new TextEntryActionItem
-                            {Caption = " End", GroupCaption = grpDates, RootKey = kHydroSearch3, Width = 60};
+            rbEndDate = new TextEntryActionItem { Caption = " End", GroupCaption = grpDates, RootKey = _searchKey, Width = 60 };
             head.Add(rbEndDate);
             rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
             UpdateDatesCaption();
@@ -180,7 +171,7 @@ namespace Search3
             var rbDate = new SimpleActionItem("Select Time", rbDate_Click)
                              {
                                  GroupCaption = grpDates,
-                                 RootKey = kHydroSearch3,
+                                 RootKey = _searchKey,
                                  LargeImage = Resources.select_date_v1_32,
                                  SmallImage = Resources.select_date_v1_16
                              };
@@ -195,7 +186,7 @@ namespace Search3
             ChangeWebServicesIcon();
             rbServices.ToolTipText = "Select data sources (All web services selected)";
             rbServices.GroupCaption = grpDataSources;
-            rbServices.RootKey = kHydroSearch3;
+            rbServices.RootKey = _searchKey;
             head.Add(rbServices);
 
             rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click)
@@ -204,7 +195,7 @@ namespace Search3
                                 SmallImage = Resources.option_16,
                                 ToolTipText = "Select the Search Catalog",
                                 GroupCaption = grpDataSources,
-                                RootKey = kHydroSearch3
+                                RootKey = _searchKey
                             };
             head.Add(rbCatalog);
             UpdateCatalogCaption();
@@ -220,27 +211,37 @@ namespace Search3
                                    SmallImage = Resources.search_16,
                                    ToolTipText = "Run Search based on selected criteria",
                                    GroupCaption = grpSearch,
-                                   RootKey = kHydroSearch3
+                                   RootKey = _searchKey
                                };
             head.Add(rbSearch);
-
-            /*
-            var btnDownload = new SimpleActionItem("Download", rbDownload_Click)
-                                  {
-                                      Enabled = false,
-                                      RootKey = kHydroSearch3,
-                                      GroupCaption = grpSearch,
-                                      LargeImage = Resources.download_32,
-                                      SmallImage = Resources.download_16
-                                  };*/
-            //App.HeaderControl.Add(btnDownload);
 
             #endregion
 
             App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
+        }
 
-            //map buttons (not added for now)
-            //AddMapButtons();
+        /// <summary>
+        /// Move (Pan) the map
+        /// </summary>
+        private void PanTool_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Pan;
+        }
+
+        /// <summary>
+        /// Zoom In
+        /// </summary>
+        private void ZoomIn_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.ZoomIn;
+        }
+
+        /// <summary>
+        /// Zoom Out
+        /// </summary>
+        private void ZoomOut_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.ZoomOut;
         }
 
         void RefreshKeywordDropDown()
@@ -255,7 +256,7 @@ namespace Search3
                                 {
                                     AllowEditingText = true,
                                     GroupCaption = grpKeyword,
-                                    RootKey = kHydroSearch3,
+                                    RootKey = _searchKey,
                                     Width = 150,
                                     Enabled = false,
                                     NullValuePrompt = TYPE_IN_KEYWORD
@@ -271,63 +272,12 @@ namespace Search3
         
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            if (e.SelectedRootKey == kHydroSearch3)
+            if (e.SelectedRootKey == _searchKey)
             {
                 App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 App.DockManager.SelectPanel("kMap");
             }
         }
-
-        //private void AddMapButtons()
-        //{
-        //    string kHomeRoot = kHydroSearch3;
-        //    string rpMapTools = "Map Tools";
-        //    string kHydroMapTools = "kHydroMapToolsSearch";
-        //    var head = App.HeaderControl;
-            
-        //    //Pan
-        //    var _rbPan = new SimpleActionItem(kHomeRoot, "Pan", rbPan_Click);
-        //    _rbPan.GroupCaption = rpMapTools;
-        //    _rbPan.LargeImage = Properties.Resources.pan;
-        //    _rbPan.SmallImage = Properties.Resources.pan_16;
-        //    _rbPan.ToolTipText = "Pan - Move the Map";
-        //    _rbPan.ToggleGroupKey = kHydroMapTools;
-        //    head.Add(_rbPan);
-
-        //    //ZoomIn
-        //    var _rbZoomIn = new SimpleActionItem(kHomeRoot, "Zoom In", rbZoomIn_Click);
-        //    _rbZoomIn.ToolTipText = "Zoom In";
-        //    _rbZoomIn.GroupCaption = rpMapTools;
-        //    _rbZoomIn.LargeImage = Properties.Resources.zoom_in;
-        //    _rbZoomIn.SmallImage = Properties.Resources.zoom_in_16;
-        //    _rbZoomIn.ToggleGroupKey = kHydroMapTools;
-        //    head.Add(_rbZoomIn);
-
-        //    //ZoomOut
-        //    var _rbZoomOut = new SimpleActionItem(kHomeRoot, "Zoom Out", rbZoomOut_Click);
-        //    _rbZoomOut.ToolTipText = "Zoom Out";
-        //    _rbZoomOut.GroupCaption = rpMapTools;
-        //    _rbZoomOut.LargeImage = Properties.Resources.zoom_out;
-        //    _rbZoomOut.SmallImage = Properties.Resources.zoom_out_16;
-        //    _rbZoomOut.ToggleGroupKey = kHydroMapTools;
-        //    head.Add(_rbZoomOut);
-
-        //    //ZoomToFullExtent
-        //    var _rbMaxExtents = new SimpleActionItem(kHomeRoot, "MaxExtents", rbFullExtent_Click);
-        //    _rbMaxExtents.ToolTipText = "Maximum Extents";
-        //    _rbMaxExtents.GroupCaption = rpMapTools;
-        //    _rbMaxExtents.LargeImage = Properties.Resources.full_extent;
-        //    _rbMaxExtents.SmallImage = Properties.Resources.full_extent_16;
-        //    head.Add(_rbMaxExtents);
-
-            
-        //}
-        
-        //void rbPan_Click(object sender, EventArgs e) { }
-        //void rbZoomIn_Click(object sender, EventArgs e) { }
-        //void rbZoomOut_Click(object sender, EventArgs e) { }
-        //void rbFullExtent_Click(object sender, EventArgs e) { }
-        //void rbDownload_Click(object sender, EventArgs e) { }
 
         #region Search
         
@@ -460,7 +410,6 @@ namespace Search3
 
         private enum AreaSelectMode
         {
-            None,
             DrawBox,
             SelectPolygons,
             SelectAttribute
@@ -603,6 +552,8 @@ namespace Search3
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
             SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
+            
+            //App.Map.FunctionMode = FunctionMode.Select;
         }
 
         #endregion

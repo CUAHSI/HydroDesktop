@@ -108,6 +108,11 @@
     <Compile Include="Keywords\IKeywordsList.cs" />
     <Compile Include="Keywords\KeywordListData.cs" />
     <Compile Include="Keywords\KeywordsList.cs" />
+    <Compile Include="MessageStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Searching\CompletedEventArgs.cs" />
     <Compile Include="Searching\HISCentralSearcher.cs" />
     <Compile Include="Searching\LogMessageEventArgs.cs" />
@@ -193,6 +198,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Area\SelectAreaByAttributeDialog.resx">
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Searching\SearchProgressForm.resx">
       <DependentUpon>SearchProgressForm.cs</DependentUpon>
@@ -284,6 +293,8 @@
     <None Include="Resources\select_date_v1_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\zoom_out_16x16.png" />
+    <None Include="Resources\zoom_in_16x16.png" />
     <None Include="Resources\zoom.png" />
     <None Include="Resources\download_16.png" />
     <None Include="Resources\download_32.png" />
@@ -293,6 +304,7 @@
     <None Include="Resources\keyword_32.png" />
     <None Include="Resources\HydroDesktop.ico" />
     <Content Include="Resources\deselect_16x16.png" />
+    <None Include="Resources\hand_16x16.png" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
