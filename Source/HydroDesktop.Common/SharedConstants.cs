@@ -20,5 +20,14 @@
         {
             get { return "kHydroSearchV3"; }
         }
+
+        /// <summary>
+        /// Name of Data Sources group in search ribbon
+        /// </summary>
+        public static string SearchDataSourcesGroupName
+        {
+            get { return "Data Sources"; }
+        }
     }
 }
+
