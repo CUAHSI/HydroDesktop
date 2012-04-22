@@ -61,6 +61,24 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add More Keywords.
+        /// </summary>
+        internal static string Add_More_Keywords {
+            get {
+                return ResourceManager.GetString("Add_More_Keywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyword.
+        /// </summary>
+        internal static string Keyword {
+            get {
+                return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pan.
         /// </summary>
         internal static string Pan {
