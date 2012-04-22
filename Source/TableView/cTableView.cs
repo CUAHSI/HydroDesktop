@@ -184,8 +184,7 @@ namespace TableView
         {
             dataViewSeries.ColumnHeadersVisible = true;
             dataViewSeries.ColumnHeadersBorderStyle = ProperColumnHeadersBorderStyle;
-           
-            ViewMode = TableViewMode.SequenceView;
+            
             UpdateDatabasePath();
         }
 
