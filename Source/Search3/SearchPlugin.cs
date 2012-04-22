@@ -167,15 +167,8 @@ namespace Search3
             head.Add(rbEndDate);
             rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
             UpdateDatesCaption();
-
-            var rbDate = new SimpleActionItem("Select Time", rbDate_Click)
-                             {
-                                 GroupCaption = grpDates,
-                                 RootKey = _searchKey,
-                                 LargeImage = Resources.select_date_v1_32,
-                                 SmallImage = Resources.select_date_v1_16
-                             };
-            head.Add(rbDate);
+            
+            head.Add(new SimpleActionItem(_searchKey, Msg.Select_Dates, rbDate_Click){GroupCaption = grpDates, LargeImage = Resources.select_date_v1_32, SmallImage = Resources.select_date_v1_16});
 
             #endregion
 

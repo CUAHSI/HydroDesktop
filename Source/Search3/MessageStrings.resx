@@ -123,6 +123,9 @@
   <data name="Select_By_Attribute" xml:space="preserve">
     <value>Select by Attribute</value>
   </data>
+  <data name="Select_Dates" xml:space="preserve">
+    <value>Select Dates</value>
+  </data>
   <data name="Zoom_In" xml:space="preserve">
     <value>In</value>
   </data>

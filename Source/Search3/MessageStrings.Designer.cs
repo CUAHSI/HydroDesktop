@@ -79,6 +79,15 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Dates.
+        /// </summary>
+        internal static string Select_Dates {
+            get {
+                return ResourceManager.GetString("Select_Dates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In.
         /// </summary>
         internal static string Zoom_In {
