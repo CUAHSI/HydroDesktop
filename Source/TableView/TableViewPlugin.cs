@@ -11,8 +11,6 @@ namespace TableView
 {
     public class TableViewPlugin : Extension
     {
-        #region IMapPlugin Members
-
         #region Variables
 
         //the seriesView component
@@ -31,10 +29,15 @@ namespace TableView
 
         #endregion
 
+
+        #region Extension Members
+
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove(kTableView);
+            
+            App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
 
             tableViewControl = null;
             if (SeriesControl != null)
@@ -104,14 +107,7 @@ namespace TableView
                                            };
             App.HeaderControl.Add(changeDatabaseButton);
 
-            ////New Database
-            //var newDatabaseButton = new SimpleActionItem("New", rbNewDatabase_Click);
-            //newDatabaseButton.RootKey = kTableView;
-            //newDatabaseButton.ToolTipText = "Create New Database";
-            //newDatabaseButton.LargeImage = Properties.Resources.newDatabase;
-            //newDatabaseButton.SmallImage = Properties.Resources.newDatabase_16x16;
-            //newDatabaseButton.GroupCaption = "Database";
-            //App.HeaderControl.Add(newDatabaseButton);
+            AddTableViewPanel();
 
             // Options buttons
             var sequenceModeAction = new SimpleActionItem(_optionsSequenceMode, TableViewModeChanged)
@@ -135,11 +131,13 @@ namespace TableView
                                              ToggleGroupKey = _optionsToggleGroupButtonKey
                                          };
             App.HeaderControl.Add(parallelModeAction);
+
+            parallelModeAction.Toggling += TableViewModeChanged;
+            parallelModeAction.Toggle();
+
             //-----
              
             #endregion initialize the Table Ribbon TabPage and related controls
-
-            AddTableViewPanel();
 
             SeriesControl.Refreshed += SeriesControl_Refreshed;
 
@@ -265,34 +263,6 @@ namespace TableView
                 frmChangeDatabase.ShowDialog();
             }
         }
-
-        //private void rbNewDatabase_Click(object sender, EventArgs e)
-        //{
-        //    CreateNewDatabase();
-        //}
-
-        ///// <summary>
-        ///// Creates a new database to be used by the HydroDesktop application
-        ///// </summary>
-        //private void CreateNewDatabase()
-        //{
-        //    var saveDialog = new SaveFileDialog {Filter = "SQLite Database|*.sqlite"};
-        //    if (saveDialog.ShowDialog() != DialogResult.OK) return;
-        //    var newDbFileName = saveDialog.FileName;
-        //    try
-        //    {
-        //        if (SQLiteHelper.CreateSQLiteDatabase(newDbFileName))
-        //        {
-        //            var connString = SQLiteHelper.GetSQLiteConnectionString(newDbFileName);
-        //            Settings.Instance.DataRepositoryConnectionString = connString;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Unable to create new database." + Environment.NewLine +
-        //                        ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
 
         # endregion
     }
