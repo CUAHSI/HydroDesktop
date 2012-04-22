@@ -166,7 +166,7 @@ namespace Search3
 
             #region Data Sources
 
-            const string grpDataSources = "Data Sources";
+            var grpDataSources = SharedConstants.SearchDataSourcesGroupName;
             rbServices = new SimpleActionItem("All Data Sources", rbServices_Click);
             ChangeWebServicesIcon();
             rbServices.ToolTipText = "Select data sources (All web services selected)";
