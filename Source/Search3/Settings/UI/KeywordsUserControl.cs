@@ -8,24 +8,11 @@ namespace Search3.Settings.UI
 {
     public partial class KeywordsUserControl : UserControl
     {
-        #region Fields
-
-        private KeywordsSettings _keywordsSettings;
-
-        #endregion
-
         #region Constructors
 
         public KeywordsUserControl()
         {
             InitializeComponent();
-
-            // Keywords display
-            rbList.Tag = DisplayMode.List;
-            rbTree.Tag = DisplayMode.Tree;
-            rbBoth.Tag = DisplayMode.Both;
-            foreach (var rb in new[] {rbList, rbTree, rbBoth})
-                rb.CheckedChanged += rb_CheckedChanged;
         }
 
         #endregion
@@ -41,13 +28,22 @@ namespace Search3.Settings.UI
         {
             if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
-            _keywordsSettings = keywordsSettings;
-            
             tboTypeKeyword.Clear();
             lblKeywordRelation.Text = "";
-           
-            // Keywords
-            lbKeywords.DataSource = keywordsSettings.Keywords;
+            tboTypeKeyword.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            var autoCompleteSource = new AutoCompleteStringCollection();
+            autoCompleteSource.AddRange(keywordsSettings.Keywords.ToArray());
+            tboTypeKeyword.AutoCompleteCustomSource = autoCompleteSource;
+            tboTypeKeyword.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            tboTypeKeyword.KeyDown += delegate(object sender, KeyEventArgs args)
+                                          {
+                                              if (args.KeyCode == Keys.Enter)
+                                              {
+                                                  UpdateKeywordTextBox(tboTypeKeyword.Text);
+                                                  AddKeyword();
+                                              }
+                                          };
             
             // Ontology tree
             treeviewOntology.BeginUpdate();
@@ -133,72 +129,6 @@ namespace Search3.Settings.UI
             return res;
         }
 
-        void rb_CheckedChanged(object sender, EventArgs e)
-        {
-            var displayMode = (DisplayMode)((RadioButton)sender).Tag;
-            spcKey.Panel2Collapsed = displayMode == DisplayMode.List;
-            spcKey.Panel1Collapsed = displayMode == DisplayMode.Tree;
-        }
-
-        private void tboTypeKeyword_TextChanged(object sender, EventArgs e)
-        {
-            //control display if user is in treeview mode
-            if (rbTree.Checked)
-            {
-                rbList.Checked = true;
-            }
-            
-            lbKeywords.ClearSelected();
-            var searchString2 = tboTypeKeyword.Text;
-            lbKeywords.SelectionMode = SelectionMode.MultiSimple;
-            var x = -1;
-
-            if (searchString2.Length != 0)
-            {
-                do
-                {
-                    x = lbKeywords.FindString(searchString2, x);
-                    if (x != -1)
-                    {
-                        if (lbKeywords.SelectedIndices.Count > 0)
-                        {
-                            if (x == lbKeywords.SelectedIndices[0])
-                                return;
-                        }
-                        lbKeywords.SetSelected(x, true);
-                    }
-                }
-                while (x != -1);
-            }
-        }
-
-        private void lbKeywords_MouseUp(object sender, MouseEventArgs e)
-        {
-            var keyIndex = lbKeywords.IndexFromPoint(e.Location);
-            if (keyIndex < 0) return;
-
-            tboTypeKeyword.Text = string.Empty;
-            var strNode = lbKeywords.Items[keyIndex].ToString();
-
-            //check for synonyms
-            if (_keywordsSettings.Synonyms != null)
-            {
-                foreach (var ontoPath in _keywordsSettings.Synonyms)
-                {
-                    if (string.Equals(ontoPath.SearchableKeyword, strNode, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        UpdateKeywordTextBox(ontoPath.ConceptName);
-                    }
-                }
-            }
-
-            //check ends
-            if (tboTypeKeyword.Text == "")
-            {
-                UpdateKeywordTextBox(lbKeywords.Items[keyIndex].ToString());
-            }
-        }
-
         private void UpdateKeywordTextBox(string text)
         {
             tboTypeKeyword.Text = text;
@@ -226,13 +156,19 @@ namespace Search3.Settings.UI
 
         private void btnAddKeyword_Click(object sender, EventArgs e)
         {
-            if (lbKeywords.SelectedIndex == -1)
+            AddKeyword();
+        }
+
+        private void AddKeyword()
+        {
+            var node = treeviewOntology.SelectedNode;
+            if (node == null)
             {
                 MessageBox.Show("Please select a valid Keyword.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            var itemToAdd = lbKeywords.SelectedItem.ToString();
+            var itemToAdd = node.Text;
             if (GetSelectedKeywords().Any(item => item == itemToAdd))
             {
                 MessageBox.Show("This Keyword is already selected, Please select another keyword.", "Information",
@@ -240,7 +176,7 @@ namespace Search3.Settings.UI
                 return;
             }
 
-            AddSelectedKeywords(new[] {itemToAdd});
+            AddSelectedKeywords(new[] { itemToAdd });
         }
 
         private void button15_Click(object sender, EventArgs e)
@@ -253,17 +189,6 @@ namespace Search3.Settings.UI
             RemoveSelectedKeywords(itemsToRemove);
         }
        
-        #endregion
-
-        #region Helpers
-
-        private enum DisplayMode
-        {
-            List,
-            Tree,
-            Both
-        }
-
         #endregion
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Search3.Settings.UI
+﻿using System.Windows.Forms;
+
+namespace Search3.Settings.UI
 {
     partial class KeywordsUserControl
     {
@@ -34,22 +36,11 @@
             this.lblKeywordRelation = new System.Windows.Forms.Label();
             this.btnAddKeyword = new System.Windows.Forms.Button();
             this.btnRemoveKeyword = new System.Windows.Forms.Button();
-            this.groupboxKeywordDisplay = new System.Windows.Forms.GroupBox();
-            this.rbBoth = new System.Windows.Forms.RadioButton();
-            this.rbTree = new System.Windows.Forms.RadioButton();
-            this.rbList = new System.Windows.Forms.RadioButton();
-            this.spcKey = new System.Windows.Forms.SplitContainer();
-            this.lbKeywords = new System.Windows.Forms.ListBox();
-            this.treeviewOntology = new System.Windows.Forms.TreeView();
             this.lblSelectedKeywords = new System.Windows.Forms.Label();
             this.lbSelectedKeywords = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.groupboxKeywordDisplay.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spcKey)).BeginInit();
-            this.spcKey.Panel1.SuspendLayout();
-            this.spcKey.Panel2.SuspendLayout();
-            this.spcKey.SuspendLayout();
+            this.treeviewOntology = new System.Windows.Forms.TreeView();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -63,7 +54,6 @@
             this.tboTypeKeyword.Name = "tboTypeKeyword";
             this.tboTypeKeyword.Size = new System.Drawing.Size(174, 20);
             this.tboTypeKeyword.TabIndex = 52;
-            this.tboTypeKeyword.TextChanged += new System.EventHandler(this.tboTypeKeyword_TextChanged);
             // 
             // lblKeywords
             // 
@@ -107,95 +97,6 @@
             this.btnRemoveKeyword.UseVisualStyleBackColor = true;
             this.btnRemoveKeyword.Click += new System.EventHandler(this.button15_Click);
             // 
-            // groupboxKeywordDisplay
-            // 
-            this.groupboxKeywordDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupboxKeywordDisplay.Controls.Add(this.rbBoth);
-            this.groupboxKeywordDisplay.Controls.Add(this.rbTree);
-            this.groupboxKeywordDisplay.Controls.Add(this.rbList);
-            this.groupboxKeywordDisplay.Location = new System.Drawing.Point(125, 263);
-            this.groupboxKeywordDisplay.Name = "groupboxKeywordDisplay";
-            this.groupboxKeywordDisplay.Size = new System.Drawing.Size(158, 40);
-            this.groupboxKeywordDisplay.TabIndex = 61;
-            this.groupboxKeywordDisplay.TabStop = false;
-            this.groupboxKeywordDisplay.Text = "Keywords Display";
-            // 
-            // rbBoth
-            // 
-            this.rbBoth.AutoSize = true;
-            this.rbBoth.Checked = true;
-            this.rbBoth.Location = new System.Drawing.Point(97, 17);
-            this.rbBoth.Name = "rbBoth";
-            this.rbBoth.Size = new System.Drawing.Size(47, 17);
-            this.rbBoth.TabIndex = 2;
-            this.rbBoth.TabStop = true;
-            this.rbBoth.Text = "Both";
-            this.rbBoth.UseVisualStyleBackColor = true;
-            // 
-            // rbTree
-            // 
-            this.rbTree.AutoSize = true;
-            this.rbTree.Location = new System.Drawing.Point(48, 17);
-            this.rbTree.Name = "rbTree";
-            this.rbTree.Size = new System.Drawing.Size(47, 17);
-            this.rbTree.TabIndex = 1;
-            this.rbTree.Text = "Tree";
-            this.rbTree.UseVisualStyleBackColor = true;
-            // 
-            // rbList
-            // 
-            this.rbList.AutoSize = true;
-            this.rbList.Location = new System.Drawing.Point(4, 17);
-            this.rbList.Name = "rbList";
-            this.rbList.Size = new System.Drawing.Size(41, 17);
-            this.rbList.TabIndex = 0;
-            this.rbList.Text = "List";
-            this.rbList.UseVisualStyleBackColor = true;
-            // 
-            // spcKey
-            // 
-            this.spcKey.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.spcKey.Location = new System.Drawing.Point(3, 80);
-            this.spcKey.Name = "spcKey";
-            // 
-            // spcKey.Panel1
-            // 
-            this.spcKey.Panel1.Controls.Add(this.lbKeywords);
-            // 
-            // spcKey.Panel2
-            // 
-            this.spcKey.Panel2.Controls.Add(this.treeviewOntology);
-            this.spcKey.Size = new System.Drawing.Size(292, 179);
-            this.spcKey.SplitterDistance = 95;
-            this.spcKey.TabIndex = 62;
-            // 
-            // lbKeywords
-            // 
-            this.lbKeywords.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbKeywords.FormattingEnabled = true;
-            this.lbKeywords.HorizontalScrollbar = true;
-            this.lbKeywords.Location = new System.Drawing.Point(0, 0);
-            this.lbKeywords.Name = "lbKeywords";
-            this.lbKeywords.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbKeywords.Size = new System.Drawing.Size(95, 179);
-            this.lbKeywords.Sorted = true;
-            this.lbKeywords.TabIndex = 42;
-            this.lbKeywords.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lbKeywords_MouseUp);
-            // 
-            // treeviewOntology
-            // 
-            this.treeviewOntology.BackColor = System.Drawing.SystemColors.Window;
-            this.treeviewOntology.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeviewOntology.HideSelection = false;
-            this.treeviewOntology.Indent = 19;
-            this.treeviewOntology.Location = new System.Drawing.Point(0, 0);
-            this.treeviewOntology.Name = "treeviewOntology";
-            this.treeviewOntology.Size = new System.Drawing.Size(193, 179);
-            this.treeviewOntology.TabIndex = 39;
-            this.treeviewOntology.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvOntology_AfterSelect);
-            // 
             // lblSelectedKeywords
             // 
             this.lblSelectedKeywords.AutoSize = true;
@@ -237,25 +138,32 @@
             this.panel2.Size = new System.Drawing.Size(295, 40);
             this.panel2.TabIndex = 66;
             // 
+            // treeviewOntology
+            // 
+            this.treeviewOntology.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeviewOntology.BackColor = System.Drawing.SystemColors.Window;
+            this.treeviewOntology.HideSelection = false;
+            this.treeviewOntology.Indent = 19;
+            this.treeviewOntology.Location = new System.Drawing.Point(3, 92);
+            this.treeviewOntology.Name = "treeviewOntology";
+            this.treeviewOntology.Size = new System.Drawing.Size(289, 179);
+            this.treeviewOntology.TabIndex = 39;
+            this.treeviewOntology.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvOntology_AfterSelect);
+            // 
             // KeywordsUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.treeviewOntology);
             this.Controls.Add(this.btnRemoveKeyword);
-            this.Controls.Add(this.groupboxKeywordDisplay);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.btnAddKeyword);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.spcKey);
             this.Controls.Add(this.lblKeywordRelation);
             this.Name = "KeywordsUserControl";
             this.Size = new System.Drawing.Size(295, 407);
-            this.groupboxKeywordDisplay.ResumeLayout(false);
-            this.groupboxKeywordDisplay.PerformLayout();
-            this.spcKey.Panel1.ResumeLayout(false);
-            this.spcKey.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spcKey)).EndInit();
-            this.spcKey.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -271,16 +179,10 @@
         private System.Windows.Forms.Label lblKeywordRelation;
         private System.Windows.Forms.Button btnAddKeyword;
         private System.Windows.Forms.Button btnRemoveKeyword;
-        private System.Windows.Forms.GroupBox groupboxKeywordDisplay;
-        private System.Windows.Forms.RadioButton rbBoth;
-        private System.Windows.Forms.RadioButton rbTree;
-        private System.Windows.Forms.RadioButton rbList;
-        private System.Windows.Forms.SplitContainer spcKey;
-        private System.Windows.Forms.ListBox lbKeywords;
-        private System.Windows.Forms.TreeView treeviewOntology;
         private System.Windows.Forms.Label lblSelectedKeywords;
         private System.Windows.Forms.ListBox lbSelectedKeywords;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TreeView treeviewOntology;
     }
 }

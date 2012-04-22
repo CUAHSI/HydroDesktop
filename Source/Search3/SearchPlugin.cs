@@ -144,15 +144,7 @@ namespace Search3
             UpdateKeywordsCaption();
 
             //Keyword more options
-            var rbKeyword2 = new SimpleActionItem("Keyword Selection", rbKeyword_Click)
-                                 {
-                                     LargeImage = Resources.keyword_32,
-                                     SmallImage = Resources.keyword_16,
-                                     GroupCaption = "Keyword",
-                                     ToolTipText = "Show Keyword Ontology Tree",
-                                     RootKey = _searchKey
-                                 };
-            head.Add(rbKeyword2);
+            head.Add(new SimpleActionItem(_searchKey, Msg.Add_More_Keywords, rbKeyword_Click){ LargeImage = Resources.keyword_32, SmallImage = Resources.keyword_16, GroupCaption = Msg.Keyword, ToolTipText = "Show Keyword Ontology Tree"});
 
             #endregion
 
