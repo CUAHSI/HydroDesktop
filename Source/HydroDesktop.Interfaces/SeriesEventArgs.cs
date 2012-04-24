@@ -7,8 +7,8 @@ namespace HydroDesktop.Interfaces
     /// </summary>
     public class SeriesEventArgs : EventArgs
     {
-        private int _seriesID;
-        private bool _isChecked;
+        private readonly int _seriesID;
+        private readonly bool _isChecked;
 
         /// <summary>
         /// Creates a new instance of the series EventArgs
