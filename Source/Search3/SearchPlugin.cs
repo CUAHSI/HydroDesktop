@@ -11,9 +11,9 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Common;
-using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.Interfaces.PluginContracts;
 using Search3.Area;
 using Search3.Properties;
 using Search3.Searching;
@@ -22,6 +22,7 @@ using Search3.Settings;
 using Search3.Settings.UI;
 using HydroDesktop.WebServices;
 using Msg = Search3.MessageStrings;
+using HydroDesktop.Common.Tools;
 
 namespace Search3
 {
@@ -32,7 +33,6 @@ namespace Search3
         const string TYPE_IN_KEYWORD = "Type-in a Keyword";
 
         private SimpleActionItem rbServices;
-        private SimpleActionItem rbCatalog;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
         private DropDownActionItem rbKeyword;
@@ -173,17 +173,6 @@ namespace Search3
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = _searchKey;
             head.Add(rbServices);
-
-            rbCatalog = new SimpleActionItem("HIS Central", rbCatalog_Click)
-                            {
-                                LargeImage = Resources.option_32,
-                                SmallImage = Resources.option_16,
-                                ToolTipText = "Select the Search Catalog",
-                                GroupCaption = grpDataSources,
-                                RootKey = _searchKey
-                            };
-            head.Add(rbCatalog);
-            UpdateCatalogCaption();
 
             #endregion
 
@@ -636,7 +625,11 @@ namespace Search3
 
         void rbServices_Click(object Sender, EventArgs e)
         {
-            if (WebServicesDialog.ShowDialog(SearchSettings.Instance.WebServicesSettings) == DialogResult.OK)
+            if (WebServicesDialog.ShowDialog(SearchSettings.Instance.WebServicesSettings, 
+                                             SearchSettings.Instance.CatalogSettings,
+                                             SearchSettings.Instance.KeywordsSettings,
+                                             App.GetExtension<IMetadataFetcherPlugin>()
+                                             ) == DialogResult.OK)
             {
                 UpdateWebServicesCaption();
             }
@@ -736,28 +729,6 @@ namespace Search3
             {
                 SearchSettings.Instance.DateSettings.StartDate = result.Value;
             }
-        }
-
-        #endregion
-
-        #region Catalog
-
-        void rbCatalog_Click(object sender, EventArgs e)
-        {
-            if (SearchCatalogSettingsDialog.ShowDialog(SearchSettings.Instance.CatalogSettings,
-                                                       SearchSettings.Instance.WebServicesSettings,
-                                                       SearchSettings.Instance.KeywordsSettings) == DialogResult.OK)
-            {
-                UpdateCatalogCaption();
-                UpdateWebServicesCaption();
-                UpdateKeywordsCaption();
-            }
-        }
-
-        private void UpdateCatalogCaption()
-        {
-            rbCatalog.Caption = SearchSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
-            rbCatalog.ToolTipText = "Select search catalog (selected catalog: " + SearchSettings.Instance.CatalogSettings.TypeOfCatalog.Description();
         }
 
         #endregion

@@ -102,7 +102,7 @@
     <Compile Include="DatabaseChangedEventArgs.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FilterTypes.cs" />
-    <Compile Include="IDataExportPlugin.cs" />
+    <Compile Include="PluginContracts\IDataExportPlugin.cs" />
     <Compile Include="IDataFilesRepository.cs" />
     <Compile Include="IDataSeriesRepository.cs" />
     <Compile Include="IDataServicesRepository.cs" />
@@ -124,7 +124,9 @@
     <Compile Include="IUnitConversionsRepository.cs" />
     <Compile Include="IUnitsRepository.cs" />
     <Compile Include="IVariablesRepository.cs" />
-    <Compile Include="IWebServicesStore.cs" />
+    <Compile Include="PluginContracts\IDataAggregationPlugin.cs" />
+    <Compile Include="PluginContracts\ISearchPlugin.cs" />
+    <Compile Include="PluginContracts\IWebServicesStore.cs" />
     <Compile Include="ObjectModel\BaseEntity.cs" />
     <Compile Include="ObjectModel\Constants.cs" />
     <Compile Include="ObjectModel\DataFile.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="ObjectModel\UnitConversion.cs" />
     <Compile Include="ObjectModel\ValueTypeCV.cs" />
     <Compile Include="ObjectModel\Variable.cs" />
+    <Compile Include="PluginContracts\IMetadataFetcherPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeriesEventArgs.cs" />
   </ItemGroup>
@@ -167,9 +170,6 @@
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\deselect_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

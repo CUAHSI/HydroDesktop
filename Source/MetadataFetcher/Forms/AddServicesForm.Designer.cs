@@ -288,14 +288,14 @@
             this.fromHISServerToolStripMenuItem,
             this.fromFileToolStripMenuItem});
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.importToolStripMenuItem.Text = "&Import";
             // 
             // fromHydroPortalToolStripMenuItem
             // 
             this.fromHydroPortalToolStripMenuItem.Enabled = false;
             this.fromHydroPortalToolStripMenuItem.Name = "fromHydroPortalToolStripMenuItem";
-            this.fromHydroPortalToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fromHydroPortalToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fromHydroPortalToolStripMenuItem.Text = "From Hydro&Portal...";
             this.fromHydroPortalToolStripMenuItem.Visible = false;
             this.fromHydroPortalToolStripMenuItem.Click += new System.EventHandler(this.fromHydroPortalToolStripMenuItem_Click);
@@ -303,14 +303,14 @@
             // fromHISServerToolStripMenuItem
             // 
             this.fromHISServerToolStripMenuItem.Name = "fromHISServerToolStripMenuItem";
-            this.fromHISServerToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fromHISServerToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fromHISServerToolStripMenuItem.Text = "From &HydroServer...";
             this.fromHISServerToolStripMenuItem.Click += new System.EventHandler(this.fromHydroServerToolStripMenuItem_Click);
             // 
             // fromFileToolStripMenuItem
             // 
             this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fromFileToolStripMenuItem.Text = "From &File...";
             this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fromFileToolStripMenuItem_Click);
             // 
@@ -319,14 +319,14 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuCheckForValidService});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // mnuCheckForValidService
             // 
             this.mnuCheckForValidService.CheckOnClick = true;
             this.mnuCheckForValidService.Name = "mnuCheckForValidService";
-            this.mnuCheckForValidService.Size = new System.Drawing.Size(440, 22);
+            this.mnuCheckForValidService.Size = new System.Drawing.Size(407, 22);
             this.mnuCheckForValidService.Text = "&Check for valid WaterOneFlow service before committing to database";
             // 
             // openFileDialog1
@@ -566,7 +566,7 @@
             this.Controls.Add(this.gbxUpdate);
             this.Controls.Add(this.gbxProgress);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "AddServicesForm";
