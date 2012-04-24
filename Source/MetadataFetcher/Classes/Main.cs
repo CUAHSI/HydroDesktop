@@ -1,6 +1,7 @@
 ﻿#region Namespaces
 using System;
 using HydroDesktop.Common;
+using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.MetadataFetcher.Forms;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -12,15 +13,8 @@ using Msg = HydroDesktop.MetadataFetcher.MessageStrings;
 
 namespace HydroDesktop.MetadataFetcher
 {
-	class Main : Extension
+    class Main : Extension, IMetadataFetcherPlugin
 	{
-		#region Variables
-
-		private MainForm _mainForm;
-		private AddServicesForm _addServicesForm;
-
-		#endregion
-
 		#region IExtension Members
 
 		/// <summary>
@@ -59,36 +53,39 @@ namespace HydroDesktop.MetadataFetcher
 
 		void mnuDownloadMetadata_Click ( object sender, EventArgs e )
 		{
-			// Initialize the main form
-			if ( _mainForm == null )
-			{
-				_mainForm = new MainForm ();
-			}
-
-			// Show the form
-			if ( _mainForm.Visible == false )
-			{
-                _mainForm.RefreshServiceList();
-                _mainForm.Show ();
-			}
-
-			_mainForm.Focus ();
+		    DownloadMetadata();
 		}
 
 		void mnuAddServices_Click ( object sender, EventArgs e )
 		{
-			if ( _addServicesForm == null )
-				_addServicesForm = new AddServicesForm ();
-
-			DialogResult result = _addServicesForm.ShowDialog ();
-
-			if ( _mainForm != null )
-			{
-				_mainForm.SelectNewServices ();
-			}
+		    AddServices();
 		}
 
-		#endregion
+        private void DownloadMetadata()
+        {
+            using (var form = new MainForm())
+            {
+                form.RefreshServiceList();
+                form.ShowDialog();
+            }
+        }
 
+        #endregion
+
+        #region Implementation of IMetadataFetcherPlugin
+
+        public void AddServices()
+        {
+            using (var form = new AddServicesForm())
+            {
+                var dialogResult = form.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    DownloadMetadata();
+                }   
+            }
+        }
+
+        #endregion
 	}
 }

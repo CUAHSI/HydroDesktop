@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using HydroDesktop.Database;
-using HydroDesktop.MetadataFetcher.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices;
 using HydroDesktop.ImportExport;
@@ -61,18 +58,12 @@ namespace HydroDesktop.MetadataFetcher.Forms
 
 		void AddServicesForm_FormClosing ( object sender, FormClosingEventArgs e )
 		{
-			e.Cancel = true;
-
-			if ( bgwMain.IsBusy == true )
+			if (bgwMain.IsBusy)
 			{
-				CancelWorker ();
-
-				_formIsClosing = true;
-			}
-			else
-			{
-				Hide();
-			}
+			    e.Cancel = true;
+                _formIsClosing = true;
+			    CancelWorker();
+            }
 		}
 
 		#endregion
@@ -1208,14 +1199,14 @@ namespace HydroDesktop.MetadataFetcher.Forms
 			// Enable controls that were disabled until the asynchronous operation was finished
 			RestoreFormFromWork ();
 
-			if ( _formIsClosing == true )
+			if ( _formIsClosing )
 			{
 				_formIsClosing = false;
-				Hide();
+                DialogResult = DialogResult.Cancel;
 			}
 			else if ( task == BackgroundWorkerTasks.UpdateDatabase )
 			{
-				this.DialogResult = System.Windows.Forms.DialogResult.OK;
+				DialogResult = DialogResult.OK;
 			}
 		}
 

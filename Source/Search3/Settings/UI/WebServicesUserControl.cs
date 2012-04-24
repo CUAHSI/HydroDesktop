@@ -11,6 +11,7 @@ namespace Search3.Settings.UI
         #region Fields
 
         private WebServicesSettings _webServicesSettings;
+        private CatalogSettings _catalogSettings;
 
         #endregion
 
@@ -107,7 +108,7 @@ namespace Search3.Settings.UI
 
             try
             {
-                _webServicesSettings.RefreshWebServices();
+                _webServicesSettings.RefreshWebServices(_catalogSettings);
                 RefreshWebServices(_webServicesSettings.WebServices);
             }catch(Exception ex)
             {
@@ -134,11 +135,13 @@ namespace Search3.Settings.UI
         /// Set settings into control.
         /// </summary>
         /// <param name="webServicesSettings">WebServices settings to set.</param>
+        /// <param name="catalogSettings">Catalog settings </param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="webServicesSettings"/> is null.</exception>
-        public void SetSettings(WebServicesSettings webServicesSettings)
+        public void SetSettings(WebServicesSettings webServicesSettings, CatalogSettings catalogSettings)
         {
             if (webServicesSettings == null) throw new ArgumentNullException("webServicesSettings");
 
+            _catalogSettings = catalogSettings;
             _webServicesSettings = webServicesSettings;
             RefreshWebServices(webServicesSettings.WebServices);
         }
