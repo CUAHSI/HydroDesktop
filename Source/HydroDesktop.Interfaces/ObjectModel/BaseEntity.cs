@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
@@ -18,6 +17,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// Id (primary key) of the entity
         /// </summary>
         public virtual long Id { get; set; }
+
         /// <summary>
         /// Two entities are considered equal if they have the same Id
         /// </summary>
@@ -27,12 +27,12 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            //if (GetType() != other.GetType()) return false;
             if (Id == 0 || other.Id == 0) return false;
             return other.Id == Id;
         }
+
         /// <summary>
-        /// a base entity and another object are considered equal
+        /// A base entity and another object are considered equal
         /// only if they represent a reference to the same object
         /// instance
         /// </summary>
@@ -41,10 +41,8 @@ namespace HydroDesktop.Interfaces.ObjectModel
         public override bool Equals(object obj)
         {
             if (obj.Equals(DBNull.Value)) return false;
-            
-            if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            //if (GetType() != obj.GetType()) return false;
+            
             return Equals((BaseEntity)obj);
         }
 
@@ -54,14 +52,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns></returns>
         public override int GetHashCode()
         {
-            if (Id == 0)
-            {
-                return base.GetHashCode();
-            }
-            else
-            {
-                return (Id.GetHashCode() * 397) ^ GetType().GetHashCode();
-            }
+           return (Id.GetHashCode() * 397) ^ GetType().GetHashCode();
         }
 
         /// <summary>
@@ -87,38 +78,25 @@ namespace HydroDesktop.Interfaces.ObjectModel
         }
 
         # region Validation
-        /* these two methods ( IsValid, and  GetRuleViolations())
-         * need to be implemented in each class that you want to validation
-         * you cannot just implement GetRuleViolations
-         * GetRuleViolotions should call
-         * 
-         * foreach (var violation in base.GetRuleViolations().AsEnumerable())
-          {
-              yield return violation;
-          }
-
-         * so that all rules can be enforced
-         * */
-
+       
         /// <summary>
-        /// return true if the object is valid
+        /// Return true if the object is valid
         /// </summary>
         public virtual bool IsValid
         {
-            get { return (GetRuleViolations().Count() == 0); }
+            get { return (!GetRuleViolations().Any()); }
         }
 
         /// <summary>
-        /// show all rule violations
+        /// Show all rule violations
         /// </summary>
         /// <returns>rule violations</returns>
         public virtual IEnumerable<RuleViolation> GetRuleViolations()
         {
-            
             yield break; // basically, empty
         }
-        #endregion
 
+        #endregion
 
         public object Clone()
         {
@@ -132,13 +110,4 @@ namespace HydroDesktop.Interfaces.ObjectModel
             // do nothing here
         }
     }
-
-    //Tried and extension. This just ends up calling the BaseEntity GetRuleViolations
-    //public static class BaseExtensions
-    //{
-    //    public static bool IsValid(this BaseEntity b)
-    //    {
-    //        return (b.GetRuleViolations().Count() == 0);
-    //    }
-    //}
 }
