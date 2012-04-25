@@ -102,6 +102,7 @@ namespace Search3.Settings.UI
                     bntAddLocalDataSource.Text = "Advanced Options...";
                     break;
             }
+            RefreshWebServices();
         }
 
         private void RefreshWebServices()
@@ -135,7 +136,10 @@ namespace Search3.Settings.UI
             switch (typeOfCatalog)
             {
                 case TypeOfCatalog.HisCentral:
-                    AdvancedHisCentralOptionsDialog.ShowDialog(_catalogSettings);
+                    if (AdvancedHisCentralOptionsDialog.ShowDialog(_catalogSettings) == DialogResult.OK)
+                    {
+                        RefreshWebServices();
+                    }
                     break;
                 case TypeOfCatalog.LocalMetadataCache:
                     if (_metadataFetcher != null)
