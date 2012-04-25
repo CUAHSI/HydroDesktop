@@ -968,8 +968,15 @@ namespace HydroDesktop.MetadataFetcher.Forms
                             firstSiteError = ex.Message;
                         }
 
-                        StreamReader rdr = new StreamReader(ex.Response.GetResponseStream());
-                        err += rdr.ReadToEnd();
+                        if (ex.Response != null)
+                        {
+                            StreamReader rdr = new StreamReader(ex.Response.GetResponseStream());
+                            err += rdr.ReadToEnd();
+                        }
+                        else
+                        {
+                            err += ex.Message;
+                        }
 
                         continue;
                     }
