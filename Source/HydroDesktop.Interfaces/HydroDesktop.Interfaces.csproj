@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Interfaces</RootNamespace>
+    <AssemblyName>HydroDesktop.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+    <DocumentationFile>..\..\Binaries\HydroDesktop.Interfaces.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\Binaries\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\packages\DotSpatial.Controls.1.1\lib\net40\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\packages\DotSpatial.Data.1.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\packages\DotSpatial.Data.Forms.1.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\packages\DotSpatial.Extensions.1.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\packages\DotSpatial.Modeling.Forms.1.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\packages\DotSpatial.Projections.1.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\packages\DotSpatial.Projections.Forms.1.1\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\packages\DotSpatial.Serialization.1.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\packages\DotSpatial.Symbology.1.1\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms">
+      <HintPath>..\packages\DotSpatial.Symbology.Forms.1.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\packages\DotSpatial.Topology.1.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseChangedEventArgs.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="FilterTypes.cs" />
+    <Compile Include="PluginContracts\IDataExportPlugin.cs" />
+    <Compile Include="IDataFilesRepository.cs" />
+    <Compile Include="IDataSeriesRepository.cs" />
+    <Compile Include="IDataServicesRepository.cs" />
+    <Compile Include="IDataThemesRepository.cs" />
+    <Compile Include="IDataValuesRepository.cs" />
+    <Compile Include="IHydroDbOperations.cs" />
+    <Compile Include="IMetadataCacheManager.cs" />
+    <Compile Include="IMethodsRepository.cs" />
+    <Compile Include="IOffsetTypesRepository.cs" />
+    <Compile Include="IQualifiersRepository.cs" />
+    <Compile Include="IQualityControlLevelsRepository.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="IRepositoryManager.cs" />
+    <Compile Include="ISamplesRepository.cs" />
+    <Compile Include="ISeriesProvenanceRepository.cs" />
+    <Compile Include="ISeriesSelector.cs" />
+    <Compile Include="ISitesRepository.cs" />
+    <Compile Include="ISourcesRepository.cs" />
+    <Compile Include="IUnitConversionsRepository.cs" />
+    <Compile Include="IUnitsRepository.cs" />
+    <Compile Include="IVariablesRepository.cs" />
+    <Compile Include="PluginContracts\IDataAggregationPlugin.cs" />
+    <Compile Include="PluginContracts\ISearchPlugin.cs" />
+    <Compile Include="PluginContracts\IWebServicesStore.cs" />
+    <Compile Include="ObjectModel\BaseEntity.cs" />
+    <Compile Include="ObjectModel\Constants.cs" />
+    <Compile Include="ObjectModel\DataFile.cs" />
+    <Compile Include="ObjectModel\DataServiceInfo.cs" />
+    <Compile Include="ObjectModel\DataTypeCV.cs" />
+    <Compile Include="ObjectModel\DataValue.cs" />
+    <Compile Include="ObjectModel\ISOMetadata.cs" />
+    <Compile Include="ObjectModel\LabMethod.cs" />
+    <Compile Include="ObjectModel\Method.cs" />
+    <Compile Include="ObjectModel\OffsetType.cs" />
+    <Compile Include="ObjectModel\Qualifier.cs" />
+    <Compile Include="ObjectModel\QualityControlLevel.cs" />
+    <Compile Include="ObjectModel\QueryInfo.cs" />
+    <Compile Include="ObjectModel\RuleViolation.cs" />
+    <Compile Include="ObjectModel\Sample.cs" />
+    <Compile Include="ObjectModel\SampleMediumCV.cs" />
+    <Compile Include="ObjectModel\Series.cs" />
+    <Compile Include="ObjectModel\SeriesDataCart.cs" />
+    <Compile Include="ObjectModel\SeriesMetadata.cs" />
+    <Compile Include="ObjectModel\SeriesProvenance.cs" />
+    <Compile Include="ObjectModel\Site.cs" />
+    <Compile Include="ObjectModel\Source.cs" />
+    <Compile Include="ObjectModel\SpatialReference.cs" />
+    <Compile Include="ObjectModel\Theme.cs" />
+    <Compile Include="ObjectModel\Unit.cs" />
+    <Compile Include="ObjectModel\UnitConversion.cs" />
+    <Compile Include="ObjectModel\ValueTypeCV.cs" />
+    <Compile Include="ObjectModel\Variable.cs" />
+    <Compile Include="PluginContracts\IMetadataFetcherPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeriesEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
