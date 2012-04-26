@@ -154,10 +154,11 @@ namespace HydroDesktop.DataDownload
             header.Add(_btnDownload1 = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = searchRootKey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
             header.Add(_btnDownload2 = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
             header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
-            header.Add(_btnShowPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false});
+            header.Add(_btnShowPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
 
             _btnShowPopups.Toggling += ShowPopups_Click;
             _btnShowPopups.Toggle();
+            _btnShowPopups.Enabled = false;
 
             // Subscribe to events
             App.Map.LayerAdded += Map_LayerAdded;
