@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>
@@ -14,10 +9,12 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// Rule violation error message
         /// </summary>
         public string ErrorMessage { get; private set; }
+
         /// <summary>
         /// rule violation property name
         /// </summary>
         public string PropertyName { get; private set; }
+
         /// <summary>
         /// Creates a new instance of a rule violation
         /// </summary>
@@ -26,6 +23,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             ErrorMessage = errorMessage;
         }
+
         /// <summary>
         /// Creates a new instance of a rule violation
         /// </summary>
