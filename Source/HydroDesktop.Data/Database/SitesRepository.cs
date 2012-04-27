@@ -50,6 +50,11 @@ namespace HydroDesktop.Database
             return site;
         }
 
+        protected override string PrimaryKeyName
+        {
+            get { return "SiteID"; }
+        }
+
         public bool Exists(Site site)
         {
             if (site == null) return false;

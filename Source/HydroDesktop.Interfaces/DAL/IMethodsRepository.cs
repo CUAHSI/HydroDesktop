@@ -6,7 +6,7 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for Methods Repository
     /// </summary>
-    public interface IMethodsRepository : IRepository
+    public interface IMethodsRepository : IRepository<Method>
     {
         /// <summary>
         /// Insert method
@@ -31,12 +31,5 @@ namespace HydroDesktop.Interfaces
         /// <param name="methodDescription">Method Description</param>
         /// <returns>MethodID or null.</returns>
         int? GetMethodID(string methodDescription);
-
-        /// <summary>
-        /// Get method by ID
-        /// </summary>
-        /// <param name="methodID">Method ID</param>
-        /// <returns>Method or null.</returns>
-        Method GetMethod(int methodID);
     }
 }
