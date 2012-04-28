@@ -26,9 +26,12 @@ namespace HydroDesktop.Docking
         /// <summary>
         /// The lookup list of dock panels (for keeping track of existing panels)
         /// </summary>
-        private Dictionary<string, DockContent> dockContents = new Dictionary<string,DockContent>();
+        //private Dictionary<string, DockContent> dockContents = new Dictionary<string,DockContent>();
 
-        private Dictionary<DockContent, int> sortOrderLookup = new Dictionary<DockContent, int>();
+        //private Dictionary<DockContent, int> sortOrderLookup = new Dictionary<DockContent, int>();
+
+        // The lookup list of dock panels (for keeping track of existing panels)
+        private Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string,DockPanelInfo>();
 
         /// <summary>The active panel key</summary>
         private string ActivePanelKey { get; set; }
@@ -69,26 +72,25 @@ namespace HydroDesktop.Docking
         public void ResetLayout()
         {
             //check the map
-            DockContent mapContent = dockContents["kMap"];
+            DockContent mapContent = dockPanelLookup["kMap"].WeifenLuoDockPanel;
             if (mapContent.IsFloat)
             {
                 mapContent.Dock = DockStyle.Fill;
                 mapContent.DockState = DockState.Document;
                 mapContent.PanelPane = MainDockPanel.ActiveDocumentPane;
-                //mapContent.Show(MainDockPanel);
             }
             
             
             //first, check the list
-            foreach (string key in dockContents.Keys)
+            foreach (string key in dockPanelLookup.Keys)
             {
                 if (key == "kHydroSeriesView")
                 {
-                    DockContent cnt = dockContents[key];
+                    DockContent cnt = dockPanelLookup[key].WeifenLuoDockPanel;
 
                     cnt.Dock = DockStyle.Left;
                     cnt.DockState = DockState.DockLeft;
-                    cnt.PanelPane = dockContents["kLegend"].Pane;
+                    cnt.PanelPane = dockPanelLookup["kLegend"].WeifenLuoDockPanel.Pane;
 
                     if (cnt.IsHidden)
                     {
@@ -97,11 +99,11 @@ namespace HydroDesktop.Docking
                 }
                 else if (key != "kMap" && key != "kLegend")
                 {
-                    DockContent cnt = dockContents[key];
+                    DockContent cnt = dockPanelLookup[key].WeifenLuoDockPanel;
 
                     cnt.Dock = DockStyle.Fill;
                     cnt.DockState = DockState.Document;
-                    cnt.PanelPane = dockContents["kMap"].Pane;
+                    cnt.PanelPane = dockPanelLookup["kMap"].WeifenLuoDockPanel.Pane;
 
                     if (cnt.IsHidden)
                     {
@@ -109,30 +111,6 @@ namespace HydroDesktop.Docking
                     }
                 }
             }
-            
-            
-            ////not implemented
-            ////TODO: check MW4 implementation
-            //MainDockPanel.SaveAsXml(@"e:\dev\HydroDesktop\dock_layout.xml");
-
-            //string dockFileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "dock_layout.xml");
-
-            //if (System.IO.File.Exists(dockFileName))
-            //{
-            //    try
-            //    {
-            //        MainDockPanel.LoadFromXml(dockFileName, delegate(DeserializeDockContent));
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show(ex.Message);
-            //    }
-            //}
-
-            //foreach (DockContent pnl in this.dockContents.Values)
-            //{
-            //    pnl.
-            //}
         }
 
         /// <summary>
@@ -190,13 +168,9 @@ namespace HydroDesktop.Docking
             content.Pane.Tag = key;
 
             //add panel to contents dictionary
-            if (!dockContents.ContainsKey(key))
+            if (!dockPanelLookup.ContainsKey(key))
             {
-                dockContents.Add(key, content);
-            }
-            if (!sortOrderLookup.ContainsKey(content))
-            {
-                sortOrderLookup.Add(content, zOrder);
+                dockPanelLookup.Add(key, new DockPanelInfo(panel, content, zOrder));
             }
 
             //trigger the panel added event
@@ -207,6 +181,28 @@ namespace HydroDesktop.Docking
             {
                 int sortingIndex = ConvertSortOrderToIndex(content, zOrder);
                 content.Pane.SetContentIndex(content, sortingIndex);
+            }
+
+            //caption - changed
+            panel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(panel_PropertyChanged);
+        }
+
+        //when the dockable panel property is changed
+        void panel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Caption")
+            {
+                DockablePanel dp = sender as DockablePanel;
+                if (dp != null)
+                {
+                    string key = dp.Key;
+                    if (dockPanelLookup.ContainsKey(dp.Key))
+                    {
+                        DockContent dc = dockPanelLookup[dp.Key].WeifenLuoDockPanel;
+                        dc.Text = dp.Caption;
+                        dc.TabText = dp.Caption;
+                    }
+                }
             }
         }
 
@@ -240,17 +236,21 @@ namespace HydroDesktop.Docking
 
         public void Remove(string key)
         {
-            if (dockContents.ContainsKey(key))
+            if (dockPanelLookup.ContainsKey(key))
             {
-                DockContent content = dockContents[key];
+                DockPanelInfo dockInfo = dockPanelLookup[key];
+                
+                DockContent content = dockInfo.WeifenLuoDockPanel;
                 content.Close();
                 
                 //remove event handlers
                 content.FormClosing -= content_FormClosing;
                 content.FormClosed -= content_FormClosed;
 
+                dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
+
                 content.Dispose();
-                dockContents.Remove(key);
+                dockPanelLookup.Remove(key);
                 OnPanelRemoved(key);
             }
         }
@@ -287,9 +287,9 @@ namespace HydroDesktop.Docking
 
         public void SelectPanel(string key)
         {
-            if (dockContents.ContainsKey(key))
+            if (dockPanelLookup.ContainsKey(key))
             {
-                dockContents[key].Activate();
+                dockPanelLookup[key].WeifenLuoDockPanel.Activate();
             }
         }
 
@@ -350,7 +350,11 @@ namespace HydroDesktop.Docking
 
             foreach (DockContent existingContent in pane.Contents)
             {
-                sortOrderList.Add(sortOrderLookup[existingContent]);
+                string key = existingContent.Tag.ToString();
+                if (dockPanelLookup.ContainsKey(key))
+                {
+                    sortOrderList.Add(dockPanelLookup[key].SortOrder);
+                }
             }
             sortOrderList.Sort();
             index = sortOrderList.IndexOf(sortOrder);
