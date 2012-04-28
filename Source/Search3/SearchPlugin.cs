@@ -80,21 +80,51 @@ namespace Search3
             }
         }
 
+        /// <summary>
+        /// This method removes the "Download" and "MetadataFetcher" buttons if they were added before search was activated
+        /// by temporarily deactivating the DataDownload and MetadataFetcher extensions
+        /// </summary>
+        private void RemoveDownloadButtons()
+        {
+            var downloadExt = App.GetExtension("DataDownload");
+            if (downloadExt != null)
+                if (downloadExt.IsActive)
+                    downloadExt.Deactivate();
+
+            var metadataFetcherExt = App.GetExtension("MetadataFetcher");
+            if (metadataFetcherExt != null)
+                if (metadataFetcherExt.IsActive)
+                    metadataFetcherExt.Deactivate();
+        }
+
+        /// <summary>
+        /// This methods re-adds the "Download" and "MetadataFetcher" buttons after finishing search activation
+        /// by re-activating the DataDownload and MetadataFetcher extensions
+        /// </summary>
+        private void AddDownloadButtons()
+        {
+            var downloadExt = App.GetExtension("DataDownload");
+            if (downloadExt != null)
+                if (!downloadExt.IsActive)
+                    downloadExt.Activate();
+
+            var metadataFetcherExt = App.GetExtension("MetadataFetcher");
+            if (metadataFetcherExt != null)
+                if (!metadataFetcherExt.IsActive)
+                    metadataFetcherExt.Activate();
+        }
+
         private void AddSearchRibbon()
         {
+            //to ensure that search root is added first: deactivate download and metadata fetcher
+            RemoveDownloadButtons();
+            
             var head = App.HeaderControl;
             
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
             var root = new RootItem(_searchKey, "Search") { SortOrder = -10 };
-            try
-            {
-                head.Add(root);
-            }
-            catch(ArgumentException)
-            {
-                //catch exception in case the root item has been already added
-            } 
+            head.Add(root);
 
             #region Area group
 
@@ -192,6 +222,9 @@ namespace Search3
             #endregion
 
             App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
+
+            //re-add the download buttons
+            AddDownloadButtons();
         }
 
         /// <summary>
