@@ -37,7 +37,7 @@
       <HintPath>..\packages\BruTile.0.6.0\lib\net35\BruTile.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap">
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1119\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1130\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
