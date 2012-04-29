@@ -113,8 +113,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
-;Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
-;Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.4.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
+Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
+Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.4.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\DataAggregation\DataAggregation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
