@@ -324,8 +324,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 var filterEx = needDownloadedCategories
                                    ? baseFilter + string.Format(" AND ([{0}] is null)", seriesID)
                                    : baseFilter;
-                    
-                var legendText = string.Format("({0}, {1}]", min, max);
+
+                var legendText = string.Format("({0}, {1}] Observations", min, max);
                 var mySymbolizer = new PointSymbolizer(image, imageSize);
                 var myCategory = new PointCategory(mySymbolizer)
                 {
