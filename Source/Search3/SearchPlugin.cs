@@ -368,7 +368,13 @@ namespace Search3
             foreach (var item in result.ResultItems)
                 item.FeatureSet.Projection = wgs84;
 
-            ShowSearchResults(result);
+            var layers = ShowSearchResults(result);
+            // Select first search result layer
+            var first = layers.FirstOrDefault();
+            if (first != null)
+            {
+                first.IsSelected = true;
+            }
 
             // Activate metadata ribbon tab
             App.HeaderControl.SelectRoot(SharedConstants.MetadataRootKey);
@@ -377,7 +383,7 @@ namespace Search3
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
         /// </summary>
-        private void ShowSearchResults(SearchResult searchResult)
+        private IEnumerable<IMapPointLayer> ShowSearchResults(SearchResult searchResult)
         {
             //try to save the search result layer and re-add it
             var hdProjectPath = HydroDesktop.Configuration.Settings.Instance.CurrentProjectDirectory;
@@ -394,7 +400,7 @@ namespace Search3
             }
 
             var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures));
-            searchLayerCreator.Create();
+            return searchLayerCreator.Create();
         }
 
         #endregion
