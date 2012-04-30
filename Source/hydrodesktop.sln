@@ -183,6 +183,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDestkop.GetGeostatisti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.GetApplicationExtensions", "HydroDesktop.GetApplicationExtensions\HydroDesktop.GetApplicationExtensions.csproj", "{6957285E-8D27-456D-A517-8AE09F67E9CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.ObjectModel.Controls", "HydroDesktop.ObjectModel.Controls\HydroDesktop.ObjectModel.Controls.csproj", "{58B443B0-D995-434B-B403-D5D62959D32E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -529,6 +531,16 @@ Global
 		{6957285E-8D27-456D-A517-8AE09F67E9CE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6957285E-8D27-456D-A517-8AE09F67E9CE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6957285E-8D27-456D-A517-8AE09F67E9CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{58B443B0-D995-434B-B403-D5D62959D32E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

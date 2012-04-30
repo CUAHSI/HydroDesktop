@@ -76,7 +76,7 @@ namespace HydroDesktop.Database
         {
             get
             {
-                throw new NotImplementedException("Implement me in child class.");   
+                throw new NotImplementedException("You should implement PrimaryKeyName for " + GetType());   
             }
         }
 
@@ -130,7 +130,7 @@ namespace HydroDesktop.Database
 
         protected virtual T DataRowToEntity (DataRow row)
         {
-            throw new NotImplementedException("Implement me in child class.");
+            throw new NotImplementedException("You should implement DataRowToEntity for " + GetType());
         }
 
         /// <summary>

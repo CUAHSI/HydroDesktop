@@ -17,8 +17,16 @@ namespace HydroDesktop.Database
     /// </summary>
     class DataSeriesRepository : BaseRepository<Series>, IDataSeriesRepository
     {
+        #region Fields
+
+        private readonly ISitesRepository _sitesRepository;
+        private readonly IVariablesRepository _variablesRepository;
+        private readonly IMethodsRepository _methodsRepository;
+
+        #endregion
+
         #region Constructors
-        
+
         /// <summary>
         /// Create new instance of <see cref="DataSeriesRepository"/>
         /// </summary>
@@ -26,6 +34,9 @@ namespace HydroDesktop.Database
         /// <param name="connectionString">The connection string</param>
         public DataSeriesRepository(DatabaseTypes dbType, string connectionString) : base(dbType, connectionString)
         {
+            _sitesRepository = new SitesRepository(dbType, connectionString);
+            _variablesRepository = new VariablesRepository(dbType, connectionString);
+            _methodsRepository = new MethodsRepository(dbType, connectionString);
         }
 
         /// <summary>
@@ -35,6 +46,9 @@ namespace HydroDesktop.Database
         public DataSeriesRepository(IHydroDbOperations db)
             : base(db)
         {
+            _sitesRepository = new SitesRepository(db);
+            _variablesRepository = new VariablesRepository(db);
+            _methodsRepository = new MethodsRepository(db);
         }
 
         #endregion
@@ -168,33 +182,9 @@ namespace HydroDesktop.Database
             series.Subscribed = Convert.ToBoolean(seriesRow["Subscribed"]);
             series.ValueCount = Convert.ToInt32(seriesRow["ValueCount"]);
 
-            int siteID = Convert.ToInt32(seriesRow["SiteID"]);
-
-            string sqlSites = "SELECT SiteID, SiteCode, SiteName, Latitude, Longitude, Elevation_m, " +
-                "VerticalDatum, LocalX, LocalY, State, County, Comments FROM Sites where SiteID = " + siteID;
-
-            DataTable siteTable = DbOperations.LoadTable("siteTable", sqlSites);
-            if (siteTable.Rows.Count == 0) return null;
-
-            DataRow siteRow = siteTable.Rows[0];
-            var newSite = new Site();
-            newSite.Id = Convert.ToInt32(siteRow[0]);
-            newSite.Code = Convert.ToString(siteRow[1]);
-            newSite.Name = Convert.ToString(siteRow[2]);
-            newSite.Latitude = Convert.ToDouble(siteRow[3]);
-            newSite.Longitude = Convert.ToDouble(siteRow[4]);
-            newSite.Elevation_m = Convert.ToDouble(siteRow[5]);
-            newSite.VerticalDatum = Convert.ToString(siteRow[6]);
-            newSite.LocalX = Convert.ToDouble(siteRow["LocalX"]);
-            newSite.LocalY = Convert.ToDouble(siteRow["LocalY"]);
-            series.Site = newSite;
-
-            int variableID = Convert.ToInt32(seriesRow["VariableID"]);
-
-            series.Variable = RepositoryFactory.Instance.Get<IVariablesRepository>().GetByKey(variableID);
-
-            var newMethod = new Method {Id = Convert.ToInt32(seriesRow["MethodID"])};
-            series.Method = newMethod;
+            series.Site = _sitesRepository.GetByKey(seriesRow["SiteID"]);
+            series.Variable = _variablesRepository.GetByKey(seriesRow["VariableID"]);
+            series.Method = _methodsRepository.GetByKey(seriesRow["MethodID"]);
 
             var newSource = new Source {Id = Convert.ToInt32(seriesRow["SourceID"])};
             series.Source = newSource;
