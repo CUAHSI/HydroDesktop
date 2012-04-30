@@ -286,8 +286,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 if (value > maxValue)
                     maxValue = value;
             }
-            if (minValue == int.MaxValue) minValue = 0;
-            if (maxValue == int.MinValue) maxValue = 0;
+            if (minValue == int.MaxValue || minValue <= 0) minValue = 1;
+            if (maxValue < minValue) maxValue = minValue + 1;
 
             // Calculate number of categories
             int categoriesCount;
