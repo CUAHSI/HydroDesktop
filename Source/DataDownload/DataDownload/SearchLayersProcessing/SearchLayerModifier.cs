@@ -265,6 +265,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
             var settings = scheme.EditorSettings;
             settings.ClassificationType = ClassificationType.Custom;
+            settings.IntervalMethod = IntervalMethod.Manual;
 
             const string valueField = "ValueCount";
             // Find min/max value in valueField 
@@ -324,7 +325,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                 var filterEx = needDownloadedCategories
                                    ? baseFilter + string.Format(" AND ([{0}] is null)", seriesID)
                                    : baseFilter;
-                    
+
                 var legendText = string.Format("({0}, {1}]", min, max);
                 var mySymbolizer = new PointSymbolizer(image, imageSize);
                 var myCategory = new PointCategory(mySymbolizer)
@@ -354,6 +355,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                     scheme.AddCategory(categorieForDownload);
                 }
             }
+            scheme.AppearsInLegend = true;
+            scheme.LegendText = "Number of Observations";
 
             return scheme;
         }
