@@ -33,33 +33,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v11.2, Version=11.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.2.10\lib\net40\DevExpress.Data.v11.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.v11.2">
+      <HintPath>..\packages\DotSpatial.Plugins.SplashScreenManager.0.12.4.30\lib\net40-client\DevExpress.Data.v11.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v11.2, Version=11.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.2.10\lib\net40\DevExpress.Utils.v11.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v11.2">
+      <HintPath>..\packages\DotSpatial.Plugins.SplashScreenManager.0.12.4.30\lib\net40-client\DevExpress.Utils.v11.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v11.2, Version=11.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.2.10\lib\net40\DevExpress.XtraBars.v11.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.4.30\lib\net40-client\DevExpress.XtraBars.v11.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v11.2, Version=11.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.2.10\lib\net40\DevExpress.XtraEditors.v11.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraEditors.v11.2">
+      <HintPath>..\packages\DotSpatial.Plugins.SplashScreenManager.0.12.4.30\lib\net40-client\DevExpress.XtraEditors.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager">
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1130\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1137\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.MenuBar">
-      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1130\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
+    <Reference Include="DotSpatial.Plugins.MenuBar, Version=0.11.9.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1137\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.Ribbon">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.2.10\lib\net40-Client\DotSpatial.Plugins.Ribbon.dll</HintPath>
+    <Reference Include="DotSpatial.Plugins.Ribbon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.0.12.4.30\lib\net40-Client\DotSpatial.Plugins.Ribbon.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.SplashScreenManager">
-      <HintPath>..\packages\DotSpatial.Plugins.SplashScreenManager.0.12.2.10\lib\net40-Client\DotSpatial.Plugins.SplashScreenManager.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.SplashScreenManager.0.12.4.30\lib\net40-Client\DotSpatial.Plugins.SplashScreenManager.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Core, Version=1.0.11220.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1130\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1137\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
