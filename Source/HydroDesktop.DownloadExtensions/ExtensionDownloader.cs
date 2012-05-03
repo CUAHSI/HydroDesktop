@@ -71,6 +71,12 @@ namespace HydroDesktop.DownloadExtensions
                 packages.Install("DotSpatial.ProjectTemplate.NorthAmerica");
             }
 
+            if (App.GetExtension("DotSpatial.ProjectTemplate.World") == null)
+            {
+                App.UpdateProgress("Downloading world project template...");
+                packages.Install("DotSpatial.ProjectTemplate.World");
+            }
+
             App.RefreshExtensions();
         }
 

@@ -13,6 +13,8 @@ using HydroDesktop.Configuration;
 using System.Reflection;
 using HydroDesktop.Help;
 using System.Diagnostics;
+using System.ComponentModel.Composition;
+using DotSpatial.Extensions;
 
 namespace HydroDesktop.Main
 {
@@ -21,6 +23,12 @@ namespace HydroDesktop.Main
     /// </summary>
     public partial class WelcomeScreen : Form
     {
+        /// <summary>
+        /// Gets the list tools available.
+        /// </summary>
+        [ImportMany(AllowRecomposition = true)]
+        public IEnumerable<ISampleProject> Templates { get; set; }
+        
         #region Private Variables
         
         private List<ProjectFileInfo> _recentProjectFiles;
@@ -62,6 +70,8 @@ namespace HydroDesktop.Main
             {
                 lstProjectTemplates.SelectedIndex = 0;
             }
+
+            //lstProjectTemplates.DataSource = Templates;
         }
 
         #endregion
@@ -100,15 +110,30 @@ namespace HydroDesktop.Main
                 }
                 else
                 {
+                    ISampleProject selectedTemplate = lstProjectTemplates.SelectedItem as ISampleProject;
+                    string projectFile = selectedTemplate.AbsolutePathToProjectFile;
+
+                    try
+                    {
+                        string newProjectFile = CopyToDocumentsFolder(projectFile);
+                        _app.SerializationManager.OpenProject(newProjectFile);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + @" File: " + projectFile);
+                    }
+                    
+                    
                     lblProgress.Text = "Creating new Project.. ";
                     this.Cursor = Cursors.WaitCursor;
                     
                     panelStatus.Visible = true;
-                    myProjectManager.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
+                    //myProjectManager.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
 
-                    lblProgress.Text = "Loading Plugins...";
+                    //lblProgress.Text = "Loading Plugins...";
 
-                    this.Cursor = Cursors.Default;
+                    //this.Cursor = Cursors.Default;
 
                     _newProjectCreated = true;
 
@@ -117,6 +142,33 @@ namespace HydroDesktop.Main
                     this.Close();
                 }
             }
+        }
+
+        private string CopyToDocumentsFolder(string projectFile)
+        {
+            string projDir = Path.GetDirectoryName(projectFile);
+            string docsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string dotSpatialDir = Path.Combine(docsDir, "DotSpatial");
+            if (!Directory.Exists(dotSpatialDir))
+            {
+                //todo check if the directory can be created
+                Directory.CreateDirectory(dotSpatialDir);
+            }
+
+            string projName = Path.GetFileNameWithoutExtension(projectFile);
+            string newProjDir = Path.Combine(dotSpatialDir, projName);
+            if (!Directory.Exists(newProjDir))
+            {
+                Directory.CreateDirectory(newProjDir);
+            }
+
+            foreach (string file in Directory.GetFiles(projDir))
+            {
+                File.Copy(file, Path.Combine(newProjDir, Path.GetFileName(file)), true);
+            }
+            string newProjFile = Path.Combine(newProjDir, Path.GetFileName(projectFile));
+            return newProjFile;
         }
 
         /// <summary>
@@ -169,6 +221,9 @@ namespace HydroDesktop.Main
 
         private void WelcomeScreen_Load(object sender, EventArgs e)
         {
+            lstProjectTemplates.DataSource = Templates;
+            lstProjectTemplates.DisplayMember = "Name";
+            
             FindRecentProjectFiles();
         }
 

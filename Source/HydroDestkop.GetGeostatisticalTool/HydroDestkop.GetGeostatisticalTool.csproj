@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\packages\DotSpatial.Extensions.1.1.1-alpha\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="GeostatisticalTool, Version=0.1.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GeostatisticalTool.0.1.0.3\lib\GeostatisticalTool.dll</HintPath>
     </Reference>
