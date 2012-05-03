@@ -63,8 +63,8 @@
     <Reference Include="DotSpatial.Data.Forms">
       <HintPath>..\packages\DotSpatial.Data.Forms.1.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Extensions">
-      <HintPath>..\packages\DotSpatial.Extensions.1.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+    <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Extensions.1.1.1-alpha\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
       <HintPath>..\packages\DotSpatial.Modeling.Forms.1.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>

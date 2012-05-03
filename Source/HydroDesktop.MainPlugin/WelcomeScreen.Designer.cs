@@ -132,9 +132,9 @@
             // 
             // groupBoxProject
             // 
-            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxProject.Controls.Add(this.btnBrowseProject);
             this.groupBoxProject.Controls.Add(this.rbOpenExistingProject);
             this.groupBoxProject.Controls.Add(this.rbEmptyProject);
@@ -183,9 +183,6 @@
             // lstProjectTemplates
             // 
             this.lstProjectTemplates.FormattingEnabled = true;
-            this.lstProjectTemplates.Items.AddRange(new object[] {
-            "North America",
-            "World"});
             this.lstProjectTemplates.Location = new System.Drawing.Point(23, 42);
             this.lstProjectTemplates.Name = "lstProjectTemplates";
             this.lstProjectTemplates.Size = new System.Drawing.Size(245, 43);
@@ -229,8 +226,8 @@
             // 
             // panelStatus
             // 
-            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelStatus.Location = new System.Drawing.Point(8, 243);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(393, 23);
