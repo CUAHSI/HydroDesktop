@@ -1,9 +1,0 @@
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\ResolveAssemblyReference.cache
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\HydroDesktop.SplashScreenManager.SplashScreenForm.resources
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\GenerateResource.read.1.tlog
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\GenerateResource.write.1.tlog
-J:\dev\HydroDesktop\Binaries\Application Extensions\HydroDesktop.SplashScreenManager.dll
-J:\dev\HydroDesktop\Binaries\Application Extensions\HydroDesktop.SplashScreenManager.pdb
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\HydroDesktop.SplashScreenManager.dll
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\HydroDesktop.SplashScreenManager.pdb
-J:\dev\HydroDesktop\Source\HydroDesktop.SplashScreenManager\obj\Debug\HydroDesktop.SplashScreenManager.Properties.Resources.resources
