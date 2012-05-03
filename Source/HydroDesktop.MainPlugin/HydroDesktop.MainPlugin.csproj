@@ -112,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoordinateDisplay.cs" />
-    <Compile Include="NorthAmericaProjectTemplate.cs" />
     <Compile Include="PredefinedTemplate.cs" />
     <Compile Include="ProjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,7 +129,6 @@
     <Compile Include="WelcomeScreen.designer.cs">
       <DependentUpon>WelcomeScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="WorldProjectTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
