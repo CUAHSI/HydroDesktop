@@ -11,6 +11,11 @@ using DotSpatial.Controls.Header;
 
 namespace HydroDesktop.DownloadExtensions
 {
+    /// <summary>
+    /// The purpose of this extension is to download the Ribbon, MenuBar,
+    /// WebMap and AttributeDataExplorer extensions when the user starts
+    /// HydroDesktop for the first time.
+    /// </summary>
     public class ExtensionDownloader : ISatisfyImportsExtension
     {
         private readonly Packages packages = new Packages();
@@ -26,7 +31,6 @@ namespace HydroDesktop.DownloadExtensions
 
         public void Activate()
         {
-            bool isDockManagerNeeded = App.CompositionContainer.GetExportedValues<IDockManager>().Count() == 0;
             bool isHeaderControlNeeded = App.CompositionContainer.GetExportedValues<IHeaderControl>().Count() == 0;
             bool isStatusControlNeeded = App.CompositionContainer.GetExportedValues<IStatusControl>().Count() == 0;
 
@@ -55,14 +59,11 @@ namespace HydroDesktop.DownloadExtensions
                 packages.Install("DotSpatial.Plugins.WebMap");
             }
 
-            App.UpdateProgress("Downloading a ProjectTemplateManager extension...");
-            packages.Install("DotSpatial.ProjectTemplate");
-
-            App.UpdateProgress("Downloading a World project template...");
-            packages.Install("DotSpatial.ProjectTemplate.World");
-
-            App.UpdateProgress("Downloading a North America project template...");
-            packages.Install("DotSpatial.ProjectTemplate.NorthAmerica");
+            if (App.GetExtension("DotSpatial.Plugins.ProjectTemplateManager") == null)
+            {
+                App.UpdateProgress("Downloading a project template manager extension...");
+                packages.Install("DotSpatial.Plugins.ProjectTemplateManager");
+            }
 
             App.RefreshExtensions();
         }
