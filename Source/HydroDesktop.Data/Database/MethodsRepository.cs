@@ -52,23 +52,19 @@ namespace HydroDesktop.Database
                 return null;
             return Convert.ToInt32(res);
         }
-        
-        public Method GetMethod(int methodID)
-        {
-            var dt = DbOperations.LoadTable(string.Format("select MethodID, MethodDescription,  MethodLink from Methods where MethodID = {0}", methodID));
-            if (dt == null || dt.Rows.Count == 0) return null;
-
-            var methodRow = dt.Rows[0];
-            return new Method
-                       {
-                           Id = Convert.ToInt32(methodRow["MethodID"]),
-                           Code = Convert.ToInt32(methodRow["MethodID"]),
-                           Description = Convert.ToString(methodRow["MethodDescription"]),
-                           Link = Convert.ToString(methodRow["MethodLink"]),
-                       };
-        }
 
         #endregion
+
+        protected override Method DataRowToEntity(System.Data.DataRow row)
+        {
+            return new Method
+            {
+                Id = Convert.ToInt32(row["MethodID"]),
+                Code = Convert.ToInt32(row["MethodID"]),
+                Description = Convert.ToString(row["MethodDescription"]),
+                Link = Convert.ToString(row["MethodLink"]),
+            };
+        }
 
         protected override string TableName
         {
@@ -77,10 +73,7 @@ namespace HydroDesktop.Database
 
         protected override string PrimaryKeyName
         {
-            get
-            {
-                return "MethodID";
-            }
+            get { return "MethodID"; }
         }
     }
 }
