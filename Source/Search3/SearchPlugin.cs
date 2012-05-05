@@ -116,15 +116,22 @@ namespace Search3
 
         private void AddSearchRibbon()
         {
-            //to ensure that search root is added first: deactivate download and metadata fetcher
-            RemoveDownloadButtons();
+            //This was an attempt by Jiri to resolve the sort order issue. Need to find a better solution here.
+            //RemoveDownloadButtons();
             
             var head = App.HeaderControl;
             
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
             var root = new RootItem(_searchKey, "Search") { SortOrder = -10 };
-            head.Add(root);
+            try
+            {
+                head.Add(root);
+            }
+            catch (ArgumentException) 
+            { 
+              //catch exception in case the root item has been already added
+            }
 
             #region Area group
 
@@ -368,7 +375,13 @@ namespace Search3
             foreach (var item in result.ResultItems)
                 item.FeatureSet.Projection = wgs84;
 
-            ShowSearchResults(result);
+            var layers = ShowSearchResults(result);
+            // Select first search result layer
+            var first = layers.FirstOrDefault();
+            if (first != null)
+            {
+                first.IsSelected = true;
+            }
 
             // Activate metadata ribbon tab
             App.HeaderControl.SelectRoot(SharedConstants.MetadataRootKey);
@@ -377,7 +390,7 @@ namespace Search3
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
         /// </summary>
-        private void ShowSearchResults(SearchResult searchResult)
+        private IEnumerable<IMapPointLayer> ShowSearchResults(SearchResult searchResult)
         {
             //try to save the search result layer and re-add it
             var hdProjectPath = HydroDesktop.Configuration.Settings.Instance.CurrentProjectDirectory;
@@ -394,7 +407,7 @@ namespace Search3
             }
 
             var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures));
-            searchLayerCreator.Create();
+            return searchLayerCreator.Create();
         }
 
         #endregion

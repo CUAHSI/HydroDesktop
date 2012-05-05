@@ -39,16 +39,21 @@ namespace Search3.Searching
         /// <summary>
         /// Create search layer
         /// </summary>
-        public void Create()
+        public IEnumerable<IMapPointLayer> Create()
         {
-            if (!_searchResult.ResultItems.Any()) return;
+            if (!_searchResult.ResultItems.Any())
+            {
+                return new List<IMapPointLayer>();
+            }
 
             var root = _map.GetDataSitesLayer(true);
 
             var layersToSelect = new List<MapPointLayer>();
+            var result = new List<IMapPointLayer>();
             foreach(var item in _searchResult.ResultItems)
             {
                 var subResultLayer = CreateSearchResultLayer(item, root);
+                result.Add(subResultLayer);
                 root.Add(subResultLayer);
                 layersToSelect.Add(subResultLayer);
             }
@@ -74,6 +79,7 @@ namespace Search3.Searching
             }
 
             _map.Refresh();
+            return result;
         }
 
         #endregion
