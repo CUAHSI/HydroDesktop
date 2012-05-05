@@ -271,6 +271,9 @@
             int y = Shell.Location.Y + Shell.Height / 2 - welcomeScreenForm.Height / 2;
             welcomeScreenForm.Location = new System.Drawing.Point(x, y);
 
+
+            App.CompositionContainer.ComposeParts(welcomeScreenForm);
+
             welcomeScreenForm.Show();
             welcomeScreenForm.Focus();
         }

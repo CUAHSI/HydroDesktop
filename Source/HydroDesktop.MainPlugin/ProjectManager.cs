@@ -186,39 +186,6 @@ namespace HydroDesktop.Main
         }
 
         /// <summary>
-        /// Creates a new project, using a predefined project template to load the base maps.
-        /// </summary>
-        /// <param name="templateName">The project template name</param>
-        public void CreateNewProject(string templateName, AppManager appManager, Map map)
-        {
-            switch (templateName)
-            {
-                case "North America":
-                    NorthAmericaProjectTemplate.LoadBaseMaps(appManager, map);
-                    break;
-                case "World":
-                    
-                    //foreach (Extension ext in App.Extensions)
-                    //{
-                    //    if (ext.AssemblyQualifiedName.ToLower().Contains("webmap"))
-                    //        ext.Deactivate();
-                    //}
-                    WorldProjectTemplate.LoadBaseMaps(appManager, map);
-
-                    App.SerializationManager.SetCustomSetting("world_template", "true");
-                    App.SerializationManager.SetCustomSetting("FetchBasemap_BasemapName", "Bing Aerial Map");
-                    App.SerializationManager.SetCustomSetting("FetchBasemap_Opacity", "50");
-                    App.SerializationManager.OnDeserializing(new SerializingEventArgs());
-                    App.Map.MapFrame.ResetExtents();
-
-                    break;
-                default:
-                    NorthAmericaProjectTemplate.LoadBaseMaps(appManager, map);
-                    break;
-            }
-        }
-
-        /// <summary>
         /// Creates a new 'empty' project
         /// </summary>
         public void CreateEmptyProject()
