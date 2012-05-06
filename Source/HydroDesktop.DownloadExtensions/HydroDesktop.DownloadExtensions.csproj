@@ -44,12 +44,11 @@
     <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Extensions.1.1.1-alpha\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.ExtensionManager">
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1137\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+    <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1143\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
     <Reference Include="NuGet.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1137\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1143\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
