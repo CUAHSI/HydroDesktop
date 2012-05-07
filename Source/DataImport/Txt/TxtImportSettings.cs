@@ -30,7 +30,8 @@ namespace DataImport.Txt
         public string ValuesNumberDecimalSeparator { get; set; }
         public int MaxProgressPercentWhenImport { get; set; }
         public ISeriesSelector SeriesSelector { get; set; }
-        public IMap Map { get; set; }
+        public Map Map { get; set; }
+        public string LayerName { get; set; }
 
         #endregion
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
@@ -24,29 +25,44 @@ namespace DataImport.CommonPages.Progress
             }
 
             var progress = settings.MaxProgressPercentWhenImport + 1;
-            ph.ReportProgress(progress++, "Creating map layer...");
 
-            var featureSet = InitializeFeatureSet();
-            featureSet.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
-            foreach (var s in series)
+            var layerName = settings.LayerName;
+            var layer = settings.Map.GetAllLayers()
+                .OfType<IMapPointLayer>()
+                .FirstOrDefault(l => l.LegendText == layerName);
+
+            if (layer != null)
             {
-                AddSeriesToFeatureSet(s, featureSet);
+                ph.ReportProgress(progress++, "Adding series to existing layer...");
+                foreach (var s in series)
+                {
+                    AddSeriesToFeatureSet(s, layer.DataSet);
+                }
             }
-            featureSet.Reproject(settings.Map.Projection);
+            else
+            {
+                ph.ReportProgress(progress++, "Creating map layer...");
+                var featureSet = InitializeFeatureSet();
+                featureSet.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
+                foreach (var s in series)
+                {
+                    AddSeriesToFeatureSet(s, featureSet);
+                }
+                featureSet.Reproject(settings.Map.Projection);
+               
+                var fileName = Path.Combine(Settings.Instance.CurrentProjectDirectory,
+                                            string.Format("{0}.shp", layerName));
+                featureSet.Filename = fileName;
+                featureSet.Save();
+                featureSet = FeatureSet.Open(fileName); //re-open the featureSet from the file
 
-            var legendText = string.Format("Imported Data ({0})", Path.GetFileNameWithoutExtension(settings.PathToFile));
-            var fileName = Path.Combine(Settings.Instance.CurrentProjectDirectory,
-                                        string.Format("{0}.shp", legendText));
-            featureSet.Filename = fileName;
-            featureSet.Save();
-            featureSet = FeatureSet.Open(fileName); //re-open the featureSet from the file
-
-            var myLayer = new MapPointLayer(featureSet)
-                              {
-                                  LegendText = legendText
-                              };
-            var dataSitesGroup = settings.Map.GetDataSitesLayer(true);
-            dataSitesGroup.Add(myLayer);
+                var myLayer = new MapPointLayer(featureSet)
+                                  {
+                                      LegendText = layerName
+                                  };
+                var dataSitesGroup = settings.Map.GetDataSitesLayer(true);
+                dataSitesGroup.Add(myLayer);
+            }
 
             ph.ReportProgress(progress, "Refreshing series selector...");
             settings.SeriesSelector.RefreshSelection();

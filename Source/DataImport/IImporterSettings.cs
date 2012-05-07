@@ -45,6 +45,14 @@ namespace DataImport
         /// </summary>
         ISeriesSelector SeriesSelector { get; set; }
 
-        IMap Map { get; set; }
+        /// <summary>
+        /// Gets or sets Map
+        /// </summary>
+        Map Map { get; set; }
+
+        /// <summary>
+        /// Gets or sets name of layer to import data
+        /// </summary>
+        string LayerName { get; set; }
     }
 }

@@ -104,7 +104,7 @@ namespace ImportFromWaterML
                 context.Settings = importer.GetDefaultSettings();
                 context.Settings.PathToFile = fileName;
                 context.Settings.SeriesSelector = SeriesControl;
-                context.Settings.Map = App.Map;
+                context.Settings.Map = (Map) App.Map;
 
                 var wizard = new ImportSeriesWizard(context);
                 wizard.ShowDialog();

@@ -6,6 +6,7 @@ using System.IO;
 using DataImport.CommonPages;
 using DataImport.CommonPages.Complete;
 using DataImport.CommonPages.Progress;
+using DataImport.CommonPages.SelectLayer;
 using DataImport.DataTableImport;
 using Excel;
 using Wizard.UI;
@@ -42,6 +43,7 @@ namespace DataImport.Excel
                        {
                            new FormatOptionsPage(context),
                            new FieldPropertiesPage(context),
+                           new DataLayerPage(context),
                            new ProgressPage(context),
                            new CompletePage(),
                        };

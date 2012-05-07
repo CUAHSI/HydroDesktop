@@ -5,6 +5,7 @@ using System.IO;
 using DataImport.CommonPages;
 using DataImport.CommonPages.Complete;
 using DataImport.CommonPages.Progress;
+using DataImport.CommonPages.SelectLayer;
 using DataImport.DataTableImport;
 using HydroDesktop.ImportExport;
 using Wizard.UI;
@@ -51,6 +52,7 @@ namespace DataImport.Csv
                        {
                            new FormatOptionsPage(context),
                            new FieldPropertiesPage(context),
+                           new DataLayerPage(context),
                            new ProgressPage(context),
                            new CompletePage(),
                        };
