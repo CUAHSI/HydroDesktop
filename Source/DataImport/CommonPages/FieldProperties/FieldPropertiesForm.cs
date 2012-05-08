@@ -27,9 +27,11 @@ namespace DataImport.CommonPages
         /// Create new instance of <see cref="FieldPropertiesForm"/>
         /// </summary>
         /// <param name="columnData">Column data</param>
-        public FieldPropertiesForm(ColumnInfo columnData)
+        /// <param name="dataSources">Data sources for comboboxes, etc...</param>
+        public FieldPropertiesForm(ColumnInfo columnData, DataSources dataSources)
         {
             if (columnData == null) throw new ArgumentNullException("columnData");
+            if (dataSources == null) throw new ArgumentNullException("dataSources");
             Contract.EndContractBlock();
 
             _columnData = columnData;
@@ -67,15 +69,7 @@ namespace DataImport.CommonPages
             // Variable
             variableView1.ReadOnly = true;
             cmbVariables.SelectedIndexChanged += CmbVariablesOnSelectedIndexChanged;
-            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
-            var variables = variablesRepo.GetAll();
-            if (_columnData.Variable != null &&
-               !Array.Exists(variables, v => _columnData.Variable == v))
-            {
-                Array.Resize(ref variables, variables.Length + 1);
-                variables[variables.Length - 1] = _columnData.Variable;
-            }
-            variablesBindingSource.DataSource = variables;
+            variablesBindingSource.DataSource = dataSources.Variables;
             cmbVariables.DataSource = variablesBindingSource;
             cmbVariables.DisplayMember = NameHelper.Name<Variable, object>(s => s.Name);
             if (_columnData.Variable != null)
@@ -213,5 +207,10 @@ namespace DataImport.CommonPages
         }
 
         #endregion
+    }
+
+    public class DataSources
+    {
+        public IList<Variable> Variables { get; set; }
     }
 }

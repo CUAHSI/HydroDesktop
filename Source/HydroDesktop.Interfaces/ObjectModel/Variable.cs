@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace HydroDesktop.Interfaces.ObjectModel
+﻿namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>
     /// The variable (observed property)
@@ -109,11 +106,8 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns></returns>
         public override bool Equals(BaseEntity other)
         {
-            if (other is Variable)
-            {
-                return ((Variable)other).Code.Equals(this.Code);
-            }
-            return base.Equals(other);
+            var variable = other as Variable;
+            return variable != null ? (variable).Code.Equals(Code) : base.Equals(other);
         }
         /// <summary>
         /// Get the unique hash code of this variable
