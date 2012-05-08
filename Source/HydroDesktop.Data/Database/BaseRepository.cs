@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using HydroDesktop.Interfaces;
@@ -108,10 +109,10 @@ namespace HydroDesktop.Database
             return GetAll().AsQueryable();
         }
 
-        public T[] GetAll()
+        public IList<T> GetAll()
         {
             var dt = AsDataTable();
-            var res = dt.Rows.Cast<DataRow>().Select(DataRowToEntity).ToArray();
+            var res = dt.Rows.Cast<DataRow>().Select(DataRowToEntity).ToList();
             return res;
         }
 
