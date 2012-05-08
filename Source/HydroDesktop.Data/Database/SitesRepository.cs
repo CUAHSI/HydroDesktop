@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.DAL;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database
@@ -11,14 +12,22 @@ namespace HydroDesktop.Database
     /// </summary>
     class SitesRepository : BaseRepository<Site>, ISitesRepository
     {
+        #region Fields
+
+        private readonly ISpatialReferenceRepository _spatialReferenceRepository;
+
+        #endregion
+
         #region Constructors
 
         public SitesRepository(DatabaseTypes dbType, string connectionString) : base(dbType, connectionString)
         {
+            _spatialReferenceRepository = new SpatialReferenceRepository(dbType, connectionString);
         }
 
         public SitesRepository(IHydroDbOperations db) : base(db)
         {
+            _spatialReferenceRepository = new SpatialReferenceRepository(db);
         }
 
         #endregion
@@ -45,9 +54,16 @@ namespace HydroDesktop.Database
                                LocalX = Convert.ToDouble(row["LocalX"]),
                                LocalY = Convert.ToDouble(row["LocalY"]),
                                VerticalDatum = Convert.ToString(row["VerticalDatum"]),
+                               LocalProjection = _spatialReferenceRepository.GetByKey(row["LocalProjectionID"]),
+                               SpatialReference = _spatialReferenceRepository.GetByKey(row["LatLongDatumID"]),
                                // todo: load other fields
                            };
             return site;
+        }
+
+        protected override string PrimaryKeyName
+        {
+            get { return "SiteID"; }
         }
 
         public bool Exists(Site site)
