@@ -40,6 +40,7 @@ namespace HydroDesktop.Interfaces
         /// Get all data from current repository as array of entities.
         /// </summary>
         /// <returns>Array of entities.</returns>
+        // todo: change to IList<T>
         T[] GetAll();
 
         /// <summary>

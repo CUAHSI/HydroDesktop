@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DataImport.CommonPages.FieldProperties;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using Wizard.UI;
 
@@ -124,7 +126,22 @@ namespace DataImport.CommonPages
 
         private DialogResult DoDetailsItemOnClick(ColumnInfo cData)
         {
-            using (var form = new FieldPropertiesForm((ColumnInfo)cData.Clone()))
+            // Prepare parameters to pass into FieldPropertiesForm
+            var cDataClone = (ColumnInfo) cData.Clone();
+            var dataSources = new DataSources();
+            var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
+            var variables = variablesRepo.GetAll().ToList();
+            foreach (var data in _settings.ColumnDatas)
+            {
+                if (data.Variable != null && !variables.Contains(data.Variable))
+                {
+                    variables.Add(data.Variable);
+                }
+            }
+            dataSources.Variables = variables;
+
+            // Show form
+            using (var form = new FieldPropertiesForm(cDataClone, dataSources))
             {
                 var res = form.ShowDialog();
                 if (res != DialogResult.OK) return res;
