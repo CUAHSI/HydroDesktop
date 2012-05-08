@@ -55,10 +55,9 @@ namespace DataImport.CommonPages
             var sitesRepo = RepositoryFactory.Instance.Get<ISitesRepository>();
             var sites = sitesRepo.GetAll();
             if (_columnData.Site != null &&
-                !Array.Exists(sites, site => _columnData.Site == site))
+                !sites.Contains(_columnData.Site))
             {
-                Array.Resize(ref sites, sites.Length + 1);
-                sites[sites.Length - 1] = _columnData.Site;
+                sites.Add(_columnData.Site);
             }
             sitesBindingSource.DataSource = sites; 
             cmbSites.DataSource = sitesBindingSource;
