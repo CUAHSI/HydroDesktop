@@ -22,6 +22,8 @@ namespace HydroDesktop.Database
         private readonly ISitesRepository _sitesRepository;
         private readonly IVariablesRepository _variablesRepository;
         private readonly IMethodsRepository _methodsRepository;
+        private readonly IQualityControlLevelsRepository _qualityControlLevelsRepository;
+        private readonly ISourcesRepository _sourcesRepository;
 
         #endregion
 
@@ -37,6 +39,8 @@ namespace HydroDesktop.Database
             _sitesRepository = new SitesRepository(dbType, connectionString);
             _variablesRepository = new VariablesRepository(dbType, connectionString);
             _methodsRepository = new MethodsRepository(dbType, connectionString);
+            _qualityControlLevelsRepository = new QualityControlLevelsRepository(dbType, connectionString);
+            _sourcesRepository = new SourcesRepository(dbType, connectionString);
         }
 
         /// <summary>
@@ -49,6 +53,8 @@ namespace HydroDesktop.Database
             _sitesRepository = new SitesRepository(db);
             _variablesRepository = new VariablesRepository(db);
             _methodsRepository = new MethodsRepository(db);
+            _qualityControlLevelsRepository = new QualityControlLevelsRepository(db);
+            _sourcesRepository = new SourcesRepository(db);
         }
 
         #endregion
@@ -164,34 +170,26 @@ namespace HydroDesktop.Database
             return SeriesListFromTable(seriesTable);
         }
 
-        public Series GetSeriesByID(long seriesID)
+        protected override Series DataRowToEntity(DataRow row)
         {
-            var seriesTable = DbOperations.LoadTable("seriesTable", "select * from DataSeries where seriesID=" + seriesID);
-            if (seriesTable.Rows.Count == 0) return null;
-
-            var series = new Series();
-            DataRow seriesRow = seriesTable.Rows[0];
-            series.BeginDateTime = Convert.ToDateTime(seriesRow["BeginDateTime"]);
-            series.EndDateTime = Convert.ToDateTime(seriesRow["EndDateTime"]);
-            series.BeginDateTimeUTC = Convert.ToDateTime(seriesRow["BeginDateTimeUTC"]);
-            series.EndDateTimeUTC = Convert.ToDateTime(seriesRow["EndDatetimeUTC"]);
-            series.Id = seriesID;
-            series.IsCategorical = Convert.ToBoolean(seriesRow["IsCategorical"]);
-            series.LastCheckedDateTime = Convert.ToDateTime(seriesRow["LastCheckedDateTime"]);
-            series.UpdateDateTime = Convert.ToDateTime(seriesRow["UpdateDateTime"]);
-            series.Subscribed = Convert.ToBoolean(seriesRow["Subscribed"]);
-            series.ValueCount = Convert.ToInt32(seriesRow["ValueCount"]);
-
-            series.Site = _sitesRepository.GetByKey(seriesRow["SiteID"]);
-            series.Variable = _variablesRepository.GetByKey(seriesRow["VariableID"]);
-            series.Method = _methodsRepository.GetByKey(seriesRow["MethodID"]);
-
-            var newSource = new Source {Id = Convert.ToInt32(seriesRow["SourceID"])};
-            series.Source = newSource;
-
-            var newQC = new QualityControlLevel {Id = Convert.ToInt32(seriesRow["QualityControlLevelID"])};
-            series.QualityControlLevel = newQC;
-
+            var series = new Series
+                             {
+                                 Id = Convert.ToInt64(row["SeriesID"]),
+                                 BeginDateTime = Convert.ToDateTime(row["BeginDateTime"]),
+                                 EndDateTime = Convert.ToDateTime(row["EndDateTime"]),
+                                 BeginDateTimeUTC = Convert.ToDateTime(row["BeginDateTimeUTC"]),
+                                 EndDateTimeUTC = Convert.ToDateTime(row["EndDatetimeUTC"]),
+                                 IsCategorical = Convert.ToBoolean(row["IsCategorical"]),
+                                 LastCheckedDateTime = Convert.ToDateTime(row["LastCheckedDateTime"]),
+                                 UpdateDateTime = Convert.ToDateTime(row["UpdateDateTime"]),
+                                 Subscribed = Convert.ToBoolean(row["Subscribed"]),
+                                 ValueCount = Convert.ToInt32(row["ValueCount"]),
+                                 Site = _sitesRepository.GetByKey(row["SiteID"]),
+                                 Variable = _variablesRepository.GetByKey(row["VariableID"]),
+                                 Method = _methodsRepository.GetByKey(row["MethodID"]),
+                                 Source = _sourcesRepository.GetByKey(row["SourceID"]),
+                                 QualityControlLevel =_qualityControlLevelsRepository.GetByKey(row["QualityControlLevelID"])
+                             };
 
             return series;
         }
@@ -216,7 +214,7 @@ namespace HydroDesktop.Database
             if (tblTheme.Rows.Count != 1) return false;
 
             //otherwise, delete the series
-            var seriesToDel = GetSeriesByID(seriesID);
+            var seriesToDel = GetByKey(seriesID);
 
             //SQL Queries
             var sqlSite = "SELECT count(SiteID) from DataSeries where SiteID = " + seriesToDel.Site.Id;
@@ -730,6 +728,11 @@ namespace HydroDesktop.Database
         protected override string TableName
         {
             get { return "DataSeries"; }
+        }
+
+        protected override string PrimaryKeyName
+        {
+            get { return "SeriesID"; }
         }
     }
 }

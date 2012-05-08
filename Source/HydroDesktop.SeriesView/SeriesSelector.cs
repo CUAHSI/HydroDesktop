@@ -248,7 +248,7 @@ namespace SeriesView
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var series = RepositoryFactory.Instance.Get<IDataSeriesRepository>().GetSeriesByID(_clickedSeriesID);
+            var series = RepositoryFactory.Instance.Get<IDataSeriesRepository>().GetByKey(_clickedSeriesID);
             if (series != null)
             {
                 new SeriesProperties(series).Show(this);

@@ -28,7 +28,7 @@ namespace HydroDesktop.ObjectModel.Controls
 
             if (this.IsDesignMode()) return;
 
-            bindingSource1.DataSource = typeof(Source);
+            Entity = null;
 
             // Set bindings
             tbOrganization.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Organization);

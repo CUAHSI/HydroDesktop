@@ -99,6 +99,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\IISOMetadataRepository.cs" />
+    <Compile Include="DAL\ISpatialReferenceRepository.cs" />
     <Compile Include="DatabaseChangedEventArgs.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FilterTypes.cs" />

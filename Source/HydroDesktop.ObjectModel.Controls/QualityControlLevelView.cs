@@ -6,13 +6,13 @@ using HydroDesktop.Interfaces.ObjectModel;
 namespace HydroDesktop.ObjectModel.Controls
 {
     /// <summary>
-    /// View of <see cref="Method"/>
+    /// View of <see cref="QualityControlLevel"/>
     /// </summary>
-    public partial class MethodView : UserControl
+    public partial class QualityControlLevelView : UserControl
     {
         #region Fields
 
-        private Method _entity;
+        private QualityControlLevel _entity;
         private bool _readOnly;
 
         #endregion
@@ -20,9 +20,9 @@ namespace HydroDesktop.ObjectModel.Controls
         #region Constructors
 
         /// <summary>
-        /// Create new instance of <see cref="MethodView"/>
+        /// Create new instance of <see cref="QualityControlLevelView"/>
         /// </summary>
-        public MethodView()
+        public QualityControlLevelView()
         {
             InitializeComponent();
 
@@ -31,8 +31,9 @@ namespace HydroDesktop.ObjectModel.Controls
             Entity = null;
 
             // Set bindings
-            tbDescription.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Method).Description);
-            tbLink.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Method).Link);
+            tbCode.AddBinding<TextBox, QualityControlLevel>(x => x.Text, bindingSource1, x => x.Code);
+            tbDefinition.AddBinding<TextBox, QualityControlLevel>(x => x.Text, bindingSource1, x => x.Definition);
+            tbExplanation.AddBinding<TextBox, QualityControlLevel>(x => x.Text, bindingSource1, x => x.Explanation);
         }
 
         #endregion
@@ -40,19 +41,20 @@ namespace HydroDesktop.ObjectModel.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets Entity to View
+        /// Current Entity
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Method Entity
+        public QualityControlLevel Entity
         {
             get { return _entity; }
             set
             {
                 _entity = value;
-                bindingSource1.DataSource = value ?? (object)typeof(Method);
+                bindingSource1.DataSource = value ?? (object)typeof(QualityControlLevel);
             }
         }
+
 
         /// <summary>
         /// Gets or sets a value indicating whether control is read-only.
@@ -65,8 +67,9 @@ namespace HydroDesktop.ObjectModel.Controls
             {
                 _readOnly = value;
 
-                tbDescription.ReadOnly = value;
-                tbLink.ReadOnly = value;
+                tbCode.ReadOnly = value;
+                tbDefinition.ReadOnly = value;
+                tbExplanation.ReadOnly = value;
             }
         }
 

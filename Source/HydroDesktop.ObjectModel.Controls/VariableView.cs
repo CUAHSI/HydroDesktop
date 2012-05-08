@@ -28,7 +28,7 @@ namespace HydroDesktop.ObjectModel.Controls
 
             if (this.IsDesignMode()) return;
 
-            bindingSource1.DataSource = typeof (Variable);
+            Entity = null;
 
             // Set Bindings
             tbName.AddBinding(() =>  default(TextBox).Text, bindingSource1, () => default(Variable).Name);
@@ -40,6 +40,10 @@ namespace HydroDesktop.ObjectModel.Controls
             nudTimeSupport.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Variable).TimeSupport);
             tbTimeUnits.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).TimeUnit);
             nudNoDataValue.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Variable).NoDataValue);
+            tbIsRegular.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).IsRegular);
+            tbGeneralCategory.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).GeneralCategory);
+            tbSpeciation.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).Speciation);
+
         }
 
         #endregion
@@ -81,6 +85,9 @@ namespace HydroDesktop.ObjectModel.Controls
                 nudTimeSupport.FullReadOnly = value;
                 tbTimeUnits.ReadOnly = value;
                 nudNoDataValue.FullReadOnly = value;
+                tbIsRegular.ReadOnly = value;
+                tbGeneralCategory.ReadOnly = value;
+                tbSpeciation.ReadOnly = value;
             }
         }
 

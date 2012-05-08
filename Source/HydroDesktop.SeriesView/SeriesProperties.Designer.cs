@@ -37,19 +37,28 @@
             this.tbMethod = new System.Windows.Forms.TabPage();
             this.methodView1 = new HydroDesktop.ObjectModel.Controls.MethodView();
             this.tbSource = new System.Windows.Forms.TabPage();
+            this.gbIsoMetadata = new System.Windows.Forms.GroupBox();
+            this.isoMetadataView1 = new HydroDesktop.ObjectModel.Controls.ISOMetadataView();
             this.sourceView1 = new HydroDesktop.ObjectModel.Controls.SourceView();
+            this.tbQualityControlLevel = new System.Windows.Forms.TabPage();
+            this.qualityControlLevelView1 = new HydroDesktop.ObjectModel.Controls.QualityControlLevelView();
+            this.tbSeries = new System.Windows.Forms.TabPage();
+            this.seriesShortView1 = new SeriesView.SeriesShortView();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
             this.tbMethod.SuspendLayout();
             this.tbSource.SuspendLayout();
+            this.gbIsoMetadata.SuspendLayout();
+            this.tbQualityControlLevel.SuspendLayout();
+            this.tbSeries.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(280, 399);
+            this.btnOK.Location = new System.Drawing.Point(383, 537);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -66,10 +75,12 @@
             this.tbProperties.Controls.Add(this.tbVariable);
             this.tbProperties.Controls.Add(this.tbMethod);
             this.tbProperties.Controls.Add(this.tbSource);
+            this.tbProperties.Controls.Add(this.tbQualityControlLevel);
+            this.tbProperties.Controls.Add(this.tbSeries);
             this.tbProperties.Location = new System.Drawing.Point(13, 13);
             this.tbProperties.Name = "tbProperties";
             this.tbProperties.SelectedIndex = 0;
-            this.tbProperties.Size = new System.Drawing.Size(342, 376);
+            this.tbProperties.Size = new System.Drawing.Size(445, 514);
             this.tbProperties.TabIndex = 1;
             // 
             // tbSite
@@ -78,7 +89,7 @@
             this.tbSite.Location = new System.Drawing.Point(4, 22);
             this.tbSite.Name = "tbSite";
             this.tbSite.Padding = new System.Windows.Forms.Padding(3);
-            this.tbSite.Size = new System.Drawing.Size(334, 350);
+            this.tbSite.Size = new System.Drawing.Size(437, 488);
             this.tbSite.TabIndex = 0;
             this.tbSite.Text = "Site";
             this.tbSite.UseVisualStyleBackColor = true;
@@ -89,7 +100,7 @@
             this.siteView1.Location = new System.Drawing.Point(3, 3);
             this.siteView1.Name = "siteView1";
             this.siteView1.ReadOnly = false;
-            this.siteView1.Size = new System.Drawing.Size(328, 344);
+            this.siteView1.Size = new System.Drawing.Size(431, 482);
             this.siteView1.TabIndex = 0;
             // 
             // tbVariable
@@ -98,7 +109,7 @@
             this.tbVariable.Location = new System.Drawing.Point(4, 22);
             this.tbVariable.Name = "tbVariable";
             this.tbVariable.Padding = new System.Windows.Forms.Padding(3);
-            this.tbVariable.Size = new System.Drawing.Size(334, 350);
+            this.tbVariable.Size = new System.Drawing.Size(437, 488);
             this.tbVariable.TabIndex = 1;
             this.tbVariable.Text = "Variable";
             this.tbVariable.UseVisualStyleBackColor = true;
@@ -109,7 +120,7 @@
             this.variableView1.Location = new System.Drawing.Point(3, 3);
             this.variableView1.Name = "variableView1";
             this.variableView1.ReadOnly = false;
-            this.variableView1.Size = new System.Drawing.Size(328, 344);
+            this.variableView1.Size = new System.Drawing.Size(431, 494);
             this.variableView1.TabIndex = 0;
             // 
             // tbMethod
@@ -118,7 +129,7 @@
             this.tbMethod.Location = new System.Drawing.Point(4, 22);
             this.tbMethod.Name = "tbMethod";
             this.tbMethod.Padding = new System.Windows.Forms.Padding(3);
-            this.tbMethod.Size = new System.Drawing.Size(334, 350);
+            this.tbMethod.Size = new System.Drawing.Size(437, 488);
             this.tbMethod.TabIndex = 2;
             this.tbMethod.Text = "Method";
             this.tbMethod.UseVisualStyleBackColor = true;
@@ -129,35 +140,95 @@
             this.methodView1.Location = new System.Drawing.Point(3, 3);
             this.methodView1.Name = "methodView1";
             this.methodView1.ReadOnly = false;
-            this.methodView1.Size = new System.Drawing.Size(328, 344);
+            this.methodView1.Size = new System.Drawing.Size(431, 494);
             this.methodView1.TabIndex = 0;
             // 
             // tbSource
             // 
+            this.tbSource.Controls.Add(this.gbIsoMetadata);
             this.tbSource.Controls.Add(this.sourceView1);
             this.tbSource.Location = new System.Drawing.Point(4, 22);
             this.tbSource.Name = "tbSource";
             this.tbSource.Padding = new System.Windows.Forms.Padding(3);
-            this.tbSource.Size = new System.Drawing.Size(334, 350);
+            this.tbSource.Size = new System.Drawing.Size(437, 488);
             this.tbSource.TabIndex = 3;
             this.tbSource.Text = "Source";
             this.tbSource.UseVisualStyleBackColor = true;
             // 
+            // gbIsoMetadata
+            // 
+            this.gbIsoMetadata.Controls.Add(this.isoMetadataView1);
+            this.gbIsoMetadata.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbIsoMetadata.Location = new System.Drawing.Point(3, 324);
+            this.gbIsoMetadata.Name = "gbIsoMetadata";
+            this.gbIsoMetadata.Size = new System.Drawing.Size(431, 161);
+            this.gbIsoMetadata.TabIndex = 2;
+            this.gbIsoMetadata.TabStop = false;
+            this.gbIsoMetadata.Text = "ISO Metadata";
+            // 
+            // isoMetadataView1
+            // 
+            this.isoMetadataView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.isoMetadataView1.Location = new System.Drawing.Point(3, 16);
+            this.isoMetadataView1.Name = "isoMetadataView1";
+            this.isoMetadataView1.ReadOnly = false;
+            this.isoMetadataView1.Size = new System.Drawing.Size(425, 142);
+            this.isoMetadataView1.TabIndex = 1;
+            // 
             // sourceView1
             // 
-            this.sourceView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sourceView1.Dock = System.Windows.Forms.DockStyle.Top;
             this.sourceView1.Location = new System.Drawing.Point(3, 3);
-            this.sourceView1.MinimumSize = new System.Drawing.Size(200, 355);
             this.sourceView1.Name = "sourceView1";
             this.sourceView1.ReadOnly = false;
-            this.sourceView1.Size = new System.Drawing.Size(328, 355);
+            this.sourceView1.Size = new System.Drawing.Size(431, 321);
             this.sourceView1.TabIndex = 0;
+            // 
+            // tbQualityControlLevel
+            // 
+            this.tbQualityControlLevel.Controls.Add(this.qualityControlLevelView1);
+            this.tbQualityControlLevel.Location = new System.Drawing.Point(4, 22);
+            this.tbQualityControlLevel.Name = "tbQualityControlLevel";
+            this.tbQualityControlLevel.Padding = new System.Windows.Forms.Padding(3);
+            this.tbQualityControlLevel.Size = new System.Drawing.Size(437, 488);
+            this.tbQualityControlLevel.TabIndex = 4;
+            this.tbQualityControlLevel.Text = "QualityControlLevel";
+            this.tbQualityControlLevel.UseVisualStyleBackColor = true;
+            // 
+            // qualityControlLevelView1
+            // 
+            this.qualityControlLevelView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.qualityControlLevelView1.Location = new System.Drawing.Point(3, 3);
+            this.qualityControlLevelView1.Name = "qualityControlLevelView1";
+            this.qualityControlLevelView1.ReadOnly = false;
+            this.qualityControlLevelView1.Size = new System.Drawing.Size(354, 386);
+            this.qualityControlLevelView1.TabIndex = 0;
+            // 
+            // tbSeries
+            // 
+            this.tbSeries.Controls.Add(this.seriesShortView1);
+            this.tbSeries.Location = new System.Drawing.Point(4, 22);
+            this.tbSeries.Name = "tbSeries";
+            this.tbSeries.Padding = new System.Windows.Forms.Padding(3);
+            this.tbSeries.Size = new System.Drawing.Size(437, 488);
+            this.tbSeries.TabIndex = 5;
+            this.tbSeries.Text = "Series";
+            this.tbSeries.UseVisualStyleBackColor = true;
+            // 
+            // seriesShortView1
+            // 
+            this.seriesShortView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.seriesShortView1.Location = new System.Drawing.Point(3, 3);
+            this.seriesShortView1.Name = "seriesShortView1";
+            this.seriesShortView1.ReadOnly = false;
+            this.seriesShortView1.Size = new System.Drawing.Size(431, 482);
+            this.seriesShortView1.TabIndex = 0;
             // 
             // SeriesProperties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(367, 434);
+            this.ClientSize = new System.Drawing.Size(470, 572);
             this.Controls.Add(this.tbProperties);
             this.Controls.Add(this.btnOK);
             this.MaximizeBox = false;
@@ -169,6 +240,9 @@
             this.tbVariable.ResumeLayout(false);
             this.tbMethod.ResumeLayout(false);
             this.tbSource.ResumeLayout(false);
+            this.gbIsoMetadata.ResumeLayout(false);
+            this.tbQualityControlLevel.ResumeLayout(false);
+            this.tbSeries.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -185,5 +259,11 @@
         private HydroDesktop.ObjectModel.Controls.MethodView methodView1;
         private System.Windows.Forms.TabPage tbSource;
         private HydroDesktop.ObjectModel.Controls.SourceView sourceView1;
+        private System.Windows.Forms.TabPage tbQualityControlLevel;
+        private HydroDesktop.ObjectModel.Controls.QualityControlLevelView qualityControlLevelView1;
+        private HydroDesktop.ObjectModel.Controls.ISOMetadataView isoMetadataView1;
+        private System.Windows.Forms.GroupBox gbIsoMetadata;
+        private System.Windows.Forms.TabPage tbSeries;
+        private SeriesShortView seriesShortView1;
     }
 }

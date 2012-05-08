@@ -97,7 +97,7 @@ Public Class cEditView
         Dim options As PlotOptions = New PlotOptions(PlotOptions.TimeSeriesType.Line, ccList0(colorcount Mod 10), CurveEditingColor, False, True)
         Dim data As DataTable
 
-        Dim series = _dataSeriesRepo.GetSeriesByID(SeriesID)
+        Dim series = _dataSeriesRepo.GetByKey(SeriesID)
 
         Dim variableName = series.Variable.Name
         Dim unitsName = series.Variable.VariableUnit.Name
@@ -236,7 +236,7 @@ Public Class cEditView
             OriginalDt = Editdt.Copy()
 
             'get the begin and end datetime of the series
-            Dim series = _dataSeriesRepo.GetSeriesByID(newseriesID)
+            Dim series = _dataSeriesRepo.GetByKey(newseriesID)
             Dim beginDateTime As Date = series.BeginDateTime
             Dim endDateTime As Date = series.EndDateTime
 
@@ -683,7 +683,7 @@ Public Class cEditView
 
     'Count the rows of a series
     Private Function SeriesRowsCount(ByVal seriesID As Integer) As Integer
-        Dim series = _dataSeriesRepo.GetSeriesByID(seriesID)
+        Dim series = _dataSeriesRepo.GetByKey(seriesID)
         Return If(series Is Nothing, 0, series.ValueCount)
     End Function
 

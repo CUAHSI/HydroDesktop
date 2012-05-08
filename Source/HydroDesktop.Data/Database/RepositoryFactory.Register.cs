@@ -1,4 +1,5 @@
 ﻿using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.DAL;
 
 namespace HydroDesktop.Database
 {
@@ -108,6 +109,18 @@ namespace HydroDesktop.Database
                         CreatorByConnectionString = (dbType, connStr) => new UnitConversionsRepository(dbType, connStr),
                         CreatorByDbOperations = dbOp => new UnitConversionsRepository(dbOp)
                     });
+            Add<ISpatialReferenceRepository>(
+               new RepositoryCreator
+               {
+                   CreatorByConnectionString = (dbType, connStr) => new SpatialReferenceRepository(dbType, connStr),
+                   CreatorByDbOperations = dbOp => new SpatialReferenceRepository(dbOp)
+               });
+            Add<IISOMetadataRepository>(
+               new RepositoryCreator
+               {
+                   CreatorByConnectionString = (dbType, connStr) => new ISOMetadataRepository(dbType, connStr),
+                   CreatorByDbOperations = dbOp => new ISOMetadataRepository(dbOp)
+               });
         }
     }
 }

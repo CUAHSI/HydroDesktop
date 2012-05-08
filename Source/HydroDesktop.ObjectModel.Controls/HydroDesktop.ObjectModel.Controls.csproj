@@ -42,6 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISOMetadataView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ISOMetadataView.Designer.cs">
+      <DependentUpon>ISOMetadataView.cs</DependentUpon>
+    </Compile>
     <Compile Include="MethodView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -52,6 +58,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QualityControlLevelView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QualityControlLevelView.Designer.cs">
+      <DependentUpon>QualityControlLevelView.cs</DependentUpon>
+    </Compile>
     <Compile Include="SiteView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -72,8 +84,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ISOMetadataView.resx">
+      <DependentUpon>ISOMetadataView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MethodView.resx">
       <DependentUpon>MethodView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QualityControlLevelView.resx">
+      <DependentUpon>QualityControlLevelView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SiteView.resx">
       <DependentUpon>SiteView.cs</DependentUpon>

@@ -22,6 +22,15 @@ namespace SeriesView
 
             sourceView1.ReadOnly = true;
             sourceView1.Entity = series.Source;
+
+            qualityControlLevelView1.ReadOnly = true;
+            qualityControlLevelView1.Entity = series.QualityControlLevel;
+
+            isoMetadataView1.ReadOnly = true;
+            isoMetadataView1.Entity = series.Source != null? series.Source.ISOMetadata : null;
+
+            seriesShortView1.ReadOnly = true;
+            seriesShortView1.Entity = series;
         }
 
         private void btnOK_Click(object sender, EventArgs e)

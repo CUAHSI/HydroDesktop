@@ -156,7 +156,7 @@ Public Class fDeriveNewDataSeries
     Private Sub InsertAggregateDataValues()
 
         'Setting values to variables
-        Dim series = dataSeriesRepository.GetSeriesByID(newSeriesID)
+        Dim series = dataSeriesRepository.GetByKey(newSeriesID)
 
         Dim nodatavalue = series.Variable.NoDataValue
         Dim firstDate = series.BeginDateTime

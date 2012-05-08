@@ -6,13 +6,13 @@ using HydroDesktop.Interfaces.ObjectModel;
 namespace HydroDesktop.ObjectModel.Controls
 {
     /// <summary>
-    /// View of <see cref="Method"/>
+    /// View of <see cref="ISOMetadata"/>
     /// </summary>
-    public partial class MethodView : UserControl
+    public partial class ISOMetadataView : UserControl
     {
         #region Fields
 
-        private Method _entity;
+        private ISOMetadata _entity;
         private bool _readOnly;
 
         #endregion
@@ -20,9 +20,9 @@ namespace HydroDesktop.ObjectModel.Controls
         #region Constructors
 
         /// <summary>
-        /// Create new instance of <see cref="MethodView"/>
+        /// Create new instance of <see cref="QualityControlLevelView"/>
         /// </summary>
-        public MethodView()
+        public ISOMetadataView()
         {
             InitializeComponent();
 
@@ -31,8 +31,11 @@ namespace HydroDesktop.ObjectModel.Controls
             Entity = null;
 
             // Set bindings
-            tbDescription.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Method).Description);
-            tbLink.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Method).Link);
+            tbTopicCategory.AddBinding<TextBox, ISOMetadata>(x => x.Text, bindingSource1, x => x.TopicCategory);
+            tbTitle.AddBinding<TextBox, ISOMetadata>(x => x.Text, bindingSource1, x => x.Title);
+            tbAbstract.AddBinding<TextBox, ISOMetadata>(x => x.Text, bindingSource1, x => x.Abstract);
+            tbProfileVersion.AddBinding<TextBox, ISOMetadata>(x => x.Text, bindingSource1, x => x.ProfileVersion);
+            tblMetadataLink.AddBinding<TextBox, ISOMetadata>(x => x.Text, bindingSource1, x => x.MetadataLink);
         }
 
         #endregion
@@ -40,19 +43,20 @@ namespace HydroDesktop.ObjectModel.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets Entity to View
+        /// Current Entity
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Method Entity
+        public ISOMetadata Entity
         {
             get { return _entity; }
             set
             {
                 _entity = value;
-                bindingSource1.DataSource = value ?? (object)typeof(Method);
+                bindingSource1.DataSource = value ?? (object)typeof(ISOMetadata);
             }
         }
+
 
         /// <summary>
         /// Gets or sets a value indicating whether control is read-only.
@@ -65,8 +69,11 @@ namespace HydroDesktop.ObjectModel.Controls
             {
                 _readOnly = value;
 
-                tbDescription.ReadOnly = value;
-                tbLink.ReadOnly = value;
+                tbTopicCategory.ReadOnly = value;
+                tbTitle.ReadOnly = value;
+                tbAbstract.ReadOnly = value;
+                tbProfileVersion.ReadOnly = value;
+                tblMetadataLink.ReadOnly = value;
             }
         }
 
