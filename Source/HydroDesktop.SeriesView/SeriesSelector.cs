@@ -248,11 +248,10 @@ namespace SeriesView
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var tableRows = MainView.Table.Select("SeriesID=" + _clickedSeriesID);
-            if (tableRows.Length > 0)
+            var series = RepositoryFactory.Instance.Get<IDataSeriesRepository>().GetByKey(_clickedSeriesID);
+            if (series != null)
             {
-                var f = new frmProperty(tableRows[0]);
-                f.Show();
+                new SeriesProperties(series).Show(this);
             }
         }
 
