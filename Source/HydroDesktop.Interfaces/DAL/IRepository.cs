@@ -23,6 +23,13 @@ namespace HydroDesktop.Interfaces
         /// <returns>ID</returns>
         [Obsolete("Don't use this method. It added only for backward compatibility with DbOperations.")]
         long GetNextID();
+
+        /// <summary>
+        /// Check that entity exists by given key
+        /// </summary>
+        /// <param name="key">Entity ID (key)</param>
+        /// <returns>True - entity exists, otherwise - false.</returns>
+        bool Exists(object key);
     }
 
     /// <summary>
