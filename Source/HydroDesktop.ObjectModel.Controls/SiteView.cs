@@ -28,7 +28,7 @@ namespace HydroDesktop.ObjectModel.Controls
 
             if (this.IsDesignMode()) return;
 
-            bindingSource1.DataSource = typeof(Site);
+            Entity = null;
 
             // Set Bindings
             tbSiteName.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Name);
@@ -43,6 +43,8 @@ namespace HydroDesktop.ObjectModel.Controls
             tbState.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).State);
             tbCounty.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).County);
             tbComments.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Comments);
+            tbLocalProjection.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).LocalProjection);
+            tbLatLongDatum.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).SpatialReference);
         }
 
         #endregion
@@ -87,6 +89,8 @@ namespace HydroDesktop.ObjectModel.Controls
                 tbState.ReadOnly = value;
                 tbCounty.ReadOnly = value;
                 tbComments.ReadOnly = value;
+                tbLocalProjection.ReadOnly = value;
+                tbLatLongDatum.ReadOnly = value;
             }
         }
 

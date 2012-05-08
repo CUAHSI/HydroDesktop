@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HydroDesktop.Interfaces.ObjectModel
+﻿namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>
     /// Represents a spatial reference system

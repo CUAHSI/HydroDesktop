@@ -121,7 +121,7 @@ namespace DataAggregation
                 if (seriesIDValue == null || seriesIDValue == DBNull.Value)
                     continue;
                 var seriesID = Convert.ToInt64(seriesIDValue);
-                var series = seriesRepo.GetSeriesByID(seriesID);
+                var series = seriesRepo.GetByKey(seriesID);
                 if (series == null) continue;
 
                 var curVar = series.Variable.Code;

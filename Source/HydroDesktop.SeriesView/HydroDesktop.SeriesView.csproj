@@ -121,6 +121,12 @@
     <Compile Include="SeriesSelector.Designer.cs">
       <DependentUpon>SeriesSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="SeriesShortView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SeriesShortView.Designer.cs">
+      <DependentUpon>SeriesShortView.cs</DependentUpon>
+    </Compile>
     <Compile Include="SeriesViewPlugin.cs" />
     <Compile Include="FilterDataSeries.cs">
       <SubType>Form</SubType>
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SeriesSelector.resx">
       <DependentUpon>SeriesSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SeriesShortView.resx">
+      <DependentUpon>SeriesShortView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -80,6 +80,7 @@
     <Compile Include="Database\DataServicesRepository.cs" />
     <Compile Include="Database\DataThemesRepository.cs" />
     <Compile Include="Database\DataValuesRepository.cs" />
+    <Compile Include="Database\ISOMetadataRepository.cs" />
     <Compile Include="Database\MetadataCacheManagerSQL.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -96,6 +97,7 @@
     <Compile Include="Database\SeriesProvenanceRepository.cs" />
     <Compile Include="Database\SitesRepository.cs" />
     <Compile Include="Database\SourcesRepository.cs" />
+    <Compile Include="Database\SpatialReferenceRepository.cs" />
     <Compile Include="Database\UnitConversionsRepository.cs" />
     <Compile Include="Database\UnitsRepository.cs" />
     <Compile Include="Database\VariablesRepository.cs" />

@@ -9,7 +9,7 @@ namespace HydroDesktop.Interfaces
     /// <summary>
     /// Interface for DataSeries Repository
     /// </summary>
-    public interface IDataSeriesRepository
+    public interface IDataSeriesRepository : IRepository<Series>
     {
         /// <summary>
         /// Get Variable.NoDataValue for given series
@@ -66,17 +66,6 @@ namespace HydroDesktop.Interfaces
         /// <param name="themeIDs">The ids of the themes</param>
         /// <returns>Data table.</returns>
         DataTable GetSeriesIDsWithNoDataValueTable(IEnumerable<int?> themeIDs);
-
-        
-        /// <summary>
-        /// Given a Series ID, finds corresponding series in the database
-        /// </summary>
-        /// <param name="seriesID">the series ID</param>
-        /// <returns>The Series object</returns>
-        /// <remarks>This method only returns the series metadata. It doesn't return the full list of data
-        /// values to save memory space.</remarks>
-        Series GetSeriesByID(long seriesID);
-
 
         /// <summary>
         /// Gets the list of all series that are available at a site

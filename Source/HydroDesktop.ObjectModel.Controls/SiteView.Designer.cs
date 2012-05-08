@@ -54,6 +54,10 @@
             this.lblCounty = new System.Windows.Forms.Label();
             this.tbComments = new System.Windows.Forms.TextBox();
             this.lblComments = new System.Windows.Forms.Label();
+            this.tbLocalProjection = new System.Windows.Forms.TextBox();
+            this.lblLocalProjection = new System.Windows.Forms.Label();
+            this.lblLatLongDatum = new System.Windows.Forms.Label();
+            this.tbLatLongDatum = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosAccuracy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLocalY)).BeginInit();
@@ -66,7 +70,7 @@
             // lblElevation
             // 
             this.lblElevation.AutoSize = true;
-            this.lblElevation.Location = new System.Drawing.Point(14, 130);
+            this.lblElevation.Location = new System.Drawing.Point(14, 149);
             this.lblElevation.Name = "lblElevation";
             this.lblElevation.Size = new System.Drawing.Size(51, 13);
             this.lblElevation.TabIndex = 20;
@@ -76,7 +80,7 @@
             // 
             this.tbSiteCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSiteCode.Location = new System.Drawing.Point(103, 44);
+            this.tbSiteCode.Location = new System.Drawing.Point(103, 42);
             this.tbSiteCode.Name = "tbSiteCode";
             this.tbSiteCode.Size = new System.Drawing.Size(162, 20);
             this.tbSiteCode.TabIndex = 1;
@@ -84,7 +88,7 @@
             // lblSiteCode
             // 
             this.lblSiteCode.AutoSize = true;
-            this.lblSiteCode.Location = new System.Drawing.Point(14, 47);
+            this.lblSiteCode.Location = new System.Drawing.Point(14, 45);
             this.lblSiteCode.Name = "lblSiteCode";
             this.lblSiteCode.Size = new System.Drawing.Size(52, 13);
             this.lblSiteCode.TabIndex = 19;
@@ -93,7 +97,7 @@
             // lblLongitude
             // 
             this.lblLongitude.AutoSize = true;
-            this.lblLongitude.Location = new System.Drawing.Point(14, 102);
+            this.lblLongitude.Location = new System.Drawing.Point(14, 97);
             this.lblLongitude.Name = "lblLongitude";
             this.lblLongitude.Size = new System.Drawing.Size(54, 13);
             this.lblLongitude.TabIndex = 18;
@@ -102,7 +106,7 @@
             // lblLatitude
             // 
             this.lblLatitude.AutoSize = true;
-            this.lblLatitude.Location = new System.Drawing.Point(14, 74);
+            this.lblLatitude.Location = new System.Drawing.Point(14, 71);
             this.lblLatitude.Name = "lblLatitude";
             this.lblLatitude.Size = new System.Drawing.Size(45, 13);
             this.lblLatitude.TabIndex = 17;
@@ -130,15 +134,15 @@
             // 
             this.tbVertDatum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbVertDatum.Location = new System.Drawing.Point(103, 156);
+            this.tbVertDatum.Location = new System.Drawing.Point(103, 172);
             this.tbVertDatum.Name = "tbVertDatum";
             this.tbVertDatum.Size = new System.Drawing.Size(162, 20);
-            this.tbVertDatum.TabIndex = 21;
+            this.tbVertDatum.TabIndex = 6;
             // 
             // lblVerticalDatum
             // 
             this.lblVerticalDatum.AutoSize = true;
-            this.lblVerticalDatum.Location = new System.Drawing.Point(14, 159);
+            this.lblVerticalDatum.Location = new System.Drawing.Point(14, 175);
             this.lblVerticalDatum.Name = "lblVerticalDatum";
             this.lblVerticalDatum.Size = new System.Drawing.Size(76, 13);
             this.lblVerticalDatum.TabIndex = 22;
@@ -147,7 +151,7 @@
             // lblLocalX
             // 
             this.lblLocalX.AutoSize = true;
-            this.lblLocalX.Location = new System.Drawing.Point(14, 186);
+            this.lblLocalX.Location = new System.Drawing.Point(14, 201);
             this.lblLocalX.Name = "lblLocalX";
             this.lblLocalX.Size = new System.Drawing.Size(40, 13);
             this.lblLocalX.TabIndex = 24;
@@ -156,7 +160,7 @@
             // lblLocalY
             // 
             this.lblLocalY.AutoSize = true;
-            this.lblLocalY.Location = new System.Drawing.Point(14, 214);
+            this.lblLocalY.Location = new System.Drawing.Point(14, 227);
             this.lblLocalY.Name = "lblLocalY";
             this.lblLocalY.Size = new System.Drawing.Size(40, 13);
             this.lblLocalY.TabIndex = 26;
@@ -165,7 +169,7 @@
             // lblPosAccuracy
             // 
             this.lblPosAccuracy.AutoSize = true;
-            this.lblPosAccuracy.Location = new System.Drawing.Point(13, 242);
+            this.lblPosAccuracy.Location = new System.Drawing.Point(13, 279);
             this.lblPosAccuracy.Name = "lblPosAccuracy";
             this.lblPosAccuracy.Size = new System.Drawing.Size(84, 13);
             this.lblPosAccuracy.TabIndex = 28;
@@ -177,7 +181,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudPosAccuracy.DecimalPlaces = 4;
             this.nudPosAccuracy.FullReadOnly = false;
-            this.nudPosAccuracy.Location = new System.Drawing.Point(103, 240);
+            this.nudPosAccuracy.Location = new System.Drawing.Point(103, 276);
             this.nudPosAccuracy.Maximum = new decimal(new int[] {
             90,
             0,
@@ -190,7 +194,7 @@
             -2147483648});
             this.nudPosAccuracy.Name = "nudPosAccuracy";
             this.nudPosAccuracy.Size = new System.Drawing.Size(162, 20);
-            this.nudPosAccuracy.TabIndex = 27;
+            this.nudPosAccuracy.TabIndex = 10;
             // 
             // nudLocalY
             // 
@@ -198,7 +202,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudLocalY.DecimalPlaces = 4;
             this.nudLocalY.FullReadOnly = false;
-            this.nudLocalY.Location = new System.Drawing.Point(103, 212);
+            this.nudLocalY.Location = new System.Drawing.Point(103, 224);
             this.nudLocalY.Maximum = new decimal(new int[] {
             90,
             0,
@@ -211,7 +215,7 @@
             -2147483648});
             this.nudLocalY.Name = "nudLocalY";
             this.nudLocalY.Size = new System.Drawing.Size(162, 20);
-            this.nudLocalY.TabIndex = 25;
+            this.nudLocalY.TabIndex = 8;
             // 
             // nudLocalX
             // 
@@ -219,7 +223,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudLocalX.DecimalPlaces = 4;
             this.nudLocalX.FullReadOnly = false;
-            this.nudLocalX.Location = new System.Drawing.Point(103, 184);
+            this.nudLocalX.Location = new System.Drawing.Point(103, 198);
             this.nudLocalX.Maximum = new decimal(new int[] {
             90,
             0,
@@ -232,7 +236,7 @@
             -2147483648});
             this.nudLocalX.Name = "nudLocalX";
             this.nudLocalX.Size = new System.Drawing.Size(162, 20);
-            this.nudLocalX.TabIndex = 23;
+            this.nudLocalX.TabIndex = 7;
             // 
             // nudElevation
             // 
@@ -240,7 +244,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudElevation.DecimalPlaces = 4;
             this.nudElevation.FullReadOnly = false;
-            this.nudElevation.Location = new System.Drawing.Point(103, 128);
+            this.nudElevation.Location = new System.Drawing.Point(103, 146);
             this.nudElevation.Maximum = new decimal(new int[] {
             -1,
             -1,
@@ -253,7 +257,7 @@
             -2147483648});
             this.nudElevation.Name = "nudElevation";
             this.nudElevation.Size = new System.Drawing.Size(162, 20);
-            this.nudElevation.TabIndex = 4;
+            this.nudElevation.TabIndex = 5;
             // 
             // nudLng
             // 
@@ -261,7 +265,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudLng.DecimalPlaces = 4;
             this.nudLng.FullReadOnly = false;
-            this.nudLng.Location = new System.Drawing.Point(103, 100);
+            this.nudLng.Location = new System.Drawing.Point(103, 94);
             this.nudLng.Maximum = new decimal(new int[] {
             180,
             0,
@@ -282,7 +286,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudLat.DecimalPlaces = 4;
             this.nudLat.FullReadOnly = false;
-            this.nudLat.Location = new System.Drawing.Point(103, 72);
+            this.nudLat.Location = new System.Drawing.Point(103, 68);
             this.nudLat.Maximum = new decimal(new int[] {
             90,
             0,
@@ -301,15 +305,15 @@
             // 
             this.tbState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbState.Location = new System.Drawing.Point(103, 266);
+            this.tbState.Location = new System.Drawing.Point(103, 302);
             this.tbState.Name = "tbState";
             this.tbState.Size = new System.Drawing.Size(162, 20);
-            this.tbState.TabIndex = 29;
+            this.tbState.TabIndex = 11;
             // 
             // lblState
             // 
             this.lblState.AutoSize = true;
-            this.lblState.Location = new System.Drawing.Point(14, 269);
+            this.lblState.Location = new System.Drawing.Point(14, 305);
             this.lblState.Name = "lblState";
             this.lblState.Size = new System.Drawing.Size(32, 13);
             this.lblState.TabIndex = 30;
@@ -319,15 +323,15 @@
             // 
             this.tbCounty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbCounty.Location = new System.Drawing.Point(103, 292);
+            this.tbCounty.Location = new System.Drawing.Point(103, 328);
             this.tbCounty.Name = "tbCounty";
             this.tbCounty.Size = new System.Drawing.Size(162, 20);
-            this.tbCounty.TabIndex = 31;
+            this.tbCounty.TabIndex = 12;
             // 
             // lblCounty
             // 
             this.lblCounty.AutoSize = true;
-            this.lblCounty.Location = new System.Drawing.Point(14, 295);
+            this.lblCounty.Location = new System.Drawing.Point(14, 331);
             this.lblCounty.Name = "lblCounty";
             this.lblCounty.Size = new System.Drawing.Size(40, 13);
             this.lblCounty.TabIndex = 32;
@@ -337,24 +341,64 @@
             // 
             this.tbComments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbComments.Location = new System.Drawing.Point(103, 318);
+            this.tbComments.Location = new System.Drawing.Point(103, 354);
             this.tbComments.Name = "tbComments";
             this.tbComments.Size = new System.Drawing.Size(162, 20);
-            this.tbComments.TabIndex = 33;
+            this.tbComments.TabIndex = 13;
             // 
             // lblComments
             // 
             this.lblComments.AutoSize = true;
-            this.lblComments.Location = new System.Drawing.Point(14, 321);
+            this.lblComments.Location = new System.Drawing.Point(14, 357);
             this.lblComments.Name = "lblComments";
             this.lblComments.Size = new System.Drawing.Size(56, 13);
             this.lblComments.TabIndex = 34;
             this.lblComments.Text = "Comments";
             // 
+            // tbLocalProjection
+            // 
+            this.tbLocalProjection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbLocalProjection.Location = new System.Drawing.Point(103, 250);
+            this.tbLocalProjection.Name = "tbLocalProjection";
+            this.tbLocalProjection.Size = new System.Drawing.Size(162, 20);
+            this.tbLocalProjection.TabIndex = 9;
+            // 
+            // lblLocalProjection
+            // 
+            this.lblLocalProjection.AutoSize = true;
+            this.lblLocalProjection.Location = new System.Drawing.Point(14, 253);
+            this.lblLocalProjection.Name = "lblLocalProjection";
+            this.lblLocalProjection.Size = new System.Drawing.Size(80, 13);
+            this.lblLocalProjection.TabIndex = 36;
+            this.lblLocalProjection.Text = "LocalProjection";
+            // 
+            // lblLatLongDatum
+            // 
+            this.lblLatLongDatum.AutoSize = true;
+            this.lblLatLongDatum.Location = new System.Drawing.Point(14, 123);
+            this.lblLatLongDatum.Name = "lblLatLongDatum";
+            this.lblLatLongDatum.Size = new System.Drawing.Size(77, 13);
+            this.lblLatLongDatum.TabIndex = 38;
+            this.lblLatLongDatum.Text = "LatLongDatum";
+            // 
+            // tbLatLongDatum
+            // 
+            this.tbLatLongDatum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbLatLongDatum.Location = new System.Drawing.Point(103, 120);
+            this.tbLatLongDatum.Name = "tbLatLongDatum";
+            this.tbLatLongDatum.Size = new System.Drawing.Size(162, 20);
+            this.tbLatLongDatum.TabIndex = 4;
+            // 
             // SiteView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblLatLongDatum);
+            this.Controls.Add(this.tbLatLongDatum);
+            this.Controls.Add(this.lblLocalProjection);
+            this.Controls.Add(this.tbLocalProjection);
             this.Controls.Add(this.tbComments);
             this.Controls.Add(this.lblComments);
             this.Controls.Add(this.tbCounty);
@@ -380,7 +424,7 @@
             this.Controls.Add(this.tbSiteName);
             this.Controls.Add(this.lblSiteName);
             this.Name = "SiteView";
-            this.Size = new System.Drawing.Size(279, 353);
+            this.Size = new System.Drawing.Size(279, 387);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosAccuracy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLocalY)).EndInit();
@@ -420,5 +464,9 @@
         private System.Windows.Forms.Label lblCounty;
         private System.Windows.Forms.TextBox tbComments;
         private System.Windows.Forms.Label lblComments;
+        private System.Windows.Forms.TextBox tbLocalProjection;
+        private System.Windows.Forms.Label lblLocalProjection;
+        private System.Windows.Forms.Label lblLatLongDatum;
+        private System.Windows.Forms.TextBox tbLatLongDatum;
     }
 }

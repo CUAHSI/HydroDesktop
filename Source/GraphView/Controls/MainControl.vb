@@ -217,7 +217,7 @@ Namespace Controls
         Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As TimeSeriesPlotOptions
             Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
             Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-            Dim series = dataSeriesRepo.GetSeriesByID(seriesID)
+            Dim series = dataSeriesRepo.GetByKey(seriesID)
 
             Dim strStartDate = StartDateTime
             Dim strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1)
@@ -359,7 +359,7 @@ Namespace Controls
 
         Private Sub DateRangeSelection(ByVal serieID As Integer)
             Dim repository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
-            Dim series = repository.GetSeriesByID(serieID)
+            Dim series = repository.GetByKey(serieID)
             If series = Nothing Then Return
 
             Dim bDateTime = series.BeginDateTime
