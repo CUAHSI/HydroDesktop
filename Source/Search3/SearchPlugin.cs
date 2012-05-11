@@ -298,6 +298,11 @@ namespace Search3
             {
                 first.IsSelected = true;
             }
+            // Deselect "Map Layers" legend item (http://hydrodesktop.codeplex.com/workitem/8458)
+            App.Legend.RootNodes
+                .Where(r => r.IsSelected && r.LegendText == "Map Layers")
+                .ToList()
+                .ForEach(r => r.IsSelected = false);
 
             // Activate metadata ribbon tab
             App.HeaderControl.SelectRoot(SharedConstants.MetadataRootKey);
