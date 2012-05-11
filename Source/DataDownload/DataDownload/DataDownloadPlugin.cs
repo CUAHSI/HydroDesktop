@@ -30,8 +30,8 @@ namespace HydroDesktop.DataDownload
     {
         #region Fields
 
-        private SimpleActionItem _btnDownload1;
-        private SimpleActionItem _btnDownload2;
+        private SimpleActionItem _btnDownloadInSearch;
+        private SimpleActionItem _btnDownload;
         private SimpleActionItem _btnUpdate;
         private SimpleActionItem _btnShowPopups;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
@@ -132,14 +132,10 @@ namespace HydroDesktop.DataDownload
             // Initialize menu
 
             var metadataRootKey = SharedConstants.MetadataRootKey;
-            var searchRootKey = SharedConstants.SearchRootkey;
             var header = App.HeaderControl;
 
             //add the "metadata" tab
             header.Add(new RootItem(metadataRootKey, Msg.Metadata) { SortOrder = -5 });
-            
-            // if the search root item is not present, add it
-            try{header.Add(new RootItem(searchRootKey, Msg.Search) { SortOrder = -10 });} catch(ArgumentException) { } //in this case root item has been already added
             
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group});
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
@@ -151,8 +147,7 @@ namespace HydroDesktop.DataDownload
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
             header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.zoom_selection_16x16, LargeImage = Resources.zoom_selection_32x32 });
 
-            header.Add(_btnDownload1 = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = searchRootKey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
-            header.Add(_btnDownload2 = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+            header.Add(_btnDownload = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
             header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
             header.Add(_btnShowPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
 
@@ -166,6 +161,7 @@ namespace HydroDesktop.DataDownload
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             DownloadManager.Completed += DownloadManager_Completed;
             App.HeaderControl.RootItemSelected += RootItemSelected;
+            App.ExtensionsActivated += AppOnExtensionsActivated;
             //----
 
             // Update SeriesControl ContextMenu
@@ -181,11 +177,13 @@ namespace HydroDesktop.DataDownload
         {
             App.HeaderControl.RemoveAll();
 
+            // Unsubscribe from events
             App.Map.LayerAdded -= Map_LayerAdded;
             App.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
             App.HeaderControl.RootItemSelected -= RootItemSelected;
+            App.ExtensionsActivated -= AppOnExtensionsActivated;
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
@@ -205,6 +203,15 @@ namespace HydroDesktop.DataDownload
         #endregion
 
         #region Private methods
+
+        private void AppOnExtensionsActivated(object sender, EventArgs eventArgs)
+        {
+            // Add download button into search tab
+            if (App.GetExtension("Search3") != null)
+            {
+                App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+            }
+        }
 
         /// <summary>
         /// Select or deselect Features
@@ -463,8 +470,11 @@ namespace HydroDesktop.DataDownload
                 }
                 lm.UpdateContextMenu();
 
-                _btnDownload1.Enabled = true;
-                _btnDownload2.Enabled = true;
+                if (_btnDownloadInSearch != null)
+                {
+                    _btnDownloadInSearch.Enabled = true;
+                }
+                _btnDownload.Enabled = true;
                 _btnUpdate.Enabled = true;
                 _btnShowPopups.Enabled = true;
             }
