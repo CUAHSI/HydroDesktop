@@ -96,7 +96,6 @@
     <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Resources\AmeriFlux.gif" />
   </ItemGroup>
   <ItemGroup>

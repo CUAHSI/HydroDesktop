@@ -34,47 +34,52 @@ namespace HydroDesktop.DownloadExtensions
             bool isHeaderControlNeeded = App.CompositionContainer.GetExportedValues<IHeaderControl>().Count() == 0;
             bool isStatusControlNeeded = App.CompositionContainer.GetExportedValues<IStatusControl>().Count() == 0;
 
+            //installs the extensions from the online repository on-demand
+            //TODO: the list of extensions to install should be in a xml config file instead of hard-coding it
+            
+            //install ribbon (from DotSpatial MyGet repository)
             if (isHeaderControlNeeded && isStatusControlNeeded)
             {
                 App.UpdateProgress("Downloading a Ribbon extension...");
                 packages.Install("DotSpatial.Plugins.Ribbon");
             }
-
+            //install menu bar
             if (App.GetExtension("DotSpatial.Plugins.MenuBar") == null)
             {
                 App.UpdateProgress("Downloading a MenuBar extension...");
                 packages.Install("DotSpatial.Plugins.MenuBar");
             }
 
-            //install other packages
+            //install attribute data explorer
             if (App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer") == null)
             {
                 App.UpdateProgress("Downloading an AttributeDataExplorer extension...");
                 packages.Install("DotSpatial.Plugins.AttributeDataExplorer");
             }
+            //install web map (temporarily commented out until incompatiblity issue gets fixed)
+            //if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
+            //{
+            //    App.UpdateProgress("Downloading a WebMap extension...");
+            //    packages.Install("DotSpatial.Plugins.WebMap");
+            //}
 
-            if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
+            //install sample project manager
+            //if (App.GetExtension("DotSpatial.Plugins.ProjectTemplateManager") == null)
+            //{
+            //    App.UpdateProgress("Downloading a project template manager extension...");
+            //    packages.Install("DotSpatial.Plugins.ProjectTemplateManager");
+            //}
+            //install North America sample project (this will also install the SampleProjectManager)
+            if (App.GetExtension("DotSpatial.SampleProjects.NorthAmerica") == null)
             {
-                App.UpdateProgress("Downloading a WebMap extension...");
-                packages.Install("DotSpatial.Plugins.WebMap");
+                App.UpdateProgress("Downloading North America project template...");
+                packages.Install("DotSpatial.SampleProjects.NorthAmerica");
             }
-
-            if (App.GetExtension("DotSpatial.Plugins.ProjectTemplateManager") == null)
+            //install the World sample project
+            if (App.GetExtension("DotSpatial.SampleProjects.World") == null)
             {
-                App.UpdateProgress("Downloading a project template manager extension...");
-                packages.Install("DotSpatial.Plugins.ProjectTemplateManager");
-            }
-
-            if (App.GetExtension("DotSpatial.ProjectTemplate.NorthAmerica") == null)
-            {
-                App.UpdateProgress("Downloading north america project template...");
-                packages.Install("DotSpatial.ProjectTemplate.NorthAmerica");
-            }
-
-            if (App.GetExtension("DotSpatial.ProjectTemplate.World") == null)
-            {
-                App.UpdateProgress("Downloading world project template...");
-                packages.Install("DotSpatial.ProjectTemplate.World");
+                App.UpdateProgress("Downloading World project template...");
+                packages.Install("DotSpatial.SampleProjects.World");
             }
 
             App.RefreshExtensions();

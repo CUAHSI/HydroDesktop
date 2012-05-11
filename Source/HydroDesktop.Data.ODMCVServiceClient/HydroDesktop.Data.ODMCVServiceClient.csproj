@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Service References\ServiceReference.ODMCV\ODMCV_1_1.wsdl" />
   </ItemGroup>
   <ItemGroup>
