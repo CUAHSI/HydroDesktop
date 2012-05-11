@@ -29,8 +29,6 @@ namespace Search3
     public class SearchPlugin : Extension, IWebServicesStore, ISearchPlugin
     {
         #region Fields
-        
-        const string TYPE_IN_KEYWORD = "Type-in a Keyword";
 
         private SimpleActionItem rbServices;
         private TextEntryActionItem rbStartDate;
@@ -54,11 +52,17 @@ namespace Search3
             base.Activate();
 
             App.SerializationManager.Serializing += SerializationManager_Serializing;
+            App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
+            App.Map.FunctionModeChanged += Map_FunctionModeChanged;
+            App.Map.SelectionChanged += Map_SelectionChanged;
         }
 
         public override void Deactivate()
         {
             App.SerializationManager.Serializing -= SerializationManager_Serializing;
+            App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
+            App.Map.FunctionModeChanged -= Map_FunctionModeChanged;
+            App.Map.SelectionChanged -= Map_SelectionChanged;
 
             App.HeaderControl.RemoveAll();
             base.Deactivate();
@@ -80,94 +84,26 @@ namespace Search3
             }
         }
 
-        /// <summary>
-        /// This method removes the "Download" and "MetadataFetcher" buttons if they were added before search was activated
-        /// by temporarily deactivating the DataDownload and MetadataFetcher extensions
-        /// </summary>
-        private void RemoveDownloadButtons()
-        {
-            var downloadExt = App.GetExtension("DataDownload");
-            if (downloadExt != null)
-                if (downloadExt.IsActive)
-                    downloadExt.Deactivate();
-
-            var metadataFetcherExt = App.GetExtension("MetadataFetcher");
-            if (metadataFetcherExt != null)
-                if (metadataFetcherExt.IsActive)
-                    metadataFetcherExt.Deactivate();
-        }
-
-        /// <summary>
-        /// This methods re-adds the "Download" and "MetadataFetcher" buttons after finishing search activation
-        /// by re-activating the DataDownload and MetadataFetcher extensions
-        /// </summary>
-        private void AddDownloadButtons()
-        {
-            var downloadExt = App.GetExtension("DataDownload");
-            if (downloadExt != null)
-                if (!downloadExt.IsActive)
-                    downloadExt.Activate();
-
-            var metadataFetcherExt = App.GetExtension("MetadataFetcher");
-            if (metadataFetcherExt != null)
-                if (!metadataFetcherExt.IsActive)
-                    metadataFetcherExt.Activate();
-        }
-
         private void AddSearchRibbon()
         {
-            //This was an attempt by Jiri to resolve the sort order issue. Need to find a better solution here.
-            //RemoveDownloadButtons();
-            
             var head = App.HeaderControl;
             
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
-            var root = new RootItem(_searchKey, "Search") { SortOrder = -10 };
-            try
-            {
-                head.Add(root);
-            }
-            catch (ArgumentException) 
-            { 
-              //catch exception in case the root item has been already added
-            }
+            head.Add(new RootItem(_searchKey, Msg.Search) { SortOrder = -10 });
 
             #region Area group
 
-            const string grpArea = "Area";
-
-            //to get area select mode
-            App.Map.FunctionModeChanged +=Map_FunctionModeChanged;
-            App.Map.SelectionChanged += Map_SelectionChanged;
-
-            //Draw Box
-            rbDrawBox = new SimpleActionItem(_searchKey, "Draw Rectangle", rbDrawBox_Click)
-                            {
-                                LargeImage = Resources.Draw_Box_32,
-                                SmallImage = Resources.Draw_Box_16,
-                                GroupCaption = grpArea,
-                                ToggleGroupKey = grpArea
-                            };
-            head.Add(rbDrawBox);
+            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click){LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area});
             SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
-
-            //Select
-            rbSelect = new SimpleActionItem(_searchKey, "Select Polygons", rbSelect_Click)
-                           {
-                               ToolTipText = "Select Region",
-                               LargeImage = Resources.select_poly_32,
-                               SmallImage = Resources.select_poly_16,
-                               GroupCaption = grpArea,
-                               ToggleGroupKey = grpArea
-                           };
-            head.Add(rbSelect);
+            
+            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Polygons, rbSelect_Click){ToolTipText = Msg.Select_Polygons_Tooltip, LargeImage = Resources.select_poly_32, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area,ToggleGroupKey = Msg.Area, });
             SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
-            head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = grpArea, LargeImage = Resources.select_table_32, SmallImage = Resources.select_table_16 });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, PanTool_Click) { GroupCaption = grpArea, SmallImage = Resources.hand_16x16, ToggleGroupKey = grpArea });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = grpArea, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = grpArea });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = grpArea, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = grpArea });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, LargeImage = Resources.select_table_32, SmallImage = Resources.select_table_16 });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
 
             #endregion
 
@@ -213,25 +149,7 @@ namespace Search3
 
             #endregion
 
-            #region Search and download buttons
-
-            const string grpSearch = "Search";
-            var rbSearch = new SimpleActionItem("Run Search", rbSearch_Click)
-                               {
-                                   LargeImage = Resources.search_32,
-                                   SmallImage = Resources.search_16,
-                                   ToolTipText = "Run Search based on selected criteria",
-                                   GroupCaption = grpSearch,
-                                   RootKey = _searchKey
-                               };
-            head.Add(rbSearch);
-
-            #endregion
-
-            App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
-
-            //re-add the download buttons
-            AddDownloadButtons();
+            head.Add(new SimpleActionItem(_searchKey, Msg.Run_Search, rbSearch_Click) {GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
         }
 
         /// <summary>
@@ -265,15 +183,14 @@ namespace Search3
             //Keyword text entry
             if (rbKeyword == null)
             {
-                const string grpKeyword = "Keyword";
                 rbKeyword = new DropDownActionItem
                                 {
                                     AllowEditingText = true,
-                                    GroupCaption = grpKeyword,
+                                    GroupCaption = Msg.Keyword,
                                     RootKey = _searchKey,
                                     Width = 150,
                                     Enabled = false,
-                                    NullValuePrompt = TYPE_IN_KEYWORD
+                                    NullValuePrompt = Msg.Type_In_Keyword
                                 };
             }
 
@@ -281,7 +198,6 @@ namespace Search3
             PopulateKeywords();
 
             App.HeaderControl.Add(rbKeyword);
-            //SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { PopulateKeywords(); };
         }
         
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
@@ -356,10 +272,10 @@ namespace Search3
                 else
                     message = sex.Message;
 
-                MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(message, Msg.Information, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }catch(Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -438,7 +354,7 @@ namespace Search3
         void Instance_AreaRectangleChanged(object sender, EventArgs e)
         {
             var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
-            rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : "Draw Box";
+            rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
         }
 
         void rbDrawBox_Click(object sender, EventArgs e)
