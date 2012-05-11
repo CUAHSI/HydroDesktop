@@ -69,23 +69,27 @@
             this.tbOrganization.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbOrganization.Location = new System.Drawing.Point(101, 10);
+            this.tbOrganization.Multiline = true;
             this.tbOrganization.Name = "tbOrganization";
-            this.tbOrganization.Size = new System.Drawing.Size(182, 20);
+            this.tbOrganization.Size = new System.Drawing.Size(182, 32);
             this.tbOrganization.TabIndex = 0;
+            this.tbOrganization.Text = "line1\r\nline2";
             // 
             // tbDescription
             // 
             this.tbDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDescription.Location = new System.Drawing.Point(101, 38);
+            this.tbDescription.Location = new System.Drawing.Point(101, 48);
+            this.tbDescription.Multiline = true;
             this.tbDescription.Name = "tbDescription";
-            this.tbDescription.Size = new System.Drawing.Size(182, 20);
+            this.tbDescription.Size = new System.Drawing.Size(182, 48);
             this.tbDescription.TabIndex = 1;
+            this.tbDescription.Text = "line1\r\nline2\r\nline3";
             // 
             // lblSourceDescription
             // 
             this.lblSourceDescription.AutoSize = true;
-            this.lblSourceDescription.Location = new System.Drawing.Point(13, 41);
+            this.lblSourceDescription.Location = new System.Drawing.Point(13, 51);
             this.lblSourceDescription.Name = "lblSourceDescription";
             this.lblSourceDescription.Size = new System.Drawing.Size(60, 13);
             this.lblSourceDescription.TabIndex = 2;
@@ -95,7 +99,7 @@
             // 
             this.tbLink.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbLink.Location = new System.Drawing.Point(101, 66);
+            this.tbLink.Location = new System.Drawing.Point(101, 104);
             this.tbLink.Name = "tbLink";
             this.tbLink.Size = new System.Drawing.Size(182, 20);
             this.tbLink.TabIndex = 2;
@@ -103,7 +107,7 @@
             // lblLink
             // 
             this.lblLink.AutoSize = true;
-            this.lblLink.Location = new System.Drawing.Point(13, 69);
+            this.lblLink.Location = new System.Drawing.Point(13, 107);
             this.lblLink.Name = "lblLink";
             this.lblLink.Size = new System.Drawing.Size(27, 13);
             this.lblLink.TabIndex = 4;
@@ -113,7 +117,7 @@
             // 
             this.tbContactName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbContactName.Location = new System.Drawing.Point(101, 94);
+            this.tbContactName.Location = new System.Drawing.Point(101, 132);
             this.tbContactName.Name = "tbContactName";
             this.tbContactName.Size = new System.Drawing.Size(182, 20);
             this.tbContactName.TabIndex = 3;
@@ -121,7 +125,7 @@
             // lblContactName
             // 
             this.lblContactName.AutoSize = true;
-            this.lblContactName.Location = new System.Drawing.Point(13, 97);
+            this.lblContactName.Location = new System.Drawing.Point(13, 135);
             this.lblContactName.Name = "lblContactName";
             this.lblContactName.Size = new System.Drawing.Size(73, 13);
             this.lblContactName.TabIndex = 6;
@@ -131,7 +135,7 @@
             // 
             this.tbPhone.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPhone.Location = new System.Drawing.Point(101, 122);
+            this.tbPhone.Location = new System.Drawing.Point(101, 160);
             this.tbPhone.Name = "tbPhone";
             this.tbPhone.Size = new System.Drawing.Size(182, 20);
             this.tbPhone.TabIndex = 4;
@@ -139,7 +143,7 @@
             // lblPhone
             // 
             this.lblPhone.AutoSize = true;
-            this.lblPhone.Location = new System.Drawing.Point(13, 125);
+            this.lblPhone.Location = new System.Drawing.Point(13, 163);
             this.lblPhone.Name = "lblPhone";
             this.lblPhone.Size = new System.Drawing.Size(38, 13);
             this.lblPhone.TabIndex = 8;
@@ -149,7 +153,7 @@
             // 
             this.tbEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbEmail.Location = new System.Drawing.Point(101, 150);
+            this.tbEmail.Location = new System.Drawing.Point(101, 188);
             this.tbEmail.Name = "tbEmail";
             this.tbEmail.Size = new System.Drawing.Size(182, 20);
             this.tbEmail.TabIndex = 5;
@@ -157,7 +161,7 @@
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(13, 153);
+            this.lblEmail.Location = new System.Drawing.Point(13, 191);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(32, 13);
             this.lblEmail.TabIndex = 10;
@@ -167,7 +171,7 @@
             // 
             this.tbAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbAddress.Location = new System.Drawing.Point(101, 178);
+            this.tbAddress.Location = new System.Drawing.Point(101, 216);
             this.tbAddress.Name = "tbAddress";
             this.tbAddress.Size = new System.Drawing.Size(182, 20);
             this.tbAddress.TabIndex = 6;
@@ -175,7 +179,7 @@
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(13, 181);
+            this.lblAddress.Location = new System.Drawing.Point(13, 219);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(45, 13);
             this.lblAddress.TabIndex = 12;
@@ -185,7 +189,7 @@
             // 
             this.tbCity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbCity.Location = new System.Drawing.Point(101, 206);
+            this.tbCity.Location = new System.Drawing.Point(101, 244);
             this.tbCity.Name = "tbCity";
             this.tbCity.Size = new System.Drawing.Size(182, 20);
             this.tbCity.TabIndex = 7;
@@ -193,7 +197,7 @@
             // lblCity
             // 
             this.lblCity.AutoSize = true;
-            this.lblCity.Location = new System.Drawing.Point(13, 209);
+            this.lblCity.Location = new System.Drawing.Point(13, 247);
             this.lblCity.Name = "lblCity";
             this.lblCity.Size = new System.Drawing.Size(24, 13);
             this.lblCity.TabIndex = 14;
@@ -203,7 +207,7 @@
             // 
             this.tbState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbState.Location = new System.Drawing.Point(101, 234);
+            this.tbState.Location = new System.Drawing.Point(101, 272);
             this.tbState.Name = "tbState";
             this.tbState.Size = new System.Drawing.Size(182, 20);
             this.tbState.TabIndex = 8;
@@ -211,7 +215,7 @@
             // lblState
             // 
             this.lblState.AutoSize = true;
-            this.lblState.Location = new System.Drawing.Point(13, 237);
+            this.lblState.Location = new System.Drawing.Point(13, 275);
             this.lblState.Name = "lblState";
             this.lblState.Size = new System.Drawing.Size(32, 13);
             this.lblState.TabIndex = 16;
@@ -221,7 +225,7 @@
             // 
             this.tbZipCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbZipCode.Location = new System.Drawing.Point(101, 262);
+            this.tbZipCode.Location = new System.Drawing.Point(101, 300);
             this.tbZipCode.Name = "tbZipCode";
             this.tbZipCode.Size = new System.Drawing.Size(182, 20);
             this.tbZipCode.TabIndex = 9;
@@ -229,7 +233,7 @@
             // lblZipCode
             // 
             this.lblZipCode.AutoSize = true;
-            this.lblZipCode.Location = new System.Drawing.Point(13, 265);
+            this.lblZipCode.Location = new System.Drawing.Point(13, 303);
             this.lblZipCode.Name = "lblZipCode";
             this.lblZipCode.Size = new System.Drawing.Size(47, 13);
             this.lblZipCode.TabIndex = 18;
@@ -239,15 +243,17 @@
             // 
             this.tbCitation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbCitation.Location = new System.Drawing.Point(101, 290);
+            this.tbCitation.Location = new System.Drawing.Point(101, 328);
+            this.tbCitation.Multiline = true;
             this.tbCitation.Name = "tbCitation";
-            this.tbCitation.Size = new System.Drawing.Size(182, 20);
+            this.tbCitation.Size = new System.Drawing.Size(182, 48);
             this.tbCitation.TabIndex = 10;
+            this.tbCitation.Text = "line1\r\nline2\r\nline3";
             // 
             // lblCitation
             // 
             this.lblCitation.AutoSize = true;
-            this.lblCitation.Location = new System.Drawing.Point(13, 293);
+            this.lblCitation.Location = new System.Drawing.Point(13, 331);
             this.lblCitation.Name = "lblCitation";
             this.lblCitation.Size = new System.Drawing.Size(42, 13);
             this.lblCitation.TabIndex = 20;
@@ -280,7 +286,7 @@
             this.Controls.Add(this.tbOrganization);
             this.Controls.Add(this.lblOrganization);
             this.Name = "SourceView";
-            this.Size = new System.Drawing.Size(296, 326);
+            this.Size = new System.Drawing.Size(296, 388);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
