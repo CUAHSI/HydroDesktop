@@ -62,9 +62,11 @@
             this.tbDefinition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbDefinition.Location = new System.Drawing.Point(86, 36);
+            this.tbDefinition.Multiline = true;
             this.tbDefinition.Name = "tbDefinition";
-            this.tbDefinition.Size = new System.Drawing.Size(118, 20);
+            this.tbDefinition.Size = new System.Drawing.Size(118, 32);
             this.tbDefinition.TabIndex = 1;
+            this.tbDefinition.Text = "line1\r\nline2";
             // 
             // lblDefinition
             // 
@@ -79,15 +81,17 @@
             // 
             this.tbExplanation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbExplanation.Location = new System.Drawing.Point(86, 62);
+            this.tbExplanation.Location = new System.Drawing.Point(86, 75);
+            this.tbExplanation.Multiline = true;
             this.tbExplanation.Name = "tbExplanation";
-            this.tbExplanation.Size = new System.Drawing.Size(118, 20);
+            this.tbExplanation.Size = new System.Drawing.Size(118, 32);
             this.tbExplanation.TabIndex = 2;
+            this.tbExplanation.Text = "line1\r\nline2";
             // 
             // lblExplanation
             // 
             this.lblExplanation.AutoSize = true;
-            this.lblExplanation.Location = new System.Drawing.Point(14, 65);
+            this.lblExplanation.Location = new System.Drawing.Point(14, 78);
             this.lblExplanation.Name = "lblExplanation";
             this.lblExplanation.Size = new System.Drawing.Size(62, 13);
             this.lblExplanation.TabIndex = 4;
@@ -104,7 +108,7 @@
             this.Controls.Add(this.tbCode);
             this.Controls.Add(this.lblCode);
             this.Name = "QualityControlLevelView";
-            this.Size = new System.Drawing.Size(217, 94);
+            this.Size = new System.Drawing.Size(217, 121);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
