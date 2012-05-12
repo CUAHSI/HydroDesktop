@@ -122,18 +122,17 @@ namespace Search3
             #endregion
 
             #region Dates group
-
-            const string grpDates = "Time Range";
-            rbStartDate = new TextEntryActionItem { Caption = "Start", GroupCaption = grpDates, RootKey = _searchKey, Width = 60 };
+            
+            rbStartDate = new TextEntryActionItem { Caption = "Start", GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 60 };
             rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
             head.Add(rbStartDate);
 
-            rbEndDate = new TextEntryActionItem { Caption = " End", GroupCaption = grpDates, RootKey = _searchKey, Width = 60 };
+            rbEndDate = new TextEntryActionItem { Caption = " End", GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 60 };
             head.Add(rbEndDate);
             rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
             UpdateDatesCaption();
-            
-            head.Add(new SimpleActionItem(_searchKey, Msg.Select_Dates, rbDate_Click){GroupCaption = grpDates, LargeImage = Resources.select_date_v1_32, SmallImage = Resources.select_date_v1_16});
+
+            head.Add(new SimpleActionItem(_searchKey, Msg.Select_Dates, rbDate_Click) { GroupCaption = Msg.Time_Range, LargeImage = Resources.select_date_v1_32, SmallImage = Resources.select_date_v1_16 });
 
             #endregion
 
@@ -213,31 +212,80 @@ namespace Search3
         
         private DateTime? ValidateDateEdit(TextEntryActionItem item, string itemName, string dateFormat, bool showMessage)
         {
-            var validateDate = (Func<string, DateTime?>)delegate(string str)
+            DateTime? result = null;
+            string error = null;
+            try
             {
-                try
+                var date = DateTime.ParseExact(item.Text, dateFormat, CultureInfo.CurrentCulture);
+
+                var minDate = new DateTime(1753, 1, 1);
+                var maxDate = DateTime.MaxValue;
+                if (date < minDate || date > maxDate)
                 {
-                    return DateTime.ParseExact(str, dateFormat, CultureInfo.CurrentCulture);
+                    throw new Exception(string.Format("Date must be between {0} and {1}", minDate.ToShortDateString(), maxDate.ToShortDateString()));
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
-            };
-            var result = validateDate(item.Text);
-            if (result == null && showMessage)
+
+                result = date;
+            }
+            catch (ArgumentNullException)
             {
-                MessageBox.Show(string.Format("{0} is in incorrect format. Please enter {1} in the format {2}", itemName, itemName.ToLower(), dateFormat),
-                                string.Format("{0} validation", itemName), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                error = string.Format("{0} should be non-empty. Please enter {1} in the format {2}", itemName,
+                                      itemName.ToLower(), dateFormat);
+            }
+            catch (FormatException)
+            {
+                error = string.Format("{0} is in incorrect format. Please enter {1} in the format {2}", itemName,
+                                      itemName.ToLower(), dateFormat);
+            }catch(Exception ex)
+            {
+                error = ex.Message;
+            }
+
+            if (!string.IsNullOrEmpty(error) && showMessage)
+            {
+                MessageBox.Show(error, string.Format("{0} validation", itemName), MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             return result;
         }
 
+        private bool ValidateStartDate(bool showMessage)
+        {
+            var result = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, showMessage);
+            if (result != null)
+            {
+                var date = result.Value;
+                // Additional validation for start date
+                if (SearchSettings.Instance.DateSettings.EndDate < date)
+                {
+                    if (showMessage)
+                    {
+                        MessageBox.Show("End Date must be greater than Start Date.", "Start Date validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    return false;
+                }
+
+                SearchSettings.Instance.DateSettings.StartDate = date;
+                return true;
+            }
+            return false;
+        }
+
+        private bool ValidateEndDate(bool showMessage)
+        {
+            var result = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, showMessage);
+            if (result != null)
+            {
+                SearchSettings.Instance.DateSettings.EndDate = result.Value;
+                return true;
+            }
+            return false;
+        }
+
         void rbSearch_Click(object sender, EventArgs e)
         {
-            // Validation of Start/End date
-            if (ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, true) == null ||
-                ValidateDateEdit(rbEndDate, "End Date", _datesFormat, true) == null)
+            // Validation of Start/End date. 
+            // First should be validated EndDate, because StartDate validation depends from EndDate
+            if (!ValidateEndDate(true) || !ValidateStartDate(true))
             {
                 return;
             }
@@ -679,23 +727,13 @@ namespace Search3
         void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
-
-            var result = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, false);
-            if (result != null)
-            {
-                SearchSettings.Instance.DateSettings.EndDate = result.Value;
-            }
+            ValidateEndDate(false);
         }
 
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "Text") return;
-
-            var result = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, false);
-            if (result != null)
-            {
-                SearchSettings.Instance.DateSettings.StartDate = result.Value;
-            }
+            ValidateStartDate(false);
         }
 
         #endregion

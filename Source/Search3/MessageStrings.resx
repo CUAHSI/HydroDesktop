@@ -162,6 +162,9 @@
   <data name="Select_Polygons_Tooltip" xml:space="preserve">
     <value>Select Region</value>
   </data>
+  <data name="Time_Range" xml:space="preserve">
+    <value>Time Range</value>
+  </data>
   <data name="Type_In_Keyword" xml:space="preserve">
     <value>Type-in a Keyword</value>
   </data>
