@@ -72,5 +72,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("No_Data_Plot", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Number of Observations.
+        '''</summary>
+        Friend Shared ReadOnly Property Number_Observations() As String
+            Get
+                Return ResourceManager.GetString("Number_Observations", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace

@@ -89,8 +89,8 @@ Namespace Controls
 
                 'Dim i As Integer
                 'Dim gPane As ZedGraph.GraphPane = zgHistogramPlot.GraphPane 'GraphPane of the zg5Histogram plot object -> used to set data and characteristics
-                Dim ptList As New ZedGraph.PointPairList 'collection of points for the Histogram chart
-                Dim histBars As ZedGraph.BarItem 'Bar Item curve -> Histogram bars on the plot           
+                Dim ptList As New PointPairList 'collection of points for the Histogram chart
+                Dim histBars As BarItem 'Bar Item curve -> Histogram bars on the plot           
 
                 zgHistogramPlot.IsShowVScrollBar = True
                 zgHistogramPlot.IsShowHScrollBar = True
@@ -100,11 +100,11 @@ Namespace Controls
                 With m_Options
 
 
-                    If (.HistTypeMethod = PlotOptions.HistogramType.Probability) Then
+                    If (.HistTypeMethod = HistogramType.Probability) Then
                         gPane.YAxis.Title.Text = "Probability Density"
-                    ElseIf (.HistTypeMethod = PlotOptions.HistogramType.Count) Then
-                        gPane.YAxis.Title.Text = "Number of Observations"
-                    ElseIf (.HistTypeMethod = PlotOptions.HistogramType.Relative) Then
+                    ElseIf (.HistTypeMethod = HistogramType.Count) Then
+                        gPane.YAxis.Title.Text = My.Resources.MessageStrings.Number_Observations
+                    ElseIf (.HistTypeMethod = HistogramType.Relative) Then
                         gPane.YAxis.Title.Text = "Relative Number of Observations"
                     End If
 
@@ -253,20 +253,19 @@ Namespace Controls
             Dim jMode As Integer
             Static yMode As Double
             Dim xLimits As List(Of Double) = New List(Of Double)
-            Dim yLimits As List(Of Double) = New List(Of Double)
-
+            Dim yLimits As List(Of Double)
 
             'do the binning according to the pci_plotoptions HistAlg item
-            If pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Sturges Then
+            If pOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Sturges Then
                 'Sturges gives us the number of bins
-                pOptions.numBins = Math.Ceiling(Math.Log(System.Convert.ToDouble(Statistics.Count(m_Data)), 2) + 1)
+                pOptions.numBins = Math.Ceiling(Math.Log(Convert.ToDouble(Statistics.Count(m_Data)), 2) + 1)
                 xLimits = Pretty.PrettyP(Statistics.Minimum(m_Data), Statistics.Maximum(m_Data), pOptions.numBins)
 
                 dX = xLimits(2)
                 pOptions.numBins = (xLimits(1) - xLimits(0)) / xLimits(2)
                 pOptions.binWidth = dX
 
-            ElseIf pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Scott Then
+            ElseIf pOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Scott Then
                 ' Scotts gives the binwidth
 
 
@@ -280,7 +279,7 @@ Namespace Controls
                 pOptions.binWidth = dX
 
 
-            ElseIf pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Freedman Then
+            ElseIf pOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Freedman Then
                 'FD gives us the bin width, dX
 
                 pOptions.binWidth = 2 * (Statistics.UpperQuartile(m_Data) - Statistics.LowerQuartile(m_Data)) / (Statistics.Count(m_Data) ^ (1 / 3))
@@ -328,7 +327,6 @@ Namespace Controls
                     validRows = HistTable.Select(str, "")
 
                     yValue(i) = validRows.Length
-                    validRows = Nothing
                 Next
 
                 'loop through bins and find the max bin count and the mode
@@ -349,10 +347,10 @@ Namespace Controls
 
 
                 'transform the bin counts (if needed)
-                If .HistTypeMethod = PlotOptions.HistogramType.Count Then
+                If .HistTypeMethod = HistogramType.Count Then
                     '.yValue is good
                     'do nothing
-                ElseIf .HistTypeMethod = PlotOptions.HistogramType.Probability Then
+                ElseIf .HistTypeMethod = HistogramType.Probability Then
                     'use normalizing constant to make the histogram integrate to 1
                     Dim pdf As Double = 0
                     Dim k As Integer
@@ -365,7 +363,7 @@ Namespace Controls
                         yValue(j) = yValue(j) / pdf
                     Next
 
-                ElseIf .HistTypeMethod = PlotOptions.HistogramType.Relative Then
+                ElseIf .HistTypeMethod = HistogramType.Relative Then
                     'use normalizing constant to make the histogram relative
                     For j = 0 To .numBins
                         yValue(j) = yValue(j) / Statistics.Count(m_Data)

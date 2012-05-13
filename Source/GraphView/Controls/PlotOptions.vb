@@ -2,10 +2,10 @@
 Namespace Controls
     Public Class PlotOptionsControl
         'Inherits Windows.Forms.UserControl
-        Public tsType As PlotOptions.TimeSeriesType = PlotOptions.TimeSeriesType.Both
-        Public bwType As PlotOptions.BoxWhiskerType = PlotOptions.BoxWhiskerType.Monthly
-        Public hpType As PlotOptions.HistogramType = PlotOptions.HistogramType.Count
-        Public hpAlgo As PlotOptions.HistorgramAlgorithms = PlotOptions.HistorgramAlgorithms.Sturges
+        Public tsType As TimeSeriesType = TimeSeriesType.Both
+        Public bwType As BoxWhiskerType = BoxWhiskerType.Monthly
+        Public hpType As HistogramType = HistogramType.Count
+        Public hpAlgo As HistorgramAlgorithms = HistorgramAlgorithms.Sturges
         Public IsShowLegend As Boolean = True
 
         Public Property Options() As PlotOptions
@@ -14,51 +14,30 @@ Namespace Controls
             End Get
             Set(ByVal value As PlotOptions)
                 Select Case value.TimeSeriesMethod
-                    Case PlotOptions.TimeSeriesType.Line
-
-                    Case PlotOptions.TimeSeriesType.Point
-
-                    Case PlotOptions.TimeSeriesType.Both
-
+                    Case TimeSeriesType.Line
+                    Case TimeSeriesType.Point
+                    Case TimeSeriesType.Both
                 End Select
 
                 Select Case value.BoxWhiskerMethod
-                    Case PlotOptions.BoxWhiskerType.Monthly
-
-                    Case PlotOptions.BoxWhiskerType.Seasonal
-
-                    Case PlotOptions.BoxWhiskerType.Yearly
-
-                    Case PlotOptions.BoxWhiskerType.Overall
-
+                    Case BoxWhiskerType.Monthly
+                    Case BoxWhiskerType.Seasonal
+                    Case BoxWhiskerType.Yearly
+                    Case BoxWhiskerType.Overall
                 End Select
 
                 Select Case value.HistTypeMethod
-                    Case PlotOptions.HistogramType.Count
-
-                    Case PlotOptions.HistogramType.Probability
-
-                    Case PlotOptions.HistogramType.Relative
+                    Case HistogramType.Count
+                    Case HistogramType.Probability
+                    Case HistogramType.Relative
 
                 End Select
 
                 Select Case value.HistAlgorothmsMethod
-                    Case PlotOptions.HistorgramAlgorithms.Scott
-
-                    Case PlotOptions.HistorgramAlgorithms.Sturges
-
-                    Case PlotOptions.HistorgramAlgorithms.Freedman
-
+                    Case HistorgramAlgorithms.Scott
+                    Case HistorgramAlgorithms.Sturges
+                    Case HistorgramAlgorithms.Freedman
                 End Select
-
-                'btnSetLineColor.BackColor = value.GetLineColor
-                'btnSetPointColor.BackColor = value.GetPointColor
-                'dtpStartDatePicker.Value = value.StartDate
-                'dtpEndDatePicker.Value = value.EndDate
-                'ckbDateRangeChange.Checked = value.ChangeDateRange
-                'ckbShowLegend.Checked = value.ShowLegend
-                'txtLineccNumber.Text = value.LineColorList
-                'txtPointccNumber.Text = value.PointColorList
             End Set
         End Property
 

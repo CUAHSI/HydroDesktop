@@ -1,6 +1,8 @@
-﻿Imports HydroDesktop.Interfaces.ObjectModel
-Imports ZedGraph
+﻿Imports System.Windows.Forms
 Imports System.Drawing
+Imports GraphView.My.Resources
+Imports HydroDesktop.Interfaces.ObjectModel
+Imports ZedGraph
 
 Namespace Controls
 
@@ -38,7 +40,7 @@ Namespace Controls
         Private Const XColumn As String = "LocalDateTime"
         Private Const YColumn As String = "DataValue"
 
-        Public Shared m_Data As Data.DataTable
+        Public Shared m_Data As DataTable
         ' Public Shared m_DataSet As Data.DataSet
         Public Shared m_Site As String
         Public Shared m_Var As String
@@ -60,7 +62,7 @@ Namespace Controls
         Private Const db_outFld_ValDTDay As String = "DateDay"
 #End Region
 
-        Public Sub Plot(ByRef objDataTable As Data.DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, Optional ByVal e_StdDev As Double = 0)
+        Public Sub Plot(ByRef objDataTable As DataTable, ByVal strSiteName As String, ByVal strVariableName As String, ByVal strVariableUnits As String, ByRef objOptions As PlotOptions, Optional ByVal e_StdDev As Double = 0)
             Try
                 Dim master As MasterPane = zgSummaryPlot.MasterPane
                 If master.PaneList.Count = 0 Then
@@ -132,7 +134,7 @@ Namespace Controls
                 gPane4.XAxis.IsVisible = False
                 gPane4.YAxis.IsVisible = False
 
-                zgSummaryPlot.MasterPane.Title.Text = My.Resources.MessageStrings.No_Data_Plot
+                zgSummaryPlot.MasterPane.Title.Text = MessageStrings.No_Data_Plot
                 zgSummaryPlot.RestoreScale(gPane1)
                 zgSummaryPlot.RestoreScale(gPane2)
                 zgSummaryPlot.RestoreScale(gPane3)
@@ -146,12 +148,8 @@ Namespace Controls
 
 #Region "Time Series Plot"
         Public Sub Replot(ByVal options As PlotOptions)
-            Try
-                m_Options = options
-                TimeSeriesPlot()
-            Catch ex As Exception
-                Throw New Exception("Error Occured in zgSummaryPlot.Replot" & vbCrLf & ex.Message)
-            End Try
+            m_Options = options
+            TimeSeriesPlot()
         End Sub
 
 
@@ -164,7 +162,7 @@ Namespace Controls
                 If (m_Data Is Nothing) Or (m_Data.Rows.Count <= 0) Then
                     gPane1.XAxis.IsVisible = False
                     gPane1.YAxis.IsVisible = False
-                    gPane1.Title.Text = My.Resources.MessageStrings.No_Data_Plot
+                    gPane1.Title.Text = MessageStrings.No_Data_Plot
                 Else
 
                     'Setting Scroll and scale
@@ -216,13 +214,13 @@ Namespace Controls
                     curve.Symbol.Border.IsVisible = False
                     curve.Symbol.Border.IsVisible = False
                     Select Case m_Options.TimeSeriesMethod
-                        Case PlotOptions.TimeSeriesType.Line
+                        Case TimeSeriesType.Line
                             curve.Line.IsVisible = True
                             curve.Symbol.IsVisible = False
-                        Case PlotOptions.TimeSeriesType.Point
+                        Case TimeSeriesType.Point
                             curve.Line.IsVisible = False
                             curve.Symbol.IsVisible = True
-                        Case PlotOptions.TimeSeriesType.None
+                        Case TimeSeriesType.None
                             curve.Line.IsVisible = False
                             curve.Symbol.IsVisible = False
                         Case Else
@@ -252,12 +250,12 @@ Namespace Controls
 
         End Sub
 
-        Private Sub zgSummaryPlot_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As System.Drawing.Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgSummaryPlot.ContextMenuBuilder
+        Private Sub zgSummaryPlot_ContextMenuBuilder(ByVal sender As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState) Handles zgSummaryPlot.ContextMenuBuilder
             ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
 
             ' Add item to export to text file
             ' Create a new menu item
-            Dim item As System.Windows.Forms.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Dim item As ToolStripMenuItem = New ToolStripMenuItem()
             ' This is the user-defined Tag so you can find this menu item later if necessary
             item.Name = "export_to_text_file"
             item.Tag = "export_to_text_file"
@@ -269,7 +267,7 @@ Namespace Controls
             menuStrip.Items.Add(item)
 
             ' Add item to export to change line color
-            item = New System.Windows.Forms.ToolStripMenuItem()
+            item = New ToolStripMenuItem()
             item.Name = "set_line_color"
             item.Tag = "set_line_color"
             item.Text = "Set Line Color"
@@ -277,14 +275,14 @@ Namespace Controls
             menuStrip.Items.Add(item)
         End Sub
 
-        Private Function PromptForColor(ByVal defaultColor As System.Drawing.Color) As System.Drawing.Color
-            Dim dlgColor As System.Windows.Forms.ColorDialog = New System.Windows.Forms.ColorDialog()
+        Private Function PromptForColor(ByVal defaultColor As Color) As Color
+            Dim dlgColor As ColorDialog = New ColorDialog()
 
             If Not IsDBNull(defaultColor) Then
                 dlgColor.Color = defaultColor
             End If
 
-            If (dlgColor.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            If (dlgColor.ShowDialog() = DialogResult.OK) Then
                 Return dlgColor.Color
             Else
                 Return Nothing
@@ -292,12 +290,12 @@ Namespace Controls
         End Function
 
         Protected Sub ExportToTextFile()
-            System.Windows.Forms.MessageBox.Show("Not Yet Implemented")
+            MessageBox.Show("Not Yet Implemented")
         End Sub
 
         Protected Sub SetLineColor()
             If zgSummaryPlot.GraphPane.CurveList.Count > 0 Then
-                Dim newColor As System.Drawing.Color = PromptForColor(zgSummaryPlot.GraphPane.CurveList.Item(0).Color)
+                Dim newColor As Color = PromptForColor(zgSummaryPlot.GraphPane.CurveList.Item(0).Color)
                 If Not IsDBNull(newColor) Then
                     zgSummaryPlot.GraphPane.CurveList.Item(0).Color = newColor
                     zgSummaryPlot.Refresh()
@@ -312,11 +310,11 @@ Namespace Controls
             Dim i As Integer 'counter
             'Dim gPane2 As ZedGraph.GraphPane 'GraphPane of the zgProbability plot object -> used to set data and characteristics
             'Dim g As Drawing.Graphics 'graphics object of the zgProbability plot object -> used to redraw/update the plot
-            Dim ptList As ZedGraph.PointPairList 'collection of points for the Probability plot
-            Dim bflPtList As New ZedGraph.PointPairList
-            Dim probLine As ZedGraph.LineItem
-            Dim bflLine As New ZedGraph.LineItem("")
-            Dim validRows() As Data.DataRow
+            Dim ptList As PointPairList 'collection of points for the Probability plot
+            Dim bflPtList As New PointPairList
+            Dim probLine As LineItem
+            Dim bflLine As New LineItem("")
+            Dim validRows() As DataRow
             Dim numRows As Integer
             Dim curValue As Double
             Dim curX As Double
@@ -335,7 +333,7 @@ Namespace Controls
                 gPane2.XAxis.MinorTic.Size = 0
                 gPane2.XAxis.Title.Text = vbCrLf & vbCrLf & "Cumulative Frequency < Stated Value %"
                 gPane2.XAxis.Title.Gap = 0.2
-                gPane2.XAxis.Type = ZedGraph.AxisType.Linear
+                gPane2.XAxis.Type = AxisType.Linear
                 gPane2.XAxis.Scale.IsVisible = False
                 gPane2.XAxis.Scale.Min = -4.0
                 gPane2.XAxis.Scale.Max = 4.0
@@ -345,9 +343,9 @@ Namespace Controls
                 'y-axis
                 gPane2.YAxis.IsVisible = True
                 gPane2.YAxis.MajorGrid.IsVisible = True
-                gPane2.YAxis.MajorGrid.Color = Drawing.Color.Gray
+                gPane2.YAxis.MajorGrid.Color = Color.Gray
                 gPane2.YAxis.Title.Text = variable & "  " & varUnits
-                gPane2.YAxis.Type = ZedGraph.AxisType.Linear
+                gPane2.YAxis.Type = AxisType.Linear
                 gPane2.YAxis.Scale.MinGrace = 0.025
                 gPane2.YAxis.Scale.MaxGrace = 0.025
                 'Title
@@ -357,7 +355,7 @@ Namespace Controls
 
 
                 '6. Create the Pts for the Line
-                ptList = New ZedGraph.PointPairList
+                ptList = New PointPairList
 
                 'Dim ptListF As New ZedGraph.PointPairList
                 For i = 0 To numRows - 1
@@ -390,7 +388,7 @@ Namespace Controls
                 '7. Plot the Data
                 'create the points
                 'probLine = New ZedGraph.LineItem("ProbCurve")
-                probLine = gPane2.AddCurve(site, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
+                probLine = gPane2.AddCurve(site, ptList, m_Options.GetLineColor, SymbolType.Circle)
                 probLine.Line.IsVisible = False
                 probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
                 probLine.Symbol.Fill.RangeMin = 0
@@ -414,27 +412,6 @@ Namespace Controls
                     gPane2.Legend.IsVisible = False
                 End If
 
-                ''draw the plot
-                'zgSummaryPlot.AxisChange()
-                'zgSummaryPlot.Refresh()
-
-
-                '9. Release resources
-                If Not (ptList Is Nothing) Then
-                    ptList = Nothing
-                End If
-                If Not (bflPtList Is Nothing) Then
-                    bflPtList = Nothing
-                End If
-                If Not (probLine Is Nothing) Then
-                    probLine = Nothing
-                End If
-                If Not (bflLine Is Nothing) Then
-                    bflLine = Nothing
-                End If
-                If Not (validRows Is Nothing) Then
-                    validRows = Nothing
-                End If
                 'End If
             Catch ex As Exception
                 'show an error message
@@ -449,7 +426,7 @@ Namespace Controls
             'Outputs: Double -> the x-position to plot the point at
             Try
                 Return Math.Round(4.91 * (freq ^ 0.14 - (1.0# - freq) ^ 0.14), 3)
-            Catch ex As System.Exception
+            Catch ex As Exception
                 Throw New Exception("An Error occurred while calculating the X-Position for a point in the Probability Plot." & vbCrLf & "Message= " & ex.Message, ex)
             End Try
         End Function
@@ -462,7 +439,7 @@ Namespace Controls
             End Try
         End Function
 
-        Private Function CreateProbabilityXAxisLabels(ByVal pane As ZedGraph.GraphPane, ByVal axis As ZedGraph.Axis, ByVal val As Double, ByVal index As Integer) As String
+        Private Function CreateProbabilityXAxisLabels(ByVal pane As GraphPane, ByVal axis As Axis, ByVal val As Double, ByVal index As Integer) As String
             Try
                 'pane.XAxis.IsVisible = True
                 'Select Case val
@@ -615,19 +592,19 @@ Namespace Controls
             End Select
         End Function
 
-        Private Sub AddLabelToPlot(ByRef gpane As ZedGraph.GraphPane, ByVal label As String, ByVal xLoc As Double)
-            Dim myText As ZedGraph.TextObj
-            Dim myTic As ZedGraph.TextObj
+        Private Sub AddLabelToPlot(ByRef gpane As GraphPane, ByVal label As String, ByVal xLoc As Double)
+            Dim myText As TextObj
+            Dim myTic As TextObj
             Try
-                myText = New ZedGraph.TextObj(label, xLoc, 1.05, ZedGraph.CoordType.XScaleYChartFraction)
+                myText = New TextObj(label, xLoc, 1.05, CoordType.XScaleYChartFraction)
                 myText.FontSpec.Size = 13
                 myText.FontSpec.Border.IsVisible = False
-                myText.FontSpec.Fill = New ZedGraph.Fill(Drawing.Color.FromArgb(25, Drawing.Color.White))
+                myText.FontSpec.Fill = New Fill(Color.FromArgb(25, Color.White))
                 gpane.GraphObjList.Add(myText)
-                myTic = New ZedGraph.TextObj("|", xLoc, 0.997, ZedGraph.CoordType.XScaleYChartFraction)
+                myTic = New TextObj("|", xLoc, 0.997, CoordType.XScaleYChartFraction)
                 myTic.FontSpec.Size = 12.0
                 myTic.FontSpec.Border.IsVisible = False
-                myTic.FontSpec.Fill = New ZedGraph.Fill(Drawing.Color.FromArgb(25, Drawing.Color.White))
+                myTic.FontSpec.Fill = New Fill(Color.FromArgb(25, Color.White))
                 gpane.GraphObjList.Add(myTic)
             Catch ex As Exception
                 Throw New Exception("An Error occurred while creating an X-Axis Label for a plot on the Visualize Tab." & vbCrLf & "Message = " & ex.Message, ex)
@@ -684,8 +661,8 @@ Namespace Controls
 
                 'Dim i As Integer
 
-                Dim ptList As New ZedGraph.PointPairList 'collection of points for the Histogram chart
-                Dim histBars As ZedGraph.BarItem 'Bar Item curve -> Histogram bars on the plot           
+                Dim ptList As New PointPairList 'collection of points for the Histogram chart
+                Dim histBars As BarItem 'Bar Item curve -> Histogram bars on the plot           
 
 
                 gPane3.XAxis.IsVisible = True
@@ -693,17 +670,17 @@ Namespace Controls
                 With m_Options
 
 
-                    If (.HistTypeMethod = PlotOptions.HistogramType.Probability) Then
+                    If (.HistTypeMethod = HistogramType.Probability) Then
                         gPane3.YAxis.Title.Text = "Probability Density"
-                    ElseIf (.HistTypeMethod = PlotOptions.HistogramType.Count) Then
-                        gPane3.YAxis.Title.Text = "Number of Observations"
-                    ElseIf (.HistTypeMethod = PlotOptions.HistogramType.Relative) Then
+                    ElseIf (.HistTypeMethod = HistogramType.Count) Then
+                        gPane3.YAxis.Title.Text = MessageStrings.Number_Observations
+                    ElseIf (.HistTypeMethod = HistogramType.Relative) Then
                         gPane3.YAxis.Title.Text = "Relative Number of Observations"
                     End If
 
                     'set bar settings
 
-                    gPane3.BarSettings.Type = ZedGraph.BarType.Cluster
+                    gPane3.BarSettings.Type = BarType.Cluster
                     gPane3.BarSettings.MinBarGap = 0
                     gPane3.BarSettings.MinClusterGap = 0
                     gPane3.XAxis.Scale.IsLabelsInside = False
@@ -721,7 +698,7 @@ Namespace Controls
                     gPane3.XAxis.Title.Gap = 0.2
                     gPane3.XAxis.Scale.Mag = 0
                     gPane3.XAxis.MinorGrid.IsVisible = False
-                    gPane3.XAxis.MinorTic.Color = Drawing.Color.Transparent
+                    gPane3.XAxis.MinorTic.Color = Color.Transparent
                     gPane3.XAxis.MajorGrid.IsVisible = True
                     gPane3.XAxis.Scale.Min = 0
                     gPane3.XAxis.IsVisible = True
@@ -786,7 +763,7 @@ Namespace Controls
                     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                     ptList.Add(xCenterList, yValue)
 
-                    histBars = gPane3.AddBar("Histogram", ptList, Drawing.Color.Black)
+                    histBars = gPane3.AddBar("Histogram", ptList, Color.Black)
 
                 End With
 
@@ -799,41 +776,25 @@ Namespace Controls
         Public Sub Histogram_Calc(ByRef HistTable As DataTable, ByRef pOptions As PlotOptions) ', ByVal SS As Statistics)
 
             Dim i, j As Integer
-
-            'Dim d_rows() As System.Data.DataRow
-
-            ''Data rows populated from the Data table.
-            'd_rows = HistTable.Select("", "Value ASC")
-
-            'Dim y(d_rows.Length - 1) As Double
-
-            'For i = 0 To d_rows.Length - 1
-            '    y(i) = CDbl(d_rows(i).Item("value"))
-            'Next
-
-            'If (d_rows.Length = 0) Then
-            '    Exit Sub
-            'End If
-
             Dim dX As Double
             Dim bMax As Integer
             Dim jMode As Integer
             Static yMode As Double
             Dim xLimits As List(Of Double) = New List(Of Double)
-            Dim yLimits As List(Of Double) = New List(Of Double)
+            Dim yLimits As List(Of Double)
 
 
             'do the binning according to the pci_plotoptions HistAlg item
-            If pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Sturges Then
+            If pOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Sturges Then
                 'Sturges gives us the number of bins
-                pOptions.numBins = Math.Ceiling(Math.Log(System.Convert.ToDouble(Statistics.Count(m_Data)), 2) + 1)
+                pOptions.numBins = Math.Ceiling(Math.Log(Convert.ToDouble(Statistics.Count(m_Data)), 2) + 1)
                 xLimits = Pretty.PrettyP(Statistics.Minimum(m_Data), Statistics.Maximum(m_Data), pOptions.numBins)
 
                 dX = xLimits(2)
                 pOptions.numBins = (xLimits(1) - xLimits(0)) / xLimits(2)
                 pOptions.binWidth = dX
 
-            ElseIf pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Scott Then
+            ElseIf pOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Scott Then
                 ' Scotts gives the binwidth
 
 
@@ -847,7 +808,7 @@ Namespace Controls
                 pOptions.binWidth = dX
 
 
-            ElseIf pOptions.HistAlgorothmsMethod = PlotOptions.HistorgramAlgorithms.Freedman Then
+            ElseIf pOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Freedman Then
                 'FD gives us the bin width, dX
 
                 pOptions.binWidth = 2 * (Statistics.UpperQuartile(m_Data) - Statistics.LowerQuartile(m_Data)) / (Statistics.Count(m_Data) ^ (1 / 3))
@@ -921,10 +882,10 @@ Namespace Controls
 
 
                 'transform the bin counts (if needed)
-                If .HistTypeMethod = PlotOptions.HistogramType.Count Then
+                If .HistTypeMethod = HistogramType.Count Then
                     '.yValue is good
                     'do nothing
-                ElseIf .HistTypeMethod = PlotOptions.HistogramType.Probability Then
+                ElseIf .HistTypeMethod = HistogramType.Probability Then
                     'use normalizing constant to make the histogram integrate to 1
                     Dim pdf As Double = 0
                     Dim k As Integer
@@ -937,7 +898,7 @@ Namespace Controls
                         yValue(j) = yValue(j) / pdf
                     Next
 
-                ElseIf .HistTypeMethod = PlotOptions.HistogramType.Relative Then
+                ElseIf .HistTypeMethod = HistogramType.Relative Then
                     'use normalizing constant to make the histogram relative
                     For j = 0 To .numBins
                         yValue(j) = yValue(j) / Statistics.Count(m_Data)
@@ -980,7 +941,7 @@ Namespace Controls
                 If ((m_Data Is Nothing) OrElse (m_Data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
                     gPane4.CurveList.Clear()
                     gPane4.GraphObjList.Clear()
-                    gPane4.Title.Text = My.Resources.MessageStrings.No_Data_Plot
+                    gPane4.Title.Text = MessageStrings.No_Data_Plot
                     gPane4.XAxis.IsVisible = False
                     gPane4.YAxis.IsVisible = False
                     gPane4.Legend.IsVisible = False
@@ -990,14 +951,14 @@ Namespace Controls
 
                     Dim numPts As Integer 'number of points in ptList
                     Dim xTitle As String 'the title of the XAxis
-                    Dim medianList As ZedGraph.PointPairList 'collection of Median points for the Box/Whisker plot
-                    Dim meanList As ZedGraph.PointPairList 'collection of Mean points for the Box/Whisker plot
-                    Dim outlierList As ZedGraph.PointPairList = Nothing 'collection of Outlier points for the Box/Whisker plot
+                    Dim medianList As PointPairList 'collection of Median points for the Box/Whisker plot
+                    Dim meanList As PointPairList 'collection of Mean points for the Box/Whisker plot
+                    Dim outlierList As PointPairList = Nothing 'collection of Outlier points for the Box/Whisker plot
                     Dim boxes As BoxPlot() = Nothing 'collection of boxes to draw
                     Dim xAxisLabels As String() = Nothing 'collection of labels for the x-Axis
-                    Dim medianLine As ZedGraph.LineItem 'zedgraph curve item -> line that contains all of the Medain points
-                    Dim meanLine As ZedGraph.LineItem 'zedgraph curve item -> line that contains all of the Mean points
-                    Dim outlierLine As ZedGraph.LineItem 'zedgraph curve item -> line that contains all of the outliers
+                    Dim medianLine As LineItem 'zedgraph curve item -> line that contains all of the Medain points
+                    Dim meanLine As LineItem 'zedgraph curve item -> line that contains all of the Mean points
+                    Dim outlierLine As LineItem 'zedgraph curve item -> line that contains all of the outliers
                     Dim min, max As Double 'the max,Min value
                     Dim showXTics As Boolean = True 'tracks if showing major tic marks along the x-axis
 
@@ -1008,27 +969,27 @@ Namespace Controls
 
                     '4. Calculate Data for the correct type of BoxPlot
                     'get all the rows from the table with positive data, order by Date
-                    medianList = New ZedGraph.PointPairList()
-                    meanList = New ZedGraph.PointPairList()
+                    medianList = New PointPairList()
+                    meanList = New PointPairList()
                     min = 100
                     max = 0
                     Select Case m_Options.BoxWhiskerMethod
-                        Case PlotOptions.BoxWhiskerType.Monthly
+                        Case BoxWhiskerType.Monthly
                             'Calculate Boxplot for Monthly data
                             numPts = CalcBoxPlot_Monthly(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Month"
                             showXTics = True
-                        Case PlotOptions.BoxWhiskerType.Seasonal
+                        Case BoxWhiskerType.Seasonal
                             'Calculate Boxplot for seasonal data
                             numPts = CalcBoxPlot_Seasonal(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Season"
                             showXTics = True
-                        Case PlotOptions.BoxWhiskerType.Yearly
+                        Case BoxWhiskerType.Yearly
                             'Calculate Boxplot for Yearly data
                             numPts = CalcBoxPlot_Yearly(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Year"
                             showXTics = True
-                        Case PlotOptions.BoxWhiskerType.Overall
+                        Case BoxWhiskerType.Overall
                             'Calculate Boxplot for All data
                             numPts = CalcBoxPlot_Overall(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Overall"
@@ -1044,7 +1005,7 @@ Namespace Controls
 
                     'x-axis
                     gPane4.XAxis.IsVisible = True
-                    gPane4.XAxis.Type = ZedGraph.AxisType.Text
+                    gPane4.XAxis.Type = AxisType.Text
                     gPane4.XAxis.Scale.TextLabels = xAxisLabels
                     gPane4.XAxis.Title.Text = xTitle
                     gPane4.XAxis.MajorTic.IsAllTics = showXTics
@@ -1064,20 +1025,20 @@ Namespace Controls
                     '6. Plot the Data
                     If numPts > 0 Then
                         'Add Median line to plot
-                        medianLine = gPane4.AddCurve("MedianPts", medianList, Color.Black, ZedGraph.SymbolType.Circle)
+                        medianLine = gPane4.AddCurve("MedianPts", medianList, Color.Black, SymbolType.Circle)
                         medianLine.Line.IsVisible = False
-                        medianLine.Symbol.Fill = New ZedGraph.Fill(Drawing.Color.Black)
+                        medianLine.Symbol.Fill = New Fill(Color.Black)
                         medianLine.Symbol.Size = 5
                         'Add Mean line to plot
-                        meanLine = gPane4.AddCurve("MeanPts", meanList, Color.Red, ZedGraph.SymbolType.Triangle)
+                        meanLine = gPane4.AddCurve("MeanPts", meanList, Color.Red, SymbolType.Triangle)
                         meanLine.Line.IsVisible = False
-                        meanLine.Symbol.Fill = New ZedGraph.Fill(Drawing.Color.Red)
+                        meanLine.Symbol.Fill = New Fill(Color.Red)
                         meanLine.Symbol.Size = 5
                         'Draw BoxPlot,Outliers around each point
                         If Not (outlierList Is Nothing) Then
                             outlierList.Clear()
                         Else
-                            outlierList = New ZedGraph.PointPairList
+                            outlierList = New PointPairList
                         End If
                         For i = 0 To numPts - 1
                             If Not (boxes(i) Is Nothing) Then
@@ -1088,9 +1049,9 @@ Namespace Controls
                             End If
                         Next i
                         'draw the Outliers on plot
-                        outlierLine = gPane4.AddCurve("Outliers", outlierList, Color.DarkGreen, ZedGraph.SymbolType.Circle)
+                        outlierLine = gPane4.AddCurve("Outliers", outlierList, Color.DarkGreen, SymbolType.Circle)
                         outlierLine.Line.IsVisible = False
-                        outlierLine.Symbol.Fill = New ZedGraph.Fill(Drawing.Color.DarkGreen)
+                        outlierLine.Symbol.Fill = New Fill(Color.DarkGreen)
                         outlierLine.Symbol.Size = 4
                         outlierLine.IsOverrideOrdinal = True
 
@@ -1116,7 +1077,7 @@ Namespace Controls
 
         End Sub
 
-        Private Function CalcBoxPlot_Monthly(ByRef medianPtList As ZedGraph.PointPairList, ByRef meanPtList As ZedGraph.PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
+        Private Function CalcBoxPlot_Monthly(ByRef medianPtList As PointPairList, ByRef meanPtList As PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
             'This function calculates the Mean and Median point lists, boxes, and x-axis lables for the Monthly Box Plot, it returns the number of points created
             'Inputs:  medianPtList (ByRef) -> the zedgraph PointPairList to Plot the Median values -> values are calculated in this function : input values are junk
             '         meanPtList (ByRef) -> the zedgraph PointPairList to Plot the Median values -> values are calculated in this function : input values are junk
@@ -1133,8 +1094,8 @@ Namespace Controls
             '         max (byRef) -> the maximum value of the whisker/outliers
             Const numMonths As Integer = 12 'number of months in the year -> Monthly will always have this many points
             Dim i, j As Integer 'counter
-            Dim monthData As Data.DataTable 'clone of m_VisPlotData -> used to pull the data for each individual month 
-            Dim validRows As Data.DataRow() = Nothing 'collection of valid data for the current month
+            Dim monthData As DataTable 'clone of m_VisPlotData -> used to pull the data for each individual month 
+            Dim validRows As DataRow() = Nothing 'collection of valid data for the current month
             Dim numValid As Integer 'number of valid rows retrieved
             Try
                 '1. Create the Mean, Median point list
@@ -1143,14 +1104,14 @@ Namespace Controls
                         medianPtList.Clear()
                     End If
                 Else
-                    medianPtList = New ZedGraph.PointPairList()
+                    medianPtList = New PointPairList()
                 End If
                 If Not (meanPtList) Is Nothing Then
                     If meanPtList.Count > 0 Then
                         meanPtList.Clear()
                     End If
                 Else
-                    meanPtList = New ZedGraph.PointPairList()
+                    meanPtList = New PointPairList()
                 End If
 
                 '2. Create Axis labels
@@ -1201,8 +1162,8 @@ Namespace Controls
                         'Calculate the Outliers for this set of data, set min,max values to min,Max Outlier values
                         CalcBoxPlotOutliers(numValid, monthData, boxes(i), min, max)
                     Else
-                        medianPtList.Add(i, ZedGraph.PointPair.Missing)
-                        meanPtList.Add(i, ZedGraph.PointPair.Missing)
+                        medianPtList.Add(i, PointPair.Missing)
+                        meanPtList.Add(i, PointPair.Missing)
                     End If
                 Next i
 
@@ -1226,7 +1187,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Private Function CalcBoxPlot_Seasonal(ByRef medianPtList As ZedGraph.PointPairList, ByRef meanPtList As ZedGraph.PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
+        Private Function CalcBoxPlot_Seasonal(ByRef medianPtList As PointPairList, ByRef meanPtList As PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
             'This function calculates the point list, boxes, and x-axis lables for the Seasonal Box Plot, it returns the number of points created
             'Inputs:  medianPtList (ByRef) -> the zedgraph PointPairList to Plot the Median values -> values are calculated in this function : input values are junk
             '         meanPtList (ByRef) -> the zedgraph PointPairList to Plot the Median values -> values are calculated in this function : input values are junk
@@ -1243,8 +1204,8 @@ Namespace Controls
             '         max (byRef) -> the maximum value of the whisker/outliers
             Const numSeasons As Integer = 4 'number of Seasons in the year -> Seasonal will always have this many points
             Dim i, j As Integer 'counter
-            Dim seasonData As Data.DataTable 'clone of m_VisPlotData -> used to pull the data for each individual month 
-            Dim validRows As Data.DataRow() = Nothing 'collection of valid data for the current month
+            Dim seasonData As DataTable 'clone of m_VisPlotData -> used to pull the data for each individual month 
+            Dim validRows As DataRow() = Nothing 'collection of valid data for the current month
             Dim numValid As Integer 'number of valid rows retrieved
             Try
                 '1. Create the Mean, Median point list
@@ -1253,14 +1214,14 @@ Namespace Controls
                         medianPtList.Clear()
                     End If
                 Else
-                    medianPtList = New ZedGraph.PointPairList()
+                    medianPtList = New PointPairList()
                 End If
                 If Not (meanPtList) Is Nothing Then
                     If meanPtList.Count > 0 Then
                         meanPtList.Clear()
                     End If
                 Else
-                    meanPtList = New ZedGraph.PointPairList()
+                    meanPtList = New PointPairList()
                 End If
 
                 '2. Create Axis labels
@@ -1311,8 +1272,8 @@ Namespace Controls
                         'Calculate the Outliers for this set of data, set min,max values to min,Max Outlier values
                         CalcBoxPlotOutliers(numValid, seasonData, boxes(i), min, max)
                     Else
-                        medianPtList.Add(i, ZedGraph.PointPair.Missing)
-                        meanPtList.Add(i, ZedGraph.PointPair.Missing)
+                        medianPtList.Add(i, PointPair.Missing)
+                        meanPtList.Add(i, PointPair.Missing)
                     End If
                 Next i
 
@@ -1336,7 +1297,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Private Function CalcBoxPlot_Yearly(ByRef medianPtList As ZedGraph.PointPairList, ByRef meanPtList As ZedGraph.PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
+        Private Function CalcBoxPlot_Yearly(ByRef medianPtList As PointPairList, ByRef meanPtList As PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
             'This function calculates the point list, boxes, and x-axis lables for the Yearly Box Plot, it returns the number of points created
             'Inputs:  medianPtList (ByRef) -> the zedgraph PointPairList to Plot the Median values -> values are calculated in this function : input values are junk
             '         meanPtList (ByRef) -> the zedgraph PointPairList to Plot the Median values -> values are calculated in this function : input values are junk
@@ -1353,8 +1314,8 @@ Namespace Controls
             '         max (byRef) -> the maximum value of the whisker/outliers
             Dim numYears As Integer = 0 'number of years in selected data
             Dim i, j As Integer 'counter
-            Dim yearData As Data.DataTable 'clone of m_VisPlotData -> used to pull the data for each individual month 
-            Dim validRows As Data.DataRow() = Nothing 'collection of valid data for the current month
+            Dim yearData As DataTable 'clone of m_VisPlotData -> used to pull the data for each individual month 
+            Dim validRows As DataRow() = Nothing 'collection of valid data for the current month
             Dim numValid As Integer = Nothing 'number of valid rows retrieved
             Dim startYear As Integer 'the beginning year of the data
             Dim endYear As Integer 'the ending year of the data
@@ -1374,14 +1335,14 @@ Namespace Controls
                         medianPtList.Clear()
                     End If
                 Else
-                    medianPtList = New ZedGraph.PointPairList()
+                    medianPtList = New PointPairList()
                 End If
                 If Not (meanPtList) Is Nothing Then
                     If meanPtList.Count > 0 Then
                         meanPtList.Clear()
                     End If
                 Else
-                    meanPtList = New ZedGraph.PointPairList()
+                    meanPtList = New PointPairList()
                 End If
 
                 '3. Get data for each month, calculate stats
@@ -1431,8 +1392,8 @@ Namespace Controls
                         'Calculate the Outliers for this set of data, set min,max values to min,Max Outlier values
                         CalcBoxPlotOutliers(numValid, yearData, boxes(i), min, max)
                     Else
-                        medianPtList.Add(i, ZedGraph.PointPair.Missing)
-                        meanPtList.Add(i, ZedGraph.PointPair.Missing)
+                        medianPtList.Add(i, PointPair.Missing)
+                        meanPtList.Add(i, PointPair.Missing)
                     End If
                 Next i
 
@@ -1456,7 +1417,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Private Function CalcBoxPlot_Overall(ByRef medianPtList As ZedGraph.PointPairList, ByRef meanPtList As ZedGraph.PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
+        Private Function CalcBoxPlot_Overall(ByRef medianPtList As PointPairList, ByRef meanPtList As PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double) As Integer
             'This function calculates the point list, boxes, and x-axis labels for the Overall Box Plot, it returns the number of points created
             'Inputs:  medianPtList (ByRef) -> the zedgraph PointPairList to Plot the Median value -> value is calculated in this function : input values are junk
             '         meanPtList (ByRef) -> the zedgraph PointPairList to Plot the Median value -> value is calculated in this function : input values are junk
@@ -1472,9 +1433,9 @@ Namespace Controls
             '         min (byRef) -> the minimum value of the whisker/outliers
             '         max (byRef) -> the maximum value of the whisker/outliers
             Const numPts As Integer = 5 'number of months in the year -> Overall will always have this many points
-            Dim validRows() As Data.DataRow
+            Dim validRows() As DataRow
             Dim numValid As Integer 'number of valid rows retrieved
-            Dim overallData As Data.DataTable
+            Dim overallData As DataTable
             Dim i As Integer
             Try
                 '1. Create the Mean, Median point list
@@ -1483,14 +1444,14 @@ Namespace Controls
                         medianPtList.Clear()
                     End If
                 Else
-                    medianPtList = New ZedGraph.PointPairList()
+                    medianPtList = New PointPairList()
                 End If
                 If Not (meanPtList) Is Nothing Then
                     If meanPtList.Count > 0 Then
                         meanPtList.Clear()
                     End If
                 Else
-                    meanPtList = New ZedGraph.PointPairList()
+                    meanPtList = New PointPairList()
                 End If
 
                 '2. Create Axis labels
@@ -1521,16 +1482,16 @@ Namespace Controls
                     boxes(2).xValue = 3
                     boxes(2).yValue = boxes(2).median
                     'add the points
-                    medianPtList.Add(1, ZedGraph.PointPair.Missing)
-                    meanPtList.Add(1, ZedGraph.PointPair.Missing)
-                    medianPtList.Add(2, ZedGraph.PointPair.Missing)
-                    meanPtList.Add(2, ZedGraph.PointPair.Missing)
+                    medianPtList.Add(1, PointPair.Missing)
+                    meanPtList.Add(1, PointPair.Missing)
+                    medianPtList.Add(2, PointPair.Missing)
+                    meanPtList.Add(2, PointPair.Missing)
                     medianPtList.Add(3, boxes(2).yValue, xAxisLabels(2) & ", " & "Median = " & boxes(2).yValue)
                     meanPtList.Add(3, boxes(2).mean, xAxisLabels(2) & ", " & "Mean = " & boxes(2).mean)
-                    medianPtList.Add(4, ZedGraph.PointPair.Missing)
-                    meanPtList.Add(4, ZedGraph.PointPair.Missing)
-                    medianPtList.Add(5, ZedGraph.PointPair.Missing)
-                    meanPtList.Add(5, ZedGraph.PointPair.Missing)
+                    medianPtList.Add(4, PointPair.Missing)
+                    meanPtList.Add(4, PointPair.Missing)
+                    medianPtList.Add(5, PointPair.Missing)
+                    meanPtList.Add(5, PointPair.Missing)
 
                     '7. Calc Outliers
                     'set the min,max to Lower,Upper Adjacent Values
@@ -1556,7 +1517,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Private Sub CalcBoxPlotOutliers(ByVal numRows As Integer, ByRef monthData As Data.DataTable, ByRef boxData As BoxPlot, ByRef min As Double, ByRef max As Double)
+        Private Sub CalcBoxPlotOutliers(ByVal numRows As Integer, ByRef monthData As DataTable, ByRef boxData As BoxPlot, ByRef min As Double, ByRef max As Double)
             '
             'Inputs:  
             'Outputs: 
@@ -1591,49 +1552,49 @@ Namespace Controls
             End Try
         End Sub
 
-        Private Sub DrawBoxPlot(ByRef gPane As ZedGraph.GraphPane, ByVal boxData As BoxPlot)
+        Private Sub DrawBoxPlot(ByRef gPane As GraphPane, ByVal boxData As BoxPlot)
             'Dim x1, y1, x2, y2 As Double 'x,y values for bounds of rectangles
-            Dim upperBoxShaded As ZedGraph.BoxObj 'shaded box between 75% quantile and Upper 95% Confidence Limit on the Median
-            Dim lowerBoxShaded As ZedGraph.BoxObj 'shaded box between 25% quantile and Lower 95% Confidence Limit on the Median
-            Dim hourglassPts As ZedGraph.PointD() 'points for the Hourglass outline to make up the box outline
-            Dim hourglassOutline As ZedGraph.PolyObj 'Outline for the Hourglass
-            Dim confIntervalLine As ZedGraph.LineObj 'Line in center -> 95% Confidence Interval on the Mean
-            Dim whisker_Upper As ZedGraph.LineObj 'Upper Whisker -> Upper Adjacent Level
-            Dim lineToWhisker_Upper As ZedGraph.LineObj 'Line from Upper Whisker to 75% quantile (top of box)
-            Dim whisker_Lower As ZedGraph.LineObj 'Lower Whisker -> Lower Adjacent Level
-            Dim lineToWhisker_Lower As ZedGraph.LineObj 'Line from Lower Whisker to 25% quantil (bottom of box)
+            Dim upperBoxShaded As BoxObj 'shaded box between 75% quantile and Upper 95% Confidence Limit on the Median
+            Dim lowerBoxShaded As BoxObj 'shaded box between 25% quantile and Lower 95% Confidence Limit on the Median
+            Dim hourglassPts As PointD() 'points for the Hourglass outline to make up the box outline
+            Dim hourglassOutline As PolyObj 'Outline for the Hourglass
+            Dim confIntervalLine As LineObj 'Line in center -> 95% Confidence Interval on the Mean
+            Dim whisker_Upper As LineObj 'Upper Whisker -> Upper Adjacent Level
+            Dim lineToWhisker_Upper As LineObj 'Line from Upper Whisker to 75% quantile (top of box)
+            Dim whisker_Lower As LineObj 'Lower Whisker -> Lower Adjacent Level
+            Dim lineToWhisker_Lower As LineObj 'Line from Lower Whisker to 25% quantil (bottom of box)
             Try
                 '1. Draw Confidence Interval -> red line
-                confIntervalLine = New ZedGraph.LineObj(Color.Red, boxData.xValue, boxData.confidenceInterval95_Upper, boxData.xValue, boxData.confidenceInterval95_Lower)
+                confIntervalLine = New LineObj(Color.Red, boxData.xValue, boxData.confidenceInterval95_Upper, boxData.xValue, boxData.confidenceInterval95_Lower)
                 confIntervalLine.IsClippedToChartRect = True
-                confIntervalLine.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                confIntervalLine.ZOrder = ZOrder.E_BehindCurves
                 gPane.GraphObjList.Add(confIntervalLine)
 
                 '2. Draw Upper Whisker, line
                 'whisker
-                whisker_Upper = New ZedGraph.LineObj(Color.Black, boxData.xValue - 0.15, boxData.adjacentLevel_Upper, boxData.xValue + 0.15, boxData.adjacentLevel_Upper)
+                whisker_Upper = New LineObj(Color.Black, boxData.xValue - 0.15, boxData.adjacentLevel_Upper, boxData.xValue + 0.15, boxData.adjacentLevel_Upper)
                 whisker_Upper.IsClippedToChartRect = True
-                whisker_Upper.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                whisker_Upper.ZOrder = ZOrder.E_BehindCurves
                 whisker_Upper.Line.Width = 2
                 gPane.GraphObjList.Add(whisker_Upper)
                 'line between whisker, top of hourglass
-                lineToWhisker_Upper = New ZedGraph.LineObj(Color.Black, boxData.xValue, boxData.adjacentLevel_Upper, boxData.xValue, boxData.quantile_75th)
+                lineToWhisker_Upper = New LineObj(Color.Black, boxData.xValue, boxData.adjacentLevel_Upper, boxData.xValue, boxData.quantile_75th)
                 lineToWhisker_Upper.IsClippedToChartRect = True
-                lineToWhisker_Upper.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                lineToWhisker_Upper.ZOrder = ZOrder.E_BehindCurves
                 lineToWhisker_Upper.Line.Width = 2
                 gPane.GraphObjList.Add(lineToWhisker_Upper)
 
                 '3. Draw Lower Whisker, line
                 'whisker
-                whisker_Lower = New ZedGraph.LineObj(Color.Black, boxData.xValue - 0.15, boxData.adjacentLevel_Lower, boxData.xValue + 0.15, boxData.adjacentLevel_Lower)
+                whisker_Lower = New LineObj(Color.Black, boxData.xValue - 0.15, boxData.adjacentLevel_Lower, boxData.xValue + 0.15, boxData.adjacentLevel_Lower)
                 whisker_Lower.IsClippedToChartRect = True
-                whisker_Lower.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                whisker_Lower.ZOrder = ZOrder.E_BehindCurves
                 whisker_Lower.Line.Width = 2
                 gPane.GraphObjList.Add(whisker_Lower)
                 'line between whisker, top of hourglass
-                lineToWhisker_Lower = New ZedGraph.LineObj(Color.Black, boxData.xValue, boxData.quantile_25th, boxData.xValue, boxData.adjacentLevel_Lower)
+                lineToWhisker_Lower = New LineObj(Color.Black, boxData.xValue, boxData.quantile_25th, boxData.xValue, boxData.adjacentLevel_Lower)
                 lineToWhisker_Lower.IsClippedToChartRect = True
-                lineToWhisker_Lower.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                lineToWhisker_Lower.ZOrder = ZOrder.E_BehindCurves
                 lineToWhisker_Lower.Line.Width = 2
                 gPane.GraphObjList.Add(lineToWhisker_Lower)
 
@@ -1641,33 +1602,33 @@ Namespace Controls
                 'create points
                 ReDim hourglassPts(10)
                 'top
-                hourglassPts(0) = New ZedGraph.PointD(boxData.xValue - 0.3, boxData.quantile_75th)
-                hourglassPts(1) = New ZedGraph.PointD(boxData.xValue + 0.3, boxData.quantile_75th)
+                hourglassPts(0) = New PointD(boxData.xValue - 0.3, boxData.quantile_75th)
+                hourglassPts(1) = New PointD(boxData.xValue + 0.3, boxData.quantile_75th)
                 'right side
-                hourglassPts(2) = New ZedGraph.PointD(boxData.xValue + 0.3, boxData.confidenceLimit95_Upper)
-                hourglassPts(3) = New ZedGraph.PointD(boxData.xValue + 0.15, boxData.median)
-                hourglassPts(4) = New ZedGraph.PointD(boxData.xValue + 0.3, boxData.confidenceLimit95_Lower)
+                hourglassPts(2) = New PointD(boxData.xValue + 0.3, boxData.confidenceLimit95_Upper)
+                hourglassPts(3) = New PointD(boxData.xValue + 0.15, boxData.median)
+                hourglassPts(4) = New PointD(boxData.xValue + 0.3, boxData.confidenceLimit95_Lower)
                 'bottom
-                hourglassPts(5) = New ZedGraph.PointD(boxData.xValue + 0.3, boxData.quantile_25th)
-                hourglassPts(6) = New ZedGraph.PointD(boxData.xValue - 0.3, boxData.quantile_25th)
+                hourglassPts(5) = New PointD(boxData.xValue + 0.3, boxData.quantile_25th)
+                hourglassPts(6) = New PointD(boxData.xValue - 0.3, boxData.quantile_25th)
                 'left side
-                hourglassPts(7) = New ZedGraph.PointD(boxData.xValue - 0.3, boxData.confidenceLimit95_Lower)
-                hourglassPts(8) = New ZedGraph.PointD(boxData.xValue - 0.15, boxData.median)
-                hourglassPts(9) = New ZedGraph.PointD(boxData.xValue - 0.3, boxData.confidenceLimit95_Upper)
+                hourglassPts(7) = New PointD(boxData.xValue - 0.3, boxData.confidenceLimit95_Lower)
+                hourglassPts(8) = New PointD(boxData.xValue - 0.15, boxData.median)
+                hourglassPts(9) = New PointD(boxData.xValue - 0.3, boxData.confidenceLimit95_Upper)
                 'repeat 1st point -> end of poly
-                hourglassPts(10) = New ZedGraph.PointD(boxData.xValue - 0.3, boxData.quantile_75th)
+                hourglassPts(10) = New PointD(boxData.xValue - 0.3, boxData.quantile_75th)
                 'create outline
-                hourglassOutline = New ZedGraph.PolyObj(hourglassPts)
+                hourglassOutline = New PolyObj(hourglassPts)
                 hourglassOutline.Border.Color = Color.SlateGray
                 hourglassOutline.Border.IsVisible = True
                 hourglassOutline.Fill.IsVisible = False
                 hourglassOutline.IsClippedToChartRect = True
-                hourglassOutline.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                hourglassOutline.ZOrder = ZOrder.E_BehindCurves
                 gPane.GraphObjList.Add(hourglassOutline)
 
                 '5. Draw Upper shaded box ->Upper 95% Confidence Limit to 75% quantile value
                 If boxData.quantile_75th > boxData.confidenceLimit95_Upper Then
-                    upperBoxShaded = New ZedGraph.BoxObj(1, 1, 1, 1)
+                    upperBoxShaded = New BoxObj(1, 1, 1, 1)
                     'If upperBoxShaded.Location Is Nothing Then
                     '    upperBoxShaded.Location = New ZedGraph.Location()
                     'End If
@@ -1680,14 +1641,14 @@ Namespace Controls
                     'upperBoxShaded.Location.Height = Math.Round(boxData.quantile_75th - boxData.confidenceLimit95_Upper, 3)
 
                     upperBoxShaded.Border.IsVisible = False
-                    upperBoxShaded.Fill = New ZedGraph.Fill(System.Drawing.Color.LightGray)
+                    upperBoxShaded.Fill = New Fill(Color.LightGray)
                     upperBoxShaded.IsClippedToChartRect = True
-                    upperBoxShaded.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                    upperBoxShaded.ZOrder = ZOrder.E_BehindCurves
                     gPane.GraphObjList.Add(upperBoxShaded)
                 End If
                 '6. Draw Lower shaded box ->Lower 95% Confidence Limit to 25% quantile value
                 If boxData.confidenceLimit95_Lower > boxData.quantile_25th Then
-                    lowerBoxShaded = New ZedGraph.BoxObj(1, 1, 1, 1)
+                    lowerBoxShaded = New BoxObj(1, 1, 1, 1)
                     'If upperBoxShaded.Location Is Nothing Then
                     '    upperBoxShaded.Location = New ZedGraph.Location()
                     'End If
@@ -1700,9 +1661,9 @@ Namespace Controls
                     'lowerBoxShaded.Location.Y = boxData.quantile_25th
                     'lowerBoxShaded.Location.Height = Math.Round(boxData.confidenceLimit95_Lower - boxData.quantile_25th, 3)
                     lowerBoxShaded.Border.IsVisible = False
-                    lowerBoxShaded.Fill = New ZedGraph.Fill(System.Drawing.Color.LightGray)
+                    lowerBoxShaded.Fill = New Fill(Color.LightGray)
                     lowerBoxShaded.IsClippedToChartRect = True
-                    lowerBoxShaded.ZOrder = ZedGraph.ZOrder.E_BehindCurves
+                    lowerBoxShaded.ZOrder = ZOrder.E_BehindCurves
                     gPane.GraphObjList.Add(lowerBoxShaded)
                 End If
 
@@ -1741,7 +1702,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private Sub DrawOutliers(ByRef outlierPtList As ZedGraph.PointPairList, ByVal curBoxData As BoxPlot) 'ByRef gPane As ZedGraph.GraphPane, ByVal boxData As clsBoxPlot)
+        Private Sub DrawOutliers(ByRef outlierPtList As PointPairList, ByVal curBoxData As BoxPlot) 'ByRef gPane As ZedGraph.GraphPane, ByVal boxData As clsBoxPlot)
             Dim i As Integer 'counter
             Dim curValue As Double
 
@@ -1751,7 +1712,7 @@ Namespace Controls
                     Exit Try
                 End If
                 If outlierPtList Is Nothing Then
-                    outlierPtList = New ZedGraph.PointPairList
+                    outlierPtList = New PointPairList
                 End If
 
                 '2. Add Lower Outliers
@@ -1840,7 +1801,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Private Sub CalcBoxPlotStats(ByVal numRows As Integer, ByRef data As Data.DataTable, ByRef boxData As BoxPlot)
+        Private Sub CalcBoxPlotStats(ByVal numRows As Integer, ByRef data As DataTable, ByRef boxData As BoxPlot)
             'Calculates and stores the stats for the given set of data for a BoxPlot
             'Inputs:  data (ByRef) -> the set of data to calculate the stats on
             '         boxData (ByRef) -> the clsBoxPlot object to store the calculated data into -> NOTE: the xValue should have already been set

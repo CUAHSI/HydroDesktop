@@ -1,8 +1,10 @@
-﻿Imports HydroDesktop.Interfaces.ObjectModel
-Imports ZedGraph
+﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
+Imports GraphView.My.Resources
+Imports HydroDesktop.Interfaces.ObjectModel
+Imports ZedGraph
 
 Namespace Controls
 
@@ -58,7 +60,7 @@ Namespace Controls
                 If gPane.GraphObjList Is Nothing Then Return
 
                 gPane.CurveList.Clear()
-                SetGraphPaneTitle(My.Resources.MessageStrings.No_Data_Plot)
+                SetGraphPaneTitle(MessageStrings.No_Data_Plot)
                 gPane.XAxis.IsVisible = False
                 gPane.YAxis.IsVisible = False
                 gPane.GraphObjList.Clear()
@@ -85,7 +87,7 @@ Namespace Controls
                     gPane.YAxis.IsVisible = False
                     zgTimeSeries.IsShowVScrollBar = False
                     zgTimeSeries.IsShowHScrollBar = False
-                    SetGraphPaneTitle(My.Resources.MessageStrings.No_Data_Plot)
+                    SetGraphPaneTitle(MessageStrings.No_Data_Plot)
                 Else
                     'Setting Legend
                     If m_Options.ShowLegend Then
@@ -135,13 +137,13 @@ Namespace Controls
                     curve.Symbol.Fill.Type = FillType.GradientByColorValue
                     curve.Symbol.Border.IsVisible = False
                     Select Case m_Options.TimeSeriesMethod
-                        Case PlotOptions.TimeSeriesType.Line
+                        Case TimeSeriesType.Line
                             curve.Line.IsVisible = True
                             curve.Symbol.IsVisible = False
-                        Case PlotOptions.TimeSeriesType.Point
+                        Case TimeSeriesType.Point
                             curve.Line.IsVisible = False
                             curve.Symbol.IsVisible = True
-                        Case PlotOptions.TimeSeriesType.None
+                        Case TimeSeriesType.None
                             curve.Line.IsVisible = False
                             curve.Symbol.IsVisible = False
                         Case Else
@@ -192,12 +194,12 @@ Namespace Controls
 
         End Sub
 
-        Private Sub zgTimeSeries_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgTimeSeries.ContextMenuBuilder
+        Private Sub zgTimeSeries_ContextMenuBuilder(ByVal sender As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState) Handles zgTimeSeries.ContextMenuBuilder
             ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
 
             ' Add item to export to text file
             ' Create a new menu item
-            Dim item As Windows.Forms.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Dim item As ToolStripMenuItem = New ToolStripMenuItem()
             ' This is the user-defined Tag so you can find this menu item later if necessary
             item.Name = "export_to_text_file"
             item.Tag = "export_to_text_file"
@@ -209,7 +211,7 @@ Namespace Controls
             menuStrip.Items.Add(item)
 
             ' Add item to export to change line color
-            item = New System.Windows.Forms.ToolStripMenuItem()
+            item = New ToolStripMenuItem()
             item.Name = "set_line_color"
             item.Tag = "set_line_color"
             item.Text = "Set Line Color"
@@ -217,14 +219,14 @@ Namespace Controls
             menuStrip.Items.Add(item)
         End Sub
 
-        Private Function PromptForColor(ByVal defaultColor As Color) As System.Drawing.Color
-            Dim dlgColor As Windows.Forms.ColorDialog = New Windows.Forms.ColorDialog()
+        Private Function PromptForColor(ByVal defaultColor As Color) As Color
+            Dim dlgColor As ColorDialog = New ColorDialog()
 
             If Not IsDBNull(defaultColor) Then
                 dlgColor.Color = defaultColor
             End If
 
-            If (dlgColor.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            If (dlgColor.ShowDialog() = DialogResult.OK) Then
                 Return dlgColor.Color
             Else
                 Return Nothing
@@ -242,7 +244,7 @@ Namespace Controls
 
             'Check if there is any series to export
             If (checkedSeries <= 0) Then
-                System.Windows.Forms.MessageBox.Show("No Data To Export")
+                MessageBox.Show("No Data To Export")
 
             Else
 
@@ -272,7 +274,7 @@ Namespace Controls
 
         Protected Sub SetLineColor()
             If zgTimeSeries.GraphPane.CurveList.Count > 0 Then
-                Dim newColor As System.Drawing.Color = PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
+                Dim newColor As Color = PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
                 If Not IsDBNull(newColor) Then
                     zgTimeSeries.GraphPane.CurveList.Item(0).Color = newColor
                     zgTimeSeries.Refresh()
@@ -332,7 +334,7 @@ Namespace Controls
                     '.Title.Text = .CurveList(0).Link.Title
                     .Legend.IsVisible = False
                 ElseIf .CurveList.Count = 0 Then
-                    .Title.Text = My.Resources.MessageStrings.No_Data_Plot
+                    .Title.Text = MessageStrings.No_Data_Plot
                 End If
 
             End With
