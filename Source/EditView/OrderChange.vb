@@ -1,8 +1,8 @@
 ﻿Imports System.Windows.Forms
 Public Class OrderChange
     Const DDL_WIDTH As Integer = 200
-    Dim dropDowns() As ComboBox
-    Dim m_order() As String
+    ReadOnly dropDowns() As ComboBox
+    ReadOnly m_order() As String
     Public Sub New(ByVal order() As String)
 
         ' This call is required by the Windows Form Designer.

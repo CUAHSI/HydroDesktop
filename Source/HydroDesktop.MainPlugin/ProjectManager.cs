@@ -1,14 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using DotSpatial.Data;
 using DotSpatial.Controls;
+using DotSpatial.Data;
 using DotSpatial.Projections;
+using DotSpatial.Topology;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
-using DotSpatial.Topology;
-using DotSpatial.Symbology;
-using Hydrodesktop.Common;
 
 namespace HydroDesktop.Main
 {

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>

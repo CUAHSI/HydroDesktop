@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Text;
 using System.Diagnostics;
-using HydroDesktop.Interfaces;
 using System.Globalization;
+using System.Text;
+using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Database
 {

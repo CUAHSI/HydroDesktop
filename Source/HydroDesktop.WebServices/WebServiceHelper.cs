@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Xml;
 using System.IO;
+using System.Net;
+using System.Text;
+using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices
@@ -35,10 +33,10 @@ namespace HydroDesktop.WebServices
             string soapEnvelope = CreateSoapEnvelopeForGetSites(soapNamespace);
 
             //send the SOAP envelope to the service as a xml document
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.Load(new StringReader(soapEnvelope));
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            var req = (HttpWebRequest)WebRequest.Create(url);
 
             //this is the valid SoapAction header for GetValues web method
             string soapAction = "GetSites";
@@ -82,10 +80,10 @@ namespace HydroDesktop.WebServices
             string soapEnvelope = CreateSoapEnvelopeForGetSiteInfo(soapNamespace, fullSiteCode);
 
             //send the SOAP envelope to the service as a xml document
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.Load(new StringReader(soapEnvelope));
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            var req = (HttpWebRequest)WebRequest.Create(url);
 
             //this is the valid SoapAction header for GetValues web method
             string soapAction = soapNamespace + "GetSiteInfoObject";
@@ -95,7 +93,7 @@ namespace HydroDesktop.WebServices
             req.ContentType = "text/xml;charset=\"utf-8\"";
             req.Accept = "text/xml";
             req.Method = "POST";
-            Stream stm = req.GetRequestStream();
+            var stm = req.GetRequestStream();
             doc.Save(stm);
             stm.Close();
 
@@ -314,9 +312,9 @@ namespace HydroDesktop.WebServices
             //create the AuthToken (currently, only empty AuthToken is supported)
             string authToken = String.Empty;
 
-            string webMethodName = "GetSiteInfoObject";
+            const string webMethodName = "GetSiteInfoObject";
 
-            StringBuilder soapEnv = new StringBuilder();
+            var soapEnv = new StringBuilder();
             soapEnv.AppendLine(@"<?xml version=""1.0"" encoding=""utf-8""?>");
             soapEnv.AppendLine(@"<soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">");
             soapEnv.AppendLine("<soap:Body>");

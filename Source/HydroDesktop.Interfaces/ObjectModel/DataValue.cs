@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
@@ -240,7 +240,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns>String representation of the data value in Time|Value format</returns>
         public override string ToString()
         {
-            return LocalDateTime.ToString() + "|" + Value.ToString();
+            return LocalDateTime.ToString(CultureInfo.InvariantCulture) + "|" + Value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

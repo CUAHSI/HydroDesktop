@@ -9,7 +9,7 @@ Imports HydroDesktop.Interfaces
 Public Class cProbabilityPlot
     Implements IChart
     
-    Private Shared m_VarList As New List(Of String)
+    Private Shared ReadOnly m_VarList As New List(Of String)
     Private m_SeriesSelector As ISeriesSelector
     Private Const NO_DATA_TO_PLOT As String = "No Data To Plot"
 

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using DataImport.CommonPages;
 using DataImport.CommonPages.Complete;
 using DataImport.CommonPages.Progress;
 using Wizard.UI;

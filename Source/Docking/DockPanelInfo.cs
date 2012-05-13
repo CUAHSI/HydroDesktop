@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DotSpatial.Controls.Docking;
 using WeifenLuo.WinFormsUI.Docking;
-using DotSpatial.Controls.Docking;
 
 namespace HydroDesktop.Docking
 {

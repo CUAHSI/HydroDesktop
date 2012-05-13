@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
-using System.Linq;
 using Hydrodesktop.Common;
 
 namespace Search3.Searching

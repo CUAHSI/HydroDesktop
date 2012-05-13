@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data;
-using HydroDesktop.Interfaces;
-using DotSpatial.Data;
-using DotSpatial.Topology;
-using HydroDesktop.Database;
-using DotSpatial.Projections;
-using HydroDesktop.Configuration;
-using System.IO;
 using System.Globalization;
+using System.IO;
+using DotSpatial.Data;
+using DotSpatial.Projections;
+using DotSpatial.Topology;
+using HydroDesktop.Configuration;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {

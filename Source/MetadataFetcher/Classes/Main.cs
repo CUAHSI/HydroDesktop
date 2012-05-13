@@ -1,11 +1,11 @@
 ﻿#region Namespaces
 using System;
-using HydroDesktop.Common;
-using HydroDesktop.Interfaces.PluginContracts;
-using HydroDesktop.MetadataFetcher.Forms;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using HydroDesktop.Common;
+using HydroDesktop.Interfaces.PluginContracts;
+using HydroDesktop.MetadataFetcher.Forms;
 using HydroDesktop.MetadataFetcher.Properties;
 using Msg = HydroDesktop.MetadataFetcher.MessageStrings;
 

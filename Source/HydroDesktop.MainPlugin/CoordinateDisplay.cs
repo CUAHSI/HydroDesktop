@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotSpatial.Controls.Header;
-using DotSpatial.Controls;
-using DotSpatial.Topology;
 using System.Windows.Forms;
+using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
 using DotSpatial.Projections;
+using DotSpatial.Topology;
 
 namespace HydroDesktop.Main
 {
@@ -80,17 +77,17 @@ namespace HydroDesktop.Main
                 return;
             }
             
-            Coordinate projCor = new Coordinate();
-            System.Drawing.Point _mouseLocation = new System.Drawing.Point();
+            var projCor = new Coordinate();
+            var _mouseLocation = new System.Drawing.Point();
             _mouseLocation.X = e.X;
             _mouseLocation.Y = e.Y;
             projCor = mainMap.PixelToProj(_mouseLocation);
 
-            double[] xy = new double[2];
+            var xy = new double[2];
             xy[0] = projCor.X;
             xy[1] = projCor.Y;
 
-            double[] z = new double[1];
+            var z = new double[1];
             if (!isWgs84)
             {
                 Reproject.ReprojectPoints(xy, z, currentMapProjection, wgs84Projection, 0, 1);

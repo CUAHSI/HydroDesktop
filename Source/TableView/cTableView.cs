@@ -7,9 +7,9 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using HydroDesktop.Interfaces;
-using HydroDesktop.Database;
 using HydroDesktop.Configuration;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
 
 namespace TableView
 {

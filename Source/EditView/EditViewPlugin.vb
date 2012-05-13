@@ -112,7 +112,7 @@ Namespace EditView
         Private Sub InitializeRibbonButtons()
 
             'Main Function Panel
-            Dim mainFunctionGroup As String = "Main Functions"
+            Const mainFunctionGroup As String = "Main Functions"
 
             btnSelectSeries = New SimpleActionItem("Edit Series", AddressOf btnSelectSeries_Click)
             btnSelectSeries.RootKey = kEditView
@@ -139,7 +139,7 @@ Namespace EditView
             App.HeaderControl.Add(btnApplyToDatabase)
 
             'Plot Function Panel
-            Dim editFunctionGroup As String = "Edit Functions"
+            Const editFunctionGroup As String = "Edit Functions"
 
             btnChangeYValue = New SimpleActionItem("Change Value", AddressOf _mainControl.btnChangeYValue_Click)
             btnChangeYValue.RootKey = kEditView
@@ -172,7 +172,7 @@ Namespace EditView
             App.HeaderControl.Add(btnDeletePoint)
 
             'Main Function Panel
-            Dim plotFunctionGroup As String = "Plot Function"
+            Const plotFunctionGroup As String = "Plot Function"
 
             ckbShowLegend = New SimpleActionItem("Show Legend", AddressOf _mainControl.ckbShowLegend_Click)
             ckbShowLegend.RootKey = kEditView

@@ -1,12 +1,12 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using HydroDesktop.Common;
-using HydroDesktop.Interfaces;
-using DotSpatial.Controls.Header;
-using System.ComponentModel.Composition;
 using DotSpatial.Controls.Docking;
+using DotSpatial.Controls.Header;
+using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
+using HydroDesktop.Interfaces;
 
 namespace TableView
 {

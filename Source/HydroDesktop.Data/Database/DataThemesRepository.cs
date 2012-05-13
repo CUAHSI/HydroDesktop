@@ -102,7 +102,7 @@ namespace HydroDesktop.Database
             {
                 DbOperations.ExecuteNonQuery(sqlDeleteTheme);
             }
-            catch { };
+            catch { }
 
             //re-check the number of series in the theme
 
@@ -165,7 +165,7 @@ namespace HydroDesktop.Database
                 DbOperations.ExecuteNonQuery(sqlDeleteTheme);
                 e.Result = "Theme deleted successfully";
             }
-            catch { };
+            catch { }
 
             return true;
         }

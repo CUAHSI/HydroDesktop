@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces;
-using System.Collections.Generic;
 
 namespace HydroDesktop.Database
 {

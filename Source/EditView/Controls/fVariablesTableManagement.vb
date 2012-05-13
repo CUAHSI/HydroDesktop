@@ -169,7 +169,7 @@ Public Class fVariablesTableManagement
 
     End Sub
 
-    Private Sub ddlTUnitsName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlTUnitsName.SelectionChangeCommitted
+    Private Sub ddlTUnitsName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlTUnitsName.SelectionChangeCommitted
         Dim ID As Integer = ddlTUnitsName.SelectedValue.ToString
         Dim unit = _unitsRepo.GetByKey(ID)
 

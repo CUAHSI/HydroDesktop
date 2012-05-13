@@ -1,16 +1,15 @@
 ﻿namespace HydroDesktop.Main
 {
     using System;
+    using System.ComponentModel.Composition;
+    using System.Diagnostics;
+    using System.IO;
     using System.Windows.Forms;
-
     using DotSpatial.Controls;
     using DotSpatial.Controls.Header;
-    using System.ComponentModel.Composition;
     using HydroDesktop.Configuration;
-    using System.IO;
-    using HydroDesktop.Interfaces;
     using HydroDesktop.Database;
-    using System.Diagnostics;
+    using HydroDesktop.Interfaces;
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
@@ -35,7 +34,7 @@
         public override void Activate()
         {
             //startup logging
-            TraceLogger logger = new TraceLogger();
+            var logger = new TraceLogger();
             logger.CreateTraceFile();
 
             

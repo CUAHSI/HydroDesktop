@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.DataDownload.LayerInformation.PopupControl;
-using System.Linq;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 
 namespace HydroDesktop.DataDownload.LayerInformation

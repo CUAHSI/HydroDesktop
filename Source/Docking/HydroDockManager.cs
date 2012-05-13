@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotSpatial.Controls.Docking;
-using System.Windows.Forms;
-using HydroDesktop.Common;
-using WeifenLuo.WinFormsUI.Docking;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.Windows.Forms;
+using DotSpatial.Controls.Docking;
+using HydroDesktop.Common;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace HydroDesktop.Docking
 {
@@ -32,7 +30,7 @@ namespace HydroDesktop.Docking
         //private Dictionary<DockContent, int> sortOrderLookup = new Dictionary<DockContent, int>();
 
         // The lookup list of dock panels (for keeping track of existing panels)
-        private Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string,DockPanelInfo>();
+        private readonly Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string,DockPanelInfo>();
 
         /// <summary>The active panel key</summary>
         private string ActivePanelKey { get; set; }

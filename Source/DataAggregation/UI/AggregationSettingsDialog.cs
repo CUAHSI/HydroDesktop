@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -14,7 +15,6 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 using PointShape = DotSpatial.Symbology.PointShape;
-using System.Globalization;
 
 namespace DataAggregation
 {

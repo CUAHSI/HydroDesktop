@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using System.Globalization;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;

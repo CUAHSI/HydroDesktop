@@ -11,8 +11,8 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using HydroDesktop.Help;
 using Hydrodesktop.Common;
+using HydroDesktop.Help;
 
 namespace EPADelineation
 {

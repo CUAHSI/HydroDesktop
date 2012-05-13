@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Help;
 using HydroDesktop.Interfaces;
@@ -646,7 +646,7 @@ namespace HydroDesktop.ExportToCSV
         private class ThemeDescription
         {
             public int? ThemeId { get; private set; }
-            public string ThemeName { get; private set; }
+            private string ThemeName { get; set; }
 
             public ThemeDescription(int? themeId, string themeName)
             {
