@@ -1,4 +1,4 @@
-﻿Imports HydroDesktop.Interfaces.ObjectModel
+﻿Option Strict On
 
 Namespace Controls
 
@@ -40,38 +40,23 @@ Namespace Controls
         Private Sub Plot(ByRef options As OneSeriesPlotInfo)
             Dim siteName = options.SiteName
             Dim variableName = options.VariableName
-            Dim table = options.DataTable
-            Dim plotOptions = options.PlotOptions
-            Dim seriesID = options.SeriesID
-
             Dim siteAndVariable = siteName + ", " + variableName
+            Dim statistics = options.SummaryStatistics
 
-            Dim data = table
-            If (Not plotOptions.UseCensoredData) Then
-                Dim temp As DataTable = table.Copy
-                Dim censoredRows() As DataRow = temp.Rows.Cast(Of DataRow).Where(Function(row) DataValue.IsCensored(row("CensorCode"))).ToArray()
-
-                For Each censoredRow As DataRow In censoredRows
-                    temp.Rows.Remove(censoredRow)
-                Next censoredRow
-
-                data = temp
-            End If
-
-            dgvStatSummary.Rows.Add(siteAndVariable, "ID " + seriesID.ToString)
-            dgvStatSummary.Rows.Add("# Of Observations", Statistics.Count(data))
-            dgvStatSummary.Rows.Add("# Of Censored Obs.", Statistics.CountCensored(data))
-            dgvStatSummary.Rows.Add("Arithmetic Mean", Statistics.ArithmeticMean(data))
-            dgvStatSummary.Rows.Add("Geometric Mean", Statistics.GeometricMean(data))
-            dgvStatSummary.Rows.Add("Maximum", Statistics.Maximum(data))
-            dgvStatSummary.Rows.Add("Minimum", Statistics.Minimum(data))
-            dgvStatSummary.Rows.Add("Standard Deviation", Statistics.StandardDeviation(data))
-            dgvStatSummary.Rows.Add("Coefficient of Variation", Statistics.CoefficientOfVariation(data))
-            dgvStatSummary.Rows.Add("Percentiles 10%", Statistics.Percentile(data, 10))
-            dgvStatSummary.Rows.Add("Percentiles 25%", Statistics.Percentile(data, 25))
-            dgvStatSummary.Rows.Add("Percentiles 50%(median)", Statistics.Percentile(data, 50))
-            dgvStatSummary.Rows.Add("Percentiles 75%", Statistics.Percentile(data, 75))
-            dgvStatSummary.Rows.Add("Percentiles 90%", Statistics.Percentile(data, 90))
+            dgvStatSummary.Rows.Add(siteAndVariable, "ID " + options.SeriesID.ToString())
+            dgvStatSummary.Rows.Add("# Of Observations", statistics.NumberOfObservations)
+            dgvStatSummary.Rows.Add("# Of Censored Obs.", statistics.NumberOfCensoredObservations)
+            dgvStatSummary.Rows.Add("Arithmetic Mean", statistics.ArithmeticMean)
+            dgvStatSummary.Rows.Add("Geometric Mean", statistics.GeometricMean)
+            dgvStatSummary.Rows.Add("Maximum", statistics.Maximum)
+            dgvStatSummary.Rows.Add("Minimum", statistics.Minimum)
+            dgvStatSummary.Rows.Add("Standard Deviation", statistics.StandardDeviation)
+            dgvStatSummary.Rows.Add("Coefficient of Variation", statistics.CoefficientOfVariation)
+            dgvStatSummary.Rows.Add("Percentiles 10%", statistics.Percentile10)
+            dgvStatSummary.Rows.Add("Percentiles 25%", statistics.Percentile25)
+            dgvStatSummary.Rows.Add("Percentiles 50%(median)", statistics.Percentile50)
+            dgvStatSummary.Rows.Add("Percentiles 75%", statistics.Percentile75)
+            dgvStatSummary.Rows.Add("Percentiles 90%", statistics.Percentile90)
             dgvStatSummary.Rows.Add()
             dgvStatSummary.Columns(0).Width = siteAndVariable.Length * 7
             dgvStatSummary.AutoResizeColumns()

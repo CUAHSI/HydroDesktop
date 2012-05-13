@@ -3,6 +3,10 @@
 Public Class PlotOptions
     Public Event DatesChanged As EventHandler
 
+    Public Sub New()
+        SetColorCollections()
+    End Sub
+
     Public Property TimeSeriesMethod() As TimeSeriesType = TimeSeriesType.Both
     Public Property HistTypeMethod() As HistogramType = HistogramType.Count
     Public Property HistAlgorothmsMethod() As HistorgramAlgorithms = HistorgramAlgorithms.Sturges
@@ -15,10 +19,13 @@ Public Class PlotOptions
     Public Property xMajor() As Double
     Public Property BoxWhiskerMethod() As BoxWhiskerType = BoxWhiskerType.Monthly
     Public Property IsPlotCensored() As Boolean = True
+    'TODO: remove GetLineColor and GetPointColor
+    <Obsolete()>
     Public Property GetLineColor() As Color = Color.Black
+    <Obsolete()>
     Public Property GetPointColor() As Color = Color.Black
-    Public Property LineColorList() As Integer
-    Public Property PointColorList() As Integer
+    Public Property LineColorList() As New List(Of Color)
+    Public Property PointColorList() As New List(Of Color)
     Public Property ShowLegend() As Boolean = True
     Public Property UseCensoredData() As Boolean = False
     Public Property DisplayFullDate As Boolean = True
@@ -72,6 +79,24 @@ Public Class PlotOptions
         End Set
     End Property
 
+
+    Private Sub SetColorCollections()
+        Dim colors() As Color = {Color.FromArgb(106, 61, 154),
+                                 Color.FromArgb(202, 178, 214),
+                                 Color.FromArgb(255, 127, 0),
+                                 Color.FromArgb(253, 191, 111),
+                                 Color.FromArgb(227, 26, 28),
+                                 Color.FromArgb(251, 154, 153),
+                                 Color.FromArgb(51, 160, 44),
+                                 Color.FromArgb(178, 223, 138),
+                                 Color.FromArgb(31, 120, 180),
+                                 Color.FromArgb(166, 206, 227)}
+
+        For Each color In colors
+            LineColorList.Add(color)
+            PointColorList.Add(color)
+        Next
+    End Sub
 
     Private Sub RaiseDatesChanged()
         RaiseEvent DatesChanged(Me, EventArgs.Empty)

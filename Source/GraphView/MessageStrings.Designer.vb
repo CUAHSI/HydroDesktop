@@ -65,6 +65,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to All data is censored, so there is no data do display.
+        '''</summary>
+        Friend Shared ReadOnly Property All_Data_Censored() As String
+            Get
+                Return ResourceManager.GetString("All_Data_Censored", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to No Data To Plot.
         '''</summary>
         Friend Shared ReadOnly Property No_Data_Plot() As String

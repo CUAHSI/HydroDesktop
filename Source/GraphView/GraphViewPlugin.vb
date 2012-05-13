@@ -517,9 +517,24 @@ Public Class GraphViewPlugin
     End Sub
 
     Sub rbColorSetting_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Dim frmCC = New ColorSettingsDialog(_mainControl.linecolorlist, _mainControl.pointcolorlist)
-        frmCC._CTSA = _mainControl
+        Dim frmCC = New ColorSettingsDialog(_plotOptions.LineColorList, _plotOptions.PointColorList)
+        AddHandler frmCC.ColorsApplied, AddressOf OnColorsApplied
         frmCC.ShowDialog()
+    End Sub
+
+    Private Sub OnColorsApplied(ByVal sender As Object, ByVal e As EventArgs)
+        Dim form = DirectCast(sender, ColorSettingsDialog)
+
+        _plotOptions.PointColorList.Clear()
+        For i As Integer = 0 To form.pointcolorlist.Count
+            _plotOptions.PointColorList.Add(form.pointcolorlist(i))
+        Next
+        _plotOptions.LineColorList.Clear()
+        For i As Integer = 0 To form.linecolorlist.Count
+            _plotOptions.LineColorList.Add(form.linecolorlist(i))
+        Next
+
+        _mainControl.ApplyOptions()
     End Sub
 
     Sub rbhtCount_Click(ByVal sender As Object, ByVal e As EventArgs)
