@@ -33,14 +33,14 @@
     Private _LineColorList As Integer
     Private _PointColorList As Integer
     Private ReadOnly _StartDate As Date
-    Private _EndDate As Date
+    Private ReadOnly _EndDate As Date
     Private ReadOnly _ChangeDateRange As Boolean
-    Private _ShowLegend As Boolean
-    Private _UseCensoredData As Boolean
+    Private ReadOnly _ShowLegend As Boolean
+    Private ReadOnly _UseCensoredData As Boolean
 
 
-    Private _HistType As HistogramType
-    Private _HistAlgorothms As HistorgramAlgorithms
+    Private ReadOnly _HistType As HistogramType
+    Private ReadOnly _HistAlgorothms As HistorgramAlgorithms
     Private _NumBins As Integer
     Private _BinWidth As Double
     Private _xMax As Double

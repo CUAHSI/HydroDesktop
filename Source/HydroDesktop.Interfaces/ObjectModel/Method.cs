@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>

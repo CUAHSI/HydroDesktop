@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
-using DotSpatial.Controls.Docking;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Docking;
 
 namespace HydroDesktop.MainApplication
 {

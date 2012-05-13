@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using System.ComponentModel.Composition;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using Hydrodesktop.Common;
 using HydroDesktop.Common;
+using HydroDesktop.Common.Tools;
 using HydroDesktop.DataDownload.Downloading;
+using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.DataDownload.Properties;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
-using HydroDesktop.DataDownload.LayerInformation;
-using HydroDesktop.Common.Tools;
-using Hydrodesktop.Common;
 using Msg = HydroDesktop.DataDownload.MessageStrings;
 
 namespace HydroDesktop.DataDownload

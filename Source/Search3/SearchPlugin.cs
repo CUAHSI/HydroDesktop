@@ -11,18 +11,18 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Common;
+using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
+using HydroDesktop.WebServices;
 using Search3.Area;
 using Search3.Properties;
 using Search3.Searching;
 using Search3.Searching.Exceptions;
 using Search3.Settings;
 using Search3.Settings.UI;
-using HydroDesktop.WebServices;
 using Msg = Search3.MessageStrings;
-using HydroDesktop.Common.Tools;
 
 namespace Search3
 {

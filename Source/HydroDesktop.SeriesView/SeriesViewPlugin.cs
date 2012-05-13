@@ -2,13 +2,12 @@
 
 namespace SeriesView
 {
-    using System.Windows.Forms;
-
-    using DotSpatial.Controls;
-    using DotSpatial.Controls.Header;
     using System.ComponentModel.Composition;
-    using HydroDesktop.Interfaces;
+    using System.Windows.Forms;
+    using DotSpatial.Controls;
     using DotSpatial.Controls.Docking;
+    using DotSpatial.Controls.Header;
+    using HydroDesktop.Interfaces;
 
     public class SeriesViewPlugin : Extension
     {

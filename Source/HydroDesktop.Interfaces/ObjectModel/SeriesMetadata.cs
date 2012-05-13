@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
@@ -18,6 +16,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public SeriesMetadata()
         {
+            ValueCount = 0;
             Method = Method.Unknown;
             Source = Source.Unknown;
             QualityControlLevel = QualityControlLevel.Unknown;
@@ -35,6 +34,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <param name="source">the source of the data values for this series</param>
         public SeriesMetadata(Site site, Variable variable, Method method, QualityControlLevel qualControl, Source source)
         {
+            ValueCount = 0;
             this.Site = site;
             this.Variable = variable;
             this.Method = method;
@@ -90,11 +90,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         #endregion
 
         #region Private Variables
-        private int _valueCount = 0;
-        private DateTime _beginDateTime;
-        private DateTime _endDateTime;
-        private DateTime _beginDateTimeUTC;
-        private DateTime _endDateTimeUTC;
+
         #endregion
 
         #region Properties
@@ -106,79 +102,28 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <summary>
         /// The local time when the first value of the series was measured
         /// </summary>
-        public virtual DateTime BeginDateTime
-        {
-            get
-            {
-                return _beginDateTime;
-            }
-            set
-            {
-                _beginDateTime = value;
-            }
-        }
+        public virtual DateTime BeginDateTime { get; set; }
 
         /// <summary>
         /// The local time when the last value of the series was measured
         /// </summary>
-        public virtual DateTime EndDateTime
-        {
-            get
-            {
-                return _endDateTime;
-            }
-            set
-            {
-                _endDateTime = value;
-            }
-        }
+        public virtual DateTime EndDateTime { get; set; }
 
         /// <summary>
         /// Begin time of the series in UTC
         /// </summary>
-        public virtual DateTime BeginDateTimeUTC 
-        {
-            get
-            {
-                return _beginDateTimeUTC;
-            }
-            set
-            {
-                _beginDateTimeUTC = value;
-            }
-        }
+        public virtual DateTime BeginDateTimeUTC { get; set; }
 
         /// <summary>
         /// End time of the series in UTC
         /// </summary>
-        public virtual DateTime EndDateTimeUTC 
-        {
-            get
-            {
-                return _endDateTimeUTC;
-            }
-            set
-            {
-                _endDateTimeUTC = value;
-            }       
-        }
+        public virtual DateTime EndDateTimeUTC { get; set; }
 
-        
+
         /// <summary>
         /// The number of data values in this series
         /// </summary>
-        public virtual int ValueCount 
-        { 
-            get
-            {
-                return _valueCount;
-            }
-
-            set
-            {
-                _valueCount = value;
-            }
-        }
+        public virtual int ValueCount { get; set; }
 
         /// <summary>
         /// The time when the series has been saved to the HydroDesktop 

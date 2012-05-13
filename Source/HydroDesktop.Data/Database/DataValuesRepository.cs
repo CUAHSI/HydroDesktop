@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using HydroDesktop.Interfaces;
-using System.Globalization;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database

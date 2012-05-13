@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.Extensions;
 using DotSpatial.Projections;
 using HydroDesktop.Configuration;
-using System.Reflection;
 using HydroDesktop.Help;
-using System.Diagnostics;
-using System.ComponentModel.Composition;
-using DotSpatial.Extensions;
 
 namespace HydroDesktop.Main
 {

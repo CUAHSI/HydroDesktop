@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -5,7 +6,6 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Excel;
-using System;
 using ExcelExtension.Properties;
 
 namespace ExcelExtension

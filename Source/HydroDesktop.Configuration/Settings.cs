@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.Configuration
 {
@@ -12,10 +11,10 @@ namespace HydroDesktop.Configuration
     /// </summary>
     public class Settings
     {
-        readonly string _defaultHISCentralURL = //Properties.Settings.Default.DefaultHISCentralUrl;
-        "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
+        private const string _defaultHISCentralURL = //Properties.Settings.Default.DefaultHISCentralUrl;
+            "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
 
-        private List<string> _hisCentralURLList = Properties.Settings.Default.HISCentralUrlList.Cast<string>().ToList();
+        private readonly List<string> _hisCentralURLList = Properties.Settings.Default.HISCentralUrlList.Cast<string>().ToList();
         private string _downloadOption = "Append";
 
         private string _dataRepositoryConnectionString;
@@ -278,7 +277,7 @@ namespace HydroDesktop.Configuration
         /// <param name="fileName"></param>
         public void AddFileToRecentFiles(string fileName)
         {
-            int maximumNumberOfRecentFiles = 10;
+            const int maximumNumberOfRecentFiles = 10;
 
             if (Properties.Settings.Default.RecentProjectFiles.Contains(fileName))
             {

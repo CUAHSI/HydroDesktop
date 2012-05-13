@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Reflection;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using System.Security.Permissions;
-using System.Web.Services.Description;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
+using System.Reflection;
 
 namespace HydroDesktop.WebServices
 {

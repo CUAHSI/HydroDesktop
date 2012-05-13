@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
-using System.IO;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 
 namespace HydroDesktop.ImportExport
@@ -36,7 +36,7 @@ namespace HydroDesktop.ImportExport
 
 		private TextWriter _textStream;
 		private bool _isDisposed = false;
-		private string _delimiter;
+		private readonly string _delimiter;
 
 		#endregion
 

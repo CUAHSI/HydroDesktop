@@ -1,5 +1,5 @@
-﻿using HydroDesktop.Interfaces.ObjectModel;
-using System.Data;
+﻿using System.Data;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
 {

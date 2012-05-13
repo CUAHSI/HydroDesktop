@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
-using DotSpatial.Controls.Header;
 
 namespace HydroDesktop.ExportToCSV
 {

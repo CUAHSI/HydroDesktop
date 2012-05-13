@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Resources;
-using System.Globalization;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Net;
+using System.Resources;
 
 namespace HydroDesktop.WebServices
 {
@@ -70,7 +68,7 @@ namespace HydroDesktop.WebServices
 
         private Image GetImageFromHISCentral(string serviceCode)
         {
-            int requestTimeout = 2000;
+            const int requestTimeout = 2000;
 
             try
             {

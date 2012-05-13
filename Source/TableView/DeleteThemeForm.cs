@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using HydroDesktop.Database;
-using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace TableView
 {

@@ -6,9 +6,9 @@ Public Class cSummaryPlot
 
 #Region "setup"
 
-    Dim gPane1 As GraphPane = New GraphPane
+    ReadOnly gPane1 As GraphPane = New GraphPane
     Dim gPane2 As GraphPane = New GraphPane
-    Dim gPane3 As GraphPane = New GraphPane
+    ReadOnly gPane3 As GraphPane = New GraphPane
     Dim gPane4 As GraphPane = New GraphPane
 
     Public Sub New()

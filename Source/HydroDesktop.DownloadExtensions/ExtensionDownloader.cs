@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using DotSpatial.Extensions;
 using DotSpatial.Controls;
-using DotSpatial.Plugins.ExtensionManager;
-using System.ComponentModel.Composition;
-using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
+using DotSpatial.Extensions;
+using DotSpatial.Plugins.ExtensionManager;
 
 namespace HydroDesktop.DownloadExtensions
 {

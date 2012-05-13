@@ -1,12 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Forms;
-
 using DotSpatial.Controls;
-using HydroDesktop.Help;
-using HydroDesktop;
 //using HydroDesktop.Main;
 using DotSpatial.Controls.Header;
+using HydroDesktop.Help;
 
 namespace HelpTab
 {

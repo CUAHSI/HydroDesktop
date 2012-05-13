@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using DotSpatial.Controls;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
