@@ -166,6 +166,8 @@ Namespace Controls
         'when a series is checked in the series selector control
         Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
 
+            Dim seriesPlotInfo = New SeriesPlotInfo(_seriesMenu.CheckedIDList, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options, StartDateTime, EndDateTime)
+
             'Declaring all variables
             Dim curveIndex As Integer = 0
             Dim removedSeriesID As Integer = 0
@@ -186,7 +188,6 @@ Namespace Controls
                 If (selectedSeriesIdList.Count = 0) Or (selectedSeriesIdList.Count = 1) Then
                     'Clear the graph and repolt the whole graph
                     Summary.ClearStatistics()
-                    dataSummary.ClearStatTables()
                     timeSeriesPlot.Remove(0)
                     probabilityPlot.Remove(0)
                     timeSeriesPlot.Clear()
@@ -201,7 +202,6 @@ Namespace Controls
                     probabilityPlot.Remove(removedSeriesID)
                     boxWhisker.Remove(removedSeriesID)
                     histogramPlot.Remove(removedSeriesID)
-                    dataSummary.RemoveStatTable(removedSeriesID)
                     If IsDisplayFullDate Then
                         ResetDateRange()
                     End If
@@ -223,7 +223,8 @@ Namespace Controls
 
             End If
 
-            dataSummary.StatTableStyling()
+            dataSummary.Plot(seriesPlotInfo)
+
             timeSeriesPlot.Refreshing()
             probabilityPlot.Refreshing()
             histogramPlot.Refreshing()
@@ -233,40 +234,8 @@ Namespace Controls
 
         End Sub
 
-        Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As TimeSeriesPlotOptions
-            Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
-            Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-            Dim series = dataSeriesRepo.GetByKey(seriesID)
-
-            Dim strStartDate = StartDateTime
-            Dim strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1)
-            ProgressBar.Value += 1
-
-            Dim nodatavalue = series.Variable.NoDataValue
-            ProgressBar.Value += 1
-            Dim data = dataValuesRepo.GetTableForGraphView(seriesID, nodatavalue, strStartDate, strEndDate)
-            ProgressBar.Value += 1
-            Dim variableName = series.Variable.Name
-            ProgressBar.Value += 1
-            Dim unitsName = series.Variable.VariableUnit.Name
-            ProgressBar.Value += 1
-            Dim siteName = If(_seriesMenu.SiteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
-            ProgressBar.Value += 1
-            Dim dataType = series.Variable.DataType
-            ProgressBar.Value += 1
-
-            Dim options = plotOptionsControl.Options
-
-            Dim timeSeriesOptions = New TimeSeriesPlotOptions
-            timeSeriesOptions.DataTable = data
-            timeSeriesOptions.DataType = dataType
-            timeSeriesOptions.PlotOptions = options
-            timeSeriesOptions.SeriesID = seriesID
-            timeSeriesOptions.SiteName = siteName
-            timeSeriesOptions.VariableName = variableName
-            timeSeriesOptions.VariableUnits = unitsName
-
-            Return timeSeriesOptions
+        Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As OneSeriesPlotInfo
+            Return OneSeriesPlotInfo.Create(seriesID, StartDateTime, EndDateTime, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options)
         End Function
 
         Private Sub PlotGraps(ByVal seriesID As Int32)
@@ -281,9 +250,6 @@ Namespace Controls
             ColorChooser(timeSeriesOptions.PlotOptions)
 
             Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-            dataSummary.Plot(timeSeriesOptions)
-            dataSummary.StatTableStyling()
-
             If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
 
                 timeSeriesPlot.Plot(timeSeriesOptions)
@@ -313,6 +279,8 @@ Namespace Controls
 
         Public Sub ApplyOptions()
 
+            Dim seriesPlotInfo = New SeriesPlotInfo(_seriesMenu.CheckedIDList, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options, StartDateTime, EndDateTime)
+
             'progress bar setting
             ProgressBar.Visible = True
             ProgressBar.Maximum = selectedSeriesIdList.Count * 10
@@ -322,7 +290,6 @@ Namespace Controls
 
             'Clear the graph and plot it again
             Summary.ClearStatistics()
-            dataSummary.ClearStatTables()
             timeSeriesPlot.Clear()
             boxWhisker.Clear()
             histogramPlot.Clear()
@@ -334,7 +301,7 @@ Namespace Controls
                 colorcount += 1
             Next
 
-            dataSummary.StatTableStyling()
+            dataSummary.Plot(seriesPlotInfo)
             timeSeriesPlot.Refreshing()
             probabilityPlot.Refreshing()
             histogramPlot.Refreshing()

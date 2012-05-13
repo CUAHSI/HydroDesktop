@@ -23,12 +23,12 @@ Namespace Controls
             zgHistogramPlot.GraphPane.Title.Text = title
         End Sub
 
-        Public Sub Plot(ByRef options As TimeSeriesPlotOptions, ByVal e_StdDev As Double)
+        Public Sub Plot(ByRef options As OneSeriesPlotInfo, ByVal e_StdDev As Double)
             Try
                 m_Data = options.DataTable.Copy
 
                 If zgHistogramPlot.MasterPane.PaneList.Count <> 0 Then
-                    Dim cOptions = DirectCast(zgHistogramPlot.MasterPane.PaneList(0).Tag, TimeSeriesPlotOptions)
+                    Dim cOptions = DirectCast(zgHistogramPlot.MasterPane.PaneList(0).Tag, OneSeriesPlotInfo)
                     If cOptions Is Nothing Then
                         zgHistogramPlot.MasterPane.PaneList.Clear()
                     End If
@@ -77,7 +77,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
+        Private Sub Graph(ByVal gPane As GraphPane, ByRef options As OneSeriesPlotInfo)
             Try
                 Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
                 Dim m_Options = options.PlotOptions
@@ -150,11 +150,11 @@ Namespace Controls
 
                     Dim needShowDataType = False
                     For Each c In zgHistogramPlot.MasterPane.PaneList
-                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
 
                         For Each cc In zgHistogramPlot.MasterPane.PaneList
                             If Not ReferenceEquals(c, cc) Then
-                                Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                                Dim ccOptions = DirectCast(cc.Tag, OneSeriesPlotInfo)
 
                                 If ccOptions.SiteName = cOptions.SiteName And
                                    ccOptions.VariableName = cOptions.VariableName Then
@@ -170,7 +170,7 @@ Namespace Controls
                     Else
                         ' Update legend for all curves
                         For Each c In zgHistogramPlot.MasterPane.PaneList()
-                            Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                            Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                             c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                         Next
                     End If
@@ -458,7 +458,7 @@ Namespace Controls
         End Sub
 
         Public Function PaneID(ByVal pane As GraphPane) As Integer
-            Dim cOptions = DirectCast(pane.Tag, TimeSeriesPlotOptions)
+            Dim cOptions = DirectCast(pane.Tag, OneSeriesPlotInfo)
             If cOptions Is Nothing Then Return Nothing
             Return cOptions.SeriesID
         End Function

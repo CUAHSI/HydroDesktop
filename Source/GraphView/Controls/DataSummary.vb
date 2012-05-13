@@ -10,7 +10,17 @@ Namespace Controls
             InitializeComponent()
         End Sub
 
-        Public Sub Plot(ByRef options As TimeSeriesPlotOptions)
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+            ClearStatTables()
+            For Each seriesInfo In seriesPlotInfo.GetSeriesInfo()
+                Plot(seriesInfo)
+            Next
+            StatTableStyling()
+        End Sub
+
+#Region "Private methods"
+
+        Private Sub Plot(ByRef options As OneSeriesPlotInfo)
             Dim siteName = options.SiteName
             Dim variableName = options.VariableName
             Dim table = options.DataTable
@@ -31,7 +41,7 @@ Namespace Controls
                 data = temp
             End If
 
-            dgvStatSummary.Rows.Add(siteAndVariable, "ID " + seriesId.ToString)
+            dgvStatSummary.Rows.Add(siteAndVariable, "ID " + seriesID.ToString)
             dgvStatSummary.Rows.Add("# Of Observations", Statistics.Count(data))
             dgvStatSummary.Rows.Add("# Of Censored Obs.", Statistics.CountCensored(data))
             dgvStatSummary.Rows.Add("Arithmetic Mean", Statistics.ArithmeticMean(data))
@@ -50,12 +60,11 @@ Namespace Controls
             dgvStatSummary.AutoResizeColumns()
         End Sub
 
-        Public Sub ClearStatTables()
+        Private Sub ClearStatTables()
             dgvStatSummary.Rows.Clear()
-
         End Sub
 
-        Public Sub StatTableStyling()
+        Private Sub StatTableStyling()
             Dim count As Integer = 0
             Dim sizecount As Integer = dgvStatSummary.Rows.Count
             For Each i In DirectCast(dgvStatSummary.Rows, IEnumerable)
@@ -72,20 +81,7 @@ Namespace Controls
 
         End Sub
 
-        Public Sub RemoveStatTable(ByVal SeriesID As Integer)
-            Dim row As Integer = 0
-
-            Do Until (row > dgvStatSummary.RowCount - 1)
-                If dgvStatSummary.Rows(row).Cells(1).Value = "ID " + SeriesID.ToString Then
-                    For i = 0 To 14
-                        dgvStatSummary.Rows.Remove(dgvStatSummary.Rows(row))
-                    Next
-                Else
-                    row += 15
-                End If
-
-            Loop
-        End Sub
+#End Region
 
     End Class
 End Namespace

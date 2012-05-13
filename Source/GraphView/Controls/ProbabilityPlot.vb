@@ -29,7 +29,7 @@ Namespace Controls
             zgProbabilityPlot.GraphPane.Title.Text = title
         End Sub
 
-        Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
+        Public Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
             Try
                 Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
                 m_VarList.Add(m_VariableWithUnits)
@@ -58,7 +58,7 @@ Namespace Controls
 
 #Region " Probability "
 
-        Private Sub PlotProbability(ByRef options As TimeSeriesPlotOptions)
+        Private Sub PlotProbability(ByRef options As OneSeriesPlotInfo)
 
             Dim m_Data = options.DataTable.Copy
             Dim m_Site = options.SiteName
@@ -187,11 +187,11 @@ Namespace Controls
                 'Setting Legend Title
                 Dim needShowDataType = False
                 For Each c In zgProbabilityPlot.GraphPane.CurveList
-                    Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                    Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
 
                     For Each cc In zgProbabilityPlot.GraphPane.CurveList
                         If Not ReferenceEquals(c, cc) Then
-                            Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                            Dim ccOptions = DirectCast(cc.Tag, OneSeriesPlotInfo)
                             If ccOptions.SiteName = cOptions.SiteName And
                                ccOptions.VariableName = cOptions.VariableName Then
                                 needShowDataType = True
@@ -206,7 +206,7 @@ Namespace Controls
                 Else
                     ' Update legend for all curves
                     For Each c In zgProbabilityPlot.GraphPane.CurveList
-                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                         c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                     Next
                 End If

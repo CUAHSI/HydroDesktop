@@ -38,7 +38,7 @@ Namespace Controls
             Return zgTimeSeries.GraphPane.CurveList.Count
         End Function
 
-        Public Sub Plot(ByRef options As TimeSeriesPlotOptions)
+        Public Sub Plot(ByRef options As OneSeriesPlotInfo)
             Graph(options)
         End Sub
 
@@ -71,7 +71,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private Sub Graph(ByRef options As TimeSeriesPlotOptions)
+        Private Sub Graph(ByRef options As OneSeriesPlotInfo)
             Try
                 Dim gPane As GraphPane = zgTimeSeries.GraphPane
 
@@ -152,11 +152,11 @@ Namespace Controls
                     'Setting Legend Title
                     Dim needShowDataType = False
                     For Each c In zgTimeSeries.GraphPane.CurveList
-                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
 
                         For Each cc In zgTimeSeries.GraphPane.CurveList
                             If Not ReferenceEquals(c, cc) Then
-                                Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                                Dim ccOptions = DirectCast(cc.Tag, OneSeriesPlotInfo)
 
                                 If ccOptions.SiteName = cOptions.SiteName And
                                    ccOptions.VariableName = cOptions.VariableName Then
@@ -172,7 +172,7 @@ Namespace Controls
                     Else
                         ' Update legend for all curves
                         For Each c In zgTimeSeries.GraphPane.CurveList
-                            Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                            Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                             c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                         Next
                     End If
@@ -401,7 +401,7 @@ Namespace Controls
         End Sub
 
         Private Function CurveID(ByVal curve As CurveItem) As Integer
-            Dim cOptions = DirectCast(curve.Tag, TimeSeriesPlotOptions)
+            Dim cOptions = DirectCast(curve.Tag, OneSeriesPlotInfo)
             If cOptions Is Nothing Then Return Nothing
             Return cOptions.SeriesID
         End Function

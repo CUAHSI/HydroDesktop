@@ -12,13 +12,13 @@ Namespace Controls
         Private Const db_outFld_ValDTMonth As String = "DateMonth"
         Private Const db_outFld_ValDTYear As String = "DateYear"
 
-        Public Sub Plot(ByRef options As TimeSeriesPlotOptions, Optional ByVal e_StdDev As Double = 0)
+        Public Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
             Try
                 m_Data = options.DataTable.Copy
                 Dim i As Integer
 
                 If zgBoxWhiskerPlot.MasterPane.PaneList.Count <> 0 Then
-                    Dim cOptions = DirectCast(zgBoxWhiskerPlot.MasterPane.PaneList(0).Tag, TimeSeriesPlotOptions)
+                    Dim cOptions = DirectCast(zgBoxWhiskerPlot.MasterPane.PaneList(0).Tag, OneSeriesPlotInfo)
                     If cOptions Is Nothing Then
                         zgBoxWhiskerPlot.MasterPane.PaneList.Clear()
                     End If
@@ -75,7 +75,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private Sub Graph(ByVal gPane As GraphPane, ByRef options As TimeSeriesPlotOptions)
+        Private Sub Graph(ByVal gPane As GraphPane, ByRef options As OneSeriesPlotInfo)
             Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
             Dim m_Options = options.PlotOptions
 
@@ -187,11 +187,11 @@ Namespace Controls
                     gPane.Tag = options
                     Dim needShowDataType = False
                     For Each c In zgBoxWhiskerPlot.MasterPane.PaneList
-                        Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                        Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
 
                         For Each cc In zgBoxWhiskerPlot.MasterPane.PaneList
                             If Not ReferenceEquals(c, cc) Then
-                                Dim ccOptions = DirectCast(cc.Tag, TimeSeriesPlotOptions)
+                                Dim ccOptions = DirectCast(cc.Tag, OneSeriesPlotInfo)
                                 If ccOptions.SiteName = cOptions.SiteName And
                                    ccOptions.VariableName = cOptions.VariableName Then
                                     needShowDataType = True
@@ -206,7 +206,7 @@ Namespace Controls
                     Else
                         ' Update legend for all curves
                         For Each c In zgBoxWhiskerPlot.MasterPane.PaneList()
-                            Dim cOptions = DirectCast(c.Tag, TimeSeriesPlotOptions)
+                            Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                             c.Title.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
                         Next
                     End If
@@ -1079,7 +1079,7 @@ Namespace Controls
         End Sub
 
         Private Function PaneID(ByVal pane As GraphPane) As Integer
-            Dim cOptions = DirectCast(pane.Tag, TimeSeriesPlotOptions)
+            Dim cOptions = DirectCast(pane.Tag, OneSeriesPlotInfo)
             If cOptions Is Nothing Then Return Nothing
             Return cOptions.SeriesID
         End Function
