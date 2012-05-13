@@ -25,7 +25,6 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.summaryStatistics = New SummaryStatistics()
             Me.tpDataSummary = New System.Windows.Forms.TabPage()
             Me.dataSummary = New DataSummary()
             Me.tpBoxWhisker = New System.Windows.Forms.TabPage()
@@ -45,16 +44,6 @@
             Me.tpTimeSeries.SuspendLayout()
             Me.tcPlots.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'CSummaryStatistics1
-            '
-            Me.summaryStatistics.AutoScroll = True
-            Me.summaryStatistics.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.summaryStatistics.Location = New System.Drawing.Point(0, 0)
-            Me.summaryStatistics.Name = "CSummaryStatistics1"
-            Me.summaryStatistics.Padding = New System.Windows.Forms.Padding(3)
-            Me.summaryStatistics.Size = New System.Drawing.Size(230, 375)
-            Me.summaryStatistics.TabIndex = 0
             '
             'tpDataSummary
             '
@@ -196,7 +185,6 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents summaryStatistics As SummaryStatistics
         Friend WithEvents dataSummary As DataSummary
         Friend WithEvents boxWhisker As BoxWhiskerPlot
         Friend WithEvents histogramPlot As HistogramPlot

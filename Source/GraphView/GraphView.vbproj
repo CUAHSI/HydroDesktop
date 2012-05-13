@@ -167,6 +167,7 @@
     </Compile>
     <Compile Include="Controls\IChart.vb" />
     <Compile Include="Controls\OneSeriesPlotInfo.vb" />
+    <Compile Include="Controls\SummaryStatistics.vb" />
     <Compile Include="Controls\ZedGraphControlEx.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,12 +194,6 @@
       <DependentUpon>ProbabilityPlot.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProbabilityPlot.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\SummaryStatistics.Designer.vb">
-      <DependentUpon>SummaryStatistics.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SummaryStatistics.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\TimeSeriesPlot.Designer.vb">
@@ -261,10 +256,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProbabilityPlot.resx">
       <DependentUpon>ProbabilityPlot.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SummaryStatistics.resx">
-      <DependentUpon>SummaryStatistics.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TimeSeriesPlot.resx">
