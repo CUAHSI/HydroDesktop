@@ -1,4 +1,6 @@
-﻿namespace SeriesView
+﻿using HydroDesktop.Common;
+
+namespace SeriesView
 {
     using System.Windows.Forms;
 
@@ -10,7 +12,8 @@
 
     public class SeriesViewPlugin : Extension
     {
-        private const string SeriesViewKey = "kHydroSeriesView";
+        private readonly string SeriesViewKey = SharedConstants.SeriesViewKey;
+        private readonly string _tableRootKey = SharedConstants.TableRootKey;
 
         [Export("SeriesControl")]
         private ISeriesSelector MainSeriesSelector = new SeriesSelector();
@@ -20,7 +23,7 @@
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             
             AddSeriesDockPanel();
-            App.HeaderControl.Add(new RootItem("kHydroTable", "Table") {SortOrder = 20});
+            App.HeaderControl.Add(new RootItem(_tableRootKey, "Table") { SortOrder = 20 });
 
             Global.PluginEntryPoint = this;
 
@@ -29,9 +32,9 @@
 
         void DockManager_ActivePanelChanged(object sender, DockablePanelEventArgs e)
         {
-            if (e.ActivePanelKey == "kHydroTable")
+            if (e.ActivePanelKey == _tableRootKey)
             {
-                App.HeaderControl.SelectRoot("kHydroTable");
+                App.HeaderControl.SelectRoot(_tableRootKey);
             }
         }
 

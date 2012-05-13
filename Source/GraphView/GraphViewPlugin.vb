@@ -1,6 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.ComponentModel
+Imports HydroDesktop.Common
 Imports Controls
 Imports DotSpatial.Controls
 Imports System.Globalization
@@ -649,7 +650,7 @@ Namespace GraphView
             'activate the graph ribbon tab and the series view panel
             If e.ActivePanelKey = kGraph Then
                 App.HeaderControl.SelectRoot(kGraph)
-                App.DockManager.SelectPanel("kHydroSeriesView")
+                App.DockManager.SelectPanel( SharedConstants.SeriesViewKey)
             End If
 
         End Sub
