@@ -1,5 +1,4 @@
-﻿
-Namespace Controls
+﻿Namespace Controls
 
     Public Class DateTimeSettingsDialog
 
@@ -31,11 +30,11 @@ Namespace Controls
             btnApply.Enabled = True
         End Sub
 
-        Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
+        Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnApply.Click
             ApplyDates()
         End Sub
 
-        Private Sub btnOK_Click(sender As System.Object, e As System.EventArgs) Handles btnOK.Click
+        Private Sub btnOK_Click(sender As System.Object, e As EventArgs) Handles btnOK.Click
             ApplyDates()
             Close()
         End Sub

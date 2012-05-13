@@ -14,6 +14,7 @@ Public Class fDeriveNewDataSeries
     Private Const DERIVED_METHOD_DESCRIPTION = "Derived using HydroDesktop Edit View"
     Private ReadOnly _SelectedSeriesID As Integer
     Private ReadOnly _cEditView As cEditView
+    Private ReadOnly _seriesSelector As ISeriesSelector
     Private _derivedVariable As Variable
     Private _selectedSeriesVariable As Variable
 
@@ -23,10 +24,11 @@ Public Class fDeriveNewDataSeries
     ReadOnly qualityControlLevelsRepository As IQualityControlLevelsRepository = RepositoryFactory.Instance.Get(Of IQualityControlLevelsRepository)()
     ReadOnly dataValuesRepository As IDataValuesRepository = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
 
-    Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView)
+    Public Sub New(ByVal seriesId As Int32, ByRef cEditView As cEditView, ByRef seriesSelector As ISeriesSelector)
 
         _SelectedSeriesID = seriesId
         _cEditView = cEditView
+        _seriesSelector = seriesSelector
 
         InitializeComponent()
         initialize()
@@ -429,7 +431,7 @@ Public Class fDeriveNewDataSeries
             InsertNewDataValues()
         End If
 
-        _cEditView._seriesSelector.RefreshSelection()
+        _seriesSelector.RefreshSelection()
 
         MsgBox("Derive Complete", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Edit View")
         btnCancel.Text = "Close"

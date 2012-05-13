@@ -7,8 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3DA5E14F-CECF-4C4E-89F5-A233A21BFF34}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace>GraphView</RootNamespace>
     <AssemblyName>GraphView</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -142,10 +141,10 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\cDataSummary.Designer.vb">
-      <DependentUpon>cDataSummary.vb</DependentUpon>
+    <Compile Include="Controls\DataSummary.Designer.vb">
+      <DependentUpon>DataSummary.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cDataSummary.vb">
+    <Compile Include="Controls\DataSummary.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ColorSettingsDialog.Designer.vb">
@@ -154,10 +153,10 @@
     <Compile Include="Controls\ColorSettingsDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\cSummaryplot.Designer.vb">
-      <DependentUpon>cSummaryplot.vb</DependentUpon>
+    <Compile Include="Controls\Summaryplot.Designer.vb">
+      <DependentUpon>Summaryplot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cSummaryplot.vb">
+    <Compile Include="Controls\Summaryplot.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\DateTimeSettingsDialog.Designer.vb">
@@ -172,42 +171,47 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Common.vb" />
+    <Compile Include="MessageStrings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Pretty.vb" />
     <Compile Include="BoxPlot.vb" />
-    <Compile Include="Controls\cBoxWhiskerPlot.Designer.vb">
-      <DependentUpon>cBoxWhiskerPlot.vb</DependentUpon>
+    <Compile Include="Controls\BoxWhiskerPlot.Designer.vb">
+      <DependentUpon>BoxWhiskerPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cBoxWhiskerPlot.vb">
+    <Compile Include="Controls\BoxWhiskerPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\cHistogramPlot.Designer.vb">
-      <DependentUpon>cHistogramPlot.vb</DependentUpon>
+    <Compile Include="Controls\HistogramPlot.Designer.vb">
+      <DependentUpon>HistogramPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cHistogramPlot.vb">
+    <Compile Include="Controls\HistogramPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\cPlotOptions.Designer.vb">
-      <DependentUpon>cPlotOptions.vb</DependentUpon>
+    <Compile Include="Controls\PlotOptions.Designer.vb">
+      <DependentUpon>PlotOptions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cPlotOptions.vb">
+    <Compile Include="Controls\PlotOptions.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\cProbabilityPlot.Designer.vb">
-      <DependentUpon>cProbabilityPlot.vb</DependentUpon>
+    <Compile Include="Controls\ProbabilityPlot.Designer.vb">
+      <DependentUpon>ProbabilityPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cProbabilityPlot.vb">
+    <Compile Include="Controls\ProbabilityPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\cSummaryStatistics.Designer.vb">
-      <DependentUpon>cSummaryStatistics.vb</DependentUpon>
+    <Compile Include="Controls\SummaryStatistics.Designer.vb">
+      <DependentUpon>SummaryStatistics.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cSummaryStatistics.vb">
+    <Compile Include="Controls\SummaryStatistics.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\cTimeSeriesPlot.Designer.vb">
-      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+    <Compile Include="Controls\TimeSeriesPlot.Designer.vb">
+      <DependentUpon>TimeSeriesPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cTimeSeriesPlot.vb">
+    <Compile Include="Controls\TimeSeriesPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\MainControl.Designer.vb">
@@ -242,40 +246,40 @@
     <Compile Include="Statistics.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\cBoxWhiskerPlot.resx">
-      <DependentUpon>cBoxWhiskerPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\BoxWhiskerPlot.resx">
+      <DependentUpon>BoxWhiskerPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cDataSummary.resx">
-      <DependentUpon>cDataSummary.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\DataSummary.resx">
+      <DependentUpon>DataSummary.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cHistogramPlot.resx">
-      <DependentUpon>cHistogramPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\HistogramPlot.resx">
+      <DependentUpon>HistogramPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ColorSettingsDialog.resx">
       <DependentUpon>ColorSettingsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cSummaryplot.resx">
-      <DependentUpon>cSummaryplot.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\Summaryplot.resx">
+      <DependentUpon>Summaryplot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cPlotOptions.resx">
-      <DependentUpon>cPlotOptions.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\PlotOptions.resx">
+      <DependentUpon>PlotOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cProbabilityPlot.resx">
-      <DependentUpon>cProbabilityPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\ProbabilityPlot.resx">
+      <DependentUpon>ProbabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cSummaryStatistics.resx">
-      <DependentUpon>cSummaryStatistics.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\SummaryStatistics.resx">
+      <DependentUpon>SummaryStatistics.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cTimeSeriesPlot.resx">
-      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\TimeSeriesPlot.resx">
+      <DependentUpon>TimeSeriesPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainControl.resx">
@@ -285,6 +289,11 @@
     <EmbeddedResource Include="Controls\DateTimeSettingsDialog.resx">
       <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageStrings.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageStrings.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
