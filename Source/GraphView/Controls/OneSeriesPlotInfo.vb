@@ -31,13 +31,36 @@ Namespace Controls
 
             _seriesInfos = New List(Of OneSeriesPlotInfo)(_seriesIDs.Count)
 
+            Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
+            Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
             For i As Integer = 0 To _seriesIDs.Count - 1
                 Dim seriesId = _seriesIDs(i)
-                Dim oneSeriesInfo = OneSeriesPlotInfo.Create(seriesId, _siteDisplayColumn, _plotOptions)
-                oneSeriesInfo.LineColor = _plotOptions.LineColorList(i Mod _plotOptions.LineColorList.Count)
-                oneSeriesInfo.PointColor = _plotOptions.PointColorList(i Mod _plotOptions.PointColorList.Count)
+                Dim series = dataSeriesRepo.GetByKey(seriesId)
+                If (series Is Nothing) Then Continue For
 
-                _seriesInfos.Add(oneSeriesInfo)
+                Dim strStartDate = PlotOptions.StartDateTime
+                Dim strEndDate = PlotOptions.EndDateTime.AddDays(1).AddMilliseconds(-1)
+
+                Dim nodatavalue = series.Variable.NoDataValue
+                Dim data = dataValuesRepo.GetTableForGraphView(seriesId, nodatavalue, strStartDate, strEndDate)
+                Dim variableName = series.Variable.Name
+                Dim unitsName = series.Variable.VariableUnit.Name
+                Dim siteName = If(_siteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
+                Dim dataType = series.Variable.DataType
+
+                Dim result = New OneSeriesPlotInfo
+                result.DataTable = data
+                result.DataType = dataType
+                result.PlotOptions = PlotOptions
+                result.SeriesID = seriesId
+                result.SiteName = siteName
+                result.VariableName = variableName
+                result.VariableUnits = unitsName
+                result.Statistics = SummaryStatistics.Create(data, PlotOptions.UseCensoredData)
+                result.LineColor = _plotOptions.LineColorList(i Mod _plotOptions.LineColorList.Count)
+                result.PointColor = _plotOptions.PointColorList(i Mod _plotOptions.PointColorList.Count)
+
+                _seriesInfos.Add(result)
             Next
             Return _seriesInfos
         End Function
@@ -54,33 +77,5 @@ Namespace Controls
         Public Property LineColor As Color = Color.Black
         Public Property PointColor As Color = Color.Black
         Public Property Statistics() As SummaryStatistics
-
-        Public Shared Function Create(ByVal seriesID As Integer, ByVal siteDisplayColumn As String, ByVal plotOptions As PlotOptions) As OneSeriesPlotInfo
-            Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
-            Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-            Dim series = dataSeriesRepo.GetByKey(seriesID)
-
-            Dim strStartDate = plotOptions.StartDateTime
-            Dim strEndDate = plotOptions.EndDateTime.AddDays(1).AddMilliseconds(-1)
-
-            Dim nodatavalue = series.Variable.NoDataValue
-            Dim data = dataValuesRepo.GetTableForGraphView(seriesID, nodatavalue, strStartDate, strEndDate)
-            Dim variableName = series.Variable.Name
-            Dim unitsName = series.Variable.VariableUnit.Name
-            Dim siteName = If(siteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
-            Dim dataType = series.Variable.DataType
-
-            Dim result = New OneSeriesPlotInfo
-            result.DataTable = data
-            result.DataType = dataType
-            result.PlotOptions = plotOptions
-            result.SeriesID = seriesID
-            result.SiteName = siteName
-            result.VariableName = variableName
-            result.VariableUnits = unitsName
-            result.Statistics = SummaryStatistics.Create(data, plotOptions.UseCensoredData)
-
-            Return result
-        End Function
     End Class
 End Namespace

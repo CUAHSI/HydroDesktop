@@ -1,4 +1,5 @@
-﻿Imports ZedGraph
+﻿Imports GraphView.My.Resources
+Imports ZedGraph
 Imports System.Drawing
 
 Namespace Controls
@@ -8,11 +9,51 @@ Namespace Controls
 
         Private Shared m_Data As DataTable
         Private m_StdDev As Double = 0
+        Private _seriesPlotInfo As SeriesPlotInfo
 
         Private Const db_outFld_ValDTMonth As String = "DateMonth"
         Private Const db_outFld_ValDTYear As String = "DateYear"
 
-        Public Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
+        Public Sub New()
+
+            ' This call is required by the Windows Form Designer.
+            InitializeComponent()
+
+            ' Add any initialization after the InitializeComponent() call.
+            Dim gPane As GraphPane = zgBoxWhiskerPlot.MasterPane.PaneList(0)
+            gPane.Border.IsVisible = False
+            gPane.Legend.IsVisible = False
+            zgBoxWhiskerPlot.MasterPane.Border.IsVisible = False
+
+            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
+        End Sub
+
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+            _seriesPlotInfo = Nothing
+            If Not Visible Then
+                _seriesPlotInfo = seriesPlotInfo
+                Return
+            End If
+
+            Clear()
+            For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
+                If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    Plot(oneSeriesInfo, oneSeriesInfo.Statistics.StandardDeviation)
+                ElseIf oneSeriesInfo.Statistics.NumberOfObservations = oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
+                End If
+            Next
+            Refreshing()
+        End Sub
+
+        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
+            If Not Visible Then Return
+            If _seriesPlotInfo Is Nothing Then Return
+            Plot(_seriesPlotInfo)
+        End Sub
+
+
+        Private Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
             Try
                 m_Data = options.DataTable.Copy
                 Dim i As Integer
@@ -47,32 +88,28 @@ Namespace Controls
             End Try
         End Sub
 
-        Public Function CurveCount() As Int32
+        Private Function CurveCount() As Int32
             Return zgBoxWhiskerPlot.GraphPane.CurveList.Count
         End Function
 
-        Public Sub SetGraphPaneTitle(ByVal title As String)
+        Private Sub SetGraphPaneTitle(ByVal title As String)
             zgBoxWhiskerPlot.GraphPane.Title.Text = title
         End Sub
 
-        Public Sub Clear()
-            Try
-                zgBoxWhiskerPlot.MasterPane.PaneList.Clear()
-                zgBoxWhiskerPlot.MasterPane.PaneList.Add(New GraphPane)
-                zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.IsVisible = True
-                zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = My.Resources.MessageStrings.No_Data_Plot
-                zgBoxWhiskerPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
-                zgBoxWhiskerPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
-                zgBoxWhiskerPlot.MasterPane.PaneList(0).Border.IsVisible = False
-                zgBoxWhiskerPlot.MasterPane.PaneList(0).AxisChange()
-                zgBoxWhiskerPlot.MasterPane.Border.IsVisible = False
-                zgBoxWhiskerPlot.IsShowHScrollBar = False
-                zgBoxWhiskerPlot.IsShowVScrollBar = False
-                zgBoxWhiskerPlot.Refresh()
-                zgBoxWhiskerPlot.AxisChange()
-            Catch ex As Exception
-                Throw New Exception("Error Occured in ZGBoxWhisker.Clear" & vbCrLf & ex.Message)
-            End Try
+        Private Sub Clear()
+            zgBoxWhiskerPlot.MasterPane.PaneList.Clear()
+            zgBoxWhiskerPlot.MasterPane.PaneList.Add(New GraphPane)
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.IsVisible = True
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = My.Resources.MessageStrings.No_Data_Plot
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).Border.IsVisible = False
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).AxisChange()
+            zgBoxWhiskerPlot.MasterPane.Border.IsVisible = False
+            zgBoxWhiskerPlot.IsShowHScrollBar = False
+            zgBoxWhiskerPlot.IsShowVScrollBar = False
+            zgBoxWhiskerPlot.Refresh()
+            zgBoxWhiskerPlot.AxisChange()
         End Sub
 
         Private Sub Graph(ByVal gPane As GraphPane, ByRef options As OneSeriesPlotInfo)
@@ -1044,25 +1081,12 @@ Namespace Controls
             End Try
         End Sub
 
-        Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            Dim gPane As GraphPane = zgBoxWhiskerPlot.MasterPane.PaneList(0)
-            gPane.Border.IsVisible = False
-            gPane.Legend.IsVisible = False
-            zgBoxWhiskerPlot.MasterPane.Border.IsVisible = False
-
-
-        End Sub
-        Public Sub Refreshing()
+        Private Sub Refreshing()
             zgBoxWhiskerPlot.AxisChange()
             zgBoxWhiskerPlot.Refresh()
         End Sub
 
-        Public Sub Remove(ByVal ID As Integer)
+        Private Sub Remove(ByVal ID As Integer)
             Dim PaneListCopy As New PaneList
             For i = 0 To zgBoxWhiskerPlot.MasterPane.PaneList.Count - 1
                 PaneListCopy.Add(zgBoxWhiskerPlot.MasterPane.PaneList(i))

@@ -204,8 +204,8 @@ Namespace Controls
                     Next row
 
 
-                    Dim curve As LineItem = gPane1.AddCurve(m_Site, pointList, m_Options.GetLineColor, SymbolType.Circle)
-                    curve.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
+                    Dim curve As LineItem = gPane1.AddCurve(m_Site, pointList, Color.Black, SymbolType.Circle)
+                    curve.Symbol.Fill = New Fill(Color.Black, Color.Black)
                     curve.Symbol.Fill.RangeMin = 0
                     curve.Symbol.Fill.RangeMax = 1
                     curve.Symbol.Size = 4
@@ -388,9 +388,9 @@ Namespace Controls
                 '7. Plot the Data
                 'create the points
                 'probLine = New ZedGraph.LineItem("ProbCurve")
-                probLine = gPane2.AddCurve(site, ptList, m_Options.GetLineColor, SymbolType.Circle)
+                probLine = gPane2.AddCurve(site, ptList, Color.Black, SymbolType.Circle)
                 probLine.Line.IsVisible = False
-                probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
+                probLine.Symbol.Fill = New Fill(Color.Black, Color.Black)
                 probLine.Symbol.Fill.RangeMin = 0
                 probLine.Symbol.Fill.RangeMax = 1
                 probLine.Symbol.Size = 4
