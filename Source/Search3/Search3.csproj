@@ -249,9 +249,6 @@
     <None Include="Resources\search2_3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\download32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\full_extent.png" />
   </ItemGroup>
   <ItemGroup>
@@ -297,8 +294,6 @@
     <None Include="Resources\zoom_out_16x16.png" />
     <None Include="Resources\zoom_in_16x16.png" />
     <None Include="Resources\zoom.png" />
-    <None Include="Resources\download_16.png" />
-    <None Include="Resources\download_32.png" />
     <None Include="Resources\Draw_Box_16.png" />
     <None Include="Resources\Draw_Box_32.png" />
     <None Include="Resources\keyword_16.png" />
