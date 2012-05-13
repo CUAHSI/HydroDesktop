@@ -189,12 +189,6 @@
     <Compile Include="Controls\HistogramPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PlotOptions.Designer.vb">
-      <DependentUpon>PlotOptions.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PlotOptions.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controls\ProbabilityPlot.Designer.vb">
       <DependentUpon>ProbabilityPlot.vb</DependentUpon>
     </Compile>
@@ -263,10 +257,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Summaryplot.resx">
       <DependentUpon>Summaryplot.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PlotOptions.resx">
-      <DependentUpon>PlotOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProbabilityPlot.resx">

@@ -2,23 +2,25 @@
 
     Public Class DateTimeSettingsDialog
 
-        Private ReadOnly _ctsa As MainControl
+        Private ReadOnly _plotOptions As PlotOptions
 
-        Public Sub New(ctsa As MainControl)
+        Public Event DatesApplied As EventHandler
+
+        Public Sub New(plotOptions As PlotOptions)
 
             ' This call is required by the designer.
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
-            _ctsa = ctsa
+            _plotOptions = plotOptions
 
-            dtpStartDate.MinDate = _ctsa.StartDateLimit
-            dtpStartDate.MaxDate = _ctsa.EndDateLimit
-            dtpEndDate.MinDate = _ctsa.StartDateLimit
-            dtpEndDate.MaxDate = _ctsa.EndDateLimit
+            dtpStartDate.MinDate = _plotOptions.StartDateLimit
+            dtpStartDate.MaxDate = _plotOptions.EndDateLimit
+            dtpEndDate.MinDate = _plotOptions.StartDateLimit
+            dtpEndDate.MaxDate = _plotOptions.EndDateLimit
 
-            dtpStartDate.Value = _ctsa.StartDateTime
-            dtpEndDate.Value = _ctsa.EndDateTime
+            dtpStartDate.Value = _plotOptions.StartDateTime
+            dtpEndDate.Value = _plotOptions.EndDateTime
 
             AddHandler dtpStartDate.ValueChanged, AddressOf dtpDate_ValueChanged
             AddHandler dtpEndDate.ValueChanged, AddressOf dtpDate_ValueChanged
@@ -42,11 +44,12 @@
         Private Sub ApplyDates()
             If Not btnApply.Enabled Then Return
 
-            _ctsa.StartDateTime = dtpStartDate.Value
-            _ctsa.EndDateTime = dtpEndDate.Value
-            _ctsa.ApplyOptions()
+            _plotOptions.StartDateTime = dtpStartDate.Value
+            _plotOptions.EndDateTime = dtpEndDate.Value
 
             btnApply.Enabled = False
+
+            RaiseEvent DatesApplied(Me, EventArgs.Empty)
         End Sub
 
     End Class

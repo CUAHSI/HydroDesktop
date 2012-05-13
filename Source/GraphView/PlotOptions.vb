@@ -1,201 +1,82 @@
 ﻿Imports System.Drawing
 
 Public Class PlotOptions
+    Public Event DatesChanged As EventHandler
 
-#Region "Fields"
+    Public Property TimeSeriesMethod() As TimeSeriesType = TimeSeriesType.Both
+    Public Property HistTypeMethod() As HistogramType = HistogramType.Count
+    Public Property HistAlgorothmsMethod() As HistorgramAlgorithms = HistorgramAlgorithms.Sturges
+    Public Property numBins() As Integer
+    Public Property binWidth() As Double
+    Public Property xMax() As Double
+    Public Property xMin() As Double
+    Public Property yMax() As Double
+    Public Property yMin() As Double
+    Public Property xMajor() As Double
+    Public Property BoxWhiskerMethod() As BoxWhiskerType = BoxWhiskerType.Monthly
+    Public Property IsPlotCensored() As Boolean = True
+    Public Property GetLineColor() As Color = Color.Black
+    Public Property GetPointColor() As Color = Color.Black
+    Public Property LineColorList() As Integer
+    Public Property PointColorList() As Integer
+    Public Property ShowLegend() As Boolean = True
+    Public Property UseCensoredData() As Boolean = False
+    Public Property DisplayFullDate As Boolean = True
 
-    Private ReadOnly _TimeSeriesMethod As TimeSeriesType
-    Private ReadOnly _BoxWhiskerMethod As BoxWhiskerType
-    Private ReadOnly _IsPlotCensored As Boolean
-    Private _GetLineColor As Color
-    Private _GetPointColor As Color
-    Private _LineColorList As Integer
-    Private _PointColorList As Integer
-    Private ReadOnly _StartDate As Date
-    Private ReadOnly _EndDate As Date
-    Private ReadOnly _ChangeDateRange As Boolean
-    Private ReadOnly _ShowLegend As Boolean
-    Private ReadOnly _UseCensoredData As Boolean
-    Private ReadOnly _HistType As HistogramType
-    Private ReadOnly _HistAlgorothms As HistorgramAlgorithms
-    Private _NumBins As Integer
-    Private _BinWidth As Double
-    Private _xMax As Double
-    Private _xMin As Double
-    Private _yMax As Double
-    Private _yMin As Double
-    Private _xMajor As Double
 
-#End Region
+    Private _startDateTime As DateTime
+    Public Property StartDateTime() As DateTime
+        Get
+            Return _startDateTime
+        End Get
+        Set(ByVal value As DateTime)
+            _startDateTime = value
 
-    Public Sub New(ByVal TimeSeriesMethod As TimeSeriesType, ByVal HistType As HistogramType, _
-                   ByVal HistAlgorothms As HistorgramAlgorithms, ByVal NumBins As Integer, ByVal BinWidth As Double, _
-                   ByVal xMax As Double, ByVal xMin As Double, ByVal yMax As Double, ByVal yMin As Double, ByVal xMajor As Double, _
-                   ByVal BoxWhiskerMethod As BoxWhiskerType, ByVal GetLineColor As Color, _
-                   ByVal GetPointColor As Color, _
-                   ByVal ShowLegend As Boolean, ByVal StartDate As Date, ByVal EndDate As Date, ByVal ChangeDateRange As Boolean, _
-                   ByVal UseCensoredData As Boolean, Optional ByVal IsPlotCensored As Boolean = True)
-        _TimeSeriesMethod = TimeSeriesMethod
-        _BoxWhiskerMethod = BoxWhiskerMethod
-        _IsPlotCensored = IsPlotCensored
-        _GetLineColor = GetLineColor
-        _GetPointColor = GetPointColor
-        _LineColorList = LineColorList
-        _PointColorList = PointColorList
-        _StartDate = StartDate
-        _EndDate = EndDate
-        _ChangeDateRange = ChangeDateRange
-        _ShowLegend = ShowLegend
-        _UseCensoredData = UseCensoredData
-        _HistType = HistType
-        _HistAlgorothms = HistAlgorothms
-        _NumBins = NumBins
-        _BinWidth = BinWidth
-        _xMax = xMax
-        _xMin = xMin
-        _yMax = yMax
-        _yMin = yMin
-        _xMajor = xMajor
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private _endDateTime As DateTime
+    Public Property EndDateTime() As Date
+        Get
+            Return _endDateTime
+        End Get
+        Set(value As Date)
+            _endDateTime = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private _startDateLimit As DateTime
+    Public Property StartDateLimit() As Date
+        Get
+            Return _startDateLimit
+        End Get
+        Set(value As Date)
+            _startDateLimit = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+    Private _endDateLimit As DateTime
+    Public Property EndDateLimit() As Date
+        Get
+            Return _endDateLimit
+        End Get
+        Set(value As Date)
+            _endDateLimit = value
+
+            RaiseDatesChanged()
+        End Set
+    End Property
+
+
+    Private Sub RaiseDatesChanged()
+        RaiseEvent DatesChanged(Me, EventArgs.Empty)
     End Sub
 
-    Public ReadOnly Property TimeSeriesMethod() As TimeSeriesType
-        Get
-            Return _TimeSeriesMethod
-        End Get
-    End Property
-    Public ReadOnly Property HistTypeMethod() As HistogramType
-        Get
-            Return _HistType
-        End Get
-    End Property
-    Public ReadOnly Property HistAlgorothmsMethod() As HistorgramAlgorithms
-        Get
-            Return _HistAlgorothms
-        End Get
-    End Property
-    Public Property numBins() As Integer
-        Get
-            Return _NumBins
-        End Get
-        Set(ByVal value As Integer)
-            _NumBins = value
-        End Set
-    End Property
-    Public Property binWidth() As Double
-        Get
-            Return _BinWidth
-        End Get
-        Set(ByVal value As Double)
-            _BinWidth = value
-        End Set
-    End Property
-    Public Property xMax() As Double
-        Get
-            Return _xMax
-        End Get
-        Set(ByVal value As Double)
-            _xMax = value
-        End Set
-    End Property
-    Public Property xMin() As Double
-        Get
-            Return _xMin
-        End Get
-        Set(ByVal value As Double)
-            _xMin = value
-        End Set
-    End Property
-    Public Property yMax() As Double
-        Get
-            Return _yMax
-        End Get
-        Set(ByVal value As Double)
-            _yMax = value
-        End Set
-    End Property
-    Public Property yMin() As Double
-        Get
-            Return _yMin
-        End Get
-        Set(ByVal value As Double)
-            _yMin = value
-        End Set
-    End Property
-    Public Property xMajor() As Double
-        Get
-            Return _xMajor
-        End Get
-        Set(ByVal value As Double)
-            _xMajor = value
-        End Set
-    End Property
-    Public ReadOnly Property BoxWhiskerMethod() As BoxWhiskerType
-        Get
-            Return _BoxWhiskerMethod
-        End Get
-    End Property
-    Public ReadOnly Property IsPlotCensored() As Boolean
-        Get
-            Return _IsPlotCensored
-        End Get
-    End Property
-    Public Property GetLineColor() As Color
-        Get
-            Return _GetLineColor
-        End Get
-        Set(ByVal value As Color)
-            _GetLineColor = value
-        End Set
-    End Property
-    Public Property GetPointColor() As Color
-        Get
-            Return _GetPointColor
-        End Get
-        Set(ByVal value As Color)
-            _GetPointColor = value
-        End Set
-    End Property
-    Public Property LineColorList() As Integer
-        Get
-            Return _LineColorList
-        End Get
-        Set(ByVal value As Integer)
-            _LineColorList = value
-        End Set
-    End Property
-    Public Property PointColorList() As Integer
-        Get
-            Return _PointColorList
-        End Get
-        Set(ByVal value As Integer)
-            _PointColorList = value
-        End Set
-    End Property
-    Public ReadOnly Property StartDate() As Date
-        Get
-            Return _StartDate
-        End Get
-    End Property
-    Public ReadOnly Property EndDate() As Date
-        Get
-            Return _EndDate
-        End Get
-    End Property
-    Public ReadOnly Property ChangeDateRange() As Boolean
-        Get
-            Return _ChangeDateRange
-        End Get
-    End Property
-    Public ReadOnly Property ShowLegend() As Boolean
-        Get
-            Return _ShowLegend
-        End Get
-    End Property
-    Public ReadOnly Property UseCensoredData() As Boolean
-        Get
-            Return _UseCensoredData
-        End Get
-    End Property
 End Class
 
 Public Enum TimeSeriesType

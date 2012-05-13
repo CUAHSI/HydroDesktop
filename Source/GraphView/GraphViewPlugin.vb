@@ -1,4 +1,6 @@
-﻿Imports System.Windows.Forms
+﻿Option Strict On
+
+Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports GraphView.Controls
 Imports HydroDesktop.Common
@@ -9,10 +11,10 @@ Imports DotSpatial.Controls.Header
 Imports System.ComponentModel.Composition
 Imports DotSpatial.Controls.Docking
 
-Public Class Main
+Public Class GraphViewPlugin
     Inherits Extension
 
-#Region "Variables"
+#Region "Fields"
 
     Private Const kGraph As String = "kHydroGraph_01"
 
@@ -65,30 +67,44 @@ Public Class Main
     Private rbbtYearly As SimpleActionItem 'Yearly
     Private rbbtOverall As SimpleActionItem 'Overall
 
-    Private ReadOnly _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern
+    Private ReadOnly _datesFormat As String = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern
     Private Const rpOtherOptions As String = "Date & Time"
     Private rbDateTimeSetting As SimpleActionItem 'Date Setting
     Private rbStartDate As TextEntryActionItem 'Date Setting
     Private rbEndDate As TextEntryActionItem 'Date Setting
     Private rbApplyDateSettings As SimpleActionItem
     Private rbDisplayFullDateRange As SimpleActionItem 'Display Full Date Range Toggle button
-    Private boolFullDateRange As Boolean = True 'Display Full Date Range boolean indicator
 
     Private Const rpChart As String = "Chart"
     Private rbShowPointValues As SimpleActionItem 'Show Point Values Toggle button
     Private _showPointValues As Boolean
     Private rbZoomIn As SimpleActionItem 'Zoom In Toggle button
     Private rbZoomOut As SimpleActionItem 'Zoom Out Toggle button
-    Private rbUndoZoom As SimpleActionItem 'Undo zoom Toggle button
+    Private rbUndoZoom As SimpleActionItem
+
+    Private ReadOnly _plotOptions As PlotOptions = New PlotOptions()
+
+    Public ReadOnly Property PlotOptions() As PlotOptions
+        Get
+            Return _plotOptions
+        End Get
+    End Property
+
+    Public ReadOnly Property SeriesSelector() As ISeriesSelector
+        Get
+            Return appSeriesView
+        End Get
+    End Property
+
+    'Undo zoom Toggle button
 
 #End Region
-
 
 #Region "IExtension Members"
 
     'When the plugin is initialized
     Public Overrides Sub Activate()
-        _mainControl = New MainControl(appSeriesView, App)
+        _mainControl = New MainControl(Me)
         _mainControl.Dock = DockStyle.Fill
 
         InitializeRibbonButtons()
@@ -128,7 +144,7 @@ Public Class Main
         End If
     End Sub
 
-    Sub DockPanelAdded(ByVal sender As Object, ByVal args As Docking.DockablePanelEventArgs)
+    Sub DockPanelAdded(ByVal sender As Object, ByVal args As DockablePanelEventArgs)
 
         If Not firstTimeLoaded Then Return
 
@@ -140,7 +156,7 @@ Public Class Main
 
     Private Sub InitializeRibbonButtons()
 
-        Dim header As HeaderControl = App.HeaderControl
+        Dim header = App.HeaderControl
 
         'To Add Items to the ribbon menu
         tabGraph = New RootItem(kGraph, _pluginName)
@@ -272,22 +288,19 @@ Public Class Main
         rbbtMonthly = New SimpleActionItem(kGraph, kBoxWhiskerType, "Monthly", AddressOf rbbtMonthly_Click)
         rbbtMonthly.GroupCaption = rpBoxWhiskerOption
         header.Add(rbbtMonthly)
-        rbbtMonthly.Visible = False
         'Seasonal
         rbbtSeasonal = New SimpleActionItem(kGraph, kBoxWhiskerType, "Seasonal", AddressOf rbbtSeasonal_Click)
         rbbtSeasonal.GroupCaption = rpBoxWhiskerOption
         header.Add(rbbtSeasonal)
-        rbbtSeasonal.Visible = False
         'Yearly
         rbbtYearly = New SimpleActionItem(kGraph, kBoxWhiskerType, "Yearly", AddressOf rbbtYearly_Click)
         rbbtYearly.GroupCaption = rpBoxWhiskerOption
         header.Add(rbbtYearly)
-        rbbtYearly.Visible = False
         'Overall
         rbbtOverall = New SimpleActionItem(kGraph, kBoxWhiskerType, "Overall", AddressOf rbbtOverall_Click)
         rbbtOverall.GroupCaption = rpBoxWhiskerOption
         header.Add(rbbtOverall)
-        rbbtOverall.Visible = False
+        'rbbtOverall.Visible = False
 
         'Others
         'Date Setting
@@ -307,7 +320,7 @@ Public Class Main
         AddHandler rbEndDate.PropertyChanged, AddressOf dateSettings_PropertyChanged
         header.Add(rbEndDate)
 
-        AddHandler _mainControl.DatesChanged, AddressOf mainControlDatesChanged
+        AddHandler _plotOptions.DatesChanged, AddressOf mainControlDatesChanged
 
         rbApplyDateSettings = New SimpleActionItem("Refresh", AddressOf rbDateTimeRefresh_Click)
         rbApplyDateSettings.RootKey = kGraph
@@ -337,7 +350,7 @@ Public Class Main
         rbShowPointValues.GroupCaption = rpChart
         header.Add(rbShowPointValues)
         rbShowPointValues.Visible = False
-        rbShowPointValues_Click()
+        rbShowPointValues_Click(Me, EventArgs.Empty)
 
         'Zoom In
         rbZoomIn = New SimpleActionItem("Zoom In", AddressOf rbZoomIn_Click)
@@ -361,7 +374,7 @@ Public Class Main
         header.Add(rbUndoZoom)
 
         'The button should initially be checked
-        rbTSA_Click()
+        rbTSA_Click(Me, EventArgs.Empty)
         rbTSA.Toggle()
 
     End Sub
@@ -374,8 +387,8 @@ Public Class Main
             Dim endDate = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, False)
             If (endDate Is Nothing) Then Return
 
-            If _mainControl.StartDateLimit.Date >= startDate And
-                   _mainControl.EndDateLimit.Date <= endDate Then
+            If _plotOptions.StartDateLimit.Date >= startDate And
+                   _plotOptions.EndDateLimit.Date <= endDate Then
                 rbDisplayFullDateRange.Enabled = False
             Else
                 rbDisplayFullDateRange.Enabled = True
@@ -387,14 +400,14 @@ Public Class Main
     Private Sub rbDateTimeRefresh_Click(ByVal sender As Object, ByVal e As EventArgs)
         ' Validation of Start/End date
         Dim startDate = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, True)
-        If (startDate Is Nothing) Then Return
+        If (Not startDate.HasValue) Then Return
         Dim endDate = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, True)
-        If (endDate Is Nothing) Then Return
+        If (Not endDate.HasValue) Then Return
         ' end of validation
 
-        _mainControl.StartDateTime = startDate
-        _mainControl.EndDateTime = endDate
-        _mainControl.IsDisplayFullDate = False
+        _plotOptions.StartDateTime = startDate.Value
+        _plotOptions.EndDateTime = endDate.Value
+        _plotOptions.DisplayFullDate = False
         _mainControl.ApplyOptions()
     End Sub
 
@@ -418,15 +431,15 @@ Public Class Main
 
 
     Private Sub mainControlDatesChanged(ByVal sender As Object, ByVal e As EventArgs)
-        rbStartDate.Text = _mainControl.StartDateTime.ToString(_datesFormat)
-        rbEndDate.Text = _mainControl.EndDateTime.ToString(_datesFormat)
+        rbStartDate.Text = _plotOptions.StartDateTime.ToString(_datesFormat)
+        rbEndDate.Text = _plotOptions.EndDateTime.ToString(_datesFormat)
     End Sub
 
 #End Region
 
 #Region "Event Handlers"
     'Click Time Series
-    Sub rbTSA_Click()
+    Sub rbTSA_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ShowTimeSeriesPlot()
         rbPlotType.Visible = True
         rbColorSetting.Visible = True
@@ -438,7 +451,7 @@ Public Class Main
 
     End Sub
 
-    Sub rbProbability_Click()
+    Sub rbProbability_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ShowProbabilityPlot()
         rbPlotType.Visible = True
         rbColorSetting.Visible = True
@@ -449,7 +462,7 @@ Public Class Main
         rbBoxWhiskerType.Visible = False
     End Sub
 
-    Sub rbHistogram_Click()
+    Sub rbHistogram_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ShowHistogramPlot()
         rbPlotType.Visible = False
         rbColorSetting.Visible = False
@@ -460,7 +473,7 @@ Public Class Main
         rbBoxWhiskerType.Visible = False
     End Sub
 
-    Sub rbBoxWhisker_Click()
+    Sub rbBoxWhisker_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ShowBoxWhiskerPlot()
         rbPlotType.Visible = False
         rbColorSetting.Visible = False
@@ -471,7 +484,7 @@ Public Class Main
         rbBoxWhiskerType.Visible = True
     End Sub
 
-    Sub rbSummary_Click()
+    Sub rbSummary_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ShowSummaryPlot()
         rbPlotType.Visible = False
         rbColorSetting.Visible = False
@@ -482,104 +495,105 @@ Public Class Main
         rbBoxWhiskerType.Visible = False
     End Sub
 
-    Sub rbLine_Click()
-        _mainControl.plotOptionsControl.tsType = TimeSeriesType.Line
+    Sub rbLine_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.TimeSeriesMethod = TimeSeriesType.Line
         _mainControl.ApplyOptions()
     End Sub
-    Sub rbPoint_Click()
-        _mainControl.plotOptionsControl.tsType = TimeSeriesType.Point
+    Sub rbPoint_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.TimeSeriesMethod = TimeSeriesType.Point
         _mainControl.ApplyOptions()
     End Sub
-    Sub rbBoth_Click()
-        _mainControl.plotOptionsControl.tsType = TimeSeriesType.Both
+    Sub rbBoth_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.TimeSeriesMethod = TimeSeriesType.Both
         _mainControl.ApplyOptions()
     End Sub
 
-    Sub rbShowLegend_Click()
-        Dim text = If(_mainControl.plotOptionsControl.IsShowLegend, "Show Legend", "Close Legend")
+    Sub rbShowLegend_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Dim text = If(_plotOptions.ShowLegend, "Show Legend", "Close Legend")
 
-        _mainControl.plotOptionsControl.IsShowLegend = Not _mainControl.plotOptionsControl.IsShowLegend
+        _plotOptions.ShowLegend = Not _plotOptions.ShowLegend
         _mainControl.ApplyOptions()
         rbShowLegend.Caption = text
     End Sub
 
-    Sub rbColorSetting_Click()
+    Sub rbColorSetting_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim frmCC = New ColorSettingsDialog(_mainControl.linecolorlist, _mainControl.pointcolorlist)
         frmCC._CTSA = _mainControl
         frmCC.ShowDialog()
     End Sub
 
-    Sub rbhtCount_Click()
-        _mainControl.plotOptionsControl.hpType = HistogramType.Count
+    Sub rbhtCount_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.HistTypeMethod = HistogramType.Count
         _mainControl.ApplyOptions()
     End Sub
-    Sub rbhtProbability_Click()
-        _mainControl.plotOptionsControl.hpType = HistogramType.Probability
+    Sub rbhtProbability_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.HistTypeMethod = HistogramType.Probability
         _mainControl.ApplyOptions()
     End Sub
-    Sub rbhtRelative_Click()
-        _mainControl.plotOptionsControl.hpType = HistogramType.Relative
-        _mainControl.ApplyOptions()
-    End Sub
-
-    Sub rbhaSturges_Click()
-        _mainControl.plotOptionsControl.hpAlgo = HistorgramAlgorithms.Sturges
-        _mainControl.ApplyOptions()
-    End Sub
-    Sub rbhaScott_Click()
-        _mainControl.plotOptionsControl.hpAlgo = HistorgramAlgorithms.Scott
-        _mainControl.ApplyOptions()
-    End Sub
-    Sub rbhaFreedman_Click()
-        _mainControl.plotOptionsControl.hpAlgo = HistorgramAlgorithms.Freedman
+    Sub rbhtRelative_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.HistTypeMethod = HistogramType.Relative
         _mainControl.ApplyOptions()
     End Sub
 
-    Sub rbbtMonthly_Click()
-        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Monthly
+    Sub rbhaSturges_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Sturges
         _mainControl.ApplyOptions()
     End Sub
-    Sub rbbtSeasonal_Click()
-        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Seasonal
+    Sub rbhaScott_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Scott
         _mainControl.ApplyOptions()
     End Sub
-    Sub rbbtYearly_Click()
-        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Yearly
-        _mainControl.ApplyOptions()
-    End Sub
-    Sub rbbtOverall_Click()
-        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Overall
+    Sub rbhaFreedman_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.HistAlgorothmsMethod = HistorgramAlgorithms.Freedman
         _mainControl.ApplyOptions()
     End Sub
 
-    Sub rbDateTimeSetting_Click()
+    Sub rbbtMonthly_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.BoxWhiskerMethod = BoxWhiskerType.Monthly
+        _mainControl.ApplyOptions()
+    End Sub
+    Sub rbbtSeasonal_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.BoxWhiskerMethod = BoxWhiskerType.Seasonal
+        _mainControl.ApplyOptions()
+    End Sub
+    Sub rbbtYearly_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.BoxWhiskerMethod = BoxWhiskerType.Yearly
+        _mainControl.ApplyOptions()
+    End Sub
+    Sub rbbtOverall_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.BoxWhiskerMethod = BoxWhiskerType.Overall
+        _mainControl.ApplyOptions()
+    End Sub
+
+    Sub rbDateTimeSetting_Click(ByVal sender As Object, ByVal e As EventArgs)
 
         'First make sure that the dates are within limits.  This will also ensure that a time series has been selected.
-        If _mainControl.StartDateTime.CompareTo(_mainControl.StartDateLimit) < 0 Or _
-            _mainControl.EndDateTime.CompareTo(_mainControl.EndDateLimit) > 0 Then
+        If _plotOptions.StartDateTime.CompareTo(_plotOptions.StartDateLimit) < 0 Or _
+            _plotOptions.EndDateTime.CompareTo(_plotOptions.EndDateLimit) > 0 Then
 
             MessageBox.Show("Please select a series first.")
             Return 'Leave without doing anything else.
         End If
 
         'rckbDisplayFullDateRange.Checked = False
-        _mainControl.IsDisplayFullDate = False
-        Dim frmDateTimeSetting = New DateTimeSettingsDialog(_mainControl)
+        _plotOptions.DisplayFullDate = False
+        Dim frmDateTimeSetting = New DateTimeSettingsDialog(_plotOptions)
+        AddHandler frmDateTimeSetting.DatesApplied, AddressOf OnDatesApplied
         frmDateTimeSetting.ShowDialog()
     End Sub
 
+    Private Sub OnDatesApplied(ByVal sender As Object, ByVal e As EventArgs)
+        _mainControl.ApplyOptions()
+    End Sub
+
     'Display full date range toggle button is clicked
-    Private Sub rbDisplayFullDateRange_Click()
-        If _mainControl.IsDisplayFullDate Then
-            _mainControl.IsDisplayFullDate = False
-        Else
-            _mainControl.IsDisplayFullDate = True
-            _mainControl.ApplyOptions()
-        End If
+    Private Sub rbDisplayFullDateRange_Click(ByVal sender As Object, ByVal e As EventArgs)
+        _plotOptions.DisplayFullDate = Not _plotOptions.DisplayFullDate
+        _mainControl.ApplyOptions()
     End Sub
 
     'Show Point Values 
-    Private Sub rbShowPointValues_Click()
+    Private Sub rbShowPointValues_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ShowPointValues(_showPointValues)
         If _showPointValues Then
             rbShowPointValues.Caption = "Show Point Values - On"
@@ -589,15 +603,15 @@ Public Class Main
         _showPointValues = Not _showPointValues
     End Sub
 
-    Private Sub rbUndoZoom_Click()
+    Private Sub rbUndoZoom_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.UndoZoom()
     End Sub
 
-    Private Sub rbZoomIn_Click()
+    Private Sub rbZoomIn_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ZoomIn()
     End Sub
 
-    Private Sub rbZoomOut_Click()
+    Private Sub rbZoomOut_Click(ByVal sender As Object, ByVal e As EventArgs)
         _mainControl.ZoomOut()
     End Sub
 

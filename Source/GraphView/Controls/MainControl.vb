@@ -1,4 +1,4 @@
-﻿Imports DotSpatial.Controls
+﻿
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports System.Drawing
@@ -9,103 +9,52 @@ Namespace Controls
 
 #Region "Fields"
 
+        Private ReadOnly _parent As GraphViewPlugin
         Private ReadOnly Summary As New SummaryStatistics
         Public linecolorlist As New List(Of Color)
         Public pointcolorlist As New List(Of Color)
         Private ReadOnly ccList0 As New List(Of Color)
         Private colorcount As Integer = 0
         Private ReadOnly selectedSeriesIdList As New List(Of Int32) 'the list of the series which is selected
-        Private _seriesMenu As ISeriesSelector
-        Public Event DatesChanged As EventHandler
-        Public IsDisplayFullDate As Boolean = True
 
 #End Region
 
 #Region "Constructors"
-        Public Sub New(ByVal seriesSelector As ISeriesSelector, ByVal appManager As AppManager)
+        Public Sub New(ByVal parent As GraphViewPlugin)
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            _seriesMenu = seriesSelector
+            _parent = parent
 
             'assign the events
-            AddHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
-            AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
+            AddHandler parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            AddHandler parent.SeriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
             AddHandler Disposed, AddressOf OnDisposing
 
-            probabilityPlot.SeriesSelector = seriesSelector
-            probabilityPlot.AppManager = appManager
-            timeSeriesPlot.SeriesSelector = seriesSelector
-            timeSeriesPlot.AppManager = appManager
+            probabilityPlot.SeriesSelector = parent.SeriesSelector
+            probabilityPlot.AppManager = parent.App
+            timeSeriesPlot.SeriesSelector = parent.SeriesSelector
+            timeSeriesPlot.AppManager = parent.App
 
             SetColorCollections()
             selectedSeriesIdList.Clear()
             timeSeriesPlot.Clear()
 
-            StartDateLimit = Today.AddYears(-150)
-            EndDateLimit = Today
+            _parent.PlotOptions.StartDateLimit = Today.AddYears(-150)
+            _parent.PlotOptions.EndDateLimit = Today
         End Sub
 
 
         Private Sub OnDisposing(ByVal sender As Object, ByVal e As EventArgs)
             ' Unsubscribe from events
             RemoveHandler Disposed, AddressOf OnDisposing
-            RemoveHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
-            RemoveHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
-            _seriesMenu = Nothing
+            RemoveHandler _parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            RemoveHandler _parent.SeriesSelector.Refreshed, AddressOf SeriesSelector_Refreshed
         End Sub
 
 #End Region
 
 #Region "Properties"
-
-        Private _startDateTime As DateTime
-        Public Property StartDateTime() As DateTime
-            Get
-                Return _startDateTime
-            End Get
-            Set(ByVal value As DateTime)
-                _startDateTime = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
-
-        Private _endDateTime As DateTime
-        Public Property EndDateTime() As Date
-            Get
-                Return _endDateTime
-            End Get
-            Set(value As Date)
-                _endDateTime = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
-
-        Private _startDateLimit As DateTime
-        Public Property StartDateLimit() As Date
-            Get
-                Return _startDateLimit
-            End Get
-            Set(value As Date)
-                _startDateLimit = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
-
-        Private _endDateLimit As DateTime
-        Public Property EndDateLimit() As Date
-            Get
-                Return _endDateLimit
-            End Get
-            Set(value As Date)
-                _endDateLimit = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
 
 #End Region
 
@@ -131,9 +80,6 @@ Namespace Controls
 
 #Region "Private Methods"
 
-        Private Sub RaiseDatesChanged()
-            RaiseEvent DatesChanged(Me, EventArgs.Empty)
-        End Sub
 
         Private Sub SetColorCollections()
             'Setting of color collections
@@ -172,12 +118,12 @@ Namespace Controls
             Dim removedSeriesID As Integer = 0
             Dim CheckedSeriesState As Boolean = False
 
-            If Not (selectedSeriesIdList.Contains(_seriesMenu.SelectedSeriesID)) Then
-                selectedSeriesIdList.Add(_seriesMenu.SelectedSeriesID)
+            If Not (selectedSeriesIdList.Contains(_parent.SeriesSelector.SelectedSeriesID)) Then
+                selectedSeriesIdList.Add(_parent.SeriesSelector.SelectedSeriesID)
                 CheckedSeriesState = True
             Else
                 For i As Integer = 0 To selectedSeriesIdList.Count - 1
-                    If Not _seriesMenu.CheckedIDList.Contains(selectedSeriesIdList(i)) Then
+                    If Not _parent.SeriesSelector.CheckedIDList.Contains(selectedSeriesIdList(i)) Then
                         removedSeriesID = selectedSeriesIdList(i)
                         curveIndex = i
                     End If
@@ -194,14 +140,14 @@ Namespace Controls
                     histogramPlot.Clear()
                     probabilityPlot.Clear()
                     colorcount = 0
-                    StartDateLimit = Today.AddYears(-150)
-                    EndDateLimit = Today
+                    _parent.PlotOptions.StartDateLimit = Today.AddYears(-150)
+                    _parent.PlotOptions.EndDateLimit = Today
                 Else
                     timeSeriesPlot.Remove(removedSeriesID)
                     probabilityPlot.Remove(removedSeriesID)
                     boxWhisker.Remove(removedSeriesID)
                     histogramPlot.Remove(removedSeriesID)
-                    If IsDisplayFullDate Then
+                    If _parent.PlotOptions.DisplayFullDate Then
                         ResetDateRange()
                     End If
                 End If
@@ -222,7 +168,7 @@ Namespace Controls
 
             End If
 
-            Dim seriesPlotInfo = New SeriesPlotInfo(_seriesMenu.CheckedIDList, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options, StartDateTime, EndDateTime)
+            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions, _parent.PlotOptions.StartDateTime, _parent.PlotOptions.EndDateTime)
 
             dataSummary.Plot(seriesPlotInfo)
 
@@ -236,7 +182,7 @@ Namespace Controls
         End Sub
 
         Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As OneSeriesPlotInfo
-            Return OneSeriesPlotInfo.Create(seriesID, StartDateTime, EndDateTime, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options)
+            Return OneSeriesPlotInfo.Create(seriesID, _parent.PlotOptions.StartDateTime, _parent.PlotOptions.EndDateTime, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions)
         End Function
 
         Private Sub PlotGraps(ByVal seriesID As Int32)
@@ -280,7 +226,7 @@ Namespace Controls
 
         Public Sub ApplyOptions()
 
-            Dim seriesPlotInfo = New SeriesPlotInfo(_seriesMenu.CheckedIDList, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options, StartDateTime, EndDateTime)
+            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions, _parent.PlotOptions.StartDateTime, _parent.PlotOptions.EndDateTime)
 
             'progress bar setting
             ProgressBar.Visible = True
@@ -351,24 +297,27 @@ Namespace Controls
 
             Dim bDateTime = series.BeginDateTime
             Dim eDateTime = series.EndDateTime
+            Dim plotOptions = _parent.PlotOptions
 
-            If StartDateLimit > bDateTime Or StartDateLimit = Today.AddYears(-150) Then
-                StartDateLimit = bDateTime
+            If plotOptions.StartDateLimit > bDateTime Or plotOptions.StartDateLimit = Today.AddYears(-150) Then
+                plotOptions.StartDateLimit = bDateTime
             End If
-            If EndDateLimit < eDateTime Or EndDateLimit = Today Then
-                EndDateLimit = eDateTime
+            If plotOptions.EndDateLimit < eDateTime Or plotOptions.EndDateLimit = Today Then
+                plotOptions.EndDateLimit = eDateTime
             End If
 
-            If IsDisplayFullDate Then
-                StartDateTime = StartDateLimit
-                EndDateTime = EndDateLimit
+            If _parent.PlotOptions.DisplayFullDate Then
+                plotOptions.StartDateTime = plotOptions.StartDateLimit
+                plotOptions.EndDateTime = plotOptions.EndDateLimit
             End If
 
         End Sub
 
         Private Sub ResetDateRange()
-            StartDateLimit = Today.AddYears(-150)
-            EndDateLimit = Today
+            Dim plotOptions = _parent.PlotOptions
+
+            plotOptions.StartDateLimit = Today.AddYears(-150)
+            plotOptions.EndDateLimit = Today
             For i As Integer = 0 To selectedSeriesIdList.Count - 1
                 DateRangeSelection(i)
             Next
