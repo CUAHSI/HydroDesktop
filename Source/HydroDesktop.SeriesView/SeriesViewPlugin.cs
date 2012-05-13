@@ -14,19 +14,13 @@
 
         [Export("SeriesControl")]
         private ISeriesSelector MainSeriesSelector = new SeriesSelector();
-
-        private RootItem tableRoot;
-
-        bool firstTimeActivating = true;
         
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             
             AddSeriesDockPanel();
-
-            tableRoot = new RootItem("kHydroTable", "Table") {SortOrder = 20};
-            App.HeaderControl.Add(tableRoot);
+            App.HeaderControl.Add(new RootItem("kHydroTable", "Table") {SortOrder = 20});
 
             Global.PluginEntryPoint = this;
 
@@ -45,24 +39,12 @@
         {
  	        App.HeaderControl.RemoveAll();
             App.DockManager.Remove(SeriesViewKey);
-
-            App.DockManager.PanelAdded -= DockManager_PanelAdded;
+            
             App.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
 
             Global.PluginEntryPoint = null;
             
             base.Deactivate();
-        }
-
-
-        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
-        {
-            if (!firstTimeActivating) return;
-            
-            if (e.ActivePanelKey == "kLegend")
-            {
-                AddSeriesDockPanel();
-            }
         }
 
         void AddSeriesDockPanel()
@@ -81,7 +63,6 @@
             };
 
             App.DockManager.Add(timeSeriesPanel);
-            firstTimeActivating = false;
         }
     }
 }
