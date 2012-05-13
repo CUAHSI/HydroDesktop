@@ -49,11 +49,8 @@ Public Class cDataSummary
 
     Public Sub StatTableStyling()
         Dim count As Integer = 0
-        Dim sizecount As Integer = 0
-        For Each i In dgvStatSummary.Rows
-            sizecount += 1
-        Next
-        For Each i In dgvStatSummary.Rows
+        Dim sizecount As Integer = dgvStatSummary.Rows.Count
+        For Each i In DirectCast(dgvStatSummary.Rows, IEnumerable)
             dgvStatSummary.Rows(count).Cells(0).Style.BackColor = Drawing.Color.Yellow
             If (count Mod 15 = 0) And Not (count = sizecount) Then
                 dgvStatSummary.Rows(count).Cells(0).Style.BackColor = Drawing.Color.Aqua

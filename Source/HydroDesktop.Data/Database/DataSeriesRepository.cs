@@ -615,11 +615,11 @@ namespace HydroDesktop.Database
                                        newvalue,
                                        row["ValueAccuracy"].ToString() == "" ? "NULL" : row["ValueAccuracy"].ToString(),
                                        Convert.ToDateTime(row["LocalDateTime"]).ToString("yyyy-MM-dd HH:mm:ss"),
-                                       row["UTCOffset"].ToString(),
+                                       row["UTCOffset"],
                                        Convert.ToDateTime(row["DateTimeUTC"]).ToString("yyyy-MM-dd HH:mm:ss"),
                                        row["OffsetValue"].ToString() == "" ? "NULL" : row["OffsetValue"].ToString(),
                                        row["OffsetTypeID"].ToString() == "" ? "NULL" : row["OffsetTypeID"].ToString(),
-                                       row["CensorCode"].ToString(),
+                                       row["CensorCode"],
                                        row["QualifierID"].ToString() == "" ? "NULL" : row["QualifierID"].ToString(),
                                        row["SampleID"].ToString() == "" ? "NULL" : row["SampleID"].ToString(),
                                        row["FileID"].ToString() == "" ? "NULL" : row["FileID"].ToString());

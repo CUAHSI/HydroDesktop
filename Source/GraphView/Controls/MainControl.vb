@@ -1,6 +1,5 @@
 ﻿Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
-Imports HydroDesktop.Configuration
 Imports System.Drawing
 
 Namespace Controls
