@@ -1,4 +1,5 @@
-﻿Imports HydroDesktop.Database
+﻿Imports DotSpatial.Controls
+Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports System.Drawing
 
@@ -21,7 +22,7 @@ Namespace Controls
 #End Region
 
 #Region "Constructors"
-        Public Sub New(ByVal seriesSelector As ISeriesSelector)
+        Public Sub New(ByVal seriesSelector As ISeriesSelector, ByVal appManager As AppManager)
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
@@ -33,7 +34,9 @@ Namespace Controls
             AddHandler Disposed, AddressOf OnDisposing
 
             probabilityPlot.SeriesSelector = seriesSelector
+            probabilityPlot.AppManager = appManager
             timeSeriesPlot.SeriesSelector = seriesSelector
+            timeSeriesPlot.AppManager = appManager
 
             SetColorCollections()
             selectedSeriesIdList.Clear()

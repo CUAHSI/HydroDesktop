@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
+Imports DotSpatial.Controls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports GraphView.My.Resources
@@ -12,16 +13,8 @@ Namespace Controls
         Implements IChart
 
         Private Shared ReadOnly m_VarList As New List(Of String)
-        Private m_SeriesSelector As ISeriesSelector
-        'the main series selector control
         Public Property SeriesSelector() As ISeriesSelector
-            Get
-                Return m_SeriesSelector
-            End Get
-            Set(ByVal value As ISeriesSelector)
-                m_SeriesSelector = value
-            End Set
-        End Property
+        Public Property AppManager() As AppManager
 
         Public Function CurveCount() As Int32
             Return zgProbabilityPlot.GraphPane.CurveList.Count
@@ -32,13 +25,9 @@ Namespace Controls
         End Sub
 
         Public Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
-            Try
-                Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
-                m_VarList.Add(m_VariableWithUnits)
-                PlotProbability(options)
-            Catch ex As Exception
-                Throw New Exception("Error Occured in ZGProbability.Plot" & vbCrLf & ex.Message)
-            End Try
+            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+            m_VarList.Add(m_VariableWithUnits)
+            PlotProbability(options)
         End Sub
 
         Public Sub Clear()
@@ -71,9 +60,7 @@ Namespace Controls
             Dim gPane As GraphPane 'GraphPane of the zgProbability plot object -> used to set data and characteristics
             'Dim g As Drawing.Graphics 'graphics object of the zgProbability plot object -> used to redraw/update the plot
             Dim ptList As PointPairList 'collection of points for the Probability plot
-            Dim bflPtList As New PointPairList
             Dim probLine As LineItem
-            Dim bflLine As New LineItem("")
             Dim validRows() As DataRow
             Dim numRows As Integer
             Dim curValue As Double
@@ -457,12 +444,14 @@ Namespace Controls
                 Next count
 
                 'Export Data
-                Dim exportPlugin = Common.PluginEntryPoint.App.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
-                If Not exportPlugin Is Nothing Then
-                    exportPlugin.Export(exportTable)
+                If (AppManager IsNot Nothing) Then
+                    Dim exportPlugin = AppManager.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
+                    If exportPlugin IsNot Nothing Then
+                        exportPlugin.Export(exportTable)
+                    End If
                 End If
 
-            End If
+                End If
         End Sub
 
         Private Sub AddLabelToPlot(ByRef gpane As GraphPane, ByVal label As String, ByVal xLoc As Double)
@@ -500,7 +489,7 @@ Namespace Controls
             'calculates the the length of the string s in pixels
             'Inputs:  s -> the string to find the length of
             'Outputs: Integer -> the length of the string s in pixels
-            Dim l As New System.Windows.Forms.Label   'used to find the length of the string in pixels
+            Dim l As New Windows.Forms.Label   'used to find the length of the string in pixels
             l.Text = s
             l.AutoSize = True
             Return l.Width
@@ -510,7 +499,7 @@ Namespace Controls
             'calculates the the length of the string s in pixels
             'Inputs:  s -> the string to find the length of
             'Outputs: Integer -> the length of the string s in pixels
-            Dim l As New System.Windows.Forms.Label   'used to find the length of the string in pixels
+            Dim l As New Windows.Forms.Label   'used to find the length of the string in pixels
             'l.Height = 13
             'l.Width = 100
             l.Text = s

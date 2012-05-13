@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
+Imports DotSpatial.Controls
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports GraphView.My.Resources
@@ -26,15 +27,9 @@ Namespace Controls
         Private Const XColumn As String = "LocalDateTime"
         Private Const YColumn As String = "DataValue"
 
-        Private m_SeriesSelector As ISeriesSelector
+
         Public Property SeriesSelector() As ISeriesSelector
-            Get
-                Return m_SeriesSelector
-            End Get
-            Set(ByVal value As ISeriesSelector)
-                m_SeriesSelector = value
-            End Set
-        End Property
+        Public Property AppManager() As AppManager
 
         Public Function CurveCount() As Int32
             Return zgTimeSeries.GraphPane.CurveList.Count
@@ -265,9 +260,11 @@ Namespace Controls
 
                 Next count
 
-                Dim exportPlugin = Common.PluginEntryPoint.App.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
-                If Not exportPlugin Is Nothing Then
-                    exportPlugin.Export(exportTable)
+                If (AppManager IsNot Nothing) Then
+                    Dim exportPlugin = AppManager.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
+                    If exportPlugin IsNot Nothing Then
+                        exportPlugin.Export(exportTable)
+                    End If
                 End If
             End If
         End Sub
