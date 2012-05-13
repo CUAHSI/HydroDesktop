@@ -166,8 +166,6 @@ Namespace Controls
         'when a series is checked in the series selector control
         Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
 
-            Dim seriesPlotInfo = New SeriesPlotInfo(_seriesMenu.CheckedIDList, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options, StartDateTime, EndDateTime)
-
             'Declaring all variables
             Dim curveIndex As Integer = 0
             Dim removedSeriesID As Integer = 0
@@ -222,6 +220,8 @@ Namespace Controls
                 colorcount += 1
 
             End If
+
+            Dim seriesPlotInfo = New SeriesPlotInfo(_seriesMenu.CheckedIDList, _seriesMenu.SiteDisplayColumn, plotOptionsControl.Options, StartDateTime, EndDateTime)
 
             dataSummary.Plot(seriesPlotInfo)
 
