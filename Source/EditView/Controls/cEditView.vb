@@ -15,7 +15,7 @@ Public Class cEditView
     
     Private ReadOnly CurveEditingColor As Color = Color.Black
 
-    Public _seriesSelector As ISeriesSelector
+    Private _seriesSelector As ISeriesSelector
     Private OriginalDt As DataTable
     Public Editdt As DataTable
     Public newseriesID As Integer = 0
@@ -140,18 +140,16 @@ Public Class cEditView
 
         'Declaring all variables
         Dim curveIndex As Integer
-        Dim SeriesSelector = _seriesSelector
-
-        If Not SeriesSelector.CheckedIDList.Length > selectedSeriesIdList.Count Then
+        If Not _seriesSelector.CheckedIDList.Length > selectedSeriesIdList.Count Then
 
             If pTimeSeriesPlot.HasEditingCurve Then
                 pTimeSeriesPlot.EditCurvePointList = pTimeSeriesPlot.CopyCurvePointList(pTimeSeriesPlot.EditingCurve)
                 pTimeSeriesPlot.EditCurveLable = pTimeSeriesPlot.EditingCurve.Label.Text
                 pTimeSeriesPlot.EditCurveTitle = pTimeSeriesPlot.EditingCurve.Link.Title
             End If
-            curveIndex = selectedSeriesIdList.IndexOf(SeriesSelector.SelectedSeriesID)
-            selectedSeriesIdList.Remove(SeriesSelector.SelectedSeriesID)
-            If SeriesRowsCount(SeriesSelector.SelectedSeriesID) = 0 Then
+            curveIndex = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
+            selectedSeriesIdList.Remove(_seriesSelector.SelectedSeriesID)
+            If SeriesRowsCount(_seriesSelector.SelectedSeriesID) = 0 Then
                 nodataseriescount -= 1
             End If
             If (selectedSeriesIdList.Count = 0) Then
@@ -161,7 +159,7 @@ Public Class cEditView
                     pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
                     curveIndex = pTimeSeriesPlot.CurveID(0)
                     pTimeSeriesPlot.Remove(0)
-                    If SeriesRowsCount(SeriesSelector.SelectedSeriesID) = 0 Then
+                    If SeriesRowsCount(_seriesSelector.SelectedSeriesID) = 0 Then
                         nodataseriescount += 1
                     ElseIf Not curveIndex = newseriesID Then
                         PlotGraph(curveIndex)
@@ -187,17 +185,17 @@ Public Class cEditView
             End If
 
         Else
-            If Not selectedSeriesIdList.Contains(SeriesSelector.SelectedSeriesID) Then
-                selectedSeriesIdList.Add(SeriesSelector.SelectedSeriesID)
+            If Not selectedSeriesIdList.Contains(_seriesSelector.SelectedSeriesID) Then
+                selectedSeriesIdList.Add(_seriesSelector.SelectedSeriesID)
             Else
                 Return 'added by jiri to correct error when SeriesCheck event occurs multiple times
             End If
 
-            If SeriesRowsCount(SeriesSelector.SelectedSeriesID) = 0 Then
+            If SeriesRowsCount(_seriesSelector.SelectedSeriesID) = 0 Then
                 nodataseriescount += 1
-            ElseIf Not SeriesSelector.SelectedSeriesID = newseriesID Then
-                PlotGraph(SeriesSelector.SelectedSeriesID)
-            Else : SeriesSelector.SelectedSeriesID = newseriesID
+            ElseIf Not _seriesSelector.SelectedSeriesID = newseriesID Then
+                PlotGraph(_seriesSelector.SelectedSeriesID)
+            Else : _seriesSelector.SelectedSeriesID = newseriesID
                 Dim curve As LineItem = pTimeSeriesPlot.zgTimeSeries.GraphPane.AddCurve(pTimeSeriesPlot.EditCurveLable, pTimeSeriesPlot.EditCurvePointList, Color.Black, SymbolType.Circle)
                 pTimeSeriesPlot.SettingCurveStyle(curve)
                 curve.Link.Title = pTimeSeriesPlot.EditCurveTitle
@@ -324,11 +322,10 @@ Public Class cEditView
 
     'Derive New Series
     Public Sub btnDeriveNewDataSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Dim seriesSelector = _seriesSelector
         'check if the user selected any series, then open the Derive New Series form
-        If Not seriesSelector.SelectedSeriesID = 0 Then
+        If Not _seriesSelector.SelectedSeriesID = 0 Then
             Dim frmDeriveNewDataSeries As fDeriveNewDataSeries
-            frmDeriveNewDataSeries = New fDeriveNewDataSeries(_seriesSelector.SelectedSeriesID, Me)
+            frmDeriveNewDataSeries = New fDeriveNewDataSeries(_seriesSelector.SelectedSeriesID, Me, _seriesSelector)
             frmDeriveNewDataSeries.ShowDialog()
         Else
             MsgBox("Please select a series to derive.")

@@ -8,7 +8,7 @@ Namespace Controls
 
 #Region "Fields"
 
-        Private ReadOnly Summary As New cSummaryStatistics
+        Private ReadOnly Summary As New SummaryStatistics
         Public linecolorlist As New List(Of Color)
         Public pointcolorlist As New List(Of Color)
         Private ReadOnly ccList0 As New List(Of Color)
@@ -32,12 +32,12 @@ Namespace Controls
             AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
             AddHandler Disposed, AddressOf OnDisposing
 
-            pProbability.SeriesSelector = seriesSelector
-            pTimeSeries.SeriesSelector = seriesSelector
+            probabilityPlot.SeriesSelector = seriesSelector
+            timeSeriesPlot.SeriesSelector = seriesSelector
 
             SetColorCollections()
             selectedSeriesIdList.Clear()
-            pTimeSeries.Clear()
+            timeSeriesPlot.Clear()
 
             StartDateLimit = Today.AddYears(-150)
             EndDateLimit = Today
@@ -106,6 +106,26 @@ Namespace Controls
 
 #End Region
 
+        Public Sub ShowTimeSeriesPlot()
+            tcPlots.SelectTab(tpTimeSeries)
+        End Sub
+
+        Public Sub ShowProbabilityPlot()
+            tcPlots.SelectTab(tpTimeSeries)
+        End Sub
+
+        Public Sub ShowHistogramPlot()
+            tcPlots.SelectTab(tpHistogram)
+        End Sub
+
+        Public Sub ShowBoxWhiskerPlot()
+            tcPlots.SelectTab(tpBoxWhisker)
+        End Sub
+
+        Public Sub ShowSummaryPlot()
+            tcPlots.SelectTab(tpDataSummary)
+        End Sub
+
 #Region "Private Methods"
 
         Private Sub RaiseDatesChanged()
@@ -136,9 +156,9 @@ Namespace Controls
 
         Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
 
-            pTimeSeries.Clear()
-            pBoxWhisker.Clear()
-            pProbability.Clear()
+            timeSeriesPlot.Clear()
+            boxWhisker.Clear()
+            probabilityPlot.Clear()
             selectedSeriesIdList.Clear()
 
         End Sub
@@ -166,22 +186,22 @@ Namespace Controls
                 If (selectedSeriesIdList.Count = 0) Or (selectedSeriesIdList.Count = 1) Then
                     'Clear the graph and repolt the whole graph
                     Summary.ClearStatistics()
-                    pDataSummary.ClearStatTables()
-                    pTimeSeries.Remove(0)
-                    pProbability.Remove(0)
-                    pTimeSeries.Clear()
-                    pBoxWhisker.Clear()
-                    pHistogram.Clear()
-                    pProbability.Clear()
+                    dataSummary.ClearStatTables()
+                    timeSeriesPlot.Remove(0)
+                    probabilityPlot.Remove(0)
+                    timeSeriesPlot.Clear()
+                    boxWhisker.Clear()
+                    histogramPlot.Clear()
+                    probabilityPlot.Clear()
                     colorcount = 0
                     StartDateLimit = Today.AddYears(-150)
                     EndDateLimit = Today
                 Else
-                    pTimeSeries.Remove(removedSeriesID)
-                    pProbability.Remove(removedSeriesID)
-                    pBoxWhisker.Remove(removedSeriesID)
-                    pHistogram.Remove(removedSeriesID)
-                    pDataSummary.RemoveStatTable(removedSeriesID)
+                    timeSeriesPlot.Remove(removedSeriesID)
+                    probabilityPlot.Remove(removedSeriesID)
+                    boxWhisker.Remove(removedSeriesID)
+                    histogramPlot.Remove(removedSeriesID)
+                    dataSummary.RemoveStatTable(removedSeriesID)
                     If IsDisplayFullDate Then
                         ResetDateRange()
                     End If
@@ -203,11 +223,11 @@ Namespace Controls
 
             End If
 
-            pDataSummary.StatTableStyling()
-            pTimeSeries.Refreshing()
-            pProbability.Refreshing()
-            pHistogram.Refreshing()
-            pBoxWhisker.Refreshing()
+            dataSummary.StatTableStyling()
+            timeSeriesPlot.Refreshing()
+            probabilityPlot.Refreshing()
+            histogramPlot.Refreshing()
+            boxWhisker.Refreshing()
 
             ProgressBar.Visible = False
 
@@ -235,7 +255,7 @@ Namespace Controls
             Dim dataType = series.Variable.DataType
             ProgressBar.Value += 1
 
-            Dim options = CPlotOptions1.Options
+            Dim options = plotOptionsControl.Options
 
             Dim timeSeriesOptions = New TimeSeriesPlotOptions
             timeSeriesOptions.DataTable = data
@@ -248,7 +268,7 @@ Namespace Controls
 
             Return timeSeriesOptions
         End Function
-        
+
         Private Sub PlotGraps(ByVal seriesID As Int32)
 
             'Date Range setting
@@ -261,31 +281,31 @@ Namespace Controls
             ColorChooser(timeSeriesOptions.PlotOptions)
 
             Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-            pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, seriesID, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-            pDataSummary.StatTableStyling()
+            dataSummary.Plot(timeSeriesOptions)
+            dataSummary.StatTableStyling()
 
             If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
 
-                pTimeSeries.Plot(timeSeriesOptions)
+                timeSeriesPlot.Plot(timeSeriesOptions)
                 If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
 
-                pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
+                boxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                 If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
 
-                pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
+                probabilityPlot.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                 If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
 
-                pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
+                histogramPlot.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
                 If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
 
             ElseIf Summary.Statistic_NumberOfObservations = Summary.Statistic_NumberOfCensoredObservations Then
 
                 Const ALL_CENSORED As String = "All data is censored, so there is no data do display"
 
-                If pTimeSeries.CurveCount = 0 Then pTimeSeries.SetGraphPaneTitle(ALL_CENSORED)
-                If pBoxWhisker.CurveCount = 0 Then pBoxWhisker.SetGraphPaneTitle(ALL_CENSORED)
-                If pProbability.CurveCount = 0 Then pProbability.SetGraphPaneTitle(ALL_CENSORED)
-                If pHistogram.CurveCount = 0 Then pHistogram.SetGraphPaneTitle(ALL_CENSORED)
+                If timeSeriesPlot.CurveCount = 0 Then timeSeriesPlot.SetGraphPaneTitle(ALL_CENSORED)
+                If boxWhisker.CurveCount = 0 Then boxWhisker.SetGraphPaneTitle(ALL_CENSORED)
+                If probabilityPlot.CurveCount = 0 Then probabilityPlot.SetGraphPaneTitle(ALL_CENSORED)
+                If histogramPlot.CurveCount = 0 Then histogramPlot.SetGraphPaneTitle(ALL_CENSORED)
 
             End If
 
@@ -302,11 +322,11 @@ Namespace Controls
 
             'Clear the graph and plot it again
             Summary.ClearStatistics()
-            pDataSummary.ClearStatTables()
-            pTimeSeries.Clear()
-            pBoxWhisker.Clear()
-            pHistogram.Clear()
-            pProbability.Clear()
+            dataSummary.ClearStatTables()
+            timeSeriesPlot.Clear()
+            boxWhisker.Clear()
+            histogramPlot.Clear()
+            probabilityPlot.Clear()
 
             'Ploting the Time Series graph and Probability graph
             For Each s As Integer In selectedSeriesIdList
@@ -314,41 +334,41 @@ Namespace Controls
                 colorcount += 1
             Next
 
-            pDataSummary.StatTableStyling()
-            pTimeSeries.Refreshing()
-            pProbability.Refreshing()
-            pHistogram.Refreshing()
-            pBoxWhisker.Refreshing()
+            dataSummary.StatTableStyling()
+            timeSeriesPlot.Refreshing()
+            probabilityPlot.Refreshing()
+            histogramPlot.Refreshing()
+            boxWhisker.Refreshing()
 
             ProgressBar.Visible = False
         End Sub
 
         Public Sub ShowPointValues(ByVal showPointValues As Boolean)
-            DirectCast(pTimeSeries, IChart).ShowPointValues = showPointValues
-            DirectCast(pProbability, IChart).ShowPointValues = showPointValues
-            DirectCast(pHistogram, IChart).ShowPointValues = showPointValues
-            DirectCast(pBoxWhisker, IChart).ShowPointValues = showPointValues
+            DirectCast(timeSeriesPlot, IChart).ShowPointValues = showPointValues
+            DirectCast(probabilityPlot, IChart).ShowPointValues = showPointValues
+            DirectCast(histogramPlot, IChart).ShowPointValues = showPointValues
+            DirectCast(boxWhisker, IChart).ShowPointValues = showPointValues
         End Sub
 
         Public Sub UndoZoom()
-            DirectCast(pTimeSeries, IChart).ZoomOutAll()
-            DirectCast(pProbability, IChart).ZoomOutAll()
-            DirectCast(pHistogram, IChart).ZoomOutAll()
-            DirectCast(pBoxWhisker, IChart).ZoomOutAll()
+            DirectCast(timeSeriesPlot, IChart).ZoomOutAll()
+            DirectCast(probabilityPlot, IChart).ZoomOutAll()
+            DirectCast(histogramPlot, IChart).ZoomOutAll()
+            DirectCast(boxWhisker, IChart).ZoomOutAll()
         End Sub
 
         Public Sub ZoomIn()
-            DirectCast(pTimeSeries, IChart).ZoomIn()
-            DirectCast(pProbability, IChart).ZoomIn()
-            DirectCast(pHistogram, IChart).ZoomIn()
-            DirectCast(pBoxWhisker, IChart).ZoomIn()
+            DirectCast(timeSeriesPlot, IChart).ZoomIn()
+            DirectCast(probabilityPlot, IChart).ZoomIn()
+            DirectCast(histogramPlot, IChart).ZoomIn()
+            DirectCast(boxWhisker, IChart).ZoomIn()
         End Sub
 
         Public Sub ZoomOut()
-            DirectCast(pTimeSeries, IChart).ZoomOut()
-            DirectCast(pProbability, IChart).ZoomOut()
-            DirectCast(pHistogram, IChart).ZoomOut()
-            DirectCast(pBoxWhisker, IChart).ZoomOut()
+            DirectCast(timeSeriesPlot, IChart).ZoomOut()
+            DirectCast(probabilityPlot, IChart).ZoomOut()
+            DirectCast(histogramPlot, IChart).ZoomOut()
+            DirectCast(boxWhisker, IChart).ZoomOut()
         End Sub
 
         Private Sub ColorChooser(ByVal options As PlotOptions)
