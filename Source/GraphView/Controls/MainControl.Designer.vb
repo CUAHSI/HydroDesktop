@@ -196,7 +196,6 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents plotOptionsControl As New PlotOptionsControl
         Friend WithEvents summaryStatistics As SummaryStatistics
         Friend WithEvents dataSummary As DataSummary
         Friend WithEvents boxWhisker As BoxWhiskerPlot
