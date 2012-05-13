@@ -41,7 +41,7 @@ Namespace Controls
             Dim siteName = options.SiteName
             Dim variableName = options.VariableName
             Dim siteAndVariable = siteName + ", " + variableName
-            Dim statistics = options.SummaryStatistics
+            Dim statistics = options.Statistics
 
             dgvStatSummary.Rows.Add(siteAndVariable, "ID " + options.SeriesID.ToString())
             dgvStatSummary.Rows.Add("# Of Observations", statistics.NumberOfObservations)

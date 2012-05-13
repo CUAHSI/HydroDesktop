@@ -12,6 +12,8 @@ Namespace Controls
     Public Class TimeSeriesPlot
         Implements IChart
 
+        Private _seriesPlotInfo As SeriesPlotInfo
+
         Public Sub New()
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
@@ -22,6 +24,8 @@ Namespace Controls
             gPane.YAxis.Type = AxisType.Linear
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
+
+            AddHandler VisibleChanged, AddressOf OnTimeSeriesPlotVisibleChanged
         End Sub
 
         Private Const XColumn As String = "LocalDateTime"
@@ -31,41 +35,54 @@ Namespace Controls
         Public Property SeriesSelector() As ISeriesSelector
         Public Property AppManager() As AppManager
 
-        Public Function CurveCount() As Int32
+        Private Function CurveCount() As Int32
             Return zgTimeSeries.GraphPane.CurveList.Count
         End Function
 
-        Public Sub Plot(ByRef options As OneSeriesPlotInfo)
-            Graph(options)
-        End Sub
-
-        Public Sub SetGraphPaneTitle(ByVal title As String)
+        Private Sub SetGraphPaneTitle(ByVal title As String)
             zgTimeSeries.GraphPane.Title.Text = title
         End Sub
 
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+            _seriesPlotInfo = Nothing
+            If Not Visible Then
+                _seriesPlotInfo = seriesPlotInfo
+                Return
+            End If
 
-        Public Sub Clear()
-            Try
-                If zgTimeSeries Is Nothing Then Return
-                If zgTimeSeries.GraphPane Is Nothing Then Return
+            Clear()
+            For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
+                If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    Graph(oneSeriesInfo)
+                ElseIf oneSeriesInfo.Statistics.NumberOfObservations = oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
+                End If
+            Next
+            Refreshing()
+        End Sub
 
-                Dim gPane As GraphPane = zgTimeSeries.GraphPane
+        Private Sub OnTimeSeriesPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
+            If Not Visible Then Return
+            If _seriesPlotInfo Is Nothing Then Return
+            Plot(_seriesPlotInfo)
+        End Sub
 
-                If gPane.CurveList Is Nothing Then Return
-                If gPane.GraphObjList Is Nothing Then Return
+        Private Sub Clear()
+            If zgTimeSeries Is Nothing Then Return
+            If zgTimeSeries.GraphPane Is Nothing Then Return
 
-                gPane.CurveList.Clear()
-                SetGraphPaneTitle(MessageStrings.No_Data_Plot)
-                gPane.XAxis.IsVisible = False
-                gPane.YAxis.IsVisible = False
-                gPane.GraphObjList.Clear()
-                zgTimeSeries.IsShowVScrollBar = False
-                zgTimeSeries.IsShowHScrollBar = False
-                'Graph()
+            Dim gPane As GraphPane = zgTimeSeries.GraphPane
 
-            Catch ex As Exception
-                Throw New Exception("Error Occured in ZGTimeSeries.Clear" & vbCrLf & ex.Message)
-            End Try
+            If gPane.CurveList Is Nothing Then Return
+            If gPane.GraphObjList Is Nothing Then Return
+
+            gPane.CurveList.Clear()
+            SetGraphPaneTitle(MessageStrings.No_Data_Plot)
+            gPane.XAxis.IsVisible = False
+            gPane.YAxis.IsVisible = False
+            gPane.GraphObjList.Clear()
+            zgTimeSeries.IsShowVScrollBar = False
+            zgTimeSeries.IsShowHScrollBar = False
         End Sub
 
         Private Sub Graph(ByRef options As OneSeriesPlotInfo)
@@ -121,10 +138,10 @@ Namespace Controls
                         End If
                     Next row
 
-                    Dim curve As LineItem = gPane.AddCurve(m_Site, pointList, m_Options.GetLineColor, SymbolType.Circle)
+                    Dim curve As LineItem = gPane.AddCurve(m_Site, pointList, options.LineColor, SymbolType.Circle)
 
                     curve.Tag = options
-                    curve.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
+                    curve.Symbol.Fill = New Fill(options.PointColor, Color.Black)
                     curve.Symbol.Fill.RangeMin = 0
                     curve.Symbol.Fill.RangeMax = 1
                     curve.Symbol.Size = 4
@@ -279,12 +296,12 @@ Namespace Controls
             End If
         End Sub
 
-        Public Sub Refreshing()
+        Private Sub Refreshing()
             zgTimeSeries.AxisChange()
             zgTimeSeries.Refresh()
         End Sub
 
-        Public Sub Remove(ByVal ID As Integer)
+        Private Sub Remove(ByVal ID As Integer)
             'added by jiri to prevent unhandled exception
             If zgTimeSeries.GraphPane.CurveList.Count = 0 Then
                 Return
