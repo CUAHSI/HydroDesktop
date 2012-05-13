@@ -151,7 +151,7 @@ namespace HydroDesktop.Database
 
                 if (worker != null && worker.WorkerReportsProgress)
                 {
-                    var percent = (int)(((float)count / (float)numSeries) * 100);
+                    var percent = (int)((count / (float)numSeries) * 100);
                     var userState = "Deleting series " + count + " of " + numSeries + "...";
                     worker.ReportProgress(percent, userState);
                 }
