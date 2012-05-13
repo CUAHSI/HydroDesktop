@@ -32,8 +32,6 @@ Namespace Controls
             timeSeriesPlot.AppManager = parent.App
 
             selectedSeriesIdList.Clear()
-            timeSeriesPlot.Clear()
-
             _parent.PlotOptions.StartDateLimit = Today.AddYears(-150)
             _parent.PlotOptions.EndDateLimit = Today
         End Sub
@@ -71,12 +69,9 @@ Namespace Controls
         End Sub
 
         Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
-
-            timeSeriesPlot.Clear()
             boxWhisker.Clear()
             probabilityPlot.Clear()
             selectedSeriesIdList.Clear()
-
         End Sub
 
         'when a series is checked in the series selector control
@@ -101,9 +96,7 @@ Namespace Controls
                 selectedSeriesIdList.Remove(selectedSeriesIdList(curveIndex))
                 If (selectedSeriesIdList.Count = 0) Or (selectedSeriesIdList.Count = 1) Then
                     'Clear the graph and repolt the whole graph
-                    timeSeriesPlot.Remove(0)
                     probabilityPlot.Remove(0)
-                    timeSeriesPlot.Clear()
                     boxWhisker.Clear()
                     histogramPlot.Clear()
                     probabilityPlot.Clear()
@@ -111,7 +104,6 @@ Namespace Controls
                     _parent.PlotOptions.StartDateLimit = Today.AddYears(-150)
                     _parent.PlotOptions.EndDateLimit = Today
                 Else
-                    timeSeriesPlot.Remove(removedSeriesID)
                     probabilityPlot.Remove(removedSeriesID)
                     boxWhisker.Remove(removedSeriesID)
                     histogramPlot.Remove(removedSeriesID)
@@ -136,11 +128,14 @@ Namespace Controls
 
             End If
 
-            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions, _parent.PlotOptions.StartDateTime, _parent.PlotOptions.EndDateTime)
+            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList,
+                                                    _parent.SeriesSelector.SiteDisplayColumn,
+                                                    _parent.PlotOptions)
 
             dataSummary.Plot(seriesPlotInfo)
+            timeSeriesPlot.Plot(seriesPlotInfo)
 
-            timeSeriesPlot.Refreshing()
+
             probabilityPlot.Refreshing()
             histogramPlot.Refreshing()
             boxWhisker.Refreshing()
@@ -150,7 +145,7 @@ Namespace Controls
         End Sub
 
         Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As OneSeriesPlotInfo
-            Return OneSeriesPlotInfo.Create(seriesID, _parent.PlotOptions.StartDateTime, _parent.PlotOptions.EndDateTime, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions)
+            Return OneSeriesPlotInfo.Create(seriesID, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions)
         End Function
 
         Private Sub PlotGraps(ByVal seriesID As Int32)
@@ -166,10 +161,6 @@ Namespace Controls
 
             Dim statistics = SummaryStatistics.Create(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions.UseCensoredData)
             If statistics.NumberOfObservations > statistics.NumberOfCensoredObservations Then
-
-                timeSeriesPlot.Plot(timeSeriesOptions)
-                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-
                 boxWhisker.Plot(timeSeriesOptions, statistics.StandardDeviation)
                 If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
 
@@ -180,7 +171,6 @@ Namespace Controls
                 If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
 
             ElseIf statistics.NumberOfObservations = statistics.NumberOfCensoredObservations Then
-                If timeSeriesPlot.CurveCount = 0 Then timeSeriesPlot.SetGraphPaneTitle(MessageStrings.All_Data_Censored)
                 If boxWhisker.CurveCount = 0 Then boxWhisker.SetGraphPaneTitle(MessageStrings.All_Data_Censored)
                 If probabilityPlot.CurveCount = 0 Then probabilityPlot.SetGraphPaneTitle(MessageStrings.All_Data_Censored)
                 If histogramPlot.CurveCount = 0 Then histogramPlot.SetGraphPaneTitle(MessageStrings.All_Data_Censored)
@@ -191,7 +181,7 @@ Namespace Controls
 
         Public Sub ApplyOptions()
 
-            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions, _parent.PlotOptions.StartDateTime, _parent.PlotOptions.EndDateTime)
+            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList, _parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions)
 
             'progress bar setting
             ProgressBar.Visible = True
@@ -201,7 +191,6 @@ Namespace Controls
             colorcount = 0
 
             'Clear the graph and plot it again
-            timeSeriesPlot.Clear()
             boxWhisker.Clear()
             histogramPlot.Clear()
             probabilityPlot.Clear()
@@ -213,7 +202,8 @@ Namespace Controls
             Next
 
             dataSummary.Plot(seriesPlotInfo)
-            timeSeriesPlot.Refreshing()
+            timeSeriesPlot.Plot(seriesPlotInfo)
+
             probabilityPlot.Refreshing()
             histogramPlot.Refreshing()
             boxWhisker.Refreshing()

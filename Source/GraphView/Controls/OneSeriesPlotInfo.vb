@@ -9,17 +9,13 @@ Namespace Controls
         Private ReadOnly _seriesIDs As IList(Of Integer)
         Private ReadOnly _siteDisplayColumn As String
         Private ReadOnly _plotOptions As PlotOptions
-        Private ReadOnly _startDateTime As Date
-        Private ReadOnly _endDateTime As Date
         Private _seriesInfos As ICollection(Of OneSeriesPlotInfo)
 
-        Sub New(ByRef seriesIDs As IList(Of Int32), ByRef siteDisplayColumn As String, ByRef plotOptions As PlotOptions, ByVal startDateTime As DateTime, ByVal endDateTime As DateTime)
+        Sub New(ByRef seriesIDs As IList(Of Int32), ByRef siteDisplayColumn As String, ByRef plotOptions As PlotOptions)
 
             _seriesIDs = seriesIDs
             _siteDisplayColumn = siteDisplayColumn
             _plotOptions = plotOptions
-            _startDateTime = startDateTime
-            _endDateTime = endDateTime
         End Sub
 
         Public ReadOnly Property PlotOptions() As PlotOptions
@@ -37,7 +33,7 @@ Namespace Controls
 
             For i As Integer = 0 To _seriesIDs.Count - 1
                 Dim seriesId = _seriesIDs(i)
-                Dim oneSeriesInfo = OneSeriesPlotInfo.Create(seriesId, _startDateTime, _endDateTime, _siteDisplayColumn, _plotOptions)
+                Dim oneSeriesInfo = OneSeriesPlotInfo.Create(seriesId, _siteDisplayColumn, _plotOptions)
                 oneSeriesInfo.LineColor = _plotOptions.LineColorList(i Mod _plotOptions.LineColorList.Count)
                 oneSeriesInfo.PointColor = _plotOptions.PointColorList(i Mod _plotOptions.PointColorList.Count)
 
@@ -57,15 +53,15 @@ Namespace Controls
         Public Property SeriesID As Integer
         Public Property LineColor As Color = Color.Black
         Public Property PointColor As Color = Color.Black
-        Public Property SummaryStatistics() As SummaryStatistics
+        Public Property Statistics() As SummaryStatistics
 
-        Public Shared Function Create(ByVal seriesID As Integer, ByVal startDateTime As DateTime, ByVal endDateTime As DateTime, ByVal siteDisplayColumn As String, ByVal plotOptions As PlotOptions) As OneSeriesPlotInfo
+        Public Shared Function Create(ByVal seriesID As Integer, ByVal siteDisplayColumn As String, ByVal plotOptions As PlotOptions) As OneSeriesPlotInfo
             Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
             Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
             Dim series = dataSeriesRepo.GetByKey(seriesID)
 
-            Dim strStartDate = startDateTime
-            Dim strEndDate = endDateTime.AddDays(1).AddMilliseconds(-1)
+            Dim strStartDate = plotOptions.StartDateTime
+            Dim strEndDate = plotOptions.EndDateTime.AddDays(1).AddMilliseconds(-1)
 
             Dim nodatavalue = series.Variable.NoDataValue
             Dim data = dataValuesRepo.GetTableForGraphView(seriesID, nodatavalue, strStartDate, strEndDate)
@@ -82,7 +78,7 @@ Namespace Controls
             result.SiteName = siteName
             result.VariableName = variableName
             result.VariableUnits = unitsName
-            result.SummaryStatistics = SummaryStatistics.Create(data, plotOptions.UseCensoredData)
+            result.Statistics = SummaryStatistics.Create(data, plotOptions.UseCensoredData)
 
             Return result
         End Function
