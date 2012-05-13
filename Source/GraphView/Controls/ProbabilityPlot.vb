@@ -1,8 +1,10 @@
-﻿Imports HydroDesktop.Interfaces.ObjectModel
-Imports ZedGraph
+﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
+Imports GraphView.My.Resources
+Imports HydroDesktop.Interfaces.ObjectModel
+Imports ZedGraph
 
 Namespace Controls
 
@@ -43,7 +45,7 @@ Namespace Controls
             Try
                 Dim gPane As GraphPane = zgProbabilityPlot.GraphPane
                 gPane.CurveList.Clear()
-                gPane.Title.Text = My.Resources.MessageStrings.No_Data_Plot
+                gPane.Title.Text = MessageStrings.No_Data_Plot
                 gPane.XAxis.IsVisible = False
                 gPane.YAxis.IsVisible = False
                 gPane.GraphObjList.Clear()
@@ -66,13 +68,13 @@ Namespace Controls
             Dim m_Options = options.PlotOptions
 
             Dim i As Integer 'counter
-            Dim gPane As ZedGraph.GraphPane 'GraphPane of the zgProbability plot object -> used to set data and characteristics
+            Dim gPane As GraphPane 'GraphPane of the zgProbability plot object -> used to set data and characteristics
             'Dim g As Drawing.Graphics 'graphics object of the zgProbability plot object -> used to redraw/update the plot
-            Dim ptList As ZedGraph.PointPairList 'collection of points for the Probability plot
-            Dim bflPtList As New ZedGraph.PointPairList
-            Dim probLine As ZedGraph.LineItem
-            Dim bflLine As New ZedGraph.LineItem("")
-            Dim validRows() As Data.DataRow
+            Dim ptList As PointPairList 'collection of points for the Probability plot
+            Dim bflPtList As New PointPairList
+            Dim probLine As LineItem
+            Dim bflLine As New LineItem("")
+            Dim validRows() As DataRow
             Dim numRows As Integer
             Dim curValue As Double
             Dim curX As Double
@@ -108,7 +110,7 @@ Namespace Controls
                 gPane.XAxis.MinorTic.Size = 0
                 gPane.XAxis.Title.Text = vbCrLf & vbCrLf & "Cumulative Frequency < Stated Value %"
                 gPane.XAxis.Title.Gap = 0.2
-                gPane.XAxis.Type = ZedGraph.AxisType.Linear
+                gPane.XAxis.Type = AxisType.Linear
                 gPane.XAxis.Scale.IsVisible = False
                 gPane.XAxis.Scale.Min = -4.0
                 gPane.XAxis.Scale.Max = 4.0
@@ -125,7 +127,7 @@ Namespace Controls
                 gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
 
                 '6. Create the Pts for the Line
-                ptList = New ZedGraph.PointPairList
+                ptList = New PointPairList
 
                 'Dim ptListF As New ZedGraph.PointPairList
                 For i = 0 To numRows - 1
@@ -158,7 +160,7 @@ Namespace Controls
                 '7. Plot the Data
                 'create the points
                 'probLine = New ZedGraph.LineItem("ProbCurve")
-                probLine = gPane.AddCurve(m_Site, ptList, m_Options.GetLineColor, ZedGraph.SymbolType.Circle)
+                probLine = gPane.AddCurve(m_Site, ptList, m_Options.GetLineColor, SymbolType.Circle)
                 probLine.Tag = options
                 probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
                 probLine.Symbol.Fill.RangeMin = 0
@@ -170,13 +172,13 @@ Namespace Controls
                 probLine.Line.IsVisible = False
 
                 Select Case m_Options.TimeSeriesMethod
-                    Case PlotOptions.TimeSeriesType.Line
+                    Case TimeSeriesType.Line
                         probLine.Line.IsVisible = True
                         probLine.Symbol.IsVisible = False
-                    Case PlotOptions.TimeSeriesType.Point
+                    Case TimeSeriesType.Point
                         probLine.Line.IsVisible = False
                         probLine.Symbol.IsVisible = True
-                    Case PlotOptions.TimeSeriesType.None
+                    Case TimeSeriesType.None
                         probLine.Line.IsVisible = False
                         probLine.Symbol.IsVisible = False
                     Case Else
@@ -232,22 +234,6 @@ Namespace Controls
                 SettingYAsixs()
                 SettingTitle()
 
-                '9. Release resources
-                If Not (ptList Is Nothing) Then
-                    ptList = Nothing
-                End If
-                If Not (bflPtList Is Nothing) Then
-                    bflPtList = Nothing
-                End If
-                If Not (probLine Is Nothing) Then
-                    probLine = Nothing
-                End If
-                If Not (bflLine Is Nothing) Then
-                    bflLine = Nothing
-                End If
-                If Not (validRows Is Nothing) Then
-                    validRows = Nothing
-                End If
                 'End If
             Catch ex As Exception
                 'show an error message
@@ -262,7 +248,7 @@ Namespace Controls
             'Outputs: Double -> the x-position to plot the point at
             Try
                 Return Math.Round(4.91 * (freq ^ 0.14 - (1.0# - freq) ^ 0.14), 3)
-            Catch ex As System.Exception
+            Catch ex As Exception
                 Throw New Exception("An Error occurred while calculating the X-Position for a point in the Probability Plot." & vbCrLf & "Message= " & ex.Message, ex)
             End Try
         End Function
@@ -375,10 +361,10 @@ Namespace Controls
 
 #End Region
 
-        Private Sub zgProbabilityPlot_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As System.Drawing.Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgProbabilityPlot.ContextMenuBuilder
+        Private Sub zgProbabilityPlot_ContextMenuBuilder(ByVal sender As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState) Handles zgProbabilityPlot.ContextMenuBuilder
             ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
             ' Create a new menu item
-            Dim item As System.Windows.Forms.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Dim item As ToolStripMenuItem = New ToolStripMenuItem()
             ' This is the user-defined Tag so you can find this menu item later if necessary
             item.Name = "export_to_text_file"
             item.Tag = "export_to_text_file"
@@ -395,7 +381,7 @@ Namespace Controls
 
             'Check if there is any series to export
             If (checkedSeries <= 0) Then
-                System.Windows.Forms.MessageBox.Show("No Data To Export")
+                MessageBox.Show("No Data To Export")
 
             Else
 
@@ -479,19 +465,19 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub AddLabelToPlot(ByRef gpane As ZedGraph.GraphPane, ByVal label As String, ByVal xLoc As Double)
-            Dim myText As ZedGraph.TextObj
-            Dim myTic As ZedGraph.TextObj
+        Private Sub AddLabelToPlot(ByRef gpane As GraphPane, ByVal label As String, ByVal xLoc As Double)
+            Dim myText As TextObj
+            Dim myTic As TextObj
             Try
-                myText = New ZedGraph.TextObj(label, xLoc, 1.05, ZedGraph.CoordType.XScaleYChartFraction)
+                myText = New TextObj(label, xLoc, 1.05, CoordType.XScaleYChartFraction)
                 myText.FontSpec.Size = 13
                 myText.FontSpec.Border.IsVisible = False
-                myText.FontSpec.Fill = New ZedGraph.Fill(Drawing.Color.FromArgb(25, Drawing.Color.White))
+                myText.FontSpec.Fill = New Fill(Color.FromArgb(25, Color.White))
                 gpane.GraphObjList.Add(myText)
-                myTic = New ZedGraph.TextObj("|", xLoc, 0.997, ZedGraph.CoordType.XScaleYChartFraction)
+                myTic = New TextObj("|", xLoc, 0.997, CoordType.XScaleYChartFraction)
                 myTic.FontSpec.Size = 12.0
                 myTic.FontSpec.Border.IsVisible = False
-                myTic.FontSpec.Fill = New ZedGraph.Fill(Drawing.Color.FromArgb(25, Drawing.Color.White))
+                myTic.FontSpec.Fill = New Fill(Color.FromArgb(25, Color.White))
                 gpane.GraphObjList.Add(myTic)
             Catch ex As Exception
                 Throw New Exception("An Error occurred while creating an X-Axis Label for a plot on the Visualize Tab." & vbCrLf & "Message = " & ex.Message, ex)
@@ -590,7 +576,7 @@ Namespace Controls
                     '.Title.Text = .CurveList(0).Link.Title
                     .Legend.IsVisible = False
                 ElseIf .CurveList.Count = 0 Then
-                    .Title.Text = My.Resources.MessageStrings.No_Data_Plot
+                    .Title.Text = MessageStrings.No_Data_Plot
                 End If
 
             End With

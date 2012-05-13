@@ -121,25 +121,25 @@ Namespace Controls
                     min = 100
                     max = 0
                     Select Case m_Options.BoxWhiskerMethod
-                        Case PlotOptions.BoxWhiskerType.Monthly
+                        Case BoxWhiskerType.Monthly
                             'Calculate Boxplot for Monthly data
                             numPts = CalcBoxPlot_Monthly(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Month"
                             showXTics = True
                             zgBoxWhiskerPlot.ScrollMaxX = 12.5
-                        Case PlotOptions.BoxWhiskerType.Seasonal
+                        Case BoxWhiskerType.Seasonal
                             'Calculate Boxplot for seasonal data
                             numPts = CalcBoxPlot_Seasonal(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Season"
                             showXTics = True
                             zgBoxWhiskerPlot.ScrollMaxX = 4.5
-                        Case PlotOptions.BoxWhiskerType.Yearly
+                        Case BoxWhiskerType.Yearly
                             'Calculate Boxplot for Yearly data
                             numPts = CalcBoxPlot_Yearly(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Year"
                             showXTics = True
                             'zgBoxWhiskerPlot.ScrollMaxX =
-                        Case PlotOptions.BoxWhiskerType.Overall
+                        Case BoxWhiskerType.Overall
                             'Calculate Boxplot for All data
                             numPts = CalcBoxPlot_Overall(medianList, meanList, boxes, xAxisLabels, min, max)
                             xTitle = "Overall"

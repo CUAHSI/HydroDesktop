@@ -500,15 +500,15 @@ Public Class Main
     End Sub
 
     Sub rbLine_Click()
-        _mainControl.plotOptionsControl.tsType = PlotOptions.TimeSeriesType.Line
+        _mainControl.plotOptionsControl.tsType = TimeSeriesType.Line
         _mainControl.ApplyOptions()
     End Sub
     Sub rbPoint_Click()
-        _mainControl.plotOptionsControl.tsType = PlotOptions.TimeSeriesType.Point
+        _mainControl.plotOptionsControl.tsType = TimeSeriesType.Point
         _mainControl.ApplyOptions()
     End Sub
     Sub rbBoth_Click()
-        _mainControl.plotOptionsControl.tsType = PlotOptions.TimeSeriesType.Both
+        _mainControl.plotOptionsControl.tsType = TimeSeriesType.Both
         _mainControl.ApplyOptions()
     End Sub
 
@@ -527,45 +527,45 @@ Public Class Main
     End Sub
 
     Sub rbhtCount_Click()
-        _mainControl.plotOptionsControl.hpType = PlotOptions.HistogramType.Count
+        _mainControl.plotOptionsControl.hpType = HistogramType.Count
         _mainControl.ApplyOptions()
     End Sub
     Sub rbhtProbability_Click()
-        _mainControl.plotOptionsControl.hpType = PlotOptions.HistogramType.Probability
+        _mainControl.plotOptionsControl.hpType = HistogramType.Probability
         _mainControl.ApplyOptions()
     End Sub
     Sub rbhtRelative_Click()
-        _mainControl.plotOptionsControl.hpType = PlotOptions.HistogramType.Relative
+        _mainControl.plotOptionsControl.hpType = HistogramType.Relative
         _mainControl.ApplyOptions()
     End Sub
 
     Sub rbhaSturges_Click()
-        _mainControl.plotOptionsControl.hpAlgo = PlotOptions.HistorgramAlgorithms.Sturges
+        _mainControl.plotOptionsControl.hpAlgo = HistorgramAlgorithms.Sturges
         _mainControl.ApplyOptions()
     End Sub
     Sub rbhaScott_Click()
-        _mainControl.plotOptionsControl.hpAlgo = PlotOptions.HistorgramAlgorithms.Scott
+        _mainControl.plotOptionsControl.hpAlgo = HistorgramAlgorithms.Scott
         _mainControl.ApplyOptions()
     End Sub
     Sub rbhaFreedman_Click()
-        _mainControl.plotOptionsControl.hpAlgo = PlotOptions.HistorgramAlgorithms.Freedman
+        _mainControl.plotOptionsControl.hpAlgo = HistorgramAlgorithms.Freedman
         _mainControl.ApplyOptions()
     End Sub
 
     Sub rbbtMonthly_Click()
-        _mainControl.plotOptionsControl.bwType = PlotOptions.BoxWhiskerType.Monthly
+        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Monthly
         _mainControl.ApplyOptions()
     End Sub
     Sub rbbtSeasonal_Click()
-        _mainControl.plotOptionsControl.bwType = PlotOptions.BoxWhiskerType.Seasonal
+        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Seasonal
         _mainControl.ApplyOptions()
     End Sub
     Sub rbbtYearly_Click()
-        _mainControl.plotOptionsControl.bwType = PlotOptions.BoxWhiskerType.Yearly
+        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Yearly
         _mainControl.ApplyOptions()
     End Sub
     Sub rbbtOverall_Click()
-        _mainControl.plotOptionsControl.bwType = PlotOptions.BoxWhiskerType.Overall
+        _mainControl.plotOptionsControl.bwType = BoxWhiskerType.Overall
         _mainControl.ApplyOptions()
     End Sub
 

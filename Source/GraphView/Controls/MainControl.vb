@@ -148,8 +148,6 @@ Namespace Controls
 
             For i = 0 To 9
                 linecolorlist.Add(ccList0(i))
-            Next
-            For i = 0 To 9
                 pointcolorlist.Add(ccList0(i))
             Next
         End Sub

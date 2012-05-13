@@ -1,35 +1,14 @@
-﻿Public Class PlotOptions
-    Public Enum TimeSeriesType
-        Both
-        Line
-        Point
-        None
-    End Enum
-    Public Enum BoxWhiskerType
-        Monthly
-        Seasonal
-        Yearly
-        Overall
-    End Enum
-    Public Enum HistogramType
-        Count
-        Probability
-        Relative
-    End Enum
-    Public Enum HistorgramAlgorithms
-        Sturges
-        Scott
-        Freedman
-    End Enum
-#Region " Member Variables "
+﻿Imports System.Drawing
+
+Public Class PlotOptions
+
+#Region "Fields"
+
     Private ReadOnly _TimeSeriesMethod As TimeSeriesType
-    'Private _IsBarsManual As Boolean
-    'Private _NumberOfBars As Integer
-    'Private _IsDiscreteBars As Boolean
     Private ReadOnly _BoxWhiskerMethod As BoxWhiskerType
     Private ReadOnly _IsPlotCensored As Boolean
-    Private _GetLineColor As System.Drawing.Color
-    Private _GetPointColor As System.Drawing.Color
+    Private _GetLineColor As Color
+    Private _GetPointColor As Color
     Private _LineColorList As Integer
     Private _PointColorList As Integer
     Private ReadOnly _StartDate As Date
@@ -37,8 +16,6 @@
     Private ReadOnly _ChangeDateRange As Boolean
     Private ReadOnly _ShowLegend As Boolean
     Private ReadOnly _UseCensoredData As Boolean
-
-
     Private ReadOnly _HistType As HistogramType
     Private ReadOnly _HistAlgorothms As HistorgramAlgorithms
     Private _NumBins As Integer
@@ -48,24 +25,17 @@
     Private _yMax As Double
     Private _yMin As Double
     Private _xMajor As Double
-    Private _yValue As List(Of Double)
-    Private _xCenterList As List(Of Double)
-    Private _xCenterListLog As List(Of Double)
-    Private _lbin As List(Of Double)
-    Private _rbin As List(Of Double)
+
 #End Region
 
     Public Sub New(ByVal TimeSeriesMethod As TimeSeriesType, ByVal HistType As HistogramType, _
                    ByVal HistAlgorothms As HistorgramAlgorithms, ByVal NumBins As Integer, ByVal BinWidth As Double, _
                    ByVal xMax As Double, ByVal xMin As Double, ByVal yMax As Double, ByVal yMin As Double, ByVal xMajor As Double, _
-                   ByVal BoxWhiskerMethod As BoxWhiskerType, ByVal GetLineColor As System.Drawing.Color, _
-                   ByVal GetPointColor As System.Drawing.Color, _
+                   ByVal BoxWhiskerMethod As BoxWhiskerType, ByVal GetLineColor As Color, _
+                   ByVal GetPointColor As Color, _
                    ByVal ShowLegend As Boolean, ByVal StartDate As Date, ByVal EndDate As Date, ByVal ChangeDateRange As Boolean, _
                    ByVal UseCensoredData As Boolean, Optional ByVal IsPlotCensored As Boolean = True)
         _TimeSeriesMethod = TimeSeriesMethod
-        '_IsBarsManual = IsBarsManual
-        '_NumberOfBars = NumberOfBars
-        '_IsDiscreteBars = IsDiscreteBars
         _BoxWhiskerMethod = BoxWhiskerMethod
         _IsPlotCensored = IsPlotCensored
         _GetLineColor = GetLineColor
@@ -77,9 +47,6 @@
         _ChangeDateRange = ChangeDateRange
         _ShowLegend = ShowLegend
         _UseCensoredData = UseCensoredData
-
-
-
         _HistType = HistType
         _HistAlgorothms = HistAlgorothms
         _NumBins = NumBins
@@ -89,11 +56,6 @@
         _yMax = yMax
         _yMin = yMin
         _xMajor = xMajor
-        '_yValue = yValue
-        '_xCenterList = xCenterList
-        '_xCenterListLog = xCenterListLog
-        '_lbin = lbin
-        '_rbin = rbin
     End Sub
 
     Public ReadOnly Property TimeSeriesMethod() As TimeSeriesType
@@ -101,21 +63,6 @@
             Return _TimeSeriesMethod
         End Get
     End Property
-    'Public ReadOnly Property IsBarsManual() As Boolean
-    '    Get
-    '        Return _IsBarsManual
-    '    End Get
-    'End Property
-    'Public ReadOnly Property NumberOfBars() As Integer
-    '    Get
-    '        Return _NumberOfBars
-    '    End Get
-    'End Property
-    'Public ReadOnly Property IsDiscreteBars() As Boolean
-    '    Get
-    '        Return _IsDiscreteBars
-    '    End Get
-    'End Property
     Public ReadOnly Property HistTypeMethod() As HistogramType
         Get
             Return _HistType
@@ -182,46 +129,6 @@
             _xMajor = value
         End Set
     End Property
-    'Public Property yValue() As List(Of Double)
-    '    Get
-    '        Return _yValue
-    '    End Get
-    '    Set(ByVal value As List(Of Double))
-    '        _yValue = value
-    '    End Set
-    'End Property
-    'Public Property xCenterList() As List(Of Double)
-    '    Get
-    '        Return _xCenterList
-    '    End Get
-    '    Set(ByVal value As List(Of Double))
-    '        _xCenterList = value
-    '    End Set
-    'End Property
-    'Public Property xCenterListLog() As List(Of Double)
-    '    Get
-    '        Return _xCenterListLog
-    '    End Get
-    '    Set(ByVal value As List(Of Double))
-    '        _xCenterListLog = value
-    '    End Set
-    'End Property
-    'Public Property lbin() As List(Of Double)
-    '    Get
-    '        Return _lbin
-    '    End Get
-    '    Set(ByVal value As List(Of Double))
-    '        _lbin = value
-    '    End Set
-    'End Property
-    'Public Property rbin() As List(Of Double)
-    '    Get
-    '        Return _rbin
-    '    End Get
-    '    Set(ByVal value As List(Of Double))
-    '        _rbin = value
-    '    End Set
-    'End Property
     Public ReadOnly Property BoxWhiskerMethod() As BoxWhiskerType
         Get
             Return _BoxWhiskerMethod
@@ -232,19 +139,19 @@
             Return _IsPlotCensored
         End Get
     End Property
-    Public Property GetLineColor() As System.Drawing.Color
+    Public Property GetLineColor() As Color
         Get
             Return _GetLineColor
         End Get
-        Set(ByVal value As System.Drawing.Color)
+        Set(ByVal value As Color)
             _GetLineColor = value
         End Set
     End Property
-    Public Property GetPointColor() As System.Drawing.Color
+    Public Property GetPointColor() As Color
         Get
             Return _GetPointColor
         End Get
-        Set(ByVal value As System.Drawing.Color)
+        Set(ByVal value As Color)
             _GetPointColor = value
         End Set
     End Property
@@ -290,3 +197,29 @@
         End Get
     End Property
 End Class
+
+Public Enum TimeSeriesType
+    Both
+    Line
+    Point
+    None
+End Enum
+
+Public Enum BoxWhiskerType
+    Monthly
+    Seasonal
+    Yearly
+    Overall
+End Enum
+
+Public Enum HistogramType
+    Count
+    Probability
+    Relative
+End Enum
+
+Public Enum HistorgramAlgorithms
+    Sturges
+    Scott
+    Freedman
+End Enum
