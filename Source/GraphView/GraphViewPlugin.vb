@@ -88,32 +88,17 @@ Public Class Main
 
     'When the plugin is initialized
     Public Overrides Sub Activate()
-
-        'watch for dock panel added event
-        'If firstTimeLoaded Then
-        '    AddHandler App.DockManager.PanelAdded, AddressOf DockPanelAdded
-        'End If
-
-
-        _mainControl = New MainControl(appSeriesView)
+        _mainControl = New MainControl(appSeriesView, App)
         _mainControl.Dock = DockStyle.Fill
 
         InitializeRibbonButtons()
 
-        'If Not firstTimeLoaded Then
         Dim dp As New DockablePanel(kGraph, _pluginName, _mainControl, DockStyle.Fill)
         dp.DefaultSortOrder = 20
         App.DockManager.Add(dp)
-        'End If
-
 
         AddHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
-
-        'when the graph dock panel is activated:
-        'show graph ribbon tab and series view
         AddHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
-
-        Common.PluginEntryPoint = Me
 
         MyBase.Activate()
     End Sub
@@ -131,8 +116,6 @@ Public Class Main
 
         RemoveHandler App.DockManager.ActivePanelChanged, AddressOf DockManager_ActivePanelChanged
         RemoveHandler App.HeaderControl.RootItemSelected, AddressOf HeaderControl_RootItemSelected
-
-        Common.PluginEntryPoint = Nothing
 
         'important line to deactivate the plugin
         MyBase.Deactivate()

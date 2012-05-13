@@ -170,7 +170,6 @@
     <Compile Include="Controls\ZedGraphControlEx.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Common.vb" />
     <Compile Include="MessageStrings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
