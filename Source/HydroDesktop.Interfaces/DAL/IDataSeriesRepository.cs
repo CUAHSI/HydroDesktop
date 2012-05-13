@@ -80,6 +80,8 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         IList<Series> GetSeriesBySite(Site site);
 
+        Tuple<DateTime, DateTime> GetDatesRange(long seriesID);
+
         /// <summary>
         /// Deletes a series given it's ID. The series is only deleted when it belongs to one theme.
         /// </summary>

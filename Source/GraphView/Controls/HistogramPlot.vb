@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports GraphView.My.Resources
 Imports ZedGraph
 
 Namespace Controls
@@ -6,75 +7,88 @@ Namespace Controls
     Public Class HistogramPlot
         Implements IChart
 
-        Private Shared m_Data As DataTable
-
+        Private m_Data As DataTable
         Private m_StdDev As Double = 0
-
         Private yValue() As Double
         Private xCenterList() As Double
         Private lbin() As Double
         Private rbin() As Double
+        Private _seriesPlotInfo As SeriesPlotInfo
 
-        Public Function CurveCount() As Int32
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+            _seriesPlotInfo = Nothing
+            If Not Visible Then
+                _seriesPlotInfo = seriesPlotInfo
+                Return
+            End If
+
+            Clear()
+            For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
+                If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    Plot(oneSeriesInfo, oneSeriesInfo.Statistics.StandardDeviation)
+                ElseIf oneSeriesInfo.Statistics.NumberOfObservations = oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
+                End If
+            Next
+            Refreshing()
+        End Sub
+
+        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
+            If Not Visible Then Return
+            If _seriesPlotInfo Is Nothing Then Return
+            Plot(_seriesPlotInfo)
+        End Sub
+
+        Private Function CurveCount() As Int32
             Return zgHistogramPlot.GraphPane.CurveList.Count
         End Function
 
-        Public Sub SetGraphPaneTitle(ByVal title As String)
+        Private Sub SetGraphPaneTitle(ByVal title As String)
             zgHistogramPlot.GraphPane.Title.Text = title
         End Sub
 
-        Public Sub Plot(ByRef options As OneSeriesPlotInfo, ByVal e_StdDev As Double)
-            Try
-                m_Data = options.DataTable.Copy
+        Private Sub Plot(ByVal options As OneSeriesPlotInfo, ByVal e_StdDev As Double)
+            m_Data = options.DataTable.Copy
 
-                If zgHistogramPlot.MasterPane.PaneList.Count <> 0 Then
-                    Dim cOptions = DirectCast(zgHistogramPlot.MasterPane.PaneList(0).Tag, OneSeriesPlotInfo)
-                    If cOptions Is Nothing Then
-                        zgHistogramPlot.MasterPane.PaneList.Clear()
-                    End If
+            If zgHistogramPlot.MasterPane.PaneList.Count <> 0 Then
+                Dim cOptions = DirectCast(zgHistogramPlot.MasterPane.PaneList(0).Tag, OneSeriesPlotInfo)
+                If cOptions Is Nothing Then
+                    zgHistogramPlot.MasterPane.PaneList.Clear()
                 End If
+            End If
 
-                If (e_StdDev = 0) And (Not (m_Data Is Nothing)) And (m_Data.Rows.Count > 0) Then
-                    m_StdDev = Statistics.StandardDeviation(m_Data)
-                Else
-                    m_StdDev = e_StdDev
-                End If
+            If (e_StdDev = 0) And (m_Data IsNot Nothing) And (m_Data.Rows.Count > 0) Then
+                m_StdDev = Statistics.StandardDeviation(m_Data)
+            Else
+                m_StdDev = e_StdDev
+            End If
 
-                zgHistogramPlot.MasterPane.Title.IsVisible = False
+            zgHistogramPlot.MasterPane.Title.IsVisible = False
 
-                Dim gPane As GraphPane = New GraphPane
-                zgHistogramPlot.MasterPane.PaneList.Add(gPane)
-                Graph(gPane, options)
+            Dim gPane As GraphPane = New GraphPane
+            zgHistogramPlot.MasterPane.PaneList.Add(gPane)
+            Graph(gPane, options)
 
-                If zgHistogramPlot.MasterPane.PaneList.Count > 1 Then
-                    zgHistogramPlot.IsShowHScrollBar = False
-                    zgHistogramPlot.IsShowVScrollBar = False
-                End If
-
-            Catch ex As Exception
-                Throw New Exception("Error Occured in ZGHistogram.Plot" & vbCrLf & ex.Message)
-            End Try
-        End Sub
-
-        Public Sub Clear()
-            Try
-                zgHistogramPlot.MasterPane.PaneList.Clear()
-                zgHistogramPlot.MasterPane.PaneList.Add(New GraphPane)
-                zgHistogramPlot.MasterPane.PaneList(0).Title.IsVisible = True
-                zgHistogramPlot.MasterPane.PaneList(0).Title.Text = My.Resources.MessageStrings.No_Data_Plot
-                zgHistogramPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
-                zgHistogramPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
-                zgHistogramPlot.MasterPane.PaneList(0).Border.IsVisible = False
-                zgHistogramPlot.MasterPane.PaneList(0).AxisChange()
-                zgHistogramPlot.MasterPane.Border.IsVisible = False
+            If zgHistogramPlot.MasterPane.PaneList.Count > 1 Then
                 zgHistogramPlot.IsShowHScrollBar = False
                 zgHistogramPlot.IsShowVScrollBar = False
-                zgHistogramPlot.Refresh()
-                zgHistogramPlot.AxisChange()
+            End If
+        End Sub
 
-            Catch ex As Exception
-                Throw New Exception("Error Occured in ZGHistogram.Clear" & vbCrLf & ex.Message)
-            End Try
+        Private Sub Clear()
+            zgHistogramPlot.MasterPane.PaneList.Clear()
+            zgHistogramPlot.MasterPane.PaneList.Add(New GraphPane)
+            zgHistogramPlot.MasterPane.PaneList(0).Title.IsVisible = True
+            zgHistogramPlot.MasterPane.PaneList(0).Title.Text = MessageStrings.No_Data_Plot
+            zgHistogramPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
+            zgHistogramPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
+            zgHistogramPlot.MasterPane.PaneList(0).Border.IsVisible = False
+            zgHistogramPlot.MasterPane.PaneList(0).AxisChange()
+            zgHistogramPlot.MasterPane.Border.IsVisible = False
+            zgHistogramPlot.IsShowHScrollBar = False
+            zgHistogramPlot.IsShowVScrollBar = False
+            zgHistogramPlot.Refresh()
+            zgHistogramPlot.AxisChange()
         End Sub
 
         Private Sub Graph(ByVal gPane As GraphPane, ByRef options As OneSeriesPlotInfo)
@@ -103,14 +117,14 @@ Namespace Controls
                     If (.HistTypeMethod = HistogramType.Probability) Then
                         gPane.YAxis.Title.Text = "Probability Density"
                     ElseIf (.HistTypeMethod = HistogramType.Count) Then
-                        gPane.YAxis.Title.Text = My.Resources.MessageStrings.Number_Observations
+                        gPane.YAxis.Title.Text = MessageStrings.Number_Observations
                     ElseIf (.HistTypeMethod = HistogramType.Relative) Then
                         gPane.YAxis.Title.Text = "Relative Number of Observations"
                     End If
 
                     'set bar settings
 
-                    gPane.BarSettings.Type = ZedGraph.BarType.Cluster
+                    gPane.BarSettings.Type = BarType.Cluster
                     gPane.BarSettings.MinBarGap = 0
                     gPane.BarSettings.MinClusterGap = 0
                     gPane.XAxis.Scale.IsLabelsInside = False
@@ -411,36 +425,18 @@ Namespace Controls
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
             gPane.BarSettings.Type = BarType.Stack
-            'zgHistogramPlot.MasterPane.PaneList.Clear()
             zgHistogramPlot.MasterPane.Border.IsVisible = False
 
+            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
 
         End Sub
 
-        Private Sub zgHistogramPlot_ContextMenuBuilder(ByVal sender As ZedGraph.ZedGraphControl, ByVal menuStrip As System.Windows.Forms.ContextMenuStrip, ByVal mousePt As System.Drawing.Point, ByVal objState As ZedGraph.ZedGraphControl.ContextMenuObjectState) Handles zgHistogramPlot.ContextMenuBuilder
-            ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
-            ' Create a new menu item
-            Dim item As System.Windows.Forms.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            ' This is the user-defined Tag so you can find this menu item later if necessary
-            item.Name = "export_to_text_file"
-            item.Tag = "export_to_text_file"
-            ' This is the text that will show up in the menu
-            item.Text = "Export to Text File"
-            ' Add a handler that will respond when that menu item is selected
-            AddHandler item.Click, AddressOf ExportToTextFile
-            ' Add the menu item to the menu
-            menuStrip.Items.Add(item)
-        End Sub
-
-        Protected Sub ExportToTextFile()
-            System.Windows.Forms.MessageBox.Show("Not Yet Implemented")
-        End Sub
-        Public Sub Refreshing()
+        Private Sub Refreshing()
             zgHistogramPlot.AxisChange()
             zgHistogramPlot.Refresh()
         End Sub
 
-        Public Sub Remove(ByVal ID As Integer)
+        Private Sub Remove(ByVal ID As Integer)
             Dim PaneListCopy As New PaneList
             For i = 0 To zgHistogramPlot.MasterPane.PaneList.Count - 1
                 PaneListCopy.Add(zgHistogramPlot.MasterPane.PaneList(i))

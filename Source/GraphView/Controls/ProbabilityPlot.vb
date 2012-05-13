@@ -15,35 +15,56 @@ Namespace Controls
         Private Shared ReadOnly m_VarList As New List(Of String)
         Public Property SeriesSelector() As ISeriesSelector
         Public Property AppManager() As AppManager
+        Private _seriesPlotInfo As SeriesPlotInfo
 
-        Public Function CurveCount() As Int32
+        Private Function CurveCount() As Int32
             Return zgProbabilityPlot.GraphPane.CurveList.Count
         End Function
 
-        Public Sub SetGraphPaneTitle(ByVal title As String)
+        Private Sub SetGraphPaneTitle(ByVal title As String)
             zgProbabilityPlot.GraphPane.Title.Text = title
         End Sub
 
-        Public Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
+        Private Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
             Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
             m_VarList.Add(m_VariableWithUnits)
             PlotProbability(options)
         End Sub
 
-        Public Sub Clear()
-            Try
-                Dim gPane As GraphPane = zgProbabilityPlot.GraphPane
-                gPane.CurveList.Clear()
-                gPane.Title.Text = MessageStrings.No_Data_Plot
-                gPane.XAxis.IsVisible = False
-                gPane.YAxis.IsVisible = False
-                gPane.GraphObjList.Clear()
-                zgProbabilityPlot.IsShowVScrollBar = False
-                zgProbabilityPlot.IsShowHScrollBar = False
-                zgProbabilityPlot.Refresh()
-            Catch ex As Exception
-                Throw New Exception("Error Occured in ZGProbability.Clear" & vbCrLf & ex.Message)
-            End Try
+        Private Sub Clear()
+            Dim gPane As GraphPane = zgProbabilityPlot.GraphPane
+            gPane.CurveList.Clear()
+            gPane.Title.Text = MessageStrings.No_Data_Plot
+            gPane.XAxis.IsVisible = False
+            gPane.YAxis.IsVisible = False
+            gPane.GraphObjList.Clear()
+            zgProbabilityPlot.IsShowVScrollBar = False
+            zgProbabilityPlot.IsShowHScrollBar = False
+            zgProbabilityPlot.Refresh()
+        End Sub
+
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+            _seriesPlotInfo = Nothing
+            If Not Visible Then
+                _seriesPlotInfo = seriesPlotInfo
+                Return
+            End If
+
+            Clear()
+            For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
+                If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    Plot(oneSeriesInfo, oneSeriesInfo.Statistics.StandardDeviation)
+                ElseIf oneSeriesInfo.Statistics.NumberOfObservations = oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
+                    If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
+                End If
+            Next
+            Refreshing()
+        End Sub
+
+        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
+            If Not Visible Then Return
+            If _seriesPlotInfo Is Nothing Then Return
+            Plot(_seriesPlotInfo)
         End Sub
 
 
@@ -147,9 +168,9 @@ Namespace Controls
                 '7. Plot the Data
                 'create the points
                 'probLine = New ZedGraph.LineItem("ProbCurve")
-                probLine = gPane.AddCurve(m_Site, ptList, m_Options.GetLineColor, SymbolType.Circle)
+                probLine = gPane.AddCurve(m_Site, ptList, options.LineColor, SymbolType.Circle)
                 probLine.Tag = options
-                probLine.Symbol.Fill = New Fill(m_Options.GetPointColor, Color.Black)
+                probLine.Symbol.Fill = New Fill(options.PointColor, Color.Black)
                 probLine.Symbol.Fill.RangeMin = 0
                 probLine.Symbol.Fill.RangeMax = 1
                 probLine.Symbol.Size = 4
@@ -516,14 +537,16 @@ Namespace Controls
             ' Add any initialization after the InitializeComponent() call.
             zgProbabilityPlot.GraphPane.Legend.IsVisible = False
             zgProbabilityPlot.GraphPane.Border.IsVisible = False
+
+            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
-        Public Sub Refreshing()
+        Private Sub Refreshing()
             zgProbabilityPlot.AxisChange()
             zgProbabilityPlot.Refresh()
         End Sub
 
-        Public Sub Remove(ByVal curveIndex As Integer)
+        Private Sub Remove(ByVal curveIndex As Integer)
             'added by jiri to prevent unhandled exception
             If zgProbabilityPlot.GraphPane.CurveList.Count = 0 Then
                 Return

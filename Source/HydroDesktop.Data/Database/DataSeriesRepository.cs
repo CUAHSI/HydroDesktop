@@ -170,6 +170,14 @@ namespace HydroDesktop.Database
             return SeriesListFromTable(seriesTable);
         }
 
+        public Tuple<DateTime, DateTime> GetDatesRange(long seriesID)
+        {
+            var query = string.Format("select BeginDateTime, EndDateTime from DataSeries where SeriesID={0}", seriesID);
+            var list = DbOperations.Read(query, reader =>
+                                     new Tuple<DateTime, DateTime>(reader.GetDateTime(0), reader.GetDateTime(1)));
+            return list.FirstOrDefault();
+        }
+
         protected override Series DataRowToEntity(DataRow row)
         {
             var series = new Series

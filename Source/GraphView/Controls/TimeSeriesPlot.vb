@@ -25,7 +25,7 @@ Namespace Controls
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
 
-            AddHandler VisibleChanged, AddressOf OnTimeSeriesPlotVisibleChanged
+            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
         Private Const XColumn As String = "LocalDateTime"
@@ -61,7 +61,7 @@ Namespace Controls
             Refreshing()
         End Sub
 
-        Private Sub OnTimeSeriesPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
             If Not Visible Then Return
             If _seriesPlotInfo Is Nothing Then Return
             Plot(_seriesPlotInfo)

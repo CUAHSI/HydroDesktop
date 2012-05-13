@@ -19,11 +19,6 @@ Public Class PlotOptions
     Public Property xMajor() As Double
     Public Property BoxWhiskerMethod() As BoxWhiskerType = BoxWhiskerType.Monthly
     Public Property IsPlotCensored() As Boolean = True
-    'TODO: remove GetLineColor and GetPointColor
-    <Obsolete()>
-    Public Property GetLineColor() As Color = Color.Black
-    <Obsolete()>
-    Public Property GetPointColor() As Color = Color.Black
     Public Property LineColorList() As New List(Of Color)
     Public Property PointColorList() As New List(Of Color)
     Public Property ShowLegend() As Boolean = True
