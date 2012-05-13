@@ -12,6 +12,7 @@ using DataImport.Txt;
 using DataImport.WaterML;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 
 namespace ImportFromWaterML
@@ -19,8 +20,8 @@ namespace ImportFromWaterML
     public class Main : Extension
     {
         #region Variables
-        
-        private const string TableTabKey = "kHydroTable";
+
+        private readonly string TableTabKey = SharedConstants.TableRootKey;
 
         #endregion
 

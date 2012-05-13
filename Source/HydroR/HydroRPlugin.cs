@@ -7,6 +7,7 @@ using System.Drawing;
 using System.ComponentModel.Composition;
 
 using DotSpatial.Controls;
+using HydroDesktop.Common;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
@@ -26,6 +27,7 @@ namespace HydroR
 
         private const string _panelName = "HydroR";
         private const string kHydroR = "kHydroR";
+        private readonly string _seriesViewKey = SharedConstants.SeriesViewKey;
 
         private RootItem _hydroRTab; 
 
@@ -77,7 +79,7 @@ namespace HydroR
                 //when the HydroR panel is selected - activate SeriesView and HydroR ribbon tab
                 App.DockManager.ActivePanelChanged += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_ActivePanelChanged);
 
-                App.DockManager.SelectPanel("kHydroSeriesView");
+                App.DockManager.SelectPanel(_seriesViewKey);
                 App.HeaderControl.SelectRoot(kHydroR);
 
                 _hydroRControl.RChanged += new cRCommandView.REventHandler(_hydroRControl_RChanged);
@@ -193,7 +195,7 @@ namespace HydroR
         {
             if (e.ActivePanelKey == kHydroR)
             {
-                App.DockManager.SelectPanel("kHydroSeriesView");
+                App.DockManager.SelectPanel(_seriesViewKey);
                 App.HeaderControl.SelectRoot(kHydroR);
             }
         }

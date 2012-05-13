@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Forms
+Imports HydroDesktop.Common
 Imports DotSpatial.Controls
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
@@ -220,13 +221,8 @@ Namespace EditView
                 ignoreRootSelected = True
                 App.HeaderControl.SelectRoot(kEditView)
                 ignoreRootSelected = False
-                App.DockManager.SelectPanel("kHydroSeriesView")
+                App.DockManager.SelectPanel(SharedConstants.SeriesViewKey)
             End If
-            '_EditView.Visible = True
-            'ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
-            '    _EditView.Visible = False
-            'End If
-
         End Sub
 
         Private Sub btnSelectSeries_Click()

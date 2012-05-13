@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DotSpatial.Controls.Docking;
 using System.Windows.Forms;
+using HydroDesktop.Common;
 using WeifenLuo.WinFormsUI.Docking;
 using System.ComponentModel.Composition;
 using System.Drawing;
@@ -84,7 +85,7 @@ namespace HydroDesktop.Docking
             //first, check the list
             foreach (string key in dockPanelLookup.Keys)
             {
-                if (key == "kHydroSeriesView")
+                if (key == SharedConstants.SeriesViewKey)
                 {
                     DockContent cnt = dockPanelLookup[key].WeifenLuoDockPanel;
 

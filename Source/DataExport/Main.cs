@@ -2,6 +2,7 @@
 using System.Data;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
+using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 using DotSpatial.Controls.Header;
 
@@ -18,7 +19,7 @@ namespace HydroDesktop.ExportToCSV
         /// <summary>
         /// The key of the "Table" ribbon tab
         /// </summary>
-        private const string TableTabKey = "kHydroTable";
+        private readonly string TableTabKey = SharedConstants.TableRootKey;
 
         /// <summary>
         /// The name of the "Data Export" panel on the table ribbon
