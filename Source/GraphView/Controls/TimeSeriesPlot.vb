@@ -89,7 +89,7 @@ Namespace Controls
             Try
                 Dim gPane As GraphPane = zgTimeSeries.GraphPane
 
-                Dim m_Data = options.DataTable.Copy
+                Dim m_Data = options.DataTable
                 Dim m_Site = options.SiteName
                 Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
                 Dim m_Options = options.PlotOptions
