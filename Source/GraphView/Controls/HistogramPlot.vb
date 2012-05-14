@@ -15,7 +15,7 @@ Namespace Controls
         Private rbin() As Double
         Private _seriesPlotInfo As SeriesPlotInfo
 
-        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
             _seriesPlotInfo = Nothing
             If Not Visible Then
                 _seriesPlotInfo = seriesPlotInfo

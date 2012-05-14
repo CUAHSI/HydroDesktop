@@ -28,7 +28,7 @@ Namespace Controls
             AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
-        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
             _seriesPlotInfo = Nothing
             If Not Visible Then
                 _seriesPlotInfo = seriesPlotInfo

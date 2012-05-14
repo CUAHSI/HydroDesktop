@@ -8,17 +8,30 @@ Namespace Controls
 
 #Region "Fields"
 
-        Private ReadOnly _seriesIDs As IList(Of Integer)
         Private ReadOnly _siteDisplayColumn As String
         Private ReadOnly _plotOptions As PlotOptions
-        Private _seriesInfos As ICollection(Of OneSeriesPlotInfo)
+        Private ReadOnly _seriesInfos As IDictionary(Of Integer, OneSeriesPlotInfo)
 
 #End Region
 
-        Sub New(ByRef seriesIDs As IList(Of Int32), ByRef siteDisplayColumn As String, ByRef plotOptions As PlotOptions)
-            _seriesIDs = seriesIDs
+        Sub New(ByVal siteDisplayColumn As String, ByVal plotOptions As PlotOptions)
+            _seriesInfos = New Dictionary(Of Integer, OneSeriesPlotInfo)()
             _siteDisplayColumn = siteDisplayColumn
             _plotOptions = plotOptions
+        End Sub
+
+        Public Sub Update(ByVal e As SeriesEventArgs)
+            If Not e.IsChecked Then
+                _seriesInfos.Remove(e.SeriesID)
+            Else
+                _seriesInfos(e.SeriesID) = Nothing
+            End If
+        End Sub
+
+        Public Sub Update()
+            For Each key As Integer In _seriesInfos.Keys.ToList()
+                _seriesInfos(key) = Nothing
+            Next
         End Sub
 
         Public ReadOnly Property PlotOptions() As PlotOptions
@@ -27,44 +40,52 @@ Namespace Controls
             End Get
         End Property
 
-        Public Function GetSeriesInfo() As ICollection(Of OneSeriesPlotInfo)
-            If (Not (_seriesInfos Is Nothing)) Then
-                Return _seriesInfos
-            End If
+        Public Function GetSeriesIDs() As ICollection(Of Integer)
+            Return _seriesInfos.Keys
+        End Function
 
-            _seriesInfos = New List(Of OneSeriesPlotInfo)(_seriesIDs.Count)
+        Public Function GetSeriesInfo() As ICollection(Of OneSeriesPlotInfo)
+            
+            Dim list = New List(Of OneSeriesPlotInfo)(_seriesInfos.Count)
 
             Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
             Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-            For i As Integer = 0 To _seriesIDs.Count - 1
-                Dim seriesId = _seriesIDs(i)
-                Dim series = dataSeriesRepo.GetByKey(seriesId)
-                If (series Is Nothing) Then Continue For
+            For Each key As Integer In _seriesInfos.Keys.ToList()
 
-                Dim strStartDate = PlotOptions.StartDateTime
-                Dim strEndDate = PlotOptions.EndDateTime.AddDays(1).AddMilliseconds(-1)
+                Dim seriesInfo = _seriesInfos(key)
+                If seriesInfo Is Nothing Then
+                    seriesInfo = New OneSeriesPlotInfo(Me)
+                    _seriesInfos(key) = seriesInfo
 
-                Dim nodatavalue = series.Variable.NoDataValue
-                Dim data = dataValuesRepo.GetTableForGraphView(seriesId, nodatavalue, strStartDate, strEndDate)
-                Dim variableName = series.Variable.Name
-                Dim unitsName = series.Variable.VariableUnit.Name
-                Dim siteName = If(_siteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
-                Dim dataType = series.Variable.DataType
+                    Dim seriesId = key
+                    Dim series = dataSeriesRepo.GetByKey(seriesId)
 
-                Dim result = New OneSeriesPlotInfo(Me)
-                result.DataTable = data
-                result.DataType = dataType
-                result.SeriesID = seriesId
-                result.SiteName = siteName
-                result.VariableName = variableName
-                result.VariableUnits = unitsName
-                result.Statistics = SummaryStatistics.Create(data, PlotOptions.UseCensoredData)
-                result.LineColor = _plotOptions.LineColorList(i Mod _plotOptions.LineColorList.Count)
-                result.PointColor = _plotOptions.PointColorList(i Mod _plotOptions.PointColorList.Count)
+                    Dim strStartDate = PlotOptions.StartDateTime
+                    Dim strEndDate = PlotOptions.EndDateTime.AddDays(1).AddMilliseconds(-1)
 
-                _seriesInfos.Add(result)
+                    Dim nodatavalue = series.Variable.NoDataValue
+                    Dim data = dataValuesRepo.GetTableForGraphView(seriesId, nodatavalue, strStartDate, strEndDate)
+                    Dim variableName = series.Variable.Name
+                    Dim unitsName = series.Variable.VariableUnit.Name
+                    Dim siteName = If(_siteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
+                    Dim dataType = series.Variable.DataType
+
+                    seriesInfo.DataTable = data
+                    seriesInfo.DataType = dataType
+                    seriesInfo.SeriesID = seriesId
+                    seriesInfo.SiteName = siteName
+                    seriesInfo.VariableName = variableName
+                    seriesInfo.VariableUnits = unitsName
+                    seriesInfo.Statistics = SummaryStatistics.Create(data, PlotOptions.UseCensoredData)
+                End If
+
+                Dim i = list.Count
+                seriesInfo.LineColor = _plotOptions.LineColorList(i Mod _plotOptions.LineColorList.Count)
+                seriesInfo.PointColor = _plotOptions.PointColorList(i Mod _plotOptions.PointColorList.Count)
+                list.Add(seriesInfo)
             Next
-            Return _seriesInfos
+            Return list
         End Function
+
     End Class
 End NameSpace

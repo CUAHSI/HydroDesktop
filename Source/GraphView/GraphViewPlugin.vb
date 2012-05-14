@@ -69,7 +69,6 @@ Public Class GraphViewPlugin
 
     Private ReadOnly _datesFormat As String = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern
     Private Const rpOtherOptions As String = "Date & Time"
-    Private rbDateTimeSetting As SimpleActionItem 'Date Setting
     Private rbStartDate As TextEntryActionItem 'Date Setting
     Private rbEndDate As TextEntryActionItem 'Date Setting
     Private rbApplyDateSettings As SimpleActionItem
@@ -211,15 +210,24 @@ Public Class GraphViewPlugin
         header.Add(rbPlotType)
 
         'Line
-        rbLine = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Line", AddressOf rbLine_Click)
+        rbLine = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Line", Sub()
+                                                                              _plotOptions.TimeSeriesMethod = TimeSeriesType.Line
+                                                                              _mainControl.ApplyOptions()
+                                                                          End Sub)
         rbLine.GroupCaption = rpPlotOption
         header.Add(rbLine)
         'Point
-        rbPoint = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Point", AddressOf rbPoint_Click)
+        rbPoint = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Point", Sub()
+                                                                                _plotOptions.TimeSeriesMethod = TimeSeriesType.Point
+                                                                                _mainControl.ApplyOptions()
+                                                                            End Sub)
         rbPoint.GroupCaption = rpPlotOption
         header.Add(rbPoint)
         'Both
-        rbBoth = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Both", AddressOf rbBoth_Click)
+        rbBoth = New SimpleActionItem(kGraph, PlotOptionsMenuKey, "Both", Sub()
+                                                                              _plotOptions.TimeSeriesMethod = TimeSeriesType.Both
+                                                                              _mainControl.ApplyOptions()
+                                                                          End Sub)
         rbBoth.GroupCaption = rpPlotOption
         header.Add(rbBoth)
 
@@ -336,13 +344,6 @@ Public Class GraphViewPlugin
         rbDisplayFullDateRange.Enabled = False
         header.Add(rbDisplayFullDateRange)
 
-        rbDateTimeSetting = New SimpleActionItem("Date Setting", AddressOf rbDateTimeSetting_Click)
-        rbDateTimeSetting.RootKey = kGraph
-        rbDateTimeSetting.LargeImage = My.Resources.DateSetting
-        rbDateTimeSetting.GroupCaption = rpOtherOptions
-        header.Add(rbDateTimeSetting)
-        rbDateTimeSetting.Visible = False
-
         'Chart
         'Show Point Values
         rbShowPointValues = New SimpleActionItem("Show Point Values", AddressOf rbShowPointValues_Click)
@@ -408,7 +409,7 @@ Public Class GraphViewPlugin
         _plotOptions.StartDateTime = startDate.Value
         _plotOptions.EndDateTime = endDate.Value
         _plotOptions.DisplayFullDate = False
-        _mainControl.ApplyOptions()
+        _mainControl.ApplyOptions(True)
     End Sub
 
     Private Function ValidateDate(str As String, dateFormat As String) As DateTime?
@@ -495,19 +496,6 @@ Public Class GraphViewPlugin
         rbBoxWhiskerType.Visible = False
     End Sub
 
-    Sub rbLine_Click(ByVal sender As Object, ByVal e As EventArgs)
-        _plotOptions.TimeSeriesMethod = TimeSeriesType.Line
-        _mainControl.ApplyOptions()
-    End Sub
-    Sub rbPoint_Click(ByVal sender As Object, ByVal e As EventArgs)
-        _plotOptions.TimeSeriesMethod = TimeSeriesType.Point
-        _mainControl.ApplyOptions()
-    End Sub
-    Sub rbBoth_Click(ByVal sender As Object, ByVal e As EventArgs)
-        _plotOptions.TimeSeriesMethod = TimeSeriesType.Both
-        _mainControl.ApplyOptions()
-    End Sub
-
     Sub rbShowLegend_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim text = If(_plotOptions.ShowLegend, "Show Legend", "Close Legend")
 
@@ -580,31 +568,10 @@ Public Class GraphViewPlugin
         _mainControl.ApplyOptions()
     End Sub
 
-    Sub rbDateTimeSetting_Click(ByVal sender As Object, ByVal e As EventArgs)
-
-        'First make sure that the dates are within limits.  This will also ensure that a time series has been selected.
-        If _plotOptions.StartDateTime.CompareTo(_plotOptions.StartDateLimit) < 0 Or _
-            _plotOptions.EndDateTime.CompareTo(_plotOptions.EndDateLimit) > 0 Then
-
-            MessageBox.Show("Please select a series first.")
-            Return 'Leave without doing anything else.
-        End If
-
-        'rckbDisplayFullDateRange.Checked = False
-        _plotOptions.DisplayFullDate = False
-        Dim frmDateTimeSetting = New DateTimeSettingsDialog(_plotOptions)
-        AddHandler frmDateTimeSetting.DatesApplied, AddressOf OnDatesApplied
-        frmDateTimeSetting.ShowDialog()
-    End Sub
-
-    Private Sub OnDatesApplied(ByVal sender As Object, ByVal e As EventArgs)
-        _mainControl.ApplyOptions()
-    End Sub
-
     'Display full date range toggle button is clicked
     Private Sub rbDisplayFullDateRange_Click(ByVal sender As Object, ByVal e As EventArgs)
         _plotOptions.DisplayFullDate = Not _plotOptions.DisplayFullDate
-        _mainControl.ApplyOptions()
+        _mainControl.ApplyOptions(True)
     End Sub
 
     'Show Point Values 
