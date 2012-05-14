@@ -154,18 +154,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\SeriesPlotInfo.vb" />
-    <Compile Include="Controls\Summaryplot.Designer.vb">
-      <DependentUpon>Summaryplot.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Summaryplot.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\DateTimeSettingsDialog.Designer.vb">
-      <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DateTimeSettingsDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Controls\IChart.vb" />
     <Compile Include="Controls\OneSeriesPlotInfo.vb" />
     <Compile Include="Controls\SummaryStatistics.vb" />
@@ -251,10 +239,6 @@
       <DependentUpon>ColorSettingsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Summaryplot.resx">
-      <DependentUpon>Summaryplot.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProbabilityPlot.resx">
       <DependentUpon>ProbabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -265,10 +249,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainControl.resx">
       <DependentUpon>MainControl.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DateTimeSettingsDialog.resx">
-      <DependentUpon>DateTimeSettingsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageStrings.resx">

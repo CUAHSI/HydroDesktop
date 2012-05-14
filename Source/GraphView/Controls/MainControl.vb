@@ -9,6 +9,8 @@ Namespace Controls
 
         Private ReadOnly _parent As GraphViewPlugin
         Private ReadOnly _charts As ICollection(Of IChart)
+        Private ReadOnly _plots As ICollection(Of IPlot)
+        Private ReadOnly _seriesPlotInfo As SeriesPlotInfo
 
 #End Region
 
@@ -20,6 +22,7 @@ Namespace Controls
 
             _parent = parent
             _charts = {timeSeriesPlot, probabilityPlot, histogramPlot, boxWhisker}
+            _plots = {dataSummary, timeSeriesPlot, probabilityPlot, histogramPlot, boxWhisker}
 
             'assign the events
             AddHandler parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
@@ -32,6 +35,8 @@ Namespace Controls
 
             _parent.PlotOptions.StartDateLimit = Today.AddYears(-150)
             _parent.PlotOptions.EndDateLimit = Today
+
+            _seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions)
         End Sub
 
 
@@ -64,23 +69,18 @@ Namespace Controls
             tcPlots.SelectTab(tpDataSummary)
         End Sub
 
-        Public Sub ApplyOptions()
-            ' todo: ProgressBar
-            ' todo: checking for already loaded data tables
-            ' todo: reload data table only when dates changed 
-            Dim seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.CheckedIDList,
-                                                    _parent.SeriesSelector.SiteDisplayColumn,
-                                                    _parent.PlotOptions)
+        Public Sub ApplyOptions(Optional ByVal refreshData As Boolean = False)
+            If refreshData Then
+                _seriesPlotInfo.Update()
+            End If
 
-            For Each id In _parent.SeriesSelector.CheckedIDList
+            ' todo: ProgressBar
+            For Each id In _seriesPlotInfo.GetSeriesIDs()
                 DateRangeSelection(id)
             Next
-
-            dataSummary.Plot(seriesPlotInfo)
-            timeSeriesPlot.Plot(seriesPlotInfo)
-            probabilityPlot.Plot(seriesPlotInfo)
-            histogramPlot.Plot(seriesPlotInfo)
-            boxWhisker.Plot(seriesPlotInfo)
+            For Each plot As IPlot In _plots
+                plot.Plot(_seriesPlotInfo)
+            Next
         End Sub
 
         Public Sub ShowPointValues(ByVal showPointValues As Boolean)
@@ -112,6 +112,7 @@ Namespace Controls
 #Region "Private methods"
 
         Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
+            _seriesPlotInfo.Update(e)
             ApplyOptions()
         End Sub
 

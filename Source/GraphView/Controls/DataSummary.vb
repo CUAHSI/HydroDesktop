@@ -3,6 +3,7 @@
 Namespace Controls
 
     Public Class DataSummary
+        Implements IPlot
 
         Private _seriesPlotInfo As SeriesPlotInfo
 
@@ -14,7 +15,7 @@ Namespace Controls
             AddHandler VisibleChanged, AddressOf OnDataSummaryVisibleChanged
         End Sub
 
-        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo)
+        Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
 
             _seriesPlotInfo = Nothing
             If Not Visible Then
