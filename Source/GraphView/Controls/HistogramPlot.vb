@@ -7,7 +7,6 @@ Namespace Controls
     Public Class HistogramPlot
         Implements IChart
 
-        Private m_Data As DataTable
         Private m_StdDev As Double = 0
         Private yValue() As Double
         Private xCenterList() As Double
@@ -48,8 +47,6 @@ Namespace Controls
         End Sub
 
         Private Sub Plot(ByVal options As OneSeriesPlotInfo, ByVal e_StdDev As Double)
-            m_Data = options.DataTable.Copy
-
             If zgHistogramPlot.MasterPane.PaneList.Count <> 0 Then
                 Dim cOptions = DirectCast(zgHistogramPlot.MasterPane.PaneList(0).Tag, OneSeriesPlotInfo)
                 If cOptions Is Nothing Then
@@ -57,12 +54,7 @@ Namespace Controls
                 End If
             End If
 
-            If (e_StdDev = 0) And (m_Data IsNot Nothing) And (m_Data.Rows.Count > 0) Then
-                m_StdDev = Statistics.StandardDeviation(m_Data)
-            Else
-                m_StdDev = e_StdDev
-            End If
-
+            m_StdDev = e_StdDev
             zgHistogramPlot.MasterPane.Title.IsVisible = False
 
             Dim gPane As GraphPane = New GraphPane
@@ -98,7 +90,7 @@ Namespace Controls
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 'New code
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                Histogram_Calc(m_Data, m_Options)
+                Histogram_Calc(options.DataTable, m_Options)
 
 
                 'Dim i As Integer
@@ -245,23 +237,8 @@ Namespace Controls
 
         Private Sub Histogram_Calc(ByRef HistTable As DataTable, ByRef pOptions As PlotOptions) ', ByVal SS As Statistics)
 
+            Dim m_Data = HistTable
             Dim i, j As Integer
-
-            'Dim d_rows() As System.Data.DataRow
-
-            ''Data rows populated from the Data table.
-            'd_rows = HistTable.Select("", "Value ASC")
-
-            'Dim y(d_rows.Length - 1) As Double
-
-            'For i = 0 To d_rows.Length - 1
-            '    y(i) = CDbl(d_rows(i).Item("value"))
-            'Next
-
-            'If (d_rows.Length = 0) Then
-            '    Exit Sub
-            'End If
-
             Dim dX As Double
             Dim bMax As Integer
             Dim jMode As Integer
@@ -336,11 +313,7 @@ Namespace Controls
                 For i = 0 To .numBins
                     'query the data tables for each bin
                     Dim str As String = "DataValue >= " & lbin(i).ToString(CultureInfo.InvariantCulture) & " and DataValue < " & rbin(i).ToString(CultureInfo.InvariantCulture)
-                    Dim validRows As DataRow()
-
-                    validRows = HistTable.Select(str, "")
-
-                    yValue(i) = validRows.Length
+                    yValue(i) = HistTable.Compute("count(DataValue)", str)
                 Next
 
                 'loop through bins and find the max bin count and the mode
