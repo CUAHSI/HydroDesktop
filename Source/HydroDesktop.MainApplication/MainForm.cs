@@ -32,6 +32,10 @@ namespace HydroDesktop.MainApplication
                     {
                     // we use this event to ensure that legend and map dockable panels are
                     // added to the DockManager before any other dockable panels.
+
+                    //enforce legend width
+                    ((Legend)appManager.Legend).Width = 300;
+
                     appManager.DockManager.Add(new DockablePanel("kLegend", "Legend", (Legend)appManager.Legend, DockStyle.Left) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.legend_16x16 });
                     appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.map_16x16 });
                     appManager.Map.Legend = this.appManager.Legend; //links map with legend
