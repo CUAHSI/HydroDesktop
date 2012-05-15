@@ -55,7 +55,6 @@
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager">
       <HintPath>..\..\SupportFiles\ExtensionManager\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.2\lib\net40-Client\DotSpatial.Projections.dll</HintPath>

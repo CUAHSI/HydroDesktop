@@ -52,19 +52,13 @@ namespace HydroDesktop.DownloadExtensions
                 App.UpdateProgress("Downloading an AttributeDataExplorer extension...");
                 packages.Install("DotSpatial.Plugins.AttributeDataExplorer");
             }
-            //install web map (temporarily commented out until incompatiblity issue gets fixed)
-            //if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
-            //{
-            //    App.UpdateProgress("Downloading a WebMap extension...");
-            //    packages.Install("DotSpatial.Plugins.WebMap");
-            //}
+            //install web map
+            if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
+            {
+                App.UpdateProgress("Downloading a WebMap extension...");
+                packages.Install("DotSpatial.Plugins.WebMap");
+            }
 
-            //install sample project manager
-            //if (App.GetExtension("DotSpatial.Plugins.ProjectTemplateManager") == null)
-            //{
-            //    App.UpdateProgress("Downloading a project template manager extension...");
-            //    packages.Install("DotSpatial.Plugins.ProjectTemplateManager");
-            //}
             //install North America sample project (this will also install the SampleProjectManager)
             if (App.GetExtension("DotSpatial.SampleProjects.NorthAmerica") == null)
             {
