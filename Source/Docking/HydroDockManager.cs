@@ -67,7 +67,10 @@ namespace HydroDesktop.Docking
 
         #endregion
 
-
+        /// <summary>
+        /// Resets the dock panel layout to the original layout as it
+        /// was when the application was installed
+        /// </summary>
         public void ResetLayout()
         {
             //check the map
@@ -243,6 +246,10 @@ namespace HydroDesktop.Docking
             return null;
         }
 
+        /// <summary>
+        /// Completely removes a dockable panel
+        /// </summary>
+        /// <param name="key">Unique key of the panel</param>
         public void Remove(string key)
         {
             if (dockPanelLookup.ContainsKey(key))
@@ -299,6 +306,18 @@ namespace HydroDesktop.Docking
             if (dockPanelLookup.ContainsKey(key))
             {
                 dockPanelLookup[key].WeifenLuoDockPanel.Activate();
+            }
+        }
+
+        /// <summary>
+        /// Hides the Dockable panel (panel is identified by key)
+        /// </summary>
+        /// <param name="key">the unique key of the dockable panel</param>
+        public void HidePanel(string key)
+        {
+            if (dockPanelLookup.ContainsKey(key))
+            {
+                dockPanelLookup[key].WeifenLuoDockPanel.Hide();
             }
         }
 
