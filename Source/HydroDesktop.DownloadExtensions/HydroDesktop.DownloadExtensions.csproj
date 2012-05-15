@@ -42,7 +42,7 @@
       <HintPath>..\..\Binaries\Application Extensions\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Extensions.1.1.1-alpha\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Extensions.1.2\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager">
       <HintPath>..\..\SupportFiles\ExtensionManager\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
