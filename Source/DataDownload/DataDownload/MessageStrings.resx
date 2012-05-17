@@ -144,6 +144,9 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Search_Results_Tools_Group" xml:space="preserve">
+    <value>Search Results tool</value>
+  </data>
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>

@@ -23,6 +23,8 @@ using Search3.Searching.Exceptions;
 using Search3.Settings;
 using Search3.Settings.UI;
 using Msg = Search3.MessageStrings;
+using DotSpatial.Topology;
+using DotSpatial.Symbology;
 
 namespace Search3
 {
@@ -38,6 +40,7 @@ namespace Search3
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
+        private SearchStatusDisplay searchSummary;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
@@ -49,6 +52,7 @@ namespace Search3
         public override void Activate()
         {
             AddSearchRibbon();
+            searchSummary = new SearchStatusDisplay(App);
             base.Activate();
 
             App.SerializationManager.Serializing += SerializationManager_Serializing;
@@ -96,11 +100,15 @@ namespace Search3
 
             head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click){LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area});
             SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
-            
-            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Polygons, rbSelect_Click){ToolTipText = Msg.Select_Polygons_Tooltip, LargeImage = Resources.select_poly_32, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area,ToggleGroupKey = Msg.Area, });
-            SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, LargeImage = Resources.select_table_32, SmallImage = Resources.select_table_16 });
+            
+            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click){ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area,ToggleGroupKey = Msg.Area, });
+            SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
+
+            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, DeselectAll_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
+            
             head.Add(new SimpleActionItem(_searchKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
             head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
             head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
@@ -139,7 +147,7 @@ namespace Search3
             #region Data Sources
 
             var grpDataSources = SharedConstants.SearchDataSourcesGroupName;
-            rbServices = new SimpleActionItem("All Data Sources", rbServices_Click);
+            rbServices = new SimpleActionItem("Select Data Sources", rbServices_Click);
             ChangeWebServicesIcon();
             rbServices.ToolTipText = "Select data sources (All web services selected)";
             rbServices.GroupCaption = grpDataSources;
@@ -175,6 +183,52 @@ namespace Search3
             App.Map.FunctionMode = FunctionMode.ZoomOut;
         }
 
+        private void ZoomSelected_Click(object sender, EventArgs e)
+        {
+            const double distanceX = 2;
+            const double distanceY = 2;
+            const double EPS = 1e-7;
+
+            IEnvelope envelope = null;
+            foreach (var layer in ((Map)App.Map).GetAllLayers())
+            {
+                var featureLayer = layer as IFeatureLayer;
+                if (featureLayer == null || !featureLayer.Checked || featureLayer.Selection.Count == 0) continue;
+
+                var env = featureLayer.Selection.Envelope;
+                envelope = envelope == null ? env : envelope.Union(env);
+            }
+            if (envelope == null) return;
+
+            if (Math.Abs(envelope.Width - 0) < EPS || Math.Abs(envelope.Height - 0) < EPS)
+            {
+                envelope.ExpandBy(distanceX, distanceY);
+            }
+
+            if (envelope.Width > EPS && envelope.Height > EPS)
+            {
+                envelope.ExpandBy(envelope.Width / 10, envelope.Height / 10); // work item #84
+            }
+            else
+            {
+                const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                var newExtentWidth = App.Map.ViewExtents.Width*zoomInFactor;
+                var newExtentHeight = App.Map.ViewExtents.Height*zoomInFactor;
+                envelope.ExpandBy(newExtentWidth, newExtentHeight);
+            }
+
+            App.Map.ViewExtents = envelope.ToExtent();
+        }
+
+        /// <summary>
+        /// Deselect All
+        /// </summary>
+        private void DeselectAll_Click(object sender, EventArgs e)
+        {
+            IEnvelope env = new Envelope();
+            App.Map.MapFrame.ClearSelection(out env);
+        }
+
         void RefreshKeywordDropDown()
         {
             if (rbKeyword !=null) App.HeaderControl.Remove(rbKeyword.Key);
@@ -205,6 +259,13 @@ namespace Search3
             {
                 App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 App.DockManager.SelectPanel("kMap");
+
+                //searchSummary.ShowSearchStatus = true;
+                //searchSummary.UpdateStatus();
+            }
+            else
+            {
+                //searchSummary.ShowSearchStatus = false;
             }
         }
 
@@ -351,9 +412,6 @@ namespace Search3
                 .Where(r => r.IsSelected && r.LegendText == "Map Layers")
                 .ToList()
                 .ForEach(r => r.IsSelected = false);
-
-            // Activate metadata ribbon tab
-            App.HeaderControl.SelectRoot(SharedConstants.MetadataRootKey);
         }
 
         /// <summary>
@@ -408,6 +466,10 @@ namespace Search3
         {
             var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
+
+            //searchSummary.AreaStatus = "Rectangle " + rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
+            //searchSummary.AreaStatus = "Rectangle";
+            //searchSummary.UpdateStatus();
         }
 
         void rbDrawBox_Click(object sender, EventArgs e)
@@ -447,17 +509,22 @@ namespace Search3
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
         {
             var fsPolygons = SearchSettings.Instance.AreaSettings.Polygons;
-            var caption = "Select Polygons";
+
+            var caption = "0 features selected ";
+            
+            //var caption = "Select Polygons";
             if (fsPolygons != null && fsPolygons.Features.Count > 0)
             {
                 int numPolygons = fsPolygons.Features.Count;
                 caption = numPolygons > 1
-                    ? String.Format("{0} polygons selected", fsPolygons.Features.Count)
-                    : "1 polygon selected";
+                    ? String.Format("{0} features selected", fsPolygons.Features.Count)
+                    : "1 feature selected";
             }
-            
-            rbSelect.Caption = caption;
-            rbSelect.ToolTipText = caption;
+
+            //searchSummary.AreaStatus = SearchSettings.Instance.AreaSettings.AreaRectangle != null ? "Rectangle" : caption;
+            //searchSummary.UpdateStatus();
+            //rbSelect.Caption = caption;
+            //rbSelect.ToolTipText = caption;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
@@ -616,9 +683,14 @@ namespace Search3
                 if (sbKeywords.Length > 0)
                 {
                     rbKeyword.SelectedItem = sbKeywords.ToString();
+
+                    //searchSummary.KeywordStatus = rbKeyword.SelectedItem.ToString();
+                    //searchSummary.UpdateStatus();
                 }
                 //rbKeyword.SelectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
                 //rbKeyword.ToolTipText = rbKeyword.SelectedItem.ToString();
+
+                
             }
             finally
             {
@@ -661,7 +733,7 @@ namespace Search3
             WebServiceNode webServiceNode = null;
             if (checkedCount == totalCount)
             {
-                caption = "All services";
+                caption = "All sources";
                 hint = caption;
             }else if (checkedCount == 1)
             {
@@ -674,13 +746,16 @@ namespace Search3
             }
             else
             {
-                caption = string.Format("{0} services selected", checkedCount);
-                hint = string.Format("{0} services", checkedCount);
+                caption = string.Format("{0} sources selected", checkedCount);
+                hint = string.Format("{0} sources", checkedCount);
             }
 
-            rbServices.Caption = caption;
-            rbServices.ToolTipText = string.Format("Select web services ({0} selected)", hint);
-            ChangeWebServicesIcon(webServiceNode);
+            //rbServices.Caption = caption;
+            rbServices.ToolTipText = string.Format("Select data sources ({0} selected)", hint);
+            //ChangeWebServicesIcon(webServiceNode);
+            
+            //searchSummary.DataSourceStatus = caption;
+            //searchSummary.UpdateStatus();
         }
 
         private void ChangeWebServicesIcon(WebServiceNode webServiceNode = null)

@@ -123,6 +123,12 @@
   <data name="Area" xml:space="preserve">
     <value>Area</value>
   </data>
+  <data name="Deselect_All" xml:space="preserve">
+    <value>Clear Selection</value>
+  </data>
+  <data name="Deselect_All_Tooltip" xml:space="preserve">
+    <value>Deselect all features</value>
+  </data>
   <data name="Draw_Box" xml:space="preserve">
     <value>Draw Box</value>
   </data>
@@ -156,6 +162,12 @@
   <data name="Select_Dates" xml:space="preserve">
     <value>Select Dates</value>
   </data>
+  <data name="Select_Features" xml:space="preserve">
+    <value>Select Features</value>
+  </data>
+  <data name="Select_Features_Tooltip" xml:space="preserve">
+    <value>Click in the map to select features</value>
+  </data>
   <data name="Select_Polygons" xml:space="preserve">
     <value>Select Polygons</value>
   </data>
@@ -179,5 +191,11 @@
   </data>
   <data name="Zoom_Out_Tooltip" xml:space="preserve">
     <value>Zoom Out</value>
+  </data>
+  <data name="Zoom_Selected" xml:space="preserve">
+    <value>Zoom to Selection</value>
+  </data>
+  <data name="Zoom_Selected_Tooltip" xml:space="preserve">
+    <value>Zoom to selected features</value>
   </data>
 </root>

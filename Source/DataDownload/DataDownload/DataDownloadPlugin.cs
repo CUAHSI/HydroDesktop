@@ -31,9 +31,10 @@ namespace HydroDesktop.DataDownload
         #region Fields
 
         private SimpleActionItem _btnDownloadInSearch;
-        private SimpleActionItem _btnDownload;
-        private SimpleActionItem _btnUpdate;
-        private SimpleActionItem _btnShowPopups;
+        //private SimpleActionItem _btnDownload;
+        //private SimpleActionItem _btnUpdate;
+        //private SimpleActionItem _btnShowPopups;
+        private SimpleActionItem _btnSearchResults;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
         private SearchLayerInformer _searchLayerInformer;
 
@@ -85,6 +86,11 @@ namespace HydroDesktop.DataDownload
         /// </summary>
         public event EventHandler ShowPopupsChanged;
 
+        /// <summary>
+        /// Raised when "show search results" changed
+        /// </summary>
+        public event EventHandler ShowSearchResultsChanged;
+
         #endregion
 
         #region Public methods
@@ -135,33 +141,35 @@ namespace HydroDesktop.DataDownload
             var header = App.HeaderControl;
 
             //add the "metadata" tab
-            header.Add(new RootItem(metadataRootKey, Msg.Metadata) { SortOrder = -5 });
+            //header.Add(new RootItem(metadataRootKey, Msg.Metadata) { SortOrder = -5 });
             
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group});
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, LargeImage = Resources.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Extents, ZoomToMaxExtents_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_To_Extents_Tooltip, SmallImage = Resources.zoom_extend_16x16, LargeImage = Resources.zoom_extend_32x32 });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32 });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group});
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, LargeImage = Resources.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Extents, ZoomToMaxExtents_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_To_Extents_Tooltip, SmallImage = Resources.zoom_extend_16x16, LargeImage = Resources.zoom_extend_32x32 });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32 });
 
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
-            header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.zoom_selection_16x16, LargeImage = Resources.zoom_selection_32x32 });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
+            //header.Add(new SimpleActionItem(metadataRootKey, Msg.Zoom_To_Selection, ZoomToSelection_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.zoom_selection_16x16, LargeImage = Resources.zoom_selection_32x32 });
 
-            header.Add(_btnDownload = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
-            header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
-            header.Add(_btnShowPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
+            //header.Add(_btnDownload = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+            //header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
+            //header.Add(_btnShowPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
 
-            _btnShowPopups.Toggling += ShowPopups_Click;
-            _btnShowPopups.Toggle();
-            _btnShowPopups.Enabled = false;
+            //_btnShowPopups.Toggling += ShowPopups_Click;
+            //_btnShowPopups.Toggle();
+            //_btnShowPopups.Enabled = false;
+            _showPopups = true;
 
             // Subscribe to events
             App.Map.LayerAdded += Map_LayerAdded;
             App.Map.Layers.LayerRemoved += Layers_LayerRemoved;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             DownloadManager.Completed += DownloadManager_Completed;
-            App.HeaderControl.RootItemSelected += RootItemSelected;
+
             App.ExtensionsActivated += AppOnExtensionsActivated;
+            App.DockManager.PanelClosed += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_PanelClosed);
             //----
 
             // Update SeriesControl ContextMenu
@@ -169,6 +177,32 @@ namespace HydroDesktop.DataDownload
 
             base.Activate();
         }
+
+        void DockManager_PanelClosed(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        {
+            if (e.ActivePanelKey == "kDataExplorer")
+            {
+                if (_showSearchResultsPanel)
+                {
+                    _btnSearchResults.Toggle();
+                }
+                _showSearchResultsPanel = false;
+            }
+        }
+
+        void DataDownloadPlugin_ShowSearchResultsChanged(object sender, EventArgs e)
+        {
+            if (!_showSearchResultsPanel)
+            {
+                App.DockManager.HidePanel("kDataExplorer");
+            }
+            else
+            {
+                App.DockManager.HidePanel("kDataExplorer");
+            }
+        }
+
+        
 
         /// <summary>
         /// Fires when the plug-in should become inactive
@@ -182,7 +216,7 @@ namespace HydroDesktop.DataDownload
             App.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
-            App.HeaderControl.RootItemSelected -= RootItemSelected;
+            //App.HeaderControl.RootItemSelected -= RootItemSelected;
             App.ExtensionsActivated -= AppOnExtensionsActivated;
 
             foreach (var layer in App.Map.MapFrame.Layers)
@@ -209,8 +243,19 @@ namespace HydroDesktop.DataDownload
             // Add download button into search tab
             if (App.GetExtension("Search3") != null)
             {
-                App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Search Results", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.info_rhombus_32x32, SmallImage = Resources.info_rhombus_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
+                App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group, Enabled = false });               
             }
+
+            App.DockManager.HidePanel("kDataExplorer");
+
+            _btnSearchResults.Toggling += ShowSearchResults_Click;
+            //_btnSearchResults.Toggle();
+            _btnSearchResults.Enabled = false;
+
+            //var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
+            //if (ext == null) return;
+            //ext.Deactivate();
         }
 
         /// <summary>
@@ -284,42 +329,42 @@ namespace HydroDesktop.DataDownload
             StartDownloading(layer);
         }
 
-        private void ZoomToSelection_Click(object sender, EventArgs e)
-        {
-            const double distanceX = 2;
-            const double distanceY = 2;
-            const double EPS = 1e-7;
+        //private void ZoomToSelection_Click(object sender, EventArgs e)
+        //{
+        //    const double distanceX = 2;
+        //    const double distanceY = 2;
+        //    const double EPS = 1e-7;
 
-            IEnvelope envelope = null;
-            foreach (var layer in ((Map)App.Map).GetAllLayers())
-            {
-                var featureLayer = layer as IFeatureLayer;
-                if (featureLayer == null || !featureLayer.Checked || featureLayer.Selection.Count == 0) continue;
+        //    IEnvelope envelope = null;
+        //    foreach (var layer in ((Map)App.Map).GetAllLayers())
+        //    {
+        //        var featureLayer = layer as IFeatureLayer;
+        //        if (featureLayer == null || !featureLayer.Checked || featureLayer.Selection.Count == 0) continue;
 
-                var env = featureLayer.Selection.Envelope;
-                envelope = envelope == null ? env : envelope.Union(env);
-            }
-            if (envelope == null) return;
+        //        var env = featureLayer.Selection.Envelope;
+        //        envelope = envelope == null ? env : envelope.Union(env);
+        //    }
+        //    if (envelope == null) return;
 
-            if (Math.Abs(envelope.Width - 0) < EPS || Math.Abs(envelope.Height - 0) < EPS)
-            {
-                envelope.ExpandBy(distanceX, distanceY);
-            }
+        //    if (Math.Abs(envelope.Width - 0) < EPS || Math.Abs(envelope.Height - 0) < EPS)
+        //    {
+        //        envelope.ExpandBy(distanceX, distanceY);
+        //    }
 
-            if (envelope.Width > EPS && envelope.Height > EPS)
-            {
-                envelope.ExpandBy(envelope.Width / 10, envelope.Height / 10); // work item #84
-            }
-            else
-            {
-                const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
-                var newExtentWidth = App.Map.ViewExtents.Width*zoomInFactor;
-                var newExtentHeight = App.Map.ViewExtents.Height*zoomInFactor;
-                envelope.ExpandBy(newExtentWidth, newExtentHeight);
-            }
+        //    if (envelope.Width > EPS && envelope.Height > EPS)
+        //    {
+        //        envelope.ExpandBy(envelope.Width / 10, envelope.Height / 10); // work item #84
+        //    }
+        //    else
+        //    {
+        //        const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+        //        var newExtentWidth = App.Map.ViewExtents.Width*zoomInFactor;
+        //        var newExtentHeight = App.Map.ViewExtents.Height*zoomInFactor;
+        //        envelope.ExpandBy(newExtentWidth, newExtentHeight);
+        //    }
 
-            App.Map.ViewExtents = envelope.ToExtent();
-        }
+        //    App.Map.ViewExtents = envelope.ToExtent();
+        //}
 
         /// <summary>
         /// Move (Pan) the map
@@ -388,24 +433,58 @@ namespace HydroDesktop.DataDownload
         }
 
 
-        private void RootItemSelected(object sender, RootItemEventArgs e)
+
+
+        private bool _showSearchResultsPanel;
+        /// <summary>
+        /// Gets or sets a boolean indicating whether the search results panel should be shown
+        /// </summary>
+        public bool ShowSearchResultsPanel
         {
-            var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
-            if (ext == null) return;
-
-            if (e.SelectedRootKey == SharedConstants.MetadataRootKey)
+            get { return _showSearchResultsPanel; }
+            set
             {
-                if (!ext.IsActive)
-                    ext.Activate();
+                if (_showSearchResultsPanel == value) return;
+                _showSearchResultsPanel = value;
 
-                App.SerializationManager.SetCustomSetting("MetadataRootClicked", true);
-                App.DockManager.SelectPanel("kMap");
+                var handler = ShowSearchResultsChanged;
+                if (handler != null)
+                {
+                    handler(this, EventArgs.Empty);
+                }
             }
+        }
+
+        private void ShowSearchResults_Click(object sender, EventArgs e)
+        {
+            _showSearchResultsPanel = !_showSearchResultsPanel;
+
+            if (ShowSearchResultsPanel)
+                App.DockManager.SelectPanel("kDataExplorer");
             else
-            {
-                if (ext.IsActive)
-                    ext.Deactivate();
-            }
+                App.DockManager.HidePanel("kDataExplorer");
+        }
+
+        private void DoShowSearchResults(object sender, EventArgs e)
+        {
+            
+            
+            //var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
+            //if (ext == null) return;
+
+            //if (e.SelectedRootKey == SharedConstants.MetadataRootKey)
+            //{
+                //if (!ext.IsActive)
+                 //   ext.Activate();
+
+                //App.SerializationManager.SetCustomSetting("MetadataRootClicked", true);
+                //App.DockManager.SelectPanel("kMap");
+            //}
+            //else
+            //{
+                //if (ext.IsActive)
+                   // ext.Deactivate();
+            //}
         }
 
         private void DoSeriesControlUpdateValues(object sender, EventArgs e)
@@ -474,9 +553,13 @@ namespace HydroDesktop.DataDownload
                 {
                     _btnDownloadInSearch.Enabled = true;
                 }
-                _btnDownload.Enabled = true;
-                _btnUpdate.Enabled = true;
-                _btnShowPopups.Enabled = true;
+                if (_btnSearchResults != null)
+                {
+                    _btnSearchResults.Enabled = true;
+                }
+                //_btnDownload.Enabled = true;
+                //_btnUpdate.Enabled = true;
+                //_btnShowPopups.Enabled = true;
             }
 
             var group = layer as IGroup;

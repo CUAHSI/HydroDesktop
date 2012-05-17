@@ -63,14 +63,11 @@ namespace HydroDesktop.Docking
 
             //setup the events
             MainDockPanel.ActiveDocumentChanged += new EventHandler(MainDockPanel_ActiveDocumentChanged);
+
         }
 
         #endregion
-
-        /// <summary>
-        /// Resets the dock panel layout to the original layout as it
-        /// was when the application was installed
-        /// </summary>
+        
         public void ResetLayout()
         {
             //check the map
@@ -169,6 +166,7 @@ namespace HydroDesktop.Docking
             {
                 content.Icon = ImageToIcon(img);
             }
+            content.VisibleChanged += new EventHandler(content_VisibleChanged);
 
             content.Show(MainDockPanel);
 
@@ -197,6 +195,16 @@ namespace HydroDesktop.Docking
 
             //caption - changed
             panel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(panel_PropertyChanged);
+        }
+
+        void content_VisibleChanged(object sender, EventArgs e)
+        {
+            DockContent content = sender as DockContent;
+            if (content == null) return;
+            if (content.IsHidden)
+            {
+                //OnPanelClosed(content.Tag.ToString());
+            }
         }
 
         //when the dockable panel property is changed
@@ -301,6 +309,12 @@ namespace HydroDesktop.Docking
 
         public event EventHandler<DockablePanelEventArgs> PanelClosed;
 
+        /// <summary>
+        /// Selects a dockable panel (the panel gains focus)
+        /// if the panel is hidden, make it visible at its original
+        /// location
+        /// </summary>
+        /// <param name="key">The unique key of the dockable panel to select</param>
         public void SelectPanel(string key)
         {
             if (dockPanelLookup.ContainsKey(key))
@@ -336,6 +350,11 @@ namespace HydroDesktop.Docking
 
             string activePanelKey = activeContent.Tag.ToString();
             OnActivePanelChanged(activePanelKey);
+
+            DockContent previousActiveContent = MainDockPanel.ActiveContent.DockHandler.PreviousActive as DockContent;
+            if (previousActiveContent == null) return;
+            if (previousActiveContent.IsHidden)
+                OnPanelClosed(previousActiveContent.Tag.ToString());
         }
 
         protected void OnPanelClosed(string panelKey)
