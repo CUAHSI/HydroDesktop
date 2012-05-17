@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HydroDesktop.SplashScreenManager.Properties {
+namespace HydroDesktop.SimpleLegend.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace HydroDesktop.SplashScreenManager.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HydroDesktop.SplashScreenManager.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HydroDesktop.SimpleLegend.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,13 @@ namespace HydroDesktop.SplashScreenManager.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        internal static System.Drawing.Bitmap legend_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("legend_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
