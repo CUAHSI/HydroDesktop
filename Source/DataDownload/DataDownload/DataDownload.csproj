@@ -259,6 +259,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\deselect_16x16.png" />
+    <Content Include="Resources\table_16x16.png" />
+    <Content Include="Resources\table_32x32.png" />
     <None Include="Resources\option_32.png" />
     <None Include="Resources\option_16.png" />
   </ItemGroup>

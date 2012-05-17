@@ -165,12 +165,12 @@ namespace HydroDesktop.Docking
             if (img != null)
             {
                 content.Icon = ImageToIcon(img);
-            }
-            content.VisibleChanged += new EventHandler(content_VisibleChanged);
+            }        
 
             content.Show(MainDockPanel);
 
             //event handler for closing
+            content.VisibleChanged += new EventHandler(content_VisibleChanged);
             content.FormClosing += new FormClosingEventHandler(content_FormClosing);
             content.FormClosed += new FormClosedEventHandler(content_FormClosed);
 
@@ -232,7 +232,7 @@ namespace HydroDesktop.Docking
             if (c != null)
             {
                 OnPanelClosed(c.Tag.ToString());
-            }
+           } 
         }
 
         void content_FormClosing(object sender, FormClosingEventArgs e)
@@ -260,16 +260,20 @@ namespace HydroDesktop.Docking
         /// <param name="key">Unique key of the panel</param>
         public void Remove(string key)
         {
+            //if (key == "kDataExplorer") return;
+            
             if (dockPanelLookup.ContainsKey(key))
             {
                 DockPanelInfo dockInfo = dockPanelLookup[key];
                 
                 DockContent content = dockInfo.WeifenLuoDockPanel;
+
                 content.Close();
-                
+
                 //remove event handlers
                 content.FormClosing -= content_FormClosing;
                 content.FormClosed -= content_FormClosed;
+                content.VisibleChanged -= content_VisibleChanged;
 
                 dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
 
@@ -331,7 +335,7 @@ namespace HydroDesktop.Docking
         {
             if (dockPanelLookup.ContainsKey(key))
             {
-                dockPanelLookup[key].WeifenLuoDockPanel.Hide();
+                dockPanelLookup[key].WeifenLuoDockPanel.IsHidden = true;
             }
         }
 
@@ -350,11 +354,6 @@ namespace HydroDesktop.Docking
 
             string activePanelKey = activeContent.Tag.ToString();
             OnActivePanelChanged(activePanelKey);
-
-            DockContent previousActiveContent = MainDockPanel.ActiveContent.DockHandler.PreviousActive as DockContent;
-            if (previousActiveContent == null) return;
-            if (previousActiveContent.IsHidden)
-                OnPanelClosed(previousActiveContent.Tag.ToString());
         }
 
         protected void OnPanelClosed(string panelKey)

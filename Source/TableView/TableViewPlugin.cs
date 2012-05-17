@@ -36,7 +36,7 @@ namespace TableView
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-            App.DockManager.Remove(kTableView);
+            //App.DockManager.Remove(kTableView);
             
             App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
 

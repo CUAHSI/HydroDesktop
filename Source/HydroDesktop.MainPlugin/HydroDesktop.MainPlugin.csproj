@@ -122,6 +122,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeTableManager.cs" />
     <Compile Include="CoordinateDisplay.cs" />
     <Compile Include="PredefinedTemplate.cs" />
     <Compile Include="ProjectManager.cs" />
@@ -175,6 +176,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\deselect_16x16.png" />
+    <None Include="Resources\table_32x32.png" />
+    <None Include="Resources\table_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
