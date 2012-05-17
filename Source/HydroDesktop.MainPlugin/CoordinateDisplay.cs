@@ -15,6 +15,8 @@ namespace HydroDesktop.Main
     public class CoordinateDisplay
     {
         private Map mainMap = null;
+        private AppManager mainApp = null;
+
         ProjectionInfo wgs84Projection = ProjectionInfo.FromEsriString(Properties.Resources.wgs_84_esri_string);
         ProjectionInfo currentMapProjection = null;
         StatusPanel latLonStatusPanel = null;
@@ -24,9 +26,10 @@ namespace HydroDesktop.Main
         public CoordinateDisplay(AppManager app)
         {
             latLonStatusPanel = new StatusPanel();
-            latLonStatusPanel.Width = 400;
+            latLonStatusPanel.Width = 250;
             app.ProgressHandler.Add(latLonStatusPanel);
 
+            mainApp = app;
             mainMap = app.Map as Map;
             if (mainMap == null) return;
 
@@ -54,7 +57,17 @@ namespace HydroDesktop.Main
             set
             {
                 _showCoordinates = value;
-                latLonStatusPanel.Caption = String.Empty;
+
+                if (_showCoordinates == false)
+                {
+                    //mainApp.ProgressHandler.Remove(
+                    latLonStatusPanel.Caption = String.Empty;
+                }
+                else
+                {
+                    //mainApp.ProgressHandler.Add(latLonStatusPanel);
+                }
+                //latLonStatusPanel.Caption = String.Empty;
             }
         }
 

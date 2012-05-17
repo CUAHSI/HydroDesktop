@@ -31,9 +31,9 @@ namespace HydroDesktop.DataDownload
         #region Fields
 
         private SimpleActionItem _btnDownloadInSearch;
-        //private SimpleActionItem _btnDownload;
-        //private SimpleActionItem _btnUpdate;
-        //private SimpleActionItem _btnShowPopups;
+        private SimpleActionItem _btnShowPopups;
+        private SimpleActionItem _btnUpdate;
+        private SimpleActionItem _btnSearchOptions;
         private SimpleActionItem _btnSearchResults;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
         private SearchLayerInformer _searchLayerInformer;
@@ -155,12 +155,6 @@ namespace HydroDesktop.DataDownload
 
             //header.Add(_btnDownload = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
             //header.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
-            //header.Add(_btnShowPopups = new SimpleActionItem(Msg.ShowPopups, ShowPopups_Click) { RootKey = metadataRootKey, GroupCaption = Msg.Download, LargeImage = Resources.popup_32x32, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
-
-            //_btnShowPopups.Toggling += ShowPopups_Click;
-            //_btnShowPopups.Toggle();
-            //_btnShowPopups.Enabled = false;
-            _showPopups = true;
 
             // Subscribe to events
             App.Map.LayerAdded += Map_LayerAdded;
@@ -243,8 +237,19 @@ namespace HydroDesktop.DataDownload
             // Add download button into search tab
             if (App.GetExtension("Search3") != null)
             {
-                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Search Results", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.info_rhombus_32x32, SmallImage = Resources.info_rhombus_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
-                App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group, Enabled = false });               
+                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Results", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.info_rhombus_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
+
+                App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
+                _btnShowPopups.Toggling += ShowPopups_Click;
+                _btnShowPopups.Toggle();
+                _btnShowPopups.Enabled = false;
+                _showPopups = true;
+
+                //App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Options", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.option_32, SmallImage = Resources.option_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+                
+                App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Download, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+
+                App.HeaderControl.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
             }
 
             App.DockManager.HidePanel("kDataExplorer");
@@ -279,6 +284,11 @@ namespace HydroDesktop.DataDownload
                         mapFeatureLayer.UnSelectAll();
                 }
             }
+        }
+
+        private void Options_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void ShowPopups_Click(object sender, EventArgs e)
@@ -553,10 +563,18 @@ namespace HydroDesktop.DataDownload
                 {
                     _btnDownloadInSearch.Enabled = true;
                 }
+                if (_btnSearchOptions != null)
+                {
+                    _btnSearchOptions.Enabled = true;
+                }
                 if (_btnSearchResults != null)
                 {
                     _btnSearchResults.Enabled = true;
                 }
+                if (_btnShowPopups != null)
+                    _btnShowPopups.Enabled = true;
+
+                
                 //_btnDownload.Enabled = true;
                 //_btnUpdate.Enabled = true;
                 //_btnShowPopups.Enabled = true;
@@ -665,6 +683,15 @@ namespace HydroDesktop.DataDownload
             if (aggPlugin != null)
             {
                 aggPlugin.AttachLayerToPlugin(sourceLayer);
+            }
+
+            //check for update button
+            if (_btnUpdate != null)
+            {
+                if (SearchLayerModifier.LayerHaveDownlodedData(sourceLayer))
+                {
+                    _btnUpdate.Enabled = true;
+                }
             }
 
             // Refresh list of the time series in the table and graph in the main form

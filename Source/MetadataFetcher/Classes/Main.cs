@@ -45,7 +45,7 @@ namespace HydroDesktop.MetadataFetcher
                 var dsGroup = SharedConstants.SearchDataSourcesGroupName;
                 var header = App.HeaderControl;
 
-                header.Add(new SimpleActionItem(rootKey, Msg.Manage, mnuDownloadMetadata_Click){LargeImage = Resources.Metadata_Fetcher_32,SmallImage = Resources.Metadata_Fetcher_16,ToolTipText = Msg.Manage_ToolTip, GroupCaption = dsGroup});
+                //header.Add(new SimpleActionItem(rootKey, Msg.Manage, mnuDownloadMetadata_Click){LargeImage = Resources.Metadata_Fetcher_32,SmallImage = Resources.Metadata_Fetcher_16,ToolTipText = Msg.Manage_ToolTip, GroupCaption = dsGroup});
                 //header.Add(new SimpleActionItem(rootKey, Msg.Add, mnuAddServices_Click){LargeImage = Resources.Metadata_Fetcher_Add_32,SmallImage = Resources.Metadata_Fetcher_Add_16,ToolTipText = Msg.Add_ToolTip, GroupCaption = dsGroup});
             }
         }
