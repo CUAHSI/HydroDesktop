@@ -59,11 +59,10 @@
             {
                 ((Form)Shell).FormClosing += HydroDesktopMainPlugin_FormClosing;
             }
-
-            //show latitude, longitude coordinate display
-            latLongDisplay = new CoordinateDisplay(App);
             //show selection status display
             selectionDisplay = new SelectionStatusDisplay(App);
+            //show latitude, longitude coordinate display
+            latLongDisplay = new CoordinateDisplay(App);
             base.Activate();
         }
 

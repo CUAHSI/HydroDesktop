@@ -26,7 +26,7 @@ namespace HydroDesktop.Main
         public CoordinateDisplay(AppManager app)
         {
             latLonStatusPanel = new StatusPanel();
-            latLonStatusPanel.Width = 250;
+            latLonStatusPanel.Width = 400;
             app.ProgressHandler.Add(latLonStatusPanel);
 
             mainApp = app;

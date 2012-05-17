@@ -40,7 +40,7 @@ namespace Search3
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
-        private SearchStatusDisplay searchSummary;
+        //private SearchStatusDisplay searchSummary;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
@@ -52,7 +52,7 @@ namespace Search3
         public override void Activate()
         {
             AddSearchRibbon();
-            searchSummary = new SearchStatusDisplay(App);
+            //searchSummary = new SearchStatusDisplay(App);
             base.Activate();
 
             App.SerializationManager.Serializing += SerializationManager_Serializing;
