@@ -189,10 +189,12 @@ namespace HydroDesktop.DataDownload
             if (!_showSearchResultsPanel)
             {
                 App.DockManager.HidePanel("kDataExplorer");
+                _showSearchResultsPanel = false;
             }
             else
             {
-                App.DockManager.HidePanel("kDataExplorer");
+                App.DockManager.SelectPanel("kDataExplorer");
+                _showSearchResultsPanel = true;
             }
         }
 
@@ -237,7 +239,7 @@ namespace HydroDesktop.DataDownload
             // Add download button into search tab
             if (App.GetExtension("Search3") != null)
             {
-                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Results", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.info_rhombus_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
+                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Results", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
 
                 App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
                 _btnShowPopups.Toggling += ShowPopups_Click;
@@ -252,7 +254,10 @@ namespace HydroDesktop.DataDownload
                 App.HeaderControl.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
             }
 
-            App.DockManager.HidePanel("kDataExplorer");
+            if (!_showSearchResultsPanel)
+            {
+                App.DockManager.HidePanel("kDataExplorer");
+            }
 
             _btnSearchResults.Toggling += ShowSearchResults_Click;
             //_btnSearchResults.Toggle();

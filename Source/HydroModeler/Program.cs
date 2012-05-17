@@ -47,7 +47,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             App.HeaderControl.RemoveAll();
 
             // Remove the plugin panel
-            App.DockManager.Remove(kHydroModelerDock);
+            //App.DockManager.Remove(kHydroModelerDock);
 
             // this line ensures that 'enabled' is set to false
             base.Deactivate();

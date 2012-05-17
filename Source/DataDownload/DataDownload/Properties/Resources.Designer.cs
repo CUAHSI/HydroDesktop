@@ -179,6 +179,20 @@ namespace HydroDesktop.DataDownload.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap table_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("table_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap table_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("table_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;D_WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137,298.257223562997]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]].
         /// </summary>
