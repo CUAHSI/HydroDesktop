@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="Searching\Exceptions\SearchSettingsException.cs" />
     <Compile Include="Searching\SeriesSearcher.cs" />
+    <Compile Include="SearchStatusDisplay.cs" />
     <Compile Include="Settings\AreaSettings.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
@@ -302,6 +303,7 @@
     <None Include="Resources\select_date_v1_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\zoom_selection_16x16.png" />
     <None Include="Resources\zoom_out_16x16.png" />
     <None Include="Resources\zoom_in_16x16.png" />
     <None Include="Resources\zoom.png" />
@@ -311,7 +313,7 @@
     <None Include="Resources\keyword_32.png" />
     <None Include="Resources\HydroDesktop.ico" />
     <None Include="Resources\hand_16x16.png" />
-    <Content Include="Resources\deselect_16x16.png" />
+    <None Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
