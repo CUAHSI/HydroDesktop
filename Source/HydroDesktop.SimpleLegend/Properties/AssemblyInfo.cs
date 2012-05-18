@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HydroDestkop.GetGeostatisticalTool")]
+[assembly: AssemblyTitle("HydroDesktop.SimpleLegend")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hewlett-Packard Company")]
-[assembly: AssemblyProduct("HydroDestkop.GetGeostatisticalTool")]
+[assembly: AssemblyProduct("HydroDesktop.SimpleLegend")]
 [assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("98641330-cea1-4d3a-8250-d8cf2d7a4744")]
+[assembly: Guid("22153699-b827-4115-8005-cb84dfad0121")]
 
 // Version information for an assembly consists of the following four values:
 //

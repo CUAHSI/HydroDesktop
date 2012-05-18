@@ -41,7 +41,7 @@ namespace HydroR
         {
             App.HeaderControl.RemoveAll();
 
-            App.DockManager.Remove(kHydroR);
+            //App.DockManager.Remove(kHydroR);
 
             if (Shell is Form)
             {

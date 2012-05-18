@@ -40,7 +40,7 @@ namespace SeriesView
         public override void  Deactivate()
         {
  	        App.HeaderControl.RemoveAll();
-            App.DockManager.Remove(SeriesViewKey);
+            //App.DockManager.Remove(SeriesViewKey);
             
             App.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
 
