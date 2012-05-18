@@ -83,5 +83,8 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// keyword is returned.
         /// </summary>
         public string ConceptKeyword { get; set; }
+
+        public bool IsRegular { get; set; }
+        public string VariableUnits { get; set; }
     }
 }

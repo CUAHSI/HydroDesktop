@@ -17,6 +17,7 @@ namespace Search3.Searching
         #region Fields
 
         private readonly string _hisCentralUrl;
+        private static readonly CultureInfo _usaCulture = new CultureInfo("en-US");
 
         #endregion
 
@@ -166,16 +167,12 @@ namespace Search3.Searching
         /// <returns>the list of intermediate 'SeriesDataCart' objects</returns>
         private SeriesDataCart ReadSeriesFromHISCentral(XmlReader reader)
         {
-            var usaCulture = new CultureInfo("en-US");
-
             var series = new SeriesDataCart();
             while (reader.Read())
             {
-                string nodeName = reader.Name.ToLower();
-
+                var nodeName = reader.Name.ToLower();
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-
                     switch (nodeName)
                     {
                         case "servcode":
@@ -200,11 +197,11 @@ namespace Search3.Searching
                             break;
                         case "begindate":
                             reader.Read();
-                            series.BeginDate = Convert.ToDateTime(reader.Value, usaCulture);
+                            series.BeginDate = Convert.ToDateTime(reader.Value, _usaCulture);
                             break;
                         case "enddate":
                             reader.Read();
-                            series.EndDate = Convert.ToDateTime(reader.Value, usaCulture);
+                            series.EndDate = Convert.ToDateTime(reader.Value, _usaCulture);
                             break;
                         case "valuecount":
                             reader.Read();
@@ -249,6 +246,14 @@ namespace Search3.Searching
                         case "timesupport":
                             reader.Read();
                             series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            break;
+                        case "isregular":
+                            reader.Read();
+                            series.IsRegular = Convert.ToBoolean(reader.Value);
+                            break;
+                        case "variableunits":
+                            reader.Read();
+                            series.VariableUnits = reader.Value;
                             break;
                     }
                 }

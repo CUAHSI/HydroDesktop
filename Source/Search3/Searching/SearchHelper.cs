@@ -35,7 +35,42 @@ namespace Search3.Searching
             row["TimeSupport"] = series.TimeSupport;
             row["Latitude"] = series.Latitude;
             row["Longitude"] = series.Longitude;
+            row["IsRegular"] = series.IsRegular;
+            row["Units"] = series.VariableUnits;
         }
+
+        /// <summary>
+        /// Adds the necessary attribute columns to the featureSet's attribute table
+        /// </summary>
+        private static FeatureSet CreateEmptyFeatureSet()
+        {
+            var fs = new FeatureSet(FeatureType.Point);
+
+            var tab = fs.DataTable;
+            tab.Columns.Add(new DataColumn("DataSource", typeof(string)));
+            tab.Columns.Add(new DataColumn("SiteName", typeof(string)));
+            tab.Columns.Add(new DataColumn("VarName", typeof(string)));
+            tab.Columns.Add(new DataColumn("SiteCode", typeof(string)));
+            tab.Columns.Add(new DataColumn("VarCode", typeof(string)));
+            tab.Columns.Add(new DataColumn("Keyword", typeof(string)));
+            tab.Columns.Add(new DataColumn("ValueCount", typeof(int)));
+            tab.Columns.Add(new DataColumn("StartDate", typeof(string)));
+            tab.Columns.Add(new DataColumn("EndDate", typeof(string)));
+            tab.Columns.Add(new DataColumn("ServiceURL", typeof(string)));
+            tab.Columns.Add(new DataColumn("ServiceCode", typeof(string)));
+            tab.Columns.Add(new DataColumn("DataType", typeof(string)));
+            tab.Columns.Add(new DataColumn("ValueType", typeof(string)));
+            tab.Columns.Add(new DataColumn("SampleMed", typeof(string)));
+            tab.Columns.Add(new DataColumn("TimeUnits", typeof(string)));
+            tab.Columns.Add(new DataColumn("TimeSupport", typeof(double)));
+            tab.Columns.Add(new DataColumn("Latitude", typeof(double)));
+            tab.Columns.Add(new DataColumn("Longitude", typeof(double)));
+            tab.Columns.Add(new DataColumn("IsRegular", typeof(bool)));
+            tab.Columns.Add(new DataColumn("Units", typeof(string)));
+
+            return fs;
+        }
+
         
         /// <summary>
         /// Divides the search bounding box into several 'tiles' to prevent
@@ -158,50 +193,6 @@ namespace Search3.Searching
         }
 
 	    /// <summary>
-	    /// Adds the necessary attribute columns to the featureSet's attribute table
-	    /// </summary>
-	    private static FeatureSet CreateEmptyFeatureSet()
-        {
-            var fs = new FeatureSet(FeatureType.Point);
-            
-            var tab = fs.DataTable;
-            tab.Columns.Add(new DataColumn("DataSource", typeof(string)));           
-            tab.Columns.Add(new DataColumn("SiteName", typeof(string)));
-            tab.Columns.Add(new DataColumn("VarName", typeof(string)));
-            tab.Columns.Add(new DataColumn("SiteCode", typeof(string)));
-            tab.Columns.Add(new DataColumn("VarCode", typeof(string)));
-            tab.Columns.Add(new DataColumn("Keyword", typeof(string)));
-            tab.Columns.Add(new DataColumn("ValueCount", typeof(int)));
-            tab.Columns.Add(new DataColumn("StartDate", typeof(string)));
-            tab.Columns.Add(new DataColumn("EndDate", typeof(string)));
-            tab.Columns.Add(new DataColumn("ServiceURL", typeof(string)));
-            tab.Columns.Add(new DataColumn("ServiceCode", typeof(string)));
-            tab.Columns.Add(new DataColumn("DataType", typeof(string)));
-            tab.Columns.Add(new DataColumn("ValueType", typeof(string)));
-            tab.Columns.Add(new DataColumn("SampleMed", typeof(string)));           
-            tab.Columns.Add(new DataColumn("TimeUnits", typeof(string)));
-            tab.Columns.Add(new DataColumn("TimeSupport", typeof(double)));
-            tab.Columns.Add(new DataColumn("Latitude", typeof(double)));
-            tab.Columns.Add(new DataColumn("Longitude", typeof(double)));
-
-            return fs;
-        }
-
-		/// <summary>
-		/// Adds sites from the list of data series
-		/// to an existing feature set
-		/// </summary>
-		private static void AddToFeatureSet ( IEnumerable<SeriesDataCart> seriesList, IFeatureSet fs )
-		{
-		    if (seriesList == null) throw new ArgumentNullException("seriesList");
-
-		    foreach (var series in seriesList )
-		    {
-		        AddToFeatureSet(series, fs);
-			}
-		}
-
-	    /// <summary>
 	    /// Adds series to an existing feature set
 	    /// </summary>
 	    /// <param name="series">Series</param>
@@ -218,44 +209,5 @@ namespace Search3.Searching
             var row = f.DataRow;
             PopulateDataRow(series, row);
         }
-
-	    /// <summary>
-		/// Adds sites from the list of data series which are inside the polygons 
-		/// to an existing feature set
-		/// <param name="seriesList"></param>
-		/// <param name="fs"></param>
-		/// <param name="polygons"></param>
-		/// </summary>
-	    private static void AddToFeatureSet ( IEnumerable<SeriesDataCart> seriesList, IFeatureSet fs, IList<IFeature> polygons )
-		{
-			if ( polygons.Count == 0 )
-			{
-				AddToFeatureSet ( seriesList, fs );
-				return;
-			}
-
-			foreach ( SeriesDataCart series in seriesList )
-			{
-				double lat = series.Latitude;
-				double lon = series.Longitude;
-				var coord = new Coordinate ( lon, lat );
-
-				if ( TestPointInPolygons ( coord, polygons ) )
-				{
-
-					var f = new Feature ( FeatureType.Point, new[] { coord } );
-					fs.Features.Add ( f );
-
-					DataRow row = f.DataRow;
-                    PopulateDataRow(series, row);
-				}
-			}
-		}
-
-		private static bool TestPointInPolygons ( Coordinate coord, IEnumerable<IFeature> polygons )
-		{
-			var pt = new Point ( coord );
-		    return polygons.Any(poly => poly.Intersects(pt));
-		}
 	}
 }
