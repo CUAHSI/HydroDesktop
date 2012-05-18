@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 
 namespace SeriesView
 {

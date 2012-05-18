@@ -5,6 +5,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 
 namespace HydroDesktop.ExportToCSV
 {

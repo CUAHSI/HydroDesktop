@@ -7,6 +7,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
+using HydroDesktop.Interfaces.PluginContracts;
 using Hydrodesktop.Common;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;

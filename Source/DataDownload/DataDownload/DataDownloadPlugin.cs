@@ -11,6 +11,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using HydroDesktop.Interfaces.PluginContracts;
 using Hydrodesktop.Common;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;

@@ -32,17 +32,17 @@ namespace Search3.Settings.UI
             rbHisCentral1.CheckedChanged += rbHisCentral_CheckedChanged;
             rbHisCentral2.CheckedChanged += rbHisCentral_CheckedChanged;
             rbHisCentalCustom.CheckedChanged += rbHisCentral_CheckedChanged;
-            switch (_catalogSettings.HISCentralUrl)
+            if (_catalogSettings.HISCentralUrl == CatalogSettings.HISCENTRAL_URL_1)
             {
-                case CatalogSettings.HISCENTRAL_URL_1:
-                    rbHisCentral1.Checked = true;
-                    break;
-                case CatalogSettings.HISCENTRAL_URL_2:
-                    rbHisCentral2.Checked = true;
-                    break;
-                default:
-                    rbHisCentalCustom.Checked = true;
-                    break;
+                rbHisCentral1.Checked = true;
+            }
+            else if (_catalogSettings.HISCentralUrl == CatalogSettings.HISCENTRAL_URL_2)
+            {
+                rbHisCentral2.Checked = true;
+            }
+            else
+            {
+                rbHisCentalCustom.Checked = true;
             }
         }
 

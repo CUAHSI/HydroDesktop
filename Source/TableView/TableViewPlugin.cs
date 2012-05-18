@@ -7,6 +7,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 
 namespace TableView
 {

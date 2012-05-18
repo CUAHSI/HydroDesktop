@@ -1,7 +1,7 @@
 using System.Data;
 using DotSpatial.Symbology;
 
-namespace HydroDesktop.Interfaces
+namespace HydroDesktop.Interfaces.PluginContracts
 {
     /// <summary>
     /// Interface of data export plugin

@@ -5,6 +5,7 @@ Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
 Imports GraphView.My.Resources
 Imports HydroDesktop.Interfaces.ObjectModel
+Imports HydroDesktop.Interfaces.PluginContracts
 Imports ZedGraph
 
 Namespace Controls
