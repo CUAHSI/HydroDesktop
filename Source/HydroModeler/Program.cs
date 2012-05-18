@@ -7,6 +7,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Help;
+using HydroDesktop.Common;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
@@ -47,7 +48,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             App.HeaderControl.RemoveAll();
 
             // Remove the plugin panel
-            App.DockManager.Remove(kHydroModelerDock);
+            //App.DockManager.Remove(kHydroModelerDock);
 
             // this line ensures that 'enabled' is set to false
             base.Deactivate();
@@ -112,10 +113,24 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
             if (ignoreRootSelected) return;
-            
+
             if (e.SelectedRootKey == "RootRibbonHydroModeler")
             {
                 App.DockManager.SelectPanel(kHydroModelerDock);
+
+                //hide panels
+                App.DockManager.HidePanel("kLegend");
+                App.DockManager.HidePanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+            }
+            else if (e.SelectedRootKey == SharedConstants.SearchRootkey || e.SelectedRootKey == HeaderControl.HomeRootItemKey)
+            {
+                App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+                App.DockManager.SelectPanel("kLegend");
+            }
+            else if (e.SelectedRootKey == "kHydroGraph_01" || e.SelectedRootKey == SharedConstants.TableRootKey || e.SelectedRootKey == "kHydroEditView" || e.SelectedRootKey == "kHydroR")
+            {
+                App.DockManager.SelectPanel("kLegend");
+                App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
             }
         }
         #endregion
