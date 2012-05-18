@@ -28,7 +28,7 @@ using DotSpatial.Symbology;
 
 namespace Search3
 {
-    public class SearchPlugin : Extension, IWebServicesStore, ISearchPlugin
+    public class SearchPlugin : Extension, ISearchPlugin
     {
         #region Fields
 
@@ -839,5 +839,9 @@ namespace Search3
             searchLayerCreator.Create();
         }
 
+        public string HisCentralUrl
+        {
+            get { return SearchSettings.Instance.CatalogSettings.HISCentralUrl; }
+        }
     }
 }

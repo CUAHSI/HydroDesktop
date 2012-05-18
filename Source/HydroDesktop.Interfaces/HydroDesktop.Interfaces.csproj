@@ -138,7 +138,6 @@
     <Compile Include="DAL\IVariablesRepository.cs" />
     <Compile Include="PluginContracts\IDataAggregationPlugin.cs" />
     <Compile Include="PluginContracts\ISearchPlugin.cs" />
-    <Compile Include="PluginContracts\IWebServicesStore.cs" />
     <Compile Include="ObjectModel\BaseEntity.cs" />
     <Compile Include="ObjectModel\Constants.cs" />
     <Compile Include="ObjectModel\DataFile.cs" />
