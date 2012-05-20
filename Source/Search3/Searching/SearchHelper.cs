@@ -175,7 +175,10 @@ namespace Search3.Searching
         {
             // Update BeginDate/EndDate/ValueCount to the user-specified range
             var seriesStartDate = series.BeginDate < startDate ? startDate : series.BeginDate;
-            var seriesEndDate = series.EndDate > endDate ? endDate : series.EndDate;
+            // Fix http://hydrodesktop.codeplex.com/workitem/8468
+            // HIS Central sometimes doesn't contains actual end dates for datasets,
+            // so always set end date of series to user-specified endDate.
+            var seriesEndDate = endDate; //var seriesEndDate = series.EndDate > endDate ? endDate : series.EndDate;
 
             var serverDateRange = series.EndDate.Subtract(series.BeginDate);
             var userDateRange = seriesEndDate.Subtract(seriesStartDate);
