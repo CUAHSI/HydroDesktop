@@ -59,7 +59,7 @@ namespace Search3.Settings.UI
             }
         }
 
-        private void RefreshWebServices(IEnumerable<WebServiceNode> webServiceNodeCollection)
+        private void RefreshWebServicesTreeView(IEnumerable<WebServiceNode> webServiceNodeCollection)
         {
             treeViewWebServices.SuspendLayout();
             try
@@ -109,7 +109,7 @@ namespace Search3.Settings.UI
             try
             {
                 _webServicesSettings.RefreshWebServices(_catalogSettings);
-                RefreshWebServices(_webServicesSettings.WebServices);
+                RefreshWebServicesTreeView(_webServicesSettings.WebServices);
             }catch(Exception ex)
             {
                 MessageBox.Show("Unable to refresh WebServices." + Environment.NewLine + "Error: " + ex.Message, "Error",
@@ -143,7 +143,7 @@ namespace Search3.Settings.UI
 
             _catalogSettings = catalogSettings;
             _webServicesSettings = webServicesSettings;
-            RefreshWebServices(webServicesSettings.WebServices);
+            RefreshWebServicesTreeView(webServicesSettings.WebServices);
         }
 
         #endregion
