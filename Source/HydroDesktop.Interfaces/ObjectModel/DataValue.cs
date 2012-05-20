@@ -13,7 +13,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
     {
         private DateTime _localDateTime = DateTime.MinValue;
         private DateTime _dateTimeUTC = DateTime.MinValue;
-        private double _utcOffset = 0.0;
+        private double _utcOffset;
         
         /// <summary>
         /// Creates a new empty data value
