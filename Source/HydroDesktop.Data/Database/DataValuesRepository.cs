@@ -122,8 +122,11 @@ namespace HydroDesktop.Database
             var sql =
                 "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
                 "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
-                "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, dv.CensorCode, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory " +
+                "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, dv.CensorCode, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory, " +
+                "OffsetValue, OT.OffsetDescription, Un.UnitsAbbreviation as OffsetUnits " +
                 "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
+                "LEFT JOIN OffsetTypes OT on DV.OffsetTypeId = OT.OffsetTypeId " +
+                "LEFT JOIN Units Un on Un.UnitsID = OT.OffsetUnitsId " + 
                 "WHERE v.VariableID = ds.VariableID " +
                 "AND s.SiteID = ds.SiteID " +
                 "AND m.MethodID = ds.MethodID " +
@@ -217,7 +220,10 @@ namespace HydroDesktop.Database
         {
             var whereClause = GetWhereClauseForIds(seriesIDs);
             var dataQuery =
-                "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode FROM DataValues WHERE " +
+                "SELECT ValueID, SeriesID, DataValue, LocalDateTime, UTCOffset, CensorCode, OffsetValue, OT.OffsetDescription, Un.UnitsAbbreviation as OffsetUnits FROM DataValues DV " +
+                "LEFT JOIN OffsetTypes OT on DV.OffsetTypeId = OT.OffsetTypeId " +
+                "LEFT JOIN Units Un on Un.UnitsID = OT.OffsetUnitsId " + 
+                "WHERE " +
                 whereClause;
             var limitQuery = string.Format("{0} limit {1} offset {2}", dataQuery, valuesPerPage,
                                            currentPage*valuesPerPage);

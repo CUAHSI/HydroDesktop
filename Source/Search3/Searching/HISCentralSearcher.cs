@@ -87,19 +87,18 @@ namespace Search3.Searching
                                                                               int[] networkIDs)
         {
             //call the web service dynamically, using WebClient
-            var usaFormat = new CultureInfo("en-US");
 
             var url = new StringBuilder();
             url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
-            url.Append(Uri.EscapeDataString(xMin.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(xMin.ToString(_usaCulture)));
             url.Append("&xmax=");
-            url.Append(Uri.EscapeDataString(xMax.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(xMax.ToString(_usaCulture)));
             url.Append("&ymin=");
-            url.Append(Uri.EscapeDataString(yMin.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(yMin.ToString(_usaCulture)));
             url.Append("&ymax=");
-            url.Append(Uri.EscapeDataString(yMax.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(yMax.ToString(_usaCulture)));
 
             //to append the keyword
             url.Append("&conceptKeyword=");

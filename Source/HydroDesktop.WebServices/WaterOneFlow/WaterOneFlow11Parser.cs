@@ -92,9 +92,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <param name="xmlFile"></param>
         public IList<Series> ParseGetValues(string xmlFile)
         {
-            DataFile xmlFileInfo = GetDataFileInfo(xmlFile);
-            
-            QueryInfo qry = null;
+            var xmlFileInfo = GetDataFileInfo(xmlFile);
+
             Site site = null;
             Variable varInfo = null;
             IList<Series> seriesList = null;
@@ -110,7 +109,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                         if (readerName == "queryinfo")
                         {
                             //Read the 'Query Info'
-                            qry = ReadQueryInfo(reader);
+                            var qry = ReadQueryInfo(reader);
                             xmlFileInfo.QueryInfo = qry;
                         }
                         else if (readerName == "source" || readerName == "sourceinfo")
@@ -126,8 +125,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                         else if (readerName == "values")
                         {
                             //Read the time series and data values information
-                            seriesList = ReadDataValues(reader);
-                            foreach (Series series in seriesList)
+                            seriesList = ReadDataValues(reader, xmlFileInfo);
+                            foreach (var series in seriesList)
                             {
                                 if (varInfo != null)
                                 {
@@ -137,7 +136,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                 {
                                     series.Site = site;
                                 }
-                                CheckDataSeries(series, xmlFileInfo);
+                                CheckDataSeries(series);
                             }
                         }
                     }
@@ -152,16 +151,17 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// </summary>
         /// <param name="xmlFileName"></param>
         /// <returns></returns>
-        private DataFile GetDataFileInfo(string xmlFileName)
+        private static DataFile GetDataFileInfo(string xmlFileName)
         {
-            //create a 'data file' object
-            DataFile xmlFileInfo = new DataFile();
-            xmlFileInfo.FileDescription = "WaterML File";
-            xmlFileInfo.FileName = System.IO.Path.GetFileName(xmlFileName);
-            xmlFileInfo.FilePath = System.IO.Path.GetDirectoryName(xmlFileName);
-            xmlFileInfo.FileType = "xml";
-            xmlFileInfo.LoadDateTime = DateTime.Now;
-            xmlFileInfo.LoadMethod = "WaterML download";
+            var xmlFileInfo = new DataFile
+                                  {
+                                      FileDescription = "WaterML File",
+                                      FileName = System.IO.Path.GetFileName(xmlFileName),
+                                      FilePath = System.IO.Path.GetDirectoryName(xmlFileName),
+                                      FileType = "xml",
+                                      LoadDateTime = DateTime.Now,
+                                      LoadMethod = "WaterML download"
+                                  };
             return xmlFileInfo;
         }
 
@@ -538,26 +538,25 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads the DataValues section
         /// </summary>
-        private IList<Series> ReadDataValues(XmlReader r)
+        private IList<Series> ReadDataValues(XmlReader r, DataFile dataFile)
         {
             IList<DataValue> lst = new List<DataValue>();
 
-            Dictionary<string, Qualifier> qualifiers = new Dictionary<string, Qualifier>();
-            Dictionary<string, Method> methods = new Dictionary<string, Method>();
-            Dictionary<string, Source> sources = new Dictionary<string, Source>();
-            Dictionary<string, QualityControlLevel> qualityControlLevels = new Dictionary<string, QualityControlLevel>();
-            Dictionary<string, Sample> samples = new Dictionary<string,Sample>();
-            Dictionary<string, LabMethod> labMethods = new Dictionary<string, LabMethod>();
-            Dictionary<string, OffsetType> offsets = new Dictionary<string, OffsetType>();
-            Dictionary<string, Series> seriesDictionary = new Dictionary<string, Series>();
+            var qualifiers = new Dictionary<string, Qualifier>();
+            var methods = new Dictionary<string, Method>();
+            var sources = new Dictionary<string, Source>();
+            var qualityControlLevels = new Dictionary<string, QualityControlLevel>();
+            var samples = new Dictionary<string,Sample>();
+            var labMethods = new Dictionary<string, LabMethod>();
+            var offsets = new Dictionary<string, OffsetType>();
+            var seriesDictionary = new Dictionary<string, Series>();
             
             //lookup for unique source, method, quality control level combination
-            Dictionary<DataValue, string> seriesCodeLookup = new Dictionary<DataValue, string>();
+            var seriesCodeLookup = new Dictionary<DataValue, string>();
             
             //lookup for samples, qualifiers and vertical offsets
             var sampleLookup = new Dictionary<DataValue, string>();
             var offsetLookup = new Dictionary<DataValue, string>();
-            var qualifierLookup = new Dictionary<DataValue, string>();
 
             var methodLookup = new Dictionary<DataValue, string>();
             var sourceLookup = new Dictionary<DataValue, string>();
@@ -570,45 +569,28 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     if (r.Name == "value")
                     {
                         //create a new empty data value and add it to the list
-                        DataValue val = new DataValue();
+                        var val = new DataValue {DataFile = dataFile};
                         lst.Add(val);
-
-                        //the default value of censor code is 'nc'
-                        val.CensorCode = "nc";
                         
                         if (r.HasAttributes)
                         {
-                            string censorCode = r.GetAttribute("censorCode");
+                            var censorCode = r.GetAttribute("censorCode");
                             if (!string.IsNullOrEmpty(censorCode))
                             {
-                                val.CensorCode = r.GetAttribute("censorCode");
+                                val.CensorCode = censorCode;
                             }
                             val.LocalDateTime = Convert.ToDateTime(r.GetAttribute("dateTime"), CultureInfo.InvariantCulture);
 
                             //utcOffset
-                            string utcOffset = r.GetAttribute("timeOffset");
-                            if (!String.IsNullOrEmpty(utcOffset))
-                            {
-                                val.UTCOffset = ConvertUtcOffset(utcOffset);
-                            }
-                            else
-                            {
-                                val.UTCOffset = 0.0;
-                            }
+                            var utcOffset = r.GetAttribute("timeOffset");
+                            val.UTCOffset = !String.IsNullOrEmpty(utcOffset) ? ConvertUtcOffset(utcOffset) : 0.0;
 
                             //dateTimeUtc
-                            string dateTimeUTC = r.GetAttribute("dateTimeUTC");
-                            if (!String.IsNullOrEmpty(dateTimeUTC))
-                            {
-                                val.DateTimeUTC = Convert.ToDateTime(dateTimeUTC, CultureInfo.InvariantCulture);
-                            }
-                            else
-                            {
-                                val.DateTimeUTC = val.LocalDateTime;
-                            }
+                            var dateTimeUTC = r.GetAttribute("dateTimeUTC");
+                            val.DateTimeUTC = !String.IsNullOrEmpty(dateTimeUTC) ? Convert.ToDateTime(dateTimeUTC, CultureInfo.InvariantCulture) : val.LocalDateTime;
 
                             //method
-                            string methodID = r.GetAttribute("methodCode");
+                            var methodID = r.GetAttribute("methodCode");
                             if (String.IsNullOrEmpty(methodID))
                             {
                                 //try methodID instead of methodCode
@@ -620,13 +602,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             }
                             if (!methods.ContainsKey(methodID))
                             {
-                                Method newMethod = Method.Unknown;
+                                var newMethod = Method.Unknown;
                                 methods.Add(methodID, newMethod);
                             }
                             methodLookup.Add(val, methodID);
 
                             //quality control level
-                            string qualityCode = r.GetAttribute("qualityControlLevelCode");
+                            var qualityCode = r.GetAttribute("qualityControlLevelCode");
                             if (String.IsNullOrEmpty(qualityCode))
                             {
                                 qualityCode = r.GetAttribute("qualityControlLevelID");
@@ -637,7 +619,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             }
                             if (!qualityControlLevels.ContainsKey(qualityCode))
                             {
-                                QualityControlLevel qualControl = QualityControlLevel.Unknown;
+                                var qualControl = QualityControlLevel.Unknown;
                                 qualControl.Code = qualityCode;
                                 qualControl.Definition = qualityCode;
                                 qualControl.Explanation = qualityCode;
@@ -682,8 +664,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             {
                                 if (!qualifiers.ContainsKey(qualifierCodes))
                                 {
-                                    Qualifier newQualifier = new Qualifier();
-                                    newQualifier.Code = qualifierCodes;
+                                    var newQualifier = new Qualifier {Code = qualifierCodes};
                                     qualifiers.Add(qualifierCodes, newQualifier);
                                     val.Qualifier = newQualifier;
                                 }
@@ -942,12 +923,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             if (String.IsNullOrEmpty(qualifierCode)) return;
             if (!qualifiers.ContainsKey(qualifierCode))
             {
-                Qualifier newQualifier = new Qualifier();
+                var newQualifier = new Qualifier();
                 newQualifier.Code = qualifierCode;
                 qualifiers.Add(qualifierCode, newQualifier);
             }
 
-            Qualifier qualifier = qualifiers[qualifierCode];
+            var qualifier = qualifiers[qualifierCode];
             r.Read();
             qualifier.Description = r.Value;
         }
@@ -1264,8 +1245,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// separates it into multiple series.
         /// </summary>
         /// <param name="series">the data series to be checked</param>
-        /// <param name="xmlFileInfo">info about the downloaded xml file</param>
-        private void CheckDataSeries(Series series, DataFile xmlFileInfo)
+        private void CheckDataSeries(Series series)
         {
 			//ensure that properties are re-calculated
 			series.UpdateProperties ();
@@ -1298,12 +1278,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             series.CreationDateTime = DateTime.Now;
             series.LastCheckedDateTime = DateTime.Now;
             series.UpdateDateTime = series.LastCheckedDateTime;
-
-            //set the data file and queryInfo information
-            foreach (DataValue val in series.DataValueList)
-            {
-                val.DataFile = xmlFileInfo;
-            }
         }
 
         /// <summary>
