@@ -108,10 +108,7 @@ namespace HydroDesktop.DataDownload.Downloading
         public IEnumerable<Series> DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
         {
             var client = GetWsClientInstance(dInfo.Wsdl);
-            var parser = client.ServiceInfo.Version == 1.0
-                                             ? (IWaterOneFlowParser) new WaterOneFlow10Parser()
-                                             : new WaterOneFlow11Parser();
-
+            var parser = new ParserFactory().GetParser(client.ServiceInfo);
             var result = new List<Series>();
             foreach (var xmlFile in dInfo.FilesWithData)
             {

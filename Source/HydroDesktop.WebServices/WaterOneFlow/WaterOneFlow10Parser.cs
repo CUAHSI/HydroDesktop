@@ -592,7 +592,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                 sources.Add(sourceID, Source.Unknown);
                             }
                             wrapper.SourceID = sourceID;
-                            wrapper.SeriesCode = SeriesCode.CreateSeriesCode(methodID, qualityCode, sourceID); //----method-source-qualityControl combination----
+                            wrapper.SeriesCode = SeriesCodeHelper.CreateSeriesCode(methodID, qualityCode, sourceID); //----method-source-qualityControl combination----
                             
                             //sample
                             var sampleID = r.GetAttribute("sampleID");
@@ -685,10 +685,10 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     //assign method, source and qual.control level
                     try
                     {
-                        newSeries.Method = methods[SeriesCode.GetMethodCode(seriesCode)];
+                        newSeries.Method = methods[SeriesCodeHelper.GetMethodCode(seriesCode)];
                         //fix by Jiri: fixes the case when sourceID is unspecified sources
                         //has more than one source entry
-                        string sourceCode = SeriesCode.GetSourceCode(seriesCode);
+                        string sourceCode = SeriesCodeHelper.GetSourceCode(seriesCode);
                         if (sourceCode == "0" && sources.Count > 0)
                         {
                             foreach (string sc in sources.Keys)
@@ -701,7 +701,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             }
                         }
                         newSeries.Source = sources[sourceCode];
-                        newSeries.QualityControlLevel = qualityControlLevels[SeriesCode.GetQualityCode(seriesCode)];
+                        newSeries.QualityControlLevel = qualityControlLevels[SeriesCodeHelper.GetQualityCode(seriesCode)];
                     }
                     catch { }
                 }

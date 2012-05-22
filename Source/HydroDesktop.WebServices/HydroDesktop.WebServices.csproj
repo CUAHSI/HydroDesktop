@@ -73,10 +73,12 @@
     </Compile>
     <Compile Include="ServiceIconHelper.cs" />
     <Compile Include="SoapHelper.cs" />
+    <Compile Include="WaterOneFlow\IGetValuesProgressHandler.cs" />
     <Compile Include="WaterOneFlow\IWaterOneFlowClient.cs" />
     <Compile Include="WaterOneFlow\IWaterOneFlowParser.cs" />
+    <Compile Include="WaterOneFlow\ParserFactory.cs" />
     <Compile Include="WaterOneFlow\RestWaterOneFlowClient.cs" />
-    <Compile Include="WaterOneFlow\SeriesCode.cs" />
+    <Compile Include="WaterOneFlow\SeriesCodeHelper.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlow10Parser.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlow11Parser.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowClient.cs" />

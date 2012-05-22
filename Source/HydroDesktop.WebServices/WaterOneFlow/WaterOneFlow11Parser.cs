@@ -634,7 +634,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                 sources.Add(sourceID, Source.Unknown);
                             }
                             wrapper.SourceID = sourceID;
-                            wrapper.SeriesCode = SeriesCode.CreateSeriesCode(methodID, qualityCode, sourceID); //----method-source-qualityControl combination----
+                            wrapper.SeriesCode = SeriesCodeHelper.CreateSeriesCode(methodID, qualityCode, sourceID); //----method-source-qualityControl combination----
 
                             //sample
                             string sampleCode = r.GetAttribute("labSampleCode");
@@ -730,9 +730,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     //assign method, source and qual.control level
                     try
                     {
-                        newSeries.Method = methods[SeriesCode.GetMethodCode(seriesCode)];
-                        newSeries.Source = sources[SeriesCode.GetSourceCode(seriesCode)];
-                        newSeries.QualityControlLevel = qualityControlLevels[SeriesCode.GetQualityCode(seriesCode)];
+                        newSeries.Method = methods[SeriesCodeHelper.GetMethodCode(seriesCode)];
+                        newSeries.Source = sources[SeriesCodeHelper.GetSourceCode(seriesCode)];
+                        newSeries.QualityControlLevel = qualityControlLevels[SeriesCodeHelper.GetQualityCode(seriesCode)];
                     }
                     catch { }
                 }

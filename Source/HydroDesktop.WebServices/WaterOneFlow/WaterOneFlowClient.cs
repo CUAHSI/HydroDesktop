@@ -14,15 +14,15 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 	{
 		#region Variables
 
-		private string _asmxURL;
-		private IWaterOneFlowParser _parser;
+		private readonly string _asmxURL;
+		private readonly IWaterOneFlowParser _parser;
 
 		//the directory where downloaded files are stored
 		private string _downloadDirectory;
 
 		//the object containing additional metadata information
 		//about the web service including service version
-		private DataServiceInfo _serviceInfo = null;
+		private readonly DataServiceInfo _serviceInfo;
 
 		#endregion
 
@@ -50,16 +50,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			AssignWaterOneFlowVersion ( _serviceInfo );
 
             //assign the waterOneFlow parser
-            //the parser is automatically set depending on service version information
-            //in the WaterML file
-            if (ServiceInfo.Version == 1.0)
-            {
-                _parser = new WaterOneFlow10Parser();
-            }
-            else
-            {
-                _parser = new WaterOneFlow11Parser();
-            }
+		    var parserFactory = new ParserFactory();
+		    _parser = parserFactory.GetParser(ServiceInfo);
 		}
 
 		/// <summary>
@@ -99,18 +91,16 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			get { return _downloadDirectory; }
 			set
 			{
-				if ( !Directory.Exists ( _downloadDirectory ) )
-				{
-                    try
-                    {
-                        Directory.CreateDirectory(_downloadDirectory);
-                        _downloadDirectory = value;
-                    }
-                    catch
-                    {
-                        _downloadDirectory = Path.GetTempPath();
-                    }
-				}
+			    if (Directory.Exists(_downloadDirectory)) return;
+			    try
+			    {
+			        Directory.CreateDirectory(_downloadDirectory);
+			        _downloadDirectory = value;
+			    }
+			    catch
+			    {
+			        _downloadDirectory = Path.GetTempPath();
+			    }
 			}
 		}
 
@@ -433,11 +423,11 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// 
 		private void WriteLinesToFile ( String filepath, String lines )
 		{
-			if ( filepath == null || filepath.Length == 0 )
+			if ( string.IsNullOrEmpty(filepath) )
 			{
 				return;
 			}
-			if ( lines == null || lines.Length == 0 )
+			if ( string.IsNullOrEmpty(lines) )
 			{
 				return;
 			}
@@ -468,24 +458,5 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 		#endregion
 	}
-
-    /// <summary>
-    /// Progress handler for calling the GetValues WaterOneFlow service request
-    /// </summary>
-    public interface IGetValuesProgressHandler
-    {
-        /// <summary>
-        /// Report progress 
-        /// </summary>
-        /// <param name="intervalNumber">Number of downloaded interval</param>
-        /// <param name="totalIntervalsCount">Total intervals count</param>
-        /// <param name="timeTaken">Time taken to download current interval (in seconds)</param>
-        void Progress(int intervalNumber, int totalIntervalsCount, double timeTaken);
-        /// <summary>
-        /// Shows that current opeation should be cancelled
-        /// </summary>
-        bool CancellationPending { get;}
-    }
-    
 }
 
