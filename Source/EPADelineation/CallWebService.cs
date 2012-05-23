@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
-using System.IO;
-
-using Newtonsoft.Json;
-
 using DotSpatial.Data;
-using DotSpatial.Topology;
-using DotSpatial.Controls;
 using DotSpatial.Projections;
+using DotSpatial.Topology;
 using Newtonsoft.Json.Linq;
-using System.Globalization;
 
 namespace EPADelineation
 {

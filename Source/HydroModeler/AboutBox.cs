@@ -39,10 +39,6 @@
 #endregion
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {
@@ -259,7 +255,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 		private void linkWwwOpenMIOrg_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			ProcessStartInfo info = new ProcessStartInfo( linkWwwOpenMIOrg.Text );
+			var info = new ProcessStartInfo( linkWwwOpenMIOrg.Text );
 			Process.Start( info );
 		}
 
@@ -271,7 +267,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 		private void linkWwwSourceforgeNet_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			ProcessStartInfo info = new ProcessStartInfo( linkWwwSourceforgeNet.Text );
+			var info = new ProcessStartInfo( linkWwwSourceforgeNet.Text );
 			Process.Start( info );		
 		}
 

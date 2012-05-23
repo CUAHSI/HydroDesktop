@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
@@ -86,5 +83,8 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// keyword is returned.
         /// </summary>
         public string ConceptKeyword { get; set; }
+
+        public bool IsRegular { get; set; }
+        public string VariableUnits { get; set; }
     }
 }

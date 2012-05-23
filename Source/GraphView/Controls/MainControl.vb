@@ -1,7 +1,5 @@
 ﻿Imports HydroDesktop.Database
 Imports HydroDesktop.Interfaces
-Imports HydroDesktop.Configuration
-Imports System.Drawing
 
 Namespace Controls
 
@@ -9,383 +7,138 @@ Namespace Controls
 
 #Region "Fields"
 
-        Private ReadOnly Summary As New cSummaryStatistics
-        Public linecolorlist As New List(Of Color)
-        Public pointcolorlist As New List(Of Color)
-        Private ReadOnly ccList0 As New List(Of Color)
-        Private colorcount As Integer = 0
-        Private ReadOnly selectedSeriesIdList As New List(Of Int32) 'the list of the series which is selected
-        Private _seriesMenu As ISeriesSelector
-        Public Event DatesChanged As EventHandler
-        Public IsDisplayFullDate As Boolean = True
+        Private ReadOnly _parent As GraphViewPlugin
+        Private ReadOnly _charts As ICollection(Of IChart)
+        Private ReadOnly _plots As ICollection(Of IPlot)
+        Private ReadOnly _seriesPlotInfo As SeriesPlotInfo
 
 #End Region
 
 #Region "Constructors"
-        Public Sub New(ByVal seriesSelector As ISeriesSelector)
+
+        Public Sub New(ByVal parent As GraphViewPlugin)
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            _seriesMenu = seriesSelector
+            _parent = parent
+            _charts = {timeSeriesPlot, probabilityPlot, histogramPlot, boxWhisker}
+            _plots = {dataSummary, timeSeriesPlot, probabilityPlot, histogramPlot, boxWhisker}
 
             'assign the events
-            AddHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
-            AddHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
+            AddHandler parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
             AddHandler Disposed, AddressOf OnDisposing
 
-            pProbability.SeriesSelector = seriesSelector
-            pTimeSeries.SeriesSelector = seriesSelector
+            probabilityPlot.SeriesSelector = parent.SeriesSelector
+            probabilityPlot.AppManager = parent.App
+            timeSeriesPlot.SeriesSelector = parent.SeriesSelector
+            timeSeriesPlot.AppManager = parent.App
 
-            SetColorCollections()
-            selectedSeriesIdList.Clear()
-            pTimeSeries.Clear()
+            _parent.PlotOptions.StartDateLimit = Today.AddYears(-150)
+            _parent.PlotOptions.EndDateLimit = Today
 
-            StartDateLimit = Today.AddYears(-150)
-            EndDateLimit = Today
+            _seriesPlotInfo = New SeriesPlotInfo(_parent.SeriesSelector.SiteDisplayColumn, _parent.PlotOptions)
         End Sub
 
 
         Private Sub OnDisposing(ByVal sender As Object, ByVal e As EventArgs)
             ' Unsubscribe from events
-            RemoveHandler Disposed, AddressOf OnDisposing
-            RemoveHandler _seriesMenu.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
-            RemoveHandler _seriesMenu.Refreshed, AddressOf SeriesSelector_Refreshed
-            _seriesMenu = Nothing
+            RemoveHandler _parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
         End Sub
-
-#End Region
-
-#Region "Properties"
-
-        Private _startDateTime As DateTime
-        Public Property StartDateTime() As DateTime
-            Get
-                Return _startDateTime
-            End Get
-            Set(ByVal value As DateTime)
-                _startDateTime = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
-
-        Private _endDateTime As DateTime
-        Public Property EndDateTime() As Date
-            Get
-                Return _endDateTime
-            End Get
-            Set(value As Date)
-                _endDateTime = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
-
-        Private _startDateLimit As DateTime
-        Public Property StartDateLimit() As Date
-            Get
-                Return _startDateLimit
-            End Get
-            Set(value As Date)
-                _startDateLimit = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
-
-        Private _endDateLimit As DateTime
-        Public Property EndDateLimit() As Date
-            Get
-                Return _endDateLimit
-            End Get
-            Set(value As Date)
-                _endDateLimit = value
-
-                RaiseDatesChanged()
-            End Set
-        End Property
 
 #End Region
 
 #Region "Private Methods"
 
-        Private Sub RaiseDatesChanged()
-            RaiseEvent DatesChanged(Me, EventArgs.Empty)
+        Public Sub ShowTimeSeriesPlot()
+            tcPlots.SelectTab(tpTimeSeries)
         End Sub
 
-        Private Sub SetColorCollections()
-            'Setting of color collections
-            ccList0.Clear()
-            ccList0.Add(Color.FromArgb(106, 61, 154))
-            ccList0.Add(Color.FromArgb(202, 178, 214))
-            ccList0.Add(Color.FromArgb(255, 127, 0))
-            ccList0.Add(Color.FromArgb(253, 191, 111))
-            ccList0.Add(Color.FromArgb(227, 26, 28))
-            ccList0.Add(Color.FromArgb(251, 154, 153))
-            ccList0.Add(Color.FromArgb(51, 160, 44))
-            ccList0.Add(Color.FromArgb(178, 223, 138))
-            ccList0.Add(Color.FromArgb(31, 120, 180))
-            ccList0.Add(Color.FromArgb(166, 206, 227))
-
-            For i = 0 To 9
-                linecolorlist.Add(ccList0(i))
-            Next
-            For i = 0 To 9
-                pointcolorlist.Add(ccList0(i))
-            Next
+        Public Sub ShowProbabilityPlot()
+            tcPlots.SelectTab(tpTimeSeries)
         End Sub
 
-        Private Sub SeriesSelector_Refreshed(ByVal sender As Object, ByVal e As EventArgs)
-
-            pTimeSeries.Clear()
-            pBoxWhisker.Clear()
-            pProbability.Clear()
-            selectedSeriesIdList.Clear()
-
+        Public Sub ShowHistogramPlot()
+            tcPlots.SelectTab(tpHistogram)
         End Sub
 
-        'when a series is checked in the series selector control
-        Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
+        Public Sub ShowBoxWhiskerPlot()
+            tcPlots.SelectTab(tpBoxWhisker)
+        End Sub
 
-            'Declaring all variables
-            Dim curveIndex As Integer = 0
-            Dim removedSeriesID As Integer = 0
-            Dim CheckedSeriesState As Boolean = False
+        Public Sub ShowSummaryPlot()
+            tcPlots.SelectTab(tpDataSummary)
+        End Sub
 
-            If Not (selectedSeriesIdList.Contains(_seriesMenu.SelectedSeriesID)) Then
-                selectedSeriesIdList.Add(_seriesMenu.SelectedSeriesID)
-                CheckedSeriesState = True
-            Else
-                For i As Integer = 0 To selectedSeriesIdList.Count - 1
-                    If Not _seriesMenu.CheckedIDList.Contains(selectedSeriesIdList(i)) Then
-                        removedSeriesID = selectedSeriesIdList(i)
-                        curveIndex = i
-                    End If
-                Next
-
-                selectedSeriesIdList.Remove(selectedSeriesIdList(curveIndex))
-                If (selectedSeriesIdList.Count = 0) Or (selectedSeriesIdList.Count = 1) Then
-                    'Clear the graph and repolt the whole graph
-                    Summary.ClearStatistics()
-                    pDataSummary.ClearStatTables()
-                    pTimeSeries.Remove(0)
-                    pProbability.Remove(0)
-                    pTimeSeries.Clear()
-                    pBoxWhisker.Clear()
-                    pHistogram.Clear()
-                    pProbability.Clear()
-                    colorcount = 0
-                    StartDateLimit = Today.AddYears(-150)
-                    EndDateLimit = Today
-                Else
-                    pTimeSeries.Remove(removedSeriesID)
-                    pProbability.Remove(removedSeriesID)
-                    pBoxWhisker.Remove(removedSeriesID)
-                    pHistogram.Remove(removedSeriesID)
-                    pDataSummary.RemoveStatTable(removedSeriesID)
-                    If IsDisplayFullDate Then
-                        ResetDateRange()
-                    End If
-                End If
+        Public Sub ApplyOptions(Optional ByVal refreshData As Boolean = False)
+            If refreshData Then
+                _seriesPlotInfo.Update()
             End If
 
-
-            If (CheckedSeriesState = True) Or (selectedSeriesIdList.Count = 1) Then
-
-                'progress bar setting
-                ProgressBar.Visible = True
-                ProgressBar.Maximum = 11
-                ProgressBar.Minimum = 0
-                ProgressBar.Value = 0
-
-                Dim seriesID = selectedSeriesIdList(selectedSeriesIdList.Count - 1)
-                PlotGraps(seriesID)
-                colorcount += 1
-
-            End If
-
-            pDataSummary.StatTableStyling()
-            pTimeSeries.Refreshing()
-            pProbability.Refreshing()
-            pHistogram.Refreshing()
-            pBoxWhisker.Refreshing()
-
-            ProgressBar.Visible = False
-
-        End Sub
-
-        Private Function GetTimeSeriesPlotOptions(ByVal seriesID As Integer) As TimeSeriesPlotOptions
-            Dim dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
-            Dim dataValuesRepo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-            Dim series = dataSeriesRepo.GetByKey(seriesID)
-
-            Dim strStartDate = StartDateTime
-            Dim strEndDate = EndDateTime.AddDays(1).AddMilliseconds(-1)
-            ProgressBar.Value += 1
-
-            Dim nodatavalue = series.Variable.NoDataValue
-            ProgressBar.Value += 1
-            Dim data = dataValuesRepo.GetTableForGraphView(seriesID, nodatavalue, strStartDate, strEndDate)
-            ProgressBar.Value += 1
-            Dim variableName = series.Variable.Name
-            ProgressBar.Value += 1
-            Dim unitsName = series.Variable.VariableUnit.Name
-            ProgressBar.Value += 1
-            Dim siteName = If(_seriesMenu.SiteDisplayColumn = "SiteName", series.Site.Name, series.Site.Code)
-            ProgressBar.Value += 1
-            Dim dataType = series.Variable.DataType
-            ProgressBar.Value += 1
-
-            Dim options = CPlotOptions1.Options
-
-            Dim timeSeriesOptions = New TimeSeriesPlotOptions
-            timeSeriesOptions.DataTable = data
-            timeSeriesOptions.DataType = dataType
-            timeSeriesOptions.PlotOptions = options
-            timeSeriesOptions.SeriesID = seriesID
-            timeSeriesOptions.SiteName = siteName
-            timeSeriesOptions.VariableName = variableName
-            timeSeriesOptions.VariableUnits = unitsName
-
-            Return timeSeriesOptions
-        End Function
-        
-        Private Sub PlotGraps(ByVal seriesID As Int32)
-
-            'Date Range setting
-            DateRangeSelection(seriesID)
-
-            'get data
-            Dim timeSeriesOptions = GetTimeSeriesPlotOptions(seriesID)
-
-            'Set different color to each curve if the color option is not selected
-            ColorChooser(timeSeriesOptions.PlotOptions)
-
-            Summary.GetStatistics(timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-            pDataSummary.CreateStatTable(timeSeriesOptions.SiteName, timeSeriesOptions.VariableName, seriesID, timeSeriesOptions.DataTable, timeSeriesOptions.PlotOptions)
-            pDataSummary.StatTableStyling()
-
-            If Summary.Statistic_NumberOfObservations > Summary.Statistic_NumberOfCensoredObservations Then
-
-                pTimeSeries.Plot(timeSeriesOptions)
-                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-
-                pBoxWhisker.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-
-                pProbability.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-
-                pHistogram.Plot(timeSeriesOptions, Summary.Statistic_StandardDeviation)
-                If ProgressBar.Value < ProgressBar.Maximum Then ProgressBar.Value += 1
-
-            ElseIf Summary.Statistic_NumberOfObservations = Summary.Statistic_NumberOfCensoredObservations Then
-
-                Const ALL_CENSORED As String = "All data is censored, so there is no data do display"
-
-                If pTimeSeries.CurveCount = 0 Then pTimeSeries.SetGraphPaneTitle(ALL_CENSORED)
-                If pBoxWhisker.CurveCount = 0 Then pBoxWhisker.SetGraphPaneTitle(ALL_CENSORED)
-                If pProbability.CurveCount = 0 Then pProbability.SetGraphPaneTitle(ALL_CENSORED)
-                If pHistogram.CurveCount = 0 Then pHistogram.SetGraphPaneTitle(ALL_CENSORED)
-
-            End If
-
-        End Sub
-
-        Public Sub ApplyOptions()
-
-            'progress bar setting
-            ProgressBar.Visible = True
-            ProgressBar.Maximum = selectedSeriesIdList.Count * 10
-            ProgressBar.Minimum = 0
-            ProgressBar.Value = 0
-            colorcount = 0
-
-            'Clear the graph and plot it again
-            Summary.ClearStatistics()
-            pDataSummary.ClearStatTables()
-            pTimeSeries.Clear()
-            pBoxWhisker.Clear()
-            pHistogram.Clear()
-            pProbability.Clear()
-
-            'Ploting the Time Series graph and Probability graph
-            For Each s As Integer In selectedSeriesIdList
-                PlotGraps(s)
-                colorcount += 1
+            ' todo: ProgressBar
+            For Each id In _seriesPlotInfo.GetSeriesIDs()
+                DateRangeSelection(id)
             Next
-
-            pDataSummary.StatTableStyling()
-            pTimeSeries.Refreshing()
-            pProbability.Refreshing()
-            pHistogram.Refreshing()
-            pBoxWhisker.Refreshing()
-
-            ProgressBar.Visible = False
+            For Each plot As IPlot In _plots
+                plot.Plot(_seriesPlotInfo)
+            Next
         End Sub
 
         Public Sub ShowPointValues(ByVal showPointValues As Boolean)
-            DirectCast(pTimeSeries, IChart).ShowPointValues = showPointValues
-            DirectCast(pProbability, IChart).ShowPointValues = showPointValues
-            DirectCast(pHistogram, IChart).ShowPointValues = showPointValues
-            DirectCast(pBoxWhisker, IChart).ShowPointValues = showPointValues
+            For Each chart As IChart In _charts
+                chart.ShowPointValues = showPointValues
+            Next
         End Sub
 
         Public Sub UndoZoom()
-            DirectCast(pTimeSeries, IChart).ZoomOutAll()
-            DirectCast(pProbability, IChart).ZoomOutAll()
-            DirectCast(pHistogram, IChart).ZoomOutAll()
-            DirectCast(pBoxWhisker, IChart).ZoomOutAll()
+            For Each chart As IChart In _charts
+                chart.ZoomOutAll()
+            Next
         End Sub
 
         Public Sub ZoomIn()
-            DirectCast(pTimeSeries, IChart).ZoomIn()
-            DirectCast(pProbability, IChart).ZoomIn()
-            DirectCast(pHistogram, IChart).ZoomIn()
-            DirectCast(pBoxWhisker, IChart).ZoomIn()
+            For Each chart As IChart In _charts
+                chart.ZoomIn()
+            Next
         End Sub
 
         Public Sub ZoomOut()
-            DirectCast(pTimeSeries, IChart).ZoomOut()
-            DirectCast(pProbability, IChart).ZoomOut()
-            DirectCast(pHistogram, IChart).ZoomOut()
-            DirectCast(pBoxWhisker, IChart).ZoomOut()
+            For Each chart As IChart In _charts
+                chart.ZoomOut()
+            Next
         End Sub
 
-        Private Sub ColorChooser(ByVal options As PlotOptions)
-            options.GetPointColor = pointcolorlist(colorcount Mod 10)
-            options.GetLineColor = linecolorlist(colorcount Mod 10)
+#End Region
+
+#Region "Private methods"
+
+        Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
+            _seriesPlotInfo.Update(e)
+            ApplyOptions()
         End Sub
 
         Private Sub DateRangeSelection(ByVal serieID As Integer)
             Dim repository = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
-            Dim series = repository.GetByKey(serieID)
-            If series = Nothing Then Return
+            Dim range = repository.GetDatesRange(serieID)
+            If range Is Nothing Then Return
 
-            Dim bDateTime = series.BeginDateTime
-            Dim eDateTime = series.EndDateTime
+            Dim bDateTime = range.Item1
+            Dim eDateTime = range.Item2
+            Dim plotOptions = _parent.PlotOptions
 
-            If StartDateLimit > bDateTime Or StartDateLimit = Today.AddYears(-150) Then
-                StartDateLimit = bDateTime
+            If plotOptions.StartDateLimit > bDateTime Or plotOptions.StartDateLimit = Today.AddYears(-150) Then
+                plotOptions.StartDateLimit = bDateTime
             End If
-            If EndDateLimit < eDateTime Or EndDateLimit = Today Then
-                EndDateLimit = eDateTime
+            If plotOptions.EndDateLimit < eDateTime Or plotOptions.EndDateLimit = Today Then
+                plotOptions.EndDateLimit = eDateTime
             End If
 
-            If IsDisplayFullDate Then
-                StartDateTime = StartDateLimit
-                EndDateTime = EndDateLimit
+            If _parent.PlotOptions.DisplayFullDate Then
+                plotOptions.StartDateTime = plotOptions.StartDateLimit
+                plotOptions.EndDateTime = plotOptions.EndDateLimit
             End If
 
         End Sub
 
-        Private Sub ResetDateRange()
-            StartDateLimit = Today.AddYears(-150)
-            EndDateLimit = Today
-            For i As Integer = 0 To selectedSeriesIdList.Count - 1
-                DateRangeSelection(i)
-            Next
-        End Sub
 #End Region
 
     End Class

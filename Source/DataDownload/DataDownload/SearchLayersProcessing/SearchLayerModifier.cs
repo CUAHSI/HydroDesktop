@@ -13,6 +13,8 @@ using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.Interfaces.PluginContracts;
+using HydroDesktop.Common.Tools;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
@@ -256,7 +258,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             }
         }
 
-        private static IPointScheme CreateSymbology(string servCode, IFeatureSet featureSet)
+        private IPointScheme CreateSymbology(string servCode, IFeatureSet featureSet)
         {
             Debug.Assert(featureSet != null);
 
@@ -304,8 +306,10 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             const int imageStep = 5;
             var imageSize = 5;
 
-            var imageHelper = new WebServices.ServiceIconHelper(Settings.Instance.SelectedHISCentralURL); // we need it only to get image
-            var image = imageHelper.GetImageForService(servCode);
+            var searchPlugin = _downloadPlugin.App.GetExtension<ISearchPlugin>();
+            var image = searchPlugin != null
+                              ? new WebServices.ServiceIconHelper(searchPlugin.HisCentralUrl).GetImageForService(servCode)
+                              : null;
 
             const string seriesID = "SeriesID";
             var needDownloadedCategories = featureSet.DataTable.Columns.Contains(seriesID);

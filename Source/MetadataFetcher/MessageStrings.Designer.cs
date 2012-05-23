@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HydroDesktop.MetadataFetcher {
-    using System;
-    
-    
+namespace HydroDesktop.MetadataFetcher
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

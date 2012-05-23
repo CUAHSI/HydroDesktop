@@ -9,8 +9,22 @@ namespace Search3.Settings
     /// </summary>
     public class CatalogSettings : ObservableObject<CatalogSettings>
     {
-        internal const string HISCENTRAL_URL_1 = "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
-        internal const string HISCENTRAL_URL_2 = "http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx";
+        /// <summary>
+        /// Gets default url of HisCentral
+        /// </summary>
+        public static string HISCENTRAL_URL_1
+        {
+            get { return "http://hiscentral.cuahsi.org/webservices/hiscentral_1_1.asmx"; }
+        }
+
+        /// <summary>
+        /// Gets secondary url of HisCentral
+        /// </summary>
+        public static string HISCENTRAL_URL_2
+        {
+            get { return "http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx"; }
+        }
+    
 
         private string _hisCentralUrl;
         public string HISCentralUrl

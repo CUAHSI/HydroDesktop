@@ -28,13 +28,10 @@
 #endregion 
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using OpenMI.Standard;
-using Oatc.OpenMI.Sdk.DevelopmentSupport;
 using Oatc.OpenMI.Gui.Core;
+using Oatc.OpenMI.Sdk.DevelopmentSupport;
+using OpenMI.Standard;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {

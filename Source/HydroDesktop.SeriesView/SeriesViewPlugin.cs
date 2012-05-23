@@ -1,32 +1,28 @@
-﻿namespace SeriesView
-{
-    using System.Windows.Forms;
+﻿using HydroDesktop.Common;
 
-    using DotSpatial.Controls;
-    using DotSpatial.Controls.Header;
+namespace SeriesView
+{
     using System.ComponentModel.Composition;
-    using HydroDesktop.Interfaces;
+    using System.Windows.Forms;
+    using DotSpatial.Controls;
     using DotSpatial.Controls.Docking;
+    using DotSpatial.Controls.Header;
+    using HydroDesktop.Interfaces;
 
     public class SeriesViewPlugin : Extension
     {
-        private const string SeriesViewKey = "kHydroSeriesView";
+        private readonly string SeriesViewKey = SharedConstants.SeriesViewKey;
+        private readonly string _tableRootKey = SharedConstants.TableRootKey;
 
         [Export("SeriesControl")]
         private ISeriesSelector MainSeriesSelector = new SeriesSelector();
-
-        private RootItem tableRoot;
-
-        bool firstTimeActivating = true;
         
         public override void Activate()
         {
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             
             AddSeriesDockPanel();
-
-            tableRoot = new RootItem("kHydroTable", "Table") {SortOrder = 20};
-            App.HeaderControl.Add(tableRoot);
+            App.HeaderControl.Add(new RootItem(_tableRootKey, "Table") { SortOrder = 20 });
 
             Global.PluginEntryPoint = this;
 
@@ -35,34 +31,22 @@
 
         void DockManager_ActivePanelChanged(object sender, DockablePanelEventArgs e)
         {
-            if (e.ActivePanelKey == "kHydroTable")
+            if (e.ActivePanelKey == _tableRootKey)
             {
-                App.HeaderControl.SelectRoot("kHydroTable");
+                App.HeaderControl.SelectRoot(_tableRootKey);
             }
         }
 
         public override void  Deactivate()
         {
  	        App.HeaderControl.RemoveAll();
-            App.DockManager.Remove(SeriesViewKey);
-
-            App.DockManager.PanelAdded -= DockManager_PanelAdded;
+            //App.DockManager.Remove(SeriesViewKey);
+            
             App.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
 
             Global.PluginEntryPoint = null;
             
             base.Deactivate();
-        }
-
-
-        void DockManager_PanelAdded(object sender, DockablePanelEventArgs e)
-        {
-            if (!firstTimeActivating) return;
-            
-            if (e.ActivePanelKey == "kLegend")
-            {
-                AddSeriesDockPanel();
-            }
         }
 
         void AddSeriesDockPanel()
@@ -81,7 +65,6 @@
             };
 
             App.DockManager.Add(timeSeriesPanel);
-            firstTimeActivating = false;
         }
     }
 }

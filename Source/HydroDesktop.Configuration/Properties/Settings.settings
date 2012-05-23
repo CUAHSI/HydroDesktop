@@ -14,19 +14,6 @@
     <Setting Name="NewMetadataCacheName" Type="System.String" Scope="User">
       <Value Profile="(Default)">new1_metadatacache.sqlite</Value>
     </Setting>
-    <Setting Name="HISCentralUrlList" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;http://hiscentral.cuahsi.org/webservices/hiscentral.asmx&lt;/string&gt;
-  &lt;string&gt;http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="DefaultHISCentralUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral.asmx</Value>
-    </Setting>
-    <Setting Name="SelectedHISCentralUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral.asmx</Value>
-    </Setting>
     <Setting Name="NewProjectFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">new1.dspx</Value>
     </Setting>

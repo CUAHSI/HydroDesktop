@@ -1,4 +1,6 @@
-﻿namespace HydroDesktop.Interfaces.ObjectModel
+﻿using System.Globalization;
+
+namespace HydroDesktop.Interfaces.ObjectModel
 {
     /// <summary>
     /// Represents a spatial reference system
@@ -22,7 +24,7 @@
         public SpatialReference(int srsID)
         {
             SRSID = srsID;
-            SRSName = "EPSG:" + srsID.ToString();
+            SRSName = "EPSG:" + srsID.ToString(CultureInfo.InvariantCulture);
         }
         /// <summary>
         /// Creates a spatial reference with the specified name

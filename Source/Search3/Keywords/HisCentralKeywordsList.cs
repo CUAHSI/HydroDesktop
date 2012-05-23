@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Search3.Settings;
-using System;
 
 namespace Search3.Keywords
 {

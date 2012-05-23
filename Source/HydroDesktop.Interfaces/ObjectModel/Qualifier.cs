@@ -59,7 +59,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public override bool Equals(object obj)
         {
-            Qualifier other = obj as Qualifier;
+            var other = obj as Qualifier;
             if (other == null) return base.Equals(obj);
 
             return Code.Equals(other.Code);
@@ -82,19 +82,19 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns>The collection of simple qualifiers</returns>
         public virtual IList<Qualifier> GetSimpleQualifiers()
         {
-            List<Qualifier> resultList = new List<Qualifier>();
+            var resultList = new List<Qualifier>();
             if (IsCompositeQualifier == false)
             {
                 resultList.Add(this);
             }
             else
             {
-                string[] separators = new string[] {","};
-                string[] codes = Code.Split(separators,StringSplitOptions.RemoveEmptyEntries);
-                string[] descriptions = Description.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                var separators = new string[] {","};
+                var codes = Code.Split(separators,StringSplitOptions.RemoveEmptyEntries);
+                var descriptions = Description.Split(separators, StringSplitOptions.RemoveEmptyEntries);
                 for (int i = 0; i < codes.Length; i++)
                 {
-                    Qualifier newQual = new Qualifier();
+                    var newQual = new Qualifier();
                     newQual.Code = codes[i].Trim();
                     newQual.Description = descriptions[i].Trim();
                     resultList.Add(newQual);

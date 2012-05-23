@@ -19,7 +19,6 @@ namespace Search3.Settings
 
         #endregion
 
-
         private CatalogSettings _catalogSettings;
         public CatalogSettings CatalogSettings
         {
@@ -30,10 +29,7 @@ namespace Search3.Settings
                     _catalogSettings = new CatalogSettings
                                            {
                                                TypeOfCatalog = Properties.Settings.Default.TypeOfCatalog,
-                                               HISCentralUrl = HydroDesktop.Configuration.Settings.Instance.SelectedHISCentralURL
                                            };
-
-                    _catalogSettings.PropertyChanged += _catalogSettings_PropertyChanged;
                 }
 
                 return _catalogSettings;
@@ -62,21 +58,6 @@ namespace Search3.Settings
         public AreaSettings AreaSettings
         {
             get { return _areaSettings; }
-        }
-
-        void _catalogSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "HISCentralUrl":
-                    HydroDesktop.Configuration.Settings.Instance.SelectedHISCentralURL = _catalogSettings.HISCentralUrl;
-                    //todo: save HydroDesktop.Configuration.Settings
-                    break;
-                case "TypeOfCatalog":
-                    //Properties.Settings.Default.TypeOfCatalog = _catalogSettings.TypeOfCatalog;
-                    //Properties.Settings.Default.Save();
-                    break;
-            }
         }
     }
 }

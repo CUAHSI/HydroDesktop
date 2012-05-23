@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotSpatial.Controls.Docking;
-using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.Windows.Forms;
+using DotSpatial.Controls.Docking;
+using HydroDesktop.Common;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace HydroDesktop.Docking
 {
@@ -31,7 +30,7 @@ namespace HydroDesktop.Docking
         //private Dictionary<DockContent, int> sortOrderLookup = new Dictionary<DockContent, int>();
 
         // The lookup list of dock panels (for keeping track of existing panels)
-        private Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string,DockPanelInfo>();
+        private readonly Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string,DockPanelInfo>();
 
         /// <summary>The active panel key</summary>
         private string ActivePanelKey { get; set; }
@@ -64,11 +63,11 @@ namespace HydroDesktop.Docking
 
             //setup the events
             MainDockPanel.ActiveDocumentChanged += new EventHandler(MainDockPanel_ActiveDocumentChanged);
+
         }
 
         #endregion
-
-
+        
         public void ResetLayout()
         {
             //check the map
@@ -84,7 +83,7 @@ namespace HydroDesktop.Docking
             //first, check the list
             foreach (string key in dockPanelLookup.Keys)
             {
-                if (key == "kHydroSeriesView")
+                if (key == SharedConstants.SeriesViewKey)
                 {
                     DockContent cnt = dockPanelLookup[key].WeifenLuoDockPanel;
 
@@ -135,6 +134,15 @@ namespace HydroDesktop.Docking
             if (dockStyle == DockStyle.Right)
                 MainDockPanel.DockRightPortion = (double)innerControl.Width / MainDockPanel.Width;
 
+            if (dockStyle == DockStyle.Left)
+                MainDockPanel.DockLeftPortion = (double)innerControl.Width / MainDockPanel.Width;
+
+            if (dockStyle == DockStyle.Top)
+                MainDockPanel.DockTopPortion = (double)innerControl.Height / MainDockPanel.Height;
+
+            if (dockStyle == DockStyle.Bottom)
+                MainDockPanel.DockBottomPortion = (double)innerControl.Height / MainDockPanel.Height;
+
             //setting document tab strip location to 'bottom'
             if (dockStyle == DockStyle.Fill)
             {
@@ -144,6 +152,7 @@ namespace HydroDesktop.Docking
 
             DockContent content = new DockContent();
             content.ShowHint = ConvertToDockState(dockStyle);
+
             content.Controls.Add(innerControl);
 
             content.Text = caption;
@@ -156,11 +165,12 @@ namespace HydroDesktop.Docking
             if (img != null)
             {
                 content.Icon = ImageToIcon(img);
-            }
+            }        
 
             content.Show(MainDockPanel);
 
             //event handler for closing
+            content.VisibleChanged += new EventHandler(content_VisibleChanged);
             content.FormClosing += new FormClosingEventHandler(content_FormClosing);
             content.FormClosed += new FormClosedEventHandler(content_FormClosed);
 
@@ -185,6 +195,16 @@ namespace HydroDesktop.Docking
 
             //caption - changed
             panel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(panel_PropertyChanged);
+        }
+
+        void content_VisibleChanged(object sender, EventArgs e)
+        {
+            DockContent content = sender as DockContent;
+            if (content == null) return;
+            if (content.IsHidden)
+            {
+                //OnPanelClosed(content.Tag.ToString());
+            }
         }
 
         //when the dockable panel property is changed
@@ -212,7 +232,7 @@ namespace HydroDesktop.Docking
             if (c != null)
             {
                 OnPanelClosed(c.Tag.ToString());
-            }
+           } 
         }
 
         void content_FormClosing(object sender, FormClosingEventArgs e)
@@ -234,18 +254,26 @@ namespace HydroDesktop.Docking
             return null;
         }
 
+        /// <summary>
+        /// Completely removes a dockable panel
+        /// </summary>
+        /// <param name="key">Unique key of the panel</param>
         public void Remove(string key)
         {
+            //if (key == "kDataExplorer") return;
+            
             if (dockPanelLookup.ContainsKey(key))
             {
                 DockPanelInfo dockInfo = dockPanelLookup[key];
                 
                 DockContent content = dockInfo.WeifenLuoDockPanel;
+
                 content.Close();
-                
+
                 //remove event handlers
                 content.FormClosing -= content_FormClosing;
                 content.FormClosed -= content_FormClosed;
+                content.VisibleChanged -= content_VisibleChanged;
 
                 dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
 
@@ -285,11 +313,29 @@ namespace HydroDesktop.Docking
 
         public event EventHandler<DockablePanelEventArgs> PanelClosed;
 
+        /// <summary>
+        /// Selects a dockable panel (the panel gains focus)
+        /// if the panel is hidden, make it visible at its original
+        /// location
+        /// </summary>
+        /// <param name="key">The unique key of the dockable panel to select</param>
         public void SelectPanel(string key)
         {
             if (dockPanelLookup.ContainsKey(key))
             {
                 dockPanelLookup[key].WeifenLuoDockPanel.Activate();
+            }
+        }
+
+        /// <summary>
+        /// Hides the Dockable panel (panel is identified by key)
+        /// </summary>
+        /// <param name="key">the unique key of the dockable panel</param>
+        public void HidePanel(string key)
+        {
+            if (dockPanelLookup.ContainsKey(key))
+            {
+                dockPanelLookup[key].WeifenLuoDockPanel.IsHidden = true;
             }
         }
 

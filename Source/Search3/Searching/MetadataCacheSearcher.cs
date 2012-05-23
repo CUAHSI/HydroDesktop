@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using HydroDesktop.Database;
-using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace Search3.Searching
 {

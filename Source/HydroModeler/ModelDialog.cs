@@ -26,16 +26,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion 
-using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
-using System.Windows.Forms;
-using OpenMI.Standard;
-using Oatc.OpenMI.Sdk.Backbone;
-using Oatc.OpenMI.Gui.Core;
+using System.Diagnostics;
 using Oatc.OpenMI.Gui.Controls;
+using Oatc.OpenMI.Gui.Core;
+using Oatc.OpenMI.Sdk.Backbone;
+using OpenMI.Standard;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor
 {

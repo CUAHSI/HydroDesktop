@@ -105,11 +105,12 @@
         /// <returns></returns>
         public override bool Equals(BaseEntity other)
         {
-            if (other is Unit)
+            var unit = other as Unit;
+            if (unit != null)
             {
-                if (((Unit) other).Name != Name) return false;
-                if (((Unit) other).UnitsType != UnitsType) return false;
-                if (((Unit) other).Abbreviation != Abbreviation) return false;
+                if (unit.Name != Name) return false;
+                if (unit.UnitsType != UnitsType) return false;
+                if (unit.Abbreviation != Abbreviation) return false;
                 return true;
             }
             return base.Equals(other);

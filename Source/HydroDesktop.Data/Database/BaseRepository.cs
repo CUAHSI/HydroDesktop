@@ -119,10 +119,18 @@ namespace HydroDesktop.Database
         public T GetByKey(object key)
         {
              var table = DbOperations.LoadTable(TableName,
-                                    string.Format("select * from {0} where {1}={2}", TableName, PrimaryKeyName, key));
+                                    string.Format("select * from {0} where {1}={2} LIMIT 1", TableName, PrimaryKeyName, key));
              if (table.Rows.Count == 0)
                  return default(T);
             return DataRowToEntity(table.Rows[0]);
+        }
+
+        public bool Exists(object key)
+        {
+            var res =
+                DbOperations.ExecuteSingleOutput(
+                    string.Format("select count(*) from {0} where {1}=?", TableName, PrimaryKeyName), key);
+            return Convert.ToInt64(res) > 0;
         }
 
         #endregion

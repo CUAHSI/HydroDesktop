@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using HydroDesktop.Interfaces;
-using DotSpatial.Data;
-using DotSpatial.Topology;
-using DotSpatial.Controls;
-using HydroDesktop.Database;
-using DotSpatial.Projections;
-using HydroDesktop.Configuration;
 using System.IO;
+using System.Linq;
+using DotSpatial.Controls;
+using DotSpatial.Data;
+using DotSpatial.Projections;
+using DotSpatial.Topology;
+using HydroDesktop.Interfaces.PluginContracts;
 using Hydrodesktop.Common;
+using HydroDesktop.Configuration;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
 
 namespace TableView
 {

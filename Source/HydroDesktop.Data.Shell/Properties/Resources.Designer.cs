@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HydroDesktop.Data.Shell.Properties {
-    using System;
-    
-    
+namespace HydroDesktop.Data.Shell.Properties
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

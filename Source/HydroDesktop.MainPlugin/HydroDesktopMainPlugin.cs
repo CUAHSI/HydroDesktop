@@ -1,16 +1,17 @@
 ﻿namespace HydroDesktop.Main
 {
     using System;
+    using System.ComponentModel.Composition;
+    using System.Diagnostics;
+    using System.IO;
     using System.Windows.Forms;
-
     using DotSpatial.Controls;
     using DotSpatial.Controls.Header;
-    using System.ComponentModel.Composition;
     using HydroDesktop.Configuration;
-    using System.IO;
-    using HydroDesktop.Interfaces;
     using HydroDesktop.Database;
-    using System.Diagnostics;
+    using HydroDesktop.Interfaces;
+    using HydroDesktop.Main.Properties;
+    using DotSpatial.Extensions;
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
@@ -32,10 +33,12 @@
 
         private SelectionStatusDisplay selectionDisplay;
 
+        private AttributeTableManager attributeManager;
+
         public override void Activate()
         {
             //startup logging
-            TraceLogger logger = new TraceLogger();
+            var logger = new TraceLogger();
             logger.CreateTraceFile();
 
             
@@ -48,19 +51,40 @@
             App.SerializationManager.NewProjectCreated += SerializationManager_NewProjectCreated;
             App.SerializationManager.IsDirtyChanged += SerializationManager_IsDirtyChanged;
 
+            App.ExtensionsActivated += new EventHandler(App_ExtensionsActivated);
+
+
             // todo: export Shell in MapWindow as Form to avoid type casting
             if (Shell is Form)
             {
                 ((Form)Shell).FormClosing += HydroDesktopMainPlugin_FormClosing;
             }
-
+            //show selection status display
+            selectionDisplay = new SelectionStatusDisplay(App);
             //show latitude, longitude coordinate display
             latLongDisplay = new CoordinateDisplay(App);
-            //show selection status display
-            //selectionDisplay = new SelectionStatusDisplay(App);
-
             base.Activate();
         }
+
+        void App_ExtensionsActivated(object sender, EventArgs e)
+        {
+            if (App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer") != null)
+            {
+                attributeManager = new AttributeTableManager(App);
+
+                //App.HeaderControl.Add(new SimpleActionItem("Attribute Table", ShowAttribute_Click) { RootKey = HeaderControl.HomeRootItemKey, GroupCaption = "Map Tool", LargeImage = Resources.table_32x32, SmallImage = Resources.table_16x16, Enabled = true });
+                //add the context menu items
+            }
+        }
+
+        //void ShowAttribute_Click(object sender, EventArgs e)
+        //{
+        //    //_attributesVisible = !_attributesVisible;
+        //    //if (_attributesVisible)
+        //        App.DockManager.SelectPanel("kDataExplorer");
+        //    //else
+        //    //    App.DockManager.HidePanel("kDataExplorer");
+        //}
 
         void HydroDesktopMainPlugin_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -147,6 +171,7 @@
             {
                 ((Form)Shell).FormClosing -= HydroDesktopMainPlugin_FormClosing;
             }
+            App.ExtensionsActivated -= App_ExtensionsActivated;
 
             base.Deactivate();
         }
@@ -348,15 +373,13 @@
 
                 //if the clicked root item was 'search', then don't select the map root item
                 //(the user intended to show search tab and map panel)
-                if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false) &&
-                    !App.SerializationManager.GetCustomSetting("MetadataRootClicked", false))
+                if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
                 {
                     App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
                 }
                 else
                 {
                     App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
-                    App.SerializationManager.SetCustomSetting("MetadataRootClicked", false);
                 }
             }
         }

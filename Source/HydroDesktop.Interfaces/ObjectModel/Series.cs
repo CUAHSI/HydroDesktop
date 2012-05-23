@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections.Generic;
 
 namespace HydroDesktop.Interfaces.ObjectModel
@@ -69,7 +68,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         {
             //TODO: need to include series provenance information
             
-            Series newSeries = new Series();
             BeginDateTime = original.BeginDateTime;
             EndDateTime = original.EndDateTime;
             CreationDateTime = DateTime.Now;
@@ -97,11 +95,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         #endregion
 
         #region Private Variables
-        private int _valueCount = 0;
-        private DateTime _beginDateTime;
-        private DateTime _endDateTime;
-        private DateTime _beginDateTimeUTC;
-        private DateTime _endDateTimeUTC;
+
         #endregion
 
         #region Properties
@@ -121,82 +115,38 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <summary>
         /// The local time when the first value of the series was measured
         /// </summary>
-        public virtual DateTime BeginDateTime
-        {
-            get
-            {
-                return _beginDateTime;
-            }
-            set
-            {
-                _beginDateTime = value;
-            }
-        }
+        public virtual DateTime BeginDateTime { get; set; }
 
         /// <summary>
         /// The local time when the last value of the series was measured
         /// </summary>
-        public virtual DateTime EndDateTime
-        {
-            get
-            {
-                return _endDateTime;
-            }
-            set
-            {
-                _endDateTime = value;
-            }
-        }
+        public virtual DateTime EndDateTime { get; set; }
 
         /// <summary>
         /// Gets or sets the begin date time of series in UTC
         /// </summary>
-        public virtual DateTime BeginDateTimeUTC 
-        {
-            get
-            {
-                return _beginDateTimeUTC;
-            }
-            set
-            {
-                _beginDateTimeUTC = value;
-            }
-        }
+        public virtual DateTime BeginDateTimeUTC { get; set; }
 
         /// <summary>
         /// Gets or sets the end date time of the series in UTC
         /// </summary>
-        public virtual DateTime EndDateTimeUTC 
-        {
-            get
-            {
-                return _endDateTimeUTC;
-            }
-            set
-            {
-                _endDateTimeUTC = value;
-            }       
-        }
+        public virtual DateTime EndDateTimeUTC { get; set; }
 
         /// <summary>
         /// The number of data values in this series
         /// </summary>
-        public virtual int ValueCount
-        {
-            get { return _valueCount; }
-            set { _valueCount = value; }
-        }
+        public virtual int ValueCount { get; set; }
 
         private  void UpdateSeriesInfoFromDataValues()
         {
             if (DataValueList.Count > 0)
             {
                 ValueCount = DataValueList.Count;
-                _endDateTimeUTC = DataValueList[DataValueList.Count - 1].DateTimeUTC;
-                _beginDateTimeUTC = DataValueList[0].DateTimeUTC;
+                EndDateTimeUTC = DataValueList[DataValueList.Count - 1].DateTimeUTC;
+                BeginDateTimeUTC = DataValueList[0].DateTimeUTC;
 
-                _endDateTime = DataValueList[DataValueList.Count - 1].LocalDateTime;
-                _beginDateTime = DataValueList[0].LocalDateTime;
+                EndDateTime = DataValueList[DataValueList.Count - 1].LocalDateTime;
+                BeginDateTime = DataValueList[0].LocalDateTime;
 
             } 
             else
@@ -378,14 +328,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns>The number of DataValues in the DataValueList</returns>
         public virtual int GetValueCount()
         {
-            if (DataValueList == null) 
-            {
-                return 0;
-            }
-            else
-            {
-                return DataValueList.Count;
-            }
+            return DataValueList == null ? 0 : DataValueList.Count;
         }
 
         /// <summary>

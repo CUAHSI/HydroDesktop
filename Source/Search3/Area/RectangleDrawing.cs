@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Data;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
-using System.Data;
 using DotSpatial.Symbology;
-using System.Drawing;
-using System.Windows.Forms;
+using DotSpatial.Topology;
 
 namespace Search3.Area
 {

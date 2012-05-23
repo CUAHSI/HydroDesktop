@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace HydroDesktop.Configuration
 {
@@ -12,16 +10,8 @@ namespace HydroDesktop.Configuration
     /// </summary>
     public class Settings
     {
-        readonly string _defaultHISCentralURL = //Properties.Settings.Default.DefaultHISCentralUrl;
-        "http://hiscentral.cuahsi.org/webservices/hiscentral.asmx";
-
-        private List<string> _hisCentralURLList = Properties.Settings.Default.HISCentralUrlList.Cast<string>().ToList();
         private string _downloadOption = "Append";
-
         private string _dataRepositoryConnectionString;
-
-        private string _selectedHISCentralUrl = Properties.Settings.Default.SelectedHISCentralUrl;
-
         private string _metadataCacheConnectionString;
 
         /// <summary>
@@ -42,64 +32,10 @@ namespace HydroDesktop.Configuration
         /// Creates a new settings object with default values.
         /// This is a private constructor, meaning no outsiders have access.
         /// </summary>
-
         private Settings()
         {
-            //_hisCentralURLList.Add(DefaultHISCentralURL);
-            //SelectedHISCentralURL = DefaultHISCentralURL;
-            //_dataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(GetDefaultDatabasePath());
-            //_downloadOption = OverwriteOptions.Append;
-            //_recentProject = GetDefaultRecentProjectFile();
         }
-
-        /// <summary>
-        /// Gets the collection of available HIS Central URLs
-        /// </summary>
-        public IList<string> HISCentralURLList
-        {
-            get
-            {
-                return _hisCentralURLList;
-            }
-        }
-
-        /// <summary>
-        /// Get The default HIS Central URL
-        /// </summary>
-        public string DefaultHISCentralURL
-        {
-            get
-            {
-                return _defaultHISCentralURL;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets currently user-selected HIS Central URL
-        /// This is a user-level setting
-        /// </summary>
-        public string SelectedHISCentralURL
-        {
-            get
-            {
-                if (!_hisCentralURLList.Contains(_selectedHISCentralUrl))
-                {
-                    _selectedHISCentralUrl = _defaultHISCentralURL;
-                }
-                return _selectedHISCentralUrl;
-            }
-            set
-            {
-                if (_hisCentralURLList.Contains(value))
-                {
-                    _selectedHISCentralUrl = value;
-                }
-                else
-                {
-                    _selectedHISCentralUrl = _defaultHISCentralURL;
-                }
-            }
-        }
+        
 
         /// <summary>
         /// The user-defined data repository connection string
@@ -278,7 +214,7 @@ namespace HydroDesktop.Configuration
         /// <param name="fileName"></param>
         public void AddFileToRecentFiles(string fileName)
         {
-            int maximumNumberOfRecentFiles = 10;
+            const int maximumNumberOfRecentFiles = 10;
 
             if (Properties.Settings.Default.RecentProjectFiles.Contains(fileName))
             {

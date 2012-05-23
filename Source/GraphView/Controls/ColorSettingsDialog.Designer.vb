@@ -3,7 +3,6 @@
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ColorSettingsDialog
         Inherits System.Windows.Forms.Form
-        Public _CTSA As MainControl
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _

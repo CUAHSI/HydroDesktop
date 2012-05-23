@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Text;
 using System.Diagnostics;
-using HydroDesktop.Interfaces;
 using System.Globalization;
+using System.Text;
+using HydroDesktop.Interfaces;
 
 namespace HydroDesktop.Database
 {
@@ -476,15 +476,15 @@ namespace HydroDesktop.Database
         /// <param name="primaryKeyName">primary key name</param>
         /// <param name="uniqueFields">list of unique columnhs</param>
         /// <returns>the DB command object that can be used for running the query</returns>
-        private string GenerateUniqueQueryCommand(string tableName, string primaryKeyName, string[] uniqueFields)
+        private string GenerateUniqueQueryCommand(string tableName, string primaryKeyName, IList<string> uniqueFields)
         {         
             string uniqueSQL = "select " + primaryKeyName + " from " + tableName + " where ";
            
-            for (int i = 0; i < uniqueFields.Length - 1; i++)
+            for (int i = 0; i < uniqueFields.Count - 1; i++)
             {
                 uniqueSQL += uniqueFields[i] + "=? AND ";
             }
-            uniqueSQL += uniqueFields[uniqueFields.Length - 1] + "=?";
+            uniqueSQL += uniqueFields[uniqueFields.Count - 1] + "=?";
 
             return uniqueSQL;
         }
@@ -527,10 +527,10 @@ namespace HydroDesktop.Database
                     {
                         uniqueCmd.CommandText = sqlUnique;
                         uniqueCmd.Connection = conn;
-                        for (int p = 0; p < uniqueFields.Length; p++)
+                        foreach (string t in uniqueFields)
                         {
-                            DbParameter param = dbFactory.CreateParameter();
-                            param.ParameterName = uniqueFields[p];
+                            var param = dbFactory.CreateParameter();
+                            param.ParameterName = t;
                             uniqueCmd.Parameters.Add(param);
                         }
 
@@ -808,7 +808,6 @@ namespace HydroDesktop.Database
             //sqLITE - specific...
             if (dbFactory is System.Data.SQLite.SQLiteFactory)
             {
-                string pkColName = 
                 da.InsertCommand.CommandText += String.Format(";SELECT last_insert_rowid() AS [{0}]", primaryKeyName);
                 da.InsertCommand.UpdatedRowSource = UpdateRowSource.FirstReturnedRecord;
             }
