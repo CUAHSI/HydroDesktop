@@ -170,7 +170,6 @@ Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraEditors.v1
 Source: "..\Binaries\Application Extensions\HydroDesktop.Docking.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.MainPlugin.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\NuGet.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.ExtensionManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\DotSpatial.Plugins.MenuBar\DotSpatial.Plugins.MenuBar.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
