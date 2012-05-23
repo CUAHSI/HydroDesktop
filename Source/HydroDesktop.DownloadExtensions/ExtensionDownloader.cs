@@ -59,6 +59,13 @@ namespace HydroDesktop.DownloadExtensions
                 packages.Install("DotSpatial.Plugins.WebMap");
             }
 
+            //install web map
+            if (App.GetExtension("GeostatisticalTool") == null)
+            {
+                App.UpdateProgress("Downloading a WebMap extension...");
+                packages.Install("GeostatisticalTool");
+            }
+
             //install North America sample project (this will also install the SampleProjectManager)
             if (App.GetExtension("DotSpatial.SampleProjects.NorthAmerica") == null)
             {
