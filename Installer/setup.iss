@@ -133,7 +133,7 @@ Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress
 Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraLayouts.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\BruTile\Lib\net40-client\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\DotSpatial.Plugins.WebMap\Lib\net40-client\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
