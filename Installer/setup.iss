@@ -87,7 +87,7 @@ AlwaysShowComponentsList=false
 ;InfoBeforeFile=Source\..\..\Documents\Pre-install.txt
 ;InfoAfterFile=Source\..\..\Documents\Post-install.txt
 OutputDir=Releases
-OutputBaseFilename="HydroDesktop15_Beta_Installer"
+OutputBaseFilename="HydroDesktop15_Installer"
 
 ;install to a separate directory
 UsePreviousAppDir=no
@@ -116,8 +116,8 @@ Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.4.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
 
-Source: "..\Binaries\Plugins\DataAggregation\DataAggregation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\DataAggregation\DataAggregation.dll"; DestDir: "{app}\Plugins\DataAggregation"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\DataDownload"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\ImportFromWaterML\DataImport.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ImportFromWaterML\Wizard.Controls.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
@@ -127,24 +127,24 @@ Source: "..\Binaries\Plugins\ExcelExtension\Excel.dll"; DestDir: "{app}\Plugins"
 Source: "..\Binaries\Plugins\ExcelExtension\ExcelExtension.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExcelExtension\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.AttributeDataExplorer\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.AttributeDataExplorerLib\net40-client\\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.WebMap\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DotSpatial.Plugins.WebMap\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\BruTile\Lib\net40-client\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\DotSpatial.Plugins.WebMap\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\EditView\EditView.dll*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\EditView\ZedGraph.dll*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\EPADelineation\EPADelineation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\Newtonsoft.Json.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-Source: "..\Binaries\Plugins\GeostatisticalTool\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\source\packages\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.*.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
