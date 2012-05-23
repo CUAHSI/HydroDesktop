@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HydroDesktop.Interfaces;
-using HydroDesktop.Interfaces.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
+using System.Linq;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Database
 {
@@ -827,19 +826,9 @@ namespace HydroDesktop.Database
             int sourceID = 0;
             int isoMetadataID = 0;
             int seriesID = 0;
-            
 
-            object siteIDResult = null;
-           
-            object variableIDResult = null;
-            
-            object methodIDResult = null;
-            object qualityControlLevelIDResult = null;
-            object sourceIDResult = null;
-            
-            object seriesIDResult = null;
-            
-            //check the ServiceID (must be already set)
+
+		    //check the ServiceID (must be already set)
             if (dataService.Id <= 0)
             {
                 throw new ArgumentException("The DataServiceID must be set.");
@@ -856,6 +845,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 2 Site
                     //****************************************************************
+                    object siteIDResult = null;
                     using (DbCommand cmd01 = conn.CreateCommand())
                     {
                         cmd01.CommandText = sqlSite;
@@ -911,6 +901,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     Variable variable = series.Variable;
 
+                    object variableIDResult = null;
                     using (DbCommand cmd05 = conn.CreateCommand())
                     {
                         cmd05.CommandText = sqlVariable;
@@ -958,6 +949,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     Method method = series.Method;
 
+                    object methodIDResult = null;
                     using (DbCommand cmd10 = conn.CreateCommand())
                     {
                         cmd10.CommandText = sqlMethod;
@@ -988,6 +980,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     QualityControlLevel qc = series.QualityControlLevel;
 
+                    object qualityControlLevelIDResult = null;
                     using (DbCommand cmd12 = conn.CreateCommand())
                     {
                         cmd12.CommandText = sqlQuality;
@@ -1023,6 +1016,7 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     Source source = series.Source;
 
+                    object sourceIDResult = null;
                     using (DbCommand cmd14 = conn.CreateCommand())
                     {
                         cmd14.CommandText = sqlSource;
@@ -1076,7 +1070,7 @@ namespace HydroDesktop.Database
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.Int32, series.ValueCount));
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.Int32, dataService.Id));
                         
-                        seriesIDResult = cmd18.ExecuteScalar();
+                        object seriesIDResult = cmd18.ExecuteScalar();
                         seriesID = Convert.ToInt32(seriesIDResult);
                     }
 

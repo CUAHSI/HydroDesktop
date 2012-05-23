@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 
 namespace HydroDesktop.Interfaces.ObjectModel
 {
@@ -13,7 +13,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
     {
         private DateTime _localDateTime = DateTime.MinValue;
         private DateTime _dateTimeUTC = DateTime.MinValue;
-        private double _utcOffset = 0.0;
+        private double _utcOffset;
         
         /// <summary>
         /// Creates a new empty data value
@@ -240,7 +240,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <returns>String representation of the data value in Time|Value format</returns>
         public override string ToString()
         {
-            return LocalDateTime.ToString() + "|" + Value.ToString();
+            return LocalDateTime.ToString(CultureInfo.InvariantCulture) + "|" + Value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

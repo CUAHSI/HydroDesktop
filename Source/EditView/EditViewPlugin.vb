@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Forms
+Imports HydroDesktop.Common
 Imports DotSpatial.Controls
 Imports HydroDesktop.Interfaces
 Imports DotSpatial.Controls.Header
@@ -111,7 +112,7 @@ Namespace EditView
         Private Sub InitializeRibbonButtons()
 
             'Main Function Panel
-            Dim mainFunctionGroup As String = "Main Functions"
+            Const mainFunctionGroup As String = "Main Functions"
 
             btnSelectSeries = New SimpleActionItem("Edit Series", AddressOf btnSelectSeries_Click)
             btnSelectSeries.RootKey = kEditView
@@ -138,7 +139,7 @@ Namespace EditView
             App.HeaderControl.Add(btnApplyToDatabase)
 
             'Plot Function Panel
-            Dim editFunctionGroup As String = "Edit Functions"
+            Const editFunctionGroup As String = "Edit Functions"
 
             btnChangeYValue = New SimpleActionItem("Change Value", AddressOf _mainControl.btnChangeYValue_Click)
             btnChangeYValue.RootKey = kEditView
@@ -171,7 +172,7 @@ Namespace EditView
             App.HeaderControl.Add(btnDeletePoint)
 
             'Main Function Panel
-            Dim plotFunctionGroup As String = "Plot Function"
+            Const plotFunctionGroup As String = "Plot Function"
 
             ckbShowLegend = New SimpleActionItem("Show Legend", AddressOf _mainControl.ckbShowLegend_Click)
             ckbShowLegend.RootKey = kEditView
@@ -220,13 +221,8 @@ Namespace EditView
                 ignoreRootSelected = True
                 App.HeaderControl.SelectRoot(kEditView)
                 ignoreRootSelected = False
-                App.DockManager.SelectPanel("kHydroSeriesView")
+                App.DockManager.SelectPanel(SharedConstants.SeriesViewKey)
             End If
-            '_EditView.Visible = True
-            'ElseIf e.ActivePanelKey <> "kHydroSeriesView" Then
-            '    _EditView.Visible = False
-            'End If
-
         End Sub
 
         Private Sub btnSelectSeries_Click()

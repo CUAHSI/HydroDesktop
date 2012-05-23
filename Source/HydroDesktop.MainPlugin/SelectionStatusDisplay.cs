@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
@@ -17,7 +14,7 @@ namespace HydroDesktop.Main
             App = app;
 
             SelectionStatusPanel = new StatusPanel();
-            SelectionStatusPanel.Width = 400;
+            SelectionStatusPanel.Width = 250;
             app.ProgressHandler.Add(SelectionStatusPanel);
 
             App.Map.SelectionChanged += new EventHandler(Map_SelectionChanged);

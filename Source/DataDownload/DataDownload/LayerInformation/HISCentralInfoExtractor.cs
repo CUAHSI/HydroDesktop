@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using DotSpatial.Controls;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Common.Tools;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
@@ -56,7 +57,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 {
                     _services = new Dictionary<string, string>();
 
-                    var wss = _appManager.GetExtension<IWebServicesStore>();
+                    var wss = _appManager.GetExtension<ISearchPlugin>();
                     if (wss != null)
                     {
                         var infos = wss.GetWebServices();

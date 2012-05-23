@@ -22,6 +22,22 @@
         }
 
         /// <summary>
+        /// Root Key of Table Ribbon
+        /// </summary>
+        public static string TableRootKey
+        {
+            get { return "kHydroTable"; }
+        }
+
+        /// <summary>
+        /// Key of SeriesSelector dock panel
+        /// </summary>
+        public static string SeriesViewKey
+        {
+            get { return "kHydroSeriesView"; }
+        }
+
+        /// <summary>
         /// Name of Data Sources group in search ribbon
         /// </summary>
         public static string SearchDataSourcesGroupName

@@ -69,8 +69,8 @@ namespace HydroDesktop.Database
             var entity = new UnitConversion
                              {
                                  Id = Convert.ToInt64(row["ConversionID"]),
-                                 FromUnit = _unitsRepository.GetByKey(Convert.ToInt64(row["FromUnitsID"])),
-                                 ToUnit = _unitsRepository.GetByKey(Convert.ToInt64(row["ToUnitsID"])),
+                                 FromUnit = _unitsRepository.GetByKey(row["FromUnitsID"]),
+                                 ToUnit = _unitsRepository.GetByKey(row["ToUnitsID"]),
                                  ConversionFactor = Convert.ToDouble(row["ConversionFactor"]),
                                  Offset = Convert.ToDouble(row["Offset"]),
                              };

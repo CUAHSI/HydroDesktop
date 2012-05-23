@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
-using System.Linq;
 using Hydrodesktop.Common;
+using DotSpatial.Topology;
+using DotSpatial.Data;
 
 namespace Search3.Searching
 {
@@ -41,6 +43,8 @@ namespace Search3.Searching
         /// </summary>
         public IEnumerable<IMapPointLayer> Create()
         {
+            Extent ext = new Extent();
+            
             if (!_searchResult.ResultItems.Any())
             {
                 return new List<IMapPointLayer>();
@@ -61,7 +65,10 @@ namespace Search3.Searching
 
             //assign the projection again
             foreach (var item in _searchResult.ResultItems)
+            {
                 item.FeatureSet.Reproject(_map.Projection);
+                ext.ExpandToInclude(item.FeatureSet.Extent);
+            }
 
             for (int i = 0; i < root.Layers.Count; i++)
             {
@@ -78,6 +85,8 @@ namespace Search3.Searching
                 }
             }
 
+            ext.ExpandBy(_map.ViewExtents.Width / 100);
+            _map.ViewExtents = ext;
             _map.Refresh();
             return result;
         }

@@ -12,7 +12,6 @@
 //
 // The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
 // ********************************************************************************************************
-using DotSpatial.Controls;
 
 namespace HydroDesktop.MainApplication
 {

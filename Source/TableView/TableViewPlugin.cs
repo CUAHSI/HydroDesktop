@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using HydroDesktop.Interfaces;
-using DotSpatial.Controls.Header;
-using System.ComponentModel.Composition;
 using DotSpatial.Controls.Docking;
+using DotSpatial.Controls.Header;
+using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 
 namespace TableView
 {
@@ -18,7 +20,7 @@ namespace TableView
         internal ISeriesSelector SeriesControl { get; set; }
 
         private const string _tablePanelName = "Table";
-        private const string kTableView = "kHydroTable";
+        private readonly string kTableView = SharedConstants.TableRootKey;
         private const string _optionsGroupCaption = "Options";
         private const string _optionsToggleGroupButtonKey = "kTableViewModeOptions";
         private const string _optionsParallelMode = "Parallel";
@@ -35,7 +37,7 @@ namespace TableView
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-            App.DockManager.Remove(kTableView);
+            //App.DockManager.Remove(kTableView);
             
             App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
 
@@ -215,7 +217,7 @@ namespace TableView
         {
             if (e.ActivePanelKey == kTableView)
             {
-                App.DockManager.SelectPanel("kHydroSeriesView");
+                App.DockManager.SelectPanel(SharedConstants.SeriesViewKey);
                 App.HeaderControl.SelectRoot(kTableView);
                 RefreshDatabasePath();
             }

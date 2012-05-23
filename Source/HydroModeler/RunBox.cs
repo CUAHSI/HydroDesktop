@@ -26,15 +26,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion 
-using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 using Oatc.OpenMI.Gui.Core;
 using OpenMI.Standard;
-using System.IO;
-using DotSpatial.Controls;
 //using DotSpatial.Controls.RibbonControls;
 
 namespace Oatc.OpenMI.Gui.ConfigurationEditor

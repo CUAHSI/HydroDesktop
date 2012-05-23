@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Help;
 using HydroDesktop.Interfaces;
@@ -70,7 +70,7 @@ namespace HydroDesktop.ExportToCSV
         {
             Cursor = Cursors.WaitCursor;
 
-            if (ExpotThemes)
+            if (ExportThemes)
             {
                 //populate list box with list of themes
                 var repository = RepositoryFactory.Instance.Get<IDataThemesRepository>();
@@ -110,7 +110,7 @@ namespace HydroDesktop.ExportToCSV
             //Set fields in CheckListBox
             DataTable dtList;
 
-            if (ExpotThemes)
+            if (ExportThemes)
             {
                 var repo = RepositoryFactory.Instance.Get<IDataValuesRepository>();
                 dtList = repo.GetTableForExport(-1);
@@ -147,7 +147,7 @@ namespace HydroDesktop.ExportToCSV
 
         #region Private Methods
 
-        private bool ExpotThemes
+        private bool ExportThemes
         {
             get { return _dataToExport == null; }
         }
@@ -161,7 +161,7 @@ namespace HydroDesktop.ExportToCSV
         /// <returns>Return the BackgroundWorker result.</returns>
         private string Exportdlg(BwParameters parameters, BackgroundWorker exportdlgWorker, DoWorkEventArgs e)
         {
-            if (ExpotThemes)
+            if (ExportThemes)
             {
                 return ExportDataSeriesTable(parameters, exportdlgWorker, e);
             }
@@ -407,7 +407,7 @@ namespace HydroDesktop.ExportToCSV
             }
 
             //Check the themes  for export.  There should be at least one item selected.
-            if (ExpotThemes && clbThemes.CheckedItems.Count == 0)
+            if (ExportThemes && clbThemes.CheckedItems.Count == 0)
             {
                 MessageBox.Show("Please choose at least one theme to export", "Export To Text File",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -446,7 +446,7 @@ namespace HydroDesktop.ExportToCSV
 
             // Construct DataTable of all the series in the selected theme
             DataTable dtSeries;
-            if (ExpotThemes)
+            if (ExportThemes)
             {
                 var themeIds =
                     (from ThemeDescription themeDescr in clbThemes.CheckedItems select themeDescr.ThemeId).ToList();
@@ -646,7 +646,7 @@ namespace HydroDesktop.ExportToCSV
         private class ThemeDescription
         {
             public int? ThemeId { get; private set; }
-            public string ThemeName { get; private set; }
+            private string ThemeName { get; set; }
 
             public ThemeDescription(int? themeId, string themeName)
             {

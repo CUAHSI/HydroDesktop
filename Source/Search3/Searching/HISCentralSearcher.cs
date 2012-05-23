@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using HydroDesktop.Interfaces.ObjectModel;
-using System.Net;
-using System.IO;
 using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Xml;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace Search3.Searching
 {
@@ -17,6 +17,7 @@ namespace Search3.Searching
         #region Fields
 
         private readonly string _hisCentralUrl;
+        private static readonly CultureInfo _usaCulture = new CultureInfo("en-US");
 
         #endregion
 
@@ -86,19 +87,18 @@ namespace Search3.Searching
                                                                               int[] networkIDs)
         {
             //call the web service dynamically, using WebClient
-            var usaFormat = new CultureInfo("en-US");
 
             var url = new StringBuilder();
             url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
-            url.Append(Uri.EscapeDataString(xMin.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(xMin.ToString(_usaCulture)));
             url.Append("&xmax=");
-            url.Append(Uri.EscapeDataString(xMax.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(xMax.ToString(_usaCulture)));
             url.Append("&ymin=");
-            url.Append(Uri.EscapeDataString(yMin.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(yMin.ToString(_usaCulture)));
             url.Append("&ymax=");
-            url.Append(Uri.EscapeDataString(yMax.ToString(usaFormat)));
+            url.Append(Uri.EscapeDataString(yMax.ToString(_usaCulture)));
 
             //to append the keyword
             url.Append("&conceptKeyword=");
@@ -166,16 +166,12 @@ namespace Search3.Searching
         /// <returns>the list of intermediate 'SeriesDataCart' objects</returns>
         private SeriesDataCart ReadSeriesFromHISCentral(XmlReader reader)
         {
-            var usaCulture = new CultureInfo("en-US");
-
             var series = new SeriesDataCart();
             while (reader.Read())
             {
-                string nodeName = reader.Name.ToLower();
-
+                var nodeName = reader.Name.ToLower();
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-
                     switch (nodeName)
                     {
                         case "servcode":
@@ -200,11 +196,11 @@ namespace Search3.Searching
                             break;
                         case "begindate":
                             reader.Read();
-                            series.BeginDate = Convert.ToDateTime(reader.Value, usaCulture);
+                            series.BeginDate = Convert.ToDateTime(reader.Value, _usaCulture);
                             break;
                         case "enddate":
                             reader.Read();
-                            series.EndDate = Convert.ToDateTime(reader.Value, usaCulture);
+                            series.EndDate = Convert.ToDateTime(reader.Value, _usaCulture);
                             break;
                         case "valuecount":
                             reader.Read();
@@ -249,6 +245,14 @@ namespace Search3.Searching
                         case "timesupport":
                             reader.Read();
                             series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            break;
+                        case "isregular":
+                            reader.Read();
+                            series.IsRegular = Convert.ToBoolean(reader.Value);
+                            break;
+                        case "variableunits":
+                            reader.Read();
+                            series.VariableUnits = reader.Value;
                             break;
                     }
                 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
-using DotSpatial.Controls.Docking;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Docking;
 
 namespace HydroDesktop.MainApplication
 {
@@ -24,17 +24,12 @@ namespace HydroDesktop.MainApplication
             InitializeComponent();
             appManager = new AppManager();
             appManager.Map = new Map();
-            appManager.Legend = new Legend();
-            LoadCustomBranding(HydroDesktop.MainApplication.Properties.Settings.Default);
+            LoadCustomBranding(Properties.Settings.Default);
 
             appManager.SatisfyImportsExtensionsActivated +=
-                delegate(object sender, EventArgs e)
+                delegate
                 {
-                    // we use this event to ensure that legend and map dockable panels are
-                    // added to the DockManager before any other dockable panels.
-                    this.appManager.DockManager.Add(new DockablePanel("kLegend", "Legend", (Legend)appManager.Legend, DockStyle.Left) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.legend_16x16 });
-                    this.appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.map_16x16 });
-                    this.appManager.Map.Legend = this.appManager.Legend; //links map with legend
+                    appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.map_16x16 });
                 };
 
             Shell = this;

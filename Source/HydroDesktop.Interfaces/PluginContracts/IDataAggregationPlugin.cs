@@ -1,6 +1,6 @@
 using DotSpatial.Symbology;
 
-namespace HydroDesktop.Interfaces
+namespace HydroDesktop.Interfaces.PluginContracts
 {
     /// <summary>
     /// Provides methods for data aggregation

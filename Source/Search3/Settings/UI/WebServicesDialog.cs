@@ -27,9 +27,7 @@ namespace Search3.Settings.UI
             _keywordsSettings = keywordsSettings;
             _metadataFetcher = metadataFetcher;
             webServicesUserControl1.SetSettings(settings, catalogSettings);
-
-            rbHisCentral.CheckedChanged += rbTypeOfCatalog_CheckedChanged;
-            rbLocalMetadataCache.CheckedChanged += rbTypeOfCatalog_CheckedChanged;
+            
             switch (_catalogSettings.TypeOfCatalog)
             {
                 case TypeOfCatalog.HisCentral:
@@ -39,6 +37,9 @@ namespace Search3.Settings.UI
                     rbLocalMetadataCache.Checked = true;
                     break;
             }
+            rbHisCentral.CheckedChanged += rbTypeOfCatalog_CheckedChanged;
+            rbLocalMetadataCache.CheckedChanged += rbTypeOfCatalog_CheckedChanged;
+            UpdateCatalogSettings();
         }
 
         #endregion
@@ -59,7 +60,6 @@ namespace Search3.Settings.UI
                     if (catalogSettings.TypeOfCatalog != form._catalogSettings.TypeOfCatalog ||
                         catalogSettings.HISCentralUrl != form._catalogSettings.HISCentralUrl)
                     {
-                        form.RefreshWebServices();
                         form.RefreshKeywords();
                     }
 
@@ -88,7 +88,7 @@ namespace Search3.Settings.UI
             }
         }
         
-        void rbTypeOfCatalog_CheckedChanged(object sender, EventArgs e)
+        private void UpdateCatalogSettings()
         {
             var typeOfCatalog = CurrentTypeOfCatalog;
             _catalogSettings.TypeOfCatalog = typeOfCatalog;
@@ -102,6 +102,14 @@ namespace Search3.Settings.UI
                     bntAddLocalDataSource.Text = "Advanced Options...";
                     break;
             }
+        }
+
+        void rbTypeOfCatalog_CheckedChanged(object sender, EventArgs e)
+        {
+            var button = sender as RadioButton;
+            if (button == null || !button.Checked) return;
+
+            UpdateCatalogSettings();
             RefreshWebServices();
         }
 

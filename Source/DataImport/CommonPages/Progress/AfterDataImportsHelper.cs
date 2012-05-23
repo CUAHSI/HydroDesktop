@@ -7,9 +7,9 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
+using Hydrodesktop.Common;
 using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces.ObjectModel;
-using Hydrodesktop.Common;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 
 namespace DataImport.CommonPages.Progress

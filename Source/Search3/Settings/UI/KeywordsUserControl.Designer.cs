@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-
+﻿
 namespace Search3.Settings.UI
 {
     partial class KeywordsUserControl

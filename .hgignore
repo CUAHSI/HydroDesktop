@@ -56,3 +56,4 @@ glob:*.orig
 *.sln.docstates
 Source/Packages/
 Documentation/OnlineHelp/build/
+Source/packages/

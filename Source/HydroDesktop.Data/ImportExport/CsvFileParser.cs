@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Data;
 using System.IO;
 
@@ -86,7 +85,7 @@ namespace HydroDesktop.ImportExport
 	    /// <returns>DataTable of the parsed data</returns>
 	    public static DataTable ParseFileToDataTable ( string fileToParse, bool hasHeaders, BackgroundWorker bgWorker = null, DoWorkEventArgs e = null, int maxRowsCount = -1)
 		{
-			DataTable dataTable = new DataTable ();
+			var dataTable = new DataTable ();
 
 			// Get the number of lines in the file
 			long totalSteps = 0;

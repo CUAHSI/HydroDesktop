@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
-using System.IO;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 
 namespace HydroDesktop.ImportExport
@@ -35,8 +35,8 @@ namespace HydroDesktop.ImportExport
 		#region Variables
 
 		private TextWriter _textStream;
-		private bool _isDisposed = false;
-		private string _delimiter;
+		private bool _isDisposed;
+		private readonly string _delimiter;
 
 		#endregion
 
@@ -176,7 +176,7 @@ namespace HydroDesktop.ImportExport
 			TextWriter outputStream = null;
 			try
 			{
-				outputStream = new StreamWriter ( outputFilename, append ) as TextWriter;
+				outputStream = new StreamWriter ( outputFilename, append );
 			}
 			catch ( Exception ex )
 			{
@@ -209,9 +209,8 @@ namespace HydroDesktop.ImportExport
 
 			object[] rowItems = row.ItemArray;
 
-			for ( int i = 0; i < rowItems.Length; i++ )
+			foreach (object rowItem in rowItems)
 			{
-			    object rowItem = rowItems[i];
 			    itemArray.Add(rowItem == null ? "" : rowItem.ToString());
 			}
 
@@ -390,10 +389,10 @@ namespace HydroDesktop.ImportExport
                     }
 
                     // Report progress
-                    if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                    if (bgWorker.WorkerReportsProgress && reportingOption != BackgroundWorkerReportingOptions.None)
                     {
                         currentStep++;
-                        int percentComplete = (int)(100 * currentStep / totalSteps);
+                        var percentComplete = (int)(100 * currentStep / totalSteps);
                         if (percentComplete > previousPercentComplete)
                         {
                             if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)

@@ -170,6 +170,14 @@ namespace HydroDesktop.Database
             return SeriesListFromTable(seriesTable);
         }
 
+        public Tuple<DateTime, DateTime> GetDatesRange(long seriesID)
+        {
+            var query = string.Format("select BeginDateTime, EndDateTime from DataSeries where SeriesID={0}", seriesID);
+            var list = DbOperations.Read(query, reader =>
+                                     new Tuple<DateTime, DateTime>(reader.GetDateTime(0), reader.GetDateTime(1)));
+            return list.FirstOrDefault();
+        }
+
         protected override Series DataRowToEntity(DataRow row)
         {
             var series = new Series
@@ -615,11 +623,11 @@ namespace HydroDesktop.Database
                                        newvalue,
                                        row["ValueAccuracy"].ToString() == "" ? "NULL" : row["ValueAccuracy"].ToString(),
                                        Convert.ToDateTime(row["LocalDateTime"]).ToString("yyyy-MM-dd HH:mm:ss"),
-                                       row["UTCOffset"].ToString(),
+                                       row["UTCOffset"],
                                        Convert.ToDateTime(row["DateTimeUTC"]).ToString("yyyy-MM-dd HH:mm:ss"),
                                        row["OffsetValue"].ToString() == "" ? "NULL" : row["OffsetValue"].ToString(),
                                        row["OffsetTypeID"].ToString() == "" ? "NULL" : row["OffsetTypeID"].ToString(),
-                                       row["CensorCode"].ToString(),
+                                       row["CensorCode"],
                                        row["QualifierID"].ToString() == "" ? "NULL" : row["QualifierID"].ToString(),
                                        row["SampleID"].ToString() == "" ? "NULL" : row["SampleID"].ToString(),
                                        row["FileID"].ToString() == "" ? "NULL" : row["FileID"].ToString());

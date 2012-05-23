@@ -18,7 +18,7 @@ Namespace Controls
         Private ReadOnly _linecolorlist As New List(Of Color)
         Private ReadOnly _pointcolorlist As New List(Of Color)
 
-        Private Property linecolorlist() As List(Of Color)
+        Public Property linecolorlist() As List(Of Color)
             Get
                 Return _linecolorlist
             End Get
@@ -43,7 +43,7 @@ Namespace Controls
             End Set
         End Property
 
-        Private Property pointcolorlist() As List(Of Color)
+        Public Property pointcolorlist() As List(Of Color)
             Get
                 Return _pointcolorlist
             End Get
@@ -481,20 +481,10 @@ Namespace Controls
             Close()
         End Sub
 
+        Public Event ColorsApplied As EventHandler
 
         Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnApply.Click
-
-            _CTSA.pointcolorlist.Clear()
-            _CTSA.linecolorlist.Clear()
-            For i As Integer = 0 To 9
-                _CTSA.pointcolorlist.Add(pointcolorlist(i))
-            Next
-            For i As Integer = 0 To 9
-                _CTSA.linecolorlist.Add(linecolorlist(i))
-            Next
-
-            _CTSA.ApplyOptions()
-
+            RaiseEvent ColorsApplied(Me, EventArgs.Empty)
         End Sub
 
         Private Function PromptForColor(ByVal defaultColor As Color) As Color

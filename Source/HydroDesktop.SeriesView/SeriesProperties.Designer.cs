@@ -37,21 +37,21 @@
             this.tbMethod = new System.Windows.Forms.TabPage();
             this.methodView1 = new HydroDesktop.ObjectModel.Controls.MethodView();
             this.tbSource = new System.Windows.Forms.TabPage();
-            this.gbIsoMetadata = new System.Windows.Forms.GroupBox();
-            this.isoMetadataView1 = new HydroDesktop.ObjectModel.Controls.ISOMetadataView();
             this.sourceView1 = new HydroDesktop.ObjectModel.Controls.SourceView();
             this.tbQualityControlLevel = new System.Windows.Forms.TabPage();
             this.qualityControlLevelView1 = new HydroDesktop.ObjectModel.Controls.QualityControlLevelView();
             this.tbSeries = new System.Windows.Forms.TabPage();
             this.seriesShortView1 = new SeriesView.SeriesShortView();
+            this.tpISOMetadata = new System.Windows.Forms.TabPage();
+            this.isoMetadataView1 = new HydroDesktop.ObjectModel.Controls.ISOMetadataView();
             this.tbProperties.SuspendLayout();
             this.tbSite.SuspendLayout();
             this.tbVariable.SuspendLayout();
             this.tbMethod.SuspendLayout();
             this.tbSource.SuspendLayout();
-            this.gbIsoMetadata.SuspendLayout();
             this.tbQualityControlLevel.SuspendLayout();
             this.tbSeries.SuspendLayout();
+            this.tpISOMetadata.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -75,6 +75,7 @@
             this.tbProperties.Controls.Add(this.tbVariable);
             this.tbProperties.Controls.Add(this.tbMethod);
             this.tbProperties.Controls.Add(this.tbSource);
+            this.tbProperties.Controls.Add(this.tpISOMetadata);
             this.tbProperties.Controls.Add(this.tbQualityControlLevel);
             this.tbProperties.Controls.Add(this.tbSeries);
             this.tbProperties.Location = new System.Drawing.Point(13, 13);
@@ -145,7 +146,6 @@
             // 
             // tbSource
             // 
-            this.tbSource.Controls.Add(this.gbIsoMetadata);
             this.tbSource.Controls.Add(this.sourceView1);
             this.tbSource.Location = new System.Drawing.Point(4, 22);
             this.tbSource.Name = "tbSource";
@@ -155,33 +155,13 @@
             this.tbSource.Text = "Source";
             this.tbSource.UseVisualStyleBackColor = true;
             // 
-            // gbIsoMetadata
-            // 
-            this.gbIsoMetadata.Controls.Add(this.isoMetadataView1);
-            this.gbIsoMetadata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbIsoMetadata.Location = new System.Drawing.Point(3, 324);
-            this.gbIsoMetadata.Name = "gbIsoMetadata";
-            this.gbIsoMetadata.Size = new System.Drawing.Size(431, 161);
-            this.gbIsoMetadata.TabIndex = 2;
-            this.gbIsoMetadata.TabStop = false;
-            this.gbIsoMetadata.Text = "ISO Metadata";
-            // 
-            // isoMetadataView1
-            // 
-            this.isoMetadataView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.isoMetadataView1.Location = new System.Drawing.Point(3, 16);
-            this.isoMetadataView1.Name = "isoMetadataView1";
-            this.isoMetadataView1.ReadOnly = false;
-            this.isoMetadataView1.Size = new System.Drawing.Size(425, 142);
-            this.isoMetadataView1.TabIndex = 1;
-            // 
             // sourceView1
             // 
-            this.sourceView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sourceView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sourceView1.Location = new System.Drawing.Point(3, 3);
             this.sourceView1.Name = "sourceView1";
             this.sourceView1.ReadOnly = false;
-            this.sourceView1.Size = new System.Drawing.Size(431, 321);
+            this.sourceView1.Size = new System.Drawing.Size(431, 482);
             this.sourceView1.TabIndex = 0;
             // 
             // tbQualityControlLevel
@@ -201,7 +181,7 @@
             this.qualityControlLevelView1.Location = new System.Drawing.Point(3, 3);
             this.qualityControlLevelView1.Name = "qualityControlLevelView1";
             this.qualityControlLevelView1.ReadOnly = false;
-            this.qualityControlLevelView1.Size = new System.Drawing.Size(354, 386);
+            this.qualityControlLevelView1.Size = new System.Drawing.Size(431, 482);
             this.qualityControlLevelView1.TabIndex = 0;
             // 
             // tbSeries
@@ -224,6 +204,26 @@
             this.seriesShortView1.Size = new System.Drawing.Size(431, 482);
             this.seriesShortView1.TabIndex = 0;
             // 
+            // tpISOMetadata
+            // 
+            this.tpISOMetadata.Controls.Add(this.isoMetadataView1);
+            this.tpISOMetadata.Location = new System.Drawing.Point(4, 22);
+            this.tpISOMetadata.Name = "tpISOMetadata";
+            this.tpISOMetadata.Padding = new System.Windows.Forms.Padding(3);
+            this.tpISOMetadata.Size = new System.Drawing.Size(437, 488);
+            this.tpISOMetadata.TabIndex = 6;
+            this.tpISOMetadata.Text = "ISO metadata";
+            this.tpISOMetadata.UseVisualStyleBackColor = true;
+            // 
+            // isoMetadataView1
+            // 
+            this.isoMetadataView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.isoMetadataView1.Location = new System.Drawing.Point(3, 3);
+            this.isoMetadataView1.Name = "isoMetadataView1";
+            this.isoMetadataView1.ReadOnly = false;
+            this.isoMetadataView1.Size = new System.Drawing.Size(431, 482);
+            this.isoMetadataView1.TabIndex = 2;
+            // 
             // SeriesProperties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -240,9 +240,9 @@
             this.tbVariable.ResumeLayout(false);
             this.tbMethod.ResumeLayout(false);
             this.tbSource.ResumeLayout(false);
-            this.gbIsoMetadata.ResumeLayout(false);
             this.tbQualityControlLevel.ResumeLayout(false);
             this.tbSeries.ResumeLayout(false);
+            this.tpISOMetadata.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -261,9 +261,9 @@
         private HydroDesktop.ObjectModel.Controls.SourceView sourceView1;
         private System.Windows.Forms.TabPage tbQualityControlLevel;
         private HydroDesktop.ObjectModel.Controls.QualityControlLevelView qualityControlLevelView1;
-        private HydroDesktop.ObjectModel.Controls.ISOMetadataView isoMetadataView1;
-        private System.Windows.Forms.GroupBox gbIsoMetadata;
         private System.Windows.Forms.TabPage tbSeries;
         private SeriesShortView seriesShortView1;
+        private System.Windows.Forms.TabPage tpISOMetadata;
+        private HydroDesktop.ObjectModel.Controls.ISOMetadataView isoMetadataView1;
     }
 }

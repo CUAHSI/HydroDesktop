@@ -35,9 +35,14 @@ namespace HydroDesktop.Database
                              {
                                  Id = Convert.ToInt64(row["OffsetTypeID"]),
                                  Description = Convert.ToString(row["OffsetDescription"]),
-                                 Unit = _unitsRepository.GetByKey(Convert.ToInt64(row["OffsetUnitsID"]))
+                                 Unit = _unitsRepository.GetByKey(row["OffsetUnitsID"]),
                              };
             return entity;
+        }
+
+        protected override string PrimaryKeyName
+        {
+            get { return "OffsetTypeID"; }
         }
     }
 }

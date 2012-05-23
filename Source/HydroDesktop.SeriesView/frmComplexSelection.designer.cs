@@ -1,8 +1,4 @@
-﻿using System;
-using DotSpatial.Controls;
-using System.Windows.Forms;
-using System.Drawing;
-using DotSpatial.Symbology.Forms;
+﻿using DotSpatial.Symbology.Forms;
 
 namespace SeriesView
 {

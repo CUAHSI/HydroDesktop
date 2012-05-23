@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Common;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
 {
@@ -79,6 +79,8 @@ namespace HydroDesktop.Interfaces
         /// Gets list of all series that are associated with the site
         /// </summary>
         IList<Series> GetSeriesBySite(Site site);
+
+        Tuple<DateTime, DateTime> GetDatesRange(long seriesID);
 
         /// <summary>
         /// Deletes a series given it's ID. The series is only deleted when it belongs to one theme.

@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports Statistics
+
 
 ''' <summary>
 ''' Used to calculate statistics used in box plots

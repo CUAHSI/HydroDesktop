@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Data;
-using System.ComponentModel;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
-using System.Drawing;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 
 namespace SeriesView
 {
@@ -677,16 +678,7 @@ namespace SeriesView
 
         private int[] GetVisibleIDs()
         {
-            var seriesIDs = new List<int>();
-            foreach (DataGridViewRow dr in dgvSeries.Rows)
-            {
-                if (dr.Visible)
-                {
-                    int seriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
-                    seriesIDs.Add(seriesID);
-                }
-            }
-            return seriesIDs.ToArray();
+            return (from DataGridViewRow dr in dgvSeries.Rows where dr.Visible select Convert.ToInt32(dr.Cells["SeriesID"].Value)).ToArray();
         }
 
         #endregion
