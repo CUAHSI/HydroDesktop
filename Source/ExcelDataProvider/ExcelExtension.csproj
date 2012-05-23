@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="Excel">
       <HintPath>Lib\ExcelDataReader_2.0.1.0\Excel.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Lib\ExcelDataReader_2.0.1.0\ICSharpCode.SharpZipLib.dll</HintPath>
