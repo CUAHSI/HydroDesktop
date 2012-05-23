@@ -111,6 +111,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.ObjectModel.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
