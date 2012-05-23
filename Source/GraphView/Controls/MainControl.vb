@@ -54,7 +54,7 @@ Namespace Controls
         End Sub
 
         Public Sub ShowProbabilityPlot()
-            tcPlots.SelectTab(tpTimeSeries)
+            tcPlots.SelectTab(tpProbability)
         End Sub
 
         Public Sub ShowHistogramPlot()
