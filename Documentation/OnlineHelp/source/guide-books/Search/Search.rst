@@ -59,7 +59,7 @@ To select polygons by location:
 
 #. In the *Legend*, left-click to select the map layer that you want to use.  Note that you must select a polygon layer.  The search will not work with online basemap data, point layers, or line layers.
 #. In the *Legend*, make sure the desired map layer is visible by placing a check in the box next to the layer's name.
-#. On the *Search* tab, click the **Select Polygons** tool.  This tool works like the **Select** tool on the Map tab, and either tool can be used to select features.
+#. On the *Search* tab, click the **Select Features** tool.  This tool works like the **Select** tool on the Map tab, and either tool can be used to select features.
 #. With the left mouse button, click a polygon in the map or draw a box that intersects one or more polygons to select those features.  
 
 .. figure:: ./images/Search_fig04.png
@@ -94,7 +94,7 @@ To quickly choose a single keyword:
 
 To select multiple keywords:
 
-#. In the *Search* tab, click the **Keyword Selection** button.
+#. In the *Search* tab, click the **Add More Keywords** button.
 #. In the dialog that opens, choose a keyword by either typing it in the text box at the top or by browsing the keywords and selecting a desired keyword.
 #. With a keyword highlighted, click the green plus sign to add it to the list of selected keywords.
 #. Repeat steps 2 and 3 to add more keywords.
@@ -130,7 +130,7 @@ One of these options is to **restrict the search to specific data sources**.  Yo
 
 To restrict the option to particular data sources:
 
-#. On the *Search* tab, click the **All Services** button.
+#. On the *Search* tab, click the **Select Data Sources** button.
 #. In the dialog that opens, place a check next to services that you do not want to exclude from the search, and click **OK**.
 
 Another option you have is to search the local metadata cache instead of HIS Central.
@@ -141,8 +141,8 @@ For more information on creating a metadata cache, see :doc:`/extensions/Metadat
 
 To search the metadata cache instead of HIS Central:
 
-#. On the *Search* tab, click the **HIS Central** button.
-#. Select the **Local Metadata Cache** option and click **OK**.
+#. On the *Search* tab, click the **Select Data Sources** button.
+#. In the dialog that opens, check the **Local Data Source** radio-button and click **OK**.
 
 .. note::  You must have already harvested data into the metadata cache before attempting to search it.
 

@@ -1,9 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-// It is necessary to add the DotSpatial.Plugins namespace to correctly
-// recognize plugin attributes
-
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
@@ -34,10 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.0.0")]
-[assembly: AssemblyFileVersion("1.5.0.0")]
-
-// It is necessary to set the PluginAssembly attribute so that the assembly is
-// properly recognized by the main HydroDesktop application as a plugin
-//[assembly: PluginAssembly]
-
+[assembly: AssemblyVersion("1.5.1.0")]
+[assembly: AssemblyFileVersion("1.5.1.0")]
