@@ -9,11 +9,11 @@ HIS Central maintains a catalog of time series metadata, i.e., where time series
 
 The local metadata cache database is similar to the HIS Central catalog.  Like the HIS Central catalog, the local metadata cache database doesn't store time series values; it stores information about where time series variables are measured and from which Web services they may be obtained.  One difference is that the variables in the local metadata cache database are not mapped to the CUAHSI hydrologic variable ontolgoy, because the ontology and mappings are maintained by HIS Central.  Another difference is that the local metadata cache database only stores metadata from the services that you choose to harvest into it.  
 
-The *Metadata Fetcher* is the tool that you use to harvest metadata into the local metadata cache database.  When this extension is enabled, you'll find a *Metadata* panel added to the *Table* tab.  The panel has buttons for working with the metadata cache.  
+The *Metadata Fetcher* is the tool that you use to harvest metadata into the local metadata cache database.  You'll find it under the *Data Sources* *Metadata* panel added to the *Search* tab.  The panel has buttons for working with the metadata cache.  
 
 The general workflow for harvesting metadata into your local cache is:
 
-#. Use the **Add** button to add WaterOneFlow services to the list of services that the metadata cache will harvest.  This just adds services to a list and doesn't actually perform any harvesting.
+#. Use the **Add Data Source** button to add WaterOneFlow services to the list of services that the metadata cache will harvest.  This just adds services to a list and doesn't actually perform any harvesting.
 #. Use the **Manage** button to harvest metadata for selected services.
 
 Once metadata has been harvested, you can search the local metadata cache database by using the Search tab.

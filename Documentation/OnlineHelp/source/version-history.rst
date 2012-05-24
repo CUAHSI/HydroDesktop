@@ -7,6 +7,13 @@
 Version History
 ===============
 
+Release 1.5 Build 1 (May 24, 2012)
+----------------------------------
+
+* Time series data import from text files and Excel
+* Improved performance of graph and table views for large time series
+* Display of complete metadata in the series properties window
+
 Release 1.4 Build 6 (Feb 21, 2012)
 ----------------------------------
 
