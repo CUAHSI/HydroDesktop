@@ -62,7 +62,7 @@ namespace HydroDesktop.DownloadExtensions
             //install web map
             if (App.GetExtension("GeostatisticalTool") == null)
             {
-                App.UpdateProgress("Downloading a WebMap extension...");
+                App.UpdateProgress("Downloading geostatistical tool...");
                 packages.Install("GeostatisticalTool");
             }
 
