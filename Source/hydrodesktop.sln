@@ -185,6 +185,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{D89C1440-A20
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.SimpleLegend", "HydroDesktop.SimpleLegend\HydroDesktop.SimpleLegend.csproj", "{0913BF38-CA92-462C-8B77-BA8937A989F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySQLExporter", "MySQLExporter\MySQLExporter.csproj", "{693DB8C2-EBED-456C-913C-0B88101C067A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -531,11 +533,22 @@ Global
 		{0913BF38-CA92-462C-8B77-BA8937A989F4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0913BF38-CA92-462C-8B77-BA8937A989F4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0913BF38-CA92-462C-8B77-BA8937A989F4}.Release|x86.ActiveCfg = Release|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{693DB8C2-EBED-456C-913C-0B88101C067A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BE7E6470-D691-454D-9705-2B9E8F8C2EF1} = {AC270CF7-EA4B-4FDE-A9EA-B19F649FF9C3}
+		{693DB8C2-EBED-456C-913C-0B88101C067A} = {AC270CF7-EA4B-4FDE-A9EA-B19F649FF9C3}
 	EndGlobalSection
 EndGlobal
