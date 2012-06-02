@@ -5,10 +5,10 @@ using HydroDesktop.Interfaces.ObjectModel;
 using NUnit.Framework;
 using System.IO;
 
-namespace HydroDesktop.WebServices.Tests
+namespace HydroDesktop.WebServices.Tests.WaterOneFlow
 {
     [TestFixture]
-    public class XmlParserTest
+    public class WaterOneFlow10ParserTests
     {
         [TestCase(@"TestFiles\v10\")]
         public void TestParseDataSeries(String samplesPath)
