@@ -36,6 +36,23 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 return ReadSites(reader);
             }
         }
+      
+        public IList<SeriesMetadata> ParseGetSiteInfo(string xmlFile)
+        {
+            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
+            {
+                return ParseGetSiteInfoCall(fileStream);
+            }
+        }
+
+        public IList<SeriesMetadata> ParseGetSiteInfoCall(Stream stream)
+        {
+            var txtReader = new StreamReader(stream);
+            using (var reader = XmlReader.Create(txtReader, _readerSettings))
+            {
+                return ReadSeriesMetadata(reader);
+            }
+        }
 
         private IList<Site> ReadSites(XmlReader reader)
         {
@@ -60,40 +77,33 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return siteList;
         }
 
-        /// <summary>
-        /// Parses a WaterML SiteInfo XML file
-        /// </summary>
-        /// <param name="xmlFile"></param>
-        /// <returns></returns>
-        public IList<SeriesMetadata> ParseGetSiteInfo(string xmlFile)
+        private IList<SeriesMetadata> ReadSeriesMetadata(XmlReader reader)
         {
             IList<SeriesMetadata> seriesList = new List<SeriesMetadata>();
             Site site = null;
 
-            using (var reader = XmlReader.Create(xmlFile, _readerSettings))
+            while (reader.Read())
             {
-                while (reader.Read())
+                if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        string readerName = reader.Name.ToLower();
+                    var readerName = reader.Name.ToLower();
 
-                        if (readerName == "siteinfo")
-                        {
-                            //Read the site information
-                            site = ReadSite(reader);   
-                        }
-                        else if (site != null && readerName == "series")
-                        {
-                            SeriesMetadata newSeries = ReadSeriesFromSiteInfo(reader, site);
-                            seriesList.Add(newSeries);
-                        }
+                    if (readerName == "siteinfo")
+                    {
+                        //Read the site information
+                        site = ReadSite(reader);
+                    }
+                    else if (site != null && readerName == "series")
+                    {
+                        SeriesMetadata newSeries = ReadSeriesFromSiteInfo(reader, site);
+                        seriesList.Add(newSeries);
                     }
                 }
             }
+
             return seriesList;
         }
-        
+
         /// <summary>
         /// Parses a WaterML TimeSeriesResponse XML file
         /// </summary>
@@ -1132,7 +1142,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// </summary>
         private void ReadSpatialReference(XmlReader r, Site site)
         {
-            SpatialReference spatialReference = new SpatialReference();
             while (r.Read())
             {
                 //lat long datum (srs)

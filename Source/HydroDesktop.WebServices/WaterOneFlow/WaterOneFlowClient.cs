@@ -142,8 +142,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// with a different method or quality control level</remarks>
 		public IList<Series> GetValues ( string siteCode, string variableCode, DateTime startTime, DateTime endTime )
 		{
-			string xmlFile = GetValuesXML ( siteCode, variableCode, startTime, endTime );
-			return _parser.ParseGetValues ( xmlFile );
+			string xmlFile = GetValuesXML (siteCode, variableCode, startTime, endTime);
+			return _parser.ParseGetValues (xmlFile );
 		}
 
 		/// <summary>
@@ -155,8 +155,28 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// and quality control level.</returns>
 		public IList<SeriesMetadata> GetSiteInfo ( string siteCode )
 		{
-			string xmlFile = GetSiteInfoXML ( siteCode );
-			return _parser.ParseGetSiteInfo ( xmlFile );
+            IList<SeriesMetadata> result;
+            if (SaveXmlFiles)
+            {
+                var xmlFile = GetSiteInfoXML(siteCode);
+                using (var fileStream = new FileStream(xmlFile, FileMode.Open))
+                {
+                    result = _parser.ParseGetSiteInfoCall(fileStream);
+                }
+            }
+            else
+            {
+                var req = WebServiceHelper.CreateGetSiteInfoRequest(_asmxURL, siteCode);
+                using (var resp = (HttpWebResponse)req.GetResponse())
+                {
+                    using (var stream = resp.GetResponseStream())
+                    {
+                        result = _parser.ParseGetSiteInfoCall(stream);
+                    }
+                }
+            }
+
+            return result;
 		}
 
 		/// <summary>
@@ -406,7 +426,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             fileName = fileName.Replace(":", "-");
             fileName = Path.Combine(DownloadDirectory, fileName);
 
-            HttpWebRequest req = WebServiceHelper.CreateGetSiteInfoRequest(_asmxURL, fullSiteCode);
+            var req = WebServiceHelper.CreateGetSiteInfoRequest(_asmxURL, fullSiteCode);
 
             SaveWebResponseToFile(req, fileName);
             return fileName;
