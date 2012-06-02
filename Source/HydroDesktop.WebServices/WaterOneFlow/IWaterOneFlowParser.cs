@@ -45,7 +45,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Parses a WaterML TimeSeriesResponse XML file
         /// </summary>
-        /// <param name="xmlFile"></param>
+        /// <param name="xmlFile">Path to xml file.</param>
         IList<Series> ParseGetValues(string xmlFile);
     }
 }
