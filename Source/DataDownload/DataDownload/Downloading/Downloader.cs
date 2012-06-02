@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using HydroDesktop.Database;
 using HydroDesktop.DataDownload.Downloading.Exceptions;
@@ -112,20 +113,25 @@ namespace HydroDesktop.DataDownload.Downloading
             var result = new List<Series>();
             foreach (var xmlFile in dInfo.FilesWithData)
             {
-                IList<Series> seriesList;
                 try
                 {
-                    seriesList = parser.ParseGetValues(xmlFile);
+                    using (var fileStream = new FileStream(xmlFile, FileMode.Open))
+                    {
+                        var seriesList = parser.ParseGetValues(fileStream);
+                        result.AddRange(seriesList);
+                    }
                 }
                 catch (Exception ex)
                 {
                     throw new DataSeriesFromXmlException(ex.Message, ex);
                 }
-                if (seriesList == null || seriesList.Count == 0)
-                    throw new NoSeriesFromXmlException();
-
-                result.AddRange(seriesList);
             }
+
+            if (result.Count == 0)
+            {
+                throw new NoSeriesFromXmlException();
+            }
+
             return result;
         }
      

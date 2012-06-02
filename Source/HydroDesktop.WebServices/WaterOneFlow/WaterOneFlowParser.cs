@@ -233,7 +233,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 }
             }
 
-            return seriesList;
+            return seriesList ?? (new List<Series>(0));
         }
 
         /// <summary>
