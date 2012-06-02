@@ -4,13 +4,14 @@ using HydroDesktop.WebServices.WaterOneFlow;
 namespace HydroDesktop.WebServices.Tests.WaterOneFlow
 {
     [TestFixture]
-    public class WaterOneFlowClientTest
+    public class WaterOneFlowClientTests
     {
         [Test]
         [TestCase(@"http://icewater.boisestate.edu/dcew2dataservices/cuahsi_1_0.asmx?WSDL")]
         [TestCase(@"http://icewater.boisestate.edu/rcew2dataservices/cuahsi_1_1.asmx?WSDL")]
         [TestCase(@"http://icewater.usu.edu/MudLake/cuahsi_1_0.asmx?WSDL")]
         [TestCase(@"http://hydrodata.info/webservices/cuahsi_1_1.asmx?WSDL")]
+        [TestCase(@"http://his.crwr.utexas.edu/TXEvap/cuahsi_1_0.asmx")]
         public void GetSites_SaveXmlFilesFlag_ReturnsSameData(string url)
         {
             var target = new WaterOneFlowClient(url);

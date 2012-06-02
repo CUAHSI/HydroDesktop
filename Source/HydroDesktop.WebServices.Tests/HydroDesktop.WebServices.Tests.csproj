@@ -77,11 +77,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HisCentralTest.cs" />
-    <Compile Include="WaterOneFlow\WaterOneFlowClientTest.cs" />
+    <Compile Include="WaterOneFlow\WaterOneFlowClientTests.cs" />
     <Compile Include="WaterOneFlow\ParserFactoryTests.cs" />
-    <Compile Include="XmlDownloaderTest.cs" />
-    <Compile Include="XmlParserTest.cs" />
+    <Compile Include="WaterOneFlow\WaterOneFlow10ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
