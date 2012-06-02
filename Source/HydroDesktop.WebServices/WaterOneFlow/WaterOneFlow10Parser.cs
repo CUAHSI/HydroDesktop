@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -12,331 +11,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     /// Parses a WaterML response into a HydroDesktop domain object
     /// The WaterML should be in the 1.0 version.
     /// </summary>
-    public class WaterOneFlow10Parser : IWaterOneFlowParser
+    public class WaterOneFlow10Parser : WaterOneFlowParser
     {
-        #region Variables
-
-        private static readonly XmlReaderSettings _readerSettings = new XmlReaderSettings {IgnoreWhitespace = true,};
-
-        #endregion
-
-        public IList<Site> ParseGetSitesXml(string xmlFile)
-        {
-            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
-            {
-                return ParseGetSitesCall(fileStream);
-            }
-        }
-
-        public IList<Site> ParseGetSitesCall(Stream stream)
-        {
-            var txtReader = new StreamReader(stream);
-            using (var reader = XmlReader.Create(txtReader, _readerSettings))
-            {
-                return ReadSites(reader);
-            }
-        }
-
-        public IList<SeriesMetadata> ParseGetSiteInfo(string xmlFile)
-        {
-            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
-            {
-                return ParseGetSiteInfoCall(fileStream);
-            }
-        }
-
-        public IList<SeriesMetadata> ParseGetSiteInfoCall(Stream stream)
-        {
-            var txtReader = new StreamReader(stream);
-            using (var reader = XmlReader.Create(txtReader, _readerSettings))
-            {
-                return ReadSeriesMetadata(reader);
-            }
-        }
-
-        private IList<Site> ReadSites(XmlReader reader)
-        {
-            var siteList = new List<Site>();
-            while (reader.Read())
-            {
-                if (reader.NodeType == XmlNodeType.Element)
-                {
-                    var readerName = reader.Name.ToLower();
-
-                    if (readerName == "site")
-                    {
-                        //Read the site information
-                        var site = ReadSite(reader);
-                        if (site != null)
-                        {
-                            siteList.Add(site);
-                        }
-                    }
-                }
-            }
-            return siteList;
-        }
-
-        private IList<SeriesMetadata> ReadSeriesMetadata(XmlReader reader)
-        {
-            IList<SeriesMetadata> seriesList = new List<SeriesMetadata>();
-            Site site = null;
-
-            while (reader.Read())
-            {
-                if (reader.NodeType == XmlNodeType.Element)
-                {
-                    var readerName = reader.Name.ToLower();
-
-                    if (readerName == "siteinfo")
-                    {
-                        //Read the site information
-                        site = ReadSite(reader);
-                    }
-                    else if (site != null && readerName == "series")
-                    {
-                        SeriesMetadata newSeries = ReadSeriesFromSiteInfo(reader, site);
-                        seriesList.Add(newSeries);
-                    }
-                }
-            }
-
-            return seriesList;
-        }
-        
-        /// <summary>
-        /// Parses a WaterML TimeSeriesResponse XML file
-        /// </summary>
-        /// <param name="xmlFile"></param>
-        public IList<Series> ParseGetValues(string xmlFile)
-        {
-            var xmlFileInfo = GetDataFileInfo(xmlFile);
-
-            Site site = null;
-            Variable varInfo = null;
-            IList<Series> seriesList = null;
-
-            using (var reader =  XmlReader.Create(xmlFile, _readerSettings))
-            {
-                while (reader.Read())
-                {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        string readerName = reader.Name.ToLower();
-                        
-                        if (readerName == "queryinfo")
-                        {
-                            //Read the 'Query Info'
-                            var qry = ReadQueryInfo(reader);
-                            xmlFileInfo.QueryInfo = qry;
-                        }
-                        else if (readerName == "source" || readerName == "sourceinfo")
-                        {
-                            //Read the site information
-                            site = ReadSite(reader);
-                        }
-                        else if (readerName == "variable")
-                        {
-                            //Read the variable information
-                            varInfo = ReadVariable(reader);
-                        }
-                        else if (readerName == "values")
-                        {
-                            //Read the time series and data values information
-                            seriesList = ReadDataValues(reader, xmlFileInfo);
-                            foreach (var series in seriesList)
-                            {
-                                if (varInfo != null)
-                                {
-                                    series.Variable = varInfo;
-                                }
-                                if (site != null)
-                                {
-                                    series.Site = site;
-                                }
-                                CheckDataSeries(series);
-                            }
-                        }
-                    }
-                }
-
-                return seriesList;
-            }
-        }
-
-        /// <summary>
-        /// Gets information about the xml (WaterML) file
-        /// </summary>
-        /// <param name="xmlFileName"></param>
-        /// <returns></returns>
-        private static DataFile GetDataFileInfo(string xmlFileName)
-        {
-            var xmlFileInfo = new DataFile
-                                  {
-                                      FileDescription = "WaterML File",
-                                      FileName = System.IO.Path.GetFileName(xmlFileName),
-                                      FilePath = System.IO.Path.GetDirectoryName(xmlFileName),
-                                      FileType = "xml",
-                                      LoadDateTime = DateTime.Now,
-                                      LoadMethod = "WaterML download"
-                                  };
-            return xmlFileInfo;
-        }
-
-        /// <summary>
-        /// Reads the QueryInfo section
-        /// </summary>
-        private QueryInfo ReadQueryInfo(XmlReader r)
-        {
-            QueryInfo query = new QueryInfo();
-            while (r.Read())
-            {
-                string nodeName = r.Name.ToLower();
-
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (nodeName == "locationparam")
-                    {
-                        r.Read();
-                        query.LocationParameter = r.Value;
-                    }
-                    else if (nodeName == "variableparam")
-                    {
-                        r.Read();
-                        query.VariableParameter = r.ReadContentAsString();
-                    }
-                    else if (nodeName == "begindatetime")
-                    {
-                        r.Read();
-                        query.BeginDateParameter = Convert.ToDateTime(r.Value,CultureInfo.InvariantCulture);
-                    }
-                    else if (nodeName == "enddatetime")
-                    {
-                        r.Read();
-                        query.EndDateParameter = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "queryinfo")
-                {
-                    return query;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Reads information about site from the WaterML returned by GetValues
-        /// </summary>
-        private Site ReadSite(XmlReader r)
-        {
-            Site site = new Site();
-            while (r.Read())
-            {
-                string nodeName = r.Name.ToLower();
-                
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (nodeName == "sitename")
-                    {
-                        r.Read();
-                        site.Name = r.Value;
-                    }
-                    else if (nodeName == "geolocation")
-                    {
-                        ReadSpatialReference(r, site);
-                    }
-                    else if (nodeName.IndexOf("sitecode") >= 0)
-                    {
-                        string networkPrefix = r.GetAttribute("network");
-                        r.Read();
-                        string siteCode = r.Value;
-                        if (!String.IsNullOrEmpty(networkPrefix))
-                        {
-                            siteCode = networkPrefix + ":" + siteCode;
-                        }
-                        site.Code = siteCode;
-                    }
-                    else if (nodeName == "verticaldatum")
-                    {
-                        r.Read();
-                        site.VerticalDatum = r.Value;
-                    }
-                    else if (nodeName == "timezoneinfo")
-                    {
-                        site.DefaultTimeZone = ReadTimeZoneInfo(r);
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && 
-                    (nodeName.StartsWith("source") || nodeName.StartsWith("siteinfo")))
-                {
-                    //ensure that spatial reference is set
-                    if (site.SpatialReference == null)
-                    {
-                        site.SpatialReference = new SpatialReference();
-                        site.SpatialReference.SRSID = 0;
-                        site.SpatialReference.SRSName = "unknown";
-                    }
-                    
-                    return site;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Reads information about time zone
-        /// </summary>
-        private TimeZoneInfo ReadTimeZoneInfo(XmlReader r)
-        {
-            string zoneAbbrev = string.Empty;
-            string zoneOffset = string.Empty;
-            TimeZoneInfo defaultTz = TimeZoneInfo.Utc;
-
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name == "defaultTimeZone")
-                    {
-                        if (r.HasAttributes)
-                        {
-                            while(r.MoveToNextAttribute())
-                            {
-                                if (r.Name.ToLower() == "zoneabbreviation")
-                                {
-                                    zoneAbbrev = r.Value;
-                                }
-
-                                if (r.Name.ToLower() == "zoneoffset")
-                                {
-                                    zoneOffset = r.Value;
-                                }
-                            }
-                            r.MoveToElement();
-                        }
-
-                        if (!string.IsNullOrEmpty(zoneAbbrev) && !string.IsNullOrEmpty(zoneOffset))
-                        {
-                            int offsetHours = Convert.ToInt32(zoneOffset.Substring(0, zoneOffset.IndexOf(":")));
-                            int offsetMinutes = Convert.ToInt32(zoneOffset.Substring(zoneOffset.IndexOf(":") + 1));
-                            TimeSpan offsetTimeSpan = new TimeSpan(offsetHours, offsetMinutes, 0);
-                            defaultTz = TimeZoneInfo.CreateCustomTimeZone(zoneAbbrev, offsetTimeSpan, zoneAbbrev, zoneAbbrev);
-                            return defaultTz;
-                        }
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name == "timeZoneInfo")
-                {
-                    return defaultTz;
-                }
-            }
-            return defaultTz;
-        }
-
         /// <summary>
         /// Reads information about variable
         /// </summary>
-        private Variable ReadVariable(XmlReader r)
+        protected override Variable ReadVariable(XmlReader r)
         {
             Variable varInfo = new Variable();
             Unit timeUnit = Unit.Unknown;
@@ -471,65 +151,10 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return varInfo;
         }
 
-        private SeriesMetadata ReadSeriesFromSiteInfo(XmlReader r, Site site)
-        {
-            SeriesMetadata series = new SeriesMetadata();
-            series.Site = site;
-
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    string nodeName = r.Name.ToLower();
-                    if (nodeName == "variable")
-                    {
-                        series.Variable = ReadVariable(r);
-                    }
-                    else if (nodeName == "valuecount")
-                    {
-                        r.Read();
-                        series.ValueCount = Convert.ToInt32(r.Value);
-                    }
-                    else if (nodeName == "begindatetime")
-                    {
-                        r.Read();
-                        series.BeginDateTime = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
-                        series.BeginDateTimeUTC = series.BeginDateTime;
-                    }
-                    else if (nodeName == "enddatetime")
-                    {
-                        r.Read();
-                        series.EndDateTime = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
-                        series.EndDateTimeUTC = series.EndDateTime;
-                    }
-                    else if (nodeName == "method")
-                    {
-                        series.Method = ReadMethod(r);
-                    }
-                    else if (nodeName == "source")
-                    {
-                        series.Source = ReadSource(r);
-                    }
-                    else if (nodeName == "qualitycontrollevel")
-                    {
-                        //TODO: Read QualityControlLevel
-                    }
-                }
-                else
-                {
-                    if (r.NodeType == XmlNodeType.EndElement && r.Name == "series")
-                    {
-                        return series;
-                    }
-                }
-            }
-            return series;
-        }
-
         /// <summary>
         /// Reads the DataValues section
         /// </summary>
-        private IList<Series> ReadDataValues(XmlReader r, DataFile dataFile)
+        protected override IList<Series> ReadDataValues(XmlReader r, DataFile dataFile)
         {
             int valueCount;
             var lst = new List<DataValueWrapper>(Int32.TryParse(r.GetAttribute("count"), out valueCount) ? valueCount : 4);
@@ -677,10 +302,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     {
                         ReadQualifier(r, qualifiers);
                     }
-                    else if (r.Name == "sample")
-                    {
-                        ReadSample(r, samples);
-                    }
                     else if (r.Name == "offset")
                     {
                         ReadOffset(r, offsets);
@@ -807,14 +428,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         }
 
         /// <summary>
-        /// Reads information about a sample
-        /// </summary>
-        private void ReadSample(XmlReader r, Dictionary<string, Sample> samples)
-        {
-            //not implemented
-        }
-
-        /// <summary>
         /// Reads information about a qualifier
         /// </summary>
         private void ReadQualifier(XmlReader r, Dictionary<string, Qualifier> qualifiers)
@@ -838,7 +451,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// </summary>
         /// <param name="r"></param>
         /// <returns></returns>
-        private Method ReadMethod(XmlReader r)
+        protected override Method ReadMethod(XmlReader r)
         {
             //assign the method Code (method ID) if available
             string methodID = r.GetAttribute("methodID");
@@ -918,7 +531,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
         }
 
-        private Source ReadSource(XmlReader r)
+        protected override Source ReadSource(XmlReader r)
         {
             //assign the source Code (source ID) if available
             string sourceID = r.GetAttribute("sourceID");
@@ -1004,6 +617,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return Source.Unknown;
         }
 
+        protected override QualityControlLevel ReadQualityControlLevel(XmlReader r)
+        {
+            // todo: QualityControlLevel
+            return null;
+        }
+
         /// <summary>
         /// Reads information about the source of the data series
         /// </summary>
@@ -1074,69 +693,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
         }
 
-
-        /// <summary>
-        /// Reads the spatial reference information
-        /// </summary>
-        private void ReadSpatialReference(XmlReader r, Site site)
-        {
-            SpatialReference spatialReference = new SpatialReference();
-            while (r.Read())
-            {
-                //lat long datum (srs)
-                if (r.NodeType == XmlNodeType.Element && r.Name == "geogLocation")
-                {
-                    if (r.HasAttributes)
-                    {
-                        site.SpatialReference = new SpatialReference();
-                        string srsName = r.GetAttribute("srs");
-                        if (String.IsNullOrEmpty(srsName))
-                        {
-                            srsName = "unknown";
-                        }
-                        site.SpatialReference.SRSName = srsName;
-                    }
-                }
-
-                //latitude
-                if (r.NodeType == XmlNodeType.Element && r.Name == "latitude")
-                {
-                    r.Read();
-                    site.Latitude = r.ReadContentAsDouble();
-                }
-
-                //longitude
-                if (r.NodeType == XmlNodeType.Element && r.Name == "longitude")
-                {
-                    r.Read();
-                    site.Longitude = r.ReadContentAsDouble();
-                }
-
-                //local projection
-                if (r.NodeType == XmlNodeType.Element && r.Name == "localSiteXY" && r.HasAttributes)
-                {
-                    site.LocalProjection = new SpatialReference();
-                    site.LocalProjection.SRSName = r.GetAttribute("projectionInformation");
-                }
-
-                if (r.NodeType == XmlNodeType.Element && r.Name == "X")
-                {
-                    r.Read();
-                    site.LocalX = r.ReadContentAsDouble();
-                }
-
-                if (r.NodeType == XmlNodeType.Element && r.Name == "Y")
-                {
-                    r.Read();
-                    site.LocalY = r.ReadContentAsDouble();
-                }
-                if (r.NodeType == XmlNodeType.EndElement && r.Name == "geoLocation")
-                {
-                    return;
-                }
-            }
-        }
-
+       
         /// <summary>
         /// Check compound qualifiers
         /// </summary>
@@ -1169,56 +726,5 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 }
             }
         }
-
-        /// <summary>
-        /// Checks data series to make sure that the time zone information
-        /// is correct. Also check if it is a composite series and if it is composite then
-        /// separates it into multiple series.
-        /// </summary>
-        /// <param name="series">the data series to be checked</param>
-        private void CheckDataSeries(Series series)
-        {
-            //ensure that properties are re-calculated
-            series.UpdateProperties();
-            
-            if (series.Site.DefaultTimeZone == null)
-            {
-                series.Site.DefaultTimeZone = TimeZoneInfo.Utc;
-            }
-
-            //check the time zone and assign the 'UTC Offset'
-            if (series.Site.DefaultTimeZone != TimeZoneInfo.Utc)
-            {
-                TimeSpan utcOffset = series.Site.DefaultTimeZone.BaseUtcOffset;
-                double utcOffsetHours = utcOffset.TotalHours;
-                series.BeginDateTimeUTC = series.BeginDateTime - utcOffset;
-                series.EndDateTimeUTC = series.EndDateTime - utcOffset;
-                foreach (DataValue val in series.DataValueList)
-                {
-                    val.UTCOffset = utcOffsetHours;
-                }
-            }
-            else
-            {
-                series.BeginDateTimeUTC = series.BeginDateTime;
-                series.EndDateTimeUTC = series.EndDateTime;
-            }
-
-            //set the checked and creation date time
-            series.CreationDateTime = DateTime.Now;
-            series.LastCheckedDateTime = DateTime.Now;
-            series.UpdateDateTime = series.LastCheckedDateTime;
-        }
-    }
-
-    class DataValueWrapper
-    {
-        public DataValue DataValue { get; set; }
-        public string SeriesCode { get; set; }
-        public string SourceID { get; set; }
-        public string MethodID { get; set; }
-        public string OffsetID { get; set; }
-        public string SampleID { get; set; }
-        public string QualityID { get; set; }
     }
 }
