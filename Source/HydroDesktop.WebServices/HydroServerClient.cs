@@ -12,7 +12,7 @@ namespace HydroDesktop.WebServices
 	/// <summary>
 	/// Communicates with an HIS Server that is configured with a HISServerCapabilities service
 	/// </summary>
-	public class HydroServerClient : WebServiceClientBase
+	public class HydroServerClient
 	{
 		#region Variables
 
@@ -27,7 +27,6 @@ namespace HydroDesktop.WebServices
 		/// </summary>
 		/// <param name="asmxUrl">The URL of the HIS Server with the HISServerCapabilities service</param>
 		public HydroServerClient ( string asmxUrl )
-			: base ( asmxUrl )
 		{
 			_asmxUrl = asmxUrl;
 		}

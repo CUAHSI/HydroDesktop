@@ -16,22 +16,22 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// </summary>
         /// <param name="xmlFile">Xml file.</param>
         /// <returns>List of sites.</returns>
-        [Obsolete("Use ParseGetSitesCall() instead.")]
-        IList<Site> ParseGetSitesXml(string xmlFile);
+        [Obsolete("Use ParseGetSites(Stream stream) instead.")]
+        IList<Site> ParseGetSites(string xmlFile);
 
         /// <summary>
         /// Reads the stream returned by GetSites call to a WaterOneFlow web service.
         /// </summary>
         /// <param name="stream">Stream that contains xml file.</param>
         /// <returns>List of sites.</returns>
-        IList<Site> ParseGetSitesCall(Stream stream);
+        IList<Site> ParseGetSites(Stream stream);
 
         /// <summary>
         /// Parses the xml file returned by GetSiteInfo call to a WaterOneFlow web service.
         /// </summary>
         /// <param name="xmlFile">Xml file.</param>
         /// <returns>List of SeriesMetadata.</returns>
-        [Obsolete("Use ParseGetSiteInfoCall() instead.")]
+        [Obsolete("Use ParseGetSiteInfo(Stream stream) instead.")]
         IList<SeriesMetadata> ParseGetSiteInfo(string xmlFile);
 
 
@@ -40,12 +40,21 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// </summary>
         /// <param name="stream">Stream that contains xml file.</param>
         /// <returns>List of SeriesMetadata.</returns>
-        IList<SeriesMetadata> ParseGetSiteInfoCall(Stream stream);
+        IList<SeriesMetadata> ParseGetSiteInfo(Stream stream);
         
         /// <summary>
         /// Parses a WaterML TimeSeriesResponse XML file
         /// </summary>
         /// <param name="xmlFile">Path to xml file.</param>
+        /// <returns>List of series.</returns>
+        [Obsolete("Use ParseGetValues(Stream stream) instead.")]
         IList<Series> ParseGetValues(string xmlFile);
+
+        /// <summary>
+        /// Parses a WaterML TimeSeriesResponse XML file
+        /// </summary>
+        /// <param name="stream">Stream that contains xml file.</param>
+        /// <returns>List of series.</returns>
+        IList<Series> ParseGetValues(Stream stream);
     }
 }

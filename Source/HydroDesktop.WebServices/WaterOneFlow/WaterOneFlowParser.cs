@@ -17,15 +17,15 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         #region Implementation of IWaterOneFlowParser
 
-        public IList<Site> ParseGetSitesXml(string xmlFile)
+        public IList<Site> ParseGetSites(string xmlFile)
         {
             using (var fileStream = new FileStream(xmlFile, FileMode.Open))
             {
-                return ParseGetSitesCall(fileStream);
+                return ParseGetSites(fileStream);
             }
         }
 
-        public IList<Site> ParseGetSitesCall(Stream stream)
+        public IList<Site> ParseGetSites(Stream stream)
         {
             var txtReader = new StreamReader(stream);
             using (var reader = XmlReader.Create(txtReader, _readerSettings))
@@ -38,11 +38,11 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         {
             using (var fileStream = new FileStream(xmlFile, FileMode.Open))
             {
-                return ParseGetSiteInfoCall(fileStream);
+                return ParseGetSiteInfo(fileStream);
             }
         }
 
-        public IList<SeriesMetadata> ParseGetSiteInfoCall(Stream stream)
+        public IList<SeriesMetadata> ParseGetSiteInfo(Stream stream)
         {
             var txtReader = new StreamReader(stream);
             using (var reader = XmlReader.Create(txtReader, _readerSettings))
@@ -53,57 +53,18 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         public IList<Series> ParseGetValues(string xmlFile)
         {
-            var xmlFileInfo = GetDataFileInfo(xmlFile);
-
-            Site site = null;
-            Variable varInfo = null;
-            IList<Series> seriesList = null;
-
-            using (var reader = XmlReader.Create(xmlFile, _readerSettings))
+            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
             {
-                while (reader.Read())
-                {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        string readerName = reader.Name.ToLower();
+                return ParseGetValues(fileStream);
+            } 
+        }
 
-                        if (readerName == "queryinfo")
-                        {
-                            //Read the 'Query Info'
-                            var qry = ReadQueryInfo(reader);
-                            xmlFileInfo.QueryInfo = qry;
-                        }
-                        else if (readerName == "source" || readerName == "sourceinfo")
-                        {
-                            //Read the site information
-                            site = ReadSite(reader);
-                        }
-                        else if (readerName == "variable")
-                        {
-                            //Read the variable information
-                            varInfo = ReadVariable(reader);
-                        }
-                        else if (readerName == "values")
-                        {
-                            //Read the time series and data values information
-                            seriesList = ReadDataValues(reader, xmlFileInfo);
-                            foreach (var series in seriesList)
-                            {
-                                if (varInfo != null)
-                                {
-                                    series.Variable = varInfo;
-                                }
-                                if (site != null)
-                                {
-                                    series.Site = site;
-                                }
-                                CheckDataSeries(series);
-                            }
-                        }
-                    }
-                }
-
-                return seriesList;
+        public IList<Series> ParseGetValues(Stream stream)
+        {
+            var txtReader = new StreamReader(stream);
+            using (var reader = XmlReader.Create(txtReader, _readerSettings))
+            {
+                return ReadValues(reader);
             }
         }
 
@@ -223,6 +184,56 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 }
             }
             return series;
+        }
+
+        private IList<Series> ReadValues(XmlReader reader)
+        {
+            Site site = null;
+            Variable varInfo = null;
+            IList<Series> seriesList = null;
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    string readerName = reader.Name.ToLower();
+
+                    if (readerName == "queryinfo")
+                    {
+                        //Read the 'Query Info'
+                        //var qry = ReadQueryInfo(reader);
+                        //xmlFileInfo.QueryInfo = qry;
+                    }
+                    else if (readerName == "source" || readerName == "sourceinfo")
+                    {
+                        //Read the site information
+                        site = ReadSite(reader);
+                    }
+                    else if (readerName == "variable")
+                    {
+                        //Read the variable information
+                        varInfo = ReadVariable(reader);
+                    }
+                    else if (readerName == "values")
+                    {
+                        //Read the time series and data values information
+                        seriesList = ReadDataValues(reader);
+                        foreach (var series in seriesList)
+                        {
+                            if (varInfo != null)
+                            {
+                                series.Variable = varInfo;
+                            }
+                            if (site != null)
+                            {
+                                series.Site = site;
+                            }
+                            CheckDataSeries(series);
+                        }
+                    }
+                }
+            }
+
+            return seriesList;
         }
 
         /// <summary>
@@ -433,25 +444,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 
         /// <summary>
-        /// Gets information about the xml (WaterML) file
-        /// </summary>
-        /// <param name="xmlFileName"></param>
-        /// <returns></returns>
-        private static DataFile GetDataFileInfo(string xmlFileName)
-        {
-            var xmlFileInfo = new DataFile
-            {
-                FileDescription = "WaterML File",
-                FileName = Path.GetFileName(xmlFileName),
-                FilePath = Path.GetDirectoryName(xmlFileName),
-                FileType = "xml",
-                LoadDateTime = DateTime.Now,
-                LoadMethod = "WaterML download"
-            };
-            return xmlFileInfo;
-        }
-
-        /// <summary>
         /// Checks data series to make sure that the time zone information
         /// is correct. Also check if it is a composite series and if it is composite then
         /// separates it into multiple series.
@@ -498,7 +490,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         protected abstract Method ReadMethod(XmlReader r);
         protected abstract Source ReadSource(XmlReader r);
         protected abstract QualityControlLevel ReadQualityControlLevel(XmlReader r);
-        protected abstract IList<Series> ReadDataValues(XmlReader r, DataFile dataFile);
+        protected abstract IList<Series> ReadDataValues(XmlReader r);
     }
 
     class DataValueWrapper
