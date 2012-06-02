@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
@@ -11,11 +13,20 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     {
         /// <summary>
         /// Parses the xml file returned by GetSites call to a WaterOneFlow
-        /// web service
+        /// web service.
         /// </summary>
-        /// <param name="xmlFile"></param>
-        /// <returns></returns>
+        /// <param name="xmlFile">Xml file.</param>
+        /// <returns>List of sites.</returns>
+        [Obsolete("Use ParseGetSitesCall() instead.")]
         IList<Site> ParseGetSitesXml(string xmlFile);
+
+        /// <summary>
+        /// Reads the stream returned by GetSites call to a WaterOneFlow
+        /// web service.
+        /// </summary>
+        /// <param name="stream">Stream that contains xml file.</param>
+        /// <returns>List of sites.</returns>
+        IList<Site> ParseGetSitesCall(Stream stream);
 
         /// <summary>
         /// Parses the xml file returned by GetSiteInfo call to a WaterOneFlow web service

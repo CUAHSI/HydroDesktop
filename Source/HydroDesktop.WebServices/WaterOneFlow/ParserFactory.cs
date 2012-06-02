@@ -8,7 +8,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         public IWaterOneFlowParser GetParser(DataServiceInfo dataService)
         {
             IWaterOneFlowParser parser;
-            switch (dataService.Version.ToString(CultureInfo.InvariantCulture))
+            switch (dataService.Version.ToString("F1", CultureInfo.InvariantCulture))
             {
                 case "1.0":
                     parser = new WaterOneFlow10Parser();

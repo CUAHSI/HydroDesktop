@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using HydroDesktop.WebServices.WaterOneFlow;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterOneFlow;
+using NUnit.Framework;
 
 namespace HydroDesktop.WebServices.Tests
 {
@@ -140,12 +140,6 @@ namespace HydroDesktop.WebServices.Tests
             Assert.Greater(series.Count, 0);
             Assert.AreNotEqual(series[0].Source.ToString(), "unknown");
             Assert.AreNotEqual(series[0].Method.ToString(), "unknown");
-        }
-
-        [Test]
-        public void TestSeriesWithOffset()
-        {
-
         }
     }
 }

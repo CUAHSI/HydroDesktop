@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -19,32 +20,39 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         #endregion
 
-        /// <summary>
-        /// Parses the xml file returned by GetSites call to a WaterOneFlow
-        /// web service
-        /// </summary>
-        /// <param name="xmlFile"></param>
-        /// <returns></returns>
         public IList<Site> ParseGetSitesXml(string xmlFile)
         {
-            IList<Site> siteList = new List<Site>();
-
-            using (var reader = XmlReader.Create(xmlFile, _readerSettings))
+            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
             {
-                while (reader.Read())
-                {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        string readerName = reader.Name.ToLower();
+                return ParseGetSitesCall(fileStream);
+            }
+        }
 
-                        if (readerName == "site")
+        public IList<Site> ParseGetSitesCall(Stream stream)
+        {
+            var txtReader = new StreamReader(stream);
+            using (var reader = XmlReader.Create(txtReader, _readerSettings))
+            {
+                return ReadSites(reader);
+            }
+        }
+
+        private IList<Site> ReadSites(XmlReader reader)
+        {
+            var siteList = new List<Site>();
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    var readerName = reader.Name.ToLower();
+
+                    if (readerName == "site")
+                    {
+                        //Read the site information
+                        var site = ReadSite(reader);
+                        if (site != null)
                         {
-                            //Read the site information
-                            Site site = ReadSite(reader);
-                            if (site != null)
-                            {
-                                siteList.Add(site);
-                            }
+                            siteList.Add(site);
                         }
                     }
                 }

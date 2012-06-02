@@ -42,9 +42,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			CheckWebService ( serviceInfo.EndpointURL );
 			_asmxURL = serviceInfo.EndpointURL;
 
-            //TODO make this path an optional user setting
-			DownloadDirectory = Path.Combine ( Path.GetTempPath (), "HydroDesktop" );
-
 			//find out the WaterOneFlow version of this web service
 			_serviceInfo = serviceInfo;
 			AssignWaterOneFlowVersion ( _serviceInfo );
@@ -86,9 +83,18 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// Gets or sets the name of the directory where 
 		/// downloaded xml files are stored
 		/// </summary>
+        //TODO make this path an optional user setting
 		public string DownloadDirectory
 		{
-			get { return _downloadDirectory; }
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_downloadDirectory))
+                {
+                    DownloadDirectory = Path.Combine(Path.GetTempPath(), "HydroDesktop");
+                }
+
+                return _downloadDirectory;
+            }
 			set
 			{
 			    if (Directory.Exists(_downloadDirectory)) return;
@@ -104,7 +110,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			}
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// The URL address of the web service being used
 		/// </summary>
 		public string ServiceURL
@@ -112,7 +118,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			get { return _asmxURL; }
 		}
 
-		#endregion
+        /// <summary>
+        /// Gets or sets boolean indicated that WaterOneFlowClient should save temporary xml files.
+        /// </summary>
+        /// <seealso cref="DownloadDirectory"/>
+        public bool SaveXmlFiles { get; set; }
+
+	    #endregion
 
 		#region Public Methods
 
@@ -151,10 +163,30 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// Gets the information about all sites available at this web service.
 		/// </summary>
 		/// <returns>The list of all sites supported by this web service.</returns>
-		public IList<Site> GetSites ()
+		public IList<Site> GetSites()
 		{
-			string xmlFile = GetSitesXML ();
-			return _parser.ParseGetSitesXml ( xmlFile );
+		    IList<Site> result;
+            if (SaveXmlFiles)
+            {
+                var xmlFile = GetSitesXML();
+                using (var fileStream = new FileStream(xmlFile, FileMode.Open))
+                {
+                    result = _parser.ParseGetSitesCall(fileStream);
+                }
+            }
+            else
+            {
+                var req = WebServiceHelper.CreateGetSitesRequest(_asmxURL);
+                using (var resp = (HttpWebResponse)req.GetResponse())
+                {
+                    using (var stream = resp.GetResponseStream())
+                    {
+                        result = _parser.ParseGetSitesCall(stream);
+                    }
+                }
+            }
+
+		    return result;
 		}
 
 		/// <summary>
@@ -251,30 +283,23 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
             return savedFiles.AsEnumerable();
 	    }
+       
 
-        private string GetWebResponseString(HttpWebResponse resp)
-        {
-            // we will read data via the response stream
-            Stream receiveStream = resp.GetResponseStream();
-            using (StreamReader r = new StreamReader(receiveStream))
-            {
-                return r.ReadToEnd();
-            }     
-        }
-
-        private void SaveWebResponseToFile(HttpWebRequest req, string filename)
+        private void SaveWebResponseToFile(WebRequest req, string filename)
         {
             using (var resp = (HttpWebResponse)req.GetResponse())
             {
                 // we will read data via the response stream
-                using (Stream ReceiveStream = resp.GetResponseStream())
+                using (var stream = resp.GetResponseStream())
                 {
-                    byte[] buffer = new byte[1024];
-                    using (FileStream outFile = new FileStream(filename, FileMode.Create))
+                    var buffer = new byte[1024];
+                    using (var outFile = new FileStream(filename, FileMode.Create))
                     {
                         int bytesRead;
-                        while ((bytesRead = ReceiveStream.Read(buffer, 0, buffer.Length)) != 0)
+                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+                        {
                             outFile.Write(buffer, 0, bytesRead);
+                        }
                     }
                 }
             }
@@ -320,15 +345,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// Gets the information about all sites in the web service as a XML document in the WaterML format
 		/// </summary>
 		/// <returns>The downloaded XML file name</returns>
-		public string GetSitesXML ()
+		public string GetSitesXML()
 		{
             //generate the file name
-            string fileName = Path.Combine(DownloadDirectory, "sites" + GenerateTimeStampString() + ".xml");
-            
-            HttpWebRequest req = WebServiceHelper.CreateGetSitesRequest(_asmxURL);
-
+            var fileName = Path.Combine(DownloadDirectory, "sites" + GenerateTimeStampString() + ".xml");
+            var req = WebServiceHelper.CreateGetSitesRequest(_asmxURL);
             SaveWebResponseToFile(req, fileName);
-
             return fileName; 
 		}
 
