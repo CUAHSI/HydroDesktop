@@ -83,7 +83,6 @@
     <Compile Include="WaterOneFlow\WaterOneFlow11Parser.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowClient.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowParser.cs" />
-    <Compile Include="WebServiceClientBase.cs" />
     <Compile Include="WebServiceHelper.cs" />
   </ItemGroup>
   <ItemGroup>

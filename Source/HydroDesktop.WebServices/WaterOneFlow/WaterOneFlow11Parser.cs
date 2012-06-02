@@ -186,7 +186,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads the DataValues section
         /// </summary>
-        protected override IList<Series> ReadDataValues(XmlReader r, DataFile dataFile)
+        protected override IList<Series> ReadDataValues(XmlReader r)
         {
             int valueCount;
             var lst = new List<DataValueWrapper>(Int32.TryParse(r.GetAttribute("count"), out valueCount) ? valueCount : 4);
@@ -208,7 +208,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     {
                         //create a new empty data value and add it to the list
                         var wrapper = new DataValueWrapper();
-                        var val = new DataValue { DataFile = dataFile };
+                        var val = new DataValue();
                         wrapper.DataValue = val;
                         lst.Add(wrapper);
                         

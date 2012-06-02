@@ -44,7 +44,7 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
 
             foreach (string fileName in fileNames)
             {
-                IList<Site> sites = parser.ParseGetSitesXml(fileName);
+                IList<Site> sites = parser.ParseGetSites(fileName);
                 Assert.Greater(sites.Count, 0, "Error in file '"+fileName+ "' the number of sites must be greater than zero.");
             }
 

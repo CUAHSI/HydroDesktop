@@ -10,11 +10,11 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 	/// <summary>
 	/// Special class for communicating with WaterML / WaterOneFlow web services
 	/// </summary>
-	public class WaterOneFlowClient : WebServiceClientBase, IWaterOneFlowClient
+	public class WaterOneFlowClient : IWaterOneFlowClient
 	{
-		#region Variables
+		#region Fields
 
-		private readonly string _asmxURL;
+		private readonly string _serviceURL;
 		private readonly IWaterOneFlowParser _parser;
 
 		//the directory where downloaded files are stored
@@ -35,20 +35,16 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <param name="serviceInfo">The object with web service information</param>
 		/// <remarks>Throws an exception if the web service is not a valid
 		/// WaterOneFlow service</remarks>
-		public WaterOneFlowClient ( DataServiceInfo serviceInfo )
+		public WaterOneFlowClient(DataServiceInfo serviceInfo)
 		{
-			//check if the web service is a valid web service.
-			//this will throw an exception when the web service URL is invalid.
-			CheckWebService ( serviceInfo.EndpointURL );
-			_asmxURL = serviceInfo.EndpointURL;
+			_serviceURL = serviceInfo.EndpointURL;
 
 			//find out the WaterOneFlow version of this web service
 			_serviceInfo = serviceInfo;
-			AssignWaterOneFlowVersion ( _serviceInfo );
+            _serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(_serviceURL);
 
             //assign the waterOneFlow parser
-		    var parserFactory = new ParserFactory();
-		    _parser = parserFactory.GetParser(ServiceInfo);
+            _parser = new ParserFactory().GetParser(ServiceInfo);
 		}
 
 		/// <summary>
@@ -59,10 +55,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <param name="asmxURL">The url of the .asmx web page</param>
 		/// <remarks>Throws an exception if the web service is not a valid
 		/// WaterOneFlow service</remarks>
-		public WaterOneFlowClient ( string asmxURL ) :
-			this ( new DataServiceInfo ( asmxURL, asmxURL.Replace ( @"http://", "" ) ) ) { }
+        public WaterOneFlowClient(string asmxURL) :
+            this(new DataServiceInfo(asmxURL, asmxURL.Replace(@"http://", "")))
+		{
+		}
 
-		#endregion
+	    #endregion
 
 		#region Properties
 
@@ -77,13 +75,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <summary>
 		/// Gets or sets the ServiceID (assigned code) corresponding to this web service
 		/// </summary>
+		// todo: Not used
 		public int ServiceID { get; set; }
 
 		/// <summary>
 		/// Gets or sets the name of the directory where 
 		/// downloaded xml files are stored
 		/// </summary>
-        //TODO make this path an optional user setting
 		public string DownloadDirectory
 		{
             get
@@ -113,9 +111,10 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 	    /// <summary>
 		/// The URL address of the web service being used
 		/// </summary>
+		//todo: Not used
 		public string ServiceURL
 		{
-			get { return _asmxURL; }
+			get { return _serviceURL; }
 		}
 
         /// <summary>
@@ -140,13 +139,33 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <remarks>Usually the list of Series returned will only contain one series. However in some
 		/// cases, it will contain two or more series with the same site code and variable code, but
 		/// with a different method or quality control level</remarks>
-		public IList<Series> GetValues ( string siteCode, string variableCode, DateTime startTime, DateTime endTime )
+        public IList<Series> GetValues(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
 		{
-			string xmlFile = GetValuesXML (siteCode, variableCode, startTime, endTime);
-			return _parser.ParseGetValues (xmlFile );
+		    IList<Series> result;
+		    if (SaveXmlFiles)
+		    {
+		        var xmlFile = GetValuesXML(siteCode, variableCode, startTime, endTime);
+		        using (var fileStream = new FileStream(xmlFile, FileMode.Open))
+		        {
+		            result = _parser.ParseGetValues(fileStream);
+		        }
+		    }
+		    else
+		    {
+		        var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime, endTime);
+		        using (var resp = (HttpWebResponse) req.GetResponse())
+		        {
+		            using (var stream = resp.GetResponseStream())
+		            {
+		                result = _parser.ParseGetValues(stream);
+		            }
+		        }
+		    }
+
+		    return result;
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Gets information about all series available for the specific site
 		/// </summary>
 		/// <param name="siteCode">the full site code (networkPrefix:siteCode)</param>
@@ -161,17 +180,17 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 var xmlFile = GetSiteInfoXML(siteCode);
                 using (var fileStream = new FileStream(xmlFile, FileMode.Open))
                 {
-                    result = _parser.ParseGetSiteInfoCall(fileStream);
+                    result = _parser.ParseGetSiteInfo(fileStream);
                 }
             }
             else
             {
-                var req = WebServiceHelper.CreateGetSiteInfoRequest(_asmxURL, siteCode);
+                var req = WebServiceHelper.CreateGetSiteInfoRequest(_serviceURL, siteCode);
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     using (var stream = resp.GetResponseStream())
                     {
-                        result = _parser.ParseGetSiteInfoCall(stream);
+                        result = _parser.ParseGetSiteInfo(stream);
                     }
                 }
             }
@@ -191,17 +210,17 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 var xmlFile = GetSitesXML();
                 using (var fileStream = new FileStream(xmlFile, FileMode.Open))
                 {
-                    result = _parser.ParseGetSitesCall(fileStream);
+                    result = _parser.ParseGetSites(fileStream);
                 }
             }
             else
             {
-                var req = WebServiceHelper.CreateGetSitesRequest(_asmxURL);
+                var req = WebServiceHelper.CreateGetSitesRequest(_serviceURL);
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     using (var stream = resp.GetResponseStream())
                     {
-                        result = _parser.ParseGetSitesCall(stream);
+                        result = _parser.ParseGetSites(stream);
                     }
                 }
             }
@@ -217,10 +236,11 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <param name="eastLongitude">Longitude of eastern edge of bounding box</param>
 		/// <param name="northLatitude">Latitude of northern edge of bounding box</param>
 		/// <returns>The list of all sites supported by this web service within a bounding box.</returns>
+		// todo: Not used & not implemented
 		public IList<Site> GetSites ( double westLongitude, double southLatitude, double eastLongitude, double northLatitude )
 		{
-			string xmlFile = GetSitesXML ( westLongitude, southLatitude, eastLongitude, northLatitude );
-			return _parser.ParseGetSitesXml ( xmlFile );
+		    string xmlFile = GetSitesXML(westLongitude, southLatitude, eastLongitude, northLatitude);
+			return _parser.ParseGetSites ( xmlFile );
 		}
         
 		/// <summary>
@@ -303,63 +323,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
             return savedFiles.AsEnumerable();
 	    }
-       
-
-        private void SaveWebResponseToFile(WebRequest req, string filename)
-        {
-            using (var resp = (HttpWebResponse)req.GetResponse())
-            {
-                // we will read data via the response stream
-                using (var stream = resp.GetResponseStream())
-                {
-                    var buffer = new byte[1024];
-                    using (var outFile = new FileStream(filename, FileMode.Create))
-                    {
-                        int bytesRead;
-                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
-                        {
-                            outFile.Write(buffer, 0, bytesRead);
-                        }
-                    }
-                }
-            }
-        }
-
-        private string GetAndSavesValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
-        {
-            HttpWebRequest req = WebServiceHelper.CreateGetValuesRequest(_asmxURL, siteCode, variableCode, startTime, endTime);
-
-            string filename = GenerateGetValuesFileName(siteCode, variableCode);
-
-            SaveWebResponseToFile(req, filename);
-
-            return filename;
-        }
-        private string SaveWebMethodResut(object result, string siteCode, string variableCode)
-        {
-            //generate the file name
-            string timeStamp = GenerateTimeStampString();
-            string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
-            fileName = fileName.Replace(":", "-");
-            fileName = fileName.Replace("=", "-");
-            fileName = fileName.Replace("/", "-");
-
-            fileName = Path.Combine(DownloadDirectory, fileName);
-            WriteLinesToFile(fileName, result.ToString());
-            return fileName;
-        }
-        private string GenerateGetValuesFileName(string siteCode, string variableCode)
-        {
-            //generate the file name
-            string timeStamp = GenerateTimeStampString();
-            string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
-            fileName = fileName.Replace(":", "-");
-            fileName = fileName.Replace("=", "-");
-            fileName = fileName.Replace("/", "-");
-
-            fileName = Path.Combine(DownloadDirectory, fileName);
-            return fileName;
-        }
 
 	    /// <summary>
 		/// Gets the information about all sites in the web service as a XML document in the WaterML format
@@ -369,7 +332,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		{
             //generate the file name
             var fileName = Path.Combine(DownloadDirectory, "sites" + GenerateTimeStampString() + ".xml");
-            var req = WebServiceHelper.CreateGetSitesRequest(_asmxURL);
+            var req = WebServiceHelper.CreateGetSitesRequest(_serviceURL);
             SaveWebResponseToFile(req, fileName);
             return fileName; 
 		}
@@ -426,7 +389,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             fileName = fileName.Replace(":", "-");
             fileName = Path.Combine(DownloadDirectory, fileName);
 
-            var req = WebServiceHelper.CreateGetSiteInfoRequest(_asmxURL, fullSiteCode);
+            var req = WebServiceHelper.CreateGetSiteInfoRequest(_serviceURL, fullSiteCode);
 
             SaveWebResponseToFile(req, fileName);
             return fileName;
@@ -436,69 +399,59 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 		#region Private Methods
 
+        private static void SaveWebResponseToFile(WebRequest req, string filename)
+        {
+            using (var resp = (HttpWebResponse)req.GetResponse())
+            {
+                // we will read data via the response stream
+                using (var stream = resp.GetResponseStream())
+                {
+                    var buffer = new byte[1024];
+                    using (var outFile = new FileStream(filename, FileMode.Create))
+                    {
+                        int bytesRead;
+                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+                        {
+                            outFile.Write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+        }
+
+        private string GetAndSavesValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
+        {
+            var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime, endTime);
+            var filename = GenerateGetValuesFileName(siteCode, variableCode);
+            SaveWebResponseToFile(req, filename);
+            return filename;
+        }
+
+        private string GenerateGetValuesFileName(string siteCode, string variableCode)
+        {
+            //generate the file name
+            string timeStamp = GenerateTimeStampString();
+            string fileName = siteCode + "-" + variableCode + "-" + timeStamp + ".xml";
+            fileName = fileName.Replace(":", "-");
+            fileName = fileName.Replace("=", "-");
+            fileName = fileName.Replace("/", "-");
+
+            fileName = Path.Combine(DownloadDirectory, fileName);
+            return fileName;
+        }
+
 		/// <summary>
 		/// Generates a 'time stamp' string in the yyyyMMddhhmmss-miliseconds format for
 		/// the current system dateTime
 		/// </summary>
 		/// <returns></returns>
-		private string GenerateTimeStampString ()
+        private static string GenerateTimeStampString()
 		{
-			DateTime now = DateTime.Now;
-			return now.ToString ( "yyyyMMddhhmmss" ) + now.Millisecond.ToString ( "000" );
+		    var now = DateTime.Now;
+		    return now.ToString("yyyyMMddhhmmss") + now.Millisecond.ToString("000");
 		}
 
-		/// <summary>
-		/// This method finds the WaterOneFlow version of the web service and assigns
-        /// this information to the ServiceInfo object
-		/// </summary>
-		/// <param name="serviceInfo">the web service to be checked</param>
-		private void AssignWaterOneFlowVersion ( DataServiceInfo serviceInfo )
-		{
-            _serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(_asmxURL);
-		}
-
-		/// <summary>
-		/// This method is used to write the file to the Hard Disk
-		/// </summary>
-		/// <param name="filepath">Path of the file</param>
-		/// <param name="lines">File contents</param>
-		/// 
-		private void WriteLinesToFile ( String filepath, String lines )
-		{
-			if ( string.IsNullOrEmpty(filepath) )
-			{
-				return;
-			}
-			if ( string.IsNullOrEmpty(lines) )
-			{
-				return;
-			}
-
-			StreamWriter fileWriter = null;
-			try
-			{
-				if ( File.Exists ( filepath ) )
-				{
-					File.Delete ( filepath );
-					fileWriter = File.CreateText ( filepath );
-					fileWriter.Write ( lines );
-				}
-				else
-				{
-					fileWriter = File.CreateText ( filepath );
-					fileWriter.Write ( lines );
-				}
-			}
-			finally
-			{
-				if ( fileWriter != null )
-				{
-					fileWriter.Close ();
-				}
-			}
-		}
-
-		#endregion
+	    #endregion
 	}
 }
 

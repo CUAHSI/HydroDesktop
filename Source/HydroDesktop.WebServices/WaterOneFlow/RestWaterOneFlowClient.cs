@@ -92,7 +92,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         public IList<HydroDesktop.Interfaces.ObjectModel.Site> GetSites()
         {
             string xmlFile = GetSitesXML();
-            return _parser.ParseGetSitesXml(xmlFile);
+            return _parser.ParseGetSites(xmlFile);
         }
 
 
