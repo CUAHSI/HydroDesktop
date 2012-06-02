@@ -22,8 +22,7 @@ namespace HydroDesktop.Main
         /// <summary>
         /// Gets the list tools available.
         /// </summary>
-        [ImportMany(AllowRecomposition = true)]
-        public IEnumerable<ISampleProject> Templates { get; set; }
+        public IEnumerable<ISampleProject> SampleProjects { get; set; }
         
         #region Private Variables
         
@@ -66,8 +65,6 @@ namespace HydroDesktop.Main
             {
                 lstProjectTemplates.SelectedIndex = 0;
             }
-
-            //lstProjectTemplates.DataSource = Templates;
         }
 
         #endregion
@@ -217,10 +214,29 @@ namespace HydroDesktop.Main
 
         private void WelcomeScreen_Load(object sender, EventArgs e)
         {
-            lstProjectTemplates.DataSource = Templates;
+            SampleProjects = FindSampleProjectFiles();
+            lstProjectTemplates.DataSource = SampleProjects;
             lstProjectTemplates.DisplayMember = "Name";
-            
+
             FindRecentProjectFiles();
+        }
+
+        /// <summary>
+        /// Gets the list tools available.
+        /// </summary>
+        private IEnumerable<ISampleProject> FindSampleProjectFiles()
+        {
+            List<ISampleProject> sampleProjectList = new List<ISampleProject>();
+            foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
+            {
+                var sample = new SampleProjectInfo();
+                sample.AbsolutePathToProjectFile = absolutePath;
+                sample.Name = Path.GetFileNameWithoutExtension(absolutePath);
+                sample.Description = "description";
+                sample.Version = "1.0";
+                sampleProjectList.Add(sample);
+            }
+            return sampleProjectList;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
