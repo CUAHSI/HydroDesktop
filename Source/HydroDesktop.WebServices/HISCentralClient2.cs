@@ -19,6 +19,7 @@ namespace HydroDesktop.WebServices
     /// This is a new version of the HIS Central Client class.
     /// This makes calls to web methods directly over HTTP Protocol.
     /// </summary>
+    // todo: Not Used
     public class HISCentralClient2
     {
         #region Stopwatch

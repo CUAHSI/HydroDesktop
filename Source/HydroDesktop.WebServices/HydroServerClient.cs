@@ -40,6 +40,7 @@ namespace HydroDesktop.WebServices
 		/// </summary>
 		/// <param name="xmlResponse">Response from the web service</param>
 		/// <returns>List of DataServiceInfo objects for each WaterOneFlow web service found</returns>
+        // todo: Not Used
 		private IList<DataServiceInfo> ParseGetWaterOneFlowServicesResponse ( string xmlResponse )
 		{
 			XmlDocument xmlDoc = new XmlDocument ();
