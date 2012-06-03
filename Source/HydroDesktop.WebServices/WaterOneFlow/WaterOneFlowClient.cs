@@ -73,12 +73,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		}
 
 		/// <summary>
-		/// Gets or sets the ServiceID (assigned code) corresponding to this web service
-		/// </summary>
-		// todo: Not used
-		public int ServiceID { get; set; }
-
-		/// <summary>
 		/// Gets or sets the name of the directory where 
 		/// downloaded xml files are stored
 		/// </summary>
@@ -106,15 +100,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 			        _downloadDirectory = Path.GetTempPath();
 			    }
 			}
-		}
-
-	    /// <summary>
-		/// The URL address of the web service being used
-		/// </summary>
-		//todo: Not used
-		public string ServiceURL
-		{
-			get { return _serviceURL; }
 		}
 
         /// <summary>
@@ -226,21 +211,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
 
 		    return result;
-		}
-
-		/// <summary>
-		/// Gets the information about all sites available at this web service within a bounding box.
-		/// </summary>
-		/// <param name="westLongitude">Longitude of western edge of bounding box</param>
-		/// <param name="southLatitude">Latitude of southern edge of bounding box</param>
-		/// <param name="eastLongitude">Longitude of eastern edge of bounding box</param>
-		/// <param name="northLatitude">Latitude of northern edge of bounding box</param>
-		/// <returns>The list of all sites supported by this web service within a bounding box.</returns>
-		// todo: Not used & not implemented
-		public IList<Site> GetSites ( double westLongitude, double southLatitude, double eastLongitude, double northLatitude )
-		{
-		    string xmlFile = GetSitesXML(westLongitude, southLatitude, eastLongitude, northLatitude);
-			return _parser.ParseGetSites ( xmlFile );
 		}
         
 		/// <summary>
