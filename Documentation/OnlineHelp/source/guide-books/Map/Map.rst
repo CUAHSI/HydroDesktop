@@ -61,7 +61,7 @@ table editor to filter the data using a custom query expression.
 Layout
 ------
 
-To print or export a map, or set up the map layout by going to the *File* menu in the main toolbar and selecting *Print*. This displays the Print Layout window. 
+To print or export a map, or set up the map layout by going to the *File* menu in the main toolbar and selecting *Print Layout*. This displays the Print Layout window. 
   * To add a map to the layout, click on the *Insert Map* button and drag-drop it to the layout. You can change the scale of the map by changing the Scale value in the map properties
   of the layout.
   
