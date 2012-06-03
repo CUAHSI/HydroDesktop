@@ -389,7 +389,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                         }
                     }
                 }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name == "timezoneinfo")
+                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "timezoneinfo")
                 {
                     return defaultTz;
                 }
