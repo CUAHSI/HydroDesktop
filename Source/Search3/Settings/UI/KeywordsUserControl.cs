@@ -40,12 +40,30 @@ namespace Search3.Settings.UI
                                           {
                                               if (args.KeyCode == Keys.Enter)
                                               {
-                                                  UpdateKeywordTextBox(tboTypeKeyword.Text);
+                                                  treeviewOntology.SelectedNode = null;
+
+                                                  // Replace keyword by synonym
+                                                  var keyword = tboTypeKeyword.Text;
+                                                  var synonyms = keywordsSettings.Synonyms;
+                                                  if (synonyms != null)
+                                                  {
+                                                      foreach (var ontoPath in synonyms)
+                                                      {
+                                                          if (string.Equals(ontoPath.SearchableKeyword, keyword, StringComparison.OrdinalIgnoreCase))
+                                                          {
+                                                              keyword = ontoPath.ConceptName;
+                                                              break;
+                                                          }
+                                                      }
+                                                  }
+
+                                                  UpdateKeywordTextBox(keyword);
                                                   AddKeyword();
                                               }
                                           };
             
             // Ontology tree
+            treeviewOntology.AfterSelect += tvOntology_AfterSelect;
             treeviewOntology.BeginUpdate();
             treeviewOntology.Nodes.Clear();
             FillTreeviewOntology(treeviewOntology.Nodes, keywordsSettings.OntologyTree.Nodes);
@@ -55,6 +73,7 @@ namespace Search3.Settings.UI
             AddSelectedKeywords(keywordsSettings.SelectedKeywords);
             if (keywordsSettings.SelectedKeywords.Any())
             {
+                // Select first keyword in textbox
                 UpdateKeywordTextBox(keywordsSettings.SelectedKeywords.First());
             }
         }
@@ -131,27 +150,35 @@ namespace Search3.Settings.UI
 
         private void UpdateKeywordTextBox(string text)
         {
+            treeviewOntology.AfterSelect -= tvOntology_AfterSelect;
             tboTypeKeyword.Text = text;
             FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);
+            treeviewOntology.AfterSelect += tvOntology_AfterSelect;
         }
 
         private void tvOntology_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            UpdateKeywordTextBox(e.Node.Text);
+            tboTypeKeyword.Text = e.Node.Text;
         }
 
-        private void FindInTreeView(IEnumerable tncoll, string strNode)
+        private bool FindInTreeView(IEnumerable tncoll, string strNode)
         {
             foreach (TreeNode tnode in tncoll)
             {
-                if (tnode.Text.ToLower() == strNode.ToLower())
+                if (string.Equals(tnode.Text, strNode, StringComparison.OrdinalIgnoreCase))
                 {
                     tnode.TreeView.SelectedNode = tnode;
                     lblKeywordRelation.Text = tnode.FullPath;
+                    return true;
                 }
 
-                FindInTreeView(tnode.Nodes, strNode);
+                var res = FindInTreeView(tnode.Nodes, strNode);
+                if (res)
+                {
+                    return true;
+                }
             }
+            return false;
         }
 
         private void btnAddKeyword_Click(object sender, EventArgs e)

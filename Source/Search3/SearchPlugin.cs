@@ -662,8 +662,7 @@ namespace Search3
                         var strNode = keywords[i];
                         foreach (var ontoPath in SearchSettings.Instance.KeywordsSettings.Synonyms)
                         {
-                            if (string.Equals(ontoPath.SearchableKeyword, strNode,
-                                              StringComparison.InvariantCultureIgnoreCase))
+                            if (string.Equals(ontoPath.SearchableKeyword, strNode, StringComparison.OrdinalIgnoreCase))
                             {
                                 keywords[i] = ontoPath.ConceptName;
                                 break;

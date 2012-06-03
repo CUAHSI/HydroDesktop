@@ -149,7 +149,6 @@ namespace Search3.Settings.UI
             this.treeviewOntology.Name = "treeviewOntology";
             this.treeviewOntology.Size = new System.Drawing.Size(289, 179);
             this.treeviewOntology.TabIndex = 39;
-            this.treeviewOntology.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvOntology_AfterSelect);
             // 
             // KeywordsUserControl
             // 
