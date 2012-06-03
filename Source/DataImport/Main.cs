@@ -42,8 +42,8 @@ namespace ImportFromWaterML
             var importButtonTabKey = new SimpleActionItem("Import", menu_Click)
                                  {
                                      RootKey = TableTabKey,
-                                     SmallImage = Resources.waterml_import1,
-                                     LargeImage = Resources.waterml_import1,
+                                     SmallImage = Resources.import_16,
+                                     LargeImage = Resources.import,
                                      GroupCaption = "Data Import",
                                      ToolTipText = "Import data series into database.",
                                  };
@@ -52,8 +52,8 @@ namespace ImportFromWaterML
             var importButton = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Import...", menu_Click)
                                    {
                                        GroupCaption = HeaderControl.ApplicationMenuKey,
-                                       SmallImage = Resources.waterml_import1,
-                                       LargeImage = Resources.waterml_import1,
+                                       SmallImage = Resources.import_16,
+                                       LargeImage = Resources.import,
                                        ToolTipText = "Import data series into database."
                                    };
             App.HeaderControl.Add(importButton);
