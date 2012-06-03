@@ -12,8 +12,10 @@ Guide Books:
 
    guide-books/Map/Map
    guide-books/Search/Search
+   guide-books/ImportingTimeSeries/time-series-import
    guide-books/ExportingTimeSeries/time-series-export
    guide-books/TableView/TableView
+   guide-books/Interpolation/creating-interpolated-map
    using-the-file-menu
    working-with-databases
 
