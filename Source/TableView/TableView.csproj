@@ -219,7 +219,6 @@
     <None Include="Resources\newDatabase_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\series_parallel_32.png" />
     <Content Include="Resources\series_sequence_32.png" />
   </ItemGroup>
