@@ -224,11 +224,10 @@ namespace HydroDesktop.DataDownload
             {
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Results", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
 
-                App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true});
+                App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false});
                 _btnShowPopups.Toggling += ShowPopups_Click;
-                //_btnShowPopups.Toggle();
                 _btnShowPopups.Enabled = false;
-                _showPopups = true;
+                _showPopups = false;
 
                 //App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Options", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.option_32, SmallImage = Resources.option_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
                 
@@ -245,10 +244,6 @@ namespace HydroDesktop.DataDownload
             _btnSearchResults.Toggling += ShowSearchResults_Click;
             //_btnSearchResults.Toggle();
             _btnSearchResults.Enabled = false;
-
-            //var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
-            //if (ext == null) return;
-            //ext.Deactivate();
         }
 
         /// <summary>
@@ -563,9 +558,12 @@ namespace HydroDesktop.DataDownload
                 {
                     if (!_btnShowPopups.Enabled)
                     {
+                        _btnShowPopups.Enabled = true;
+                    }
+                    if (!ShowPopups)
+                    {
                         _btnShowPopups.Toggle();
                     }
-                    _btnShowPopups.Enabled = true;
                 }
 
                 
