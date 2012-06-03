@@ -14,7 +14,6 @@ using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
-using HydroDesktop.Common.Tools;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {

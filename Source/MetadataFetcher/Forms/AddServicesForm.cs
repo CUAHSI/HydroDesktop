@@ -147,130 +147,6 @@ namespace HydroDesktop.MetadataFetcher.Forms
 		}
 
 		/// <summary>
-		/// Searches for WaterOneFlow services registered at an HydroServer, and adds info about those services to the data grid view
-		/// </summary>
-		/// <param name="portalUtils">Object that contains a pointer to the HydroServer chosen by the user</param>
-		/// <param name="e">Parameters from the BackgroundWorker</param>
-		/// <returns>Parameters (task type, output message, rows to add to view) to be processed by a BackgroundWorker event handler</returns>
-		private object[] AddServicesFromHydroServer ( HydroServerClient hydroServerClient, DoWorkEventArgs e )
-		{
-			// Build parameters to pass to the background worker
-			object[] parameters = new object[3];
-			parameters[0] = BackgroundWorkerTasks.AddServicesFromHydroServer;
-			parameters[1] = "Operation cancelled";
-
-			// Get all items registered with the server
-			bgwMain.ReportProgress ( 0, "Getting list of registered services..." );
-			List<DataServiceInfo> services = (List<DataServiceInfo>)hydroServerClient.GetWaterOneFlowServices ();
-
-			// Read the items into rows
-			int totalSteps = services.Count;
-			int currentStep = 0;
-
-			List<string[]> rowsToAdd = new List<string[]> ();
-
-			foreach ( DataServiceInfo serviceInfo in services )
-			{
-				if ( bgwMain.CancellationPending )
-				{
-					e.Cancel = true;
-					return parameters;
-				}
-
-				currentStep++;
-				bgwMain.ReportProgress ( 100 * currentStep / totalSteps, "Reading service info: " + currentStep + " of " + totalSteps + "..." );
-
-				// Create an item to add to the data grid view
-				rowsToAdd.Add ( CreateServiceRow ( serviceInfo ) );
-			}
-
-			// Prepare a message to the user
-			string message = "";
-			int servicesAdded = rowsToAdd.Count;
-			if ( servicesAdded == 0 )
-			{
-				message = "No services found in HydroServer";
-			}
-			else if ( servicesAdded == 1 )
-			{
-				message = "1 service found in HydroServer";
-			}
-			else
-			{
-				message = servicesAdded.ToString () + " services found in HydroServer";
-			}
-
-			parameters[1] = message;
-			parameters[2] = rowsToAdd;
-
-			return parameters;
-		}
-
-		/// <summary>
-		/// Searches for WaterOneFlow services registered at a HydroPortal, and adds info about those services to the data grid view
-		/// </summary>
-		/// <param name="portalUtils">Object that contains a pointer to the HydroPortal chosen by the user</param>
-		/// <param name="e">Parameters from the BackgroundWorker</param>
-		/// <returns>Parameters (task type, output message, rows to add to view) to be processed by a BackgroundWorker event handler</returns>
-		private object[] AddServicesFromHydroPortal ( HydroPortalUtils portalUtils, DoWorkEventArgs e )
-		{
-			// Build parameters to pass to the background worker
-			object[] parameters = new object[3];
-			parameters[0] = BackgroundWorkerTasks.AddServicesFromHydroPortal;
-			parameters[1] = "Operation cancelled";
-
-			// Get all items registered with the portal
-			bgwMain.ReportProgress ( 0, "Getting list of registered portal items..." );
-			List<string> itemIds = portalUtils.GetRegisteredItemIds ();
-
-			// Find items with an element providing the URL to a WaterOneFlow service
-			int totalSteps = itemIds.Count;
-			int currentStep = 0;
-
-			List<string[]> rowsToAdd = new List<string[]> ();
-
-			foreach ( string itemId in itemIds )
-			{
-				if ( bgwMain.CancellationPending )
-				{
-					e.Cancel = true;
-					return parameters;
-				}
-
-				currentStep++;
-				bgwMain.ReportProgress ( 100 * currentStep / totalSteps, "Searching registered items for WaterOneFlow services: " + currentStep + " of " + totalSteps + "..." );
-
-				DataServiceInfo serviceInfo = portalUtils.ReadWaterOneFlowServiceInfo ( itemId );
-				if ( serviceInfo != null && serviceInfo.EndpointURL != null && serviceInfo.EndpointURL != String.Empty )
-				{
-					// Create an item to add to the data grid view
-					rowsToAdd.Add ( CreateServiceRow ( serviceInfo ) );
-				}
-			}
-
-			// Prepare a message to the user
-			string message = "";
-			int servicesAdded = rowsToAdd.Count;
-			if ( servicesAdded == 0 )
-			{
-				message = "No services found in portal";
-			}
-			else if ( servicesAdded == 1 )
-			{
-				message = "1 service found in portal";
-			}
-			else
-			{
-				message = servicesAdded.ToString () + " services found in portal";
-			}
-
-			parameters[1] = message;
-			parameters[2] = rowsToAdd;
-
-			return parameters;
-		}
-
-		/// <summary>
 		/// Searches for WaterOneFlow service info in a DataTable, and adds info about those services to the data grid view
 		/// </summary>
 		/// <param name="pathToFile">Path to CSV file</param>
@@ -545,13 +421,14 @@ namespace HydroDesktop.MetadataFetcher.Forms
 					// Attempt to create a WaterOneFlowServiceClient from the URL.  If the URL is not for a WaterOneFlow service, an error is thrown in the constructor.
 					try
 					{
-						WaterOneFlowClient waterOneFlowClient = new WaterOneFlowClient ( serviceInfo.EndpointURL );
-						DataServiceInfo clientServiceInfo = waterOneFlowClient.ServiceInfo;
+						//WaterOneFlowClient waterOneFlowClient = new WaterOneFlowClient ( serviceInfo.EndpointURL );
+
+                        DataServiceInfo clientServiceInfo = new DataServiceInfo(serviceInfo.EndpointURL, "WaterOneFlow");
 
 						serviceInfo.ServiceName = clientServiceInfo.ServiceName;
-						serviceInfo.Protocol = clientServiceInfo.Protocol;
-						serviceInfo.ServiceType = clientServiceInfo.ServiceType;
-						serviceInfo.Version = clientServiceInfo.Version;
+						serviceInfo.Protocol = "SOAP";
+						serviceInfo.ServiceType = "SOAP";
+                        serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(serviceInfo.EndpointURL);
 					}
 					catch
 					{
@@ -660,63 +537,6 @@ namespace HydroDesktop.MetadataFetcher.Forms
 			return base.ProcessCmdKey ( ref msg, keyData );
 		}
 
-		private void fromHydroPortalToolStripMenuItem_Click ( object sender, EventArgs e )
-		{
-			AddServiceFromHydroPortalForm frmAddFromPortal = new AddServiceFromHydroPortalForm ();
-
-			if ( frmAddFromPortal.ShowDialog ( this ) == DialogResult.OK )
-			{
-				if ( bgwMain.IsBusy )
-				{
-					MessageBox.Show ( "The background worker is currently busy.  Please try again in a few moments.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk );
-					return;
-				}
-
-				HydroPortalUtils portalUtils = frmAddFromPortal.HydroPortalConnection;
-
-				// Build parameters to pass to the background worker
-				object[] parameters = new object[2];
-				parameters[0] = BackgroundWorkerTasks.AddServicesFromHydroPortal;
-				parameters[1] = portalUtils;
-
-				// Set form controls for doing work
-				dgvAddServices.ClearSelection ();
-				SetupFormForWork ( true );
-
-				// Start the asynchronous operation
-				bgwMain.RunWorkerAsync ( parameters );
-			}
-		}
-
-		private void fromHydroServerToolStripMenuItem_Click ( object sender, EventArgs e )
-		{
-			AddServiceFromHydroServerForm frmAddFromHisServer = new AddServiceFromHydroServerForm ();
-
-			if ( frmAddFromHisServer.ShowDialog ( this ) == DialogResult.OK )
-			{
-				if ( bgwMain.IsBusy )
-				{
-					MessageBox.Show ( "The background worker is currently busy.  Please try again in a few moments.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk );
-					return;
-				}
-
-                tcAddService.SelectedTab = tpAddMultiSvcs; //switch to the multi service tab
-                
-                HydroServerClient hydroServerClient = frmAddFromHisServer.HisServerConnection;
-
-				// Build parameters to pass to the background worker
-				object[] parameters = new object[2];
-				parameters[0] = BackgroundWorkerTasks.AddServicesFromHydroServer;
-				parameters[1] = hydroServerClient;
-
-				// Set form controls for doing work
-				dgvAddServices.ClearSelection ();
-				SetupFormForWork ( true );
-
-				// Start the asynchronous operation
-				bgwMain.RunWorkerAsync ( parameters );
-			}
-		}
 
 		private void fromFileToolStripMenuItem_Click ( object sender, EventArgs e )
 		{
@@ -1088,12 +908,8 @@ namespace HydroDesktop.MetadataFetcher.Forms
 		{
 			object[] parameters = e.Argument as object[];
 			BackgroundWorkerTasks task = (BackgroundWorkerTasks)parameters[0];
-			if ( task == BackgroundWorkerTasks.AddServicesFromHydroPortal )
-			{
-				HydroPortalUtils portalUtils = parameters[1] as HydroPortalUtils;
-				e.Result = AddServicesFromHydroPortal ( portalUtils, e );
-			}
-			else if ( task == BackgroundWorkerTasks.AddServicesFromFile )
+
+			if ( task == BackgroundWorkerTasks.AddServicesFromFile )
 			{
 				string path = parameters[1] as string;
 				e.Result = AddServicesFromDataTable ( path, e );
@@ -1107,11 +923,6 @@ namespace HydroDesktop.MetadataFetcher.Forms
 			{
 				List<DataServiceInfo> services = parameters[1] as List<DataServiceInfo>;
 				e.Result = AddServicesToDatabase ( services, e );
-			}
-			else if ( task == BackgroundWorkerTasks.AddServicesFromHydroServer )
-			{
-				HydroServerClient hydroServerClient = parameters[1] as HydroServerClient;
-				e.Result = AddServicesFromHydroServer ( hydroServerClient, e );
 			}
 			else
 			{
