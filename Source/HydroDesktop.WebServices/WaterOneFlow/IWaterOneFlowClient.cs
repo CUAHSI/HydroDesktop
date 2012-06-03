@@ -43,17 +43,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 
         /// <summary>
-        /// Gets the information about all sites available at this web service within a bounding box.
-        /// </summary>
-        /// <param name="westLongitude">Longitude of western edge of bounding box</param>
-        /// <param name="southLatitude">Latitude of southern edge of bounding box</param>
-        /// <param name="eastLongitude">Longitude of eastern edge of bounding box</param>
-        /// <param name="northLatitude">Latitude of northern edge of bounding box</param>
-        /// <returns>The list of all sites supported by this web service within a bounding box.</returns>
-        IList<Site> GetSites(double westLongitude, double southLatitude, double eastLongitude, double northLatitude);
-
-
-        /// <summary>
         /// Gets the information about sites within a bounding box, from the web service as a XML document in the WaterML format
         /// </summary>
         /// <param name="westLongitude">Longitude of western edge of bounding box</param>
@@ -99,20 +88,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
 
         /// <summary>
-        /// Gets or sets the ServiceID (assigned code) corresponding to this web service
-        /// </summary>
-        int ServiceID { get; set; }
-
-
-        /// <summary>
         /// Gets information about the web service used by this web service client
         /// </summary>
         DataServiceInfo ServiceInfo { get; }
-
-
-        /// <summary>
-        /// The URL address of the web service being used
-        /// </summary>
-        string ServiceURL { get; }
     }
 }
