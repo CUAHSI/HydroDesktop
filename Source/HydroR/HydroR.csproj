@@ -185,7 +185,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\deselect_16x16.png" />
     <None Include="app.config" />
     <Content Include="HydroR_1.2.tar.gz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

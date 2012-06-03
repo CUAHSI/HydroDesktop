@@ -145,7 +145,6 @@
     <Content Include="HydroDesktopSplashLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\HydroDesktop.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

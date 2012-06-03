@@ -190,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Metadata_Fetcher_16.png" />
-    <Content Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\Metadata_Fetcher_32.png" />
     <None Include="Resources\Metadata_Fetcher_Add_16.png" />
     <Content Include="Resources\Metadata_Fetcher_Add_32.png" />
