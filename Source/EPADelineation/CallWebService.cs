@@ -240,7 +240,7 @@ namespace EPADelineation
                 string response = delineate.DownloadString(uri);
 
                 int start = response.IndexOf("(");
-                int end = response.IndexOf(")");
+                int end = response.LastIndexOf(")");
 
                 response = response.Substring(start + 1, end - 1 - start);
 
@@ -248,10 +248,20 @@ namespace EPADelineation
                 JObject mainObj = new JObject();
                 JToken outputObj = new JObject();
                 JToken shapeObj = new JObject();
+                JToken statusObj = new JObject();
 
                 mainObj = JObject.Parse(response);
 
                 outputObj = mainObj["output"];
+
+                //check for error message in outputObj
+                if (outputObj.Type == Newtonsoft.Json.Linq.JTokenType.Null)
+                {
+                    statusObj = mainObj["status"];
+                    string statusMessage = statusObj["status_message"].ToString();
+                    throw new ArgumentException(statusMessage);
+                }      
+
                 shapeObj = outputObj["shape"];
 
                 string stype = shapeObj["type"].ToString();
