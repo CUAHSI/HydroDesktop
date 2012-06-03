@@ -646,21 +646,23 @@ namespace Search3
         void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
         {
             if (_keywordsUpdating) return;
-            
+
+            IList<string> keywords;
             if (e.SelectedItem == null)
             {
-                SearchSettings.Instance.KeywordsSettings.SelectedKeywords = null;
+                keywords = null;
             }
             else
             {
-                var keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 // Replace keywords by synonyms
-                if (SearchSettings.Instance.KeywordsSettings.Synonyms != null)
+                var synonyms = SearchSettings.Instance.KeywordsSettings.Synonyms;
+                if (synonyms != null)
                 {
                     for (int i = 0; i < keywords.Count; i++)
                     {
                         var strNode = keywords[i];
-                        foreach (var ontoPath in SearchSettings.Instance.KeywordsSettings.Synonyms)
+                        foreach (var ontoPath in synonyms)
                         {
                             if (string.Equals(ontoPath.SearchableKeyword, strNode, StringComparison.OrdinalIgnoreCase))
                             {
@@ -670,10 +672,9 @@ namespace Search3
                         }
                     }
                 }
-
-                SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
             }
-            UpdateKeywordsCaption();
+
+            SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
         }
 
         private bool _keywordsUpdating;
@@ -698,7 +699,6 @@ namespace Search3
                 var selectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : null;
                 _rbKeyword.SelectedItem = selectedItem;
                 _rbKeyword.ToolTipText = selectedItem;
-                
             }
             finally
             {
