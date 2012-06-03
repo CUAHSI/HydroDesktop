@@ -31,54 +31,34 @@ namespace HydroDesktop.DownloadExtensions
             bool isStatusControlNeeded = App.CompositionContainer.GetExportedValues<IStatusControl>().Count() == 0;
 
             //installs the extensions from the online repository on-demand
-            //TODO: the list of extensions to install should be in a xml config file instead of hard-coding it
-            
-            //install ribbon (from DotSpatial MyGet repository)
+            //note: some of these packages will be shipped with the installer but they are installed from online
+            //when running from Visual Studio solution (direct reference in Visual Studio is not allowed by the license of Ribbon and 
+            //AttributeDataExplorer)
+
+            //install the ribbon (must be downloaded first)
             if (isHeaderControlNeeded && isStatusControlNeeded)
             {
                 App.UpdateProgress("Downloading a Ribbon extension...");
                 packages.Install("DotSpatial.Plugins.Ribbon");
             }
-            //install menu bar
-            if (App.GetExtension("DotSpatial.Plugins.MenuBar") == null)
+
+            foreach (string package in Properties.Settings.Default.ExternalExtensions)
             {
-                App.UpdateProgress("Downloading a MenuBar extension...");
-                packages.Install("DotSpatial.Plugins.MenuBar");
+                if (App.GetExtension(package) == null)
+                {
+                    App.UpdateProgress("Downloading " + package + " extension...");
+                    packages.Install(package);
+                }
             }
 
-            //install attribute data explorer
-            if (App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer") == null)
+            foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
             {
-                App.UpdateProgress("Downloading an AttributeDataExplorer extension...");
-                packages.Install("DotSpatial.Plugins.AttributeDataExplorer");
+                if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
+                {
+                    App.UpdateProgress("Downloading " + sampleProject + " sample project...");
+                    packages.Install(sampleProject);
+                }
             }
-            //install web map
-            if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
-            {
-                App.UpdateProgress("Downloading a WebMap extension...");
-                packages.Install("DotSpatial.Plugins.WebMap");
-            }
-
-            //install web map
-            if (App.GetExtension("GeostatisticalTool") == null)
-            {
-                App.UpdateProgress("Downloading geostatistical tool...");
-                packages.Install("GeostatisticalTool");
-            }
-
-            //install North America sample project (this will also install the SampleProjectManager)
-            if (App.GetExtension("DotSpatial.SampleProjects.NorthAmerica") == null)
-            {
-                App.UpdateProgress("Downloading North America project template...");
-                packages.Install("DotSpatial.SampleProjects.NorthAmerica");
-            }
-            //install the World sample project
-            if (App.GetExtension("DotSpatial.SampleProjects.World") == null)
-            {
-                App.UpdateProgress("Downloading World project template...");
-                packages.Install("DotSpatial.SampleProjects.World");
-            }
-
             App.RefreshExtensions();
         }
 

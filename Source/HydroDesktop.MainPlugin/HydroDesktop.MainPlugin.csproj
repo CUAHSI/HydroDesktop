@@ -124,7 +124,6 @@
   <ItemGroup>
     <Compile Include="AttributeTableManager.cs" />
     <Compile Include="CoordinateDisplay.cs" />
-    <Compile Include="PredefinedTemplate.cs" />
     <Compile Include="ProjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HydroDesktopMainPlugin.cs" />
