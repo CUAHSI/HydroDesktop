@@ -40,8 +40,8 @@ namespace DataImport.Txt
                        {
                            new FormatOptionsPage(context),
                            new FieldPropertiesPage(context),
-                           new ProgressPage(context),
                            new DataLayerPage(context),
+                           new ProgressPage(context),
                            new CompletePage(),
                        };
         }
