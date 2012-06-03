@@ -49,8 +49,6 @@
             this.btnCheckExisting = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromHydroPortalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromHISServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCheckForValidService = new System.Windows.Forms.ToolStripMenuItem();
@@ -284,33 +282,15 @@
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fromHydroPortalToolStripMenuItem,
-            this.fromHISServerToolStripMenuItem,
             this.fromFileToolStripMenuItem});
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.importToolStripMenuItem.Text = "&Import";
-            // 
-            // fromHydroPortalToolStripMenuItem
-            // 
-            this.fromHydroPortalToolStripMenuItem.Enabled = false;
-            this.fromHydroPortalToolStripMenuItem.Name = "fromHydroPortalToolStripMenuItem";
-            this.fromHydroPortalToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.fromHydroPortalToolStripMenuItem.Text = "From Hydro&Portal...";
-            this.fromHydroPortalToolStripMenuItem.Visible = false;
-            this.fromHydroPortalToolStripMenuItem.Click += new System.EventHandler(this.fromHydroPortalToolStripMenuItem_Click);
-            // 
-            // fromHISServerToolStripMenuItem
-            // 
-            this.fromHISServerToolStripMenuItem.Name = "fromHISServerToolStripMenuItem";
-            this.fromHISServerToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.fromHISServerToolStripMenuItem.Text = "From &HydroServer...";
-            this.fromHISServerToolStripMenuItem.Click += new System.EventHandler(this.fromHydroServerToolStripMenuItem_Click);
             // 
             // fromFileToolStripMenuItem
             // 
             this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.fromFileToolStripMenuItem.Text = "From &File...";
             this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fromFileToolStripMenuItem_Click);
             // 
@@ -319,14 +299,14 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuCheckForValidService});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // mnuCheckForValidService
             // 
             this.mnuCheckForValidService.CheckOnClick = true;
             this.mnuCheckForValidService.Name = "mnuCheckForValidService";
-            this.mnuCheckForValidService.Size = new System.Drawing.Size(407, 22);
+            this.mnuCheckForValidService.Size = new System.Drawing.Size(440, 22);
             this.mnuCheckForValidService.Text = "&Check for valid WaterOneFlow service before committing to database";
             // 
             // openFileDialog1
@@ -619,9 +599,7 @@
 		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mnuCheckForValidService;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
-		private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem fromHydroPortalToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem fromHISServerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fromFileToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtEmail;
