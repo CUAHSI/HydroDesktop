@@ -35,7 +35,8 @@ namespace Search3
         private SimpleActionItem rbServices;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
-        private DropDownActionItem rbKeyword;
+        private DropDownActionItem _rbKeyword;
+        private SimpleActionItem _rbAddMoreKeywords;
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
@@ -44,6 +45,7 @@ namespace Search3
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
+        private const string KEYWORDS_SEPARATOR = ";";
 
         #endregion
 
@@ -117,15 +119,8 @@ namespace Search3
 
             #region Keyword Group
 
-            RefreshKeywordDropDown();
-            
-            SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { RefreshKeywordDropDown(); };
-
-            rbKeyword.SelectedValueChanged += rbKeyword_SelectedValueChanged;
-            UpdateKeywordsCaption();
-
-            //Keyword more options
-            head.Add(new SimpleActionItem(_searchKey, Msg.Add_More_Keywords, rbKeyword_Click){ LargeImage = Resources.keyword_32, SmallImage = Resources.keyword_16, GroupCaption = Msg.Keyword, ToolTipText = "Show Keyword Ontology Tree"});
+            RecreateKeywordGroup();
+            SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { RecreateKeywordGroup(); };
 
             #endregion
 
@@ -229,28 +224,60 @@ namespace Search3
             App.Map.MapFrame.ClearSelection(out env);
         }
 
-        void RefreshKeywordDropDown()
+        private void RecreateKeywordGroup()
         {
-            if (rbKeyword !=null) App.HeaderControl.Remove(rbKeyword.Key);
-
-            //Keyword text entry
-            if (rbKeyword == null)
+            HeaderItem dummy = null;
+            if (_rbKeyword != null || _rbAddMoreKeywords != null)
             {
-                rbKeyword = new DropDownActionItem
-                                {
-                                    AllowEditingText = true,
-                                    GroupCaption = Msg.Keyword,
-                                    RootKey = _searchKey,
-                                    Width = 165,
-                                    Enabled = false,
-                                    NullValuePrompt = Msg.Type_In_Keyword
-                                };
+                // This need to save buttons group from removing by HeaderControl (it removes groups with zero HeaderItems).
+                dummy = new SimpleActionItem(_searchKey, "Dummy", null) {GroupCaption = Msg.Keyword};
+                App.HeaderControl.Add(dummy);
+            }
+
+            if (_rbKeyword != null)
+            {
+                App.HeaderControl.Remove(_rbKeyword.Key);
+            }else
+            {
+                _rbKeyword = new DropDownActionItem
+                                 {
+                                     AllowEditingText = true,
+                                     GroupCaption = Msg.Keyword,
+                                     RootKey = _searchKey,
+                                     Width = 165,
+                                     Enabled = false,
+                                     NullValuePrompt = Msg.Type_In_Keyword
+                                 };
+                _rbKeyword.SelectedValueChanged += rbKeyword_SelectedValueChanged;
+            }
+            if (_rbAddMoreKeywords != null)
+            {
+                App.HeaderControl.Remove(_rbAddMoreKeywords.Key);
+            }
+            else
+            {
+                _rbAddMoreKeywords = new SimpleActionItem(_searchKey, Msg.Add_More_Keywords, rbKeyword_Click)
+                                         {
+                                             LargeImage = Resources.keyword_32,
+                                             SmallImage = Resources.keyword_16,
+                                             GroupCaption = Msg.Keyword,
+                                             ToolTipText = "Show Keyword Ontology Tree"
+                                         };
             }
 
             // Populate items by keywords
-            PopulateKeywords();
+            _rbKeyword.Items.Clear();
+            _rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
 
-            App.HeaderControl.Add(rbKeyword);
+            App.HeaderControl.Add(_rbKeyword);
+            App.HeaderControl.Add(_rbAddMoreKeywords);
+            if (dummy != null)
+            {
+                App.HeaderControl.Remove(dummy.Key);
+                App.HeaderControl.SelectRoot(_searchKey);
+            }
+
+            UpdateKeywordsCaption();
         }
         
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
@@ -616,38 +643,28 @@ namespace Search3
 
         #region Keywords
 
-        private const string KEYWORDS_SEPARATOR = ";";
-
-        private void PopulateKeywords()
-        {
-            // Populate items by keywords
-            rbKeyword.Items.Clear();
-            rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
-            
-            //rbKeyword.NullValuePrompt = TYPE_IN_KEYWORD;
-        }
-
         void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
         {
             if (_keywordsUpdating) return;
-            
+
+            IList<string> keywords;
             if (e.SelectedItem == null)
             {
-                SearchSettings.Instance.KeywordsSettings.SelectedKeywords = null;
+                keywords = null;
             }
             else
             {
-                var keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 // Replace keywords by synonyms
-                if (SearchSettings.Instance.KeywordsSettings.Synonyms != null)
+                var synonyms = SearchSettings.Instance.KeywordsSettings.Synonyms;
+                if (synonyms != null)
                 {
                     for (int i = 0; i < keywords.Count; i++)
                     {
                         var strNode = keywords[i];
-                        foreach (var ontoPath in SearchSettings.Instance.KeywordsSettings.Synonyms)
+                        foreach (var ontoPath in synonyms)
                         {
-                            if (string.Equals(ontoPath.SearchableKeyword, strNode,
-                                              StringComparison.InvariantCultureIgnoreCase))
+                            if (string.Equals(ontoPath.SearchableKeyword, strNode, StringComparison.OrdinalIgnoreCase))
                             {
                                 keywords[i] = ontoPath.ConceptName;
                                 break;
@@ -655,10 +672,9 @@ namespace Search3
                         }
                     }
                 }
-
-                SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
             }
-            UpdateKeywordsCaption();
+
+            SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
         }
 
         private bool _keywordsUpdating;
@@ -680,17 +696,9 @@ namespace Search3
                     sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
                 }
 
-                if (sbKeywords.Length > 0)
-                {
-                    rbKeyword.SelectedItem = sbKeywords.ToString();
-
-                    //searchSummary.KeywordStatus = rbKeyword.SelectedItem.ToString();
-                    //searchSummary.UpdateStatus();
-                }
-                //rbKeyword.SelectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : TYPE_IN_KEYWORD;
-                //rbKeyword.ToolTipText = rbKeyword.SelectedItem.ToString();
-
-                
+                var selectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : null;
+                _rbKeyword.SelectedItem = selectedItem;
+                _rbKeyword.ToolTipText = selectedItem;
             }
             finally
             {
