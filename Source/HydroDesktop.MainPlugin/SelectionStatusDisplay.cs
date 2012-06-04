@@ -18,9 +18,36 @@ namespace HydroDesktop.Main
             app.ProgressHandler.Add(SelectionStatusPanel);
 
             App.Map.SelectionChanged += new EventHandler(Map_SelectionChanged);
+            App.Map.MapFrame.LayerSelected +=new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+
+            App.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
+            App.SerializationManager.NewProjectCreated += new EventHandler<SerializingEventArgs>(SerializationManager_NewProjectCreated);
+        }
+
+        void SerializationManager_NewProjectCreated(object sender, SerializingEventArgs e)
+        {
+            App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
+            App.Map.MapFrame.LayerSelected += new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+        }
+
+        void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
+        {
+            App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
+            App.Map.MapFrame.LayerSelected += new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            UpdateStatusPanel();
+        }
+
+        void MapFrame_LayerSelected(object sender, DotSpatial.Symbology.LayerSelectedEventArgs e)
+        {
+            UpdateStatusPanel();
         }
 
         void Map_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateStatusPanel();
+        }
+
+        void UpdateStatusPanel()
         {
             if (App.Map.MapFrame.IsSelected)
             {
