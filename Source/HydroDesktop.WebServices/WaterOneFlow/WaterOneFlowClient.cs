@@ -91,16 +91,18 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
 			set
 			{
-			    if (Directory.Exists(_downloadDirectory)) return;
-			    try
-			    {
-			        Directory.CreateDirectory(_downloadDirectory);
-			        _downloadDirectory = value;
-			    }
-			    catch
-			    {
-			        _downloadDirectory = Path.GetTempPath();
-			    }
+                if (!Directory.Exists(value))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(value);
+                    }
+                    catch
+                    {
+                        value = Path.GetTempPath();
+                    }
+                }
+			    _downloadDirectory = value;
 			}
 		}
 
