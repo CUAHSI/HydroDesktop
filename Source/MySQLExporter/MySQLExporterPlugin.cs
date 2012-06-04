@@ -112,8 +112,7 @@ namespace HydroDesktop.ExportToCSV
                 writer.Flush();
             }
 
-            string fn = "series.txt";
-            using (StreamWriter writer = new StreamWriter("J:\\" + fn))
+            using (StreamWriter writer = new StreamWriter("J:\\series.txt"))
             {
                 foreach(Series s in allSeries)
                 {          
