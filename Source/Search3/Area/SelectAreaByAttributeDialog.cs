@@ -112,22 +112,6 @@ namespace Search3.Area
             _changesApplied = false;
         }
 
-        //private void teFirstLetters_TextChanged(object sender, EventArgs e)
-        //{
-        //    if (lbValues.Items.Count == 0) return;
-
-        //    var text = teFirstLetters.Text;
-        //    for (int i = 0; i < lbValues.Items.Count; i++)
-        //    {
-        //        var curItem =  lbValues.Items[i].ToString();
-        //        var selected = string.IsNullOrEmpty(text)
-        //                           ? (text == curItem)
-        //                           : curItem.StartsWith(text, StringComparison.InvariantCultureIgnoreCase);
-        //        lbValues.SetSelected(i, selected);
-
-        //    }
-        //}
-
         private void SelectShapesInTheMap()
         {
             if (_changesApplied) return;
@@ -140,31 +124,19 @@ namespace Search3.Area
             var dataColumn = cmbField.SelectedItem as DataColumn;
             if (dataColumn == null) return;
 
-            //if (cmbValues.SelectedItem != null)
-            //{
-            //    selectedLayer.UnSelectAll();
-            //    _map.Refresh();
-            //    return;
-            //}
-
-            //var selectedValues = new List<string>(lbValues.SelectedItems.Count);
-            //selectedValues.AddRange(from object item in lbValues.SelectedItems select item.ToString());
-
-            ////selecting area by attribute
-            //_map.ClearSelection();
             string selectedColumn = cmbField.Text;
-            //foreach(string selectedVal in selectedValues)
-            //{
-            //    string filterEx = string.Format("[{0}] = '{1}'",selectedColumn, selectedVal);
-            //    selectedLayer.SelectByAttribute(filterEx,ModifySelectionMode.Append);
-            //}
 
             var selectedValue = cmbValues.SelectedItem.ToString();
+
             string filterEx = string.Format("[{0}] = '{1}'", selectedColumn, selectedValue);
             selectedLayer.SelectByAttribute(filterEx,ModifySelectionMode.Append);
+            _map.MapFrame.IsSelected = false;
 
             //zoom to selection
             selectedLayer.ZoomToSelectedFeatures();
+
+            selectedLayer.IsSelected = false;
+            selectedLayer.IsSelected = true;
 
             _changesApplied = true;
             //_map.Refresh();
