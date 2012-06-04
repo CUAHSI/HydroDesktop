@@ -45,6 +45,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
             //assign the waterOneFlow parser
             _parser = new ParserFactory().GetParser(ServiceInfo);
+
+            SaveXmlFiles = true; // for backward-compatibility
 		}
 
 		/// <summary>
