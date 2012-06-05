@@ -23,7 +23,6 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
             }
         }
 
-
         [TestCase(@"TestFiles\v10sites\")]
         public void TestParseGetSites(String samplesPath)
         {
@@ -34,6 +33,20 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
                 Assert.Greater(sites.Count, 0,
                                "Error in file '" + fileName + "' the number of sites must be greater than zero.");
             }
+        }
+
+        [Test]
+        public void ParseSite()
+        {
+            var xmlPath = @"TestFiles\v10sites\Site-DCEW2-dcew.p1-20110216043840885.xml";
+            var target = new WaterOneFlow10Parser();
+
+            var siteInfo = target.ParseGetSiteInfo(xmlPath);
+            var actual = siteInfo[0].Site;
+
+            Assert.AreEqual("Ada", actual.County);
+            Assert.AreEqual("Idaho", actual.State);
+            Assert.AreEqual("Comments", actual.Comments);
         }
     }
 }
