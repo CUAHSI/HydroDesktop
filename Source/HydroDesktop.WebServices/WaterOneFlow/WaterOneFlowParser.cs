@@ -244,7 +244,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             var site = new Site();
             while (r.Read())
             {
-                string nodeName = r.Name.ToLower();
+                var nodeName = r.Name.ToLower();
 
                 if (r.NodeType == XmlNodeType.Element)
                 {
@@ -278,11 +278,63 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     {
                         site.DefaultTimeZone = ReadTimeZoneInfo(r);
                     }
-
                     else if (nodeName == "elevation_m")
                     {
                         r.Read();
                         site.Elevation_m = Convert.ToDouble(r.Value, CultureInfo.InvariantCulture);
+                    }
+                    // WaterML 1.0 notes
+                    else if (nodeName == "note")
+                    {
+                        var title = r.GetAttribute("title");
+                        if (!String.IsNullOrEmpty(title))
+                        {
+                            title = title.ToLower();
+                            r.Read();
+                            var value = r.Value;
+                            switch (title)
+                            {
+                                case "county":
+                                    site.County = value;
+                                    break;
+                                case "state":
+                                    site.State = value;
+                                    break;
+                                case "comments":
+                                    site.Comments = value;
+                                    break;
+                            }
+                        }
+                    }
+                    // WaterML 1.1 site properties
+                    else if (nodeName == "siteproperty")
+                    {
+                        var title = r.GetAttribute("name");
+                        if (!String.IsNullOrEmpty(title))
+                        {
+                            title = title.ToLower();
+                            r.Read();
+                            var value = r.Value;
+                            switch (title)
+                            {
+                                case "county":
+                                    site.County = value;
+                                    break;
+                                case "state":
+                                    site.State = value;
+                                    break;
+                                case "comments":
+                                    site.Comments = value;
+                                    break;
+                                case "sitetype":
+                                    break;
+                                case "country":
+                                    break;
+                                case "posaccuracy_m":
+                                    site.PosAccuracy_m = Convert.ToDouble(value, CultureInfo.InvariantCulture);;
+                                    break;
+                            }
+                        }
                     }
                 }
                 else if (r.NodeType == XmlNodeType.EndElement &&
@@ -291,9 +343,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     //ensure that spatial reference is set
                     if (site.SpatialReference == null)
                     {
-                        site.SpatialReference = new SpatialReference();
-                        site.SpatialReference.SRSID = 0;
-                        site.SpatialReference.SRSName = "unknown";
+                        site.SpatialReference = new SpatialReference {SRSID = 0, SRSName = "unknown"};
                     }
 
                     return site;

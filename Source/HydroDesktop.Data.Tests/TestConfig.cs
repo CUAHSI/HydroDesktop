@@ -53,7 +53,7 @@ namespace HydroDesktop.Data.Tests
         {
             get 
             {
-                return HydroDesktop.Configuration.Settings.Instance.TempDirectory;
+                return Configuration.Settings.Instance.TempDirectory;
             }
         }
 
