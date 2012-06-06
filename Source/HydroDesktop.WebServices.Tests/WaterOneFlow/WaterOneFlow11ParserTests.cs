@@ -31,5 +31,23 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
             Assert.AreEqual("Quality controlled data", qcl.Definition);
             Assert.AreEqual("Explanation", qcl.Explanation);
         }
+
+        [Test]
+        public void ParseISOMetadata()
+        {
+            var xmlPath = @"TestFiles\v11\GetValues_Mendon_usu3.xml";
+            var target = new WaterOneFlow11Parser();
+
+            var result = target.ParseGetValues(xmlPath);
+            var series = result[0];
+
+            var isoMetadata = series.Source.ISOMetadata;
+
+            Assert.AreEqual("inlandWaters", isoMetadata.TopicCategory);
+            Assert.AreEqual("Little Bear River Conservation Effects Assessment Project water quality data.", isoMetadata.Title);
+            Assert.AreEqual("Abstract", isoMetadata.Abstract);
+            Assert.AreEqual("ProfileVersion", isoMetadata.ProfileVersion);
+            Assert.AreEqual("MetadataLink", isoMetadata.MetadataLink);
+        }
     }
 }
