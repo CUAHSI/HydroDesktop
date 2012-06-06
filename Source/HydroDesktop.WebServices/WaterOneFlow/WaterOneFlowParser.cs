@@ -602,7 +602,32 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             source.ContactName = contact.ContactName;
                             source.Email = contact.Email;
                             source.Phone = contact.Phone;
-                            source.Address = contact.Address; //todo: parse ContactInformationType.Address
+
+                            // Convert WaterML address into HD address
+                            if (!String.IsNullOrEmpty(contact.Address))
+                            {
+                                //Complete address: {Address},{City},{State},{ZipCode}
+                                var split = contact.Address.Split(new [] {','},
+                                                                  StringSplitOptions.RemoveEmptyEntries);
+                                if (split.Length > 0)
+                                {
+                                    source.Address = split[0].Trim();
+                                }
+                                if (split.Length > 1)
+                                {
+                                    source.City = split[1].Trim();
+                                }
+                                if (split.Length > 2)
+                                {
+                                    source.State = split[2].Trim();
+                                }
+                                if (split.Length > 3)
+                                {
+                                    int zipCode;
+                                    if (Int32.TryParse(split[3].Trim(), out zipCode))
+                                        source.ZipCode = zipCode;
+                                }
+                            }
                             break;
                         case "sourcelink":  // WML 1.0/1.1.  Note: WML 1.1 supports many "SourceLinks" elements
                             reader.Read();
