@@ -565,55 +565,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             r.Read();
             qualifier.Description = r.Value;
         }
-
-
-        /// <summary>
-        /// Reads information about the quality control level and returns the quality control level object
-        /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        protected override QualityControlLevel ReadQualityControlLevel(XmlReader r)
-        {
-            QualityControlLevel qc = QualityControlLevel.Unknown;
-
-            string qcID = r.GetAttribute("methodID");
-            string qcCode = String.Empty;
-
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name.ToLower() == "qualitycontrollevelcode")
-                    {
-                        r.Read();
-                        qcCode = r.Value;
-                    }
-                    else if (r.Name.ToLower() == "definition")
-                    {
-                        r.Read();
-                        qc.Definition = r.Value.Trim();
-                    }
-                    else if (r.Name == "explanation")
-                    {
-                        r.Read();
-                        qc.Explanation = r.Value.Trim();
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "qualitycontrollevel")
-                {
-                    if (!String.IsNullOrEmpty(qcCode))
-                    {
-                        qc.Code = qcCode;           
-                    }
-                    if (!String.IsNullOrEmpty(qcID))
-                    {
-                        qc.OriginId = Convert.ToInt32(qcID);
-                    }
-                    return  qc;
-                }
-            }
-            return qc;
-        }
       
 
         /// <summary>

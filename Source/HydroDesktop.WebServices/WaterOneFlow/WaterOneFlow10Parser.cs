@@ -537,12 +537,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return Source.Unknown;
         }
 
-        protected override QualityControlLevel ReadQualityControlLevel(XmlReader r)
-        {
-            // todo: QualityControlLevel
-            return null;
-        }
-
         /// <summary>
         /// Reads information about the source of the data series
         /// </summary>
