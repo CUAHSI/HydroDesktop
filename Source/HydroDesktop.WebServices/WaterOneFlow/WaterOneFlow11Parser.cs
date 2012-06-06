@@ -340,7 +340,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     else if (r.Name == "method")
                     {
                         var method = ReadMethod(r);
-                        var methodCodeKey = method.Code.ToString();
+                        var methodCodeKey = method.Code.ToString(CultureInfo.InvariantCulture);
                         if (methods.ContainsKey(methodCodeKey))
                         {
                             methods[methodCodeKey] = method;
@@ -348,7 +348,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     }
                     else if (r.Name == "source")
                     {
-                        ReadSource(r, sources);
+                        var source = ReadSource(r);
+                        var sourceCodeKey = source.OriginId.ToString(CultureInfo.InvariantCulture);
+                        if (sources.ContainsKey(sourceCodeKey))
+                        {
+                            sources[sourceCodeKey] = source;
+                        }
                     }
                     else if (r.Name == "qualityControlLevel")
                     {
@@ -564,95 +569,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             var qualifier = qualifiers[qualifierCode];
             r.Read();
             qualifier.Description = r.Value;
-        }
-      
-
-        /// <summary>
-        /// Reads information about source
-        /// </summary>
-        /// <param name="r">the xml reader</param>
-        /// <returns>The Source object</returns>
-        protected override Source ReadSource(XmlReader r)
-        {
-            string sourceID = r.GetAttribute("sourceID");
-            string sourceCode = String.Empty;
-
-            Source source = Source.Unknown;
-            
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    string nodeName = r.Name.ToLower();
-                    if (r.Name.ToLower() == "sourceCode")
-                    {
-                        r.Read();
-                        sourceCode = r.Value;
-                    }
-                    else if (nodeName == "organization")
-                    {
-                        r.Read();
-                        source.Organization = r.Value;
-                    }
-                    else if (nodeName == "contactname")
-                    {
-                        r.Read();
-                        source.ContactName = r.Value;
-                    }
-                    else if (nodeName == "phone")
-                    {
-                        r.Read();
-                        source.Phone = r.Value;
-                    }
-                    else if (nodeName == "email")
-                    {
-                        r.Read();
-                        source.Email = r.Value;
-                    }
-                    else if (nodeName == "address")
-                    {
-                        r.Read();
-                        source.Address = r.Value;
-                    }
-                    else if (nodeName == "sourcedescription")
-                    {
-                        r.Read();
-                        source.Description = r.Value;
-                    }
-                    else if (nodeName == "citation")
-                    {
-                        r.Read();
-                        source.Citation = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "source")
-                {
-                    if (sourceCode != String.Empty)
-                    {
-                        source.OriginId = Convert.ToInt32(sourceCode);
-                    }
-                    else if (sourceID != String.Empty)
-                    {
-                        source.OriginId = Convert.ToInt32(sourceID);
-                    }
-                    return source;   
-                }
-            }
-            return source;
-        }
-
-        /// <summary>
-        /// Reads information about the source of the data series
-        /// </summary>
-        private void ReadSource(XmlReader r, Dictionary<string, Source> sources)
-        {
-            Source source = ReadSource(r);
-            string sourceCodeKey = source.OriginId.ToString();
-            if (sources.ContainsKey(sourceCodeKey))
-            {
-                sources[sourceCodeKey] = null;
-                sources[sourceCodeKey] = source;
-            }
         }
 
         /// <summary>
