@@ -41,7 +41,7 @@ namespace Search3
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
         private Searcher _searcher;
-        //private SearchStatusDisplay searchSummary;
+        private SearchStatusDisplay searchSummary;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
@@ -54,7 +54,7 @@ namespace Search3
         public override void Activate()
         {
             AddSearchRibbon();
-            //searchSummary = new SearchStatusDisplay(App);
+            searchSummary = new SearchStatusDisplay(App);
             base.Activate();
 
             App.SerializationManager.Serializing += SerializationManager_Serializing;
@@ -287,12 +287,12 @@ namespace Search3
                 App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 App.DockManager.SelectPanel("kMap");
 
-                //searchSummary.ShowSearchStatus = true;
-                //searchSummary.UpdateStatus();
+                searchSummary.ShowSearchStatus = true;
+                searchSummary.UpdateStatus();
             }
             else
             {
-                //searchSummary.ShowSearchStatus = false;
+                searchSummary.ShowSearchStatus = false;
             }
         }
 
@@ -494,9 +494,9 @@ namespace Search3
             var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
 
-            //searchSummary.AreaStatus = "Rectangle " + rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
-            //searchSummary.AreaStatus = "Rectangle";
-            //searchSummary.UpdateStatus();
+            searchSummary.AreaStatus = "Rectangle " + rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
+            searchSummary.AreaStatus = "Rectangle";
+            searchSummary.UpdateStatus();
         }
 
         void rbDrawBox_Click(object sender, EventArgs e)
@@ -548,10 +548,10 @@ namespace Search3
                     : "1 feature selected";
             }
 
-            //searchSummary.AreaStatus = SearchSettings.Instance.AreaSettings.AreaRectangle != null ? "Rectangle" : caption;
-            //searchSummary.UpdateStatus();
-            //rbSelect.Caption = caption;
-            //rbSelect.ToolTipText = caption;
+            searchSummary.AreaStatus = SearchSettings.Instance.AreaSettings.AreaRectangle != null ? "Rectangle" : caption;
+            searchSummary.UpdateStatus();
+            rbSelect.Caption = caption;
+            rbSelect.ToolTipText = caption;
         }
 
         void rbSelect_Click(object sender, EventArgs e)
@@ -762,8 +762,8 @@ namespace Search3
             rbServices.ToolTipText = string.Format("Select data sources ({0} selected)", hint);
             //ChangeWebServicesIcon(webServiceNode);
             
-            //searchSummary.DataSourceStatus = caption;
-            //searchSummary.UpdateStatus();
+            searchSummary.DataSourceStatus = caption;
+            searchSummary.UpdateStatus();
         }
 
         private void ChangeWebServicesIcon(WebServiceNode webServiceNode = null)

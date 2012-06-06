@@ -14,12 +14,14 @@ namespace Search3
     {
         private bool _showSearchStatus = false;
         StatusPanel searchStatusPanel = null;
+        private AppManager _app = null;
 
         public SearchStatusDisplay(AppManager app)
         {
             searchStatusPanel = new StatusPanel();
             searchStatusPanel.Width = 600;
-            app.ProgressHandler.Add(searchStatusPanel);
+            _app = app;
+            //app.ProgressHandler.Add(searchStatusPanel);
         }
         
         /// <summary>
@@ -33,8 +35,16 @@ namespace Search3
             }
             set
             {
+                bool oldStatus = _showSearchStatus;
                 _showSearchStatus = value;
-                searchStatusPanel.Caption = String.Empty;
+
+                if (oldStatus != _showSearchStatus)
+                {
+                    if (!_showSearchStatus)
+                        _app.ProgressHandler.Remove(searchStatusPanel);
+                    else
+                        _app.ProgressHandler.Add(searchStatusPanel);
+                }
             }
         }
 
