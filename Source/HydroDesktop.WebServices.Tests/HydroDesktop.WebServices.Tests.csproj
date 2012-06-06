@@ -102,6 +102,9 @@
     <Content Include="TestFiles\v10\RioGrandeET-SEV-RioGrandeET-ET_Penman-20110211055032021.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\v11\GetValues_Mendon_usu3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\v11\Site-RCEW2-012-20120604043508874.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
