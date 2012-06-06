@@ -438,37 +438,36 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return defaultTz;
         }
       
-        protected virtual QueryInfo ReadQueryInfo(XmlReader r)
+        protected virtual QueryInfo ReadQueryInfo(XmlReader reader)
         {
             var query = new QueryInfo();
-            while (r.Read())
+            while (reader.Read())
             {
-                string nodeName = r.Name.ToLower();
+                var nodeName = reader.Name.ToLower();
 
-                if (r.NodeType == XmlNodeType.Element)
+                if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (nodeName == "locationparam")
+                    switch (nodeName)
                     {
-                        r.Read();
-                        query.LocationParameter = r.Value;
-                    }
-                    else if (nodeName == "variableparam")
-                    {
-                        r.Read();
-                        query.VariableParameter = r.ReadContentAsString();
-                    }
-                    else if (nodeName == "begindatetime")
-                    {
-                        r.Read();
-                        query.BeginDateParameter = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
-                    }
-                    else if (nodeName == "enddatetime")
-                    {
-                        r.Read();
-                        query.EndDateParameter = Convert.ToDateTime(r.Value, CultureInfo.InvariantCulture);
+                        case "locationparam":
+                            reader.Read();
+                            query.LocationParameter = reader.Value;
+                            break;
+                        case "variableparam":
+                            reader.Read();
+                            query.VariableParameter = reader.ReadContentAsString();
+                            break;
+                        case "begindatetime":
+                            reader.Read();
+                            query.BeginDateParameter = Convert.ToDateTime(reader.Value, CultureInfo.InvariantCulture);
+                            break;
+                        case "enddatetime":
+                            reader.Read();
+                            query.EndDateParameter = Convert.ToDateTime(reader.Value, CultureInfo.InvariantCulture);
+                            break;
                     }
                 }
-                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "queryinfo")
+                else if (reader.NodeType == XmlNodeType.EndElement && nodeName == "queryinfo")
                 {
                     return query;
                 }
@@ -476,129 +475,129 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return null;
         }
 
-        protected virtual Method ReadMethod(XmlReader r)
+        protected virtual Method ReadMethod(XmlReader reader)
         {
             var method = Method.Unknown;
-            string methodCode = null;
-            var methodID = r.GetAttribute("methodID");
-            while (r.Read())
+            var methodID = reader.GetAttribute("methodID");
+            if (!String.IsNullOrEmpty(methodID))
             {
-                var nodeName = r.Name.ToLower();
-                if (r.NodeType == XmlNodeType.Element)
+                method.Code = Convert.ToInt32(methodID);
+            }
+
+            if (reader.IsEmptyElement)
+            {
+                return method;
+            }
+
+            while (reader.Read())
+            {
+                var nodeName = reader.Name.ToLower();
+                if (reader.NodeType == XmlNodeType.Element)
                 {
                     switch (nodeName)
                     {
                         case "methodcode":
                             // WaterML 1.1: methodCode
-                            r.Read();
-                            methodCode = r.Value;
+                            reader.Read();
+                            method.Code = Convert.ToInt32(reader.Value);
                             break;
                         case "methoddescription":
-                            r.Read();
-                            method.Description = r.Value;
+                            reader.Read();
+                            method.Description = reader.Value;
                             break;
                         case "methodlink":
-                            r.Read();
-                            method.Link = r.Value;
+                            reader.Read();
+                            method.Link = reader.Value;
                             break;
                     }
                 }
-                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "method")
+                else if (reader.NodeType == XmlNodeType.EndElement && nodeName == "method")
                 {
-                    if (!String.IsNullOrEmpty(methodCode))
-                    {
-                        method.Code = Convert.ToInt32(methodCode);
-                    }
-                    else if (!String.IsNullOrEmpty(methodID))
-                    {
-                        method.Code = Convert.ToInt32(methodID);
-                    }
-
-                    return method;
+                    break;
                 }
             }
             return method;
         }
        
-        protected virtual QualityControlLevel ReadQualityControlLevel(XmlReader r)
+        protected virtual QualityControlLevel ReadQualityControlLevel(XmlReader reader)
         {
             var qc = QualityControlLevel.Unknown;
-            var qcID = r.GetAttribute("qualityControlLevelID");
+            var qcID = reader.GetAttribute("qualityControlLevelID");
             if (!String.IsNullOrEmpty(qcID))
             {
                 qc.OriginId = Convert.ToInt32(qcID);
             }
 
             // WaterML 1.0: QualityControlLevelType contains only one attribute without sub-elements
-            if (r.IsEmptyElement)
+            if (reader.IsEmptyElement)
             {
                 return qc;
             }
 
             // WaterML 1.1: QualityControlLevelType contains additional elements
-            while (r.Read())
+            while (reader.Read())
             {
-                var nodeName = r.Name.ToLower();
-                if (r.NodeType == XmlNodeType.Element)
+                var nodeName = reader.Name.ToLower();
+                if (reader.NodeType == XmlNodeType.Element)
                 {
                     switch (nodeName)
                     {
                         case "qualitycontrollevelcode":
-                            r.Read();
-                            qc.Code = r.Value;
+                            reader.Read();
+                            qc.Code = reader.Value;
                             break;
                         case "definition":
-                            r.Read();
-                            qc.Definition = r.Value.Trim();
+                            reader.Read();
+                            qc.Definition = reader.Value.Trim();
                             break;
                         case "explanation":
-                            r.Read();
-                            qc.Explanation = r.Value.Trim();
+                            reader.Read();
+                            qc.Explanation = reader.Value.Trim();
                             break;
                     }
                 }
-                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "qualitycontrollevel")
+                else if (reader.NodeType == XmlNodeType.EndElement && nodeName == "qualitycontrollevel")
                 {
-                    return qc;
+                    break;
                 }
             }
             return qc;
         }
 
-        protected virtual Source ReadSource(XmlReader r)
+        protected virtual Source ReadSource(XmlReader reader)
         {
             var source = Source.Unknown;
-            var sourceID = r.GetAttribute("sourceID");
+            var sourceID = reader.GetAttribute("sourceID");
             if (!String.IsNullOrEmpty(sourceID))
             {
                 source.OriginId = Convert.ToInt32(sourceID);
             }
 
-            if (r.IsEmptyElement)
+            if (reader.IsEmptyElement)
             {
                 return source;
             }
 
-            while (r.Read())
+            while (reader.Read())
             {
-                var nodeName = r.Name.ToLower();
-                if (r.NodeType == XmlNodeType.Element)
+                var nodeName = reader.Name.ToLower();
+                if (reader.NodeType == XmlNodeType.Element)
                 {
                     switch (nodeName)
                     {
                         case "organization": // WML 1.0/1.1
-                            r.Read();
-                            source.Organization = r.Value;
+                            reader.Read();
+                            source.Organization = reader.Value;
                             break;
                         case "sourcedescription":  // WML 1.0/1.1
-                            r.Read();
-                            source.Description = r.Value;
+                            reader.Read();
+                            source.Description = reader.Value;
                             break;
                         case "metadata": // WML 1.0/1.1
-                            source.ISOMetadata = ReadISOMetadata(r);
+                            source.ISOMetadata = ReadISOMetadata(reader);
                             break;
                         case "contactinformation": // WML 1.0/1.1. Note: WML 1.1 supports many "ContactInformation" elements
-                            var contact = ReadContactInformtaion(r);
+                            var contact = ReadContactInformtaion(reader);
 
                             source.ContactName = contact.ContactName;
                             source.Email = contact.Email;
@@ -606,19 +605,19 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             source.Address = contact.Address; //todo: parse ContactInformationType.Address
                             break;
                         case "sourcelink":  // WML 1.0/1.1.  Note: WML 1.1 supports many "SourceLinks" elements
-                            r.Read();
-                            source.Link = r.Value;
+                            reader.Read();
+                            source.Link = reader.Value;
                             break;
                         case "sourcecode": // WML 1.1
-                            r.Read();
+                            reader.Read();
                             break;
                         case "citation": // WML 1.1
-                            r.Read();
-                            source.Citation = r.Value;
+                            reader.Read();
+                            source.Citation = reader.Value;
                             break;
                     }
                 }
-                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "source")
+                else if (reader.NodeType == XmlNodeType.EndElement && nodeName == "source")
                 {
                     break;
                 }
