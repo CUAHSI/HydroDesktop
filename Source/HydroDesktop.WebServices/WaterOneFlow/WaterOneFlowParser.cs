@@ -488,6 +488,50 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return null;
         }
 
+        protected virtual Method ReadMethod(XmlReader r)
+        {
+            var method = Method.Unknown;
+            string methodCode = null;
+            var methodID = r.GetAttribute("methodID");
+            while (r.Read())
+            {
+                var nodeName = r.Name.ToLower();
+                if (r.NodeType == XmlNodeType.Element)
+                {
+                    switch (nodeName)
+                    {
+                        case "methodcode":
+                            // WaterML 1.1: methodCode
+                            r.Read();
+                            methodCode = r.Value;
+                            break;
+                        case "methoddescription":
+                            r.Read();
+                            method.Description = r.Value;
+                            break;
+                        case "methodlink":
+                            r.Read();
+                            method.Link = r.Value;
+                            break;
+                    }
+                }
+                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "method")
+                {
+                    if (!String.IsNullOrEmpty(methodCode))
+                    {
+                        method.Code = Convert.ToInt32(methodCode);
+                    }
+                    else if (!String.IsNullOrEmpty(methodID))
+                    {
+                        method.Code = Convert.ToInt32(methodID);
+                    }
+
+                    return method;
+                }
+            }
+            return method;
+        }
+
         #endregion
 
         #region Private methods
@@ -537,7 +581,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         #endregion
 
         protected abstract Variable ReadVariable(XmlReader r);
-        protected abstract Method ReadMethod(XmlReader r);
         protected abstract Source ReadSource(XmlReader r);
         protected abstract QualityControlLevel ReadQualityControlLevel(XmlReader r);
         protected abstract IList<Series> ReadDataValues(XmlReader r);

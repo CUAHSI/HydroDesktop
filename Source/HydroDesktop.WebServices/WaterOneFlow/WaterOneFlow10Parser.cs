@@ -288,7 +288,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                    } 
                     else if (r.Name == "method")
                     {
-                        ReadMethod(r, methods);
+                        var method = ReadMethod(r);
+                        var methodCodeKey = method.Code.ToString();
+                        if (methods.ContainsKey(methodCodeKey))
+                        {
+                            methods[methodCodeKey] = method;
+                        }
                     }
                     else if (r.Name == "source")
                     {
@@ -444,91 +449,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             Qualifier qualifier = qualifiers[qualifierCode];
             r.Read();
             qualifier.Description = r.Value;
-        }
-
-        /// <summary>
-        /// Reads information about method and returns the method object
-        /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        protected override Method ReadMethod(XmlReader r)
-        {
-            //assign the method Code (method ID) if available
-            string methodID = r.GetAttribute("methodID");
-            Method method = Method.Unknown;
-
-            if (!String.IsNullOrEmpty(methodID))
-            {
-                method.Code = Convert.ToInt32(methodID);
-            }
-            
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name.ToLower() == "methoddescription")
-                    {
-                        r.Read();
-                        method.Description = r.Value;
-                    }
-                    else if (r.Name == "methodlink")
-                    {
-                        r.Read();
-                        method.Link = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "method")
-                {
-                    return method;
-                }
-            }
-            return Method.Unknown;
-        }
-
-        /// <summary>
-        /// Reads information about method
-        /// </summary>
-        private void ReadMethod(XmlReader r, Dictionary<string, Method> methods)
-        {
-            string methodID = r.GetAttribute("methodID");
-            
-            //special case: if the number of methods is one
-            if (methods.Count == 1)
-            {
-                Method newMethod = ReadMethod(r);
-                string methodCode = newMethod.Code.ToString();
-                methods[methodCode] = newMethod;
-            }
-            // otherwise: there are more than one method
-            else
-            {             
-                if (String.IsNullOrEmpty(methodID)) return;
-                if (!methods.ContainsKey(methodID)) return;
-
-                Method method = methods[methodID];
-                method.Code = Convert.ToInt32(methodID);
-
-                while (r.Read())
-                {
-                    if (r.NodeType == XmlNodeType.Element)
-                    {
-                        if (r.Name.ToLower() == "methoddescription")
-                        {
-                            r.Read();
-                            method.Description = r.Value;
-                        }
-                        else if (r.Name.ToLower() == "methodlink")
-                        {
-                            r.Read();
-                            method.Link = r.Value;
-                        }
-                    }
-                    else if (r.NodeType == XmlNodeType.EndElement && r.Name == "method")
-                    {
-                        return;
-                    }
-                }
-            }
         }
 
         protected override Source ReadSource(XmlReader r)
