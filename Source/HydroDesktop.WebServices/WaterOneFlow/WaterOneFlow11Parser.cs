@@ -339,7 +339,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     }
                     else if (r.Name == "method")
                     {
-                        ReadMethod(r, methods);
+                        var method = ReadMethod(r);
+                        var methodCodeKey = method.Code.ToString();
+                        if (methods.ContainsKey(methodCodeKey))
+                        {
+                            methods[methodCodeKey] = method;
+                        }
                     }
                     else if (r.Name == "source")
                     {
@@ -347,7 +352,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     }
                     else if (r.Name == "qualityControlLevel")
                     {
-                        ReadQualityControlLevel(r, qualityControlLevels);
+                        var qcLevel = ReadQualityControlLevel(r);
+                        var qcCodeKey = qcLevel.Code;
+                        if (qualityControlLevels.ContainsKey(qcCodeKey))
+                        {
+                            qualityControlLevels[qcCodeKey] = qcLevel;
+                        }
                     }
                     else if (r.Name == "qualifier")
                     {
@@ -604,79 +614,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
             return qc;
         }
-
-        private void ReadQualityControlLevel(XmlReader r, Dictionary<string, QualityControlLevel> qcLevels)
-        {
-            QualityControlLevel qcLevel = ReadQualityControlLevel(r);
-            string qcCodeKey = qcLevel.Code;
-            if (qcLevels.ContainsKey(qcCodeKey))
-            {
-                qcLevels[qcCodeKey] = null;
-                qcLevels[qcCodeKey] = qcLevel;
-            }
-        }
-
-        /// <summary>
-        /// Reads information about method and returns the method object
-        /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        protected override Method ReadMethod(XmlReader r)
-        {
-            Method method = Method.Unknown;
-
-            string methodID = r.GetAttribute("methodID");
-            string methodCode = String.Empty;
-            
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name.ToLower() == "methodcode")
-                    {
-                        r.Read();
-                        methodCode = r.Value;
-                    }
-                    else if (r.Name.ToLower() == "methoddescription")
-                    {
-                        r.Read();
-                        method.Description = r.Value;
-                    }
-                    else if (r.Name == "methodlink")
-                    {
-                        r.Read();
-                        method.Link = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "method")
-                {
-                    if (!String.IsNullOrEmpty(methodCode))
-                    {
-                        method.Code = Convert.ToInt32(methodCode);
-                    }
-                    else if (!String.IsNullOrEmpty(methodID))
-                    {
-                        method.Code = Convert.ToInt32(methodID);
-                    }
-                    return method;
-                }
-            }
-            return method;
-        }
-
-        /// <summary>
-        /// Reads information about method
-        /// </summary>
-        private void ReadMethod(XmlReader r, Dictionary<string, Method> methods)
-        {
-            Method method = ReadMethod(r);
-            string methodCodeKey = method.Code.ToString();
-            if (methods.ContainsKey(methodCodeKey))
-            {
-                methods[methodCodeKey] = null;
-                methods[methodCodeKey] = method;
-            }
-        }
+      
 
         /// <summary>
         /// Reads information about source
