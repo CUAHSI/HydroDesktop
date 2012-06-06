@@ -243,7 +243,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                                 (string)feature.DataRow["VarCode"] == series.Variable.Code &&
                                 (string)feature.DataRow["VarName"] == series.Variable.Name &&
                                 (string)feature.DataRow["DataType"] == series.Variable.DataType &&
-                                (string)feature.DataRow["Method"] == series.Method.Description &&
+                                (feature.DataRow["Method"] == DBNull.Value ? null : feature.DataRow["Method"].ToString()) == series.Method.Description &&
                                 (string)feature.DataRow["QCLevel"] == series.QualityControlLevel.Definition);
             if (downloadedFeature == null) return;
 
