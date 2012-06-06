@@ -7,18 +7,29 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
     public class WaterOneFlow11ParserTests
     {
         [Test]
-        public void ParseSite()
+        public void ParseSiteInfo()
         {
             var xmlPath = @"TestFiles\v11\Site-RCEW2-012-20120604043508874.xml";
             var target = new WaterOneFlow11Parser();
 
-            var siteInfo = target.ParseGetSiteInfo(xmlPath);
-            var actual = siteInfo[0].Site;
+            var result = target.ParseGetSiteInfo(xmlPath);
+            Assert.IsTrue(result.Count > 1);
 
-            Assert.AreEqual("Owyhee", actual.County);
-            Assert.AreEqual("Idaho", actual.State);
-            Assert.AreEqual("Comments", actual.Comments);
-            Assert.AreEqual(3.5, actual.PosAccuracy_m);
+            var series = result[0];
+
+            // Site
+            var site = series.Site;
+            Assert.AreEqual("Owyhee", site.County);
+            Assert.AreEqual("Idaho", site.State);
+            Assert.AreEqual("Comments", site.Comments);
+            Assert.AreEqual(3.5, site.PosAccuracy_m);
+
+            //QualityControlLevel
+            var qcl = series.QualityControlLevel;
+            Assert.AreEqual(1, qcl.OriginId);
+            Assert.AreEqual("1", qcl.Code);
+            Assert.AreEqual("Quality controlled data", qcl.Definition);
+            Assert.AreEqual("Explanation", qcl.Explanation);
         }
     }
 }

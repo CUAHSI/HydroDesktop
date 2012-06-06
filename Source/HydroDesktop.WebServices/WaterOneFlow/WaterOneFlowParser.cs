@@ -532,6 +532,56 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             return method;
         }
 
+        /// <summary>
+        /// Reads information about the quality control level and returns the quality control level object
+        /// </summary>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        protected virtual QualityControlLevel ReadQualityControlLevel(XmlReader r)
+        {
+            var qc = QualityControlLevel.Unknown;
+            var qcID = r.GetAttribute("qualityControlLevelID");
+            if (!String.IsNullOrEmpty(qcID))
+            {
+                qc.OriginId = Convert.ToInt32(qcID);
+            }
+
+            // WaterML 1.0: QualityControlLevelType contains only one attribute without sub-elements
+            if (r.IsEmptyElement)
+            {
+                return qc;
+            }
+
+            // WaterML 1.1: QualityControlLevelType contains additional elements
+            while (r.Read())
+            {
+                var nodeName = r.Name.ToLower();
+                if (r.NodeType == XmlNodeType.Element)
+                {
+                    switch (nodeName)
+                    {
+                        case "qualitycontrollevelcode":
+                            r.Read();
+                            qc.Code = r.Value;
+                            break;
+                        case "definition":
+                            r.Read();
+                            qc.Definition = r.Value.Trim();
+                            break;
+                        case "explanation":
+                            r.Read();
+                            qc.Explanation = r.Value.Trim();
+                            break;
+                    }
+                }
+                else if (r.NodeType == XmlNodeType.EndElement && nodeName == "qualitycontrollevel")
+                {
+                    return qc;
+                }
+            }
+            return qc;
+        }
+
         #endregion
 
         #region Private methods
@@ -582,7 +632,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         protected abstract Variable ReadVariable(XmlReader r);
         protected abstract Source ReadSource(XmlReader r);
-        protected abstract QualityControlLevel ReadQualityControlLevel(XmlReader r);
         protected abstract IList<Series> ReadDataValues(XmlReader r);
     }
 
