@@ -14,3 +14,10 @@ ADD COLUMN OffsetToSI float;
 
 ALTER TABLE UnitConversions
 ADD COLUMN Offset float;
+
+-- Site: SiteType/Country columns
+ALTER TABLE Sites
+ADD COLUMN SiteType nvarchar;
+
+ALTER TABLE Sites
+ADD COLUMN Country nvarchar;

@@ -2479,9 +2479,15 @@ namespace HydroDesktop.Database
             const string sqlSpatialReference = "SELECT SpatialReferenceID FROM SpatialReferences WHERE SRSID = ? AND SRSName = ?";
 
             string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + LastRowIDSelect;
-            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
-                                                  "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
-                                                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
+            var sites = _db.GetTableSchema("Sites");
+
+            var sqlSaveSite = (sites.Columns.Contains("Country") && sites.Columns.Contains("SiteType"))
+                                  ? "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
+                                    "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments, Country, SiteType) " +
+                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect
+                                  : "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
+                                    "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
+                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
 
             int siteID = 0;
             int spatialReferenceID = 0;
@@ -2582,6 +2588,9 @@ namespace HydroDesktop.Database
                     cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.State));
                     cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.County));
                     cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Comments));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Country));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.SiteType));
+
 
                     var siteIDResult = cmd04.ExecuteScalar();
                     siteID = Convert.ToInt32(siteIDResult);

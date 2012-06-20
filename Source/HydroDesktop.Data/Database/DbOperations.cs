@@ -868,22 +868,15 @@ namespace HydroDesktop.Database
         /// <returns>an empty dataTable with the same column names and types</returns>
         public DataTable GetTableSchema(string tableName)
         {
-            DataTable table = null;
-            DbConnection conn = CreateConnection();
-            
+            var conn = CreateConnection();
             try
-            {          
-                table = new DataTable();
-                
-                DbDataAdapter da = dbFactory.CreateDataAdapter();
-                
+            {
+                var table = new DataTable {TableName = tableName};
+                var da = dbFactory.CreateDataAdapter();
                 da.SelectCommand = conn.CreateCommand();
-                da.SelectCommand.CommandText = "SELECT * FROM " + tableName;
-                da.FillSchema(table, SchemaType.Source);
-                
-                table = new DataTable();
-                da.FillSchema(table, SchemaType.Source);
-                table.TableName = tableName;
+                da.SelectCommand.CommandText = "SELECT * FROM " + tableName + " WHERE 1 = 0";
+                da.Fill(table);
+                return table;
             }
             finally
             {
@@ -892,8 +885,6 @@ namespace HydroDesktop.Database
                     conn.Close();
                 }
             }
-
-            return table;
         }
     }
 }

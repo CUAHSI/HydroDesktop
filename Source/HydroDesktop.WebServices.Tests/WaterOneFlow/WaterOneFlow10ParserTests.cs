@@ -51,6 +51,8 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
             Assert.AreEqual("Ada", site.County);
             Assert.AreEqual("Idaho", site.State);
             Assert.AreEqual("Comments", site.Comments);
+            Assert.AreEqual(null, site.Country);
+            Assert.AreEqual(null, site.SiteType);
 
 
             //QualityControlLevel
