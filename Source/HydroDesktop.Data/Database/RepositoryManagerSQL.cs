@@ -63,12 +63,9 @@ namespace HydroDesktop.Database
         /// <returns>number of saved data values</returns>
         public int SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues)
         { 
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
             string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
 
             
@@ -99,11 +96,10 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
             object qualifierIDResult = null;
-            object themeIDResult = null;
             object sampleIDResult = null;
             object labMethodIDResult = null;
             object offsetTypeIDResult = null;
@@ -125,7 +121,7 @@ namespace HydroDesktop.Database
                 series.AddDataValue(Convert.ToDateTime(row[0]), Convert.ToDouble(row[1]));
             }
 
-            Theme theme = new Theme(themeName);
+            var theme = new Theme(themeName);
             
             int numSavedValues = 0;
 
@@ -188,31 +184,19 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     if (qualifierLookup.Count > 0)
                     {
-                        using (DbCommand cmd19 = conn.CreateCommand())
+                        var unsavedQualifiers = new List<Qualifier>();
+                        foreach (Qualifier qualifier in qualifierLookup.Values)
                         {
-                            cmd19.CommandText = sqlQualifier;
-                            cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Qualifier qualifier in qualifierLookup.Values)
+                            var id = GetQualifierID(conn, qualifier);
+                            if (id.HasValue)
                             {
-                                cmd19.Parameters[0].Value = qualifier.Code;
-                                qualifierIDResult = cmd19.ExecuteScalar();
-                                if (qualifierIDResult != null)
-                                {
-                                    qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                }
+                                qualifier.Id = id.Value;
+                            }
+                            else
+                            {
+                                unsavedQualifiers.Add(qualifier);
                             }
                         }
-
-                        List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                        foreach (Qualifier qual in qualifierLookup.Values)
-                        {
-                            if (qual.Id == 0)
-                            {
-                                unsavedQualifiers.Add(qual);
-                            }
-                        }
-
                         if (unsavedQualifiers.Count > 0)
                         {
                             using (DbCommand cmd20 = conn.CreateCommand())
@@ -390,32 +374,16 @@ namespace HydroDesktop.Database
                         }
 
                         //check for existing offset units
-                        using (DbCommand cmd26 = conn.CreateCommand())
+                        foreach (var offsetUnit in offsetUnitLookup.Values)
                         {
-                            cmd26.CommandText = sqlUnits;
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Unit offsetUnit in offsetUnitLookup.Values)
+                            var unitID = GetUnitID(conn, offsetUnit);
+                            if (unitID.HasValue)
                             {
-                                cmd26.Parameters[0].Value = offsetUnit.Name;
-                                cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                offsetUnitIDResult = cmd26.ExecuteScalar();
-                                if (offsetUnitIDResult != null)
-                                {
-                                    offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                }
+                                offsetUnit.Id = unitID.Value;
                             }
-                        }
-
-                        //check unsaved offset unit
-                        foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                        {
-                            if (offsetUnit1.Id == 0)
+                            else
                             {
-                                unsavedOffsetUnits.Add(offsetUnit1);
+                                unsavedOffsetUnits.Add(offsetUnit);   
                             }
                         }
 
@@ -526,17 +494,12 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 14 Data Theme                               ***********
                     //****************************************************************
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
+                   
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -544,8 +507,7 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
@@ -606,12 +568,9 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesAppend(Series series, Theme theme)
         {
-            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
             string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
@@ -647,11 +606,10 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
             object qualifierIDResult = null;
-            object themeIDResult = null;
             object sampleIDResult = null;
             object labMethodIDResult = null;
             object offsetTypeIDResult = null;
@@ -799,31 +757,18 @@ namespace HydroDesktop.Database
                         //****************************************************************
                         if (qualifierLookup.Count > 0)
                         {
-                            using (DbCommand cmd19 = conn.CreateCommand())
+                            var unsavedQualifiers = new List<Qualifier>();
+                            foreach (var qualifier in qualifierLookup.Values)
                             {
-                                cmd19.CommandText = sqlQualifier;
-                                cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Qualifier qualifier in qualifierLookup.Values)
+                                var id = GetQualifierID(conn, qualifier);
+                                if (id.HasValue)
                                 {
-                                    cmd19.Parameters[0].Value = qualifier.Code;
-                                    qualifierIDResult = cmd19.ExecuteScalar();
-                                    if (qualifierIDResult != null)
-                                    {
-                                        qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                    }
+                                    qualifier.Id = id.Value;
+                                }else
+                                {
+                                    unsavedQualifiers.Add(qualifier);
                                 }
                             }
-
-                            List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                            foreach (Qualifier qual in qualifierLookup.Values)
-                            {
-                                if (qual.Id == 0)
-                                {
-                                    unsavedQualifiers.Add(qual);
-                                }
-                            }
-
                             if (unsavedQualifiers.Count > 0)
                             {
                                 using (DbCommand cmd20 = conn.CreateCommand())
@@ -1001,32 +946,16 @@ namespace HydroDesktop.Database
                             }
 
                             //check for existing offset units
-                            using (DbCommand cmd26 = conn.CreateCommand())
+                            foreach (var offsetUnit in offsetUnitLookup.Values)
                             {
-                                cmd26.CommandText = sqlUnits;
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Unit offsetUnit in offsetUnitLookup.Values)
+                                var unitID = GetUnitID(conn, offsetUnit);
+                                if (unitID.HasValue)
                                 {
-                                    cmd26.Parameters[0].Value = offsetUnit.Name;
-                                    cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                    cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                    offsetUnitIDResult = cmd26.ExecuteScalar();
-                                    if (offsetUnitIDResult != null)
-                                    {
-                                        offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                    }
+                                    offsetUnit.Id = unitID.Value;
                                 }
-                            }
-
-                            //check unsaved offset unit
-                            foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                            {
-                                if (offsetUnit1.Id == 0)
+                                else
                                 {
-                                    unsavedOffsetUnits.Add(offsetUnit1);
+                                    unsavedOffsetUnits.Add(offsetUnit);
                                 }
                             }
 
@@ -1182,18 +1111,11 @@ namespace HydroDesktop.Database
                     //*** Step 15 Data Theme                               ***********
                     //****************************************************************
 
-                    
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -1201,8 +1123,7 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
@@ -1251,12 +1172,9 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesOverwrite(Series series, Theme theme)
         {
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
             string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
@@ -1294,11 +1212,10 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
             object qualifierIDResult = null;
-            object themeIDResult = null;
             object sampleIDResult = null;
             object labMethodIDResult = null;
             object offsetTypeIDResult = null;
@@ -1448,31 +1365,19 @@ namespace HydroDesktop.Database
                         //****************************************************************
                         if (qualifierLookup.Count > 0)
                         {
-                            using (DbCommand cmd19 = conn.CreateCommand())
+                            var unsavedQualifiers = new List<Qualifier>();
+                            foreach (var qualifier in qualifierLookup.Values)
                             {
-                                cmd19.CommandText = sqlQualifier;
-                                cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Qualifier qualifier in qualifierLookup.Values)
+                                var id = GetQualifierID(conn, qualifier);
+                                if (id.HasValue)
                                 {
-                                    cmd19.Parameters[0].Value = qualifier.Code;
-                                    qualifierIDResult = cmd19.ExecuteScalar();
-                                    if (qualifierIDResult != null)
-                                    {
-                                        qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                    }
+                                    qualifier.Id = id.Value;
+                                }
+                                else
+                                {
+                                    unsavedQualifiers.Add(qualifier);
                                 }
                             }
-
-                            List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                            foreach (Qualifier qual in qualifierLookup.Values)
-                            {
-                                if (qual.Id == 0)
-                                {
-                                    unsavedQualifiers.Add(qual);
-                                }
-                            }
-
                             if (unsavedQualifiers.Count > 0)
                             {
                                 using (DbCommand cmd20 = conn.CreateCommand())
@@ -1650,32 +1555,16 @@ namespace HydroDesktop.Database
                             }
 
                             //check for existing offset units
-                            using (DbCommand cmd26 = conn.CreateCommand())
+                            foreach (var offsetUnit in offsetUnitLookup.Values)
                             {
-                                cmd26.CommandText = sqlUnits;
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Unit offsetUnit in offsetUnitLookup.Values)
+                                var unitID = GetUnitID(conn, offsetUnit);
+                                if (unitID.HasValue)
                                 {
-                                    cmd26.Parameters[0].Value = offsetUnit.Name;
-                                    cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                    cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                    offsetUnitIDResult = cmd26.ExecuteScalar();
-                                    if (offsetUnitIDResult != null)
-                                    {
-                                        offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                    }
+                                    offsetUnit.Id = unitID.Value;
                                 }
-                            }
-
-                            //check unsaved offset unit
-                            foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                            {
-                                if (offsetUnit1.Id == 0)
+                                else
                                 {
-                                    unsavedOffsetUnits.Add(offsetUnit1);
+                                    unsavedOffsetUnits.Add(offsetUnit);
                                 }
                             }
 
@@ -1831,18 +1720,11 @@ namespace HydroDesktop.Database
                     //*** Step 15 Data Theme                               ***********
                     //****************************************************************
 
-
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -1850,8 +1732,7 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
@@ -1897,14 +1778,10 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         public int SaveSeriesAsCopy(Series series, Theme theme)
         {
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
             string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
             string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
             string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
-
             
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
@@ -1934,11 +1811,10 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
             object qualifierIDResult = null;
-            object themeIDResult = null;
             object sampleIDResult = null;
             object labMethodIDResult = null;
             object offsetTypeIDResult = null;
@@ -2019,31 +1895,19 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     if (qualifierLookup.Count > 0)
                     {
-                        using (DbCommand cmd19 = conn.CreateCommand())
+                        var unsavedQualifiers = new List<Qualifier>();
+                        foreach (var qualifier in qualifierLookup.Values)
                         {
-                            cmd19.CommandText = sqlQualifier;
-                            cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Qualifier qualifier in qualifierLookup.Values)
+                            var id = GetQualifierID(conn, qualifier);
+                            if (id.HasValue)
                             {
-                                cmd19.Parameters[0].Value = qualifier.Code;
-                                qualifierIDResult = cmd19.ExecuteScalar();
-                                if (qualifierIDResult != null)
-                                {
-                                    qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                }
+                                qualifier.Id = id.Value;
+                            }
+                            else
+                            {
+                                unsavedQualifiers.Add(qualifier);
                             }
                         }
-
-                        List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                        foreach (Qualifier qual in qualifierLookup.Values)
-                        {
-                            if (qual.Id == 0)
-                            {
-                                unsavedQualifiers.Add(qual);
-                            }
-                        }
-
                         if (unsavedQualifiers.Count > 0)
                         {
                             using (DbCommand cmd20 = conn.CreateCommand())
@@ -2221,34 +2085,18 @@ namespace HydroDesktop.Database
                         }
 
                         //check for existing offset units
-                        using (DbCommand cmd26 = conn.CreateCommand())
+                        foreach (var offsetUnit in offsetUnitLookup.Values)
                         {
-                            cmd26.CommandText = sqlUnits;
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Unit offsetUnit in offsetUnitLookup.Values)
+                            var unitID = GetUnitID(conn, offsetUnit);
+                            if (unitID.HasValue)
                             {
-                                cmd26.Parameters[0].Value = offsetUnit.Name;
-                                cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                offsetUnitIDResult = cmd26.ExecuteScalar();
-                                if (offsetUnitIDResult != null)
-                                {
-                                    offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                }
+                                offsetUnit.Id = unitID.Value;
+                            }else
+                            {
+                                unsavedOffsetUnits.Add(offsetUnit);
                             }
                         }
-
-                        //check unsaved offset unit
-                        foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                        {
-                            if (offsetUnit1.Id == 0)
-                            {
-                                unsavedOffsetUnits.Add(offsetUnit1);
-                            }
-                        }
+                      
 
                         //save offset units
                         if (unsavedOffsetUnits.Count > 0)
@@ -2357,17 +2205,11 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 14 Data Theme                               ***********
                     //****************************************************************
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -2375,8 +2217,7 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
@@ -2683,16 +2524,14 @@ namespace HydroDesktop.Database
         private int GetOrCreateVariableID(Variable variable, DbConnection conn)
         {
             const string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
-            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-
             string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + LastRowIDSelect;
             string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
                 "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
 
             int variableID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
+            long variableUnitsID = 0;
+            long timeUnitsID = 0;
 
             using (DbCommand cmd05 = conn.CreateCommand())
             {
@@ -2713,36 +2552,20 @@ namespace HydroDesktop.Database
                 // Get Variable unit
                 if (variable.VariableUnit != null)
                 {
-                    using (DbCommand cmd06 = conn.CreateCommand())
+                    var unitID = GetUnitID(conn, variable.VariableUnit);
+                    if (unitID.HasValue)
                     {
-                        cmd06.CommandText = sqlUnits;
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                        var variableUnitsIDResult = cmd06.ExecuteScalar();
-                        if (variableUnitsIDResult != null)
-                        {
-                            variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                        }
+                        variableUnitsID = unitID.Value;
                     }
                 }
 
                 // Get Time Unit
                 if (variable.TimeUnit != null)
                 {
-                    using (DbCommand cmd06 = conn.CreateCommand())
+                    var unitID = GetUnitID(conn, variable.TimeUnit);
+                    if (unitID.HasValue)
                     {
-                        cmd06.CommandText = sqlUnits;
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                        
-                        var timeUnitsIDResult = cmd06.ExecuteScalar();
-                        if (timeUnitsIDResult != null)
-                        {
-                            timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                        }
+                        timeUnitsID = unitID.Value;
                     }
                 }
 
@@ -2800,6 +2623,56 @@ namespace HydroDesktop.Database
             }
 
             return variableID;
+        }
+
+        private long? GetUnitID(DbConnection conn, Unit unit)
+        {
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlUnits;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Name));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.UnitsType));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Abbreviation));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetQualifierID(DbConnection conn, Qualifier qualifier)
+        {
+            const string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlQualifier;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, qualifier.Code));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetThemeID(DbConnection conn, Theme theme)
+        {
+            const string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlTheme;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
         }
 
         private void GetLookups(Series series, out Dictionary<string, Qualifier> qualifierLookup,
