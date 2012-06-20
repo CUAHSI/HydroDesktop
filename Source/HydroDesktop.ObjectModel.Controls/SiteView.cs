@@ -45,6 +45,8 @@ namespace HydroDesktop.ObjectModel.Controls
             tbComments.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Comments);
             tbLocalProjection.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).LocalProjection);
             tbLatLongDatum.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).SpatialReference);
+            tbSiteType.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).SiteType);
+            tbCountry.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Country);
         }
 
         #endregion
@@ -91,6 +93,8 @@ namespace HydroDesktop.ObjectModel.Controls
                 tbComments.ReadOnly = value;
                 tbLocalProjection.ReadOnly = value;
                 tbLatLongDatum.ReadOnly = value;
+                tbSiteType.ReadOnly = value;
+                tbCountry.ReadOnly = value;
             }
         }
 
