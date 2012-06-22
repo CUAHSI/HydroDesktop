@@ -69,7 +69,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
 
             Theme myTheme = new Theme("DataManagerSQL-Theme");
             
-            manager.SaveSeriesAsCopy(mySeries, myTheme);
+            manager.SaveSeries(mySeries, myTheme, OverwriteOptions.Copy);
         }
 
         [Test]
@@ -92,8 +92,8 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
 
             Theme myTheme = new Theme("DataManagerSQL-Theme");
 
-            manager.SaveSeriesAsCopy(mySeries1, myTheme);
-            manager.SaveSeriesAsCopy(mySeries2, myTheme);
+            manager.SaveSeries(mySeries1, myTheme, OverwriteOptions.Copy);
+            manager.SaveSeries(mySeries2, myTheme, OverwriteOptions.Copy);
         }
 
         //public void TestDeleteSeries1()
