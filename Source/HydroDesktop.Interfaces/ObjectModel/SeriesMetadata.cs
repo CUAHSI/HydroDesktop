@@ -175,14 +175,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The primary quality control level of the data
         /// </summary>
         public virtual QualityControlLevel QualityControlLevel { get; set; }
-
-        /// <summary>
-        /// Shortcut property to obtain time zone information
-        /// </summary>
-        public virtual TimeZoneInfo GetDefaultTimeZone()
-        {
-            return (Site != null) ? Site.DefaultTimeZone : null;
-        }
         
 
         #endregion

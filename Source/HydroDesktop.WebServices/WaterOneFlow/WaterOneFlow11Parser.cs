@@ -590,7 +590,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                         Qualifier matchingQual = qualifiers[code];
                         description += matchingQual.Description + ", ";
                     }
-                    description = description.Remove(description.LastIndexOf(","));
+                    description = description.Remove(description.LastIndexOf(",", System.StringComparison.Ordinal));
                     qual.Description = description;
                 }
             }
@@ -611,7 +611,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <returns></returns>
         private double ConvertUtcOffset(string offsetString)
         {
-            int colonIndex = offsetString.IndexOf(":");
+            int colonIndex = offsetString.IndexOf(":", StringComparison.Ordinal);
             double minutes = 0.0;
             double hours = 0.0;
             if (colonIndex > 0 && colonIndex < offsetString.Length - 1)
