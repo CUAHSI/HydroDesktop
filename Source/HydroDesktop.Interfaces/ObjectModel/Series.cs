@@ -137,7 +137,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual int ValueCount { get; set; }
 
-        private  void UpdateSeriesInfoFromDataValues()
+        public  void UpdateSeriesInfoFromDataValues()
         {
             if (DataValueList.Count > 0)
             {
@@ -217,17 +217,11 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual IList<Theme> ThemeList { get; protected set; }
 
-        /// <summary>
-        /// Shortcut property to obtain time zone information
-        /// </summary>
-        public virtual TimeZoneInfo GetDefaultTimeZone()
-        {
-            return (Site != null) ? Site.DefaultTimeZone : null;
-        }
-
+     
         #endregion
 
         #region Methods
+
         /// <summary>
         /// String representation of the series
         /// <returns>SiteName | VariableName | DataType</returns>
@@ -354,14 +348,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         public virtual Series Copy(bool copyDataValues)
         {
             return new Series(this, copyDataValues);
-        }
-
-        /// <summary>
-        /// updates the beginDateTime, endDateTime properties based on the DataValueList
-        /// </summary>
-        public virtual void UpdateProperties()
-        {
-            UpdateSeriesInfoFromDataValues();
         }
 
         #endregion

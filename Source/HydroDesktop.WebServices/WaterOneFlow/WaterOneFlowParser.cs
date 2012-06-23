@@ -227,7 +227,14 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             {
                                 series.Site = site;
                             }
-                            CheckDataSeries(series);
+
+                            //ensure that properties are re-calculated
+                            series.UpdateSeriesInfoFromDataValues();
+
+                            //set the checked and creation date time
+                            series.CreationDateTime = DateTime.Now;
+                            series.LastCheckedDateTime = DateTime.Now;
+                            series.UpdateDateTime = series.LastCheckedDateTime;
                         }
                     }
                 }
@@ -746,51 +753,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         protected abstract Variable ReadVariable(XmlReader r);
         protected abstract IList<Series> ReadDataValues(XmlReader r);
-
-        #region Private methods
-
-        /// <summary>
-        /// Checks data series to make sure that the time zone information
-        /// is correct. Also check if it is a composite series and if it is composite then
-        /// separates it into multiple series.
-        /// </summary>
-        /// <param name="series">the data series to be checked</param>
-        private void CheckDataSeries(Series series)
-        {
-            //ensure that properties are re-calculated
-            series.UpdateProperties();
-
-            if (series.Site.DefaultTimeZone == null)
-            {
-                series.Site.DefaultTimeZone = TimeZoneInfo.Utc;
-            }
-
-            //check the time zone and assign the 'UTC Offset'
-            if (series.Site.DefaultTimeZone != TimeZoneInfo.Utc)
-            {
-                TimeSpan utcOffset = series.Site.DefaultTimeZone.BaseUtcOffset;
-                double utcOffsetHours = utcOffset.TotalHours;
-                series.BeginDateTimeUTC = series.BeginDateTime + utcOffset;
-                series.EndDateTimeUTC = series.EndDateTime + utcOffset;
-                foreach (DataValue val in series.DataValueList)
-                {
-                    val.UTCOffset = utcOffsetHours;
-                    val.DateTimeUTC = val.LocalDateTime + utcOffset;
-                }
-            }
-            else
-            {
-                series.BeginDateTimeUTC = series.BeginDateTime;
-                series.EndDateTimeUTC = series.EndDateTime;
-            }
-
-            //set the checked and creation date time
-            series.CreationDateTime = DateTime.Now;
-            series.LastCheckedDateTime = DateTime.Now;
-            series.UpdateDateTime = series.LastCheckedDateTime;
-        }
-
-        #endregion
     }
 
     /// <summary>
