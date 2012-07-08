@@ -254,7 +254,7 @@ namespace Search3.Keywords
         /// </summary>
         /// <param name="StringList">System.Collections.Generic.List of strings</param>
         /// <param name="Item">The item to remove from the list</param>
-        private static void RemoveAllFromList(List<string> StringList, string Item)
+        private static void RemoveAllFromList(ICollection<string> StringList, string Item)
         {
             while (StringList.Contains(Item))
             {

@@ -4,7 +4,6 @@ using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using Hydrodesktop.Common;
-using DotSpatial.Topology;
 using DotSpatial.Data;
 
 namespace Search3.Searching
@@ -43,7 +42,7 @@ namespace Search3.Searching
         /// </summary>
         public IEnumerable<IMapPointLayer> Create()
         {
-            Extent ext = new Extent();
+            var ext = new Extent();
             
             if (!_searchResult.ResultItems.Any())
             {

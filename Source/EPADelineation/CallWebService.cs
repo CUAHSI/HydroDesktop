@@ -287,7 +287,7 @@ namespace EPADelineation
                 {
                     foreach (JArray Polycoord in coordArray) //The third level branket
                     {
-                        Polygon[] polys = new Polygon[Polycoord.Count]; ;
+                        Polygon[] polys = new Polygon[Polycoord.Count];
 
                         if (Polycoord != null)
                         {
@@ -407,8 +407,8 @@ namespace EPADelineation
 
                 object[] watersheds = new object[2];
 
-                watersheds[0] = polyfs as object;
-                watersheds[1] = area as object;
+                watersheds[0] = polyfs;
+                watersheds[1] = area;
 
                 return watersheds;
             }

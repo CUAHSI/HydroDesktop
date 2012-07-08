@@ -28,7 +28,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
         {
             var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(TestConfig.DbOperations);
 
-            string sql = "SELECT SeriesID from DataSeries";
+            const string sql = "SELECT SeriesID from DataSeries";
             DataTable tbl = TestConfig.DbOperations.LoadTable("tbl", sql);
             if (tbl.Rows.Count > 0)
             {
@@ -119,7 +119,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
             Random rnd = new Random();
             int numDays = rnd.Next(2000);
             DateTime start = DateTime.Now.Date.AddDays(-numDays);
-            double utcOffset = -7;
+            const double utcOffset = -7;
             
             Series newSeries = new Series(site, variable, method, qc, source);
             newSeries.IsCategorical = false;

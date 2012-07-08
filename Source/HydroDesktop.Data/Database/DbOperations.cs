@@ -776,11 +776,10 @@ namespace HydroDesktop.Database
 
             DbDataAdapter da = dbFactory.CreateDataAdapter();
             da.SelectCommand = cmd;
-            DataTable dt = new DataTable();
-            dt.TableName = tableName;
+            var dt = new DataTable {TableName = tableName};
             da.Fill(dt);
 
-            if (openCloseConnection == true)
+            if (openCloseConnection)
             {
                 cmd.Connection.Close();
             }

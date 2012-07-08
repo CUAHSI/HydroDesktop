@@ -57,7 +57,7 @@ namespace HydroDesktop.Main
                 }
             }
             //attach layer added events to existing groups
-            foreach (IGroup grp in App.Map.MapFrame.GetAllGroups())
+            foreach (var grp in App.Map.MapFrame.GetAllGroups())
             {
                 grp.LayerAdded += Map_LayerAdded;
             }
@@ -107,7 +107,7 @@ namespace HydroDesktop.Main
         private void DetachLayerAddedEvents()
         {
             App.Map.LayerAdded -= Map_LayerAdded;
-            foreach (IGroup grp in App.Map.MapFrame.GetAllGroups())
+            foreach (var grp in App.Map.MapFrame.GetAllGroups())
             {
                 grp.LayerAdded -= Map_LayerAdded;
             }

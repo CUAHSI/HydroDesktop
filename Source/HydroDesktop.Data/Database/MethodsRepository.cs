@@ -24,15 +24,13 @@ namespace HydroDesktop.Database
 
         #region Public methods
 
-        public int InsertMethod(string methodDescription, string methodLink)
+        public void InsertMethod(string methodDescription, string methodLink)
         {
             var methodID = DbOperations.GetNextID(TableName, "MethodID");
             DbOperations.ExecuteNonQuery(
                 string.Format(
                     "INSERT INTO Methods(MethodID, MethodDescription, MethodLink) VALUES ({0}, '{1}', '{2}')", methodID,
                     methodDescription, methodLink));
-
-            return methodID;
         }
        
         public void UpdateMethod(int methodID, string methodDescription, string methodLink)

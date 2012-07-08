@@ -27,8 +27,8 @@ namespace HydroDesktop.DownloadExtensions
 
         public void Activate()
         {
-            bool isHeaderControlNeeded = App.CompositionContainer.GetExportedValues<IHeaderControl>().Count() == 0;
-            bool isStatusControlNeeded = App.CompositionContainer.GetExportedValues<IStatusControl>().Count() == 0;
+            bool isHeaderControlNeeded = !App.CompositionContainer.GetExportedValues<IHeaderControl>().Any();
+            bool isStatusControlNeeded = !App.CompositionContainer.GetExportedValues<IStatusControl>().Any();
 
             //installs the extensions from the online repository on-demand
             //note: some of these packages will be shipped with the installer but they are installed from online

@@ -1,6 +1,5 @@
 ﻿using DotSpatial.Controls;
 using DotSpatial.Symbology;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
 
 namespace DataAggregation

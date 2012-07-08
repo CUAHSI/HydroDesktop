@@ -194,7 +194,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
 			// check log filename
 			if( checkBoxLogToFile.Checked )
-				if( textLogToFile.Text==null || textLogToFile.Text=="" )
+				if( string.IsNullOrEmpty(textLogToFile.Text) )
 				{
 					switch( MessageBox.Show("Text you have entered is not file name.", "Invalid format", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) )
 					{

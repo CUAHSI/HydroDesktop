@@ -117,7 +117,7 @@ namespace HydroR
                 else
                     MessageBox.Show("Input Error: " + e.Message);
                 rtCommands.Line--;
-                throw e;
+                throw;
 
             }
         }

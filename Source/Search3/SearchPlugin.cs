@@ -12,7 +12,6 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.WebServices;
@@ -588,7 +587,7 @@ namespace Search3
                         {
                             if (polyLayer.IsVisible && polyLayer.Selection.Count > 0)
                             {
-                                var polyFs2 = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
+                                var polyFs2 = new FeatureSet(FeatureType.Polygon);
                                 foreach (var f in polyLayer.Selection.ToFeatureList())
                                 {
                                     polyFs2.Features.Add(f);
@@ -604,7 +603,7 @@ namespace Search3
                     return;
                 }
 
-                var polyFs = new FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
+                var polyFs = new FeatureSet(FeatureType.Polygon);
                 foreach (var f in polygonLayer.Selection.ToFeatureList())
                 {
                     polyFs.Features.Add(f);

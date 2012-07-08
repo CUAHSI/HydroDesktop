@@ -87,7 +87,7 @@ namespace HydroDesktop.Interfaces
         /// </summary>
         /// <param name="seriesID">The database ID of the series</param>
         /// <returns>true if series was deleted, false otherwise</returns>
-        bool DeleteSeries(int seriesID);
+        void DeleteSeries(int seriesID);
 
         /// <summary>
         /// Check that exists series with given Site and Variable.
