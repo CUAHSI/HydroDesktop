@@ -603,9 +603,27 @@ Public Class GraphViewPlugin
         If e.ActivePanelKey = kGraph Then
             App.HeaderControl.SelectRoot(kGraph)
             App.DockManager.SelectPanel(SharedConstants.SeriesViewKey)
+            IsPanelActive = True
+        Else
+            IsPanelActive = False
         End If
 
     End Sub
+
+    Private _isPanelActive As Boolean
+    Public Property IsPanelActive As Boolean
+        Get
+            Return _isPanelActive
+        End Get
+        Set(ByVal value As Boolean)
+            If (value = _isPanelActive) Then Return
+            _isPanelActive = value
+
+            RaiseEvent IsPanelActiveChanged()
+        End Set
+    End Property
+
+    Public Event IsPanelActiveChanged()
 
 #End Region
 

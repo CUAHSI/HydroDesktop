@@ -17,35 +17,35 @@ namespace TableView
     {
         #region Fields
 
-        private readonly ISeriesSelector _seriesSelector;
+        private readonly TableViewPlugin _parent;
         private bool _needToRefresh;
 
         #endregion
 
         #region Constructor
 
-        public cTableView(ISeriesSelector seriesSelector)
+        public cTableView(TableViewPlugin parent)
         {
-            if (seriesSelector == null) throw new ArgumentNullException("seriesSelector");
+            _parent = parent;
+            if (parent == null) throw new ArgumentNullException("parent");
             Contract.EndContractBlock();
 
             InitializeComponent();
 
-            _seriesSelector = seriesSelector;
-
             dataGridViewNavigator1.PageChanged += dataGridViewNavigator1_PageChanged;
 
-            _seriesSelector.SeriesCheck += seriesSelector_Refreshed;
-            _seriesSelector.Refreshed += seriesSelector_Refreshed;
+            _parent.SeriesControl.SeriesCheck += seriesSelector_Refreshed;
+            _parent.SeriesControl.Refreshed += seriesSelector_Refreshed;
+            _parent.IsPanelActiveChanged += OnIsPanelActiveChanged;
+
             Disposed += OnDisposed;
-            VisibleChanged += OnVisibleChanged;
         }
 
         private void OnDisposed(object sender, EventArgs eventArgs)
         {
-            _seriesSelector.SeriesCheck -= seriesSelector_Refreshed;
-            _seriesSelector.Refreshed -= seriesSelector_Refreshed;
-            Disposed -= OnDisposed;
+            _parent.SeriesControl.SeriesCheck -= seriesSelector_Refreshed;
+            _parent.SeriesControl.Refreshed -= seriesSelector_Refreshed;
+            _parent.IsPanelActiveChanged -= OnIsPanelActiveChanged;
         }
 
         #endregion
@@ -71,6 +71,11 @@ namespace TableView
         #endregion
 
         #region Private methods
+
+        private bool IsVisible
+        {
+            get { return _parent.IsPanelActive; }
+        }
         
         private void UpdateViewMode()
         {
@@ -102,9 +107,11 @@ namespace TableView
             }
         }
 
+
+
         private void dataGridViewNavigator1_PageChanged(object sender, PageChangedEventArgs e)
         {
-            if (!Visible)
+            if (!IsVisible)
             {
                 _needToRefresh = true;
                 return;
@@ -126,7 +133,7 @@ namespace TableView
                 var columnDateTime = dataViewSeries.Columns["DateTime"];
                 Debug.Assert(columnDateTime != null);
                 columnDateTime.HeaderText = "DateTime" + Environment.NewLine + "Unit";
-                foreach (var id in _seriesSelector.CheckedIDList)
+                foreach (var id in _parent.SeriesControl.CheckedIDList)
                 {
                     var seriesNameTable = dataSeriesRepo.GetUnitSiteVarForFirstSeries(id);
                     var row1 = seriesNameTable.Rows[0];
@@ -145,17 +152,17 @@ namespace TableView
 
         private void ShowAllFieldsinSequence()
         {
-            dataGridViewNavigator1.Initialize(new FieldsInSequenceGetter(_seriesSelector.CheckedIDList));
+            dataGridViewNavigator1.Initialize(new FieldsInSequenceGetter(_parent.SeriesControl.CheckedIDList));
         }
 
         private void ShowJustValuesinParallel()
         {
-            dataGridViewNavigator1.Initialize(new ValuesInParallelGetter(_seriesSelector.CheckedIDList));
+            dataGridViewNavigator1.Initialize(new ValuesInParallelGetter(_parent.SeriesControl.CheckedIDList));
         }
-        
-        private void OnVisibleChanged(object sender, EventArgs eventArgs)
+
+        private void OnIsPanelActiveChanged(object sender, EventArgs eventArgs)
         {
-            if (!Visible) return;
+            if (!IsVisible) return;
             if (_needToRefresh)
             {
                 _needToRefresh = false;
@@ -165,7 +172,7 @@ namespace TableView
 
         private void RefreshTableView()
         {
-            if (!Visible)
+            if (!IsVisible)
             {
                 _needToRefresh = true;
                 return;

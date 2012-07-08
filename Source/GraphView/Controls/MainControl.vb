@@ -9,7 +9,6 @@ Namespace Controls
 
         Private ReadOnly _parent As GraphViewPlugin
         Private ReadOnly _charts As ICollection(Of IChart)
-        Private ReadOnly _plots As ICollection(Of IPlot)
         Private ReadOnly _seriesPlotInfo As SeriesPlotInfo
 
 #End Region
@@ -22,10 +21,11 @@ Namespace Controls
 
             _parent = parent
             _charts = {timeSeriesPlot, probabilityPlot, histogramPlot, boxWhisker}
-            _plots = {dataSummary, timeSeriesPlot, probabilityPlot, histogramPlot, boxWhisker}
 
             'assign the events
-            AddHandler parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            AddHandler tcPlots.Selected, AddressOf PlotSelected
+            AddHandler _parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            AddHandler _parent.IsPanelActiveChanged, AddressOf OnIsPanelActiveChanged
             AddHandler Disposed, AddressOf OnDisposing
 
             probabilityPlot.SeriesSelector = parent.SeriesSelector
@@ -43,6 +43,23 @@ Namespace Controls
         Private Sub OnDisposing(ByVal sender As Object, ByVal e As EventArgs)
             ' Unsubscribe from events
             RemoveHandler _parent.SeriesSelector.SeriesCheck, AddressOf SeriesSelector_SeriesCheck
+            RemoveHandler _parent.IsPanelActiveChanged, AddressOf OnIsPanelActiveChanged
+        End Sub
+
+        Private ReadOnly Property IsVisible() As Boolean
+            Get
+                Return _parent.IsPanelActive
+            End Get
+        End Property
+
+        Private _needToRefresh As Boolean
+        Private Sub OnIsPanelActiveChanged()
+            If (Not IsVisible) Then Return
+
+            If (_needToRefresh) Then
+                _needToRefresh = False
+                ApplyOptions()
+            End If
         End Sub
 
 #End Region
@@ -74,13 +91,16 @@ Namespace Controls
                 _seriesPlotInfo.Update()
             End If
 
-            ' todo: ProgressBar
             For Each id In _seriesPlotInfo.GetSeriesIDs()
                 DateRangeSelection(id)
             Next
-            For Each plot As IPlot In _plots
-                plot.Plot(_seriesPlotInfo)
-            Next
+            PlotSelected()
+        End Sub
+
+        Private Sub PlotSelected()
+            Dim plot = DirectCast(tcPlots.SelectedTab.Controls(0), IPlot)
+            If IsNothing(plot) Then Return
+            plot.Plot(_seriesPlotInfo)
         End Sub
 
         Public Sub ShowPointValues(ByVal showPointValues As Boolean)
@@ -113,6 +133,12 @@ Namespace Controls
 
         Private Sub SeriesSelector_SeriesCheck(ByVal sender As Object, ByVal e As SeriesEventArgs)
             _seriesPlotInfo.Update(e)
+
+            If (Not IsVisible) Then
+                _needToRefresh = True
+                Return
+            End If
+
             ApplyOptions()
         End Sub
 

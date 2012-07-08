@@ -8,7 +8,6 @@ Namespace Controls
         Implements IChart
 
         Private m_StdDev As Double = 0
-        Private _seriesPlotInfo As SeriesPlotInfo
 
         Private Const db_outFld_ValDTMonth As String = "DateMonth"
         Private Const db_outFld_ValDTYear As String = "DateYear"
@@ -23,17 +22,9 @@ Namespace Controls
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.Border.IsVisible = False
-
-            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
-            _seriesPlotInfo = Nothing
-            If Not Visible Then
-                _seriesPlotInfo = seriesPlotInfo
-                Return
-            End If
-
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
@@ -44,13 +35,6 @@ Namespace Controls
             Next
             Refreshing()
         End Sub
-
-        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
-            If Not Visible Then Return
-            If _seriesPlotInfo Is Nothing Then Return
-            Plot(_seriesPlotInfo)
-        End Sub
-
 
         Private Sub Plot(ByRef options As OneSeriesPlotInfo, ByVal e_StdDev As Double)
 

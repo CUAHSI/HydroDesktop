@@ -344,15 +344,18 @@ namespace HydroDesktop.Docking
         /// </summary>
         void MainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (MainDockPanel.ActiveContent == null) return;
-            if (MainDockPanel.ActiveContent.DockHandler == null) return;
-            if (MainDockPanel.ActiveContent.DockHandler.Content == null) return;
-            
-            DockContent activeContent = MainDockPanel.ActiveContent.DockHandler.Content as DockContent;
+            DockContent activeContent;
+            try
+            {
+                activeContent = MainDockPanel.ActiveContent.DockHandler.Content as DockContent;
+            }catch(NullReferenceException)
+            {
+                return;
+            }
             if (activeContent == null) return;
             if (activeContent.Tag == null) return;
 
-            string activePanelKey = activeContent.Tag.ToString();
+            var activePanelKey = activeContent.Tag.ToString();
             OnActivePanelChanged(activePanelKey);
         }
 
@@ -382,9 +385,10 @@ namespace HydroDesktop.Docking
 
         protected void OnActivePanelChanged(string newActivePanelKey)
         {
-            if (ActivePanelChanged != null)
+            var handler = ActivePanelChanged;
+            if (handler != null)
             {
-                ActivePanelChanged(this, new DockablePanelEventArgs(newActivePanelKey));
+                handler(this, new DockablePanelEventArgs(newActivePanelKey));
             }
         }
 
