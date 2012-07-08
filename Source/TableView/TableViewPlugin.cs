@@ -31,6 +31,24 @@ namespace TableView
 
         #endregion
 
+        public EventHandler IsPanelActiveChanged;
+
+        private bool _isPanelActive;
+        public bool IsPanelActive
+        {
+            get { return _isPanelActive; }
+            set
+            {
+                if (_isPanelActive == value) return;
+                _isPanelActive = value;
+
+                var handler = IsPanelActiveChanged;
+                if (handler != null)
+                {
+                    handler(this, EventArgs.Empty);
+                }
+            }
+        }
 
         #region Extension Members
 
@@ -173,7 +191,7 @@ namespace TableView
         void AddTableViewPanel()
         {
             // Add "Table View Plugin" dock panel to the SeriesView
-            tableViewControl = new cTableView(SeriesControl) {Dock = DockStyle.Fill};
+            tableViewControl = new cTableView(this) {Dock = DockStyle.Fill};
             var tableViewPanel = new DockablePanel
             {
                 Key = kTableView,
@@ -183,7 +201,6 @@ namespace TableView
                 DefaultSortOrder = 10
             };
             App.DockManager.Add(tableViewPanel);
-
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
         }
 
@@ -220,6 +237,11 @@ namespace TableView
                 App.DockManager.SelectPanel(SharedConstants.SeriesViewKey);
                 App.HeaderControl.SelectRoot(kTableView);
                 RefreshDatabasePath();
+                IsPanelActive = true;
+            }
+            else
+            {
+                IsPanelActive = false;    
             }
         }
 
