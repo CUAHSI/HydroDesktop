@@ -100,11 +100,7 @@ namespace ExcelExtension
                     feature.DataRow = fs.DataTable.NewRow();
                     for (int j = 0; j < reader.FieldCount; j++)
                     {
-                        object value = reader.GetValue(j);
-                        if (value == null)
-                        {
-                            value = DBNull.Value;
-                        }
+                        object value = reader.GetValue(j) ?? DBNull.Value;
                         feature.DataRow[j] = value;
                     }
                     fs.Features.Add(feature);

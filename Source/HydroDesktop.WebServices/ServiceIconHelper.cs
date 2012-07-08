@@ -73,7 +73,7 @@ namespace HydroDesktop.WebServices
             try
             {
                 string url = String.Format("{0}/getIcon.aspx?name={1}", _hisCentralUrl, serviceCode);
-                System.Net.HttpWebRequest req = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(url);
+                var req = (HttpWebRequest)WebRequest.Create(url);
                 req.Timeout = requestTimeout;
                 // Request response:
                 System.Net.WebResponse webResponse = req.GetResponse();
@@ -82,7 +82,7 @@ namespace HydroDesktop.WebServices
                 System.IO.Stream webStream = webResponse.GetResponseStream();
 
                 // convert webstream to image
-                System.Drawing.Image tmpImage = System.Drawing.Image.FromStream(webStream);
+                var tmpImage = Image.FromStream(webStream);
 
                 // Cleanup
                 webResponse.Close();

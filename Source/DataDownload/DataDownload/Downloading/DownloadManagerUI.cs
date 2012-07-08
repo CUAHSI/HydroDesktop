@@ -254,7 +254,7 @@ namespace HydroDesktop.DataDownload.Downloading
             }
         }
 
-        private static void ThreadSafeSetText(Label label, string value)
+        private static void ThreadSafeSetText(Control label, string value)
         {
             label.UIThread(() => label.Text = value);
         }

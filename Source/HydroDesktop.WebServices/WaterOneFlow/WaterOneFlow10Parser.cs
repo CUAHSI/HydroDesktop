@@ -390,7 +390,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Read the vertical offset type
         /// </summary>
-        private void ReadOffset(XmlReader r, Dictionary<string, OffsetType> offsets)
+        private static void ReadOffset(XmlReader r, IDictionary<string, OffsetType> offsets)
         {
             string offsetID = r.GetAttribute("offsetTypeID");
             if (String.IsNullOrEmpty(offsetID)) return;
@@ -440,18 +440,17 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads information about a qualifier
         /// </summary>
-        private void ReadQualifier(XmlReader r, Dictionary<string, Qualifier> qualifiers)
+        private static void ReadQualifier(XmlReader r, IDictionary<string, Qualifier> qualifiers)
         {
             string qualifierCode = r.GetAttribute("qualifierCode");
             if (String.IsNullOrEmpty(qualifierCode)) return;
             if (!qualifiers.ContainsKey(qualifierCode))
             {
-                Qualifier newQualifier = new Qualifier();
-                newQualifier.Code = qualifierCode;
+                var newQualifier = new Qualifier {Code = qualifierCode};
                 qualifiers.Add(qualifierCode, newQualifier);
             }
 
-            Qualifier qualifier = qualifiers[qualifierCode];
+            var qualifier = qualifiers[qualifierCode];
             r.Read();
             qualifier.Description = r.Value;
         }

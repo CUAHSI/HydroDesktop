@@ -148,7 +148,7 @@ namespace HydroDesktop.DataDownload
             DownloadManager.Completed += DownloadManager_Completed;
 
             App.ExtensionsActivated += AppOnExtensionsActivated;
-            App.DockManager.PanelClosed += new EventHandler<DotSpatial.Controls.Docking.DockablePanelEventArgs>(DockManager_PanelClosed);
+            App.DockManager.PanelClosed += DockManager_PanelClosed;
 
             // Update SeriesControl ContextMenu
             _seriesControlUpdateValuesMenuItem = SeriesControl.ContextMenuStrip.Items.Add("Update Values from Server", null, DoSeriesControlUpdateValues);
@@ -406,7 +406,7 @@ namespace HydroDesktop.DataDownload
             }
         }
 
-        private void ZoomToLayer(IMapLayer layerToZoom)
+        private void ZoomToLayer(IRenderable layerToZoom)
         {
             const double eps = 1e-7;
             var layerEnvelope = layerToZoom.Extent.ToEnvelope();

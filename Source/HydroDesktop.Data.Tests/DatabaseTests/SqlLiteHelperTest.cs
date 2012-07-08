@@ -20,7 +20,6 @@ namespace HydroDesktop.Database.Tests.DatabaseTests
                     File.Delete(file);
                 }catch
                 {
-                    continue;
                 }
             }
         }

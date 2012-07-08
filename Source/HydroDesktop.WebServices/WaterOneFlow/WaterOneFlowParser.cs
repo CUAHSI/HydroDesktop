@@ -337,7 +337,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                     site.Country = value;
                                     break;
                                 case "posaccuracy_m":
-                                    site.PosAccuracy_m = Convert.ToDouble(value, CultureInfo.InvariantCulture);;
+                                    site.PosAccuracy_m = Convert.ToDouble(value, CultureInfo.InvariantCulture);
                                     break;
                             }
                         }

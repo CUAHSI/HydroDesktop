@@ -75,7 +75,7 @@ namespace DataImport.Excel
 
         #region Private methods
 
-        private DataSet AsDataSet(IWizardImporterSettings settings)
+        private DataSet AsDataSet(IImporterSettings settings)
         {
             var fileName = settings.PathToFile;
 

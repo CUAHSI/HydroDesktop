@@ -17,23 +17,23 @@ namespace HydroDesktop.Main
             SelectionStatusPanel.Width = 250;
             app.ProgressHandler.Add(SelectionStatusPanel);
 
-            App.Map.SelectionChanged += new EventHandler(Map_SelectionChanged);
-            App.Map.MapFrame.LayerSelected +=new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            App.Map.SelectionChanged += Map_SelectionChanged;
+            App.Map.MapFrame.LayerSelected +=MapFrame_LayerSelected;
 
-            App.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
-            App.SerializationManager.NewProjectCreated += new EventHandler<SerializingEventArgs>(SerializationManager_NewProjectCreated);
+            App.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            App.SerializationManager.NewProjectCreated += SerializationManager_NewProjectCreated;
         }
 
         void SerializationManager_NewProjectCreated(object sender, SerializingEventArgs e)
         {
             App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-            App.Map.MapFrame.LayerSelected += new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
         }
 
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-            App.Map.MapFrame.LayerSelected += new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
             UpdateStatusPanel();
         }
 

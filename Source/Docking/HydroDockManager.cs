@@ -59,10 +59,10 @@ namespace HydroDesktop.Docking
             MainDockPanel.Parent = Shell; //using the static variable
             MainDockPanel.Dock = DockStyle.Fill;
             MainDockPanel.BringToFront();
-            MainDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
+            MainDockPanel.DocumentStyle = DocumentStyle.DockingSdi;
 
             //setup the events
-            MainDockPanel.ActiveDocumentChanged += new EventHandler(MainDockPanel_ActiveDocumentChanged);
+            MainDockPanel.ActiveDocumentChanged += MainDockPanel_ActiveDocumentChanged;
 
         }
 
@@ -170,9 +170,9 @@ namespace HydroDesktop.Docking
             content.Show(MainDockPanel);
 
             //event handler for closing
-            content.VisibleChanged += new EventHandler(content_VisibleChanged);
-            content.FormClosing += new FormClosingEventHandler(content_FormClosing);
-            content.FormClosed += new FormClosedEventHandler(content_FormClosed);
+            content.VisibleChanged += content_VisibleChanged;
+            content.FormClosing += content_FormClosing;
+            content.FormClosed += content_FormClosed;
 
             //the tag is used by the ActivePanelChanged event
             content.Pane.Tag = key;
@@ -194,7 +194,7 @@ namespace HydroDesktop.Docking
             }
 
             //caption - changed
-            panel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(panel_PropertyChanged);
+            panel.PropertyChanged += panel_PropertyChanged;
         }
 
         void content_VisibleChanged(object sender, EventArgs e)

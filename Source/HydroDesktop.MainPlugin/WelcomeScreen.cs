@@ -98,42 +98,39 @@ namespace HydroDesktop.Main
                 if (lstProjectTemplates.SelectedIndex < 0)
                 {
                     MessageBox.Show("Please select a project template.");
-                    this.DialogResult = DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
-                else
+                var selectedTemplate = lstProjectTemplates.SelectedItem as ISampleProject;
+                string projectFile = selectedTemplate.AbsolutePathToProjectFile;
+
+                try
                 {
-                    ISampleProject selectedTemplate = lstProjectTemplates.SelectedItem as ISampleProject;
-                    string projectFile = selectedTemplate.AbsolutePathToProjectFile;
+                    string newProjectFile = CopyToDocumentsFolder(projectFile);
+                    _app.SerializationManager.OpenProject(newProjectFile);
 
-                    try
-                    {
-                        string newProjectFile = CopyToDocumentsFolder(projectFile);
-                        _app.SerializationManager.OpenProject(newProjectFile);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message + @" File: " + projectFile);
-                    }
-                    
-                    
-                    lblProgress.Text = "Creating new Project.. ";
-                    this.Cursor = Cursors.WaitCursor;
-                    
-                    panelStatus.Visible = true;
-                    //myProjectManager.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
-
-                    //lblProgress.Text = "Loading Plugins...";
-
-                    //this.Cursor = Cursors.Default;
-
-                    _newProjectCreated = true;
-
-                    this.DialogResult = DialogResult.OK;
-                    
-                    this.Close();
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + @" File: " + projectFile);
+                }
+                    
+                    
+                lblProgress.Text = "Creating new Project.. ";
+                this.Cursor = Cursors.WaitCursor;
+                    
+                panelStatus.Visible = true;
+                //myProjectManager.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
+
+                //lblProgress.Text = "Loading Plugins...";
+
+                //this.Cursor = Cursors.Default;
+
+                _newProjectCreated = true;
+
+                this.DialogResult = DialogResult.OK;
+                    
+                this.Close();
             }
         }
 
@@ -282,7 +279,7 @@ namespace HydroDesktop.Main
 
         private void OpenExistingProject(string projectFileName)
         {
-            lblProgress.Text = "Opening Project " + Path.GetFileNameWithoutExtension(projectFileName).ToString() + "...";
+            lblProgress.Text = "Opening Project " + Path.GetFileNameWithoutExtension(projectFileName) + "...";
             this.Cursor = Cursors.WaitCursor;
 
             myProjectManager.OpenProject(projectFileName);

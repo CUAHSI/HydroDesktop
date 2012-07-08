@@ -439,7 +439,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Read the vertical offset type
         /// </summary>
-        private void ReadOffset(XmlReader r, Dictionary<string, OffsetType> offsets)
+        private static void ReadOffset(XmlReader r, IDictionary<string, OffsetType> offsets)
         {
             string offsetID = r.GetAttribute("offsetTypeID");
             if (String.IsNullOrEmpty(offsetID)) return;
@@ -483,12 +483,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads information about a sample
         /// </summary>
-        private void ReadSample(XmlReader r, Dictionary<string, Sample> samples, Dictionary<string, LabMethod> labMethods)
+        private static void ReadSample(XmlReader r, IDictionary<string, Sample> samples, Dictionary<string, LabMethod> labMethods)
         {
             Sample sample = Sample.Unknown;
             sample.LabMethod = LabMethod.Unknown;
 
-            LabMethod newLabMethod = LabMethod.Unknown;
+            var newLabMethod = LabMethod.Unknown;
 
             string labSampleCode = String.Empty;
             
@@ -549,13 +549,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     return;
                 }
             }
-            return;
         }
 
         /// <summary>
         /// Reads information about a qualifier
         /// </summary>
-        private void ReadQualifier(XmlReader r, Dictionary<string, Qualifier> qualifiers)
+        private static void ReadQualifier(XmlReader r, IDictionary<string, Qualifier> qualifiers)
         {
             string qualifierCode = r.GetAttribute("qualifierCode");
             if (String.IsNullOrEmpty(qualifierCode)) return;
@@ -582,15 +581,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 if (qual.IsCompositeQualifier) //it's a 'compound qualifier'
                 {
                     string[] codes = qual.Code.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    
-                    string description = "";
-                    
-                    foreach (string code in codes)
-                    {
-                        Qualifier matchingQual = qualifiers[code];
-                        description += matchingQual.Description + ", ";
-                    }
-                    description = description.Remove(description.LastIndexOf(",", System.StringComparison.Ordinal));
+
+                    var description = codes
+                        .Select(code => qualifiers[code])
+                        .Aggregate("", (current, matchingQual) => current + (matchingQual.Description + ", "));
+
+                    description = description.Remove(description.LastIndexOf(",", StringComparison.Ordinal));
                     qual.Description = description;
                 }
             }

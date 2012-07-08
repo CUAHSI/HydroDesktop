@@ -788,7 +788,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 
 			if ( errors.Length > 0 )
 			{
-				message += "\n\nSome errors occurred during the operation:\n\n" + errors.ToString (); ;
+				message += "\n\nSome errors occurred during the operation:\n\n" + errors;
 			}
 
 			TimeSpan span = DateTime.Now.Subtract ( testStart );
@@ -1098,7 +1098,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 
 			if ( errors.Length > 0 )
 			{
-				message += "\n\nSome errors occurred during the operation:\n\n" + errors.ToString (); ;
+				message += "\n\nSome errors occurred during the operation:\n\n" + errors;
 			}
 
 			return message;
