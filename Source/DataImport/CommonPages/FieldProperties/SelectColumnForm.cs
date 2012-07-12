@@ -17,7 +17,7 @@ namespace DataImport.CommonPages.FieldProperties
         {
             InitializeComponent();
 
-            cmbColumns.DisplayMember = NameHelper.Name<ColumnInfo, string>(x => x.ColumnName);
+            cmbColumns.DisplayMember = NameHelper<ColumnInfo>.Name(x => x.ColumnName);
             cmbColumns.DataSource = columns;
         }
 

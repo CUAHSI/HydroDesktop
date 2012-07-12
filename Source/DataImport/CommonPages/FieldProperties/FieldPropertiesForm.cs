@@ -61,7 +61,7 @@ namespace DataImport.CommonPages
             }
             sitesBindingSource.DataSource = sites; 
             cmbSites.DataSource = sitesBindingSource;
-            cmbSites.DisplayMember = NameHelper.Name<Site, object>(s => s.Name);
+            cmbSites.DisplayMember = NameHelper<Site>.Name(s => s.Name);
             if (_columnData.Site != null)
                 cmbSites.SelectedItem = _columnData.Site;
             
@@ -70,7 +70,7 @@ namespace DataImport.CommonPages
             cmbVariables.SelectedIndexChanged += CmbVariablesOnSelectedIndexChanged;
             variablesBindingSource.DataSource = dataSources.Variables;
             cmbVariables.DataSource = variablesBindingSource;
-            cmbVariables.DisplayMember = NameHelper.Name<Variable, object>(s => s.Name);
+            cmbVariables.DisplayMember = NameHelper<Variable>.Name(s => s.Name);
             if (_columnData.Variable != null)
                 cmbVariables.SelectedItem = _columnData.Variable;
 

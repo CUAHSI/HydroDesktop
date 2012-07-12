@@ -39,7 +39,7 @@ namespace DataImport.CommonPages.FieldProperties
             var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
             var units = unitRepo.AsQueryable().OrderBy(u => u.Name).ToArray();
             cmbUnits.DataSource = units;
-            cmbUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
+            cmbUnits.DisplayMember = NameHelper<Unit>.Name(x => x.Name);
         }
 
         #endregion

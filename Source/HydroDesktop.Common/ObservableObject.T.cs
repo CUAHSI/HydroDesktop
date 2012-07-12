@@ -22,7 +22,7 @@ namespace HydroDesktop.Common
         /// Called when [property changed].
         /// </summary>
         /// <param name="property">The property.</param>
-        protected virtual void NotifyPropertyChanged(Expression<Func<T, object>> property)
+        protected virtual void NotifyPropertyChanged(Expression<Func<object>> property)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
