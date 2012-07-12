@@ -141,12 +141,14 @@ namespace CUAHSI.HIS
 
                     // remove data value if less than start
                     if (series.DataValueList[i].LocalDateTime < CalendarConverter.ModifiedJulian2Gregorian(_start).AddSeconds(-timestep))
-                        series.DataValueList[i].Value = series.GetNoDataValue();
+                        //series.DataValueList[i].Value = series.GetNoDataValue();
+                        series.DataValueList.RemoveAt(i); // This change was necessary b/c series.GetNoDataValue() was removed
                 }
 
                 //-- save data series
-                db.SaveSeriesAsCopy(series, theme);
-
+                //db.SaveSeriesAsCopy(series, theme);
+                db.SaveSeries(series, theme,OverwriteOptions.Copy); //This change was necessary b/c db.SaveSeriesAsCopy() was removed
+                
             }
         
             //clear all values in the buffer
