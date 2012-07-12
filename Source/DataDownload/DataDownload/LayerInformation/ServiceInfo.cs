@@ -48,7 +48,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _dataSource = value;
-                NotifyPropertyChanged(x => x.DataSource);
+                NotifyPropertyChanged(() => DataSource);
             }
         }
 
@@ -65,7 +65,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _siteName = value;
-                NotifyPropertyChanged(x => SiteName);
+                NotifyPropertyChanged(() => SiteName);
             }
         }
 
@@ -80,8 +80,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
             set
             {
                 _valueCount = value;
-                NotifyPropertyChanged(x => ValueCount);
-                NotifyPropertyChanged(x => ValueCountAsString);
+                NotifyPropertyChanged(() => ValueCount);
+                NotifyPropertyChanged(() => ValueCountAsString);
             }
         }
 
@@ -98,7 +98,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _serviceDesciptionUrl = value;
-                NotifyPropertyChanged(x => ServiceDesciptionUrl);
+                NotifyPropertyChanged(() => ServiceDesciptionUrl);
             }
         }
 
@@ -179,7 +179,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             set
             {
                 _isDownloaded = value;
-                NotifyPropertyChanged(x => IsDownloaded);
+                NotifyPropertyChanged(() => IsDownloaded);
             }
         }
 

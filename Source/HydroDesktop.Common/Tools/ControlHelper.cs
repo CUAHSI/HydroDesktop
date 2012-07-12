@@ -40,8 +40,8 @@ namespace HydroDesktop.Common.Tools
         public static void AddBinding<T, TS>(this T control, Expression<Func<T, object>> controlProperty, object source, Expression<Func<TS, object>> sourceProperty)
             where T : Control
         {
-            control.DataBindings.Add(new Binding(NameHelper.Name(controlProperty),
-                                                 source, NameHelper.Name(sourceProperty, true),
+            control.DataBindings.Add(new Binding(NameHelper<T>.Name(controlProperty),
+                                                 source, NameHelper<TS>.Name(sourceProperty, true),
                                                  true, DataSourceUpdateMode.OnPropertyChanged));
         }
 

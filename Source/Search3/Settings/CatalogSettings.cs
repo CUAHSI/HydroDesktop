@@ -33,7 +33,7 @@ namespace Search3.Settings
             set
             {
                 _hisCentralUrl = value;
-                NotifyPropertyChanged(x => HISCentralUrl);
+                NotifyPropertyChanged(() => HISCentralUrl);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Search3.Settings
             set
             {
                 _typeOfCatalog = value;
-                NotifyPropertyChanged(x => TypeOfCatalog);
+                NotifyPropertyChanged(() => TypeOfCatalog);
             }
         }
 

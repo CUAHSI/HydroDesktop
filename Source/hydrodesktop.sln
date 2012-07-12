@@ -193,6 +193,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Data.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.WebServices.Tests", "HydroDesktop.WebServices.Tests\HydroDesktop.WebServices.Tests.csproj", "{AAC539BD-17E4-4FC0-8A9D-294DDA49104C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Common.Tests", "HydroDesktop.Common.Tests\HydroDesktop.Common.Tests.csproj", "{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -573,6 +575,16 @@ Global
 		{AAC539BD-17E4-4FC0-8A9D-294DDA49104C}.Release|Mixed Platforms.Build.0 = Release|x86
 		{AAC539BD-17E4-4FC0-8A9D-294DDA49104C}.Release|x86.ActiveCfg = Release|x86
 		{AAC539BD-17E4-4FC0-8A9D-294DDA49104C}.Release|x86.Build.0 = Release|x86
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -582,5 +594,6 @@ Global
 		{693DB8C2-EBED-456C-913C-0B88101C067A} = {AC270CF7-EA4B-4FDE-A9EA-B19F649FF9C3}
 		{8FC4515D-D5EF-405D-BD8D-E5F481583313} = {60696D8B-A0C3-483C-BB92-EF9724274F1D}
 		{AAC539BD-17E4-4FC0-8A9D-294DDA49104C} = {60696D8B-A0C3-483C-BB92-EF9724274F1D}
+		{233A27C0-65BF-4AB2-A9DF-BFE7460D1B47} = {60696D8B-A0C3-483C-BB92-EF9724274F1D}
 	EndGlobalSection
 EndGlobal

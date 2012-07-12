@@ -39,17 +39,17 @@ namespace DataImport.CommonPages
             var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
             var units = unitRepo.AsQueryable().OrderBy(u => u.Name).ToArray();
             cmbVariableUnits.DataSource = units;
-            cmbVariableUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
+            cmbVariableUnits.DisplayMember = NameHelper<Unit>.Name(x => x.Name);
 
             units = unitRepo.AsQueryable().Where(u => u.UnitsType == "Time").OrderBy(u => u.Name).ToArray();
             cmbTimeUnits.DataSource = units;
-            cmbTimeUnits.DisplayMember = NameHelper.Name<Unit, object>(x => x.Name);
+            cmbTimeUnits.DisplayMember = NameHelper<Unit>.Name(x => x.Name);
 
             var variablesRepo = RepositoryFactory.Instance.Get<IVariablesRepository>();
             var variables = variablesRepo.GetAll();
 
             cmbName.DataSource = variables;
-            cmbName.DisplayMember = NameHelper.Name<Variable, object>(x => x.Name);
+            cmbName.DisplayMember = NameHelper<Variable>.Name(x => x.Name);
             cmbName.SelectedIndexChanged += delegate
                                                 {
                                                     var variable = cmbName.SelectedItem as Variable;
