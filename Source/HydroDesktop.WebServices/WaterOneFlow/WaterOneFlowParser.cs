@@ -11,7 +11,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     {
         #region Fields
 
-        private static readonly XmlReaderSettings _readerSettings = new XmlReaderSettings { IgnoreWhitespace = true, };
+        private static readonly XmlReaderSettings _readerSettings = new XmlReaderSettings { IgnoreWhitespace = true, DtdProcessing = DtdProcessing.Parse};
 
         #endregion
 
