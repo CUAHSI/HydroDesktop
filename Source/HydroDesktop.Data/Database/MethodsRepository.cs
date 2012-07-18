@@ -46,8 +46,6 @@ namespace HydroDesktop.Database
             var res = DbOperations.ExecuteSingleOutput(string.Format("select MethodID from Methods where MethodDescription='{0}'", methodDescription));
             if (res == null || res == DBNull.Value)
                 return null;
-            if (res.ToString() == String.Empty)
-                return null;
             return Convert.ToInt32(res);
         }
 

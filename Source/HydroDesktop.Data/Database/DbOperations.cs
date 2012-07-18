@@ -840,14 +840,6 @@ namespace HydroDesktop.Database
                 }
 
                 output = cmd.ExecuteScalar();
-                if (output != DBNull.Value)
-                {
-                    output = Convert.ToString(output, CultureInfo.InvariantCulture);
-                }
-            }
-            catch
-            {
-                output = null;
             }
             finally
             {
