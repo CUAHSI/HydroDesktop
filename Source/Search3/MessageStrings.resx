@@ -123,6 +123,12 @@
   <data name="Area" xml:space="preserve">
     <value>Area</value>
   </data>
+  <data name="Current_View" xml:space="preserve">
+    <value>Current View</value>
+  </data>
+  <data name="Current_View_Tooltip" xml:space="preserve">
+    <value>Use the current ViewExtents of the map as the search area rectangle.</value>
+  </data>
   <data name="Deselect_All" xml:space="preserve">
     <value>Clear Selection</value>
   </data>
