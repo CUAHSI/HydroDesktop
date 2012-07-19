@@ -218,15 +218,7 @@ namespace Search3.Searching
                 }
             }
 
-            if (settings.AreaSettings.Polygons != null)
-            {
-                var polygons = Area.AreaHelper.ReprojectPolygonsToWGS84(settings.AreaSettings.Polygons);
-
-                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(), tileWidth, tileHeight,
-                                                            settings.DateSettings.StartDate,
-                                                            settings.DateSettings.EndDate,
-                                                            webServices, progressHandler);
-            }else
+            if (settings.AreaSettings.AreaRectangle != null)
             {
                 var box = Area.AreaHelper.ReprojectBoxToWGS84(settings.AreaSettings.AreaRectangle,
                                                               settings.AreaSettings.RectangleProjection);
@@ -235,6 +227,15 @@ namespace Search3.Searching
                                                               settings.DateSettings.StartDate,
                                                               settings.DateSettings.EndDate,
                                                               webServices, progressHandler);
+            }
+            else
+            {
+                var polygons = Area.AreaHelper.ReprojectPolygonsToWGS84(settings.AreaSettings.Polygons);
+
+                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(), tileWidth, tileHeight,
+                                                            settings.DateSettings.StartDate,
+                                                            settings.DateSettings.EndDate,
+                                                            webServices, progressHandler);
             }
             return result;
         }

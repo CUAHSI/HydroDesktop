@@ -28,6 +28,16 @@ namespace Search3.Settings
         }
         public ProjectionInfo RectangleProjection { get; private set; }
 
+        public void SetAreaRectangle(Extent extent, ProjectionInfo rectangleProjection)
+        {
+            var xMin = extent.MinX;
+            var yMin = extent.MinY;
+            var xMax = extent.MaxX;
+            var yMax = extent.MaxY;
+            var box = new Box(xMin, xMax, yMin, yMax);
+            SetAreaRectangle(box, rectangleProjection);
+        }
+
         public void SetAreaRectangle(Box areaRectangle, ProjectionInfo rectangleProjection)
         {
             RectangleProjection = rectangleProjection;

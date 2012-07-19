@@ -39,6 +39,8 @@ namespace Search3
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
+        private SimpleActionItem _currentView;
+        private bool _useCurrentView;
         private Searcher _searcher;
         //private SearchStatusDisplay searchSummary;
 
@@ -113,6 +115,10 @@ namespace Search3
             head.Add(new SimpleActionItem(_searchKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
             head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
             head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
+
+            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, delegate { _useCurrentView = !_useCurrentView; }) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Current_View, ToolTipText = Msg.Current_View_Tooltip });
+            _currentView.Toggling += delegate { _useCurrentView = !_useCurrentView; };
+            _currentView.Toggle();
 
             #endregion
 
@@ -392,6 +398,20 @@ namespace Search3
                 }
                 else
                 {
+                    if (_useCurrentView)
+                    {
+                        var extent = App.Map.ViewExtents;
+                        var areaKm2 = extent.ToEnvelope().Area()/1e6;
+                        if (areaKm2 > 1e6)
+                        {
+                            if (MessageBox.Show("Current view is too large. Search can take a long time. Do you want to continue?", 
+                                "Continue search", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            {
+                                return;
+                            }
+                        }
+                        SearchSettings.Instance.AreaSettings.SetAreaRectangle(extent, App.Map.Projection);
+                    }
                     _searcher.Run(SearchSettings.Instance);
                 }
             }
@@ -503,6 +523,7 @@ namespace Search3
             CurrentAreaSelectMode = AreaSelectMode.DrawBox;
 
             DeactivateSelectAreaByPolygon();
+            DeactivateCurrentView();
 
             if (_rectangleDrawing == null)
             {
@@ -523,13 +544,7 @@ namespace Search3
         void rectangleDrawing_RectangleCreated(object sender, EventArgs e)
         {
             if (_rectangleDrawing == null) return;
-
-            var xMin = _rectangleDrawing.RectangleExtent.MinX;
-            var yMin = _rectangleDrawing.RectangleExtent.MinY;
-            var xMax = _rectangleDrawing.RectangleExtent.MaxX;
-            var yMax = _rectangleDrawing.RectangleExtent.MaxY;
-
-            SearchSettings.Instance.AreaSettings.SetAreaRectangle(new Box(xMin, xMax, yMin, yMax), App.Map.Projection);
+            SearchSettings.Instance.AreaSettings.SetAreaRectangle(_rectangleDrawing.RectangleExtent, App.Map.Projection);
         }
 
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
@@ -558,6 +573,7 @@ namespace Search3
             CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
 
             DeactivateDrawBox();
+            DeactivateCurrentView();
             
             App.Map.FunctionMode = FunctionMode.Select;
 
@@ -620,7 +636,7 @@ namespace Search3
 
             _isDeactivatingDrawBox = true;
             _rectangleDrawing.Deactivate();
-            SearchSettings.Instance.AreaSettings.SetAreaRectangle(null, null);
+            SearchSettings.Instance.AreaSettings.SetAreaRectangle((Box)null, null);
             _isDeactivatingDrawBox = false;
         }
 
@@ -630,12 +646,21 @@ namespace Search3
 
             DeactivateDrawBox();
             DeactivateSelectAreaByPolygon();
+            DeactivateCurrentView();
 
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
             SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
             
             //App.Map.FunctionMode = FunctionMode.Select;
+        }
+
+        private void DeactivateCurrentView()
+        {
+            if (_useCurrentView)
+            {
+                _currentView.Toggle();
+            }
         }
 
         #endregion
