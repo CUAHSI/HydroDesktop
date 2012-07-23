@@ -42,6 +42,7 @@ namespace Search3
         private SimpleActionItem _currentView;
         private bool _useCurrentView;
         private Searcher _searcher;
+        private readonly SearchSettings _searchSettings = new SearchSettings();
         //private SearchStatusDisplay searchSummary;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
@@ -102,19 +103,19 @@ namespace Search3
             #region Area group
 
             head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click){LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area});
-            SearchSettings.Instance.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
+            _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, SmallImage = Resources.select_table_16 });
             
             head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click){ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area,ToggleGroupKey = Msg.Area, });
-            SearchSettings.Instance.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
+            _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
-            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, DeselectAll_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate{ IEnvelope env; App.Map.MapFrame.ClearSelection(out env);}) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
             //head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
             
-            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, ZoomOut_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate {  App.Map.FunctionMode = FunctionMode.ZoomIn;}) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
 
             head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, delegate { _useCurrentView = !_useCurrentView; }) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Current_View, ToolTipText = Msg.Current_View_Tooltip });
             _currentView.Toggling += delegate { _useCurrentView = !_useCurrentView; };
@@ -125,7 +126,7 @@ namespace Search3
             #region Keyword Group
 
             RecreateKeywordGroup();
-            SearchSettings.Instance.KeywordsSettings.KeywordsChanged += delegate { RecreateKeywordGroup(); };
+            _searchSettings.KeywordsSettings.KeywordsChanged += delegate { RecreateKeywordGroup(); };
 
             #endregion
 
@@ -157,30 +158,6 @@ namespace Search3
             #endregion
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Run_Search, rbSearch_Click) {GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
-        }
-
-        /// <summary>
-        /// Move (Pan) the map
-        /// </summary>
-        private void PanTool_Click(object sender, EventArgs e)
-        {
-            App.Map.FunctionMode = FunctionMode.Pan;
-        }
-
-        /// <summary>
-        /// Zoom In
-        /// </summary>
-        private void ZoomIn_Click(object sender, EventArgs e)
-        {
-            App.Map.FunctionMode = FunctionMode.ZoomIn;
-        }
-
-        /// <summary>
-        /// Zoom Out
-        /// </summary>
-        private void ZoomOut_Click(object sender, EventArgs e)
-        {
-            App.Map.FunctionMode = FunctionMode.ZoomOut;
         }
 
         private void ZoomSelected_Click(object sender, EventArgs e)
@@ -218,15 +195,6 @@ namespace Search3
             }
 
             App.Map.ViewExtents = envelope.ToExtent();
-        }
-
-        /// <summary>
-        /// Deselect All
-        /// </summary>
-        private void DeselectAll_Click(object sender, EventArgs e)
-        {
-            IEnvelope env = new Envelope();
-            App.Map.MapFrame.ClearSelection(out env);
         }
 
         private void RecreateKeywordGroup()
@@ -272,7 +240,7 @@ namespace Search3
 
             // Populate items by keywords
             _rbKeyword.Items.Clear();
-            _rbKeyword.Items.AddRange(SearchSettings.Instance.KeywordsSettings.Keywords);
+            _rbKeyword.Items.AddRange(_searchSettings.KeywordsSettings.Keywords);
 
             App.HeaderControl.Add(_rbKeyword);
             App.HeaderControl.Add(_rbAddMoreKeywords);
@@ -348,7 +316,7 @@ namespace Search3
             {
                 var date = result.Value;
                 // Additional validation for start date
-                if (SearchSettings.Instance.DateSettings.EndDate < date)
+                if (_searchSettings.DateSettings.EndDate < date)
                 {
                     if (showMessage)
                     {
@@ -357,7 +325,7 @@ namespace Search3
                     return false;
                 }
 
-                SearchSettings.Instance.DateSettings.StartDate = date;
+                _searchSettings.DateSettings.StartDate = date;
                 return true;
             }
             return false;
@@ -368,7 +336,7 @@ namespace Search3
             var result = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, showMessage);
             if (result != null)
             {
-                SearchSettings.Instance.DateSettings.EndDate = result.Value;
+                _searchSettings.DateSettings.EndDate = result.Value;
                 return true;
             }
             return false;
@@ -410,24 +378,14 @@ namespace Search3
                                 return;
                             }
                         }
-                        SearchSettings.Instance.AreaSettings.SetAreaRectangle(extent, App.Map.Projection);
+                        _searchSettings.AreaSettings.SetAreaRectangle(extent, App.Map.Projection);
                     }
-                    _searcher.Run(SearchSettings.Instance);
+                    _searcher.Run(_searchSettings);
                 }
             }
-            catch (SearchSettingsException sex)
+            catch (SearchSettingsValidationException sex)
             {
-                string message;
-                if (sex is NoSelectedKeywordsException)
-                    message = "Please provide at least one Keyword for search.";
-                else if (sex is NoWebServicesException)
-                    message = "Please provide at least one Web Service for search.";
-                else if (sex is NoAreaToSearchException)
-                    message = "Please provide at least one Target Area for search.";
-                else
-                    message = sex.Message;
-
-                MessageBox.Show(message, Msg.Information, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(sex.Message, Msg.Information, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -479,7 +437,7 @@ namespace Search3
                 loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));
             }
 
-            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures));
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), _searchSettings);
             return searchLayerCreator.Create();
         }
 
@@ -510,7 +468,7 @@ namespace Search3
 
         void Instance_AreaRectangleChanged(object sender, EventArgs e)
         {
-            var rectangle = SearchSettings.Instance.AreaSettings.AreaRectangle;
+            var rectangle = _searchSettings.AreaSettings.AreaRectangle;
             rbDrawBox.ToolTipText = rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
 
             //searchSummary.AreaStatus = "Rectangle " + rectangle != null ? rectangle.ToString() : Msg.Draw_Box;
@@ -544,12 +502,12 @@ namespace Search3
         void rectangleDrawing_RectangleCreated(object sender, EventArgs e)
         {
             if (_rectangleDrawing == null) return;
-            SearchSettings.Instance.AreaSettings.SetAreaRectangle(_rectangleDrawing.RectangleExtent, App.Map.Projection);
+            _searchSettings.AreaSettings.SetAreaRectangle(_rectangleDrawing.RectangleExtent, App.Map.Projection);
         }
 
         void AreaSettings_PolygonsChanged(object sender, EventArgs e)
         {
-            var fsPolygons = SearchSettings.Instance.AreaSettings.Polygons;
+            var fsPolygons = _searchSettings.AreaSettings.Polygons;
 
             var caption = "0 features selected ";
             
@@ -584,7 +542,7 @@ namespace Search3
         
         private void DeactivateSelectAreaByPolygon()
         {
-            SearchSettings.Instance.AreaSettings.Polygons = null;
+            _searchSettings.AreaSettings.Polygons = null;
         }
 
         void Map_SelectionChanged(object sender, EventArgs e)
@@ -609,7 +567,7 @@ namespace Search3
                                     polyFs2.Features.Add(f);
                                 }
                                 polyFs2.Projection = App.Map.Projection;
-                                SearchSettings.Instance.AreaSettings.Polygons = polyFs2;
+                                _searchSettings.AreaSettings.Polygons = polyFs2;
                                 return;
                             }
 
@@ -625,7 +583,7 @@ namespace Search3
                     polyFs.Features.Add(f);
                 }
                 polyFs.Projection = App.Map.Projection;
-                SearchSettings.Instance.AreaSettings.Polygons = polyFs;
+                _searchSettings.AreaSettings.Polygons = polyFs;
             }
         }
 
@@ -636,7 +594,7 @@ namespace Search3
 
             _isDeactivatingDrawBox = true;
             _rectangleDrawing.Deactivate();
-            SearchSettings.Instance.AreaSettings.SetAreaRectangle((Box)null, null);
+            _searchSettings.AreaSettings.SetAreaRectangle((Box)null, null);
             _isDeactivatingDrawBox = false;
         }
 
@@ -680,7 +638,7 @@ namespace Search3
             {
                 keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 // Replace keywords by synonyms
-                var synonyms = SearchSettings.Instance.KeywordsSettings.Synonyms;
+                var synonyms = _searchSettings.KeywordsSettings.Synonyms;
                 if (synonyms != null)
                 {
                     for (int i = 0; i < keywords.Count; i++)
@@ -698,7 +656,7 @@ namespace Search3
                 }
             }
 
-            SearchSettings.Instance.KeywordsSettings.SelectedKeywords = keywords;
+            _searchSettings.KeywordsSettings.SelectedKeywords = keywords;
         }
 
         private bool _keywordsUpdating;
@@ -707,7 +665,7 @@ namespace Search3
             _keywordsUpdating = true;
             try
             {
-                var keywords = SearchSettings.Instance.KeywordsSettings.SelectedKeywords.ToList();
+                var keywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
                 var sbKeywords = new StringBuilder();
                 const string separator = KEYWORDS_SEPARATOR + " ";
                 foreach (var key in keywords)
@@ -731,8 +689,8 @@ namespace Search3
         }
 
         void rbKeyword_Click(object sender, EventArgs e)
-        {        
-            if (KeywordsDialog.ShowDialog(SearchSettings.Instance.KeywordsSettings) == DialogResult.OK)
+        {
+            if (KeywordsDialog.ShowDialog(_searchSettings.KeywordsSettings) == DialogResult.OK)
             {
                 UpdateKeywordsCaption();
             }
@@ -742,11 +700,11 @@ namespace Search3
 
         #region WebServices
 
-        void rbServices_Click(object Sender, EventArgs e)
+        void rbServices_Click(object sender, EventArgs e)
         {
-            if (WebServicesDialog.ShowDialog(SearchSettings.Instance.WebServicesSettings, 
-                                             SearchSettings.Instance.CatalogSettings,
-                                             SearchSettings.Instance.KeywordsSettings,
+            if (WebServicesDialog.ShowDialog(_searchSettings.WebServicesSettings,
+                                             _searchSettings.CatalogSettings,
+                                             _searchSettings.KeywordsSettings,
                                              App.GetExtension<IMetadataFetcherPlugin>()
                                              ) == DialogResult.OK)
             {
@@ -756,7 +714,7 @@ namespace Search3
 
         private void UpdateWebServicesCaption()
         {
-            var webservicesSettings = SearchSettings.Instance.WebServicesSettings;
+            var webservicesSettings = _searchSettings.WebServicesSettings;
             var checkedCount = webservicesSettings.CheckedCount;
             var totalCount = webservicesSettings.TotalCount;
 
@@ -802,7 +760,7 @@ namespace Search3
 
             try
             {
-                var imageHelper = new ServiceIconHelper(SearchSettings.Instance.CatalogSettings.HISCentralUrl);
+                var imageHelper = new ServiceIconHelper(_searchSettings.CatalogSettings.HISCentralUrl);
                 var image = imageHelper.GetImageForService(webServiceNode.ServiceCode);
                 rbServices.LargeImage = rbServices.SmallImage = image;
             }
@@ -819,13 +777,13 @@ namespace Search3
 
         private void UpdateDatesCaption()
         {
-            rbStartDate.Text = SearchSettings.Instance.DateSettings.StartDate.ToString(_datesFormat);
-            rbEndDate.Text = SearchSettings.Instance.DateSettings.EndDate.ToString(_datesFormat);
+            rbStartDate.Text = _searchSettings.DateSettings.StartDate.ToString(_datesFormat);
+            rbEndDate.Text = _searchSettings.DateSettings.EndDate.ToString(_datesFormat);
         }
 
         void rbDate_Click(object sender, EventArgs e)
         {
-            if (DateSettingsDialog.ShowDialog(SearchSettings.Instance.DateSettings) == DialogResult.OK)
+            if (DateSettingsDialog.ShowDialog(_searchSettings.DateSettings) == DialogResult.OK)
             {
                 UpdateDatesCaption();
             }
@@ -833,13 +791,13 @@ namespace Search3
 
         void rbEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "Text") return;
+            if (e.PropertyName != NameHelper<TextEntryActionItem>.Name(t => t.Text)) return;
             ValidateEndDate(false);
         }
 
         void rbStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "Text") return;
+            if (e.PropertyName != NameHelper<TextEntryActionItem>.Name(t => t.Text)) return;
             ValidateStartDate(false);
         }
 
@@ -849,7 +807,7 @@ namespace Search3
 
         public IList<DataServiceInfo> GetWebServices()
         {
-            var webServices = SearchSettings.Instance.WebServicesSettings.WebServices;
+            var webServices = _searchSettings.WebServicesSettings.WebServices;
             var result = new List<DataServiceInfo>(webServices.Count);
             result.AddRange(webServices.Select(wsInfo => new DataServiceInfo
                                                              {
@@ -867,13 +825,13 @@ namespace Search3
             var loadedFeatures = new List<SearchResultItem>(featuresPerCode.Count());
             loadedFeatures.AddRange(featuresPerCode.Select(item => new SearchResultItem(item.Item1, item.Item2)));
 
-            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures));
+            var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), _searchSettings);
             searchLayerCreator.Create();
         }
 
         public string HisCentralUrl
         {
-            get { return SearchSettings.Instance.CatalogSettings.HISCentralUrl; }
+            get { return _searchSettings.CatalogSettings.HISCentralUrl; }
         }
     }
 }

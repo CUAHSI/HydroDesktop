@@ -1,63 +1,49 @@
-﻿using System;
-
-namespace Search3.Settings
+﻿namespace Search3.Settings
 {
     public class SearchSettings
     {
-        #region Singletone implementation
+        #region Fields
 
-        private SearchSettings()
-        {
-                
-        }
-
-        private static readonly Lazy<SearchSettings> _instance = new Lazy<SearchSettings>(() => new SearchSettings(), true);
-        public static SearchSettings Instance
-        {
-            get { return _instance.Value; }
-        }
+        private CatalogSettings _catalogSettings;
+        private DateSettings _dateSettings;
+        private KeywordsSettings _keywordsSettings;
+        private WebServicesSettings _webServicesSettings;
+        private AreaSettings _areaSettings;
 
         #endregion
 
-        private CatalogSettings _catalogSettings;
+        #region Public properties
+
         public CatalogSettings CatalogSettings
         {
             get
             {
-                if (_catalogSettings == null)
-                {
-                    _catalogSettings = new CatalogSettings
-                                           {
-                                               TypeOfCatalog = Properties.Settings.Default.TypeOfCatalog,
-                                           };
-                }
-
-                return _catalogSettings;
+                return _catalogSettings ??
+                       (_catalogSettings =
+                        new CatalogSettings {TypeOfCatalog = Properties.Settings.Default.TypeOfCatalog});
             }
         }
-
-        private readonly DateSettings _dateSettings = new DateSettings();
+        
         public DateSettings DateSettings
         {
-            get { return _dateSettings; }
+            get { return _dateSettings ?? (_dateSettings = new DateSettings()); }
         }
-
-        private readonly KeywordsSettings _keywordsSettings = new KeywordsSettings();
+        
         public KeywordsSettings KeywordsSettings
         {
-            get { return _keywordsSettings; }
+            get { return _keywordsSettings?? (_keywordsSettings = new KeywordsSettings(this)); }
         }
-
-        private readonly WebServicesSettings _webServicesSettings = new WebServicesSettings();
+        
         public WebServicesSettings WebServicesSettings
         {
-            get { return _webServicesSettings; }
+            get { return _webServicesSettings??(_webServicesSettings = new WebServicesSettings(this)); }
         }
-
-        private readonly AreaSettings _areaSettings = new AreaSettings();
+        
         public AreaSettings AreaSettings
         {
-            get { return _areaSettings; }
+            get { return _areaSettings?? (_areaSettings = new AreaSettings()); }
         }
+
+        #endregion
     }
 }
