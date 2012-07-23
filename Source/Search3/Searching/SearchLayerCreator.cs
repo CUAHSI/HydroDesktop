@@ -5,6 +5,7 @@ using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using Hydrodesktop.Common;
 using DotSpatial.Data;
+using Search3.Settings;
 
 namespace Search3.Searching
 {
@@ -14,6 +15,7 @@ namespace Search3.Searching
 
         private readonly IMap _map;
         private readonly SearchResult _searchResult;
+        private readonly SearchSettings _searchSettings;
 
         #endregion
 
@@ -24,13 +26,16 @@ namespace Search3.Searching
         /// </summary>
         /// <param name="map">Map</param>
         /// <param name="searchResult">Search result</param>
-        public SearchLayerCreator(IMap map, SearchResult searchResult)
+        /// <param name="searchSettings">Seacrh settings </param>
+        public SearchLayerCreator(IMap map, SearchResult searchResult, SearchSettings searchSettings)
         {
             if (map == null) throw new ArgumentNullException("map");
             if (searchResult == null) throw new ArgumentNullException("searchResult");
+            if (searchSettings == null) throw new ArgumentNullException("searchSettings");
 
             _map = map;
             _searchResult = searchResult;
+            _searchSettings = searchSettings;
         }
 
         #endregion
@@ -99,7 +104,7 @@ namespace Search3.Searching
             var myLayer = new MapPointLayer(item.FeatureSet);
 
             // Get Title of web-server
-            var webService = Settings.SearchSettings.Instance.WebServicesSettings.WebServices.FirstOrDefault(
+            var webService = _searchSettings.WebServicesSettings.WebServices.FirstOrDefault(
                 ws => ws.ServiceCode == item.ServiceCode);
             var defaulLegendText = webService != null? webService.Title : item.ServiceCode;
 
