@@ -380,6 +380,18 @@ namespace Search3
                         }
                         _searchSettings.AreaSettings.SetAreaRectangle(extent, App.Map.Projection);
                     }
+
+                    if (_searchSettings.AreaSettings.Polygons != null &&
+                        _searchSettings.AreaSettings.Polygons.Features.Count > 20)
+                    {
+                        if (MessageBox.Show("Too many polygon areas are selected. Number of selected polygons: " + _searchSettings.AreaSettings.Polygons.Features.Count + Environment.NewLine
+                            + "Search can take a long time. Do you want to continue?",
+                               "Continue search", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            return;
+                        }
+                    }
+
                     _searcher.Run(_searchSettings);
                 }
             }
