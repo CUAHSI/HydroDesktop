@@ -123,8 +123,14 @@
   <data name="Area" xml:space="preserve">
     <value>Area</value>
   </data>
+  <data name="Continue_Search" xml:space="preserve">
+    <value>Continue search</value>
+  </data>
   <data name="Current_View" xml:space="preserve">
     <value>Current View</value>
+  </data>
+  <data name="Current_View_Large_Msg" xml:space="preserve">
+    <value>Current view is too large. Search can take a long time. Do you want to continue?</value>
   </data>
   <data name="Current_View_Tooltip" xml:space="preserve">
     <value>Use the current ViewExtents of the map as the search area rectangle.</value>
@@ -141,6 +147,9 @@
   <data name="Draw_Rectangle" xml:space="preserve">
     <value>Draw Rectangle</value>
   </data>
+  <data name="End_Date" xml:space="preserve">
+    <value>End Date</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -149,6 +158,9 @@
   </data>
   <data name="Keyword" xml:space="preserve">
     <value>Keyword</value>
+  </data>
+  <data name="Keyword_Tooltip" xml:space="preserve">
+    <value>Show Keyword Ontology Tree</value>
   </data>
   <data name="Pan" xml:space="preserve">
     <value>Pan</value>
@@ -165,6 +177,12 @@
   <data name="Select_By_Attribute" xml:space="preserve">
     <value>Select by Attribute</value>
   </data>
+  <data name="Select_Data_Sources" xml:space="preserve">
+    <value>Select Data Sources</value>
+  </data>
+  <data name="Select_Data_Sources_Tooltip" xml:space="preserve">
+    <value>Select data sources (All web services selected)</value>
+  </data>
   <data name="Select_Dates" xml:space="preserve">
     <value>Select Dates</value>
   </data>
@@ -179,6 +197,21 @@
   </data>
   <data name="Select_Polygons_Tooltip" xml:space="preserve">
     <value>Select Region</value>
+  </data>
+  <data name="Start_Date" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Start_Date_Validation" xml:space="preserve">
+    <value>Start Date validation</value>
+  </data>
+  <data name="Start_Date_Validation_Msg" xml:space="preserve">
+    <value>End Date must be greater than Start Date.</value>
+  </data>
+  <data name="TimeRange_End" xml:space="preserve">
+    <value> End</value>
+  </data>
+  <data name="TimeRange_Start" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="Time_Range" xml:space="preserve">
     <value>Time Range</value>

@@ -132,11 +132,11 @@ namespace Search3
 
             #region Dates group
             
-            rbStartDate = new TextEntryActionItem { Caption = "Start", GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 70 };
+            rbStartDate = new TextEntryActionItem { Caption = Msg.TimeRange_Start, GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 70 };
             rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
             head.Add(rbStartDate);
 
-            rbEndDate = new TextEntryActionItem { Caption = " End", GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 70 };
+            rbEndDate = new TextEntryActionItem { Caption = Msg.TimeRange_End, GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 70 };
             head.Add(rbEndDate);
             rbEndDate.PropertyChanged += rbEndDate_PropertyChanged;
             UpdateDatesCaption();
@@ -148,9 +148,9 @@ namespace Search3
             #region Data Sources
 
             var grpDataSources = SharedConstants.SearchDataSourcesGroupName;
-            rbServices = new SimpleActionItem("Select Data Sources", rbServices_Click);
+            rbServices = new SimpleActionItem(Msg.Select_Data_Sources, rbServices_Click);
             ChangeWebServicesIcon();
-            rbServices.ToolTipText = "Select data sources (All web services selected)";
+            rbServices.ToolTipText = Msg.Select_Data_Sources_Tooltip;
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = _searchKey;
             head.Add(rbServices);
@@ -234,7 +234,7 @@ namespace Search3
                                              LargeImage = Resources.keyword_32,
                                              SmallImage = Resources.keyword_16,
                                              GroupCaption = Msg.Keyword,
-                                             ToolTipText = "Show Keyword Ontology Tree"
+                                             ToolTipText = Msg.Keyword_Tooltip
                                          };
             }
 
@@ -311,7 +311,7 @@ namespace Search3
 
         private bool ValidateStartDate(bool showMessage)
         {
-            var result = ValidateDateEdit(rbStartDate, "Start Date", _datesFormat, showMessage);
+            var result = ValidateDateEdit(rbStartDate, Msg.Start_Date, _datesFormat, showMessage);
             if (result != null)
             {
                 var date = result.Value;
@@ -320,7 +320,7 @@ namespace Search3
                 {
                     if (showMessage)
                     {
-                        MessageBox.Show("End Date must be greater than Start Date.", "Start Date validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(Msg.Start_Date_Validation_Msg, Msg.Start_Date_Validation, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     return false;
                 }
@@ -333,7 +333,7 @@ namespace Search3
 
         private bool ValidateEndDate(bool showMessage)
         {
-            var result = ValidateDateEdit(rbEndDate, "End Date", _datesFormat, showMessage);
+            var result = ValidateDateEdit(rbEndDate, Msg.End_Date, _datesFormat, showMessage);
             if (result != null)
             {
                 _searchSettings.DateSettings.EndDate = result.Value;
@@ -372,8 +372,7 @@ namespace Search3
                         var areaKm2 = extent.ToEnvelope().Area()/1e6;
                         if (areaKm2 > 1e6)
                         {
-                            if (MessageBox.Show("Current view is too large. Search can take a long time. Do you want to continue?", 
-                                "Continue search", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            if (MessageBox.Show(Msg.Current_View_Large_Msg, Msg.Continue_Search, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                             {
                                 return;
                             }
@@ -386,7 +385,7 @@ namespace Search3
                     {
                         if (MessageBox.Show("Too many polygon areas are selected. Number of selected polygons: " + _searchSettings.AreaSettings.Polygons.Features.Count + Environment.NewLine
                             + "Search can take a long time. Do you want to continue?",
-                               "Continue search", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                               Msg.Continue_Search, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                         {
                             return;
                         }
@@ -412,7 +411,7 @@ namespace Search3
             e.ProgressHandler.ReportMessage("Adding Sites to Map...");
             var result = e.Result;
             //We need to reproject the Search results from WGS84 to the projection of the map.
-            ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
+            var wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
             foreach (var item in result.ResultItems)
                 item.FeatureSet.Projection = wgs84;
 
@@ -779,7 +778,7 @@ namespace Search3
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to change icon." + Environment.NewLine +
-                                "Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                ex.Message, Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
