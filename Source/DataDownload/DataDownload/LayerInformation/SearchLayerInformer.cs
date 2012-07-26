@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -49,12 +50,23 @@ namespace HydroDesktop.DataDownload.LayerInformation
             toolTip.AutoClose = false;
             toolTip.FocusOnOpen = false;
             toolTip.ShowingAnimation = toolTip.HidingAnimation = PopupAnimations.Blend;
-
+            toolTip.TopLevel = false;
+            
             _parentPlugin.ShowPopupsChanged += OnParentPluginOnShowPopupsChanged;
             _map.MouseMove += _map_MouseMove;
             _map.VisibleChanged += MapOnVisibleChanged;
-            if (_map.Parent != null)
-                _map.Parent.VisibleChanged += MapOnVisibleChanged;
+            var parent = _map.Parent;
+            while (parent != null)
+            {
+                parent.VisibleChanged += MapOnVisibleChanged;
+                var form = parent as Form;
+                if (form != null)
+                {
+                    toolTip.Parent = form;
+                }
+                parent = parent.Parent;
+            }
+            Debug.Assert(toolTip.Parent != null);
         }
 
         #endregion
@@ -68,8 +80,12 @@ namespace HydroDesktop.DataDownload.LayerInformation
         {
             _map.MouseMove -= _map_MouseMove;
             _map.VisibleChanged -= MapOnVisibleChanged;
-            if (_map.Parent != null)
-                _map.Parent.VisibleChanged -= MapOnVisibleChanged;
+            var parent = _map.Parent;
+            while (parent != null)
+            {
+                parent.VisibleChanged -= MapOnVisibleChanged;
+                parent = parent.Parent;
+            }
             _parentPlugin.ShowPopupsChanged -= OnParentPluginOnShowPopupsChanged;
         }
     
@@ -84,16 +100,17 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 HideToolTip();
             }
         }
-
+      
         private void MapOnVisibleChanged(object sender, EventArgs eventArgs)
         {
-            if (!_map.Visible || (_map.Parent != null && !_map.Parent.Visible))
+            var control = sender as Control;
+            if (control != null && (!control.Visible))
             {
                 HideToolTip();
             }
         }
 
-        void _map_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        void _map_MouseMove(object sender, MouseEventArgs e)
         {
             if (!_parentPlugin.ShowPopups)
             {
@@ -128,7 +145,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             HideToolTip();
             control.SetInfo(pInfos);
-            toolTip.Show(_map, e.Location);
+            toolTip.Show(_map, toolTip.Parent.PointToClient(e.Location));
         }
 
         private void HideToolTip()
