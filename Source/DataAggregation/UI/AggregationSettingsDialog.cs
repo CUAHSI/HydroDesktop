@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -340,6 +341,11 @@ namespace DataAggregation
         public void ReportMessage(string message)
         {
             lblProgress.UIThread(() => lblProgress.Text = message);
+        }
+
+        public CancellationToken CancellationToken
+        {
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

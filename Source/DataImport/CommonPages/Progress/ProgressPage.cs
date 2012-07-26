@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using Wizard.UI;
@@ -79,6 +80,11 @@ namespace DataImport.CommonPages.Progress
         public void ReportMessage(string message)
         {
             lblInfo.UIThread(() => lblInfo.Text = message);
+        }
+
+        public CancellationToken CancellationToken
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         #endregion

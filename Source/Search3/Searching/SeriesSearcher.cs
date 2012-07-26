@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -85,12 +87,12 @@ namespace Search3.Searching
             return resultFs;
         }
 
-        private List<SeriesDataCart> GetSeriesListForExtent(Extent extent, string[] keywords, double tileWidth, double tileHeight,
-                                                      DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, 
+        private List<SeriesDataCart> GetSeriesListForExtent(Extent extent, IEnumerable<string> keywords, double tileWidth, double tileHeight,
+                                                      DateTime startDate, DateTime endDate, ICollection<WebServiceNode> serviceIDs, 
                                                       IProgressHandler bgWorker, Func<SeriesDataCart, bool> seriesFilter)
         {
             var servicesToSearch = new List<Tuple<WebServiceNode[], Extent>>();
-            if (serviceIDs.Length > 0)
+            if (serviceIDs.Count > 0)
             {
                 foreach (var webService in serviceIDs)
                 {
@@ -122,43 +124,60 @@ namespace Search3.Searching
                 totalTilesCount += tiles.Count;
             }
 
-            var fullSeriesList = new List<SeriesDataCart>();
+            var fullSeriesList = new List<List<SeriesDataCart>>();
             int currentTileIndex = 0;
-            foreach (var wsInfo in servicesWithExtents)
+            int totalSeriesCount = 0;
+
+            var options = new ParallelOptions {CancellationToken = bgWorker.CancellationToken};
+            Parallel.ForEach(servicesWithExtents, options, wsInfo =>
             {
-                var webServices = wsInfo.Item1;
+                bgWorker.CheckForCancel();
+                var ids = wsInfo.Item1.Select(item => item.ServiceID).ToArray();
                 var tiles = wsInfo.Item2;
 
-                for (int i = 0; i < tiles.Count; i++, currentTileIndex++)
+                Parallel.ForEach(tiles, options, tile =>
                 {
-                    var tile = tiles[i];
-
+                    Interlocked.Add(ref currentTileIndex, 1);
                     bgWorker.CheckForCancel();
 
                     // Do the web service call
                     var tileSeriesList = new List<SeriesDataCart>();
                     foreach (var keyword in keywords)
                     {
-                        bgWorker.ReportMessage(
-                            string.Format("Retrieving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
-                                          currentTileIndex + 1, totalTilesCount));
                         bgWorker.CheckForCancel();
-                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY,
-                                                                       keyword, startDate, endDate,
-                                                                       webServices.Select(item => item.ServiceID).ToArray()));
+                        bgWorker.ReportMessage(string.Format("Retrieving series from server. Keyword: {0}. Tile: {1} of {2}", keyword, currentTileIndex, totalTilesCount));
+                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY, keyword, startDate, endDate, ids));
                     }
 
-                    fullSeriesList.AddRange(tileSeriesList.Where(seriesFilter));
+                    bgWorker.CheckForCancel();
+                    if (tileSeriesList.Count > 0)
+                    {
+                        var filtered = tileSeriesList.Where(seriesFilter).ToList();
+                        if (filtered.Count > 0)
+                        {
+                            lock (_lockGetSeries)
+                            {
+                                totalSeriesCount += filtered.Count;
+                                fullSeriesList.Add(filtered);
+                            }
+                        }
+                    }
 
                     // Report progress
-                    var message = string.Format("{0} Series found", fullSeriesList.Count);
-                    var percentProgress = (currentTileIndex * 100) / totalTilesCount + 1;
+                    var message = string.Format("{0} Series found", totalSeriesCount);
+                    var percentProgress = (currentTileIndex * 100) / totalTilesCount;
                     bgWorker.ReportProgress(percentProgress, message);
-                }
-            }
+                });
 
-            return fullSeriesList;
+            });
+
+            // Collect all series into result list
+            var result = new List<SeriesDataCart>(totalSeriesCount);
+            fullSeriesList.ForEach(result.AddRange);
+            return result;
         }
+
+        private static readonly object _lockGetSeries = new object();
 
         /// <summary>
         /// Gets all data series within the geographic bounding box that match the

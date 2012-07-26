@@ -307,6 +307,11 @@ namespace Search3.Searching
             {
                 _parent.LogMessage(message);
             }
+
+            public CancellationToken CancellationToken
+            {
+                get { return _parent._cancellationTokenSource.Token; }
+            }
         }
     }
 }
