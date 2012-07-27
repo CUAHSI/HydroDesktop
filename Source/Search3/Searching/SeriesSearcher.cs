@@ -140,7 +140,7 @@ namespace Search3.Searching
             var tileLoopOptions = new ParallelOptions
                 {
                         CancellationToken = bgWorker.CancellationToken,
-                        // Note: currently HIS Cental returns timeout if many requests are sended in the same time.
+                        // Note: currently HIS Central returns timeout if many requests are sent in the same time.
                         // To test set  MaxDegreeOfParallelism = -1
                         MaxDegreeOfParallelism = 4,
                 };

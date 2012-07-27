@@ -12,6 +12,7 @@ using HydroDesktop.Common.Tools;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
+using HydroDesktop.WebServices;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
@@ -302,11 +303,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             var categorieStep = (maxValue - minValue) / categoriesCount + 1;    // value step in filter
             const int imageStep = 5;
             var imageSize = 5;
-
-            var searchPlugin = _downloadPlugin.App.GetExtension<ISearchPlugin>();
-            var image = searchPlugin != null
-                              ? new WebServices.ServiceIconHelper(searchPlugin.HisCentralUrl).GetImageForService(servCode)
-                              : null;
+            
+            var image = ServiceIconHelper.Instance.GetImageForService(servCode);
 
             const string seriesID = "SeriesID";
             var needDownloadedCategories = featureSet.DataTable.Columns.Contains(seriesID);

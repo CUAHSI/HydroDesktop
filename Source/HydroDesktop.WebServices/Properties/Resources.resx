@@ -334,4 +334,7 @@
   <data name="CUAHSI_1_1_Namespace" xml:space="preserve">
     <value>http://www.cuahsi.org/his/1.1/ws/</value>
   </data>
+  <data name="HISCentral_Site" xml:space="preserve">
+    <value>http://hiscentral.cuahsi.org</value>
+  </data>
 </root>
