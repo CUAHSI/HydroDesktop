@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml;
+using HydroDesktop.Common;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace Search3.Searching
@@ -27,10 +28,10 @@ namespace Search3.Searching
         /// Create a new HIS Central Searcher which connects to the HIS Central web
         /// services
         /// </summary>
-        /// <param name="hisCentralURL">The URL of HIS Central</param>
-        public HISCentralSearcher(string hisCentralURL)
+        /// <param name="hisCentralUrl">The URL of HIS Central</param>
+        public HISCentralSearcher(string hisCentralUrl)
         {
-            _hisCentralUrl = hisCentralURL;
+            _hisCentralUrl = hisCentralUrl;
         }
 
         #endregion
@@ -42,7 +43,7 @@ namespace Search3.Searching
             HttpWebResponse response = null;
             try
             {
-                string url = _hisCentralUrl + "/GetWaterOneFlowServiceInfo";
+                var url = _hisCentralUrl + "/GetWaterOneFlowServiceInfo";
 
                 var request = (HttpWebRequest) WebRequest.Create(url);
                 //Endpoint is the URL to which u are making the request.
@@ -84,10 +85,9 @@ namespace Search3.Searching
         protected override IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin,
                                                                               double yMax, string keyword,
                                                                               DateTime startDate, DateTime endDate,
-                                                                              int[] networkIDs)
+                                                                              int[] networkIDs,
+                                                                              IProgressHandler bgWorker, long currentTile, long totalTilesCount)
         {
-            //call the web service dynamically, using WebClient
-
             var url = new StringBuilder();
             url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
@@ -129,33 +129,55 @@ namespace Search3.Searching
             url.Append(Uri.EscapeDataString(startDate.ToString("MM/dd/yyyy")));
             url.Append("&endDate=");
             url.Append(Uri.EscapeDataString(endDate.ToString("MM/dd/yyyy")));
+         
 
-            //to encode the URL
-            string finalURL = url.ToString();
-
-            //to read the xml stream
-            var seriesList = new List<SeriesDataCart>();
-            using (var reader = XmlReader.Create(finalURL))
+            // Try to send request several times (in case, when server returns timeout)
+            const int tryCount = 5;
+            for (int i = 0; i < tryCount; i++)
             {
-                while (reader.Read())
+                try
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    bgWorker.CheckForCancel();
+                    bgWorker.ReportMessage(string.Format("Sended request to HIS Central. Keyword: {0}. Tile {1}/{2}.{3}", keyword, currentTile, totalTilesCount,
+                        i == 0 ? String.Empty : string.Format(" Attempt {0}/{1}", i + 1, tryCount)));
+
+                    var request = WebRequest.Create(url.ToString());
+                    request.Timeout = 30 * 1000;
+                    using (var response = request.GetResponse())
+                    using (var reader = XmlReader.Create(response.GetResponseStream()))
                     {
-                        if (reader.Name == "SeriesRecord")
+                        return ParseSeries(reader, startDate, endDate);
+                    }    
+                }
+                catch (WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.Timeout) continue;
+                    throw;
+                }
+            }
+            throw new WebException("Timeout", WebExceptionStatus.Timeout);
+        }
+
+        private IEnumerable<SeriesDataCart> ParseSeries(XmlReader reader, DateTime startDate, DateTime endDate)
+        {
+            var seriesList = new List<SeriesDataCart>();
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    if (reader.Name == "SeriesRecord")
+                    {
+                        //Read the site information
+                        var series = ReadSeriesFromHISCentral(reader);
+                        if (series != null)
                         {
-                            //Read the site information
-                            var series = ReadSeriesFromHISCentral(reader);
-                            if (series != null)
-                            {
-                                // Update BeginDate/EndDate/ValueCount to the user-specified range
-                                SearchHelper.UpdateDataCartToDateInterval(series, startDate, endDate);
-                                seriesList.Add(series);
-                            }
+                            // Update BeginDate/EndDate/ValueCount to the user-specified range
+                            SearchHelper.UpdateDataCartToDateInterval(series, startDate, endDate);
+                            seriesList.Add(series);
                         }
                     }
                 }
             }
-
             return seriesList;
         }
 

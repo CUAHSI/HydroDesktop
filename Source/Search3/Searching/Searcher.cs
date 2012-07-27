@@ -128,6 +128,23 @@ namespace Search3.Searching
                                      TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        private void LogAggregateException(Exception ex)
+        {
+            var aggr = ex as AggregateException;
+            if (aggr != null)
+            {
+                LogMessage("AggregateException Error: " + aggr.Message);
+                foreach (var innerException in aggr.InnerExceptions)
+                {
+                    LogAggregateException(innerException);
+                }
+            }
+            else
+            {
+                LogMessage("Error:", ex);       
+            }
+        }
+
         private void OnFinishedTask(Task<SearchResult> task)
         {
             if (task == null) return;
@@ -140,7 +157,7 @@ namespace Search3.Searching
                 {
                     foreach (var error in task.Exception.InnerExceptions)
                     {
-                        LogMessage("Error:", error);
+                        LogAggregateException(error);
                     }
                 }
                 else
