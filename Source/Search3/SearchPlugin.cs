@@ -771,8 +771,7 @@ namespace Search3
 
             try
             {
-                var imageHelper = new ServiceIconHelper(_searchSettings.CatalogSettings.HISCentralUrl);
-                var image = imageHelper.GetImageForService(webServiceNode.ServiceCode);
+                var image = ServiceIconHelper.Instance.GetImageForService(webServiceNode.ServiceCode);
                 rbServices.LargeImage = rbServices.SmallImage = image;
             }
             catch (Exception ex)
