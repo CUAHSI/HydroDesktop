@@ -344,14 +344,10 @@ namespace HydroDesktop.Docking
         /// </summary>
         void MainDockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            DockContent activeContent;
-            try
-            {
-                activeContent = MainDockPanel.ActiveContent.DockHandler.Content as DockContent;
-            }catch(NullReferenceException)
-            {
-                return;
-            }
+            if (MainDockPanel.ActiveContent == null ||
+                MainDockPanel.ActiveContent.DockHandler == null) return;
+
+            var activeContent = MainDockPanel.ActiveContent.DockHandler.Content as DockContent;          
             if (activeContent == null) return;
             if (activeContent.Tag == null) return;
 
