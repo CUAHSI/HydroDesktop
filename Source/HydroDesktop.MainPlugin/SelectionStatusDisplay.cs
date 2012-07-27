@@ -1,6 +1,7 @@
 ﻿using System;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using DotSpatial.Symbology;
 
 namespace HydroDesktop.Main
 {
@@ -16,6 +17,7 @@ namespace HydroDesktop.Main
             SelectionStatusPanel = new StatusPanel();
             SelectionStatusPanel.Width = 250;
             app.ProgressHandler.Add(SelectionStatusPanel);
+        
 
             App.Map.SelectionChanged += Map_SelectionChanged;
             App.Map.MapFrame.LayerSelected +=MapFrame_LayerSelected;
@@ -55,14 +57,11 @@ namespace HydroDesktop.Main
             }
             else
             {
-                if (App.Map.Layers.SelectedLayer != null)
+                var selected = App.Map.Layers.SelectedLayer as IMapFeatureLayer; 
+                if (selected != null && selected.Selection != null)
                 {
-                    string layName = App.Map.Layers.SelectedLayer.LegendText;
-                    IMapFeatureLayer mfl = App.Map.Layers.SelectedLayer as IMapFeatureLayer;
-                    if (mfl != null)
-                    {
-                        SelectionStatusPanel.Caption = String.Format("layer: {0} Selected: {1}", layName, mfl.Selection.Count);
-                    }
+                    var layName = selected.LegendText;
+                    SelectionStatusPanel.Caption = String.Format("layer: {0} Selected: {1}", layName, selected.Selection.Count);
                 }
             }
         }
