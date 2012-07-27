@@ -137,6 +137,7 @@ namespace Search3.Area
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            if (!btnApply.Enabled) return;
             SelectShapesInTheMap();
         }
 
