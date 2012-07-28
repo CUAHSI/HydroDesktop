@@ -69,12 +69,6 @@ namespace HydroDesktop.DataDownload.Downloading
             get { return _worker.IsBusy; }
         }
 
-        internal log4net.ILog Log
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Is GUI of download manager is visible?
         /// </summary>
@@ -206,20 +200,17 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private void DoLog(LogKind logKind, string message, Exception exception = null)
         {
-            if (Log != null)
+            switch (logKind)
             {
-                switch (logKind)
-                {
-                    case LogKind.Error:
-                        Log.Error(message, exception);
-                        break;
-                    case LogKind.Info:
-                        Log.Info(message, exception);
-                        break;
-                    case LogKind.Warn:
-                        Log.Warn(message, exception);
-                        break;
-                }
+                case LogKind.Error:
+                    //Log.Error(message, exception);
+                    break;
+                case LogKind.Info:
+                    //Log.Info(message, exception);
+                    break;
+                case LogKind.Warn:
+                    //Log.Warn(message, exception);
+                    break;
             }
 
             var handler = OnMessage;
