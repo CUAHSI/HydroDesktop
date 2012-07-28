@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using HydroDesktop.Interfaces;
 using NUnit.Framework;
 using HydroDesktop.Database;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.Data.Tests;
 
-namespace HydroDesktop.Database.Tests.DataManagerTests
+namespace HydroDesktop.Data.Tests.DatabaseTests
 {
     [TestFixture]
     public class DataManagerSQLTest
