@@ -18,11 +18,11 @@ namespace EPADelineation
 
         private Coordinate _stPoint;
 
-        private string _PointIndexingUrl = "http://iaspub.epa.gov/WATERSWebServices/OWServices";
-        
-        private string _DelineationUrl = "http://iaspub.epa.gov/waters10/waters_services.navigationDelineationService";
+        private string _PointIndexingUrl = "http://ofmpub.epa.gov/waters10/waters_services.PointIndexingService";
 
-        private string _StreamlineUrl = "http://iaspub.epa.gov/waters10/waters_services.upstreamDownStreamService";
+        private string _DelineationUrl = "http://ofmpub.epa.gov/waters10/waters_services.navigationDelineationService";
+
+        private string _StreamlineUrl = "http://ofmpub.epa.gov/waters10/waters_services.upstreamDownStreamService";
 
         private ProjectionInfo _defaultProjection;
 
@@ -60,7 +60,7 @@ namespace EPADelineation
         {
             if (startPoint == null) return null;
             if (startPoint.Length < 2) return null;
-            
+
             string Comid = startPoint[0] as string;
             string Measure = startPoint[1] as string;
 
@@ -91,7 +91,7 @@ namespace EPADelineation
         {
             if (startPoint == null) return null;
             if (startPoint.Length < 2) return null;
-            
+
             string Comid = startPoint[0] as string;
             string Measure = startPoint[1] as string;
 
@@ -100,7 +100,7 @@ namespace EPADelineation
             object[] streamObj = GetStreamline(streamUri);
 
             if (streamObj != null)
-            {   
+            {
                 IFeatureSet Upstream = streamObj[0] as IFeatureSet;
                 List<string> comid = streamObj[1] as List<string>;
                 List<string> reachcode = streamObj[2] as List<string>;
@@ -115,8 +115,8 @@ namespace EPADelineation
 
         }
 
-        #endregion 
-        
+        #endregion
+
         #region Private Methods
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace EPADelineation
         {
             int comid = 0;
             double measure = 0;
-            
+
             //create the input parameters
             string pointUri = GetPointQueryUri(_stPoint);
 
@@ -138,23 +138,28 @@ namespace EPADelineation
             try
             {
                 string response = delineate.DownloadString(pointUri);
-                using (XmlTextReader reader = new XmlTextReader(new StringReader(response)))
+                JObject mainObj = JObject.Parse(response);
+                JToken outputObj = mainObj["output"];
+
+                //check for error message in outputObj
+                if (outputObj.Type == Newtonsoft.Json.Linq.JTokenType.Null)
                 {
-                    while (reader.Read())
-                    {
-                        if (reader.NodeType == XmlNodeType.Element && reader.Name == "comid")
-                        {
-                            string comidStr = reader.ReadInnerXml();
-                            comid = Convert.ToInt32(comidStr, CultureInfo.InvariantCulture);
-                        }
-                        if (reader.NodeType == XmlNodeType.Element && reader.Name == "fmeasure")
-                        {
-                            string measureStr = reader.ReadInnerXml();
-                            measure = Convert.ToDouble(measureStr, CultureInfo.InvariantCulture);
-                            break;
-                        }
-                    }
+                    JToken statusObj = mainObj["status"];
+                    string statusMessage = statusObj["status_message"].ToString();
+                    throw new ArgumentException(statusMessage);
                 }
+
+                // Get flowline array (should just be one)
+                JArray flowlinesObj = outputObj["ary_flowlines"] as JArray;
+
+                // TODO: catch when array is empty
+
+                JToken flowline = flowlinesObj[0];
+                string comidStr = flowline["comid"].ToString();
+                comid = Convert.ToInt32(comidStr, CultureInfo.InvariantCulture);
+                string measureStr = flowline["fmeasure"].ToString();
+                measure = Convert.ToDouble(measureStr, CultureInfo.InvariantCulture);
+
             }
             catch (WebException ex)
             {
@@ -164,7 +169,6 @@ namespace EPADelineation
 
             if (comid > 0 && measure > 0)
             {
-
                 string[] startpt = new string[2];
                 startpt[0] = comid.ToString(CultureInfo.InvariantCulture);
                 startpt[1] = measure.ToString(CultureInfo.InvariantCulture);
@@ -186,10 +190,8 @@ namespace EPADelineation
         private string GetPointQueryUri(Coordinate stPoint)
         {
             // The Max Distance is set as 100km. Non-limited distance could cause timeout.
-            string uri = String.Format("{0}?invoke=pointIndexingServiceSimple&pInputGeometry=POINT({1}+{2})" +
-                "&pInputGeometrySrid=8265&pReachresolution=3&pPointIndexingMethod=Distance" +
-                "&pPointIndexingFcodeAllow=&pPointIndexingFcodeDeny=&pPointIndexingMaxDist=100" +
-                "&pPointIndexingRaindropDist=100&pOutputPathFlag=&pTolerance=5",
+            string uri = String.Format("{0}?pGeometry=POINT({1} {2})" +
+                "&pGeometryMod=WKT,SRID=8265&pResolution=3&pPointIndexingMethod=DISTANCE&pPointIndexingMaxDist=100",
                 _PointIndexingUrl, stPoint.X.ToString(CultureInfo.InvariantCulture), stPoint.Y.ToString(CultureInfo.InvariantCulture));
             return uri;
         }
@@ -203,7 +205,7 @@ namespace EPADelineation
         private string GetWshedQueryUri(string qcomid, string qmeasure)
         {
             // The Max Distance is set as 100km. Non-limited distance could cause timeout.
-            string uri = _DelineationUrl + "?pNavigationType=UT&pStartComid=" + qcomid + "&pStartMeasure=" + qmeasure + 
+            string uri = _DelineationUrl + "?pNavigationType=UT&pStartComid=" + qcomid + "&pStartMeasure=" + qmeasure +
                 "&pMaxDistance=100&pMaxTime=&pAggregationFlag=true&pOutputFlag=FEATURE&pFeatureType=CATCHMENT_TOPO" +
                 "&optCache=1269303461090&optOutGeomFormat=GEOJSON&optJSONPCallback=success";
             return uri;
@@ -260,7 +262,7 @@ namespace EPADelineation
                     statusObj = mainObj["status"];
                     string statusMessage = statusObj["status_message"].ToString();
                     throw new ArgumentException(statusMessage);
-                }      
+                }
 
                 shapeObj = outputObj["shape"];
 
