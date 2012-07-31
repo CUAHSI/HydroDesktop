@@ -10,10 +10,11 @@ using HydroDesktop.DataDownload.LayerInformation.PopupControl;
 
 namespace HydroDesktop.DataDownload.LayerInformation
 {
+    /// <summary>
+    /// Custom tooltip to show info about services.
+    /// </summary>
     public partial class CustomToolTipControl : UserControl
     {
-        
-
         #region Fields
 
         private readonly DataDownloadPlugin _parentPlugin;
@@ -29,6 +30,10 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
         #region Constructors
 
+        /// <summary>
+        /// Creates new instance of <see cref="CustomToolTipControl"/> class.
+        /// </summary>
+        /// <param name="parentPlugin">DataDownloadPlugin</param>
         public CustomToolTipControl(DataDownloadPlugin parentPlugin)
         {
             _parentPlugin = parentPlugin;
@@ -49,10 +54,10 @@ namespace HydroDesktop.DataDownload.LayerInformation
         #region Public methods
 
         /// <summary>
-        /// Is info already setted on current tooltip
+        /// Is info already set on current tooltip
         /// </summary>
         /// <param name="info">Info to check</param>
-        /// <returns>True - setted, false - otherwise</returns>
+        /// <returns>True - info set, false - otherwise</returns>
         public bool IsInfoAlreadySetted(List<ServiceInfoGroup> info)
         {
             if (info == null) throw new ArgumentNullException("info");

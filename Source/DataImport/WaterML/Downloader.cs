@@ -98,8 +98,9 @@ namespace ImportFromWaterML
         /// communicate with the database
         /// </summary>
         /// <param name="series">The data series to be saved</param>
-        /// <param name="theme">The theme associated with this data series</param>
-        /// <param name="overwrite">Determines how to handle duplicate data values.</param>
+        /// <param name="themeName">Theme name</param>
+        /// <param name="siteName">Site name</param>
+        /// <param name="variableName">Variable name </param>
         /// <returns>True if series was successfully saved.</returns>
         public bool SaveDataSeries(Series series, string themeName, string siteName, string variableName)
         {

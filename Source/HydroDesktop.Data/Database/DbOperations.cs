@@ -710,7 +710,9 @@ namespace HydroDesktop.Database
             var conn = CreateConnection();
             conn.Open();
             var da = dbFactory.CreateDataAdapter();
+            Debug.Assert(da != null, "da != null");
             da.SelectCommand = dbFactory.CreateCommand();
+            Debug.Assert(da.SelectCommand != null, "da.SelectCommand != null");
             da.SelectCommand.CommandText = sqlQuery;
             da.SelectCommand.Connection = conn;
             var dt = new DataTable {TableName = tableName};
@@ -723,6 +725,14 @@ namespace HydroDesktop.Database
             return dt;
         }
 
+        /// <summary>
+        /// Gets the collection of entities
+        /// </summary>
+        /// <typeparam name="T">Type of collection</typeparam>
+        /// <param name="query">Query to select any data</param>
+        /// <param name="rowReader">Delegate that converted row into entity</param>
+        /// <param name="parameters">The values of command parameters.</param>
+        /// <returns>Collection of entities</returns>
         public List<T> Read<T>(string query, Func<DbDataReader, T> rowReader, params object[] parameters)
         {
             var result = new List<T>();

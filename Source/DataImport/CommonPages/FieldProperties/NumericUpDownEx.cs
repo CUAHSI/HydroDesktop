@@ -16,6 +16,10 @@ namespace DataImport.CommonPages
             Minimum = decimal.MinValue;
         }
 
+        /// <summary>
+        /// Decrements the value of the spin box (also known as an up-down control).
+        /// </summary>
+        /// <filterpriority>1</filterpriority>
         public override void DownButton()
         {
             if (FullReadOnly)
@@ -23,6 +27,10 @@ namespace DataImport.CommonPages
             base.DownButton();
         }
 
+        /// <summary>
+        /// Increments the value of the spin box (also known as an up-down control).
+        /// </summary>
+        /// <filterpriority>1</filterpriority>
         public override void UpButton()
         {
             if (FullReadOnly)

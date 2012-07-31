@@ -64,7 +64,7 @@ namespace HydroDesktop.Main
                 return logFileStream;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
