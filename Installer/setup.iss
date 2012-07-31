@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.5"
-#define SrcApp "HydroDesktop_1_5.exe"
+#define AppName "HydroDesktop 1.5.2"
+#define SrcApp "HydroDesktop_1_5_2.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -165,7 +165,7 @@ Source: "..\Binaries\Plugins\TableView\TableView.dll"; DestDir: "{app}\Plugins";
 Source: "..\Binaries\Plugins\GraphView\GraphView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\HelpTab.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-Source: "..\Binaries\Application Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Application Extensions\HydroDesktop.DownloadExtensions.dll"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.Docking.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.MainPlugin.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
