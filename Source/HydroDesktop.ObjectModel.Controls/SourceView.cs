@@ -31,17 +31,17 @@ namespace HydroDesktop.ObjectModel.Controls
             Entity = null;
 
             // Set bindings
-            tbOrganization.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Organization);
-            tbDescription.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Description);
-            tbLink.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Link);
-            tbContactName.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).ContactName);
-            tbPhone.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Phone);
-            tbEmail.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Email);
-            tbAddress.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Address);
-            tbCity.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).City);
-            tbState.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).State);
-            tbZipCode.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).ZipCode);
-            tbCitation.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Source).Citation);
+            tbOrganization.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Organization);
+            tbDescription.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Description);
+            tbLink.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Link);
+            tbContactName.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.ContactName);
+            tbPhone.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Phone);
+            tbEmail.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Email);
+            tbAddress.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Address);
+            tbCity.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.City);
+            tbState.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.State);
+            tbZipCode.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.ZipCode);
+            tbCitation.AddBinding<TextBox, Source>(t => t.Text, bindingSource1, s => s.Citation);
         }
 
         #endregion

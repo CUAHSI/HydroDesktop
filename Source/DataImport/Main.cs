@@ -37,6 +37,9 @@ namespace ImportFromWaterML
 
         #region Extension Members
 
+        /// <summary>
+        /// Activates this provider
+        /// </summary>
         public override void Activate()
         {
             var importButtonTabKey = new SimpleActionItem("Import", menu_Click)
@@ -61,6 +64,9 @@ namespace ImportFromWaterML
             base.Activate();
         }
 
+        /// <summary>
+        /// Deactivates this provider
+        /// </summary>
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();

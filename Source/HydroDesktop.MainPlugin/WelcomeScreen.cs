@@ -396,7 +396,7 @@ namespace HydroDesktop.Main
                     string[] projFiles = Directory.GetFiles(userSampleProjectDir, "*.dspx", SearchOption.AllDirectories);
                     foreach (string projFile in projFiles)
                     {
-                        ProjectFileInfo projFileInfo = new ProjectFileInfo(projFile);
+                        var projFileInfo = new ProjectFileInfo(projFile);
                         if (!Settings.Instance.RecentProjectFiles.Contains(projFile))
                         {
                             Settings.Instance.RecentProjectFiles.Add(projFile);
@@ -448,7 +448,20 @@ namespace HydroDesktop.Main
 
         public override bool Equals(object obj)
         {
-            return base.ToString().Equals(obj.ToString());
+            return Equals(obj as ProjectFileInfo);
+        }
+
+        public bool Equals(ProjectFileInfo other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return string.Equals(Name, other.Name);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Name != null ? Name.GetHashCode() : 0);
         }
     }
 }

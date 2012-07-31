@@ -32,7 +32,9 @@ namespace HydroDesktop.Common.Tests.Tools
             var propertyName1 = NameHelper<Class1>.Name(o => o.A);
             Assert.AreEqual("A", propertyName1);
 
+#pragma warning disable 1720
             var propertyName2 = NameHelper.Name(() => default(Class1).A);
+#pragma warning restore 1720
             Assert.AreEqual("A", propertyName2);
         }
 

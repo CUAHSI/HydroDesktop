@@ -31,22 +31,22 @@ namespace HydroDesktop.ObjectModel.Controls
             Entity = null;
 
             // Set Bindings
-            tbSiteName.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Name);
-            tbSiteCode.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Code);
-            nudLat.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Site).Latitude);
-            nudLng.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Site).Longitude);
-            nudElevation.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Site).Elevation_m);
-            tbVertDatum.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).VerticalDatum);
-            nudLocalX.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Site).LocalX);
-            nudLocalY.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Site).LocalY);
-            nudPosAccuracy.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Site).PosAccuracy_m);
-            tbState.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).State);
-            tbCounty.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).County);
-            tbComments.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Comments);
-            tbLocalProjection.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).LocalProjection);
-            tbLatLongDatum.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).SpatialReference);
-            tbSiteType.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).SiteType);
-            tbCountry.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Site).Country);
+            tbSiteName.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.Name);
+            tbSiteCode.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.Code);
+            nudLat.AddBinding<NumericUpDown, Site>(n  => n.Value, bindingSource1, s => s.Latitude);
+            nudLng.AddBinding<NumericUpDown, Site>(n => n.Value, bindingSource1, s => s.Longitude);
+            nudElevation.AddBinding<NumericUpDown, Site>(n => n.Value, bindingSource1, s => s.Elevation_m);
+            tbVertDatum.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.VerticalDatum);
+            nudLocalX.AddBinding<NumericUpDown, Site>(n => n.Value, bindingSource1, s => s.LocalX);
+            nudLocalY.AddBinding<NumericUpDown, Site>(n => n.Value, bindingSource1, s => s.LocalY);
+            nudPosAccuracy.AddBinding<NumericUpDown, Site>(n => n.Value, bindingSource1, s => s.PosAccuracy_m);
+            tbState.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.State);
+            tbCounty.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.County);
+            tbComments.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.Comments);
+            tbLocalProjection.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.LocalProjection);
+            tbLatLongDatum.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.SpatialReference);
+            tbSiteType.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.SiteType);
+            tbCountry.AddBinding<TextBox, Site>(t => t.Text, bindingSource1, s => s.Country);
         }
 
         #endregion

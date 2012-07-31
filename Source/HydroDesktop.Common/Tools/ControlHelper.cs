@@ -46,22 +46,6 @@ namespace HydroDesktop.Common.Tools
         }
 
         /// <summary>
-        /// Add binding to control
-        /// </summary>
-        /// <typeparam name="T">Type of target control property</typeparam>
-        /// <typeparam name="TS">Type of source object property</typeparam>
-        /// <param name="control">Control</param>
-        /// <param name="controlProperty">Expression that returns control property to bind</param>
-        /// <param name="source">Bind source</param>
-        /// <param name="sourceProperty">Expression that returns source property to bind</param>
-        public static void AddBinding<T, TS>(this Control control, Expression<Func<T>> controlProperty, object source, Expression<Func<TS>> sourceProperty)
-        {
-            control.DataBindings.Add(new Binding(NameHelper.Name(controlProperty),
-                                                 source, NameHelper.Name(sourceProperty, true),
-                                                 true, DataSourceUpdateMode.OnPropertyChanged));
-        }
-
-        /// <summary>
         /// Detecting Design Mode In Visual Studio
         /// </summary>
         /// <param name="control">Control</param>
