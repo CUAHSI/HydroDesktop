@@ -288,11 +288,21 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                    } 
                     else if (r.Name == "method")
                     {
-                        ReadMethod(r, methods);
+                        var method = ReadMethod(r);
+                        var methodCodeKey = method.Code.ToString(CultureInfo.InvariantCulture);
+                        if (methods.ContainsKey(methodCodeKey))
+                        {
+                            methods[methodCodeKey] = method;
+                        }
                     }
                     else if (r.Name == "source")
                     {
-                        ReadSource(r, sources);
+                        var source = ReadSource(r);
+                        var sourceCodeKey = source.OriginId.ToString(CultureInfo.InvariantCulture);
+                        if (sources.ContainsKey(sourceCodeKey))
+                        {
+                            sources[sourceCodeKey] = source;
+                        }
                     }
                     else if (r.Name == "qualityControlLevel")
                     {
@@ -380,7 +390,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Read the vertical offset type
         /// </summary>
-        private void ReadOffset(XmlReader r, Dictionary<string, OffsetType> offsets)
+        private static void ReadOffset(XmlReader r, IDictionary<string, OffsetType> offsets)
         {
             string offsetID = r.GetAttribute("offsetTypeID");
             if (String.IsNullOrEmpty(offsetID)) return;
@@ -430,267 +440,19 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads information about a qualifier
         /// </summary>
-        private void ReadQualifier(XmlReader r, Dictionary<string, Qualifier> qualifiers)
+        private static void ReadQualifier(XmlReader r, IDictionary<string, Qualifier> qualifiers)
         {
             string qualifierCode = r.GetAttribute("qualifierCode");
             if (String.IsNullOrEmpty(qualifierCode)) return;
             if (!qualifiers.ContainsKey(qualifierCode))
             {
-                Qualifier newQualifier = new Qualifier();
-                newQualifier.Code = qualifierCode;
+                var newQualifier = new Qualifier {Code = qualifierCode};
                 qualifiers.Add(qualifierCode, newQualifier);
             }
 
-            Qualifier qualifier = qualifiers[qualifierCode];
+            var qualifier = qualifiers[qualifierCode];
             r.Read();
             qualifier.Description = r.Value;
-        }
-
-        /// <summary>
-        /// Reads information about method and returns the method object
-        /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        protected override Method ReadMethod(XmlReader r)
-        {
-            //assign the method Code (method ID) if available
-            string methodID = r.GetAttribute("methodID");
-            Method method = Method.Unknown;
-
-            if (!String.IsNullOrEmpty(methodID))
-            {
-                method.Code = Convert.ToInt32(methodID);
-            }
-            
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name.ToLower() == "methoddescription")
-                    {
-                        r.Read();
-                        method.Description = r.Value;
-                    }
-                    else if (r.Name == "methodlink")
-                    {
-                        r.Read();
-                        method.Link = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "method")
-                {
-                    return method;
-                }
-            }
-            return Method.Unknown;
-        }
-
-        /// <summary>
-        /// Reads information about method
-        /// </summary>
-        private void ReadMethod(XmlReader r, Dictionary<string, Method> methods)
-        {
-            string methodID = r.GetAttribute("methodID");
-            
-            //special case: if the number of methods is one
-            if (methods.Count == 1)
-            {
-                Method newMethod = ReadMethod(r);
-                string methodCode = newMethod.Code.ToString();
-                methods[methodCode] = newMethod;
-            }
-            // otherwise: there are more than one method
-            else
-            {             
-                if (String.IsNullOrEmpty(methodID)) return;
-                if (!methods.ContainsKey(methodID)) return;
-
-                Method method = methods[methodID];
-                method.Code = Convert.ToInt32(methodID);
-
-                while (r.Read())
-                {
-                    if (r.NodeType == XmlNodeType.Element)
-                    {
-                        if (r.Name.ToLower() == "methoddescription")
-                        {
-                            r.Read();
-                            method.Description = r.Value;
-                        }
-                        else if (r.Name.ToLower() == "methodlink")
-                        {
-                            r.Read();
-                            method.Link = r.Value;
-                        }
-                    }
-                    else if (r.NodeType == XmlNodeType.EndElement && r.Name == "method")
-                    {
-                        return;
-                    }
-                }
-            }
-        }
-
-        protected override Source ReadSource(XmlReader r)
-        {
-            //assign the source Code (source ID) if available
-            string sourceID = r.GetAttribute("sourceID");
-            Source source = Source.Unknown;
-
-            if (!String.IsNullOrEmpty(sourceID))
-            {
-                source.OriginId = Convert.ToInt32(sourceID);
-            }
-
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    string nodeName = r.Name.ToLower();
-                    if (nodeName == "organization")
-                    {
-                        r.Read();
-                        source.Organization = r.Value;
-                    }
-                    else if (nodeName == "contactname")
-                    {
-                        r.Read();
-                        source.ContactName = r.Value;
-                    }
-                    else if (nodeName == "phone")
-                    {
-                        r.Read();
-                        source.Phone = r.Value;
-                    }
-                    else if (nodeName == "email")
-                    {
-                        r.Read();
-                        source.Email = r.Value;
-                    }
-                    else if (nodeName == "address")
-                    {
-                        r.Read();
-
-                        //to read the source address
-                        string wholeAddress = r.Value;
-                        try
-                        {
-                            if (wholeAddress.Contains("\n"))
-                            {
-                                char[] separators = new char[] { '\n', ',' };
-
-                                string[] addressParts = wholeAddress.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                                if (addressParts.Length > 2)
-                                {
-                                    source.State = addressParts[2];
-                                }
-                                if (addressParts.Length > 1)
-                                {
-                                    source.City = addressParts[1];
-                                }
-                                if (addressParts.Length > 0)
-                                {
-                                    source.Address = addressParts[0];
-                                }
-                            }
-                            else
-                            {
-                                source.Address = wholeAddress;
-                            }
-                        }
-                        catch
-                        {
-                            source.Address = wholeAddress;
-                        }
-                    }
-                    else if (nodeName == "sourcedescription")
-                    {
-                        r.Read();
-                        source.Description = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "source")
-                {
-                    return source;
-                }
-            }
-            return Source.Unknown;
-        }
-
-        protected override QualityControlLevel ReadQualityControlLevel(XmlReader r)
-        {
-            // todo: QualityControlLevel
-            return null;
-        }
-
-        /// <summary>
-        /// Reads information about the source of the data series
-        /// </summary>
-        private void ReadSource(XmlReader r, Dictionary<string, Source> sources)
-        {
-            //special case: if the number of sources is one
-            if (sources.Count == 1)
-            {
-                Source newSource = ReadSource(r);
-                string sourceID = newSource.OriginId.ToString();
-                sources[sourceID] = newSource;
-            }
-            // otherwise: there are more than one source
-            else
-            {
-                string sourceID = r.GetAttribute("sourceID");
-                if (String.IsNullOrEmpty(sourceID)) return;
-                if (!sources.ContainsKey(sourceID)) return;
-
-                Source source = sources[sourceID];
-
-                while (r.Read())
-                {
-                    if (r.NodeType == XmlNodeType.Element)
-                    {
-                        string nodeName = r.Name.ToLower();
-                        if (nodeName == "organization")
-                        {
-                            r.Read();
-                            source.Organization = r.Value;
-                        }
-                        else if (nodeName == "contactname")
-                        {
-                            r.Read();
-                            source.ContactName = r.Value;
-                        }
-                        else if (nodeName == "phone")
-                        {
-                            r.Read();
-                            source.Phone = r.Value;
-                        }
-                        else if (nodeName == "email")
-                        {
-                            r.Read();
-                            source.Email = r.Value;
-                        }
-                        else if (nodeName == "address")
-                        {
-                            r.Read();
-                            source.Address = r.Value;
-                        }
-                        else if (nodeName == "sourcedescription")
-                        {
-                            r.Read();
-                            source.Description = r.Value;
-                        }
-                        else if (nodeName == "sourcelink")
-                        {
-                            r.Read();
-                            source.Link = r.Value;
-                        }
-                    }
-                    else if (r.NodeType == XmlNodeType.EndElement && r.Name == "source")
-                    {
-                        return;
-                    }
-                }
-            }
         }
 
        

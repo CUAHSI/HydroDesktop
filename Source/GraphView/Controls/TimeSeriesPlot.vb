@@ -13,8 +13,6 @@ Namespace Controls
     Public Class TimeSeriesPlot
         Implements IChart
 
-        Private _seriesPlotInfo As SeriesPlotInfo
-
         Public Sub New()
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
@@ -25,8 +23,6 @@ Namespace Controls
             gPane.YAxis.Type = AxisType.Linear
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
-
-            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
         Private Const XColumn As String = "LocalDateTime"
@@ -45,12 +41,6 @@ Namespace Controls
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
-            _seriesPlotInfo = Nothing
-            If Not Visible Then
-                _seriesPlotInfo = seriesPlotInfo
-                Return
-            End If
-
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
@@ -60,12 +50,6 @@ Namespace Controls
                 End If
             Next
             Refreshing()
-        End Sub
-
-        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
-            If Not Visible Then Return
-            If _seriesPlotInfo Is Nothing Then Return
-            Plot(_seriesPlotInfo)
         End Sub
 
         Private Sub Clear()

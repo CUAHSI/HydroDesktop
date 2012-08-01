@@ -48,7 +48,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _dataSource = value;
-                NotifyPropertyChanged(x => x.DataSource);
+                NotifyPropertyChanged(() => DataSource);
             }
         }
 
@@ -65,7 +65,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _siteName = value;
-                NotifyPropertyChanged(x => SiteName);
+                NotifyPropertyChanged(() => SiteName);
             }
         }
 
@@ -80,8 +80,8 @@ namespace HydroDesktop.DataDownload.LayerInformation
             set
             {
                 _valueCount = value;
-                NotifyPropertyChanged(x => ValueCount);
-                NotifyPropertyChanged(x => ValueCountAsString);
+                NotifyPropertyChanged(() => ValueCount);
+                NotifyPropertyChanged(() => ValueCountAsString);
             }
         }
 
@@ -98,7 +98,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 if (value == null) throw new ArgumentNullException("value");
 
                 _serviceDesciptionUrl = value;
-                NotifyPropertyChanged(x => ServiceDesciptionUrl);
+                NotifyPropertyChanged(() => ServiceDesciptionUrl);
             }
         }
 
@@ -179,7 +179,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
             set
             {
                 _isDownloaded = value;
-                NotifyPropertyChanged(x => IsDownloaded);
+                NotifyPropertyChanged(() => IsDownloaded);
             }
         }
 
@@ -223,6 +223,13 @@ namespace HydroDesktop.DataDownload.LayerInformation
             ServiceDesciptionUrl = source.ServiceDesciptionUrl;
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
             var pi = obj as ServiceInfo;
@@ -235,6 +242,13 @@ namespace HydroDesktop.DataDownload.LayerInformation
                    pi.VarCode == VarCode;
         }
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             return DataSource.GetHashCode() ^ SiteName.GetHashCode() ^

@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using DotSpatial.Data;
 using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -85,12 +88,12 @@ namespace Search3.Searching
             return resultFs;
         }
 
-        private List<SeriesDataCart> GetSeriesListForExtent(Extent extent, string[] keywords, double tileWidth, double tileHeight,
-                                                      DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, 
+        private List<SeriesDataCart> GetSeriesListForExtent(Extent extent, IEnumerable<string> keywords, double tileWidth, double tileHeight,
+                                                      DateTime startDate, DateTime endDate, ICollection<WebServiceNode> serviceIDs, 
                                                       IProgressHandler bgWorker, Func<SeriesDataCart, bool> seriesFilter)
         {
             var servicesToSearch = new List<Tuple<WebServiceNode[], Extent>>();
-            if (serviceIDs.Length > 0)
+            if (serviceIDs.Count > 0)
             {
                 foreach (var webService in serviceIDs)
                 {
@@ -122,43 +125,75 @@ namespace Search3.Searching
                 totalTilesCount += tiles.Count;
             }
 
-            var fullSeriesList = new List<SeriesDataCart>();
-            int currentTileIndex = 0;
-            foreach (var wsInfo in servicesWithExtents)
+            var fullSeriesList = new List<List<SeriesDataCart>>();
+            long  currentTileIndex = 0;
+            int tilesFinished = 0;
+            int totalSeriesCount = 0;
+
+            bgWorker.ReportProgress(0, "0 Series found");
+           
+            var serviceLoopOptions = new ParallelOptions
+                {
+                        CancellationToken = bgWorker.CancellationToken,
+                        MaxDegreeOfParallelism = 2, 
+                };
+            var tileLoopOptions = new ParallelOptions
+                {
+                        CancellationToken = bgWorker.CancellationToken,
+                        // Note: currently HIS Central returns timeout if many requests are sent in the same time.
+                        // To test set  MaxDegreeOfParallelism = -1
+                        MaxDegreeOfParallelism = 4,
+                };
+            Parallel.ForEach(servicesWithExtents, serviceLoopOptions, wsInfo =>
             {
-                var webServices = wsInfo.Item1;
+                bgWorker.CheckForCancel();
+                var ids = wsInfo.Item1.Select(item => item.ServiceID).ToArray();
                 var tiles = wsInfo.Item2;
 
-                for (int i = 0; i < tiles.Count; i++, currentTileIndex++)
+                Parallel.ForEach(tiles, tileLoopOptions, tile =>
                 {
-                    var tile = tiles[i];
-
+                    var current = Interlocked.Add(ref currentTileIndex, 1);
                     bgWorker.CheckForCancel();
 
                     // Do the web service call
                     var tileSeriesList = new List<SeriesDataCart>();
                     foreach (var keyword in keywords)
                     {
-                        bgWorker.ReportMessage(
-                            string.Format("Retrieving series from server. Keyword: {0}. Tile: {1} of {2}", keyword,
-                                          currentTileIndex + 1, totalTilesCount));
                         bgWorker.CheckForCancel();
-                        tileSeriesList.AddRange(GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY,
-                                                                       keyword, startDate, endDate,
-                                                                       webServices.Select(item => item.ServiceID).ToArray()));
+                        var series = GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY, keyword, startDate, endDate, ids, bgWorker, current, totalTilesCount);
+                        tileSeriesList.AddRange(series);
                     }
 
-                    fullSeriesList.AddRange(tileSeriesList.Where(seriesFilter));
+                    bgWorker.CheckForCancel();
+                    if (tileSeriesList.Count > 0)
+                    {
+                        var filtered = tileSeriesList.Where(seriesFilter).ToList();
+                        if (filtered.Count > 0)
+                        {
+                            lock (_lockGetSeries)
+                            {
+                                totalSeriesCount += filtered.Count;
+                                fullSeriesList.Add(filtered);
+                            }
+                        }
+                    }
 
                     // Report progress
-                    var message = string.Format("{0} Series found", fullSeriesList.Count);
-                    var percentProgress = (currentTileIndex * 100) / totalTilesCount + 1;
+                    var currentFinished = Interlocked.Add(ref tilesFinished, 1);
+                    var message = string.Format("{0} Series found", totalSeriesCount);
+                    var percentProgress = (currentFinished * 100) / totalTilesCount;
                     bgWorker.ReportProgress(percentProgress, message);
-                }
-            }
+                });
 
-            return fullSeriesList;
+            });
+
+            // Collect all series into result list
+            var result = new List<SeriesDataCart>(totalSeriesCount);
+            fullSeriesList.ForEach(result.AddRange);
+            return result;
         }
+
+        private static readonly object _lockGetSeries = new object();
 
         /// <summary>
         /// Gets all data series within the geographic bounding box that match the
@@ -174,9 +209,12 @@ namespace Search3.Searching
         /// <param name="endDate">end date. If set to null, results will not be filtered by end date.</param>
         /// <param name="networkIDs">array of serviceIDs provided by GetServicesInBox.
         /// If set to null, results will not be filtered by web service.</param>
+        /// <param name="bgWorker">Progress handler </param>
+        /// <param name="currentTile">Current tile index </param>
+        /// <param name="totalTilesCount">Total tiles number </param>
         /// <returns>A list of data series matching the specified criteria</returns>
         protected abstract IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, 
                                                                               string keyword, DateTime startDate, DateTime endDate,
-                                                                              int[] networkIDs);
+                                                                              int[] networkIDs, IProgressHandler bgWorker, long currentTile, long totalTilesCount);
     }
 }

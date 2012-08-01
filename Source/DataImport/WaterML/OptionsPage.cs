@@ -10,6 +10,10 @@ namespace DataImport.WaterML
     {
         private readonly WaterMLImportSettings _settings;
 
+        /// <summary>
+        /// Creates new instance of <see cref="OptionsPage"/> class.
+        /// </summary>
+        /// <param name="context">Context</param>
         public OptionsPage(WizardContext context)
         {
             _settings = (WaterMLImportSettings) context.Settings;

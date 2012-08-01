@@ -92,7 +92,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _downloadedAndSaved = value;
-                NotifyPropertyChanged(x => DownloadedAndSaved);
+                NotifyPropertyChanged(() => DownloadedAndSaved);
 
                 // update depended properties
                 RemainingSeries = TotalSeries - (DownloadedAndSaved + WithError);
@@ -109,7 +109,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _downloaded = value;
-                NotifyPropertyChanged(x => Downloaded);
+                NotifyPropertyChanged(() => Downloaded);
             }
         }
 
@@ -123,7 +123,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _withError = value;
-                NotifyPropertyChanged(x => WithError);
+                NotifyPropertyChanged(() => WithError);
 
                 // update depended properties
                 RemainingSeries = TotalSeries - (DownloadedAndSaved + WithError);
@@ -138,7 +138,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _totalSeries = value;
-                NotifyPropertyChanged(x => TotalSeries);
+                NotifyPropertyChanged(() => TotalSeries);
 
                 // update depended properties
                 RemainingSeries = TotalSeries;
@@ -157,7 +157,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _remainingSeries = value;
-                NotifyPropertyChanged(x => RemainingSeries);
+                NotifyPropertyChanged(() => RemainingSeries);
 
                 // update depended properties
                 RefreshEstimatedTimeForDownload();
@@ -172,7 +172,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _estimatedTime = value;
-                NotifyPropertyChanged(x => EstimatedTime);
+                NotifyPropertyChanged(() => EstimatedTime);
             }
         }
 
@@ -183,7 +183,7 @@ namespace HydroDesktop.DataDownload.Downloading
             private set
             {
                 _estimatedTimeForDownload = value;
-                NotifyPropertyChanged(x => EstimatedTimeForDownload);
+                NotifyPropertyChanged(() => EstimatedTimeForDownload);
 
                 EstimatedTime = EstimatedTimeForDownload.Add(EstimatedTimeForSave);
             }
@@ -196,7 +196,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _estimatedTimeForSave = value;
-                NotifyPropertyChanged(x => EstimatedTimeForSave);
+                NotifyPropertyChanged(() => EstimatedTimeForSave);
 
                 EstimatedTime = EstimatedTimeForDownload.Add(EstimatedTimeForSave);
             }

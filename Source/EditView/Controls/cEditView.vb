@@ -321,7 +321,7 @@ Public Class cEditView
     End Sub
 
     'Derive New Series
-    Public Sub btnDeriveNewDataSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Public Sub btnDeriveNewDataSeries_Click(ByVal sender As System.Object, ByVal e As EventArgs)
         'check if the user selected any series, then open the Derive New Series form
         If Not _seriesSelector.SelectedSeriesID = 0 Then
             Dim frmDeriveNewDataSeries As fDeriveNewDataSeries

@@ -40,21 +40,12 @@ namespace HydroDesktop.Interfaces.ObjectModel
             ValueCount = 0;
             ThemeList = new List<Theme>();
             
-            this.Site = site;
-            this.Variable = variable;
-            this.Method = method;
-            this.QualityControlLevel = qualControl;
-            this.Source = source;
+            Site = site;
+            Variable = variable;
+            Method = method;
+            QualityControlLevel = qualControl;
+            Source = source;
         }
-
-        /// <summary>
-        /// Creates a copy of the original series. The data values are also copied. 
-        /// The new series shares the same site, variable, source, method and quality
-        /// control level. The new series does not belong to any data theme.
-        /// </summary>
-        /// <param name="original">The original series</param>
-        public Series(Series original)
-            : this(original, true) { }
 
         /// <summary>
         /// Creates a copy of the original series. If copyDataValues is set to true,
@@ -83,7 +74,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
             Variable = original.Variable;
 
             //to copy the data values
-            if (copyDataValues == true)
+            if (copyDataValues)
             {
                 foreach (DataValue originalDataValue in original.DataValueList)
                 {
@@ -94,18 +85,7 @@ namespace HydroDesktop.Interfaces.ObjectModel
 
         #endregion
 
-        #region Private Variables
-
-        #endregion
-
         #region Properties
-        /// <summary>
-        /// True if the series has data values in the data value list
-        /// </summary>
-        public virtual bool HasDataValues
-        {
-            get { return (ValueCount > 0); }
-        }
 
         /// <summary>
         /// True if the series represents categorical data
@@ -136,24 +116,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The number of data values in this series
         /// </summary>
         public virtual int ValueCount { get; set; }
-
-        private  void UpdateSeriesInfoFromDataValues()
-        {
-            if (DataValueList.Count > 0)
-            {
-                ValueCount = DataValueList.Count;
-                EndDateTimeUTC = DataValueList[DataValueList.Count - 1].DateTimeUTC;
-                BeginDateTimeUTC = DataValueList[0].DateTimeUTC;
-
-                EndDateTime = DataValueList[DataValueList.Count - 1].LocalDateTime;
-                BeginDateTime = DataValueList[0].LocalDateTime;
-
-            } 
-            else
-            {
-                ValueCount = 0;
-            }   
-        }
 
         /// <summary>
         /// The time when the series has been saved to the HydroDesktop 
@@ -186,12 +148,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         public virtual Variable Variable { get; set; }
 
-        ///// <summary>
-        ///// Optional specification of the data service that was used to retrieve
-        ///// this series
-        ///// </summary>
-        //public virtual DataServiceInfo DataService { get; set; }
-
         /// <summary>
         /// The method of measurement
         /// </summary>
@@ -216,18 +172,28 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The list of all themes containing this series
         /// </summary>
         public virtual IList<Theme> ThemeList { get; protected set; }
-
-        /// <summary>
-        /// Shortcut property to obtain time zone information
-        /// </summary>
-        public virtual TimeZoneInfo GetDefaultTimeZone()
-        {
-            return (Site != null) ? Site.DefaultTimeZone : null;
-        }
-
+     
         #endregion
 
-        #region Methods
+        #region Public methods
+
+        public void UpdateSeriesInfoFromDataValues()
+        {
+            if (DataValueList.Count > 0)
+            {
+                ValueCount = DataValueList.Count;
+                EndDateTimeUTC = DataValueList[DataValueList.Count - 1].DateTimeUTC;
+                BeginDateTimeUTC = DataValueList[0].DateTimeUTC;
+
+                EndDateTime = DataValueList[DataValueList.Count - 1].LocalDateTime;
+                BeginDateTime = DataValueList[0].LocalDateTime;
+            }
+            else
+            {
+                ValueCount = 0;
+            }
+        }
+
         /// <summary>
         /// String representation of the series
         /// <returns>SiteName | VariableName | DataType</returns>
@@ -238,28 +204,14 @@ namespace HydroDesktop.Interfaces.ObjectModel
         }
 
         /// <summary>
-        /// Creates a new empty data value object associated with this series.
-        /// The value is added to the end of the data value list of this series.
-        /// </summary>
-        public virtual DataValue AddDataValue()
-        {
-            DataValue newValue = new DataValue();
-            newValue.Series = this;
-            DataValueList.Add(newValue);
-            UpdateSeriesInfoFromDataValues();
-            return newValue;
-        }
-
-        /// <summary>
         /// Associates an existing data value with this data series
         /// </summary>
         /// <param name="val"></param>
-        public virtual DataValue AddDataValue(DataValue val)
+        public virtual void AddDataValue(DataValue val)
         { 
             DataValueList.Add(val);
             val.Series = this;
             UpdateSeriesInfoFromDataValues();
-            return val;
         }
 
         /// <summary>
@@ -268,29 +220,10 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <param name="time">the local observation time of the data value</param>
         /// <param name="value">the observation value</param>
         /// <returns>the DataValue object</returns>
-        public virtual DataValue AddDataValue(DateTime time, double value)
+        public virtual void AddDataValue(DateTime time, double value)
         {
-            DataValue val = new DataValue(value, time, 0.0);
-            DataValueList.Add(val);
-            val.Series = this;
-            UpdateSeriesInfoFromDataValues();
-            return val;
-        }
-
-        /// <summary>
-        /// Adds a data value to the end of this series
-        /// </summary>
-        /// <param name="time">the local observation time of the data value</param>
-        /// <param name="value">the observed value</param>
-        /// <param name="utcOffset">the difference between UTC and local time</param>
-        /// <returns>the DataValue object</returns>
-        public virtual DataValue AddDataValue(DateTime time, double value, double utcOffset)
-        {
-            DataValue val = new DataValue(value, time, utcOffset);
-            DataValueList.Add(val);
-            val.Series = this;
-            UpdateSeriesInfoFromDataValues();
-            return val;
+            var val = new DataValue(value, time, 0.0);
+            AddDataValue(val);
         }
 
         /// <summary>
@@ -300,26 +233,12 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <param name="value">the observed value</param>
         /// <param name="utcOffset">the difference between UTC and local time</param>
         /// <param name="qualifier">the qualifier (contains information about specific
-        /// observation conditions</param>
+        ///   observation conditions</param>
         /// <returns>the DataValue object</returns>
-        public virtual DataValue AddDataValue(DateTime time, double value, double utcOffset, Qualifier qualifier)
+        public virtual void AddDataValue(DateTime time, double value, double utcOffset, Qualifier qualifier)
         {
-            DataValue val = new DataValue(value, time, utcOffset);
-            val.Qualifier = qualifier;
-            DataValueList.Add(val);
-            val.Series = this;
-            UpdateSeriesInfoFromDataValues();
-            return val;
-        }
-
-        /// <summary>
-        /// A shortcut method to obtain the 'no data' value used by the variable
-        /// of this series
-        /// </summary>
-        /// <returns></returns>
-        public virtual double GetNoDataValue()
-        {
-            return (Variable != null) ? Variable.NoDataValue : 0;
+            var val = new DataValue(value, time, utcOffset) {Qualifier = qualifier};
+            AddDataValue(val);
         }
 
         /// <summary>
@@ -329,39 +248,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         public virtual int GetValueCount()
         {
             return DataValueList == null ? 0 : DataValueList.Count;
-        }
-
-        /// <summary>
-        /// Creates a copy of this data series. The data values are also
-        /// copied. the new data series shares the same site, variable, method,
-        /// source and quality control level with the original series.
-        /// </summary>
-        /// <returns>The new copy of the data series</returns>
-        public virtual Series Copy()
-        {
-            return new Series(this);
-        }
-
-        /// <summary>
-        /// Creates a copy of this data series. If the copyDataValues parameter
-        /// is set to true, then data values are also
-        /// copied. the new data series shares the same site, variable, method,
-        /// source and quality control level with the original series.
-        /// <param name="copyDataValues">Specifies whether data values should
-        /// be copied</param>
-        /// </summary>
-        /// <returns>The new copy of the data series</returns>
-        public virtual Series Copy(bool copyDataValues)
-        {
-            return new Series(this, copyDataValues);
-        }
-
-        /// <summary>
-        /// updates the beginDateTime, endDateTime properties based on the DataValueList
-        /// </summary>
-        public virtual void UpdateProperties()
-        {
-            UpdateSeriesInfoFromDataValues();
         }
 
         #endregion

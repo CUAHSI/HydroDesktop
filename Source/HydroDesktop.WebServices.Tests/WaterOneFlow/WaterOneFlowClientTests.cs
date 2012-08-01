@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
 using NUnit.Framework;
 using HydroDesktop.WebServices.WaterOneFlow;
 
@@ -74,27 +75,39 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
             var target = new WaterOneFlowClient(url);
             var start = DateTime.ParseExact(startDate, DATES_FORMAT, provider);
             var end = DateTime.ParseExact(endDate, DATES_FORMAT, provider);
-
-            target.SaveXmlFiles = false;
-            var series1 = target.GetValues(siteCode, varCode, start, end);
-
-            target.SaveXmlFiles = true;
-            var series2 = target.GetValues(siteCode, varCode, start, end);
-
-            Assert.AreEqual(series1.Count, series2.Count);
-            for (var i = 0; i < series1.Count; i++)
+            try
             {
-                var site1 = series1[i].Site;
-                var site2 = series2[i].Site;
-                var var1 = series1[i].Variable;
-                var var2 = series2[i].Variable;
+                target.SaveXmlFiles = false;
+                var series1 = target.GetValues(siteCode, varCode, start, end);
 
-                Assert.AreEqual(site1.Code, site2.Code);
-                Assert.AreEqual(site1.Name, site2.Name);
-                Assert.AreEqual(series1[i].ValueCount, series2[i].ValueCount);
-                Assert.AreEqual(var1.Code, var2.Code);
-                Assert.AreEqual(var1.Name, var2.Name);
+                target.SaveXmlFiles = true;
+                var series2 = target.GetValues(siteCode, varCode, start, end);
+
+                Assert.AreEqual(series1.Count, series2.Count);
+                for (var i = 0; i < series1.Count; i++)
+                {
+                    var site1 = series1[i].Site;
+                    var site2 = series2[i].Site;
+                    var var1 = series1[i].Variable;
+                    var var2 = series2[i].Variable;
+
+                    Assert.AreEqual(site1.Code, site2.Code);
+                    Assert.AreEqual(site1.Name, site2.Name);
+                    Assert.AreEqual(series1[i].ValueCount, series2[i].ValueCount);
+                    Assert.AreEqual(var1.Code, var2.Code);
+                    Assert.AreEqual(var1.Name, var2.Name);
+                }
             }
+            catch (WebException ex)
+            {
+                if (ex.Status.HasFlag(WebExceptionStatus.ProtocolError) ||
+                    ex.Status.HasFlag(WebExceptionStatus.Timeout))
+                {
+                    Assert.Inconclusive("Unable to test GetValues() from: " + url);
+                }
+                throw;
+            }
+
         }
     }
 }

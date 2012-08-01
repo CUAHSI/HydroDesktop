@@ -8,7 +8,6 @@ Namespace Controls
         Implements IChart
 
         Private m_StdDev As Double = 0
-        Private _seriesPlotInfo As SeriesPlotInfo
 
         Private Const db_outFld_ValDTMonth As String = "DateMonth"
         Private Const db_outFld_ValDTYear As String = "DateYear"
@@ -23,17 +22,9 @@ Namespace Controls
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.Border.IsVisible = False
-
-            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
-            _seriesPlotInfo = Nothing
-            If Not Visible Then
-                _seriesPlotInfo = seriesPlotInfo
-                Return
-            End If
-
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
@@ -44,13 +35,6 @@ Namespace Controls
             Next
             Refreshing()
         End Sub
-
-        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
-            If Not Visible Then Return
-            If _seriesPlotInfo Is Nothing Then Return
-            Plot(_seriesPlotInfo)
-        End Sub
-
 
         Private Sub Plot(ByRef options As OneSeriesPlotInfo, ByVal e_StdDev As Double)
 
@@ -403,7 +387,6 @@ Namespace Controls
                 'ShowError("An Error occurred while calculating the Monthly Box Plot values. " & vbCrLf & "Message = " & ex.Message)
             End Try
             'return that none were created
-            Return 0
         End Function
 
         Private Function CalcBoxPlot_Seasonal(ByRef medianPtList As PointPairList, ByRef meanPtList As PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double, m_data As DataTable) As Integer
@@ -513,7 +496,6 @@ Namespace Controls
                 'ShowError("An Error occurred while calculating the Seasonal Box Plot values. " & vbCrLf & "Message = " & ex.Message)
             End Try
             'return that none were created
-            Return 0
         End Function
 
         Private Function CalcBoxPlot_Yearly(ByRef medianPtList As PointPairList, ByRef meanPtList As PointPairList, ByRef boxes As BoxPlot(), ByRef xAxisLabels As String(), ByRef min As Double, ByRef max As Double, m_data As DataTable) As Integer
@@ -735,7 +717,6 @@ Namespace Controls
                 'ShowError("An Error occurred while calculating the Overall Box Plot values. " & vbCrLf & "Message = " & ex.Message)
             End Try
             'return that none were created
-            Return 0
         End Function
 
         Private Sub CalcBoxPlotOutliers(ByVal numRows As Integer, ByRef monthData As DataTable, ByRef boxData As BoxPlot, ByRef min As Double, ByRef max As Double)
@@ -995,7 +976,6 @@ Namespace Controls
                 'ShowError("An Error occurred while creating the Year labels for the Box/Whisker Plot." & vbCrLf & "Message = " & ex.Message)
             End Try
             'return 0
-            Return 0
         End Function
 
         Private Sub CalcBoxPlotStats(ByVal numRows As Integer, ByRef data As DataTable, ByRef boxData As BoxPlot)

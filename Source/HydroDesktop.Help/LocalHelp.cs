@@ -46,14 +46,14 @@ namespace HydroDesktop.Help
 			{
 				throw new ArgumentException ( "Could not open help file. File at '" + helpFilePath + "' does not exist.", "RelativeFileLocation" );
 			}
-            else if (Path.GetExtension(helpFilePath) == "pdf")
-            {
-                System.Diagnostics.Process.Start(helpFilePath);
-            }
-            else
-            {
-                WebUtilities.OpenUri(helpFilePath);
-            }
+		    if (Path.GetExtension(helpFilePath) == "pdf")
+		    {
+		        System.Diagnostics.Process.Start(helpFilePath);
+		    }
+		    else
+		    {
+		        WebUtilities.OpenUri(helpFilePath);
+		    }
 		}
 
 		#endregion

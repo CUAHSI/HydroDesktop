@@ -422,7 +422,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 MessageBox.Show(
                     
-                    ex.Message.ToString(),
+                    ex.Message,
                     "Failed to load model...",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -806,7 +806,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 listOfListeners.Add(progressBarListener);
 
                 // log file
-                if (_composition.LogToFile != null && _composition.LogToFile != "")
+                if (!string.IsNullOrEmpty(_composition.LogToFile))
                 {
                     // get composition file's directory to logfile is saved in same directory
                     string logFileName;
@@ -2427,9 +2427,9 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             //-- clear selected model from memory
             if (_selectedModel != null)
                 for (int i = 0; i <= _composition.Models.Count - 1; i++)
-                    if (((UIModel)_composition.Models[i]) == _selectedModel)
+                    if (_composition.Models[i] == _selectedModel)
                     {
-                        ((UIModel)_composition.Models[i]).Color = System.Drawing.Color.LightGreen;
+                        ((UIModel)_composition.Models[i]).Color = Color.LightGreen;
                         _selectedModel = null;
                         _currentFile = null;
                         _allowEdit = false;

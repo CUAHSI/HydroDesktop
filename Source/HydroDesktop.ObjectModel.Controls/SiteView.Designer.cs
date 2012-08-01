@@ -58,6 +58,10 @@
             this.lblLocalProjection = new System.Windows.Forms.Label();
             this.lblLatLongDatum = new System.Windows.Forms.Label();
             this.tbLatLongDatum = new System.Windows.Forms.TextBox();
+            this.tbSiteType = new System.Windows.Forms.TextBox();
+            this.lblSiteType = new System.Windows.Forms.Label();
+            this.tbCountry = new System.Windows.Forms.TextBox();
+            this.lblCountry = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosAccuracy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLocalY)).BeginInit();
@@ -391,10 +395,50 @@
             this.tbLatLongDatum.Size = new System.Drawing.Size(162, 20);
             this.tbLatLongDatum.TabIndex = 4;
             // 
+            // tbSiteType
+            // 
+            this.tbSiteType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSiteType.Location = new System.Drawing.Point(103, 380);
+            this.tbSiteType.Name = "tbSiteType";
+            this.tbSiteType.Size = new System.Drawing.Size(162, 20);
+            this.tbSiteType.TabIndex = 39;
+            // 
+            // lblSiteType
+            // 
+            this.lblSiteType.AutoSize = true;
+            this.lblSiteType.Location = new System.Drawing.Point(14, 383);
+            this.lblSiteType.Name = "lblSiteType";
+            this.lblSiteType.Size = new System.Drawing.Size(49, 13);
+            this.lblSiteType.TabIndex = 40;
+            this.lblSiteType.Text = "SiteType";
+            // 
+            // tbCountry
+            // 
+            this.tbCountry.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbCountry.Location = new System.Drawing.Point(103, 406);
+            this.tbCountry.Name = "tbCountry";
+            this.tbCountry.Size = new System.Drawing.Size(162, 20);
+            this.tbCountry.TabIndex = 41;
+            // 
+            // lblCountry
+            // 
+            this.lblCountry.AutoSize = true;
+            this.lblCountry.Location = new System.Drawing.Point(14, 409);
+            this.lblCountry.Name = "lblCountry";
+            this.lblCountry.Size = new System.Drawing.Size(43, 13);
+            this.lblCountry.TabIndex = 42;
+            this.lblCountry.Text = "Country";
+            // 
             // SiteView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tbCountry);
+            this.Controls.Add(this.lblCountry);
+            this.Controls.Add(this.tbSiteType);
+            this.Controls.Add(this.lblSiteType);
             this.Controls.Add(this.lblLatLongDatum);
             this.Controls.Add(this.tbLatLongDatum);
             this.Controls.Add(this.lblLocalProjection);
@@ -424,7 +468,7 @@
             this.Controls.Add(this.tbSiteName);
             this.Controls.Add(this.lblSiteName);
             this.Name = "SiteView";
-            this.Size = new System.Drawing.Size(279, 387);
+            this.Size = new System.Drawing.Size(279, 432);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosAccuracy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLocalY)).EndInit();
@@ -468,5 +512,9 @@
         private System.Windows.Forms.Label lblLocalProjection;
         private System.Windows.Forms.Label lblLatLongDatum;
         private System.Windows.Forms.TextBox tbLatLongDatum;
+        private System.Windows.Forms.TextBox tbSiteType;
+        private System.Windows.Forms.Label lblSiteType;
+        private System.Windows.Forms.TextBox tbCountry;
+        private System.Windows.Forms.Label lblCountry;
     }
 }

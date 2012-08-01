@@ -11,21 +11,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
     public class Qualifier : BaseEntity
     {
         /// <summary>
-        /// creates a new qualifier object
-        /// </summary>
-        public Qualifier()
-        { }
-        /// <summary>
-        /// Creates a qualifier with the code and description
-        /// </summary>
-        /// <param name="code">qualifier code</param>
-        /// <param name="description">qualifier description</param>
-        public Qualifier(string code, string description)
-        {
-            this.Code = code;
-            this.Description = description;
-        }
-        /// <summary>
         /// qualifier code (for example "P" or "Ice")
         /// </summary>
         public virtual string Code { get; set; }

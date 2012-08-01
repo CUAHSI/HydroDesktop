@@ -55,15 +55,12 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <inheritdoc/>
         public override bool Equals(BaseEntity other)
         {
-            DataFile file2 = other as DataFile;
+            var file2 = other as DataFile;
             if (file2 == null)
             {
                 return base.Equals(other);
             }
-            else
-            {
-                return (FileName.Equals(file2.FileName) && FilePath.Equals(file2.FilePath));
-            }
+            return (FileName.Equals(file2.FileName) && FilePath.Equals(file2.FilePath));
         }
         /// <inheritdoc/>
         public override int GetHashCode()

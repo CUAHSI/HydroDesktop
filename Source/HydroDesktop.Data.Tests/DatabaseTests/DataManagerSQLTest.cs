@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using HydroDesktop.Interfaces;
 using NUnit.Framework;
 using HydroDesktop.Database;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.Data.Tests;
 
-namespace HydroDesktop.Database.Tests.DataManagerTests
+namespace HydroDesktop.Data.Tests.DatabaseTests
 {
     [TestFixture]
     public class DataManagerSQLTest
@@ -28,7 +24,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
         {
             var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>(TestConfig.DbOperations);
 
-            string sql = "SELECT SeriesID from DataSeries";
+            const string sql = "SELECT SeriesID from DataSeries";
             DataTable tbl = TestConfig.DbOperations.LoadTable("tbl", sql);
             if (tbl.Rows.Count > 0)
             {
@@ -69,7 +65,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
 
             Theme myTheme = new Theme("DataManagerSQL-Theme");
             
-            manager.SaveSeriesAsCopy(mySeries, myTheme);
+            manager.SaveSeries(mySeries, myTheme, OverwriteOptions.Copy);
         }
 
         [Test]
@@ -92,8 +88,8 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
 
             Theme myTheme = new Theme("DataManagerSQL-Theme");
 
-            manager.SaveSeriesAsCopy(mySeries1, myTheme);
-            manager.SaveSeriesAsCopy(mySeries2, myTheme);
+            manager.SaveSeries(mySeries1, myTheme, OverwriteOptions.Copy);
+            manager.SaveSeries(mySeries2, myTheme, OverwriteOptions.Copy);
         }
 
         //public void TestDeleteSeries1()
@@ -119,7 +115,7 @@ namespace HydroDesktop.Database.Tests.DataManagerTests
             Random rnd = new Random();
             int numDays = rnd.Next(2000);
             DateTime start = DateTime.Now.Date.AddDays(-numDays);
-            double utcOffset = -7;
+            const double utcOffset = -7;
             
             Series newSeries = new Series(site, variable, method, qc, source);
             newSeries.IsCategorical = false;

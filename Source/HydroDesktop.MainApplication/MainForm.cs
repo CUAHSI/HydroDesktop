@@ -38,18 +38,18 @@ namespace HydroDesktop.MainApplication
             this.appManager.ProgressHandler.Progress("", 0, "Go to the extension manager to find additional extensions!");
         }
 
-        private void LoadCustomBranding(HydroDesktop.MainApplication.Properties.Settings settings)
+        private void LoadCustomBranding(Properties.Settings settings)
         {
             if (!String.IsNullOrWhiteSpace(settings.CustomAppIconPath) &&
                 System.IO.File.Exists(settings.CustomAppIconPath))
             {
-                System.Drawing.Icon ico = new System.Drawing.Icon(settings.CustomAppIconPath);
+                var ico = new System.Drawing.Icon(settings.CustomAppIconPath);
                 this.Icon = ico;
             }
 
             if (!String.IsNullOrWhiteSpace(settings.CustomMainFormTitle))
             {
-                this.Text = settings.CustomMainFormTitle;
+                Text = settings.CustomMainFormTitle;
             }
         }
 

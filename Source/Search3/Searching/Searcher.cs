@@ -48,7 +48,7 @@ namespace Search3.Searching
         /// <param name="settings">Settings to start search.</param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="settings"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Throws if previous search command is still active.</exception>
-        /// <exception cref="SearchSettingsException">Throws if settings to search has any problems.</exception>
+        /// <exception cref="SearchSettingsValidationException">Throws if settings to search has any problems.</exception>
         public void Run(SearchSettings settings)
         {
             if (settings == null) 
@@ -128,6 +128,23 @@ namespace Search3.Searching
                                      TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        private void LogAggregateException(Exception ex)
+        {
+            var aggr = ex as AggregateException;
+            if (aggr != null)
+            {
+                LogMessage("AggregateException Error: " + aggr.Message);
+                foreach (var innerException in aggr.InnerExceptions)
+                {
+                    LogAggregateException(innerException);
+                }
+            }
+            else
+            {
+                LogMessage("Error:", ex);       
+            }
+        }
+
         private void OnFinishedTask(Task<SearchResult> task)
         {
             if (task == null) return;
@@ -140,7 +157,7 @@ namespace Search3.Searching
                 {
                     foreach (var error in task.Exception.InnerExceptions)
                     {
-                        LogMessage("Error:", error);
+                        LogAggregateException(error);
                     }
                 }
                 else
@@ -218,15 +235,7 @@ namespace Search3.Searching
                 }
             }
 
-            if (settings.AreaSettings.Polygons != null)
-            {
-                var polygons = Area.AreaHelper.ReprojectPolygonsToWGS84(settings.AreaSettings.Polygons);
-
-                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(), tileWidth, tileHeight,
-                                                            settings.DateSettings.StartDate,
-                                                            settings.DateSettings.EndDate,
-                                                            webServices, progressHandler);
-            }else
+            if (settings.AreaSettings.AreaRectangle != null)
             {
                 var box = Area.AreaHelper.ReprojectBoxToWGS84(settings.AreaSettings.AreaRectangle,
                                                               settings.AreaSettings.RectangleProjection);
@@ -235,6 +244,15 @@ namespace Search3.Searching
                                                               settings.DateSettings.StartDate,
                                                               settings.DateSettings.EndDate,
                                                               webServices, progressHandler);
+            }
+            else
+            {
+                var polygons = Area.AreaHelper.ReprojectPolygonsToWGS84(settings.AreaSettings.Polygons);
+
+                result = searcher.GetSeriesCatalogInPolygon(polygons, keywords.ToArray(), tileWidth, tileHeight,
+                                                            settings.DateSettings.StartDate,
+                                                            settings.DateSettings.EndDate,
+                                                            webServices, progressHandler);
             }
             return result;
         }
@@ -266,18 +284,18 @@ namespace Search3.Searching
             }
         }
 
-        private void CheckSettingsForErrors(SearchSettings settings)
+        private static void CheckSettingsForErrors(SearchSettings settings)
         {
             var selectedKeywords = settings.KeywordsSettings.SelectedKeywords.ToList();
             if (selectedKeywords.Count == 0)
-                throw new NoSelectedKeywordsException();
+                throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
 
             var webServicesCount = settings.WebServicesSettings.CheckedCount;
             if (webServicesCount == 0)
-                throw new NoWebServicesException();
+                throw new SearchSettingsValidationException("Please provide at least one Web Service for search.");
 
             if (!settings.AreaSettings.HasAnyArea)
-                throw new NoAreaToSearchException();
+                throw new SearchSettingsValidationException("Please provide at least one Target Area for search.");
         }
 
         #endregion
@@ -305,6 +323,11 @@ namespace Search3.Searching
             public void ReportMessage(string message)
             {
                 _parent.LogMessage(message);
+            }
+
+            public CancellationToken CancellationToken
+            {
+                get { return _parent._cancellationTokenSource.Token; }
             }
         }
     }

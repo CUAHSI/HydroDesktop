@@ -14,8 +14,6 @@ namespace Search3.Area
 
         private readonly Map _map;
 
-        private bool _changesApplied;
-
         #endregion
 
         #region Constructors
@@ -90,7 +88,6 @@ namespace Search3.Area
             var dataColumn = cmbField.SelectedItem as DataColumn;
             if (dataColumn == null)
             {
-                //lbValues.DataSource = null;
                 return;
             }
 
@@ -101,35 +98,28 @@ namespace Search3.Area
             foreach(DataRow row in selectedLayer.DataSet.DataTable.Rows)
                 uniqueValues.Add(row[dataColumn.ColumnName].ToString());
 
-            //lbValues.SuspendLayout();
-            //lbValues.DataSource = uniqueValues.ToList();
-            //lbValues.ResumeLayout();
             cmbValues.DataSource = uniqueValues.ToList();
 
             if (!selectedLayer.IsVisible) 
                 selectedLayer.IsVisible = true;
-
-            _changesApplied = false;
         }
 
         private void SelectShapesInTheMap()
         {
-            if (_changesApplied) return;
-            
             var selectedLayer = cmbActiveLayer.SelectedItem as IMapPolygonLayer;
             if (selectedLayer == null) return;
-
-            
 
             var dataColumn = cmbField.SelectedItem as DataColumn;
             if (dataColumn == null) return;
 
+            if (cmbValues.SelectedItem == null) return;
+            var selectedValue = cmbValues.SelectedItem.ToString();
+            if (String.IsNullOrWhiteSpace(selectedValue)) return;
+
             string selectedColumn = cmbField.Text;
 
-            var selectedValue = cmbValues.SelectedItem.ToString();
-
             string filterEx = string.Format("[{0}] = '{1}'", selectedColumn, selectedValue);
-            selectedLayer.SelectByAttribute(filterEx,ModifySelectionMode.Append);
+            selectedLayer.SelectByAttribute(filterEx, ModifySelectionMode.Append);
             _map.MapFrame.IsSelected = false;
 
             //zoom to selection
@@ -137,21 +127,25 @@ namespace Search3.Area
 
             selectedLayer.IsSelected = false;
             selectedLayer.IsSelected = true;
-
-            _changesApplied = true;
-            //_map.Refresh();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
             SelectShapesInTheMap();
+            btnApply.Enabled = false;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            if (!btnApply.Enabled) return;
             SelectShapesInTheMap();
         }
 
         #endregion
+
+        private void cmbValues_SelectedValueChanged(object sender, EventArgs e)
+        {
+            btnApply.Enabled = true;
+        }
     }
 }

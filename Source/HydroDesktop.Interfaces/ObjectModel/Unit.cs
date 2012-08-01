@@ -6,26 +6,6 @@
     public class Unit : BaseEntity
     {
         /// <summary>
-        /// Creates a new default instance of the unit object
-        /// </summary>
-        public Unit()
-        {
-        }
-
-        /// <summary>
-        /// Creates an instance of a unit object
-        /// </summary>
-        /// <param name="name">The unit name (for example, "centimeter")</param>
-        /// <param name="type">The unit type (for example, "length")</param>
-        /// <param name="abbreviation">The unit abbreviation (for example, "cm")</param>
-        public Unit(string name, string type, string abbreviation)
-        {
-            Name = name;
-            UnitsType = type;
-            Abbreviation = abbreviation;
-        }
-
-        /// <summary>
         /// The unit name (for example "centimeter")
         /// </summary>
         public virtual string Name { get; set; }

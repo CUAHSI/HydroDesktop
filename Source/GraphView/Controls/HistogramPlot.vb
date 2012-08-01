@@ -12,15 +12,9 @@ Namespace Controls
         Private xCenterList() As Double
         Private lbin() As Double
         Private rbin() As Double
-        Private _seriesPlotInfo As SeriesPlotInfo
+
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
-            _seriesPlotInfo = Nothing
-            If Not Visible Then
-                _seriesPlotInfo = seriesPlotInfo
-                Return
-            End If
-
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
@@ -30,12 +24,6 @@ Namespace Controls
                 End If
             Next
             Refreshing()
-        End Sub
-
-        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
-            If Not Visible Then Return
-            If _seriesPlotInfo Is Nothing Then Return
-            Plot(_seriesPlotInfo)
         End Sub
 
         Private Function CurveCount() As Int32
@@ -399,9 +387,6 @@ Namespace Controls
             gPane.Legend.IsVisible = False
             gPane.BarSettings.Type = BarType.Stack
             zgHistogramPlot.MasterPane.Border.IsVisible = False
-
-            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
-
         End Sub
 
         Private Sub Refreshing()
