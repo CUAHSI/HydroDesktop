@@ -119,6 +119,7 @@
             this.cmbValues.Name = "cmbValues";
             this.cmbValues.Size = new System.Drawing.Size(288, 21);
             this.cmbValues.TabIndex = 7;
+            this.cmbValues.SelectedValueChanged += new System.EventHandler(this.cmbValues_SelectedValueChanged);
             // 
             // SelectAreaByAttributeDialog
             // 

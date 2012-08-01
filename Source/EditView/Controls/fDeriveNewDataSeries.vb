@@ -4,6 +4,7 @@ Imports HydroDesktop.Database
 Imports System.Windows.Forms
 Imports HydroDesktop.Interfaces
 Imports HydroDesktop.Interfaces.ObjectModel
+Imports System.Threading
 
 
 Public Class fDeriveNewDataSeries
@@ -451,4 +452,10 @@ Public Class fDeriveNewDataSeries
     Public Sub ReportMessage(ByVal message As String) Implements IProgressHandler.ReportMessage
         Throw New NotImplementedException()
     End Sub
+
+    Public ReadOnly Property CancellationToken() As CancellationToken Implements IProgressHandler.CancellationToken
+        Get
+            Throw New NotImplementedException()
+        End Get
+    End Property
 End Class

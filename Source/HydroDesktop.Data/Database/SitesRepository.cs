@@ -56,7 +56,8 @@ namespace HydroDesktop.Database
                                VerticalDatum = Convert.ToString(row["VerticalDatum"]),
                                LocalProjection = _spatialReferenceRepository.GetByKey(row["LocalProjectionID"]),
                                SpatialReference = _spatialReferenceRepository.GetByKey(row["LatLongDatumID"]),
-                               // todo: load other fields
+                               Country = Convert.ToString(row.GetDataOrNull("Country")),
+                               SiteType = Convert.ToString(row.GetDataOrNull("SiteType")),
                            };
             return site;
         }
@@ -73,23 +74,6 @@ namespace HydroDesktop.Database
             const string query = "select count(*) from {0} where SiteID = {1} and SiteCode = '{2}'";
             var result  = DbOperations.ExecuteSingleOutput(string.Format(query, TableName, site.Id, site.Code));
             return Convert.ToInt32(result) > 0;
-        }
-
-        public void AddSite(Site site)
-        {
-            var query = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, Elevation_m, Comments, County, State, PosAccuracy_m, LocalX, LocalY, VerticalDatum, LatLongDatumID, LocalProjectionID)"
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
-            var id = DbOperations.ExecuteSingleOutput(query,
-                                                      new object[]
-                                                          {
-                                                              site.Code, site.Name, site.Latitude, site.Longitude,
-                                                              site.Elevation_m, site.Comments, site.County, site.State,
-                                                              site.PosAccuracy_m, site.LocalX, site.LocalX,
-                                                              site.VerticalDatum, 
-                                                              site.SpatialReference == null? 0 : site.SpatialReference.Id,
-                                                              site.LocalProjection == null? 0 : site.LocalProjection.Id
-                                                          });
-            site.Id = Convert.ToInt64(id);
         }
 
         public IList<Site> GetSitesWithBothVariables(Variable variable1, Variable variable2)

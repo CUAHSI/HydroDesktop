@@ -240,7 +240,7 @@ namespace DataAggregation
 
         #region Private methods
 
-        private bool TimeIntervalsOverlap(DateTime startDate1, DateTime endDate1, DateTime startDate2, DateTime endDate2)
+        private static bool TimeIntervalsOverlap(DateTime startDate1, DateTime endDate1, DateTime startDate2, DateTime endDate2)
         {
             if (startDate2 <= endDate1 && endDate2 >= startDate1)
                 return true;

@@ -177,10 +177,7 @@ namespace HydroDesktop.Main
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }           
+            return false;
         }
 
         /// <summary>
@@ -283,16 +280,13 @@ namespace HydroDesktop.Main
             {
                 return baseMapFolder1;
             }
-            else if (Directory.Exists(baseMapFolder2))
+            if (Directory.Exists(baseMapFolder2))
             {
                 return baseMapFolder2;
             }
-            else
-            {
-                MessageBox.Show("error loading base map data. The directory " +
-                    baseMapFolder2 + " does not exist.");
-                return "";
-            }
+            MessageBox.Show("error loading base map data. The directory " +
+                            baseMapFolder2 + " does not exist.");
+            return "";
         }
     }
 }

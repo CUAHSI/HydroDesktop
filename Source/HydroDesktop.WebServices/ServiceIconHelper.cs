@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Net;
-using System.Resources;
 
 namespace HydroDesktop.WebServices
 {
@@ -13,41 +12,24 @@ namespace HydroDesktop.WebServices
     /// </summary>
     public class ServiceIconHelper
     {
-        /// <summary>
-        /// Creates a new instance of the icon helper class
-        /// </summary>
-        public ServiceIconHelper(string hisCentralUrl)
-        {
-            _hisCentralUrl = hisCentralUrl;
-            if (_hisCentralUrl.EndsWith("webservices/hiscentral.asmx"))
-            {
-                _hisCentralUrl = _hisCentralUrl.Substring(0, _hisCentralUrl.IndexOf("webservices/hiscentral.asmx"));
-                _defaultIconUrl = _hisCentralUrl + "images/defaulticon.gif";
-            }
+        #region Fields
 
+        private readonly Dictionary<string, Image> _serviceIcons = new Dictionary<string, Image>();
+        private static readonly Lazy<ServiceIconHelper> _instance = new Lazy<ServiceIconHelper>(() => new ServiceIconHelper(), true);
+
+        #endregion
+
+        private ServiceIconHelper()
+        {
             LoadIcons();
         }
 
-        readonly string _hisCentralUrl;
-        string _defaultIconUrl;
-
-        private readonly Dictionary<string, Image> _serviceIcons = new Dictionary<string, Image>();
-
-        private void LoadIcons()
+        public static ServiceIconHelper Instance
         {
-            ResourceManager rm = Properties.Resources.ResourceManager;
-
-            ResourceSet rs = rm.GetResourceSet(new CultureInfo("en-US"), true, true);
-
-            foreach (DictionaryEntry entry in rs)
-            {
-                var entryImage = entry.Value as Image;
-                if (entryImage != null)
-                {
-                    _serviceIcons.Add(entry.Key.ToString(), entryImage);
-                }
-            }
+            get { return _instance.Value; }
         }
+
+        #region Public methods
 
         /// <summary>
         /// Given a service code (such as 'NWISDV'), returns the web service logo icon
@@ -59,40 +41,53 @@ namespace HydroDesktop.WebServices
         {
             if (!_serviceIcons.ContainsKey(serviceCode))
             {
-                Image webImage = GetImageFromHISCentral(serviceCode);
+                var webImage = GetImageFromHISCentral(serviceCode);
                 _serviceIcons.Add(serviceCode, webImage);
             }
 
             return _serviceIcons[serviceCode];
         }
 
-        private Image GetImageFromHISCentral(string serviceCode)
-        {
-            const int requestTimeout = 2000;
+        #endregion
 
+        #region Private methods
+
+        private void LoadIcons()
+        {
+            var rs = Properties.Resources.ResourceManager.GetResourceSet(new CultureInfo("en-US"), true, true);
+            foreach (DictionaryEntry entry in rs)
+            {
+                var entryImage = entry.Value as Image;
+                if (entryImage != null)
+                {
+                    _serviceIcons.Add(entry.Key.ToString(), entryImage);
+                }
+            }
+        }
+
+        private static Image GetImageFromHISCentral(string serviceCode)
+        {
             try
             {
-                string url = String.Format("{0}/getIcon.aspx?name={1}", _hisCentralUrl, serviceCode);
-                System.Net.HttpWebRequest req = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(url);
-                req.Timeout = requestTimeout;
-                // Request response:
-                System.Net.WebResponse webResponse = req.GetResponse();
+                var url = String.Format("{0}/getIcon.aspx?name={1}", Properties.Resources.HISCentral_Site, serviceCode);
+                var req = (HttpWebRequest)WebRequest.Create(url);
+                req.Timeout = 5000;
 
-                // Open data stream:
-                System.IO.Stream webStream = webResponse.GetResponseStream();
-
-                // convert webstream to image
-                System.Drawing.Image tmpImage = System.Drawing.Image.FromStream(webStream);
-
-                // Cleanup
-                webResponse.Close();
-                return tmpImage;
+                using (var webResponse = req.GetResponse())
+                using (var webStream = webResponse.GetResponseStream())
+                {
+                    return Image.FromStream(webStream);
+                }
             }
-            catch (WebException)
+            catch (Exception)
             {
+                // todo: log error
+
                 //if the icon is not available on the web
                 return Properties.Resources.defaulticon;
             }
         }
+
+        #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Search3.Settings
             set
             {
                 _startDate = value;
-                NotifyPropertyChanged(x => StartDate);
+                NotifyPropertyChanged(() => StartDate);
             }
         }
 
@@ -23,7 +23,7 @@ namespace Search3.Settings
             set
             {
                 _endDate = value;
-                NotifyPropertyChanged(x => EndDate);
+                NotifyPropertyChanged(() => EndDate);
             }
         }
 

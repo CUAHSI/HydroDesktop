@@ -88,7 +88,7 @@ namespace DataImport.DataTableImport
             foreach (var tuple in toImport)
             {
                 var series = tuple.Item2;
-                series.UpdateProperties();
+                series.UpdateSeriesInfoFromDataValues();
 
                 repoManager.SaveSeries(series, theme, tuple.Item3);
 

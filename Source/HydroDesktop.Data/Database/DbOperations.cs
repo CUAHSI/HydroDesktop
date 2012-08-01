@@ -710,7 +710,9 @@ namespace HydroDesktop.Database
             var conn = CreateConnection();
             conn.Open();
             var da = dbFactory.CreateDataAdapter();
+            Debug.Assert(da != null, "da != null");
             da.SelectCommand = dbFactory.CreateCommand();
+            Debug.Assert(da.SelectCommand != null, "da.SelectCommand != null");
             da.SelectCommand.CommandText = sqlQuery;
             da.SelectCommand.Connection = conn;
             var dt = new DataTable {TableName = tableName};
@@ -723,6 +725,14 @@ namespace HydroDesktop.Database
             return dt;
         }
 
+        /// <summary>
+        /// Gets the collection of entities
+        /// </summary>
+        /// <typeparam name="T">Type of collection</typeparam>
+        /// <param name="query">Query to select any data</param>
+        /// <param name="rowReader">Delegate that converted row into entity</param>
+        /// <param name="parameters">The values of command parameters.</param>
+        /// <returns>Collection of entities</returns>
         public List<T> Read<T>(string query, Func<DbDataReader, T> rowReader, params object[] parameters)
         {
             var result = new List<T>();
@@ -776,11 +786,10 @@ namespace HydroDesktop.Database
 
             DbDataAdapter da = dbFactory.CreateDataAdapter();
             da.SelectCommand = cmd;
-            DataTable dt = new DataTable();
-            dt.TableName = tableName;
+            var dt = new DataTable {TableName = tableName};
             da.Fill(dt);
 
-            if (openCloseConnection == true)
+            if (openCloseConnection)
             {
                 cmd.Connection.Close();
             }
@@ -841,14 +850,6 @@ namespace HydroDesktop.Database
                 }
 
                 output = cmd.ExecuteScalar();
-                if (output != DBNull.Value)
-                {
-                    output = Convert.ToString(output, CultureInfo.InvariantCulture);
-                }
-            }
-            catch
-            {
-                output = null;
             }
             finally
             {
@@ -868,22 +869,15 @@ namespace HydroDesktop.Database
         /// <returns>an empty dataTable with the same column names and types</returns>
         public DataTable GetTableSchema(string tableName)
         {
-            DataTable table = null;
-            DbConnection conn = CreateConnection();
-            
+            var conn = CreateConnection();
             try
-            {          
-                table = new DataTable();
-                
-                DbDataAdapter da = dbFactory.CreateDataAdapter();
-                
+            {
+                var table = new DataTable {TableName = tableName};
+                var da = dbFactory.CreateDataAdapter();
                 da.SelectCommand = conn.CreateCommand();
-                da.SelectCommand.CommandText = "SELECT * FROM " + tableName;
-                da.FillSchema(table, SchemaType.Source);
-                
-                table = new DataTable();
-                da.FillSchema(table, SchemaType.Source);
-                table.TableName = tableName;
+                da.SelectCommand.CommandText = "SELECT * FROM " + tableName + " WHERE 1 = 0";
+                da.Fill(table);
+                return table;
             }
             finally
             {
@@ -892,8 +886,6 @@ namespace HydroDesktop.Database
                     conn.Close();
                 }
             }
-
-            return table;
         }
     }
 }

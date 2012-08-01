@@ -81,7 +81,7 @@ namespace HydroDesktop.Database
             }
         }
 
-        protected string LastRowIDSelect
+        protected static string LastRowIDSelect
         {
             get { return "; SELECT LAST_INSERT_ROWID();"; }
         }

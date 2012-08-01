@@ -580,7 +580,7 @@ namespace HydroDesktop.Database
                 "DELETE FROM QualityControlLevelsCache WHERE ServiceID = " + serviceID + ";" + 
 				"DELETE FROM ISOMetadataCache WHERE ServiceID = " + serviceID + ";";
 
-			if ( deleteService == true )
+			if ( deleteService )
 			{
 				sqlDelete += "DELETE FROM DataServices WHERE ServiceID = " + serviceID + ";";
 			}

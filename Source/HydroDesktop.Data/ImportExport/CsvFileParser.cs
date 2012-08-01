@@ -7,7 +7,7 @@ namespace HydroDesktop.ImportExport
 	/// <summary>
 	/// Helper class for CSV file parsing
 	/// </summary>
-    public class CsvFileParser
+    public static class CsvFileParser
 	{
 		#region Private Members
 
@@ -179,7 +179,7 @@ namespace HydroDesktop.ImportExport
 						}
 
 						// Report progress
-						if ( bgWorker.WorkerReportsProgress == true )
+						if ( bgWorker.WorkerReportsProgress )
 						{
 							currentStep++;
 							percentComplete = (int)(100 * currentStep / totalSteps);
@@ -221,7 +221,7 @@ namespace HydroDesktop.ImportExport
 					return dataTable;
 				}
 
-				if ( bgWorker.WorkerReportsProgress == true )
+				if ( bgWorker.WorkerReportsProgress )
 				{
 					bgWorker.ReportProgress ( 100, "All lines read from file" );
 				}

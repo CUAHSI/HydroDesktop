@@ -66,6 +66,17 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// Comments (optional comments about the site)
         /// </summary>
         public virtual string Comments { get; set; }
+
+        /// <summary>
+        /// SiteType (optional)
+        /// </summary>
+        public virtual string SiteType { get; set; }
+
+        /// <summary>
+        /// Country (optional)
+        /// </summary>
+        public virtual string Country { get; set; }
+
         /// <summary>
         /// Network prefix. This is the first part of the site
         /// code before the ':' separator.

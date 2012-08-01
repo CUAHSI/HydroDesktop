@@ -31,8 +31,8 @@ namespace HydroDesktop.ObjectModel.Controls
             Entity = null;
 
             // Set bindings
-            tbDescription.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Method).Description);
-            tbLink.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Method).Link);
+            tbDescription.AddBinding<TextBox, Method>(t => t.Text, bindingSource1, m => m.Description);
+            tbLink.AddBinding<TextBox, Method>(t => t.Text, bindingSource1, m => m.Link);
         }
 
         #endregion

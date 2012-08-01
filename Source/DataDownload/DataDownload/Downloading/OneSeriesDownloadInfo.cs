@@ -48,7 +48,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _wsdl = value;
-                NotifyPropertyChanged(x => Wsdl);
+                NotifyPropertyChanged(() => Wsdl);
             }
         }
 
@@ -62,7 +62,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _fullSiteCode = value;
-                NotifyPropertyChanged(x => FullSiteCode);
+                NotifyPropertyChanged(() => FullSiteCode);
             }
         }
 
@@ -76,7 +76,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _fullVariableCode = value;
-                NotifyPropertyChanged(x => FullVariableCode);
+                NotifyPropertyChanged(() => FullVariableCode);
             }
         }
 
@@ -90,7 +90,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _siteName = value;
-                NotifyPropertyChanged(x => SiteName);
+                NotifyPropertyChanged(() => SiteName);
             }
         }
 
@@ -104,7 +104,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _variableName = value;
-                NotifyPropertyChanged(x => VariableName);
+                NotifyPropertyChanged(() => VariableName);
             }
         }
 
@@ -118,7 +118,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _startDate = value;
-                NotifyPropertyChanged(x => StartDate);
+                NotifyPropertyChanged(() => StartDate);
             }
         }
 
@@ -132,7 +132,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _endDate = value;
-                NotifyPropertyChanged(x => EndDate);
+                NotifyPropertyChanged(() => EndDate);
             }
         }
 
@@ -146,7 +146,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _latitude = value;
-                NotifyPropertyChanged(x => Latitude);
+                NotifyPropertyChanged(() => Latitude);
             }
         }
 
@@ -160,7 +160,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _longitude = value;
-                NotifyPropertyChanged(x => Longitude);
+                NotifyPropertyChanged(() => Longitude);
             }
         }
 
@@ -174,8 +174,8 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _status = value;
-                NotifyPropertyChanged(x => Status);
-                NotifyPropertyChanged(x => StatusAsString);
+                NotifyPropertyChanged(() => Status);
+                NotifyPropertyChanged(() => StatusAsString);
 
                 if (_status == DownloadInfoStatus.Pending)
                 {
@@ -211,7 +211,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _downloadTimeTaken = value;
-                NotifyPropertyChanged(x => DownloadTimeTaken);
+                NotifyPropertyChanged(() => DownloadTimeTaken);
             }
         }
 
@@ -226,7 +226,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _errorMessage = value;
-                NotifyPropertyChanged(x => ErrorMessage);
+                NotifyPropertyChanged(() => ErrorMessage);
             }
         }
 
@@ -260,7 +260,7 @@ namespace HydroDesktop.DataDownload.Downloading
             set
             {
                 _overwriteOption = value;
-                NotifyPropertyChanged(x => OverwriteOption);
+                NotifyPropertyChanged(() => OverwriteOption);
             }
         }
 
@@ -297,7 +297,7 @@ namespace HydroDesktop.DataDownload.Downloading
             {
                 _downloadedChunksPercent = value;
 
-                NotifyPropertyChanged(x => DownloadedChunksPercent);
+                NotifyPropertyChanged(() => DownloadedChunksPercent);
             }
         }
 

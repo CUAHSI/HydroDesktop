@@ -210,7 +210,7 @@ namespace HydroDesktop.Database
             return Convert.ToInt64(res) > 0;
         }
 
-        public bool DeleteSeries(int seriesID)
+        public void DeleteSeries(int seriesID)
         {
             var _db = DbOperations;
 
@@ -219,7 +219,7 @@ namespace HydroDesktop.Database
             DataTable tblTheme = _db.LoadTable("tblTheme", sqlTheme);
 
             //if the series belongs to multiple themes, do not delete it.
-            if (tblTheme.Rows.Count != 1) return false;
+            if (tblTheme.Rows.Count != 1) return;
 
             //otherwise, delete the series
             var seriesToDel = GetByKey(seriesID);
@@ -335,7 +335,6 @@ namespace HydroDesktop.Database
                 _db.ExecuteNonQuery(dele2);
             }
             catch { }
-            return true;
         }
 
         public Tuple<DateTime, DateTime> GetDateTimes(long seriesID)

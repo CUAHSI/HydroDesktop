@@ -63,35 +63,12 @@ namespace HydroDesktop.Database
         /// <returns>number of saved data values</returns>
         public int SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues)
         { 
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
-            string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
-            string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
-            string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
-            string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
-
-            
-            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
-                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
+                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + LastRowIDSelect;
 
-            string sqlSaveQualifier = "INSERT INTO Qualifiers(QualifierCode, QualifierDescription) VALUES (?,?)" + sqlRowID;
-
-            string sqlSaveSample = "INSERT INTO Samples(SampleType, LabSampleCode, LabMethodID) VALUES (?,?, ?)" + sqlRowID;
-
-            string sqlSaveLabMethod = "INSERT INTO LabMethods(LabName, LabOrganization, LabMethodName, LabMethodLink, LabMethodDescription) " +
-                "VALUES(?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveOffsetType = "INSERT INTO OffsetTypes(OffsetUnitsID, OffsetDescription) VALUES (?, ?)" + sqlRowID;
-
-            string sqlSaveDataValue = "INSERT INTO DataValues(SeriesID, DataValue, ValueAccuracy, LocalDateTime, " +
-                "UTCOffset, DateTimeUTC, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-
-            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + sqlRowID;
+            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + LastRowIDSelect;
             string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
 
             
@@ -99,19 +76,7 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
-            
-            object seriesIDResult = null;
-            object qualifierIDResult = null;
-            object themeIDResult = null;
-            object sampleIDResult = null;
-            object labMethodIDResult = null;
-            object offsetTypeIDResult = null;
-            object offsetUnitIDResult = null;
-
-            var qualifierLookup = new Dictionary<string, Qualifier>();
-            var sampleLookup = new Dictionary<string, Sample>();
-            var offsetLookup = new Dictionary<string, OffsetType>();
+            long themeID = 0;
 
             //create the series object
             Series series = new Series();
@@ -125,9 +90,9 @@ namespace HydroDesktop.Database
                 series.AddDataValue(Convert.ToDateTime(row[0]), Convert.ToDouble(row[1]));
             }
 
-            Theme theme = new Theme(themeName);
+            var theme = new Theme(themeName);
             
-            int numSavedValues = 0;
+            int numSavedValues;
 
             //Step 1 Begin Transaction
             using (DbConnection conn = _db.CreateConnection())
@@ -136,24 +101,10 @@ namespace HydroDesktop.Database
 
                 using (DbTransaction tran = conn.BeginTransaction())
                 {
-                    //****************************************************************
-                    //*** Step 4 Method
-                    //****************************************************************
                     methodID = GetOrCreateMethodID(series.Method, conn);
-
-                    //****************************************************************
-                    //*** Step 5 Quality Control Level
-                    //****************************************************************
                     qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
-
-                    //****************************************************************
-                    //*** Step 6 Source
-                    //****************************************************************
                     sourceID = GetOrCreateSourceID(series.Source, conn);
-
-                    //****************************************************************
-                    //*** Step 7 Series
-                    //****************************************************************
+                    
                     using (DbCommand cmd18 = conn.CreateCommand())
                     {
                         cmd18.CommandText = sqlSaveSeries;
@@ -173,370 +124,29 @@ namespace HydroDesktop.Database
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.DateTime, series.UpdateDateTime));
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.DateTime, series.LastCheckedDateTime));
 
-                        seriesIDResult = cmd18.ExecuteScalar();
+                        var seriesIDResult = cmd18.ExecuteScalar();
                         seriesID = Convert.ToInt32(seriesIDResult);
                     }
 
-
-                    //****************************************************************
-                    //*** Step 8 Qualifier and Sample Lookup
-                    //****************************************************************
+                    Dictionary<string, Qualifier> qualifierLookup;
+                    Dictionary<string, Sample> sampleLookup;
+                    Dictionary<string, OffsetType> offsetLookup;
                     GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
 
-                    //****************************************************************
-                    //*** Step 9 Qualifiers
-                    //****************************************************************
-                    if (qualifierLookup.Count > 0)
-                    {
-                        using (DbCommand cmd19 = conn.CreateCommand())
-                        {
-                            cmd19.CommandText = sqlQualifier;
-                            cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Qualifier qualifier in qualifierLookup.Values)
-                            {
-                                cmd19.Parameters[0].Value = qualifier.Code;
-                                qualifierIDResult = cmd19.ExecuteScalar();
-                                if (qualifierIDResult != null)
-                                {
-                                    qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                }
-                            }
-                        }
-
-                        List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                        foreach (Qualifier qual in qualifierLookup.Values)
-                        {
-                            if (qual.Id == 0)
-                            {
-                                unsavedQualifiers.Add(qual);
-                            }
-                        }
-
-                        if (unsavedQualifiers.Count > 0)
-                        {
-                            using (DbCommand cmd20 = conn.CreateCommand())
-                            {
-                                cmd20.CommandText = sqlSaveQualifier;
-                                cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Qualifier qual2 in unsavedQualifiers)
-                                {
-                                    cmd20.Parameters[0].Value = qual2.Code;
-                                    cmd20.Parameters[1].Value = qual2.Description;
-                                    qualifierIDResult = cmd20.ExecuteScalar();
-                                    qual2.Id = Convert.ToInt32(qualifierIDResult);
-                                }
-                            }
-                        }
-                    }
-
-                    //****************************************************************
-                    //*** TODO Step 10 Samples and Lab Methods
-                    //****************************************************************
-                    if (sampleLookup.Count > 0)
-                    {
-                        Dictionary<string, LabMethod> labMethodLookup = new Dictionary<string, LabMethod>();
-
-                        using (DbCommand cmd21 = conn.CreateCommand())
-                        {
-                            cmd21.CommandText = sqlSample;
-                            cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Sample sample in sampleLookup.Values)
-                            {
-                                cmd21.Parameters[0].Value = sample.SampleType;
-                                cmd21.Parameters[1].Value = sample.LabSampleCode;
-                                sampleIDResult = cmd21.ExecuteScalar();
-                                if (sampleIDResult != null)
-                                {
-                                    sample.Id = Convert.ToInt32(sampleIDResult);
-                                }
-                            }
-                        }
-
-
-                        List<Sample> unsavedSamples = new List<Sample>();
-                        List<LabMethod> unsavedLabMethods = new List<LabMethod>();
-
-                        foreach (Sample samp in sampleLookup.Values)
-                        {
-                            if (samp.Id == 0)
-                            {
-                                unsavedSamples.Add(samp);
-                                string labMethodKey = samp.LabMethod.LabName + "|" + samp.LabMethod.LabMethodName;
-                                if (!labMethodLookup.ContainsKey(labMethodKey))
-                                {
-                                    labMethodLookup.Add(labMethodKey, samp.LabMethod);
-                                }
-                            }
-                        }
-
-                        using (DbCommand cmd22 = conn.CreateCommand())
-                        {
-                            cmd22.CommandText = sqlLabMethod;
-                            cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (LabMethod labMethod in labMethodLookup.Values)
-                            {
-                                cmd22.Parameters[0].Value = labMethod.LabName;
-                                cmd22.Parameters[1].Value = labMethod.LabMethodName;
-                                labMethodIDResult = cmd22.ExecuteScalar();
-                                if (labMethodIDResult != null)
-                                {
-                                    labMethod.Id = Convert.ToInt32(labMethodIDResult);
-                                }
-                            }
-                        }
-
-                        //check unsaved lab methods
-                        foreach (LabMethod lm in labMethodLookup.Values)
-                        {
-                            if (lm.Id == 0)
-                            {
-                                unsavedLabMethods.Add(lm);
-                            }
-                        }
-
-                        //save lab methods
-                        if (unsavedLabMethods.Count > 0)
-                        {
-                            using (DbCommand cmd23 = conn.CreateCommand())
-                            {
-                                cmd23.CommandText = sqlSaveLabMethod;
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (LabMethod labMethodToSave in unsavedLabMethods)
-                                {
-                                    cmd23.Parameters[0].Value = labMethodToSave.LabName;
-                                    cmd23.Parameters[1].Value = labMethodToSave.LabOrganization;
-                                    cmd23.Parameters[2].Value = labMethodToSave.LabMethodName;
-                                    cmd23.Parameters[3].Value = labMethodToSave.LabMethodLink;
-                                    cmd23.Parameters[4].Value = labMethodToSave.LabMethodDescription;
-                                    labMethodIDResult = cmd23.ExecuteScalar();
-                                    labMethodToSave.Id = Convert.ToInt32(labMethodIDResult);
-                                }
-                            }
-                        }
-
-                        //save samples
-                        if (unsavedSamples.Count > 0)
-                        {
-                            using (DbCommand cmd24 = conn.CreateCommand())
-                            {
-                                cmd24.CommandText = sqlSaveSample;
-                                cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd24.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                                foreach (Sample samp3 in unsavedSamples)
-                                {
-                                    cmd24.Parameters[0].Value = samp3.SampleType;
-                                    cmd24.Parameters[1].Value = samp3.LabSampleCode;
-                                    cmd24.Parameters[2].Value = samp3.LabMethod.Id;
-                                    sampleIDResult = cmd24.ExecuteScalar();
-                                    samp3.Id = Convert.ToInt32(sampleIDResult);
-                                }
-                            }
-                        }
-                    }
-
-
-
-                    //****************************************************************
-                    //*** TODO Step 11 Vertical Offsets
-                    //****************************************************************
-                    if (offsetLookup.Count > 0)
-                    {
-                        Dictionary<string, Unit> offsetUnitLookup = new Dictionary<string, Unit>();
-                        List<Unit> unsavedOffsetUnits = new List<Unit>();
-
-                        using (DbCommand cmd25 = conn.CreateCommand())
-                        {
-                            cmd25.CommandText = sqlOffsetType;
-                            cmd25.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (OffsetType offset in offsetLookup.Values)
-                            {
-                                cmd25.Parameters[0].Value = offset.Description;
-                                offsetTypeIDResult = cmd25.ExecuteScalar();
-                                if (offsetTypeIDResult != null)
-                                {
-                                    offset.Id = Convert.ToInt32(offsetTypeIDResult);
-                                }
-                            }
-                        }
-
-                        //check unsaved offsets
-                        List<OffsetType> unsavedoffsets = new List<OffsetType>();
-                        foreach (OffsetType offset2 in offsetLookup.Values)
-                        {
-                            if (offset2.Id == 0)
-                            {
-                                unsavedoffsets.Add(offset2);
-                                string offsetUnitsKey = offset2.Unit.Abbreviation + "|" + offset2.Unit.Name;
-                                if (!offsetUnitLookup.ContainsKey(offsetUnitsKey))
-                                {
-                                    offsetUnitLookup.Add(offsetUnitsKey, offset2.Unit);
-                                }
-                            }
-                        }
-
-                        //check for existing offset units
-                        using (DbCommand cmd26 = conn.CreateCommand())
-                        {
-                            cmd26.CommandText = sqlUnits;
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Unit offsetUnit in offsetUnitLookup.Values)
-                            {
-                                cmd26.Parameters[0].Value = offsetUnit.Name;
-                                cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                offsetUnitIDResult = cmd26.ExecuteScalar();
-                                if (offsetUnitIDResult != null)
-                                {
-                                    offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                }
-                            }
-                        }
-
-                        //check unsaved offset unit
-                        foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                        {
-                            if (offsetUnit1.Id == 0)
-                            {
-                                unsavedOffsetUnits.Add(offsetUnit1);
-                            }
-                        }
-
-                        //save offset units
-                        if (unsavedOffsetUnits.Count > 0)
-                        {
-                            using (DbCommand cmd27 = conn.CreateCommand())
-                            {
-                                cmd27.CommandText = sqlSaveUnits;
-                                cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Unit unitToSave in unsavedOffsetUnits)
-                                {
-                                    cmd27.Parameters[0].Value = unitToSave.Name;
-                                    cmd27.Parameters[1].Value = unitToSave.UnitsType;
-                                    cmd27.Parameters[2].Value = unitToSave.Abbreviation;
-
-                                    offsetUnitIDResult = cmd27.ExecuteScalar();
-                                    unitToSave.Id = Convert.ToInt32(offsetUnitIDResult);
-                                }
-                            }
-                        }
-
-                        //save offset types
-                        if (unsavedoffsets.Count > 0)
-                        {
-                            using (DbCommand cmd28 = conn.CreateCommand())
-                            {
-                                cmd28.CommandText = sqlSaveOffsetType;
-                                cmd28.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                                cmd28.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (OffsetType offsetToSave in unsavedoffsets)
-                                {
-                                    cmd28.Parameters[0].Value = offsetToSave.Unit.Id;
-                                    cmd28.Parameters[1].Value = offsetToSave.Description;
-                                    offsetTypeIDResult = cmd28.ExecuteScalar();
-                                    offsetToSave.Id = Convert.ToInt32(offsetTypeIDResult);
-                                }
-                            }
-                        }
-                    }
-
-                    //****************************************************************
-                    //*** TODO Step 12 Data File - QueryInfo - DataService ***********
-                    //****************************************************************
-
-                    //****************************************************************
-                    //*** TODO Step 13 Data Values                         ***********
-                    //****************************************************************
-                    using (DbCommand cmd30 = conn.CreateCommand())
-                    {
-                        cmd30.CommandText = sqlSaveDataValue;
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32, seriesID));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.String));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                        foreach (DataValue val in series.DataValueList)
-                        {
-                            cmd30.Parameters[1].Value = val.Value;
-                            cmd30.Parameters[2].Value = null;
-                            if (val.ValueAccuracy != 0)
-                            {
-                                cmd30.Parameters[2].Value = val.ValueAccuracy;
-                            }
-                            cmd30.Parameters[3].Value = val.LocalDateTime;
-                            cmd30.Parameters[4].Value = val.UTCOffset;
-                            cmd30.Parameters[5].Value = val.DateTimeUTC;
-                            if (val.OffsetType != null)
-                            {
-                                cmd30.Parameters[6].Value = val.OffsetValue;
-                                cmd30.Parameters[7].Value = val.OffsetType.Id;
-                            }
-                            else
-                            {
-                                cmd30.Parameters[6].Value = null;
-                                cmd30.Parameters[7].Value = null;
-                            }
-                            cmd30.Parameters[8].Value = val.CensorCode;
-                            if (val.Qualifier != null)
-                            {
-                                cmd30.Parameters[9].Value = val.Qualifier.Id;
-                            }
-
-                            if (val.Sample != null)
-                            {
-                                cmd30.Parameters[10].Value = val.Sample.Id;
-                            }
-
-                            cmd30.Parameters[11].Value = null; //TODO Check Data File
-
-                            cmd30.ExecuteNonQuery();
-                            numSavedValues++;
-                        }
-                    }
+                    SaveQualifiers(conn, qualifierLookup);
+                    SaveSamplesAndLabMethods(conn, sampleLookup);
+                    SaveOffsets(conn, offsetLookup);
+                    numSavedValues = SaveDataValues(conn, seriesID, series.DataValueList);
 
                     //****************************************************************
                     //*** Step 14 Data Theme                               ***********
                     //****************************************************************
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
+                   
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -544,8 +154,7 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
@@ -606,36 +215,14 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesAppend(Series series, Theme theme)
         {
-            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
-            string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
-            string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
-            string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
-            string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
-
-            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
-                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
+                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + LastRowIDSelect;
 
-            string sqlSaveQualifier = "INSERT INTO Qualifiers(QualifierCode, QualifierDescription) VALUES (?,?)" + sqlRowID;
-
-            string sqlSaveSample = "INSERT INTO Samples(SampleType, LabSampleCode, LabMethodID) VALUES (?,?, ?)" + sqlRowID;
-
-            string sqlSaveLabMethod = "INSERT INTO LabMethods(LabName, LabOrganization, LabMethodName, LabMethodLink, LabMethodDescription) " +
-                "VALUES(?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveOffsetType = "INSERT INTO OffsetTypes(OffsetUnitsID, OffsetDescription) VALUES (?, ?)" + sqlRowID;
-
-            string sqlSaveDataValue = "INSERT INTO DataValues(SeriesID, DataValue, ValueAccuracy, LocalDateTime, " +
-                "UTCOffset, DateTimeUTC, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-
-            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + sqlRowID;
+            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + LastRowIDSelect;
             string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
 
             string sqlUpdateSeries = "UPDATE DataSeries SET BeginDateTime = ?, BeginDateTimeUTC = ?, EndDateTime = ?, EndDateTimeUTC = ?, " +
@@ -647,19 +234,9 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
-            object qualifierIDResult = null;
-            object themeIDResult = null;
-            object sampleIDResult = null;
-            object labMethodIDResult = null;
-            object offsetTypeIDResult = null;
-            object offsetUnitIDResult = null;
-
-            var qualifierLookup = new Dictionary<string, Qualifier>();
-            var sampleLookup = new Dictionary<string, Sample>();
-            var offsetLookup = new Dictionary<string, OffsetType>();
 
             int numSavedValues = 0;
 
@@ -677,35 +254,15 @@ namespace HydroDesktop.Database
 
                 using (DbTransaction tran = conn.BeginTransaction())
                 {
-                    //****************************************************************
-                    //*** Step 2 Site
-                    //****************************************************************
                     siteID = GetOrCreateSiteID(series.Site, conn);
-
-                    //****************************************************************
-                    //*** Step 3 Variable
-                    //****************************************************************
                     variableID = GetOrCreateVariableID(series.Variable, conn);
-
-                    //****************************************************************
-                    //*** Step 4 Method
-                    //****************************************************************
                     methodID = GetOrCreateMethodID(series.Method, conn);
-
-                    //****************************************************************
-                    //*** Step 5 Quality Control Level
-                    //****************************************************************
                     qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
-
-                    //****************************************************************
-                    //*** Step 6 Source
-                    //****************************************************************
                     sourceID = GetOrCreateSourceID(series.Source, conn);
 
                     //****************************************************************
                     //*** Step 7 Series
                     //****************************************************************
-                    seriesIDResult = null;
                     using (DbCommand cmdSeries = conn.CreateCommand())
                     {
                         //To retrieve the BeginTime, EndTime and SeriesID of the existing series
@@ -758,7 +315,6 @@ namespace HydroDesktop.Database
                     else
                     {
                         //Case 2: Series does not exist.
-                        seriesAlreadyExists = false;
                         using (DbCommand cmd18 = conn.CreateCommand())
                         {
                             cmd18.CommandText = sqlSaveSeries;
@@ -792,353 +348,20 @@ namespace HydroDesktop.Database
                         //****************************************************************
                         //*** Step 8 Qualifier and Sample Lookup
                         //****************************************************************
+                        Dictionary<string, Qualifier> qualifierLookup;
+                        Dictionary<string, Sample> sampleLookup;
+                        Dictionary<string, OffsetType> offsetLookup;
                         GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
-
-                        //****************************************************************
-                        //*** Step 9 Qualifiers
-                        //****************************************************************
-                        if (qualifierLookup.Count > 0)
-                        {
-                            using (DbCommand cmd19 = conn.CreateCommand())
-                            {
-                                cmd19.CommandText = sqlQualifier;
-                                cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Qualifier qualifier in qualifierLookup.Values)
-                                {
-                                    cmd19.Parameters[0].Value = qualifier.Code;
-                                    qualifierIDResult = cmd19.ExecuteScalar();
-                                    if (qualifierIDResult != null)
-                                    {
-                                        qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                    }
-                                }
-                            }
-
-                            List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                            foreach (Qualifier qual in qualifierLookup.Values)
-                            {
-                                if (qual.Id == 0)
-                                {
-                                    unsavedQualifiers.Add(qual);
-                                }
-                            }
-
-                            if (unsavedQualifiers.Count > 0)
-                            {
-                                using (DbCommand cmd20 = conn.CreateCommand())
-                                {
-                                    cmd20.CommandText = sqlSaveQualifier;
-                                    cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (Qualifier qual2 in unsavedQualifiers)
-                                    {
-                                        cmd20.Parameters[0].Value = qual2.Code;
-                                        cmd20.Parameters[1].Value = qual2.Description;
-                                        qualifierIDResult = cmd20.ExecuteScalar();
-                                        qual2.Id = Convert.ToInt32(qualifierIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //****************************************************************
-                        //*** TODO Step 10 Samples and Lab Methods
-                        //****************************************************************
-                        if (sampleLookup.Count > 0)
-                        {
-                            Dictionary<string, LabMethod> labMethodLookup = new Dictionary<string, LabMethod>();
-
-                            using (DbCommand cmd21 = conn.CreateCommand())
-                            {
-                                cmd21.CommandText = sqlSample;
-                                cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Sample sample in sampleLookup.Values)
-                                {
-                                    cmd21.Parameters[0].Value = sample.SampleType;
-                                    cmd21.Parameters[1].Value = sample.LabSampleCode;
-                                    sampleIDResult = cmd21.ExecuteScalar();
-                                    if (sampleIDResult != null)
-                                    {
-                                        sample.Id = Convert.ToInt32(sampleIDResult);
-                                    }
-                                }
-                            }
-
-
-                            List<Sample> unsavedSamples = new List<Sample>();
-                            List<LabMethod> unsavedLabMethods = new List<LabMethod>();
-
-                            foreach (Sample samp in sampleLookup.Values)
-                            {
-                                if (samp.Id == 0)
-                                {
-                                    unsavedSamples.Add(samp);
-                                    string labMethodKey = samp.LabMethod.LabName + "|" + samp.LabMethod.LabMethodName;
-                                    if (!labMethodLookup.ContainsKey(labMethodKey))
-                                    {
-                                        labMethodLookup.Add(labMethodKey, samp.LabMethod);
-                                    }
-                                }
-                            }
-
-                            using (DbCommand cmd22 = conn.CreateCommand())
-                            {
-                                cmd22.CommandText = sqlLabMethod;
-                                cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (LabMethod labMethod in labMethodLookup.Values)
-                                {
-                                    cmd22.Parameters[0].Value = labMethod.LabName;
-                                    cmd22.Parameters[1].Value = labMethod.LabMethodName;
-                                    labMethodIDResult = cmd22.ExecuteScalar();
-                                    if (labMethodIDResult != null)
-                                    {
-                                        labMethod.Id = Convert.ToInt32(labMethodIDResult);
-                                    }
-                                }
-                            }
-
-                            //check unsaved lab methods
-                            foreach (LabMethod lm in labMethodLookup.Values)
-                            {
-                                if (lm.Id == 0)
-                                {
-                                    unsavedLabMethods.Add(lm);
-                                }
-                            }
-
-                            //save lab methods
-                            if (unsavedLabMethods.Count > 0)
-                            {
-                                using (DbCommand cmd23 = conn.CreateCommand())
-                                {
-                                    cmd23.CommandText = sqlSaveLabMethod;
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (LabMethod labMethodToSave in unsavedLabMethods)
-                                    {
-                                        cmd23.Parameters[0].Value = labMethodToSave.LabName;
-                                        cmd23.Parameters[1].Value = labMethodToSave.LabOrganization;
-                                        cmd23.Parameters[2].Value = labMethodToSave.LabMethodName;
-                                        cmd23.Parameters[3].Value = labMethodToSave.LabMethodLink;
-                                        cmd23.Parameters[4].Value = labMethodToSave.LabMethodDescription;
-                                        labMethodIDResult = cmd23.ExecuteScalar();
-                                        labMethodToSave.Id = Convert.ToInt32(labMethodIDResult);
-                                    }
-                                }
-                            }
-
-                            //save samples
-                            if (unsavedSamples.Count > 0)
-                            {
-                                using (DbCommand cmd24 = conn.CreateCommand())
-                                {
-                                    cmd24.CommandText = sqlSaveSample;
-                                    cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd24.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                                    foreach (Sample samp3 in unsavedSamples)
-                                    {
-                                        cmd24.Parameters[0].Value = samp3.SampleType;
-                                        cmd24.Parameters[1].Value = samp3.LabSampleCode;
-                                        cmd24.Parameters[2].Value = samp3.LabMethod.Id;
-                                        sampleIDResult = cmd24.ExecuteScalar();
-                                        samp3.Id = Convert.ToInt32(sampleIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-
-
-                        //****************************************************************
-                        //*** TODO Step 11 Vertical Offsets (NEEDS TESTING DATA - DCEW)
-                        //****************************************************************
-                        if (offsetLookup.Count > 0)
-                        {
-                            Dictionary<string, Unit> offsetUnitLookup = new Dictionary<string, Unit>();
-                            List<Unit> unsavedOffsetUnits = new List<Unit>();
-
-                            using (DbCommand cmd25 = conn.CreateCommand())
-                            {
-                                cmd25.CommandText = sqlOffsetType;
-                                cmd25.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (OffsetType offset in offsetLookup.Values)
-                                {
-                                    cmd25.Parameters[0].Value = offset.Description;
-                                    offsetTypeIDResult = cmd25.ExecuteScalar();
-                                    if (offsetTypeIDResult != null)
-                                    {
-                                        offset.Id = Convert.ToInt32(offsetTypeIDResult);
-                                    }
-                                }
-                            }
-
-                            //check unsaved offsets
-                            List<OffsetType> unsavedoffsets = new List<OffsetType>();
-                            foreach (OffsetType offset2 in offsetLookup.Values)
-                            {
-                                if (offset2.Id == 0)
-                                {
-                                    unsavedoffsets.Add(offset2);
-                                    string offsetUnitsKey = offset2.Unit.Abbreviation + "|" + offset2.Unit.Name;
-                                    if (!offsetUnitLookup.ContainsKey(offsetUnitsKey))
-                                    {
-                                        offsetUnitLookup.Add(offsetUnitsKey, offset2.Unit);
-                                    }
-                                }
-                            }
-
-                            //check for existing offset units
-                            using (DbCommand cmd26 = conn.CreateCommand())
-                            {
-                                cmd26.CommandText = sqlUnits;
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Unit offsetUnit in offsetUnitLookup.Values)
-                                {
-                                    cmd26.Parameters[0].Value = offsetUnit.Name;
-                                    cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                    cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                    offsetUnitIDResult = cmd26.ExecuteScalar();
-                                    if (offsetUnitIDResult != null)
-                                    {
-                                        offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                    }
-                                }
-                            }
-
-                            //check unsaved offset unit
-                            foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                            {
-                                if (offsetUnit1.Id == 0)
-                                {
-                                    unsavedOffsetUnits.Add(offsetUnit1);
-                                }
-                            }
-
-                            //save offset units
-                            if (unsavedOffsetUnits.Count > 0)
-                            {
-                                using (DbCommand cmd27 = conn.CreateCommand())
-                                {
-                                    cmd27.CommandText = sqlSaveUnits;
-                                    cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (Unit unitToSave in unsavedOffsetUnits)
-                                    {
-                                        cmd27.Parameters[0].Value = unitToSave.Name;
-                                        cmd27.Parameters[1].Value = unitToSave.UnitsType;
-                                        cmd27.Parameters[2].Value = unitToSave.Abbreviation;
-
-                                        offsetUnitIDResult = cmd27.ExecuteScalar();
-                                        unitToSave.Id = Convert.ToInt32(offsetUnitIDResult);
-                                    }
-                                }
-                            }
-
-                            //save offset types
-                            if (unsavedoffsets.Count > 0)
-                            {
-                                using (DbCommand cmd28 = conn.CreateCommand())
-                                {
-                                    cmd28.CommandText = sqlSaveOffsetType;
-                                    cmd28.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                                    cmd28.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (OffsetType offsetToSave in unsavedoffsets)
-                                    {
-                                        cmd28.Parameters[0].Value = offsetToSave.Unit.Id;
-                                        cmd28.Parameters[1].Value = offsetToSave.Description;
-                                        offsetTypeIDResult = cmd28.ExecuteScalar();
-                                        offsetToSave.Id = Convert.ToInt32(offsetTypeIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //****************************************************************
-                        //*** TODO Step 12 Data File - QueryInfo - DataService ***********
-                        //****************************************************************
-
-                        //****************************************************************
-                        //*** TODO Step 13 Data Values related information     ***********
-                        //****************************************************************
-
-                        using (DbCommand cmd30 = conn.CreateCommand())
-                        {
-                            cmd30.CommandText = sqlSaveDataValue;
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32, seriesID));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                            foreach (DataValue val in series.DataValueList)
-                            {
-                                cmd30.Parameters[1].Value = val.Value;
-                                cmd30.Parameters[2].Value = null;
-                                if (val.ValueAccuracy != 0)
-                                {
-                                    cmd30.Parameters[2].Value = val.ValueAccuracy;
-                                }
-                                cmd30.Parameters[3].Value = val.LocalDateTime;
-                                cmd30.Parameters[4].Value = val.UTCOffset;
-                                cmd30.Parameters[5].Value = val.DateTimeUTC;
-                                if (val.OffsetType != null)
-                                {
-                                    cmd30.Parameters[6].Value = val.OffsetValue;
-                                    cmd30.Parameters[7].Value = val.OffsetType.Id;
-                                }
-                                else
-                                {
-                                    cmd30.Parameters[6].Value = null;
-                                    cmd30.Parameters[7].Value = null;
-                                }
-                                cmd30.Parameters[8].Value = val.CensorCode;
-                                if (val.Qualifier != null)
-                                {
-                                    cmd30.Parameters[9].Value = val.Qualifier.Id;
-                                }
-
-                                if (val.Sample != null)
-                                {
-                                    cmd30.Parameters[10].Value = val.Sample.Id;
-                                }
-
-                                cmd30.Parameters[11].Value = null; //TODO Check Data File
-
-                                cmd30.ExecuteNonQuery();
-                                numSavedValues++;
-                            }
-                        }
+                      
+                        SaveQualifiers(conn, qualifierLookup);
+                        SaveSamplesAndLabMethods(conn, sampleLookup);
+                        SaveOffsets(conn, offsetLookup);
+                        numSavedValues = SaveDataValues(conn, seriesID, series.DataValueList);
 
                         //****************************************************************
                         //*** Step 14 Data Series Update                       ***********
                         //****************************************************************
-                        if (seriesAlreadyExists == true && seriesID > 0)
+                        if (seriesAlreadyExists && seriesID > 0)
                         {
                             //begin DateTime
                             DateTime beginDateTime = beginTimeDb;
@@ -1182,18 +405,11 @@ namespace HydroDesktop.Database
                     //*** Step 15 Data Theme                               ***********
                     //****************************************************************
 
-                    
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -1201,13 +417,12 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
                     //To save the Theme-Series combination (DataThemes DataTable)
-                    object seriesThemeCombinationResult = null;
+                    object seriesThemeCombinationResult;
                     using (DbCommand cmd24 = conn.CreateCommand())
                     {
                         cmd24.CommandText = sqlThemeSeries;
@@ -1251,36 +466,14 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesOverwrite(Series series, Theme theme)
         {
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
-            string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
-            string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
-            string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
             string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
-            string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
-
-            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
-                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
-
-            string sqlSaveQualifier = "INSERT INTO Qualifiers(QualifierCode, QualifierDescription) VALUES (?,?)" + sqlRowID;
-
-            string sqlSaveSample = "INSERT INTO Samples(SampleType, LabSampleCode, LabMethodID) VALUES (?,?, ?)" + sqlRowID;
-
-            string sqlSaveLabMethod = "INSERT INTO LabMethods(LabName, LabOrganization, LabMethodName, LabMethodLink, LabMethodDescription) " +
-                "VALUES(?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveOffsetType = "INSERT INTO OffsetTypes(OffsetUnitsID, OffsetDescription) VALUES (?, ?)" + sqlRowID;
-
-            string sqlSaveDataValue = "INSERT INTO DataValues(SeriesID, DataValue, ValueAccuracy, LocalDateTime, " +
-                "UTCOffset, DateTimeUTC, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-
-            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + sqlRowID;
+                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + LastRowIDSelect;
+            
+            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + LastRowIDSelect;
             string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
 
             string sqlUpdateSeries = "UPDATE DataSeries SET BeginDateTime = ?, BeginDateTimeUTC = ?, EndDateTime = ?, EndDateTimeUTC = ?, " +
@@ -1294,23 +487,13 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
-            object qualifierIDResult = null;
-            object themeIDResult = null;
-            object sampleIDResult = null;
-            object labMethodIDResult = null;
-            object offsetTypeIDResult = null;
-            object offsetUnitIDResult = null;
-
-            var qualifierLookup = new Dictionary<string, Qualifier>();
-            var sampleLookup = new Dictionary<string, Sample>();
-            var offsetLookup = new Dictionary<string, OffsetType>();
 
             int numSavedValues = 0;
 
-            bool seriesAlreadyExists = false;
+            bool seriesAlreadyExists;
             DateTime beginTimeDb = DateTime.MinValue;
             DateTime beginTimeUtcDb = beginTimeDb;
             DateTime endTimeDb = DateTime.MinValue;
@@ -1324,35 +507,15 @@ namespace HydroDesktop.Database
 
                 using (DbTransaction tran = conn.BeginTransaction())
                 {
-                    //****************************************************************
-                    //*** Step 2 Site
-                    //****************************************************************
                     siteID = GetOrCreateSiteID(series.Site, conn);
-
-                    //****************************************************************
-                    //*** Step 3 Variable
-                    //****************************************************************
                     variableID = GetOrCreateVariableID(series.Variable, conn);
-
-                    //****************************************************************
-                    //*** Step 4 Method
-                    //****************************************************************
                     methodID = GetOrCreateMethodID(series.Method, conn);
-
-                    //****************************************************************
-                    //*** Step 5 Quality Control Level
-                    //****************************************************************
                     qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
-
-                    //****************************************************************
-                    //*** Step 6 Source
-                    //****************************************************************
                     sourceID = GetOrCreateSourceID(series.Source, conn);
 
                     //****************************************************************
                     //*** Step 7 Series
                     //****************************************************************
-                    seriesIDResult = null;
                     using (DbCommand cmdSeries = conn.CreateCommand())
                     {
                         //To retrieve the BeginTime, EndTime and SeriesID of the existing series
@@ -1441,353 +604,20 @@ namespace HydroDesktop.Database
                         //****************************************************************
                         //*** Step 8 Qualifier and Sample Lookup
                         //****************************************************************
+                        Dictionary<string, Qualifier> qualifierLookup;
+                        Dictionary<string, Sample> sampleLookup;
+                        Dictionary<string, OffsetType> offsetLookup;
                         GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
-
-                        //****************************************************************
-                        //*** Step 9 Qualifiers
-                        //****************************************************************
-                        if (qualifierLookup.Count > 0)
-                        {
-                            using (DbCommand cmd19 = conn.CreateCommand())
-                            {
-                                cmd19.CommandText = sqlQualifier;
-                                cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Qualifier qualifier in qualifierLookup.Values)
-                                {
-                                    cmd19.Parameters[0].Value = qualifier.Code;
-                                    qualifierIDResult = cmd19.ExecuteScalar();
-                                    if (qualifierIDResult != null)
-                                    {
-                                        qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                    }
-                                }
-                            }
-
-                            List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                            foreach (Qualifier qual in qualifierLookup.Values)
-                            {
-                                if (qual.Id == 0)
-                                {
-                                    unsavedQualifiers.Add(qual);
-                                }
-                            }
-
-                            if (unsavedQualifiers.Count > 0)
-                            {
-                                using (DbCommand cmd20 = conn.CreateCommand())
-                                {
-                                    cmd20.CommandText = sqlSaveQualifier;
-                                    cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (Qualifier qual2 in unsavedQualifiers)
-                                    {
-                                        cmd20.Parameters[0].Value = qual2.Code;
-                                        cmd20.Parameters[1].Value = qual2.Description;
-                                        qualifierIDResult = cmd20.ExecuteScalar();
-                                        qual2.Id = Convert.ToInt32(qualifierIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //****************************************************************
-                        //*** TODO Step 10 Samples and Lab Methods
-                        //****************************************************************
-                        if (sampleLookup.Count > 0)
-                        {
-                            Dictionary<string, LabMethod> labMethodLookup = new Dictionary<string, LabMethod>();
-
-                            using (DbCommand cmd21 = conn.CreateCommand())
-                            {
-                                cmd21.CommandText = sqlSample;
-                                cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Sample sample in sampleLookup.Values)
-                                {
-                                    cmd21.Parameters[0].Value = sample.SampleType;
-                                    cmd21.Parameters[1].Value = sample.LabSampleCode;
-                                    sampleIDResult = cmd21.ExecuteScalar();
-                                    if (sampleIDResult != null)
-                                    {
-                                        sample.Id = Convert.ToInt32(sampleIDResult);
-                                    }
-                                }
-                            }
-
-
-                            List<Sample> unsavedSamples = new List<Sample>();
-                            List<LabMethod> unsavedLabMethods = new List<LabMethod>();
-
-                            foreach (Sample samp in sampleLookup.Values)
-                            {
-                                if (samp.Id == 0)
-                                {
-                                    unsavedSamples.Add(samp);
-                                    string labMethodKey = samp.LabMethod.LabName + "|" + samp.LabMethod.LabMethodName;
-                                    if (!labMethodLookup.ContainsKey(labMethodKey))
-                                    {
-                                        labMethodLookup.Add(labMethodKey, samp.LabMethod);
-                                    }
-                                }
-                            }
-
-                            using (DbCommand cmd22 = conn.CreateCommand())
-                            {
-                                cmd22.CommandText = sqlLabMethod;
-                                cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (LabMethod labMethod in labMethodLookup.Values)
-                                {
-                                    cmd22.Parameters[0].Value = labMethod.LabName;
-                                    cmd22.Parameters[1].Value = labMethod.LabMethodName;
-                                    labMethodIDResult = cmd22.ExecuteScalar();
-                                    if (labMethodIDResult != null)
-                                    {
-                                        labMethod.Id = Convert.ToInt32(labMethodIDResult);
-                                    }
-                                }
-                            }
-
-                            //check unsaved lab methods
-                            foreach (LabMethod lm in labMethodLookup.Values)
-                            {
-                                if (lm.Id == 0)
-                                {
-                                    unsavedLabMethods.Add(lm);
-                                }
-                            }
-
-                            //save lab methods
-                            if (unsavedLabMethods.Count > 0)
-                            {
-                                using (DbCommand cmd23 = conn.CreateCommand())
-                                {
-                                    cmd23.CommandText = sqlSaveLabMethod;
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (LabMethod labMethodToSave in unsavedLabMethods)
-                                    {
-                                        cmd23.Parameters[0].Value = labMethodToSave.LabName;
-                                        cmd23.Parameters[1].Value = labMethodToSave.LabOrganization;
-                                        cmd23.Parameters[2].Value = labMethodToSave.LabMethodName;
-                                        cmd23.Parameters[3].Value = labMethodToSave.LabMethodLink;
-                                        cmd23.Parameters[4].Value = labMethodToSave.LabMethodDescription;
-                                        labMethodIDResult = cmd23.ExecuteScalar();
-                                        labMethodToSave.Id = Convert.ToInt32(labMethodIDResult);
-                                    }
-                                }
-                            }
-
-                            //save samples
-                            if (unsavedSamples.Count > 0)
-                            {
-                                using (DbCommand cmd24 = conn.CreateCommand())
-                                {
-                                    cmd24.CommandText = sqlSaveSample;
-                                    cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd24.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                                    foreach (Sample samp3 in unsavedSamples)
-                                    {
-                                        cmd24.Parameters[0].Value = samp3.SampleType;
-                                        cmd24.Parameters[1].Value = samp3.LabSampleCode;
-                                        cmd24.Parameters[2].Value = samp3.LabMethod.Id;
-                                        sampleIDResult = cmd24.ExecuteScalar();
-                                        samp3.Id = Convert.ToInt32(sampleIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-
-
-                        //****************************************************************
-                        //*** TODO Step 11 Vertical Offsets (NEEDS TESTING DATA - DCEW)
-                        //****************************************************************
-                        if (offsetLookup.Count > 0)
-                        {
-                            Dictionary<string, Unit> offsetUnitLookup = new Dictionary<string, Unit>();
-                            List<Unit> unsavedOffsetUnits = new List<Unit>();
-
-                            using (DbCommand cmd25 = conn.CreateCommand())
-                            {
-                                cmd25.CommandText = sqlOffsetType;
-                                cmd25.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (OffsetType offset in offsetLookup.Values)
-                                {
-                                    cmd25.Parameters[0].Value = offset.Description;
-                                    offsetTypeIDResult = cmd25.ExecuteScalar();
-                                    if (offsetTypeIDResult != null)
-                                    {
-                                        offset.Id = Convert.ToInt32(offsetTypeIDResult);
-                                    }
-                                }
-                            }
-
-                            //check unsaved offsets
-                            List<OffsetType> unsavedoffsets = new List<OffsetType>();
-                            foreach (OffsetType offset2 in offsetLookup.Values)
-                            {
-                                if (offset2.Id == 0)
-                                {
-                                    unsavedoffsets.Add(offset2);
-                                    string offsetUnitsKey = offset2.Unit.Abbreviation + "|" + offset2.Unit.Name;
-                                    if (!offsetUnitLookup.ContainsKey(offsetUnitsKey))
-                                    {
-                                        offsetUnitLookup.Add(offsetUnitsKey, offset2.Unit);
-                                    }
-                                }
-                            }
-
-                            //check for existing offset units
-                            using (DbCommand cmd26 = conn.CreateCommand())
-                            {
-                                cmd26.CommandText = sqlUnits;
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Unit offsetUnit in offsetUnitLookup.Values)
-                                {
-                                    cmd26.Parameters[0].Value = offsetUnit.Name;
-                                    cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                    cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                    offsetUnitIDResult = cmd26.ExecuteScalar();
-                                    if (offsetUnitIDResult != null)
-                                    {
-                                        offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                    }
-                                }
-                            }
-
-                            //check unsaved offset unit
-                            foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                            {
-                                if (offsetUnit1.Id == 0)
-                                {
-                                    unsavedOffsetUnits.Add(offsetUnit1);
-                                }
-                            }
-
-                            //save offset units
-                            if (unsavedOffsetUnits.Count > 0)
-                            {
-                                using (DbCommand cmd27 = conn.CreateCommand())
-                                {
-                                    cmd27.CommandText = sqlSaveUnits;
-                                    cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                    cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (Unit unitToSave in unsavedOffsetUnits)
-                                    {
-                                        cmd27.Parameters[0].Value = unitToSave.Name;
-                                        cmd27.Parameters[1].Value = unitToSave.UnitsType;
-                                        cmd27.Parameters[2].Value = unitToSave.Abbreviation;
-
-                                        offsetUnitIDResult = cmd27.ExecuteScalar();
-                                        unitToSave.Id = Convert.ToInt32(offsetUnitIDResult);
-                                    }
-                                }
-                            }
-
-                            //save offset types
-                            if (unsavedoffsets.Count > 0)
-                            {
-                                using (DbCommand cmd28 = conn.CreateCommand())
-                                {
-                                    cmd28.CommandText = sqlSaveOffsetType;
-                                    cmd28.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                                    cmd28.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                    foreach (OffsetType offsetToSave in unsavedoffsets)
-                                    {
-                                        cmd28.Parameters[0].Value = offsetToSave.Unit.Id;
-                                        cmd28.Parameters[1].Value = offsetToSave.Description;
-                                        offsetTypeIDResult = cmd28.ExecuteScalar();
-                                        offsetToSave.Id = Convert.ToInt32(offsetTypeIDResult);
-                                    }
-                                }
-                            }
-                        }
-
-                        //****************************************************************
-                        //*** TODO Step 12 Data File - QueryInfo - DataService ***********
-                        //****************************************************************
-
-                        //****************************************************************
-                        //*** TODO Step 13 Data Values related information     ***********
-                        //****************************************************************
-
-                        using (DbCommand cmd30 = conn.CreateCommand())
-                        {
-                            cmd30.CommandText = sqlSaveDataValue;
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32, seriesID));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                            cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                            foreach (DataValue val in series.DataValueList)
-                            {
-                                cmd30.Parameters[1].Value = val.Value;
-                                cmd30.Parameters[2].Value = null;
-                                if (val.ValueAccuracy != 0)
-                                {
-                                    cmd30.Parameters[2].Value = val.ValueAccuracy;
-                                }
-                                cmd30.Parameters[3].Value = val.LocalDateTime;
-                                cmd30.Parameters[4].Value = val.UTCOffset;
-                                cmd30.Parameters[5].Value = val.DateTimeUTC;
-                                if (val.OffsetType != null)
-                                {
-                                    cmd30.Parameters[6].Value = val.OffsetValue;
-                                    cmd30.Parameters[7].Value = val.OffsetType.Id;
-                                }
-                                else
-                                {
-                                    cmd30.Parameters[6].Value = null;
-                                    cmd30.Parameters[7].Value = null;
-                                }
-                                cmd30.Parameters[8].Value = val.CensorCode;
-                                if (val.Qualifier != null)
-                                {
-                                    cmd30.Parameters[9].Value = val.Qualifier.Id;
-                                }
-
-                                if (val.Sample != null)
-                                {
-                                    cmd30.Parameters[10].Value = val.Sample.Id;
-                                }
-
-                                cmd30.Parameters[11].Value = null; //TODO Check Data File
-
-                                cmd30.ExecuteNonQuery();
-                                numSavedValues++;
-                            }
-                        }
+                     
+                        SaveQualifiers(conn, qualifierLookup);
+                        SaveSamplesAndLabMethods(conn, sampleLookup);
+                        SaveOffsets(conn, offsetLookup);
+                        numSavedValues = SaveDataValues(conn, seriesID, series.DataValueList);
 
                         //****************************************************************
                         //*** Step 14 Data Series Update                       ***********
                         //****************************************************************
-                        if (seriesAlreadyExists == true && seriesID > 0)
+                        if (seriesAlreadyExists && seriesID > 0)
                         {
                             //begin DateTime
                             DateTime beginDateTime = beginTimeDb;
@@ -1831,18 +661,11 @@ namespace HydroDesktop.Database
                     //*** Step 15 Data Theme                               ***********
                     //****************************************************************
 
-
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -1850,13 +673,12 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
                     //To save the Theme-Series combination (DataThemes DataTable)
-                    object seriesThemeCombinationResult = null;
+                    object seriesThemeCombinationResult;
                     using (DbCommand cmd24 = conn.CreateCommand())
                     {
                         cmd24.CommandText = sqlThemeSeries;
@@ -1895,37 +717,13 @@ namespace HydroDesktop.Database
         /// <param name="series">The time series</param>
         /// <param name="theme">The associated theme</param>
         /// <returns>Number of DataValue saved</returns>
-        public int SaveSeriesAsCopy(Series series, Theme theme)
+        private int SaveSeriesAsCopy(Series series, Theme theme)
         {
-            string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-            string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
-            string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
-            string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
-            string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
-            string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
-            string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
-
-            
-            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + sqlRowID;
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
-                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + sqlRowID;
-
-            string sqlSaveQualifier = "INSERT INTO Qualifiers(QualifierCode, QualifierDescription) VALUES (?,?)" + sqlRowID;
-
-            string sqlSaveSample = "INSERT INTO Samples(SampleType, LabSampleCode, LabMethodID) VALUES (?,?, ?)" + sqlRowID;
-
-            string sqlSaveLabMethod = "INSERT INTO LabMethods(LabName, LabOrganization, LabMethodName, LabMethodLink, LabMethodDescription) " +
-                "VALUES(?, ?, ?, ?, ?)" + sqlRowID;
-
-            string sqlSaveOffsetType = "INSERT INTO OffsetTypes(OffsetUnitsID, OffsetDescription) VALUES (?, ?)" + sqlRowID;
-
-            string sqlSaveDataValue = "INSERT INTO DataValues(SeriesID, DataValue, ValueAccuracy, LocalDateTime, " +
-                "UTCOffset, DateTimeUTC, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-
-            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + sqlRowID;
+                "VALUES(?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)" + LastRowIDSelect;
+            string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + LastRowIDSelect;
             string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
 
             int siteID = 0;
@@ -1934,20 +732,10 @@ namespace HydroDesktop.Database
             int qualityControlLevelID = 0;
             int sourceID = 0;
             int seriesID = 0;
-            int themeID = 0;
+            long themeID = 0;
             
             object seriesIDResult = null;
-            object qualifierIDResult = null;
-            object themeIDResult = null;
-            object sampleIDResult = null;
-            object labMethodIDResult = null;
-            object offsetTypeIDResult = null;
-            object offsetUnitIDResult = null;
-
-            var qualifierLookup = new Dictionary<string, Qualifier>();
-            var sampleLookup = new Dictionary<string, Sample>();
-            var offsetLookup = new Dictionary<string, OffsetType>();
-
+            
             int numSavedValues = 0;
             
             //Step 1 Begin Transaction
@@ -1957,29 +745,10 @@ namespace HydroDesktop.Database
                 
                 using (DbTransaction tran = conn.BeginTransaction())
                 {
-                    //****************************************************************
-                    //*** Step 2 Site
-                    //****************************************************************
                     siteID = GetOrCreateSiteID(series.Site, conn);
-                   
-                    //****************************************************************
-                    //*** Step 3 Variable
-                    //****************************************************************
                     variableID = GetOrCreateVariableID(series.Variable, conn);
-
-                    //****************************************************************
-                    //*** Step 4 Method
-                    //****************************************************************
                     methodID = GetOrCreateMethodID(series.Method, conn);
-
-                    //****************************************************************
-                    //*** Step 5 Quality Control Level
-                    //****************************************************************
                     qualityControlLevelID = GetOrCreateQualityControlLevelID(series.QualityControlLevel, conn);
-                   
-                    //****************************************************************
-                    //*** Step 6 Source
-                    //****************************************************************
                     sourceID = GetOrCreateSourceID(series.Source, conn);
                    
                     //****************************************************************
@@ -2012,362 +781,24 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 8 Qualifier and Sample Lookup
                     //****************************************************************
+                    Dictionary<string, Qualifier> qualifierLookup;
+                    Dictionary<string, Sample> sampleLookup;
+                    Dictionary<string, OffsetType> offsetLookup;
                     GetLookups(series, out qualifierLookup, out sampleLookup, out offsetLookup);
-
-                    //****************************************************************
-                    //*** Step 9 Qualifiers
-                    //****************************************************************
-                    if (qualifierLookup.Count > 0)
-                    {
-                        using (DbCommand cmd19 = conn.CreateCommand())
-                        {
-                            cmd19.CommandText = sqlQualifier;
-                            cmd19.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Qualifier qualifier in qualifierLookup.Values)
-                            {
-                                cmd19.Parameters[0].Value = qualifier.Code;
-                                qualifierIDResult = cmd19.ExecuteScalar();
-                                if (qualifierIDResult != null)
-                                {
-                                    qualifier.Id = Convert.ToInt32(qualifierIDResult);
-                                }
-                            }
-                        }
-
-                        List<Qualifier> unsavedQualifiers = new List<Qualifier>();
-                        foreach (Qualifier qual in qualifierLookup.Values)
-                        {
-                            if (qual.Id == 0)
-                            {
-                                unsavedQualifiers.Add(qual);
-                            }
-                        }
-
-                        if (unsavedQualifiers.Count > 0)
-                        {
-                            using (DbCommand cmd20 = conn.CreateCommand())
-                            {
-                                cmd20.CommandText = sqlSaveQualifier;
-                                cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Qualifier qual2 in unsavedQualifiers)
-                                {
-                                    cmd20.Parameters[0].Value = qual2.Code;
-                                    cmd20.Parameters[1].Value = qual2.Description;
-                                    qualifierIDResult = cmd20.ExecuteScalar();
-                                    qual2.Id = Convert.ToInt32(qualifierIDResult);
-                                }
-                            }
-                        }
-                    }
-
-                    //****************************************************************
-                    //*** TODO Step 10 Samples and Lab Methods
-                    //****************************************************************
-                    if (sampleLookup.Count > 0)
-                    {
-                        Dictionary<string, LabMethod> labMethodLookup = new Dictionary<string, LabMethod>();
-
-                        using (DbCommand cmd21 = conn.CreateCommand())
-                        {
-                            cmd21.CommandText = sqlSample;
-                            cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd21.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Sample sample in sampleLookup.Values)
-                            {
-                                cmd21.Parameters[0].Value = sample.SampleType;
-                                cmd21.Parameters[1].Value = sample.LabSampleCode;
-                                sampleIDResult = cmd21.ExecuteScalar();
-                                if (sampleIDResult != null)
-                                {
-                                    sample.Id = Convert.ToInt32(sampleIDResult);
-                                }
-                            }
-                        }
-
-
-                        List<Sample> unsavedSamples = new List<Sample>();
-                        List<LabMethod> unsavedLabMethods = new List<LabMethod>();
-                        
-                        foreach (Sample samp in sampleLookup.Values)
-                        {
-                            if (samp.Id == 0)
-                            {
-                                unsavedSamples.Add(samp);
-                                string labMethodKey = samp.LabMethod.LabName + "|" + samp.LabMethod.LabMethodName;
-                                if (! labMethodLookup.ContainsKey(labMethodKey))
-                                {
-                                    labMethodLookup.Add(labMethodKey, samp.LabMethod);
-                                }
-                            }
-                        }
-
-                        using (DbCommand cmd22 = conn.CreateCommand())
-                        {
-                            cmd22.CommandText = sqlLabMethod;
-                            cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd22.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (LabMethod labMethod in labMethodLookup.Values)
-                            {
-                                cmd22.Parameters[0].Value = labMethod.LabName;
-                                cmd22.Parameters[1].Value = labMethod.LabMethodName;
-                                labMethodIDResult = cmd22.ExecuteScalar();
-                                if (labMethodIDResult != null)
-                                {
-                                    labMethod.Id = Convert.ToInt32(labMethodIDResult);
-                                }
-                            }
-                        }
-
-                        //check unsaved lab methods
-                        foreach (LabMethod lm in labMethodLookup.Values)
-                        {
-                            if (lm.Id == 0)
-                            {
-                                unsavedLabMethods.Add(lm);
-                            }
-                        }
-
-                        //save lab methods
-                        if (unsavedLabMethods.Count > 0)
-                        {
-                            using (DbCommand cmd23 = conn.CreateCommand())
-                            {
-                                cmd23.CommandText = sqlSaveLabMethod;
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd23.Parameters.Add(_db.CreateParameter(DbType.String));
-                            
-                                foreach (LabMethod labMethodToSave in unsavedLabMethods)
-                                {
-                                    cmd23.Parameters[0].Value = labMethodToSave.LabName;
-                                    cmd23.Parameters[1].Value = labMethodToSave.LabOrganization;
-                                    cmd23.Parameters[2].Value = labMethodToSave.LabMethodName;
-                                    cmd23.Parameters[3].Value = labMethodToSave.LabMethodLink;
-                                    cmd23.Parameters[4].Value = labMethodToSave.LabMethodDescription;
-                                    labMethodIDResult = cmd23.ExecuteScalar();
-                                    labMethodToSave.Id = Convert.ToInt32(labMethodIDResult);
-                                }
-                            }
-                        }
-
-                        //save samples
-                        if (unsavedSamples.Count > 0)
-                        {
-                            using (DbCommand cmd24 = conn.CreateCommand())
-                            {
-                                cmd24.CommandText = sqlSaveSample;
-                                cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd24.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd24.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                                foreach (Sample samp3 in unsavedSamples)
-                                {
-                                    cmd24.Parameters[0].Value = samp3.SampleType;
-                                    cmd24.Parameters[1].Value = samp3.LabSampleCode;
-                                    cmd24.Parameters[2].Value = samp3.LabMethod.Id;
-                                    sampleIDResult = cmd24.ExecuteScalar();
-                                    samp3.Id = Convert.ToInt32(sampleIDResult);
-                                }
-                            }
-                        }
-                    }
-
-
-
-                    //****************************************************************
-                    //*** TODO Step 11 Vertical Offsets (NEEDS TESTING DATA - DCEW)
-                    //****************************************************************
-                    if (offsetLookup.Count > 0)
-                    {
-                        Dictionary<string, Unit> offsetUnitLookup = new Dictionary<string, Unit>();
-                        List<Unit> unsavedOffsetUnits = new List<Unit>();
-                        
-                        using (DbCommand cmd25 = conn.CreateCommand())
-                        {
-                            cmd25.CommandText = sqlOffsetType;
-                            cmd25.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (OffsetType offset in offsetLookup.Values)
-                            {
-                                cmd25.Parameters[0].Value = offset.Description;
-                                offsetTypeIDResult = cmd25.ExecuteScalar();
-                                if (offsetTypeIDResult != null)
-                                {
-                                    offset.Id = Convert.ToInt32(offsetTypeIDResult);
-                                }
-                            }
-                        }
-
-                        //check unsaved offsets
-                        List<OffsetType> unsavedoffsets = new List<OffsetType>();
-                        foreach (OffsetType offset2 in offsetLookup.Values)
-                        {
-                            if (offset2.Id == 0)
-                            {
-                                unsavedoffsets.Add(offset2);
-                                string offsetUnitsKey =  offset2.Unit.Abbreviation + "|" + offset2.Unit.Name;
-                                if (!offsetUnitLookup.ContainsKey(offsetUnitsKey))
-                                {
-                                    offsetUnitLookup.Add(offsetUnitsKey, offset2.Unit);
-                                }
-                            }
-                        }
-
-                        //check for existing offset units
-                        using (DbCommand cmd26 = conn.CreateCommand())
-                        {
-                            cmd26.CommandText = sqlUnits;
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-                            cmd26.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                            foreach (Unit offsetUnit in offsetUnitLookup.Values)
-                            {
-                                cmd26.Parameters[0].Value = offsetUnit.Name;
-                                cmd26.Parameters[1].Value = offsetUnit.UnitsType;
-                                cmd26.Parameters[2].Value = offsetUnit.Abbreviation;
-                                offsetUnitIDResult = cmd26.ExecuteScalar();
-                                if (offsetUnitIDResult != null)
-                                {
-                                    offsetUnit.Id = Convert.ToInt32(offsetUnitIDResult);
-                                }
-                            }
-                        }
-
-                        //check unsaved offset unit
-                        foreach (Unit offsetUnit1 in offsetUnitLookup.Values)
-                        {
-                            if (offsetUnit1.Id == 0)
-                            {
-                                unsavedOffsetUnits.Add(offsetUnit1);
-                            }
-                        }
-
-                        //save offset units
-                        if (unsavedOffsetUnits.Count > 0)
-                        {
-                            using (DbCommand cmd27 = conn.CreateCommand())
-                            {
-                                cmd27.CommandText = sqlSaveUnits;
-                                cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-                                cmd27.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (Unit unitToSave in unsavedOffsetUnits)
-                                {
-                                    cmd27.Parameters[0].Value = unitToSave.Name;
-                                    cmd27.Parameters[1].Value = unitToSave.UnitsType;
-                                    cmd27.Parameters[2].Value = unitToSave.Abbreviation;
-                                    
-                                    offsetUnitIDResult = cmd27.ExecuteScalar();
-                                    unitToSave.Id = Convert.ToInt32(offsetUnitIDResult);
-                                }
-                            }
-                        }
-
-                        //save offset types
-                        if (unsavedoffsets.Count > 0)
-                        {
-                            using (DbCommand cmd28 = conn.CreateCommand())
-                            {
-                                cmd28.CommandText = sqlSaveOffsetType;
-                                cmd28.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                                cmd28.Parameters.Add(_db.CreateParameter(DbType.String));
-
-                                foreach (OffsetType offsetToSave in unsavedoffsets)
-                                {
-                                    cmd28.Parameters[0].Value = offsetToSave.Unit.Id;
-                                    cmd28.Parameters[1].Value = offsetToSave.Description;
-                                    offsetTypeIDResult = cmd28.ExecuteScalar();
-                                    offsetToSave.Id = Convert.ToInt32(offsetTypeIDResult);
-                                }
-                            }
-                        }
-                    }
-
-                    //****************************************************************
-                    //*** TODO Step 12 Data File - QueryInfo - DataService ***********
-                    //****************************************************************
-
-                    //****************************************************************
-                    //*** TODO Step 13 Data Values                         ***********
-                    //****************************************************************
-                    using (DbCommand cmd30 = conn.CreateCommand())
-                    {
-                        cmd30.CommandText = sqlSaveDataValue;
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32, seriesID));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.DateTime));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Double));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.String));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-                        cmd30.Parameters.Add(_db.CreateParameter(DbType.Int32));
-
-                        foreach (DataValue val in series.DataValueList)
-                        {
-                            cmd30.Parameters[1].Value = val.Value;
-                            cmd30.Parameters[2].Value = null;
-                            if (val.ValueAccuracy != 0)
-                            {
-                                cmd30.Parameters[2].Value = val.ValueAccuracy;
-                            }
-                            cmd30.Parameters[3].Value = val.LocalDateTime;
-                            cmd30.Parameters[4].Value = val.UTCOffset;
-                            cmd30.Parameters[5].Value = val.DateTimeUTC;
-                            if (val.OffsetType != null)
-                            {
-                                cmd30.Parameters[6].Value = val.OffsetValue;
-                                cmd30.Parameters[7].Value = val.OffsetType.Id;
-                            }
-                            else
-                            {
-                                cmd30.Parameters[6].Value = null;
-                                cmd30.Parameters[7].Value = null;
-                            }
-                            cmd30.Parameters[8].Value = val.CensorCode;
-                            if (val.Qualifier != null)
-                            {
-                                cmd30.Parameters[9].Value = val.Qualifier.Id;
-                            }
-
-                            if (val.Sample != null)
-                            {
-                                cmd30.Parameters[10].Value = val.Sample.Id;
-                            }
-                            
-                            cmd30.Parameters[11].Value = null; //TODO Check Data File
-
-                            cmd30.ExecuteNonQuery();
-                            numSavedValues++;
-                        }
-                    }
+                    
+                    SaveQualifiers(conn, qualifierLookup);
+                    SaveSamplesAndLabMethods(conn, sampleLookup);
+                    SaveOffsets(conn, offsetLookup);
+                    numSavedValues = SaveDataValues(conn, seriesID, series.DataValueList);
 
                     //****************************************************************
                     //*** Step 14 Data Theme                               ***********
                     //****************************************************************
-                    using (DbCommand cmd22 = conn.CreateCommand())
+                    var themeIDResult = GetThemeID(conn, theme);
+                    if (themeIDResult.HasValue)
                     {
-                        cmd22.CommandText = sqlTheme;
-                        cmd22.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
-                        themeIDResult = cmd22.ExecuteScalar();
-                        if (themeIDResult != null)
-                        {
-                            themeID = Convert.ToInt32(themeIDResult);
-                        }
+                        themeID = themeIDResult.Value;
                     }
-
                     if (themeID == 0)
                     {
                         using (DbCommand cmd23 = conn.CreateCommand())
@@ -2375,8 +806,7 @@ namespace HydroDesktop.Database
                             cmd23.CommandText = sqlSaveTheme1;
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
                             cmd23.Parameters.Add(_db.CreateParameter(DbType.String, theme.Description));
-                            themeIDResult = cmd23.ExecuteScalar();
-                            themeID = Convert.ToInt32(themeIDResult);
+                            themeID = Convert.ToInt32(cmd23.ExecuteScalar());
                         }
                     }
 
@@ -2401,6 +831,41 @@ namespace HydroDesktop.Database
         #endregion
       
         #region Private methods
+
+        private void GetLookups(Series series, out Dictionary<string, Qualifier> qualifierLookup,
+                                             out Dictionary<string, Sample> sampleLookup,
+                                             out Dictionary<string, OffsetType> offsetLookup)
+        {
+            qualifierLookup = new Dictionary<string, Qualifier>();
+            sampleLookup = new Dictionary<string, Sample>();
+            offsetLookup = new Dictionary<string, OffsetType>();
+
+            foreach (var val in series.DataValueList)
+            {
+                if (val.Qualifier != null)
+                {
+                    if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
+                    {
+                        qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
+                    }
+                }
+
+                if (val.Sample != null)
+                {
+                    if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
+                    {
+                        sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
+                    }
+                }
+                if (val.OffsetType != null)
+                {
+                    if (!offsetLookup.ContainsKey(val.OffsetType.Description))
+                    {
+                        offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
+                    }
+                }
+            }
+        }
 
         private int GetOrCreateMethodID(Method method, DbConnection conn)
         {
@@ -2479,9 +944,15 @@ namespace HydroDesktop.Database
             const string sqlSpatialReference = "SELECT SpatialReferenceID FROM SpatialReferences WHERE SRSID = ? AND SRSName = ?";
 
             string sqlSaveSpatialReference = "INSERT INTO SpatialReferences(SRSID, SRSName) VALUES(?, ?)" + LastRowIDSelect;
-            string sqlSaveSite = "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
-                                                  "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
-                                                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
+            var sites = _db.GetTableSchema("Sites");
+
+            var sqlSaveSite = (sites.Columns.Contains("Country") && sites.Columns.Contains("SiteType"))
+                                  ? "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
+                                    "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments, Country, SiteType) " +
+                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect
+                                  : "INSERT INTO Sites(SiteCode, SiteName, Latitude, Longitude, LatLongDatumID, Elevation_m, VerticalDatum, " +
+                                    "LocalX, LocalY, LocalProjectionID, PosAccuracy_m, State, County, Comments) " +
+                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
 
             int siteID = 0;
             int spatialReferenceID = 0;
@@ -2582,6 +1053,9 @@ namespace HydroDesktop.Database
                     cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.State));
                     cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.County));
                     cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Comments));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.Country));
+                    cmd04.Parameters.Add(_db.CreateParameter(DbType.String, site.SiteType));
+
 
                     var siteIDResult = cmd04.ExecuteScalar();
                     siteID = Convert.ToInt32(siteIDResult);
@@ -2674,16 +1148,13 @@ namespace HydroDesktop.Database
         private int GetOrCreateVariableID(Variable variable, DbConnection conn)
         {
             const string sqlVariable = "SELECT VariableID FROM Variables WHERE VariableCode = ? AND DataType = ?";
-            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
-
-            string sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + LastRowIDSelect;
             string sqlSaveVariable = "INSERT INTO Variables(VariableCode, VariableName, Speciation, VariableUnitsID, SampleMedium, ValueType, " +
                 "IsRegular, ISCategorical, TimeSupport, TimeUnitsID, DataType, GeneralCategory, NoDataValue) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" + LastRowIDSelect;
 
             int variableID = 0;
-            int variableUnitsID = 0;
-            int timeUnitsID = 0;
+            long variableUnitsID = 0;
+            long timeUnitsID = 0;
 
             using (DbCommand cmd05 = conn.CreateCommand())
             {
@@ -2704,36 +1175,20 @@ namespace HydroDesktop.Database
                 // Get Variable unit
                 if (variable.VariableUnit != null)
                 {
-                    using (DbCommand cmd06 = conn.CreateCommand())
+                    var unitID = GetUnitID(conn, variable.VariableUnit);
+                    if (unitID.HasValue)
                     {
-                        cmd06.CommandText = sqlUnits;
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-
-                        var variableUnitsIDResult = cmd06.ExecuteScalar();
-                        if (variableUnitsIDResult != null)
-                        {
-                            variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                        }
+                        variableUnitsID = unitID.Value;
                     }
                 }
 
                 // Get Time Unit
                 if (variable.TimeUnit != null)
                 {
-                    using (DbCommand cmd06 = conn.CreateCommand())
+                    var unitID = GetUnitID(conn, variable.TimeUnit);
+                    if (unitID.HasValue)
                     {
-                        cmd06.CommandText = sqlUnits;
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                        cmd06.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                        
-                        var timeUnitsIDResult = cmd06.ExecuteScalar();
-                        if (timeUnitsIDResult != null)
-                        {
-                            timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                        }
+                        timeUnitsID = unitID.Value;
                     }
                 }
 
@@ -2741,30 +1196,16 @@ namespace HydroDesktop.Database
                 if (variableUnitsID == 0 &&
                     variable.VariableUnit != null)
                 {
-                    using (DbCommand cmd07 = conn.CreateCommand())
-                    {
-                        cmd07.CommandText = sqlSaveUnits;
-                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Name));
-                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.UnitsType));
-                        cmd07.Parameters.Add(_db.CreateParameter(DbType.String, variable.VariableUnit.Abbreviation));
-                        var variableUnitsIDResult = cmd07.ExecuteScalar();
-                        variableUnitsID = Convert.ToInt32(variableUnitsIDResult);
-                    }
+                    SaveUnit(conn, variable.VariableUnit);
+                    variableUnitsID = variable.VariableUnit.Id;
                 }
 
                 // Save the time units
                 if (timeUnitsID == 0 &&
                     variable.TimeUnit != null)
                 {
-                    using (DbCommand cmd08 = conn.CreateCommand())
-                    {
-                        cmd08.CommandText = sqlSaveUnits;
-                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
-                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
-                        cmd08.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-                        var timeUnitsIDResult = cmd08.ExecuteScalar();
-                        timeUnitsID = Convert.ToInt32(timeUnitsIDResult);
-                    }
+                    SaveUnit(conn, variable.TimeUnit);
+                    timeUnitsID = variable.TimeUnit.Id;
                 }
 
                 //Insert the variable to the database
@@ -2793,42 +1234,378 @@ namespace HydroDesktop.Database
             return variableID;
         }
 
-        private void GetLookups(Series series, out Dictionary<string, Qualifier> qualifierLookup,
-                                               out Dictionary<string, Sample> sampleLookup,
-                                               out Dictionary<string, OffsetType> offsetLookup)
+        private long? GetUnitID(DbConnection conn, Unit unit)
         {
-            qualifierLookup = new Dictionary<string, Qualifier>();
-            sampleLookup = new Dictionary<string, Sample>();
-            offsetLookup = new Dictionary<string, OffsetType>();
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
 
-            foreach (var val in series.DataValueList)
+            using (var cmd = conn.CreateCommand())
             {
-                if (val.Qualifier != null)
-                {
-                    if (!qualifierLookup.ContainsKey(val.Qualifier.Code))
-                    {
-                        qualifierLookup.Add(val.Qualifier.Code, val.Qualifier);
-                    }
-                }
+                cmd.CommandText = sqlUnits;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Name));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.UnitsType));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Abbreviation));
 
-                if (val.Sample != null)
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetQualifierID(DbConnection conn, Qualifier qualifier)
+        {
+            const string sqlQualifier = "SELECT QualifierID FROM Qualifiers WHERE QualifierCode = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlQualifier;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, qualifier.Code));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetThemeID(DbConnection conn, Theme theme)
+        {
+            const string sqlTheme = "SELECT ThemeID FROM DataThemeDescriptions WHERE ThemeName = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlTheme;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, theme.Name));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetSampleID(DbConnection conn, Sample sample)
+        {
+            const string sqlSample = "SELECT SampleID FROM Samples WHERE SampleType = ? AND LabSampleCode = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlSample;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, sample.SampleType));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, sample.LabSampleCode));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetLabMethodID(DbConnection conn, LabMethod labMethod)
+        {
+            const string sqlLabMethod = "SELECT LabMethodID FROM LabMethods WHERE LabName = ? AND LabMethodName = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlLabMethod;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethod.LabName));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethod.LabMethodName));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private long? GetOffsetTypeID(DbConnection conn, OffsetType offsetType)
+        {
+            const string sqlOffsetType = "SELECT OffsetTypeID FROM OffsetTypes WHERE OffsetDescription = ?";
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlOffsetType;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, offsetType.Description));
+
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    return Convert.ToInt64(result);
+                return null;
+            }
+        }
+
+        private void SaveLabMethod(DbConnection conn, LabMethod labMethodToSave)
+        {
+            var sqlSaveLabMethod = "INSERT INTO LabMethods(LabName, LabOrganization, LabMethodName, LabMethodLink, LabMethodDescription) " +
+                "VALUES(?, ?, ?, ?, ?)" + LastRowIDSelect;
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlSaveLabMethod;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethodToSave.LabName));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethodToSave.LabOrganization));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethodToSave.LabMethodName));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethodToSave.LabMethodLink));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, labMethodToSave.LabMethodDescription));
+
+                var labMethodIDResult = cmd.ExecuteScalar();
+                labMethodToSave.Id = Convert.ToInt64(labMethodIDResult);
+            }
+        }
+
+        private void SaveSample(DbConnection conn, Sample sample)
+        {
+            var sqlSaveSample = "INSERT INTO Samples(SampleType, LabSampleCode, LabMethodID) VALUES (?,?, ?)" + LastRowIDSelect;
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlSaveSample;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, sample.SampleType));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, sample.LabSampleCode));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int64, sample.LabMethod.Id));
+
+                var sampleIDResult = cmd.ExecuteScalar();
+                sample.Id = Convert.ToInt64(sampleIDResult);
+            }
+        }
+
+        private void SaveSamplesAndLabMethods(DbConnection conn, Dictionary<string, Sample> sampleLookup)
+        {
+            if (sampleLookup.Count <= 0) return;
+
+            var unsavedSamples = new List<Sample>();
+            var unsavedLabMethods = new List<LabMethod>();
+            var labMethodLookup = new Dictionary<string, LabMethod>();
+
+            foreach (var sample in sampleLookup.Values)
+            {
+                var id = GetSampleID(conn, sample);
+                if (id.HasValue)
                 {
-                    if (!sampleLookup.ContainsKey(val.Sample.LabSampleCode))
+                    sample.Id = id.Value;
+                }
+                else
+                {
+                    unsavedSamples.Add(sample);
+                    var labMethodKey = sample.LabMethod.LabName + "|" + sample.LabMethod.LabMethodName;
+                    if (!labMethodLookup.ContainsKey(labMethodKey))
                     {
-                        sampleLookup.Add(val.Sample.LabSampleCode, val.Sample);
+                        labMethodLookup.Add(labMethodKey, sample.LabMethod);
                     }
                 }
-                if (val.OffsetType != null)
+            }
+            foreach (var labMethod in labMethodLookup.Values)
+            {
+                var id = GetLabMethodID(conn, labMethod);
+                if (id.HasValue)
                 {
-                    if (!offsetLookup.ContainsKey(val.OffsetType.Description))
+                    labMethod.Id = id.Value;
+                }
+                else
+                {
+                    unsavedLabMethods.Add(labMethod);
+                }
+            }
+
+            //save lab methods
+            foreach (var labMethodToSave in unsavedLabMethods)
+            {
+                SaveLabMethod(conn, labMethodToSave);
+            }
+
+            //save samples
+            foreach (var sample in unsavedSamples)
+            {
+                SaveSample(conn, sample);
+            }
+        }
+
+        private void SaveQualifiers(DbConnection conn, Dictionary<string, Qualifier> qualifierLookup)
+        {
+            if (qualifierLookup.Count <= 0) return;
+
+            var sqlSaveQualifier = "INSERT INTO Qualifiers(QualifierCode, QualifierDescription) VALUES (?,?)" + LastRowIDSelect;
+
+            var unsavedQualifiers = new List<Qualifier>();
+            foreach (var qualifier in qualifierLookup.Values)
+            {
+                var id = GetQualifierID(conn, qualifier);
+                if (id.HasValue)
+                {
+                    qualifier.Id = id.Value;
+                }
+                else
+                {
+                    unsavedQualifiers.Add(qualifier);
+                }
+            }
+            if (unsavedQualifiers.Count > 0)
+            {
+                using (DbCommand cmd20 = conn.CreateCommand())
+                {
+                    cmd20.CommandText = sqlSaveQualifier;
+                    cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
+                    cmd20.Parameters.Add(_db.CreateParameter(DbType.String));
+
+                    foreach (var qual2 in unsavedQualifiers)
                     {
-                        offsetLookup.Add(val.OffsetType.Description, val.OffsetType);
+                        cmd20.Parameters[0].Value = qual2.Code;
+                        cmd20.Parameters[1].Value = qual2.Description;
+                        var qualifierIDResult = cmd20.ExecuteScalar();
+                        qual2.Id = Convert.ToInt64(qualifierIDResult);
                     }
                 }
             }
         }
 
-        #endregion
+        private void SaveOffsets(DbConnection conn, Dictionary<string, OffsetType> offsetLookup)
+        {
+            if (offsetLookup.Count <= 0) return;
 
+            var offsetUnitLookup = new Dictionary<string, Unit>();
+            var unsavedOffsetUnits = new List<Unit>();
+            var unsavedoffsets = new List<OffsetType>();
+
+            foreach (var offset in offsetLookup.Values)
+            {
+                var id = GetOffsetTypeID(conn, offset);
+                if (id.HasValue)
+                {
+                    offset.Id = id.Value;
+                }
+                else
+                {
+                    unsavedoffsets.Add(offset);
+                    string offsetUnitsKey = offset.Unit.Abbreviation + "|" + offset.Unit.Name;
+                    if (!offsetUnitLookup.ContainsKey(offsetUnitsKey))
+                    {
+                        offsetUnitLookup.Add(offsetUnitsKey, offset.Unit);
+                    }
+                }
+            }
+
+            //check for existing offset units
+            foreach (var offsetUnit in offsetUnitLookup.Values)
+            {
+                var unitID = GetUnitID(conn, offsetUnit);
+                if (unitID.HasValue)
+                {
+                    offsetUnit.Id = unitID.Value;
+                }
+                else
+                {
+                    unsavedOffsetUnits.Add(offsetUnit);
+                }
+            }
+
+            //save offset units
+            foreach (var unitToSave in unsavedOffsetUnits)
+            {
+                SaveUnit(conn, unitToSave);
+            }
+
+            //save offset types
+            foreach (var offsetToSave in unsavedoffsets)
+            {
+                SaveOffsetType(conn, offsetToSave);
+            }
+        }
+
+        private void SaveUnit(DbConnection conn, Unit unit)
+        {
+            var sqlSaveUnits = "INSERT INTO Units(UnitsName, UnitsType, UnitsAbbreviation) VALUES(?, ?, ?)" + LastRowIDSelect;
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlSaveUnits;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Name));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.UnitsType));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Abbreviation));
+
+                var result = cmd.ExecuteScalar();
+                unit.Id = Convert.ToInt64(result);
+            }
+        }
+
+        private void SaveOffsetType(DbConnection conn, OffsetType offsetType)
+        {
+            var sqlSaveOffsetType = "INSERT INTO OffsetTypes(OffsetUnitsID, OffsetDescription) VALUES (?, ?)" + LastRowIDSelect;
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlSaveOffsetType;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, offsetType.Unit.Id));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String, offsetType.Description));
+
+                var result = cmd.ExecuteScalar();
+                offsetType.Id = Convert.ToInt64(result);
+            }
+        }
+
+        private int SaveDataValues(DbConnection conn, int seriesID, IEnumerable<DataValue> dataValueList)
+        {
+            const string sqlSaveDataValue = "INSERT INTO DataValues(SeriesID, DataValue, ValueAccuracy, LocalDateTime, " +
+              "UTCOffset, DateTimeUTC, OffsetValue, OffsetTypeID, CensorCode, QualifierID, SampleID, FileID) " +
+              "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+
+            var numSavedValues = 0;
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sqlSaveDataValue;
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, seriesID));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Double));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Double));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.DateTime));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Double));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.DateTime));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Double));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int32));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.String));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int32));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int32));
+                cmd.Parameters.Add(_db.CreateParameter(DbType.Int32));
+
+                foreach (var val in dataValueList)
+                {
+                    cmd.Parameters[1].Value = val.Value;
+                    cmd.Parameters[2].Value = null;
+                    if (val.ValueAccuracy != 0)
+                    {
+                        cmd.Parameters[2].Value = val.ValueAccuracy;
+                    }
+                    cmd.Parameters[3].Value = val.LocalDateTime;
+                    cmd.Parameters[4].Value = val.UTCOffset;
+                    cmd.Parameters[5].Value = val.DateTimeUTC;
+                    if (val.OffsetType != null)
+                    {
+                        cmd.Parameters[6].Value = val.OffsetValue;
+                        cmd.Parameters[7].Value = val.OffsetType.Id;
+                    }
+                    else
+                    {
+                        cmd.Parameters[6].Value = null;
+                        cmd.Parameters[7].Value = null;
+                    }
+                    cmd.Parameters[8].Value = val.CensorCode;
+                    if (val.Qualifier != null)
+                    {
+                        cmd.Parameters[9].Value = val.Qualifier.Id;
+                    }
+
+                    if (val.Sample != null)
+                    {
+                        cmd.Parameters[10].Value = val.Sample.Id;
+                    }
+
+                    cmd.Parameters[11].Value = null;
+
+                    cmd.ExecuteNonQuery();
+                    numSavedValues++;
+                }
+            }
+            return numSavedValues;
+        }
+
+        #endregion
     }
 }

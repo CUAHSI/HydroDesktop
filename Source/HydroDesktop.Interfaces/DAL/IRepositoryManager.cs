@@ -33,17 +33,5 @@ namespace HydroDesktop.Interfaces
         /// some of the existing data values in the database may be overwritten.</param>
         /// <returns>The number of saved data values</returns>
         int SaveSeries(Series seriesToSave, Theme theme, OverwriteOptions overwrite);
-
-        
-        /// <summary>
-        /// Saves a data series to the database. The series will be associated with the 
-        /// specified theme. This method does not check whether there are any existing series with 
-        /// the same properties in the database. It will always create a new 'copy' of the series
-        /// </summary>
-        /// <param name="series">The time series</param>
-        /// <param name="theme">The associated theme</param>
-        /// <returns>Number of DataValue saved</returns>
-        int SaveSeriesAsCopy(Series series, Theme theme);
-
     }
 }
