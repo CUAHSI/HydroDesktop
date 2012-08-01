@@ -148,13 +148,14 @@ Source: "..\Binaries\Plugins\EPADelineation\Newtonsoft.Json.dll"; DestDir: "{app
 Source: "..\GeostatisticalTool\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\GeostatisticalTool\MadInterfaces.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-;Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.*.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\HydroModeler.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\HydroR\HydroR.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\HydroR\HydroR_1.2.tar.gz"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\MetadataFetcher.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\Search3\Search3.dll"; DestDir: "{app}\Plugins\Search3"; Flags: ignoreversion;
