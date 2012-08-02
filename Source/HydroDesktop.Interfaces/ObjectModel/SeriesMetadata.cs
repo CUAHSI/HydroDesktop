@@ -35,11 +35,11 @@ namespace HydroDesktop.Interfaces.ObjectModel
         public SeriesMetadata(Site site, Variable variable, Method method, QualityControlLevel qualControl, Source source)
         {
             ValueCount = 0;
-            this.Site = site;
-            this.Variable = variable;
-            this.Method = method;
-            this.QualityControlLevel = qualControl;
-            this.Source = source;
+            Site = site;
+            Variable = variable;
+            Method = method;
+            QualityControlLevel = qualControl;
+            Source = source;
         }
 
         /// <summary>
@@ -50,28 +50,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// </summary>
         /// <param name="original">The original series</param>
         public SeriesMetadata(SeriesMetadata original)
-        {
-            BeginDateTime = original.BeginDateTime;
-            EndDateTime = original.EndDateTime;
-            CreationDateTime = DateTime.Now;
-            EndDateTime = original.EndDateTime;
-            EndDateTimeUTC = original.EndDateTimeUTC;
-            IsCategorical = original.IsCategorical;
-            Method = original.Method;
-            QualityControlLevel = original.QualityControlLevel;
-            Source = original.Source;
-            UpdateDateTime = DateTime.Now;
-            ValueCount = original.ValueCount;
-            Variable = original.Variable;
-        }
-
-        /// <summary>
-        /// Creates seriesMetadata object from the original series.
-        /// The new seriesMetadata object shares the same site, variable, source, method and quality
-        /// control level but it doesn't have any data values
-        /// </summary>
-        /// <param name="original">The original series</param>
-        public SeriesMetadata(Series original)
         {
             BeginDateTime = original.BeginDateTime;
             EndDateTime = original.EndDateTime;
@@ -175,14 +153,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// The primary quality control level of the data
         /// </summary>
         public virtual QualityControlLevel QualityControlLevel { get; set; }
-
-        /// <summary>
-        /// Shortcut property to obtain time zone information
-        /// </summary>
-        public virtual TimeZoneInfo GetDefaultTimeZone()
-        {
-            return (Site != null) ? Site.DefaultTimeZone : null;
-        }
         
 
         #endregion

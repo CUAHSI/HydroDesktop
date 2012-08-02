@@ -184,10 +184,10 @@
         /// </summary>
         public void OnImportsSatisfied()
         {
-            Form mainForm = Shell as Form;
+            var mainForm = Shell as Form;
             if (mainForm != null)
             {
-                mainForm.Shown += new EventHandler(mainForm_Shown);
+                mainForm.Shown += mainForm_Shown;
             }
         }
 

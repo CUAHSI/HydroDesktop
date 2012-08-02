@@ -9,11 +9,10 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.Configuration;
 using HydroDesktop.DataDownload.Downloading;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
+using HydroDesktop.WebServices;
 
 namespace HydroDesktop.DataDownload.SearchLayersProcessing
 {
@@ -243,7 +242,7 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                                 (string)feature.DataRow["VarCode"] == series.Variable.Code &&
                                 (string)feature.DataRow["VarName"] == series.Variable.Name &&
                                 (string)feature.DataRow["DataType"] == series.Variable.DataType &&
-                                (string)feature.DataRow["Method"] == series.Method.Description &&
+                                (feature.DataRow["Method"] == DBNull.Value ? null : feature.DataRow["Method"].ToString()) == series.Method.Description &&
                                 (string)feature.DataRow["QCLevel"] == series.QualityControlLevel.Definition);
             if (downloadedFeature == null) return;
 
@@ -304,11 +303,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             var categorieStep = (maxValue - minValue) / categoriesCount + 1;    // value step in filter
             const int imageStep = 5;
             var imageSize = 5;
-
-            var searchPlugin = _downloadPlugin.App.GetExtension<ISearchPlugin>();
-            var image = searchPlugin != null
-                              ? new WebServices.ServiceIconHelper(searchPlugin.HisCentralUrl).GetImageForService(servCode)
-                              : null;
+            
+            var image = ServiceIconHelper.Instance.GetImageForService(servCode);
 
             const string seriesID = "SeriesID";
             var needDownloadedCategories = featureSet.DataTable.Columns.Contains(seriesID);

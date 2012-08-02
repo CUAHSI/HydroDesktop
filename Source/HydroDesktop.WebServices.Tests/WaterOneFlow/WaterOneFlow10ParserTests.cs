@@ -36,17 +36,28 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
         }
 
         [Test]
-        public void ParseSite()
+        public void ParseSiteInfo()
         {
             var xmlPath = @"TestFiles\v10sites\Site-DCEW2-dcew.p1-20110216043840885.xml";
             var target = new WaterOneFlow10Parser();
 
-            var siteInfo = target.ParseGetSiteInfo(xmlPath);
-            var actual = siteInfo[0].Site;
+            var result = target.ParseGetSiteInfo(xmlPath);
+            Assert.IsTrue(result.Count > 1);
 
-            Assert.AreEqual("Ada", actual.County);
-            Assert.AreEqual("Idaho", actual.State);
-            Assert.AreEqual("Comments", actual.Comments);
+            var series = result[0];
+
+            // Site
+            var site = series.Site;
+            Assert.AreEqual("Ada", site.County);
+            Assert.AreEqual("Idaho", site.State);
+            Assert.AreEqual("Comments", site.Comments);
+            Assert.AreEqual(null, site.Country);
+            Assert.AreEqual(null, site.SiteType);
+
+
+            //QualityControlLevel
+            var qcl = series.QualityControlLevel;
+            Assert.AreEqual(2, qcl.OriginId);
         }
     }
 }

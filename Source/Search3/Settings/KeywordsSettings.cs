@@ -8,6 +8,14 @@ namespace Search3.Settings
 {
     public class KeywordsSettings
     {
+        private readonly SearchSettings _parent;
+
+        public KeywordsSettings(SearchSettings parent)
+        {
+            if (parent == null) throw new ArgumentNullException("parent");
+            _parent = parent;
+        }
+
         /// <summary>
         /// Fires when Keywords/OntologyTree/Synonyms changed
         /// </summary>
@@ -62,7 +70,7 @@ namespace Search3.Settings
 
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
         {
-            var keywordsData = new KeywordsList().GetKeywordsListData(catalogSettings ?? SearchSettings.Instance.CatalogSettings);
+            var keywordsData = new KeywordsList().GetKeywordsListData(catalogSettings ?? _parent.CatalogSettings);
 
             Keywords = keywordsData.Keywords;
             OntologyTree = keywordsData.OntoloyTree;
@@ -77,7 +85,7 @@ namespace Search3.Settings
         /// <returns>Deep copy.</returns>
         public KeywordsSettings Copy()
         {
-            var result = new KeywordsSettings();
+            var result = new KeywordsSettings(_parent);
             result.Copy(this);
             return result;
         }

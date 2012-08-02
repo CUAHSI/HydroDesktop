@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace HydroDesktop.Common
 {
     /// <summary>
@@ -22,5 +24,10 @@ namespace HydroDesktop.Common
         /// </summary>
         /// <param name="message">Message to report</param>
         void ReportMessage(string message);
+
+        /// <summary>
+        /// CancellationToken
+        /// </summary>
+        CancellationToken CancellationToken { get; }
     }
 }

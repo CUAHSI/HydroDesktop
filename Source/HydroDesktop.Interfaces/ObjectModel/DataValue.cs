@@ -24,22 +24,6 @@ namespace HydroDesktop.Interfaces.ObjectModel
         }
 
         /// <summary>
-        /// Creates a new data value object. The local time and utc time needs to
-        /// be specified.
-        /// </summary>
-        /// <param name="localDateTime">The local time</param>
-        /// <param name="dateTimeUTC">The time in UTC</param>
-        /// <param name="value">the data value</param>
-        public DataValue(double value, DateTime localDateTime, DateTime dateTimeUTC)
-        {
-            CensorCode = "nc";
-            _dateTimeUTC = dateTimeUTC;
-            LocalDateTime = localDateTime;
-            DateTimeUTC = dateTimeUTC;
-            Value = value;
-        }
-
-        /// <summary>
         /// Creates a new data value object with the user-specified value.
         /// The local time and the UTC Offset (UTC Offset = time[LocalTime] - time[UTC]) 
         /// needs to be specified.

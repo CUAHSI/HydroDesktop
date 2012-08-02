@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using HydroDesktop.Configuration;
+﻿using System.IO;
 using HydroDesktop.Database;
 using NUnit.Framework;
 
-namespace HydroDesktop.Database.Tests.Database.sqllite
+namespace HydroDesktop.Data.Tests.sqlite
 {
     public class SqlIteDataRepositoryTest
     {
@@ -19,7 +13,7 @@ namespace HydroDesktop.Database.Tests.Database.sqllite
         public void setup()
         {
             tempDir =
-                Path.Combine(HydroDesktop.Configuration.Settings.Instance.TempDirectory, "sqliteUnitTest");
+                Path.Combine(Configuration.Settings.Instance.TempDirectory, "sqliteUnitTest");
             Directory.CreateDirectory(tempDir);
         }
         [TearDown]

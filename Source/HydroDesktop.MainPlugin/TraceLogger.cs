@@ -10,8 +10,8 @@ namespace HydroDesktop.Main
     /// </summary>
     public class TraceLogger
     {
-        string logFileName = "hydrodesktop_log.txt";
-        
+        private const string logFileName = "hydrodesktop_log.txt";
+
         public void CreateTraceFile()
         {
             //first try to create it in application startup path
@@ -32,7 +32,7 @@ namespace HydroDesktop.Main
             //create the trace listener
             if (logStream != null && File.Exists(logFileName))
             {
-                TextWriterTraceListener myTextListener = new TextWriterTraceListener(logStream);
+                var myTextListener = new TextWriterTraceListener(logStream);
                 Trace.Listeners.Add(myTextListener);
             }      
         }
@@ -46,7 +46,7 @@ namespace HydroDesktop.Main
                 {
                     Directory.CreateDirectory(logFileDirectory);
                 }
-                catch (Exception ex1)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -64,7 +64,7 @@ namespace HydroDesktop.Main
                 return logFileStream;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

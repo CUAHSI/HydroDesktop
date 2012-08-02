@@ -9,6 +9,14 @@ namespace Search3.Settings
 {
     public class WebServicesSettings
     {
+        private readonly SearchSettings _parent;
+
+        public WebServicesSettings(SearchSettings parent)
+        {
+            if (parent == null) throw new ArgumentNullException("parent");
+            _parent = parent;
+        }
+
         private IList<WebServiceNode> _webServices;
         public ReadOnlyCollection<WebServiceNode> WebServices
         {
@@ -38,7 +46,7 @@ namespace Search3.Settings
 
         public void RefreshWebServices(CatalogSettings catalogSettings = null)
         {
-            _webServices = new WebServicesList().GetWebServices(catalogSettings ?? SearchSettings.Instance.CatalogSettings).ToList();
+            _webServices = new WebServicesList().GetWebServices(catalogSettings ?? _parent.CatalogSettings).ToList();
         }
 
         public int CheckedCount
@@ -57,7 +65,7 @@ namespace Search3.Settings
         /// <returns>Deep copy.</returns>
         public WebServicesSettings Copy()
         {
-            var result = new WebServicesSettings();
+            var result = new WebServicesSettings(_parent);
             result.Copy(this);
             return result;
         }

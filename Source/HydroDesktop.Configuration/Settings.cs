@@ -96,7 +96,7 @@ namespace HydroDesktop.Configuration
         /// <summary>
         /// Gets the default project file name
         /// </summary>
-        [Obsolete()]
+        [Obsolete]
         public string DefaultProjectFileName
         {
             get

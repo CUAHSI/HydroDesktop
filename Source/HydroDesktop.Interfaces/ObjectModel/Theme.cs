@@ -38,9 +38,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
         /// <param name="description">theme description</param>
         public Theme(string name, string description)
         {
-            this.Name = name;
-            this.Description = description;
-            this.DateCreated = DateTime.Now;
+            Name = name;
+            Description = description;
+            DateCreated = DateTime.Now;
         }
         /// <summary>
         /// Theme name

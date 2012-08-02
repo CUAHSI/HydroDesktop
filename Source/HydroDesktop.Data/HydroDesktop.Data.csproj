@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Database\BaseRepository.cs" />
     <Compile Include="Database\DataFilesRepository.cs" />
+    <Compile Include="Database\DataRowHelper.cs" />
     <Compile Include="Database\DataSeriesRepository.cs" />
     <Compile Include="Database\DataServicesRepository.cs" />
     <Compile Include="Database\DataThemesRepository.cs" />

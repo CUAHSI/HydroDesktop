@@ -1,6 +1,5 @@
 ﻿using DotSpatial.Controls;
 using DotSpatial.Symbology;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
 
 namespace DataAggregation
@@ -12,6 +11,9 @@ namespace DataAggregation
     {
         #region Extension methods
 
+        /// <summary>
+        /// Activates this provider
+        /// </summary>
         public override void Activate()
         {
             base.Activate();
@@ -19,9 +21,11 @@ namespace DataAggregation
             App.Map.LayerAdded += Map_LayerAdded;
             App.Map.Layers.LayerRemoved += Layers_LayerRemoved;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
-
         }
 
+        /// <summary>
+        /// Deactivates this provider
+        /// </summary>
         public override void Deactivate()
         {
             App.Map.LayerAdded -= Map_LayerAdded;
@@ -71,7 +75,11 @@ namespace DataAggregation
         }
 
         #endregion
-       
+
+        /// <summary>
+        /// Attach layer to data aggregation plug-in
+        /// </summary>
+        /// <param name="layer">Layer to attach</param>
         public void AttachLayerToPlugin(ILayer layer)
         {
             // Check for DataAggregation 

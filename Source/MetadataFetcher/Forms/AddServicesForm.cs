@@ -779,19 +779,12 @@ namespace HydroDesktop.MetadataFetcher.Forms
 
         private void txtTitle_Validating(object sender, CancelEventArgs e)
         {
-            if (String.IsNullOrEmpty(txtTitle.Text))
-            {
-                errorProvider1.SetError(txtTitle, "Please enter a title");
-            }
-            else
-            {
-                errorProvider1.SetError(txtTitle, "");
-            }
+            errorProvider1.SetError(txtTitle, !String.IsNullOrEmpty(txtTitle.Text) ? "" : "Please enter a title");
 
             CheckFields();
         }
 
-        private void txtURL_Validating(object sender, CancelEventArgs e)
+	    private void txtURL_Validating(object sender, CancelEventArgs e)
         {
            
             if (String.IsNullOrEmpty(txtURL.Text))
@@ -806,16 +799,9 @@ namespace HydroDesktop.MetadataFetcher.Forms
             }
 
             //check that the URL is Valid -- this is quite slow. Perhaps a REGEX would be better.
-            if (!WebOperations.IsUrlFormatValid(txtURL.Text))
-            {
-                errorProvider1.SetError(txtURL, "Please enter a valid URL");
-            }
-            else
-            {
-                errorProvider1.SetError(txtURL, "");
-            }
+	        errorProvider1.SetError(txtURL, !WebOperations.IsUrlFormatValid(txtURL.Text) ? "Please enter a valid URL" : "");
 
-            CheckFields();
+	        CheckFields();
         }
 
         private void tcAddService_SelectedIndexChanged(object sender, EventArgs e)

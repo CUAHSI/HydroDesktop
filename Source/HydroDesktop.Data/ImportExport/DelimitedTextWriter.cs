@@ -79,14 +79,11 @@ namespace HydroDesktop.ImportExport
 			{
 				throw new ArgumentNullException ( "Null delimiter provided to DelimitedTextWriter" );
 			}
-			else if ( delimiter == String.Empty )
-			{
-				throw new ArgumentException ( "Empty delimiter provided to DelimitedTextWriter" );
-			}
-			else
-			{
-				_delimiter = delimiter;
-			}
+		    if ( delimiter == String.Empty )
+		    {
+		        throw new ArgumentException ( "Empty delimiter provided to DelimitedTextWriter" );
+		    }
+		    _delimiter = delimiter;
 		}
 
 		/// <summary>
@@ -103,14 +100,11 @@ namespace HydroDesktop.ImportExport
 			{
 				throw new ArgumentNullException ( "Null delimiter provided to DelimitedTextWriter" );
 			}
-			else if ( delimiter == String.Empty )
-			{
-				throw new ArgumentException ( "Empty delimiter provided to DelimitedTextWriter" );
-			}
-			else
-			{
-				_delimiter = delimiter;
-			}
+		    if ( delimiter == String.Empty )
+		    {
+		        throw new ArgumentException ( "Empty delimiter provided to DelimitedTextWriter" );
+		    }
+		    _delimiter = delimiter;
 		}
 
 		#endregion
@@ -294,7 +288,7 @@ namespace HydroDesktop.ImportExport
                 }
 
                 // Report progress
-                if (bgWorker.WorkerReportsProgress == true && reportingOption != BackgroundWorkerReportingOptions.None)
+                if (bgWorker.WorkerReportsProgress && reportingOption != BackgroundWorkerReportingOptions.None)
                 {
                     if (reportingOption == BackgroundWorkerReportingOptions.UserStateAndProgress)
                     {

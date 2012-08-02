@@ -339,15 +339,30 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     }
                     else if (r.Name == "method")
                     {
-                        ReadMethod(r, methods);
+                        var method = ReadMethod(r);
+                        var methodCodeKey = method.Code.ToString(CultureInfo.InvariantCulture);
+                        if (methods.ContainsKey(methodCodeKey))
+                        {
+                            methods[methodCodeKey] = method;
+                        }
                     }
                     else if (r.Name == "source")
                     {
-                        ReadSource(r, sources);
+                        var source = ReadSource(r);
+                        var sourceCodeKey = source.OriginId.ToString(CultureInfo.InvariantCulture);
+                        if (sources.ContainsKey(sourceCodeKey))
+                        {
+                            sources[sourceCodeKey] = source;
+                        }
                     }
                     else if (r.Name == "qualityControlLevel")
                     {
-                        ReadQualityControlLevel(r, qualityControlLevels);
+                        var qcLevel = ReadQualityControlLevel(r);
+                        var qcCodeKey = qcLevel.Code;
+                        if (qualityControlLevels.ContainsKey(qcCodeKey))
+                        {
+                            qualityControlLevels[qcCodeKey] = qcLevel;
+                        }
                     }
                     else if (r.Name == "qualifier")
                     {
@@ -424,7 +439,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Read the vertical offset type
         /// </summary>
-        private void ReadOffset(XmlReader r, Dictionary<string, OffsetType> offsets)
+        private static void ReadOffset(XmlReader r, IDictionary<string, OffsetType> offsets)
         {
             string offsetID = r.GetAttribute("offsetTypeID");
             if (String.IsNullOrEmpty(offsetID)) return;
@@ -468,12 +483,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads information about a sample
         /// </summary>
-        private void ReadSample(XmlReader r, Dictionary<string, Sample> samples, Dictionary<string, LabMethod> labMethods)
+        private static void ReadSample(XmlReader r, IDictionary<string, Sample> samples, Dictionary<string, LabMethod> labMethods)
         {
             Sample sample = Sample.Unknown;
             sample.LabMethod = LabMethod.Unknown;
 
-            LabMethod newLabMethod = LabMethod.Unknown;
+            var newLabMethod = LabMethod.Unknown;
 
             string labSampleCode = String.Empty;
             
@@ -534,13 +549,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                     return;
                 }
             }
-            return;
         }
 
         /// <summary>
         /// Reads information about a qualifier
         /// </summary>
-        private void ReadQualifier(XmlReader r, Dictionary<string, Qualifier> qualifiers)
+        private static void ReadQualifier(XmlReader r, IDictionary<string, Qualifier> qualifiers)
         {
             string qualifierCode = r.GetAttribute("qualifierCode");
             if (String.IsNullOrEmpty(qualifierCode)) return;
@@ -556,216 +570,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             qualifier.Description = r.Value;
         }
 
-
-        /// <summary>
-        /// Reads information about the quality control level and returns the quality control level object
-        /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        protected override QualityControlLevel ReadQualityControlLevel(XmlReader r)
-        {
-            QualityControlLevel qc = QualityControlLevel.Unknown;
-
-            string qcID = r.GetAttribute("methodID");
-            string qcCode = String.Empty;
-
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name.ToLower() == "qualitycontrollevelcode")
-                    {
-                        r.Read();
-                        qcCode = r.Value;
-                    }
-                    else if (r.Name.ToLower() == "definition")
-                    {
-                        r.Read();
-                        qc.Definition = r.Value.Trim();
-                    }
-                    else if (r.Name == "explanation")
-                    {
-                        r.Read();
-                        qc.Explanation = r.Value.Trim();
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "qualitycontrollevel")
-                {
-                    if (!String.IsNullOrEmpty(qcCode))
-                    {
-                        qc.Code = qcCode;           
-                    }
-                    if (!String.IsNullOrEmpty(qcID))
-                    {
-                        qc.OriginId = Convert.ToInt32(qcID);
-                    }
-                    return  qc;
-                }
-            }
-            return qc;
-        }
-
-        private void ReadQualityControlLevel(XmlReader r, Dictionary<string, QualityControlLevel> qcLevels)
-        {
-            QualityControlLevel qcLevel = ReadQualityControlLevel(r);
-            string qcCodeKey = qcLevel.Code;
-            if (qcLevels.ContainsKey(qcCodeKey))
-            {
-                qcLevels[qcCodeKey] = null;
-                qcLevels[qcCodeKey] = qcLevel;
-            }
-        }
-
-        /// <summary>
-        /// Reads information about method and returns the method object
-        /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        protected override Method ReadMethod(XmlReader r)
-        {
-            Method method = Method.Unknown;
-
-            string methodID = r.GetAttribute("methodID");
-            string methodCode = String.Empty;
-            
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name.ToLower() == "methodcode")
-                    {
-                        r.Read();
-                        methodCode = r.Value;
-                    }
-                    else if (r.Name.ToLower() == "methoddescription")
-                    {
-                        r.Read();
-                        method.Description = r.Value;
-                    }
-                    else if (r.Name == "methodlink")
-                    {
-                        r.Read();
-                        method.Link = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "method")
-                {
-                    if (!String.IsNullOrEmpty(methodCode))
-                    {
-                        method.Code = Convert.ToInt32(methodCode);
-                    }
-                    else if (!String.IsNullOrEmpty(methodID))
-                    {
-                        method.Code = Convert.ToInt32(methodID);
-                    }
-                    return method;
-                }
-            }
-            return method;
-        }
-
-        /// <summary>
-        /// Reads information about method
-        /// </summary>
-        private void ReadMethod(XmlReader r, Dictionary<string, Method> methods)
-        {
-            Method method = ReadMethod(r);
-            string methodCodeKey = method.Code.ToString();
-            if (methods.ContainsKey(methodCodeKey))
-            {
-                methods[methodCodeKey] = null;
-                methods[methodCodeKey] = method;
-            }
-        }
-
-        /// <summary>
-        /// Reads information about source
-        /// </summary>
-        /// <param name="r">the xml reader</param>
-        /// <returns>The Source object</returns>
-        protected override Source ReadSource(XmlReader r)
-        {
-            string sourceID = r.GetAttribute("sourceID");
-            string sourceCode = String.Empty;
-
-            Source source = Source.Unknown;
-            
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    string nodeName = r.Name.ToLower();
-                    if (r.Name.ToLower() == "sourceCode")
-                    {
-                        r.Read();
-                        sourceCode = r.Value;
-                    }
-                    else if (nodeName == "organization")
-                    {
-                        r.Read();
-                        source.Organization = r.Value;
-                    }
-                    else if (nodeName == "contactname")
-                    {
-                        r.Read();
-                        source.ContactName = r.Value;
-                    }
-                    else if (nodeName == "phone")
-                    {
-                        r.Read();
-                        source.Phone = r.Value;
-                    }
-                    else if (nodeName == "email")
-                    {
-                        r.Read();
-                        source.Email = r.Value;
-                    }
-                    else if (nodeName == "address")
-                    {
-                        r.Read();
-                        source.Address = r.Value;
-                    }
-                    else if (nodeName == "sourcedescription")
-                    {
-                        r.Read();
-                        source.Description = r.Value;
-                    }
-                    else if (nodeName == "citation")
-                    {
-                        r.Read();
-                        source.Citation = r.Value;
-                    }
-                }
-                else if (r.NodeType == XmlNodeType.EndElement && r.Name.ToLower() == "source")
-                {
-                    if (sourceCode != String.Empty)
-                    {
-                        source.OriginId = Convert.ToInt32(sourceCode);
-                    }
-                    else if (sourceID != String.Empty)
-                    {
-                        source.OriginId = Convert.ToInt32(sourceID);
-                    }
-                    return source;   
-                }
-            }
-            return source;
-        }
-
-        /// <summary>
-        /// Reads information about the source of the data series
-        /// </summary>
-        private void ReadSource(XmlReader r, Dictionary<string, Source> sources)
-        {
-            Source source = ReadSource(r);
-            string sourceCodeKey = source.OriginId.ToString();
-            if (sources.ContainsKey(sourceCodeKey))
-            {
-                sources[sourceCodeKey] = null;
-                sources[sourceCodeKey] = source;
-            }
-        }
-
         /// <summary>
         /// Check compound qualifiers
         /// </summary>
@@ -777,15 +581,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 if (qual.IsCompositeQualifier) //it's a 'compound qualifier'
                 {
                     string[] codes = qual.Code.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    
-                    string description = "";
-                    
-                    foreach (string code in codes)
-                    {
-                        Qualifier matchingQual = qualifiers[code];
-                        description += matchingQual.Description + ", ";
-                    }
-                    description = description.Remove(description.LastIndexOf(","));
+
+                    var description = codes
+                        .Select(code => qualifiers[code])
+                        .Aggregate("", (current, matchingQual) => current + (matchingQual.Description + ", "));
+
+                    description = description.Remove(description.LastIndexOf(",", StringComparison.Ordinal));
                     qual.Description = description;
                 }
             }
@@ -806,7 +607,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <returns></returns>
         private double ConvertUtcOffset(string offsetString)
         {
-            int colonIndex = offsetString.IndexOf(":");
+            int colonIndex = offsetString.IndexOf(":", StringComparison.Ordinal);
             double minutes = 0.0;
             double hours = 0.0;
             if (colonIndex > 0 && colonIndex < offsetString.Length - 1)

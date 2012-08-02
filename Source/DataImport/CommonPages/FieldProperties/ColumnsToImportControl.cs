@@ -50,17 +50,17 @@ namespace DataImport.CommonPages.FieldProperties
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
                                           {
-                                              DataPropertyName = NameHelper.Name<ColumnInfoWrapper, string>(x => x.ColumnName),
+                                              DataPropertyName = NameHelper<ColumnInfoWrapper>.Name(x => x.ColumnName),
                                               HeaderText = "ValueColumn",
                                           });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
                                           {
-                                              DataPropertyName = NameHelper.Name<ColumnInfoWrapper, string>(x => x.SiteName),
+                                              DataPropertyName = NameHelper<ColumnInfoWrapper>.Name(x => x.SiteName),
                                               HeaderText = "Site"
                                           });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
                                           {
-                                              DataPropertyName = NameHelper.Name<ColumnInfoWrapper, string>(x => x.VariableName),
+                                              DataPropertyName = NameHelper<ColumnInfoWrapper>.Name(x => x.VariableName),
                                               HeaderText = "Variable"
                                           });
         }

@@ -15,7 +15,7 @@ namespace DataAggregation
             set
             {
                 _aggregationMode = value;
-                NotifyPropertyChanged(x => AggregationMode);
+                NotifyPropertyChanged(() => AggregationMode);
             }
         }
 
@@ -26,7 +26,7 @@ namespace DataAggregation
             set
             {
                 _startTime = value;
-                NotifyPropertyChanged(x => StartTime);
+                NotifyPropertyChanged(() => StartTime);
             }
         }
 
@@ -37,7 +37,7 @@ namespace DataAggregation
             set
             {
                 _endTime = value;
-                NotifyPropertyChanged(x => EndTime);
+                NotifyPropertyChanged(() => EndTime);
             }
         }
 
@@ -48,7 +48,7 @@ namespace DataAggregation
             set
             {
                 _variableCode = value;
-                NotifyPropertyChanged(x => VariableCode);
+                NotifyPropertyChanged(() => VariableCode);
             }
         }
 
@@ -59,7 +59,7 @@ namespace DataAggregation
             set
             {
                 _createNewLayer = value;
-                NotifyPropertyChanged(x => CreateNewLayer);
+                NotifyPropertyChanged(() => CreateNewLayer);
             }
         }
     }
