@@ -10,20 +10,15 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.5"
-#define SrcApp "HydroDesktop_1_5.exe"
+#define AppName "HydroDesktop 1.5.3"
+#define SrcApp "HydroDesktop_1_5_3.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define AppVerStr StripBuild(FileVerStr)
 ;#define MyAppPublisher "CUAHSI"
 ;#define MyAppURL "http://www.hydrodesktop.org"
-;#define MyAppExeName "MapWindow.exe"
-;#define MyAppVerName "0.9"
 ;#define MyOutputBaseFilename "HydroDesktop09_Installer"
-
-;;"MapWindowx86-installer"
-;;"MapWindowx86Full-v48RC1-installer"
 
 ;; Include ALL languages
 ;#define ISSI_Languages
@@ -37,22 +32,12 @@
 ;#define ISSI_LicensePrint
 ; Add BeveledLabel message (leave empty for default "Inno Setup" value)
 ;#define ISSI_BeveledLabel "HydroDesktop"
-;; Create a link to a web page in the Setup Wizard using multilingual custom messages:
-;#define ISSI_URL
-;#define ISSI_UrlText
-
-;; ISSI Languages with license file
-;#define ISSI_Dutch "C:\ISSI\license.txt"
-
-; Include ISSI
-;#define ISSI_IncludePath "Source\..\..\ISSI"
-;#include ISSI_IncludePath+"\_issi.isi"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{A914416C-9FC5-49FB-B740-70D7F4B6DC07}
+AppID={06501E6E-51BE-4F13-92B3-58E999EE345F}
 
 PrivilegesRequired=poweruser
 MinVersion=,5.01
@@ -128,17 +113,10 @@ Source: "..\Binaries\Plugins\ExcelExtension\Excel.dll"; DestDir: "{app}"; Flags:
 Source: "..\Binaries\Plugins\ExcelExtension\ExcelExtension.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ExcelExtension\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-;Source: "..\BruTile\Lib\net35\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-;Source: "..\DotSpatial.Plugins.WebMap\Lib\net40-client\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
 Source: "..\Binaries\Plugins\EditView\EditView.dll*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
 
 Source: "..\Binaries\Plugins\EPADelineation\EPADelineation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\Newtonsoft.Json.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-;Source: "..\GeostatisticalTool\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-;Source: "..\GeostatisticalTool\MadInterfaces.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.*.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
@@ -169,8 +147,8 @@ Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\NuGet.Core.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_2.exe"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_2.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_3.exe"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_3.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: recursesubdirs
