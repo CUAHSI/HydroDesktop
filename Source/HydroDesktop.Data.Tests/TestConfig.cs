@@ -1,18 +1,12 @@
-﻿using System.Reflection;
-using System.IO;
-using log4net;
+﻿using System.IO;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Database;
-
 
 namespace HydroDesktop.Data.Tests
 {
     public static class TestConfig
     {
-        private static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-       
-        private static MetadataCacheManagerSQL _metadataCacheManager = null;
-        private static IRepositoryManager _sqlRepositoryManager = null;
+        private static MetadataCacheManagerSQL _metadataCacheManager;
         private static DbOperations _dbOperations;
           
         /// <summary>
@@ -25,7 +19,6 @@ namespace HydroDesktop.Data.Tests
             {
                 string dbPath = Path.Combine(DefaultDatabaseDirectory, "MetadataCacheTest.sqlite");
                 SQLiteHelper.CreateMetadataCacheDb(dbPath);
-                log.Info("DefaultMetadataCacheDbFile  " + dbPath);
                 return SQLiteHelper.GetSQLiteConnectionString(dbPath);
             }
         }
@@ -40,7 +33,6 @@ namespace HydroDesktop.Data.Tests
             {
                 string dbPath = Path.Combine(DefaultDatabaseDirectory, "DataRepositoryTest.sqlite");
                 SQLiteHelper.CreateSQLiteDatabase(dbPath);
-                log.Info("DefaultActualDataFile  " + dbPath);
                 return SQLiteHelper.GetSQLiteConnectionString(dbPath);
             }
         }
@@ -75,14 +67,10 @@ namespace HydroDesktop.Data.Tests
         /// <returns></returns>
         public static MetadataCacheManagerSQL MetadataCacheManager
         {
-            get
-            {
-                if (_metadataCacheManager == null)
-                {
-                    log.Debug("Call to create MetadataCacheManager"); 
-                    _metadataCacheManager = new MetadataCacheManagerSQL(DatabaseTypes.SQLite, DefaultLocalCacheConnection);
-                }
-                return _metadataCacheManager;
+            get {
+                return _metadataCacheManager ??
+                       (_metadataCacheManager =
+                        new MetadataCacheManagerSQL(DatabaseTypes.SQLite, DefaultLocalCacheConnection));
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using Wizard.UI;
@@ -61,12 +62,20 @@ namespace DataImport.CommonPages.Progress
 
         #region IProgressHandler implementation
 
-        public void ReportProgress(int persentage, object state)
+        /// <summary>
+        /// Report progress
+        /// </summary>
+        /// <param name="percentage">Percentage of progress</param>
+        /// <param name="state">State of progress</param>
+        public void ReportProgress(int percentage, object state)
         {
-            progressBar.UIThread(() => progressBar.Value = persentage);
+            progressBar.UIThread(() => progressBar.Value = percentage);
             lblInfo.UIThread(() => lblInfo.Text = state != null ? state.ToString() : string.Empty);
         }
 
+        /// <summary>
+        /// Check for cancel
+        /// </summary>
         public void CheckForCancel()
         {
             var bw = _backgroundWorker;
@@ -76,9 +85,21 @@ namespace DataImport.CommonPages.Progress
             }
         }
 
+        /// <summary>
+        /// Report any custom message
+        /// </summary>
+        /// <param name="message">Message to report</param>
         public void ReportMessage(string message)
         {
             lblInfo.UIThread(() => lblInfo.Text = message);
+        }
+
+        /// <summary>
+        /// CancellationToken
+        /// </summary>
+        public CancellationToken CancellationToken
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         #endregion

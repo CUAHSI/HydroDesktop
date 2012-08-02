@@ -31,18 +31,18 @@ namespace HydroDesktop.ObjectModel.Controls
             Entity = null;
 
             // Set Bindings
-            tbName.AddBinding(() =>  default(TextBox).Text, bindingSource1, () => default(Variable).Name);
-            tbCode.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).Code);
-            tbVariableUnits.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).VariableUnit);
-            tbDataType.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).DataType);
-            tbValueType.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).ValueType);
-            tbSampleMedium.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).SampleMedium);
-            nudTimeSupport.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Variable).TimeSupport);
-            tbTimeUnits.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).TimeUnit);
-            nudNoDataValue.AddBinding(() => default(NumericUpDown).Value, bindingSource1, () => default(Variable).NoDataValue);
-            tbIsRegular.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).IsRegular);
-            tbGeneralCategory.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).GeneralCategory);
-            tbSpeciation.AddBinding(() => default(TextBox).Text, bindingSource1, () => default(Variable).Speciation);
+            tbName.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.Name);
+            tbCode.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.Code);
+            tbVariableUnits.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.VariableUnit);
+            tbDataType.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.DataType);
+            tbValueType.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.ValueType);
+            tbSampleMedium.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.SampleMedium);
+            nudTimeSupport.AddBinding<NumericUpDown, Variable>(n => n.Value, bindingSource1, v => v.TimeSupport);
+            tbTimeUnits.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.TimeUnit);
+            nudNoDataValue.AddBinding<NumericUpDown, Variable>(n => n.Value, bindingSource1, v => v.NoDataValue);
+            tbIsRegular.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.IsRegular);
+            tbGeneralCategory.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.GeneralCategory);
+            tbSpeciation.AddBinding<TextBox, Variable>(t => t.Text, bindingSource1, v => v.Speciation);
 
         }
 

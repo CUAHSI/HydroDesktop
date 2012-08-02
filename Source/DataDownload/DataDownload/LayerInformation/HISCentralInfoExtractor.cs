@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DotSpatial.Controls;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
 
 namespace HydroDesktop.DataDownload.LayerInformation

@@ -26,16 +26,15 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.tpDataSummary = New System.Windows.Forms.TabPage()
-            Me.dataSummary = New DataSummary()
+            Me.dataSummary = New GraphView.Controls.DataSummary()
             Me.tpBoxWhisker = New System.Windows.Forms.TabPage()
-            Me.boxWhisker = New BoxWhiskerPlot()
+            Me.boxWhisker = New GraphView.Controls.BoxWhiskerPlot()
             Me.tpHistogram = New System.Windows.Forms.TabPage()
-            Me.histogramPlot = New HistogramPlot()
+            Me.histogramPlot = New GraphView.Controls.HistogramPlot()
             Me.tpProbability = New System.Windows.Forms.TabPage()
-            Me.probabilityPlot = New ProbabilityPlot()
+            Me.probabilityPlot = New GraphView.Controls.ProbabilityPlot()
             Me.tpTimeSeries = New System.Windows.Forms.TabPage()
-            Me.ProgressBar = New System.Windows.Forms.ProgressBar()
-            Me.timeSeriesPlot = New TimeSeriesPlot()
+            Me.timeSeriesPlot = New GraphView.Controls.TimeSeriesPlot()
             Me.tcPlots = New System.Windows.Forms.TabControl()
             Me.tpDataSummary.SuspendLayout()
             Me.tpBoxWhisker.SuspendLayout()
@@ -56,11 +55,11 @@
             Me.tpDataSummary.Text = "Summary Statistics"
             Me.tpDataSummary.UseVisualStyleBackColor = True
             '
-            'pDataSummary
+            'dataSummary
             '
             Me.dataSummary.Dock = System.Windows.Forms.DockStyle.Fill
             Me.dataSummary.Location = New System.Drawing.Point(3, 3)
-            Me.dataSummary.Name = "pDataSummary"
+            Me.dataSummary.Name = "dataSummary"
             Me.dataSummary.Size = New System.Drawing.Size(981, 485)
             Me.dataSummary.TabIndex = 0
             '
@@ -74,11 +73,11 @@
             Me.tpBoxWhisker.Text = "Box/Whisker"
             Me.tpBoxWhisker.UseVisualStyleBackColor = True
             '
-            'pBoxWhisker
+            'boxWhisker
             '
             Me.boxWhisker.Dock = System.Windows.Forms.DockStyle.Fill
             Me.boxWhisker.Location = New System.Drawing.Point(0, 0)
-            Me.boxWhisker.Name = "pBoxWhisker"
+            Me.boxWhisker.Name = "boxWhisker"
             Me.boxWhisker.ShowPointValues = False
             Me.boxWhisker.Size = New System.Drawing.Size(987, 491)
             Me.boxWhisker.TabIndex = 0
@@ -93,11 +92,11 @@
             Me.tpHistogram.Text = "Histogram"
             Me.tpHistogram.UseVisualStyleBackColor = True
             '
-            'pHistogram
+            'histogramPlot
             '
             Me.histogramPlot.Dock = System.Windows.Forms.DockStyle.Fill
             Me.histogramPlot.Location = New System.Drawing.Point(0, 0)
-            Me.histogramPlot.Name = "pHistogram"
+            Me.histogramPlot.Name = "histogramPlot"
             Me.histogramPlot.ShowPointValues = False
             Me.histogramPlot.Size = New System.Drawing.Size(987, 491)
             Me.histogramPlot.TabIndex = 0
@@ -112,11 +111,12 @@
             Me.tpProbability.Text = "Probability"
             Me.tpProbability.UseVisualStyleBackColor = True
             '
-            'pProbability
+            'probabilityPlot
             '
+            Me.probabilityPlot.AppManager = Nothing
             Me.probabilityPlot.Dock = System.Windows.Forms.DockStyle.Fill
             Me.probabilityPlot.Location = New System.Drawing.Point(0, 0)
-            Me.probabilityPlot.Name = "pProbability"
+            Me.probabilityPlot.Name = "probabilityPlot"
             Me.probabilityPlot.SeriesSelector = Nothing
             Me.probabilityPlot.ShowPointValues = False
             Me.probabilityPlot.Size = New System.Drawing.Size(987, 491)
@@ -124,7 +124,6 @@
             '
             'tpTimeSeries
             '
-            Me.tpTimeSeries.Controls.Add(Me.ProgressBar)
             Me.tpTimeSeries.Controls.Add(Me.timeSeriesPlot)
             Me.tpTimeSeries.Location = New System.Drawing.Point(4, 5)
             Me.tpTimeSeries.Name = "tpTimeSeries"
@@ -133,19 +132,12 @@
             Me.tpTimeSeries.Text = "Time Series"
             Me.tpTimeSeries.UseVisualStyleBackColor = True
             '
-            'ProgressBar
+            'timeSeriesPlot
             '
-            Me.ProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.ProgressBar.Location = New System.Drawing.Point(0, 468)
-            Me.ProgressBar.Name = "ProgressBar"
-            Me.ProgressBar.Size = New System.Drawing.Size(987, 23)
-            Me.ProgressBar.TabIndex = 2
-            '
-            'pTimeSeries
-            '
+            Me.timeSeriesPlot.AppManager = Nothing
             Me.timeSeriesPlot.Dock = System.Windows.Forms.DockStyle.Fill
             Me.timeSeriesPlot.Location = New System.Drawing.Point(0, 0)
-            Me.timeSeriesPlot.Name = "pTimeSeries"
+            Me.timeSeriesPlot.Name = "timeSeriesPlot"
             Me.timeSeriesPlot.SeriesSelector = Nothing
             Me.timeSeriesPlot.ShowPointValues = False
             Me.timeSeriesPlot.Size = New System.Drawing.Size(987, 491)
@@ -189,7 +181,6 @@
         Friend WithEvents boxWhisker As BoxWhiskerPlot
         Friend WithEvents histogramPlot As HistogramPlot
         Friend WithEvents probabilityPlot As ProbabilityPlot
-        Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
         Friend WithEvents timeSeriesPlot As TimeSeriesPlot
         Private WithEvents tcPlots As System.Windows.Forms.TabControl
         Private WithEvents tpDataSummary As System.Windows.Forms.TabPage

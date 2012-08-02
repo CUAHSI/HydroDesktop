@@ -111,10 +111,7 @@ namespace HydroDesktop.Help
 			{
 				throw new ArgumentException ( "Invalid mailto link format." );
 			}
-			else
-			{
-				Process.Start ( mailtoLink );
-			}
+		    Process.Start ( mailtoLink );
 		}
 
 		#endregion

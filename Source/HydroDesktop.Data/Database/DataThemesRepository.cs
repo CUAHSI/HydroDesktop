@@ -74,7 +74,7 @@ namespace HydroDesktop.Database
         {
             const string sql = "SELECT ThemeID from DataThemeDescriptions WHERE ThemeName =?";
             var objThemeId = DbOperations.ExecuteSingleOutput(sql, themeName);
-            if (objThemeId == null || objThemeId == DBNull.Value || (string) objThemeId == string.Empty) return null;
+            if (objThemeId == null || objThemeId == DBNull.Value) return null;
             return Convert.ToInt32(objThemeId);
         }
 

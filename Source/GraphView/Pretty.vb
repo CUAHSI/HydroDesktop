@@ -9,10 +9,10 @@
             min = min - range * buffer
         End If
 
-        Dim shrink_sml As Double = 0.25
+        Const shrink_sml As Double = 0.25
         Dim high_u_fact() As Double = {0.8, 1.7}
-        Dim eps_correction As Integer = 2
-        Dim return_bounds As Integer = 0
+        Const eps_correction As Integer = 2
+        Const return_bounds As Integer = 0
         Dim dx, cell, unit, base, U, ns, nu As Double
         Dim k As Integer, min_n As Integer = 1
         Dim i_small As Boolean

@@ -79,6 +79,42 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Continue search.
+        /// </summary>
+        internal static string Continue_Search {
+            get {
+                return ResourceManager.GetString("Continue_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current View.
+        /// </summary>
+        internal static string Current_View {
+            get {
+                return ResourceManager.GetString("Current_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current view is too large. Search can take a long time. Do you want to continue?.
+        /// </summary>
+        internal static string Current_View_Large_Msg {
+            get {
+                return ResourceManager.GetString("Current_View_Large_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the current ViewExtents of the map as the search area rectangle..
+        /// </summary>
+        internal static string Current_View_Tooltip {
+            get {
+                return ResourceManager.GetString("Current_View_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Selection.
         /// </summary>
         internal static string Deselect_All {
@@ -115,6 +151,15 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        internal static string End_Date {
+            get {
+                return ResourceManager.GetString("End_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string Error {
@@ -138,6 +183,15 @@ namespace Search3 {
         internal static string Keyword {
             get {
                 return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Keyword Ontology Tree.
+        /// </summary>
+        internal static string Keyword_Tooltip {
+            get {
+                return ResourceManager.GetString("Keyword_Tooltip", resourceCulture);
             }
         }
         
@@ -187,6 +241,24 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Data Sources.
+        /// </summary>
+        internal static string Select_Data_Sources {
+            get {
+                return ResourceManager.GetString("Select_Data_Sources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select data sources (All web services selected).
+        /// </summary>
+        internal static string Select_Data_Sources_Tooltip {
+            get {
+                return ResourceManager.GetString("Select_Data_Sources_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Dates.
         /// </summary>
         internal static string Select_Dates {
@@ -232,11 +304,56 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        internal static string Start_Date {
+            get {
+                return ResourceManager.GetString("Start_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date validation.
+        /// </summary>
+        internal static string Start_Date_Validation {
+            get {
+                return ResourceManager.GetString("Start_Date_Validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date must be greater than Start Date..
+        /// </summary>
+        internal static string Start_Date_Validation_Msg {
+            get {
+                return ResourceManager.GetString("Start_Date_Validation_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Range.
         /// </summary>
         internal static string Time_Range {
             get {
                 return ResourceManager.GetString("Time_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  End.
+        /// </summary>
+        internal static string TimeRange_End {
+            get {
+                return ResourceManager.GetString("TimeRange_End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string TimeRange_Start {
+            get {
+                return ResourceManager.GetString("TimeRange_Start", resourceCulture);
             }
         }
         

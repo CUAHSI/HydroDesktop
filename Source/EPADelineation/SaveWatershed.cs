@@ -88,7 +88,7 @@ namespace EPADelineation
 
         private static string GetOrderedText<T>(IEnumerable<ILayer> allLayers, string defaultText) where T : ILegendItem
         {
-            if (allLayers.Count() == 0)
+            if (!allLayers.Any())
                 return defaultText;
             var layers = allLayers.OfType<T>()
                 .Where(layer => (!String.IsNullOrEmpty(layer.LegendText)) && layer.LegendText.StartsWith(defaultText));

@@ -5,24 +5,14 @@ Namespace Controls
     Public Class DataSummary
         Implements IPlot
 
-        Private _seriesPlotInfo As SeriesPlotInfo
-
         Public Sub New()
 
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            AddHandler VisibleChanged, AddressOf OnDataSummaryVisibleChanged
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
-
-            _seriesPlotInfo = Nothing
-            If Not Visible Then
-                _seriesPlotInfo = seriesPlotInfo
-                Return
-            End If
-
             ClearStatTables()
             For Each seriesInfo In seriesPlotInfo.GetSeriesInfo()
                 Plot(seriesInfo)
@@ -31,12 +21,6 @@ Namespace Controls
         End Sub
 
 #Region "Private methods"
-
-        Private Sub OnDataSummaryVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
-            If Not Visible Then Return
-            If _seriesPlotInfo Is Nothing Then Return
-            Plot(_seriesPlotInfo)
-        End Sub
 
         Private Sub Plot(ByRef options As OneSeriesPlotInfo)
             Dim siteName = options.SiteName

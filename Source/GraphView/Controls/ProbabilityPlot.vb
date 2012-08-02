@@ -16,7 +16,6 @@ Namespace Controls
         Private Shared ReadOnly m_VarList As New List(Of String)
         Public Property SeriesSelector() As ISeriesSelector
         Public Property AppManager() As AppManager
-        Private _seriesPlotInfo As SeriesPlotInfo
 
         Private Function CurveCount() As Int32
             Return zgProbabilityPlot.GraphPane.CurveList.Count
@@ -45,12 +44,6 @@ Namespace Controls
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
-            _seriesPlotInfo = Nothing
-            If Not Visible Then
-                _seriesPlotInfo = seriesPlotInfo
-                Return
-            End If
-
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
@@ -61,13 +54,6 @@ Namespace Controls
             Next
             Refreshing()
         End Sub
-
-        Private Sub OnPlotVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
-            If Not Visible Then Return
-            If _seriesPlotInfo Is Nothing Then Return
-            Plot(_seriesPlotInfo)
-        End Sub
-
 
 #Region " Probability "
 
@@ -538,8 +524,6 @@ Namespace Controls
             ' Add any initialization after the InitializeComponent() call.
             zgProbabilityPlot.GraphPane.Legend.IsVisible = False
             zgProbabilityPlot.GraphPane.Border.IsVisible = False
-
-            AddHandler VisibleChanged, AddressOf OnPlotVisibleChanged
         End Sub
 
         Private Sub Refreshing()

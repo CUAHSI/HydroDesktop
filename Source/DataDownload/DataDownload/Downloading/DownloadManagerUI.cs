@@ -232,29 +232,29 @@ namespace HydroDesktop.DataDownload.Downloading
         void dpInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var dpInfo = _manager.Information; // to avoid long names
-            if (e.PropertyName == NameHelper.Name<ManagerInformation, int>(x => x.DownloadedAndSaved))
+            if (e.PropertyName == NameHelper<ManagerInformation>.Name(x => x.DownloadedAndSaved))
             {
                 ThreadSafeSetText(lcDownloadedAndSavedInfo, dpInfo.DownloadedAndSaved.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == NameHelper.Name<ManagerInformation, int>(x => x.WithError))
+            else if (e.PropertyName == NameHelper<ManagerInformation>.Name(x => x.WithError))
             {
                 ThreadSafeSetText(lcWithErrorInfo, dpInfo.WithError.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName ==  NameHelper.Name<ManagerInformation, int>(x => x.TotalSeries))
+            else if (e.PropertyName == NameHelper<ManagerInformation>.Name(x => x.TotalSeries))
             {
                 ThreadSafeSetText(lcTotalSeriesInfo, dpInfo.TotalSeries.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == NameHelper.Name<ManagerInformation, int>(x => x.RemainingSeries))
+            else if (e.PropertyName == NameHelper<ManagerInformation>.Name(x => x.RemainingSeries))
             {
                 ThreadSafeSetText(lcRemainingSeriesInfo, dpInfo.RemainingSeries.ToString(CultureInfo.InvariantCulture));
             }
-            else if (e.PropertyName == NameHelper.Name<ManagerInformation, TimeSpan>(x => x.EstimatedTime))
+            else if (e.PropertyName == NameHelper<ManagerInformation>.Name(x => x.EstimatedTime))
             {
                 ThreadSafeSetText(lcEstimatedTimeInfo, dpInfo.EstimatedTime.ToString());
             }
         }
 
-        private static void ThreadSafeSetText(Label label, string value)
+        private static void ThreadSafeSetText(Control label, string value)
         {
             label.UIThread(() => label.Text = value);
         }
@@ -264,12 +264,12 @@ namespace HydroDesktop.DataDownload.Downloading
             dgvDownloadData.DataSource = null;
             dgvDownloadData.AutoGenerateColumns = false;
 
-            var serviceUrlColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.Wsdl), HeaderText = "ServiceUrl" };
-            var fullSiteCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.FullSiteCode), HeaderText = "SiteCode" };
-            var fullVariableCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.FullVariableCode), HeaderText = "VariableCode" };
-            var siteNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.SiteName), HeaderText = "SiteName" };
-            var variableNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.VariableName), HeaderText = "VariableName" };
-            var statusColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper.Name<OneSeriesDownloadInfo, string>(x => x.StatusAsString), HeaderText = "Status" };
+            var serviceUrlColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper<OneSeriesDownloadInfo>.Name(x => x.Wsdl), HeaderText = "ServiceUrl" };
+            var fullSiteCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper<OneSeriesDownloadInfo>.Name(x => x.FullSiteCode), HeaderText = "SiteCode" };
+            var fullVariableCodeColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper<OneSeriesDownloadInfo>.Name(x => x.FullVariableCode), HeaderText = "VariableCode" };
+            var siteNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper<OneSeriesDownloadInfo>.Name(x => x.SiteName), HeaderText = "SiteName" };
+            var variableNameColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper<OneSeriesDownloadInfo>.Name(x => x.VariableName), HeaderText = "VariableName" };
+            var statusColumn = new DataGridViewTextBoxColumn { DataPropertyName = NameHelper<OneSeriesDownloadInfo>.Name(x => x.StatusAsString), HeaderText = "Status" };
 
             dgvDownloadData.Columns.Clear();
             dgvDownloadData.Columns.Add(serviceUrlColumn);

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using HydroDesktop.Database;
 using NUnit.Framework;
 
-namespace HydroDesktop.Database.Tests.DatabaseTests
+namespace HydroDesktop.Data.Tests.DatabaseTests
 {
     [TestFixture]
     class SqlLiteHelperTest
@@ -20,7 +21,6 @@ namespace HydroDesktop.Database.Tests.DatabaseTests
                     File.Delete(file);
                 }catch
                 {
-                    continue;
                 }
             }
         }

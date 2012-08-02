@@ -37,8 +37,8 @@ namespace HydroDesktop.Main
             isWgs84 = (mapProjEsriString == Properties.Resources.wgs_84_esri_string);
             currentMapProjection = ProjectionInfo.FromEsriString(mapProjEsriString);
 
-            mainMap.MouseMove +=new MouseEventHandler(mainMap_MouseMove);
-            mainMap.ProjectionChanged += new EventHandler(mainMap_ProjectionChanged);
+            mainMap.MouseMove +=mainMap_MouseMove;
+            mainMap.ProjectionChanged += mainMap_ProjectionChanged;
         }
 
         void mainMap_ProjectionChanged(object sender, EventArgs e)

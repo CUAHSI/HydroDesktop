@@ -1,6 +1,7 @@
 ﻿using System;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
+using DotSpatial.Symbology;
 
 namespace HydroDesktop.Main
 {
@@ -16,24 +17,25 @@ namespace HydroDesktop.Main
             SelectionStatusPanel = new StatusPanel();
             SelectionStatusPanel.Width = 250;
             app.ProgressHandler.Add(SelectionStatusPanel);
+        
 
-            App.Map.SelectionChanged += new EventHandler(Map_SelectionChanged);
-            App.Map.MapFrame.LayerSelected +=new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            App.Map.SelectionChanged += Map_SelectionChanged;
+            App.Map.MapFrame.LayerSelected +=MapFrame_LayerSelected;
 
-            App.SerializationManager.Deserializing += new EventHandler<SerializingEventArgs>(SerializationManager_Deserializing);
-            App.SerializationManager.NewProjectCreated += new EventHandler<SerializingEventArgs>(SerializationManager_NewProjectCreated);
+            App.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            App.SerializationManager.NewProjectCreated += SerializationManager_NewProjectCreated;
         }
 
         void SerializationManager_NewProjectCreated(object sender, SerializingEventArgs e)
         {
             App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-            App.Map.MapFrame.LayerSelected += new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
         }
 
         void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             App.Map.MapFrame.LayerSelected -= MapFrame_LayerSelected;
-            App.Map.MapFrame.LayerSelected += new EventHandler<DotSpatial.Symbology.LayerSelectedEventArgs>(MapFrame_LayerSelected);
+            App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
             UpdateStatusPanel();
         }
 
@@ -55,14 +57,11 @@ namespace HydroDesktop.Main
             }
             else
             {
-                if (App.Map.Layers.SelectedLayer != null)
+                var selected = App.Map.Layers.SelectedLayer as IMapFeatureLayer; 
+                if (selected != null && selected.Selection != null)
                 {
-                    string layName = App.Map.Layers.SelectedLayer.LegendText;
-                    IMapFeatureLayer mfl = App.Map.Layers.SelectedLayer as IMapFeatureLayer;
-                    if (mfl != null)
-                    {
-                        SelectionStatusPanel.Caption = String.Format("layer: {0} Selected: {1}", layName, mfl.Selection.Count);
-                    }
+                    var layName = selected.LegendText;
+                    SelectionStatusPanel.Caption = String.Format("layer: {0} Selected: {1}", layName, selected.Selection.Count);
                 }
             }
         }

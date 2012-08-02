@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using HydroDesktop.Common;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -46,10 +47,11 @@ namespace Search3.Searching
         }
 
         protected override IEnumerable<SeriesDataCart> GetSeriesCatalogForBox(double xMin, double xMax, double yMin, double yMax, string keyword,
-            DateTime startDate, DateTime endDate, int[] networkIDs)
+            DateTime startDate, DateTime endDate, int[] networkIDs, IProgressHandler bgWorker, long currentTile, long totalTilesCount)
         {
-            var dt = _db.GetSeriesDataTableInBox(xMin, xMax, yMin, yMax, new []{keyword}, startDate, endDate, networkIDs);
+            bgWorker.ReportMessage(string.Format("Executed query to the database. Keyword: {0}. Tile {1}/{2}.", keyword, currentTile, totalTilesCount));
 
+            var dt = _db.GetSeriesDataTableInBox(xMin, xMax, yMin, yMax, new []{keyword}, startDate, endDate, networkIDs);
             var seriesList = new List<SeriesDataCart>(dt.Rows.Count);
             foreach (DataRow row in dt.Rows)
             {
