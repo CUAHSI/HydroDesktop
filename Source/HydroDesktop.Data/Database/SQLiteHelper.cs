@@ -20,6 +20,9 @@ namespace HydroDesktop.Database
         /// </summary>
         public static string GetSQLiteFileName(string sqliteConnString)
         {
+            if (String.IsNullOrEmpty(sqliteConnString))
+                throw new ArgumentException("sqliteConnString is null or empty.", "sqliteConnString");
+
             var conn = new SQLiteConnectionStringBuilder(sqliteConnString);
             return conn.DataSource;
         }
@@ -28,7 +31,10 @@ namespace HydroDesktop.Database
         /// </summary>
         public static string GetSQLiteConnectionString(string dbFileName)
         {
-            var conn = new SQLiteConnectionStringBuilder {DataSource = dbFileName, Version = 3, FailIfMissing = true};
+            if (String.IsNullOrEmpty(dbFileName))
+                throw new ArgumentException("dbFileName is null or empty.", "dbFileName");
+
+            var conn = new SQLiteConnectionStringBuilder { DataSource = dbFileName, Version = 3, FailIfMissing = true };
             conn.Add("Compress", true);
 
             return conn.ConnectionString;
@@ -41,6 +47,9 @@ namespace HydroDesktop.Database
         /// <returns>true if database was created, false otherwise</returns>
         public static Boolean CreateSQLiteDatabase(string dbPath)
         {
+            if (String.IsNullOrEmpty(dbPath))
+                throw new ArgumentException("dbPath is null or empty.", "dbPath");
+         
             var asm = Assembly.GetAssembly(typeof(DbOperations));
 
             //to create the default.sqlite database file
@@ -77,6 +86,9 @@ namespace HydroDesktop.Database
         /// <returns>true if database was created, false otherwise</returns>
         public static Boolean CreateMetadataCacheDb(string dbPath)
         {
+            if (String.IsNullOrEmpty(dbPath))
+                throw new ArgumentException("dbPath is null or empty.", "dbPath");
+
             var asm = Assembly.GetAssembly(typeof(DbOperations));
 
             //to create the default.sqlite database file
