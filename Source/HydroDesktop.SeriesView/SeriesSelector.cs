@@ -54,6 +54,8 @@ namespace SeriesView
             cbBoxCriterion.SelectedIndexChanged += cbBoxCriterion_SelectedIndexChanged;
             cbBoxContent.SelectedIndexChanged += cbBoxContent_SelectedIndexChanged;
 
+            contextMenuStrip1.Opening += new CancelEventHandler(contextMenuStrip1_Opening);
+
             Settings.Instance.DatabaseChanged += Instance_DatabaseChanged;
             Disposed += SeriesSelector_Disposed;
         }
@@ -61,6 +63,12 @@ namespace SeriesView
         #endregion
 
         #region Event Handlers
+
+        void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            // We shouldn't show the context menu when a series has not been loaded.
+            e.Cancel = (_clickedSeriesID == 0);
+        }
 
         private void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -174,7 +182,7 @@ namespace SeriesView
                     cbBoxContent.DataSource = null;
                     cbBoxContent.DisplayMember = SiteDisplayColumn;
                     cbBoxContent.ValueMember = "SiteID";
-                    cbBoxContent.DataSource = _siteTable;                    
+                    cbBoxContent.DataSource = _siteTable;
                     break;
 
                 case "Variable":
@@ -463,7 +471,7 @@ namespace SeriesView
             var tbl = manager.GetDetailedSeriesTable();
 
             // Add Checked column
-            var columnChecked = new DataColumn("Checked", typeof (bool)) {DefaultValue = false,};
+            var columnChecked = new DataColumn("Checked", typeof(bool)) { DefaultValue = false, };
             tbl.Columns.Add(columnChecked);
 
             dgvSeries.DataSource = new DataView(tbl);
@@ -588,13 +596,13 @@ namespace SeriesView
             _siteTable = RepositoryFactory.Instance.Get<ISitesRepository>().AsDataTable();
             var variables = RepositoryFactory.Instance.Get<IVariablesRepository>().GetAll();
             _variableTable = new DataTable();
-            _variableTable.Columns.Add("VariableID", typeof (long));
+            _variableTable.Columns.Add("VariableID", typeof(long));
             _variableTable.Columns.Add("VariableName", typeof(string));
             foreach (var variable in variables)
             {
                 var row = _variableTable.NewRow();
                 row["VariableID"] = variable.Id;
-                row["VariableName"] = variable.Name  + " (" + variable.VariableUnit.Abbreviation + ")";
+                row["VariableName"] = variable.Name + " (" + variable.VariableUnit.Abbreviation + ")";
                 _variableTable.Rows.Add(row);
             }
             _sourceTable = RepositoryFactory.Instance.Get<ISourcesRepository>().AsDataTable();
@@ -628,7 +636,7 @@ namespace SeriesView
             if (String.IsNullOrEmpty(filterExpression)) return FilterTypes.All;
 
             //other filter types --> simple uses the ID and has only one '='.
-            string[] parts = filterExpression.Split(new[] {'='});
+            string[] parts = filterExpression.Split(new[] { '=' });
             int numParts = parts.Length;
             if (numParts == 2)
             {
@@ -705,7 +713,7 @@ namespace SeriesView
                 _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
                 if (_clickedSeriesID > 0)
                 {
-                    checkedIDs = new[] {_clickedSeriesID};
+                    checkedIDs = new[] { _clickedSeriesID };
                 }
                 else
                 {
