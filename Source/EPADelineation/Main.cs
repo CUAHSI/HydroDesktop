@@ -38,6 +38,7 @@ namespace EPADelineation
             action.LargeImage = Properties.Resources.Delineation_icon_32;
             action.RootKey = HeaderControl.HomeRootItemKey;
             action.ToggleGroupKey = "tDelineateEpaTool";
+            action.SortOrder = 100; //give it a high sort order to move the button to the right
             App.HeaderControl.Add(action);
 
             base.Activate();

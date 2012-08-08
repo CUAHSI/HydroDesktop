@@ -98,7 +98,7 @@ namespace Search3
             
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
-            head.Add(new RootItem(_searchKey, Msg.Search) { SortOrder = -10 });
+            head.Add(new RootItem(_searchKey, Msg.Search) { SortOrder = -5 });
 
             #region Area group
 

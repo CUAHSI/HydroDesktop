@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.5.3"
-#define SrcApp "HydroDesktop_1_5_3.exe"
+#define AppName "HydroDesktop 1.5.4"
+#define SrcApp "HydroDesktop_1_5_4.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -102,8 +102,8 @@ Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.5.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
 
-Source: "..\Binaries\Plugins\DataAggregation\DataAggregation.dll"; DestDir: "{app}\Plugins\DataAggregation"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins\DataDownload"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\DataAggregation\DataAggregation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\ImportFromWaterML\DataImport.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\ImportFromWaterML\Wizard.Controls.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
@@ -126,9 +126,9 @@ Source: "..\Binaries\Plugins\HydroR\HydroR.dll"; DestDir: "{app}\Plugins"; Flags
 Source: "..\Binaries\Plugins\HydroR\HydroR_1.2.tar.gz"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\MetadataFetcher\MetadataFetcher.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-Source: "..\Binaries\Plugins\Search3\Search3.dll"; DestDir: "{app}\Plugins\Search3"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search3\Resources\OntologyTree.xml"; DestDir: "{app}\Plugins\Search3\Resources"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search3\Resources\Synonyms.xml"; DestDir: "{app}\Plugins\Search3\Resources"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\Search3\Search3.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\Search3\Resources\OntologyTree.xml"; DestDir: "{app}\Plugins\Resources"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\Search3\Resources\Synonyms.xml"; DestDir: "{app}\Plugins\Resources"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\TableView\TableView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\GraphView\GraphView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
@@ -147,12 +147,14 @@ Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\NuGet.Core.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_3.exe"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_3.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_4.exe"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_4.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: recursesubdirs
-Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
+
+;Sample Projects are now downloaded on-demand
+;Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#SrcApp}"
@@ -236,6 +238,10 @@ Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_5.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_5\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_5_2.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_5_2\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_5_3.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_5_3\*"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
 [UninstallDelete]
