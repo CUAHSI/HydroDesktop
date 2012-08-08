@@ -115,14 +115,14 @@
             this.lblProductVersion.Name = "lblProductVersion";
             this.lblProductVersion.Size = new System.Drawing.Size(145, 13);
             this.lblProductVersion.TabIndex = 8;
-            this.lblProductVersion.Text = "CUAHSI HydroDesktop 1.4.0";
+            this.lblProductVersion.Text = "CUAHSI HydroDesktop 1.5.0";
             // 
             // lstRecentProjects
             // 
             this.lstRecentProjects.FormattingEnabled = true;
-            this.lstRecentProjects.Location = new System.Drawing.Point(23, 125);
+            this.lstRecentProjects.Location = new System.Drawing.Point(23, 145);
             this.lstRecentProjects.Name = "lstRecentProjects";
-            this.lstRecentProjects.Size = new System.Drawing.Size(245, 82);
+            this.lstRecentProjects.Size = new System.Drawing.Size(245, 56);
             this.lstRecentProjects.TabIndex = 6;
             this.lstRecentProjects.Click += new System.EventHandler(this.lstRecentProjects_Click);
             // 
@@ -151,7 +151,7 @@
             // 
             this.btnBrowseProject.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseProject.Image")));
             this.btnBrowseProject.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBrowseProject.Location = new System.Drawing.Point(138, 97);
+            this.btnBrowseProject.Location = new System.Drawing.Point(138, 117);
             this.btnBrowseProject.Name = "btnBrowseProject";
             this.btnBrowseProject.Size = new System.Drawing.Size(78, 22);
             this.btnBrowseProject.TabIndex = 5;
@@ -163,7 +163,7 @@
             // rbOpenExistingProject
             // 
             this.rbOpenExistingProject.AutoSize = true;
-            this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 100);
+            this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 120);
             this.rbOpenExistingProject.Name = "rbOpenExistingProject";
             this.rbOpenExistingProject.Size = new System.Drawing.Size(126, 17);
             this.rbOpenExistingProject.TabIndex = 4;
@@ -185,7 +185,7 @@
             this.lstProjectTemplates.FormattingEnabled = true;
             this.lstProjectTemplates.Location = new System.Drawing.Point(23, 42);
             this.lstProjectTemplates.Name = "lstProjectTemplates";
-            this.lstProjectTemplates.Size = new System.Drawing.Size(245, 43);
+            this.lstProjectTemplates.Size = new System.Drawing.Size(245, 69);
             this.lstProjectTemplates.TabIndex = 3;
             // 
             // rbNewProjectTemplate
