@@ -29,8 +29,6 @@ namespace HydroDesktop.DownloadExtensions.Properties {
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>DotSpatial.Plugins.MenuBar</string>
   <string>DotSpatial.Plugins.AttributeDataExplorer</string>
-  <string>BruTile</string>
-  <string>DotSpatial.Plugins.WebMap</string>
   <string>GeostatisticalTool</string>
   <string>DotSpatial.SampleProjects.SampleProjectManager</string>
 </ArrayOfString>")]

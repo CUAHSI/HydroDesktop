@@ -51,6 +51,21 @@ namespace HydroDesktop.DownloadExtensions
                 }
             }
 
+            //special case: download the WebMap plugin with BruTile
+            if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
+            {
+                App.UpdateProgress("Downloading DotSpatial.Plugins.WebMap extension...");
+                packages.Install("BruTile");
+                packages.Install("DotSpatial.Plugins.WebMap");
+            }
+            //special case: download EPADelineation with Newtonsoft.Json
+            if (App.GetExtension("EPADelineation") == null)
+            {
+                App.UpdateProgress("Downloading EPADelineation extension...");
+                packages.Install("Newtonsoft.Json");
+                packages.Install("EPADelineation");
+            }
+
             foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
             {
                 if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
