@@ -7,8 +7,6 @@
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;DotSpatial.Plugins.MenuBar&lt;/string&gt;
   &lt;string&gt;DotSpatial.Plugins.AttributeDataExplorer&lt;/string&gt;
-  &lt;string&gt;BruTile&lt;/string&gt;
-  &lt;string&gt;DotSpatial.Plugins.WebMap&lt;/string&gt;
   &lt;string&gt;GeostatisticalTool&lt;/string&gt;
   &lt;string&gt;DotSpatial.SampleProjects.SampleProjectManager&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
