@@ -211,6 +211,7 @@
     <EmbeddedResource Include="MessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Searching\SearchProgressForm.resx">
       <DependentUpon>SearchProgressForm.cs</DependentUpon>

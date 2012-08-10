@@ -126,6 +126,9 @@
   <data name="DownloadTooTip" xml:space="preserve">
     <value>Click to download all selected series</value>
   </data>
+  <data name="Download_Selected" xml:space="preserve">
+    <value>Download Selected</value>
+  </data>
   <data name="Download_Tools_Group" xml:space="preserve">
     <value>Download tool</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="Pan" xml:space="preserve">
     <value>Pan</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
