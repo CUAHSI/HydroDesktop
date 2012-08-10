@@ -157,7 +157,7 @@ namespace Search3
 
             #endregion
 
-            head.Add(new SimpleActionItem(_searchKey, Msg.Run_Search, rbSearch_Click) {GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Search, rbSearch_Click) { GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
         }
 
         private void ZoomSelected_Click(object sender, EventArgs e)
