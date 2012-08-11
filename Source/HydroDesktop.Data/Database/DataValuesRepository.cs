@@ -123,10 +123,11 @@ namespace HydroDesktop.Database
                 "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
                 "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
                 "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, dv.CensorCode, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory, " +
-                "OffsetValue, OT.OffsetDescription, Un.UnitsAbbreviation as OffsetUnits " +
+                "OffsetValue, OT.OffsetDescription, Un.UnitsAbbreviation as OffsetUnits, QL.QualifierCode " +
                 "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
                 "LEFT JOIN OffsetTypes OT on DV.OffsetTypeId = OT.OffsetTypeId " +
-                "LEFT JOIN Units Un on Un.UnitsID = OT.OffsetUnitsId " + 
+                "LEFT JOIN Units Un on Un.UnitsID = OT.OffsetUnitsId " +
+                "LEFT JOIN Qualifiers QL on QL.QualifierID = dv.QualifierID " + 
                 "WHERE v.VariableID = ds.VariableID " +
                 "AND s.SiteID = ds.SiteID " +
                 "AND m.MethodID = ds.MethodID " +
