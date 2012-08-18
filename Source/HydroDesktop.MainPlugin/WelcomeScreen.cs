@@ -34,8 +34,6 @@ namespace HydroDesktop.Main
 
         private ProjectManager myProjectManager;
 
-        const string SampleProjectsDirectory = "hydrodesktop_sample_projects";
-        const string QuickStartGuideFile = "HydroDesktop_Quick_Start_Guide_1.4.pdf";
         
         #endregion
 
@@ -120,11 +118,6 @@ namespace HydroDesktop.Main
                 this.Cursor = Cursors.WaitCursor;
                     
                 panelStatus.Visible = true;
-                //myProjectManager.CreateNewProject(lstProjectTemplates.SelectedItem.ToString(), _app, mainMap);
-
-                //lblProgress.Text = "Loading Plugins...";
-
-                //this.Cursor = Cursors.Default;
 
                 _newProjectCreated = true;
 
@@ -211,30 +204,19 @@ namespace HydroDesktop.Main
 
         private void WelcomeScreen_Load(object sender, EventArgs e)
         {
-            SampleProjects = FindSampleProjectFiles();
+            SampleProjectInstaller spi = new SampleProjectInstaller();
+            List<SampleProjectInfo> sampleProjects1 = spi.FindSampleProjectFiles();
+            IEnumerable<ISampleProject> sampleProjects2 = spi.SetupInstalledSampleProjects(sampleProjects1);
+
+            SampleProjects = sampleProjects2;
+
             lstProjectTemplates.DataSource = SampleProjects;
             lstProjectTemplates.DisplayMember = "Name";
 
             FindRecentProjectFiles();
         }
 
-        /// <summary>
-        /// Gets the list tools available.
-        /// </summary>
-        private IEnumerable<ISampleProject> FindSampleProjectFiles()
-        {
-            List<ISampleProject> sampleProjectList = new List<ISampleProject>();
-            foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
-            {
-                var sample = new SampleProjectInfo();
-                sample.AbsolutePathToProjectFile = absolutePath;
-                sample.Name = Path.GetFileNameWithoutExtension(absolutePath);
-                sample.Description = "description";
-                sample.Version = "1.0";
-                sampleProjectList.Add(sample);
-            }
-            return sampleProjectList;
-        }
+        
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -328,90 +310,22 @@ namespace HydroDesktop.Main
                 RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
             }
 
-            SetupSampleProjects();
+            //also adds the installed 'sample projects' to the directory
+            //SetupSampleProjects();
 
             bsRecentFiles.ResetBindings(false);
             lstRecentProjects.SelectedIndex = -1;
         }
 
 
-        private void SetupSampleProjects()
-        {
-            //string[] predefinedSampleProjects = new string[] { "elbe.dspx", "jacobs_well_spring.dspx" };
-            
-            string userProjDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HydroDesktop");
 
-            if (!Directory.Exists(userProjDir))
-            {
-                try
-                {
-                    Directory.CreateDirectory(userProjDir);
-                }
-                catch (Exception ex)
-                {
-                    Trace.Write("error creating directory " + userProjDir + " " + ex.Message);
-                }
-            }
-            if (!Directory.Exists(userProjDir))
-            {
-                try
-                {
-                    userProjDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "HydroDesktop");
-                    Directory.CreateDirectory(userProjDir);
-                }
-                catch (Exception ex)
-                {
-                    Trace.Write("error creating directory " + userProjDir + " " + ex.Message);
-                }
-            }
-            if (!Directory.Exists(userProjDir))
-            {
-                try
-                {
-                    userProjDir = Path.Combine(Path.GetTempPath(), "HydroDesktop");
-                    Directory.CreateDirectory(userProjDir);
-                }
-                catch { }
-            }
-
-            if (Directory.Exists(userProjDir))
-            {
-                //also add the project files from hd_sample_projects folder
-                string projDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SampleProjectsDirectory);
-
-                string userSampleProjectDir = Path.Combine(userProjDir, "hydroDesktop_sample_projects");
-                if (!Directory.Exists(userSampleProjectDir))
-                {
-                    foreach (string dirPath in Directory.GetDirectories(projDir, "*", SearchOption.AllDirectories))
-                        Directory.CreateDirectory(dirPath.Replace(projDir, userSampleProjectDir));
-
-                    //Copy all the files
-                    foreach (string newPath in Directory.GetFiles(projDir, "*.*",
-                        SearchOption.AllDirectories))
-                        File.Copy(newPath, newPath.Replace(projDir, userSampleProjectDir));
-
-                }
-                if (Directory.Exists(userSampleProjectDir))
-                {
-                    string[] projFiles = Directory.GetFiles(userSampleProjectDir, "*.dspx", SearchOption.AllDirectories);
-                    foreach (string projFile in projFiles)
-                    {
-                        var projFileInfo = new ProjectFileInfo(projFile);
-                        if (!Settings.Instance.RecentProjectFiles.Contains(projFile))
-                        {
-                            Settings.Instance.RecentProjectFiles.Add(projFile);
-                            RecentProjectFiles.Add(projFileInfo);
-                        }
-                    }
-                }
-            }
-        }
 
         #endregion
 
         private void linkLabelQuickStart_click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            LocalHelp.OpenHelpFile(QuickStartGuideFile);
+            string quickStartGuideFile = Properties.Settings.Default.QuickStartGuideName;
+            LocalHelp.OpenHelpFile(quickStartGuideFile);
         }
 
         private void linkLabelHelp_click(object sender, LinkLabelLinkClickedEventArgs e)

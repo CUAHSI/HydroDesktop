@@ -71,9 +71,6 @@
             if (App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer") != null)
             {
                 attributeManager = new AttributeTableManager(App);
-
-                //App.HeaderControl.Add(new SimpleActionItem("Attribute Table", ShowAttribute_Click) { RootKey = HeaderControl.HomeRootItemKey, GroupCaption = "Map Tool", LargeImage = Resources.table_32x32, SmallImage = Resources.table_16x16, Enabled = true });
-                //add the context menu items
             }
         }
 
@@ -236,8 +233,8 @@
         {
             SetupDatabases();
             Shell.Text = HYDRODESKTOP_NAME;
-            //setup new db information
-            //SeriesControl.SetupDatabase();
+
+            //setup projection information / same as in previous project
             if (App.Map.Projection != null)
             {
                 latLongDisplay.MapProjectionString = App.Map.Projection.ToEsriString();
@@ -261,21 +258,7 @@
             {
                 latLongDisplay.MapProjectionString = App.Map.Projection.ToEsriString();
             }
-
-            //disable progress reporting for the layers
         }
-
-
-        ////runs when all extensions have been loaded
-        //void App_Loaded(object sender, EventArgs e)
-        //{
-        //    //displays the initial welcome screen
-        //    ShowWelcomeScreen();
-
-        //    //sets-up the database connection and creates a
-        //    //new empty database if required
-        //    SetupDatabases();
-        //}
 
         /// <summary>
         /// In the welcome screen, user chooses to create a project from template,
@@ -329,7 +312,7 @@
             string metadataCacheTempFile = string.Format("NewProject_{0}_{1}{2}_cache.sqlite",
                DateTime.Now.Date.ToString("yyyy-MM-dd"), DateTime.Now.Hour, DateTime.Now.Minute);
 
-            string tempDir = Settings.Instance.TempDirectory;
+            string tempDir = HydroDesktop.Configuration.Settings.Instance.TempDirectory;
             string dataRepositoryPath = Path.Combine(tempDir, dataRepositoryTempFile);
 
             string metadataCachePath = Path.Combine(tempDir, metadataCacheTempFile);
@@ -339,13 +322,13 @@
                 //create new dataRepositoryDb
                 SQLiteHelper.CreateSQLiteDatabase(dataRepositoryPath);
                 string conString1 = SQLiteHelper.GetSQLiteConnectionString(dataRepositoryPath);
-                Settings.Instance.DataRepositoryConnectionString = conString1;
-                Settings.Instance.CurrentProjectFile = Path.ChangeExtension(dataRepositoryPath, ".dspx");
+                HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString = conString1;
+                HydroDesktop.Configuration.Settings.Instance.CurrentProjectFile = Path.ChangeExtension(dataRepositoryPath, ".dspx");
 
                 //create new metadataCacheDb
                 SQLiteHelper.CreateMetadataCacheDb(metadataCachePath);
                 string conString2 = SQLiteHelper.GetSQLiteConnectionString(metadataCachePath);
-                Settings.Instance.MetadataCacheConnectionString = conString2;                
+                HydroDesktop.Configuration.Settings.Instance.MetadataCacheConnectionString = conString2;                
             }
             //TODO: find a smart solution when Write access to temp folder is denied
         }

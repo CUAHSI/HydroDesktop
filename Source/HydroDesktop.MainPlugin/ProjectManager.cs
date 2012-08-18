@@ -16,26 +16,23 @@ namespace HydroDesktop.Main
         /// The main app manager
         /// </summary>
         public AppManager App { get; private set; }
-        
+
         /// <summary>
         /// Creates a new instance of the project manager
         /// </summary>
         /// <param name="mainApp"></param>
-        public ProjectManager(AppManager mainApp)
-        {
+        public ProjectManager(AppManager mainApp) {
             App = mainApp;
         }
-        
+
         public static ProjectionInfo DefaultProjection { get { return KnownCoordinateSystems.Projected.World.WebMercator; } }
 
         //sets the map extent to continental U.S
-        private void SetDefaultMapExtents()
-        {
+        private void SetDefaultMapExtents() {
             App.Map.ViewExtents = DefaultMapExtents().ToExtent();
         }
 
-        public static Envelope DefaultMapExtents()
-        {
+        public static Envelope DefaultMapExtents() {
             Envelope _defaultMapExtent = new Envelope(-130, -60, 10, 55);
 
 
@@ -51,8 +48,7 @@ namespace HydroDesktop.Main
             return new Envelope(xy[0], xy[2], xy[1], xy[3]);
         }
 
-        private static void CopyStream(Stream input, Stream output)
-        {
+        private static void CopyStream(Stream input, Stream output) {
             byte[] buffer = new byte[8192];
 
             int bytesRead;
@@ -67,23 +63,20 @@ namespace HydroDesktop.Main
         /// This function returns false, if the SQLite db
         /// file doesn't exist or if the file size is 0 Bytes
         /// </summary>
-        public static bool DatabaseExists(string dbPath)
-        {
+        public static bool DatabaseExists(string dbPath) {
             return SQLiteHelper.DatabaseExists(dbPath);
         }
 
         /// <summary>
         /// To get the SQLite database path given the SQLite connection string
         /// </summary>
-        public static string GetSQLiteFileName(string sqliteConnString)
-        {
+        public static string GetSQLiteFileName(string sqliteConnString) {
             return SQLiteHelper.GetSQLiteFileName(sqliteConnString);
         }
         /// <summary>
         /// To get the full SQLite connection string given the SQLite database path
         /// </summary>
-        public static string GetSQLiteConnectionString(string dbFileName)
-        {
+        public static string GetSQLiteConnectionString(string dbFileName) {
             return SQLiteHelper.GetSQLiteConnectionString(dbFileName);
         }
 
@@ -91,8 +84,7 @@ namespace HydroDesktop.Main
         /// Create the default .SQLITE database in the user-specified path
         /// </summary>
         /// <returns>true if database was created, false otherwise</returns>
-        public static Boolean CreateNewDatabase(string dbPath)
-        {
+        public static Boolean CreateNewDatabase(string dbPath) {
             //to create the default.sqlite database file using the SQLiteHelper method
             return SQLiteHelper.CreateSQLiteDatabase(dbPath);
         }
@@ -103,8 +95,7 @@ namespace HydroDesktop.Main
         /// <param name="path1">the first path</param>
         /// <param name="path2">the second path</param>
         /// <returns>true if the two paths are on same drive</returns>
-        private static Boolean IsSameDrive(string path1, string path2)
-        {
+        private static Boolean IsSameDrive(string path1, string path2) {
             if (Path.IsPathRooted(path1) && Path.IsPathRooted(path2) && !path1.StartsWith("\\\\") && !path2.StartsWith("\\\\"))
             {
                 if (Path.GetPathRoot(path1) == Path.GetPathRoot(path2))
@@ -118,22 +109,17 @@ namespace HydroDesktop.Main
         /// <summary>
         /// Opens a project and updates the maps
         /// </summary>
-        public void OpenProject(string projectFileName)
-        {
+        public void OpenProject(string projectFileName) {
             App.ProgressHandler.Progress("Opening Project", 0, "Opening Project");
             App.SerializationManager.OpenProject(projectFileName);
             App.ProgressHandler.Progress("Project opened", 0, "");
-
-            //disable excessive progress reporting (no longer needed with new DS)
-            //DisableProgressReportingForLayers();
         }
 
-        private void DisableProgressReportingForLayers()
-        {
+        private void DisableProgressReportingForLayers() {
             foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
             {
                 layer.ProgressHandler = null;
-                
+
                 MapPolygonLayer polyLay = layer as MapPolygonLayer;
                 if (polyLay != null)
                 {
@@ -143,10 +129,9 @@ namespace HydroDesktop.Main
             App.Map.ProgressHandler = null;
         }
 
-        public void OpeningProject()
-        {
+        public void OpeningProject() {
             if (App.SerializationManager.CurrentProjectFile == null) return;
-            
+
             //todo: change the configuration settings paths
             string projectFile = App.SerializationManager.CurrentProjectFile;
             Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
@@ -165,13 +150,12 @@ namespace HydroDesktop.Main
             }
             Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(dbFileName);
             Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(cacheDbFileName);
-        
-            
+
+
         }
 
         //checks if the db exists. Also checks the db schema
-        private bool ValidateDatabase(string dbFileName, DatabaseType dbType)
-        {
+        private bool ValidateDatabase(string dbFileName, DatabaseType dbType) {
             //check if db exists
             if (SQLiteHelper.DatabaseExists(dbFileName))
             {
@@ -183,16 +167,14 @@ namespace HydroDesktop.Main
         /// <summary>
         /// Creates a new 'empty' project
         /// </summary>
-        public void CreateEmptyProject()
-        {
+        public void CreateEmptyProject() {
             App.Map.Layers.Clear();
         }
 
         //saves the current HydroDesktop project file to the user specified location
-        public void SavingProject()
-        {
+        public void SavingProject() {
             string projectFileName = App.SerializationManager.CurrentProjectFile;
-            
+
             Settings.Instance.AddFileToRecentFiles(projectFileName);
 
             string newProjectDirectory = Path.GetDirectoryName(projectFileName);
@@ -239,7 +221,7 @@ namespace HydroDesktop.Main
                 Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(newDbPath);
                 Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(newCachePath);
                 Settings.Instance.CurrentProjectFile = App.SerializationManager.CurrentProjectFile;
-        
+
                 //Also save the files of all map layers 
 
                 string projDir = App.SerializationManager.CurrentProjectDirectory;
@@ -262,31 +244,6 @@ namespace HydroDesktop.Main
                 }
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
-        }
-
-        public static string GetMapDirectory()
-        {
-            string binariesDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            if (binariesDirectory.EndsWith(@"\")) binariesDirectory =
-                binariesDirectory.Substring(0, binariesDirectory.Length - 1);
-            DirectoryInfo baseDirInfo = Directory.GetParent(binariesDirectory);
-            string baseDirectory = baseDirInfo.FullName;
-
-            string baseMapFolder1 = baseDirectory + Path.DirectorySeparatorChar +
-                @"Maps\BaseData-MercatorSphere";
-            string baseMapFolder2 = Path.Combine(binariesDirectory, @"Maps\BaseData-MercatorSphere");
-
-            if (Directory.Exists(baseMapFolder1))
-            {
-                return baseMapFolder1;
-            }
-            if (Directory.Exists(baseMapFolder2))
-            {
-                return baseMapFolder2;
-            }
-            MessageBox.Show("error loading base map data. The directory " +
-                            baseMapFolder2 + " does not exist.");
-            return "";
         }
     }
 }
