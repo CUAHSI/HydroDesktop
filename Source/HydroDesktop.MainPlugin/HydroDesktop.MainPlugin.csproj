@@ -132,7 +132,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="SampleProjectInfo.cs" />
+    <Compile Include="SampleProjectInstaller.cs" />
     <Compile Include="SelectionStatusDisplay.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="WelcomeScreen.cs">
@@ -152,8 +158,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="package.nuspec" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\CuahsiLogo38.png" />
   </ItemGroup>
   <ItemGroup>
