@@ -131,7 +131,7 @@ Source: "..\Binaries\Plugins\TableView\TableView.dll"; DestDir: "{app}\Plugins";
 Source: "..\Binaries\Plugins\GraphView\GraphView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\HelpTab\HelpTab.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-Source: "..\Binaries\Application Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Application Extensions\HydroDesktop.DownloadExtensions.dll"; Flags: ignoreversion;
+;Source: "..\Binaries\Application Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Application Extensions\HydroDesktop.DownloadExtensions.dll"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.Docking.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.MainPlugin.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
@@ -148,8 +148,38 @@ Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignor
 Source: "..\Binaries\HydroDesktop_1_5_dev.exe"; DestDir: "{app}\HydroDesktop_1_5_5.exe"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop_1_5_dev.exe.config"; DestDir: "{app}\HydroDesktop_1_5_5.exe"; Flags: ignoreversion;
 
+;include 3rd party packages. These packages are retrieved by the auto-build
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+
+;MenuBar package
+Source: "..\DotSpatial.Plugins.MenuBar\Lib\net40-client\DotSpatial.Plugins.MenuBar.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+
+;AttributeDataExplorer package
+Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+
+;GeostatisticalTool package
+Source: "..\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\GeostatisticalTool\Lib\net40-client\MadInterfaces.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+
+;WebMap package
+Source: "..\BruTile\Lib\net35\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.WebMap\Lib\net40-client\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+
+;SampleProjectManager package
+Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+
+;SampleProjects
+Source: "..\DotSpatial.SampleProjects.World\*"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.World"; Flags: recursesubdirs;
+
 ;Example Configurations for HydroModeler and Sample Projects for HD
-Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: recursesubdirs
+Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: 
 
 ;Sample Projects are now downloaded on-demand
 ;Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
