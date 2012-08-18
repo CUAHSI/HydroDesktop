@@ -43,7 +43,12 @@ namespace HydroDesktop.Main
             string resultDspxPath = shippedProjectFile;
             
             //check if project file is in excluded names
-            string parentDir = Path.GetDirectoryName(shippedProjectFile);
+            string parentDir1 = Path.GetDirectoryName(shippedProjectFile);
+            string parentDir = parentDir1;
+            if (parentDir1.EndsWith("content") || parentDir1.EndsWith(@"content\"))
+            {
+                parentDir = Directory.GetParent(parentDir1).FullName;
+            }
 
             //copy directories
             foreach (string dirPath in Directory.GetDirectories(parentDir, "*", SearchOption.AllDirectories))
@@ -51,7 +56,7 @@ namespace HydroDesktop.Main
                 string newDir = dirPath.Replace(parentDir, targetDirectory);
                 if (!Directory.Exists(newDir))
                 {
-                    Directory.CreateDirectory(dirPath.Replace(newDir, targetDirectory));
+                    Directory.CreateDirectory(newDir);
                 }
             }
                 
@@ -60,9 +65,15 @@ namespace HydroDesktop.Main
             foreach (string newPath in Directory.GetFiles(parentDir, "*.*",
                 SearchOption.AllDirectories))
             {
-                File.Copy(newPath, newPath.Replace(parentDir, targetDirectory));
-                if (newPath.Contains("*.dspx"))
-                    resultDspxPath = newPath;
+                string newPath2 = newPath.Replace(parentDir, targetDirectory);
+                if (!File.Exists(newPath2))
+                {
+                    File.Copy(newPath, newPath2);
+                }
+                if (newPath2.EndsWith("*.dspx"))
+                {
+                    resultDspxPath = newPath2;
+                }
             }
 
             //return new project path
@@ -148,10 +159,13 @@ namespace HydroDesktop.Main
                 }
 
                 //step 3: copy each sample project to target directory
+                string defaultTargetBaseDir = AppManager.AbsolutePathToExtensions;
+                string packagesDir = Path.Combine(AppManager.AbsolutePathToExtensions, "Packages");
+
                 foreach (string spf in sampleProjectFilesToInstall)
                 {
-                    //attempt to create target directory
-                    string targDirName = Path.GetFileNameWithoutExtension(spf);
+                    //attempt to create target directory             
+                    string targDirName = Path.Combine(packagesDir,Path.GetFileNameWithoutExtension(spf));
 
                     try
                     {
@@ -159,8 +173,8 @@ namespace HydroDesktop.Main
                         string newFullPath = CopyShippedSampleProject(spf, targetDir);
                         SampleProjectInfo spi = new SampleProjectInfo();
                         spi.AbsolutePathToProjectFile = newFullPath;
-                        spi.Description = targDirName;
-                        spi.Name = targDirName;
+                        spi.Description = Path.GetFileNameWithoutExtension(spi.AbsolutePathToProjectFile);
+                        spi.Name = spi.Description;
                         resultList.Add(spi);
                     }
                     catch (Exception ex)

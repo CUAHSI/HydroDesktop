@@ -66,14 +66,14 @@ namespace HydroDesktop.DownloadExtensions
                 packages.Install("EPADelineation");
             }
 
-            foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
-            {
-                if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
-                {
-                    App.UpdateProgress("Downloading " + sampleProject + " sample project...");
-                    packages.Install(sampleProject);
-                }
-            }
+            //foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
+            //{
+            //    if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
+            //    {
+            //        App.UpdateProgress("Downloading " + sampleProject + " sample project...");
+            //        packages.Install(sampleProject);
+            //    }
+            //}
             App.RefreshExtensions();
         }
 
