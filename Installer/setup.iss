@@ -145,8 +145,8 @@ Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\NuGet.Core.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_4.exe"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_4.exe.config"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_dev.exe"; DestDir: "{app}\HydroDesktop_1_5_5.exe"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_dev.exe.config"; DestDir: "{app}\HydroDesktop_1_5_5.exe"; Flags: ignoreversion;
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: recursesubdirs
@@ -240,6 +240,8 @@ Type: files; Name: "{userappdata}\HydroDesktop_1_5_2.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_5_2\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_5_3.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_5_3\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_5_4.exe\*"
+Type: files; Name: "{userappdata}\HydroDesktop_1_5_4\*"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
 [UninstallDelete]
