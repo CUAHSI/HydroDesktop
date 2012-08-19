@@ -60,7 +60,6 @@ VersionInfoCompany=CUAHSI [www.cuahsi.org]
 VersionInfoCopyright=Mozilla Public License (MPL) 1.1
 VersionInfoDescription=HydroDesktop [www.HydroDesktop.org]
 VersionInfoProductName="{#AppName} {#AppVerStr}
-VersionInfoVersion = "{#AppVerStr}
 VersionInfoProductVersion={#AppVerStr}
 DefaultDirName={pf}\CUAHSI HIS\{#AppName}
 DefaultGroupName=CUAHSI HIS\{#AppName}
