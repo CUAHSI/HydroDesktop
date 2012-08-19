@@ -173,7 +173,7 @@ Source: "..\BruTile\Lib\net35\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ign
 Source: "..\DotSpatial.Plugins.WebMap\Lib\net40-client\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ;SampleProjectManager package
-Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+;Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-Client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ;SampleProjects
 Source: "..\DotSpatial.SampleProjects.World\*"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.World"; Flags: recursesubdirs;
