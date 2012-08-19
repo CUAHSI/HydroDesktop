@@ -181,7 +181,7 @@ Source: "..\SampleProjects.jacobs_well_spring\*"; DestDir: "{app}\hydrodesktop_s
 Source: "..\SampleProjects.elbe\*"; DestDir: "{app}\hydrodesktop_sample_projects\elbe"; Flags: recursesubdirs;
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
-Source: "Hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\Hydromodeler_example_configurations"; Flags: 
+Source: "HydroModeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\HydroModeler_example_configurations"; Flags: 
 
 ;Sample Projects are now downloaded on-demand
 ;Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
