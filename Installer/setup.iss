@@ -145,8 +145,8 @@ Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\NuGet.Core.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_dev.exe"; DestDir: "{app}\HydroDesktop_1_5_5.exe"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_dev.exe.config"; DestDir: "{app}\HydroDesktop_1_5_5.exe"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_dev.exe"; DestDir: "{app}; DestName: {#SrcApp}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_dev.exe.config"; DestDir: "{app}; DestName: {#SrcApp}.config"; Flags: ignoreversion;
 
 ;include 3rd party packages. These packages are retrieved by the auto-build
 Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
@@ -183,9 +183,6 @@ Source: "..\SampleProjects.elbe\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrode
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "HydroModeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\HydroModeler_example_configurations"; Flags: recursesubdirs;
-
-;Sample Projects are now downloaded on-demand
-;Source: "hydrodesktop_sample_projects\*"; DestDir: "{app}\hydrodesktop_sample_projects"; Flags: recursesubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#SrcApp}"

@@ -24,6 +24,12 @@ namespace HydroDesktop.Main
         /// </summary>
         public List<SampleProjectInfo> FindSampleProjectFiles() 
         {
+            //create the AbsolutePathToExtensions directory in case this directory doesn't exist
+            if (!Directory.Exists(AppManager.AbsolutePathToExtensions))
+            {
+                Directory.CreateDirectory(AppManager.AbsolutePathToExtensions);
+            }
+            
             List<SampleProjectInfo> sampleProjectList = new List<SampleProjectInfo>();
             foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
             {
