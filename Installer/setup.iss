@@ -176,9 +176,9 @@ Source: "..\DotSpatial.Plugins.WebMap\Lib\net40-client\DotSpatial.Plugins.WebMap
 ;Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-Client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ;SampleProjects
-Source: "..\DotSpatial.SampleProjects.World\*"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.World"; Flags: recursesubdirs;
-Source: "..\SampleProjects.jacobs_well_spring\*"; DestDir: "{app}\hydrodesktop_sample_projects\jacobs_well_spring"; Flags: recursesubdirs;
-Source: "..\SampleProjects.elbe\*"; DestDir: "{app}\hydrodesktop_sample_projects\elbe"; Flags: recursesubdirs;
+;Source: "..\DotSpatial.SampleProjects.World\*"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.World"; Flags: recursesubdirs;
+;Source: "..\SampleProjects.jacobs_well_spring\*"; DestDir: "{app}\hydrodesktop_sample_projects\jacobs_well_spring"; Flags: recursesubdirs;
+;Source: "..\SampleProjects.elbe\*"; DestDir: "{app}\hydrodesktop_sample_projects\elbe"; Flags: recursesubdirs;
 
 ;Example Configurations for HydroModeler and Sample Projects for HD
 Source: "hydromodeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\hydromodeler_example_configurations"; Flags: 
