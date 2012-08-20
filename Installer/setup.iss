@@ -145,7 +145,7 @@ Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\NuGet.Core.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_5_dev.exe"; DestDir: "{app};" DestName: "{#SrcApp}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_5_dev.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop_1_5_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
 ;include 3rd party packages. These packages are retrieved by the auto-build
