@@ -2,9 +2,8 @@
 using System.Data;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using HydroDesktop.Interfaces;
-using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.Common;
+using HydroDesktop.Interfaces;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Collections.Generic;
