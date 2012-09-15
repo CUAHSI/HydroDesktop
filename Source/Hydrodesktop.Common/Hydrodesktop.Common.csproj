@@ -104,6 +104,7 @@
     <Compile Include="SharedConstants.cs" />
     <Compile Include="Tools\AppManagerHelper.cs" />
     <Compile Include="Tools\ControlHelper.cs" />
+    <Compile Include="Tools\DrawingHelper.cs" />
     <Compile Include="Tools\EnumHelper.cs" />
     <Compile Include="Tools\NameHelper.cs" />
     <Compile Include="Tools\SymbologyHelper.cs" />

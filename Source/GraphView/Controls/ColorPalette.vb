@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.ComponentModel
+Imports HydroDesktop.Common.Tools
 
 Public Class ColorPalette
 
@@ -73,24 +74,6 @@ Public Class ColorPalette
 
 #End Region
 
-#Region "Public methods"
-
-    Public Shared Function PromptForColor(ByVal defaultColor As Color) As Color?
-        Dim dlgColor As Windows.Forms.ColorDialog = New Windows.Forms.ColorDialog()
-
-        If Not IsDBNull(defaultColor) Then
-            dlgColor.Color = defaultColor
-        End If
-
-        If (dlgColor.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-            Return dlgColor.Color
-        Else
-            Return Nothing
-        End If
-    End Function
-
-#End Region
-
 #Region "Private methods"
 
     Private Sub InitColorControl(ByVal label As Label)
@@ -106,7 +89,7 @@ Public Class ColorPalette
         If label Is Nothing Then Return
 
         Dim defaltColor = If(DefaultColorFunc Is Nothing, Nothing, DefaultColorFunc.Invoke())
-        Dim newColor As Color? = PromptForColor(defaltColor)
+        Dim newColor = DrawingHelper.PromptForColor(defaltColor)
 
         If newColor.HasValue Then
             label.BackColor = newColor

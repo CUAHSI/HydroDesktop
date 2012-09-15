@@ -6,6 +6,7 @@ Imports HydroDesktop.Interfaces
 Imports GraphView.My.Resources
 Imports HydroDesktop.Interfaces.ObjectModel
 Imports HydroDesktop.Interfaces.PluginContracts
+Imports HydroDesktop.Common.Tools
 Imports ZedGraph
 
 Namespace Controls
@@ -215,20 +216,7 @@ Namespace Controls
             AddHandler item.Click, AddressOf SetLineColor
             menuStrip.Items.Add(item)
         End Sub
-
-        Private Function PromptForColor(ByVal defaultColor As Color) As Color
-            Dim dlgColor As ColorDialog = New ColorDialog()
-
-            If Not IsDBNull(defaultColor) Then
-                dlgColor.Color = defaultColor
-            End If
-
-            If (dlgColor.ShowDialog() = DialogResult.OK) Then
-                Return dlgColor.Color
-            Else
-                Return Nothing
-            End If
-        End Function
+        
 
         Protected Sub ExportToTextFile()
 
@@ -271,10 +259,10 @@ Namespace Controls
             End If
         End Sub
 
-        Protected Sub SetLineColor()
+        Private Sub SetLineColor()
             If zgTimeSeries.GraphPane.CurveList.Count > 0 Then
-                Dim newColor As Color = PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
-                If Not IsDBNull(newColor) Then
+                Dim newColor = DrawingHelper.PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
+                If newColor.HasValue Then
                     zgTimeSeries.GraphPane.CurveList.Item(0).Color = newColor
                     zgTimeSeries.Refresh()
                 End If
