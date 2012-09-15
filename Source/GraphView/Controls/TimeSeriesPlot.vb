@@ -201,7 +201,7 @@ Namespace Controls
             item.Name = "export_to_text_file"
             item.Tag = "export_to_text_file"
             ' This is the text that will show up in the menu
-            item.Text = "Export to Text File"
+            item.Text = MessageStrings.Export_Time_Series
             ' Add a handler that will respond when that menu item is selected
             AddHandler item.Click, AddressOf ExportToTextFile
             ' Add the menu item to the menu
