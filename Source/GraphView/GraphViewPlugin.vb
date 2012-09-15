@@ -514,11 +514,11 @@ Public Class GraphViewPlugin
         Dim form = DirectCast(sender, ColorSettingsDialog)
 
         _plotOptions.PointColorList.Clear()
-        For i As Integer = 0 To form.pointcolorlist.Count
+        For i As Integer = 0 To form.pointcolorlist.Count - 1
             _plotOptions.PointColorList.Add(form.pointcolorlist(i))
         Next
         _plotOptions.LineColorList.Clear()
-        For i As Integer = 0 To form.linecolorlist.Count
+        For i As Integer = 0 To form.linecolorlist.Count - 1
             _plotOptions.LineColorList.Add(form.linecolorlist(i))
         Next
 
