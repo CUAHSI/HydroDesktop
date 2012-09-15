@@ -7,11 +7,8 @@
     using System.Windows.Forms;
     using DotSpatial.Controls;
     using DotSpatial.Controls.Header;
-    using HydroDesktop.Configuration;
     using HydroDesktop.Database;
     using HydroDesktop.Interfaces;
-    using HydroDesktop.Main.Properties;
-    using DotSpatial.Extensions;
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
@@ -51,7 +48,7 @@
             App.SerializationManager.NewProjectCreated += SerializationManager_NewProjectCreated;
             App.SerializationManager.IsDirtyChanged += SerializationManager_IsDirtyChanged;
 
-            App.ExtensionsActivated += new EventHandler(App_ExtensionsActivated);
+            App.ExtensionsActivated += App_ExtensionsActivated;
 
 
             // todo: export Shell in MapWindow as Form to avoid type casting
@@ -164,9 +161,10 @@
 
         public override void  Deactivate()
         {
-            if (Shell is Form)
+            var shell = Shell as Form;
+            if (shell != null)
             {
-                ((Form)Shell).FormClosing -= HydroDesktopMainPlugin_FormClosing;
+                shell.FormClosing -= HydroDesktopMainPlugin_FormClosing;
             }
             App.ExtensionsActivated -= App_ExtensionsActivated;
 
@@ -270,19 +268,21 @@
             App.DockManager.SelectPanel("kMap");
             App.DockManager.SelectPanel("kLegend");
 
-            welcomeScreenForm = new WelcomeScreen(myProjectManager);
-            welcomeScreenForm.StartPosition = FormStartPosition.CenterScreen;
-            welcomeScreenForm.TopMost = true;
-            welcomeScreenForm.FormClosing += new FormClosingEventHandler(welcomeScreen_FormClosing);
+            welcomeScreenForm = new WelcomeScreen(myProjectManager)
+                {
+                    StartPosition = FormStartPosition.CenterScreen,
+                    TopMost = true
+                };
+            welcomeScreenForm.FormClosing += welcomeScreen_FormClosing;
+            welcomeScreenForm.Shown += (sender, args) => welcomeScreenForm.TopMost = false; // No more need to be TopMost after showing the logo.
 
             int x = Shell.Location.X + Shell.Width / 2 - welcomeScreenForm.Width / 2;
             int y = Shell.Location.Y + Shell.Height / 2 - welcomeScreenForm.Height / 2;
             welcomeScreenForm.Location = new System.Drawing.Point(x, y);
 
-
             App.CompositionContainer.ComposeParts(welcomeScreenForm);
 
-            welcomeScreenForm.Show();
+            welcomeScreenForm.Show(Shell);
             welcomeScreenForm.Focus();
         }
 
@@ -296,6 +296,9 @@
 
             //setup the lat, long coordinate display
             latLongDisplay.ShowCoordinates = true;
+
+            // Focus to main application window
+            Shell.Focus();
         }
 
         /// <summary>
@@ -312,7 +315,7 @@
             string metadataCacheTempFile = string.Format("NewProject_{0}_{1}{2}_cache.sqlite",
                DateTime.Now.Date.ToString("yyyy-MM-dd"), DateTime.Now.Hour, DateTime.Now.Minute);
 
-            string tempDir = HydroDesktop.Configuration.Settings.Instance.TempDirectory;
+            string tempDir = Configuration.Settings.Instance.TempDirectory;
             string dataRepositoryPath = Path.Combine(tempDir, dataRepositoryTempFile);
 
             string metadataCachePath = Path.Combine(tempDir, metadataCacheTempFile);
@@ -322,13 +325,13 @@
                 //create new dataRepositoryDb
                 SQLiteHelper.CreateSQLiteDatabase(dataRepositoryPath);
                 string conString1 = SQLiteHelper.GetSQLiteConnectionString(dataRepositoryPath);
-                HydroDesktop.Configuration.Settings.Instance.DataRepositoryConnectionString = conString1;
-                HydroDesktop.Configuration.Settings.Instance.CurrentProjectFile = Path.ChangeExtension(dataRepositoryPath, ".dspx");
+                Configuration.Settings.Instance.DataRepositoryConnectionString = conString1;
+                Configuration.Settings.Instance.CurrentProjectFile = Path.ChangeExtension(dataRepositoryPath, ".dspx");
 
                 //create new metadataCacheDb
                 SQLiteHelper.CreateMetadataCacheDb(metadataCachePath);
-                string conString2 = SQLiteHelper.GetSQLiteConnectionString(metadataCachePath);
-                HydroDesktop.Configuration.Settings.Instance.MetadataCacheConnectionString = conString2;                
+                var conString2 = SQLiteHelper.GetSQLiteConnectionString(metadataCachePath);
+                Configuration.Settings.Instance.MetadataCacheConnectionString = conString2;                
             }
             //TODO: find a smart solution when Write access to temp folder is denied
         }
