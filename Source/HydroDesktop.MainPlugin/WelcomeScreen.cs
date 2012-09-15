@@ -55,9 +55,9 @@ namespace HydroDesktop.Main
             _recentProjectFiles = new List<ProjectFileInfo>();
             bsRecentFiles = new BindingSource(RecentProjectFiles, null);
             lstRecentProjects.DataSource = bsRecentFiles;
-            lstRecentProjects.DoubleClick += new EventHandler(lstRecentProjects_DoubleClick);
+            lstRecentProjects.DoubleClick += lstRecentProjects_DoubleClick;
 
-            lstProjectTemplates.DoubleClick += new EventHandler(lstProjectTemplates_DoubleClick);
+            lstProjectTemplates.DoubleClick += lstProjectTemplates_DoubleClick;
 
             if (lstProjectTemplates.Items.Count > 0)
             {
