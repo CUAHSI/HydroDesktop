@@ -120,6 +120,9 @@
   <data name="All_Data_Censored" xml:space="preserve">
     <value>All data is censored, so there is no data do display</value>
   </data>
+  <data name="Export_Time_Series" xml:space="preserve">
+    <value>Export Time Series</value>
+  </data>
   <data name="No_Data_Plot" xml:space="preserve">
     <value>No Data To Plot</value>
   </data>
