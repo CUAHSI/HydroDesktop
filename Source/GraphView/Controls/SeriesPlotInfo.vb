@@ -40,6 +40,8 @@ Namespace Controls
             End Get
         End Property
 
+        Public Property IsColorsChanged() As Boolean
+
         Public Function GetSeriesIDs() As ICollection(Of Integer)
             Return _seriesInfos.Keys
         End Function

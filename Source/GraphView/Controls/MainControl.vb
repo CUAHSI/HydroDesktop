@@ -64,7 +64,13 @@ Namespace Controls
 
 #End Region
 
-#Region "Private Methods"
+        Public ReadOnly Property SeriesPlotInfo() As SeriesPlotInfo
+            Get
+                Return _seriesPlotInfo
+            End Get
+        End Property
+
+#Region "Public Methods"
 
         Public Sub ShowTimeSeriesPlot()
             tcPlots.SelectTab(tpTimeSeries)

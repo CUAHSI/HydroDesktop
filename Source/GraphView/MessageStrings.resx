@@ -121,12 +121,15 @@
     <value>All data is censored, so there is no data do display</value>
   </data>
   <data name="Export_Time_Series" xml:space="preserve">
-    <value>Export Time Series</value>
+    <value>Export Time Series...</value>
   </data>
   <data name="No_Data_Plot" xml:space="preserve">
     <value>No Data To Plot</value>
   </data>
   <data name="Number_Observations" xml:space="preserve">
     <value>Number of Observations</value>
+  </data>
+  <data name="Set_Line_Color" xml:space="preserve">
+    <value>Set Line Color...</value>
   </data>
 </root>
