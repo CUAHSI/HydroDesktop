@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports HydroDesktop.Common.Tools
 
 Namespace Controls
 
@@ -189,7 +190,7 @@ Namespace Controls
         End Sub
 
         Private Sub btnSetLineColor_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSetLineColor.Click
-            Dim newColor As Color? = ColorPalette.PromptForColor(btnSetLineColor.BackColor)
+            Dim newColor = DrawingHelper.PromptForColor(btnSetLineColor.BackColor)
             If newColor Is Nothing Then Return
 
             btnSetLineColor.BackColor = newColor.Value
@@ -210,7 +211,7 @@ Namespace Controls
         End Sub
 
         Private Sub btnSetPointColor_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSetPointColor.Click
-            Dim newColor As Color? = ColorPalette.PromptForColor(btnSetPointColor.BackColor)
+            Dim newColor = DrawingHelper.PromptForColor(btnSetPointColor.BackColor)
             If newColor Is Nothing Then Return
 
             btnSetPointColor.BackColor = newColor.Value

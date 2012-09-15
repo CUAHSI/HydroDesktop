@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Forms
+Imports HydroDesktop.Common.Tools
 Imports ZedGraph
 Imports System.Drawing
 
@@ -319,20 +320,7 @@ Public Class cTimeSeriesPlot
         AddHandler item.Click, AddressOf SetLineColor
         menuStrip.Items.Add(item)
     End Sub
-
-    Private Function PromptForColor(ByVal defaultColor As System.Drawing.Color) As System.Drawing.Color
-        Dim dlgColor As System.Windows.Forms.ColorDialog = New System.Windows.Forms.ColorDialog()
-
-        If Not IsDBNull(defaultColor) Then
-            dlgColor.Color = defaultColor
-        End If
-
-        If (dlgColor.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-            Return dlgColor.Color
-        Else
-            Return Nothing
-        End If
-    End Function
+ 
 
     'Protected Sub ExportToTextFile()
 
@@ -384,8 +372,8 @@ Public Class cTimeSeriesPlot
 
     Protected Sub SetLineColor()
         If zgTimeSeries.GraphPane.CurveList.Count > 0 Then
-            Dim newColor As System.Drawing.Color = PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
-            If Not IsDBNull(newColor) Then
+            Dim newColor = DrawingHelper.PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
+            If newColor.HasValue Then
                 zgTimeSeries.GraphPane.CurveList.Item(0).Color = newColor
                 zgTimeSeries.Refresh()
             End If
