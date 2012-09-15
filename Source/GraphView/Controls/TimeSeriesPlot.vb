@@ -42,10 +42,23 @@ Namespace Controls
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
+            ' Save curves before clear
+            Dim curves = zgTimeSeries.GraphPane.CurveList.Select(Function(xItem) xItem).ToList()
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
                     Graph(oneSeriesInfo)
+
+                    ' Try to found previous curve with same SeriesID
+                    Dim prevCurve = curves.FirstOrDefault(Function(xItem) DirectCast(xItem.Tag, OneSeriesPlotInfo).SeriesID = oneSeriesInfo.SeriesID)
+                    If prevCurve IsNot Nothing Then
+                        ' If found, restore color setting
+                        Dim lastCurve = zgTimeSeries.GraphPane.CurveList(zgTimeSeries.GraphPane.CurveList.Count - 1)
+                        If Not seriesPlotInfo.IsColorsChanged Then
+                            lastCurve.Color = prevCurve.Color
+                        End If
+                    End If
+
                 ElseIf oneSeriesInfo.Statistics.NumberOfObservations = oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
                     If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
                 End If
@@ -54,14 +67,7 @@ Namespace Controls
         End Sub
 
         Private Sub Clear()
-            If zgTimeSeries Is Nothing Then Return
-            If zgTimeSeries.GraphPane Is Nothing Then Return
-
             Dim gPane As GraphPane = zgTimeSeries.GraphPane
-
-            If gPane.CurveList Is Nothing Then Return
-            If gPane.GraphObjList Is Nothing Then Return
-
             gPane.CurveList.Clear()
             SetGraphPaneTitle(MessageStrings.No_Data_Plot)
             gPane.XAxis.IsVisible = False
@@ -192,113 +198,80 @@ Namespace Controls
 
         End Sub
 
-        Private Sub zgTimeSeries_ContextMenuBuilder(ByVal sender As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState) Handles zgTimeSeries.ContextMenuBuilder
+        Private Sub zgTimeSeries_ContextMenuBuilder(ByVal sender As ZedGraphControl, ByVal menuStrip As ContextMenuStrip,
+                                                    ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState) Handles zgTimeSeries.ContextMenuBuilder
             ' from http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu
 
             ' Add item to export to text file
-            ' Create a new menu item
             Dim item As ToolStripMenuItem = New ToolStripMenuItem()
-            ' This is the user-defined Tag so you can find this menu item later if necessary
-            item.Name = "export_to_text_file"
-            item.Tag = "export_to_text_file"
-            ' This is the text that will show up in the menu
             item.Text = MessageStrings.Export_Time_Series
-            ' Add a handler that will respond when that menu item is selected
+            item.Enabled = SeriesSelector IsNot Nothing AndAlso SeriesSelector.CheckedIDList.Any()
             AddHandler item.Click, AddressOf ExportToTextFile
-            ' Add the menu item to the menu
             menuStrip.Items.Add(item)
 
             ' Add item to export to change line color
             item = New ToolStripMenuItem()
-            item.Name = "set_line_color"
-            item.Tag = "set_line_color"
-            item.Text = "Set Line Color"
+            item.Enabled = sender.GraphPane.CurveList.Count > 0
+            If item.Enabled Then
+                Dim curve As CurveItem
+                Dim iNearest As Integer
+                Dim founded = sender.GraphPane.FindNearestPoint(mousePt, curve, iNearest)
+                item.Text = If(founded, curve.Label.Text + ": " + MessageStrings.Set_Line_Color, MessageStrings.Set_Line_Color)
+                item.Enabled = founded
+                item.Tag = curve
+            Else
+                item.Text = MessageStrings.Set_Line_Color
+            End If
+
             AddHandler item.Click, AddressOf SetLineColor
             menuStrip.Items.Add(item)
         End Sub
-        
 
-        Protected Sub ExportToTextFile()
 
-            'Error checking
+        Private Sub ExportToTextFile()
+            Debug.Assert(SeriesSelector IsNot Nothing)
+            Debug.Assert(SeriesSelector.CheckedIDList.Any())
+
             Dim sSelector = SeriesSelector
-            If sSelector Is Nothing Then Exit Sub
 
-            'Check selected series
-            Dim checkedSeries As Integer = sSelector.CheckedIDList.Count()
+            'Build a datatable to export
+            Dim exportTable As DataTable = New DataTable
+            Dim repo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
+            'Build datatable for each series and then add all series' datatable to the exportTable
+            For count As Integer = 1 To sSelector.CheckedIDList.Count()
+                'Error checking
+                Dim checkedSeriesID As Integer = sSelector.CheckedIDList(count - 1)
+                Dim totalData = repo.GetTableForExportFromTimeSeriesPlot(checkedSeriesID)
 
-            'Check if there is any series to export
-            If (checkedSeries <= 0) Then
-                MessageBox.Show("No Data To Export")
+                If count = 1 Then
+                    exportTable = totalData.Copy()
+                Else
+                    exportTable.Merge(totalData, True)
+                End If
 
-            Else
+            Next count
 
-                'Build a datatable to export
-                Dim exportTable As DataTable = New DataTable
-                Dim repo = RepositoryFactory.Instance.Get(Of IDataValuesRepository)()
-                'Build datatable for each series and then add all series' datatable to the exportTable
-                For count As Integer = 1 To checkedSeries
-                    'Error checking
-                    Dim checkedSeriesID As Integer = sSelector.CheckedIDList(count - 1)
-                    Dim totalData = repo.GetTableForExportFromTimeSeriesPlot(checkedSeriesID)
-
-                    If count = 1 Then
-                        exportTable = totalData.Copy()
-                    Else
-                        exportTable.Merge(totalData, True)
-                    End If
-
-                Next count
-
-                If (AppManager IsNot Nothing) Then
-                    Dim exportPlugin = AppManager.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
-                    If exportPlugin IsNot Nothing Then
-                        exportPlugin.Export(exportTable)
-                    End If
+            If (AppManager IsNot Nothing) Then
+                Dim exportPlugin = AppManager.Extensions.OfType(Of IDataExportPlugin).FirstOrDefault()
+                If exportPlugin IsNot Nothing Then
+                    exportPlugin.Export(exportTable)
                 End If
             End If
         End Sub
 
-        Private Sub SetLineColor()
-            If zgTimeSeries.GraphPane.CurveList.Count > 0 Then
-                Dim newColor = DrawingHelper.PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
-                If newColor.HasValue Then
-                    zgTimeSeries.GraphPane.CurveList.Item(0).Color = newColor
-                    zgTimeSeries.Refresh()
-                End If
+        Private Sub SetLineColor(ByVal sender As ToolStripMenuItem, ByVal eventArgs As EventArgs)
+            Dim curve = TryCast(sender.Tag, CurveItem)
+            If curve Is Nothing Then Return
+            Dim newColor = DrawingHelper.PromptForColor(curve.Color)
+            If newColor.HasValue Then
+                curve.Color = newColor
+                zgTimeSeries.Refresh()
             End If
         End Sub
 
         Private Sub Refreshing()
             zgTimeSeries.AxisChange()
             zgTimeSeries.Refresh()
-        End Sub
-
-        Private Sub Remove(ByVal ID As Integer)
-            'added by jiri to prevent unhandled exception
-            If zgTimeSeries.GraphPane.CurveList.Count = 0 Then
-                Return
-            End If
-
-            Dim CurveListCopy As New CurveList
-            For i = 0 To zgTimeSeries.GraphPane.CurveList.Count - 1
-                CurveListCopy.Add(zgTimeSeries.GraphPane.CurveList(i))
-            Next
-            Try
-                zgTimeSeries.GraphPane.CurveList.Clear()
-            Catch
-            End Try
-            For i = 0 To CurveListCopy.Count - 1
-
-                If Not (CurveID(CurveListCopy(i)) = ID) Then
-                    zgTimeSeries.GraphPane.CurveList.Add(CurveListCopy(i))
-
-                End If
-            Next
-
-            SettingYAsixs()
-            SettingTitle()
-
         End Sub
 
         Private Sub SettingTitle()
@@ -388,12 +361,6 @@ Namespace Controls
                 .Y2Axis.IsVisible = True
             End With
         End Sub
-
-        Private Function CurveID(ByVal curve As CurveItem) As Integer
-            Dim cOptions = DirectCast(curve.Tag, OneSeriesPlotInfo)
-            If cOptions Is Nothing Then Return Nothing
-            Return cOptions.SeriesID
-        End Function
 
         Public Property ShowPointValues() As Boolean Implements IChart.ShowPointValues
             Get

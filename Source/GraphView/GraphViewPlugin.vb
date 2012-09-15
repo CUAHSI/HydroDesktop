@@ -522,7 +522,9 @@ Public Class GraphViewPlugin
             _plotOptions.LineColorList.Add(form.linecolorlist(i))
         Next
 
+        _mainControl.SeriesPlotInfo.IsColorsChanged = True
         _mainControl.ApplyOptions()
+        _mainControl.SeriesPlotInfo.IsColorsChanged = False
     End Sub
 
     Sub rbhtCount_Click(ByVal sender As Object, ByVal e As EventArgs)

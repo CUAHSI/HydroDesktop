@@ -74,7 +74,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Export Time Series.
+        '''  Looks up a localized string similar to Export Time Series....
         '''</summary>
         Friend Shared ReadOnly Property Export_Time_Series() As String
             Get
@@ -97,6 +97,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property Number_Observations() As String
             Get
                 Return ResourceManager.GetString("Number_Observations", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Set Line Color....
+        '''</summary>
+        Friend Shared ReadOnly Property Set_Line_Color() As String
+            Get
+                Return ResourceManager.GetString("Set_Line_Color", resourceCulture)
             End Get
         End Property
     End Class
