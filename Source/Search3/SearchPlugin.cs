@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
@@ -34,8 +34,11 @@ namespace Search3
         private SimpleActionItem rbServices;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
-        private DropDownActionItem _rbKeyword;
+        
         private SimpleActionItem _rbAddMoreKeywords;
+        private TextEntryActionItem _currentKeywords;
+        private DropDownActionItem _dropdownKeywords;
+
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
@@ -48,6 +51,9 @@ namespace Search3
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
         private const string KEYWORDS_SEPARATOR = ";";
+
+        [Import("Shell")]
+        private ContainerControl Shell { get; set; }
 
         #endregion
 
@@ -196,62 +202,6 @@ namespace Search3
 
             App.Map.ViewExtents = envelope.ToExtent();
         }
-
-        private void RecreateKeywordGroup()
-        {
-            HeaderItem dummy = null;
-            if (_rbKeyword != null || _rbAddMoreKeywords != null)
-            {
-                // This need to save buttons group from removing by HeaderControl (it removes groups with zero HeaderItems).
-                dummy = new SimpleActionItem(_searchKey, "Dummy", null) {GroupCaption = Msg.Keyword};
-                App.HeaderControl.Add(dummy);
-            }
-
-            if (_rbKeyword != null)
-            {
-                App.HeaderControl.Remove(_rbKeyword.Key);
-            }else
-            {
-                _rbKeyword = new DropDownActionItem
-                                 {
-                                     AllowEditingText = true,
-                                     GroupCaption = Msg.Keyword,
-                                     RootKey = _searchKey,
-                                     Width = 165,
-                                     Enabled = false,
-                                     NullValuePrompt = Msg.Type_In_Keyword
-                                 };
-                _rbKeyword.SelectedValueChanged += rbKeyword_SelectedValueChanged;
-            }
-            if (_rbAddMoreKeywords != null)
-            {
-                App.HeaderControl.Remove(_rbAddMoreKeywords.Key);
-            }
-            else
-            {
-                _rbAddMoreKeywords = new SimpleActionItem(_searchKey, Msg.Add_More_Keywords, rbKeyword_Click)
-                                         {
-                                             LargeImage = Resources.keyword_32,
-                                             SmallImage = Resources.keyword_16,
-                                             GroupCaption = Msg.Keyword,
-                                             ToolTipText = Msg.Keyword_Tooltip
-                                         };
-            }
-
-            // Populate items by keywords
-            _rbKeyword.Items.Clear();
-            _rbKeyword.Items.AddRange(_searchSettings.KeywordsSettings.Keywords);
-
-            App.HeaderControl.Add(_rbKeyword);
-            App.HeaderControl.Add(_rbAddMoreKeywords);
-            if (dummy != null)
-            {
-                App.HeaderControl.Remove(dummy.Key);
-                App.HeaderControl.SelectRoot(_searchKey);
-            }
-
-            UpdateKeywordsCaption();
-        }
         
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
@@ -344,60 +294,79 @@ namespace Search3
 
         void rbSearch_Click(object sender, EventArgs e)
         {
-            // Validation of Start/End date. 
-            // First should be validated EndDate, because StartDate validation depends from EndDate
-            if (!ValidateEndDate(true) || !ValidateStartDate(true))
-            {
-                return;
-            }
-            // end of validation
-
             if (_searcher == null)
             {
-                _searcher = new Searcher();
+                _searcher = new Searcher(Shell);
                 _searcher.Completed += _searcher_Completed;
             }
 
+            // Show Search progress if search already started
+            if (!_searcher.IsUIVisible && _searcher.IsBusy)
+            {
+                _searcher.ShowUI();
+                return;
+            }
+           
             try
             {
-                if (!_searcher.IsUIVisible && _searcher.IsBusy)
+                // Validation of Start/End date. 
+                // First should be validated EndDate, because StartDate validation depends from EndDate
+                if (!ValidateEndDate(true) || !ValidateStartDate(true))
                 {
-                    _searcher.ShowUI();
+                    return;
                 }
-                else
-                {
-                    if (_useCurrentView)
-                    {
-                        var extent = App.Map.ViewExtents;
-                        var areaKm2 = extent.ToEnvelope().Area()/1e6;
-                        if (areaKm2 > 1e6)
-                        {
-                            if (MessageBox.Show(Msg.Current_View_Large_Msg, Msg.Continue_Search, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                            {
-                                return;
-                            }
-                        }
-                        _searchSettings.AreaSettings.SetAreaRectangle(extent, App.Map.Projection);
-                    }
 
-                    if (_searchSettings.AreaSettings.Polygons != null &&
-                        _searchSettings.AreaSettings.Polygons.Features.Count > 20)
+                // Read Keywords
+                if (!ReadSelectedKeywords()) return;
+
+                // Check for Keywords count
+                var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
+                if (selectedKeywords.Count == 0)
+                    throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
+
+                // Check for checked webservices
+                var webServicesCount = _searchSettings.WebServicesSettings.CheckedCount;
+                if (webServicesCount == 0)
+                    throw new SearchSettingsValidationException("Please provide at least one Web Service for search.");
+
+                // Check for Current View
+                if (_useCurrentView)
+                {
+                    var extent = App.Map.ViewExtents;
+                    var areaKm2 = extent.ToEnvelope().Area() / 1e6;
+                    if (areaKm2 > 1e6)
                     {
-                        if (MessageBox.Show("Too many polygon areas are selected. Number of selected polygons: " + _searchSettings.AreaSettings.Polygons.Features.Count + Environment.NewLine
-                            + "Search can take a long time. Do you want to continue?",
-                               Msg.Continue_Search, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        if (MessageBox.Show(Msg.Current_View_Large_Msg, Msg.Continue_Search, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                         {
                             return;
                         }
                     }
-
-                    _searcher.Run(_searchSettings);
+                    _searchSettings.AreaSettings.SetAreaRectangle(extent, App.Map.Projection);
                 }
+                // Check for target area
+                if (!_searchSettings.AreaSettings.HasAnyArea)
+                    throw new SearchSettingsValidationException("Please provide at least one Target Area for search.");
+
+                // Check for Max count of polygons
+                if (_searchSettings.AreaSettings.Polygons != null &&
+                    _searchSettings.AreaSettings.Polygons.Features.Count > 20)
+                {
+                    if (MessageBox.Show("Too many polygon areas are selected. Number of selected polygons: " + _searchSettings.AreaSettings.Polygons.Features.Count + Environment.NewLine
+                        + "Search can take a long time. Do you want to continue?",
+                           Msg.Continue_Search, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
+                // Run search
+                _searcher.Run(_searchSettings);
             }
             catch (SearchSettingsValidationException sex)
             {
                 MessageBox.Show(sex.Message, Msg.Information, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -599,6 +568,7 @@ namespace Search3
         }
 
         private bool _isDeactivatingDrawBox;
+
         private void DeactivateDrawBox()
         {
             if (_rectangleDrawing == null) return;
@@ -636,75 +606,162 @@ namespace Search3
 
         #region Keywords
 
-        void rbKeyword_SelectedValueChanged(object sender, SelectedValueChangedEventArgs e)
+        private void RecreateKeywordGroup()
         {
-            if (_keywordsUpdating) return;
-
-            IList<string> keywords;
-            if (e.SelectedItem == null)
+            HeaderItem dummy = null;
+            if (_currentKeywords != null)
             {
-                keywords = null;
+                // This need to save buttons group from removing by HeaderControl (it removes groups with zero HeaderItems).
+                dummy = new SimpleActionItem(_searchKey, "Dummy", null) { GroupCaption = Msg.Keyword };
+                App.HeaderControl.Add(dummy);
             }
-            else
+
+            Action<ActionItem, Action> removeOrCreate = delegate(ActionItem item, Action factory)
             {
-                keywords = e.SelectedItem.ToString().Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                // Replace keywords by synonyms
-                var synonyms = _searchSettings.KeywordsSettings.Synonyms;
-                if (synonyms != null)
+                if (item != null)
                 {
-                    for (int i = 0; i < keywords.Count; i++)
-                    {
-                        var strNode = keywords[i];
-                        foreach (var ontoPath in synonyms)
-                        {
-                            if (string.Equals(ontoPath.SearchableKeyword, strNode, StringComparison.OrdinalIgnoreCase))
-                            {
-                                keywords[i] = ontoPath.ConceptName;
-                                break;
-                            }
-                        }
-                    }
+                    App.HeaderControl.Remove(item.Key);
+                    return;
                 }
+                factory();
+            };
+
+            removeOrCreate(_currentKeywords, delegate
+            {
+                _currentKeywords = new TextEntryActionItem
+                {
+                    GroupCaption = Msg.Keyword,
+                    RootKey = _searchKey,
+                    Width = 170,
+                };
+            });
+
+            removeOrCreate(_dropdownKeywords, delegate
+            {
+                _dropdownKeywords = new DropDownActionItem
+                {
+                    AllowEditingText = false,
+                    GroupCaption = Msg.Keyword,
+                    RootKey = _searchKey,
+                    Width = 170,
+                    NullValuePrompt = "Select Keyword"
+                };
+                _dropdownKeywords.SelectedValueChanged +=
+                    delegate(object sender, SelectedValueChangedEventArgs args)
+                    {
+                        if (args.SelectedItem == null) return;
+                        _currentKeywords.Text = string.IsNullOrWhiteSpace(_currentKeywords.Text)
+                                                    ? args.SelectedItem.ToString()
+                                                    : args.SelectedItem + KEYWORDS_SEPARATOR + " " +
+                                                      _currentKeywords.Text;
+                        _currentKeywords.ToolTipText = _currentKeywords.Text;
+                    };
+            });
+            removeOrCreate(_rbAddMoreKeywords, delegate
+            {
+                _rbAddMoreKeywords = new SimpleActionItem(_searchKey, Msg.Add_More_Keywords, rbKeyword_Click)
+                {
+                    LargeImage = Resources.keyword_32,
+                    SmallImage = Resources.keyword_16,
+                    GroupCaption = Msg.Keyword,
+                    ToolTipText = Msg.Keyword_Tooltip
+                };
+            });
+            
+
+            // Populate items by keywords
+            _dropdownKeywords.Items.Clear();
+            _dropdownKeywords.Items.AddRange(_searchSettings.KeywordsSettings.Keywords);
+
+            // Add items to HeaderControl
+            App.HeaderControl.Add(_currentKeywords);
+            App.HeaderControl.Add(_dropdownKeywords);
+            App.HeaderControl.Add(_rbAddMoreKeywords);
+
+            // Clear current keywords text
+            _currentKeywords.Text = string.Empty;
+
+            if (dummy != null)
+            {
+                App.HeaderControl.Remove(dummy.Key);
+                App.HeaderControl.SelectRoot(_searchKey);
             }
 
-            _searchSettings.KeywordsSettings.SelectedKeywords = keywords;
+            UpdateKeywordsCaption();
         }
-
-        private bool _keywordsUpdating;
+        
         private void UpdateKeywordsCaption()
         {
-            _keywordsUpdating = true;
-            try
-            {
-                var keywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
-                var sbKeywords = new StringBuilder();
-                const string separator = KEYWORDS_SEPARATOR + " ";
-                foreach (var key in keywords)
-                {
-                    sbKeywords.Append(key + separator);
-                }
-                // Remove last separator
-                if (sbKeywords.Length > 0)
-                {
-                    sbKeywords.Remove(sbKeywords.Length - separator.Length, separator.Length);
-                }
+            const string separator = KEYWORDS_SEPARATOR + " ";
+            var text = string.Join(separator, _searchSettings.KeywordsSettings.SelectedKeywords);
 
-                var selectedItem = sbKeywords.Length > 0 ? sbKeywords.ToString() : null;
-                _rbKeyword.SelectedItem = selectedItem;
-                _rbKeyword.ToolTipText = selectedItem;
-            }
-            finally
-            {
-                _keywordsUpdating = false;
-            }
+            var selectedItem = text.Length > 0 ? text : null;
+            _currentKeywords.Text = selectedItem;
+            _currentKeywords.ToolTipText = selectedItem;
         }
 
         void rbKeyword_Click(object sender, EventArgs e)
         {
+            if (!ReadSelectedKeywords()) return;
             if (KeywordsDialog.ShowDialog(_searchSettings.KeywordsSettings) == DialogResult.OK)
             {
                 UpdateKeywordsCaption();
             }
+        }
+
+        private bool ReadSelectedKeywords()
+        {
+            IList<string> selectedKeywords;
+
+            var text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                selectedKeywords = null;
+            }
+            else
+            {
+                selectedKeywords = text.Split(new[] { KEYWORDS_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(k => k.Trim())
+                    .ToList();
+                // Remove duplicates
+                selectedKeywords = selectedKeywords.Distinct().ToList();
+
+                // Iterate keywords to find invalid keywords and replace existing by synonyms
+                var toDelete = new List<string>();
+                for (int i = 0; i < selectedKeywords.Count; i++)
+                {
+                    var cur = selectedKeywords[i];
+                    // Try to find keyword
+                    var orginal = _searchSettings.KeywordsSettings.Keywords.FirstOrDefault(
+                        k => string.Equals(k, cur, StringComparison.OrdinalIgnoreCase));
+                    if (orginal != null)
+                    {
+                        // Replace keyword by synonyms
+                        selectedKeywords[i] = _searchSettings.KeywordsSettings.FindSynonym(orginal);
+                    }
+                    else
+                    {
+                        toDelete.Add(cur);
+                    }
+                }
+                if (toDelete.Count > 0)
+                {
+                    var res = MessageBox.Show(Shell,
+                                    "The next invalid Keywords will be removed from the search criteria:" +
+                                    Environment.NewLine +
+                                    String.Join(KEYWORDS_SEPARATOR + " ", toDelete),
+                                    "Keywords not valid", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (res != DialogResult.OK)
+                    {
+                        return false;
+                    }
+                    toDelete.ForEach(k => selectedKeywords.Remove(k));
+                }
+            }
+            _searchSettings.KeywordsSettings.SelectedKeywords = selectedKeywords;
+            UpdateKeywordsCaption();
+
+            return true;
         }
 
         #endregion

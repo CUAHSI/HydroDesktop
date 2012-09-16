@@ -43,20 +43,9 @@ namespace Search3.Settings.UI
                                                   treeviewOntology.SelectedNode = null;
 
                                                   // Replace keyword by synonym
-                                                  var keyword = tboTypeKeyword.Text;
-                                                  var synonyms = keywordsSettings.Synonyms;
-                                                  if (synonyms != null)
-                                                  {
-                                                      foreach (var ontoPath in synonyms)
-                                                      {
-                                                          if (string.Equals(ontoPath.SearchableKeyword, keyword, StringComparison.OrdinalIgnoreCase))
-                                                          {
-                                                              keyword = ontoPath.ConceptName;
-                                                              break;
-                                                          }
-                                                      }
-                                                  }
-
+                                                  var keyword = tboTypeKeyword.Text.Trim();
+                                                  keyword = keywordsSettings.FindSynonym(keyword);
+                                                  
                                                   UpdateKeywordTextBox(keyword);
                                                   AddKeyword();
                                               }

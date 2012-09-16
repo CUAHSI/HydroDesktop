@@ -27,7 +27,6 @@ namespace Search3.Settings
             get { return _selectedKeywords ?? (_selectedKeywords = new string[]{}); }
             set
             {
-                Debug.Assert(value != null);
                 _selectedKeywords = value;
             }
         }
@@ -66,6 +65,24 @@ namespace Search3.Settings
         }
     
         public ArrayOfOntologyPath Synonyms { get;private set;}
+
+        public string FindSynonym(string keyword)
+        {
+            var synonyms = Synonyms;
+            if (synonyms != null)
+            {
+                foreach (var ontoPath in synonyms)
+                {
+                    if (string.Equals(ontoPath.SearchableKeyword, keyword, StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyword = ontoPath.ConceptName;
+                        break;
+                    }
+                }
+            }
+
+            return keyword;
+        }
     
 
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)

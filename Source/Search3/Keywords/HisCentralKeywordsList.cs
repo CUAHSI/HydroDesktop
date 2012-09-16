@@ -22,27 +22,31 @@ namespace Search3.Keywords
                 var ontoPath = new OntologyPath();
                 foreach (XmlElement child in elem.ChildNodes)
                 {
+                    var text = child.InnerText.Trim();
                     if (child.Name == "conceptID")
                     {
                         int conceptID;
-                        if (Int32.TryParse(child.InnerText, out conceptID))
+                        if (Int32.TryParse(text, out conceptID))
                             ontoPath.ConceptID = conceptID;
                     }
                     else if (child.Name == "ConceptName")
                     {
-                        ontoPath.ConceptName = child.InnerText;
+                        ontoPath.ConceptName = text;
                     }
                     else if (child.Name == "ConceptPath")
                     {
-                        ontoPath.ConceptPath = child.InnerText;
+                        ontoPath.ConceptPath = text;
                     }
                     else if (child.Name == "SearchableKeyword")
                     {
-                        ontoPath.SearchableKeyword = child.InnerText;
+                        ontoPath.SearchableKeyword = text;
                     }
                 }
                 synonyms.Add(ontoPath);
-                keywordsList.Add(ontoPath.SearchableKeyword);
+                if (!String.IsNullOrWhiteSpace(ontoPath.SearchableKeyword))
+                {
+                    keywordsList.Add(ontoPath.SearchableKeyword);
+                }
             }
 
             // Ontology tree
@@ -91,14 +95,11 @@ namespace Search3.Keywords
             OntologyNode tmptreenode = null;
             if (node.HasChildNodes)
             {
-                if (node.FirstChild.InnerText != string.Empty)
+                var text = node.FirstChild.InnerText.Trim();
+                if (text != string.Empty)
                 {
-                    tmptreenode = new OntologyNode(node.FirstChild.InnerText);
-
-                    if (!keywordsList.Contains(node.FirstChild.InnerText))
-                    {
-                        keywordsList.Add(node.FirstChild.InnerText);
-                    }
+                    tmptreenode = new OntologyNode(text);
+                    keywordsList.Add(text);
                 }
             }
             return tmptreenode ?? (new OntologyNode());

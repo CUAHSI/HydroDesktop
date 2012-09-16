@@ -21,7 +21,6 @@ namespace Search3.Searching
             _searcher = searcher;
 
             InitializeComponent();
-            
 
             SubscribeToSearcherEvents();
             Disposed += SearchProgressForm_Disposed;
@@ -114,7 +113,7 @@ namespace Search3.Searching
         {
             if (_searcher.IsBusy)
             {
-                if (MessageBox.Show("Abort search?", "Question", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) ==
+                if (MessageBox.Show("Are you sure you want to cancel search?", "Cancel search", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) ==
                     DialogResult.OK)
                 {
                     _searcher.Cancel();

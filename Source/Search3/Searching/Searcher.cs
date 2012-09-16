@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using HydroDesktop.Common;
 using Search3.Keywords;
 using Search3.Searching.Exceptions;
@@ -20,6 +21,7 @@ namespace Search3.Searching
         private SearchProgressForm _searcherUI;
         private Task<SearchResult> _searchTask;
         private CancellationTokenSource _cancellationTokenSource;
+        private readonly IWin32Window _formsOwner;
         
         #endregion
 
@@ -40,6 +42,11 @@ namespace Search3.Searching
 
         #endregion
 
+        public Searcher(IWin32Window formsOwner)
+        {
+            _formsOwner = formsOwner;
+        }
+
         #region Public methods
 
         /// <summary>
@@ -58,8 +65,6 @@ namespace Search3.Searching
                 ShowUI();
                 throw new InvalidOperationException("The previous search command is still active.");
             }
-            CheckSettingsForErrors(settings);
-
             _searcherUI = new SearchProgressForm(this);
             ShowUI();
             LogMessage("Search started.");
@@ -104,7 +109,7 @@ namespace Search3.Searching
         public void ShowUI()
         {
             if (_searcherUI == null) return;
-            _searcherUI.Show();
+            _searcherUI.Show(_formsOwner);
         }
         
         /// <summary>
@@ -220,20 +225,20 @@ namespace Search3.Searching
 
             var keywords = settings.KeywordsSettings.SelectedKeywords.ToList();
 
-            if (settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral)
+            if (keywords.Contains("Hydrosphere"))
             {
-                //todo: do we need to do this?
-                var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
-                HdSearchOntologyHelper.RefineKeywordList(keywords, ontologyXml);
+                keywords.Clear();
             }
             else
             {
-                //in the special case of metadata cache - hydrosphere keyword
-                if (keywords.Contains("Hydrosphere"))
+                if (settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral)
                 {
-                    keywords.Clear();
-                }
+                    // todo: replace this by manual traversal of settings.KeywordsSettings.OntologyTree
+                    //var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
+                    //HdSearchOntologyHelper.RefineKeywordList(keywords, ontologyXml);
+                }    
             }
+            
 
             if (settings.AreaSettings.AreaRectangle != null)
             {
@@ -283,21 +288,7 @@ namespace Search3.Searching
                 progressHandler(this, new ProgressChangedEventArgs(progressPercentage, message));
             }
         }
-
-        private static void CheckSettingsForErrors(SearchSettings settings)
-        {
-            var selectedKeywords = settings.KeywordsSettings.SelectedKeywords.ToList();
-            if (selectedKeywords.Count == 0)
-                throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
-
-            var webServicesCount = settings.WebServicesSettings.CheckedCount;
-            if (webServicesCount == 0)
-                throw new SearchSettingsValidationException("Please provide at least one Web Service for search.");
-
-            if (!settings.AreaSettings.HasAnyArea)
-                throw new SearchSettingsValidationException("Please provide at least one Target Area for search.");
-        }
-
+        
         #endregion
 
         private class ProgressHandler : IProgressHandler
