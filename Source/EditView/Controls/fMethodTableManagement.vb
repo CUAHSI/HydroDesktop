@@ -6,7 +6,7 @@ Imports HydroDesktop.Interfaces
 
 Public Class fMethodTableManagement
 
-    ReadOnly repo = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
+    ReadOnly repo As IMethodsRepository = RepositoryFactory.Instance.Get(Of IMethodsRepository)()
 
     Public Sub New()
         InitializeComponent()
@@ -24,7 +24,7 @@ Public Class fMethodTableManagement
         If _MethodID = Nothing Then
             btnSubmit.Text = "Add"
         Else
-            Dim method = repo.GetMethod(_MethodID)
+            Dim method = repo.GetByKey(_MethodID)
             txtDescription.Text = method.Description
             txtLink.Text = method.Link
             btnSubmit.Text = "Edit"

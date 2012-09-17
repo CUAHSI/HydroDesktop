@@ -182,23 +182,11 @@
         Return list1
     End Function
 
-    Shared Function fmax(ByVal lo As Double, ByVal hi As Double)
-
-        If (lo < hi) Then
-            Return hi
-        Else
-            Return lo
-        End If
-
+    Shared Function fmax(ByVal lo As Double, ByVal hi As Double) As Double
+        Return Math.Max(lo, hi)
     End Function
 
-    Shared Function imax(ByVal lo As Integer, ByVal hi As Integer)
-
-        If (lo < hi) Then
-            Return hi
-        Else
-            Return lo
-        End If
-
+    Shared Function imax(ByVal lo As Integer, ByVal hi As Integer) As Double
+        Return Math.Min(lo, hi)
     End Function
 End Class

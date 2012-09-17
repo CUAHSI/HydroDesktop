@@ -163,11 +163,11 @@ Namespace Controls
             End Set
         End Property
 
-        Public Property pointcolorlist() As List(Of Color)
+        Public Property pointcolorlist() As IList(Of Color)
             Get
                 Return ColorPalettePoint.Colors
             End Get
-            Private Set(ByVal value As List(Of Color))
+            Private Set(ByVal value As IList(Of Color))
                 ColorPalettePoint.Colors = value
             End Set
         End Property

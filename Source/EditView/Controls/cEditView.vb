@@ -696,18 +696,11 @@ Public Class cEditView
     'Value Threshold Filter
     Public Sub ValueThresholdFilter(ByVal LargerThanValue As Double, ByVal LessThanValue As Double)
         For i As Integer = 0 To dgvDataValues.Rows.Count - 1
+            Dim dv = Convert.ToDouble(dgvDataValues.Rows(i).Cells("DataValue").Value)
             If LargerThanValue < LessThanValue Then
-                If dgvDataValues.Rows(i).Cells("DataValue").Value > LargerThanValue And dgvDataValues.Rows(i).Cells("DataValue").Value < LessThanValue Then
-                    dgvDataValues.Rows(i).Selected = True
-                Else
-                    dgvDataValues.Rows(i).Selected = False
-                End If
+                dgvDataValues.Rows(i).Selected = dv > LargerThanValue And dv < LessThanValue
             Else
-                If dgvDataValues.Rows(i).Cells("DataValue").Value > LargerThanValue Or dgvDataValues.Rows(i).Cells("DataValue").Value < LessThanValue Then
-                    dgvDataValues.Rows(i).Selected = True
-                Else
-                    dgvDataValues.Rows(i).Selected = False
-                End If
+                dgvDataValues.Rows(i).Selected = dv > LargerThanValue Or dv < LessThanValue
             End If
         Next
     End Sub

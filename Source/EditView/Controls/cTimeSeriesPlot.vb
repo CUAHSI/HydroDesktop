@@ -374,7 +374,7 @@ Public Class cTimeSeriesPlot
         If zgTimeSeries.GraphPane.CurveList.Count > 0 Then
             Dim newColor = DrawingHelper.PromptForColor(zgTimeSeries.GraphPane.CurveList.Item(0).Color)
             If newColor.HasValue Then
-                zgTimeSeries.GraphPane.CurveList.Item(0).Color = newColor
+                zgTimeSeries.GraphPane.CurveList.Item(0).Color = newColor.Value
                 zgTimeSeries.Refresh()
             End If
         End If
@@ -742,8 +742,8 @@ Public Class cTimeSeriesPlot
         Refreshing()
     End Sub
 
-    Public Function CopyCurvePointList(ByVal curve As CurveItem)
-        Dim pointList As New PointPairList
+    Public Function CopyCurvePointList(ByVal curve As CurveItem) As PointPairList
+        Dim pointList As New PointPairList()
         For i As Integer = 0 To curve.Points.Count - 1
             pointList.Add(curve.Points(i))
         Next
