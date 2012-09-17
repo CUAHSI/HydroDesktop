@@ -1637,11 +1637,6 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
-        /// </summary>
-        /// 
-
-
-        /// <summary>
         /// Initializes the HydoDesktop Ribbon.  Also calls the three methods below.
         /// </summary>
         private void InitializeComponentRibbon()

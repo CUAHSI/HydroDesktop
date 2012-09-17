@@ -264,7 +264,7 @@ Namespace Controls
             If curve Is Nothing Then Return
             Dim newColor = DrawingHelper.PromptForColor(curve.Color)
             If newColor.HasValue Then
-                curve.Color = newColor
+                curve.Color = newColor.Value
                 zgTimeSeries.Refresh()
             End If
         End Sub

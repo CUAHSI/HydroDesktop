@@ -954,8 +954,8 @@ Namespace Controls
             Dim curYear As Integer 'current year creating a label for
             Try
                 '1. calculate the start,end year
-                startYear = m_Data.Compute("Min(LocalDateTime)", "").year
-                endYear = m_Data.Compute("Max(LocalDateTime)", "").year
+                startYear = Convert.ToDateTime(m_data.Compute("Min(LocalDateTime)", "")).Year
+                endYear = Convert.ToDateTime(m_data.Compute("Max(LocalDateTime)", "")).Year
 
                 '2. calculate the number of years
                 numYears = (endYear - startYear) + 1
@@ -1000,7 +1000,7 @@ Namespace Controls
 
                 '2. calculate the Mean, Median
                 'Mean
-                boxData.mean = Math.Round(data.Compute("Avg(DataValue)", ""), 3)
+                boxData.mean = Math.Round(Convert.ToDouble(data.Compute("Avg(DataValue)", "")), 3)
                 'Median
                 If (numRows Mod 2 = 0 And numRows > 1) Then
                     'even number of values -> take the middle two and average them
