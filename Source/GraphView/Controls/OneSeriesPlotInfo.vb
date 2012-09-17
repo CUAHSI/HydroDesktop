@@ -24,5 +24,14 @@ Namespace Controls
         Public Property LineColor As Color = Color.Black
         Public Property PointColor As Color = Color.Black
         Public Property Statistics() As SummaryStatistics
+
+        ''' <summary>
+        ''' Returns string which contains Variable with Units. If Units is "unknown"" then only Variable returned.
+        ''' </summary>
+        ''' <returns>Variable with Units.</returns>
+        Public Function GetVariableWithUnitsString() As String
+            Return If(String.IsNullOrEmpty(VariableUnits) OrElse String.Equals(VariableUnits, "unknown", StringComparison.OrdinalIgnoreCase),
+                       VariableName, VariableName & " - " & VariableUnits)
+        End Function
     End Class
 End Namespace
