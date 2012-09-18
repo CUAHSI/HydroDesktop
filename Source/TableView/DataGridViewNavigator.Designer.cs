@@ -28,14 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnFirst = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnLast = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblInfo = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.tbInfo = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnFirst
@@ -89,23 +92,13 @@
             this.tableLayoutPanel1.Controls.Add(this.btnLast, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnPrev, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnNext, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblInfo, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tbInfo, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(343, 31);
             this.tableLayoutPanel1.TabIndex = 4;
-            // 
-            // lblInfo
-            // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(123, 8);
-            this.lblInfo.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(40, 13);
-            this.lblInfo.TabIndex = 4;
-            this.lblInfo.Text = "0 of 10";
             // 
             // lblStatus
             // 
@@ -117,6 +110,17 @@
             this.lblStatus.TabIndex = 5;
             this.lblStatus.Text = "Loading data...";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // tbInfo
+            // 
+            this.tbInfo.Location = new System.Drawing.Point(123, 3);
+            this.tbInfo.Name = "tbInfo";
+            this.tbInfo.Size = new System.Drawing.Size(97, 20);
+            this.tbInfo.TabIndex = 4;
+            // 
             // DataGridViewNavigator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -127,6 +131,7 @@
             this.Size = new System.Drawing.Size(432, 31);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -139,7 +144,8 @@
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnLast;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.TextBox tbInfo;
     }
 }

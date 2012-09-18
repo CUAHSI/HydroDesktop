@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace TableView
@@ -12,6 +13,7 @@ namespace TableView
 
         private const string LOADING_DATA = "Loading data...";
         private IPagedTableGetter _tableGetter;
+        private BackgroundWorker _worker;
 
         #endregion
 
@@ -29,7 +31,6 @@ namespace TableView
 
             DisableNavButtons();
             btnFirst.BackColor = btnPrev.BackColor = btnNext.BackColor = btnLast.BackColor = SystemColors.Control;
-            lblInfo.Text = string.Empty;
 
             btnFirst.Click += delegate { CurrentPage = 0; };
             btnPrev.Click += delegate { CurrentPage--; };
@@ -37,15 +38,77 @@ namespace TableView
             btnLast.Click += delegate { CurrentPage = PagesCount - 1; };
 
             PageChanged += DataGridViewNavigator_PageChanged;
+
+            // TextBox setting
+            tbInfo.Click += (sender, args) => tbInfo.SelectAll(); // AutoSelect all text on clicking
+            tbInfo.CausesValidation = false;
+            tbInfo.KeyPress += (sender, args) =>
+                {
+                    // Validate only if Enter was pressed
+                    if (args.KeyChar == (char)Keys.Enter)
+                    {
+                        var pageToJump = ValidatePageJumperTextBox();
+                        if (pageToJump.HasValue)
+                        {
+                            CurrentPage = pageToJump.Value - 1;
+                        }
+                    }
+                };
         }
 
         #endregion
 
         #region Private methods
 
+        private int? ValidatePageJumperTextBox()
+        {
+            var text = tbInfo.Text;
+
+            var valid = false;
+            int res;
+
+            // Try parse text as Integer
+            if (Int32.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out res))
+            {
+                valid = true;
+            }
+            else
+            {
+                // Try parse text as "n of m"
+                if (!String.IsNullOrWhiteSpace(text))
+                {
+                    var split = text.Split(new[] { "of" }, StringSplitOptions.RemoveEmptyEntries);
+                    int first, last;
+                    if (split.Length == 2 && Int32.TryParse(split[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out first) &&
+                                             Int32.TryParse(split[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out last) &&
+                                             last == PagesCount)
+                    {
+                        res = first;
+                        valid = true;
+                    }
+                }
+            }
+            // Check for interval
+            string message;
+            if (!valid)
+            {
+                message = "Please enter a valid page number.";
+            }
+            else if (res > PagesCount || res <= 0)
+            {
+                message = string.Format("Page number should be in interval [1; {0}]", PagesCount);
+            }
+            else
+            {
+                message = null;
+            }
+            errorProvider1.SetError(tbInfo, message);
+            return message == null? res : (int?) null;
+        }
+
         private void DisableNavButtons()
         {
-            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = false;
+            btnFirst.Enabled = btnPrev.Enabled = btnNext.Enabled = btnLast.Enabled = tbInfo.Enabled = false;
         }
 
         void DataGridViewNavigator_PageChanged(object sender, EventArgs e)
@@ -56,7 +119,9 @@ namespace TableView
             btnNext.Enabled = CurrentPage != PagesCount - 1 && PagesCount > 0;
             btnLast.Enabled = CurrentPage < PagesCount - 1;
 
-            lblInfo.Text = string.Format("{0} of {1}", PagesCount > 0? CurrentPage + 1 : 0, PagesCount);
+            tbInfo.Enabled = PagesCount > 0;
+            tbInfo.Text = string.Format("{0} of {1}", PagesCount > 0 ? CurrentPage + 1 : 0, PagesCount);
+            errorProvider1.SetError(tbInfo, null);
         }
 
         private void HideStatus()
@@ -101,6 +166,7 @@ namespace TableView
             get { return _currentPage; }
             private set
             {
+                if (value == _currentPage) return;
                 if (value < 0 || value > PagesCount ||
                     (value == PagesCount && PagesCount != 0)) return;
 
@@ -131,13 +197,12 @@ namespace TableView
         /// <summary>
         /// Total pages count
         /// </summary>
-        public int PagesCount {get;private set; }
+        public int PagesCount { get; private set; }
 
         #endregion
 
         #region Public methods
 
-        private BackgroundWorker _worker;
         private void CheckNavigatorState()
         {
             if (_worker != null && _worker.IsBusy)
@@ -170,6 +235,7 @@ namespace TableView
                                                   long remainder;
                                                   var div = (int) Math.DivRem(rowsCount, ValuesPerPage, out remainder);
                                                   PagesCount = remainder == 0 ? div : div + 1;
+                                                  _currentPage = -1; // This need because CurrentPage checked for non-equality before setting it's value
                                                   CurrentPage = 0;
                                               };
             _worker.RunWorkerAsync();
