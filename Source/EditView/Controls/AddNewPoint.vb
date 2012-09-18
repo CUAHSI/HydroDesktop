@@ -10,7 +10,7 @@ Namespace Controls
 
         End Sub
 
-        Public Sub initialize()
+        Private Sub initialize()
 
             'OffsetType Column
             Dim dtOffsetTypes = RepositoryFactory.Instance.Get(Of IOffsetTypesRepository)().AsDataTable()
@@ -197,7 +197,7 @@ Namespace Controls
                         dt.Rows(dt.Rows.Count - 1)("ValueID") = dataValuesRepo.GetNextID() + AddingRowsCount
                         dt.Rows(dt.Rows.Count - 1)("SeriesID") = _cEditView.newseriesID
                         dt.Rows(dt.Rows.Count - 1)("DataValue") = dgvNewPoints.Rows(i).Cells("DataValue").Value
-                        If Not dgvNewPoints.Rows(i).Cells("ValueAccuracy").Value = Nothing Then
+                        If Not (dgvNewPoints.Rows(i).Cells("ValueAccuracy").Value = Nothing) Then
                             dt.Rows(dt.Rows.Count - 1)("ValueAccuracy") = dgvNewPoints.Rows(i).Cells("ValueAccuracy").Value
                         Else
                             dt.Rows(dt.Rows.Count - 1)("ValueAccuracy") = 0
