@@ -14,7 +14,6 @@ Namespace Controls
 #Region "privateDeclaration"
 
         Private ReadOnly CurveEditingColor As Color = Color.Black
-
         Private _seriesSelector As ISeriesSelector
         Private OriginalDt As DataTable
         Public Editdt As DataTable
@@ -33,7 +32,6 @@ Namespace Controls
         Private Const ErrMsgForNotPointSelected As String = "Please select a point for editing."
 
         Private _needToRefresh As Boolean
-
 #End Region
 
 #Region "Constructor"
@@ -694,7 +692,7 @@ Namespace Controls
 
 #Region "Filters"
         'Value Threshold Filter
-        Public Sub ValueThresholdFilter(ByVal LargerThanValue As Double, ByVal LessThanValue As Double)
+        Private Sub ValueThresholdFilter(ByVal LargerThanValue As Double, ByVal LessThanValue As Double)
             For i As Integer = 0 To dgvDataValues.Rows.Count - 1
                 Dim dv = Convert.ToDouble(dgvDataValues.Rows(i).Cells("DataValue").Value)
                 If LargerThanValue < LessThanValue Then
@@ -718,20 +716,12 @@ Namespace Controls
         End Sub
 
         'Date Filter
-        Public Sub DateFilter(ByVal DateBefore As DateTime, ByVal DateAfter As DateTime)
+        Private Sub DateFilter(ByVal DateBefore As DateTime, ByVal DateAfter As DateTime)
             For i As Integer = 0 To dgvDataValues.Rows.Count - 1
                 If DateAfter > DateBefore Then
-                    If dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter.ToOADate Or dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore.ToOADate Then
-                        dgvDataValues.Rows(i).Selected = True
-                    Else
-                        dgvDataValues.Rows(i).Selected = False
-                    End If
+                    dgvDataValues.Rows(i).Selected = dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter.ToOADate Or dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore.ToOADate
                 Else
-                    If dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter.ToOADate And dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore.ToOADate Then
-                        dgvDataValues.Rows(i).Selected = True
-                    Else
-                        dgvDataValues.Rows(i).Selected = False
-                    End If
+                    dgvDataValues.Rows(i).Selected = dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter.ToOADate And dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore.ToOADate
                 End If
             Next
         End Sub
@@ -795,7 +785,7 @@ Namespace Controls
             Next
         End Sub
 
-        Public Sub ChangeValueByInterpolating(ByRef returned As Boolean)
+        Private Sub ChangeValueByInterpolating(ByRef returned As Boolean)
             Dim i As Integer = 1
             Dim count As Integer = 1
             Dim difference As Double
@@ -842,7 +832,7 @@ Namespace Controls
 
 #End Region
 
-        Private Sub dgvDataValues_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles dgvDataValues.SelectionChanged
+        Private Sub dgvDataValues_SelectionChanged(sender As System.Object, e As EventArgs) Handles dgvDataValues.SelectionChanged
             Dim selectedRows = GetSelectedRows()
             Dim IDlist As New List(Of Int32)(selectedRows.Count)
             IDlist.AddRange(From row As DataGridViewRow In selectedRows Select CType(row.Cells("ValueID").Value, Integer))
