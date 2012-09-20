@@ -92,8 +92,8 @@ Public Class ColorPalette
         Dim newColor = DrawingHelper.PromptForColor(defaltColor)
 
         If newColor.HasValue Then
-            label.BackColor = newColor
-            _colors(_colorControls.IndexOf(label)) = newColor
+            label.BackColor = newColor.Value
+            _colors(_colorControls.IndexOf(label)) = newColor.Value
         End If
     End Sub
 

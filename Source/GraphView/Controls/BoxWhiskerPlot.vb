@@ -84,13 +84,12 @@ Namespace Controls
             zgBoxWhiskerPlot.AxisChange()
         End Sub
 
-        Private Sub Graph(ByVal gPane As GraphPane, ByRef options As OneSeriesPlotInfo)
-            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+        Private Sub Graph(ByVal gPane As GraphPane, ByVal options As OneSeriesPlotInfo)
             Dim m_Options = options.PlotOptions
             Dim m_data = options.DataTable
 
             Try
-                If ((m_Data Is Nothing) OrElse (m_Data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
+                If ((m_data Is Nothing) OrElse (m_data.Rows.Count < 1)) Then 'OrElse ((m_DataSet Is Nothing) OrElse (m_DataSet.Tables.Count < 1)) Then
                     gPane.CurveList.Clear()
                     gPane.GraphObjList.Clear()
                     gPane.Title.Text = MessageStrings.No_Data_Plot
@@ -182,7 +181,7 @@ Namespace Controls
                     gPane.YAxis.MajorGrid.IsVisible = True
                     gPane.YAxis.MajorGrid.Color = Color.Gray
                     'gPane.YAxis.Type = ZedGraph.AxisType.Linear
-                    gPane.YAxis.Title.Text = m_VariableWithUnits
+                    gPane.YAxis.Title.Text = options.GetVariableWithUnitsString()
                     If min > 0 And (min - (0.2 * m_StdDev)) < 0 Then
                         gPane.YAxis.Scale.Min = 0
                     Else
@@ -955,8 +954,8 @@ Namespace Controls
             Dim curYear As Integer 'current year creating a label for
             Try
                 '1. calculate the start,end year
-                startYear = m_Data.Compute("Min(LocalDateTime)", "").year
-                endYear = m_Data.Compute("Max(LocalDateTime)", "").year
+                startYear = Convert.ToDateTime(m_data.Compute("Min(LocalDateTime)", "")).Year
+                endYear = Convert.ToDateTime(m_data.Compute("Max(LocalDateTime)", "")).Year
 
                 '2. calculate the number of years
                 numYears = (endYear - startYear) + 1
@@ -1001,7 +1000,7 @@ Namespace Controls
 
                 '2. calculate the Mean, Median
                 'Mean
-                boxData.mean = Math.Round(data.Compute("Avg(DataValue)", ""), 3)
+                boxData.mean = Math.Round(Convert.ToDouble(data.Compute("Avg(DataValue)", "")), 3)
                 'Median
                 If (numRows Mod 2 = 0 And numRows > 1) Then
                     'even number of values -> take the middle two and average them

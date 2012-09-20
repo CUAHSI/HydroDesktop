@@ -13,7 +13,7 @@ namespace HydroDesktop.Interfaces
         /// <param name="methodDescription">Method description</param>
         /// <param name="methodLink">Method link</param>
         /// <returns>MethodID of inserted method</returns>
-        void InsertMethod(string methodDescription, string methodLink);
+        long InsertMethod(string methodDescription, string methodLink);
 
         /// <summary>
         /// Update method

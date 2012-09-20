@@ -71,9 +71,8 @@ Namespace Controls
             zgHistogramPlot.AxisChange()
         End Sub
 
-        Private Sub Graph(ByVal gPane As GraphPane, ByRef options As OneSeriesPlotInfo)
+        Private Sub Graph(ByVal gPane As GraphPane, ByVal options As OneSeriesPlotInfo)
             Try
-                Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
                 Dim m_Options = options.PlotOptions
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 'New code
@@ -114,7 +113,7 @@ Namespace Controls
                     ' Scaling the X axis better
                     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                    gPane.XAxis.Title.Text = m_VariableWithUnits
+                    gPane.XAxis.Title.Text = options.GetVariableWithUnitsString()
                     gPane.XAxis.MinorTic.IsAllTics = False
                     gPane.XAxis.Title.Gap = 0.2
                     gPane.XAxis.Scale.Mag = 0

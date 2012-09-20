@@ -512,17 +512,5 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 		
 		}
 
-
-        /// <summary>
-        /// Forces the element set viewer to redraw.  This is triggered after the form has stopped moving. (moved into elementset viewer class)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void elementSetViewer_ResizeEnd(object sender, System.EventArgs e)
-        //{
-        //    //force the elementset view to refresh
-        //    _elementSetViewer.Refresh();
-
-        //}
     }
 }

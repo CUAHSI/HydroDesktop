@@ -77,13 +77,13 @@ Namespace Controls
             zgTimeSeries.IsShowHScrollBar = False
         End Sub
 
-        Private Sub Graph(ByRef options As OneSeriesPlotInfo)
+        Private Sub Graph(ByVal options As OneSeriesPlotInfo)
             Try
                 Dim gPane As GraphPane = zgTimeSeries.GraphPane
 
                 Dim m_Data = options.DataTable
                 Dim m_Site = options.SiteName
-                Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+                Dim m_VariableWithUnits = options.GetVariableWithUnitsString()
                 Dim m_Options = options.PlotOptions
 
                 If (m_Data Is Nothing) Or (m_Data.Rows.Count <= 0) Then
@@ -264,7 +264,7 @@ Namespace Controls
             If curve Is Nothing Then Return
             Dim newColor = DrawingHelper.PromptForColor(curve.Color)
             If newColor.HasValue Then
-                curve.Color = newColor
+                curve.Color = newColor.Value
                 zgTimeSeries.Refresh()
             End If
         End Sub
