@@ -19,7 +19,7 @@ Namespace EditView
 
         Private ignoreRootSelected As Boolean = False
 
-        Private _mainControl As cEditView
+        Private _mainControl As Controls.EditView
 
         Private Const _pluginName As String = "Edit"
         'Private Const kEditView As String = "kHydroEditView"
@@ -72,7 +72,7 @@ Namespace EditView
             'End If
 
 
-            _mainControl = New cEditView(_seriesSelector)
+            _mainControl = New Controls.EditView(_seriesSelector)
 
             _mainControl.Dock = DockStyle.Fill
 

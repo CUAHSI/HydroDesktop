@@ -34,7 +34,10 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\Binaries\Plugins\EditView\</OutputPath>
     <DocumentationFile>EditView.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <NoWarn>41999,42016</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +46,10 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\Binaries\Plugins\EditView\</OutputPath>
     <DocumentationFile>EditView.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <NoWarn>41999,42016</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -51,23 +57,29 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\Binaries\Plugins\EditView\</OutputPath>
     <DocumentationFile>EditView.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <NoWarn>41999,42016</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\..\Binaries\Plugins\EditView\</OutputPath>
     <DocumentationFile>EditView.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <NoWarn>41999,42016</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
@@ -155,57 +167,57 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\cEditView.Designer.vb">
-      <DependentUpon>cEditView.vb</DependentUpon>
+      <DependentUpon>EditView.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cEditView.vb">
+    <Compile Include="Controls\EditView.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\fVariablesTableManagement.Designer.vb">
-      <DependentUpon>fVariablesTableManagement.vb</DependentUpon>
+    <Compile Include="Controls\VariablesTableManagement.Designer.vb">
+      <DependentUpon>VariablesTableManagement.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fVariablesTableManagement.vb">
+    <Compile Include="Controls\VariablesTableManagement.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\fQualifiersTableManagement.Designer.vb">
-      <DependentUpon>fQualifiersTableManagement.vb</DependentUpon>
+    <Compile Include="Controls\QualifiersTableManagement.Designer.vb">
+      <DependentUpon>QualifiersTableManagement.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fQualifiersTableManagement.vb">
+    <Compile Include="Controls\QualifiersTableManagement.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\fAddNewPoint.Designer.vb">
-      <DependentUpon>fAddNewPoint.vb</DependentUpon>
+    <Compile Include="Controls\AddNewPoint.Designer.vb">
+      <DependentUpon>AddNewPoint.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fAddNewPoint.vb">
+    <Compile Include="Controls\AddNewPoint.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\fChangeYValue.Designer.vb">
-      <DependentUpon>fChangeYValue.vb</DependentUpon>
+    <Compile Include="Controls\ChangeYValue.Designer.vb">
+      <DependentUpon>ChangeYValue.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fChangeYValue.vb">
+    <Compile Include="Controls\ChangeYValue.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\fQualityControlLevelTableManagement.Designer.vb">
-      <DependentUpon>fQualityControlLevelTableManagement.vb</DependentUpon>
+    <Compile Include="Controls\QualityControlLevelTableManagement.Designer.vb">
+      <DependentUpon>QualityControlLevelTableManagement.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fQualityControlLevelTableManagement.vb">
+    <Compile Include="Controls\QualityControlLevelTableManagement.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\fMethodTableManagement.Designer.vb">
-      <DependentUpon>fMethodTableManagement.vb</DependentUpon>
+    <Compile Include="Controls\MethodTableManagement.Designer.vb">
+      <DependentUpon>MethodTableManagement.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fMethodTableManagement.vb">
+    <Compile Include="Controls\MethodTableManagement.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\cTimeSeriesPlot.Designer.vb">
-      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+    <Compile Include="Controls\TimeSeriesPlot.Designer.vb">
+      <DependentUpon>TimeSeriesPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\cTimeSeriesPlot.vb">
+    <Compile Include="Controls\TimeSeriesPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\fDeriveNewDataSeries.Designer.vb">
-      <DependentUpon>fDeriveNewDataSeries.vb</DependentUpon>
+    <Compile Include="Controls\DeriveNewDataSeries.Designer.vb">
+      <DependentUpon>DeriveNewDataSeries.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\fDeriveNewDataSeries.vb">
+    <Compile Include="Controls\DeriveNewDataSeries.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EditViewPlugin.vb" />
@@ -235,39 +247,39 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\cEditView.resx">
-      <DependentUpon>cEditView.vb</DependentUpon>
+      <DependentUpon>EditView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fVariablesTableManagement.resx">
-      <DependentUpon>fVariablesTableManagement.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\VariablesTableManagement.resx">
+      <DependentUpon>VariablesTableManagement.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fQualifiersTableManagement.resx">
-      <DependentUpon>fQualifiersTableManagement.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\QualifiersTableManagement.resx">
+      <DependentUpon>QualifiersTableManagement.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fAddNewPoint.resx">
-      <DependentUpon>fAddNewPoint.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\AddNewPoint.resx">
+      <DependentUpon>AddNewPoint.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fChangeYValue.resx">
-      <DependentUpon>fChangeYValue.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\ChangeYValue.resx">
+      <DependentUpon>ChangeYValue.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fQualityControlLevelTableManagement.resx">
-      <DependentUpon>fQualityControlLevelTableManagement.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\QualityControlLevelTableManagement.resx">
+      <DependentUpon>QualityControlLevelTableManagement.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fMethodTableManagement.resx">
-      <DependentUpon>fMethodTableManagement.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\MethodTableManagement.resx">
+      <DependentUpon>MethodTableManagement.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\cTimeSeriesPlot.resx">
-      <DependentUpon>cTimeSeriesPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\TimeSeriesPlot.resx">
+      <DependentUpon>TimeSeriesPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\fDeriveNewDataSeries.resx">
-      <DependentUpon>fDeriveNewDataSeries.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\DeriveNewDataSeries.resx">
+      <DependentUpon>DeriveNewDataSeries.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

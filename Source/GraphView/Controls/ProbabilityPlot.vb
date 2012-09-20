@@ -25,8 +25,8 @@ Namespace Controls
             zgProbabilityPlot.GraphPane.Title.Text = title
         End Sub
 
-        Private Sub Plot(ByRef options As OneSeriesPlotInfo, Optional ByVal e_StdDev As Double = 0)
-            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+        Private Sub Plot(ByVal options As OneSeriesPlotInfo)
+            Dim m_VariableWithUnits = options.GetVariableWithUnitsString()
             m_VarList.Add(m_VariableWithUnits)
             PlotProbability(options)
         End Sub
@@ -47,7 +47,7 @@ Namespace Controls
             Clear()
             For Each oneSeriesInfo In seriesPlotInfo.GetSeriesInfo()
                 If oneSeriesInfo.Statistics.NumberOfObservations > oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
-                    Plot(oneSeriesInfo, oneSeriesInfo.Statistics.StandardDeviation)
+                    Plot(oneSeriesInfo)
                 ElseIf oneSeriesInfo.Statistics.NumberOfObservations = oneSeriesInfo.Statistics.NumberOfCensoredObservations Then
                     If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
                 End If
@@ -57,11 +57,11 @@ Namespace Controls
 
 #Region " Probability "
 
-        Private Sub PlotProbability(ByRef options As OneSeriesPlotInfo)
+        Private Sub PlotProbability(ByVal options As OneSeriesPlotInfo)
 
             Dim m_Data = options.DataTable
             Dim m_Site = options.SiteName
-            Dim m_VariableWithUnits = options.VariableName & " - " & options.VariableUnits
+            Dim m_VariableWithUnits = options.GetVariableWithUnitsString()
             Dim m_Options = options.PlotOptions
 
             Dim i As Integer 'counter

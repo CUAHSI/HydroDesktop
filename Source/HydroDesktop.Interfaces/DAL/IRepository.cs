@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.Interfaces
@@ -38,12 +37,6 @@ namespace HydroDesktop.Interfaces
     /// <typeparam name="T">T of entity</typeparam>
     public interface IRepository<T> : IRepository where T : BaseEntity
     {
-        /// <summary>
-        /// Gets IQueryable for current repository to evaluate queries using Linq.
-        /// </summary>
-        /// <returns>Instance of IQueryable</returns>
-        IQueryable<T> AsQueryable();
-
         /// <summary>
         /// Get all data from current repository as array of entities.
         /// </summary>

@@ -37,11 +37,11 @@ namespace DataImport.CommonPages
 
             // Set Bindings
             var unitRepo = RepositoryFactory.Instance.Get<IUnitsRepository>();
-            var units = unitRepo.AsQueryable().OrderBy(u => u.Name).ToArray();
+            var units = unitRepo.GetAll().OrderBy(u => u.Name).ToArray();
             cmbVariableUnits.DataSource = units;
             cmbVariableUnits.DisplayMember = NameHelper<Unit>.Name(x => x.Name);
 
-            units = unitRepo.AsQueryable().Where(u => u.UnitsType == "Time").OrderBy(u => u.Name).ToArray();
+            units = unitRepo.GetAll().Where(u => u.UnitsType == "Time").OrderBy(u => u.Name).ToArray();
             cmbTimeUnits.DataSource = units;
             cmbTimeUnits.DisplayMember = NameHelper<Unit>.Name(x => x.Name);
 
