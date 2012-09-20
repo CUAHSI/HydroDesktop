@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Xml;
 using Search3.Settings;
 
 namespace Search3.Keywords
 {
-    class HisCentralKeywordsList : IKeywordsList
+    class HisCentralKeywordsList : IOntologyReader
     {
+        private static readonly string _ontologyFilename = Properties.Settings.Default.OntologyFilename;
+        private static readonly string _ontologySynonymsFilename = Properties.Settings.Default.SynonymsFilename;
         private SortedSet<string> keywordsList;
 
-        public KeywordListData GetKeywordsListData()
+        public OntologyDesc GetOntologyDesc()
         {
             // Synonyms and keywords
-            var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySynonymsXmlFile();
+            var tmpsyndoc = ReadOntologySynonymsXmlFile();
             keywordsList = new SortedSet<string>();
             var synonyms = new List<OntologyPath>();
             var root = tmpsyndoc.DocumentElement;
@@ -55,11 +60,19 @@ namespace Search3.Keywords
 
             // Ontology tree
             var tree = new OntologyTree();
-            var tmpxmldoc = HdSearchOntologyHelper.ReadOntologyXmlFile();
+            var tmpxmldoc = ReadOntologyXmlFile();
             FillTree(tmpxmldoc.DocumentElement, tree.Nodes);
 
-            //------
-            var result = new KeywordListData
+            // Replace Hydroshpere with All
+            keywordsList.Remove("Hydrosphere");
+            keywordsList.Add(Constants.RootName);
+            if (tree.Nodes.Count > 0)
+            {
+                tree.Nodes[0].Text = Constants.RootName;
+            }
+
+            // Return result
+            var result = new OntologyDesc
                              {
                                  OntoloyTree = tree, 
                                  Keywords = keywordsList, 
@@ -88,12 +101,14 @@ namespace Search3.Keywords
                 }
             }
         }
+
         private ICollection<OntologyNode> AddNodeToTree(XmlNode node, ICollection<OntologyNode> parentnode)
         {
             var newchildnode = CreateTreeNodeFromXmlNode(node);
             if (parentnode != null) parentnode.Add(newchildnode);
             return newchildnode.Nodes;
         }
+
         private OntologyNode CreateTreeNodeFromXmlNode(XmlNode node)
         {
             OntologyNode tmptreenode = null;
@@ -107,6 +122,87 @@ namespace Search3.Keywords
                 }
             }
             return tmptreenode ?? (new OntologyNode());
+        }
+
+        private static XmlDocument ReadOntologyXmlFile()
+        {
+            return ReadXmlFile(_ontologyFilename);
+        }
+
+        private static XmlDocument ReadOntologySynonymsXmlFile()
+        {
+            return ReadXmlFile(_ontologySynonymsFilename);
+        }
+
+        private static XmlDocument ReadXmlFile(string filename)
+        {
+            var tmpxmldoc = new XmlDocument();
+            var assemblyFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Debug.Assert(assemblyFolder != null, "assemblyFolder != null");
+            tmpxmldoc.Load(Path.Combine(assemblyFolder, filename));
+            return tmpxmldoc;
+        }
+
+        internal static List<string> RefineKeywordList(OntologyDesc desc, List<string> keywords)
+        {
+            var ontologyTree = desc.OntoloyTree;
+            var allKeywords = desc.Keywords;
+
+            // If searching 1st tier keywords, clear the list.
+            var tier1Keywords = ontologyTree.Nodes.Select(d => d.Text);
+            if (tier1Keywords.Any(keywords.Contains))
+            {
+                keywords.Clear();
+                return keywords;
+            }
+
+            // Remove duplicates
+            keywords = keywords.Distinct().ToList();
+
+            // Remove invalid keywords
+            var toDelete = new HashSet<string>(keywords.Where(k => !allKeywords.Contains(k)));
+
+            // Remove keywords if their ancestors are also in the list.
+            foreach (var keyword in keywords)
+            {
+                if (toDelete.Contains(keyword)) continue;
+                var node = ontologyTree.FindNode(keyword);
+                if (node == null) continue;
+
+                foreach (var other in keywords)
+                {
+                    if (other == keyword) continue;
+                    if (toDelete.Contains(other)) continue;
+                    if (node.HasChild(other))
+                    {
+                        toDelete.Add(other);
+                    }
+                }
+            }
+            foreach (var del in toDelete)
+            {
+                keywords.Remove(del);
+            }
+
+            // Replace 2nd tier keywords with their 3rd tier child keywords.
+            // 2nd tier keywords cannot be searched at HIS Central.
+            foreach (var tier2Node in ontologyTree.Nodes.SelectMany(node => node.Nodes))
+            {
+                var tier2keyword = tier2Node.Text;
+                if (!keywords.Contains(tier2keyword)) continue;
+
+                // Remove 2nd tier keyword
+                keywords.Remove(tier2keyword);
+
+                // Add 3rd tier keywords that are children of the removed 2nd tier keyword.
+                var tier3Keywords = tier2Node.Nodes.Select(d => d.Text);
+                foreach (var tier3keyword in tier3Keywords.Where(tier3keyword => !keywords.Contains(tier3keyword)))
+                {
+                    keywords.Add(tier3keyword);
+                }
+            }
+
+            return keywords;
         }
     }
 }

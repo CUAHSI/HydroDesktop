@@ -94,7 +94,7 @@ namespace Search3.Settings.UI
             this.btnRemoveKeyword.Size = new System.Drawing.Size(25, 22);
             this.btnRemoveKeyword.TabIndex = 60;
             this.btnRemoveKeyword.UseVisualStyleBackColor = true;
-            this.btnRemoveKeyword.Click += new System.EventHandler(this.button15_Click);
+            this.btnRemoveKeyword.Click += new System.EventHandler(this.btnRemoveKeyword_Click);
             // 
             // lblSelectedKeywords
             // 
@@ -113,7 +113,7 @@ namespace Search3.Settings.UI
             this.lbSelectedKeywords.FormattingEnabled = true;
             this.lbSelectedKeywords.Location = new System.Drawing.Point(0, 13);
             this.lbSelectedKeywords.Name = "lbSelectedKeywords";
-            this.lbSelectedKeywords.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.lbSelectedKeywords.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbSelectedKeywords.Size = new System.Drawing.Size(295, 85);
             this.lbSelectedKeywords.TabIndex = 63;
             // 

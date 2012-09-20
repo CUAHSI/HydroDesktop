@@ -113,12 +113,12 @@
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Area\RectangleDrawing.cs" />
+    <Compile Include="Keywords\Constants.cs" />
     <Compile Include="Keywords\DbKeywordsList.cs" />
-    <Compile Include="Keywords\HdSearchOntologyHelper.cs" />
     <Compile Include="Keywords\HisCentralKeywordsList.cs" />
-    <Compile Include="Keywords\IKeywordsList.cs" />
-    <Compile Include="Keywords\KeywordListData.cs" />
-    <Compile Include="Keywords\KeywordsList.cs" />
+    <Compile Include="Keywords\IOntologyReader.cs" />
+    <Compile Include="Keywords\OntologyDesc.cs" />
+    <Compile Include="Keywords\KeywordsServicesFactory.cs" />
     <Compile Include="MessageStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

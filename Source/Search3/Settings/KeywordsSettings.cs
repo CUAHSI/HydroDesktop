@@ -8,7 +8,18 @@ namespace Search3.Settings
 {
     public class KeywordsSettings
     {
+        #region Fields
+
         private readonly SearchSettings _parent;
+        private OntologyDesc _ontologyDesc;
+        private IEnumerable<string> _selectedKeywords;
+
+        #endregion
+
+        /// <summary>
+        /// Fires when Keywords/OntologyTree/Synonyms changed
+        /// </summary>
+        public event EventHandler KeywordsChanged;
 
         public KeywordsSettings(SearchSettings parent)
         {
@@ -16,12 +27,7 @@ namespace Search3.Settings
             _parent = parent;
         }
 
-        /// <summary>
-        /// Fires when Keywords/OntologyTree/Synonyms changed
-        /// </summary>
-        public event EventHandler KeywordsChanged;
-
-        private IEnumerable<string> _selectedKeywords;
+        
         public IEnumerable<string> SelectedKeywords
         {
             get { return _selectedKeywords ?? (_selectedKeywords = new string[]{}); }
@@ -30,41 +36,38 @@ namespace Search3.Settings
                 _selectedKeywords = value;
             }
         }
-
-        private IList<string> _keywords;
-        public IList<string> Keywords
+        
+        public IEnumerable<string> Keywords
         {
             get
             {
-                if (_keywords == null)
+                if (_ontologyDesc == null)
                 {
                     UpdateKeywordsAndOntology();
                 }
-                Debug.Assert(_keywords != null);
-                return _keywords;
-            }
-            private set
-            {
-                _keywords = value;
+                Debug.Assert(_ontologyDesc != null);
+                return _ontologyDesc.Keywords;
             }
         }
 
-        private OntologyTree _ontologyTree;
         public OntologyTree OntologyTree
         {
             get
             {
-                if (_ontologyTree == null)
+                if (_ontologyDesc == null)
                 {
                     UpdateKeywordsAndOntology();
                 }
-                Debug.Assert(_ontologyTree != null);
-                return _ontologyTree;
+                Debug.Assert(_ontologyDesc != null);
+                return _ontologyDesc.OntoloyTree;
             }
-            private set { _ontologyTree = value; }
         }
 
-        private List<OntologyPath> Synonyms { get; set; }
+        public OntologyDesc OntologyDesc
+        {
+            get { return _ontologyDesc; }
+        }
+        
 
         /// <summary>
         /// Returns synonym for keyword.
@@ -73,7 +76,8 @@ namespace Search3.Settings
         /// <returns>Synonym for keyword, or keyword, if synonym not found.</returns>
         public string FindSynonym(string keyword)
         {
-            var synonyms = Synonyms;
+            if (_ontologyDesc == null) return keyword;
+            var synonyms = _ontologyDesc.Synonyms;
             if (synonyms != null)
             {
                 foreach (var ontoPath in synonyms)
@@ -88,28 +92,19 @@ namespace Search3.Settings
 
             return keyword;
         }
-    
 
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
         {
-            var keywordsData = new KeywordsList().GetKeywordsListData(catalogSettings ?? _parent.CatalogSettings);
-            // Replace Hydroshpere with All
-            keywordsData.Keywords.Remove("Hydrosphere");
-            keywordsData.Keywords.Add("All");
-            if (keywordsData.OntoloyTree.Nodes.Count > 0)
-            {
-                keywordsData.OntoloyTree.Nodes[0].Text = "All";
-            }
-            if (_selectedKeywords == null)
-            {
-                _selectedKeywords = new[] {"All"};
-            }
-            //
+            var desc = KeywordsServicesFactory.GetKeywordsList(catalogSettings ?? _parent.CatalogSettings).GetOntologyDesc();
 
-            Keywords = keywordsData.Keywords.ToList();
-            OntologyTree = keywordsData.OntoloyTree;
-            Synonyms = keywordsData.Synonyms;
+            // Select root of OntoloyTree
+            if (_selectedKeywords == null && 
+                desc.OntoloyTree.Nodes.Count > 0)
+            {
+                _selectedKeywords = new[] { desc.OntoloyTree.Nodes[0].Text };
+            }
 
+            _ontologyDesc = desc;
             RaiseKeywordsChanged();
         }
 
@@ -137,10 +132,7 @@ namespace Search3.Settings
             selectedKeywords.AddRange(source.SelectedKeywords.Select(s => s));
             SelectedKeywords = selectedKeywords;
 
-            Keywords = source.Keywords;
-            OntologyTree = source.OntologyTree;
-            Synonyms = source.Synonyms;
-
+            _ontologyDesc = source._ontologyDesc;
             RaiseKeywordsChanged();
         }
 

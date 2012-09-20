@@ -138,8 +138,12 @@ namespace Search3.Searching
                 try
                 {
                     bgWorker.CheckForCancel();
-                    bgWorker.ReportMessage(string.Format("Sent request to HIS Central. Keyword: {0}. Tile {1}/{2}.{3}", keyword, currentTile, totalTilesCount,
-                        i == 0 ? String.Empty : string.Format(" Attempt {0}/{1}", i + 1, tryCount)));
+                    bgWorker.ReportMessage(string.Format("Sent request to HIS Central. Keyword: {0}. Tile {1}/{2}.{3}",
+                                                         String.IsNullOrEmpty(keyword) ? "All" : keyword, currentTile,
+                                                         totalTilesCount,
+                                                         i == 0
+                                                             ? String.Empty
+                                                             : string.Format(" Attempt {0}/{1}", i + 1, tryCount)));
 
                     var request = WebRequest.Create(url.ToString());
                     request.Timeout = 30 * 1000;

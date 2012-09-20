@@ -3,26 +3,26 @@ using Search3.Settings;
 
 namespace Search3.Keywords
 {
-    class KeywordsList
+    static class KeywordsServicesFactory
     {
-        public KeywordListData GetKeywordsListData(CatalogSettings catalogSettings)
+        public static IOntologyReader GetKeywordsList(CatalogSettings catalogSettings)
         {
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
 
-            IKeywordsList concreteList;
+            IOntologyReader reader;
             switch (catalogSettings.TypeOfCatalog)
             {
                 case TypeOfCatalog.LocalMetadataCache:
-                    concreteList = new DbKeywordsList();
+                    reader = new DbKeywordsList();
                     break;
                 case TypeOfCatalog.HisCentral:
-                    concreteList = new HisCentralKeywordsList();
+                    reader = new HisCentralKeywordsList();
                     break;
                 default:
                     throw new Exception("Unknown TypeOfCatalog");
             }
 
-            return concreteList.GetKeywordsListData();
+            return reader;
         }
     }
 }
