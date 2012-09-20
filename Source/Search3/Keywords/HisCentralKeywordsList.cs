@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using Search3.Settings;
 
@@ -15,7 +14,7 @@ namespace Search3.Keywords
             // Synonyms and keywords
             var tmpsyndoc = HdSearchOntologyHelper.ReadOntologySynonymsXmlFile();
             keywordsList = new SortedSet<string>();
-            var synonyms = new ArrayOfOntologyPath();
+            var synonyms = new List<OntologyPath>();
             var root = tmpsyndoc.DocumentElement;
             foreach (XmlElement elem in root.ChildNodes)
             {
@@ -42,7 +41,12 @@ namespace Search3.Keywords
                         ontoPath.SearchableKeyword = text;
                     }
                 }
-                synonyms.Add(ontoPath);
+                // Add to sysnonyms, only if SearchableKeyword != ConceptName
+                if (!string.Equals(ontoPath.SearchableKeyword, ontoPath.ConceptName) &&
+                    !string.IsNullOrEmpty(ontoPath.SearchableKeyword))
+                {
+                    synonyms.Add(ontoPath);
+                }
                 if (!String.IsNullOrWhiteSpace(ontoPath.SearchableKeyword))
                 {
                     keywordsList.Add(ontoPath.SearchableKeyword);
@@ -58,7 +62,7 @@ namespace Search3.Keywords
             var result = new KeywordListData
                              {
                                  OntoloyTree = tree, 
-                                 Keywords = keywordsList.ToList(), 
+                                 Keywords = keywordsList, 
                                  Synonyms = synonyms,
                              };
             return result;

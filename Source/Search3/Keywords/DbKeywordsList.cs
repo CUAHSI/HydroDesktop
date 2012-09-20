@@ -27,7 +27,7 @@ namespace Search3.Keywords
             //------
             var result = new KeywordListData
                              {
-                                 Keywords = sortedKeywords.ToList(),
+                                 Keywords = sortedKeywords,
                                  OntoloyTree = tree,
                              };
             return result;

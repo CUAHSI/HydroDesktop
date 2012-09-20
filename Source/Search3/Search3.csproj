@@ -145,7 +145,7 @@
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
-    <Compile Include="Settings\ArrayOfOntologyPath.cs" />
+    <Compile Include="Settings\OntologyPath.cs" />
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -311,7 +311,6 @@
     <None Include="Resources\keyword_32.png" />
     <None Include="Resources\HydroDesktop.ico" />
     <None Include="Resources\hand_16x16.png" />
-    <None Include="Resources\deselect_32x32.png" />
     <None Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

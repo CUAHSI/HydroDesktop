@@ -5,13 +5,13 @@ namespace Search3.Keywords
 {
     public class KeywordListData
     {
-        private IList<string> _keywords;
+        private SortedSet<string> _keywords;
         /// <summary>
         /// Keywords, not null.
         /// </summary>
-        public IList<string> Keywords
+        public SortedSet<string> Keywords
         {
-            get { return _keywords?? (_keywords = new List<string>()); }
+            get { return _keywords?? (_keywords = new SortedSet<string>()); }
             set { _keywords = value; }
         }
 
@@ -28,6 +28,6 @@ namespace Search3.Keywords
         /// <summary>
         /// Synonyms, may be null.
         /// </summary>
-        public ArrayOfOntologyPath Synonyms { get; set; }
+        public List<OntologyPath> Synonyms { get; set; }
     }
 }
