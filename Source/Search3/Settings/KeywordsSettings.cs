@@ -63,9 +63,14 @@ namespace Search3.Settings
             }
             private set { _ontologyTree = value; }
         }
-    
-        public ArrayOfOntologyPath Synonyms { get;private set;}
 
+        private List<OntologyPath> Synonyms { get; set; }
+
+        /// <summary>
+        /// Returns synonym for keyword.
+        /// </summary>
+        /// <param name="keyword">Keyword to find synonym.</param>
+        /// <returns>Synonym for keyword, or keyword, if synonym not found.</returns>
         public string FindSynonym(string keyword)
         {
             var synonyms = Synonyms;
@@ -88,8 +93,20 @@ namespace Search3.Settings
         public void UpdateKeywordsAndOntology(CatalogSettings catalogSettings = null)
         {
             var keywordsData = new KeywordsList().GetKeywordsListData(catalogSettings ?? _parent.CatalogSettings);
+            // Replace Hydroshpere with All
+            keywordsData.Keywords.Remove("Hydrosphere");
+            keywordsData.Keywords.Add("All");
+            if (keywordsData.OntoloyTree.Nodes.Count > 0)
+            {
+                keywordsData.OntoloyTree.Nodes[0].Text = "All";
+            }
+            if (_selectedKeywords == null)
+            {
+                _selectedKeywords = new[] {"All"};
+            }
+            //
 
-            Keywords = keywordsData.Keywords;
+            Keywords = keywordsData.Keywords.ToList();
             OntologyTree = keywordsData.OntoloyTree;
             Synonyms = keywordsData.Synonyms;
 

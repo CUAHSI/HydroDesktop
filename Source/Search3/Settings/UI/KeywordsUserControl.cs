@@ -138,7 +138,7 @@ namespace Search3.Settings.UI
         }
 
         private void UpdateKeywordTextBox(string text)
-        {
+        { 
             treeviewOntology.AfterSelect -= tvOntology_AfterSelect;
             tboTypeKeyword.Text = text;
             FindInTreeView(treeviewOntology.Nodes, tboTypeKeyword.Text);

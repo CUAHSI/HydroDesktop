@@ -1,11 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace Search3.Settings
+﻿namespace Search3.Settings
 {
-    public class ArrayOfOntologyPath : List<OntologyPath>
-    {
-    }
-
     public class OntologyPath
     {
         public int? ConceptID { get; set; }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfOntologyPath xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://hiscentral.cuahsi.org/20100205/">
   <OntologyPath>
-    <conceptID />
+    <conceptID>1</conceptID>
     <SearchableKeyword />
     <ConceptName>Hydrosphere</ConceptName>
     <ConceptPath />
   </OntologyPath>
   <OntologyPath>
-    <conceptID />
-    <SearchableKeyword />
+    <conceptID>2</conceptID>
+    <SearchableKeyword>Physical</SearchableKeyword>
     <ConceptName>Physical</ConceptName>
     <ConceptPath>Hydrosphere/</ConceptPath>
   </OntologyPath>

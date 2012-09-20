@@ -225,7 +225,7 @@ namespace Search3.Searching
 
             var keywords = settings.KeywordsSettings.SelectedKeywords.ToList();
 
-            if (keywords.Contains("Hydrosphere"))
+            if (keywords.Contains("All"))
             {
                 keywords.Clear();
             }
