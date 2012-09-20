@@ -3,19 +3,24 @@ using Search3.Settings;
 
 namespace Search3.Keywords
 {
-    public class KeywordListData
+    public class OntologyDesc
     {
-        private SortedSet<string> _keywords;
+        #region Fields
+
+        private IEnumerable<string> _keywords;
+        private OntologyTree _ontoloyTree;
+
+        #endregion
+
         /// <summary>
         /// Keywords, not null.
         /// </summary>
-        public SortedSet<string> Keywords
+        public IEnumerable<string> Keywords
         {
-            get { return _keywords?? (_keywords = new SortedSet<string>()); }
+            get { return _keywords?? (_keywords = new List<string>(0)); }
             set { _keywords = value; }
         }
-
-        private OntologyTree _ontoloyTree;
+        
         /// <summary>
         /// Ontology tree, not null.
         /// </summary>
@@ -28,6 +33,6 @@ namespace Search3.Keywords
         /// <summary>
         /// Synonyms, may be null.
         /// </summary>
-        public List<OntologyPath> Synonyms { get; set; }
+        public IEnumerable<OntologyPath> Synonyms { get; set; }
     }
 }

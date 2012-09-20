@@ -35,6 +35,11 @@ namespace Search3.Settings
             get { return _childs; }
         }
 
+        public bool HasChild(string name)
+        {
+            return OntologyTree.FindNode(name, Nodes) != null;
+        }
+
         public override string ToString()
         {
             return Text;

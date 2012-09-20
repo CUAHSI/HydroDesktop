@@ -224,21 +224,16 @@ namespace Search3.Searching
                                   : settings.WebServicesSettings.WebServices.Where(item => item.Checked).ToArray();
 
             var keywords = settings.KeywordsSettings.SelectedKeywords.ToList();
-
-            if (keywords.Contains("All"))
+            if (settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.LocalMetadataCache)
             {
-                keywords.Clear();
-            }
-            else
-            {
-                if (settings.CatalogSettings.TypeOfCatalog == TypeOfCatalog.HisCentral)
+                if (keywords.Contains(Constants.RootName))
                 {
-                    // todo: replace this by manual traversal of settings.KeywordsSettings.OntologyTree
-                    //var ontologyXml = HdSearchOntologyHelper.ReadOntologyXmlFile();
-                    //HdSearchOntologyHelper.RefineKeywordList(keywords, ontologyXml);
-                }    
+                    keywords.Clear();
+                }
+            }else
+            {
+                keywords = HisCentralKeywordsList.RefineKeywordList(settings.KeywordsSettings.OntologyDesc, keywords);
             }
-            
 
             if (settings.AreaSettings.AreaRectangle != null)
             {

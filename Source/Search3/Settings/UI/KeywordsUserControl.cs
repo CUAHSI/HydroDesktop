@@ -147,7 +147,7 @@ namespace Search3.Settings.UI
 
         private void tvOntology_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            tboTypeKeyword.Text = e.Node.Text;
+            UpdateKeywordTextBox(e.Node.Text);
         }
 
         private bool FindInTreeView(IEnumerable tncoll, string strNode)
@@ -195,7 +195,7 @@ namespace Search3.Settings.UI
             AddSelectedKeywords(new[] { itemToAdd });
         }
 
-        private void button15_Click(object sender, EventArgs e)
+        private void btnRemoveKeyword_Click(object sender, EventArgs e)
         {
             if (lbSelectedKeywords.SelectedItems.Count <= 0)
                 return;
