@@ -178,14 +178,11 @@ namespace SeriesView
             // 
             this.dgvSeries.AllowUserToAddRows = false;
             this.dgvSeries.AllowUserToDeleteRows = false;
-            this.dgvSeries.AllowUserToResizeColumns = false;
             this.dgvSeries.AllowUserToResizeRows = false;
             this.dgvSeries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSeries.BackgroundColor = System.Drawing.Color.White;
-            this.dgvSeries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSeries.ColumnHeadersVisible = false;
             this.dgvSeries.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvSeries.Location = new System.Drawing.Point(7, 89);
             this.dgvSeries.MultiSelect = false;

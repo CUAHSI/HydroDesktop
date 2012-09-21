@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace SeriesView
 {
     public partial class SeriesSelector : UserControl, ISeriesSelector
     {
-        #region Private Variables
+        #region Fields
 
         //Private Six Criterion Tables
         private DataTable _themeTable;
@@ -28,10 +29,13 @@ namespace SeriesView
         private int _clickedSeriesID;
 
         private bool _checkedAllChanging; //checked all indicator
-        //private checkboxes visible indicator
         private bool _checkBoxesVisible = true;
 
         private bool _needShowVariableNameWithDataType;
+
+        private const string Column_Checked = "Checked";
+        private const string Column_VariableName = "VariableName";
+        private const string Column_SeriesID = "SeriesID";
 
         #endregion
 
@@ -54,7 +58,7 @@ namespace SeriesView
             cbBoxCriterion.SelectedIndexChanged += cbBoxCriterion_SelectedIndexChanged;
             cbBoxContent.SelectedIndexChanged += cbBoxContent_SelectedIndexChanged;
 
-            contextMenuStrip1.Opening += new CancelEventHandler(contextMenuStrip1_Opening);
+            contextMenuStrip1.Opening += contextMenuStrip1_Opening;
 
             Settings.Instance.DatabaseChanged += Instance_DatabaseChanged;
             Disposed += SeriesSelector_Disposed;
@@ -73,10 +77,10 @@ namespace SeriesView
         private void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (_needShowVariableNameWithDataType &&
-                dgvSeries.Columns[e.ColumnIndex].Name == "VariableName")
+                dgvSeries.Columns[e.ColumnIndex].Name == Column_VariableName)
             {
                 e.Value = string.Format("{0}, {1}",
-                                        dgvSeries.Rows[e.RowIndex].Cells["VariableName"].Value,
+                                        dgvSeries.Rows[e.RowIndex].Cells[Column_VariableName].Value,
                                         dgvSeries.Rows[e.RowIndex].Cells["DataType"].Value);
                 e.FormattingApplied = true;
             }
@@ -96,7 +100,7 @@ namespace SeriesView
         {
             if (e.RowIndex >= 0)
             {
-                _clickedSeriesID = Convert.ToInt32(dgvSeries.Rows[e.RowIndex].Cells["SeriesID"].Value);
+                _clickedSeriesID = Convert.ToInt32(dgvSeries.Rows[e.RowIndex].Cells[Column_SeriesID].Value);
 
                 if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
                 {
@@ -152,8 +156,8 @@ namespace SeriesView
             if (_checkedAllChanging) return;
 
             DataGridViewRow row = dgvSeries.Rows[e.RowIndex];
-            int seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
-            bool isChecked = Convert.ToBoolean(row.Cells["Checked"].Value);
+            var seriesID = Convert.ToInt32(row.Cells[Column_SeriesID].Value);
+            var isChecked = Convert.ToBoolean(row.Cells[Column_Checked].Value);
             dgvSeries.Refresh();
 
             OnSeriesCheck(seriesID, isChecked);
@@ -264,7 +268,6 @@ namespace SeriesView
             }
         }
 
-
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
@@ -338,7 +341,7 @@ namespace SeriesView
             set
             {
                 _checkBoxesVisible = value;
-                dgvSeries.Columns["Checked"].Visible = _checkBoxesVisible;
+                dgvSeries.Columns[Column_Checked].Visible = _checkBoxesVisible;
             }
         }
 
@@ -354,7 +357,7 @@ namespace SeriesView
                 dgvSeries.ClearSelection();
                 foreach (DataGridViewRow dr in dgvSeries.Rows)
                 {
-                    int rowSeriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
+                    var rowSeriesID = Convert.ToInt32(dr.Cells[Column_SeriesID].Value);
                     if (rowSeriesID == value)
                     {
                         dr.Selected = true;
@@ -422,7 +425,7 @@ namespace SeriesView
                 // Get all rows to process
                 var rowsToProcess = dgvSeries.Rows
                     .Cast<DataGridViewRow>()
-                    .Where(row => Convert.ToBoolean(row.Cells["Checked"].Value) != isCheckedValue)
+                    .Where(row => Convert.ToBoolean(row.Cells[Column_Checked].Value) != isCheckedValue)
                     .ToList();
 
                 // If rows to process is to many, ask user for confirmation
@@ -440,8 +443,8 @@ namespace SeriesView
                 // Process series...
                 foreach (var row in rowsToProcess)
                 {
-                    row.Cells["Checked"].Value = isCheckedValue;
-                    var seriesID = Convert.ToInt32(row.Cells["SeriesID"].Value);
+                    row.Cells[Column_Checked].Value = isCheckedValue;
+                    var seriesID = Convert.ToInt32(row.Cells[Column_SeriesID].Value);
                     _clickedSeriesID = seriesID;
 
                     dgvSeries.Refresh();
@@ -471,17 +474,17 @@ namespace SeriesView
             var tbl = manager.GetDetailedSeriesTable();
 
             // Add Checked column
-            var columnChecked = new DataColumn("Checked", typeof(bool)) { DefaultValue = false, };
+            var columnChecked = new DataColumn(Column_Checked, typeof(bool)) { DefaultValue = false, };
             tbl.Columns.Add(columnChecked);
 
             dgvSeries.DataSource = new DataView(tbl);
             //datagridview representation
             foreach (DataGridViewColumn col in dgvSeries.Columns)
             {
-                if (col.Name != "Checked" &&
+                if (col.Name != Column_Checked &&
                     col.Name != SiteDisplayColumn &&
-                    col.Name != "VariableName" &&
-                    col.Name != "SeriesID")
+                    col.Name != Column_VariableName &&
+                    col.Name != Column_SeriesID)
                 {
                     col.Visible = false;
                 }
@@ -493,7 +496,7 @@ namespace SeriesView
             _needShowVariableNameWithDataType = false;
             foreach (DataRow row in tbl.Rows)
             {
-                var variable = row["VariableName"].ToString();
+                var variable = row[Column_VariableName].ToString();
                 var site = row["SiteID"].ToString();
                 if (tbl.Select(string.Format("VariableName = '{0}' and SiteID = '{1}'", variable, site)).Length >= 2)
                 {
@@ -502,22 +505,30 @@ namespace SeriesView
                 }
             }
 
-            dgvSeries.Columns["Checked"].DisplayIndex = 0;
-            dgvSeries.Columns["Checked"].Width = 25;
-            dgvSeries.Columns["Checked"].ReadOnly = false;
+            var column = dgvSeries.Columns[Column_Checked];
+            Debug.Assert(column != null, "column != null");
+            column.HeaderText = "Check";
+            column.DisplayIndex = 0;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            column.ReadOnly = false;
 
-            dgvSeries.Columns["SeriesID"].DisplayIndex = 1;
-            dgvSeries.Columns["SeriesID"].Width = 35;
-            dgvSeries.Columns["SeriesID"].ReadOnly = true;
+            column = dgvSeries.Columns[Column_SeriesID];
+            Debug.Assert(column != null, "column != null");
+            column.DisplayIndex = 1;
+            column.ReadOnly = true;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
-            dgvSeries.Columns["VariableName"].DisplayIndex = 2;
-            dgvSeries.Columns["VariableName"].ReadOnly = true;
-            dgvSeries.Columns["VariableName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column = dgvSeries.Columns[Column_VariableName];
+            Debug.Assert(column != null, "column != null");
+            column.DisplayIndex = 2;
+            column.ReadOnly = true;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvSeries.Columns[SiteDisplayColumn].DisplayIndex = 3;
-            dgvSeries.Columns[SiteDisplayColumn].ReadOnly = true;
-            dgvSeries.Columns[SiteDisplayColumn].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+            column = dgvSeries.Columns[SiteDisplayColumn];
+            Debug.Assert(column != null, "column != null");
+            column.DisplayIndex = 3;
+            column.ReadOnly = true;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 
             //setup the filter option to "default all"
@@ -674,11 +685,10 @@ namespace SeriesView
             var seriesIDs = new List<int>();
             foreach (DataGridViewRow dr in dgvSeries.Rows)
             {
-                var isChecked = Convert.ToBoolean(dr.Cells["Checked"].Value);
+                var isChecked = Convert.ToBoolean(dr.Cells[Column_Checked].Value);
                 if (isChecked)
                 {
-                    int seriesID = Convert.ToInt32(dr.Cells["SeriesID"].Value);
-                    seriesIDs.Add(seriesID);
+                    seriesIDs.Add(Convert.ToInt32(dr.Cells[Column_SeriesID].Value));
                 }
             }
             return seriesIDs.ToArray();
@@ -686,7 +696,15 @@ namespace SeriesView
 
         private int[] GetVisibleIDs()
         {
-            return (from DataGridViewRow dr in dgvSeries.Rows where dr.Visible select Convert.ToInt32(dr.Cells["SeriesID"].Value)).ToArray();
+            var list = new List<int>();
+            foreach (DataGridViewRow dr in dgvSeries.Rows)
+            {
+                if (dr.Visible)
+                {
+                    list.Add(Convert.ToInt32(dr.Cells[Column_SeriesID].Value));
+                }
+            }
+            return list.ToArray();
         }
 
         #endregion
@@ -710,7 +728,7 @@ namespace SeriesView
             if (checkedIDs.Length == 0)
             {
                 //If no series are checked, export the clicked series only.
-                _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells["SeriesID"].Value);
+                _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells[Column_SeriesID].Value);
                 if (_clickedSeriesID > 0)
                 {
                     checkedIDs = new[] { _clickedSeriesID };
