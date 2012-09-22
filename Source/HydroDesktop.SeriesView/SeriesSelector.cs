@@ -153,6 +153,7 @@ namespace SeriesView
 
         private void dgvSeries_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex == -1) return; // -1 - when column changed
             if (_checkedAllChanging) return;
 
             DataGridViewRow row = dgvSeries.Rows[e.RowIndex];
