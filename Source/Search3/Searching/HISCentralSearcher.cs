@@ -129,7 +129,10 @@ namespace Search3.Searching
             url.Append(Uri.EscapeDataString(startDate.ToString("MM/dd/yyyy")));
             url.Append("&endDate=");
             url.Append(Uri.EscapeDataString(endDate.ToString("MM/dd/yyyy")));
-         
+
+            var keywordDesc = string.Format("[{0}. Tile {1}/{2}]",
+                                            String.IsNullOrEmpty(keyword) ? "All" : keyword, currentTile,
+                                            totalTilesCount);
 
             // Try to send request several times (in case, when server returns timeout)
             const int tryCount = 5;
@@ -138,28 +141,30 @@ namespace Search3.Searching
                 try
                 {
                     bgWorker.CheckForCancel();
-                    bgWorker.ReportMessage(string.Format("Sent request to HIS Central. Keyword: {0}. Tile {1}/{2}.{3}",
-                                                         String.IsNullOrEmpty(keyword) ? "All" : keyword, currentTile,
-                                                         totalTilesCount,
-                                                         i == 0
-                                                             ? String.Empty
-                                                             : string.Format(" Attempt {0}/{1}", i + 1, tryCount)));
+                    bgWorker.ReportMessage(i == 0
+                                               ? string.Format("Sent request: {0}", keywordDesc)
+                                               : string.Format("Timeout has occurred for {0}. New Attempt ({1} of {2})...",
+                                                   keywordDesc, i + 1, tryCount));
 
                     var request = WebRequest.Create(url.ToString());
                     request.Timeout = 30 * 1000;
                     using (var response = request.GetResponse())
                     using (var reader = XmlReader.Create(response.GetResponseStream()))
                     {
+                        bgWorker.ReportMessage(string.Format("Data received for {0}", keywordDesc));
                         return ParseSeries(reader, startDate, endDate);
                     }    
                 }
                 catch (WebException ex)
                 {
-                    if (ex.Status == WebExceptionStatus.Timeout) continue;
+                    if (ex.Status == WebExceptionStatus.Timeout)
+                    {
+                        continue;
+                    }
                     throw;
                 }
             }
-            throw new WebException("Timeout", WebExceptionStatus.Timeout);
+            throw new WebException("Timeout. Try to decrease Search Area, or Select another Keywords.", WebExceptionStatus.Timeout);
         }
 
         private IEnumerable<SeriesDataCart> ParseSeries(XmlReader reader, DateTime startDate, DateTime endDate)
