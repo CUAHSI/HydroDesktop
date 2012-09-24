@@ -56,6 +56,7 @@ namespace HydroDesktop.MainApplication
             this.ClientSize = new System.Drawing.Size(1040, 662);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HydroDesktop";
             this.ResumeLayout(false);
 
