@@ -77,8 +77,8 @@ OutputBaseFilename="HydroDesktop15_Installer"
 ;install to a separate directory
 UsePreviousAppDir=no
 
-;SetupIconFile=Source\..\..\Documents\MapWindow.ico
-;UninstallDisplayIcon=Source\..\..\Documents\MapWindow.ico
+;SetupIconFile=HydroDesktop.ico
+;UninstallDisplayIcon=HydroDesktop.ico
 ChangesAssociations=true
 Compression=lzma/Normal
 SolidCompression=true
