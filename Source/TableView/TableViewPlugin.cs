@@ -93,12 +93,12 @@ namespace TableView
             App.HeaderControl.Add(refreshThemeButton);
 
             //DeleteTheme
-            var deleteThemeButton = new SimpleActionItem("Delete", rbDeleteTheme_Click)
+            var deleteThemeButton = new SimpleActionItem("Remove", rbDeleteTheme_Click)
                                         {
                                             RootKey = kTableView,
                                             LargeImage = Properties.Resources.delete,
                                             SmallImage = Properties.Resources.delete_16x16,
-                                            ToolTipText = "Delete Theme from Database",
+                                            ToolTipText = "Remove Theme from Database",
                                             GroupCaption = _tablePanelName
                                         };
 

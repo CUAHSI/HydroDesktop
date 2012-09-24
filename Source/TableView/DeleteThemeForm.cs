@@ -11,16 +11,15 @@ namespace TableView
     public partial class DeleteThemeForm : Form
     {
         private readonly Dictionary<string, Theme> _themeLookup = new Dictionary<string, Theme>();
-        
+
         public DeleteThemeForm()
         {
             InitializeComponent();
 
-            FormClosing +=DeleteThemeForm_FormClosing;
-            //checkListThemes.ItemCheck += new ItemCheckEventHandler(checkListThemes_ItemCheck);
-            bgwMain.DoWork +=bgwMain_DoWork;
-            bgwMain.RunWorkerCompleted +=bgwMain_RunWorkerCompleted;
-            bgwMain.ProgressChanged +=bgwMain_ProgressChanged;
+            FormClosing += DeleteThemeForm_FormClosing;
+            bgwMain.DoWork += bgwMain_DoWork;
+            bgwMain.RunWorkerCompleted += bgwMain_RunWorkerCompleted;
+            bgwMain.ProgressChanged += bgwMain_ProgressChanged;
         }
 
         private void checkListThemes_SelectedIndexChanged(object sender, EventArgs e)
@@ -58,8 +57,8 @@ namespace TableView
             int numCheckedThemes = checkListThemes.CheckedItems.Count;
 
             
-            DialogResult reply = MessageBox.Show("Are you sure to delete " + numCheckedThemes +
-                " theme(s) with all sites, variables, time series and data values? ","Delete Theme",
+            DialogResult reply = MessageBox.Show("Are you sure to remove " + numCheckedThemes +
+                " theme(s) with all sites, variables, time series and data values? ","Remove Theme",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (reply == DialogResult.Yes)
@@ -96,14 +95,11 @@ namespace TableView
             if (bgwMain.IsBusy)
             {
                 Cancel_worker();
-                //_formIsClosing = true;
                 e.Cancel = true;
             }
         }
 
         #region BackgroundWorker
-
-        
 
         /// <summary>
         /// Call "Cancel_worker" when button click happens.
@@ -174,13 +170,6 @@ namespace TableView
                 MessageBox.Show("Operation was cancelled.");
                 DialogResult = DialogResult.OK;
                 Close();
-                
-                // Close the form if the user clicked the X to close it.
-
-                //if (_formIsClosing == true)
-                //{
-                //    this.DialogResult = DialogResult.Cancel;
-                //}
             }
             else
             {
@@ -191,7 +180,5 @@ namespace TableView
         }
 
         #endregion
-
-        
     }
 }

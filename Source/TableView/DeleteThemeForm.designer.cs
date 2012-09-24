@@ -49,7 +49,7 @@
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(109, 27);
             this.btnOK.TabIndex = 0;
-            this.btnOK.Text = "Delete Data Sites";
+            this.btnOK.Text = "Remove Data Sites";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -68,9 +68,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(185, 13);
+            this.label1.Size = new System.Drawing.Size(191, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Select the Data sites layer(s) to delete";
+            this.label1.Text = "Select the Data sites layer(s) to remove";
             // 
             // bgwMain
             // 
@@ -142,10 +142,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gbxDelete);
             this.Controls.Add(this.gbxProgress);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DeleteThemeForm";
-            this.Text = "Delete Data Sites from Database";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Remove Data Sites from Database";
             this.Load += new System.EventHandler(this.DeleteThemeForm_Load);
             this.gbxProgress.ResumeLayout(false);
             this.gbxDelete.ResumeLayout(false);
