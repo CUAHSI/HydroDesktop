@@ -650,10 +650,20 @@ namespace Search3
                     delegate(object sender, SelectedValueChangedEventArgs args)
                     {
                         if (args.SelectedItem == null) return;
-                        _currentKeywords.Text = string.IsNullOrWhiteSpace(_currentKeywords.Text)
-                                                    ? args.SelectedItem.ToString()
-                                                    : args.SelectedItem + KEYWORDS_SEPARATOR + " " +
-                                                      _currentKeywords.Text;
+                        var current = _currentKeywords.Text;
+                        var selected = args.SelectedItem.ToString();
+
+                        var hasKeywords = !string.IsNullOrWhiteSpace(current);
+                        current = !hasKeywords
+                                          ? selected
+                                          : selected + KEYWORDS_SEPARATOR + " " + current;
+                        if (hasKeywords)
+                        {
+                            // Remove "All", if new keyword was added, because All + AnyKeyword = All in searching.
+                            current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName , string.Empty);
+                        }
+
+                        _currentKeywords.Text = current;
                         _currentKeywords.ToolTipText = _currentKeywords.Text;
                     };
             });
