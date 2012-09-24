@@ -108,5 +108,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("Set_Line_Color", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Click on point to Set Line Color....
+        '''</summary>
+        Friend Shared ReadOnly Property Set_Line_Color_No_Point() As String
+            Get
+                Return ResourceManager.GetString("Set_Line_Color_No_Point", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace
