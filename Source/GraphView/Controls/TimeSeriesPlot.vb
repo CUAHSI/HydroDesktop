@@ -213,18 +213,22 @@ Namespace Controls
             item = New ToolStripMenuItem()
             item.Enabled = sender.GraphPane.CurveList.Count > 0
             If item.Enabled Then
-                Dim curve As CurveItem
+                Dim curve As CurveItem = Nothing
                 Dim iNearest As Integer
                 Dim founded = sender.GraphPane.FindNearestPoint(mousePt, curve, iNearest)
-                item.Text = If(founded, curve.Label.Text + ": " + MessageStrings.Set_Line_Color, MessageStrings.Set_Line_Color)
+                founded = founded OrElse Not IsNothing(curve)
+                item.Text = If(founded,
+                               curve.Label.Text + ": " + MessageStrings.Set_Line_Color,
+                               MessageStrings.Set_Line_Color_No_Point)
                 item.Enabled = founded
                 item.Tag = curve
             Else
-                item.Text = MessageStrings.Set_Line_Color
+                item.Text = MessageStrings.Set_Line_Color_No_Point
             End If
 
             AddHandler item.Click, AddressOf SetLineColor
             menuStrip.Items.Add(item)
+
         End Sub
 
 
