@@ -1,4 +1,6 @@
-﻿Namespace Controls
+﻿Imports HydroDesktop.ZedGraphEx
+
+Namespace Controls
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class TimeSeriesPlot
         Inherits System.Windows.Forms.UserControl
@@ -24,7 +26,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.zgTimeSeries = New Controls.ZedGraphControlEx
+            Me.zgTimeSeries = New ZedGraphControlEx
             Me.SuspendLayout()
             '
             'zgTimeSeries
@@ -53,7 +55,7 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents zgTimeSeries As Controls.ZedGraphControlEx
+        Friend WithEvents zgTimeSeries As ZedGraphControlEx
 
     End Class
 End Namespace

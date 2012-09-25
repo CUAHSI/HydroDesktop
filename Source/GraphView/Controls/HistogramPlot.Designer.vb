@@ -1,4 +1,6 @@
-﻿Namespace Controls
+﻿Imports HydroDesktop.ZedGraphEx
+
+Namespace Controls
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class HistogramPlot
         Inherits System.Windows.Forms.UserControl
@@ -24,7 +26,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.zgHistogramPlot = New Controls.ZedGraphControlEx
+            Me.zgHistogramPlot = New ZedGraphControlEx
             Me.SuspendLayout()
             '
             'zgHistogramPlot
@@ -53,7 +55,7 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents zgHistogramPlot As Controls.ZedGraphControlEx
+        Friend WithEvents zgHistogramPlot As ZedGraphControlEx
 
     End Class
 End Namespace

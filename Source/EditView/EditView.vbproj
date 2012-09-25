@@ -45,38 +45,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Binaries\Plugins\EditView\</OutputPath>
-    <DocumentationFile>EditView.xml</DocumentationFile>
     <NoWarn>41999,42016</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
-    <WarningLevel>1</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Binaries\Plugins\EditView\</OutputPath>
-    <DocumentationFile>EditView.xml</DocumentationFile>
-    <NoWarn>41999,42016</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
-    <WarningLevel>1</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\..\Binaries\Plugins\EditView\</OutputPath>
-    <DocumentationFile>EditView.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>41999,42016</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <WarningsAsErrors>
     </WarningsAsErrors>
     <WarningLevel>1</WarningLevel>
@@ -328,6 +297,11 @@
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.ZedGraphEx\HydroDesktop.ZedGraphEx.csproj">
+      <Project>{9B0A0FAC-318F-4A27-A416-3977820B3B95}</Project>
+      <Name>HydroDesktop.ZedGraphEx</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

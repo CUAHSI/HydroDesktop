@@ -1,4 +1,6 @@
-﻿Namespace Controls
+﻿Imports HydroDesktop.ZedGraphEx
+
+Namespace Controls
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class BoxWhiskerPlot
         Inherits System.Windows.Forms.UserControl
@@ -24,7 +26,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.zgBoxWhiskerPlot = New Controls.ZedGraphControlEx
+            Me.zgBoxWhiskerPlot = New ZedGraphControlEx
             Me.SuspendLayout()
             '
             'zgBoxWhiskerPlot
@@ -52,7 +54,7 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents zgBoxWhiskerPlot As Controls.ZedGraphControlEx
+        Friend WithEvents zgBoxWhiskerPlot As ZedGraphControlEx
 
     End Class
 End Namespace

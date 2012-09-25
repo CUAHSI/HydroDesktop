@@ -1,4 +1,6 @@
-﻿Namespace Controls
+﻿Imports HydroDesktop.ZedGraphEx
+
+Namespace Controls
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ProbabilityPlot
         Inherits System.Windows.Forms.UserControl
@@ -24,7 +26,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.zgProbabilityPlot = New Controls.ZedGraphControlEx
+            Me.zgProbabilityPlot = New ZedGraphControlEx
             Me.SuspendLayout()
             '
             'zgProbabilityPlot
@@ -51,7 +53,7 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents zgProbabilityPlot As Controls.ZedGraphControlEx
+        Friend WithEvents zgProbabilityPlot As ZedGraphControlEx
 
     End Class
 End Namespace

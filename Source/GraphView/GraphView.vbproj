@@ -43,36 +43,8 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
-    <DocumentationFile>GraphView.xml</DocumentationFile>
     <NoWarn>41999,42016</NoWarn>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
-    <DocumentationFile>GraphView.xml</DocumentationFile>
-    <NoWarn>41999,42016</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
-    <DocumentationFile>GraphView.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>41999,42016</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <WarningsAsErrors>
     </WarningsAsErrors>
   </PropertyGroup>
@@ -183,9 +155,6 @@
     <Compile Include="Controls\IChart.vb" />
     <Compile Include="Controls\OneSeriesPlotInfo.vb" />
     <Compile Include="Controls\SummaryStatistics.vb" />
-    <Compile Include="Controls\ZedGraphControlEx.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="MessageStrings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -369,6 +338,11 @@
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.ZedGraphEx\HydroDesktop.ZedGraphEx.csproj">
+      <Project>{9B0A0FAC-318F-4A27-A416-3977820B3B95}</Project>
+      <Name>HydroDesktop.ZedGraphEx</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
