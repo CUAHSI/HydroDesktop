@@ -15,39 +15,37 @@ namespace HydroDesktop.Main
         public void CreateTraceFile()
         {
             //first try to create it in application startup path
-            string programFilesPath = Application.StartupPath;
-            string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HydroDesktop");
-            string tempPath = Path.Combine(Path.GetTempPath(), "HydroDesktop");
+            var programFilesPath = Application.StartupPath;
+            var documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "HydroDesktop");
+            var tempPath = Path.Combine(Path.GetTempPath(), "HydroDesktop");
 
-            Stream logStream = null;
+            var stream = TryToCreateLogFile(programFilesPath);
 
-            logStream = TryToCreateLogFile(programFilesPath);
+            if (stream == null)
+                stream = TryToCreateLogFile(documentsPath);
 
-            if (logStream == null)
-                logStream = TryToCreateLogFile(documentsPath);
-
-            if (logStream == null)
-                logStream = TryToCreateLogFile(tempPath);
+            if (stream == null)
+                stream = TryToCreateLogFile(tempPath);
 
             //create the trace listener
-            if (logStream != null && File.Exists(logFileName))
+            if (stream != null)
             {
-                var myTextListener = new TextWriterTraceListener(logStream);
+                var myTextListener = new TextWriterTraceListener(stream);
                 Trace.Listeners.Add(myTextListener);
             }      
         }
 
         private Stream TryToCreateLogFile(string logFileDirectory)
         {
-           
             if (!Directory.Exists(logFileDirectory))
             {
                 try
                 {
                     Directory.CreateDirectory(logFileDirectory);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Trace.TraceError("Unable to create directory {0}: {1}", logFileDirectory, ex.Message);
                     return null;
                 }
             }
@@ -57,15 +55,15 @@ namespace HydroDesktop.Main
             }
             
             //at this point the directory exists
-            string fullPath = Path.Combine(logFileDirectory, logFileName);
+            var fullPath = Path.Combine(logFileDirectory, logFileName);
             try
             {
-                Stream logFileStream = File.Create(fullPath);
-                return logFileStream;
-
+                // Add to existing log file or create new
+                return new FileStream(fullPath, FileMode.Append, FileAccess.Write, FileShare.Read);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Trace.TraceError("Unable to create log file {0}: {1}", fullPath, ex.Message);
                 return null;
             }
         }
