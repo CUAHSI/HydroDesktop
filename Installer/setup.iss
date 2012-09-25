@@ -125,6 +125,7 @@ Source: "..\Binaries\Plugins\HydroR\HydroR_1.2.tar.gz"; DestDir: "{app}\Plugins"
 Source: "..\Binaries\Plugins\MetadataFetcher\MetadataFetcher.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 Source: "..\Binaries\Plugins\Search3\Search3.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Plugins\Search3\Search3.dll.config"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\Search3\Resources\OntologyTree.xml"; DestDir: "{app}\Plugins\Resources"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\Search3\Resources\Synonyms.xml"; DestDir: "{app}\Plugins\Resources"; Flags: ignoreversion;
 
