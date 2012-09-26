@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
 using System.Windows.Forms;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Logging;
@@ -22,7 +20,7 @@ namespace HydroDesktop.MainApplication
             Application.ApplicationExit += delegate
                 {
                     log.Info("Application Exit");
-                    Trace.Flush(); // todo: move this into TraceLogger.Dispose() and check that Unity releases all registered services.
+                    AppContext.Instance.Dispose();
                 };
             // Log all unhandled exceptions
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -31,14 +29,15 @@ namespace HydroDesktop.MainApplication
                     delegate(object sender, UnhandledExceptionEventArgs e)
                         {
                             ProcessUnhandled((Exception)e.ExceptionObject, true);
-                            Trace.Flush();
+                            AppContext.Instance.Dispose();
                         };
             
-            log.Info("Application started");
+            log.Info("Application Started");
             var form = new MainForm();
-            if (args.Length > 0)
-                if (System.IO.File.Exists(args[0]))
-                    form.appManager.SerializationManager.OpenProject(args[0]);
+            if (args.Length > 0 && System.IO.File.Exists(args[0]))
+            {
+                form.appManager.SerializationManager.OpenProject(args[0]);
+            }
 
             Application.Run(form);
         }
@@ -46,7 +45,7 @@ namespace HydroDesktop.MainApplication
         private static void ProcessUnhandled(Exception ex, bool isFatal)
         {
             var log = AppContext.Instance.Get<ILog>();
-            log.Error(isFatal? "fatal" : "unhandled", ex);
+            log.Error(isFatal ? "Fatal" : "Unhandled", ex);
             var caption = isFatal ? "Fatal error" : "Unhandled Exception";
             var message = "Message: " + ex.Message + Environment.NewLine + "Details saved to: " + log.Destination;
             if (isFatal)
