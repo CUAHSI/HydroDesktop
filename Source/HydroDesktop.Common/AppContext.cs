@@ -35,5 +35,13 @@ namespace HydroDesktop.Common
         {
             return Container.Current.Resolve<T>();
         }
+
+        /// <summary>
+        /// Gets current DI container.
+        /// </summary>
+        public IUnityContainer UnityContainer
+        {
+            get { return Container.Current; }
+        }
     }
 }

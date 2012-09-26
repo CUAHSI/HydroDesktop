@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using HydroDesktop.Common;
+using HydroDesktop.Common.UserMessage;
 using Search3.WebServices;
 
 namespace Search3.Settings
@@ -24,16 +26,7 @@ namespace Search3.Settings
             {
                 if (_webServices == null)
                 {
-                    try
-                    {
-                        RefreshWebServices();
-                    }catch(Exception)
-                    {
-                        //TODO: log error
-
-                        _webServices = new List<WebServiceNode>();
-                    }
-
+                    RefreshWebServices();
                     Debug.Assert(_webServices != null);
                 }
                 return new ReadOnlyCollection<WebServiceNode>(_webServices);
@@ -44,9 +37,21 @@ namespace Search3.Settings
             }
         }
 
+        /// <summary>
+        /// Refresh WebServices list.
+        /// </summary>
+        /// <param name="catalogSettings">Catalog settings to use. If null - used current catalog settings.</param>
         public void RefreshWebServices(CatalogSettings catalogSettings = null)
         {
-            _webServices = new WebServicesList().GetWebServices(catalogSettings ?? _parent.CatalogSettings).ToList();
+            try
+            {
+                _webServices = WebServicesReader.GetWebServices(catalogSettings ?? _parent.CatalogSettings).ToList();
+            }
+            catch (Exception ex)
+            {
+                AppContext.Instance.Get<IUserMessage>().Error("Unable to refresh WebServices. Empty list will be used.", ex);
+                _webServices = new List<WebServiceNode>();
+            }
         }
 
         public int CheckedCount
