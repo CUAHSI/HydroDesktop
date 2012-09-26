@@ -110,16 +110,22 @@ namespace Search3.Settings.UI
         {
             var button = sender as RadioButton;
             if (button == null || !button.Checked) return;
-
-            paButtons.Enabled = false;
+            
             UpdateCatalogSettings();
             RefreshWebServices();
-            paButtons.Enabled = true;
         }
 
         private void RefreshWebServices()
         {
-            webServicesUserControl1.RefreshWebServices();
+            paButtons.Enabled = false;
+            try
+            {
+                webServicesUserControl1.RefreshWebServices();
+            }
+            finally
+            {
+                paButtons.Enabled = true; 
+            }
         }
 
         private void RefreshKeywords()

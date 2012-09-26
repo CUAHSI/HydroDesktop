@@ -108,7 +108,11 @@
     <Compile Include="DataSitesLayerTools.cs" />
     <Compile Include="IProgressHandler.cs" />
     <Compile Include="LayerConstants.cs" />
+    <Compile Include="Logging\IExtraLog.cs" />
     <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ILogInitializer.cs" />
+    <Compile Include="Logging\TraceLogInitializer.cs" />
+    <Compile Include="UserMessage\IUserMessage.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="ObservableObject.T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +128,7 @@
     <Compile Include="Tools\EnumHelper.cs" />
     <Compile Include="Tools\NameHelper.cs" />
     <Compile Include="Tools\SymbologyHelper.cs" />
+    <Compile Include="UserMessage\MessageBoxUserMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\DelimiterSelector.resx">

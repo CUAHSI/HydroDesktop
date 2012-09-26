@@ -1,5 +1,6 @@
 using System.Configuration;
 using HydroDesktop.Common.Logging;
+using HydroDesktop.Common.UserMessage;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
@@ -59,9 +60,13 @@ namespace HydroDesktop.Common
 
         static void ConfigureFactories()
         {
-            // Configure services here
-            _currentContainer.RegisterType<ILog, TraceLogger>(new ContainerControlledLifetimeManager());
+            // Configure services here...
+            _currentContainer.RegisterType<ILogInitializer, TraceLogInitializer>(new ContainerControlledLifetimeManager());
+            _currentContainer.RegisterType<ILog, TraceLogger>();
+            _currentContainer.RegisterType<IExtraLog, TraceLogger>();
+            _currentContainer.RegisterType<IUserMessage, MessageBoxUserMessage>();
             
+            // Create service locator
             _serviceLocator = new UnityServiceLocator(_currentContainer);
             ServiceLocator.SetLocatorProvider(() => _serviceLocator);
         }

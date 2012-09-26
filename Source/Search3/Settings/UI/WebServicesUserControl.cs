@@ -106,15 +106,8 @@ namespace Search3.Settings.UI
                 return;
             }
 
-            try
-            {
-                _webServicesSettings.RefreshWebServices(_catalogSettings);
-                RefreshWebServicesTreeView(_webServicesSettings.WebServices);
-            }catch(Exception ex)
-            {
-                MessageBox.Show("Unable to refresh WebServices." + Environment.NewLine + "Error: " + ex.Message, "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            _webServicesSettings.RefreshWebServices(_catalogSettings);
+            RefreshWebServicesTreeView(_webServicesSettings.WebServices);
         }
 
 

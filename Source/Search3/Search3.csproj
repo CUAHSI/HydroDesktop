@@ -197,7 +197,7 @@
     <Compile Include="WebServices\DbWebServicesList.cs" />
     <Compile Include="WebServices\HisCentralWebServicesList.cs" />
     <Compile Include="WebServices\IWebServicesList.cs" />
-    <Compile Include="WebServices\WebServicesList.cs" />
+    <Compile Include="WebServices\WebServicesReader.cs" />
     <Compile Include="Settings\UI\WebServicesUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
