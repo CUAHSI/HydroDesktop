@@ -7,7 +7,7 @@ namespace HydroDesktop.Common.Logging
 {
     class TraceLogInitializer : ILogInitializer
     {
-        private const string LOG_FILE_NAME = "hydrodesktop_log.txt";
+        private const string LOG_FILE_NAME = "trace.log";
 
         public TraceLogInitializer()
         {

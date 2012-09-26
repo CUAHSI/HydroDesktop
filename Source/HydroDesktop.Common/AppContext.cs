@@ -43,5 +43,13 @@ namespace HydroDesktop.Common
         {
             get { return Container.Current; }
         }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Container.Current.Dispose();
+        }
     }
 }
