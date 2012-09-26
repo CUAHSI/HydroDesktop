@@ -97,9 +97,11 @@ namespace Search3.Settings.UI
             {
                 case TypeOfCatalog.LocalMetadataCache:
                     bntAddLocalDataSource.Text = "Add Data Source...";
+                    btnManageDataSources.Enabled = true;
                     break;
                 case TypeOfCatalog.HisCentral:
                     bntAddLocalDataSource.Text = "Advanced Options...";
+                    btnManageDataSources.Enabled = false;
                     break;
             }
         }
@@ -109,8 +111,10 @@ namespace Search3.Settings.UI
             var button = sender as RadioButton;
             if (button == null || !button.Checked) return;
 
+            paButtons.Enabled = false;
             UpdateCatalogSettings();
             RefreshWebServices();
+            paButtons.Enabled = true;
         }
 
         private void RefreshWebServices()
@@ -155,6 +159,14 @@ namespace Search3.Settings.UI
                         _metadataFetcher.AddServices();
                     }
                     break;
+            }
+        }
+
+        private void btnManageDataSources_Click(object sender, EventArgs e)
+        {
+            if (_metadataFetcher != null)
+            {
+                _metadataFetcher.DownloadMetadata();
             }
         }
 

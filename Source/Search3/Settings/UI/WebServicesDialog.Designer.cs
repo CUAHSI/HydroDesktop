@@ -38,6 +38,7 @@
             this.rbLocalMetadataCache = new System.Windows.Forms.RadioButton();
             this.rbHisCentral = new System.Windows.Forms.RadioButton();
             this.gbTypeOfCatalog = new System.Windows.Forms.GroupBox();
+            this.btnManageDataSources = new System.Windows.Forms.Button();
             this.webServicesUserControl1 = new Search3.Settings.UI.WebServicesUserControl();
             this.paButtons.SuspendLayout();
             this.gbTypeOfCatalog.SuspendLayout();
@@ -69,21 +70,22 @@
             // 
             this.paButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.paButtons.Controls.Add(this.btnManageDataSources);
             this.paButtons.Controls.Add(this.bntAddLocalDataSource);
             this.paButtons.Controls.Add(this.btnRefresh);
             this.paButtons.Controls.Add(this.btnSelectNone);
             this.paButtons.Controls.Add(this.btnSelectAll);
             this.paButtons.Location = new System.Drawing.Point(0, 66);
             this.paButtons.Name = "paButtons";
-            this.paButtons.Size = new System.Drawing.Size(425, 46);
+            this.paButtons.Size = new System.Drawing.Size(425, 68);
             this.paButtons.TabIndex = 45;
             // 
             // bntAddLocalDataSource
             // 
             this.bntAddLocalDataSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bntAddLocalDataSource.Location = new System.Drawing.Point(290, 12);
+            this.bntAddLocalDataSource.Location = new System.Drawing.Point(269, 8);
             this.bntAddLocalDataSource.Name = "bntAddLocalDataSource";
-            this.bntAddLocalDataSource.Size = new System.Drawing.Size(122, 23);
+            this.bntAddLocalDataSource.Size = new System.Drawing.Size(144, 23);
             this.bntAddLocalDataSource.TabIndex = 44;
             this.bntAddLocalDataSource.Text = "Add Data Source...";
             this.bntAddLocalDataSource.UseVisualStyleBackColor = true;
@@ -91,7 +93,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(20, 13);
+            this.btnRefresh.Location = new System.Drawing.Point(13, 8);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 41;
@@ -102,7 +104,7 @@
             // btnSelectNone
             // 
             this.btnSelectNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelectNone.Location = new System.Drawing.Point(208, 13);
+            this.btnSelectNone.Location = new System.Drawing.Point(95, 37);
             this.btnSelectNone.Name = "btnSelectNone";
             this.btnSelectNone.Size = new System.Drawing.Size(75, 23);
             this.btnSelectNone.TabIndex = 43;
@@ -113,7 +115,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelectAll.Location = new System.Drawing.Point(127, 13);
+            this.btnSelectAll.Location = new System.Drawing.Point(14, 37);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
             this.btnSelectAll.TabIndex = 42;
@@ -156,14 +158,25 @@
             this.gbTypeOfCatalog.TabStop = false;
             this.gbTypeOfCatalog.Text = "Select type of catalog";
             // 
+            // btnManageDataSources
+            // 
+            this.btnManageDataSources.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnManageDataSources.Location = new System.Drawing.Point(269, 37);
+            this.btnManageDataSources.Name = "btnManageDataSources";
+            this.btnManageDataSources.Size = new System.Drawing.Size(144, 23);
+            this.btnManageDataSources.TabIndex = 45;
+            this.btnManageDataSources.Text = "Manage Data Sources...";
+            this.btnManageDataSources.UseVisualStyleBackColor = true;
+            this.btnManageDataSources.Click += new System.EventHandler(this.btnManageDataSources_Click);
+            // 
             // webServicesUserControl1
             // 
             this.webServicesUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webServicesUserControl1.Location = new System.Drawing.Point(0, 118);
+            this.webServicesUserControl1.Location = new System.Drawing.Point(0, 140);
             this.webServicesUserControl1.Name = "webServicesUserControl1";
-            this.webServicesUserControl1.Size = new System.Drawing.Size(425, 323);
+            this.webServicesUserControl1.Size = new System.Drawing.Size(425, 301);
             this.webServicesUserControl1.TabIndex = 0;
             // 
             // WebServicesDialog
@@ -201,5 +214,6 @@
         private System.Windows.Forms.RadioButton rbHisCentral;
         private System.Windows.Forms.GroupBox gbTypeOfCatalog;
         private System.Windows.Forms.Button bntAddLocalDataSource;
+        private System.Windows.Forms.Button btnManageDataSources;
     }
 }
