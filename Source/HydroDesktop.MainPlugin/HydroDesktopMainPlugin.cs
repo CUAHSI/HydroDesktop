@@ -34,11 +34,6 @@
 
         public override void Activate()
         {
-            //startup logging
-            var logger = new TraceLogger();
-            logger.CreateTraceFile();
-
-            
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             myProjectManager = new ProjectManager(App);
 
@@ -82,9 +77,6 @@
 
         void HydroDesktopMainPlugin_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //write the log file from trace
-            Trace.Flush();
-            
             var projectExists = (!String.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile));
             if (!projectExists)
             {

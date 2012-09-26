@@ -141,7 +141,6 @@
     <Compile Include="SampleProjectInfo.cs" />
     <Compile Include="SampleProjectInstaller.cs" />
     <Compile Include="SelectionStatusDisplay.cs" />
-    <Compile Include="TraceLogger.cs" />
     <Compile Include="WelcomeScreen.cs">
       <SubType>Form</SubType>
     </Compile>
