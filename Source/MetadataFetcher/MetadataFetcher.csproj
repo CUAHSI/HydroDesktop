@@ -105,20 +105,8 @@
       <HintPath>..\packages\DotSpatial.Topology.1.3\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HydroDesktop.Data">
       <HintPath>..\..\Binaries\HydroDesktop.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.WebServices">
-      <HintPath>..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -194,10 +182,17 @@
     <Content Include="Resources\Metadata_Fetcher_Add_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
-      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
-      <Name>HydroDesktop.Common</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj">
+      <Project>{7d649595-3cd3-4f13-a59b-5f7b8716fdfa}</Project>
+      <Name>HydroDesktop.WebServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
