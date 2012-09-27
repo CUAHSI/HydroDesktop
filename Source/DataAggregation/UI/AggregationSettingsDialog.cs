@@ -17,7 +17,7 @@ using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 using PointShape = DotSpatial.Symbology.PointShape;
 
-namespace DataAggregation
+namespace DataAggregation.UI
 {
     /// <summary>
     /// Settings form for aggregation
@@ -44,8 +44,16 @@ namespace DataAggregation
 
             InitializeComponent();
 
+            dtpStartTime.Format = dtpEndTime.Format = DateTimePickerFormat.Custom;
+            dtpStartTime.CustomFormat = dtpEndTime.CustomFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern + " HH:mm:ss";
+
             _layer = layer;
-            _settings = new AggregationSettings();
+            _settings = new AggregationSettings
+                {
+                    CreateNewLayer = true, 
+                    CreateCategories = true,
+                    DecimalPlaces = 1,
+                };
 
             Load += OnLoad;
         }
@@ -58,26 +66,14 @@ namespace DataAggregation
             {
                 args.Value = ((AggregationMode)args.ListItem).Description();
             };
-            cmbMode.DataBindings.Clear();
-            cmbMode.DataBindings.Add("SelectedItem", _settings, "AggregationMode", true,
-                                     DataSourceUpdateMode.OnPropertyChanged);
 
-            dtpStartTime.DataBindings.Clear();
-            dtpStartTime.DataBindings.Add("Value", _settings, "StartTime", true, DataSourceUpdateMode.OnPropertyChanged);
-
-            dtpEndTime.DataBindings.Clear();
-            dtpEndTime.DataBindings.Add("Value", _settings, "EndTime", true, DataSourceUpdateMode.OnPropertyChanged);
-
-            cmbVariable.DataBindings.Clear();
-            cmbVariable.DataBindings.Add("SelectedItem", _settings, "VariableCode", true,
-                                         DataSourceUpdateMode.OnPropertyChanged);
-
-            chbCreateNewLayer.DataBindings.Clear();
-            chbCreateNewLayer.DataBindings.Add("Checked", _settings, "CreateNewLayer", true,
-                                               DataSourceUpdateMode.OnPropertyChanged);
-
-            // Set initial CreateNewLayer
-            _settings.CreateNewLayer = true;
+            cmbMode.AddBinding(x => x.SelectedItem, _settings, x => x.AggregationMode);
+            dtpStartTime.AddBinding(x => x.Value, _settings, x => x.StartTime);
+            dtpEndTime.AddBinding(x => x.Value, _settings, x => x.EndTime);
+            cmbVariable.AddBinding(x => x.SelectedItem, _settings, x => x.VariableCode);
+            chbCreateNewLayer.AddBinding(x => x.Checked, _settings, x => x.CreateNewLayer);
+            chbCreateCategories.AddBinding(x => x.Checked, _settings, x => x.CreateCategories);
+            nudDecimalPlaces.AddBinding(x => x.Value, _settings, x => x.DecimalPlaces);
 
             // Set initial StartTime, EndTime
             var minStartTime = DateTime.MaxValue;
@@ -197,7 +193,10 @@ namespace DataAggregation
                                                              _layer.MapFrame.Add(mapLayer);
 
                                                              UpdateLabeling(mapLayer, columnName);
-                                                             UpdateSymbology(mapLayer, columnName);
+                                                             if (_settings.CreateCategories)
+                                                             {
+                                                                 UpdateSymbology(mapLayer, columnName);
+                                                             }
                                                          }
                                                      }
 

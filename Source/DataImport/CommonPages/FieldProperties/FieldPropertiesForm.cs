@@ -42,12 +42,12 @@ namespace DataImport.CommonPages
             base.Text = string.Format("Column properties - {0}", _columnData.ColumnName);
 
             // Set bindings.......
-            chApplySiteToAllCoumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
-            chApplyVariableToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyVariableToAllColumns);
-            chApplySourceToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplySourceToAllColumns);
-            chApplyMethodToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyMethodToAllColumns);
-            chApplyQualityControlToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyQualityControlToAllColumns);
-            chApplyOffsetToAllColumns.AddBinding<CheckBox, ColumnInfo>(c => c.Checked, _columnData, c => c.ApplyOffsetToAllColumns);
+            chApplySiteToAllCoumns.AddBinding(c => c.Checked, _columnData, c => c.ApplySiteToAllColumns);
+            chApplyVariableToAllColumns.AddBinding(c => c.Checked, _columnData, c => c.ApplyVariableToAllColumns);
+            chApplySourceToAllColumns.AddBinding(c => c.Checked, _columnData, c => c.ApplySourceToAllColumns);
+            chApplyMethodToAllColumns.AddBinding(c => c.Checked, _columnData, c => c.ApplyMethodToAllColumns);
+            chApplyQualityControlToAllColumns.AddBinding(c => c.Checked, _columnData, c => c.ApplyQualityControlToAllColumns);
+            chApplyOffsetToAllColumns.AddBinding(c => c.Checked, _columnData, c => c.ApplyOffsetToAllColumns);
 
             // Site
             siteView1.ReadOnly = true;

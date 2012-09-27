@@ -8,7 +8,20 @@ namespace DataAggregation
     /// </summary>
     internal class AggregationSettings : ObservableObject<AggregationSettings>
     {
+        #region Fields
+
         private AggregationMode _aggregationMode;
+        private DateTime _startTime;
+        private DateTime _endTime;
+        private string _variableCode;
+        private bool _createNewLayer;
+        private bool _createCategories;
+        private byte _decimalPlaces;
+
+        #endregion
+
+        #region Properties
+
         public AggregationMode AggregationMode
         {
             get { return _aggregationMode; }
@@ -19,7 +32,6 @@ namespace DataAggregation
             }
         }
 
-        private DateTime _startTime;
         public DateTime StartTime
         {
             get { return _startTime; }
@@ -29,8 +41,7 @@ namespace DataAggregation
                 NotifyPropertyChanged(() => StartTime);
             }
         }
-
-        private DateTime _endTime;
+        
         public DateTime EndTime
         {
             get { return _endTime; }
@@ -40,8 +51,7 @@ namespace DataAggregation
                 NotifyPropertyChanged(() => EndTime);
             }
         }
-
-        private string _variableCode;
+        
         public string VariableCode
         {
             get { return _variableCode; }
@@ -51,8 +61,7 @@ namespace DataAggregation
                 NotifyPropertyChanged(() => VariableCode);
             }
         }
-
-        private bool _createNewLayer;
+        
         public bool CreateNewLayer
         {
             get { return _createNewLayer; }
@@ -62,5 +71,27 @@ namespace DataAggregation
                 NotifyPropertyChanged(() => CreateNewLayer);
             }
         }
+
+        public bool CreateCategories
+        {
+            get { return _createCategories; }
+            set
+            {
+                _createCategories = value;
+                NotifyPropertyChanged(() => CreateCategories);
+            }
+        }
+
+        public byte DecimalPlaces
+        {
+            get { return _decimalPlaces; }
+            set
+            {
+                _decimalPlaces = value;
+                NotifyPropertyChanged(() => DecimalPlaces);
+            }
+        }
+
+        #endregion
     }
 }
