@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using DataAggregation.UI;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common.Tools;
@@ -124,7 +125,6 @@ namespace DataAggregation
                 var seriesIDCol = featureSet.DataTable.Columns.Add("SeriesID", typeof(long));
                 var siteNameCol = featureSet.DataTable.Columns.Add("SiteName", typeof(string));
                 var siteCodeCol = featureSet.DataTable.Columns.Add("SiteCode", typeof(string));
-
                 
                 // Find features to add to new feature set
                 foreach (var feature in _layer.DataSet.Features)
@@ -215,7 +215,7 @@ namespace DataAggregation
 
                 // todo: if the value is null (no value found) then the feature shouldn't be added to the new layer.
                 if (value != null)
-                    feature.DataRow[dataColumn] = value;
+                    feature.DataRow[dataColumn] = Math.Round(value.Value, _settings.DecimalPlaces);
                 else
                     feature.DataRow[dataColumn] = 0;
 
