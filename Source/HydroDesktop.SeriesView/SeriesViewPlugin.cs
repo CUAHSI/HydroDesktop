@@ -1,7 +1,6 @@
-﻿using HydroDesktop.Common;
-
-namespace SeriesView
+﻿namespace SeriesView
 {
+    using HydroDesktop.Common;
     using System.ComponentModel.Composition;
     using System.Windows.Forms;
     using DotSpatial.Controls;
@@ -16,15 +15,26 @@ namespace SeriesView
 
         [Export("SeriesControl")]
         private ISeriesSelector MainSeriesSelector = new SeriesSelector();
-        
+
         public override void Activate()
         {
-            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
-            
-            AddSeriesDockPanel();
-            App.HeaderControl.Add(new RootItem(_tableRootKey, "Table") { SortOrder = 20 });
+            ((SeriesSelector) MainSeriesSelector).ParentPlugin = this;
 
-            Global.PluginEntryPoint = this;
+            //add the series selector
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
+            ((SeriesSelector) MainSeriesSelector).Dock = DockStyle.Fill;
+            var timeSeriesPanel = new DockablePanel
+                {
+                    Key = SeriesViewKey,
+                    Caption = "time series",
+                    InnerControl = (SeriesSelector) MainSeriesSelector,
+                    Dock = DockStyle.Left,
+                    SmallImage = Properties.Resources.timeSeries,
+                    DefaultSortOrder = 1000
+                };
+            App.DockManager.Add(timeSeriesPanel);
+
+            App.HeaderControl.Add(new RootItem(_tableRootKey, "Table") {SortOrder = 20});
 
             base.Activate();
         }
@@ -40,31 +50,10 @@ namespace SeriesView
         public override void  Deactivate()
         {
  	        App.HeaderControl.RemoveAll();
-            //App.DockManager.Remove(SeriesViewKey);
-            
+            App.DockManager.Remove(SeriesViewKey);
             App.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
-
-            Global.PluginEntryPoint = null;
             
             base.Deactivate();
-        }
-
-        void AddSeriesDockPanel()
-        {
-            //add the series selector
-            ((SeriesSelector)MainSeriesSelector).Dock = DockStyle.Fill;
-
-            var timeSeriesPanel = new DockablePanel
-            {
-                Key = SeriesViewKey,
-                Caption = "time series",
-                InnerControl = (SeriesSelector)MainSeriesSelector,
-                Dock = DockStyle.Left,
-                SmallImage = Properties.Resources.timeSeries,
-                DefaultSortOrder = 1000
-            };
-
-            App.DockManager.Add(timeSeriesPanel);
         }
     }
 }

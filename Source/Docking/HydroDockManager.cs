@@ -14,60 +14,44 @@ namespace HydroDesktop.Docking
     /// </summary>
     public class HydroDockManager : IDockManager, IPartImportsSatisfiedNotification
     {
+        #region Fields 
+
         /// <summary>
         /// The main dock container panel
         /// </summary>
-        public DockPanel MainDockPanel { get; set; }
+        private DockPanel MainDockPanel { get; set; }
 
         [Import("Shell")]
-        public ContainerControl Shell { get; set; }
-        
-        /// <summary>
-        /// The lookup list of dock panels (for keeping track of existing panels)
-        /// </summary>
-        //private Dictionary<string, DockContent> dockContents = new Dictionary<string,DockContent>();
-
-        //private Dictionary<DockContent, int> sortOrderLookup = new Dictionary<DockContent, int>();
+        private ContainerControl Shell { get; set; }
 
         // The lookup list of dock panels (for keeping track of existing panels)
-        private readonly Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string,DockPanelInfo>();
-
-        /// <summary>The active panel key</summary>
-        private string ActivePanelKey { get; set; }
-
-        #region Constructor
-
-        /// <summary>
-        /// Create the default docking manager
-        /// </summary>
-        public HydroDockManager()
-        {
-            
-        }
+        private readonly Dictionary<string, DockPanelInfo> dockPanelLookup = new Dictionary<string, DockPanelInfo>();
 
         #endregion
 
-        #region IPartImportsSatisfiedNotification Members
+        #region IDockManager Members
 
         /// <summary>
-        /// setup the parent form. This 
-        /// occurs when the main form becomes available
+        /// Occurs when the active panel is changed, meaning a difference panel is activated.
         /// </summary>
-        public void OnImportsSatisfied()
-        {
-            MainDockPanel = new DockPanel();
-            MainDockPanel.Parent = Shell; //using the static variable
-            MainDockPanel.Dock = DockStyle.Fill;
-            MainDockPanel.BringToFront();
-            MainDockPanel.DocumentStyle = DocumentStyle.DockingSdi;
+        public event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
 
-            //setup the events
-            MainDockPanel.ActiveDocumentChanged += MainDockPanel_ActiveDocumentChanged;
+        /// <summary>
+        /// Occurs after a panel is added.
+        /// </summary>
+        public event EventHandler<DockablePanelEventArgs> PanelAdded;
 
-        }
+        /// <summary>
+        /// Occurs after a panel is removed.
+        /// </summary>
+        public event EventHandler<DockablePanelEventArgs> PanelRemoved;
 
-        #endregion
-        
+        /// <summary>
+        /// Occurs when a panel is closed, which means the panel can still be activated or removed.
+        /// </summary>
+        public event EventHandler<DockablePanelEventArgs> PanelClosed;
+
+
         public void ResetLayout()
         {
             //check the map
@@ -78,8 +62,8 @@ namespace HydroDesktop.Docking
                 mapContent.DockState = DockState.Document;
                 mapContent.PanelPane = MainDockPanel.ActiveDocumentPane;
             }
-            
-            
+
+
             //first, check the list
             foreach (string key in dockPanelLookup.Keys)
             {
@@ -119,17 +103,22 @@ namespace HydroDesktop.Docking
         public void Add(DockablePanel panel)
         {
             string key = panel.Key;
+            if (dockPanelLookup.ContainsKey(key))
+            {
+                throw new ArgumentOutOfRangeException("panel", string.Format("Unable to add panel with Key: {0}, because it already added.", key));
+            }
+
             string caption = panel.Caption;
-            Control innerControl = panel.InnerControl;
-            DockStyle dockStyle = panel.Dock;
-            short zOrder = panel.DefaultSortOrder;
+            var innerControl = panel.InnerControl;
+            var dockStyle = panel.Dock;
+            var zOrder = panel.DefaultSortOrder;
 
             Image img = null;
             if (panel.SmallImage != null) img = panel.SmallImage;
- 
+
             //set dock style of the inner control to Fill
             innerControl.Dock = DockStyle.Fill;
-            
+
             // make an attempt to start the pane off at the right width.
             if (dockStyle == DockStyle.Right)
                 MainDockPanel.DockRightPortion = (double)innerControl.Width / MainDockPanel.Width;
@@ -150,8 +139,7 @@ namespace HydroDesktop.Docking
                 MainDockPanel.DocumentStyle = DocumentStyle.DockingWindow;
             }
 
-            DockContent content = new DockContent();
-            content.ShowHint = ConvertToDockState(dockStyle);
+            var content = new DockContent { ShowHint = ConvertToDockState(dockStyle) };
 
             content.Controls.Add(innerControl);
 
@@ -165,12 +153,11 @@ namespace HydroDesktop.Docking
             if (img != null)
             {
                 content.Icon = ImageToIcon(img);
-            }        
+            }
 
             content.Show(MainDockPanel);
 
             //event handler for closing
-            content.VisibleChanged += content_VisibleChanged;
             content.FormClosing += content_FormClosing;
             content.FormClosed += content_FormClosed;
 
@@ -178,10 +165,7 @@ namespace HydroDesktop.Docking
             content.Pane.Tag = key;
 
             //add panel to contents dictionary
-            if (!dockPanelLookup.ContainsKey(key))
-            {
-                dockPanelLookup.Add(key, new DockPanelInfo(panel, content, zOrder));
-            }
+            dockPanelLookup.Add(key, new DockPanelInfo(panel, content, zOrder));
 
             //trigger the panel added event
             OnPanelAdded(key);
@@ -197,121 +181,27 @@ namespace HydroDesktop.Docking
             panel.PropertyChanged += panel_PropertyChanged;
         }
 
-        void content_VisibleChanged(object sender, EventArgs e)
-        {
-            DockContent content = sender as DockContent;
-            if (content == null) return;
-            if (content.IsHidden)
-            {
-                //OnPanelClosed(content.Tag.ToString());
-            }
-        }
-
-        //when the dockable panel property is changed
-        void panel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Caption")
-            {
-                DockablePanel dp = sender as DockablePanel;
-                if (dp != null)
-                {
-                    string key = dp.Key;
-                    if (dockPanelLookup.ContainsKey(dp.Key))
-                    {
-                        DockContent dc = dockPanelLookup[dp.Key].WeifenLuoDockPanel;
-                        dc.Text = dp.Caption;
-                        dc.TabText = dp.Caption;
-                    }
-                }
-            }
-        }
-
-        void content_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            DockContent c = sender as DockContent;
-            if (c != null)
-            {
-                OnPanelClosed(c.Tag.ToString());
-           } 
-        }
-
-        void content_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DockContent c = sender as DockContent;
-            if (c != null)
-            {
-                OnPanelClosed(c.Tag.ToString());
-            }
-        }
-
-        private Icon ImageToIcon(Image img)
-        {
-            Bitmap bm = img as Bitmap;
-            if (bm != null)
-            {
-                return Icon.FromHandle(bm.GetHicon());
-            }
-            return null;
-        }
-
         /// <summary>
         /// Completely removes a dockable panel
         /// </summary>
         /// <param name="key">Unique key of the panel</param>
         public void Remove(string key)
         {
-            //if (key == "kDataExplorer") return;
-            
-            if (dockPanelLookup.ContainsKey(key))
-            {
-                DockPanelInfo dockInfo = dockPanelLookup[key];
-                
-                DockContent content = dockInfo.WeifenLuoDockPanel;
+            DockPanelInfo dockInfo;
+            if (!dockPanelLookup.TryGetValue(key, out dockInfo)) return;
 
-                content.Close();
+            var content = dockInfo.WeifenLuoDockPanel;
+            content.Close();
 
-                //remove event handlers
-                content.FormClosing -= content_FormClosing;
-                content.FormClosed -= content_FormClosed;
-                content.VisibleChanged -= content_VisibleChanged;
+            //remove event handlers
+            content.FormClosing -= content_FormClosing;
+            content.FormClosed -= content_FormClosed;
+            dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
 
-                dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
-
-                content.Dispose();
-                dockPanelLookup.Remove(key);
-                OnPanelRemoved(key);
-            }
+            content.Dispose();
+            dockPanelLookup.Remove(key);
+            OnPanelRemoved(key);
         }
-        public static WeifenLuo.WinFormsUI.Docking.DockState ConvertToDockState(System.Windows.Forms.DockStyle dockStyle)
-        {
-            switch (dockStyle)
-            {
-                case System.Windows.Forms.DockStyle.Bottom:
-                    return WeifenLuo.WinFormsUI.Docking.DockState.DockBottom;
-                case System.Windows.Forms.DockStyle.Fill:
-                    return WeifenLuo.WinFormsUI.Docking.DockState.Document;
-                case System.Windows.Forms.DockStyle.Left:
-                    return WeifenLuo.WinFormsUI.Docking.DockState.DockLeft;
-                case System.Windows.Forms.DockStyle.None:
-                    return WeifenLuo.WinFormsUI.Docking.DockState.Float;
-                case System.Windows.Forms.DockStyle.Right:
-                    return WeifenLuo.WinFormsUI.Docking.DockState.DockRight;
-                case System.Windows.Forms.DockStyle.Top:
-                    return WeifenLuo.WinFormsUI.Docking.DockState.DockTop;
-
-                default:
-                    throw new NotImplementedException();
-            }
-
-        }
-
-        public event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
-
-        public event EventHandler<DockablePanelEventArgs> PanelAdded;
-
-        public event EventHandler<DockablePanelEventArgs> PanelRemoved;
-
-        public event EventHandler<DockablePanelEventArgs> PanelClosed;
 
         /// <summary>
         /// Selects a dockable panel (the panel gains focus)
@@ -321,9 +211,10 @@ namespace HydroDesktop.Docking
         /// <param name="key">The unique key of the dockable panel to select</param>
         public void SelectPanel(string key)
         {
-            if (dockPanelLookup.ContainsKey(key))
+            DockPanelInfo info;
+            if (dockPanelLookup.TryGetValue(key, out info))
             {
-                dockPanelLookup[key].WeifenLuoDockPanel.Activate();
+                info.WeifenLuoDockPanel.Activate();
             }
         }
 
@@ -333,9 +224,98 @@ namespace HydroDesktop.Docking
         /// <param name="key">the unique key of the dockable panel</param>
         public void HidePanel(string key)
         {
-            if (dockPanelLookup.ContainsKey(key))
+            DockPanelInfo info;
+            if (dockPanelLookup.TryGetValue(key, out info))
             {
-                dockPanelLookup[key].WeifenLuoDockPanel.IsHidden = true;
+                info.WeifenLuoDockPanel.IsHidden = true;
+            }
+        }
+
+        #endregion
+
+        #region IPartImportsSatisfiedNotification Members
+
+        /// <summary>
+        /// setup the parent form. This 
+        /// occurs when the main form becomes available
+        /// </summary>
+        public void OnImportsSatisfied()
+        {
+            MainDockPanel = new DockPanel {Parent = Shell, Dock = DockStyle.Fill};
+            MainDockPanel.BringToFront();
+            MainDockPanel.DocumentStyle = DocumentStyle.DockingSdi;
+
+            //setup the events
+            MainDockPanel.ActiveDocumentChanged += MainDockPanel_ActiveDocumentChanged;
+
+        }
+
+        #endregion
+
+        #region Private methods
+
+        //when the dockable panel property is changed
+        void panel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Caption")
+            {
+                var dp = sender as DockablePanel;
+                if (dp != null)
+                {
+                    var dc = dockPanelLookup[dp.Key].WeifenLuoDockPanel;
+                    dc.Text = dp.Caption;
+                    dc.TabText = dp.Caption;
+                }
+            }
+        }
+
+        void content_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var c = sender as DockContent;
+            if (c != null)
+            {
+                OnPanelClosed(c.Tag.ToString());
+           } 
+        }
+
+        void content_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var c = sender as DockContent;
+            if (c != null)
+            {
+                OnPanelClosed(c.Tag.ToString());
+            }
+        }
+
+        private static Icon ImageToIcon(Image img)
+        {
+            var bm = img as Bitmap;
+            if (bm != null)
+            {
+                return Icon.FromHandle(bm.GetHicon());
+            }
+            return null;
+        }
+
+        private static DockState ConvertToDockState(DockStyle dockStyle)
+        {
+            switch (dockStyle)
+            {
+                case DockStyle.Bottom:
+                    return DockState.DockBottom;
+                case DockStyle.Fill:
+                    return DockState.Document;
+                case DockStyle.Left:
+                    return DockState.DockLeft;
+                case DockStyle.None:
+                    return DockState.Float;
+                case DockStyle.Right:
+                    return DockState.DockRight;
+                case DockStyle.Top:
+                    return DockState.DockTop;
+
+                default:
+                    throw new NotSupportedException(dockStyle + " not suppored");
             }
         }
 
@@ -355,31 +335,34 @@ namespace HydroDesktop.Docking
             OnActivePanelChanged(activePanelKey);
         }
 
-        protected void OnPanelClosed(string panelKey)
+        private void OnPanelClosed(string panelKey)
         {
-            if (PanelClosed != null)
+            var handler = PanelClosed;
+            if (handler != null)
             {
-                PanelClosed(this, new DockablePanelEventArgs(panelKey));
+                handler(this, new DockablePanelEventArgs(panelKey));
             }
         }
 
-        protected void OnPanelAdded(string panelKey)
+        private void OnPanelAdded(string panelKey)
         {
-            if (PanelAdded != null)
+            var handler = PanelAdded;
+            if (handler != null)
             {
-                PanelAdded(this, new DockablePanelEventArgs(panelKey));
+                handler(this, new DockablePanelEventArgs(panelKey));
             }
         }
 
-        protected void OnPanelRemoved(string panelKey)
+        private void OnPanelRemoved(string panelKey)
         {
-            if (PanelRemoved != null)
+            var handler = PanelRemoved;
+            if (handler != null)
             {
-                PanelRemoved(this, new DockablePanelEventArgs(panelKey));
+                handler(this, new DockablePanelEventArgs(panelKey));
             }
         }
 
-        protected void OnActivePanelChanged(string newActivePanelKey)
+        private void OnActivePanelChanged(string newActivePanelKey)
         {
             var handler = ActivePanelChanged;
             if (handler != null)
@@ -390,21 +373,23 @@ namespace HydroDesktop.Docking
 
         int ConvertSortOrderToIndex(DockContent content, int sortOrder)
         {
-            DockPane pane = content.Pane;
-            int index = pane.Contents.Count - 1;
-            List<int> sortOrderList = new List<int>();
+            var pane = content.Pane;
+            var sortOrderList = new List<int>();
 
             foreach (DockContent existingContent in pane.Contents)
             {
-                string key = existingContent.Tag.ToString();
-                if (dockPanelLookup.ContainsKey(key))
+                var key = existingContent.Tag.ToString();
+                DockPanelInfo info;
+                if (dockPanelLookup.TryGetValue(key, out info))
                 {
-                    sortOrderList.Add(dockPanelLookup[key].SortOrder);
+                    sortOrderList.Add(info.SortOrder);
                 }
             }
             sortOrderList.Sort();
-            index = sortOrderList.IndexOf(sortOrder);
+            var index = sortOrderList.IndexOf(sortOrder);
             return index;
         }
+
+        #endregion
     }
 }

@@ -55,32 +55,21 @@ namespace TableView
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-            //App.DockManager.Remove(kTableView);
+            App.DockManager.Remove(kTableView);
             
             App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
+            App.DockManager.ActivePanelChanged -= DockManager_ActivePanelChanged;
 
             tableViewControl = null;
-            if (SeriesControl != null)
-            {
-                SeriesControl.Refreshed -= SeriesControl_Refreshed;
-            }
+            SeriesControl.Refreshed -= SeriesControl_Refreshed;
 
             base.Deactivate();
         }
 
         public override void Activate()
         {
-            if (SeriesControl == null)
-            {
-                MessageBox.Show("Cannot activate the TableView plugin. SeriesView not found.");
-                return;
-            }
-
-            //event for adding the dockable panel
-            //App.DockManager.PanelAdded += new EventHandler<DockablePanelEventArgs>(DockManager_PanelAdded);
-
             #region initialize the Table Ribbon TabPage and related controls
-
+            
             //RefreshTheme
             var refreshThemeButton = new SimpleActionItem("Refresh", rbRefreshTheme_Click)
                                          {
@@ -88,7 +77,7 @@ namespace TableView
                                              LargeImage = Properties.Resources.refreshTheme,
                                              SmallImage = Properties.Resources.refreshTheme_16x16,
                                              ToolTipText = "Refresh Themes",
-                                             GroupCaption = _tablePanelName
+                                             GroupCaption = _tablePanelName,
                                          };
             App.HeaderControl.Add(refreshThemeButton);
 

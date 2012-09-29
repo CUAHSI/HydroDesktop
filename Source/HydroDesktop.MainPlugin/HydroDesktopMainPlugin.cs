@@ -20,7 +20,7 @@
         internal ISeriesSelector SeriesControl { get; set; }
        
         [Import("Shell")]
-        public ContainerControl Shell { get; set; }
+        internal ContainerControl Shell { get; set; }
 
         private ProjectManager myProjectManager;
 
@@ -34,6 +34,11 @@
 
         public override void Activate()
         {
+            if (SeriesControl == null)
+            {
+                throw new Exception("SeriesControl not found");
+            }
+
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
             myProjectManager = new ProjectManager(App);
 

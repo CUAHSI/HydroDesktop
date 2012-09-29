@@ -197,6 +197,7 @@ namespace HydroDesktop.DataDownload
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
             App.ExtensionsActivated -= AppOnExtensionsActivated;
+            App.DockManager.PanelClosed -= DockManager_PanelClosed;
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);

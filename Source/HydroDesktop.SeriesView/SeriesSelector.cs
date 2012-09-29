@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -38,6 +39,8 @@ namespace SeriesView
         private const string Column_SeriesID = "SeriesID";
 
         #endregion
+
+        internal SeriesViewPlugin ParentPlugin { get; set; }
 
         #region Constructor
 
@@ -759,7 +762,7 @@ namespace SeriesView
                 }
             }
 
-            var exportPlugin = Global.PluginEntryPoint.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
+            var exportPlugin = ParentPlugin == null? null : ParentPlugin.App.Extensions.OfType<IDataExportPlugin>().FirstOrDefault();
             if (exportPlugin != null)
             {
                 exportPlugin.Export(table);

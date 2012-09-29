@@ -29,7 +29,7 @@ namespace HydroDesktop.MainApplication
             appManager.SatisfyImportsExtensionsActivated +=
                 delegate
                 {
-                    appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = HydroDesktop.MainApplication.Properties.Resources.map_16x16 });
+                    appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = Properties.Resources.map_16x16 });
                 };
 
             Shell = this;
