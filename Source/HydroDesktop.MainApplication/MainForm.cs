@@ -34,8 +34,14 @@ namespace HydroDesktop.MainApplication
 
             Shell = this;
             appManager.LoadExtensions();
+            // Hack: HydroDockManager need to know time when all plugins are activated to save initial layout of dock-panels
+            // (this need to working of HydroDockManager.ResetLayout() method).
+            // appManager.ExtensionsActivated is not suitable, because plugins also can change dock-panels there.
+            // To avoid direct referencing from MainForm to HydroDockManager (or vice versa), 
+            // we just send needed info through Add() method.
+            appManager.DockManager.Add(new DockablePanel { Key = "save_snapshot" });
 
-            this.appManager.ProgressHandler.Progress("", 0, "Go to the extension manager to find additional extensions!");
+            appManager.ProgressHandler.Progress("", 0, "Go to the extension manager to find additional extensions!");
         }
 
         private void LoadCustomBranding(Properties.Settings settings)
@@ -57,7 +63,5 @@ namespace HydroDesktop.MainApplication
         /// Gets or sets the appManager
         /// </summary>
         public AppManager appManager { get; set; }
-
-       
     }
 }
