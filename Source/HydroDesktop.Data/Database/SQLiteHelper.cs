@@ -232,7 +232,14 @@ namespace HydroDesktop.Database
             }
             finally
             {
-                File.Delete(originalDbPath);
+                try
+                {
+                    File.Delete(originalDbPath);
+                }
+                catch (IOException ex)
+                {
+                    Trace.TraceError("Unable to delete temp file: {0}. Reason: {1}" , originalDbPath, ex.Message);   
+                }
             }
         }
     }

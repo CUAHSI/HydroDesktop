@@ -14,7 +14,6 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
         [TestCase(@"http://icewater.boisestate.edu/rcew2dataservices/cuahsi_1_1.asmx?WSDL")]
         [TestCase(@"http://icewater.usu.edu/MudLake/cuahsi_1_0.asmx?WSDL")]
         [TestCase(@"http://hydrodata.info/webservices/cuahsi_1_1.asmx?WSDL")]
-        [TestCase(@"http://his.crwr.utexas.edu/TXEvap/cuahsi_1_0.asmx")]
         public void GetSites_SaveXmlFilesFlag_ReturnsSameData(string url)
         {
             var target = new WaterOneFlowClient(url);
@@ -41,7 +40,6 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
         [TestCase(@"http://icewater.boisestate.edu/rcew2dataservices/cuahsi_1_1.asmx?WSDL", "RCEW2:012")]
         [TestCase(@"http://icewater.usu.edu/MudLake/cuahsi_1_0.asmx?WSDL", "MudLake:USU-ML-Causeway")]
         [TestCase(@"http://hydrodata.info/webservices/cuahsi_1_1.asmx?WSDL", "HCLIMATE:114570")]
-        [TestCase(@"http://his.crwr.utexas.edu/TXEvap/cuahsi_1_0.asmx", "TxEvap:410040")]
         public void GetSiteInfo_SaveXmlFilesFlag_ReturnsSameData(string url, string siteCode)
         {
             var target = new WaterOneFlowClient(url);
