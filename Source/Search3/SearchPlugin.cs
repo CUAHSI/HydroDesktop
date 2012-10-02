@@ -384,19 +384,27 @@ namespace Search3
             var wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
             foreach (var item in result.ResultItems)
                 item.FeatureSet.Projection = wgs84;
-
             var layers = ShowSearchResults(result);
+
+            // Unselect all layers in legend (http://hydrodesktop.codeplex.com/workitem/8559)
+            App.Map.MapFrame.GetAllLayers().ForEach(r => r.IsSelected = false);
+
             // Select first search result layer
             var first = layers.FirstOrDefault();
             if (first != null)
             {
                 first.IsSelected = true;
             }
-            // Deselect "Map Layers" legend item (http://hydrodesktop.codeplex.com/workitem/8458)
+
+            // Unselect "Map Layers" legend item (http://hydrodesktop.codeplex.com/workitem/8458)
             App.Legend.RootNodes
-                .Where(r => r.IsSelected && r.LegendText == "Map Layers")
-                .ToList()
-                .ForEach(r => r.IsSelected = false);
+                .ForEach(delegate(ILegendItem item)
+                    {
+                        if (item.LegendText == "Map Layers")
+                        {
+                            item.IsSelected = false;
+                        }
+                    });
         }
 
         /// <summary>
