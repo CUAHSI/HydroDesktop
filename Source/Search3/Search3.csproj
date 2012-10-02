@@ -313,6 +313,8 @@
     <None Include="Resources\HydroDesktop.ico" />
     <None Include="Resources\hand_16x16.png" />
     <None Include="Resources\deselect_16x16.png" />
+    <Content Include="Resources\current_view_16.png" />
+    <Content Include="Resources\current_view_32.png" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
