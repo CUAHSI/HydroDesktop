@@ -123,6 +123,12 @@
   <data name="Area" xml:space="preserve">
     <value>Area</value>
   </data>
+  <data name="Attributes" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
+  <data name="Attribute_Table" xml:space="preserve">
+    <value>Attribute Table</value>
+  </data>
   <data name="Continue_Search" xml:space="preserve">
     <value>Continue search</value>
   </data>
@@ -135,6 +141,9 @@
   <data name="Current_View_Tooltip" xml:space="preserve">
     <value>Use the current ViewExtents of the map as the search area rectangle.</value>
   </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Deselect</value>
+  </data>
   <data name="Deselect_All" xml:space="preserve">
     <value>Clear Selection</value>
   </data>
@@ -145,7 +154,7 @@
     <value>Draw Box</value>
   </data>
   <data name="Draw_Rectangle" xml:space="preserve">
-    <value>Draw Rectangle</value>
+    <value>Rectangle</value>
   </data>
   <data name="End_Date" xml:space="preserve">
     <value>End Date</value>
@@ -162,6 +171,9 @@
   <data name="Keyword_Tooltip" xml:space="preserve">
     <value>Show Keyword Ontology Tree</value>
   </data>
+  <data name="Map_Tools" xml:space="preserve">
+    <value>Map Tools</value>
+  </data>
   <data name="Pan" xml:space="preserve">
     <value>Pan</value>
   </data>
@@ -173,6 +185,12 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Selection" xml:space="preserve">
+    <value>Selection</value>
   </data>
   <data name="Select_By_Attribute" xml:space="preserve">
     <value>Select by Attribute</value>

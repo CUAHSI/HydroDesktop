@@ -43,6 +43,7 @@ namespace Search3
         private SimpleActionItem rbSelect;
         private RectangleDrawing _rectangleDrawing;
         private SimpleActionItem _currentView;
+        private SimpleActionItem rbSelection;
         private bool _useCurrentView;
         private Searcher _searcher;
         private readonly SearchSettings _searchSettings = new SearchSettings();
@@ -106,26 +107,43 @@ namespace Search3
             //setting the sort order to small positive number to display it to the right of home tab
             head.Add(new RootItem(_searchKey, Msg.Search) { SortOrder = -5 });
 
+            #region Map tools group
+
+            //navigation operations: Zoom in, zoom out, pan
+            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Map_Tools, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Map_Tools });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate { App.Map.FunctionMode = FunctionMode.ZoomIn; }) { GroupCaption = Msg.Map_Tools, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Map_Tools });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Map_Tools, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Map_Tools });
+
+            //selection operations: Attribute table, select features, deselect
+            head.Add(new SimpleActionItem(_searchKey, Msg.Attribute_Table, rbAttribute_Click) { GroupCaption = Msg.Map_Tools, SmallImage = Resources.select_table_16 });
+            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_16x16, GroupCaption = Msg.Map_Tools, ToggleGroupKey = Msg.Map_Tools, });
+            _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
+            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect, delegate { IEnvelope env; App.Map.MapFrame.ClearSelection(out env); }) { GroupCaption = Msg.Map_Tools, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
+
+            #endregion
+
             #region Area group
 
-            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click){LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area});
-            _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
+            //3 area options:
 
-            head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, SmallImage = Resources.select_table_16 });
-            
-            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click){ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area,ToggleGroupKey = Msg.Area, });
-            _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
-
-            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate{ IEnvelope env; App.Map.MapFrame.ClearSelection(out env);}) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
-            //head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
-            
-            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate {  App.Map.FunctionMode = FunctionMode.ZoomIn;}) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
-
-            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, delegate { _useCurrentView = !_useCurrentView; }) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Current_View, ToolTipText = Msg.Current_View_Tooltip });
+            //current view
+            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, delegate { _useCurrentView = !_useCurrentView; }) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Current_View, SmallImage = Resources.current_view_16, ToolTipText = Msg.Current_View_Tooltip });
             _currentView.Toggling += delegate { _useCurrentView = !_useCurrentView; };
             _currentView.Toggle();
+
+            //selection
+            head.Add(rbSelection = new SimpleActionItem(_searchKey, Msg.Selection, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, });
+            _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
+
+            //draw rectangle
+            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click){SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area});
+            _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
+
+            
+            
+            
+
+            
 
             #endregion
 
