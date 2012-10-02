@@ -79,10 +79,6 @@
       <HintPath>..\packages\DotSpatial.Modeling.Forms.1.3.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.ExtensionManager">
-      <HintPath>..\..\SupportFiles\ExtensionManager\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="DotSpatial.Projections, Version=0.11.9.6, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial.Projections.1.3.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
