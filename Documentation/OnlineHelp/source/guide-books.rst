@@ -15,7 +15,7 @@ Guide Books:
    guide-books/ImportingTimeSeries/time-series-import
    guide-books/ExportingTimeSeries/time-series-export
    guide-books/TableView/TableView
-   guide-books/Interpolation/creating-interpolated-map
+   guide-books/Interpolation/Interpolation
    using-the-file-menu
    working-with-databases
 
