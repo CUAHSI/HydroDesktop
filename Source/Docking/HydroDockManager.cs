@@ -55,29 +55,44 @@ namespace HydroDesktop.Docking
         public void ResetLayout()
         {
             _suppressEvents = true;
-            // Hide all panels
-            foreach (var key in dockPanelLookup.Keys)
+            
+            var snapshots = new SortedList<int, DockPanelSnapshot>();
+            // Remove all panels
+            foreach (var key in dockPanelLookup.Keys.ToList())
             {
-                HidePanel(key);
-            }
-
-            var panels = dockPanelLookup.Values.OrderBy(f => f.Number).ToList();
-            foreach (var info in panels)
-            {
-                var snapshot = info.GetSnapshot();
-                if (snapshot == null)
+                var info = dockPanelLookup[key];
+                var snapshot = info.Snapshot;
+                if (snapshot != null)
                 {
-                    continue;
+                    snapshots.Add(info.Number, snapshot);
                 }
-                UpdateMainDockPanel(snapshot.DockStyle, snapshot.Size);
-                info.WeifenLuoDockPanel.DockState = info.WeifenLuoDockPanel.ShowHint = snapshot.DockState;
+                info.WeifenLuoDockPanel.Controls.Clear();
+                Remove(key);
             }
+            // Add all panels
+            foreach (var sn in snapshots)
+            {
+                sn.Value.DSPanel.InnerControl.Size = sn.Value.Size;
+                Add(sn.Value.DSPanel);
+            }
+            // Restore panel's state
+            foreach (var sn in snapshots)
+            {
+                var info = dockPanelLookup[sn.Value.DSPanel.Key];
+                var panel = info.WeifenLuoDockPanel;
+                panel.DockState = panel.ShowHint = sn.Value.DockState;
+                // Update snapshot
+                info.Snapshot = sn.Value;
+            }
+            
             _suppressEvents = false;
             
             // Activate first panel
-            if (panels.Count > 0)
+            if (snapshots.Count > 0)
             {
-                OnActivePanelChanged(panels[0].DotSpatialDockPanel.Key);
+                var key = snapshots.First().Value.DSPanel.Key;
+                SelectPanel(key);
+                OnActivePanelChanged(key);
             }
         }
 
@@ -138,7 +153,7 @@ namespace HydroDesktop.Docking
             content.Pane.Tag = key;
 
             //add panel to contents dictionary
-            dockPanelLookup.Add(key, new DockPanelInfo(panel, content, zOrder, dockStyle, innerControl.Size));
+            dockPanelLookup.Add(key, new DockPanelInfo(panel, content, zOrder));
 
             //trigger the panel added event
             OnPanelAdded(key);
