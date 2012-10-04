@@ -122,17 +122,6 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 </PropertyGroup>
 			  <MSBuild.Community.Tasks.AssemblyInfo CodeLanguage="CS"  
                 OutputFile="$(SourceDirectory)\Source\AssemblyInfoShared.cs" 
-                AssemblyTitle="HydroDesktop" 
-                AssemblyDescription="Hydrodesktop"
-                AssemblyConfiguration=""
-                AssemblyCompany="CUAHSI"
-                AssemblyProduct="HydroDesktop"
-                AssemblyCopyright="Copyright © CUAHSI 2010-2012"
-                AssemblyTrademark=""
-                ComVisible="false"
-                CLSCompliant="true"
-				Guid="e008a526-3833-447f-9125-96cf8aa1f515"
-
                AssemblyFileVersion="$(ReleaseVersion)" 
 			   AssemblyVersion="$(ReleaseVersion)" 
                />
