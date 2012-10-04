@@ -135,6 +135,9 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.vb">
+      <Link>My Project\AssemblyInfoShared.vb</Link>
+    </Compile>
     <Compile Include="Controls\cEditView.Designer.vb">
       <DependentUpon>EditView.vb</DependentUpon>
     </Compile>

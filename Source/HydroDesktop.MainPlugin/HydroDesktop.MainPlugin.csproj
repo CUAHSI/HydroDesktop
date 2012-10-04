@@ -123,6 +123,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="AttributeTableManager.cs" />
     <Compile Include="CoordinateDisplay.cs" />
     <Compile Include="ProjectManager.cs" />

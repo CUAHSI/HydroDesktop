@@ -119,6 +119,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="Classes\DatabaseOperations.cs" />
     <Compile Include="Classes\HydroPortalUtils.cs" />
     <Compile Include="Classes\Main.cs" />
