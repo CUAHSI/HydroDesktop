@@ -121,18 +121,7 @@ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 <ReleaseVersion Condition="'$(ReleaseVersion)' == ''">$(Major).$(Minor).$(Build).$(Revision)</ReleaseVersion>
 </PropertyGroup>
 			  <MSBuild.Community.Tasks.AssemblyInfo CodeLanguage="CS"  
-                OutputFile="$(SourceDirectory)\Source\HydroDesktop.MainPlugin\Properties\AssemblyInfo.cs" 
-                AssemblyTitle="HydroDesktop" 
-                AssemblyDescription="Hydrodesktop Main Application"
-                AssemblyConfiguration=""
-                AssemblyCompany="CUAHSI"
-                AssemblyProduct="HydroDesktop"
-                AssemblyCopyright="Copyright ©  2010-2011"
-                AssemblyTrademark=""
-                ComVisible="false"
-                CLSCompliant="true"
-				Guid="e008a526-3833-447f-9125-96cf8aa1f515"
-
+                OutputFile="$(SourceDirectory)\Source\AssemblyInfoShared.cs" 
                AssemblyFileVersion="$(ReleaseVersion)" 
 			   AssemblyVersion="$(ReleaseVersion)" 
                />
