@@ -106,6 +106,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="Area\AreaHelper.cs" />
     <Compile Include="Area\SelectAreaByAttributeDialog.cs">
       <SubType>Form</SubType>

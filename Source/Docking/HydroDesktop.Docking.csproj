@@ -111,6 +111,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="DockPanelInfo.cs" />
     <Compile Include="HydroDockManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
