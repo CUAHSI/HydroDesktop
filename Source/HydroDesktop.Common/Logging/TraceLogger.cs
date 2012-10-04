@@ -28,6 +28,8 @@ namespace HydroDesktop.Common.Logging
         public void Error(string message, Exception exception = null)
         {
             LogMessage(message, "ERROR", exception);
+            // Flush to see message in log immediately after error.
+            Trace.Flush();
         }
 
         public string Destination { get; private set; }
