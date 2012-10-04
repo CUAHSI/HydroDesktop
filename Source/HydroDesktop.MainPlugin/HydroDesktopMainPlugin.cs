@@ -1,4 +1,9 @@
-﻿namespace HydroDesktop.Main
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using DotSpatial.Data;
+
+namespace HydroDesktop.Main
 {
     using System;
     using System.ComponentModel.Composition;
@@ -253,6 +258,10 @@
             {
                 latLongDisplay.MapProjectionString = App.Map.Projection.ToEsriString();
             }
+
+            // Todo: Workaround Fix for 1.5.8: http://hydrodesktop.codeplex.com/workitem/8515
+            var toRemove = App.Map.Layers.Where(layer => layer.LegendText == null).ToList();
+            toRemove.ForEach(a => App.Map.Layers.Remove(a));
         }
 
         /// <summary>
