@@ -22,7 +22,7 @@ namespace HydroDesktop.MainApplication
                     log.Info("Application Exit");
                     AppContext.Instance.Dispose();
                 };
-            // Log all unhandled exceptions
+            // Log all unhandled exceptions and write to log file
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (sender, e) => ProcessUnhandled(e.Exception, false);
             AppDomain.CurrentDomain.UnhandledException +=
