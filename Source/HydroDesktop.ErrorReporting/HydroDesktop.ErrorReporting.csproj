@@ -41,6 +41,11 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CodePlex\HtmlElement.cs" />
+    <Compile Include="CodePlex\HtmlForm.cs" />
+    <Compile Include="CodePlex\Issue.cs" />
+    <Compile Include="CodePlex\IssueTracker.cs" />
+    <Compile Include="CodePlex\WebBrowser.cs" />
     <Compile Include="ErrorReportingFormArgs.cs" />
     <Compile Include="ErrorReportingForm.cs">
       <SubType>Form</SubType>
