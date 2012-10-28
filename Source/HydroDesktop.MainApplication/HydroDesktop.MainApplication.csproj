@@ -169,6 +169,10 @@
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.ErrorReporting\HydroDesktop.ErrorReporting.csproj">
+      <Project>{42b7a22c-fd5d-4ef3-856f-e01f8dd8a82b}</Project>
+      <Name>HydroDesktop.ErrorReporting</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
