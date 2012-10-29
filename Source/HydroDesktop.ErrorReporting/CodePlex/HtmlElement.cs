@@ -6,11 +6,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
     internal class HtmlElement
     {
         private readonly Dictionary<string, string> _attributes = new Dictionary<string, string>();
-
-        public HtmlElement()
-        {
-        }
-
+        
         public HtmlElement(string name, string value)
         {
             Name = name;

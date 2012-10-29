@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorReportingForm));
             this.lblInfo = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.paMain = new System.Windows.Forms.Panel();
             this.gbCredentials = new System.Windows.Forms.GroupBox();
             this.linkRegister = new System.Windows.Forms.LinkLabel();
             this.tbLogin = new System.Windows.Forms.TextBox();
@@ -41,12 +42,16 @@
             this.tbDescribe = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbError = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnCopyError = new System.Windows.Forms.Button();
             this.btnZipLog = new System.Windows.Forms.Button();
             this.btnSendError = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.paProgress = new System.Windows.Forms.Panel();
+            this.pbProgress = new System.Windows.Forms.ProgressBar();
+            this.paMain.SuspendLayout();
             this.gbCredentials.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.paProgress.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblInfo
@@ -55,26 +60,28 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblInfo.Location = new System.Drawing.Point(12, 9);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(410, 29);
+            this.lblInfo.Size = new System.Drawing.Size(399, 46);
             this.lblInfo.TabIndex = 0;
-            this.lblInfo.Text = "HydroDesktop has encountered an error. We are sorry for the inconvenience.";
+            this.lblInfo.Text = "HydroDesktop has encountered an error. We are sorry for the inconvenience.\r\nWe ha" +
+    "ve created an error report that you can send to us by clicking the “Send Error” " +
+    "button below.";
             // 
-            // panel1
+            // paMain
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.paMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.gbCredentials);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.tbDescribe);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.tbError);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Location = new System.Drawing.Point(15, 41);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(404, 381);
-            this.panel1.TabIndex = 1;
+            this.paMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.paMain.Controls.Add(this.paProgress);
+            this.paMain.Controls.Add(this.gbCredentials);
+            this.paMain.Controls.Add(this.label6);
+            this.paMain.Controls.Add(this.tbDescribe);
+            this.paMain.Controls.Add(this.label4);
+            this.paMain.Controls.Add(this.tbError);
+            this.paMain.Location = new System.Drawing.Point(15, 58);
+            this.paMain.Name = "paMain";
+            this.paMain.Size = new System.Drawing.Size(393, 364);
+            this.paMain.TabIndex = 1;
             // 
             // gbCredentials
             // 
@@ -85,9 +92,9 @@
             this.gbCredentials.Controls.Add(this.label3);
             this.gbCredentials.Controls.Add(this.label1);
             this.gbCredentials.Controls.Add(this.tbPassword);
-            this.gbCredentials.Location = new System.Drawing.Point(15, 278);
+            this.gbCredentials.Location = new System.Drawing.Point(15, 261);
             this.gbCredentials.Name = "gbCredentials";
-            this.gbCredentials.Size = new System.Drawing.Size(370, 89);
+            this.gbCredentials.Size = new System.Drawing.Size(359, 89);
             this.gbCredentials.TabIndex = 13;
             this.gbCredentials.TabStop = false;
             this.gbCredentials.Text = "Codeplex";
@@ -109,6 +116,7 @@
             this.tbLogin.Name = "tbLogin";
             this.tbLogin.Size = new System.Drawing.Size(178, 20);
             this.tbLogin.TabIndex = 9;
+            this.tbLogin.Validating += new System.ComponentModel.CancelEventHandler(this.tbLogin_Validating);
             // 
             // label3
             // 
@@ -138,13 +146,14 @@
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(178, 20);
             this.tbPassword.TabIndex = 11;
+            this.tbPassword.Validating += new System.ComponentModel.CancelEventHandler(this.tbPassword_Validating);
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 169);
+            this.label6.Location = new System.Drawing.Point(12, 130);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(300, 13);
             this.label6.TabIndex = 8;
@@ -155,17 +164,17 @@
             this.tbDescribe.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDescribe.Location = new System.Drawing.Point(15, 188);
+            this.tbDescribe.Location = new System.Drawing.Point(15, 146);
             this.tbDescribe.Multiline = true;
             this.tbDescribe.Name = "tbDescribe";
             this.tbDescribe.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbDescribe.Size = new System.Drawing.Size(372, 84);
+            this.tbDescribe.Size = new System.Drawing.Size(361, 109);
             this.tbDescribe.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 44);
+            this.label4.Location = new System.Drawing.Point(12, 8);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 4;
@@ -175,24 +184,13 @@
             // 
             this.tbError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbError.Location = new System.Drawing.Point(15, 60);
+            this.tbError.Location = new System.Drawing.Point(15, 24);
             this.tbError.Multiline = true;
             this.tbError.Name = "tbError";
             this.tbError.ReadOnly = true;
             this.tbError.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbError.Size = new System.Drawing.Size(370, 94);
+            this.tbError.Size = new System.Drawing.Size(359, 94);
             this.tbError.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(12, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(373, 39);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "We have created an error report that you can send to us by clicking the “Send Err" +
-    "or” button below.";
             // 
             // btnCopyError
             // 
@@ -219,23 +217,44 @@
             // btnSendError
             // 
             this.btnSendError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendError.Location = new System.Drawing.Point(313, 428);
+            this.btnSendError.Location = new System.Drawing.Point(259, 428);
             this.btnSendError.Name = "btnSendError";
-            this.btnSendError.Size = new System.Drawing.Size(106, 37);
+            this.btnSendError.Size = new System.Drawing.Size(149, 37);
             this.btnSendError.TabIndex = 4;
             this.btnSendError.Text = "Send Error";
             this.btnSendError.UseVisualStyleBackColor = true;
             this.btnSendError.Click += new System.EventHandler(this.btnSendError_Click);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // paProgress
+            // 
+            this.paProgress.Controls.Add(this.pbProgress);
+            this.paProgress.Location = new System.Drawing.Point(44, 159);
+            this.paProgress.Name = "paProgress";
+            this.paProgress.Size = new System.Drawing.Size(293, 54);
+            this.paProgress.TabIndex = 14;
+            // 
+            // pbProgress
+            // 
+            this.pbProgress.Location = new System.Drawing.Point(17, 15);
+            this.pbProgress.MarqueeAnimationSpeed = 50;
+            this.pbProgress.Name = "pbProgress";
+            this.pbProgress.Size = new System.Drawing.Size(263, 23);
+            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbProgress.TabIndex = 0;
+            // 
             // ErrorReportingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(432, 475);
+            this.ClientSize = new System.Drawing.Size(421, 475);
             this.Controls.Add(this.btnSendError);
             this.Controls.Add(this.btnZipLog);
             this.Controls.Add(this.btnCopyError);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.paMain);
             this.Controls.Add(this.lblInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -246,10 +265,12 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HydroDesktop Error";
             this.Shown += new System.EventHandler(this.ErrorReportingForm_Shown);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.paMain.ResumeLayout(false);
+            this.paMain.PerformLayout();
             this.gbCredentials.ResumeLayout(false);
             this.gbCredentials.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this.paProgress.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -257,11 +278,10 @@
         #endregion
 
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel paMain;
         private System.Windows.Forms.Button btnCopyError;
         private System.Windows.Forms.Button btnZipLog;
         private System.Windows.Forms.Button btnSendError;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbDescribe;
         private System.Windows.Forms.Label label4;
@@ -272,5 +292,8 @@
         private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.GroupBox gbCredentials;
         private System.Windows.Forms.LinkLabel linkRegister;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Panel paProgress;
+        private System.Windows.Forms.ProgressBar pbProgress;
     }
 }

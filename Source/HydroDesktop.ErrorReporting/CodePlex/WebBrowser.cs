@@ -15,13 +15,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
         {
             ServicePointManager.Expect100Continue = false;
         }
-
-        public CookieCollection Cookies
-        {
-            get { return m_cookies; }
-            set { m_cookies = new CookieCollection { value }; }
-        }
-
+      
         public WebBrowser(string userAgent)
         {
             _userAgent = userAgent;

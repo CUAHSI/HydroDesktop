@@ -17,7 +17,8 @@ namespace HydroDesktop.Common.UserMessage
         /// Show warning message.
         /// </summary>
         /// <param name="message">Message to show.</param>
-        void Warn(string message);
+        /// <param name="exception">Exception.</param>
+        void Warn(string message, Exception exception = null);
 
         /// <summary>
         /// Show error message.

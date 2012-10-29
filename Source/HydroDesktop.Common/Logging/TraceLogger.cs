@@ -20,9 +20,9 @@ namespace HydroDesktop.Common.Logging
             LogMessage(message, "INFO");
         }
 
-        public void Warn(string message)
+        public void Warn(string message, Exception exception = null)
         {
-            LogMessage(message, "WARN");
+            LogMessage(message, "WARN", exception);
         }
 
         public void Error(string message, Exception exception = null)

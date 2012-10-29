@@ -9,7 +9,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
     {
         private List<HtmlElement> _elements = new List<HtmlElement>();
 
-        internal HtmlForm(string text)
+        private HtmlForm(string text)
             : base(text)
         {
         }
