@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
@@ -53,11 +55,12 @@ namespace HydroDesktop.ErrorReporting
 
         private void ErrorReportingForm_Shown(object sender, EventArgs e)
         {
-
-            lblInfo.Text = string.Format("HydroDesktop has encountered an {0}" + Environment.NewLine + "We are sorry for the inconvenience.",
-                _initParams.IsFatal ? "Fatal error. Application will be closed." :
-                "Unhandled Exception.");
+            Text = string.Format("HydroDesktop Error - [{0}]",
+                                 _initParams.IsFatal
+                                     ? "Fatal error. Application will be closed."
+                                     : "Unhandled Exception.");
             tbError.Text = _initParams.Exception != null ? _initParams.Exception.ToString() : null;
+            EnableControls(true);
         }
 
         private void btnCopyError_Click(object sender, EventArgs e)
@@ -67,7 +70,6 @@ namespace HydroDesktop.ErrorReporting
 
         private void btnZipLog_Click(object sender, EventArgs e)
         {
-
             var zipFileName = ZipLog();
 
             // Opens the folder in explorer and selects file
@@ -101,38 +103,99 @@ namespace HydroDesktop.ErrorReporting
 
         private void btnSendError_Click(object sender, EventArgs e)
         {
-            btnSendError.Enabled = false;
-            try
+            // Validation
+            if (!ValidateLogin())
             {
-                var logFile = ZipLog();
-                var issueTracker = new IssueTracker("hydrodesktop");
-                issueTracker.SignIn(tbLogin.Text, tbPassword.Text);
+                tbLogin.Focus();
+                return;
+            }
+            if (!ValidatePassword())
+            {
+                tbPassword.Focus();
+                return;
+            }
 
-                var issue = new Issue
+            // Send error
+            EnableControls(false);
+            var bworker = new BackgroundWorker();
+            bworker.DoWork += delegate(object sender1, DoWorkEventArgs e1)
+                {
+                    var logFile = ZipLog();
+                    var issueTracker = new IssueTracker("hydrodesktop");
+                    issueTracker.SignIn(tbLogin.Text, tbPassword.Text);
+
+                    var issue = new Issue
+                        {
+                            Summary = _initParams.IsFatal ? "Fatal Error" : "Unhandled Exception",
+                            Description = "Description: " + tbDescribe.Text + Environment.NewLine +
+                                          "==============================" + Environment.NewLine +
+                                          "Error: " + tbError.Text,
+                        };
+
+                    if (!String.IsNullOrEmpty(logFile) && File.Exists(logFile))
                     {
-                        Summary = _initParams.IsFatal ? "Fatal Error" : "Unhandled Exception",
-                        Description = "Description: " + tbDescribe.Text + Environment.NewLine +
-                                      "==============================" + Environment.NewLine +
-                                      "Error: " + tbError.Text,
-                        FileToAttach = logFile,
-                    };
-                issueTracker.CreateIssue(issue);
+                        try
+                        {
+                            var fi = new FileInfo(logFile);
+                            issue.FileToAttach = fi;
+                        }
+                        catch (Exception ex)
+                        {
+                            AppContext.Instance.Get<IUserMessage>().Warn("Unable to attach log file.", ex);
+                        }
+                    }
 
-                // todo: Show number of created issue
-                AppContext.Instance.Get<IUserMessage>().Info("Issue posted.");
+                    e1.Result = issueTracker.CreateIssue(issue);
+                };
+            bworker.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
+                {
+                    EnableControls(true);
+                    if (args.Error != null)
+                    {
+                        AppContext.Instance.Get<IUserMessage>().Error("Unable to send error.", args.Error);   
+                    }else
+                    {
+                        AppContext.Instance.Get<IUserMessage>().Info("Error was sent." + Environment.NewLine +
+                                                                      "Link to issue: " + args.Result);
+                        _user = tbLogin.Text;
+                        _password = tbPassword.Text;
+                        Close();
+                    }
+                };
+            bworker.RunWorkerAsync();
+        }
 
-                _user = tbLogin.Text;
-                _password = tbPassword.Text;
-                Close();
-            }
-            catch(Exception ex)
-            {
-                AppContext.Instance.Get<IUserMessage>().Error("Unable to post issue.", ex);
-            }
-            finally
-            {
-                btnSendError.Enabled = true;
-            }
+        private void EnableControls(bool enable)
+        {
+            paMain.Enabled = enable;
+            btnCopyError.Enabled = enable;
+            btnZipLog.Enabled = enable;
+            btnSendError.Enabled = enable;
+            paProgress.Visible = !enable;
+        }
+
+        private bool ValidateLogin()
+        {
+            var error = String.IsNullOrWhiteSpace(tbLogin.Text) ? "Login should be not empty." : string.Empty;
+            errorProvider1.SetError(tbLogin, error);
+            return error == string.Empty;
+        }
+
+        private bool ValidatePassword()
+        {
+            var error = String.IsNullOrWhiteSpace(tbPassword.Text) ? "Password should be not empty." : string.Empty;
+            errorProvider1.SetError(tbPassword, error);
+            return error == string.Empty;
+        }
+
+        private void tbLogin_Validating(object sender, CancelEventArgs e)
+        {
+            ValidateLogin();
+        }
+
+        private void tbPassword_Validating(object sender, CancelEventArgs e)
+        {
+            ValidatePassword();
         }
 
         #endregion

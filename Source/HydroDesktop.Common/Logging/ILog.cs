@@ -17,13 +17,14 @@ namespace HydroDesktop.Common.Logging
         /// Log warning message.
         /// </summary>
         /// <param name="message">Message to log.</param>
-        void Warn(string message);
+        /// <param name="exception">Exception (optional).</param>
+        void Warn(string message, Exception exception = null);
 
         /// <summary>
         /// Log error message.
         /// </summary>
         /// <param name="message">Message to log.</param>
-        /// <param name="exception">Exception.</param>
+        /// <param name="exception">Exception (optional).</param>
         void Error(string message, Exception exception = null);
 
         /// <summary>
