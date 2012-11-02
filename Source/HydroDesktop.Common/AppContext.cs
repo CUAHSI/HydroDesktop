@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Microsoft.Practices.Unity;
 
 namespace HydroDesktop.Common
@@ -9,6 +10,8 @@ namespace HydroDesktop.Common
     public class AppContext
     {
         private static readonly  Lazy<AppContext> _lazy = new Lazy<AppContext>(ValueFactory, true);
+        private string _productVersion;
+
         private AppContext()
         {
             
@@ -50,6 +53,20 @@ namespace HydroDesktop.Common
         public void Dispose()
         {
             Container.Current.Dispose();
+        }
+
+        /// <summary>
+        /// Returns product version
+        /// </summary>
+        public string ProductVersion
+        {
+            get
+            {
+                return _productVersion ??
+                       (_productVersion =
+                        AssemblyName.GetAssemblyName(Assembly.GetAssembly(typeof (AppContext)).Location).Version.
+                            ToString());
+            }
         }
     }
 }

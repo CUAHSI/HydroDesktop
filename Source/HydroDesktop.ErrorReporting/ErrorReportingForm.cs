@@ -127,7 +127,8 @@ namespace HydroDesktop.ErrorReporting
                     var issue = new Issue
                         {
                             Summary = _initParams.IsFatal ? "Fatal Error" : "Unhandled Exception",
-                            Description = "Description: " + tbDescribe.Text + Environment.NewLine +
+                            Description = "Version: " + AppContext.Instance.ProductVersion + Environment.NewLine +
+                                          "Description: " + tbDescribe.Text + Environment.NewLine +
                                           "==============================" + Environment.NewLine +
                                           "Error: " + tbError.Text,
                         };

@@ -63,8 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
-      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Project>{882c41f5-6a96-419f-9153-8d277ed91464}</Project>
       <Name>HydroDesktop.Common</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
