@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -228,18 +229,28 @@ namespace HydroDesktop.Main
 
                 foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
                 {
-                    IMapFeatureLayer fl = layer as IMapFeatureLayer;
+                    var fl = layer as IMapFeatureLayer;
                     if (fl != null)
                     {
                         if (!String.IsNullOrEmpty(fl.DataSet.Filename))
                         {
-                            fl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(fl.DataSet.Filename)), true);
+                            var fileName = Path.GetFileName(fl.DataSet.Filename);
+                            if (fileName != null)
+                            {
+                                fl.DataSet.SaveAs(Path.Combine(projDir, fileName), true);
+                            }
                         }
                     }
-                    IMapRasterLayer rl = layer as IMapRasterLayer;
+
+                    var rl = layer as IMapRasterLayer;
                     if (rl != null)
                     {
-                        rl.DataSet.SaveAs(Path.Combine(projDir, Path.GetFileName(rl.DataSet.Filename)));
+                        var fileName = Path.GetFileName(rl.DataSet.Filename);
+                        if (fileName != null)
+                        {
+                            rl.DataSet.SaveAs(Path.Combine(projDir, fileName));
+                            rl.DataSet.Filename = fileName; // Save relative path
+                        }
                     }
                 }
             }
