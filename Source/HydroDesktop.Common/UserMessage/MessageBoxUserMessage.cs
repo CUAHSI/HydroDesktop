@@ -23,10 +23,13 @@ namespace HydroDesktop.Common.UserMessage
             MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public void Warn(string message)
+        public void Warn(string message, Exception exception = null)
         {
             _logger.Warn(message);
-            MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(message + (exception != null
+                                           ? Environment.NewLine +
+                                             "Reason: " + exception.Message
+                                           : string.Empty), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public void Error(string message, Exception exception = null)

@@ -2,11 +2,14 @@
 using System.Windows.Forms;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Logging;
+using HydroDesktop.ErrorReporting;
 
 namespace HydroDesktop.MainApplication
 {
     static class Program
     {
+        private static MainForm _mainForm;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -33,28 +36,26 @@ namespace HydroDesktop.MainApplication
                         };
             
             log.Info("Application Started");
-            var form = new MainForm();
+            _mainForm = new MainForm();
             if (args.Length > 0 && System.IO.File.Exists(args[0]))
             {
-                form.appManager.SerializationManager.OpenProject(args[0]);
+                _mainForm.appManager.SerializationManager.OpenProject(args[0]);
             }
 
-            Application.Run(form);
+            Application.Run(_mainForm);
         }
 
         private static void ProcessUnhandled(Exception ex, bool isFatal)
         {
             var log = AppContext.Instance.Get<ILog>();
             log.Error(isFatal ? "Fatal" : "Unhandled", ex);
-            var caption = isFatal ? "Fatal error" : "Unhandled Exception";
-            var message = "Message: " + ex.Message + Environment.NewLine + "Details saved to: " + log.Destination;
-            if (isFatal)
-            {
-                message += Environment.NewLine + "Application will be closed.";
-            }
-
-            // todo: show custom form to allow user submit bug into codeplex
-            MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            var errorForm = new ErrorReportingForm(new ErrorReportingFormArgs
+                {
+                    Exception = ex,
+                    IsFatal = isFatal,
+                    LogFile = log.Destination
+                });
+            errorForm.ShowDialog(_mainForm);
         }
     }
 }
