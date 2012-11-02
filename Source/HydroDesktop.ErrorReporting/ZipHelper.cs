@@ -1,5 +1,7 @@
+using System;
+using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
+using System.IO.Packaging;
 
 namespace HydroDesktop.ErrorReporting
 {
@@ -9,11 +11,23 @@ namespace HydroDesktop.ErrorReporting
 
         public static void AddFileToZip(string zipFilename, string fileToAdd)
         {
-            using (var sourceFile = new FileStream(fileToAdd, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
-            using (var destFile = File.Create(zipFilename))
-            using (var compStream = new GZipStream(destFile, CompressionMode.Compress))
+            using (var zip = Package.Open(zipFilename, FileMode.OpenOrCreate))
             {
-                CopyStream(sourceFile, compStream);
+                var destFilename = ".\\" + Path.GetFileName(fileToAdd);
+                var uri = PackUriHelper.CreatePartUri(new Uri(destFilename, UriKind.Relative));
+                if (zip.PartExists(uri))
+                {
+                    zip.DeletePart(uri);
+                }
+                var part = zip.CreatePart(uri, "", CompressionOption.Maximum);
+                using (var fileStream = new FileStream(fileToAdd, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    Debug.Assert(part != null, "part != null");
+                    using (var dest = part.GetStream())
+                    {
+                        CopyStream(fileStream, dest);
+                    }
+                }
             }
         }
 
