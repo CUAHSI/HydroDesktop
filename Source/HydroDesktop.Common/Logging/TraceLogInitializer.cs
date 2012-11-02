@@ -70,7 +70,7 @@ namespace HydroDesktop.Common.Logging
             try
             {
                 // Add to existing log file or create new
-                return new FileStream(fullPath, FileMode.Append, FileAccess.Write, FileShare.Read);
+                return new FileStream(fullPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
             }
             catch (Exception ex)
             {
