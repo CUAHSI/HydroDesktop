@@ -7,7 +7,7 @@ namespace HydroDesktop.Common.Logging
 {
     class TraceLogInitializer : ILogInitializer
     {
-        private const string LOG_FILE_NAME = "trace.log";
+        private const string LOG_FILE_NAME = "trace{0}.log";
 
         public TraceLogInitializer()
         {
@@ -66,9 +66,20 @@ namespace HydroDesktop.Common.Logging
             }
 
             //at this point the directory exists
-            var fullPath = Path.Combine(logFileDirectory, LOG_FILE_NAME);
+            var logFileName = string.Format(LOG_FILE_NAME, string.Empty);
+            var fullPath = Path.Combine(logFileDirectory, logFileName);
             try
             {
+                // Rename previous file to LOG_FILE_NAME_yyyyMMdd.log
+                if (File.Exists(fullPath))
+                {
+                    var lastTime = File.GetLastWriteTime(fullPath);
+                    if (lastTime.Date != DateTime.Now.Date)
+                    {
+                        File.Move(fullPath, Path.Combine(logFileDirectory, string.Format(LOG_FILE_NAME, "_" + lastTime.Date.ToString("yyyyMMdd"))));   
+                    }
+                }
+
                 // Add to existing log file or create new
                 return new FileStream(fullPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
             }
