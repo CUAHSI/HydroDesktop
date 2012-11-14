@@ -23,21 +23,25 @@ namespace DataAggregation
     {
         private const string MENU_ITEM_NAME = "Show Data Values in Map";
 
-        public static bool CanAggregateLayer(ILayer layer)
+        /// <summary>
+        /// Tests that layer can be aggregated.
+        /// </summary>
+        /// <param name="layer">Layer to test</param>
+        /// <returns>True - if layer can be aggregated, otherwise - false.</returns>
+        public static bool CanAggregateLayer(IFeatureLayer layer)
         {
-            var featureLayer = layer as IFeatureLayer;
-            if (featureLayer == null) return false;
-
-            return new[] {"SeriesID", "StartDate", "EndDate"}.All(fieldName => featureLayer.DataSet.DataTable.Columns.Contains(fieldName));
+            if (layer == null) return false;
+            return new[] { "SeriesID", "StartDate", "EndDate" }.All(fieldName => layer.DataSet.DataTable.Columns.Contains(fieldName));
         }
 
         public static void UpdateContextMenu(IFeatureLayer layer)
         {
+            if (layer == null) throw new ArgumentNullException("layer");
             var dataGroupMenu = layer.ContextMenuItems.FirstOrDefault(item => item.Name == "Data");
             if (dataGroupMenu == null)
                 return;
 
-            dataGroupMenu.AddMenuItem(MENU_ITEM_NAME, delegate { new AggregationSettingsDialog(layer).ShowDialog(); });
+            dataGroupMenu.AddMenuItem(MENU_ITEM_NAME, delegate { ShowAggregationSettingsDialog(layer); });
         }
 
         public  static void RemoveContextMenu(ILayer layer)
@@ -50,6 +54,12 @@ namespace DataAggregation
             {
                 dataGroupMenu.MenuItems.Remove(menuItem);
             }
+        }
+
+        public static void ShowAggregationSettingsDialog(IFeatureLayer layer)
+        {
+            if (layer == null) throw new ArgumentNullException("layer");
+            new AggregationSettingsDialog(layer).ShowDialog();
         }
 
         #region Fields
