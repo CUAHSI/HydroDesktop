@@ -1,5 +1,10 @@
-﻿using DotSpatial.Controls;
+﻿using System;
+using System.Linq;
+using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
+using HydroDesktop.Common;
+using HydroDesktop.Common.UserMessage;
 using HydroDesktop.Interfaces.PluginContracts;
 
 namespace DataAggregation
@@ -21,7 +26,9 @@ namespace DataAggregation
             App.Map.LayerAdded += Map_LayerAdded;
             App.Map.Layers.LayerRemoved += Layers_LayerRemoved;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            App.ExtensionsActivated += AppOnExtensionsActivated;
         }
+       
 
         /// <summary>
         /// Deactivates this provider
@@ -31,6 +38,7 @@ namespace DataAggregation
             App.Map.LayerAdded -= Map_LayerAdded;
             App.Map.Layers.LayerRemoved -= Layers_LayerRemoved;
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
+            App.ExtensionsActivated -= AppOnExtensionsActivated;
             foreach (var layer in App.Map.MapFrame.Layers)
                 DettachLayerFromPlugin(layer);
 
@@ -40,6 +48,32 @@ namespace DataAggregation
         #endregion
 
         #region Private methods
+
+        private void AppOnExtensionsActivated(object sender, EventArgs eventArgs)
+        {
+            if (App.GetExtension("GeostatisticalTool") != null)
+            {
+                App.HeaderControl.Add(new SimpleActionItem("Show Values in Map", ClickShowValueInMapEventHandler)
+                    {
+                        RootKey = "kInterpolation_Methods",
+                        LargeImage = null,
+                        SmallImage = null,
+                    });
+            }
+        }
+
+        private void ClickShowValueInMapEventHandler(object sender, EventArgs eventArgs)
+        {
+            var layer = App.Map.MapFrame.GetAllLayers().FirstOrDefault(f => f.IsSelected) as IFeatureLayer;
+            if (Aggregator.CanAggregateLayer(layer))
+            {
+                Aggregator.ShowAggregationSettingsDialog(layer);
+            }
+            else
+            {
+                AppContext.Instance.Get<IUserMessage>().Info("Please select a Data Sites layer in the map legend.");
+            }
+        }
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
@@ -83,9 +117,10 @@ namespace DataAggregation
         public void AttachLayerToPlugin(ILayer layer)
         {
             // Check for DataAggregation 
-            if (Aggregator.CanAggregateLayer(layer))
+            var fl = layer as IFeatureLayer;
+            if (Aggregator.CanAggregateLayer(fl))
             {
-                Aggregator.UpdateContextMenu((IFeatureLayer)layer);
+                Aggregator.UpdateContextMenu(fl);
             }
 
             var group = layer as IGroup;
