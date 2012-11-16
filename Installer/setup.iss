@@ -37,7 +37,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{AE8DA6F3-C620-41AF-99D6-923ED4C793E5}
+AppID={{C587C0B8-4862-4107-BC93-CAC58C37853A}
 
 PrivilegesRequired=poweruser
 MinVersion=,5.01
