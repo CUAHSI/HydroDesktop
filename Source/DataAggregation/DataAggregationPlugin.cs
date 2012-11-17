@@ -56,8 +56,8 @@ namespace DataAggregation
                 App.HeaderControl.Add(new SimpleActionItem("Show Values in Map", ClickShowValueInMapEventHandler)
                     {
                         RootKey = "kInterpolation_Methods",
-                        LargeImage = null,
-                        SmallImage = null,
+                        LargeImage = Properties.Resources.show_values_in_map_32,
+                        SmallImage = Properties.Resources.show_values_in_map_16,
                     });
             }
         }
