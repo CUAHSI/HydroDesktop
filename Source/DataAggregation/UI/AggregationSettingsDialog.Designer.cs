@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AggregationSettingsDialog));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblType = new System.Windows.Forms.Label();
@@ -38,13 +39,13 @@
             this.dtpEndTime = new System.Windows.Forms.DateTimePicker();
             this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.paSettings = new System.Windows.Forms.Panel();
+            this.lblDecimalPlaces = new System.Windows.Forms.Label();
+            this.nudDecimalPlaces = new System.Windows.Forms.NumericUpDown();
             this.chbCreateCategories = new System.Windows.Forms.CheckBox();
             this.chbCreateNewLayer = new System.Windows.Forms.CheckBox();
             this.lblVariable = new System.Windows.Forms.Label();
             this.cmbVariable = new System.Windows.Forms.ComboBox();
             this.lblProgress = new System.Windows.Forms.Label();
-            this.nudDecimalPlaces = new System.Windows.Forms.NumericUpDown();
-            this.lblDecimalPlaces = new System.Windows.Forms.Label();
             this.paSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDecimalPlaces)).BeginInit();
             this.SuspendLayout();
@@ -155,6 +156,27 @@
             this.paSettings.Size = new System.Drawing.Size(297, 235);
             this.paSettings.TabIndex = 9;
             // 
+            // lblDecimalPlaces
+            // 
+            this.lblDecimalPlaces.AutoSize = true;
+            this.lblDecimalPlaces.Location = new System.Drawing.Point(14, 157);
+            this.lblDecimalPlaces.Name = "lblDecimalPlaces";
+            this.lblDecimalPlaces.Size = new System.Drawing.Size(80, 13);
+            this.lblDecimalPlaces.TabIndex = 13;
+            this.lblDecimalPlaces.Text = "Decimal Places";
+            // 
+            // nudDecimalPlaces
+            // 
+            this.nudDecimalPlaces.Location = new System.Drawing.Point(119, 155);
+            this.nudDecimalPlaces.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudDecimalPlaces.Name = "nudDecimalPlaces";
+            this.nudDecimalPlaces.Size = new System.Drawing.Size(168, 20);
+            this.nudDecimalPlaces.TabIndex = 12;
+            // 
             // chbCreateCategories
             // 
             this.chbCreateCategories.AutoSize = true;
@@ -204,27 +226,6 @@
             this.lblProgress.Text = "Current Operation:";
             this.lblProgress.Visible = false;
             // 
-            // nudDecimalPlaces
-            // 
-            this.nudDecimalPlaces.Location = new System.Drawing.Point(119, 155);
-            this.nudDecimalPlaces.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nudDecimalPlaces.Name = "nudDecimalPlaces";
-            this.nudDecimalPlaces.Size = new System.Drawing.Size(168, 20);
-            this.nudDecimalPlaces.TabIndex = 12;
-            // 
-            // lblDecimalPlaces
-            // 
-            this.lblDecimalPlaces.AutoSize = true;
-            this.lblDecimalPlaces.Location = new System.Drawing.Point(14, 157);
-            this.lblDecimalPlaces.Name = "lblDecimalPlaces";
-            this.lblDecimalPlaces.Size = new System.Drawing.Size(80, 13);
-            this.lblDecimalPlaces.TabIndex = 13;
-            this.lblDecimalPlaces.Text = "Decimal Places";
-            // 
             // AggregationSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,6 +237,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AggregationSettingsDialog";
