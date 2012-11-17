@@ -14,6 +14,8 @@ namespace DataAggregation
     /// </summary>
     public class DataAggregationPlugin : Extension, IDataAggregationPlugin
     {
+        private const string Interpolation_Root_Key = "kInterpolation_Methods";
+
         #region Extension methods
 
         /// <summary>
@@ -53,13 +55,24 @@ namespace DataAggregation
         {
             if (App.GetExtension("GeostatisticalTool") != null)
             {
-                App.HeaderControl.Add(new SimpleActionItem("Show Values in Map", ClickShowValueInMapEventHandler)
+                App.HeaderControl.Add(new SimpleActionItem(MessageStrings.Show_Values_in_Map, ClickShowValueInMapEventHandler)
                     {
-                        RootKey = "kInterpolation_Methods",
+                        RootKey = Interpolation_Root_Key,
                         LargeImage = Properties.Resources.show_values_in_map_32,
                         SmallImage = Properties.Resources.show_values_in_map_16,
                     });
+                App.HeaderControl.Add(new SimpleActionItem(MessageStrings.Merge_Layers, ClickMergeLayersEventHandler)
+                {
+                    RootKey = Interpolation_Root_Key,
+                    LargeImage = null,
+                    SmallImage = null,
+                });
             }
+        }
+
+        private void ClickMergeLayersEventHandler(object sender, EventArgs eventArgs)
+        {
+            //throw new NotImplementedException();
         }
 
         private void ClickShowValueInMapEventHandler(object sender, EventArgs eventArgs)
@@ -71,7 +84,7 @@ namespace DataAggregation
             }
             else
             {
-                AppContext.Instance.Get<IUserMessage>().Info("Please select a Data Sites layer in the map legend.");
+                AppContext.Instance.Get<IUserMessage>().Info(MessageStrings.Msg_Select_Layer);
             }
         }
 
