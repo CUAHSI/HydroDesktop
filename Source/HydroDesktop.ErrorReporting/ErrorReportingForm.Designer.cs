@@ -157,7 +157,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(300, 13);
             this.label6.TabIndex = 8;
-            this.label6.Text = "Describe what you where doing when error occured (optional):";
+            this.label6.Text = "Describe what you were doing when error occurred (optional):";
             // 
             // tbDescribe
             // 
