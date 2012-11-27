@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Data", "HydroDesktop.Data\HydroDesktop.Data.csproj", "{CEB869C6-ED48-4846-9040-4E82AB58B86B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0B9BA90B-2016-4754-915A-0AD74FD0067A} = {0B9BA90B-2016-4754-915A-0AD74FD0067A}

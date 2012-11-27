@@ -127,20 +127,20 @@ namespace HelpTab
             App.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
 
             // Add a button to send email to the user support specialist
-            var submitEmailButton = new SimpleActionItem("Contact Support\n", submitEmailButton_Click); // !!! \n gets around a bug where the "t" in "Support" is wrapped to a new line
-            submitEmailButton.RootKey = HelpTabKey;
-            submitEmailButton.LargeImage = Resources.email_32x32;
-            submitEmailButton.SmallImage = Resources.email_16x16;
-            submitEmailButton.ToolTipText = "Send an e-mail to HydroDesktop User Support using your default e-mail program.";
-            submitEmailButton.GroupCaption = _helpPanelName;
-            App.HeaderControl.Add(submitEmailButton);
+            //var submitEmailButton = new SimpleActionItem("Contact Support\n", submitEmailButton_Click); // !!! \n gets around a bug where the "t" in "Support" is wrapped to a new line
+            //submitEmailButton.RootKey = HelpTabKey;
+            //submitEmailButton.LargeImage = Resources.email_32x32;
+            //submitEmailButton.SmallImage = Resources.email_16x16;
+            //submitEmailButton.ToolTipText = "Send an e-mail to HydroDesktop User Support using your default e-mail program.";
+            //submitEmailButton.GroupCaption = _helpPanelName;
+            //App.HeaderControl.Add(submitEmailButton);
 
             // Add a button to leave a comment
-            var submitCommentButton = new SimpleActionItem("Submit Comment", submitCommentButton_Click);
+            var submitCommentButton = new SimpleActionItem("Contact Support\n", submitCommentButton_Click);
             submitCommentButton.RootKey = HelpTabKey;
             submitCommentButton.LargeImage = Resources.comment_32x32;
             submitCommentButton.SmallImage = Resources.comment_16x16;
-            submitCommentButton.ToolTipText = "Submit a comment using the online HIS contact form.";
+            submitCommentButton.ToolTipText = "Contact support using the online HIS contact form.";
             submitCommentButton.GroupCaption = _helpPanelName;
             App.HeaderControl.Add(submitCommentButton);
 
