@@ -77,6 +77,7 @@ Namespace Controls
             gPane.GraphObjList.Clear()
             zgTimeSeries.IsShowVScrollBar = False
             zgTimeSeries.IsShowHScrollBar = False
+            zgTimeSeries.Refresh()
         End Sub
 
         Private Sub Graph(ByVal options As OneSeriesPlotInfo)
