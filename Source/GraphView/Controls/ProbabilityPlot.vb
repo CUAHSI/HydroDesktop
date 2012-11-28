@@ -23,6 +23,7 @@ Namespace Controls
 
         Private Sub SetGraphPaneTitle(ByVal title As String)
             zgProbabilityPlot.GraphPane.Title.Text = title
+            zgProbabilityPlot.GraphPane.Title.FontSpec.Size = 14
         End Sub
 
         Private Sub Plot(ByVal options As OneSeriesPlotInfo)
@@ -35,6 +36,7 @@ Namespace Controls
             Dim gPane As GraphPane = zgProbabilityPlot.GraphPane
             gPane.CurveList.Clear()
             gPane.Title.Text = MessageStrings.No_Data_Plot
+            gPane.Title.FontSpec.Size = 14
             gPane.XAxis.IsVisible = False
             gPane.YAxis.IsVisible = False
             gPane.GraphObjList.Clear()
@@ -104,6 +106,7 @@ Namespace Controls
                 gPane.XAxis.MajorTic.Size = 0
                 gPane.XAxis.MinorTic.Size = 0
                 gPane.XAxis.Title.Text = vbCrLf & vbCrLf & "Cumulative Frequency < Stated Value %"
+                gPane.XAxis.Title.FontSpec.Size = 12
                 gPane.XAxis.Title.Gap = 0.2
                 gPane.XAxis.Type = AxisType.Linear
                 gPane.XAxis.Scale.IsVisible = False
@@ -120,7 +123,8 @@ Namespace Controls
 
                 'Setting title
                 gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
-
+                gPane.Title.FontSpec.Size = 14
+               
                 '6. Create the Pts for the Line
                 ptList = New PointPairList
 
@@ -567,7 +571,7 @@ Namespace Controls
                     If IsSame Then
                         .Title.Text = .CurveList(0).Link.Title
                     Else
-                        .Title.IsVisible = False
+                        .Title.Text = "Multiple Probability"
                     End If
                 ElseIf .CurveList.Count = 1 Then
                     '.Title.Text = .CurveList(0).Link.Title
@@ -596,6 +600,10 @@ Namespace Controls
                     If i Mod 2 = 0 Then
                         Dim NewAsix As New YAxis()
                         NewAsix.Title.Text = AsixsList(i)
+                        NewAsix.Title.FontSpec.Size = 12
+                        If NewAsix.Title.Text.Length > 50 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
                         NewAsix.MajorTic.IsOpposite = False
@@ -604,6 +612,10 @@ Namespace Controls
                     Else
                         Dim NewAsix As New Y2Axis()
                         NewAsix.Title.Text = AsixsList(i)
+                        NewAsix.Title.FontSpec.Size = 12
+                        If NewAsix.Title.Text.Length > 50 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
                         NewAsix.MajorTic.IsOpposite = False

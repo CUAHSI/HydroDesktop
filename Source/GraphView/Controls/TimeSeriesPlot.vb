@@ -39,6 +39,7 @@ Namespace Controls
 
         Private Sub SetGraphPaneTitle(ByVal title As String)
             zgTimeSeries.GraphPane.Title.Text = title
+            zgTimeSeries.GraphPane.Title.FontSpec.Size = 14
         End Sub
 
         Public Sub Plot(ByVal seriesPlotInfo As SeriesPlotInfo) Implements IPlot.Plot
@@ -70,11 +71,13 @@ Namespace Controls
             Dim gPane As GraphPane = zgTimeSeries.GraphPane
             gPane.CurveList.Clear()
             SetGraphPaneTitle(MessageStrings.No_Data_Plot)
+            gPane.Title.FontSpec.Size = 14
             gPane.XAxis.IsVisible = False
             gPane.YAxis.IsVisible = False
             gPane.GraphObjList.Clear()
             zgTimeSeries.IsShowVScrollBar = False
             zgTimeSeries.IsShowHScrollBar = False
+            zgTimeSeries.Refresh()
         End Sub
 
         Private Sub Graph(ByVal options As OneSeriesPlotInfo)
@@ -92,6 +95,7 @@ Namespace Controls
                     zgTimeSeries.IsShowVScrollBar = False
                     zgTimeSeries.IsShowHScrollBar = False
                     SetGraphPaneTitle(MessageStrings.No_Data_Plot)
+                    gPane.Title.FontSpec.Size = 14
                 Else
                     'Setting Legend
                     If m_Options.ShowLegend Then
@@ -108,6 +112,7 @@ Namespace Controls
                     'Setting X Axis
                     gPane.XAxis.IsVisible = True
                     gPane.XAxis.Title.Text = "Date and Time"
+                    gPane.XAxis.Title.FontSpec.Size = 12
                     SetGraphPaneTitle(m_VariableWithUnits & vbCrLf & " at " & m_Site)
 
                     Dim pointList As New PointPairList
@@ -292,7 +297,7 @@ Namespace Controls
                     If IsSame Then
                         .Title.Text = .CurveList(0).Link.Title
                     Else
-                        .Title.IsVisible = False
+                        .Title.Text = "Multiple TimeSeries"
                     End If
                 ElseIf .CurveList.Count = 1 Then
                     '.Title.Text = .CurveList(0).Link.Title
@@ -321,6 +326,10 @@ Namespace Controls
                     If i Mod 2 = 0 Then
                         Dim NewAsix As New YAxis()
                         NewAsix.Title.Text = AsixsList(i)
+                        NewAsix.Title.FontSpec.Size = 12
+                        If NewAsix.Title.Text.Length > 50 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
                         NewAsix.MajorTic.IsOpposite = False
@@ -329,6 +338,10 @@ Namespace Controls
                     Else
                         Dim NewAsix As New Y2Axis()
                         NewAsix.Title.Text = AsixsList(i)
+                        NewAsix.Title.FontSpec.Size = 12
+                        If NewAsix.Title.Text.Length > 50 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
                         NewAsix.MajorTic.IsOpposite = False

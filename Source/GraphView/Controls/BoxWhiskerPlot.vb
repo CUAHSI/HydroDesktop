@@ -73,6 +73,7 @@ Namespace Controls
             zgBoxWhiskerPlot.MasterPane.PaneList.Add(New GraphPane)
             zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.IsVisible = True
             zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.Text = MessageStrings.No_Data_Plot
+            zgBoxWhiskerPlot.MasterPane.PaneList(0).Title.FontSpec.Size = 14
             zgBoxWhiskerPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
             zgBoxWhiskerPlot.MasterPane.PaneList(0).Border.IsVisible = False
@@ -93,6 +94,7 @@ Namespace Controls
                     gPane.CurveList.Clear()
                     gPane.GraphObjList.Clear()
                     gPane.Title.Text = MessageStrings.No_Data_Plot
+                    gPane.Title.FontSpec.Size = 14
                     gPane.XAxis.IsVisible = False
                     gPane.YAxis.IsVisible = False
                     zgBoxWhiskerPlot.IsShowVScrollBar = False
@@ -175,6 +177,7 @@ Namespace Controls
                     gPane.XAxis.Type = AxisType.Text
                     gPane.XAxis.Scale.TextLabels = xAxisLabels
                     gPane.XAxis.Title.Text = xTitle
+                    gPane.XAxis.Title.FontSpec.Size = 12
                     gPane.XAxis.MajorTic.IsAllTics = showXTics
                     'y-axis
                     gPane.YAxis.IsVisible = True
@@ -182,6 +185,10 @@ Namespace Controls
                     gPane.YAxis.MajorGrid.Color = Color.Gray
                     'gPane.YAxis.Type = ZedGraph.AxisType.Linear
                     gPane.YAxis.Title.Text = options.GetVariableWithUnitsString()
+                    gPane.YAxis.Title.FontSpec.Size = 12
+                    If gPane.YAxis.Title.Text.Length > 50 Then
+                        gPane.YAxis.Title.Text = gPane.YAxis.Title.Text.Substring(0, 50) + "..."
+                    End If
                     If min > 0 And (min - (0.2 * m_StdDev)) < 0 Then
                         gPane.YAxis.Scale.Min = 0
                     Else
@@ -211,7 +218,8 @@ Namespace Controls
                     Next
                     If Not needShowDataType Then
                         ' Set legend only for current curve
-                        gPane.Title.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                        gPane.Title.Text = options.GetVariableWithUnitsString() + vbCrLf + "at " + options.SiteName + ", " + " ID: " + options.SeriesID.ToString
+                        gPane.Title.FontSpec.Size = 14
                     Else
                         ' Update legend for all curves
                         For Each c In zgBoxWhiskerPlot.MasterPane.PaneList()

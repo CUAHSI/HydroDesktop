@@ -60,6 +60,7 @@ Namespace Controls
             zgHistogramPlot.MasterPane.PaneList.Add(New GraphPane)
             zgHistogramPlot.MasterPane.PaneList(0).Title.IsVisible = True
             zgHistogramPlot.MasterPane.PaneList(0).Title.Text = MessageStrings.No_Data_Plot
+            zgHistogramPlot.MasterPane.PaneList(0).Title.FontSpec.Size = 14
             zgHistogramPlot.MasterPane.PaneList(0).XAxis.IsVisible = False
             zgHistogramPlot.MasterPane.PaneList(0).YAxis.IsVisible = False
             zgHistogramPlot.MasterPane.PaneList(0).Border.IsVisible = False
@@ -92,7 +93,7 @@ Namespace Controls
                 gPane.Legend.IsVisible = False
                 With m_Options
 
-
+                    gPane.YAxis.Title.FontSpec.Size = 12
                     If (.HistTypeMethod = HistogramType.Probability) Then
                         gPane.YAxis.Title.Text = "Probability Density"
                     ElseIf (.HistTypeMethod = HistogramType.Count) Then
@@ -114,6 +115,10 @@ Namespace Controls
                     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                     gPane.XAxis.Title.Text = options.GetVariableWithUnitsString()
+                    gPane.XAxis.Title.FontSpec.Size = 12
+                    If gPane.XAxis.Title.Text.Length > 50 Then
+                        gPane.XAxis.Title.Text = gPane.XAxis.Title.Text.Substring(0, 50) + "..."
+                    End If
                     gPane.XAxis.MinorTic.IsAllTics = False
                     gPane.XAxis.Title.Gap = 0.2
                     gPane.XAxis.Scale.Mag = 0
@@ -159,7 +164,8 @@ Namespace Controls
                     Next
                     If Not needShowDataType Then
                         ' Set legend only for current curve
-                        gPane.Title.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                        gPane.Title.Text = options.GetVariableWithUnitsString() + vbCrLf + "at " + options.SiteName + ", " + " ID: " + options.SeriesID.ToString
+                        gPane.Title.FontSpec.Size = 14
                     Else
                         ' Update legend for all curves
                         For Each c In zgHistogramPlot.MasterPane.PaneList()
