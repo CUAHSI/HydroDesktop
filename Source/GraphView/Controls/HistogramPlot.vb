@@ -116,6 +116,9 @@ Namespace Controls
 
                     gPane.XAxis.Title.Text = options.GetVariableWithUnitsString()
                     gPane.XAxis.Title.FontSpec.Size = 12
+                    If gPane.XAxis.Title.Text.Length > 50 Then
+                        gPane.XAxis.Title.Text = gPane.XAxis.Title.Text.Substring(0, 50) + "..."
+                    End If
                     gPane.XAxis.MinorTic.IsAllTics = False
                     gPane.XAxis.Title.Gap = 0.2
                     gPane.XAxis.Scale.Mag = 0
@@ -162,6 +165,7 @@ Namespace Controls
                     If Not needShowDataType Then
                         ' Set legend only for current curve
                         gPane.Title.Text = options.GetVariableWithUnitsString() + vbCrLf + "at " + options.SiteName + ", " + " ID: " + options.SeriesID.ToString
+                        gPane.Title.FontSpec.Size = 14
                     Else
                         ' Update legend for all curves
                         For Each c In zgHistogramPlot.MasterPane.PaneList()
