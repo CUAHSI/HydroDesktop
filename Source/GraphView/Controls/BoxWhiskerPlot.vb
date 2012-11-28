@@ -182,6 +182,9 @@ Namespace Controls
                     gPane.YAxis.MajorGrid.Color = Color.Gray
                     'gPane.YAxis.Type = ZedGraph.AxisType.Linear
                     gPane.YAxis.Title.Text = options.GetVariableWithUnitsString()
+                    If gPane.YAxis.Title.Text.Length >= 40 Then
+                        gPane.YAxis.Title.FontSpec.Size = 10
+                    End If
                     If min > 0 And (min - (0.2 * m_StdDev)) < 0 Then
                         gPane.YAxis.Scale.Min = 0
                     Else
@@ -212,6 +215,9 @@ Namespace Controls
                     If Not needShowDataType Then
                         ' Set legend only for current curve
                         gPane.Title.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                        If gPane.Title.Text.Length >= 55 Then
+                            gPane.Title.FontSpec.Size = 10
+                        End If
                     Else
                         ' Update legend for all curves
                         For Each c In zgBoxWhiskerPlot.MasterPane.PaneList()
