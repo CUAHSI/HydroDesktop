@@ -74,7 +74,7 @@
             this.lblCopyright.Name = "lblCopyright";
             this.lblCopyright.Size = new System.Drawing.Size(190, 16);
             this.lblCopyright.TabIndex = 3;
-            this.lblCopyright.Text = "Copyright:  CUAHSI, 2010-2011";
+            this.lblCopyright.Text = "Copyright:  CUAHSI, 2010-2013";
             // 
             // label1
             // 
