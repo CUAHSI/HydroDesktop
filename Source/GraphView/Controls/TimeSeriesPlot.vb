@@ -74,6 +74,7 @@ Namespace Controls
             gPane.Title.FontSpec.Size = 14
             gPane.XAxis.IsVisible = False
             gPane.YAxis.IsVisible = False
+            gPane.Y2Axis.IsVisible = False
             gPane.GraphObjList.Clear()
             zgTimeSeries.IsShowVScrollBar = False
             zgTimeSeries.IsShowHScrollBar = False
