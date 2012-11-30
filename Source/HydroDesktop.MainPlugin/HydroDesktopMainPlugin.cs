@@ -183,7 +183,7 @@
             }
         }
 
-        void mainForm_Shown(object sender, EventArgs e)
+        void mainForm_Shown(object sender, EventArgs e) 
         {
             //displays the initial welcome screen
             if (string.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
@@ -194,6 +194,7 @@
             {
                 //do not show the welcome screen if a project is being opened
                 SerializationManager_Deserializing(null, null);
+                myProjectManager.OpenProject(App.SerializationManager.CurrentProjectFile); //Open project using same method used when opening from within HD
             }
         }
 
