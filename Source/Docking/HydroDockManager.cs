@@ -125,8 +125,13 @@ namespace HydroDesktop.Docking
             //set dock style of the inner control to Fill
             innerControl.Dock = DockStyle.Fill;
 
-            // make an attempt to start the pane off at the right width.
-            UpdateMainDockPanel(dockStyle, innerControl.Size);
+            /*If adding Tools Manager, do not resize pane; see Issue 8602 (http://hydrodesktop.codeplex.com/workitem/8602)
+            This solves this issue but does not solve the root of the problem.*/
+            if (key != "kTools")
+            {
+                // make an attempt to start the pane off at the right width.
+                UpdateMainDockPanel(dockStyle, innerControl.Size);
+            }
 
             var content = new DockContent { ShowHint = ConvertToDockState(dockStyle) };
             content.Controls.Add(innerControl);
