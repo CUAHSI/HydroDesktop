@@ -126,7 +126,7 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 return;
             }
 
-            var rtol = new Rectangle(e.X - 8, e.Y - 8, 0x10, 0x10);
+            var rtol = new Rectangle(e.X - 8, e.Y -8, 0x10, 0x10);
             var tolerant = _map.PixelToProj(rtol);
 
             var pInfos = visibleLayers.Select(layer => Identify(layer, tolerant))
@@ -145,7 +145,30 @@ namespace HydroDesktop.DataDownload.LayerInformation
 
             HideToolTip();
             control.SetInfo(pInfos);
-            toolTip.Show(_map, toolTip.Parent.PointToClient(e.Location));
+
+            Point adjustedLocation = adjustPopupLocation(e.Location);
+            toolTip.Show(_map, toolTip.Parent.PointToClient(adjustedLocation));
+        }
+
+        //Method used to adjust the location of the tooltip popup in case it goes outside of the map window.
+        private Point adjustPopupLocation(Point start)
+        {
+            int tempX = start.X;
+            int tempY = start.Y;
+
+            //If popup goes over right edge of map pull it to the left.
+            if (toolTip.Width + start.X > _map.Right)
+            {
+                tempX = tempX - ((toolTip.Width + start.X) - _map.Right);
+            }
+            //If popup goes below the edge of the map, make it appear above the cursor.
+            if (toolTip.Height + start.Y > _map.Bottom)
+            {
+                tempY = tempY - toolTip.Height;
+            }
+
+            Point adjustedPoint = new Point(tempX, tempY);
+            return adjustedPoint;
         }
 
         private void HideToolTip()
