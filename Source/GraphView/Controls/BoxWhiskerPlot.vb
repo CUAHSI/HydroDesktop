@@ -186,8 +186,8 @@ Namespace Controls
                     'gPane.YAxis.Type = ZedGraph.AxisType.Linear
                     gPane.YAxis.Title.Text = options.GetVariableWithUnitsString()
                     gPane.YAxis.Title.FontSpec.Size = 12
-                    If gPane.YAxis.Title.Text.Length > 50 Then
-                        gPane.YAxis.Title.Text = gPane.YAxis.Title.Text.Substring(0, 50) + "..."
+                    If gPane.YAxis.Title.Text.Length > 40 Then
+                        gPane.YAxis.Title.Text = gPane.YAxis.Title.Text.Substring(0, 40) + "..."
                     End If
                     If min > 0 And (min - (0.2 * m_StdDev)) < 0 Then
                         gPane.YAxis.Scale.Min = 0

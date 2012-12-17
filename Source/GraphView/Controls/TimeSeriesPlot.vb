@@ -24,6 +24,10 @@ Namespace Controls
             gPane.YAxis.Type = AxisType.Linear
             gPane.Border.IsVisible = False
             gPane.Legend.IsVisible = False
+            gPane.XAxis.IsVisible = False
+            gPane.YAxis.IsVisible = False
+            gPane.Y2Axis.IsVisible = False
+            SetGraphPaneTitle(MessageStrings.No_Data_Plot)
         End Sub
 
         Private Const XColumn As String = "LocalDateTime"
@@ -181,11 +185,17 @@ Namespace Controls
                     If Not needShowDataType Then
                         ' Set legend only for current curve
                         curve.Label.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                        If curve.Label.Text.Length > 70 Then
+                            curve.Label.Text = curve.Label.Text.Substring(0, 70) + "..."
+                        End If
                     Else
                         ' Update legend for all curves
                         For Each c In zgTimeSeries.GraphPane.CurveList
                             Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                             c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                            If c.Label.Text.Length > 70 Then
+                                c.Label.Text = curve.Label.Text.Substring(0, 70) + "..."
+                            End If
                         Next
                     End If
 
@@ -328,8 +338,8 @@ Namespace Controls
                         Dim NewAsix As New YAxis()
                         NewAsix.Title.Text = AsixsList(i)
                         NewAsix.Title.FontSpec.Size = 12
-                        If NewAsix.Title.Text.Length > 50 Then
-                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        If NewAsix.Title.Text.Length > 40 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 40) + "..."
                         End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
@@ -340,8 +350,8 @@ Namespace Controls
                         Dim NewAsix As New Y2Axis()
                         NewAsix.Title.Text = AsixsList(i)
                         NewAsix.Title.FontSpec.Size = 12
-                        If NewAsix.Title.Text.Length > 50 Then
-                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        If NewAsix.Title.Text.Length > 40 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 40) + "..."
                         End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
