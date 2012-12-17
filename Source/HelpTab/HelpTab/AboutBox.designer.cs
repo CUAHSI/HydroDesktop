@@ -74,7 +74,7 @@
             this.lblCopyright.Name = "lblCopyright";
             this.lblCopyright.Size = new System.Drawing.Size(190, 16);
             this.lblCopyright.TabIndex = 3;
-            this.lblCopyright.Text = "Copyright:  CUAHSI, 2010-2013";
+            this.lblCopyright.Text = "Copyright:  CUAHSI, 2010-";
             // 
             // label1
             // 
@@ -91,6 +91,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 189);
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblCopyright);
             this.Controls.Add(this.lblVersionInfo);
