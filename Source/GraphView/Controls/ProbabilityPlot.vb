@@ -125,7 +125,7 @@ Namespace Controls
                 'Setting title
                 gPane.Title.Text = m_VariableWithUnits & vbCrLf & " at " & m_Site
                 gPane.Title.FontSpec.Size = 14
-               
+
                 '6. Create the Pts for the Line
                 ptList = New PointPairList
 
@@ -205,11 +205,17 @@ Namespace Controls
                 If Not needShowDataType Then
                     ' Set legend only for current curve
                     probLine.Label.Text = options.SiteName + ", " + options.VariableName + ", ID: " + options.SeriesID.ToString
+                    If probLine.Label.Text.Length > 70 Then
+                        probLine.Label.Text = probLine.Label.Text.Substring(0, 70) + "..."
+                    End If
                 Else
                     ' Update legend for all curves
                     For Each c In zgProbabilityPlot.GraphPane.CurveList
                         Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                         c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
+                        If probLine.Label.Text.Length > 70 Then
+                            probLine.Label.Text = probLine.Label.Text.Substring(0, 70) + "..."
+                        End If
                     Next
                 End If
 
@@ -464,7 +470,7 @@ Namespace Controls
                     End If
                 End If
 
-                End If
+            End If
         End Sub
 
         Private Sub AddLabelToPlot(ByRef gpane As GraphPane, ByVal label As String, ByVal xLoc As Double)
@@ -602,8 +608,8 @@ Namespace Controls
                         Dim NewAsix As New YAxis()
                         NewAsix.Title.Text = AsixsList(i)
                         NewAsix.Title.FontSpec.Size = 12
-                        If NewAsix.Title.Text.Length > 50 Then
-                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        If NewAsix.Title.Text.Length > 40 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 40) + "..."
                         End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False
@@ -614,8 +620,8 @@ Namespace Controls
                         Dim NewAsix As New Y2Axis()
                         NewAsix.Title.Text = AsixsList(i)
                         NewAsix.Title.FontSpec.Size = 12
-                        If NewAsix.Title.Text.Length > 50 Then
-                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 50) + "..."
+                        If NewAsix.Title.Text.Length > 40 Then
+                            NewAsix.Title.Text = NewAsix.Title.Text.Substring(0, 40) + "..."
                         End If
                         NewAsix.MajorTic.IsInside = False
                         NewAsix.MinorTic.IsInside = False

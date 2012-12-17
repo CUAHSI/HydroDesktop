@@ -124,7 +124,7 @@
     <value>Export Time Series...</value>
   </data>
   <data name="No_Data_Plot" xml:space="preserve">
-    <value>No Data To Plot</value>
+    <value>Choose one or more data series to plot.</value>
   </data>
   <data name="Number_Observations" xml:space="preserve">
     <value>Number of Observations</value>
