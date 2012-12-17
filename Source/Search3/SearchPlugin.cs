@@ -696,7 +696,7 @@ namespace Search3
             App.HeaderControl.Add(_currentKeywords);
             App.HeaderControl.Add(_dropdownKeywords);
             App.HeaderControl.Add(_rbAddMoreKeywords);
-
+  
             // Clear current keywords text
             _currentKeywords.Text = string.Empty;
 
