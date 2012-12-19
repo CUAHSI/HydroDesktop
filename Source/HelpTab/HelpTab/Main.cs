@@ -20,6 +20,7 @@ namespace HelpTab
 
         // These are configurable
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
+        private readonly string _remoteHelpUri = Properties.Settings.Default.remoteHelpUri;
         private readonly string _discussionForumUri = Properties.Settings.Default.discussionForumUri;
         private readonly string _issueTrackerUri = Properties.Settings.Default.issueTrackerUri;
         private readonly string _commentMailtoLink = Properties.Settings.Default.commentMailtoLink;
@@ -179,7 +180,16 @@ namespace HelpTab
         {
             try
             {
-                LocalHelp.OpenHelpFile(_localHelpUri);
+
+                if (WebUtilities.IsInternetAvailable() == false)
+                {
+                    LocalHelp.OpenHelpFile(_localHelpUri);
+                }
+                else
+                {
+                    OpenUri(_remoteHelpUri);    
+                }
+
             }
             catch (Exception ex)
             {
