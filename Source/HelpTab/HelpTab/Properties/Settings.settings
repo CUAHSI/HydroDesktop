@@ -17,7 +17,7 @@
     <Setting Name="commentMailtoLink" Type="System.String" Scope="User">
       <Value Profile="(Default)">mailto:questions@cuahsi.org?subject=HydroDesktop&amp;body=Dear CUAHSI User Support Specialist,%0A%0A</Value>
     </Setting>
-    <Setting Name="localHelpUri" Type="System.String" Scope="User">
+    <Setting Name="localHelpUri" Type="System.String" Scope="Application">
       <Value Profile="(Default)">HydroDesktop User Guide.pdf</Value>
     </Setting>
   </Settings>
