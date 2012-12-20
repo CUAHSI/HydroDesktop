@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydroDesktop.Main.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="QuickStartGuideName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HydroDesktop_Quick_Start_Guide_1.5.pdf</Value>
+    </Setting>
+    <Setting Name="SampleProjectsDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">hydrodesktop_sample_projects</Value>
+    </Setting>
+    <Setting Name="IsWelcomeScreenDisplayed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
