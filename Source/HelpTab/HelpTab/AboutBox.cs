@@ -14,7 +14,10 @@ namespace HelpTab
 
         private void AboutBox_Load(object sender, EventArgs e)
         {
-            lblVersionInfo.Text = AppContext.Instance.ProductVersion;
+            lblVersionInfo.Text += AppContext.Instance.ProductVersion;
+            DateTime copyDateTime = DateTime.Now; 
+            string year = copyDateTime.Year.ToString();
+            lblCopyright.Text += year;
             linkLabel1.Links.Remove(linkLabel1.Links[0]);
             linkLabel1.Links.Add(0, linkLabel1.Text.Length, "http://www.hydrodesktop.org");
 

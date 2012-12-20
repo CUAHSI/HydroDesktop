@@ -116,8 +116,8 @@ Namespace Controls
 
                     gPane.XAxis.Title.Text = options.GetVariableWithUnitsString()
                     gPane.XAxis.Title.FontSpec.Size = 12
-                    If gPane.XAxis.Title.Text.Length > 50 Then
-                        gPane.XAxis.Title.Text = gPane.XAxis.Title.Text.Substring(0, 50) + "..."
+                    If gPane.XAxis.Title.Text.Length > 40 Then
+                        gPane.XAxis.Title.Text = gPane.XAxis.Title.Text.Substring(0, 40) + "..."
                     End If
                     gPane.XAxis.MinorTic.IsAllTics = False
                     gPane.XAxis.Title.Gap = 0.2
