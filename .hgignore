@@ -57,3 +57,5 @@ glob:*.orig
 Source/Packages/
 Documentation/OnlineHelp/build/
 Source/packages/
+Source/HDReferenceFixer.exe
+Source/DataAggregation.1.5.11.nupkg
