@@ -84,15 +84,12 @@ namespace HelpTab.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("HydroDesktop User Guide.pdf")]
         public string localHelpUri {
             get {
                 return ((string)(this["localHelpUri"]));
-            }
-            set {
-                this["localHelpUri"] = value;
             }
         }
     }

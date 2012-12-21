@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="helpRelativePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">UserGuide</Value>
+      <Value Profile="(Default)">Help\html</Value>
     </Setting>
   </Settings>
 </SettingsFile>
