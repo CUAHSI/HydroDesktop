@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace HydroDesktop.Help
 {
@@ -23,7 +24,7 @@ namespace HydroDesktop.Help
 		public static string GetHelpPath ()
 		{
 			string hydroDesktopFolder = AppDomain.CurrentDomain.BaseDirectory;
-			string helpPath = Path.Combine ( hydroDesktopFolder, _helpRelativePath );
+            string helpPath = Path.Combine ( hydroDesktopFolder, _helpRelativePath );
 			return helpPath;
 		}
 
@@ -39,8 +40,8 @@ namespace HydroDesktop.Help
 			{
 				throw new Exception ( "Could not open help file. The system cannot find the directory at '" + rootHelpPath + "'." );
 			}
-
-			string helpFilePath = Path.Combine ( rootHelpPath, RelativeFileLocation );
+        
+            string helpFilePath = Path.Combine ( rootHelpPath, RelativeFileLocation );
 
 			if ( File.Exists ( helpFilePath ) == false )
 			{

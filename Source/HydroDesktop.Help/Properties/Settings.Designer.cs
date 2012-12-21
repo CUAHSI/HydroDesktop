@@ -25,7 +25,7 @@ namespace HydroDesktop.Help.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("UserGuide")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Help\\html")]
         public string helpRelativePath {
             get {
                 return ((string)(this["helpRelativePath"]));
