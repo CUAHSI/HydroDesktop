@@ -125,6 +125,7 @@ namespace SeriesView
             btnUncheckAll.Enabled = enable;
             btnRefresh.Enabled = enable;
             btnOptions.Enabled = enable;
+            btnDelete.Enabled = enable;
             radAll.Enabled = enable;
             radSimple.Enabled = enable;
             radComplex.Enabled = enable;
@@ -421,7 +422,7 @@ namespace SeriesView
 
         private void SetChecked(bool isCheckedValue)
         {
-            if (_checkedAllChanging) return; // to avoid multiply checking/un-checking
+            if (_checkedAllChanging) return; // to avoid multiple checking/un-checking
 
             _checkedAllChanging = true;
             try
@@ -438,7 +439,7 @@ namespace SeriesView
                     var dialogResult = MessageBox.Show(
                         string.Format("Do you really want to check {0} series?", rowsToProcess.Count) +
                         Environment.NewLine
-                        + "It make take a long time.", "Series View", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                        + "It may take a long time.", "Series View", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                         MessageBoxDefaultButton.Button2
                         );
                     if (dialogResult != DialogResult.Yes) return;
@@ -789,6 +790,7 @@ namespace SeriesView
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
+            SetEnableToButtons(false);
             var ds = new DisplaySettings
                          {
                              SiteDisplayColumn = SiteDisplayColumn,
@@ -798,7 +800,28 @@ namespace SeriesView
             {
                 SiteDisplayColumn = ds.SiteDisplayColumn;
             }
+            SetEnableToButtons(true);
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            SetEnableToButtons(false);
+            if (MessageBox.Show("Delete all of the checked series?",
+                                            "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
+            {
+              int[] CheckedRows = GetCheckedIDs(); // Gets all the ids of rows that are checked
+
+                foreach (var id in CheckedRows ) // Deletes all those rows with thoses ids
+                {
+                    var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
+                    manager.DeleteSeries(id);
+                    RefreshSelection();
+                }
+            }
+            SetEnableToButtons(true);
+            
+        }
+
     }
 }
 

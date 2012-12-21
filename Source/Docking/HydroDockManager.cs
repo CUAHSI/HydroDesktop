@@ -261,7 +261,7 @@ namespace HydroDesktop.Docking
                 MainDockPanel.DockRightPortion = (double)size.Width / MainDockPanel.Width;
 
             if (dockStyle == DockStyle.Left)
-                MainDockPanel.DockLeftPortion = (double)size.Width / MainDockPanel.Width;
+                MainDockPanel.DockLeftPortion = ((double)size.Width+40) / MainDockPanel.Width; // 40 added to make all the buttons in the graph panel viewable from the start -Eric Hullinger
 
             if (dockStyle == DockStyle.Top)
                 MainDockPanel.DockTopPortion = (double)size.Height / MainDockPanel.Height;
