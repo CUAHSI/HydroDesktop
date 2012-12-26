@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
+using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
 
 namespace DataAggregation
@@ -15,6 +17,12 @@ namespace DataAggregation
     public class DataAggregationPlugin : Extension, IDataAggregationPlugin
     {
         private const string Interpolation_Root_Key = "kInterpolation_Methods";
+
+        /// <summary>
+        /// Series View
+        /// </summary>
+        [Import("SeriesControl", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
 
         #region Extension methods
 
@@ -72,7 +80,7 @@ namespace DataAggregation
 
         private void ClickMergeLayersEventHandler(object sender, EventArgs eventArgs)
         {
-            using (var form = new MergeTool.MergeLayersForm(App))
+            using (var form = new MergeTool.MergeLayersForm(App, SeriesControl))
             {
                 form.ShowDialog();
             }
@@ -81,7 +89,7 @@ namespace DataAggregation
         private void ClickShowValueInMapEventHandler(object sender, EventArgs eventArgs)
         {
             var layer = App.Map.MapFrame.GetAllLayers().FirstOrDefault(f => f.IsSelected) as IFeatureLayer;
-            if (Aggregator.CanAggregateLayer(layer))
+            if (Aggregator.ContainsSeries(layer))
             {
                 Aggregator.ShowAggregationSettingsDialog(layer);
             }
@@ -134,7 +142,7 @@ namespace DataAggregation
         {
             // Check for DataAggregation 
             var fl = layer as IFeatureLayer;
-            if (Aggregator.CanAggregateLayer(fl))
+            if (Aggregator.ContainsSeries(fl))
             {
                 Aggregator.UpdateContextMenu(fl);
             }

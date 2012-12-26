@@ -8,22 +8,28 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Common.UserMessage;
+using HydroDesktop.Interfaces;
+using Hydrodesktop.Common;
 
 namespace DataAggregation.MergeTool
 {
     partial class MergeLayersForm : Form
     {
         private readonly AppManager _app;
+        private readonly ISeriesSelector _seriesControl;
 
-        public MergeLayersForm(AppManager app)
+        public MergeLayersForm(AppManager app, ISeriesSelector seriesControl)
         {
             if (app == null) throw new ArgumentNullException("app");
+            if (seriesControl == null) throw new ArgumentNullException("seriesControl");
 
             _app = app;
+            _seriesControl = seriesControl;
             InitializeComponent();
         }
 
@@ -82,24 +88,38 @@ namespace DataAggregation.MergeTool
             // Start background worker
             EnableControls(false);
             var bw = new BackgroundWorker();
-            bw.DoWork += (o, args) => MergeLayers.Merge(new MergeData
+            bw.DoWork += delegate(object s, DoWorkEventArgs args)
                 {
-                    NewLayerName = tbLayerName.Text,
-                    Layers = selectedLayers.Select(s => s.Layer).ToList(),
-                });
+                    var layer = MergeLayers.Merge(new MergeData
+                        {
+                            NewLayerName = tbLayerName.Text,
+                            Layers = selectedLayers.Select(ss => ss.Layer).ToList(),
+                            Map = _app.Map,
+                        });
+                    args.Result = layer;
+                };
             bw.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
                 {
-                    EnableControls(true);
                     if (args.Error == null)
                     {
+                        // Due to DotSpatial restrictions next code should be done in UI-thread
+                        var fs = (IFeatureSet)args.Result;
+                        fs.Save();
+                        fs = FeatureSet.Open(fs.Filename); //re-open the featureSet from the file
+                        var myLayer = new MapPointLayer(fs)
+                        {
+                            LegendText = tbLayerName.Text
+                        };
+                        var dataSitesGroup = _app.Map.GetDataSitesLayer(true);
+                        dataSitesGroup.Add(myLayer);
+                        _seriesControl.RefreshSelection();
+
                         AppContext.Instance.Get<IUserMessage>().Info("Finished successfully.");
                     }
                     else
                     {
                         AppContext.Instance.Get<IUserMessage>().Error("Finished with error: " + args.Error, args.Error);
                     }
-
-                    //var resultLayer = (IFeatureLayer)args.Result;
                     
                     DialogResult = DialogResult.OK;
                 };
