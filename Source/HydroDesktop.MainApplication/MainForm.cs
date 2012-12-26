@@ -41,7 +41,7 @@ namespace HydroDesktop.MainApplication
             // we just send needed info through Add() method.
             appManager.DockManager.Add(new DockablePanel { Key = "save_snapshot" });
 
-           appManager.ProgressHandler.Progress("", 0, "Go to the extension manager to find additional extensions!");
+            appManager.ProgressHandler.Progress("", 0, "Go to the extension manager to find additional extensions!");
         }
 
         private void LoadCustomBranding(Properties.Settings settings)

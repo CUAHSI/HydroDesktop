@@ -24,11 +24,11 @@ namespace DataAggregation
         private const string MENU_ITEM_NAME = "Show Data Values in Map";
 
         /// <summary>
-        /// Tests that layer contains series and can be aggregated.
+        /// Tests that layer can be aggregated.
         /// </summary>
         /// <param name="layer">Layer to test</param>
         /// <returns>True - if layer can be aggregated, otherwise - false.</returns>
-        public static bool ContainsSeries(IFeatureLayer layer)
+        public static bool CanAggregateLayer(IFeatureLayer layer)
         {
             if (layer == null) return false;
             return new[] { "SeriesID", "StartDate", "EndDate" }.All(fieldName => layer.DataSet.DataTable.Columns.Contains(fieldName));
