@@ -72,7 +72,10 @@ namespace DataAggregation
 
         private void ClickMergeLayersEventHandler(object sender, EventArgs eventArgs)
         {
-            //throw new NotImplementedException();
+            using (var form = new MergeTool.MergeLayersForm(App))
+            {
+                form.ShowDialog();
+            }
         }
 
         private void ClickShowValueInMapEventHandler(object sender, EventArgs eventArgs)

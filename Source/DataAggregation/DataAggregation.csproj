@@ -95,6 +95,13 @@
     <Compile Include="AggregationSettings.cs" />
     <Compile Include="Aggregator.cs" />
     <Compile Include="DataAggregationPlugin.cs" />
+    <Compile Include="MergeTool\MergeLayers.cs" />
+    <Compile Include="MergeTool\MergeLayersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MergeTool\MergeLayersForm.Designer.cs">
+      <DependentUpon>MergeLayersForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MessageStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -136,6 +143,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MergeTool\MergeLayersForm.resx">
+      <DependentUpon>MergeLayersForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
@@ -149,6 +159,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\arrow_merge.ico" />
     <Content Include="Resources\arrow_merge16.png" />
     <Content Include="Resources\arrow_merge32.png" />
     <Content Include="Resources\show_values_in_map.ico" />
