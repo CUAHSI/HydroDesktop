@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using HydroDesktop.Interfaces.ObjectModel;
@@ -48,5 +49,11 @@ namespace HydroDesktop.Interfaces
 
         void InsertNewTheme(long seriesID, long newSeriesID);
 
+        /// <summary>
+        /// Add theme, which contains a list of series
+        /// </summary>
+        /// <param name="themeName">Theme name</param>
+        /// <param name="series">List of series</param>
+        void AddTheme(string themeName, List<long> series);
     }
 }

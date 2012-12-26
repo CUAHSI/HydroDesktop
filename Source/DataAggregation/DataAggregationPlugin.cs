@@ -1,11 +1,14 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
+using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
+using Hydrodesktop.Common;
 
 namespace DataAggregation
 {
@@ -15,6 +18,12 @@ namespace DataAggregation
     public class DataAggregationPlugin : Extension, IDataAggregationPlugin
     {
         private const string Interpolation_Root_Key = "kInterpolation_Methods";
+
+        /// <summary>
+        /// Series View
+        /// </summary>
+        [Import("SeriesControl", typeof(ISeriesSelector))]
+        internal ISeriesSelector SeriesControl { get; private set; }
 
         #region Extension methods
 
@@ -64,21 +73,24 @@ namespace DataAggregation
                 App.HeaderControl.Add(new SimpleActionItem(MessageStrings.Merge_Layers, ClickMergeLayersEventHandler)
                 {
                     RootKey = Interpolation_Root_Key,
-                    LargeImage = null,
-                    SmallImage = null,
+                    LargeImage = Properties.Resources.arrow_merge32,
+                    SmallImage = Properties.Resources.arrow_merge16,
                 });
             }
         }
 
         private void ClickMergeLayersEventHandler(object sender, EventArgs eventArgs)
         {
-            //throw new NotImplementedException();
+            using (var form = new MergeTool.MergeLayersForm(App, SeriesControl))
+            {
+                form.ShowDialog();
+            }
         }
 
         private void ClickShowValueInMapEventHandler(object sender, EventArgs eventArgs)
         {
             var layer = App.Map.MapFrame.GetAllLayers().FirstOrDefault(f => f.IsSelected) as IFeatureLayer;
-            if (Aggregator.CanAggregateLayer(layer))
+            if (Aggregator.ContainsSeries(layer))
             {
                 Aggregator.ShowAggregationSettingsDialog(layer);
             }
@@ -119,6 +131,16 @@ namespace DataAggregation
                 foreach (var child in group.GetLayers())
                     DettachLayerFromPlugin(child);
             }
+
+            var mg = layer as IMapGroup;
+            if (mg != null && mg.LegendText == LayerConstants.SearchGroupName)
+            {
+                var toRemove = mg.ContextMenuItems.FirstOrDefault(d => d.Name == MessageStrings.Merge_Layers);
+                if (toRemove != null)
+                {
+                    mg.ContextMenuItems.Remove(toRemove);
+                }
+            }
         }
 
         #endregion
@@ -131,7 +153,7 @@ namespace DataAggregation
         {
             // Check for DataAggregation 
             var fl = layer as IFeatureLayer;
-            if (Aggregator.CanAggregateLayer(fl))
+            if (Aggregator.ContainsSeries(fl))
             {
                 Aggregator.UpdateContextMenu(fl);
             }
@@ -144,6 +166,18 @@ namespace DataAggregation
 
                 foreach (var child in group.GetLayers())
                     AttachLayerToPlugin(child);
+            }
+
+            // Update context menu for 'Data Sites'  group
+            var mg = layer as IMapGroup;
+            if (mg != null && mg.LegendText == LayerConstants.SearchGroupName)
+            {
+                if (mg.ContextMenuItems.All(d => d.Name != MessageStrings.Merge_Layers))
+                {
+                    mg.ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.Merge_Layers,
+                                                                  Properties.Resources.arrow_merge16,
+                                                                  ClickMergeLayersEventHandler));
+                }
             }
         }
     }
