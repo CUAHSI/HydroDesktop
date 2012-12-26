@@ -65,6 +65,8 @@ namespace HydroDesktop.DataDownload.Downloading
             get { return chbAutoScroll.Checked; }
         }
 
+        private bool cancelled { get; set; }
+
         #endregion
 
         #region Private methods
@@ -159,7 +161,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private void DoRedownload(ICollection<int> indeces = null)
         {
-            btnCancel.Enabled = true;
+            toggleToCancelButton();
             redownloadControl1.Enabled = false;
 
             SubcribeToManagerEvents();
@@ -324,15 +326,17 @@ namespace HydroDesktop.DataDownload.Downloading
 
         void _manager_Canceled(object sender, EventArgs e)
         {
-            btnCancel.Enabled = false;
+            cancelled = true;
+            btnCancelClose.Enabled = false;
+            _closeAfterCompleted = true;
         }
 
-        void _manager_Completed(object sender, RunWorkerCompletedEventArgs e)
+        void _manager_Completed(object sender, RunWorkerCompletedEventArgs e) //^
         {
             UnSubcribeFromManagerEvents();
+            toggleToCloseButton();
 
             Show();
-            btnCancel.Enabled = false;
             redownloadControl1.Enabled = true;
             
             if (e.Error != null)
@@ -341,7 +345,7 @@ namespace HydroDesktop.DataDownload.Downloading
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
-            else
+            /*else
             {
                 if (e.Cancelled)
                 {
@@ -361,7 +365,7 @@ namespace HydroDesktop.DataDownload.Downloading
                                                   _manager.Information.WithError),
                                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            }
+            }*/
 
             if (_closeAfterCompleted)
                 Close();
@@ -370,7 +374,14 @@ namespace HydroDesktop.DataDownload.Downloading
         void _manager_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pbTotal.Value = e.ProgressPercentage;
-            lblTotalInfo.Text = e.UserState != null? e.UserState.ToString() : string.Empty;
+            if(cancelled==false)
+            {
+                lblTotalInfo.Text = e.UserState != null? e.UserState.ToString() : string.Empty;
+            }
+            else
+            {
+                lblTotalInfo.Text = "Cancelling. Window will close when complete.";
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -385,7 +396,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private bool DoCancel()
         {
-            if (MessageBox.Show("Downloading in progress. Do you want to cancel it?", 
+            if (!cancelled && MessageBox.Show("Downloading in progress. Do you want to cancel it?", 
                                 "Cancel downloading",
                                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -467,6 +478,21 @@ namespace HydroDesktop.DataDownload.Downloading
                     DoRedownload(GetAllRows(DownloadInfoStatus.Error));
                     break;
             }
+        }
+
+
+        private void toggleToCloseButton()
+        {
+            btnCancelClose.Text = "Close";
+            btnCancelClose.Click -= btnCancel_Click;
+            btnCancelClose.Click += btnHide_Click;
+        }
+
+        private void toggleToCancelButton()
+        {
+            btnCancelClose.Text = "Cancel";
+            btnCancelClose.Click -= btnHide_Click;
+            btnCancelClose.Click += btnCancel_Click;
         }
 
         #endregion
