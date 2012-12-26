@@ -64,8 +64,8 @@ namespace DataAggregation
                 App.HeaderControl.Add(new SimpleActionItem(MessageStrings.Merge_Layers, ClickMergeLayersEventHandler)
                 {
                     RootKey = Interpolation_Root_Key,
-                    LargeImage = null,
-                    SmallImage = null,
+                    LargeImage = Properties.Resources.arrow_merge32,
+                    SmallImage = Properties.Resources.arrow_merge16,
                 });
             }
         }
