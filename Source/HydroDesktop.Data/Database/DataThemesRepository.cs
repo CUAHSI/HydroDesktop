@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Text;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
@@ -179,6 +181,28 @@ namespace HydroDesktop.Database
             SQLstring += ThemeID + "," + newSeriesID + ")";
 
             DbOperations.ExecuteNonQuery(SQLstring);
+        }
+
+        public void AddTheme(string themeName, List<long> series)
+        {
+            var str = "Insert into DataThemeDescriptions(ThemeName) Values(@p0)" + LastRowIDSelect;
+            var strId = DbOperations.ExecuteSingleOutput(str, new object[]
+                                                                 {
+                                                                   themeName
+                                                                 });
+            var themeId = Convert.ToInt64(strId);
+            var parameters = new object[series.Count + 1];
+            parameters[0] = themeId;
+
+            var query = new StringBuilder();
+            for (int i = 0; i < series.Count; i++)
+            {
+                parameters[i + 1] = series[i];
+                query.AppendFormat("Insert into DataThemes(ThemeID, SeriesID) Values(@p0, @p{0});", i + 1);
+                query.AppendLine();
+            }
+
+            DbOperations.ExecuteNonQuery(query.ToString(), parameters);
         }
 
         #endregion

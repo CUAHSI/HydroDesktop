@@ -8,6 +8,7 @@ using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
+using Hydrodesktop.Common;
 
 namespace DataAggregation
 {
@@ -130,6 +131,16 @@ namespace DataAggregation
                 foreach (var child in group.GetLayers())
                     DettachLayerFromPlugin(child);
             }
+
+            var mg = layer as IMapGroup;
+            if (mg != null && mg.LegendText == LayerConstants.SearchGroupName)
+            {
+                var toRemove = mg.ContextMenuItems.FirstOrDefault(d => d.Name == MessageStrings.Merge_Layers);
+                if (toRemove != null)
+                {
+                    mg.ContextMenuItems.Remove(toRemove);
+                }
+            }
         }
 
         #endregion
@@ -155,6 +166,18 @@ namespace DataAggregation
 
                 foreach (var child in group.GetLayers())
                     AttachLayerToPlugin(child);
+            }
+
+            // Update context menu for 'Data Sites'  group
+            var mg = layer as IMapGroup;
+            if (mg != null && mg.LegendText == LayerConstants.SearchGroupName)
+            {
+                if (mg.ContextMenuItems.All(d => d.Name != MessageStrings.Merge_Layers))
+                {
+                    mg.ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.Merge_Layers,
+                                                                  Properties.Resources.arrow_merge16,
+                                                                  ClickMergeLayersEventHandler));
+                }
             }
         }
     }
