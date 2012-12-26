@@ -10,6 +10,8 @@ using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
 using HydroDesktop.Configuration;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
 using Hydrodesktop.Common;
 
 namespace DataAggregation.MergeTool
@@ -30,6 +32,23 @@ namespace DataAggregation.MergeTool
         {
             if (data == null) throw new ArgumentNullException("data");
 
+            // Insert new theme into database
+            var series = new HashSet<long>();
+            foreach (var layer in data.Layers)
+            {
+                foreach (var feature in layer.DataSet.Features)
+                {
+                    var id = feature.DataRow["SeriesID"];
+                    if (id != DBNull.Value && id != null)
+                    {
+                        series.Add(Convert.ToInt64(id));
+                    }
+                }
+            }
+            var repo = RepositoryFactory.Instance.Get<IDataThemesRepository>();
+            repo.AddTheme(data.NewLayerName, series.ToList());
+
+            // Create new Feature Set
             IFeatureSet fs = new FeatureSet(FeatureType.Point);
             foreach (var layer in data.Layers)
             {
