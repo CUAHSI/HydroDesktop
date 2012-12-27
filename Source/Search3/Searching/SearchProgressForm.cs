@@ -19,7 +19,7 @@ namespace Search3.Searching
         {
             if (searcher == null) throw new ArgumentNullException("searcher");
             _searcher = searcher;
-
+           
             InitializeComponent();
 
             SubscribeToSearcherEvents();
@@ -57,8 +57,7 @@ namespace Search3.Searching
             }
             btnCancel.Enabled = false;
             btnHide.Text = "Close";
-            Text = "Search Finished";
-
+        
             string message;
             switch (e.Reason)
             {

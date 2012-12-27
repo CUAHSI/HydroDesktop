@@ -38,7 +38,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(346, 217);
+            this.btnCancel.Location = new System.Drawing.Point(346, 200);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 0;
@@ -56,9 +56,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(13, 49);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(12, 12);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(408, 26);
             this.progressBar1.TabIndex = 2;
@@ -66,7 +66,7 @@
             // btnHide
             // 
             this.btnHide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHide.Location = new System.Drawing.Point(265, 217);
+            this.btnHide.Location = new System.Drawing.Point(265, 200);
             this.btnHide.Name = "btnHide";
             this.btnHide.Size = new System.Drawing.Size(75, 23);
             this.btnHide.TabIndex = 3;
@@ -76,11 +76,11 @@
             // 
             // lbOutput
             // 
-            this.lbOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lbOutput.FormattingEnabled = true;
-            this.lbOutput.Location = new System.Drawing.Point(13, 81);
+            this.lbOutput.Location = new System.Drawing.Point(12, 56);
             this.lbOutput.Name = "lbOutput";
             this.lbOutput.Size = new System.Drawing.Size(408, 121);
             this.lbOutput.TabIndex = 5;
@@ -89,7 +89,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 252);
+            this.ClientSize = new System.Drawing.Size(433, 254);
             this.Controls.Add(this.lbOutput);
             this.Controls.Add(this.btnHide);
             this.Controls.Add(this.progressBar1);
@@ -99,7 +99,7 @@
             this.MinimizeBox = false;
             this.Name = "SearchProgressForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Searching...";
+            this.Text = "Search Progress";
             this.ResumeLayout(false);
             this.PerformLayout();
 
