@@ -259,6 +259,7 @@
     <None Include="Resources\hand_16x16.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\download_16.ico" />
     <Content Include="Resources\table_16x16.png" />
     <Content Include="Resources\table_32x32.png" />
     <None Include="Resources\option_32.png" />
