@@ -331,7 +331,7 @@ namespace HydroDesktop.DataDownload.Downloading
             _closeAfterCompleted = true;
         }
 
-        void _manager_Completed(object sender, RunWorkerCompletedEventArgs e) //^
+        void _manager_Completed(object sender, RunWorkerCompletedEventArgs e) //^^
         {
             UnSubcribeFromManagerEvents();
             toggleToCloseButton();

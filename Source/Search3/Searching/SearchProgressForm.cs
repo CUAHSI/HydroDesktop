@@ -55,8 +55,10 @@ namespace Search3.Searching
             {
                 _searcher.ShowUI();
             }
-            btnCancel.Enabled = false;
-            btnHide.Text = "Close";
+            btnCloseCancel.Text = "Close";
+            btnCloseCancel.Enabled = true;
+            btnCloseCancel.Click -= btnCancel_Click;
+            btnCloseCancel.Click += btnHide_Click;
             Text = "Search Finished";
 
             string message;
@@ -117,6 +119,7 @@ namespace Search3.Searching
                     DialogResult.OK)
                 {
                     _searcher.Cancel();
+                    btnCloseCancel.Enabled = false;
                 }
             }
         }
