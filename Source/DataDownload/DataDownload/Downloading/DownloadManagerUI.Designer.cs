@@ -363,7 +363,6 @@
             this.Controls.Add(this.tlpMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(530, 270);
             this.Name = "DownloadManagerUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
