@@ -117,21 +117,21 @@ namespace HydroDesktop.Main
 
             d[0] = Math.Floor(coord[0]);
             coord[0] -= d[0];
-            coord[0] *= 60;
+            coord[0] *= 100;
 
             m[0] = Math.Floor(coord[0]);
             coord[0] -= m[0];
-            coord[0] *= 60;
+            coord[0] *= 100;
 
             s[0] = Math.Floor(coord[0]);
 
             d[1] = Math.Floor(coord[1]);
             coord[1] -= d[1];
-            coord[1] *= 60;
+            coord[1] *= 100;
 
             m[1] = Math.Floor(coord[1]);
             coord[1] -= m[1];
-            coord[1] *= 60;
+            coord[1] *= 100;
 
             s[1] = Math.Floor(coord[1]);
 

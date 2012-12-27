@@ -19,7 +19,7 @@ namespace Search3.Searching
         {
             if (searcher == null) throw new ArgumentNullException("searcher");
             _searcher = searcher;
-           
+
             InitializeComponent();
 
             SubscribeToSearcherEvents();
@@ -55,9 +55,12 @@ namespace Search3.Searching
             {
                 _searcher.ShowUI();
             }
-            btnCancel.Enabled = false;
-            btnHide.Text = "Close";
-        
+            btnCloseCancel.Text = "Close";
+            btnCloseCancel.Enabled = true;
+            btnCloseCancel.Click -= btnCancel_Click;
+            btnCloseCancel.Click += btnHide_Click;
+            Text = "Search Finished";
+
             string message;
             switch (e.Reason)
             {
@@ -116,6 +119,7 @@ namespace Search3.Searching
                     DialogResult.OK)
                 {
                     _searcher.Cancel();
+                    btnCloseCancel.Enabled = false;
                 }
             }
         }

@@ -29,11 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DownloadManagerUI));
-            this.btnCancel = new System.Windows.Forms.Button();
             this.pbTotal = new System.Windows.Forms.ProgressBar();
             this.lbOutput = new System.Windows.Forms.ListBox();
             this.lblTotalInfo = new System.Windows.Forms.Label();
-            this.btnHide = new System.Windows.Forms.Button();
+            this.btnCancelClose = new System.Windows.Forms.Button();
             this.btnDetails = new System.Windows.Forms.Button();
             this.dgvDownloadData = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -67,17 +66,6 @@
             this.paWorkButtons.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnCancel
-            // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(5, 39);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 0;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
             // pbTotal
             // 
             this.pbTotal.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -105,16 +93,16 @@
             this.lblTotalInfo.TabIndex = 7;
             this.lblTotalInfo.Text = "lblTotalInfo";
             // 
-            // btnHide
+            // btnCancelClose
             // 
-            this.btnHide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHide.Location = new System.Drawing.Point(5, 10);
-            this.btnHide.Name = "btnHide";
-            this.btnHide.Size = new System.Drawing.Size(75, 23);
-            this.btnHide.TabIndex = 9;
-            this.btnHide.Text = "Close";
-            this.btnHide.UseVisualStyleBackColor = true;
-            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
+            this.btnCancelClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancelClose.Location = new System.Drawing.Point(5, 10);
+            this.btnCancelClose.Name = "btnCancelClose";
+            this.btnCancelClose.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelClose.TabIndex = 9;
+            this.btnCancelClose.Text = "Cancel";
+            this.btnCancelClose.UseVisualStyleBackColor = true;
+            this.btnCancelClose.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnDetails
             // 
@@ -289,8 +277,7 @@
             // 
             // paCommonButtons
             // 
-            this.paCommonButtons.Controls.Add(this.btnCancel);
-            this.paCommonButtons.Controls.Add(this.btnHide);
+            this.paCommonButtons.Controls.Add(this.btnCancelClose);
             this.paCommonButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.paCommonButtons.Location = new System.Drawing.Point(552, 3);
             this.paCommonButtons.Name = "paCommonButtons";
@@ -376,7 +363,6 @@
             this.Controls.Add(this.tlpMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(530, 270);
             this.Name = "DownloadManagerUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -398,11 +384,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ProgressBar pbTotal;
         private System.Windows.Forms.ListBox lbOutput;
         private System.Windows.Forms.Label lblTotalInfo;
-        private System.Windows.Forms.Button btnHide;
+        private System.Windows.Forms.Button btnCancelClose;
         private System.Windows.Forms.Button btnDetails;
         private System.Windows.Forms.DataGridView dgvDownloadData;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

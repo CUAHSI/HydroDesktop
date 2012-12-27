@@ -144,6 +144,7 @@ namespace Search3.Searching
                         // To test set  MaxDegreeOfParallelism = -1
                         MaxDegreeOfParallelism = 4,
                 };
+
             Parallel.ForEach(servicesWithExtents, serviceLoopOptions, wsInfo =>
             {
                 bgWorker.CheckForCancel();
@@ -184,7 +185,6 @@ namespace Search3.Searching
                     var percentProgress = (currentFinished * 100) / totalTilesCount;
                     bgWorker.ReportProgress(percentProgress, message);
                 });
-
             });
 
             // Collect all series into result list
