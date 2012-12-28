@@ -303,7 +303,7 @@ namespace Search3.Searching
 
             public void CheckForCancel()
             {
-                _parent._cancellationTokenSource.Token.ThrowIfCancellationRequested();
+               _parent._cancellationTokenSource.Token.ThrowIfCancellationRequested();
             }
 
             public void ReportMessage(string message)
