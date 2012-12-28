@@ -33,12 +33,13 @@
             this.lbCurrentOperation = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lbOutput = new System.Windows.Forms.ListBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnCloseCancel
             // 
             this.btnCloseCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCloseCancel.Location = new System.Drawing.Point(346, 217);
+            this.btnCloseCancel.Location = new System.Drawing.Point(346, 187);
             this.btnCloseCancel.Name = "btnCloseCancel";
             this.btnCloseCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCloseCancel.TabIndex = 0;
@@ -56,29 +57,42 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(13, 49);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(13, 10);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(408, 26);
+            this.progressBar1.Size = new System.Drawing.Size(408, 18);
             this.progressBar1.TabIndex = 2;
             // 
             // lbOutput
             // 
-            this.lbOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lbOutput.FormattingEnabled = true;
-            this.lbOutput.Location = new System.Drawing.Point(13, 81);
+            this.lbOutput.Location = new System.Drawing.Point(13, 52);
             this.lbOutput.Name = "lbOutput";
             this.lbOutput.Size = new System.Drawing.Size(408, 121);
             this.lbOutput.TabIndex = 5;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(13, 191);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(251, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Close this window when the search is complete.";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // SearchProgressForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 252);
+            this.ClientSize = new System.Drawing.Size(433, 216);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.lbOutput);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lbCurrentOperation);
@@ -87,7 +101,7 @@
             this.MaximizeBox = false;
             this.Name = "SearchProgressForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Searching...";
+            this.Text = "Search Progress";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,5 +113,6 @@
         private System.Windows.Forms.Label lbCurrentOperation;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ListBox lbOutput;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

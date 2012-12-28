@@ -51,15 +51,22 @@ namespace Search3.Searching
         {
             UnSubscribeToSearcherEvents();
 
-            if (!_searcher.IsUIVisible)
+
+            if (!_searcher.IsUIVisible && !checkBox1.Checked)
             {
                 _searcher.ShowUI();
             }
+
+            if (checkBox1.Checked)
+            {
+                _searcher.HideUI();
+            }
+
             btnCloseCancel.Text = "Close";
             btnCloseCancel.Enabled = true;
             btnCloseCancel.Click -= btnCancel_Click;
             btnCloseCancel.Click += btnHide_Click;
-            Text = "Search Finished";
+           // Text = "Search Finished";
 
             string message;
             switch (e.Reason)
@@ -151,5 +158,10 @@ namespace Search3.Searching
         }
 
         #endregion
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+          
+        }
     }
 }

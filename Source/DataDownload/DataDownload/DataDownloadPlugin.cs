@@ -160,9 +160,11 @@ namespace HydroDesktop.DataDownload
         {
             if (e.ActivePanelKey == "kDataExplorer")
             {
+
                 if (_showSearchResultsPanel)
                 {
                     _btnSearchResults.Toggle();
+                 
                 }
                 _showSearchResultsPanel = false;
             }
@@ -243,8 +245,10 @@ namespace HydroDesktop.DataDownload
             }
 
             _btnSearchResults.Toggling += ShowSearchResults_Click;
-            //_btnSearchResults.Toggle();
+           // _btnSearchResults.Toggle();
             _btnSearchResults.Enabled = false;
+          
+
         }
 
         /// <summary>
@@ -451,12 +455,14 @@ namespace HydroDesktop.DataDownload
 
         private void ShowSearchResults_Click(object sender, EventArgs e)
         {
+            
             _showSearchResultsPanel = !_showSearchResultsPanel;
 
             if (ShowSearchResultsPanel)
                 App.DockManager.SelectPanel("kDataExplorer");
             else
                 App.DockManager.HidePanel("kDataExplorer");
+              
         }
 
         private void DoShowSearchResults(object sender, EventArgs e)
