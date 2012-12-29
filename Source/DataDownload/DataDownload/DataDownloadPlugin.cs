@@ -162,10 +162,10 @@ namespace HydroDesktop.DataDownload
             {
 
                 if (_showSearchResultsPanel)
-                {
+               {
                     _btnSearchResults.Toggle();
                  
-                }
+               }
                 _showSearchResultsPanel = false;
             }
         }
@@ -243,8 +243,9 @@ namespace HydroDesktop.DataDownload
             {
                 App.DockManager.HidePanel("kDataExplorer");
             }
-
+         
             _btnSearchResults.Toggling += ShowSearchResults_Click;
+
            // _btnSearchResults.Toggle();
             _btnSearchResults.Enabled = false;
           
@@ -461,7 +462,9 @@ namespace HydroDesktop.DataDownload
             if (ShowSearchResultsPanel)
                 App.DockManager.SelectPanel("kDataExplorer");
             else
+            {
                 App.DockManager.HidePanel("kDataExplorer");
+            }
               
         }
 

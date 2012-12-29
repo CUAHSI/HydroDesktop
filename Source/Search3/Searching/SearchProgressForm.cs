@@ -66,6 +66,7 @@ namespace Search3.Searching
             btnCloseCancel.Enabled = true;
             btnCloseCancel.Click -= btnCancel_Click;
             btnCloseCancel.Click += btnHide_Click;
+            checkBox1.Click += checkBox1_CheckedChanged; 
            // Text = "Search Finished";
 
             string message;
@@ -161,7 +162,8 @@ namespace Search3.Searching
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-          
+          if(checkBox1.Checked)
+             _searcher.HideUI();
         }
     }
 }
