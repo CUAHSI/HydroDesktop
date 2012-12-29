@@ -49,9 +49,10 @@ namespace Search3.Settings.UI
             this.tboTypeKeyword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tboTypeKeyword.Location = new System.Drawing.Point(109, 10);
+            this.tboTypeKeyword.Location = new System.Drawing.Point(14, 10);
             this.tboTypeKeyword.Name = "tboTypeKeyword";
-            this.tboTypeKeyword.Size = new System.Drawing.Size(174, 20);
+            this.tboTypeKeyword.ForeColor = System.Drawing.Color.Gray;
+            this.tboTypeKeyword.Size = new System.Drawing.Size(269, 20);
             this.tboTypeKeyword.TabIndex = 52;
             // 
             // lblKeywords
@@ -62,7 +63,6 @@ namespace Search3.Settings.UI
             this.lblKeywords.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblKeywords.Size = new System.Drawing.Size(103, 40);
             this.lblKeywords.TabIndex = 53;
-            this.lblKeywords.Text = "Keywords: Type-in first few letters";
             // 
             // lblKeywordRelation
             // 

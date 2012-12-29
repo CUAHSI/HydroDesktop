@@ -318,6 +318,7 @@
     <None Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\current_view_16.png" />
     <Content Include="Resources\current_view_32.png" />
+    <Content Include="Resources\keyword_16.ico" />
     <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
