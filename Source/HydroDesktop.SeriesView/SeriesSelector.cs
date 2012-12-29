@@ -806,8 +806,8 @@ namespace SeriesView
         private void btnDelete_Click(object sender, EventArgs e)
         {
             SetEnableToButtons(false);
-            if (MessageBox.Show("Delete all of the checked series?",
-                                            "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
+            if (MessageBox.Show("Delete all of the checked data sets?",
+                "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes))
             {
               int[] CheckedRows = GetCheckedIDs(); // Gets all the ids of rows that are checked
 
