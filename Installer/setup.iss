@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.6.0"
-#define SrcApp "HydroDesktop_1_6_0.exe"
+#define AppName "HydroDesktop 1.6.1"
+#define SrcApp "HydroDesktop_1_6_1.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -340,6 +340,8 @@ Type: files; Name: "{userappdata}\HydroDesktop\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
+
+Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_6_1.exe\*"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify
