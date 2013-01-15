@@ -341,7 +341,7 @@ Type: files; Name: "{userappdata}\HydroDesktop_1_4.exe\*"
 Type: files; Name: "{userappdata}\HydroDesktop_1_4\*"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_6_1.exe\*"
+Type: filesandordirs; Name: "{userappdata}\{SrcApp}\*"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify
