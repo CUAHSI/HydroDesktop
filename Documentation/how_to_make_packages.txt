@@ -1,0 +1,10 @@
+﻿Get a template ready for projects
+Drop into visual studio into each project
+name it package.nuspec
+change the links
+verify information in AssemblyInfo
+
+create package - HydroDesktop Core
+create package - HydroDesktop Core Application Extensions
+
+create dependency in other packages that depend on HydroDesktop Core
