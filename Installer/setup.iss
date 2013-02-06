@@ -155,10 +155,10 @@ Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#S
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
 ;include 3rd party packages. These packages are retrieved by the auto-build
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;MenuBar package
