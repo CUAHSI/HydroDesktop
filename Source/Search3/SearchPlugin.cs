@@ -649,11 +649,12 @@ namespace Search3
             {
                 _dropdownKeywords = new DropDownActionItem
                 {
-                    AllowEditingText = false,
+                    AllowEditingText = true,
                     GroupCaption = Msg.Keyword,
                     RootKey = _searchKey,
                     Width = 170,
-                    NullValuePrompt = "Select Keyword"
+                    NullValuePrompt = "Select Keyword",
+                    
                 };
                 _dropdownKeywords.SelectedValueChanged +=
                     delegate(object sender, SelectedValueChangedEventArgs args)
