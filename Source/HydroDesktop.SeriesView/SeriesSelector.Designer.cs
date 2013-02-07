@@ -59,6 +59,7 @@ namespace SeriesView
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.btnOptions);
             this.panel1.Controls.Add(this.btnDelete);
             this.panel1.Controls.Add(this.btnRefresh);
@@ -200,7 +201,7 @@ namespace SeriesView
             this.dgvSeries.Name = "dgvSeries";
             this.dgvSeries.RowHeadersVisible = false;
             this.dgvSeries.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSeries.Size = new System.Drawing.Size(379, 292);
+            this.dgvSeries.Size = new System.Drawing.Size(326, 292);
             this.dgvSeries.TabIndex = 18;
             // 
             // contextMenuStrip1
