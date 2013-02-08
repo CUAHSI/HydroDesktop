@@ -16,6 +16,7 @@ using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.WebServices;
 using Search3.Area;
+using Search3.Keywords;
 using Search3.Properties;
 using Search3.Searching;
 using Search3.Searching.Exceptions;
@@ -34,7 +35,7 @@ namespace Search3
         private SimpleActionItem rbServices;
         private TextEntryActionItem rbStartDate;
         private TextEntryActionItem rbEndDate;
-        
+
         private SimpleActionItem _rbAddMoreKeywords;
         private TextEntryActionItem _currentKeywords;
         private DropDownActionItem _dropdownKeywords;
@@ -51,6 +52,8 @@ namespace Search3
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
         private const string KEYWORDS_SEPARATOR = ";";
+      //  private bool MultiSelect = false;
+     //   private string MultiSelectKeywords;
 
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
@@ -101,32 +104,38 @@ namespace Search3
         private void AddSearchRibbon()
         {
             var head = App.HeaderControl;
-            
+
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
             head.Add(new RootItem(_searchKey, Msg.Search) { SortOrder = -5 });
 
             #region Area group
+            // Added as a temporary measure to prevent disabling and enabling of draw rectangle button when repeatedly clicked.  If clicked once, it shouldn't be disabled after clicking the same button again.
+            SimpleActionItem dummy = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, Visible = false };
+            head.Add(dummy);
+            // Added as a temporary measure to prevent disabling and enabling of pan button when repeatedly clicked.  If clicked once, it shouldn't be disabled after clicking the same button again.
+            SimpleActionItem dummy2 = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Controls, ToggleGroupKey = Msg.Controls, Visible = false };
+            head.Add(dummy2);
 
-            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click){LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area});
+
+            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
             _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, SmallImage = Resources.select_table_16 });
-            
-            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click){ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area,ToggleGroupKey = Msg.Area, });
+
+            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, });
             _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
-            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate{ IEnvelope env; App.Map.MapFrame.ClearSelection(out env);}) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate { IEnvelope env; App.Map.MapFrame.ClearSelection(out env); }) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
             //head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
-            
-            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Area, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Area });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate {  App.Map.FunctionMode = FunctionMode.ZoomIn;}) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Area });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Area });
 
-            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, delegate { _useCurrentView = !_useCurrentView; })
-                    {GroupCaption = Msg.Area, ToggleGroupKey = Msg.Current_View, ToolTipText = Msg.Current_View_Tooltip, LargeImage = Resources.current_view_32, SmallImage = Resources.current_view_16});
-            _currentView.Toggling += delegate { _useCurrentView = !_useCurrentView; };
+            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, CurrentView_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, ToolTipText = Msg.Current_View_Tooltip, LargeImage = Resources.current_view_32, SmallImage = Resources.current_view_16 });
+            _useCurrentView = true;
             _currentView.Toggle();
+
+            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Controls, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Controls });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate { App.Map.FunctionMode = FunctionMode.ZoomIn; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Controls });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Controls });
 
             #endregion
 
@@ -138,7 +147,7 @@ namespace Search3
             #endregion
 
             #region Dates group
-            
+
             rbStartDate = new TextEntryActionItem { Caption = Msg.TimeRange_Start, GroupCaption = Msg.Time_Range, RootKey = _searchKey, Width = 70 };
             rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
             head.Add(rbStartDate);
@@ -196,14 +205,14 @@ namespace Search3
             else
             {
                 const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
-                var newExtentWidth = App.Map.ViewExtents.Width*zoomInFactor;
-                var newExtentHeight = App.Map.ViewExtents.Height*zoomInFactor;
+                var newExtentWidth = App.Map.ViewExtents.Width * zoomInFactor;
+                var newExtentHeight = App.Map.ViewExtents.Height * zoomInFactor;
                 envelope.ExpandBy(newExtentWidth, newExtentHeight);
             }
 
             App.Map.ViewExtents = envelope.ToExtent();
         }
-        
+
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
             if (e.SelectedRootKey == _searchKey)
@@ -221,7 +230,7 @@ namespace Search3
         }
 
         #region Search
-        
+
         private DateTime? ValidateDateEdit(TextEntryActionItem item, string itemName, string dateFormat, bool showMessage)
         {
             DateTime? result = null;
@@ -248,7 +257,8 @@ namespace Search3
             {
                 error = string.Format("{0} is in incorrect format. Please enter {1} in the format {2}", itemName,
                                       itemName.ToLower(), dateFormat);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 error = ex.Message;
             }
@@ -307,7 +317,7 @@ namespace Search3
                 _searcher.ShowUI();
                 return;
             }
-           
+
             try
             {
                 // Validation of Start/End date. 
@@ -375,36 +385,43 @@ namespace Search3
 
         void _searcher_Completed(object sender, CompletedEventArgs e)
         {
+            // DeactivateSelectAreaByPolygon(); //Added 1/21/13 Hullinger
             DeactivateDrawBox();
 
             if (e.Result == null) return;
             e.ProgressHandler.ReportMessage("Adding Sites to Map...");
             var result = e.Result;
+
+
             //We need to reproject the Search results from WGS84 to the projection of the map.
             var wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
             foreach (var item in result.ResultItems)
                 item.FeatureSet.Projection = wgs84;
             var layers = ShowSearchResults(result);
 
+
             // Unselect all layers in legend (http://hydrodesktop.codeplex.com/workitem/8559)
             App.Map.MapFrame.GetAllLayers().ForEach(r => r.IsSelected = false);
 
             // Select first search result layer
+
+
             var first = layers.FirstOrDefault();
             if (first != null)
             {
                 first.IsSelected = true;
             }
 
+
             // Unselect "Map Layers" legend item (http://hydrodesktop.codeplex.com/workitem/8458)
             App.Legend.RootNodes
                 .ForEach(delegate(ILegendItem item)
+                {
+                    if (item.LegendText == "Map Layers")
                     {
-                        if (item.LegendText == "Map Layers")
-                        {
-                            item.IsSelected = false;
-                        }
-                    });
+                        item.IsSelected = false;
+                    }
+                });
         }
 
         /// <summary>
@@ -445,7 +462,8 @@ namespace Search3
 
         private AreaSelectMode CurrentAreaSelectMode
         {
-            get; set;
+            get;
+            set;
         }
 
         private enum AreaSelectMode
@@ -474,7 +492,7 @@ namespace Search3
 
             if (_rectangleDrawing == null)
             {
-                _rectangleDrawing = new RectangleDrawing((Map) App.Map);
+                _rectangleDrawing = new RectangleDrawing((Map)App.Map);
                 _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
                 _rectangleDrawing.Deactivated += _rectangleDrawing_Deactivated;
             }
@@ -499,7 +517,7 @@ namespace Search3
             var fsPolygons = _searchSettings.AreaSettings.Polygons;
 
             var caption = "0 features selected ";
-            
+
             //var caption = "Select Polygons";
             if (fsPolygons != null && fsPolygons.Features.Count > 0)
             {
@@ -517,18 +535,26 @@ namespace Search3
 
         void rbSelect_Click(object sender, EventArgs e)
         {
-            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+
+
 
             DeactivateDrawBox();
             DeactivateCurrentView();
-            
-            App.Map.FunctionMode = FunctionMode.Select;
 
-            var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
-            AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
-            //App.Map.MapFrame.IsSelected = true;
+            App.Map.FunctionMode = FunctionMode.Select;
+            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+
+            //   var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
+            //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
+            //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
+
+            var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map)App.Map).FirstOrDefault();
+            if (polygonLayer == null)
+            {
+                App.Map.MapFrame.IsSelected = true; ///////  This was formerly deleted
+            }
         }
-        
+
         private void DeactivateSelectAreaByPolygon()
         {
             _searchSettings.AreaSettings.Polygons = null;
@@ -539,14 +565,14 @@ namespace Search3
             if (CurrentAreaSelectMode == AreaSelectMode.SelectPolygons ||
                 CurrentAreaSelectMode == AreaSelectMode.SelectAttribute)
             {
-                var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map) App.Map).FirstOrDefault();
+                var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map)App.Map).FirstOrDefault();
                 if (polygonLayer == null)
                 {
                     //special case: if the map layers or the group is selected
                     if (App.Map.MapFrame.IsSelected)
                     {
-                        IEnumerable<IMapPolygonLayer> polygonLayers = AreaHelper.GetAllPolygonLayers((Map) App.Map).Reverse();
-                        foreach(IMapPolygonLayer polyLayer in polygonLayers)
+                        IEnumerable<IMapPolygonLayer> polygonLayers = AreaHelper.GetAllPolygonLayers((Map)App.Map).Reverse();
+                        foreach (IMapPolygonLayer polyLayer in polygonLayers)
                         {
                             if (polyLayer.IsVisible && polyLayer.Selection.Count > 0)
                             {
@@ -561,7 +587,7 @@ namespace Search3
                             }
 
                         }
-                    
+
                     }
                     return;
                 }
@@ -588,6 +614,12 @@ namespace Search3
             _isDeactivatingDrawBox = false;
         }
 
+
+        void CurrentView_Click(object sender, EventArgs e)
+        {
+            _useCurrentView = true;
+        }
+
         void rbAttribute_Click(object sender, EventArgs e)
         {
             CurrentAreaSelectMode = AreaSelectMode.SelectAttribute;
@@ -599,7 +631,7 @@ namespace Search3
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
             SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
-            
+
             //App.Map.FunctionMode = FunctionMode.Select;
         }
 
@@ -607,8 +639,9 @@ namespace Search3
         {
             if (_useCurrentView)
             {
-                _currentView.Toggle();
+                _useCurrentView = false;
             }
+            _searchSettings.AreaSettings.SetAreaRectangle((Box)null, null);
         }
 
         #endregion
@@ -649,17 +682,21 @@ namespace Search3
             {
                 _dropdownKeywords = new DropDownActionItem
                 {
-                    AllowEditingText = true,
+                    AllowEditingText = false,
                     GroupCaption = Msg.Keyword,
                     RootKey = _searchKey,
                     Width = 170,
-                    NullValuePrompt = "Select Keyword"
+                    //NullValuePrompt = "[Enter Keyword]",
+                   // FontColor = System.Drawing.Color.AliceBlue
+
                 };
+
                 _dropdownKeywords.SelectedValueChanged +=
                     delegate(object sender, SelectedValueChangedEventArgs args)
                     {
+
                         if (args.SelectedItem == null) return;
-                        var current = _currentKeywords.Text;
+                        var current = _currentKeywords.Text; //_dropdownKeywords.SelectedItem.ToString();
                         var selected = args.SelectedItem.ToString();
 
                         var hasKeywords = !string.IsNullOrWhiteSpace(current);
@@ -669,7 +706,7 @@ namespace Search3
                         if (hasKeywords)
                         {
                             // Remove "All", if new keyword was added, because All + AnyKeyword = All in searching.
-                            current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName , string.Empty);
+                            current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName, string.Empty);
                         }
 
                         _currentKeywords.Text = current;
@@ -686,19 +723,25 @@ namespace Search3
                     ToolTipText = Msg.Keyword_Tooltip
                 };
             });
-            
+
 
             // Populate items by keywords
             _dropdownKeywords.Items.Clear();
-            _dropdownKeywords.Items.AddRange(_searchSettings.KeywordsSettings.Keywords);
+            _dropdownKeywords.Items.AddRange(/*new [] {Constants.Default }*/_searchSettings.KeywordsSettings.Keywords);
 
             // Add items to HeaderControl
             App.HeaderControl.Add(_currentKeywords);
+
+            // ToolStripItem t = GetItem(_currentKeywords.Key);
+
+
             App.HeaderControl.Add(_dropdownKeywords);
             App.HeaderControl.Add(_rbAddMoreKeywords);
-  
+
             // Clear current keywords text
             _currentKeywords.Text = string.Empty;
+
+            //   _currentKeywords.PropertyChanged += 
 
             if (dummy != null)
             {
@@ -707,16 +750,27 @@ namespace Search3
             }
 
             UpdateKeywordsCaption();
+            _currentKeywords.Text = Constants.RootName;
+
         }
-        
+
         private void UpdateKeywordsCaption()
         {
             const string separator = KEYWORDS_SEPARATOR + " ";
             var text = string.Join(separator, _searchSettings.KeywordsSettings.SelectedKeywords);
 
-            var selectedItem = text.Length > 0 ? text : null;
-            _currentKeywords.Text = selectedItem;
-            _currentKeywords.ToolTipText = selectedItem;
+            var selectedItem = text.Length > 0 ? text : Constants.RootName;
+          /*  if (MultiSelect == true)
+            {
+                _currentKeywords.Text = "Multiple Selected";
+                _currentKeywords.ToolTipText = "Multiple Selected";
+                MultiSelectKeywords = selectedItem;
+            }
+            else
+            { */
+                _currentKeywords.Text = selectedItem;
+                _currentKeywords.ToolTipText = selectedItem;
+           // }
         }
 
         void rbKeyword_Click(object sender, EventArgs e)
@@ -724,16 +778,37 @@ namespace Search3
             if (!ReadSelectedKeywords()) return;
             if (KeywordsDialog.ShowDialog(_searchSettings.KeywordsSettings) == DialogResult.OK)
             {
+                var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
+            /*    if (selectedKeywords.Count > 1)
+                {
+                    MultiSelect = true;
+                }
+                else
+                {
+                    MultiSelect = false;
+                }
+                */
                 UpdateKeywordsCaption();
+
+                // MultiSelect = false;
             }
         }
 
         private bool ReadSelectedKeywords()
         {
             IList<string> selectedKeywords;
+            string text;
+            /*
+            if (MultiSelect == true)
+            {
+                text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : MultiSelectKeywords;
+            }
+            else */
+         //   {
+                text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
+           // }
 
-            var text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text) || _currentKeywords.Text == Constants.RootName)
             {
                 selectedKeywords = null;
             }
@@ -812,7 +887,8 @@ namespace Search3
             {
                 caption = "All sources";
                 hint = caption;
-            }else if (checkedCount == 1)
+            }
+            else if (checkedCount == 1)
             {
                 // Get single checked item
                 var items = webservicesSettings.WebServices.Where(w => w.Checked).ToList();
@@ -830,14 +906,14 @@ namespace Search3
             //rbServices.Caption = caption;
             rbServices.ToolTipText = string.Format("Select data sources ({0} selected)", hint);
             //ChangeWebServicesIcon(webServiceNode);
-            
+
             //searchSummary.DataSourceStatus = caption;
             //searchSummary.UpdateStatus();
         }
 
         private void ChangeWebServicesIcon(WebServiceNode webServiceNode = null)
         {
-            if (webServiceNode == null || 
+            if (webServiceNode == null ||
                 string.IsNullOrEmpty(webServiceNode.ServiceCode))
             {
                 rbServices.LargeImage = Resources.server_32;
@@ -896,12 +972,12 @@ namespace Search3
             var webServices = _searchSettings.WebServicesSettings.WebServices;
             var result = new List<DataServiceInfo>(webServices.Count);
             result.AddRange(webServices.Select(wsInfo => new DataServiceInfo
-                                                             {
-                                                                 EndpointURL = wsInfo.ServiceUrl,
-                                                                 DescriptionURL = wsInfo.DescriptionUrl,
-                                                                 ServiceTitle = wsInfo.Title,
-                                                                 HISCentralID = wsInfo.ServiceID
-                                                             }));
+            {
+                EndpointURL = wsInfo.ServiceUrl,
+                DescriptionURL = wsInfo.DescriptionUrl,
+                ServiceTitle = wsInfo.Title,
+                HISCentralID = wsInfo.ServiceID
+            }));
 
             return result;
         }

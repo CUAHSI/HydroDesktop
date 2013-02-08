@@ -126,6 +126,9 @@
   <data name="Continue_Search" xml:space="preserve">
     <value>Continue search</value>
   </data>
+  <data name="Controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
   <data name="Current_View" xml:space="preserve">
     <value>Current View</value>
   </data>
