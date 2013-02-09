@@ -759,7 +759,10 @@ namespace Search3
             const string separator = KEYWORDS_SEPARATOR + " ";
             var text = string.Join(separator, _searchSettings.KeywordsSettings.SelectedKeywords);
 
-            var selectedItem = text.Length > 0 ? text : Constants.RootName;
+            var selectedItem = text.Length > 0 ? text : null;
+            _currentKeywords.Text = selectedItem;
+            _currentKeywords.ToolTipText = selectedItem;
+
           /*  if (MultiSelect == true)
             {
                 _currentKeywords.Text = "Multiple Selected";
@@ -768,8 +771,7 @@ namespace Search3
             }
             else
             { */
-                _currentKeywords.Text = selectedItem;
-                _currentKeywords.ToolTipText = selectedItem;
+               
            // }
         }
 
@@ -778,7 +780,7 @@ namespace Search3
             if (!ReadSelectedKeywords()) return;
             if (KeywordsDialog.ShowDialog(_searchSettings.KeywordsSettings) == DialogResult.OK)
             {
-                var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
+              //  var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
             /*    if (selectedKeywords.Count > 1)
                 {
                     MultiSelect = true;
@@ -797,7 +799,6 @@ namespace Search3
         private bool ReadSelectedKeywords()
         {
             IList<string> selectedKeywords;
-            string text;
             /*
             if (MultiSelect == true)
             {
@@ -805,10 +806,10 @@ namespace Search3
             }
             else */
          //   {
-                text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
+              var text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
            // }
 
-            if (string.IsNullOrWhiteSpace(text) || _currentKeywords.Text == Constants.RootName)
+            if (string.IsNullOrWhiteSpace(text))
             {
                 selectedKeywords = null;
             }
