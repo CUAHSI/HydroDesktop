@@ -151,7 +151,7 @@ namespace Search3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Draw Rectangle.
+        ///   Looks up a localized string similar to    Draw    Rectangle.
         /// </summary>
         internal static string Draw_Rectangle {
             get {
