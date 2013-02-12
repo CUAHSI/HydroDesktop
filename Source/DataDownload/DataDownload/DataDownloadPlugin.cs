@@ -228,6 +228,8 @@ namespace HydroDesktop.DataDownload
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show for Selected Layer", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
 
                 App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Map Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false });
+              //  App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Options", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
+               
                 _btnShowPopups.Toggling += ShowPopups_Click;
                 _btnShowPopups.Enabled = false;
                 _showPopups = false;

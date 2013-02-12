@@ -59,6 +59,7 @@ namespace SeriesView
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.btnOptions);
             this.panel1.Controls.Add(this.btnDelete);
             this.panel1.Controls.Add(this.btnRefresh);
@@ -141,21 +142,19 @@ namespace SeriesView
             // 
             // panelComplexFilter
             // 
-            this.panelComplexFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.panelComplexFilter.Controls.Add(this.btnApplyFilter);
             this.panelComplexFilter.Controls.Add(this.btnEditFilter);
             this.panelComplexFilter.Controls.Add(this.txtFilter);
             this.panelComplexFilter.Location = new System.Drawing.Point(6, 34);
             this.panelComplexFilter.Name = "panelComplexFilter";
-            this.panelComplexFilter.Size = new System.Drawing.Size(381, 49);
+            this.panelComplexFilter.Size = new System.Drawing.Size(317, 49);
             this.panelComplexFilter.TabIndex = 19;
             this.panelComplexFilter.Visible = false;
             // 
             // btnApplyFilter
             // 
-            this.btnApplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApplyFilter.Location = new System.Drawing.Point(313, 26);
+            this.btnApplyFilter.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnApplyFilter.Location = new System.Drawing.Point(257, 26);
             this.btnApplyFilter.Name = "btnApplyFilter";
             this.btnApplyFilter.Size = new System.Drawing.Size(60, 20);
             this.btnApplyFilter.TabIndex = 2;
@@ -165,8 +164,8 @@ namespace SeriesView
             // 
             // btnEditFilter
             // 
-            this.btnEditFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditFilter.Location = new System.Drawing.Point(314, 3);
+            this.btnEditFilter.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnEditFilter.Location = new System.Drawing.Point(257, 2);
             this.btnEditFilter.Name = "btnEditFilter";
             this.btnEditFilter.Size = new System.Drawing.Size(60, 20);
             this.btnEditFilter.TabIndex = 1;
@@ -182,7 +181,7 @@ namespace SeriesView
             this.txtFilter.Location = new System.Drawing.Point(3, 3);
             this.txtFilter.Multiline = true;
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(305, 43);
+            this.txtFilter.Size = new System.Drawing.Size(251, 43);
             this.txtFilter.TabIndex = 0;
             // 
             // dgvSeries
@@ -200,7 +199,7 @@ namespace SeriesView
             this.dgvSeries.Name = "dgvSeries";
             this.dgvSeries.RowHeadersVisible = false;
             this.dgvSeries.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSeries.Size = new System.Drawing.Size(379, 292);
+            this.dgvSeries.Size = new System.Drawing.Size(326, 292);
             this.dgvSeries.TabIndex = 18;
             // 
             // contextMenuStrip1
@@ -247,24 +246,20 @@ namespace SeriesView
             // 
             // cbBoxCriterion
             // 
-            this.cbBoxCriterion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cbBoxCriterion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBoxCriterion.FormattingEnabled = true;
             this.cbBoxCriterion.Location = new System.Drawing.Point(6, 34);
             this.cbBoxCriterion.Name = "cbBoxCriterion";
-            this.cbBoxCriterion.Size = new System.Drawing.Size(380, 21);
+            this.cbBoxCriterion.Size = new System.Drawing.Size(317, 21);
             this.cbBoxCriterion.TabIndex = 13;
             // 
             // cbBoxContent
             // 
-            this.cbBoxContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cbBoxContent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBoxContent.FormattingEnabled = true;
             this.cbBoxContent.Location = new System.Drawing.Point(6, 61);
             this.cbBoxContent.Name = "cbBoxContent";
-            this.cbBoxContent.Size = new System.Drawing.Size(380, 21);
+            this.cbBoxContent.Size = new System.Drawing.Size(317, 21);
             this.cbBoxContent.TabIndex = 14;
             // 
             // radComplex
