@@ -126,6 +126,9 @@
   <data name="Continue_Search" xml:space="preserve">
     <value>Continue search</value>
   </data>
+  <data name="Controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
   <data name="Current_View" xml:space="preserve">
     <value>Current View</value>
   </data>
@@ -145,7 +148,7 @@
     <value>Draw Box</value>
   </data>
   <data name="Draw_Rectangle" xml:space="preserve">
-    <value>Draw Rectangle</value>
+    <value>   Draw    Rectangle</value>
   </data>
   <data name="End_Date" xml:space="preserve">
     <value>End Date</value>

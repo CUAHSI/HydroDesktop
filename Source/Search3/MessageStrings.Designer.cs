@@ -88,6 +88,15 @@ namespace Search3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Controls.
+        /// </summary>
+        internal static string Controls {
+            get {
+                return ResourceManager.GetString("Controls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current View.
         /// </summary>
         internal static string Current_View {
@@ -142,7 +151,7 @@ namespace Search3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Draw Rectangle.
+        ///   Looks up a localized string similar to    Draw    Rectangle.
         /// </summary>
         internal static string Draw_Rectangle {
             get {
