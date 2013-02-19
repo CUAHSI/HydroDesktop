@@ -39,6 +39,8 @@
             this.paProgress = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.paProgressInformation = new System.Windows.Forms.Panel();
+            this.lcValuesPerRequestInfo = new System.Windows.Forms.Label();
+            this.lcValuesPerRequest = new System.Windows.Forms.Label();
             this.lcEstimatedTimeInfo = new System.Windows.Forms.Label();
             this.lcEstimatedTime = new System.Windows.Forms.Label();
             this.lcTotalSeriesInfo = new System.Windows.Forms.Label();
@@ -169,6 +171,8 @@
             // 
             // paProgressInformation
             // 
+            this.paProgressInformation.Controls.Add(this.lcValuesPerRequestInfo);
+            this.paProgressInformation.Controls.Add(this.lcValuesPerRequest);
             this.paProgressInformation.Controls.Add(this.lcEstimatedTimeInfo);
             this.paProgressInformation.Controls.Add(this.lcEstimatedTime);
             this.paProgressInformation.Controls.Add(this.lcTotalSeriesInfo);
@@ -184,6 +188,24 @@
             this.paProgressInformation.Name = "paProgressInformation";
             this.paProgressInformation.Size = new System.Drawing.Size(537, 75);
             this.paProgressInformation.TabIndex = 8;
+            // 
+            // lcValuesPerRequestInfo
+            // 
+            this.lcValuesPerRequestInfo.AutoSize = true;
+            this.lcValuesPerRequestInfo.Location = new System.Drawing.Point(283, 52);
+            this.lcValuesPerRequestInfo.Name = "lcValuesPerRequestInfo";
+            this.lcValuesPerRequestInfo.Size = new System.Drawing.Size(35, 13);
+            this.lcValuesPerRequestInfo.TabIndex = 14;
+            this.lcValuesPerRequestInfo.Text = "label6";
+            // 
+            // lcValuesPerRequest
+            // 
+            this.lcValuesPerRequest.AutoSize = true;
+            this.lcValuesPerRequest.Location = new System.Drawing.Point(154, 52);
+            this.lcValuesPerRequest.Name = "lcValuesPerRequest";
+            this.lcValuesPerRequest.Size = new System.Drawing.Size(98, 13);
+            this.lcValuesPerRequest.TabIndex = 13;
+            this.lcValuesPerRequest.Text = "Values per request:";
             // 
             // lcEstimatedTimeInfo
             // 
@@ -411,5 +433,7 @@
         private System.Windows.Forms.Label lcEstimatedTime;
         private System.Windows.Forms.CheckBox chbAutoScroll;
         private RedownloadControl redownloadControl1;
+        private System.Windows.Forms.Label lcValuesPerRequest;
+        private System.Windows.Forms.Label lcValuesPerRequestInfo;
     }
 }

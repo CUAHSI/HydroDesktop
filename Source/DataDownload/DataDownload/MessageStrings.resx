@@ -123,6 +123,9 @@
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="DownloadSettings" xml:space="preserve">
+    <value>Download Settings</value>
+  </data>
   <data name="DownloadTooTip" xml:space="preserve">
     <value>Click to download all selected series</value>
   </data>

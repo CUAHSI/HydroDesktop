@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using HydroDesktop.WebServices.WaterOneFlow;
 using HydroDesktop.Common.Tools;
 
 namespace HydroDesktop.DataDownload.Downloading
@@ -40,6 +41,7 @@ namespace HydroDesktop.DataDownload.Downloading
             }
             
             lblTotalInfo.Text = string.Empty;
+ 
             InitDownloadProgressInfo();
             InitDownloadInfoTable();
 
@@ -221,6 +223,9 @@ namespace HydroDesktop.DataDownload.Downloading
             lcTotalSeriesInfo.Text = null;
             lcRemainingSeriesInfo.Text = null;
             lcEstimatedTimeInfo.Text = null;
+            WaterOneFlowClient client = new WaterOneFlowClient();
+            int values = client.ValuesPerReq;
+            lcValuesPerRequestInfo.Text = values.ToString();   
         }
         private void BindDownloadProgressInfo()
         {

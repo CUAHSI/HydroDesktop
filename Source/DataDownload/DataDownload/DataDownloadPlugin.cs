@@ -19,8 +19,10 @@ using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.DataDownload.Properties;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
+using HydroDesktop.WebServices;
 using HydroDesktop.Interfaces;
 using Msg = HydroDesktop.DataDownload.MessageStrings;
+using HydroDesktop.DataDownload.Options;
 
 namespace HydroDesktop.DataDownload
 {
@@ -34,7 +36,7 @@ namespace HydroDesktop.DataDownload
         private SimpleActionItem _btnDownloadInSearch;
         private SimpleActionItem _btnShowPopups;
         //private SimpleActionItem _btnUpdate;
-        //private SimpleActionItem _btnSearchOptions;
+        private SimpleActionItem _btnSearchOptions;
         private SimpleActionItem _btnSearchResults;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
         private SearchLayerInformer _searchLayerInformer;
@@ -228,13 +230,13 @@ namespace HydroDesktop.DataDownload
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show for Selected Layer", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
 
                 App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Map Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false });
-              //  App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Options", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
+            //    App.HeaderControl.Add(_btnOptions = new SimpleActionItem("Options", SearchOptions_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
                
                 _btnShowPopups.Toggling += ShowPopups_Click;
                 _btnShowPopups.Enabled = false;
                 _showPopups = false;
 
-                //App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Options", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Search, LargeImage = Resources.option_32, SmallImage = Resources.option_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
+                App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Download Settings", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.settings_16, ToolTipText = Msg.DownloadSettings, Enabled = true });
 
                 App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download_Selected, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
 
@@ -279,7 +281,8 @@ namespace HydroDesktop.DataDownload
 
         private void Options_Click(object sender, EventArgs e)
         {
-
+            DownloadOptionsDialog OptionsDialog = new DownloadOptionsDialog();
+            OptionsDialog.ShowDialog();   
         }
 
         private void ShowPopups_Click(object sender, EventArgs e)

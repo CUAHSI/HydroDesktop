@@ -20,11 +20,15 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		//the directory where downloaded files are stored
 		private string _downloadDirectory;
 
+        private static int valuesPerReq = 5000;
+        private static bool allInOneRequest = false;
+
 		//the object containing additional metadata information
 		//about the web service including service version
 		private readonly DataServiceInfo _serviceInfo;
 
 		#endregion
+
 
 		#region Constructors
 
@@ -62,9 +66,31 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		{
 		}
 
+       public WaterOneFlowClient(int values)
+        {
+            valuesPerReq = values;
+        }
+
+       public WaterOneFlowClient()
+       {
+
+       }
+
 	    #endregion
 
 		#region Properties
+
+       public int ValuesPerReq
+       {
+           get { return valuesPerReq;  }
+           set { valuesPerReq = value; }
+       }
+
+       public bool AllInOneRequest
+       {
+           get { return allInOneRequest; }
+           set { allInOneRequest = value; }
+       }
 
 		/// <summary>
 		/// Gets information about the web service used by this web service client
@@ -248,7 +274,10 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                                 DateTime startTime, DateTime endTime, 
                                                 int estimatedValuesCount, IGetValuesProgressHandler progressHandler = null)
 	    {
-	        const int valuesPerReq = 5000;
+            if (allInOneRequest == true)
+            {
+                valuesPerReq = estimatedValuesCount;
+            }
 
 	        int intervalsCount;
             if (estimatedValuesCount <= 0 || estimatedValuesCount <= valuesPerReq)
