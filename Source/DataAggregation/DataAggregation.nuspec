@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners />
+    <licenseUrl>http://hydrodesktop.codeplex.com/license</licenseUrl>
+    <projectUrl>http://hydrodesktop.codeplex.com/</projectUrl>
+    <iconUrl>http://tinyurl.com/cc7votd</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Show average, minimum, maximum or sum of observation values in the map for multiple sites. so that the values can be used by the interpolation tool. This 
+	extension adds a new context menu Data - Show values in map... when user right-clicks on a Data Sites layer in the legend.</description>
+    <summary>Show average, minimum, maximum or sum of observation values in the map for multiple sites so that the values can be used by the interpolation tool. This 
+	extension adds a new context menu Data - Show values in map... when user right-clicks on a Data Sites layer in the legend</summary>
+    <language>en-US</language>
+    <tags>HydroDesktop</tags>
+  </metadata>
+</package>
