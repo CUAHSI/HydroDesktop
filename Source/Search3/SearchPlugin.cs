@@ -687,7 +687,7 @@ namespace Search3
                     RootKey = _searchKey,
                     Width = 170,
                   //  NullValuePrompt = "[Enter Keyword]",
-                 //  FontColor = System.Drawing.Color.AliceBlue
+                 FontColor = System.Drawing.Color.AliceBlue
                   
                 };
 
