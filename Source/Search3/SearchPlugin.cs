@@ -686,9 +686,9 @@ namespace Search3
                     GroupCaption = Msg.Keyword,
                     RootKey = _searchKey,
                     Width = 170,
-                  //  NullValuePrompt = "[Enter Keyword]",
-                 //  FontColor = System.Drawing.Color.AliceBlue
-                  
+                    NullValuePrompt = "[Enter Keyword]",
+                    //FontColor = System.Drawing.Color.AliceBlue,
+                    MultiSelect = true               
                 };
 
                 _dropdownKeywords.SelectedValueChanged +=
