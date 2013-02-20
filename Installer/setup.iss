@@ -154,29 +154,29 @@ Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignor
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
-;include 3rd party packages. These packages are retrieved by the auto-build
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.Ribbon\Lib\net40-client\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
+Source: "..\Binaries\Application Extensions\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;MenuBar package
-Source: "..\DotSpatial.Plugins.MenuBar\Lib\net40-client\DotSpatial.Plugins.MenuBar.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.MenuBar.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;AttributeDataExplorer package
-Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.AttributeDataExplorer\Lib\net40-client\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;GeostatisticalTool package
 ;Source: "..\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 ;Source: "..\GeostatisticalTool\Lib\net40-client\MadInterfaces.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ;WebMap package
-Source: "..\BruTile\Lib\net35\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\DotSpatial.Plugins.WebMap\Lib\net40-client\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ;SampleProjectManager package
 Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-Client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
