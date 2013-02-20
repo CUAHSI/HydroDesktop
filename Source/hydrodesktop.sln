@@ -178,8 +178,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D1F7B8
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.DownloadExtensions", "HydroDesktop.DownloadExtensions\HydroDesktop.DownloadExtensions.csproj", "{F6A64307-6AA8-4753-A507-03E746BB49E4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.SplashScreenManager", "HydroDesktop.SplashScreenManager\HydroDesktop.SplashScreenManager.csproj", "{3054526B-2F17-4093-B6AC-FB00846D6A41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.ObjectModel.Controls", "HydroDesktop.ObjectModel.Controls\HydroDesktop.ObjectModel.Controls.csproj", "{58B443B0-D995-434B-B403-D5D62959D32E}"
@@ -309,10 +307,6 @@ Global
 		{7E4B6C24-4526-4995-9BDA-410CC41C7512}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E4B6C24-4526-4995-9BDA-410CC41C7512}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E4B6C24-4526-4995-9BDA-410CC41C7512}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3054526B-2F17-4093-B6AC-FB00846D6A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3054526B-2F17-4093-B6AC-FB00846D6A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3054526B-2F17-4093-B6AC-FB00846D6A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
