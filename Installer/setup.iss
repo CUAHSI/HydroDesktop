@@ -141,11 +141,11 @@ Source: "..\Binaries\Application Extensions\HydroDesktop.MainPlugin.dll"; DestDi
 Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.ExtensionManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\NuGet.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SplashScreenManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SimpleLegend.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\NuGet.Core.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\System.Data.SQLite.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion;
