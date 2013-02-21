@@ -27,54 +27,54 @@ namespace HydroDesktop.DownloadExtensions
 
         public void Activate()
         {
-            bool isHeaderControlNeeded = !App.CompositionContainer.GetExportedValues<IHeaderControl>().Any();
-            bool isStatusControlNeeded = !App.CompositionContainer.GetExportedValues<IStatusControl>().Any();
+            //bool isHeaderControlNeeded = !App.CompositionContainer.GetExportedValues<IHeaderControl>().Any();
+            //bool isStatusControlNeeded = !App.CompositionContainer.GetExportedValues<IStatusControl>().Any();
 
-            //installs the extensions from the online repository on-demand
-            //note: some of these packages will be shipped with the installer but they are installed from online
-            //when running from Visual Studio solution (direct reference in Visual Studio is not allowed by the license of Ribbon and 
-            //AttributeDataExplorer)
+            ////installs the extensions from the online repository on-demand
+            ////note: some of these packages will be shipped with the installer but they are installed from online
+            ////when running from Visual Studio solution (direct reference in Visual Studio is not allowed by the license of Ribbon and 
+            ////AttributeDataExplorer)
 
-            //install the ribbon (must be downloaded first)
-            if (isHeaderControlNeeded && isStatusControlNeeded)
-            {
-                App.UpdateProgress("Downloading a Ribbon extension...");
-                packages.Install("DotSpatial.Plugins.Ribbon");
-            }
-
-            foreach (string package in Properties.Settings.Default.ExternalExtensions)
-            {
-                if (App.GetExtension(package) == null)
-                {
-                    App.UpdateProgress("Downloading " + package + " extension...");
-                    packages.Install(package);
-                }
-            }
-
-            //special case: download the WebMap plugin with BruTile
-            if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
-            {
-                App.UpdateProgress("Downloading DotSpatial.Plugins.WebMap extension...");
-                packages.Install("BruTile");
-                packages.Install("DotSpatial.Plugins.WebMap");
-            }
-            //special case: download EPADelineation with Newtonsoft.Json
-            if (App.GetExtension("EPADelineation") == null)
-            {
-                App.UpdateProgress("Downloading EPADelineation extension...");
-                packages.Install("Newtonsoft.Json");
-                packages.Install("EPADelineation");
-            }
-
-            //foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
+            ////install the ribbon (must be downloaded first)
+            //if (isHeaderControlNeeded && isStatusControlNeeded)
             //{
-            //    if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
+            //    App.UpdateProgress("Downloading a Ribbon extension...");
+            //    packages.Install("DotSpatial.Plugins.Ribbon");
+            //}
+
+            //foreach (string package in Properties.Settings.Default.ExternalExtensions)
+            //{
+            //    if (App.GetExtension(package) == null)
             //    {
-            //        App.UpdateProgress("Downloading " + sampleProject + " sample project...");
-            //        packages.Install(sampleProject);
+            //        App.UpdateProgress("Downloading " + package + " extension...");
+            //        packages.Install(package);
             //    }
             //}
-            App.RefreshExtensions();
+
+            ////special case: download the WebMap plugin with BruTile
+            //if (App.GetExtension("DotSpatial.Plugins.WebMap") == null)
+            //{
+            //    App.UpdateProgress("Downloading DotSpatial.Plugins.WebMap extension...");
+            //    packages.Install("BruTile");
+            //    packages.Install("DotSpatial.Plugins.WebMap");
+            //}
+            ////special case: download EPADelineation with Newtonsoft.Json
+            //if (App.GetExtension("EPADelineation") == null)
+            //{
+            //    App.UpdateProgress("Downloading EPADelineation extension...");
+            //    packages.Install("Newtonsoft.Json");
+            //    packages.Install("EPADelineation");
+            //}
+
+            foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
+            {
+                if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
+                {
+                    App.UpdateProgress("Downloading " + sampleProject + " sample project...");
+                    packages.Install(sampleProject);
+                }
+            }
+            //App.RefreshExtensions();
         }
 
         public int Priority
