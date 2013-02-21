@@ -198,6 +198,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.ZedGraphEx", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.ErrorReporting", "HydroDesktop.ErrorReporting\HydroDesktop.ErrorReporting.csproj", "{42B7A22C-FD5D-4EF3-856F-E01F8DD8A82B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.DownloadExtensions", "HydroDesktop.DownloadExtensions\HydroDesktop.DownloadExtensions.csproj", "{F6A64307-6AA8-4753-A507-03E746BB49E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -339,6 +341,10 @@ Global
 		{42B7A22C-FD5D-4EF3-856F-E01F8DD8A82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42B7A22C-FD5D-4EF3-856F-E01F8DD8A82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42B7A22C-FD5D-4EF3-856F-E01F8DD8A82B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

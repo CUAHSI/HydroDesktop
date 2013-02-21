@@ -178,9 +178,6 @@ Source: "..\Binaries\Application Extensions\DevExpress.XtraLayout.v12.2.dll"; De
 Source: "..\Binaries\Application Extensions\BruTile.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-;SampleProjectManager package
-Source: "..\DotSpatial.SampleProjects.SampleProjectManager\Lib\net40-Client\DotSpatial.SampleProjects.SampleProjectManager.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
 ;SampleProjects
 Source: "..\DotSpatial.SampleProjects.NorthAmerica\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.NorthAmerica"; Flags: recursesubdirs;
 Source: "..\DotSpatial.SampleProjects.World\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.World"; Flags: recursesubdirs;
