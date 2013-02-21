@@ -166,9 +166,9 @@ Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.MenuBar.dll"; Des
 
 ;AttributeDataExplorer package
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.Printing.v12.2.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.XtraGrid.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DevExpress.XtraLayout.v12.2.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;GeostatisticalTool package
 ;Source: "..\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
