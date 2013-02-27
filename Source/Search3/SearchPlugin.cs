@@ -52,8 +52,8 @@ namespace Search3
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
         private const string KEYWORDS_SEPARATOR = ";";
-      //  private bool MultiSelect = false;
-     //   private string MultiSelectKeywords;
+        private bool MultiSelect = false;
+        private string MultiSelectKeywords;
 
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
@@ -686,30 +686,36 @@ namespace Search3
                     GroupCaption = Msg.Keyword,
                     RootKey = _searchKey,
                     Width = 170,
-                  //  NullValuePrompt = "[Enter Keyword]",
-                 FontColor = System.Drawing.Color.AliceBlue
+                    NullValuePrompt = "[Enter Keyword]"
                   
                 };
+
+           
 
                 _dropdownKeywords.SelectedValueChanged +=
                     delegate(object sender, SelectedValueChangedEventArgs args)
                     {
 
-                        if (args.SelectedItem == null) return;
-                        var current = _currentKeywords.Text; //_dropdownKeywords.SelectedItem.ToString();
+                        if (args.SelectedItem == null)
+                        {
+                            _currentKeywords.Text = null;
+                            return;
+                        }
+                            
+                    //    var current = /*_currentKeywords.Text;*/ _dropdownKeywords.SelectedItem.ToString();
                         var selected = args.SelectedItem.ToString();
 
-                        var hasKeywords = !string.IsNullOrWhiteSpace(current);
-                        current = !hasKeywords
-                                          ? selected
-                                          : selected + KEYWORDS_SEPARATOR + " " + current;
-                        if (hasKeywords)
-                        {
+                       // var hasKeywords = !string.IsNullOrWhiteSpace(current);
+                      //  current = !hasKeywords
+                        //                  ? selected
+                       //                   : selected + KEYWORDS_SEPARATOR + " " + current;
+                     //   if (hasKeywords)
+                   //     {
                             // Remove "All", if new keyword was added, because All + AnyKeyword = All in searching.
-                            current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName, string.Empty);
-                        }
+                    //        current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName, string.Empty);
+                   //     }
 
-                        _currentKeywords.Text = current;
+                        _currentKeywords.Text = selected; //current;
                         _currentKeywords.ToolTipText = _currentKeywords.Text;
                     };
             });
@@ -717,7 +723,7 @@ namespace Search3
             {
                 _rbAddMoreKeywords = new SimpleActionItem(_searchKey, Msg.Add_More_Keywords, rbKeyword_Click)
                 {
-                    LargeImage = Resources.keyword_32,
+                   // LargeImage = Resources.keyword_32,
                     SmallImage = Resources.keyword_16,
                     GroupCaption = Msg.Keyword,
                     ToolTipText = Msg.Keyword_Tooltip
@@ -730,7 +736,7 @@ namespace Search3
             _dropdownKeywords.Items.AddRange(/*new [] {Constants.Default }*/_searchSettings.KeywordsSettings.Keywords);
 
             // Add items to HeaderControl
-            App.HeaderControl.Add(_currentKeywords);
+          //  App.HeaderControl.Add(_currentKeywords);
 
             // ToolStripItem t = GetItem(_currentKeywords.Key);
 
@@ -750,7 +756,7 @@ namespace Search3
             }
 
             UpdateKeywordsCaption();
-            _currentKeywords.Text = Constants.RootName;
+            _currentKeywords.Text = "";
 
         }
 
@@ -780,16 +786,16 @@ namespace Search3
             if (!ReadSelectedKeywords()) return;
             if (KeywordsDialog.ShowDialog(_searchSettings.KeywordsSettings) == DialogResult.OK)
             {
-              //  var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
-            /*    if (selectedKeywords.Count > 1)
+                var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
+                if (selectedKeywords.Count > 1)
                 {
-                    MultiSelect = true;
+                    _dropdownKeywords.MultiSelect = true;
                 }
                 else
                 {
-                    MultiSelect = false;
+                    _dropdownKeywords.MultiSelect = false;
                 }
-                */
+                
                 UpdateKeywordsCaption();
 
                 // MultiSelect = false;

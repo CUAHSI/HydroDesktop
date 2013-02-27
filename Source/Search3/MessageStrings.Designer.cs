@@ -61,7 +61,7 @@ namespace Search3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple Keywords.
+        ///   Looks up a localized string similar to     Select Multiple Keywords.
         /// </summary>
         internal static string Add_More_Keywords {
             get {
