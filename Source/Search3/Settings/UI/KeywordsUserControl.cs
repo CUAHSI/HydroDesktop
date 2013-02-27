@@ -29,12 +29,22 @@ namespace Search3.Settings.UI
             if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
             tboTypeKeyword.Clear();
+            tboTypeKeyword.Text = Search3.Keywords.Constants.EnterKeyword;
             lblKeywordRelation.Text = "";
             tboTypeKeyword.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             var autoCompleteSource = new AutoCompleteStringCollection();
             autoCompleteSource.AddRange(keywordsSettings.Keywords.ToArray());
             tboTypeKeyword.AutoCompleteCustomSource = autoCompleteSource;
             tboTypeKeyword.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            tboTypeKeyword.Click += delegate(object sender, EventArgs e)
+            {
+                if (tboTypeKeyword.Text == Search3.Keywords.Constants.EnterKeyword)
+                {
+                    tboTypeKeyword.Text = "";
+                    tboTypeKeyword.ForeColor = System.Drawing.Color.Black;
+                }
+            };
 
             tboTypeKeyword.KeyDown += delegate(object sender, KeyEventArgs args)
                                           {
