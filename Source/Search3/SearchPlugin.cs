@@ -736,7 +736,7 @@ namespace Search3
             _dropdownKeywords.Items.AddRange(/*new [] {Constants.Default }*/_searchSettings.KeywordsSettings.Keywords);
 
             // Add items to HeaderControl
-          //  App.HeaderControl.Add(_currentKeywords);
+           App.HeaderControl.Add(_currentKeywords);
 
             // ToolStripItem t = GetItem(_currentKeywords.Key);
 
