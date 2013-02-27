@@ -49,9 +49,9 @@ namespace Search3.Settings.UI
             this.tboTypeKeyword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.tboTypeKeyword.ForeColor = System.Drawing.Color.Gray;
             this.tboTypeKeyword.Location = new System.Drawing.Point(14, 10);
             this.tboTypeKeyword.Name = "tboTypeKeyword";
-            this.tboTypeKeyword.ForeColor = System.Drawing.Color.Gray;
             this.tboTypeKeyword.Size = new System.Drawing.Size(269, 20);
             this.tboTypeKeyword.TabIndex = 52;
             // 
