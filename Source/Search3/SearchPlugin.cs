@@ -255,8 +255,7 @@ namespace Search3
             }
             catch (FormatException)
             {
-                error = string.Format("{0} is in incorrect format. Please enter {1} in the format {2}", itemName,
-                                      itemName.ToLower(), dateFormat);
+                error = string.Format("Invalid {0}. Please enter a valid calendar date.", itemName);
             }
             catch (Exception ex)
             {
@@ -736,7 +735,7 @@ namespace Search3
             _dropdownKeywords.Items.AddRange(/*new [] {Constants.Default }*/_searchSettings.KeywordsSettings.Keywords);
 
             // Add items to HeaderControl
-           App.HeaderControl.Add(_currentKeywords);
+            // App.HeaderControl.Add(_currentKeywords);
 
             // ToolStripItem t = GetItem(_currentKeywords.Key);
 
@@ -756,7 +755,7 @@ namespace Search3
             }
 
             UpdateKeywordsCaption();
-            _currentKeywords.Text = "";
+            _currentKeywords.Text = null;
 
         }
 
