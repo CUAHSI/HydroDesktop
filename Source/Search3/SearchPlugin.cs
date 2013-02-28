@@ -697,7 +697,7 @@ namespace Search3
 
                         if (args.SelectedItem == null)
                         {
-                            _currentKeywords.Text = null;
+                            _dropdownKeywords.SelectedItem = "";
                             return;
                         }
                             
@@ -736,10 +736,8 @@ namespace Search3
 
             // Add items to HeaderControl
             // App.HeaderControl.Add(_currentKeywords);
-
+            //  _currentKeywords.Visible = false;
             // ToolStripItem t = GetItem(_currentKeywords.Key);
-
-
             App.HeaderControl.Add(_dropdownKeywords);
             App.HeaderControl.Add(_rbAddMoreKeywords);
 
@@ -755,7 +753,10 @@ namespace Search3
             }
 
             UpdateKeywordsCaption();
-            _currentKeywords.Text = null;
+
+      
+            _dropdownKeywords.SelectedItem = "";
+            _currentKeywords.Text = "";
 
         }
 
@@ -789,10 +790,22 @@ namespace Search3
                 if (selectedKeywords.Count > 1)
                 {
                     _dropdownKeywords.MultiSelect = true;
+
+                    // This code has no other purpose than to  immediately trigger the text to change to Multiple Selected.
+                    // Without it, you have to hover or click on something in the ribbon for the change to occur.
+                    _dropdownKeywords.Enabled = false;
+                    _dropdownKeywords.Enabled = true;
+                    
+                }
+                else if (selectedKeywords.Count == 1)
+                {
+                    _dropdownKeywords.MultiSelect = false;
+                    _dropdownKeywords.SelectedItem = selectedKeywords[0];
                 }
                 else
                 {
                     _dropdownKeywords.MultiSelect = false;
+                    _dropdownKeywords.SelectedItem = null;
                 }
                 
                 UpdateKeywordsCaption();
