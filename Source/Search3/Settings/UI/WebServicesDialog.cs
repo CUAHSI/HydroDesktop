@@ -65,7 +65,7 @@ namespace Search3.Settings.UI
 
                     settings.Copy(form._settings);
                     catalogSettings.Copy(form._catalogSettings);
-                    keywordsSettings.Copy(form._keywordsSettings);
+                   // keywordsSettings.Copy(form._keywordsSettings);
                 }
 
                 return form.DialogResult;

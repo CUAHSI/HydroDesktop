@@ -52,9 +52,7 @@ namespace Search3
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
         private const string KEYWORDS_SEPARATOR = ";";
-        private bool MultiSelect = false;
-        private string MultiSelectKeywords;
-
+     
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
 
