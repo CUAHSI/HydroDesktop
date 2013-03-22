@@ -413,6 +413,8 @@ namespace SeriesView
             SetupDatabase();
         }
 
+
+
         public event SeriesEventHandler SeriesCheck;
         public event EventHandler Refreshed;
 
