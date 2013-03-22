@@ -11,6 +11,15 @@ namespace HydroDesktop.DataDownload.Options
         public DownloadOptionsDialog()
         {
             InitializeComponent();
+            WaterOneFlowClient client = new WaterOneFlowClient();
+            if (client.AllInOneRequest == true)
+            {
+                checkBox1.Checked = true;
+            }
+            else
+            {
+                textBox1.Text = client.ValuesPerReq.ToString();
+            }
         }
 
         private void button1_Click(object sender, System.EventArgs e)

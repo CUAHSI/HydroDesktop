@@ -252,7 +252,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		/// <param name="startTime">the start date/time</param>
 		/// <param name="endTime">the end date/time</param>
 		/// <returns>the downloaded xml file name</returns>
-		public string GetValuesXML ( string siteCode, string variableCode, DateTime startTime, DateTime endTime )
+		public string GetValuesXML (string siteCode, string variableCode, DateTime startTime, DateTime endTime )
 		{
 		    return GetValuesXML(siteCode, variableCode, startTime, endTime, -1).First();
 		}
@@ -274,12 +274,14 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                                                 DateTime startTime, DateTime endTime, 
                                                 int estimatedValuesCount, IGetValuesProgressHandler progressHandler = null)
 	    {
+          
             if (allInOneRequest == true)
             {
                 valuesPerReq = estimatedValuesCount;
             }
 
 	        int intervalsCount;
+
             if (estimatedValuesCount <= 0 || estimatedValuesCount <= valuesPerReq)
                 intervalsCount = 1;
             else

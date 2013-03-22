@@ -136,8 +136,11 @@ namespace HydroDesktop.DataDownload.Downloading
             _downloadManagerUI = new DownloadManagerUI(this);
             ShowUI();
 
+          
+
             DoLogInfo("Starting downloading...");
             _worker.RunWorkerAsync();
+          
         }
 
         /// <summary>
@@ -312,6 +315,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private void DoDownload(object state)
         {
+
             var dda = state as DoDownloadArg;
             if (dda == null) throw new InvalidOperationException();
 

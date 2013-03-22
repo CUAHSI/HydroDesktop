@@ -46,7 +46,8 @@ namespace HydroDesktop.DataDownload.Downloading
             InitDownloadInfoTable();
 
             _manager = manager;
-            
+
+
             ShowHideDetails(); // by default details is not shown
             dgvDownloadData.CellFormatting += dgvDownloadData_CellFormatting;
             dgvDownloadData.MouseClick += dgvDownloadData_MouseClick;
@@ -223,9 +224,6 @@ namespace HydroDesktop.DataDownload.Downloading
             lcTotalSeriesInfo.Text = null;
             lcRemainingSeriesInfo.Text = null;
             lcEstimatedTimeInfo.Text = null;
-            WaterOneFlowClient client = new WaterOneFlowClient();
-            int values = client.ValuesPerReq;
-            lcValuesPerRequestInfo.Text = values.ToString();   
         }
         private void BindDownloadProgressInfo()
         {
@@ -382,6 +380,13 @@ namespace HydroDesktop.DataDownload.Downloading
             if(cancelled==false)
             {
                 lblTotalInfo.Text = e.UserState != null? e.UserState.ToString() : string.Empty;
+                //This section needed to update the values per request. It has this condition to prevent showing incorrect value.
+                if (lblTotalInfo.Text != "Connecting to server...")
+                {
+                    WaterOneFlowClient client = new WaterOneFlowClient();
+                    int values = client.ValuesPerReq;
+                    lcValuesPerRequestInfo.Text = values.ToString();
+                }
             }
             else
             {

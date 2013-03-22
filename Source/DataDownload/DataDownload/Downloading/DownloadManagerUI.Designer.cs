@@ -196,7 +196,7 @@
             this.lcValuesPerRequestInfo.Name = "lcValuesPerRequestInfo";
             this.lcValuesPerRequestInfo.Size = new System.Drawing.Size(35, 13);
             this.lcValuesPerRequestInfo.TabIndex = 14;
-            this.lcValuesPerRequestInfo.Text = "label6";
+            this.lcValuesPerRequestInfo.Text = "0";
             // 
             // lcValuesPerRequest
             // 
@@ -434,6 +434,7 @@
         private System.Windows.Forms.CheckBox chbAutoScroll;
         private RedownloadControl redownloadControl1;
         private System.Windows.Forms.Label lcValuesPerRequest;
-        private System.Windows.Forms.Label lcValuesPerRequestInfo;
+        //public allows the text to be set outside of the DownloadManager, which is needed in this case.
+        public System.Windows.Forms.Label lcValuesPerRequestInfo;
     }
 }
