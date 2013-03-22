@@ -1,0 +1,61 @@
+# Ignore file for Visual Studio 2010
+
+# use glob syntax
+syntax: glob
+
+# Ignore Visual Studio 2010 files
+*.obj
+*StyleCop.Cache
+#*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.vsmdi
+*.onetoc2
+[Bb]in
+[Db]ebug*/
+[Tt]est[Rr]esults*/
+obj/
+[Rr]elease*/
+_Resharper*/
+_ReSharper*/
+Framework 4.0\DotSpatial.Desktop\_ReSharper.DotSpatial.Desktop*
+Framework 4.0\TestViewer\_ReSharper.TestViewer*
+Framework 4.0\_ReSharper*
+Framework 4.0\DotSpatial.Forms.Ribbons\_ReSharper*
+Unit Tests\DotSpatial_Topology\_ReSharper*
+Unit Tests\Framework 4.0\DotSpatial_Data\_ReSharper*
+Framework 4.0\Tools\DotSpatial.Tools\_ReSharper*
+Source\Main\Packages*
+*_Resharper*/
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+glob:System.Spatial.Topology/System.Spatial.Topology/ClassDiagram3.cd
+*.build
+*.bat
+glob:Binaries/
+glob:*.ReSharper
+glob:*.orig
+*.csproj.vs10x
+*.sln.docstates
+Source/Packages/
+Documentation/OnlineHelp/build/
+Source/packages/
+Source/HDReferenceFixer.exe
+Source/DataAggregation.1.5.11.nupkg
