@@ -18,11 +18,7 @@ namespace HydroDesktop.DownloadExtensions
         public static bool IsSampleProjectInstalled(string packageName)
         {
             string dspxFileName = packageName + ".dspx";
-            DirectoryInfo dir = new DirectoryInfo(AppManager.AbsolutePathToExtensions);
-            if (!dir.Exists)
-            {
-                dir.Create();
-            }
+
             foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
             {
                 if (Path.GetFileNameWithoutExtension(absolutePath) == packageName)
