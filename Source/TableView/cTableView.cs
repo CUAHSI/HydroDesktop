@@ -136,16 +136,22 @@ namespace TableView
                 foreach (var id in _parent.SeriesControl.CheckedIDList)
                 {
                     var seriesNameTable = dataSeriesRepo.GetUnitSiteVarForFirstSeries(id);
-                    var row1 = seriesNameTable.Rows[0];
-                    var unitsName = Convert.ToString(row1[0]);
-                    var siteName = Convert.ToString(row1[1]);
-                    var variableName = Convert.ToString(row1[2]);
-
-                    var columnD_id = dataViewSeries.Columns["D" + id];
-                    Debug.Assert(columnD_id != null);
-                    columnD_id.HeaderText = siteName + " * " + id + Environment.NewLine +
-                                            variableName + Environment.NewLine +
-                                            unitsName;
+                    try
+                    {
+                        var row1 = seriesNameTable.Rows[0];
+                        var unitsName = Convert.ToString(row1[0]);
+                        var siteName = Convert.ToString(row1[1]);
+                        var variableName = Convert.ToString(row1[2]);
+                        var columnD_id = dataViewSeries.Columns["D" + id];
+                        Debug.Assert(columnD_id != null);
+                        columnD_id.HeaderText = siteName + " * " + id + Environment.NewLine +
+                                                variableName + Environment.NewLine +
+                                                unitsName;
+                    }
+                    catch (IndexOutOfRangeException ex)
+                    {
+                        Debug.WriteLine(ex.StackTrace);
+                    }
                 }
             }
         }
