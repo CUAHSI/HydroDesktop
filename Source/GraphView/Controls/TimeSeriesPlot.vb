@@ -193,7 +193,7 @@ Namespace Controls
                         For Each c In zgTimeSeries.GraphPane.CurveList
                             Dim cOptions = DirectCast(c.Tag, OneSeriesPlotInfo)
                             c.Label.Text = cOptions.SiteName + ", " + cOptions.VariableName + ", " + cOptions.DataType + ", ID: " + cOptions.SeriesID.ToString
-                            If c.Label.Text.Length > 70 Then
+                            If curve.Label.Text.Length > 70 Then
                                 c.Label.Text = curve.Label.Text.Substring(0, 70) + "..."
                             End If
                         Next
