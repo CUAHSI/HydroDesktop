@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" 
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" 
+xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+<soap:Header>
+	<wsa:Action>http://www.cuahsi.org/his/1.1/ws/GetSiteInfoObjectResponse</wsa:Action>
+	<wsa:MessageID>urn:uuid:4fd73dbb-6f2d-471a-8c33-ea3039453ab6</wsa:MessageID>
+	<wsa:RelatesTo>urn:uuid:78daaa65-c332-4ea8-ba03-323f6c8f2814</wsa:RelatesTo>
+	<wsa:To>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</wsa:To>
+	<wsse:Security>
+		<wsu:Timestamp wsu:Id="Timestamp-21bfe636-f1a5-4715-be2e-9e5a85f7b9e9">
+			<wsu:Created>2012-06-04T12:35:08Z</wsu:Created>
+			<wsu:Expires>2012-06-04T12:40:08Z</wsu:Expires>
+		</wsu:Timestamp>
+	</wsse:Security>
+</soap:Header>
+<soap:Body>
+	<GetSiteInfoObjectResponse xmlns="http://www.cuahsi.org/his/1.1/ws/">
+		<sitesResponse xmlns="http://www.cuahsi.org/waterML/1.1/">
+			<queryInfo>
+				<creationTime>2012-06-04T06:35:08.2788044-06:00</creationTime>
+				<criteria MethodCalled="GetSiteInfo">
+					<parameter name="site" value="RCEW2:012" />
+				</criteria>
+			</queryInfo>
+			<site>
+				<siteInfo>
+					<siteName>Little Salmon Creek</siteName>
+					<siteCode network="RCEW2" siteID="1">012</siteCode>
+					<geoLocation>
+						<geogLocation xsi:type="LatLonPointType" srs="EPSG:4267">
+							<latitude>43.296918</latitude>
+							<longitude>-116.82704</longitude>
+						</geogLocation>
+						<localSiteXY projectionInformation=" NAD27 / UTM zone 11N">
+							<X>4793587</X>
+							<Y>514030</Y>
+						</localSiteXY>
+					</geoLocation>
+					<elevation_m>1575</elevation_m>
+					<verticalDatum>MSL</verticalDatum>
+					<siteProperty name="County">Owyhee</siteProperty>
+					<siteProperty name="State">Idaho</siteProperty>
+					<siteProperty name="Comments">Comments</siteProperty>
+					<siteProperty name="SiteType">SiteType</siteProperty>
+					<siteProperty name="Country">Country</siteProperty>
+					<siteProperty name="PosAccuracy_m">3.5</siteProperty>
+				</siteInfo>
+				<seriesCatalog menuGroupName="Reynolds Creek Experimental Watershed" serviceWsdl="http://icewater.boisestate.edu/rcew2dataservices/cuahsi_1_1.asmx?WSDL">
+					<series>
+						<variable>
+							<variableCode vocabulary="ODMRCEW2" default="true" variableID="3">hourly-precipitation</variableCode>
+							<variableName>Precipitation</variableName>
+							<valueType>Field Observation</valueType>
+							<dataType>Incremental</dataType>
+							<generalCategory>Climate</generalCategory>
+							<sampleMedium>Not Relevant</sampleMedium>
+							<unit>
+								<unitName>millimeter</unitName>
+								<unitType>Length</unitType>
+								<unitAbbreviation>mm</unitAbbreviation>
+								<unitCode>54</unitCode>
+							</unit>
+							<noDataValue>-9999</noDataValue>
+							<timeScale isRegular="true">
+								<unit>
+									<unitName>hour</unitName>
+									<unitType>Time</unitType>
+									<unitAbbreviation>hr</unitAbbreviation>
+									<unitCode>103</unitCode>
+								</unit>
+								<timeSupport>1</timeSupport>
+							</timeScale>
+							<speciation>Not Applicable</speciation>
+						</variable>
+						<valueCount>7133</valueCount>
+						<variableTimeInterval xsi:type="TimeIntervalType">
+							<beginDateTime>2000-07-18T07:00:00</beginDateTime>
+							<endDateTime>2010-01-01T14:00:00</endDateTime>
+							<beginDateTimeUTC>2000-07-18T14:00:00</beginDateTimeUTC>
+							<endDateTimeUTC>2010-01-01T21:00:00</endDateTimeUTC>
+						</variableTimeInterval>
+						<method methodID="5">
+							<methodDescription>Precipitation measured using a Belfort Instrument Weighing, Recording Universal Precipitation Gage sheltered by an Alter-type shield  with the shield�s baffles individually constrained at an angle of 30� from vertical, 12"" capacity,  8"" orifice at 10' height above ground. Reduced precipitation obtained using APCP and manual pre-processing when needed.</methodDescription>
+						</method>
+						<source sourceID="4">
+							<organization>Northwest Watershed Research Center</organization>
+							<sourceDescription>Continuous monitoring of precipitation at Reynolds Creek Experimental Watershed by the United States Department of Agriculture's Agricultural Research Service</sourceDescription>
+							<citation>Hanson, C. L., Long-term precipitation database, Reynolds Creek Experimental, Watershed, Idaho, USA, Water Resources Research, 37, 2831-2834, 2001.</citation>
+						</source>
+						<qualityControlLevel qualityControlLevelID="1">
+							<qualityControlLevelCode>1</qualityControlLevelCode>
+							<definition>Quality controlled data</definition>
+							<explanation>Explanation</explanation>
+						</qualityControlLevel>
+					</series>
+					<series>
+					<variable><variableCode vocabulary="ODMRCEW2" default="true" variableID="3">hourly-precipitation</variableCode><variableName>Precipitation</variableName><valueType>Field Observation</valueType><dataType>Incremental</dataType><generalCategory>Climate</generalCategory><sampleMedium>Not Relevant</sampleMedium><unit><unitName>millimeter</unitName><unitType>Length</unitType><unitAbbreviation>mm</unitAbbreviation><unitCode>54</unitCode></unit><noDataValue>-9999</noDataValue><timeScale isRegular="true"><unit><unitName>hour</unitName><unitType>Time</unitType><unitAbbreviation>hr</unitAbbreviation><unitCode>103</unitCode></unit><timeSupport>1</timeSupport></timeScale><speciation>Not Applicable</speciation></variable><valueCount>6609</valueCount><variableTimeInterval xsi:type="TimeIntervalType"><beginDateTime>2000-07-18T08:00:00</beginDateTime><endDateTime>2010-01-01T11:00:00</endDateTime><beginDateTimeUTC>2000-07-18T15:00:00</beginDateTimeUTC><endDateTimeUTC>2010-01-01T18:00:00</endDateTimeUTC></variableTimeInterval><method methodID="8"><methodDescription>Precipitation measured using a Belfort Instrument Weighing, Recording Universal Precipitation Gage, 12"" capacity,  8"" orifice at 10' height above ground. Reduced precipitation obtained using APCP and manual pre-processing when needed.</methodDescription></method><source sourceID="4"><organization>Northwest Watershed Research Center</organization><sourceDescription>Continuous monitoring of precipitation at Reynolds Creek Experimental Watershed by the United States Department of Agriculture's Agricultural Research Service</sourceDescription><citation>Hanson, C. L., Long-term precipitation database, Reynolds Creek Experimental, Watershed, Idaho, USA, Water Resources Research, 37, 2831-2834, 2001.</citation></source><qualityControlLevel qualityControlLevelID="1"><qualityControlLevelCode>1</qualityControlLevelCode><definition>Quality controlled data</definition></qualityControlLevel></series><series><variable><variableCode vocabulary="ODMRCEW2" default="true" variableID="3">hourly-precipitation</variableCode><variableName>Precipitation</variableName><valueType>Field Observation</valueType><dataType>Incremental</dataType><generalCategory>Climate</generalCategory><sampleMedium>Not Relevant</sampleMedium><unit><unitName>millimeter</unitName><unitType>Length</unitType><unitAbbreviation>mm</unitAbbreviation><unitCode>54</unitCode></unit><noDataValue>-9999</noDataValue><timeScale isRegular="true"><unit><unitName>hour</unitName><unitType>Time</unitType><unitAbbreviation>hr</unitAbbreviation><unitCode>103</unitCode></unit><timeSupport>1</timeSupport></timeScale><speciation>Not Applicable</speciation></variable><valueCount>7272</valueCount><variableTimeInterval xsi:type="TimeIntervalType"><beginDateTime>1968-01-01T11:00:00</beginDateTime><endDateTime>1976-12-23T12:00:00</endDateTime><beginDateTimeUTC>1968-01-01T18:00:00</beginDateTimeUTC><endDateTimeUTC>1976-12-23T19:00:00</endDateTimeUTC></variableTimeInterval><method methodID="6"><methodDescription>Precipitation measured using a Belfort Instrument Weighing, Recording Universal Precipitation Gage sheltered by an Alter-type shield  with the shield�s baffles individually constrained at an angle of 30� from vertical, 12"" or 6"" capacity,  8"" orifice at 10' height above ground. Reduced precipitation records obtained from digitized charts using FORTRAN reduction routines.</methodDescription></method><source sourceID="4"><organization>Northwest Watershed Research Center</organization><sourceDescription>Continuous monitoring of precipitation at Reynolds Creek Experimental Watershed by the United States Department of Agriculture's Agricultural Research Service</sourceDescription><citation>Hanson, C. L., Long-term precipitation database, Reynolds Creek Experimental, Watershed, Idaho, USA, Water Resources Research, 37, 2831-2834, 2001.</citation></source><qualityControlLevel qualityControlLevelID="1"><qualityControlLevelCode>1</qualityControlLevelCode><definition>Quality controlled data</definition></qualityControlLevel></series><series><variable><variableCode vocabulary="ODMRCEW2" default="true" variableID="3">hourly-precipitation</variableCode><variableName>Precipitation</variableName><valueType>Field Observation</valueType><dataType>Incremental</dataType><generalCategory>Climate</generalCategory><sampleMedium>Not Relevant</sampleMedium><unit><unitName>millimeter</unitName><unitType>Length</unitType><unitAbbreviation>mm</unitAbbreviation><unitCode>54</unitCode></unit><noDataValue>-9999</noDataValue><timeScale isRegular="true"><unit><unitName>hour</unitName><unitType>Time</unitType><unitAbbreviation>hr</unitAbbreviation><unitCode>103</unitCode></unit><timeSupport>1</timeSupport></timeScale><speciation>Not Applicable</speciation></variable><valueCount>10796</valueCount><variableTimeInterval xsi:type="TimeIntervalType"><beginDateTime>1962-01-06T05:00:00</beginDateTime><endDateTime>1976-12-23T12:00:00</endDateTime><beginDateTimeUTC>1962-01-06T12:00:00</beginDateTimeUTC><endDateTimeUTC>1976-12-23T19:00:00</endDateTimeUTC></variableTimeInterval><method methodID="9"><methodDescription>Precipitation measured using a Belfort Instrument Weighing, Recording Universal Precipitation Gage, 12"" or 6"" capacity,  8"" orifice at 10' height above ground. Reduced precipitation records obtained from digitized charts using FORTRAN reduction programs.</methodDescription></method><source sourceID="4"><organization>Northwest Watershed Research Center</organization><sourceDescription>Continuous monitoring of precipitation at Reynolds Creek Experimental Watershed by the United States Department of Agriculture's Agricultural Research Service</sourceDescription><citation>Hanson, C. L., Long-term precipitation database, Reynolds Creek Experimental, Watershed, Idaho, USA, Water Resources Research, 37, 2831-2834, 2001.</citation></source><qualityControlLevel qualityControlLevelID="1"><qualityControlLevelCode>1</qualityControlLevelCode><definition>Quality controlled data</definition></qualityControlLevel></series><series><variable><variableCode vocabulary="ODMRCEW2" default="true" variableID="3">hourly-precipitation</variableCode><variableName>Precipitation</variableName><valueType>Field Observation</valueType><dataType>Incremental</dataType><generalCategory>Climate</generalCategory><sampleMedium>Not Relevant</sampleMedium><unit><unitName>millimeter</unitName><unitType>Length</unitType><unitAbbreviation>mm</unitAbbreviation><unitCode>54</unitCode></unit><noDataValue>-9999</noDataValue><timeScale isRegular="true"><unit><unitName>hour</unitName><unitType>Time</unitType><unitAbbreviation>hr</unitAbbreviation><unitCode>103</unitCode></unit><timeSupport>1</timeSupport></timeScale><speciation>Not Applicable</speciation></variable><valueCount>17408</valueCount><variableTimeInterval xsi:type="TimeIntervalType"><beginDateTime>1962-01-06T05:00:00</beginDateTime><endDateTime>2010-01-01T11:00:00</endDateTime><beginDateTimeUTC>1962-01-06T12:00:00</beginDateTimeUTC><endDateTimeUTC>2010-01-01T18:00:00</endDateTimeUTC></variableTimeInterval><method methodID="27"><methodDescription>Wind-corrected precipitation calculated using paired unshielded and Alter-type shielded rainagage values in A=S**b*U**(1-b) where A is wind corrected value, S is precipitation measured using shielded gage, U  is precipitation using unshielded gage and b=1.8</methodDescription></method><source sourceID="4"><organization>Northwest Watershed Research Center</organization><sourceDescription>Continuous monitoring of precipitation at Reynolds Creek Experimental Watershed by the United States Department of Agriculture's Agricultural Research Service</sourceDescription><citation>Hanson, C. L., Long-term precipitation database, Reynolds Creek Experimental, Watershed, Idaho, USA, Water Resources Research, 37, 2831-2834, 2001.</citation></source><qualityControlLevel qualityControlLevelID="1"><qualityControlLevelCode>1</qualityControlLevelCode><definition>Quality controlled data</definition></qualityControlLevel></series></seriesCatalog></site></sitesResponse></GetSiteInfoObjectResponse></soap:Body></soap:Envelope>
