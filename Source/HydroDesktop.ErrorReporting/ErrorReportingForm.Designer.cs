@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorReportingForm));
             this.lblInfo = new System.Windows.Forms.Label();
             this.paMain = new System.Windows.Forms.Panel();
+            this.paProgress = new System.Windows.Forms.Panel();
+            this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.gbCredentials = new System.Windows.Forms.GroupBox();
             this.linkRegister = new System.Windows.Forms.LinkLabel();
             this.tbLogin = new System.Windows.Forms.TextBox();
@@ -46,12 +48,10 @@
             this.btnZipLog = new System.Windows.Forms.Button();
             this.btnSendError = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.paProgress = new System.Windows.Forms.Panel();
-            this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.paMain.SuspendLayout();
+            this.paProgress.SuspendLayout();
             this.gbCredentials.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.paProgress.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblInfo
@@ -83,6 +83,23 @@
             this.paMain.Size = new System.Drawing.Size(393, 364);
             this.paMain.TabIndex = 1;
             // 
+            // paProgress
+            // 
+            this.paProgress.Controls.Add(this.pbProgress);
+            this.paProgress.Location = new System.Drawing.Point(44, 159);
+            this.paProgress.Name = "paProgress";
+            this.paProgress.Size = new System.Drawing.Size(293, 54);
+            this.paProgress.TabIndex = 14;
+            // 
+            // pbProgress
+            // 
+            this.pbProgress.Location = new System.Drawing.Point(17, 15);
+            this.pbProgress.MarqueeAnimationSpeed = 50;
+            this.pbProgress.Name = "pbProgress";
+            this.pbProgress.Size = new System.Drawing.Size(263, 23);
+            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbProgress.TabIndex = 0;
+            // 
             // gbCredentials
             // 
             this.gbCredentials.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -106,7 +123,6 @@
             this.linkRegister.Name = "linkRegister";
             this.linkRegister.Size = new System.Drawing.Size(79, 13);
             this.linkRegister.TabIndex = 13;
-            this.linkRegister.TabStop = true;
             this.linkRegister.Text = "Not registered?";
             // 
             // tbLogin
@@ -155,7 +171,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(12, 130);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(300, 13);
+            this.label6.Size = new System.Drawing.Size(297, 13);
             this.label6.TabIndex = 8;
             this.label6.Text = "Describe what you were doing when error occurred (optional):";
             // 
@@ -229,23 +245,6 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // paProgress
-            // 
-            this.paProgress.Controls.Add(this.pbProgress);
-            this.paProgress.Location = new System.Drawing.Point(44, 159);
-            this.paProgress.Name = "paProgress";
-            this.paProgress.Size = new System.Drawing.Size(293, 54);
-            this.paProgress.TabIndex = 14;
-            // 
-            // pbProgress
-            // 
-            this.pbProgress.Location = new System.Drawing.Point(17, 15);
-            this.pbProgress.MarqueeAnimationSpeed = 50;
-            this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(263, 23);
-            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.pbProgress.TabIndex = 0;
-            // 
             // ErrorReportingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -267,10 +266,10 @@
             this.Shown += new System.EventHandler(this.ErrorReportingForm_Shown);
             this.paMain.ResumeLayout(false);
             this.paMain.PerformLayout();
+            this.paProgress.ResumeLayout(false);
             this.gbCredentials.ResumeLayout(false);
             this.gbCredentials.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.paProgress.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
