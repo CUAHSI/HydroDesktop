@@ -84,9 +84,6 @@
     <Reference Include="DotSpatial.Plugins.MenuBar">
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.Ribbon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DotSpatial.Plugins.Ribbon.dll</HintPath>
-    </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap">
       <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1185\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
       <Private>True</Private>
