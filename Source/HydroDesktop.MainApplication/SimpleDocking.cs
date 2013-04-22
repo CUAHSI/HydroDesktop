@@ -14,7 +14,7 @@ namespace DemoMap
     /// <summary>
     ///
     /// </summary>
-    public class SimpleDocking //: IDockManager
+    public class SimpleDocking : IDockManager
     {
         private List<Form> forms = new List<Form>();
 
@@ -135,6 +135,7 @@ namespace DemoMap
         /// <param name="dockStyle">The dock location.</param>
         public void Add(string key, string caption, Control panel, DockStyle dockStyle)
         {
+            if (panel == null) return;
             panel.Dock = DockStyle.Fill;
 
             var form = new Form();
