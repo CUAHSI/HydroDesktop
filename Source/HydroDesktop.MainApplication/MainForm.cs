@@ -22,6 +22,7 @@ namespace HydroDesktop.MainApplication
         public MainForm()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             appManager = new AppManager();
             appManager.Map = new Map();
             LoadCustomBranding(Properties.Settings.Default);
