@@ -84,10 +84,6 @@
     <Reference Include="DotSpatial.Plugins.MenuBar">
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.WebMap">
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1185\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.4.23\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
