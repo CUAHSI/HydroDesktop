@@ -45,9 +45,10 @@ namespace DemoMap
             MenuItem menu = new MenuItem(item.Caption);
 
             menu.Name = item.Key;
-            menu.Enabled = true; // item.Enabled;
+            menu.Enabled = item.Enabled;
             menu.Visible = item.Visible;
             menu.Click += (sender, e) => item.OnClick(e);
+            item.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(SimpleActionItem_PropertyChanged);
 
             MenuItem root = null;
 
@@ -86,6 +87,7 @@ namespace DemoMap
                 submenu.Visible = item.Visible;
                 submenu.Text = item.Caption;
                 submenu.MergeOrder = item.SortOrder;
+                item.PropertyChanged += new PropertyChangedEventHandler(RootItem_PropertyChanged);
                 mainmenu.MenuItems.Add(submenu);
             }
         }
@@ -150,12 +152,13 @@ namespace DemoMap
         private Control GetItem(string key)
         {
             Control item = container.Controls.Find(key, true).FirstOrDefault();
-            if (item != null)
-            {
-                return item;
-            }
+            return item;
+        }
 
-            return null;
+        private MenuItem GetMenuItem(string key)
+        {
+            MenuItem item = mainmenu.MenuItems.Find(key, true).FirstOrDefault();
+            return item;
         }
 
         private void DropDownActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -220,6 +223,83 @@ namespace DemoMap
 
         private void ActionItem_PropertyChanged(ActionItem item, PropertyChangedEventArgs e)
         {
+            if (item.GetType().Equals(typeof(SimpleActionItem)) || item.GetType().Equals(typeof(RootItem)))
+            {
+                MenuItem guiItem = GetMenuItem(item.Key);
+
+                switch (e.PropertyName)
+                {
+                    case "Caption":
+                        guiItem.Text = item.Caption;
+                        break;
+
+                    case "Enabled":
+                        guiItem.Enabled = item.Enabled;
+                        break;
+
+                    case "Visible":
+                        guiItem.Visible = item.Visible;
+                        break;
+
+                    case "ToolTipText":
+                        //guiItem.ToolTipText = item.ToolTipText;
+                        break;
+
+                    case "GroupCaption":
+                        // todo: change group
+                        break;
+
+                    case "RootKey":
+                        // todo: change root
+                        // note, this case will also be selected in the case that we set the Root key in our code.
+                        break;
+
+                    case "Key":
+                    default:
+                        throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+                }
+            }
+            else
+            {
+                Control guiItem = GetItem(item.Key);
+
+                switch (e.PropertyName)
+                {
+                    case "Caption":
+                        guiItem.Text = item.Caption;
+                        break;
+
+                    case "Enabled":
+                        guiItem.Enabled = item.Enabled;
+                        break;
+
+                    case "Visible":
+                        guiItem.Visible = item.Visible;
+                        break;
+
+                    case "ToolTipText":
+                        //guiItem.ToolTipText = item.ToolTipText;
+                        break;
+
+                    case "GroupCaption":
+                        // todo: change group
+                        break;
+
+                    case "RootKey":
+                        // todo: change root
+                        // note, this case will also be selected in the case that we set the Root key in our code.
+                        break;
+
+                    case "Key":
+                    default:
+                        throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+                }
+            }
+        }
+
+        private void RootItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var item = sender as RootItem;
             var guiItem = this.GetItem(item.Key);
 
             switch (e.PropertyName)
@@ -228,32 +308,44 @@ namespace DemoMap
                     guiItem.Text = item.Caption;
                     break;
 
-                case "Enabled":
-                    guiItem.Enabled = item.Enabled;
-                    break;
-
                 case "Visible":
                     guiItem.Visible = item.Visible;
                     break;
 
-                case "ToolTipText":
-                    //guiItem.ToolTipText = item.ToolTipText;
+                case "SortOrder":
                     break;
-
-                case "GroupCaption":
-                    // todo: change group
-                    break;
-
-                case "RootKey":
-                    // todo: change root
-                    // note, this case will also be selected in the case that we set the Root key in our code.
-                    break;
-
-                case "Key":
                 default:
-                    throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+                    break;
             }
         }
+
+        void SimpleActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var item = sender as SimpleActionItem;
+            var guiItem = this.GetItem(item.Key);
+
+            switch (e.PropertyName)
+            {
+                case "SmallImage":
+                    break;
+
+                case "LargeImage":
+                    break;
+
+                case "MenuContainerKey":
+                    Trace.WriteLine("MenuContainerKey must not be changed after item is added to header.");
+                    break;
+
+                case "ToggleGroupKey":
+                    Trace.WriteLine("ToggleGroupKey must not be changed after item is added to header.");
+                    break;
+
+                default:
+                    ActionItem_PropertyChanged(item, e);
+                    break;
+            }
+        }
+
 
         private void ParseAllowEditingProperty(DropDownActionItem item, ComboBox guiItem)
         {

@@ -176,21 +176,22 @@
     <EmbeddedResource Include="Resources\MetadataCache.sqlite" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\System.Data.SQLite.1.0.82.0\content\net40\x64\SQLite.Interop.dll">
-      <Link>x64\SQLite.Interop.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\packages\System.Data.SQLite.1.0.82.0\content\net40\x86\SQLite.Interop.dll">
-      <Link>x86\SQLite.Interop.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="ClassDiagrams\DataManagerClassDiagram.png" />
     <Content Include="ClassDiagrams\ObjectModelClassDiagram.png" />
     <Content Include="Resources\ChangeLog_DefaultDatabase.txt" />
+    <Content Include="x64\sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagrams\SeriesViewClassDiagram.cd" />
+    <None Include="libsqlite3.so.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="package.nuspec" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -224,6 +225,7 @@
       <Name>HydroDesktop.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
