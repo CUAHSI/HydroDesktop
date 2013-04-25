@@ -45,7 +45,7 @@ namespace DemoMap
             MenuItem menu = new MenuItem(item.Caption);
 
             menu.Name = item.Key;
-            menu.Enabled = item.Enabled;
+            menu.Enabled = true; // item.Enabled;
             menu.Visible = item.Visible;
             menu.Click += (sender, e) => item.OnClick(e);
 
@@ -88,14 +88,6 @@ namespace DemoMap
                 submenu.MergeOrder = item.SortOrder;
                 mainmenu.MenuItems.Add(submenu);
             }
-            /*else
-            {
-                this.mainmenu.MenuItems.Find(item.Key, true).ElementAt(0) as MenuItem;
-                submenu.Name = item.Key;
-                submenu.Visible = item.Visible;
-                submenu.Text = item.Caption;
-                submenu.MergeOrder = item.SortOrder;
-            }*/
         }
 
         public override void Add(DropDownActionItem item)
