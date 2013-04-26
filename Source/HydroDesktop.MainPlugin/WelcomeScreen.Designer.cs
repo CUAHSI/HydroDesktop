@@ -74,7 +74,6 @@
             this.linkLabelQuickStart.Name = "linkLabelQuickStart";
             this.linkLabelQuickStart.Size = new System.Drawing.Size(171, 13);
             this.linkLabelQuickStart.TabIndex = 0;
-            this.linkLabelQuickStart.TabStop = true;
             this.linkLabelQuickStart.Text = "Getting Started with HydroDesktop";
             this.linkLabelQuickStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelQuickStart_click);
             // 
@@ -85,7 +84,6 @@
             this.linkLabelHelp.Name = "linkLabelHelp";
             this.linkLabelHelp.Size = new System.Drawing.Size(140, 13);
             this.linkLabelHelp.TabIndex = 1;
-            this.linkLabelHelp.TabStop = true;
             this.linkLabelHelp.Text = "View HydroDesktop help file";
             this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_click);
             // 

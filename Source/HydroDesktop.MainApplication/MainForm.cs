@@ -22,6 +22,13 @@ namespace HydroDesktop.MainApplication
         public MainForm()
         {
             InitializeComponent();
+
+            //It looks better if we Maximize the main window, 
+            //but the Form.Owner property doesn't seem to do anything when running on Mono, so for now only maximize if on Windows.
+            if (!DotSpatial.Mono.Mono.IsRunningOnMono())
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
             appManager = new AppManager();
             appManager.Map = new Map();
             LoadCustomBranding(Properties.Settings.Default);
