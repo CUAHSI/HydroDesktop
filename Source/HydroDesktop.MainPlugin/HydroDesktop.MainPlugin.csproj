@@ -58,27 +58,6 @@
     <Reference Include="BruTile">
       <HintPath>..\packages\BruTile.0.6.0\lib\net35\BruTile.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.Data.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Printing.v12.2.Core, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.Printing.v12.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.Utils.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraBars.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.XtraBars.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.XtraEditors.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraGrid.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.XtraGrid.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraLayout.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DevExpress.XtraLayout.v12.2.dll</HintPath>
-    </Reference>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.4.22\lib\net40\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
@@ -104,22 +83,11 @@
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.AttributeDataExplorer">
-      <HintPath>..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.24\lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar">
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Plugins.Ribbon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.24\lib\net40-client\DotSpatial.Plugins.Ribbon.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Plugins.WebMap">
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1185\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.4.22\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
