@@ -6,6 +6,7 @@ using DotSpatial.Symbology;
 using Hydrodesktop.Common;
 using DotSpatial.Data;
 using Search3.Settings;
+using System.Diagnostics;
 
 namespace Search3.Searching
 {
@@ -48,32 +49,52 @@ namespace Search3.Searching
         public IEnumerable<IMapPointLayer> Create()
         {
             var ext = new Extent();
-            
+            Debug.WriteLine("Starting Create method");
             if (!_searchResult.ResultItems.Any())
             {
+                Debug.WriteLine("Returning new point layer");
                 return new List<IMapPointLayer>();
             }
 
+            Debug.WriteLine("Getting data sites layer...");
             var root = _map.GetDataSitesLayer(true);
+            Debug.WriteLine("Done");
 
             var layersToSelect = new List<MapPointLayer>();
             var result = new List<IMapPointLayer>();
+            Debug.WriteLine("Starting loop, count: " + _searchResult.ResultItems.Count());
             foreach(var item in _searchResult.ResultItems)
             {
-                var subResultLayer = CreateSearchResultLayer(item, root);
-                result.Add(subResultLayer);
-                root.Add(subResultLayer);
-                layersToSelect.Add(subResultLayer);
+                try
+                {
+                    Debug.WriteLine("creating search result layer");
+                    var subResultLayer = CreateSearchResultLayer(item, root);
+                    Debug.WriteLine("Done; adding subResultLayer to list of result layers");
+                    result.Add(subResultLayer);
+                    Debug.WriteLine("Done; adding subResultLayer to root");
+                    root.Add(subResultLayer);
+                    Debug.WriteLine("Done; adding subResultLayer to layersToSelect");
+                    layersToSelect.Add(subResultLayer);
+                    Debug.WriteLine("Done with loop iteration");
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception: " + e.Message);
+                    Debug.WriteLine(e.StackTrace);
+                }
             }
+            Debug.WriteLine("Loop Done, refreshing map");
             _map.Refresh();
+            Debug.WriteLine("Done");
 
+            Debug.WriteLine("Starting another loop");
             //assign the projection again
             foreach (var item in _searchResult.ResultItems)
             {
                 item.FeatureSet.Reproject(_map.Projection);
                 ext.ExpandToInclude(item.FeatureSet.Extent);
             }
-
+            Debug.WriteLine("Loop done. Now looping through layers: " + root.Layers.Count);
             for (int i = 0; i < root.Layers.Count; i++)
             {
                 var layer = root[i];
@@ -88,10 +109,13 @@ namespace Search3.Searching
                     layer.Checked = state;
                 }
             }
+            Debug.WriteLine("End loop");
 
             ext.ExpandBy(_map.ViewExtents.Width / 100);
             _map.ViewExtents = ext;
             _map.Refresh();
+
+            Debug.WriteLine("Return result");
             return result;
         }
 
@@ -101,6 +125,7 @@ namespace Search3.Searching
 
         private MapPointLayer CreateSearchResultLayer(SearchResultItem item, IMapGroup root)
         {
+            Debug.WriteLine("Starting method CreateSearchResultLayer");
             var myLayer = new MapPointLayer(item.FeatureSet);
 
             // Get Title of web-server
@@ -111,12 +136,14 @@ namespace Search3.Searching
             // Build legend text 
             var legendText = defaulLegendText;
             int nameIndex = 1;
+            Debug.WriteLine("Starting while loop.");
             while(true)
             {
                 // Check if legend text is already used
                 var nameUsed = root.Layers.Any(layer => layer.LegendText == legendText);
                 if (!nameUsed)
                 {
+                    Debug.WriteLine("Exiting while loop");
                     break;
                 }
 
@@ -126,6 +153,7 @@ namespace Search3.Searching
             }
 
             myLayer.LegendText = legendText;
+            Debug.WriteLine("Returning myLayer");
             return myLayer;
         }
        

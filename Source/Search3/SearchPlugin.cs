@@ -395,7 +395,7 @@ namespace Search3
             foreach (var item in result.ResultItems)
                 item.FeatureSet.Projection = wgs84;
             var layers = ShowSearchResults(result);
-
+            Debug.WriteLine("ShowSearchResults done.");
 
             // Unselect all layers in legend (http://hydrodesktop.codeplex.com/workitem/8559)
             App.Map.MapFrame.GetAllLayers().ForEach(r => r.IsSelected = false);
@@ -419,6 +419,7 @@ namespace Search3
                         item.IsSelected = false;
                     }
                 });
+            Debug.WriteLine("Finished.");
         }
 
         /// <summary>
@@ -430,8 +431,11 @@ namespace Search3
             var hdProjectPath = HydroDesktop.Configuration.Settings.Instance.CurrentProjectDirectory;
 
             var loadedFeatures = new List<SearchResultItem>(searchResult.ResultItems.Count());
+            Debug.WriteLine(searchResult.ResultItems.Count());
             foreach (var key in searchResult.ResultItems)
             {
+                Debug.WriteLine("hdProjectPath: " + hdProjectPath);
+                Debug.WriteLine("The other part: " + string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode));
                 var fs = key.FeatureSet;
                 var filename = Path.Combine(hdProjectPath,
                                             string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode));
@@ -439,6 +443,7 @@ namespace Search3
                 fs.Save();
                 loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));
             }
+            Debug.WriteLine("Loop done.");
 
             var searchLayerCreator = new SearchLayerCreator(App.Map, new SearchResult(loadedFeatures), _searchSettings);
             return searchLayerCreator.Create();
