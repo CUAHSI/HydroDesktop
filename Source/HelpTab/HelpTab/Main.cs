@@ -165,7 +165,7 @@ namespace HelpTab
             aboutButton2.ToolTipText = "Open the HydroDesktop About dialog.";
             //aboutButton2.GroupCaption = HeaderControl.ApplicationMenuKey;
             App.HeaderControl.Add(aboutButton2);
-            
+
             // This line ensures that "Enabled" is set to true
             base.Activate();
         }

@@ -124,6 +124,7 @@ namespace DemoMap
         private Control GetItem(string key)
         {
             Control item = tabcontrol.Controls.Find(key, true).FirstOrDefault();
+            Debug.Print("ITEM: " + item.Text + " FOUND.");
             return item;
         }
 
@@ -190,6 +191,7 @@ namespace DemoMap
         private void ActionItem_PropertyChanged(ActionItem item, PropertyChangedEventArgs e)
         {
             Control guiItem = GetItem(item.Key);
+            Debug.Print("ACTIONITEM_PROPERTYCHANGED: " + item.Caption);
 
             switch (e.PropertyName)
             {

@@ -87,6 +87,10 @@
       <HintPath>..\..\packages\DotSpatial.Modeling.Forms.1.4.22\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Mono">
+      <HintPath>..\..\..\SupportFiles\MonoDotSpatial\DotSpatial.Mono.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotSpatial.Projections, Version=0.11.9.6, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DotSpatial.Projections.1.4.22\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
