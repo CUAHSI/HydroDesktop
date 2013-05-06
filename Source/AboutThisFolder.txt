@@ -1,0 +1,1 @@
+- Each plugin has a subfolder
