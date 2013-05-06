@@ -132,8 +132,14 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
         {
             get
             {
-                if (!_isRunningOnMono.HasValue)
-                    _isRunningOnMono = Type.GetType("Mono.Runtime") != null;
+                if (DotSpatial.Mono.Mono.IsRunningOnMono())
+                {
+                    _isRunningOnMono = true;
+                }
+                else
+                {
+                    _isRunningOnMono = false;
+                }
                 return _isRunningOnMono.Value;
             }
         }

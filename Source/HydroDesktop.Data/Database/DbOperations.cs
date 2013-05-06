@@ -675,38 +675,19 @@ namespace HydroDesktop.Database
         /// <returns>The resulting data table</returns>
         public DataTable LoadTable(string sqlQuery)
         {
-            DataTable dt = new DataTable();
             _sw.Reset();
             _sw.Start();
             
             var conn = CreateConnection();
-            try
-            {
-                conn.Open();
-                var da = dbFactory.CreateDataAdapter();
-                da.SelectCommand = dbFactory.CreateCommand();
-                da.SelectCommand.CommandText = sqlQuery;
-                da.SelectCommand.Connection = conn;
-                dt.TableName = "table";
-                da.Fill(dt);
-            }
-            catch (DataException e)
-            {
-                Debug.WriteLine(e.StackTrace);
-                //throw e; When we switched to Managed-Only System.Data.SQLite
-                //and started using sqlite3.dll, an exception gets thrown by 
-                //da.Fill(dt) above complainging about DBNull... Still haven't figured out why this is,
-                //but the test seems to pass fine as long as we catch it here.
-                //Probably should be investigated further though.
-                if (!e.Message.Contains("DBNull"))
-                {
-                    throw e;
-                }
-            }
-            finally
-            {
-                conn.Close();
-            }
+            conn.Open();
+            var da = dbFactory.CreateDataAdapter();
+            da.SelectCommand = dbFactory.CreateCommand();
+            da.SelectCommand.CommandText = sqlQuery;
+            da.SelectCommand.Connection = conn;
+            var dt = new DataTable();
+            dt.TableName = "table";
+            da.Fill(dt);
+            conn.Close();
 
             _sw.Stop();
             Debug.WriteLine("LoadTable:" + sqlQuery + " " + _sw.ElapsedMilliseconds + "ms");

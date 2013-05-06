@@ -189,6 +189,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagrams\SeriesViewClassDiagram.cd" />
+    <None Include="libsqlite3.0.8.6.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="libsqlite3.so.0">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
