@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +10,11 @@ using System.ComponentModel;
 
 namespace DemoMap
 {
-    [Export(typeof(IHeaderControl))]
-    class SimpleMonoHeaderControl : HeaderControl, IPartImportsSatisfiedNotification
+    //[Export(typeof(IHeaderControl))]
+    class MonoHeaderControl //: HeaderControl, IPartImportsSatisfiedNotification
     {
-        private TabControl tabcontrol;
+        private MainMenu mainmenu;
+        private FlowLayoutPanel container;
 
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
@@ -23,12 +24,15 @@ namespace DemoMap
         /// </summary>
         public void OnImportsSatisfied()
         {
-            Form form = Shell as Form;
-            tabcontrol = new TabControl();
+            mainmenu = new MainMenu();
 
-            tabcontrol.Name = "Default Group";
-            tabcontrol.Dock = DockStyle.Top;
-            Shell.Controls.Add(tabcontrol);
+            Form form = Shell as Form;
+            form.Menu = mainmenu;
+
+            container = new FlowLayoutPanel();
+            container.Name = "Default Group";
+            container.Dock = DockStyle.Top;
+            Shell.Controls.Add(container);
         }
 
         public override void SelectRoot(string key)
@@ -38,19 +42,34 @@ namespace DemoMap
 
         public override void Add(SimpleActionItem item)
         {
-            Button button = new Button();
+            MenuItem menu = new MenuItem(item.Caption);
 
-            button.Name = item.Key;
-            button.Text = item.Caption;
-            button.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            button.Image = item.SmallImage;
-            button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            button.Enabled = item.Enabled;
-            button.Visible = item.Visible;
-            button.Click += (sender, e) => item.OnClick(e);
-
+            menu.Name = item.Key;
+            menu.Enabled = item.Enabled;
+            menu.Visible = item.Visible;
+            menu.Click += (sender, e) => item.OnClick(e);
             item.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(SimpleActionItem_PropertyChanged);
-            addControlToRoot(button, item.RootKey);
+
+            MenuItem root = null;
+
+            if (!mainmenu.MenuItems.ContainsKey(item.RootKey))
+            {
+                root = new MenuItem(item.RootKey);
+            }
+            else
+            {
+                root = mainmenu.MenuItems.Find(item.RootKey, true).ElementAt(0);
+            }
+
+            try
+            {
+                root.MenuItems.Add(menu);
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.StackTrace);
+            }
+
         }
 
         public override void Add(MenuContainerItem item)
@@ -60,17 +79,16 @@ namespace DemoMap
 
         public override void Add(RootItem item)
         {
-            if (!this.tabcontrol.TabPages.ContainsKey(item.Key))
+            MenuItem submenu = null;
+            if (!this.mainmenu.MenuItems.ContainsKey(item.Key))
             {
-                tabcontrol.TabPages.Add(item.Key, item.Caption);
-                TabPage tabPage = tabcontrol.TabPages[item.Key];
-                tabPage.Name = item.Key;
+                submenu = new MenuItem();
+                submenu.Name = item.Key;
+                submenu.Visible = item.Visible;
+                submenu.Text = item.Caption;
+                submenu.MergeOrder = item.SortOrder;
                 item.PropertyChanged += new PropertyChangedEventHandler(RootItem_PropertyChanged);
-                FlowLayoutPanel layout = new FlowLayoutPanel();
-                layout.Name = "container";
-                layout.WrapContents = true;
-                layout.Size = tabcontrol.Size;
-                tabPage.Controls.Add(layout);
+                mainmenu.MenuItems.Add(submenu);
             }
         }
 
@@ -93,8 +111,18 @@ namespace DemoMap
                                                 item.SelectedItem = combo.SelectedItem;
                                                 item.PropertyChanged += DropDownActionItem_PropertyChanged;
                                             };
-            addControlToRoot(combo, item.RootKey);
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
+
+            //addLabel(item.ToolTipText);
+
+            container.Controls.Add(combo);
+        }
+
+        private void addLabel(String text)
+        {
+            Label label = new Label();
+            label.Text = text;
+            container.Controls.Add(label);
         }
 
         public override void Add(SeparatorItem item)
@@ -116,14 +144,20 @@ namespace DemoMap
                                             item.Text = textBox.Text;
                                             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
                                         };
-
-            addControlToRoot(textBox, item.RootKey);
+            //addLabel(item.ToolTipText);
+            container.Controls.Add(textBox);
             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
         }
 
         private Control GetItem(string key)
         {
-            Control item = tabcontrol.Controls.Find(key, true).FirstOrDefault();
+            Control item = container.Controls.Find(key, true).FirstOrDefault();
+            return item;
+        }
+
+        private MenuItem GetMenuItem(string key)
+        {
+            MenuItem item = mainmenu.MenuItems.Find(key, true).FirstOrDefault();
             return item;
         }
 
@@ -189,38 +223,77 @@ namespace DemoMap
 
         private void ActionItem_PropertyChanged(ActionItem item, PropertyChangedEventArgs e)
         {
-            Control guiItem = GetItem(item.Key);
-
-            switch (e.PropertyName)
+            if (item.GetType().Equals(typeof(SimpleActionItem)) || item.GetType().Equals(typeof(RootItem)))
             {
-                case "Caption":
-                    guiItem.Text = item.Caption;
-                    break;
+                MenuItem guiItem = GetMenuItem(item.Key);
 
-                case "Enabled":
-                    guiItem.Enabled = item.Enabled;
-                    break;
+                switch (e.PropertyName)
+                {
+                    case "Caption":
+                        guiItem.Text = item.Caption;
+                        break;
 
-                case "Visible":
-                    guiItem.Visible = item.Visible;
-                    break;
+                    case "Enabled":
+                        guiItem.Enabled = item.Enabled;
+                        break;
 
-                case "ToolTipText":
-                    //guiItem.ToolTipText = item.ToolTipText;
-                    break;
+                    case "Visible":
+                        guiItem.Visible = item.Visible;
+                        break;
 
-                case "GroupCaption":
-                    // todo: change group
-                    break;
+                    case "ToolTipText":
+                        //guiItem.ToolTipText = item.ToolTipText;
+                        break;
 
-                case "RootKey":
-                    // todo: change root
-                    // note, this case will also be selected in the case that we set the Root key in our code.
-                    break;
+                    case "GroupCaption":
+                        // todo: change group
+                        break;
 
-                case "Key":
-                default:
-                    throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+                    case "RootKey":
+                        // todo: change root
+                        // note, this case will also be selected in the case that we set the Root key in our code.
+                        break;
+
+                    case "Key":
+                    default:
+                        throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+                }
+            }
+            else
+            {
+                Control guiItem = GetItem(item.Key);
+
+                switch (e.PropertyName)
+                {
+                    case "Caption":
+                        guiItem.Text = item.Caption;
+                        break;
+
+                    case "Enabled":
+                        guiItem.Enabled = item.Enabled;
+                        break;
+
+                    case "Visible":
+                        guiItem.Visible = item.Visible;
+                        break;
+
+                    case "ToolTipText":
+                        //guiItem.ToolTipText = item.ToolTipText;
+                        break;
+
+                    case "GroupCaption":
+                        // todo: change group
+                        break;
+
+                    case "RootKey":
+                        // todo: change root
+                        // note, this case will also be selected in the case that we set the Root key in our code.
+                        break;
+
+                    case "Key":
+                    default:
+                        throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
+                }
             }
         }
 
@@ -285,20 +358,6 @@ namespace DemoMap
                 guiItem.DropDownStyle = ComboBoxStyle.DropDownList;
             }
         }
-
-        private void addControlToRoot(Control control, string rootkey)
-        {
-            TabPage root = tabcontrol.TabPages[rootkey];
-
-            try
-            {
-                FlowLayoutPanel layout = (FlowLayoutPanel)root.Controls.Find("container", true).FirstOrDefault();
-                layout.Controls.Add(control);
-            }
-            catch (Exception e)
-            {
-                Debug.Print(e.StackTrace);
-            }
-        }
     }
 }
+*/
