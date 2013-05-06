@@ -313,26 +313,29 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private void ThreadSafeAddItemToLog(ListBox listBox, object value)
         {
-            listBox.UIThread
-                (delegate
-                     {
-                         try
+            if (!DotSpatial.Mono.Mono.IsRunningOnMono())
+            {
+                listBox.UIThread
+                    (delegate
                          {
-                             listBox.Items.Add(value);
-
-                             // scroll to last item if need
-                             if (IsAutoScrollDetailsLog)
+                             try
                              {
-                                 listBox.SelectedIndex = listBox.Items.Count - 1;
+                                 listBox.Items.Add(value);
+
+                                 // scroll to last item if need
+                                 if (IsAutoScrollDetailsLog)
+                                 {
+                                     listBox.SelectedIndex = listBox.Items.Count - 1;
+                                 }
+                             }
+                             catch (Exception e)
+                             {
+                                 Debug.WriteLine("Exception: " + e.Message);
+                                 Debug.WriteLine(e.StackTrace);
                              }
                          }
-                         catch (Exception e)
-                         {
-                             Debug.WriteLine("Exception: " + e.Message);
-                             Debug.WriteLine(e.StackTrace);
-                         }
-                     }
-                );
+                    );
+            }
         }
 
         void _manager_Canceled(object sender, EventArgs e)
