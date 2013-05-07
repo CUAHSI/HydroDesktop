@@ -52,7 +52,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\Binaries\Windows Extensions\GraphView\</OutputPath>
     <DocumentationFile>GraphView.xml</DocumentationFile>
     <NoWarn>41999,42016</NoWarn>
     <DebugType>full</DebugType>

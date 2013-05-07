@@ -179,10 +179,7 @@
     <Content Include="ClassDiagrams\DataManagerClassDiagram.png" />
     <Content Include="ClassDiagrams\ObjectModelClassDiagram.png" />
     <Content Include="Resources\ChangeLog_DefaultDatabase.txt" />
-    <Content Include="x64\sqlite3.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\sqlite3.dll">
+    <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config">

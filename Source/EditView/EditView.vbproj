@@ -54,7 +54,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\Binaries\Windows Extensions\EditView\</OutputPath>
     <DocumentationFile>EditView.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <NoWarn>41999,42016</NoWarn>
