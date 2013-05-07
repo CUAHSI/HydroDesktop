@@ -131,6 +131,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -178,6 +179,7 @@
     <Compile Include="Searching\Exceptions\SearchSettingsValidationException.cs" />
     <Compile Include="Searching\SeriesSearcher.cs" />
     <Compile Include="SearchStatusDisplay.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Settings\AreaSettings.cs" />
     <Compile Include="Settings\KeywordsSettings.cs" />
     <Compile Include="Settings\OntologyNode.cs" />
@@ -283,6 +285,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Search3.dll.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="package.nuspec" />
@@ -338,6 +341,9 @@
     <None Include="Resources\select_date_v1_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Search3.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\zoom_selection_16x16.png" />
     <None Include="Resources\zoom_out_16x16.png" />
     <None Include="Resources\zoom_in_16x16.png" />
