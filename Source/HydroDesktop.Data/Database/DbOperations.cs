@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using HydroDesktop.Interfaces;
-using System.Data.SQLite;
 
 namespace HydroDesktop.Database
 {
@@ -681,10 +680,10 @@ namespace HydroDesktop.Database
             
             var conn = CreateConnection();
             conn.Open();
-            SQLiteDataAdapter da = (SQLiteDataAdapter)dbFactory.CreateDataAdapter();
-            da.SelectCommand = (SQLiteCommand)dbFactory.CreateCommand();
+            var da = dbFactory.CreateDataAdapter();
+            da.SelectCommand = dbFactory.CreateCommand();
             da.SelectCommand.CommandText = sqlQuery;
-            da.SelectCommand.Connection = (SQLiteConnection)conn;
+            da.SelectCommand.Connection = conn;
             var dt = new DataTable();
             dt.TableName = "table";
             da.Fill(dt);
