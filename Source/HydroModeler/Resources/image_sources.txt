@@ -1,0 +1,8 @@
+run.png			: http://www.pdclipart.org/displayimage.php?album=130&pos=14
+open.png		: http://www.clker.com/clipart-9700.html 	Here is the Disclaimer ==> http://www.clker.com/disclaimer.html
+save.png		: http://www.clker.com/clipart-documnet-save.html
+saveas.png		: http://www.clker.com/clipart-document-save-as.html
+add_connection.png	: http://www.clker.com/clipart-ethernet-cable.html
+add_model.png		: http://www.clker.com/clipart-14214.html
+delete_icon		:  http://www.iconspedia.com/icon/delete-10-01.html
+
