@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Logging;
 using HydroDesktop.ErrorReporting;
+using System.IO;
+using System.Reflection;
 
 namespace HydroDesktop.MainApplication
 {
@@ -16,6 +18,9 @@ namespace HydroDesktop.MainApplication
         [STAThread]
         static void Main(string[] args)
         {
+            //Hack described in https://hydrodesktop.codeplex.com/workitem/8676
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadAssembly);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -56,6 +61,33 @@ namespace HydroDesktop.MainApplication
                     LogFile = log.Destination
                 });
             errorForm.ShowDialog(_mainForm);
+        }
+
+
+        //This method is used to load the correct System.Data.SQlite dlls.
+        //See HydroDesktop Issue 8676 for more information: https://hydrodesktop.codeplex.com/workitem/8676
+        static Assembly LoadAssembly(object sender, ResolveEventArgs args)
+        {
+            //If this isn't a SQLite DLL we don't want/need to execute this code.
+            if (!args.Name.Contains("SQLite")) { return null; }
+
+            String filePath = null;
+            if (DotSpatial.Mono.Mono.IsRunningOnMono())
+            {
+                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Support", "Mono");
+            }
+            else
+            {
+                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Support", "Windows");
+            }
+            String assemblyPath = Path.Combine(filePath, new AssemblyName(args.Name).Name + ".dll");
+            if (!File.Exists(assemblyPath))
+            {
+                return null;
+            }
+
+            Assembly assembly = Assembly.LoadFrom(assemblyPath);
+            return assembly;
         }
     }
 }

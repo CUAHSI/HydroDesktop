@@ -151,8 +151,6 @@ namespace HydroDesktop.Main
             }
             Settings.Instance.DataRepositoryConnectionString = SQLiteHelper.GetSQLiteConnectionString(dbFileName);
             Settings.Instance.MetadataCacheConnectionString = SQLiteHelper.GetSQLiteConnectionString(cacheDbFileName);
-
-
         }
 
         //checks if the db exists. Also checks the db schema
