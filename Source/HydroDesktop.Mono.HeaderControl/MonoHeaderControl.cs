@@ -27,8 +27,18 @@ namespace DemoMap
             tabcontrol = new TabControl();
 
             tabcontrol.Name = "Default Group";
-            tabcontrol.Dock = DockStyle.Top;
-            Shell.Controls.Add(tabcontrol);
+            tabcontrol.Dock = DockStyle.Fill;
+            SplitContainer container = (SplitContainer)Shell.Controls.Find("splitcontainer", false).FirstOrDefault();
+            if (container == null)
+            {
+                container = new SplitContainer();
+                container.Orientation = Orientation.Horizontal;
+                container.Name = "splitcontainer";
+                container.Dock = DockStyle.Fill;
+                container.SplitterDistance = 10;
+                Shell.Controls.Add(container);
+            }
+            container.Panel1.Controls.Add(tabcontrol);
         }
 
         public override void SelectRoot(string key)

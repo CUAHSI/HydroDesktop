@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
 using System.ComponentModel.Composition;
@@ -16,12 +17,50 @@ namespace DemoMap
     /// <summary>
     ///
     /// </summary>
-    public class SimpleDocking : IDockManager
+    public class SimpleDocking : IDockManager, IPartImportsSatisfiedNotification
     {
 
-        [Import("Shell")]
+        [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
-        private List<Form> forms = new List<Form>();
+
+        /// <summary>
+        /// Called when a part's imports have been satisfied and it is safe to use. (Shell will have a value)
+        /// </summary>
+        public void OnImportsSatisfied()
+        {
+            SplitContainer innerContainer = new SplitContainer();
+            innerContainer.Name = "innerContainer";
+            innerContainer.Dock = DockStyle.Fill;
+            innerContainer.SplitterDistance = 25;
+            SplitterPanel legendPanel = innerContainer.Panel1;
+            SplitterPanel contentPanel = innerContainer.Panel2;
+
+            contentTabs = new TabControl();
+            contentTabs.Name = "contentTabs";
+            contentTabs.Dock = DockStyle.Fill;
+
+            legendTabs = new TabControl();
+            legendTabs.Name = "legendTabs";
+            legendTabs.Dock = DockStyle.Fill;
+
+            legendPanel.Controls.Add(legendTabs);
+            contentPanel.Controls.Add(contentTabs);
+
+            SplitContainer container = (SplitContainer)Shell.Controls.Find("splitcontainer", false).FirstOrDefault();
+            if (container == null)
+            {
+                container = new SplitContainer();
+                container.Orientation = Orientation.Horizontal;
+                container.Name = "splitcontainer";
+                container.Dock = DockStyle.Fill;
+                container.SplitterDistance = 10;
+                Shell.Controls.Add(container);
+            }
+            container.Panel2.Controls.Add(innerContainer);
+        }
+
+        private TabControl legendTabs = null;
+        private TabControl contentTabs = null;
 
         #region IDockManager Members
 
@@ -31,7 +70,7 @@ namespace DemoMap
         /// <param name="key">The key.</param>
         public void Remove(string key)
         {
-            foreach (Form form in forms)
+            /*foreach (Form form in forms)
             {
                 if (form.Name == key)
                 {
@@ -39,7 +78,7 @@ namespace DemoMap
                     forms.Remove(form);
                     break;
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -140,34 +179,25 @@ namespace DemoMap
         /// <param name="dockStyle">The dock location.</param>
         public void Add(string key, string caption, Control panel, DockStyle dockStyle)
         {
-            Form owner = Shell as Form;
-
             if (panel == null) return;
             panel.Dock = DockStyle.Fill;
 
-            var form = new Form();
-            form.Controls.Add(panel);
-            form.Name = key;
-            form.Text = panel.Name;
-            form.Width = panel.Width;
-            form.Height = panel.Height;
-            if (panel.Name.Equals("Map"))
+            TabPage page = new TabPage();
+            page.Controls.Add(panel);
+            page.Name = key;
+            page.Text = caption;
+            if (dockStyle == DockStyle.Left)
             {
-                form.Width = 700;
-                form.Height = 400;
+                legendTabs.TabPages.Add(page);
             }
-            if (owner != null)
+            else
             {
-                form.Owner = owner;
-                form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+                contentTabs.TabPages.Add(page);
             }
-            form.ControlBox = false;
-            form.Show();
-            form.Activated += form_Activated;
-            forms.Add(form);
+            page.GotFocus += page_Activated;
         }
 
-        private void form_Activated(object sender, EventArgs e)
+        private void page_Activated(object sender, EventArgs e)
         {
             OnActivePanelChanged(new DockablePanelEventArgs((sender as Form).Name));
         }
