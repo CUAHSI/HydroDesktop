@@ -69,7 +69,7 @@ namespace HydroDesktop.DataDownload
             get { return _showPopups; }
             set
             {
-                if (_showPopups == value) return;
+                if (_showPopups == value || DotSpatial.Mono.Mono.IsRunningOnMono()) return;
                 _showPopups = value;
 
                 var handler = ShowPopupsChanged;
@@ -229,11 +229,14 @@ namespace HydroDesktop.DataDownload
             {
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show for Selected Layer", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
 
-                App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Map Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false });
-            //    App.HeaderControl.Add(_btnOptions = new SimpleActionItem("Options", SearchOptions_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
-               
-                _btnShowPopups.Toggling += ShowPopups_Click;
-                _btnShowPopups.Enabled = false;
+                // App.HeaderControl.Add(_btnOptions = new SimpleActionItem("Options", SearchOptions_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
+
+                if (!DotSpatial.Mono.Mono.IsRunningOnMono())
+                {
+                    App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Map Popups", ShowPopups_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false });
+                    _btnShowPopups.Toggling += ShowPopups_Click;
+                    _btnShowPopups.Enabled = false;
+                }
                 _showPopups = false;
 
                 App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Download Settings", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.settings_16, ToolTipText = Msg.DownloadSettings, Enabled = true });
