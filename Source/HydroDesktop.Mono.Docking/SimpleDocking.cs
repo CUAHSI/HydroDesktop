@@ -194,7 +194,7 @@ namespace DemoMap
             {
                 contentTabs.TabPages.Add(page);
             }
-            page.GotFocus += page_Activated;
+            page.Enter += page_Activated;
         }
 
         private void page_Activated(object sender, EventArgs e)
