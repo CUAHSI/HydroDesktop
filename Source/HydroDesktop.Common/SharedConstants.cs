@@ -44,6 +44,11 @@
         {
             get { return "Data Sources"; }
         }
+
+        public static string ShaleRootKey
+        {
+            get { return "Shale Data Network"; }
+        }
     }
 }
 
