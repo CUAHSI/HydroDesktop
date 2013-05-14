@@ -35,7 +35,8 @@ namespace DemoMap
                 container.Orientation = Orientation.Horizontal;
                 container.Name = "splitcontainer";
                 container.Dock = DockStyle.Fill;
-                container.SplitterDistance = 10;
+                container.Panel1MinSize = 5;
+                container.SplitterDistance = 12;
                 Shell.Controls.Add(container);
             }
             container.Panel1.Controls.Add(tabcontrol);
