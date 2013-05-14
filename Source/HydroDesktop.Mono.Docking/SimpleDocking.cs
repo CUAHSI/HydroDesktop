@@ -31,7 +31,8 @@ namespace DemoMap
             SplitContainer innerContainer = new SplitContainer();
             innerContainer.Name = "innerContainer";
             innerContainer.Dock = DockStyle.Fill;
-            innerContainer.SplitterDistance = 25;
+            innerContainer.Panel1MinSize = 10;
+            innerContainer.SplitterDistance = 35;
             SplitterPanel legendPanel = innerContainer.Panel1;
             SplitterPanel contentPanel = innerContainer.Panel2;
 
@@ -53,7 +54,8 @@ namespace DemoMap
                 container.Orientation = Orientation.Horizontal;
                 container.Name = "splitcontainer";
                 container.Dock = DockStyle.Fill;
-                container.SplitterDistance = 10;
+                container.Panel1MinSize = 5;
+                container.SplitterDistance = 12;
                 Shell.Controls.Add(container);
             }
             container.Panel2.Controls.Add(innerContainer);
@@ -199,7 +201,7 @@ namespace DemoMap
 
         private void page_Activated(object sender, EventArgs e)
         {
-            OnActivePanelChanged(new DockablePanelEventArgs((sender as Form).Name));
+            OnActivePanelChanged(new DockablePanelEventArgs((sender as TabPage).Name));
         }
 
         public void HidePanel(string key)
