@@ -15,6 +15,7 @@ using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.WebServices;
+using HydroDesktop.Help;
 using Search3.Area;
 using Search3.Keywords;
 using Search3.Properties;
@@ -54,7 +55,7 @@ namespace Search3
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _shaleKey = SharedConstants.ShaleRootKey;
         private const string KEYWORDS_SEPARATOR = ";";
-     
+
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
 
@@ -67,7 +68,10 @@ namespace Search3
             AddSearchRibbon();
             //searchSummary = new SearchStatusDisplay(App);
             base.Activate();
-
+             if (App.GetExtension("Search3") != null)
+             {
+             //    App.r HeaderControl.Remove(SharedConstants.SearchRootkey);
+             }
             App.SerializationManager.Serializing += SerializationManager_Serializing;
             App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
             App.Map.FunctionModeChanged += Map_FunctionModeChanged;
@@ -147,8 +151,8 @@ namespace Search3
             #endregion
 
             #region Dates group
-            head.Add(new SimpleActionItem(_shaleKey, "link1", link1_Click) { GroupCaption = Msg.Shale });
-            head.Add(new SimpleActionItem(_shaleKey, "link2", link2_Click) { GroupCaption = Msg.Shale });
+            head.Add(new SimpleActionItem(_shaleKey, "SN Website", SN_Website_Click) { GroupCaption = Msg.Shale });
+            head.Add(new SimpleActionItem(_shaleKey, "Contact SN", Contact_SN_Click) { GroupCaption = Msg.Shale });
 
             rbStartDate = new TextEntryActionItem { Caption = Msg.TimeRange_Start, GroupCaption = Msg.Time_Range, RootKey = _shaleKey, Width = 70 };
             rbStartDate.PropertyChanged += rbStartDate_PropertyChanged;
@@ -175,9 +179,9 @@ namespace Search3
 
             #endregion
 
-        
+
             head.Add(new SimpleActionItem(_shaleKey, Msg.Search, rbSearch_Click) { GroupCaption = Msg.Search, LargeImage = ShaleDataNetwork.Properties.Resources.search_32, SmallImage = ShaleDataNetwork.Properties.Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
-           
+
         }
 
         private void ZoomSelected_Click(object sender, EventArgs e)
@@ -386,14 +390,46 @@ namespace Search3
             }
         }
 
-        void link1_Click(object sender, EventArgs e)
+        void SN_Website_Click(object sender, EventArgs e)
         {
-
+            OpenUri(ShaleDataNetwork.Properties.Settings.Default.SN_Website);
         }
 
-        void link2_Click(object sender, EventArgs e)
+        void Contact_SN_Click(object sender, EventArgs e)
         {
+            OpenUri(ShaleDataNetwork.Properties.Settings.Default.Contact_SN);
+        }
 
+        private void OpenUri(string uriString)
+        {
+            if (WebUtilities.IsInternetAvailable() == false)
+            {
+                MessageBox.Show("Internet connection not available.", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            try
+            {
+                WebUtilities.OpenUri(uriString);
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No URI provided.", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (UriFormatException ex)
+            {
+                MessageBox.Show("Invalid URI format for '" + uriString + "'.\n(" + ex.Message + ")", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "The system cannot find the path specified")
+                {
+                    MessageBox.Show("Could not find the target at '" + uriString + "'.", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Could not open target at '" + uriString + "'.\n(" + ex.Message + ")", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         void _searcher_Completed(object sender, CompletedEventArgs e)
@@ -705,10 +741,10 @@ namespace Search3
                     RootKey = _shaleKey,
                     Width = 170,
                     NullValuePrompt = "[Enter Keyword]"
-                  
+
                 };
 
-           
+
 
                 _dropdownKeywords.SelectedValueChanged +=
                     delegate(object sender, SelectedValueChangedEventArgs args)
@@ -719,19 +755,19 @@ namespace Search3
                             _dropdownKeywords.SelectedItem = "";
                             return;
                         }
-                            
-                    //    var current = /*_currentKeywords.Text;*/ _dropdownKeywords.SelectedItem.ToString();
+
+                        //    var current = /*_currentKeywords.Text;*/ _dropdownKeywords.SelectedItem.ToString();
                         var selected = args.SelectedItem.ToString();
 
-                       // var hasKeywords = !string.IsNullOrWhiteSpace(current);
-                      //  current = !hasKeywords
+                        // var hasKeywords = !string.IsNullOrWhiteSpace(current);
+                        //  current = !hasKeywords
                         //                  ? selected
-                       //                   : selected + KEYWORDS_SEPARATOR + " " + current;
-                     //   if (hasKeywords)
-                   //     {
-                            // Remove "All", if new keyword was added, because All + AnyKeyword = All in searching.
-                    //        current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName, string.Empty);
-                   //     }
+                        //                   : selected + KEYWORDS_SEPARATOR + " " + current;
+                        //   if (hasKeywords)
+                        //     {
+                        // Remove "All", if new keyword was added, because All + AnyKeyword = All in searching.
+                        //        current = current.Replace(KEYWORDS_SEPARATOR + " " + Keywords.Constants.RootName, string.Empty);
+                        //     }
 
                         _currentKeywords.Text = selected; //current;
                         _currentKeywords.ToolTipText = _currentKeywords.Text;
@@ -741,7 +777,7 @@ namespace Search3
             {
                 _rbAddMoreKeywords = new SimpleActionItem(_shaleKey, Msg.Add_More_Keywords, rbKeyword_Click)
                 {
-                   // LargeImage = ShaleDataNetwork.Properties.Resources.keyword_32,
+                    // LargeImage = ShaleDataNetwork.Properties.Resources.keyword_32,
                     SmallImage = ShaleDataNetwork.Properties.Resources.keyword_16,
                     GroupCaption = Msg.Keyword,
                     ToolTipText = Msg.Keyword_Tooltip
@@ -749,20 +785,20 @@ namespace Search3
 
                 _shaleData = new SimpleActionItem(_shaleKey, Msg.Shale_Data, shaleData_Click)
                 {
-                    LargeImage = ShaleDataNetwork.Properties.Resources.oiltower_32,
+                    LargeImage = ShaleDataNetwork.Properties.Resources.SN_Logo,
                     GroupCaption = Msg.Keyword,
                     ToolTipText = Msg.Shale_Tooltip
                 };
-           
+
             });
 
-           
+
             // Populate items by keywords
             _dropdownKeywords.Items.Clear();
             _dropdownKeywords.Items.AddRange(/*new [] {Constants.Default }*/_searchSettings.KeywordsSettings.Keywords);
 
             // Add items to HeaderControl
-             App.HeaderControl.Add(_currentKeywords);
+            App.HeaderControl.Add(_currentKeywords);
             //  _currentKeywords.Visible = false;
             // ToolStripItem t = GetItem(_currentKeywords.Key);
             App.HeaderControl.Add(_dropdownKeywords);
@@ -782,7 +818,7 @@ namespace Search3
 
             UpdateKeywordsCaption();
 
-      
+
             _dropdownKeywords.SelectedItem = "";
             _currentKeywords.Text = "";
 
@@ -797,16 +833,16 @@ namespace Search3
             _currentKeywords.Text = selectedItem;
             _currentKeywords.ToolTipText = selectedItem;
 
-          /*  if (MultiSelect == true)
-            {
-                _currentKeywords.Text = "Multiple Selected";
-                _currentKeywords.ToolTipText = "Multiple Selected";
-                MultiSelectKeywords = selectedItem;
-            }
-            else
-            { */
-               
-           // }
+            /*  if (MultiSelect == true)
+              {
+                  _currentKeywords.Text = "Multiple Selected";
+                  _currentKeywords.ToolTipText = "Multiple Selected";
+                  MultiSelectKeywords = selectedItem;
+              }
+              else
+              { */
+
+            // }
         }
 
         void rbKeyword_Click(object sender, EventArgs e)
@@ -823,7 +859,7 @@ namespace Search3
                     // Without it, you have to hover or click on something in the ribbon for the change to occur.
                     _dropdownKeywords.Enabled = false;
                     _dropdownKeywords.Enabled = true;
-                    
+
                 }
                 else if (selectedKeywords.Count == 1)
                 {
@@ -835,7 +871,7 @@ namespace Search3
                     _dropdownKeywords.MultiSelect = false;
                     _dropdownKeywords.SelectedItem = null;
                 }
-                
+
                 UpdateKeywordsCaption();
 
                 // MultiSelect = false;
@@ -848,7 +884,7 @@ namespace Search3
             if (ShaleDataDialog.ShowDialog(_searchSettings.KeywordsSettings) == DialogResult.OK)
             {
                 var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
-               
+
                 if (selectedKeywords.Count > 1)
                 {
                     _dropdownKeywords.MultiSelect = true;
@@ -883,9 +919,9 @@ namespace Search3
                 text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : MultiSelectKeywords;
             }
             else */
-         //   {
-              var text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
-           // }
+            //   {
+            var text = string.IsNullOrWhiteSpace(_currentKeywords.Text) ? null : _currentKeywords.Text;
+            // }
 
             if (string.IsNullOrWhiteSpace(text))
             {
