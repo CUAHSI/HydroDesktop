@@ -70,7 +70,7 @@ namespace HydroDesktop.MainApplication
         {
             //If this isn't a SQLite DLL we don't want/need to execute this code.
             if (!args.Name.Contains("SQLite")) { return null; }
-
+            if (args.Name.Contains("Search3")) { return null; }
             String filePath = null;
             if (DotSpatial.Mono.Mono.IsRunningOnMono())
             {

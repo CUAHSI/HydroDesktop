@@ -87,6 +87,9 @@
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Plugins.Measure">
+      <HintPath>..\..\..\DotSpatial\Debug\bin\Plugins\DotSpatial.Plugins.Measure.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar">
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>

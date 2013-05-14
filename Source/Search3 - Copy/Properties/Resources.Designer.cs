@@ -280,6 +280,16 @@ namespace ShaleDataNetwork.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SN_Logo {
+            get {
+                object obj = ResourceManager.GetObject("SN_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string web_mercator_esri_string {

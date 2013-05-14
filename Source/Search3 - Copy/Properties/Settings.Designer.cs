@@ -67,5 +67,29 @@ namespace ShaleDataNetwork.Properties {
                 return ((string)(this["SearchResultNameMask"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.shalenetwork.org")]
+        public string SN_Website {
+            get {
+                return ((string)(this["SN_Website"]));
+            }
+            set {
+                this["SN_Website"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.shalenetwork.org/contact")]
+        public string Contact_SN {
+            get {
+                return ((string)(this["Contact_SN"]));
+            }
+            set {
+                this["Contact_SN"] = value;
+            }
+        }
     }
 }
