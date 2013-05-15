@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DotSpatial.Controls;
 using System.IO;
+using System.Diagnostics;
 
 namespace HydroDesktop.DownloadExtensions
 {
@@ -19,12 +20,19 @@ namespace HydroDesktop.DownloadExtensions
         {
             string dspxFileName = packageName + ".dspx";
 
-            foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
+            try
             {
-                if (Path.GetFileNameWithoutExtension(absolutePath) == packageName)
+                foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
                 {
-                    return true;
+                    if (Path.GetFileNameWithoutExtension(absolutePath).Equals(packageName))
+                    {
+                        return true;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.StackTrace);
             }
             return false;
         }

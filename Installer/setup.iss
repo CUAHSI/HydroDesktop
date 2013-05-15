@@ -155,6 +155,8 @@ Source: "..\Binaries\Windows Extensions\EditView\EditView.dll*"; DestDir: "{app}
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\GraphView\GraphView.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+
 
 
 ;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
