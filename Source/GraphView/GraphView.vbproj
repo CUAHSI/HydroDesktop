@@ -31,7 +31,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Binaries\Application Extensions\GraphView\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\GraphView\</OutputPath>
     <DocumentationFile>GraphView.xml</DocumentationFile>
     <NoWarn>41999,42016</NoWarn>
     <WarningsAsErrors>
