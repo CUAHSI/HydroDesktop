@@ -39,7 +39,7 @@ namespace DemoMap
                 container.Name = "splitcontainer";
                 container.Dock = DockStyle.Fill;
                 container.Panel1MinSize = 5;
-                container.SplitterDistance = 25;
+                container.SplitterDistance = 40;
                 Shell.Controls.Add(container);
             }
             container.Panel1.Controls.Add(tabcontrol);
@@ -89,7 +89,7 @@ namespace DemoMap
                 layout.Name = "container";
                 layout.BorderStyle = BorderStyle.Fixed3D;
                 layout.Dock = DockStyle.Fill;
-                layout.WrapContents = false;
+                layout.WrapContents = true;
                 layout.HorizontalScroll.Enabled = true;
                 layout.HorizontalScroll.Visible = true;
                 layout.VerticalScroll.Enabled = true;
@@ -329,10 +329,19 @@ namespace DemoMap
             try
             {
                 FlowLayoutPanel layout = GetOrCreateGroup(GetTabPage(rootkey), groupCaption);
-                if (layout.Controls.Count % 4 == 0 && layout.Controls.Count > 0)
+                if (layout.Controls.Count % 6 == 0 && layout.Controls.Count > 0)
                 {
-                    layout.Width += control.Width;
+                    layout.Width += control.Width - (control.Width/2);
                 }
+                else if (layout.Controls.Count <= 3)
+                {
+                    layout.Width = control.Width + 10;
+                    foreach (Control c in layout.Controls)
+                    {
+                        layout.Width += c.Width;
+                    }
+                }
+
                 layout.Controls.Add(control);
             }
             catch (Exception e)

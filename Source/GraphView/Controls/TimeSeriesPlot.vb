@@ -207,6 +207,11 @@ Namespace Controls
                 SettingYAsixs()
                 SettingTitle()
 
+                If DotSpatial.Mono.Mono.IsRunningOnMono() Then
+                    gPane.Title.IsVisible = False
+                    gPane.Legend.IsVisible = False
+                End If
+
             Catch ex As Exception
                 Throw New Exception("Error Occured in ZGTimeSeries.Graph" & vbCrLf & ex.Message)
             End Try
