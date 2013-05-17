@@ -35,6 +35,7 @@ xcopy "%SOURCE%\Binaries\Plugins\Search3\*.dll.config" /s /y "%DESTINATION%\Hydr
 xcopy "%SOURCE%\Binaries\Plugins\Search3\Resources\* /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\Resources\"
 xcopy "%SOURCE%\Binaries\Plugins\TableView\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 
+GOTO ZedGraphFiles
 xcopy "%SOURCE%\Binaries\de\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\de\"
 xcopy "%SOURCE%\Binaries\es\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\es\"
 xcopy "%SOURCE%\Binaries\fr\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\fr\"
@@ -48,6 +49,7 @@ xcopy "%SOURCE%\Binaries\sv\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\Ma
 xcopy "%SOURCE%\Binaries\tr\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\tr\"
 xcopy "%SOURCE%\Binaries\zh-cn\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\zh-cn\"
 xcopy "%SOURCE%\Binaries\zh-tw\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\zh-tw\"
+:ZedGraphFiles
 
 xcopy "%SOURCE%\SupportFiles\Mac Bundle Files\Info.plist" /s /y "%DESTINATION%\HydroDesktop.app\Contents\"
 xcopy "%SOURCE%\SupportFiles\Mac Bundle Files\HydroDesktopScript" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\"
