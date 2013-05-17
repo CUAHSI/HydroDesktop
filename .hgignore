@@ -181,3 +181,8 @@ HydroDesktop.app/Contents/MacOS/Application Extensions/DotSpatial.Plugins.MenuBa
 HydroDesktop.app/Contents/MacOS/Application Extensions/DotSpatial.Plugins.ExtensionManager.dll
 HydroDesktop.app/Contents/MacOS/Application Extensions/BruTile.dll
 HydroDesktop.app/Contents/Info.plist
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.Mono.HeaderControl.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.Mono.Docking.dll
+.DS_Store
+HydroDesktop.app/Contents/MacOS/Plugins/Resources/Synonyms.xml
+HydroDesktop.app/Contents/MacOS/Plugins/Resources/OntologyTree.xml

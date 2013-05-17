@@ -32,7 +32,7 @@ xcopy "%SOURCE%\Binaries\Plugins\ImportFromWaterML\*.dll" /s /y "%DESTINATION%\H
 xcopy "%SOURCE%\Binaries\Plugins\MetadataFetcher\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\Search3\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\Search3\*.dll.config" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
-xcopy "%SOURCE%\Binaries\Plugins\Search3\Resources\* /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\Resources\"
+xcopy "%SOURCE%\Binaries\Plugins\Search3\Resources\*" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\Resources\"
 xcopy "%SOURCE%\Binaries\Plugins\TableView\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 
 GOTO ZedGraphFiles
