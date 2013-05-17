@@ -26,6 +26,7 @@ xcopy "%SOURCE%\Binaries\Plugins\ExcelExtension\*.dll" /s /y "%DESTINATION%\Hydr
 xcopy "%SOURCE%\Binaries\Plugins\ExportToCSV\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\ExportToCSV\*.dll.config" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\GraphView\GraphView.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
+xcopy "%SOURCE%\Binaries\Plugins\EditView\EditView.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\HelpTab\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\HelpTab\*.dll.config" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\ImportFromWaterML\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"

@@ -32,7 +32,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Binaries\Windows Extensions\EditView\</OutputPath>
+    <OutputPath>..\..\Binaries\Plugins\EditView\</OutputPath>
     <DocumentationFile>EditView.xml</DocumentationFile>
     <NoWarn>41999,42016</NoWarn>
     <WarningsAsErrors>

@@ -186,3 +186,4 @@ HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.Mono.Docking
 .DS_Store
 HydroDesktop.app/Contents/MacOS/Plugins/Resources/Synonyms.xml
 HydroDesktop.app/Contents/MacOS/Plugins/Resources/OntologyTree.xml
+HydroDesktop.app/Contents/MacOS/Plugins/EditView.dll

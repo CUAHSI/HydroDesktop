@@ -132,6 +132,10 @@ Source: "..\Binaries\Plugins\HelpTab\HelpTab.dll"; DestDir: "{app}\Plugins"; Fla
 Source: "..\Binaries\Plugins\EPADelineation\EPADelineation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 Source: "..\Binaries\Plugins\EPADelineation\Newtonsoft.Json.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
+Source: "..\Binaries\Plugins\GraphView\GraphView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+
+Source: "..\Binaries\Plugins\EditView\EditView.dll*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+
 Source: "..\Binaries\Application Extensions\HydroDesktop.MainPlugin.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.ExtensionManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
@@ -151,10 +155,8 @@ Source: "..\Binaries\Windows Extensions\HydroR\HydroR.dll"; DestDir: "{app}\Wind
 Source: "..\Binaries\Windows Extensions\HydroR\HydroR_1.2.tar.gz"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\HydroDesktop.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\EditView\EditView.dll*"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\GraphView\GraphView.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 
 
@@ -258,9 +260,9 @@ Type: files; Name: "{app}\Plugins\WebMap\BruTile.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.WebMap.dll"
 Type: files; Name: "{app}\Plugins\ZDataDownload\DataDownload.dll"
 Type: files; Name: "{app}\Plugins\ZDataDownload\Log4net.dll"
-Type: files; Name: "{app}\Windows Extensions\EditView\EditView.dll"
-Type: files; Name: "{app}\Windows Extensions\EditView\ZedGraph.dll"
-Type: files; Name: "{app}\Windows Extensions\GraphView\GraphView.dll"
+Type: files; Name: "{app}\Plugins\GraphView\GraphView.dll"
+Type: files; Name: "{app}\Plugins\EditView\EditView.dll"
+Type: files; Name: "{app}\Plugins\EditView\ZedGraph.dll"
 Type: files; Name: "{app}\Windows Extensions\GraphView\ZedGraph.dll"
 Type: files; Name: "{app}\Windows Extensions\HydroR\HydroR.dll"
 Type: files; Name: "{app}\Windows Extensions\HydroR\HydroR_1.2.tar.gz"
@@ -331,9 +333,9 @@ Type: files; Name: "{app}\Plugins\WebMap\BruTile.dll"
 Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.WebMap.dll"
 Type: files; Name: "{app}\Plugins\ZDataDownload\DataDownload.dll"
 Type: files; Name: "{app}\Plugins\ZDataDownload\Log4net.dll"
-Type: files; Name: "{app}\Windows Extensions\EditView\EditView.dll"
-Type: files; Name: "{app}\Windows Extensions\EditView\ZedGraph.dll"
-Type: files; Name: "{app}\Windows Extensions\GraphView\GraphView.dll"
+Type: files; Name: "{app}\Plugins\GraphView\GraphView.dll"
+Type: files; Name: "{app}\Plugins\EditView\EditView.dll"
+Type: files; Name: "{app}\Plugins\EditView\ZedGraph.dll"
 Type: files; Name: "{app}\Windows Extensions\GraphView\ZedGraph.dll"
 Type: files; Name: "{app}\Windows Extensions\HydroR\HydroR.dll"
 Type: files; Name: "{app}\Windows Extensions\HydroR\HydroR_1.2.tar.gz"
