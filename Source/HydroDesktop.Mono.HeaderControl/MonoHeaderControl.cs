@@ -18,6 +18,9 @@ namespace DemoMap
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
 
+        private bool _nextItemBeginsGroup = false;
+        private const string STR_DefaultGroupName = "Default Group";
+
         /// <summary>
         /// Called when a part's imports have been satisfied and it is safe to use. (Shell will have a value)
         /// </summary>
@@ -26,7 +29,7 @@ namespace DemoMap
             Form form = Shell as Form;
             tabcontrol = new TabControl();
 
-            tabcontrol.Name = "Default Group";
+            tabcontrol.Name = "tabcontrol";
             tabcontrol.Dock = DockStyle.Fill;
             SplitContainer container = (SplitContainer)Shell.Controls.Find("splitcontainer", false).FirstOrDefault();
             if (container == null)
@@ -36,7 +39,7 @@ namespace DemoMap
                 container.Name = "splitcontainer";
                 container.Dock = DockStyle.Fill;
                 container.Panel1MinSize = 5;
-                container.SplitterDistance = 12;
+                container.SplitterDistance = 25;
                 Shell.Controls.Add(container);
             }
             container.Panel1.Controls.Add(tabcontrol);
@@ -61,12 +64,17 @@ namespace DemoMap
             button.Click += (sender, e) => item.OnClick(e);
 
             item.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(SimpleActionItem_PropertyChanged);
-            addControlToRoot(button, item.RootKey);
+            addControlToRoot(button, item.RootKey, item.GroupCaption);
         }
 
         public override void Add(MenuContainerItem item)
         {
-            throw new NotImplementedException();
+            Button button = new Button();
+            button.Name = item.Key;
+            button.Text = item.Caption;
+            button.Enabled = item.Enabled;
+            button.Visible = item.Visible;
+            //button.Click += (sender, e) => item.OnClick(e);
         }
 
         public override void Add(RootItem item)
@@ -79,8 +87,14 @@ namespace DemoMap
                 item.PropertyChanged += new PropertyChangedEventHandler(RootItem_PropertyChanged);
                 FlowLayoutPanel layout = new FlowLayoutPanel();
                 layout.Name = "container";
-                layout.WrapContents = true;
-                layout.Size = tabcontrol.Size;
+                layout.BorderStyle = BorderStyle.Fixed3D;
+                layout.Dock = DockStyle.Fill;
+                layout.WrapContents = false;
+                layout.HorizontalScroll.Enabled = true;
+                layout.HorizontalScroll.Visible = true;
+                layout.VerticalScroll.Enabled = true;
+                layout.VerticalScroll.Visible = true;
+
                 tabPage.Controls.Add(layout);
             }
         }
@@ -104,13 +118,13 @@ namespace DemoMap
                                                 item.SelectedItem = combo.SelectedItem;
                                                 item.PropertyChanged += DropDownActionItem_PropertyChanged;
                                             };
-            addControlToRoot(combo, item.RootKey);
+            addControlToRoot(combo, item.RootKey, item.GroupCaption);
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
         }
 
         public override void Add(SeparatorItem item)
         {
-            //throw new NotImplementedException();
+            _nextItemBeginsGroup = true;
         }
 
         public override void Add(TextEntryActionItem item)
@@ -128,15 +142,8 @@ namespace DemoMap
                                             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
                                         };
 
-            addControlToRoot(textBox, item.RootKey);
+            addControlToRoot(textBox, item.RootKey, item.GroupCaption);
             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
-        }
-
-        private Control GetItem(string key)
-        {
-            Control item = tabcontrol.Controls.Find(key, true).FirstOrDefault();
-            Debug.Print("ITEM: " + item.Text + " FOUND.");
-            return item;
         }
 
         private void DropDownActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -299,19 +306,72 @@ namespace DemoMap
             }
         }
 
-        private void addControlToRoot(Control control, string rootkey)
+        private Control GetItem(string key)
         {
-            TabPage root = tabcontrol.TabPages[rootkey];
+            Control item = tabcontrol.Controls.Find(key, true).FirstOrDefault();
+            Debug.Print("ITEM: " + item.Text + " FOUND.");
+            return item;
+        }
 
+        private TabPage GetTabPage(string key)
+        {
+            return tabcontrol.TabPages[key];
+        }
+
+        private FlowLayoutPanel GetRootContainer(TabPage root)
+        {
+            FlowLayoutPanel layout = (FlowLayoutPanel)root.Controls.Find("container", true).FirstOrDefault();
+            return layout;
+        }
+
+        private void addControlToRoot(Control control, string rootkey, string groupCaption)
+        {
             try
             {
-                FlowLayoutPanel layout = (FlowLayoutPanel)root.Controls.Find("container", true).FirstOrDefault();
+                FlowLayoutPanel layout = GetOrCreateGroup(GetTabPage(rootkey), groupCaption);
+                if (layout.Controls.Count % 4 == 0 && layout.Controls.Count > 0)
+                {
+                    layout.Width += control.Width;
+                }
                 layout.Controls.Add(control);
             }
             catch (Exception e)
             {
                 Debug.Print(e.StackTrace);
             }
+        }
+
+        private void ProcessSeparator(object barItemLink)
+        {
+            /*if (_nextItemBeginsGroup)
+            {
+                barItemLink.BeginGroup = _nextItemBeginsGroup;
+                _nextItemBeginsGroup = false;
+            }*/
+        }
+
+        private FlowLayoutPanel GetOrCreateGroup(TabPage page, string groupCaption)
+        {
+            // make sure the group caption is present or use a default.
+            if (groupCaption == null)
+            {
+                groupCaption = STR_DefaultGroupName;
+            }
+
+            FlowLayoutPanel group = (FlowLayoutPanel)GetRootContainer(page).Controls.Find(groupCaption, true).FirstOrDefault();
+            if (group == null)
+            {
+                group = new FlowLayoutPanel();
+                group.Name = groupCaption;
+                group.Text = groupCaption;
+                group.BorderStyle = BorderStyle.Fixed3D;
+                group.WrapContents = true;
+                group.HorizontalScroll.Enabled = true;
+                group.VerticalScroll.Enabled = true;
+                GetRootContainer(page).Controls.Add(group);
+            }
+
+            return group;
         }
     }
 }
