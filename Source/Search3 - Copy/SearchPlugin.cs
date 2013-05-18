@@ -27,6 +27,7 @@ using Msg = ShaleDataNetwork.MessageStrings;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
 using ShaleDataNetwork.Settings.UI;
+using ShaleDataNetwork.Measure;
 
 namespace Search3
 {
@@ -53,8 +54,9 @@ namespace Search3
         //private SearchStatusDisplay searchSummary;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-        private readonly string _shaleKey = SharedConstants.ShaleRootKey;
+        private readonly string _shaleKey = "Shale Data Network";
         private const string KEYWORDS_SEPARATOR = ";";
+        private MapFunctionMeasure _Painter;
 
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
@@ -68,10 +70,12 @@ namespace Search3
             AddSearchRibbon();
             //searchSummary = new SearchStatusDisplay(App);
             base.Activate();
-             if (App.GetExtension("Search3") != null)
-             {
-             //    App.r HeaderControl.Remove(SharedConstants.SearchRootkey);
-             }
+           
+            if (App.GetExtension("Search3") != null)
+            {
+                App.GetExtension("Search3").Deactivate();
+            }
+
             App.SerializationManager.Serializing += SerializationManager_Serializing;
             App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;
             App.Map.FunctionModeChanged += Map_FunctionModeChanged;
@@ -140,7 +144,7 @@ namespace Search3
             head.Add(new SimpleActionItem(_shaleKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Controls, SmallImage = ShaleDataNetwork.Properties.Resources.hand_16x16, ToggleGroupKey = Msg.Controls });
             head.Add(new SimpleActionItem(_shaleKey, Msg.Zoom_In, delegate { App.Map.FunctionMode = FunctionMode.ZoomIn; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = ShaleDataNetwork.Properties.Resources.zoom_in_16x16, ToggleGroupKey = Msg.Controls });
             head.Add(new SimpleActionItem(_shaleKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = ShaleDataNetwork.Properties.Resources.zoom_out_16x16, ToggleGroupKey = Msg.Controls });
-
+            App.HeaderControl.Add(new SimpleActionItem(_shaleKey, "Measure", MeasureTool_Click) { GroupCaption = Msg.Controls, SmallImage = ShaleDataNetwork.Properties.Resources.measure_16x16, LargeImage = ShaleDataNetwork.Properties.Resources.measure_32x32 });
             #endregion
 
             #region Keyword Group
@@ -798,7 +802,7 @@ namespace Search3
             _dropdownKeywords.Items.AddRange(/*new [] {Constants.Default }*/_searchSettings.KeywordsSettings.Keywords);
 
             // Add items to HeaderControl
-            App.HeaderControl.Add(_currentKeywords);
+            // App.HeaderControl.Add(_currentKeywords);
             //  _currentKeywords.Visible = false;
             // ToolStripItem t = GetItem(_currentKeywords.Key);
             App.HeaderControl.Add(_dropdownKeywords);
@@ -908,6 +912,19 @@ namespace Search3
 
                 UpdateKeywordsCaption();
             }
+        }
+
+        private void MeasureTool_Click(object sender, EventArgs e)
+        {
+            if (_Painter == null)
+                _Painter = new MapFunctionMeasure(App.Map);
+
+            if (!App.Map.MapFunctions.Contains(_Painter))
+                App.Map.MapFunctions.Add(_Painter);
+
+            App.Map.FunctionMode = FunctionMode.None;
+            App.Map.Cursor = Cursors.Cross;
+            _Painter.Activate();
         }
 
         private bool ReadSelectedKeywords()

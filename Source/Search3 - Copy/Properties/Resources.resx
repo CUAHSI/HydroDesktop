@@ -202,4 +202,16 @@
   <data name="SN_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SN_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Area" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Area.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Line" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="measure_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\measure_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="measure_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\measure_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

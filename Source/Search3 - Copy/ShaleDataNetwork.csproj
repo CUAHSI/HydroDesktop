@@ -70,6 +70,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Controls.1.4.22\lib\net40\DotSpatial.Controls.dll</HintPath>
@@ -159,6 +162,11 @@
     <Compile Include="Keywords\IOntologyReader.cs" />
     <Compile Include="Keywords\OntologyDesc.cs" />
     <Compile Include="Keywords\KeywordsServicesFactory.cs" />
+    <Compile Include="Measure\MapFunctionMeasure.cs" />
+    <Compile Include="Measure\MeasureDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Measure\MeasureMode.cs" />
     <Compile Include="MessageStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -179,6 +187,7 @@
       <DependentUpon>SearchProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Searching\Exceptions\SearchSettingsValidationException.cs" />
+    <Compile Include="Searching\SeriesComparer.cs" />
     <Compile Include="Searching\SeriesSearcher.cs" />
     <Compile Include="SearchStatusDisplay.cs" />
     <Compile Include="Settings.cs" />
@@ -255,6 +264,12 @@
     <EmbeddedResource Include="Area\SelectAreaByAttributeDialog.resx">
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Measure\MeasureDialog.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Measure\MeasureDialog.zh-CN.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -355,6 +370,10 @@
     <None Include="Resources\oil_tower_32.png" />
     <None Include="Resources\oiltower_32.png" />
     <None Include="Resources\SN_Logo.png" />
+    <None Include="Resources\Area.png" />
+    <None Include="Resources\Line.png" />
+    <None Include="Resources\measure_16x16.png" />
+    <None Include="Resources\measure_32x32.png" />
     <Content Include="Search3.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

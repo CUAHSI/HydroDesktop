@@ -32,6 +32,37 @@ namespace ShaleDataNetwork.Settings.UI
             {
                 var res = new List<string>();
 
+                if (SearchSettings.AndSearch == false)
+                {
+                    form.radioButton1.Checked = true;
+                }
+                else if (SearchSettings.AndSearch == true)
+                {
+                    form.radioButton2.Checked = true;
+                }
+
+                foreach (Control c in form.Controls)
+                {
+                    if (c is CheckBox)
+                    {
+                        if (c.Text == "Discharge")
+                        {
+                            if (settings.SelectedKeywords.Contains("Discharge, stream"))
+                            {
+                                ((CheckBox)c).Checked = true;
+                            }
+                        }
+                        else if (settings.SelectedKeywords.Contains(c.Text))
+                        {
+                            ((CheckBox)c).Checked = true;
+                        }
+                        else
+                        {
+                            ((CheckBox)c).Checked = false;
+                        }
+                    }
+                }
+
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     foreach (Control c in form.Controls)
@@ -40,11 +71,29 @@ namespace ShaleDataNetwork.Settings.UI
                         {
                             if (((CheckBox)c).Checked == true)
                             {
-                                res.Add(c.Text);
+                                if (c.Text == "Discharge")
+                                {
+                                    res.Add("Discharge, stream");
+                                }
+                                else
+                                {
+                                    res.Add(c.Text);
+                                }
                             }
                         }
-                    }         
+                    }        
+ 
                     settings.SelectedKeywords = res;
+
+                    if (form.radioButton1.Checked == true)
+                    {
+                        SearchSettings.AndSearch = false;
+                    }
+                    else if (form.radioButton2.Checked == true)
+                    {
+                        SearchSettings.AndSearch = true;
+                    }
+
                 }
 
                 return form.DialogResult;
@@ -52,5 +101,20 @@ namespace ShaleDataNetwork.Settings.UI
         }
 
         #endregion
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
