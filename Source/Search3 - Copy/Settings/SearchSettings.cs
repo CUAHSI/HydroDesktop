@@ -9,6 +9,7 @@
         private KeywordsSettings _keywordsSettings;
         private WebServicesSettings _webServicesSettings;
         private AreaSettings _areaSettings;
+        private static bool andSearch;
 
         #endregion
 
@@ -42,6 +43,12 @@
         public AreaSettings AreaSettings
         {
             get { return _areaSettings?? (_areaSettings = new AreaSettings()); }
+        }
+
+        public static bool AndSearch
+        {
+            get { return SearchSettings.andSearch; }
+            set { SearchSettings.andSearch = value; }
         }
 
         #endregion

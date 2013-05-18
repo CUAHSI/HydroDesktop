@@ -63,6 +63,16 @@ namespace ShaleDataNetwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Area {
+            get {
+                object obj = ResourceManager.GetObject("Area", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap current_view_16 {
             get {
                 object obj = ResourceManager.GetObject("current_view_16", resourceCulture);
@@ -136,6 +146,36 @@ namespace ShaleDataNetwork.Properties {
         internal static System.Drawing.Bitmap keyword_32 {
             get {
                 object obj = ResourceManager.GetObject("keyword_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Line {
+            get {
+                object obj = ResourceManager.GetObject("Line", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap measure_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("measure_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap measure_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("measure_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
