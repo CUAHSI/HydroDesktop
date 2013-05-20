@@ -24,7 +24,7 @@ namespace HydroDesktop.DownloadExtensions
             {
                 foreach (string absolutePath in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
                 {
-                    if (Path.GetFileNameWithoutExtension(absolutePath).Equals(packageName))
+                    if (absolutePath.ToLower().Contains(packageName.ToLower()))
                     {
                         return true;
                     }

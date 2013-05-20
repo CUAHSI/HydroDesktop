@@ -207,6 +207,8 @@ Namespace Controls
                 SettingYAsixs()
                 SettingTitle()
 
+                'ZedGraph apparently doesn't play nice on Mac OS when a Title and Legend are visible. 
+                'As a temporary measure, we will remove these two things.
                 If DotSpatial.Mono.Mono.IsRunningOnMono() Then
                     gPane.Title.IsVisible = False
                     gPane.Legend.IsVisible = False
