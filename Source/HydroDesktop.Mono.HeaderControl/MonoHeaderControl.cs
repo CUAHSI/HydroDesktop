@@ -39,7 +39,7 @@ namespace DemoMap
                 container.Name = "splitcontainer";
                 container.Dock = DockStyle.Fill;
                 container.Panel1MinSize = 5;
-                container.SplitterDistance = 40;
+                container.SplitterDistance = 20;
                 Shell.Controls.Add(container);
             }
             container.Panel1.Controls.Add(tabcontrol);
