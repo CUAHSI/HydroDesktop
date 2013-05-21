@@ -177,6 +177,7 @@
       <DependentUpon>SearchProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Searching\Exceptions\SearchSettingsValidationException.cs" />
+    <Compile Include="Searching\SeriesComparer.cs" />
     <Compile Include="Searching\SeriesSearcher.cs" />
     <Compile Include="SearchStatusDisplay.cs" />
     <Compile Include="Settings.cs" />
