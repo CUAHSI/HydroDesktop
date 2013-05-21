@@ -64,39 +64,50 @@ namespace DemoMap
             button.Click += (sender, e) => item.OnClick(e);
 
             item.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(SimpleActionItem_PropertyChanged);
-            addControlToRoot(button, item.RootKey, item.GroupCaption);
+            addControlToRoot(button, item);
         }
 
         public override void Add(MenuContainerItem item)
         {
-            Button button = new Button();
-            button.Name = item.Key;
-            button.Text = item.Caption;
-            button.Enabled = item.Enabled;
-            button.Visible = item.Visible;
-            //button.Click += (sender, e) => item.OnClick(e);
+            //Needs to be implemented.
         }
 
         public override void Add(RootItem item)
         {
             if (!this.tabcontrol.TabPages.ContainsKey(item.Key))
             {
-                tabcontrol.TabPages.Add(item.Key, item.Caption);
-                TabPage tabPage = tabcontrol.TabPages[item.Key];
-                tabPage.Name = item.Key;
-                item.PropertyChanged += new PropertyChangedEventHandler(RootItem_PropertyChanged);
-                FlowLayoutPanel layout = new FlowLayoutPanel();
-                layout.Name = "container";
-                layout.BorderStyle = BorderStyle.Fixed3D;
-                layout.Dock = DockStyle.Fill;
-                layout.WrapContents = true;
-                layout.HorizontalScroll.Enabled = true;
-                layout.HorizontalScroll.Visible = true;
-                layout.VerticalScroll.Enabled = true;
-                layout.VerticalScroll.Visible = true;
-
-                tabPage.Controls.Add(layout);
+                createTabPage(item.Key, item.Caption);
             }
+            else
+            {
+                tabcontrol.TabPages[item.Key].Text = item.Caption;
+            }
+
+            item.PropertyChanged += new PropertyChangedEventHandler(RootItem_PropertyChanged);
+        }
+
+        private TabPage createTabPage(String rootkey, String text = "")
+        {
+            if (String.IsNullOrEmpty(rootkey))
+            {
+                return null;
+            }
+            tabcontrol.TabPages.Add(rootkey, text);
+            TabPage tabPage = tabcontrol.TabPages[rootkey];
+            tabPage.Name = rootkey;
+
+            FlowLayoutPanel layout = new FlowLayoutPanel();
+            layout.Name = "container";
+            layout.BorderStyle = BorderStyle.Fixed3D;
+            layout.Dock = DockStyle.Fill;
+            layout.WrapContents = true;
+            layout.HorizontalScroll.Enabled = true;
+            layout.HorizontalScroll.Visible = true;
+            layout.VerticalScroll.Enabled = true;
+            layout.VerticalScroll.Visible = true;
+
+            tabPage.Controls.Add(layout);
+            return tabPage;
         }
 
         public override void Add(DropDownActionItem item)
@@ -118,7 +129,7 @@ namespace DemoMap
                                                 item.SelectedItem = combo.SelectedItem;
                                                 item.PropertyChanged += DropDownActionItem_PropertyChanged;
                                             };
-            addControlToRoot(combo, item.RootKey, item.GroupCaption);
+            addControlToRoot(combo, item);
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
         }
 
@@ -142,7 +153,7 @@ namespace DemoMap
                                             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
                                         };
 
-            addControlToRoot(textBox, item.RootKey, item.GroupCaption);
+            addControlToRoot(textBox, item);
             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
         }
 
@@ -313,9 +324,14 @@ namespace DemoMap
             return item;
         }
 
-        private TabPage GetTabPage(string key)
+        private TabPage GetTabPage(ActionItem item)
         {
-            return tabcontrol.TabPages[key];
+            TabPage page = tabcontrol.TabPages[item.RootKey];
+            if (page == null)
+            {
+                page = createTabPage(item.RootKey, item.RootKey);
+            }
+            return page;
         }
 
         private FlowLayoutPanel GetRootContainer(TabPage root)
@@ -324,11 +340,13 @@ namespace DemoMap
             return layout;
         }
 
-        private void addControlToRoot(Control control, string rootkey, string groupCaption)
+        private void addControlToRoot(Control control, ActionItem item)
         {
+            String groupCaption = item.GroupCaption;
+
             try
             {
-                FlowLayoutPanel layout = GetOrCreateGroup(GetTabPage(rootkey), groupCaption);
+                FlowLayoutPanel layout = GetOrCreateGroup(GetTabPage(item), groupCaption);
                 layout.Controls.Add(control);
 
                 if (layout.Controls.Count <= 4)

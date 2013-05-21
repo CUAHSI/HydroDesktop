@@ -192,3 +192,5 @@ HydroDesktop.app/Contents/MacOS/Plugins/BruTile.dll
 HydroDesktop.app/Contents/MacOS/Plugins/HydroDesktop.ObjectModel.Controls.dll
 HydroDesktop.app/Contents/MacOS/Plugins/DataDownload.dll.config
 HydroDesktop.app/Contents/MacOS/Plugins/DataDownload.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop_1_6_dev.sln
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.DownloadExtensions.dll
