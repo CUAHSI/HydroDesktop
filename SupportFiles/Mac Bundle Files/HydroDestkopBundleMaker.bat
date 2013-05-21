@@ -20,6 +20,8 @@ xcopy "%SOURCE%\Binaries\Support\Mono\*.*" /y "%DESTINATION%\HydroDesktop.app\Co
 xcopy "%SOURCE%\Binaries\Plugins\*.dll" /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\DataAggregation\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\DataAggregation\*.dll.config" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
+xcopy "%SOURCE%\Binaries\Plugins\DataDownload\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
+xcopy "%SOURCE%\Binaries\Plugins\DataDownload\*.dll.config" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\EPADelineation\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\EPADelineation\*.dll.config" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"
 xcopy "%SOURCE%\Binaries\Plugins\ExcelExtension\*.dll" /s /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Plugins\"

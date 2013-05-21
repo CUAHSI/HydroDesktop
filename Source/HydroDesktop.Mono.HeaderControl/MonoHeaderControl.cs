@@ -329,20 +329,21 @@ namespace DemoMap
             try
             {
                 FlowLayoutPanel layout = GetOrCreateGroup(GetTabPage(rootkey), groupCaption);
-                if (layout.Controls.Count % 6 == 0 && layout.Controls.Count > 0)
+                layout.Controls.Add(control);
+
+                if (layout.Controls.Count <= 4)
                 {
-                    layout.Width += control.Width - (control.Width/2);
-                }
-                else if (layout.Controls.Count <= 3)
-                {
-                    layout.Width = control.Width + 10;
+                    layout.Width = 1;
                     foreach (Control c in layout.Controls)
                     {
-                        layout.Width += c.Width;
+                        layout.Width += (c.Width + 10);
                     }
+                    layout.Height = control.Height + 10;
                 }
-
-                layout.Controls.Add(control);
+                else
+                {
+                    layout.Height = (control.Height * ((layout.Controls.Count / 4) + 2));
+                }
             }
             catch (Exception e)
             {
@@ -373,6 +374,8 @@ namespace DemoMap
                 group = new FlowLayoutPanel();
                 group.Name = groupCaption;
                 group.Text = groupCaption;
+                group.Width = 1;
+                group.Height = 1;
                 group.BorderStyle = BorderStyle.Fixed3D;
                 group.WrapContents = true;
                 group.HorizontalScroll.Enabled = true;

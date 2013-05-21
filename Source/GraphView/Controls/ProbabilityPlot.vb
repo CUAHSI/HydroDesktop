@@ -55,6 +55,7 @@ Namespace Controls
                     If CurveCount() = 0 Then SetGraphPaneTitle(MessageStrings.All_Data_Censored)
                 End If
             Next
+
             Refreshing()
         End Sub
 
@@ -562,6 +563,7 @@ Namespace Controls
             Next
             SettingYAsixs()
             SettingTitle()
+
         End Sub
 
         Private Sub SettingTitle()
@@ -588,6 +590,13 @@ Namespace Controls
                 End If
 
             End With
+
+            'ZedGraph apparently doesn't play nice on Mac OS when a Title and Legend are visible. 
+            'As a temporary measure, we will remove these two things.
+            If DotSpatial.Mono.Mono.IsRunningOnMono() Then
+                zgProbabilityPlot.GraphPane.Title.IsVisible = False
+                zgProbabilityPlot.GraphPane.Legend.IsVisible = False
+            End If
         End Sub
 
         Private Sub SettingYAsixs()
