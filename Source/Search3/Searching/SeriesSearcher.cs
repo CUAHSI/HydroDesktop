@@ -158,12 +158,65 @@ namespace Search3.Searching
 
                     // Do the web service call
                     var tileSeriesList = new List<SeriesDataCart>();
-                    foreach (var keyword in keywords)
+
+                    if (SearchSettings.AndSearch == true)
                     {
-                        bgWorker.CheckForCancel();
-                        var series = GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY, keyword, startDate, endDate, ids, bgWorker, current, totalTilesCount);
-                        tileSeriesList.AddRange(series);
+                        //CHANGES FOR "AND" SEARCH
+                        var totalTileSeriesList = new List<SeriesDataCart>();
+                        var tileSeriesList2 = new List<SeriesDataCart>();
+                        var tileSeriesList3 = new List<SeriesDataCart>();
+                        var tileSeriesList4 = new List<SeriesDataCart>();
+
+                        SeriesComparer sc = new SeriesComparer();
+
+                        for (int i = 0; i < keywords.Count(); i++)
+                        {
+                            String keyword = keywords.ElementAt(i);
+
+                            bgWorker.CheckForCancel();
+                            var series = GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY, keyword, startDate, endDate, ids, bgWorker, current, totalTilesCount);
+                            totalTileSeriesList.AddRange(series);
+                            if (tileSeriesList.Count() == 0)
+                            {
+                                if (i == 0)
+                                {
+                                    tileSeriesList.AddRange(series);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+
+                                tileSeriesList2.AddRange(tileSeriesList.Intersect(series, sc));
+                                tileSeriesList.Clear();
+                                tileSeriesList.AddRange(tileSeriesList2);
+                                tileSeriesList2.Clear();
+                            }
+                        }
+
+
+                        for (int i = 0; i < tileSeriesList.Count(); i++)
+                        {
+                            tileSeriesList4 = totalTileSeriesList.Where(item => (item.SiteName.Equals(tileSeriesList.ElementAt(i).SiteName))).ToList();
+                            tileSeriesList3.AddRange(tileSeriesList4);
+                        }
+
+                        tileSeriesList = tileSeriesList3;
                     }
+                    else
+                    {
+                        tileSeriesList = new List<SeriesDataCart>();
+                        foreach (var keyword in keywords)
+                        {
+                            bgWorker.CheckForCancel();
+                            var series = GetSeriesCatalogForBox(tile.MinX, tile.MaxX, tile.MinY, tile.MaxY, keyword, startDate, endDate, ids, bgWorker, current, totalTilesCount);
+                            tileSeriesList.AddRange(series);
+                        }
+                    }
+                    //END CHANGES FOR "AND" SEARCH
 
                     bgWorker.CheckForCancel();
                     if (tileSeriesList.Count > 0)
