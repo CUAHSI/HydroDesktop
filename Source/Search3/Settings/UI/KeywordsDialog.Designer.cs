@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KeywordsDialog));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.keywordsUserControl1 = new Search3.Settings.UI.KeywordsUserControl();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.keywordsUserControl1 = new Search3.Settings.UI.KeywordsUserControl();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -58,20 +58,10 @@
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             // 
-            // keywordsUserControl1
-            // 
-            this.keywordsUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.keywordsUserControl1.Location = new System.Drawing.Point(0, 0);
-            this.keywordsUserControl1.Name = "keywordsUserControl1";
-            this.keywordsUserControl1.Size = new System.Drawing.Size(378, 386);
-            this.keywordsUserControl1.TabIndex = 10;
-            // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(127, 258);
+            this.radioButton1.Location = new System.Drawing.Point(124, 254);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(207, 17);
             this.radioButton1.TabIndex = 11;
@@ -82,13 +72,23 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(127, 281);
+            this.radioButton2.Location = new System.Drawing.Point(124, 277);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(204, 17);
             this.radioButton2.TabIndex = 12;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Find sites with ALL selected keywords";
             this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // keywordsUserControl1
+            // 
+            this.keywordsUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.keywordsUserControl1.Location = new System.Drawing.Point(0, 0);
+            this.keywordsUserControl1.Name = "keywordsUserControl1";
+            this.keywordsUserControl1.Size = new System.Drawing.Size(378, 386);
+            this.keywordsUserControl1.TabIndex = 10;
             // 
             // KeywordsDialog
             // 
