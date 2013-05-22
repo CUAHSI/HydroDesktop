@@ -19,6 +19,7 @@ namespace Search3.Searching
 
         private readonly string _hisCentralUrl;
         private static readonly CultureInfo _usaCulture = new CultureInfo("en-US");
+        private static readonly CultureInfo _invariantCulture = CultureInfo.InvariantCulture;
 
         #endregion
 
@@ -227,11 +228,11 @@ namespace Search3.Searching
                             break;
                         case "begindate":
                             reader.Read();
-                            series.BeginDate = Convert.ToDateTime(reader.Value, _usaCulture);
+                            series.BeginDate = Convert.ToDateTime(reader.Value, _invariantCulture);
                             break;
                         case "enddate":
                             reader.Read();
-                            series.EndDate = Convert.ToDateTime(reader.Value, _usaCulture);
+                            series.EndDate = Convert.ToDateTime(reader.Value, _invariantCulture);
                             break;
                         case "valuecount":
                             reader.Read();

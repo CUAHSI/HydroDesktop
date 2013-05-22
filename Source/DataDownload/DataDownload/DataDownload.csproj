@@ -225,6 +225,7 @@
     <EmbeddedResource Include="MessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Options\DownloadOptionsDialog.resx">
       <DependentUpon>DownloadOptionsDialog.cs</DependentUpon>
