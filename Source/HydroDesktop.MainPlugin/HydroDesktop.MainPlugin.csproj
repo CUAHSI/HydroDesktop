@@ -56,14 +56,8 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BruTile, Version=0.7.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BruTile.0.7.6\lib\net40\BruTile.dll</HintPath>
-    </Reference>
-    <Reference Include="BruTile.Desktop, Version=0.7.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BruTile.0.7.6\lib\net40\BruTile.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="BruTile.MbTiles, Version=0.7.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BruTile.0.7.6\lib\net40\BruTile.MbTiles.dll</HintPath>
+    <Reference Include="BruTile">
+      <HintPath>..\packages\BruTile.0.6.0\lib\net35\BruTile.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.0\lib\net40\DotSpatial.Controls.dll</HintPath>
@@ -94,9 +88,6 @@
     </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar">
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1186\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.0\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
@@ -238,7 +229,6 @@
     <Content Include="Resources\layer_save_32x32.png" />
     <Content Include="Resources\measure_16x16.png" />
     <Content Include="Resources\measure_32x32.png" />
-    <Content Include="Resources\nodata.bmp" />
     <Content Include="Resources\printer_16x16.png" />
     <Content Include="Resources\printer_32x32.png" />
     <Content Include="Resources\save_as_16x16.png" />
