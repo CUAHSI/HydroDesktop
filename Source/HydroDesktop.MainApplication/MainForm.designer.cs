@@ -58,6 +58,7 @@ namespace HydroDesktop.MainApplication
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "HydroDesktop";
+            this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
             this.ResumeLayout(false);
 
         }

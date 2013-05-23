@@ -67,5 +67,16 @@ namespace HydroDesktop.MainApplication
         /// Gets or sets the appManager
         /// </summary>
         public AppManager appManager { get; set; }
+
+        //Added this event to prevent so white line fading that would happen when I would move the the legend in the MainForm off the edge of the
+        //screen.  I am still confused as to why it was happening, but this locationChanged event seems to fix the problem just fine by constantly 
+        //redrawing the legend when the form is moving.
+        private void MainForm_LocationChanged(object sender, EventArgs e)
+        {
+            if (appManager.Map != null && appManager.Map.Legend != null)
+            {
+               // appManager.Map.Legend.RefreshNodes();
+            }
+        }    
     }
 }
