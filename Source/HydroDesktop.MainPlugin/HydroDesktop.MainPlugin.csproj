@@ -84,6 +84,9 @@
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Plugins.AttributeDataExplorer">
+      <HintPath>..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.24\lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Mono">
       <HintPath>..\..\SupportFiles\MonoDotSpatial\DotSpatial.Mono.dll</HintPath>
       <Private>False</Private>
