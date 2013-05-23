@@ -75,7 +75,7 @@ namespace HydroDesktop.MainApplication
         {
             if (appManager.Map != null && appManager.Map.Legend != null)
             {
-               // appManager.Map.Legend.RefreshNodes();
+               appManager.Map.Legend.RefreshNodes();
             }
         }    
     }
