@@ -537,9 +537,6 @@ namespace Search3
 
         void rbSelect_Click(object sender, EventArgs e)
         {
-
-
-
             DeactivateDrawBox();
             DeactivateCurrentView();
 
@@ -549,12 +546,22 @@ namespace Search3
             //   var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
             //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
             //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
+            var layers = App.Map.MapFrame.GetAllLayers();
+            bool selected = false;
+            foreach (var layer in layers)
+            {
+                if (layer.IsSelected)
+                {
+                    selected = true;
+                }
+            }
 
-            var polygonLayer = AreaHelper.GetAllSelectedPolygonLayers((Map)App.Map).FirstOrDefault();
-            if (polygonLayer == null)
+           // App.Map.MapFrame.GetAllLayers().ForEach(r => r.IsSelected = false);
+            if (selected == false)
             {
                 App.Map.MapFrame.IsSelected = true; ///////  This was formerly deleted
             }
+            App.Map.Legend.RefreshNodes();
         }
 
         private void DeactivateSelectAreaByPolygon()
@@ -772,16 +779,16 @@ namespace Search3
             _currentKeywords.Text = selectedItem;
             _currentKeywords.ToolTipText = selectedItem;
 
-          /*  if (MultiSelect == true)
+            /*if (MultiSelect == true)
             {
                 _currentKeywords.Text = "Multiple Selected";
                 _currentKeywords.ToolTipText = "Multiple Selected";
                 MultiSelectKeywords = selectedItem;
             }
             else
-            { */
+            { 
                
-           // }
+            }*/
         }
 
         void rbKeyword_Click(object sender, EventArgs e)
