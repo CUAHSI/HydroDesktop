@@ -225,6 +225,7 @@ namespace HydroDesktop.Database
             var seriesToDel = GetByKey(seriesID);
 
             //SQL Queries
+            string sqlTheme2 = "SELECT count(ThemeID) from DataThemes where ThemeID = " + tblTheme.Rows[0].GetDataOrNull("ThemeID");
             var sqlSite = "SELECT count(SiteID) from DataSeries where SiteID = " + seriesToDel.Site.Id;
             string sqlVariable = "SELECT count(VariableID) from DataSeries where VariableID = " + seriesToDel.Variable.Id;
             string sqlSource = "SELECT count(SourceID) from DataSeries where SourceID = " + seriesToDel.Source.Id;
@@ -235,6 +236,7 @@ namespace HydroDesktop.Database
             string sqlDeleteValues = "DELETE FROM DataValues WHERE SeriesID = " + seriesID;
             string sqlDeleteSeries = "DELETE FROM DataSeries WHERE SeriesID = " + seriesID;
             string sqlDeleteSeriesTheme = "DELETE FROM DataThemes WHERE SeriesID = " + seriesID;
+            string sqlDeleteSeriesThemeDescription = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + tblTheme.Rows[0].GetDataOrNull("ThemeID");
 
             string sqlDeleteSite = "DELETE FROM Sites WHERE SiteID = " + seriesToDel.Site.Id;
             string sqlDeleteVariable = "DELETE FROM Variables WHERE VariableID = " + seriesToDel.Variable.Id;
@@ -323,8 +325,19 @@ namespace HydroDesktop.Database
                         cmdDeleteSeriesTheme.ExecuteNonQuery();
                     }
 
+                   
                     //commit transaction
                     tran.Commit();
+                }
+
+                var themesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlTheme2));
+                if (themesCount == 0)
+                {
+                    using (var cmdDeleteTheme = conn.CreateCommand())
+                    {
+                        cmdDeleteTheme.CommandText = sqlDeleteSeriesThemeDescription;
+                        cmdDeleteTheme.ExecuteNonQuery();
+                    }
                 }
             }
 
