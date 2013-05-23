@@ -84,6 +84,9 @@
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Plugins.AttributeDataExplorer">
+      <HintPath>..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.24\lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
