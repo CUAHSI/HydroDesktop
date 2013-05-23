@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2FAAF21B-10DD-4430-87DC-54E981495485}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroDesktop.Main</RootNamespace>
+    <AssemblyName>HydroDesktop.MainPlugin</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Binaries\Application Extensions\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>..\..\Binaries\Application Extensions\HydroDesktop.MainPlugin.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Binaries\Application Extensions\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Binaries\Application Extensions\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <DocumentationFile>..\..\Binaries\Application Extensions\HydroDesktop.MainPlugin.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\Binaries\Application Extensions\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BruTile">
+      <HintPath>..\packages\BruTile.0.6.0\lib\net35\BruTile.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\packages\DotSpatial.Controls.1.5.0\lib\net40\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\packages\DotSpatial.Data.1.5.0\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\packages\DotSpatial.Data.Forms.1.5.0\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\packages\DotSpatial.Extensions.1.5.0\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\packages\DotSpatial.Modeling.Forms.1.5.0\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Mono">
+      <HintPath>..\packages\DotSpatial.Mono.1.5.0\lib\net40\DotSpatial.Mono.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Plugins.MenuBar">
+      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\packages\DotSpatial.Projections.1.5.0\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\packages\DotSpatial.Projections.Forms.1.5.0\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\packages\DotSpatial.Serialization.1.5.0\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\packages\DotSpatial.Symbology.1.5.0\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms">
+      <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.0\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\packages\DotSpatial.Topology.1.5.0\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Data">
+      <HintPath>..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\NuGet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AttributeTableManager.cs" />
+    <Compile Include="CoordinateDisplay.cs" />
+    <Compile Include="ProjectManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HydroDesktopMainPlugin.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SampleProjectInfo.cs" />
+    <Compile Include="SampleProjectInstaller.cs" />
+    <Compile Include="SelectionStatusDisplay.cs" />
+    <Compile Include="WelcomeScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WelcomeScreen.designer.cs">
+      <DependentUpon>WelcomeScreen.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WelcomeScreen.resx">
+      <DependentUpon>WelcomeScreen.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="package.nuspec" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\CuahsiLogo38.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\legend.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\timeSeries.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help.csproj">
+      <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
+      <Name>HydroDesktop.Help</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table_32x32.png" />
+    <None Include="Resources\table_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="credits.txt" />
+    <Content Include="Resources\deselect_16x16.png" />
+    <Content Include="Resources\deselect_32x32.png" />
+    <Content Include="Resources\disk_16x16.png" />
+    <Content Include="Resources\disk_32x32.png" />
+    <Content Include="Resources\document_empty_16x16.png" />
+    <Content Include="Resources\document_empty_32x32.png" />
+    <Content Include="Resources\folder_16x16.png" />
+    <Content Include="Resources\folder_32x32.png" />
+    <Content Include="Resources\info_rhombus_16x16.png" />
+    <Content Include="Resources\info_rhombus_32x32.png" />
+    <Content Include="Resources\layer_add_16x16.png" />
+    <Content Include="Resources\layer_add_32x32.png" />
+    <Content Include="Resources\layer_remove_16x16.png" />
+    <Content Include="Resources\layer_remove_32x32.png" />
+    <Content Include="Resources\layer_save_16x16.png" />
+    <Content Include="Resources\layer_save_32x32.png" />
+    <Content Include="Resources\measure_16x16.png" />
+    <Content Include="Resources\measure_32x32.png" />
+    <Content Include="Resources\printer_16x16.png" />
+    <Content Include="Resources\printer_32x32.png" />
+    <Content Include="Resources\save_as_16x16.png" />
+    <Content Include="Resources\save_as_32x32.png" />
+    <Content Include="Resources\select_16x16.png" />
+    <Content Include="Resources\select_32x32.png" />
+    <Content Include="Resources\zoom_16x16.png" />
+    <Content Include="Resources\zoom_32x32.png" />
+    <Content Include="Resources\zoom_coordinate_16x16.png" />
+    <Content Include="Resources\zoom_coordinate_32x32.png" />
+    <Content Include="Resources\zoom_extend_16x16.png" />
+    <Content Include="Resources\zoom_extend_32x32.png" />
+    <Content Include="Resources\zoom_in_16x16.png" />
+    <Content Include="Resources\zoom_in_32x32.png" />
+    <Content Include="Resources\zoom_layer_16x16.png" />
+    <Content Include="Resources\zoom_layer_32x32.png" />
+    <Content Include="Resources\zoom_out_16x16.png" />
+    <Content Include="Resources\zoom_out_32x32.png" />
+    <Content Include="Resources\zoom_selection_16x16.png" />
+    <Content Include="Resources\zoom_selection_32x32.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
