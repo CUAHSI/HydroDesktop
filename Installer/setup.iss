@@ -141,6 +141,8 @@ Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDi
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.ExtensionManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SplashScreenManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\HydroDesktop.SimpleLegend.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+
 
 Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion;
@@ -150,6 +152,7 @@ Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#S
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\NuGet.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
+
 ;Windows specific folders
 Source: "..\Binaries\Windows Extensions\HydroR\HydroR.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\HydroR\HydroR_1.2.tar.gz"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
@@ -157,8 +160,6 @@ Source: "..\Binaries\Windows Extensions\HydroDesktop.Docking.dll"; DestDir: "{ap
 Source: "..\Binaries\Windows Extensions\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-
 
 
 ;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
@@ -172,7 +173,7 @@ Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.Ribbon.dll"; DestDir:
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.MenuBar.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;AttributeDataExplorer package
-;Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DevExpress.Printing.v12.2.Core.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DevExpress.XtraGrid.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
@@ -182,8 +183,10 @@ Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v12.2.dll"; DestDi
 ;Source: "..\GeostatisticalTool\Lib\net40-client\MadInterfaces.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ;WebMap package
-Source: "..\Binaries\Application Extensions\BruTile.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\BruTile.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\BruTile.Desktop.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\BruTile.MbTiles.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;SampleProjects
 ;Source: "..\DotSpatial.SampleProjects.NorthAmerica\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.NorthAmerica"; Flags: recursesubdirs;
