@@ -55,7 +55,7 @@ namespace HydroDesktop.DataDownload
 
             var getColumnValue = (Func<string, string>)(column => (feature.DataRow[column].ToString()));
             var pInfo = new ServiceInfo{SourceFeature = feature, Layer = layer};
-            
+           
             foreach (var fld in feature.ParentFeatureSet.GetColumns())
             {
                 var strValue = getColumnValue(fld.ColumnName);
