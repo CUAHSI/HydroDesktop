@@ -11,7 +11,7 @@ xcopy "%SOURCE%\Binaries\*.dll" /y "%DESTINATION%\HydroDesktop.app\Contents\MacO
 xcopy "%SOURCE%\Binaries\*.exe" /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\"
 xcopy "%SOURCE%\Binaries\*.png" /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\"
 
-xcopy "%SOURCE%\Binaries\Mono Extensions\*.dll" /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Application Extensions\"
+xcopy "%SOURCE%\Binaries\Mono Extensions\*.dll" /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Mono Extensions\"
 
 xcopy "%SOURCE%\Binaries\Application Extensions\*.dll" /y "%DESTINATION%\HydroDesktop.app\Contents\MacOS\Application Extensions\"
 

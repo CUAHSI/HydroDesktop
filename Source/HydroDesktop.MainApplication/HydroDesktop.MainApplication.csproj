@@ -55,8 +55,9 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Analysis">
-      <HintPath>..\packages\DotSpatial.Analysis.1.4.22\lib\net40-Client\DotSpatial.Analysis.dll</HintPath>
+    <Reference Include="DotSpatial.Analysis, Version=1.5.0.0, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial.Analysis.1.5.1\lib\net40-Client\DotSpatial.Analysis.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.1\lib\net40\DotSpatial.Controls.dll</HintPath>
