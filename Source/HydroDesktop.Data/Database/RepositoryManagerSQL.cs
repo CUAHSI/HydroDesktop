@@ -404,7 +404,10 @@ namespace HydroDesktop.Database
                     //****************************************************************
                     //*** Step 15 Data Theme                               ***********
                     //****************************************************************
-
+                   // string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
+                   // string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + LastRowIDSelect;
+                   // string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
+                   // Database changes need to happen here - Eric Hullinger
                     var themeIDResult = GetThemeID(conn, theme);
                     if (themeIDResult.HasValue)
                     {
