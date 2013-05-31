@@ -196,3 +196,5 @@ HydroDesktop.app/Contents/MacOS/HydroDesktop_1_6_dev.sln
 HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.DownloadExtensions.dll
 HydroDesktop.app/Contents/MacOS/Application Extensions/BruTile.Desktop.dll
 HydroDesktop.app/Contents/MacOS/Application Extensions/BruTile.MbTiles.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/DotSpatial.Plugins.WebMap.dll
+Source/HydroDesktop.HeaderControl/Resources/nodata.bmp
