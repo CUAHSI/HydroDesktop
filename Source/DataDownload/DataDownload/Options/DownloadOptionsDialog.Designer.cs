@@ -39,7 +39,7 @@ namespace HydroDesktop.DataDownload.Options
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(182, 76);
+            this.button1.Location = new System.Drawing.Point(182, 56);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -49,24 +49,24 @@ namespace HydroDesktop.DataDownload.Options
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(15, 37);
+            this.textBox1.Location = new System.Drawing.Point(181, 10);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(170, 20);
+            this.textBox1.Size = new System.Drawing.Size(157, 20);
             this.textBox1.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(12, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 13);
+            this.label1.Size = new System.Drawing.Size(149, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Number of data values per request:";
+            this.label1.Text = "Number of values per request:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(191, 44);
+            this.label2.Location = new System.Drawing.Point(179, 33);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 13);
             this.label2.TabIndex = 5;
@@ -74,7 +74,7 @@ namespace HydroDesktop.DataDownload.Options
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(263, 76);
+            this.button2.Location = new System.Drawing.Point(263, 56);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 6;
@@ -84,7 +84,7 @@ namespace HydroDesktop.DataDownload.Options
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 80);
+            this.checkBox1.Location = new System.Drawing.Point(12, 60);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(160, 17);
             this.checkBox1.TabIndex = 7;
@@ -96,7 +96,8 @@ namespace HydroDesktop.DataDownload.Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(350, 112);
+            this.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.ClientSize = new System.Drawing.Size(350, 85);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label2);
