@@ -332,7 +332,9 @@ namespace HydroDesktop.Main
         private void lstRecentProjects_Click(object sender, EventArgs e)
         {
             rbOpenExistingProject.Checked = true;
-        }      
+        }
+
+           
     } 
 
     public class ProjectFileInfo

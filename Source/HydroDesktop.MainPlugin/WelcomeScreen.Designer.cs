@@ -56,39 +56,46 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
+            this.checkBox1.BackColor = System.Drawing.Color.Transparent;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.checkBox1.Location = new System.Drawing.Point(8, 214);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(150, 17);
             this.checkBox1.TabIndex = 3;
             this.checkBox1.Text = "Show this dialog at startup";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.UseVisualStyleBackColor = false;
             this.checkBox1.Visible = false;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // linkLabelQuickStart
             // 
             this.linkLabelQuickStart.AutoSize = true;
+            this.linkLabelQuickStart.BackColor = System.Drawing.Color.Transparent;
             this.linkLabelQuickStart.Location = new System.Drawing.Point(12, 98);
             this.linkLabelQuickStart.Name = "linkLabelQuickStart";
             this.linkLabelQuickStart.Size = new System.Drawing.Size(171, 13);
             this.linkLabelQuickStart.TabIndex = 0;
+            this.linkLabelQuickStart.TabStop = true;
             this.linkLabelQuickStart.Text = "Getting Started with HydroDesktop";
             this.linkLabelQuickStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelQuickStart_click);
             // 
             // linkLabelHelp
             // 
             this.linkLabelHelp.AutoSize = true;
+            this.linkLabelHelp.BackColor = System.Drawing.Color.Transparent;
             this.linkLabelHelp.Location = new System.Drawing.Point(22, 130);
             this.linkLabelHelp.Name = "linkLabelHelp";
             this.linkLabelHelp.Size = new System.Drawing.Size(140, 13);
             this.linkLabelHelp.TabIndex = 1;
+            this.linkLabelHelp.TabStop = true;
             this.linkLabelHelp.Text = "View HydroDesktop help file";
             this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_click);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.CuahsiLogo38;
             this.pictureBox1.Location = new System.Drawing.Point(8, 13);
             this.pictureBox1.Name = "pictureBox1";
@@ -99,7 +106,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.label1.Location = new System.Drawing.Point(51, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(129, 24);
@@ -109,6 +118,8 @@
             // lblProductVersion
             // 
             this.lblProductVersion.AutoSize = true;
+            this.lblProductVersion.BackColor = System.Drawing.Color.Transparent;
+            this.lblProductVersion.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblProductVersion.Location = new System.Drawing.Point(22, 67);
             this.lblProductVersion.Name = "lblProductVersion";
             this.lblProductVersion.Size = new System.Drawing.Size(145, 13);
@@ -130,18 +141,19 @@
             // 
             // groupBoxProject
             // 
-            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxProject.BackColor = System.Drawing.Color.Transparent;
             this.groupBoxProject.Controls.Add(this.btnBrowseProject);
             this.groupBoxProject.Controls.Add(this.rbOpenExistingProject);
             this.groupBoxProject.Controls.Add(this.rbEmptyProject);
             this.groupBoxProject.Controls.Add(this.lstProjectTemplates);
             this.groupBoxProject.Controls.Add(this.rbNewProjectTemplate);
             this.groupBoxProject.Controls.Add(this.lstRecentProjects);
-            this.groupBoxProject.Location = new System.Drawing.Point(208, 1);
+            this.groupBoxProject.Location = new System.Drawing.Point(208, 5);
             this.groupBoxProject.Name = "groupBoxProject";
-            this.groupBoxProject.Size = new System.Drawing.Size(274, 236);
+            this.groupBoxProject.Size = new System.Drawing.Size(274, 232);
             this.groupBoxProject.TabIndex = 13;
             this.groupBoxProject.TabStop = false;
             // 
@@ -161,6 +173,7 @@
             // rbOpenExistingProject
             // 
             this.rbOpenExistingProject.AutoSize = true;
+            this.rbOpenExistingProject.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 120);
             this.rbOpenExistingProject.Name = "rbOpenExistingProject";
             this.rbOpenExistingProject.Size = new System.Drawing.Size(126, 17);
@@ -171,6 +184,7 @@
             // rbEmptyProject
             // 
             this.rbEmptyProject.AutoSize = true;
+            this.rbEmptyProject.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.rbEmptyProject.Location = new System.Drawing.Point(6, 213);
             this.rbEmptyProject.Name = "rbEmptyProject";
             this.rbEmptyProject.Size = new System.Drawing.Size(149, 17);
@@ -190,6 +204,7 @@
             // 
             this.rbNewProjectTemplate.AutoSize = true;
             this.rbNewProjectTemplate.Checked = true;
+            this.rbNewProjectTemplate.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.rbNewProjectTemplate.Location = new System.Drawing.Point(6, 19);
             this.rbNewProjectTemplate.Name = "rbNewProjectTemplate";
             this.rbNewProjectTemplate.Size = new System.Drawing.Size(190, 17);
@@ -224,8 +239,9 @@
             // 
             // panelStatus
             // 
-            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelStatus.BackColor = System.Drawing.Color.Transparent;
             this.panelStatus.Location = new System.Drawing.Point(8, 243);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(393, 23);
@@ -236,7 +252,8 @@
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.White;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(494, 274);
             this.Controls.Add(this.panelStatus);
             this.Controls.Add(this.btnOK);
@@ -247,6 +264,7 @@
             this.Controls.Add(this.linkLabelQuickStart);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.pictureBox1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
