@@ -41,18 +41,12 @@ namespace ShaleDataNetwork.Settings.UI
                     form.radioButton2.Checked = true;
                 }
 
-                foreach (Control c in form.Controls)
+                foreach (Control c in form.groupBox1.Controls)
                 {
                     if (c is CheckBox)
                     {
-                        if (c.Text == "Discharge")
-                        {
-                            if (settings.SelectedKeywords.Contains("Discharge, stream"))
-                            {
-                                ((CheckBox)c).Checked = true;
-                            }
-                        }
-                        else if (settings.SelectedKeywords.Contains(c.Text))
+                 
+                        if (settings.SelectedKeywords.Contains(c.Text))
                         {
                             ((CheckBox)c).Checked = true;
                         }
@@ -60,12 +54,35 @@ namespace ShaleDataNetwork.Settings.UI
                         {
                             ((CheckBox)c).Checked = false;
                         }
+
+
+                        if (c.Text == "Discharge")
+                        {
+                            if (settings.SelectedKeywords.Contains("Discharge, stream"))
+                            {
+                                ((CheckBox)c).Checked = true;
+                            }
+                        }
+                        if (c.Text == "Total Dissolved Solids")
+                        {
+                            if (settings.SelectedKeywords.Contains("Solids, total dissolved"))
+                            {
+                                ((CheckBox)c).Checked = true;
+                            }
+                        }
+                        if (c.Text == "Total Suspended Solids")
+                        {
+                            if (settings.SelectedKeywords.Contains("Solids, total suspended"))
+                            {
+                                ((CheckBox)c).Checked = true;
+                            }
+                        }
                     }
                 }
 
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Control c in form.Controls)
+                    foreach (Control c in form.groupBox1.Controls)
                     {
                         if (c is CheckBox)
                         {
@@ -113,6 +130,11 @@ namespace ShaleDataNetwork.Settings.UI
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ShaleDataDialog_Load(object sender, EventArgs e)
         {
 
         }
