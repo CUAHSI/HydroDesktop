@@ -21,6 +21,7 @@ namespace HelpTab
         // These are configurable
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
         private readonly string _remoteHelpUri = Properties.Settings.Default.remoteHelpUri;
+        private readonly string _quickStartUri = Properties.Settings.Default.quickStartUri;
         private readonly string _discussionForumUri = Properties.Settings.Default.discussionForumUri;
         private readonly string _issueTrackerUri = Properties.Settings.Default.issueTrackerUri;
         private readonly string _commentMailtoLink = Properties.Settings.Default.commentMailtoLink;
@@ -72,7 +73,7 @@ namespace HelpTab
         public override void Deactivate()
         {
             // Remove ribbon tab
-            App.HeaderControl.RemoveAll();
+           App.HeaderControl.RemoveAll();
 
             base.Deactivate();
         }
@@ -102,6 +103,15 @@ namespace HelpTab
             userGuideButton.ToolTipText = "Open the help documentation.";
             userGuideButton.GroupCaption = _helpPanelName;
             App.HeaderControl.Add(userGuideButton);
+
+            // Add a button to open quick start guide
+            var quickStartButton = new SimpleActionItem("Quick Start", quickStartButton_Click);
+            quickStartButton.RootKey = HelpTabKey;
+            quickStartButton.LargeImage = Resources.quickstart_32x32;
+            quickStartButton.SmallImage = Resources.quickstart_16x16;
+            quickStartButton.ToolTipText = "Open the quick start guide.";
+            quickStartButton.GroupCaption = _helpPanelName;
+            App.HeaderControl.Add(quickStartButton);
 
             //Separator
             App.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
@@ -170,6 +180,7 @@ namespace HelpTab
             base.Activate();
         }
 
+
         #endregion
 
         #region Event Handlers
@@ -196,6 +207,29 @@ namespace HelpTab
                 MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        void quickStartButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (WebUtilities.IsInternetAvailable() == false)
+                {
+                    string quickStartGuideFile = Properties.Settings.Default.QuickStartGuideName;
+                    LocalHelp.OpenHelpFile(quickStartGuideFile);
+                }
+                else
+                {
+                    OpenUri(_quickStartUri);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         void discussionButton_Click(object sender, EventArgs e)
         {

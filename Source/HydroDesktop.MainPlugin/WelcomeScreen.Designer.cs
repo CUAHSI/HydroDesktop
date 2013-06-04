@@ -31,10 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeScreen));
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.linkLabelQuickStart = new System.Windows.Forms.LinkLabel();
-            this.linkLabelHelp = new System.Windows.Forms.LinkLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblProductVersion = new System.Windows.Forms.Label();
             this.lstRecentProjects = new System.Windows.Forms.ListBox();
             this.bsRecentFiles = new System.Windows.Forms.BindingSource(this.components);
@@ -48,9 +44,12 @@
             this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.panelStatus = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.GettingStartedButton = new System.Windows.Forms.Button();
+            this.HelpButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -67,49 +66,10 @@
             this.checkBox1.Visible = false;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // linkLabelQuickStart
-            // 
-            this.linkLabelQuickStart.AutoSize = true;
-            this.linkLabelQuickStart.Location = new System.Drawing.Point(12, 98);
-            this.linkLabelQuickStart.Name = "linkLabelQuickStart";
-            this.linkLabelQuickStart.Size = new System.Drawing.Size(171, 13);
-            this.linkLabelQuickStart.TabIndex = 0;
-            this.linkLabelQuickStart.Text = "Getting Started with HydroDesktop";
-            this.linkLabelQuickStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelQuickStart_click);
-            // 
-            // linkLabelHelp
-            // 
-            this.linkLabelHelp.AutoSize = true;
-            this.linkLabelHelp.Location = new System.Drawing.Point(22, 130);
-            this.linkLabelHelp.Name = "linkLabelHelp";
-            this.linkLabelHelp.Size = new System.Drawing.Size(140, 13);
-            this.linkLabelHelp.TabIndex = 1;
-            this.linkLabelHelp.Text = "View HydroDesktop help file";
-            this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.CuahsiLogo38;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 13);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(194, 155);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(51, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(129, 24);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "HydroDesktop";
-            // 
             // lblProductVersion
             // 
             this.lblProductVersion.AutoSize = true;
-            this.lblProductVersion.Location = new System.Drawing.Point(22, 67);
+            this.lblProductVersion.Location = new System.Drawing.Point(35, 63);
             this.lblProductVersion.Name = "lblProductVersion";
             this.lblProductVersion.Size = new System.Drawing.Size(145, 13);
             this.lblProductVersion.TabIndex = 8;
@@ -231,20 +191,54 @@
             this.panelStatus.Size = new System.Drawing.Size(393, 23);
             this.panelStatus.TabIndex = 17;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.Logo_Small1;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 20);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(200, 148);
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
+            // GettingStartedButton
+            // 
+            this.GettingStartedButton.Image = ((System.Drawing.Image)(resources.GetObject("GettingStartedButton.Image")));
+            this.GettingStartedButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.GettingStartedButton.Location = new System.Drawing.Point(35, 87);
+            this.GettingStartedButton.Name = "GettingStartedButton";
+            this.GettingStartedButton.Size = new System.Drawing.Size(145, 25);
+            this.GettingStartedButton.TabIndex = 8;
+            this.GettingStartedButton.Text = "View Quick Start Guide";
+            this.GettingStartedButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.GettingStartedButton.UseVisualStyleBackColor = true;
+            this.GettingStartedButton.Click += new System.EventHandler(this.GettingStartedButton_Click);
+            // 
+            // HelpButton
+            // 
+            this.HelpButton.Image = ((System.Drawing.Image)(resources.GetObject("HelpButton.Image")));
+            this.HelpButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.HelpButton.Location = new System.Drawing.Point(22, 119);
+            this.HelpButton.Name = "HelpButton";
+            this.HelpButton.Size = new System.Drawing.Size(171, 25);
+            this.HelpButton.TabIndex = 18;
+            this.HelpButton.Text = "View HydroDesktop Help FIle";
+            this.HelpButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.HelpButton.UseVisualStyleBackColor = true;
+            this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
+            // 
             // WelcomeScreen
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(494, 274);
+            this.Controls.Add(this.HelpButton);
+            this.Controls.Add(this.GettingStartedButton);
             this.Controls.Add(this.panelStatus);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.groupBoxProject);
             this.Controls.Add(this.lblProductVersion);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.linkLabelHelp);
-            this.Controls.Add(this.linkLabelQuickStart);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -255,10 +249,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " Welcome to HydroDesktop";
             this.Load += new System.EventHandler(this.WelcomeScreen_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).EndInit();
             this.groupBoxProject.ResumeLayout(false);
             this.groupBoxProject.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,10 +261,6 @@
         #endregion
 
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.LinkLabel linkLabelQuickStart;
-        private System.Windows.Forms.LinkLabel linkLabelHelp;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblProductVersion;
         private System.Windows.Forms.ListBox lstRecentProjects;
         private System.Windows.Forms.BindingSource bsRecentFiles;
@@ -284,5 +274,8 @@
         private System.Windows.Forms.ToolStripStatusLabel lblProgress;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Panel panelStatus;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button GettingStartedButton;
+        private System.Windows.Forms.Button HelpButton;
     }
 }

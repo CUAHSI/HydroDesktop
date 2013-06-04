@@ -318,20 +318,20 @@ namespace HydroDesktop.Main
 
         #endregion
 
-        private void linkLabelQuickStart_click(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lstRecentProjects_Click(object sender, EventArgs e)
+        {
+            rbOpenExistingProject.Checked = true;
+        }
+
+        private void GettingStartedButton_Click(object sender, EventArgs e)
         {
             string quickStartGuideFile = Properties.Settings.Default.QuickStartGuideName;
             LocalHelp.OpenHelpFile(quickStartGuideFile);
         }
 
-        private void linkLabelHelp_click(object sender, LinkLabelLinkClickedEventArgs e)
+        private void HelpButton_Click(object sender, EventArgs e)
         {
-            LocalHelp.OpenHelpFile("welcome.html");
-        }
-
-        private void lstRecentProjects_Click(object sender, EventArgs e)
-        {
-            rbOpenExistingProject.Checked = true;
+            LocalHelp.OpenHelpFile("welcome.html");          
         }      
     } 
 

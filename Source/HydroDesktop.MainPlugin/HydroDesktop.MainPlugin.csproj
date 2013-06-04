@@ -236,6 +236,9 @@
     <Content Include="Resources\layer_remove_32x32.png" />
     <Content Include="Resources\layer_save_16x16.png" />
     <Content Include="Resources\layer_save_32x32.png" />
+    <None Include="Resources\Logo_Medium.png" />
+    <None Include="Resources\Logo_Small.png" />
+    <None Include="Resources\Logo_Small1.png" />
     <Content Include="Resources\measure_16x16.png" />
     <Content Include="Resources\measure_32x32.png" />
     <Content Include="Resources\printer_16x16.png" />
