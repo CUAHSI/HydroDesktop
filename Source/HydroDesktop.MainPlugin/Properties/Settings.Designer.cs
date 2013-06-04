@@ -52,5 +52,41 @@ namespace HydroDesktop.Main.Properties {
                 this["IsWelcomeScreenDisplayed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://userguide.hydrodesktop.org")]
+        public string remoteHelpUri {
+            get {
+                return ((string)(this["remoteHelpUri"]));
+            }
+            set {
+                this["remoteHelpUri"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("HydroDesktop User Guide.pdf")]
+        public string localHelpUri {
+            get {
+                return ((string)(this["localHelpUri"]));
+            }
+            set {
+                this["localHelpUri"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://quickstart.hydrodesktop.org")]
+        public string quickStartUri {
+            get {
+                return ((string)(this["quickStartUri"]));
+            }
+            set {
+                this["quickStartUri"] = value;
+            }
+        }
     }
 }

@@ -11,5 +11,14 @@
     <Setting Name="IsWelcomeScreenDisplayed" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="remoteHelpUri" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://userguide.hydrodesktop.org</Value>
+    </Setting>
+    <Setting Name="localHelpUri" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HydroDesktop User Guide.pdf</Value>
+    </Setting>
+    <Setting Name="quickStartUri" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://quickstart.hydrodesktop.org</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
