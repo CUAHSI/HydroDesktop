@@ -185,6 +185,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WelcomeScreen.resx">
       <DependentUpon>WelcomeScreen.cs</DependentUpon>
@@ -241,7 +242,6 @@
     <Content Include="Resources\layer_save_16x16.png" />
     <Content Include="Resources\layer_save_32x32.png" />
     <None Include="Resources\Logo_Medium.png" />
-    <None Include="Resources\Logo_Small.png" />
     <None Include="Resources\Logo_Small1.png" />
     <Content Include="Resources\measure_16x16.png" />
     <Content Include="Resources\measure_32x32.png" />
