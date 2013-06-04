@@ -4,6 +4,8 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Extensions;
 using DotSpatial.Plugins.ExtensionManager;
+using System;
+using System.Diagnostics;
 
 namespace HydroDesktop.DownloadExtensions
 {
@@ -70,8 +72,15 @@ namespace HydroDesktop.DownloadExtensions
             {
                 if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
                 {
-                    App.UpdateProgress("Downloading " + sampleProject + " sample project...");
-                    packages.Install(sampleProject);
+                    try
+                    {
+                        App.UpdateProgress("Downloading " + sampleProject + " sample project...");
+                        packages.Install(sampleProject);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Print(ex.StackTrace); ;
+                    }
                 }
             }
             //App.RefreshExtensions();
