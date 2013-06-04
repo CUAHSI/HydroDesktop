@@ -30,6 +30,9 @@ namespace HydroDesktop.Main
         private List<ProjectFileInfo> _recentProjectFiles;
         private AppManager _app;
         private bool _newProjectCreated = false;
+        private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
+        private readonly string _remoteHelpUri = Properties.Settings.Default.remoteHelpUri;
+        private readonly string _quickStartUri = Properties.Settings.Default.quickStartUri;
 
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
@@ -174,6 +177,38 @@ namespace HydroDesktop.Main
             //if (!progressBar1.Visible) progressBar1.Visible = true;
             //progressBar1.Value = percent;
             //lblProgress.Text = message;
+        }
+
+        private void OpenUri(string uriString)
+        {
+            if (WebUtilities.IsInternetAvailable() == false)
+            {
+                MessageBox.Show("Internet connection not available.", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            try
+            {
+                WebUtilities.OpenUri(uriString);
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No URI provided.", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (UriFormatException ex)
+            {
+                MessageBox.Show("Invalid URI format for '" + uriString + "'.\n(" + ex.Message + ")", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "The system cannot find the path specified")
+                {
+                    MessageBox.Show("Could not find the target at '" + uriString + "'.", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Could not open target at '" + uriString + "'.\n(" + ex.Message + ")", "Could not open URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         #endregion
@@ -323,15 +358,48 @@ namespace HydroDesktop.Main
             rbOpenExistingProject.Checked = true;
         }
 
-        private void GettingStartedButton_Click(object sender, EventArgs e)
-        {
-            string quickStartGuideFile = Properties.Settings.Default.QuickStartGuideName;
-            LocalHelp.OpenHelpFile(quickStartGuideFile);
-        }
-
         private void HelpButton_Click(object sender, EventArgs e)
         {
-            LocalHelp.OpenHelpFile("welcome.html");          
+            try
+            {
+
+                if (WebUtilities.IsInternetAvailable() == false)
+                {
+                    LocalHelp.OpenHelpFile(_localHelpUri);
+                }
+                else
+                {
+                    OpenUri(_remoteHelpUri);    
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        
+        }
+
+        private void QuickStartButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (WebUtilities.IsInternetAvailable() == false)
+                {
+                    string quickStartGuideFile = Properties.Settings.Default.QuickStartGuideName;
+                    LocalHelp.OpenHelpFile(quickStartGuideFile);
+                }
+                else
+                {
+                    OpenUri(_quickStartUri);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }         
         }      
     } 
 

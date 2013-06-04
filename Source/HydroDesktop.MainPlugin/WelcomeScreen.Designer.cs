@@ -45,7 +45,7 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.GettingStartedButton = new System.Windows.Forms.Button();
+            this.QuickStartButton = new System.Windows.Forms.Button();
             this.HelpButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
@@ -200,18 +200,18 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
-            // GettingStartedButton
+            // QuickStartButton
             // 
-            this.GettingStartedButton.Image = ((System.Drawing.Image)(resources.GetObject("GettingStartedButton.Image")));
-            this.GettingStartedButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.GettingStartedButton.Location = new System.Drawing.Point(35, 87);
-            this.GettingStartedButton.Name = "GettingStartedButton";
-            this.GettingStartedButton.Size = new System.Drawing.Size(145, 25);
-            this.GettingStartedButton.TabIndex = 8;
-            this.GettingStartedButton.Text = "View Quick Start Guide";
-            this.GettingStartedButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.GettingStartedButton.UseVisualStyleBackColor = true;
-            this.GettingStartedButton.Click += new System.EventHandler(this.GettingStartedButton_Click);
+            this.QuickStartButton.Image = ((System.Drawing.Image)(resources.GetObject("QuickStartButton.Image")));
+            this.QuickStartButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.QuickStartButton.Location = new System.Drawing.Point(35, 87);
+            this.QuickStartButton.Name = "QuickStartButton";
+            this.QuickStartButton.Size = new System.Drawing.Size(145, 25);
+            this.QuickStartButton.TabIndex = 8;
+            this.QuickStartButton.Text = "View Quick Start Guide";
+            this.QuickStartButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.QuickStartButton.UseVisualStyleBackColor = true;
+            this.QuickStartButton.Click += new System.EventHandler(this.QuickStartButton_Click);
             // 
             // HelpButton
             // 
@@ -234,7 +234,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(494, 274);
             this.Controls.Add(this.HelpButton);
-            this.Controls.Add(this.GettingStartedButton);
+            this.Controls.Add(this.QuickStartButton);
             this.Controls.Add(this.panelStatus);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.groupBoxProject);
@@ -275,7 +275,7 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Panel panelStatus;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button GettingStartedButton;
+        private System.Windows.Forms.Button QuickStartButton;
         private System.Windows.Forms.Button HelpButton;
     }
 }
