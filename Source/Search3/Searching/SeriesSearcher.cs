@@ -15,6 +15,8 @@ namespace Search3.Searching
 {
     public abstract class SeriesSearcher
     {
+        private int totalSeriesCount = 0;
+
         public SearchResult GetSeriesCatalogInRectangle(Box extentBox, string[] keywords, double tileWidth, double tileHeight,
                                                         DateTime startDate, DateTime endDate, WebServiceNode[] serviceIDs, IProgressHandler bgWorker)
         {
@@ -39,7 +41,8 @@ namespace Search3.Searching
             }
             
             bgWorker.CheckForCancel();
-            bgWorker.ReportProgress(100, "Search Finished.");
+            var message = string.Format("{0} Series found.", totalSeriesCount);
+            bgWorker.ReportProgress(100, "Search Finished. " + message);
             return resultFs;
         }
         
@@ -84,7 +87,8 @@ namespace Search3.Searching
             }
             
             bgWorker.CheckForCancel();
-            bgWorker.ReportProgress(100, "Search Finished.");
+            var message = string.Format("{0} Series found.", totalSeriesCount);
+            bgWorker.ReportProgress(100, "Search Finished. " + message);
             return resultFs;
         }
 
@@ -128,7 +132,7 @@ namespace Search3.Searching
             var fullSeriesList = new List<List<SeriesDataCart>>();
             long  currentTileIndex = 0;
             int tilesFinished = 0;
-            int totalSeriesCount = 0;
+            totalSeriesCount = 0;
 
             bgWorker.ReportProgress(0, "0 Series found");
            
