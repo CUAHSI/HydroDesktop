@@ -1,8 +1,4 @@
-﻿// adopted code from:
-// http://www.codeproject.com/Articles/37886/Yet-Another-Splash-Screen-in-C
-// ************************************************************************
-
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace HydroDesktop.SplashScreenManager
 {
@@ -12,6 +8,18 @@ namespace HydroDesktop.SplashScreenManager
         delegate void StringParameterWithStatusDelegate(string Text, TypeOfMessage tom);
         delegate void SplashShowCloseDelegate();
 
+        private const int CS_DROPSHADOW = 0x00020000;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                // add the drop shadow flag for automatically drawing
+                // a drop shadow around the form
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= CS_DROPSHADOW;
+                return cp;
+            }
+        }
         /// <summary>
         /// To ensure splash screen is closed using the API and not by keyboard or any other things
         /// </summary>
