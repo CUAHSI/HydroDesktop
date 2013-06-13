@@ -181,7 +181,7 @@ namespace SeriesView
             string criterionType = cbBoxCriterion.Text;
             switch (criterionType)
             {
-                case "Themes":
+                case "Data Network":
                     cbBoxContent.DataSource = _themeTable;
                     cbBoxContent.DisplayMember = "ThemeName";
                     cbBoxContent.ValueMember = "ThemeID";
@@ -240,7 +240,7 @@ namespace SeriesView
 
                 switch (criterionType)
                 {
-                    case "Themes":
+                    case "Data Network":
                         filter = "ThemeID=" + selectedID;
                         break;
                     case "Site":
@@ -602,7 +602,7 @@ namespace SeriesView
             //Fill the cbBoxCriterion with 6 items
             cbBoxCriterion.Items.Clear();
             cbBoxCriterion.Items.Add("Please select a filter criterion");
-            cbBoxCriterion.Items.Add("Themes");
+            cbBoxCriterion.Items.Add("Data Network");
             cbBoxCriterion.Items.Add("Site");
             cbBoxCriterion.Items.Add("Variable");
             cbBoxCriterion.Items.Add("Method");
