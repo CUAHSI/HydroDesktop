@@ -40,6 +40,8 @@ namespace Search3.Settings.UI
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.treeviewOntology = new System.Windows.Forms.TreeView();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -150,10 +152,36 @@ namespace Search3.Settings.UI
             this.treeviewOntology.Size = new System.Drawing.Size(289, 179);
             this.treeviewOntology.TabIndex = 39;
             // 
+            // radioButton1
+            // 
+            this.radioButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(123, 277);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(207, 17);
+            this.radioButton1.TabIndex = 67;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Find sites with ANY selected keywords";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(123, 299);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(204, 17);
+            this.radioButton2.TabIndex = 68;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Find sites with ALL selected keywords";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
             // KeywordsUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.radioButton2);
+            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.treeviewOntology);
             this.Controls.Add(this.btnRemoveKeyword);
             this.Controls.Add(this.panel2);
@@ -167,6 +195,7 @@ namespace Search3.Settings.UI
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -182,5 +211,7 @@ namespace Search3.Settings.UI
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TreeView treeviewOntology;
+        internal System.Windows.Forms.RadioButton radioButton1;
+        internal System.Windows.Forms.RadioButton radioButton2;
     }
 }

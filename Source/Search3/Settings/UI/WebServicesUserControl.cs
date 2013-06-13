@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Data;
+using System.Linq;
+using System.Diagnostics;
 
 namespace Search3.Settings.UI
 {
@@ -21,25 +24,62 @@ namespace Search3.Settings.UI
         {
             InitializeComponent();
 
-            treeViewWebServices.NodeMouseClick += treeViewWebServices_OpenUrl;
-            treeViewWebServices.AfterCheck += treeViewWebServices_AfterCheck;
-            
+            gridViewWebServices.CellContentClick += gridViewWebServices_OpenUrl;
+            gridViewWebServices.CellValueChanged += gridViewWebServices_AfterCheck;  
         }
+
+     
 
         #endregion
 
         #region Private methods
 
-        void treeViewWebServices_AfterCheck(object sender, TreeViewEventArgs e)
+        void gridViewWebServices_AfterCheck(object sender, DataGridViewCellEventArgs e)
         {
-            var webNode = (WebServiceNode)e.Node.Tag;
-            webNode.Checked = e.Node.Checked;
+            if (e.RowIndex == -1) return;
+            
+            var webNode = (WebServiceNode)gridViewWebServices.Rows[e.RowIndex].Tag;
+            if (webNode == null) return;
+
+            DataGridViewCheckBoxCell cell = (DataGridViewCheckBoxCell)gridViewWebServices.Rows[e.RowIndex].Cells[e.ColumnIndex];
+           if((bool)cell.Value == true)
+           {
+               webNode.Checked = true;
+           }
+           else 
+           {
+               webNode.Checked = false;
+           }
+          
+           // webNode.Checked = gridViewWebServices.Rows[e.RowIndex].Cells[e.ColumnIndex].c
+
+           // var webNode = (WebServiceNode)e.Node.Tag;
+           // webNode.Checked = e.Node.Checked;
         }
 
-        private void treeViewWebServices_OpenUrl(Object sender, TreeNodeMouseClickEventArgs e)
+        private void gridViewWebServices_OpenUrl(object sender, DataGridViewCellEventArgs e)
         {
-            if (!e.Node.Bounds.Contains(e.Location)) return;
+             gridViewWebServices.CommitEdit(DataGridViewDataErrorContexts.Commit);
 
+            if (gridViewWebServices.Columns[e.ColumnIndex] is DataGridViewLinkColumn)
+            {
+                //do your stuff here
+                string link = gridViewWebServices[e.ColumnIndex, e.RowIndex].Value.ToString();
+
+                try
+                {
+                    System.Diagnostics.Process.Start(link);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Can't open url. Exception:" + ex.Message);
+                }
+            }
+            
+           // if (e.ColumnIndex != 0) return;
+
+            
+            /*
             var node = e.Node;
             var nodeInfo = node.Tag as WebServiceNode;
             if (nodeInfo == null || 
@@ -48,32 +88,67 @@ namespace Search3.Settings.UI
                 MessageBox.Show("The node [" + node.Text + "] don't have any ServiceDescriptionURL attribute.");
                 return;
             }
-
-            try
-            {
-                System.Diagnostics.Process.Start(nodeInfo.DescriptionUrl);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Can't open url. Exception:" + ex.Message);
-            }
+            */  
         }
 
-        private void RefreshWebServicesTreeView(IEnumerable<WebServiceNode> webServiceNodeCollection)
+        private void RefreshWebServicesGridView(IEnumerable<WebServiceNode> webServiceNodeCollection)
         {
-            treeViewWebServices.SuspendLayout();
+            gridViewWebServices.SuspendLayout();
             try
             {
-                treeViewWebServices.Nodes.Clear();
+                gridViewWebServices.Columns.Clear();
+               
+                DataGridViewCheckBoxColumn colCB = new DataGridViewCheckBoxColumn();
+                colCB.Name = "chkcol";
+                colCB.HeaderText = "";
+                colCB.Width = 20;
+                colCB.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                gridViewWebServices.Columns.Add(colCB);
 
-                var parentNodes = treeViewWebServices.Nodes;
+                DataGridViewTextBoxColumn colTB = new DataGridViewTextBoxColumn();
+                colTB.Name = "Organization";
+                colTB.HeaderText = "Organization";
+                gridViewWebServices.Columns.Add(colTB);
+
+                DataGridViewTextBoxColumn colTB2 = new DataGridViewTextBoxColumn();
+                colTB2.Name = "Service Code";
+                colTB2.HeaderText = "Service Code";
+                gridViewWebServices.Columns.Add(colTB2);
+
+                DataGridViewLinkColumn dgvlc = new DataGridViewLinkColumn();
+                dgvlc.HeaderText = "Link";
+                dgvlc.Width = 260;
+                gridViewWebServices.Columns.Add(dgvlc);
+
+              
+
+                gridViewWebServices.AllowUserToAddRows = true;
+                foreach (var webNode in webServiceNodeCollection)
+                {
+                   
+                    DataGridViewRow row = (DataGridViewRow)gridViewWebServices.Rows[0].Clone();
+                    row.Cells[0].Value = webNode.Checked;
+                    row.Cells[1].Value = webNode.Title;
+                    row.Cells[2].Value = webNode.ServiceCode;
+                    row.Cells[3].Value = webNode.DescriptionUrl;
+                    row.Tag = webNode;
+                    gridViewWebServices.Rows.Add(row);
+                }
+                gridViewWebServices.AllowUserToAddRows = false;
+
+              //  gridViewWebServices.Rows[0].Cells["Web Service"].Tag;
+
+                //gridViewWebServices.Data
+                /*
+                var Rows = gridViewWebServices.Rows;
                 var clrBule = Color.FromKnownColor(KnownColor.Blue);
-                var prototype = treeViewWebServices.Font;
+                var prototype = gridViewWebServices.Font;
                 var font = new Font(prototype, FontStyle.Underline);
 
                 foreach (var webNode in webServiceNodeCollection)
                 {
-                    var node = new TreeNode
+              
+                    var node = new DataRow
                     {
                         ForeColor = clrBule,
                         NodeFont = font,
@@ -82,15 +157,17 @@ namespace Search3.Settings.UI
                         Checked = webNode.Checked,
                         Tag = webNode
                     };
-                    parentNodes.Add(node);
+                    parentRows.Add(node);
                 }
-                treeViewWebServices.Sort();
+                gridViewWebServices.Sort();*/
             }
             finally
             {
-                treeViewWebServices.ResumeLayout();
+                gridViewWebServices.ResumeLayout();
             }
         }
+
+       
 
         #endregion
 
@@ -107,7 +184,7 @@ namespace Search3.Settings.UI
             }
 
             _webServicesSettings.RefreshWebServices(_catalogSettings);
-            RefreshWebServicesTreeView(_webServicesSettings.WebServices);
+            RefreshWebServicesGridView(_webServicesSettings.WebServices);
         }
 
 
@@ -117,11 +194,14 @@ namespace Search3.Settings.UI
         /// <param name="check">Check or uncheck all web services.</param>
         public void CheckAllWebServices(bool check)
         {
-            if (treeViewWebServices.Nodes.Count <= 0) return;
-            foreach (TreeNode tnode in treeViewWebServices.Nodes)
+            if (gridViewWebServices.Rows.Count <= 0) return;
+           
+            foreach (DataGridViewRow row in gridViewWebServices.Rows)
             {
-                tnode.Checked = check;
+                DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
+                chk.Value = check;
             }
+            
         }
 
         /// <summary>
@@ -136,7 +216,7 @@ namespace Search3.Settings.UI
 
             _catalogSettings = catalogSettings;
             _webServicesSettings = webServicesSettings;
-            RefreshWebServicesTreeView(webServicesSettings.WebServices);
+            RefreshWebServicesGridView(webServicesSettings.WebServices);
         }
 
         #endregion

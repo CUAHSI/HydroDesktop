@@ -61,9 +61,8 @@
     <Reference Include="DotSpatial.Plugins.AttributeDataExplorer">
       <HintPath>..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.24\lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.Ribbon, Version=1.4.25.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.25\lib\net40-client\DotSpatial.Plugins.Ribbon.dll</HintPath>
+    <Reference Include="DotSpatial.Plugins.Ribbon">
+      <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.29\lib\net40-client\DotSpatial.Plugins.Ribbon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -77,7 +76,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\nodata.bmp" />

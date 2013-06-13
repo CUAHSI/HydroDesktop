@@ -28,31 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.treeViewWebServices = new System.Windows.Forms.TreeView();
+            this.gridViewWebServices = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewWebServices)).BeginInit();
             this.SuspendLayout();
             // 
-            // treeViewWebServices
+            // gridViewWebServices
             // 
-            this.treeViewWebServices.CheckBoxes = true;
-            this.treeViewWebServices.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewWebServices.Location = new System.Drawing.Point(0, 0);
-            this.treeViewWebServices.Name = "treeViewWebServices";
-            this.treeViewWebServices.Size = new System.Drawing.Size(376, 436);
-            this.treeViewWebServices.TabIndex = 40;
+            this.gridViewWebServices.AllowUserToAddRows = false;
+            this.gridViewWebServices.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridViewWebServices.Location = new System.Drawing.Point(0, 0);
+            this.gridViewWebServices.Name = "gridViewWebServices";
+            this.gridViewWebServices.Size = new System.Drawing.Size(376, 436);
+            this.gridViewWebServices.TabIndex = 40;
             // 
             // WebServicesUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.treeViewWebServices);
+            this.Controls.Add(this.gridViewWebServices);
             this.Name = "WebServicesUserControl";
             this.Size = new System.Drawing.Size(376, 436);
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewWebServices)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TreeView treeViewWebServices;
+        private System.Windows.Forms.DataGridView gridViewWebServices;
     }
 }
