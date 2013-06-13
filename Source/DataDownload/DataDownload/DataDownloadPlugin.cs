@@ -660,7 +660,7 @@ namespace HydroDesktop.DataDownload
 
             if (!hasPointsToDownload)
             {
-                MessageBox.Show("No sites are selected. Please select sites for downloading data in the map.",
+                MessageBox.Show("No results are selected for download. Please select sites in the map, or select series from the selected layer table.",
                                 "No selected sites", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
