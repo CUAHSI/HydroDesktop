@@ -221,7 +221,7 @@
             this.HelpButton.Name = "HelpButton";
             this.HelpButton.Size = new System.Drawing.Size(171, 25);
             this.HelpButton.TabIndex = 18;
-            this.HelpButton.Text = "View HydroDesktop Help FIle";
+            this.HelpButton.Text = "View HydroDesktop Help File";
             this.HelpButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.HelpButton.UseVisualStyleBackColor = true;
             this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);

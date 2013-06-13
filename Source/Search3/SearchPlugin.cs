@@ -115,9 +115,10 @@ namespace Search3
             SimpleActionItem dummy2 = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Controls, ToggleGroupKey = Msg.Controls, Visible = false };
             head.Add(dummy2);
 
+            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, CurrentView_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, ToolTipText = Msg.Current_View_Tooltip, LargeImage = Resources.current_view_32, SmallImage = Resources.current_view_16 });
 
-            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
-            _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
+            //head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
+            //_searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, SmallImage = Resources.select_table_16 });
 
@@ -127,7 +128,6 @@ namespace Search3
             head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate { IEnvelope env; App.Map.MapFrame.ClearSelection(out env); }) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
             //head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
 
-            head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, CurrentView_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, ToolTipText = Msg.Current_View_Tooltip, LargeImage = Resources.current_view_32, SmallImage = Resources.current_view_16 });
             _useCurrentView = true;
             _currentView.Toggle();
 
