@@ -177,11 +177,11 @@ namespace HydroDesktop.DataDownload.LayerInformation
                 var item = variablesList[i];
                 var lbVariable = new Label { AutoSize = true, Location = new Point(startX, startY) };
                 AddControl(container, lbVariable);
-                lbVariable.Text = string.Format("{0}{1} - {2}{3}",
+                lbVariable.Text = string.Format("{0}{1}, ~{2}",
                                                 item.VarName,
                                                 !showDataType ? string.Empty : ", " + item.DataType,
-                                                item.ValueCountAsString,
-                                                item.IsDownloaded ? string.Empty : " (estimated)");
+                                                item.ValueCountAsString);
+                                                //item.IsDownloaded ? string.Empty : " (estimated)");
                 CalculateContainerSize(lbVariable, ref thisWidth, ref startY);
             }
             if (variablesList.Count > max_variables_count)
