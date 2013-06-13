@@ -90,9 +90,9 @@
             // 
             // groupBoxProject
             // 
-            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxProject.Controls.Add(this.btnBrowseProject);
             this.groupBoxProject.Controls.Add(this.rbOpenExistingProject);
             this.groupBoxProject.Controls.Add(this.rbEmptyProject);
@@ -184,8 +184,8 @@
             // 
             // panelStatus
             // 
-            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.panelStatus.Location = new System.Drawing.Point(8, 243);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(393, 23);
@@ -204,12 +204,11 @@
             // 
             this.QuickStartButton.Image = ((System.Drawing.Image)(resources.GetObject("QuickStartButton.Image")));
             this.QuickStartButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.QuickStartButton.Location = new System.Drawing.Point(35, 87);
+            this.QuickStartButton.Location = new System.Drawing.Point(22, 121);
             this.QuickStartButton.Name = "QuickStartButton";
-            this.QuickStartButton.Size = new System.Drawing.Size(145, 25);
-            this.QuickStartButton.TabIndex = 8;
+            this.QuickStartButton.Size = new System.Drawing.Size(171, 30);
+            this.QuickStartButton.TabIndex = 9;
             this.QuickStartButton.Text = "View Quick Start Guide";
-            this.QuickStartButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.QuickStartButton.UseVisualStyleBackColor = true;
             this.QuickStartButton.Click += new System.EventHandler(this.QuickStartButton_Click);
             // 
@@ -217,9 +216,9 @@
             // 
             this.HelpButton.Image = ((System.Drawing.Image)(resources.GetObject("HelpButton.Image")));
             this.HelpButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.HelpButton.Location = new System.Drawing.Point(22, 119);
+            this.HelpButton.Location = new System.Drawing.Point(22, 165);
             this.HelpButton.Name = "HelpButton";
-            this.HelpButton.Size = new System.Drawing.Size(171, 25);
+            this.HelpButton.Size = new System.Drawing.Size(171, 30);
             this.HelpButton.TabIndex = 18;
             this.HelpButton.Text = "View HydroDesktop Help FIle";
             this.HelpButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
