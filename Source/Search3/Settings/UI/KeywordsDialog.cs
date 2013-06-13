@@ -26,22 +26,22 @@ namespace Search3.Settings.UI
             {
                 if (SearchSettings.AndSearch == false)
                 {
-                    form.radioButton1.Checked = true;
+                    form.keywordsUserControl1.radioButton1.Checked = true;
                 }
                 else if (SearchSettings.AndSearch == true)
                 {
-                    form.radioButton2.Checked = true;
+                    form.keywordsUserControl1.radioButton2.Checked = true;
                 }
 
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     settings.SelectedKeywords = form.keywordsUserControl1.GetSelectedKeywords();
 
-                    if (form.radioButton1.Checked == true)
+                    if (form.keywordsUserControl1.radioButton1.Checked == true)
                     {
                         SearchSettings.AndSearch = false;
                     }
-                    else if (form.radioButton2.Checked == true)
+                    else if (form.keywordsUserControl1.radioButton2.Checked == true)
                     {
                         SearchSettings.AndSearch = true;
                     }
