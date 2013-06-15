@@ -39,7 +39,7 @@ namespace SeriesView
         private const string Column_SeriesID = "SeriesID";
         private const string Column_ThemeName = "ThemeName";
         private const string Column_SampleMedium = "SampleMedium";
-        private const string Column_QualityControl = "QualityControlLevelCode";
+        private const string Column_QualityControl = "QualityControlLevelDefinition";
 
         #endregion
 
@@ -494,7 +494,6 @@ namespace SeriesView
                 if (col.Name != Column_Checked &&
                     col.Name != SiteDisplayColumn &&
                     col.Name != Column_VariableName &&
-                    col.Name != Column_SeriesID &&
                     col.Name != Column_ThemeName &&
                     col.Name != Column_SampleMedium &&
                     col.Name != Column_QualityControl)
@@ -525,12 +524,6 @@ namespace SeriesView
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             column.ReadOnly = false;
 
-            column = dgvSeries.Columns[Column_SeriesID];
-            Debug.Assert(column != null, "column != null");
-            column.DisplayIndex = 1;
-            column.ReadOnly = true;
-            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-
             column = dgvSeries.Columns[Column_VariableName];
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 2;
@@ -544,6 +537,7 @@ namespace SeriesView
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
             column = dgvSeries.Columns[Column_ThemeName];
+            column.HeaderText = "Data Network";
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 4;
             column.ReadOnly = true;
