@@ -69,7 +69,7 @@
             // lblProductVersion
             // 
             this.lblProductVersion.AutoSize = true;
-            this.lblProductVersion.Location = new System.Drawing.Point(35, 63);
+            this.lblProductVersion.Location = new System.Drawing.Point(41, 63);
             this.lblProductVersion.Name = "lblProductVersion";
             this.lblProductVersion.Size = new System.Drawing.Size(145, 13);
             this.lblProductVersion.TabIndex = 8;
@@ -193,10 +193,10 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.Logo_Small1;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 20);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(15, 20);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(200, 148);
+            this.pictureBox1.Size = new System.Drawing.Size(200, 40);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
@@ -230,7 +230,7 @@
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.Snow;
             this.ClientSize = new System.Drawing.Size(494, 274);
             this.Controls.Add(this.HelpButton);
             this.Controls.Add(this.QuickStartButton);
