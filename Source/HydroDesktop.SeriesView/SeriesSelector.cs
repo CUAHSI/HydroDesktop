@@ -37,6 +37,9 @@ namespace SeriesView
         private const string Column_Checked = "Checked";
         private const string Column_VariableName = "VariableName";
         private const string Column_SeriesID = "SeriesID";
+        private const string Column_ThemeName = "ThemeName";
+        private const string Column_SampleMedium = "SampleMedium";
+        private const string Column_QualityControl = "QualityControlLevelCode";
 
         #endregion
 
@@ -275,7 +278,7 @@ namespace SeriesView
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete this series (ID: " + _clickedSeriesID + ")?",
+            if (MessageBox.Show("Are you sure you want to remove this series (ID: " + _clickedSeriesID + ")?",
                                 "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
             {
                 var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
@@ -491,7 +494,10 @@ namespace SeriesView
                 if (col.Name != Column_Checked &&
                     col.Name != SiteDisplayColumn &&
                     col.Name != Column_VariableName &&
-                    col.Name != Column_SeriesID)
+                    col.Name != Column_SeriesID &&
+                    col.Name != Column_ThemeName &&
+                    col.Name != Column_SampleMedium &&
+                    col.Name != Column_QualityControl)
                 {
                     col.Visible = false;
                 }
@@ -529,13 +535,31 @@ namespace SeriesView
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 2;
             column.ReadOnly = true;
-            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
             column = dgvSeries.Columns[SiteDisplayColumn];
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 3;
             column.ReadOnly = true;
-            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            column = dgvSeries.Columns[Column_ThemeName];
+            Debug.Assert(column != null, "column != null");
+            column.DisplayIndex = 4;
+            column.ReadOnly = true;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            column = dgvSeries.Columns[Column_SampleMedium];
+            Debug.Assert(column != null, "column != null");
+            column.DisplayIndex = 5;
+            column.ReadOnly = true;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            column = dgvSeries.Columns[Column_QualityControl];
+            Debug.Assert(column != null, "column != null");
+            column.DisplayIndex = 6;
+            column.ReadOnly = true;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
 
             //setup the filter option to "default all"
@@ -808,7 +832,7 @@ namespace SeriesView
         private void btnDelete_Click(object sender, EventArgs e)
         {
             SetEnableToButtons(false);
-            if (MessageBox.Show("Delete all of the checked data sets?",
+            if (MessageBox.Show("Remove all of the checked data sets?",
                 "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes))
             {
               int[] CheckedRows = GetCheckedIDs(); // Gets all the ids of rows that are checked
