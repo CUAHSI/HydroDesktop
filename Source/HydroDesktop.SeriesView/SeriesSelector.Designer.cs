@@ -87,7 +87,7 @@ namespace SeriesView
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(57, 20);
             this.btnDelete.TabIndex = 21;
-            this.btnDelete.Text = "Delete";
+            this.btnDelete.Text = "Remove";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
@@ -222,7 +222,7 @@ namespace SeriesView
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
-            this.deleteToolStripMenuItem.Text = "Delete Series";
+            this.deleteToolStripMenuItem.Text = "Remove Series";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
