@@ -130,7 +130,7 @@
     <value>Number of Observations</value>
   </data>
   <data name="Set_Line_Color" xml:space="preserve">
-    <value>Set Line Color...</value>
+    <value>Set Line Color</value>
   </data>
   <data name="Set_Line_Color_No_Point" xml:space="preserve">
     <value>Click on point to Set Line Color...</value>
