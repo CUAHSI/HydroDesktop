@@ -101,7 +101,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Set Line Color....
+        '''  Looks up a localized string similar to Set Line Color.
         '''</summary>
         Friend Shared ReadOnly Property Set_Line_Color() As String
             Get
