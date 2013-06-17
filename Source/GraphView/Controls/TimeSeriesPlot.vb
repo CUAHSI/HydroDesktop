@@ -241,7 +241,7 @@ Namespace Controls
                 Dim founded = sender.GraphPane.FindNearestPoint(mousePt, curve, iNearest)
                 founded = founded OrElse Not IsNothing(curve)
                 item.Text = If(founded,
-                               curve.Label.Text + ": " + MessageStrings.Set_Line_Color,
+                               MessageStrings.Set_Line_Color + ": " + curve.Label.Text,
                                MessageStrings.Set_Line_Color_No_Point)
                 item.Enabled = founded
                 item.Tag = curve
