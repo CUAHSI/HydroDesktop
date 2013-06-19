@@ -73,7 +73,7 @@ namespace SeriesView
             // 
             this.btnDelete.Location = new System.Drawing.Point(254, 4);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 20);
+            this.btnDelete.Size = new System.Drawing.Size(75, 22);
             this.btnDelete.TabIndex = 21;
             this.btnDelete.Text = "Remove";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@ namespace SeriesView
             // 
             this.btnRefresh.Location = new System.Drawing.Point(11, 4);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 20);
+            this.btnRefresh.Size = new System.Drawing.Size(75, 22);
             this.btnRefresh.TabIndex = 20;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -93,7 +93,7 @@ namespace SeriesView
             // 
             this.btnCheckAll.Location = new System.Drawing.Point(92, 4);
             this.btnCheckAll.Name = "btnCheckAll";
-            this.btnCheckAll.Size = new System.Drawing.Size(75, 20);
+            this.btnCheckAll.Size = new System.Drawing.Size(75, 22);
             this.btnCheckAll.TabIndex = 19;
             this.btnCheckAll.Text = "Check All";
             this.btnCheckAll.UseVisualStyleBackColor = true;
@@ -103,7 +103,7 @@ namespace SeriesView
             // 
             this.btnUncheckAll.Location = new System.Drawing.Point(173, 4);
             this.btnUncheckAll.Name = "btnUncheckAll";
-            this.btnUncheckAll.Size = new System.Drawing.Size(75, 20);
+            this.btnUncheckAll.Size = new System.Drawing.Size(75, 22);
             this.btnUncheckAll.TabIndex = 18;
             this.btnUncheckAll.Text = "Uncheck All";
             this.btnUncheckAll.UseVisualStyleBackColor = true;
