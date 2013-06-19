@@ -27,7 +27,6 @@ namespace SeriesView
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnOptions = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnCheckAll = new System.Windows.Forms.Button();
@@ -60,7 +59,6 @@ namespace SeriesView
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.btnOptions);
             this.panel1.Controls.Add(this.btnDelete);
             this.panel1.Controls.Add(this.btnRefresh);
             this.panel1.Controls.Add(this.btnCheckAll);
@@ -68,24 +66,14 @@ namespace SeriesView
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Location = new System.Drawing.Point(3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(625, 420);
+            this.panel1.Size = new System.Drawing.Size(565, 420);
             this.panel1.TabIndex = 20;
-            // 
-            // btnOptions
-            // 
-            this.btnOptions.Location = new System.Drawing.Point(268, 4);
-            this.btnOptions.Name = "btnOptions";
-            this.btnOptions.Size = new System.Drawing.Size(60, 20);
-            this.btnOptions.TabIndex = 21;
-            this.btnOptions.Text = "Columns";
-            this.btnOptions.UseVisualStyleBackColor = true;
-            this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(208, 4);
+            this.btnDelete.Location = new System.Drawing.Point(254, 4);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(57, 20);
+            this.btnDelete.Size = new System.Drawing.Size(75, 20);
             this.btnDelete.TabIndex = 21;
             this.btnDelete.Text = "Remove";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -93,9 +81,9 @@ namespace SeriesView
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(5, 4);
+            this.btnRefresh.Location = new System.Drawing.Point(11, 4);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(59, 20);
+            this.btnRefresh.Size = new System.Drawing.Size(75, 20);
             this.btnRefresh.TabIndex = 20;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -103,9 +91,9 @@ namespace SeriesView
             // 
             // btnCheckAll
             // 
-            this.btnCheckAll.Location = new System.Drawing.Point(66, 4);
+            this.btnCheckAll.Location = new System.Drawing.Point(92, 4);
             this.btnCheckAll.Name = "btnCheckAll";
-            this.btnCheckAll.Size = new System.Drawing.Size(62, 20);
+            this.btnCheckAll.Size = new System.Drawing.Size(75, 20);
             this.btnCheckAll.TabIndex = 19;
             this.btnCheckAll.Text = "Check All";
             this.btnCheckAll.UseVisualStyleBackColor = true;
@@ -113,9 +101,9 @@ namespace SeriesView
             // 
             // btnUncheckAll
             // 
-            this.btnUncheckAll.Location = new System.Drawing.Point(131, 4);
+            this.btnUncheckAll.Location = new System.Drawing.Point(173, 4);
             this.btnUncheckAll.Name = "btnUncheckAll";
-            this.btnUncheckAll.Size = new System.Drawing.Size(74, 20);
+            this.btnUncheckAll.Size = new System.Drawing.Size(75, 20);
             this.btnUncheckAll.TabIndex = 18;
             this.btnUncheckAll.Text = "Uncheck All";
             this.btnUncheckAll.UseVisualStyleBackColor = true;
@@ -135,7 +123,7 @@ namespace SeriesView
             this.groupBox1.Controls.Add(this.radSimple);
             this.groupBox1.Location = new System.Drawing.Point(5, 30);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(392, 387);
+            this.groupBox1.Size = new System.Drawing.Size(332, 387);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selection Tool";
@@ -190,12 +178,10 @@ namespace SeriesView
             this.dgvSeries.AllowUserToDeleteRows = false;
             this.dgvSeries.AllowUserToOrderColumns = true;
             this.dgvSeries.AllowUserToResizeRows = false;
-            this.dgvSeries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSeries.BackgroundColor = System.Drawing.Color.White;
             this.dgvSeries.ContextMenuStrip = this.contextMenuStrip1;
-            this.dgvSeries.Location = new System.Drawing.Point(7, 89);
+            this.dgvSeries.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvSeries.Location = new System.Drawing.Point(3, 92);
             this.dgvSeries.MultiSelect = false;
             this.dgvSeries.Name = "dgvSeries";
             this.dgvSeries.RowHeadersVisible = false;
@@ -321,7 +307,6 @@ namespace SeriesView
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Button btnOptions;
         private System.Windows.Forms.Button btnDelete;
     }
 }
