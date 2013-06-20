@@ -127,7 +127,7 @@ namespace SeriesView
             btnCheckAll.Enabled = enable;
             btnUncheckAll.Enabled = enable;
             btnRefresh.Enabled = enable;
-            btnOptions.Enabled = enable;
+           // btnOptions.Enabled = enable;
             btnDelete.Enabled = enable;
             radAll.Enabled = enable;
             radSimple.Enabled = enable;
@@ -313,6 +313,8 @@ namespace SeriesView
         #region ISeriesSelector Members
 
         private string _siteDisplayColumn = "SiteName";
+        private string _siteCodeColumn = "SiteCode";
+
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string SiteDisplayColumn
         {
@@ -494,6 +496,7 @@ namespace SeriesView
                 if (col.Name != Column_Checked &&
                     col.Name != SiteDisplayColumn &&
                     col.Name != Column_VariableName &&
+                    col.Name != _siteCodeColumn &&
                     col.Name != Column_ThemeName &&
                     col.Name != Column_SampleMedium &&
                     col.Name != Column_QualityControl)
@@ -580,7 +583,7 @@ namespace SeriesView
                 listLocation.X = 6;
                 listLocation.Y = cbBoxCriterion.Top;
                 dgvSeries.Location = listLocation; //new Point(6, 34);
-                dgvSeries.Height = groupBox1.Height - 25;
+                dgvSeries.Height = groupBox1.Height - 35;
                 //dgvSeries.HorizontalScrollbar = true;
                 radSimple.Checked = false;
                 radComplex.Checked = false;
@@ -590,7 +593,7 @@ namespace SeriesView
             else if (newFilterType == FilterTypes.Simple)
             {
                 dgvSeries.Location = new Point(6, 90);
-                dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
+                dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 40;
                 radSimple.Checked = true;
                 radComplex.Checked = false;
                 radAll.Checked = false;
@@ -606,7 +609,7 @@ namespace SeriesView
             else if (newFilterType == FilterTypes.Complex)
             {
                 dgvSeries.Location = new Point(6, 90);
-                dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 10;
+                dgvSeries.Height = groupBox1.Bottom - cbBoxContent.Bottom - 40;
                 radSimple.Checked = false;
                 radComplex.Checked = true;
                 radAll.Checked = false;
@@ -812,9 +815,9 @@ namespace SeriesView
         {
             SetEnableToButtons(false);
             var ds = new DisplaySettings
-                         {
-                             SiteDisplayColumn = SiteDisplayColumn,
-                         };
+                     {
+                         SiteDisplayColumn = SiteDisplayColumn,
+                     };
 
             if (DisplayOptionsForm.ShowDialog(ds) == DialogResult.OK)
             {
