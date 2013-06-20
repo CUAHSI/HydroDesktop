@@ -117,8 +117,8 @@ namespace Search3
 
             head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, CurrentView_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, ToolTipText = Msg.Current_View_Tooltip, LargeImage = Resources.current_view_32, SmallImage = Resources.current_view_16 });
 
-            //head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
-            //_searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
+            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, ToolTipText = "Draw Rectangle", GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
+            _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, SmallImage = Resources.select_table_16 });
 
