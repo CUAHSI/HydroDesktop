@@ -98,9 +98,9 @@
             // btnCancelClose
             // 
             this.btnCancelClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancelClose.Location = new System.Drawing.Point(5, 10);
+            this.btnCancelClose.Location = new System.Drawing.Point(5, 3);
             this.btnCancelClose.Name = "btnCancelClose";
-            this.btnCancelClose.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelClose.Size = new System.Drawing.Size(75, 24);
             this.btnCancelClose.TabIndex = 9;
             this.btnCancelClose.Text = "Cancel";
             this.btnCancelClose.UseVisualStyleBackColor = true;
@@ -194,7 +194,7 @@
             this.lcValuesPerRequestInfo.AutoSize = true;
             this.lcValuesPerRequestInfo.Location = new System.Drawing.Point(283, 52);
             this.lcValuesPerRequestInfo.Name = "lcValuesPerRequestInfo";
-            this.lcValuesPerRequestInfo.Size = new System.Drawing.Size(35, 13);
+            this.lcValuesPerRequestInfo.Size = new System.Drawing.Size(13, 13);
             this.lcValuesPerRequestInfo.TabIndex = 14;
             this.lcValuesPerRequestInfo.Text = "0";
             // 
