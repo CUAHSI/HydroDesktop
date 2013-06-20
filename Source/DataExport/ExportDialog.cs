@@ -244,7 +244,7 @@ namespace HydroDesktop.ExportToCSV
                 return "Data Export Cancelled.";
             }
 
-            return "Export completed. Series exported: " + dtSeries.Rows.Count.ToString(CultureInfo.InvariantCulture);
+            return dtSeries.Rows.Count.ToString(CultureInfo.InvariantCulture) + " data series downloaded to: " + fileName ;
         }
 
         private string ExportAnyDataTable(BwParameters parameters, BackgroundWorker backgroundWorker, DoWorkEventArgs e)
@@ -336,6 +336,7 @@ namespace HydroDesktop.ExportToCSV
         private void bgwMain_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pgsBar.Value = e.ProgressPercentage;
+           
             gbxProgress.Text = e.UserState.ToString();
         }
 
@@ -365,6 +366,7 @@ namespace HydroDesktop.ExportToCSV
             }
             else
             {
+                this.Close();
                 MessageBox.Show(e.Result.ToString());
             }
         }
@@ -508,11 +510,14 @@ namespace HydroDesktop.ExportToCSV
                 }
 
                 File.Delete(outputFilename);
+             
                 bgwMain.RunWorkerAsync(parameters);
             }
 
             else
+            {
                 bgwMain.RunWorkerAsync(parameters);
+            }
         }
 
         private void UpdateControlsState(bool isExporting)
