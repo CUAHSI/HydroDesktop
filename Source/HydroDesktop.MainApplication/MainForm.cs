@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 
+
 namespace HydroDesktop.MainApplication
 {
     /// <summary>
@@ -34,6 +35,10 @@ namespace HydroDesktop.MainApplication
                 delegate
                 {
                     appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = Properties.Resources.map_16x16 });
+                    NavigationTools nt = new NavigationTools((Map)appManager.Map);
+                    nt.Owner = this;
+                    nt.SetDesktopLocation(1475, 200);
+                   // nt.Show();
                 };
 
             Shell = this;
