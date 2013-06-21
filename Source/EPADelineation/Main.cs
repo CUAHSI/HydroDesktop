@@ -31,9 +31,9 @@ namespace EPADelineation
         /// </summary>
         public override void  Activate()
         {
-            action = new SimpleActionItem("Delineate", _startDelineate_Click);
-            action.GroupCaption = "EPA Tool";
-            action.ToolTipText = "Using EPA Web Services to Delineate Catchments";
+            action = new SimpleActionItem("Delineate Watershed", _startDelineate_Click);
+            action.GroupCaption = "";
+            action.ToolTipText = "Delineate catchments using EPA web services";
             action.SmallImage = Properties.Resources.Delineation_icon_32.GetThumbnailImage(16, 16, null, IntPtr.Zero);
             action.LargeImage = Properties.Resources.Delineation_icon_32;
             action.RootKey = HeaderControl.HomeRootItemKey;
