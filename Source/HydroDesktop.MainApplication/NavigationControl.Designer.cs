@@ -38,22 +38,22 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.button2.BackColor = System.Drawing.Color.White;
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(3, 57);
+            this.button2.Location = new System.Drawing.Point(-1, 30);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(40, 40);
+            this.button2.Size = new System.Drawing.Size(32, 32);
             this.button2.TabIndex = 2;
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.button1.BackColor = System.Drawing.Color.White;
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(3, 3);
+            this.button1.Location = new System.Drawing.Point(-1, -1);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(40, 40);
+            this.button1.Size = new System.Drawing.Size(32, 32);
             this.button1.TabIndex = 1;
             this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button1.UseVisualStyleBackColor = false;
@@ -61,12 +61,11 @@
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.button3.BackColor = System.Drawing.Color.White;
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(3, 111);
+            this.button3.Location = new System.Drawing.Point(-1, 61);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(40, 40);
+            this.button3.Size = new System.Drawing.Size(32, 32);
             this.button3.TabIndex = 3;
             this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button3.UseVisualStyleBackColor = false;
@@ -74,12 +73,11 @@
             // 
             // button4
             // 
-            this.button4.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.button4.BackColor = System.Drawing.Color.White;
             this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button4.Location = new System.Drawing.Point(3, 164);
+            this.button4.Location = new System.Drawing.Point(-1, 92);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(40, 40);
+            this.button4.Size = new System.Drawing.Size(32, 32);
             this.button4.TabIndex = 4;
             this.button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button4.UseVisualStyleBackColor = false;
@@ -87,12 +85,12 @@
             // 
             // button5
             // 
-            this.button5.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.button5.BackColor = System.Drawing.Color.White;
             this.button5.Image = ((System.Drawing.Image)(resources.GetObject("button5.Image")));
             this.button5.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button5.Location = new System.Drawing.Point(3, 216);
+            this.button5.Location = new System.Drawing.Point(-1, 123);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(40, 40);
+            this.button5.Size = new System.Drawing.Size(32, 32);
             this.button5.TabIndex = 5;
             this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
@@ -107,9 +105,9 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Location = new System.Drawing.Point(15, 15);
+            this.Location = new System.Drawing.Point(17, 17);
             this.Name = "NavigationControl";
-            this.Size = new System.Drawing.Size(45, 258);
+            this.Size = new System.Drawing.Size(30, 154);
             this.ResumeLayout(false);
 
         }
