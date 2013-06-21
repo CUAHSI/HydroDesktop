@@ -405,7 +405,7 @@ namespace Search3
             // Select first search result layer
 
 
-            var first = layers.FirstOrDefault();
+            var first = layers.FirstOrDefault().GetParentItem();
             if (first != null)
             {
                 first.IsSelected = true;
