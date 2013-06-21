@@ -86,8 +86,8 @@ namespace Search3.Area
             }
             _numClicks = 0;
             _isActive = true;
-            _mainMap.FunctionMode = FunctionMode.Select;
             _mainMap.Cursor = Cursors.Cross;
+            _mainMap.FunctionMode = FunctionMode.Select;
             AddRectangleLayer();
             DisableLayerSelection();
         }

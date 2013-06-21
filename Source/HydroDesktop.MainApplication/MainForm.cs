@@ -34,11 +34,12 @@ namespace HydroDesktop.MainApplication
             appManager.SatisfyImportsExtensionsActivated +=
                 delegate
                 {
-                    appManager.DockManager.Add(new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = Properties.Resources.map_16x16 });
-                    NavigationTools nt = new NavigationTools((Map)appManager.Map);
-                    nt.Owner = this;
-                    nt.SetDesktopLocation(1475, 200);
-                   // nt.Show();
+                    DockablePanel dp = new DockablePanel("kMap", "Map", (Map)appManager.Map, DockStyle.Fill) { SmallImage = Properties.Resources.map_16x16 };
+                    appManager.DockManager.Add(dp);
+                    NavigationControl nc = new NavigationControl(appManager);
+                    nc.Parent = (UserControl)appManager.Map;
+                    nc.Show();
+                    appManager.HeaderControl.Remove("Pan");
                 };
 
             Shell = this;

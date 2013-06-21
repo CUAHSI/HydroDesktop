@@ -95,8 +95,8 @@
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.MenuBar">
-      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1192\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
+    <Reference Include="DotSpatial.Plugins.MenuBar, Version=0.11.9.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1195\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -220,11 +220,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\table_32x32.png" />
-    <None Include="Resources\table_16x16.png" />
+    <None Include="Resources\Logo_Medium.png" />
+    <None Include="Resources\Logo_Small1.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="credits.txt" />
+    <Content Include="Resources\cursor_arrow_16x16.png" />
+    <Content Include="Resources\cursor_arrow_32x32.png" />
     <Content Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\deselect_32x32.png" />
     <Content Include="Resources\disk_16x16.png" />
@@ -241,8 +243,6 @@
     <Content Include="Resources\layer_remove_32x32.png" />
     <Content Include="Resources\layer_save_16x16.png" />
     <Content Include="Resources\layer_save_32x32.png" />
-    <None Include="Resources\Logo_Medium.png" />
-    <None Include="Resources\Logo_Small1.png" />
     <Content Include="Resources\measure_16x16.png" />
     <Content Include="Resources\measure_32x32.png" />
     <Content Include="Resources\printer_16x16.png" />
@@ -251,6 +251,8 @@
     <Content Include="Resources\save_as_32x32.png" />
     <Content Include="Resources\select_16x16.png" />
     <Content Include="Resources\select_32x32.png" />
+    <Content Include="Resources\table_16x16.png" />
+    <Content Include="Resources\table_32x32.png" />
     <Content Include="Resources\zoom_16x16.png" />
     <Content Include="Resources\zoom_32x32.png" />
     <Content Include="Resources\zoom_coordinate_16x16.png" />

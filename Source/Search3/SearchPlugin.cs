@@ -112,28 +112,30 @@ namespace Search3
             SimpleActionItem dummy = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, Visible = false };
             head.Add(dummy);
             // Added as a temporary measure to prevent disabling and enabling of pan button when repeatedly clicked.  If clicked once, it shouldn't be disabled after clicking the same button again.
-            SimpleActionItem dummy2 = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Controls, ToggleGroupKey = Msg.Controls, Visible = false };
-            head.Add(dummy2);
+           // SimpleActionItem dummy2 = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Controls, ToggleGroupKey = Msg.Controls, Visible = false };
+           // head.Add(dummy2);
 
             head.Add(_currentView = new SimpleActionItem(_searchKey, Msg.Current_View, CurrentView_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, ToolTipText = Msg.Current_View_Tooltip, LargeImage = Resources.current_view_32, SmallImage = Resources.current_view_16 });
-
-            //head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
-            //_searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
-
-            head.Add(new SimpleActionItem(_searchKey, Msg.Select_By_Attribute, rbAttribute_Click) { GroupCaption = Msg.Area, SmallImage = Resources.select_table_16 });
-
-            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, SmallImage = Resources.select_poly_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, });
-            _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
-
-            head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate { IEnvelope env; App.Map.MapFrame.ClearSelection(out env); }) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
-            //head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
-
             _useCurrentView = true;
             _currentView.Toggle();
 
-            head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Controls, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Controls });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate { App.Map.FunctionMode = FunctionMode.ZoomIn; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Controls });
-            head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Controls });
+
+            head.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, Msg.Select_By_Attribute, rbAttribute_Click) { ToggleGroupKey = Msg.Area, GroupCaption = "Map Tool", LargeImage = Resources.select_table_32 });
+
+            head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, LargeImage = Resources.select_poly_32, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, });
+            _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
+
+            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
+            _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
+
+           // head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate { IEnvelope env; App.Map.MapFrame.ClearSelection(out env); }) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
+            //head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Selected, ZoomSelected_Click) { GroupCaption = Msg.Area, ToolTipText = Msg.Zoom_Selected_Tooltip, SmallImage = Resources.zoom_selection_16x16 });
+
+          
+
+           // head.Add(new SimpleActionItem(_searchKey, Msg.Pan, delegate { App.Map.FunctionMode = FunctionMode.Pan; }) { GroupCaption = Msg.Controls, SmallImage = Resources.hand_16x16, ToggleGroupKey = Msg.Controls });
+          //  head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_In, delegate { App.Map.FunctionMode = FunctionMode.ZoomIn; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, ToggleGroupKey = Msg.Controls });
+          //  head.Add(new SimpleActionItem(_searchKey, Msg.Zoom_Out, delegate { App.Map.FunctionMode = FunctionMode.ZoomOut; }) { GroupCaption = Msg.Controls, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, ToggleGroupKey = Msg.Controls });
 
             #endregion
 
@@ -458,7 +460,7 @@ namespace Search3
             if (App.Map.FunctionMode == FunctionMode.Select && CurrentAreaSelectMode != AreaSelectMode.DrawBox)
             {
                 CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
-                rbSelect.Toggle();
+               // rbSelect.Toggle();
             }
         }
 
@@ -613,7 +615,7 @@ namespace Search3
 
         private bool _isDeactivatingDrawBox;
 
-        private void DeactivateDrawBox()
+        public void DeactivateDrawBox()
         {
             if (_rectangleDrawing == null) return;
 
@@ -644,7 +646,7 @@ namespace Search3
             //App.Map.FunctionMode = FunctionMode.Select;
         }
 
-        private void DeactivateCurrentView()
+        public void DeactivateCurrentView()
         {
             if (_useCurrentView)
             {
