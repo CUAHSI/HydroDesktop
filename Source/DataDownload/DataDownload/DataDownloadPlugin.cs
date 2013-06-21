@@ -227,7 +227,7 @@ namespace HydroDesktop.DataDownload
             // Add download button into search tab
             if (App.GetExtension("Search3") != null)
             {
-                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show for Selected Layer", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
+                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Attribute Table", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
 
                 // App.HeaderControl.Add(_btnOptions = new SimpleActionItem("Options", SearchOptions_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
 
@@ -250,7 +250,7 @@ namespace HydroDesktop.DataDownload
             {
                 string shale = "Shale Data Network";
 
-                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show for Selected Layer", ShowSearchResults_Click) { RootKey = shale, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
+                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Attribute Table", ShowSearchResults_Click) { RootKey = shale, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
                 App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Map Popups", ShowPopups_Click) { RootKey = shale, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false });
                
                 _btnShowPopups.Toggling += ShowPopups_Click;
