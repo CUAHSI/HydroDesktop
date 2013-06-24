@@ -15,7 +15,7 @@ namespace Search3.Settings.UI
 
         private WebServicesSettings _webServicesSettings;
         private CatalogSettings _catalogSettings;
-
+      
         #endregion
 
         #region Constructors
@@ -106,8 +106,8 @@ namespace Search3.Settings.UI
                 gridViewWebServices.Columns.Add(colCB);
 
                 DataGridViewTextBoxColumn colTB = new DataGridViewTextBoxColumn();
-                colTB.Name = "Organization";
-                colTB.HeaderText = "Organization";
+                colTB.Name = "Service Name";
+                colTB.HeaderText = "Service Name";
                 gridViewWebServices.Columns.Add(colTB);
 
                 DataGridViewTextBoxColumn colTB2 = new DataGridViewTextBoxColumn();
@@ -115,22 +115,26 @@ namespace Search3.Settings.UI
                 colTB2.HeaderText = "Service Code";
                 gridViewWebServices.Columns.Add(colTB2);
 
-                DataGridViewLinkColumn dgvlc = new DataGridViewLinkColumn();
-                dgvlc.HeaderText = "Link";
-                dgvlc.Width = 260;
-                gridViewWebServices.Columns.Add(dgvlc);
+                DataGridViewTextBoxColumn colTB3 = new DataGridViewTextBoxColumn();
+                colTB3.HeaderText = "Organization";
+                gridViewWebServices.Columns.Add(colTB3);
 
-              
+                DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
+                dgvic.HeaderText = "More Info";
+                dgvic.Image = Search3.Properties.Resources.option_16;
+                gridViewWebServices.Columns.Add(dgvic);
 
+                //row.Cells[4].Value = webNode.DescriptionUrl;
+
+             
                 gridViewWebServices.AllowUserToAddRows = true;
                 foreach (var webNode in webServiceNodeCollection)
                 {
-                   
                     DataGridViewRow row = (DataGridViewRow)gridViewWebServices.Rows[0].Clone();
                     row.Cells[0].Value = webNode.Checked;
                     row.Cells[1].Value = webNode.Title;
                     row.Cells[2].Value = webNode.ServiceCode;
-                    row.Cells[3].Value = webNode.DescriptionUrl;
+                    row.Cells[3].Value = webNode.ServiceBoundingBox.XMax;
                     row.Tag = webNode;
                     gridViewWebServices.Rows.Add(row);
                 }
@@ -220,5 +224,19 @@ namespace Search3.Settings.UI
         }
 
         #endregion
+
+        private void gridViewWebServices_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex == 4)
+            {    
+                string url;
+                if((url = ((WebServiceNode)gridViewWebServices.Rows[e.RowIndex].Tag).DescriptionUrl) != null)
+                {
+                    Process.Start(url);
+                }
+                  
+            }
+        }
+
     }
 }
