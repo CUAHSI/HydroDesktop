@@ -114,6 +114,7 @@
             this.Name = "NavigationControl";
             this.Size = new System.Drawing.Size(30, 154);
             this.ResumeLayout(false);
+            button1.PerformClick();
 
         }
 
