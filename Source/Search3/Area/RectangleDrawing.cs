@@ -88,7 +88,7 @@ namespace Search3.Area
             _isActive = true;
             _mainMap.Cursor = Cursors.Cross;
             _mainMap.FunctionMode = FunctionMode.Select;
-            AddRectangleLayer();
+            AddRectangleLayer(Color.Red.ToTransparent(0.5f));
             DisableLayerSelection();
         }
 
@@ -197,7 +197,8 @@ namespace Search3.Area
         /// </summary>
         public void RestoreSearchRectangle(double minLon, double minLat, double maxLon, double maxLat)
         {
-            AddRectangleLayer();
+            AddRectangleLayer(Color.Yellow.ToTransparent(0.5f));
+           
             if (_rectangleLayer != null)
             {
                 _rectangleLayer.DataSet.Features.Clear();
@@ -247,7 +248,7 @@ namespace Search3.Area
         /// <summary>
         /// Adds the hidden "Search Rectangle" layer to the map
         /// </summary>
-        private void AddRectangleLayer()
+        private void AddRectangleLayer(Color color)
         {
             //check for the rectangle layer
             if (_rectangleLayer == null)
@@ -261,8 +262,7 @@ namespace Search3.Area
                 rectangleFs.Projection = _mainMap.Projection;
 
                 _rectangleLayer = new MapPolygonLayer(rectangleFs){LegendText = Properties.Resources.RectangleLayerName};
-                var redColor = Color.Red.ToTransparent(0.5f);
-                _rectangleLayer.Symbolizer = new PolygonSymbolizer(redColor, Color.Red);
+                _rectangleLayer.Symbolizer = new PolygonSymbolizer(color, color.ToOpaque());
                 _rectangleLayer.SelectionSymbolizer = _rectangleLayer.Symbolizer;
                 _mainMap.Layers.Add(_rectangleLayer);
             }
