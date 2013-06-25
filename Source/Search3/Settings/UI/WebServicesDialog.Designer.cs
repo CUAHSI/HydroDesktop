@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WebServicesDialog));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.paButtons = new System.Windows.Forms.Panel();
+            this.btnManageDataSources = new System.Windows.Forms.Button();
             this.bntAddLocalDataSource = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnSelectNone = new System.Windows.Forms.Button();
@@ -38,8 +40,7 @@
             this.rbLocalMetadataCache = new System.Windows.Forms.RadioButton();
             this.rbHisCentral = new System.Windows.Forms.RadioButton();
             this.gbTypeOfCatalog = new System.Windows.Forms.GroupBox();
-            this.btnManageDataSources = new System.Windows.Forms.Button();
-            this.webServicesUserControl1 = new Search3.Settings.UI.WebServicesUserControl();
+            this.webServicesUserControl1 = new Search3.Settings.UI.WebServicesUserControl(_app);
             this.paButtons.SuspendLayout();
             this.gbTypeOfCatalog.SuspendLayout();
             this.SuspendLayout();
@@ -68,8 +69,8 @@
             // 
             // paButtons
             // 
-            this.paButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.paButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.paButtons.Controls.Add(this.btnManageDataSources);
             this.paButtons.Controls.Add(this.bntAddLocalDataSource);
             this.paButtons.Controls.Add(this.btnRefresh);
@@ -79,6 +80,17 @@
             this.paButtons.Name = "paButtons";
             this.paButtons.Size = new System.Drawing.Size(425, 68);
             this.paButtons.TabIndex = 45;
+            // 
+            // btnManageDataSources
+            // 
+            this.btnManageDataSources.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnManageDataSources.Location = new System.Drawing.Point(269, 37);
+            this.btnManageDataSources.Name = "btnManageDataSources";
+            this.btnManageDataSources.Size = new System.Drawing.Size(144, 23);
+            this.btnManageDataSources.TabIndex = 45;
+            this.btnManageDataSources.Text = "Manage Data Sources...";
+            this.btnManageDataSources.UseVisualStyleBackColor = true;
+            this.btnManageDataSources.Click += new System.EventHandler(this.btnManageDataSources_Click);
             // 
             // bntAddLocalDataSource
             // 
@@ -103,7 +115,6 @@
             // 
             // btnSelectNone
             // 
-            this.btnSelectNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSelectNone.Location = new System.Drawing.Point(95, 37);
             this.btnSelectNone.Name = "btnSelectNone";
             this.btnSelectNone.Size = new System.Drawing.Size(75, 23);
@@ -114,7 +125,6 @@
             // 
             // btnSelectAll
             // 
-            this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSelectAll.Location = new System.Drawing.Point(14, 37);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
@@ -147,8 +157,8 @@
             // 
             // gbTypeOfCatalog
             // 
-            this.gbTypeOfCatalog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbTypeOfCatalog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.gbTypeOfCatalog.Controls.Add(this.rbLocalMetadataCache);
             this.gbTypeOfCatalog.Controls.Add(this.rbHisCentral);
             this.gbTypeOfCatalog.Location = new System.Drawing.Point(0, 9);
@@ -158,22 +168,11 @@
             this.gbTypeOfCatalog.TabStop = false;
             this.gbTypeOfCatalog.Text = "Select type of catalog";
             // 
-            // btnManageDataSources
-            // 
-            this.btnManageDataSources.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnManageDataSources.Location = new System.Drawing.Point(269, 37);
-            this.btnManageDataSources.Name = "btnManageDataSources";
-            this.btnManageDataSources.Size = new System.Drawing.Size(144, 23);
-            this.btnManageDataSources.TabIndex = 45;
-            this.btnManageDataSources.Text = "Manage Data Sources...";
-            this.btnManageDataSources.UseVisualStyleBackColor = true;
-            this.btnManageDataSources.Click += new System.EventHandler(this.btnManageDataSources_Click);
-            // 
             // webServicesUserControl1
             // 
-            this.webServicesUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.webServicesUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.webServicesUserControl1.Location = new System.Drawing.Point(0, 140);
             this.webServicesUserControl1.Name = "webServicesUserControl1";
             this.webServicesUserControl1.Size = new System.Drawing.Size(425, 301);
@@ -189,11 +188,12 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.paButtons);
             this.Controls.Add(this.webServicesUserControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WebServicesDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Data Sources";
+            this.Text = "Select Data Sources";
             this.paButtons.ResumeLayout(false);
             this.gbTypeOfCatalog.ResumeLayout(false);
             this.gbTypeOfCatalog.PerformLayout();

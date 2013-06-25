@@ -40,6 +40,8 @@
             this.gridViewWebServices.Name = "gridViewWebServices";
             this.gridViewWebServices.Size = new System.Drawing.Size(376, 436);
             this.gridViewWebServices.TabIndex = 40;
+            this.gridViewWebServices.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridViewWebServices_CellContentClick);
+            this.gridViewWebServices.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridViewWebServices_CellMouseMove);
             // 
             // WebServicesUserControl
             // 
