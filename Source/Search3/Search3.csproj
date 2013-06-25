@@ -342,6 +342,10 @@
     <None Include="Resources\select_date_v1_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\information.ico" />
+    <None Include="Resources\more_info.ico" />
+    <None Include="Resources\view_extents.ico" />
+    <None Include="Resources\view_extents_16_16x16.ico" />
     <Content Include="Search3.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

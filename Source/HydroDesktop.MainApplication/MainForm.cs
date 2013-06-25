@@ -23,7 +23,7 @@ namespace HydroDesktop.MainApplication
         public MainForm()
         {
             InitializeComponent();
-
+           
             //It looks better if we Maximize the main window, 
             //but the Form.Owner property doesn't seem to do anything when running on Mono, so for now only maximize if on Windows.
             this.WindowState = FormWindowState.Maximized;
@@ -39,7 +39,6 @@ namespace HydroDesktop.MainApplication
                     NavigationControl nc = new NavigationControl(appManager);
                     nc.Parent = (UserControl)appManager.Map;
                     nc.Show();
-                    appManager.HeaderControl.Remove("Pan");
                 };
 
             Shell = this;
