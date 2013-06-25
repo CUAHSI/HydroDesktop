@@ -30,9 +30,10 @@ namespace Search3.Settings.UI
 
         #region Constructors
 
-        public WebServicesUserControl(AppManager App)
+        public WebServicesUserControl(AppManager App, RectangleDrawing _rectangleDrawing)
         {
             this.App = App;
+            this._rectangleDrawing = _rectangleDrawing;
             InitializeComponent();
 
             gridViewWebServices.CellContentClick += gridViewWebServices_OpenUrl;
@@ -289,11 +290,15 @@ namespace Search3.Settings.UI
                 App.Map.ViewExtents.MaxX = maxXY[0];
                 App.Map.ViewExtents.MaxY = maxXY[1];
 
+                App.Map.ViewExtents.Width *= 1.5;
+                App.Map.ViewExtents.Height *= 1.5;
+              
+
                 Extent ex = App.Map.ViewExtents;
 
-              //  _rectangleDrawing = new RectangleDrawing((Map)App.Map);
-             //   _searchSettings.AreaSettings.SetAreaRectangle(ex, App.Map.Projection);
-                //Set App.Map.ViewExtents to new extent that centers on desired LatLong.
+              
+                _rectangleDrawing.RestoreSearchRectangle(node.ServiceBoundingBox.XMin, node.ServiceBoundingBox.YMin, node.ServiceBoundingBox.XMax, node.ServiceBoundingBox.YMax);
+ 
                 App.Map.ViewExtents = ex;
             }
             else if (e.ColumnIndex == 4)

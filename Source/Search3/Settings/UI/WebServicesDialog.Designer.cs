@@ -40,7 +40,7 @@
             this.rbLocalMetadataCache = new System.Windows.Forms.RadioButton();
             this.rbHisCentral = new System.Windows.Forms.RadioButton();
             this.gbTypeOfCatalog = new System.Windows.Forms.GroupBox();
-            this.webServicesUserControl1 = new Search3.Settings.UI.WebServicesUserControl(_app);
+            this.webServicesUserControl1 = new Search3.Settings.UI.WebServicesUserControl(_app, _rectangleDrawing);
             this.paButtons.SuspendLayout();
             this.gbTypeOfCatalog.SuspendLayout();
             this.SuspendLayout();

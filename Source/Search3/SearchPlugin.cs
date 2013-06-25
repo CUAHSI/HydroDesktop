@@ -895,14 +895,21 @@ namespace Search3
 
         void rbServices_Click(object sender, EventArgs e)
         {
+            if (_rectangleDrawing == null)
+            {
+                _rectangleDrawing = new RectangleDrawing((Map)App.Map);
+            }
+
             if (WebServicesDialog.ShowDialog(_searchSettings.WebServicesSettings,
                                              _searchSettings.CatalogSettings,
                                              _searchSettings.KeywordsSettings,
-                                             App.GetExtension<IMetadataFetcherPlugin>(), App
+                                             App.GetExtension<IMetadataFetcherPlugin>(), App, _rectangleDrawing
                                              ) == DialogResult.OK)
             {
                 UpdateWebServicesCaption();
             }
+
+            _rectangleDrawing.Deactivate();
         }
 
         private void UpdateWebServicesCaption()

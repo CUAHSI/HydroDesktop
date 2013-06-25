@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces.PluginContracts;
+using Search3.Area;
 
 namespace Search3.Settings.UI
 {
@@ -14,14 +15,16 @@ namespace Search3.Settings.UI
         private readonly KeywordsSettings _keywordsSettings;
         private readonly IMetadataFetcherPlugin _metadataFetcher;
         private AppManager _app;
+        private RectangleDrawing _rectangleDrawing;
         #endregion
 
         #region Constructors
 
         private WebServicesDialog(WebServicesSettings settings, CatalogSettings catalogSettings, KeywordsSettings keywordsSettings,
-            IMetadataFetcherPlugin metadataFetcher, AppManager App)
+            IMetadataFetcherPlugin metadataFetcher, AppManager App, RectangleDrawing _rectangleDrawing)
         {
             _app = App;
+            this._rectangleDrawing = _rectangleDrawing;
             InitializeComponent();
 
             _settings = settings;
@@ -51,7 +54,7 @@ namespace Search3.Settings.UI
         #region Public methods
 
         public static DialogResult ShowDialog(WebServicesSettings settings, CatalogSettings catalogSettings,
-             KeywordsSettings keywordsSettings, IMetadataFetcherPlugin metadataFetcher, AppManager App)
+             KeywordsSettings keywordsSettings, IMetadataFetcherPlugin metadataFetcher, AppManager App, RectangleDrawing _rectangleDrawing)
         {
             if (settings == null) throw new ArgumentNullException("settings");
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
@@ -59,7 +62,7 @@ namespace Search3.Settings.UI
 
            
 
-            using (var form = new WebServicesDialog(settings.Copy(), catalogSettings.Copy(), keywordsSettings.Copy(), metadataFetcher, App))
+            using (var form = new WebServicesDialog(settings.Copy(), catalogSettings.Copy(), keywordsSettings.Copy(), metadataFetcher, App, _rectangleDrawing))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
