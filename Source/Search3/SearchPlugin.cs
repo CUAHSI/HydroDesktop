@@ -898,7 +898,7 @@ namespace Search3
             if (WebServicesDialog.ShowDialog(_searchSettings.WebServicesSettings,
                                              _searchSettings.CatalogSettings,
                                              _searchSettings.KeywordsSettings,
-                                             App.GetExtension<IMetadataFetcherPlugin>()
+                                             App.GetExtension<IMetadataFetcherPlugin>(), App
                                              ) == DialogResult.OK)
             {
                 UpdateWebServicesCaption();

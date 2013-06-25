@@ -6,6 +6,13 @@ using System.Windows.Forms;
 using System.Data;
 using System.Linq;
 using System.Diagnostics;
+using Search3.Settings;
+using Search3.Area;
+using DotSpatial.Projections;
+using DotSpatial.Controls;
+using DotSpatial.Data;
+using DotSpatial.Controls.Header;
+using DotSpatial.Topology;
 
 namespace Search3.Settings.UI
 {
@@ -15,13 +22,17 @@ namespace Search3.Settings.UI
 
         private WebServicesSettings _webServicesSettings;
         private CatalogSettings _catalogSettings;
+        private AppManager App;
+        private readonly SearchSettings _searchSettings = new SearchSettings();
+        private RectangleDrawing _rectangleDrawing;
 
         #endregion
 
         #region Constructors
 
-        public WebServicesUserControl()
+        public WebServicesUserControl(AppManager App)
         {
+            this.App = App;
             InitializeComponent();
 
             gridViewWebServices.CellContentClick += gridViewWebServices_OpenUrl;
@@ -106,20 +117,32 @@ namespace Search3.Settings.UI
                 gridViewWebServices.Columns.Add(colCB);
 
                 DataGridViewTextBoxColumn colTB = new DataGridViewTextBoxColumn();
-                colTB.Name = "Organization";
-                colTB.HeaderText = "Organization";
+                colTB.Name = "Service Name";
+                colTB.HeaderText = "Service Name";
+                colTB.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 gridViewWebServices.Columns.Add(colTB);
 
                 DataGridViewTextBoxColumn colTB2 = new DataGridViewTextBoxColumn();
                 colTB2.Name = "Service Code";
                 colTB2.HeaderText = "Service Code";
+                colTB2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 gridViewWebServices.Columns.Add(colTB2);
 
-                DataGridViewLinkColumn dgvlc = new DataGridViewLinkColumn();
-                dgvlc.HeaderText = "Link";
-                dgvlc.Width = 260;
-                gridViewWebServices.Columns.Add(dgvlc);
+                DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
+                dgvic.HeaderText = "View Extents";
+                dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                dgvic.ValuesAreIcons = true;
+                dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
+                gridViewWebServices.Columns.Add(dgvic);
 
+                DataGridViewImageColumn dgvic2 = new DataGridViewImageColumn();
+                dgvic2.HeaderText = "More Info";
+                dgvic2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                dgvic2.ValuesAreIcons = true;
+                dgvic2.Icon = Search3.Properties.Resources.more_info;
+                gridViewWebServices.Columns.Add(dgvic2);
+             
+               
               
 
                 gridViewWebServices.AllowUserToAddRows = true;
@@ -130,7 +153,6 @@ namespace Search3.Settings.UI
                     row.Cells[0].Value = webNode.Checked;
                     row.Cells[1].Value = webNode.Title;
                     row.Cells[2].Value = webNode.ServiceCode;
-                    row.Cells[3].Value = webNode.DescriptionUrl;
                     row.Tag = webNode;
                     gridViewWebServices.Rows.Add(row);
                 }
@@ -204,6 +226,33 @@ namespace Search3.Settings.UI
             
         }
 
+        private double[] LatLonReproject(double x, double y)
+        {
+            double[] xy = new double[2] { x, y };
+
+            //Change y coordinate to be less than 90 degrees to prevent a bug.
+            if (xy[1] >= 90) xy[1] = 89.9;
+            if (xy[1] <= -90) xy[1] = -89.9;
+
+            //Need to convert points to proper projection. Currently describe WGS84 points which may or may not be accurate.
+            bool isWgs84;
+
+            String wgs84String = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            String mapProjEsriString = App.Map.Projection.ToEsriString();
+            isWgs84 = (mapProjEsriString.Equals(wgs84String));
+
+            //If the projection is not WGS84, then convert points to properly describe desired location.
+            if (!isWgs84)
+            {
+                double[] z = new double[1];
+                ProjectionInfo wgs84Projection = ProjectionInfo.FromEsriString(wgs84String);
+                ProjectionInfo currentMapProjection = ProjectionInfo.FromEsriString(mapProjEsriString);
+                Reproject.ReprojectPoints(xy, z, wgs84Projection, currentMapProjection, 0, 1);
+            }
+
+            //Return array with 1 x and 1 y value.
+            return xy;
+        }
         /// <summary>
         /// Set settings into control.
         /// </summary>
@@ -220,5 +269,57 @@ namespace Search3.Settings.UI
         }
 
         #endregion
+
+        private void gridViewWebServices_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 3)
+            {
+                double[] minXY = new double[2];
+                double[] maxXY = new double[2];
+
+                //Now convert from Lat-Long to x,y coordinates that App.Map.ViewExtents can use to pan to the correct location.
+                WebServiceNode node = (WebServiceNode)gridViewWebServices.Rows[e.RowIndex].Tag;
+               
+                minXY = LatLonReproject(node.ServiceBoundingBox.XMin, node.ServiceBoundingBox.YMin);
+                maxXY = LatLonReproject(node.ServiceBoundingBox.XMax, node.ServiceBoundingBox.YMax);
+
+                //Get extent where center is desired X,Y coordinate.
+                App.Map.ViewExtents.MinX = minXY[0];
+                App.Map.ViewExtents.MinY = minXY[1];
+                App.Map.ViewExtents.MaxX = maxXY[0];
+                App.Map.ViewExtents.MaxY = maxXY[1];
+
+                Extent ex = App.Map.ViewExtents;
+
+              //  _rectangleDrawing = new RectangleDrawing((Map)App.Map);
+             //   _searchSettings.AreaSettings.SetAreaRectangle(ex, App.Map.Projection);
+                //Set App.Map.ViewExtents to new extent that centers on desired LatLong.
+                App.Map.ViewExtents = ex;
+            }
+            else if (e.ColumnIndex == 4)
+            {
+                string url;
+                if ( (url = ((WebServiceNode)gridViewWebServices.Rows[e.RowIndex].Tag).DescriptionUrl) != null)
+                {
+                    Process.Start(url);
+                }
+            }
+        }
+
+  
+
+        private void gridViewWebServices_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == 3 || e.ColumnIndex == 4)
+            {
+                this.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+            } 
+        }
+
+      
     }
 }
