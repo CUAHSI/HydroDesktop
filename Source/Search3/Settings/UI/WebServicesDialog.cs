@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using DotSpatial.Controls;
 using HydroDesktop.Interfaces.PluginContracts;
 
 namespace Search3.Settings.UI
@@ -12,20 +13,23 @@ namespace Search3.Settings.UI
         private readonly CatalogSettings _catalogSettings;
         private readonly KeywordsSettings _keywordsSettings;
         private readonly IMetadataFetcherPlugin _metadataFetcher;
-
+        private AppManager _app;
         #endregion
 
         #region Constructors
 
         private WebServicesDialog(WebServicesSettings settings, CatalogSettings catalogSettings, KeywordsSettings keywordsSettings,
-            IMetadataFetcherPlugin metadataFetcher)
+            IMetadataFetcherPlugin metadataFetcher, AppManager App)
         {
+            _app = App;
             InitializeComponent();
 
             _settings = settings;
             _catalogSettings = catalogSettings;
             _keywordsSettings = keywordsSettings;
             _metadataFetcher = metadataFetcher;
+         
+
             webServicesUserControl1.SetSettings(settings, catalogSettings);
             
             switch (_catalogSettings.TypeOfCatalog)
@@ -46,14 +50,16 @@ namespace Search3.Settings.UI
 
         #region Public methods
 
-        public static DialogResult ShowDialog(WebServicesSettings settings, CatalogSettings catalogSettings, 
-             KeywordsSettings keywordsSettings, IMetadataFetcherPlugin metadataFetcher)
+        public static DialogResult ShowDialog(WebServicesSettings settings, CatalogSettings catalogSettings,
+             KeywordsSettings keywordsSettings, IMetadataFetcherPlugin metadataFetcher, AppManager App)
         {
             if (settings == null) throw new ArgumentNullException("settings");
             if (catalogSettings == null) throw new ArgumentNullException("catalogSettings");
             if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
-            using (var form = new WebServicesDialog(settings.Copy(), catalogSettings.Copy(), keywordsSettings.Copy(), metadataFetcher))
+           
+
+            using (var form = new WebServicesDialog(settings.Copy(), catalogSettings.Copy(), keywordsSettings.Copy(), metadataFetcher, App))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
