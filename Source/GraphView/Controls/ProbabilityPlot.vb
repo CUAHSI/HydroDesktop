@@ -163,12 +163,9 @@ Namespace Controls
                 'probLine = New ZedGraph.LineItem("ProbCurve")
                 probLine = gPane.AddCurve(m_Site, ptList, options.LineColor, SymbolType.Circle)
                 probLine.Tag = options
-                probLine.Symbol.Fill = New Fill(options.PointColor, Color.Black)
-                probLine.Symbol.Fill.RangeMin = 0
-                probLine.Symbol.Fill.RangeMax = 1
+                probLine.Symbol.Fill = New Fill(options.PointColor)
                 probLine.Symbol.Size = 4
-                probLine.Symbol.Fill.SecondaryValueGradientColor = Color.Empty
-                probLine.Symbol.Fill.Type = FillType.GradientByColorValue
+                probLine.Symbol.Fill.Type = FillType.Solid
                 probLine.Symbol.Border.IsVisible = False
                 probLine.Line.IsVisible = False
 

@@ -143,12 +143,9 @@ Namespace Controls
                     Dim curve As LineItem = gPane.AddCurve(m_Site, pointList, options.LineColor, SymbolType.Circle)
 
                     curve.Tag = options
-                    curve.Symbol.Fill = New Fill(options.PointColor, Color.Black)
-                    curve.Symbol.Fill.RangeMin = 0
-                    curve.Symbol.Fill.RangeMax = 1
+                    curve.Symbol.Fill = New Fill(options.PointColor)
                     curve.Symbol.Size = 4
-                    curve.Symbol.Fill.SecondaryValueGradientColor = Color.Empty
-                    curve.Symbol.Fill.Type = FillType.GradientByColorValue
+                    curve.Symbol.Fill.Type = FillType.Solid
                     curve.Symbol.Border.IsVisible = False
                     Select Case m_Options.TimeSeriesMethod
                         Case TimeSeriesType.Line
