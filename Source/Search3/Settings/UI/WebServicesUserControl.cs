@@ -273,6 +273,9 @@ namespace Search3.Settings.UI
 
         private void gridViewWebServices_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex == -1)
+                return;
+
             if (e.ColumnIndex == 3)
             {
                 double[] minXY = new double[2];
@@ -285,13 +288,13 @@ namespace Search3.Settings.UI
                 maxXY = LatLonReproject(node.ServiceBoundingBox.XMax, node.ServiceBoundingBox.YMax);
 
                 //Get extent where center is desired X,Y coordinate.
-                App.Map.ViewExtents.MinX = minXY[0];
-                App.Map.ViewExtents.MinY = minXY[1];
-                App.Map.ViewExtents.MaxX = maxXY[0];
-                App.Map.ViewExtents.MaxY = maxXY[1];
+                App.Map.ViewExtents.MinX = minXY[0] - (minXY[0] / 16.0);
+                App.Map.ViewExtents.MinY = minXY[1] - (minXY[1] / 16.0);
+                App.Map.ViewExtents.MaxX = maxXY[0] + (maxXY[0] / 16.0);
+                App.Map.ViewExtents.MaxY = maxXY[1] + (maxXY[1] / 16.0);
 
-                App.Map.ViewExtents.Width *= 1.5;
-                App.Map.ViewExtents.Height *= 1.5;
+                //App.Map.ViewExtents.Width *= 1.5;
+                //App.Map.ViewExtents.Height *= 1.5;
               
 
                 Extent ex = App.Map.ViewExtents;
