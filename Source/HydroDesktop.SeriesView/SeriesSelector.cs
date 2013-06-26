@@ -798,6 +798,8 @@ namespace SeriesView
         private void btnEditFilter_Click(object sender, EventArgs e)
         {
             var frm = new frmComplexSelection(MainView.Table);
+            frm.FilterExpression = txtFilter.Text;
+
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 txtFilter.Text = frm.FilterExpression;
