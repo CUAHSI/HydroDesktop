@@ -484,7 +484,6 @@ namespace HydroDesktop.Database
                 var newValueID = DbOperations.GetNextID("DataValues", "ValueID");
                 var query = new StringBuilder("BEGIN TRANSACTION; ");
 
-
                 for (int i = 0; i <= chunkLength - 1; i++)
                 {
                     double newvalue = 0.0;
@@ -541,7 +540,7 @@ namespace HydroDesktop.Database
                                        newSeriesID,
                                        newvalue,
                                        0,
-                                       Convert.ToDateTime(dt.Rows[index]["LocalDateTime"]).ToString("yyyy-MM-dd HH:mm:ss"),
+                                       currentdate.ToString("yyyy-MM-dd HH:mm:ss"), 
                                        UTC.ToString(CultureInfo.InvariantCulture),
                                        currentdate.AddHours(UTC).ToString("yyyy-MM-dd HH:mm:ss"),
                                        "NULL",
