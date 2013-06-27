@@ -49,7 +49,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(338, 468);
+            this.btnCancel.Location = new System.Drawing.Point(647, 468);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -60,7 +60,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(257, 468);
+            this.btnOK.Location = new System.Drawing.Point(566, 468);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 0;
@@ -78,13 +78,13 @@
             this.paButtons.Controls.Add(this.btnSelectAll);
             this.paButtons.Location = new System.Drawing.Point(0, 66);
             this.paButtons.Name = "paButtons";
-            this.paButtons.Size = new System.Drawing.Size(425, 68);
+            this.paButtons.Size = new System.Drawing.Size(634, 68);
             this.paButtons.TabIndex = 45;
             // 
             // btnManageDataSources
             // 
             this.btnManageDataSources.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnManageDataSources.Location = new System.Drawing.Point(269, 37);
+            this.btnManageDataSources.Location = new System.Drawing.Point(578, 37);
             this.btnManageDataSources.Name = "btnManageDataSources";
             this.btnManageDataSources.Size = new System.Drawing.Size(144, 23);
             this.btnManageDataSources.TabIndex = 45;
@@ -95,7 +95,7 @@
             // bntAddLocalDataSource
             // 
             this.bntAddLocalDataSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bntAddLocalDataSource.Location = new System.Drawing.Point(269, 8);
+            this.bntAddLocalDataSource.Location = new System.Drawing.Point(578, 8);
             this.bntAddLocalDataSource.Name = "bntAddLocalDataSource";
             this.bntAddLocalDataSource.Size = new System.Drawing.Size(144, 23);
             this.bntAddLocalDataSource.TabIndex = 44;
@@ -163,11 +163,11 @@
             this.gbTypeOfCatalog.Controls.Add(this.rbHisCentral);
             this.gbTypeOfCatalog.Location = new System.Drawing.Point(0, 9);
             this.gbTypeOfCatalog.Name = "gbTypeOfCatalog";
-            this.gbTypeOfCatalog.Size = new System.Drawing.Size(425, 53);
+            this.gbTypeOfCatalog.Size = new System.Drawing.Size(730, 53);
             this.gbTypeOfCatalog.TabIndex = 49;
             this.gbTypeOfCatalog.TabStop = false;
             this.gbTypeOfCatalog.Text = "Select type of catalog";
-            // 
+             // 
             // webServicesUserControl1
             // 
             this.webServicesUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -175,14 +175,15 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.webServicesUserControl1.Location = new System.Drawing.Point(0, 140);
             this.webServicesUserControl1.Name = "webServicesUserControl1";
-            this.webServicesUserControl1.Size = new System.Drawing.Size(425, 301);
+            this.webServicesUserControl1.Size = new System.Drawing.Size(722, 301);
             this.webServicesUserControl1.TabIndex = 0;
+            // 
             // 
             // WebServicesDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 505);
+            this.ClientSize = new System.Drawing.Size(730, 505);
             this.Controls.Add(this.gbTypeOfCatalog);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);

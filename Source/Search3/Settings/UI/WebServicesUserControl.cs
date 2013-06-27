@@ -23,7 +23,6 @@ namespace Search3.Settings.UI
         private WebServicesSettings _webServicesSettings;
         private CatalogSettings _catalogSettings;
         private AppManager App;
-        private readonly SearchSettings _searchSettings = new SearchSettings();
         private RectangleDrawing _rectangleDrawing;
 
         #endregion
@@ -129,6 +128,30 @@ namespace Search3.Settings.UI
                 colTB2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 gridViewWebServices.Columns.Add(colTB2);
 
+                DataGridViewTextBoxColumn colTB3 = new DataGridViewTextBoxColumn();
+                colTB3.Name = "Organization";
+                colTB3.HeaderText = "Organization";
+                colTB3.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                gridViewWebServices.Columns.Add(colTB3);
+
+                DataGridViewTextBoxColumn colTB4 = new DataGridViewTextBoxColumn();
+                colTB4.Name = "# Sites";
+                colTB4.HeaderText = "# Sites";
+                colTB4.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                gridViewWebServices.Columns.Add(colTB4);
+
+                DataGridViewTextBoxColumn colTB5 = new DataGridViewTextBoxColumn();
+                colTB5.Name = "# Variables";
+                colTB5.HeaderText = "# Variables";
+                colTB5.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                gridViewWebServices.Columns.Add(colTB5);
+
+                DataGridViewTextBoxColumn colTB6 = new DataGridViewTextBoxColumn();
+                colTB6.Name = "# Values";
+                colTB6.HeaderText = "# Values";
+                colTB6.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                gridViewWebServices.Columns.Add(colTB6);
+
                 DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
                 dgvic.HeaderText = "View Extents";
                 dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
@@ -154,6 +177,10 @@ namespace Search3.Settings.UI
                     row.Cells[0].Value = webNode.Checked;
                     row.Cells[1].Value = webNode.Title;
                     row.Cells[2].Value = webNode.ServiceCode;
+                    row.Cells[3].Value = webNode.Organization;
+                    row.Cells[4].Value = webNode.Sites;
+                    row.Cells[5].Value = webNode.Variables;
+                    row.Cells[6].Value = webNode.Values;
                     row.Tag = webNode;
                     gridViewWebServices.Rows.Add(row);
                 }
@@ -276,7 +303,7 @@ namespace Search3.Settings.UI
             if (e.RowIndex == -1)
                 return;
 
-            if (e.ColumnIndex == 3)
+            if (e.ColumnIndex == 7)
             {
                 double[] minXY = new double[2];
                 double[] maxXY = new double[2];
@@ -288,23 +315,18 @@ namespace Search3.Settings.UI
                 maxXY = LatLonReproject(node.ServiceBoundingBox.XMax, node.ServiceBoundingBox.YMax);
 
                 //Get extent where center is desired X,Y coordinate.
-                App.Map.ViewExtents.MinX = minXY[0] - (minXY[0] / 16.0);
-                App.Map.ViewExtents.MinY = minXY[1] - (minXY[1] / 16.0);
-                App.Map.ViewExtents.MaxX = maxXY[0] + (maxXY[0] / 16.0);
-                App.Map.ViewExtents.MaxY = maxXY[1] + (maxXY[1] / 16.0);
-
-                //App.Map.ViewExtents.Width *= 1.5;
-                //App.Map.ViewExtents.Height *= 1.5;
-              
+                App.Map.ViewExtents.MinX = minXY[0] - (minXY[0] / 20.0);
+                App.Map.ViewExtents.MinY = minXY[1] - (minXY[1] / 20.0);
+                App.Map.ViewExtents.MaxX = maxXY[0] + (maxXY[0] / 20.0);
+                App.Map.ViewExtents.MaxY = maxXY[1] + (maxXY[1] / 20.0);
 
                 Extent ex = App.Map.ViewExtents;
 
-              
                 _rectangleDrawing.RestoreSearchRectangle(node.ServiceBoundingBox.XMin, node.ServiceBoundingBox.YMin, node.ServiceBoundingBox.XMax, node.ServiceBoundingBox.YMax);
  
                 App.Map.ViewExtents = ex;
             }
-            else if (e.ColumnIndex == 4)
+            else if (e.ColumnIndex == 8)
             {
                 string url;
                 if ( (url = ((WebServiceNode)gridViewWebServices.Rows[e.RowIndex].Tag).DescriptionUrl) != null)
@@ -318,7 +340,7 @@ namespace Search3.Settings.UI
 
         private void gridViewWebServices_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.ColumnIndex == 3 || e.ColumnIndex == 4)
+            if (e.ColumnIndex == 7 || e.ColumnIndex == 8)
             {
                 this.Cursor = Cursors.Hand;
             }

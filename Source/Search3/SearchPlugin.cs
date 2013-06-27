@@ -898,7 +898,11 @@ namespace Search3
             if (_rectangleDrawing == null)
             {
                 _rectangleDrawing = new RectangleDrawing((Map)App.Map);
+                _rectangleDrawing.RectangleCreated += rectangleDrawing_RectangleCreated;
+                _rectangleDrawing.Deactivated += _rectangleDrawing_Deactivated;
             }
+
+            _rectangleDrawing.Activate();
 
             if (WebServicesDialog.ShowDialog(_searchSettings.WebServicesSettings,
                                              _searchSettings.CatalogSettings,
