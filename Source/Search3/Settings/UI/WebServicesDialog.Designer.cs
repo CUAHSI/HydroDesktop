@@ -78,7 +78,7 @@
             this.paButtons.Controls.Add(this.btnSelectAll);
             this.paButtons.Location = new System.Drawing.Point(0, 66);
             this.paButtons.Name = "paButtons";
-            this.paButtons.Size = new System.Drawing.Size(634, 68);
+            this.paButtons.Size = new System.Drawing.Size(730, 68);
             this.paButtons.TabIndex = 45;
             // 
             // btnManageDataSources
