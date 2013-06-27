@@ -38,7 +38,7 @@
             this.gridViewWebServices.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridViewWebServices.Location = new System.Drawing.Point(0, 0);
             this.gridViewWebServices.Name = "gridViewWebServices";
-            this.gridViewWebServices.Size = new System.Drawing.Size(376, 436);
+            this.gridViewWebServices.Size = new System.Drawing.Size(600, 436);
             this.gridViewWebServices.TabIndex = 40;
             this.gridViewWebServices.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridViewWebServices_CellContentClick);
             this.gridViewWebServices.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridViewWebServices_CellMouseMove);
@@ -49,7 +49,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gridViewWebServices);
             this.Name = "WebServicesUserControl";
-            this.Size = new System.Drawing.Size(376, 436);
+            this.Size = new System.Drawing.Size(600, 436);
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWebServices)).EndInit();
             this.ResumeLayout(false);
 

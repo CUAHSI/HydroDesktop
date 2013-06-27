@@ -197,6 +197,7 @@ namespace Search3.Area
         /// </summary>
         public void RestoreSearchRectangle(double minLon, double minLat, double maxLon, double maxLat)
         {
+            _rectangleLayer.Symbolizer = new PolygonSymbolizer(Color.Gold.ToTransparent(0.5f), Color.Gold);
             AddRectangleLayer(Color.Yellow.ToTransparent(0.5f));
            
             if (_rectangleLayer != null)
@@ -238,7 +239,7 @@ namespace Search3.Area
                 var newF = _rectangleLayer.DataSet.AddFeature(poly);
                 newF.DataRow["ID"] = 1;
                 _numClicks = 0;
-
+                _isActive = true;
                 _mainMap.ResetBuffer();
                 //Deactivate();
                 OnRectangleCreated();

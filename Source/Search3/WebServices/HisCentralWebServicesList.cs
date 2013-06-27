@@ -55,7 +55,11 @@ namespace Search3.WebServices
                             string title = null;
                             int serviceID = -1;
                             string serviceCode = null;
+                            string organization = null;
+
+                            int variables = -1, values = -1, sites = -1;
                             double xmin = double.NaN, xmax = double.NaN, ymin = double.NaN, ymax = double.NaN;
+
                             while (reader.Read())
                             {
                                 if  (reader.NodeType == XmlNodeType.EndElement && reader.Name == "ServiceInfo")
@@ -79,9 +83,25 @@ namespace Search3.WebServices
                                             if (!reader.Read()) continue;
                                             desciptionUrl = reader.Value.Trim();
                                             break;
+                                        case "organization":
+                                            if (!reader.Read()) continue;
+                                            organization = reader.Value.Trim();
+                                            break;
                                         case "servURL":
                                             if (!reader.Read()) continue;
                                             serviceUrl = reader.Value.Trim();
+                                            break;
+                                        case "valuecount":
+                                            if (!reader.Read()) continue;
+                                            values = Convert.ToInt32(reader.Value.Trim());
+                                            break;
+                                        case "variablecount":
+                                            if (!reader.Read()) continue;
+                                            variables = Convert.ToInt32(reader.Value.Trim());
+                                            break;
+                                        case "sitecount":
+                                            if (!reader.Read()) continue;
+                                            sites = Convert.ToInt32(reader.Value.Trim());
                                             break;
                                         case "NetworkName":
                                             if (!reader.Read()) continue;
@@ -115,7 +135,7 @@ namespace Search3.WebServices
                             if (!double.IsNaN(xmin) && !double.IsNaN(xmax) && !double.IsNaN(ymin) && !double.IsNaN(ymax))
                                 boundingBox = new Box(xmin, xmax, ymin, ymax);
 
-                            var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl, boundingBox);
+                            var node = new WebServiceNode(title, serviceCode, serviceID, desciptionUrl, serviceUrl, boundingBox, organization, sites, variables, values);
                             result.Add(node);
                         }
                     }
