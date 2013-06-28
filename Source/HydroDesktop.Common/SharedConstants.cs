@@ -22,6 +22,14 @@
         }
 
         /// <summary>
+        /// Root Key of HydroShare Ribbon
+        /// </summary>
+        public static string HydroShareRootkey
+        {
+            get { return "kHydroShare"; }
+        }
+
+        /// <summary>
         /// Root Key of Table Ribbon
         /// </summary>
         public static string TableRootKey

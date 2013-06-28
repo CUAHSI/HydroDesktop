@@ -912,7 +912,6 @@ namespace Search3
             {
                 UpdateWebServicesCaption();
             }
-
             _rectangleDrawing.Deactivate();
         }
 
