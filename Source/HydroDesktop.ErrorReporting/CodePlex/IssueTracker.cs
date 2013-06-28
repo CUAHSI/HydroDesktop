@@ -69,7 +69,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
                 throw new Exception("Not signed in into codeplex.");
             }
 
-            var createIssueUrl = string.Format(@"http://{0}.codeplex.com/WorkItem/Create", _projectName);
+            var createIssueUrl = string.Format(@"https://{0}.codeplex.com/WorkItem/Create", _projectName);
 
             var createIssuePage = _browser.Get(createIssueUrl);
             var form = HtmlForm.GetForm(createIssuePage, "aspnetForm");
@@ -89,7 +89,8 @@ namespace HydroDesktop.ErrorReporting.CodePlex
             form.Elements.Add(new HtmlElement("__RequestVerificationToken", elements.First(t => t.Name == "__RequestVerificationToken").Value));
             form.Elements.Add(new HtmlElement("searchsite", "Search all projects"));
             form.Elements.Add(new HtmlElement("WorkItem.Summary", issue.Summary));
-            form.Elements.Add(new HtmlElement("WorkItem.Description", issue.Description));
+            form.Elements.Add(new HtmlElement("Text", issue.Description));
+
             if (fileData != null)
             {
                 form.Elements.Add(new HtmlElement("PostedFile_text", @"C:\fakepath\" + file.Name));
@@ -97,7 +98,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
                     {
                         IsFile = true,
                         File = fileData,
-                        ContentType = "application/x-msdownload",
+                        ContentType = "application/octet-stream",
                         FileName = file.Name
                     });
             }
@@ -143,7 +144,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
             }
             if (issueLink == null)
             {
-                throw new Exception("Unale to post issue on Codeplex.");
+                throw new Exception("Unable to post issue on Codeplex.");
             }
             return issueLink;
         }
