@@ -59,13 +59,17 @@ Public Class GraphViewPlugin
     Private rbhaSturges As SimpleActionItem 'Sturges'
     Private rbhaFreedman As SimpleActionItem 'Freedman-Diaconis’
 
-    Private Const rpBoxWhiskerOption As String = "Box Whisker Plot Option"
+    Private Const rpBoxWhiskerOption As String = "Plot Option"
     Const kBoxWhiskerType = "kBoxWhiskerType"
     Private rbBoxWhiskerType As MenuContainerItem 'Box Whisker Type
     Private rbbtMonthly As SimpleActionItem 'Monthly
     Private rbbtSeasonal As SimpleActionItem 'Seasonal
     Private rbbtYearly As SimpleActionItem 'Yearly
     Private rbbtOverall As SimpleActionItem 'Overall
+
+    Private rbBoxWhiskerShowKey As SimpleActionItem 'Box Whisker show key
+    Private rbBoxWhiskerKey As Form
+    Private rbBoxWhiskerDiagram As PictureBox
 
     Private ReadOnly _datesFormat As String = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern
     Private Const rpOtherOptions As String = "Date & Time"
@@ -310,6 +314,24 @@ Public Class GraphViewPlugin
         header.Add(rbbtOverall)
         'rbbtOverall.Visible = False
 
+        'Box Whisker show key
+        rbBoxWhiskerShowKey = New SimpleActionItem(kGraph, "Box Whisker Key", AddressOf rbBoxWhiskerShowKey_Click)
+        rbBoxWhiskerShowKey.LargeImage = My.Resources.BoxWhiskerKey
+        rbBoxWhiskerShowKey.GroupCaption = "Show Key"
+        header.Add(rbBoxWhiskerShowKey)
+        rbBoxWhiskerShowKey.Visible = False
+
+        'Box Whisker key
+        rbBoxWhiskerDiagram = New PictureBox()
+        rbBoxWhiskerDiagram.Size = New Drawing.Size(528, 380)
+        rbBoxWhiskerDiagram.SizeMode = PictureBoxSizeMode.StretchImage
+        rbBoxWhiskerDiagram.Anchor = AnchorStyles.Right Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Top
+        rbBoxWhiskerDiagram.Image = My.Resources.BoxWhiskerDiagram
+        rbBoxWhiskerKey = New Form()
+        rbBoxWhiskerKey.Size = New Drawing.Size(528, 408)
+        rbBoxWhiskerKey.Controls.Add(rbBoxWhiskerDiagram)
+        rbBoxWhiskerKey.ShowIcon = False
+
         'Others
         'Date Setting
         rbStartDate = New TextEntryActionItem()
@@ -449,6 +471,7 @@ Public Class GraphViewPlugin
         rbHistogramType.Visible = False
         rbAlgorithms.Visible = False
         rbBoxWhiskerType.Visible = False
+        rbBoxWhiskerShowKey.Visible = False
 
     End Sub
 
@@ -461,6 +484,7 @@ Public Class GraphViewPlugin
         rbHistogramType.Visible = False
         rbAlgorithms.Visible = False
         rbBoxWhiskerType.Visible = False
+        rbBoxWhiskerShowKey.Visible = False
     End Sub
 
     Sub rbHistogram_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -472,6 +496,7 @@ Public Class GraphViewPlugin
         rbHistogramType.Visible = True
         rbAlgorithms.Visible = True
         rbBoxWhiskerType.Visible = False
+        rbBoxWhiskerShowKey.Visible = False
     End Sub
 
     Sub rbBoxWhisker_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -483,6 +508,7 @@ Public Class GraphViewPlugin
         rbHistogramType.Visible = False
         rbAlgorithms.Visible = False
         rbBoxWhiskerType.Visible = True
+        rbBoxWhiskerShowKey.Visible = True
     End Sub
 
     Sub rbSummary_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -494,6 +520,7 @@ Public Class GraphViewPlugin
         rbHistogramType.Visible = False
         rbAlgorithms.Visible = False
         rbBoxWhiskerType.Visible = False
+        rbBoxWhiskerShowKey.Visible = False
     End Sub
 
     Sub rbShowLegend_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -568,6 +595,21 @@ Public Class GraphViewPlugin
     Sub rbbtOverall_Click(ByVal sender As Object, ByVal e As EventArgs)
         _plotOptions.BoxWhiskerMethod = BoxWhiskerType.Overall
         _mainControl.ApplyOptions()
+    End Sub
+    Sub rbBoxWhiskerShowKey_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If rbBoxWhiskerKey.IsDisposed() Then
+            rbBoxWhiskerDiagram = New PictureBox()
+            rbBoxWhiskerDiagram.Size = New Drawing.Size(528, 380)
+            rbBoxWhiskerDiagram.SizeMode = PictureBoxSizeMode.StretchImage
+            rbBoxWhiskerDiagram.Anchor = AnchorStyles.Right Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Top
+            rbBoxWhiskerDiagram.Image = My.Resources.BoxWhiskerDiagram
+
+            rbBoxWhiskerKey = New Form()
+            rbBoxWhiskerKey.Size = New Drawing.Size(528, 408)
+            rbBoxWhiskerKey.Controls.Add(rbBoxWhiskerDiagram)
+            rbBoxWhiskerKey.ShowIcon = False
+        End If
+        rbBoxWhiskerKey.Show()
     End Sub
 
     'Display full date range toggle button is clicked

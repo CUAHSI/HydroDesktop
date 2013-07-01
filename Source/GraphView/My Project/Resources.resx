@@ -121,8 +121,14 @@
   <data name="Binning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binning.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BoxWhiskerKey" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BoxWhiskerKey.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BoxWhiskerType" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BoxWhiskerType.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxWhiskerDiagram" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BoxWhiskerDiagram.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BoxWisker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BoxWisker.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
