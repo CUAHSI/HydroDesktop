@@ -532,12 +532,18 @@ namespace SeriesView
             column.DisplayIndex = 2;
             column.ReadOnly = true;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            var size = column.Width;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = size;
 
             column = dgvSeries.Columns[SiteDisplayColumn];
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 3;
             column.ReadOnly = true;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            size = column.Width;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = size;
 
             column = dgvSeries.Columns[Column_ThemeName];
             column.HeaderText = "Data Network";
@@ -545,19 +551,27 @@ namespace SeriesView
             column.DisplayIndex = 4;
             column.ReadOnly = true;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            size = column.Width;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = size;
 
             column = dgvSeries.Columns[Column_SampleMedium];
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 5;
             column.ReadOnly = true;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            size = column.Width;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = size;
 
             column = dgvSeries.Columns[Column_QualityControl];
             Debug.Assert(column != null, "column != null");
             column.DisplayIndex = 6;
             column.ReadOnly = true;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-
+            size = column.Width;
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = size;
 
             //setup the filter option to "default all"
             SetFilterOption(FilterType);
