@@ -181,7 +181,6 @@ namespace SeriesView
             this.dgvSeries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSeries.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSeries.BackgroundColor = System.Drawing.Color.White;
             this.dgvSeries.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvSeries.Location = new System.Drawing.Point(3, 92);
