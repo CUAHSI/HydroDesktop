@@ -2818,14 +2818,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         private void container_SplitterMoved(object sender, EventArgs e)
         {
             //get splitter width
-            int newWidth = this.container.Panel1.Width;
+            int newWidth = this.container.Panel1.ClientSize.Width;
 
 
             //set new filelist width
             this.fileList.Width = newWidth;
 
             //set column widths
-            this.fileList.Columns[0].Width = Convert.ToInt32(3 * newWidth / 5) - 2;
+            this.fileList.Columns[0].Width = Convert.ToInt32(3 * newWidth / 5) - SystemInformation.VerticalScrollBarWidth - 4;
             this.fileList.Columns[1].Width = Convert.ToInt32(newWidth / 5);
             this.fileList.Columns[2].Width = Convert.ToInt32(newWidth / 5);
 
