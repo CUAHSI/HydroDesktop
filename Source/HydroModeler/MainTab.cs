@@ -24,7 +24,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         #region Window controls
         private System.Windows.Forms.PictureBox compositionBox;
-        private System.Windows.Forms.ListView fileList;
+        private FileListView fileList;
         private MyListView properties;
         private System.Windows.Forms.Panel ListPanel;
         private System.Windows.Forms.SplitContainer container;
@@ -140,7 +140,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             _compositionBoxPositionInArea = new Point(0, 0);
 
-            fileList = new ListView();
+            fileList = new FileListView();
             
             //initialize the composition
             _composition = new CompositionManager();
@@ -1924,7 +1924,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.ListPanel = new Panel();
-            this.fileList = new ListView();
+            this.fileList = new FileListView();
             this.properties = new MyListView();
             this.tb_navigate = new TextBox();
             this.changeDir = new Button();
@@ -2026,7 +2026,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             this.fileList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.fileList.Dock = DockStyle.None;
             this.fileList.Location = new System.Drawing.Point(0, 37);
-            this.fileList.Size = new Size(245, this.container2.Panel1.Height - 2);
+            this.fileList.Size = new Size(245, this.container2.Panel1.ClientSize.Height - 37);
             this.fileList.Name = "fileList";
 
             ImageList _imagesList = new ImageList();
@@ -2859,7 +2859,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             int width = this.container2.Panel1.Width;
 
             //set new heights in panel 1
-            this.fileList.Height = height1 - 2;
+            this.fileList.Height = height1 - 37;
 
 
             //set new heights in panel 2
@@ -4145,8 +4145,22 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
     /// <summary>
     /// This class is necessary to create and eventhandler for listview scrolling
     /// </summary>
+    /// 
+    public class FileListView : ListView
+    {
+        public FileListView()
+        {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer|ControlStyles.AllPaintingInWmPaint|ControlStyles.ResizeRedraw, true);
+        }
+    }
+
     public class MyListView : ListView
     {
+        public MyListView()
+        {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer|ControlStyles.AllPaintingInWmPaint|ControlStyles.ResizeRedraw, true);
+        }
+
         private const int WM_HSCROLL = 0x114;
         private const int WM_VSCROLL = 0x115;
         public event ScrollEventHandler Scroll;
