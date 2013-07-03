@@ -149,7 +149,6 @@ namespace HydroR
             _btnSettings.LargeImage = Properties.Resources.RSettings_32;
             _btnSettings.SmallImage = Properties.Resources.RSettings_16;
             _btnSettings.GroupCaption = "Settings";
-            _btnSettings.Click += new EventHandler(_hydroRControl.btnSettings_Click);
             App.HeaderControl.Add(_btnSettings);
         }
 
