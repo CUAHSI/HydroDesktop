@@ -118,6 +118,8 @@ namespace DemoMap
 
         public event EventHandler<DockablePanelEventArgs> PanelRemoved;
 
+        public event EventHandler<DockablePanelEventArgs> PanelHidden;
+
         #endregion
 
         #region OnPanelRemoved
@@ -168,6 +170,19 @@ namespace DemoMap
         {
             if (ActivePanelChanged != null)
                 ActivePanelChanged(null/*this*/, ea);
+        }
+
+        #endregion
+
+        #region OnPanelHidden
+
+        /// <summary>
+        /// Triggers the PanelRemoved event.
+        /// </summary>
+        public virtual void OnPanelHidden(DockablePanelEventArgs ea)
+        {
+            if (PanelHidden != null)
+                PanelHidden(null/*this*/, ea);
         }
 
         #endregion

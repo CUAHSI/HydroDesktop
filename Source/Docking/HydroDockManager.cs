@@ -52,6 +52,11 @@ namespace HydroDesktop.Docking
         /// </summary>
         public event EventHandler<DockablePanelEventArgs> PanelClosed;
 
+        /// <summary>
+        /// Occurs when a panel is Hidden.
+        /// </summary>
+        public event EventHandler<DockablePanelEventArgs> PanelHidden;
+
         public void ResetLayout()
         {
             _suppressEvents = true;
@@ -153,6 +158,7 @@ namespace HydroDesktop.Docking
             //event handler for closing
             content.FormClosing += content_FormClosing;
             content.FormClosed += content_FormClosed;
+            content.VisibleChanged += content_VisibleChanged;
 
             //the tag is used by the ActivePanelChanged event
             content.Pane.Tag = key;
@@ -189,6 +195,7 @@ namespace HydroDesktop.Docking
             //remove event handlers
             content.FormClosing -= content_FormClosing;
             content.FormClosed -= content_FormClosed;
+            content.VisibleChanged -= content_VisibleChanged;
             dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
 
             content.Dispose();
@@ -310,6 +317,16 @@ namespace HydroDesktop.Docking
             }
         }
 
+        void content_VisibleChanged(object sender, EventArgs e)
+        {
+            var c = sender as DockContent;
+            if (c != null)
+            {
+                if (c.IsHidden)
+                    OnPanelHidden(c.Tag.ToString());
+            }
+        }
+
         private static Icon ImageToIcon(Image img)
         {
             var bm = img as Bitmap;
@@ -363,6 +380,17 @@ namespace HydroDesktop.Docking
             if (_suppressEvents) return;
 
             var handler = PanelClosed;
+            if (handler != null)
+            {
+                handler(this, new DockablePanelEventArgs(panelKey));
+            }
+        }
+
+        private void OnPanelHidden(string panelKey)
+        {
+            if (_suppressEvents) return;
+
+            var handler = PanelHidden;
             if (handler != null)
             {
                 handler(this, new DockablePanelEventArgs(panelKey));

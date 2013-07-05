@@ -150,7 +150,8 @@ namespace HydroDesktop.DataDownload
             DownloadManager.Completed += DownloadManager_Completed;
 
             App.ExtensionsActivated += AppOnExtensionsActivated;
-            App.DockManager.PanelClosed += DockManager_PanelClosed;
+            App.DockManager.PanelHidden += DockManager_PanelClosed;
+
 
             // Update SeriesControl ContextMenu
             _seriesControlUpdateValuesMenuItem = SeriesControl.ContextMenuStrip.Items.Add("Update Values from Server", null, DoSeriesControlUpdateValues);
@@ -201,7 +202,7 @@ namespace HydroDesktop.DataDownload
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
             App.ExtensionsActivated -= AppOnExtensionsActivated;
-            App.DockManager.PanelClosed -= DockManager_PanelClosed;
+            App.DockManager.PanelHidden -= DockManager_PanelClosed;
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
