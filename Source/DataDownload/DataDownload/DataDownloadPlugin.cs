@@ -151,12 +151,25 @@ namespace HydroDesktop.DataDownload
 
             App.ExtensionsActivated += AppOnExtensionsActivated;
             App.DockManager.PanelHidden += DockManager_PanelClosed;
-
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
 
             // Update SeriesControl ContextMenu
             _seriesControlUpdateValuesMenuItem = SeriesControl.ContextMenuStrip.Items.Add("Update Values from Server", null, DoSeriesControlUpdateValues);
 
             base.Activate();
+        }
+
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        {
+            if (e.ActivePanelKey.Equals("kDataExplorer"))
+            {
+
+                if (!_showSearchResultsPanel)
+                {
+                    _btnSearchResults.Toggle();
+                }
+                _showSearchResultsPanel = true;
+            }
         }
 
         void DockManager_PanelClosed(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
@@ -172,22 +185,6 @@ namespace HydroDesktop.DataDownload
                 _showSearchResultsPanel = false;
             }
         }
-
-        void DataDownloadPlugin_ShowSearchResultsChanged(object sender, EventArgs e)
-        {
-            if (!_showSearchResultsPanel)
-            {
-                App.DockManager.HidePanel("kDataExplorer");
-                _showSearchResultsPanel = false;
-            }
-            else
-            {
-                App.DockManager.SelectPanel("kDataExplorer");
-                _showSearchResultsPanel = true;
-            }
-        }
-
-        
 
         /// <summary>
         /// Fires when the plug-in should become inactive
@@ -267,12 +264,8 @@ namespace HydroDesktop.DataDownload
             {
                 App.DockManager.HidePanel("kDataExplorer");
             }
-         
-            _btnSearchResults.Toggling += ShowSearchResults_Click;
-
-           // _btnSearchResults.Toggle();
-            _btnSearchResults.Enabled = false;
-          
+            
+            _btnSearchResults.Enabled = false;         
 
         }
 
@@ -479,13 +472,49 @@ namespace HydroDesktop.DataDownload
             }
         }
 
+        private bool ShowAttributes(IFeatureLayer layer)
+        {
+            bool isActive = false;
+
+            if (layer != null)
+            {
+                layer.IsSelected = true;
+                App.DockManager.SelectPanel("kDataExplorer");
+                isActive = true;
+            }
+
+            return isActive;
+        }
+
         private void ShowSearchResults_Click(object sender, EventArgs e)
         {
             
             _showSearchResultsPanel = !_showSearchResultsPanel;
 
             if (ShowSearchResultsPanel)
-                App.DockManager.SelectPanel("kDataExplorer");
+            {
+                IMapFrame mainMapFrame = App.Map.MapFrame;
+                List<ILayer> layers = mainMapFrame.GetAllLayers();
+                bool isActive = false;
+
+                foreach (ILayer layer in layers.Where(l => l.IsSelected))
+                {
+                    IFeatureLayer fl = layer as IFeatureLayer;
+
+                    if (fl == null)
+                        continue;
+                    isActive = ShowAttributes(fl);
+
+                    if (isActive)
+                        break;
+                }
+
+                if (isActive == false)
+                {
+                    _showSearchResultsPanel = !_showSearchResultsPanel;
+                    _btnSearchResults.Toggle();
+                }
+            }
             else
             {
                 App.DockManager.HidePanel("kDataExplorer");

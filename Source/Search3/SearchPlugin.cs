@@ -120,7 +120,7 @@ namespace Search3
             _currentView.Toggle();
 
 
-            head.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, Msg.Select_By_Attribute, rbAttribute_Click) { ToggleGroupKey = Msg.Area, GroupCaption = "Map Tool", LargeImage = Resources.select_table_32 });
+            head.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, Msg.Select_By_Attribute, rbAttribute_Click) {GroupCaption = "Map Tool", LargeImage = Resources.select_table_32 });
 
             head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, LargeImage = Resources.select_poly_32, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, });
             _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;

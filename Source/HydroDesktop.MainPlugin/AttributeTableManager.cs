@@ -16,6 +16,8 @@ namespace HydroDesktop.Main
     public class AttributeTableManager
     {
         AppManager App { get; set; }
+        private SimpleActionItem _btnAttributeTable;
+        private bool _showTableManagerPanel;
         
         public AttributeTableManager(AppManager app)
         {
@@ -30,12 +32,42 @@ namespace HydroDesktop.Main
 
         public void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "View Attribute Table", AttributeTable_Click) { GroupCaption = "Map Tool", SmallImage = Resources.table_16x16, LargeImage = Resources.table_32x32 });
+            App.HeaderControl.Add(_btnAttributeTable = new SimpleActionItem(HeaderControl.HomeRootItemKey, "View Attribute Table", AttributeTable_Click) { GroupCaption = "Map Tool", SmallImage = Resources.table_16x16, LargeImage = Resources.table_32x32, Enabled = true, ToggleGroupKey = "table" });
             App.Map.LayerAdded += Map_LayerAdded;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
+            App.DockManager.PanelHidden += DockManager_PanelClosed;
+            App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
+
+            _showTableManagerPanel = false;
             
             // TODO: if layers were loaded before this plugin, do something about adding them to the context menu.
             //base.Activate();
+        }
+
+        void DockManager_ActivePanelChanged(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        {
+            if (e.ActivePanelKey.Equals("kDataExplorer"))
+            {
+
+                if (!_showTableManagerPanel)
+                {
+                    _btnAttributeTable.Toggle();
+                }
+                _showTableManagerPanel = true;
+            }
+        }
+
+        void DockManager_PanelClosed(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        {
+            if (e.ActivePanelKey == "kDataExplorer")
+            {
+
+                if (_showTableManagerPanel)
+                {
+                    _btnAttributeTable.Toggle();
+                }
+                _showTableManagerPanel = false;
+            }
         }
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
@@ -125,13 +157,18 @@ namespace HydroDesktop.Main
             }
         }
 
-        private void ShowAttributes(IFeatureLayer layer)
+        private bool ShowAttributes(IFeatureLayer layer)
         {
+            bool isActive = false;
+
             if (layer != null)
             {
                 layer.IsSelected = true;
                 App.DockManager.SelectPanel("kDataExplorer");
+                isActive = true;
             }
+
+            return isActive;
         }
 
         /// <summary>
@@ -139,16 +176,35 @@ namespace HydroDesktop.Main
         /// </summary>
         private void AttributeTable_Click(object sender, EventArgs e)
         {
-            IMapFrame mainMapFrame = App.Map.MapFrame;
-            List<ILayer> layers = mainMapFrame.GetAllLayers();
+            _showTableManagerPanel = !_showTableManagerPanel;
 
-            foreach (ILayer layer in layers.Where(l => l.IsSelected))
+            if (_showTableManagerPanel)
             {
-                IFeatureLayer fl = layer as IFeatureLayer;
+                IMapFrame mainMapFrame = App.Map.MapFrame;
+                List<ILayer> layers = mainMapFrame.GetAllLayers();
+                bool isActive = false;
 
-                if (fl == null)
-                    continue;
-                ShowAttributes(fl);
+                foreach (ILayer layer in layers.Where(l => l.IsSelected))
+                {
+                    IFeatureLayer fl = layer as IFeatureLayer;
+
+                    if (fl == null)
+                        continue;
+                    isActive = ShowAttributes(fl);
+
+                    if (isActive)
+                        break;
+                }
+
+                if (isActive == false)
+                {
+                    _showTableManagerPanel = !_showTableManagerPanel;
+                    _btnAttributeTable.Toggle();
+                }
+            }
+            else
+            {
+                App.DockManager.HidePanel("kDataExplorer");
             }
         }
     }

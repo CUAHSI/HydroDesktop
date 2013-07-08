@@ -50,6 +50,9 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\packages\DotSpatial.Controls.1.5.11\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
       <Private>False</Private>
