@@ -124,12 +124,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
             else if (e.SelectedRootKey == SharedConstants.SearchRootkey || e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
-                App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
                 App.DockManager.SelectPanel("kLegend");
             }
             else if (e.SelectedRootKey == "kHydroGraph_01" || e.SelectedRootKey == SharedConstants.TableRootKey || e.SelectedRootKey == "kHydroEditView" || e.SelectedRootKey == "kHydroR")
             {
-                App.DockManager.SelectPanel("kLegend");
                 App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
             }
         }
@@ -317,6 +315,10 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 ignoreRootSelected = true;
                 App.HeaderControl.SelectRoot(KHydroModeler);
                 ignoreRootSelected = false;
+
+                //hide panels
+                App.DockManager.HidePanel("kLegend");
+                App.DockManager.HidePanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
             }
         }
 
