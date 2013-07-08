@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Search3.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TypeOfCatalog" Type="Search3.Settings.TypeOfCatalog" Scope="Application">
+      <Value Profile="(Default)">HisCentral</Value>
+    </Setting>
+    <Setting Name="WebServicesFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WebServices.xml</Value>
+    </Setting>
+    <Setting Name="SynonymsFilename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Resources\Synonyms.xml</Value>
+    </Setting>
+    <Setting Name="OntologyFilename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Resources\OntologyTree.xml</Value>
+    </Setting>
+    <Setting Name="SearchResultNameMask" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">searchresult_{0}.shp</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
