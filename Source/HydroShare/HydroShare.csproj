@@ -141,9 +141,6 @@
   <ItemGroup>
     <Content Include="Resources\python_16x16.png" />
     <Content Include="Resources\python_32x32.png" />
-    <Content Include="Test.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
