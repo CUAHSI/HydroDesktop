@@ -52,7 +52,7 @@ namespace HydroShare
 
             //test1 = new SimpleActionItem(_hydroShareKey, "", test_Click) { LargeImage = Resources.satisfied, GroupCaption = "Happy/Sad", Visible = true };
             //test2 = new SimpleActionItem(_hydroShareKey, "", test_Click) { LargeImage = Resources.sad, GroupCaption = "Happy/Sad", Visible = false };
-            pythonTest = new SimpleActionItem(_hydroShareKey, "", pythonTest_Click) { LargeImage = Resources.sad, GroupCaption = "Python Test", Visible = true };  
+            pythonTest = new SimpleActionItem(_hydroShareKey, "", pythonTest_Click) { LargeImage = Resources.python_32x32, GroupCaption = "Python Test", Visible = true };  
 
             //head.Add(test1);
             //head.Add(test2);
