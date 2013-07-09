@@ -1,0 +1,200 @@
+# Ignore file for Visual Studio 2010
+
+# use glob syntax
+syntax: glob
+
+# Ignore Visual Studio 2010 files
+*.obj
+*StyleCop.Cache
+#*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.vsmdi
+*.onetoc2
+[Bb]in
+[Db]ebug*/
+[Tt]est[Rr]esults*/
+obj/
+[Rr]elease*/
+_Resharper*/
+_ReSharper*/
+Framework 4.0\DotSpatial.Desktop\_ReSharper.DotSpatial.Desktop*
+Framework 4.0\TestViewer\_ReSharper.TestViewer*
+Framework 4.0\_ReSharper*
+Framework 4.0\DotSpatial.Forms.Ribbons\_ReSharper*
+Unit Tests\DotSpatial_Topology\_ReSharper*
+Unit Tests\Framework 4.0\DotSpatial_Data\_ReSharper*
+Framework 4.0\Tools\DotSpatial.Tools\_ReSharper*
+Source\Main\Packages*
+*_Resharper*/
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+glob:System.Spatial.Topology/System.Spatial.Topology/ClassDiagram3.cd
+*.build
+*.bat
+glob:Binaries/
+glob:*.ReSharper
+glob:*.orig
+*.csproj.vs10x
+*.sln.docstates
+Source/Packages/
+Documentation/OnlineHelp/build/
+Source/packages/
+Source/HDReferenceFixer.exe
+Source/DataAggregation.1.5.11.nupkg
+Source/HydroDesktop.MainPlugin/credits.txt
+Source/HydroDesktop.MainPlugin/Resources/zoom_selection_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_selection_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_out_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_out_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_layer_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_layer_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_in_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_in_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_extend_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_extend_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_coordinate_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_coordinate_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/zoom_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/select_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/select_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/save_as_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/save_as_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/printer_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/printer_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/measure_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/measure_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/layer_save_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/layer_save_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/layer_remove_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/layer_remove_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/layer_add_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/layer_add_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/info_rhombus_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/info_rhombus_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/folder_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/folder_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/document_empty_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/document_empty_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/disk_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/disk_16x16.png
+Source/HydroDesktop.MainPlugin/Resources/deselect_32x32.png
+Source/HydroDesktop.MainPlugin/Resources/deselect_16x16.png
+HydroDesktop.app/Contents/Resources/HydroDesktop.icns
+HydroDesktop.app/Contents/MacOS/zh-tw/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/zh-cn/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/tr/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/sv/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/sk/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/ru/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/pt/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/ja/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/it/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/hu/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/fr/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/es/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/de/ZedGraph.resources.dll
+HydroDesktop.app/Contents/MacOS/ZedGraph.dll
+HydroDesktop.app/Contents/MacOS/Support/Mono/libsqlite3.so.0
+HydroDesktop.app/Contents/MacOS/Support/Mono/libsqlite3.0.dylib
+HydroDesktop.app/Contents/MacOS/Support/Mono/System.Data.SQLite.dll
+HydroDesktop.app/Contents/MacOS/Support/Mono/System.Data.SQLite.Linq.dll
+HydroDesktop.app/Contents/MacOS/Plugins/Wizard.UI.dll
+HydroDesktop.app/Contents/MacOS/Plugins/Wizard.Controls.dll
+HydroDesktop.app/Contents/MacOS/Plugins/TableView.dll
+HydroDesktop.app/Contents/MacOS/Plugins/Search3.dll.config
+HydroDesktop.app/Contents/MacOS/Plugins/Search3.dll
+HydroDesktop.app/Contents/MacOS/Plugins/Newtonsoft.Json.dll
+HydroDesktop.app/Contents/MacOS/Plugins/MetadataFetcher.dll
+HydroDesktop.app/Contents/MacOS/Plugins/ICSharpCode.SharpZipLib.dll
+HydroDesktop.app/Contents/MacOS/Plugins/HelpTab.dll.config
+HydroDesktop.app/Contents/MacOS/Plugins/HelpTab.dll
+HydroDesktop.app/Contents/MacOS/Plugins/GraphView.dll
+HydroDesktop.app/Contents/MacOS/Plugins/ExportToCSV.dll.config
+HydroDesktop.app/Contents/MacOS/Plugins/ExportToCSV.dll
+HydroDesktop.app/Contents/MacOS/Plugins/ExcelExtension.dll
+HydroDesktop.app/Contents/MacOS/Plugins/Excel.dll
+HydroDesktop.app/Contents/MacOS/Plugins/EPADelineation.dll.config
+HydroDesktop.app/Contents/MacOS/Plugins/EPADelineation.dll
+HydroDesktop.app/Contents/MacOS/Plugins/DataImport.dll
+HydroDesktop.app/Contents/MacOS/Plugins/DataAggregation.dll
+HydroDesktop.app/Contents/MacOS/Mono Extensions/HydroDesktop.Mono.HeaderControl.dll
+HydroDesktop.app/Contents/MacOS/Mono Extensions/HydroDesktop.Mono.Docking.dll
+HydroDesktop.app/Contents/MacOS/Microsoft.Practices.Unity.dll
+HydroDesktop.app/Contents/MacOS/Microsoft.Practices.Unity.Configuration.dll
+HydroDesktop.app/Contents/MacOS/Microsoft.Practices.ServiceLocation.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop_1_6_dev.vshost.exe
+HydroDesktop.app/Contents/MacOS/HydroDesktop_1_6_dev.exe
+HydroDesktop.app/Contents/MacOS/HydroDesktopSplashLogo.png
+HydroDesktop.app/Contents/MacOS/HydroDesktopScript
+HydroDesktop.app/Contents/MacOS/HydroDesktop.ZedGraphEx.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.WebServices.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.ObjectModel.Controls.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.Interfaces.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.Help.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.ErrorReporting.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.Data.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.Data.ODMCVServiceClient.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.Configuration.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop.Common.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Topology.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Symbology.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Symbology.Forms.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Serialization.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Projections.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Projections.Forms.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Positioning.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Positioning.Forms.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Positioning.Design.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Mono.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Modeling.Forms.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Extensions.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Data.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Data.Forms.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Controls.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Compatibility.dll
+HydroDesktop.app/Contents/MacOS/DotSpatial.Analysis.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/NuGet.Core.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.SplashScreenManager.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.SimpleLegend.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.SeriesView.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.MainPlugin.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/DotSpatial.Plugins.MenuBar.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/DotSpatial.Plugins.ExtensionManager.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/BruTile.dll
+HydroDesktop.app/Contents/Info.plist
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.Mono.HeaderControl.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.Mono.Docking.dll
+.DS_Store
+HydroDesktop.app/Contents/MacOS/Plugins/Resources/Synonyms.xml
+HydroDesktop.app/Contents/MacOS/Plugins/Resources/OntologyTree.xml
+HydroDesktop.app/Contents/MacOS/Plugins/EditView.dll
+HydroDesktop.app/Contents/MacOS/Plugins/DotSpatial.Plugins.WebMap.dll
+HydroDesktop.app/Contents/MacOS/Plugins/BruTile.dll
+HydroDesktop.app/Contents/MacOS/Plugins/HydroDesktop.ObjectModel.Controls.dll
+HydroDesktop.app/Contents/MacOS/Plugins/DataDownload.dll.config
+HydroDesktop.app/Contents/MacOS/Plugins/DataDownload.dll
+HydroDesktop.app/Contents/MacOS/HydroDesktop_1_6_dev.sln
+HydroDesktop.app/Contents/MacOS/Application Extensions/HydroDesktop.DownloadExtensions.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/BruTile.Desktop.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/BruTile.MbTiles.dll
+HydroDesktop.app/Contents/MacOS/Application Extensions/DotSpatial.Plugins.WebMap.dll
+Source/HydroDesktop.HeaderControl/Resources/nodata.bmp
