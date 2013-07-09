@@ -20,8 +20,6 @@ namespace HydroDesktop.MainApplication
         {
             this.appManager = appManager;
             InitializeComponent();
-            //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            //this.BackColor = Color.Transparent;
         }
 
         private void button1_Click(object sender, EventArgs e)
