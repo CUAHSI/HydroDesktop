@@ -232,6 +232,15 @@ namespace HydroDesktop.Docking
             }
         }
 
+        public void ShowPanel(string key)
+        {
+            DockPanelInfo info;
+            if (dockPanelLookup.TryGetValue(key, out info))
+            {
+                info.WeifenLuoDockPanel.IsHidden = false;
+            }
+        }
+
         #endregion
 
         #region IPartImportsSatisfiedNotification Members

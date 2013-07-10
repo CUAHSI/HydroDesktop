@@ -223,5 +223,10 @@ namespace DemoMap
         {
 
         }
+
+        public void ShowPanel(string key)
+        {
+
+        }
     }
 }
