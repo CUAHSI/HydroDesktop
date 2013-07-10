@@ -125,10 +125,12 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             else if (e.SelectedRootKey == SharedConstants.SearchRootkey || e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
                 App.DockManager.SelectPanel("kLegend");
+                App.DockManager.ShowPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
             }
             else if (e.SelectedRootKey == "kHydroGraph_01" || e.SelectedRootKey == SharedConstants.TableRootKey || e.SelectedRootKey == "kHydroEditView" || e.SelectedRootKey == "kHydroR")
             {
                 App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+                App.DockManager.ShowPanel("kLegend");
             }
         }
         #endregion
