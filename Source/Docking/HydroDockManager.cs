@@ -215,7 +215,9 @@ namespace HydroDesktop.Docking
             if (dockPanelLookup.TryGetValue(key, out info))
             {
                 info.WeifenLuoDockPanel.Activate();
-                OnActivePanelChanged(key);
+
+                if(info.WeifenLuoDockPanel != MainDockPanel.ActiveContent)
+                    OnActivePanelChanged(key);
             }
         }
 
@@ -229,6 +231,15 @@ namespace HydroDesktop.Docking
             if (dockPanelLookup.TryGetValue(key, out info))
             {
                 info.WeifenLuoDockPanel.IsHidden = true;
+            }
+        }
+
+        public void ShowPanel(string key)
+        {
+            DockPanelInfo info;
+            if (dockPanelLookup.TryGetValue(key, out info))
+            {
+                info.WeifenLuoDockPanel.IsHidden = false;
             }
         }
 

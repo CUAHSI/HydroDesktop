@@ -356,8 +356,6 @@
         {
             if (e.ActivePanelKey == "kMap")
             {
-                App.DockManager.SelectPanel("kLegend");
-
                 //if the clicked root item was 'search', then don't select the map root item
                 //(the user intended to show search tab and map panel)
                 if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
@@ -373,17 +371,18 @@
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
+            Boolean showCoordinates = false;
+
             if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
                 App.DockManager.SelectPanel("kMap");
-                if (latLongDisplay != null)
-                    this.latLongDisplay.ShowCoordinates = true;
+                showCoordinates = true;
             }
-            else
-            {
-                if (latLongDisplay != null)
-                    latLongDisplay.ShowCoordinates = false;
-            }
+            if (e.SelectedRootKey == "kHydroSearchV3")
+                    showCoordinates = true;
+
+            if (latLongDisplay != null)
+                latLongDisplay.ShowCoordinates = showCoordinates;
         }
     }
 }

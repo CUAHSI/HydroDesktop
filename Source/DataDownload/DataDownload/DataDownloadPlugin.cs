@@ -226,6 +226,7 @@ namespace HydroDesktop.DataDownload
             if (App.GetExtension("Search3") != null)
             {
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Attribute Table", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
+                _btnSearchResults.PropertyChanged += btnSearchResults_enabled;
 
                 // App.HeaderControl.Add(_btnOptions = new SimpleActionItem("Options", SearchOptions_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = true });
 
@@ -267,6 +268,14 @@ namespace HydroDesktop.DataDownload
             
             _btnSearchResults.Enabled = false;         
 
+        }
+
+        private void btnSearchResults_enabled(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("Enabled") && _showSearchResultsPanel)
+            {
+                _btnSearchResults.Toggle();
+            }
         }
 
         /// <summary>

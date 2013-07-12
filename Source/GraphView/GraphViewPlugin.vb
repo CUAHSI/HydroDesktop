@@ -144,6 +144,9 @@ Public Class GraphViewPlugin
     Sub HeaderControl_RootItemSelected(ByVal sender As Object, ByVal e As RootItemEventArgs)
         If e.SelectedRootKey = kGraph Then
             App.DockManager.SelectPanel(kGraph)
+            IsPanelActive = True
+        Else
+            IsPanelActive = False
         End If
     End Sub
 
@@ -639,16 +642,9 @@ Public Class GraphViewPlugin
     End Sub
 
     Sub DockManager_ActivePanelChanged(ByVal sender As Object, ByVal e As DockablePanelEventArgs)
-
-        'activate the graph ribbon tab and the series view panel
-        If e.ActivePanelKey = kGraph Then
+        If (e.ActivePanelKey = kGraph) Then
             App.HeaderControl.SelectRoot(kGraph)
-            App.DockManager.SelectPanel(SharedConstants.SeriesViewKey)
-            IsPanelActive = True
-        Else
-            IsPanelActive = False
         End If
-
     End Sub
 
     Private _isPanelActive As Boolean
