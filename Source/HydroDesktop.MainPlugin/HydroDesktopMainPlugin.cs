@@ -371,17 +371,18 @@
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
+            Boolean showCoordinates = false;
+
             if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
                 App.DockManager.SelectPanel("kMap");
-                if (latLongDisplay != null)
-                    this.latLongDisplay.ShowCoordinates = true;
+                showCoordinates = true;
             }
-            else
-            {
-                if (latLongDisplay != null)
-                    latLongDisplay.ShowCoordinates = false;
-            }
+            if (e.SelectedRootKey == "kHydroSearchV3")
+                    showCoordinates = true;
+
+            if (latLongDisplay != null)
+                latLongDisplay.ShowCoordinates = showCoordinates;
         }
     }
 }
