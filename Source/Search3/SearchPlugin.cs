@@ -225,6 +225,7 @@ namespace Search3
             }
             else
             {
+                App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
                 //searchSummary.ShowSearchStatus = false;
             }
         }

@@ -167,6 +167,12 @@ namespace TableView
             if (e.SelectedRootKey == kTableView)
             {
                 App.DockManager.SelectPanel(kTableView);
+                RefreshDatabasePath();
+                IsPanelActive = true;
+            }
+            else
+            {
+                IsPanelActive = false;    
             }
         }
 
@@ -222,16 +228,7 @@ namespace TableView
         void DockManager_ActivePanelChanged(object sender, DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == kTableView)
-            {
-                App.DockManager.SelectPanel(SharedConstants.SeriesViewKey);
                 App.HeaderControl.SelectRoot(kTableView);
-                RefreshDatabasePath();
-                IsPanelActive = true;
-            }
-            else
-            {
-                IsPanelActive = false;    
-            }
         }
 
         private void RefreshDatabasePath()
