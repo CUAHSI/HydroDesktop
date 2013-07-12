@@ -130,6 +130,40 @@ Namespace Controls
             _dataSeriesRepo = RepositoryFactory.Instance.Get(Of IDataSeriesRepository)()
         End Sub
 
+        Private Sub DoSeriesRefresh()
+            If Not _seriesSelector.CheckedIDList.Length > selectedSeriesIdList.Count Then
+                'Removed Series
+                If pTimeSeriesPlot.HasEditingCurve Then
+                    pTimeSeriesPlot.EditCurvePointList = pTimeSeriesPlot.CopyCurvePointList(pTimeSeriesPlot.EditingCurve)
+                    pTimeSeriesPlot.EditCurveLable = pTimeSeriesPlot.EditingCurve.Label.Text
+                    pTimeSeriesPlot.EditCurveTitle = pTimeSeriesPlot.EditingCurve.Link.Title
+                End If
+
+                Dim curveIndex = 0
+                While _seriesSelector.CheckedIDList.Length <> selectedSeriesIdList.Count
+
+                    If Not _seriesSelector.CheckedIDList.Contains(selectedSeriesIdList(curveIndex)) Then
+                        removeSeries(curveIndex)
+                    Else
+                        curveIndex += 1
+                    End If
+
+                End While
+            Else
+                'Added Series
+                Dim curveIndex = 0
+                While _seriesSelector.CheckedIDList.Length <> selectedSeriesIdList.Count
+
+                    If Not selectedSeriesIdList.Contains(_seriesSelector.CheckedIDList(curveIndex)) Then
+                        addSeries(_seriesSelector.CheckedIDList(curveIndex))
+                    Else
+                        curveIndex += 1
+                    End If
+
+                End While
+            End If
+        End Sub
+
         Private Sub DoSeriesCheck()
             If (Not Visible) Then
                 _needToRefresh = True
@@ -145,67 +179,76 @@ Namespace Controls
                     pTimeSeriesPlot.EditCurveLable = pTimeSeriesPlot.EditingCurve.Label.Text
                     pTimeSeriesPlot.EditCurveTitle = pTimeSeriesPlot.EditingCurve.Link.Title
                 End If
-                curveIndex = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
-                selectedSeriesIdList.Remove(_seriesSelector.SelectedSeriesID)
-                If SeriesRowsCount(_seriesSelector.SelectedSeriesID) = 0 Then
-                    nodataseriescount -= 1
-                End If
-                If (selectedSeriesIdList.Count = 0) Then
-                    pTimeSeriesPlot.Clear()
-                ElseIf (selectedSeriesIdList.Count = 1) Then
-                    Try
-                        pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
-                        curveIndex = pTimeSeriesPlot.CurveID(0)
-                        pTimeSeriesPlot.Remove(0)
-                        If SeriesRowsCount(_seriesSelector.SelectedSeriesID) = 0 Then
-                            nodataseriescount += 1
-                        ElseIf Not curveIndex = newseriesID Then
-                            PlotGraph(curveIndex)
-                        Else : curveIndex = newseriesID
-                            Dim curve As LineItem = pTimeSeriesPlot.zgTimeSeries.GraphPane.AddCurve(pTimeSeriesPlot.EditCurveLable, pTimeSeriesPlot.EditCurvePointList, Color.Black, SymbolType.Circle)
-                            pTimeSeriesPlot.SettingCurveStyle(curve)
-                            curve.Link.Title = pTimeSeriesPlot.EditCurveTitle
-                            pTimeSeriesPlot.SettingTitle()
-                            pTimeSeriesPlot.AddYAxis(curve)
-                            pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.IsVisible = True
-                            pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.Title.Text = "Date and Time"
-                        End If
-                    Catch
-                        nodataseriescount -= 1
-                    End Try
-                Else
-                    Try
-                        pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
-                    Catch
-                        nodataseriescount -= 1
-                    End Try
 
-                End If
+                curveIndex = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
+                removeSeries(curveIndex)
 
             Else
-                If Not selectedSeriesIdList.Contains(_seriesSelector.SelectedSeriesID) Then
-                    selectedSeriesIdList.Add(_seriesSelector.SelectedSeriesID)
-                Else
-                    Return 'added by jiri to correct error when SeriesCheck event occurs multiple times
-                End If
-
-                If SeriesRowsCount(_seriesSelector.SelectedSeriesID) = 0 Then
-                    nodataseriescount += 1
-                ElseIf Not _seriesSelector.SelectedSeriesID = newseriesID Then
-                    PlotGraph(_seriesSelector.SelectedSeriesID)
-                Else : _seriesSelector.SelectedSeriesID = newseriesID
-                    Dim curve As LineItem = pTimeSeriesPlot.zgTimeSeries.GraphPane.AddCurve(pTimeSeriesPlot.EditCurveLable, pTimeSeriesPlot.EditCurvePointList, Color.Black, SymbolType.Circle)
-                    pTimeSeriesPlot.SettingCurveStyle(curve)
-                    curve.Link.Title = pTimeSeriesPlot.EditCurveTitle
-                    pTimeSeriesPlot.SettingTitle()
-                    pTimeSeriesPlot.AddYAxis(curve)
-                    pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.IsVisible = True
-                    pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.Title.Text = "Date and Time"
-                End If
-
+                addSeries(_seriesSelector.SelectedSeriesID)
             End If
 
             pTimeSeriesPlot.Refreshing()
+        End Sub
+
+        Private Sub addSeries(seriesId As Integer)
+            If Not selectedSeriesIdList.Contains(seriesId) Then
+                selectedSeriesIdList.Add(seriesId)
+            Else
+                Return 'added by jiri to correct error when SeriesCheck event occurs multiple times
+            End If
+
+            If SeriesRowsCount(seriesId) = 0 Then
+                nodataseriescount += 1
+            ElseIf Not seriesId = newseriesID Then
+                PlotGraph(seriesId)
+            Else : seriesId = newseriesID
+                Dim curve As LineItem = pTimeSeriesPlot.zgTimeSeries.GraphPane.AddCurve(pTimeSeriesPlot.EditCurveLable, pTimeSeriesPlot.EditCurvePointList, Color.Black, SymbolType.Circle)
+                pTimeSeriesPlot.SettingCurveStyle(curve)
+                curve.Link.Title = pTimeSeriesPlot.EditCurveTitle
+                pTimeSeriesPlot.SettingTitle()
+                pTimeSeriesPlot.AddYAxis(curve)
+                pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.IsVisible = True
+                pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.Title.Text = "Date and Time"
+            End If
+        End Sub
+
+        Private Sub removeSeries(curveIndex As Integer)
+            Dim Id = selectedSeriesIdList(curveIndex)
+            selectedSeriesIdList.Remove(Id)
+            If SeriesRowsCount(Id) = 0 Then
+                nodataseriescount -= 1
+            End If
+            If (selectedSeriesIdList.Count = 0) Then
+                pTimeSeriesPlot.Clear()
+            ElseIf (selectedSeriesIdList.Count = 1) Then
+                Try
+                    pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
+                    curveIndex = pTimeSeriesPlot.CurveID(0)
+                    pTimeSeriesPlot.Remove(0)
+                    If SeriesRowsCount(Id) = 0 Then
+                        nodataseriescount += 1
+                    ElseIf Not curveIndex = newseriesID Then
+                        PlotGraph(curveIndex)
+                    Else : curveIndex = newseriesID
+                        Dim curve As LineItem = pTimeSeriesPlot.zgTimeSeries.GraphPane.AddCurve(pTimeSeriesPlot.EditCurveLable, pTimeSeriesPlot.EditCurvePointList, Color.Black, SymbolType.Circle)
+                        pTimeSeriesPlot.SettingCurveStyle(curve)
+                        curve.Link.Title = pTimeSeriesPlot.EditCurveTitle
+                        pTimeSeriesPlot.SettingTitle()
+                        pTimeSeriesPlot.AddYAxis(curve)
+                        pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.IsVisible = True
+                        pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.Title.Text = "Date and Time"
+                    End If
+                Catch
+                    nodataseriescount -= 1
+                End Try
+            Else
+                Try
+                    pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
+                Catch
+                    nodataseriescount -= 1
+                End Try
+
+            End If
         End Sub
 
         Private Sub OnMeVisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
@@ -213,7 +256,7 @@ Namespace Controls
 
             If (_needToRefresh) Then
                 _needToRefresh = False
-                DoSeriesCheck()
+                DoSeriesRefresh()
             End If
         End Sub
 
