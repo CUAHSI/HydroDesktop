@@ -131,37 +131,34 @@ Namespace Controls
         End Sub
 
         Private Sub DoSeriesRefresh()
-            If Not _seriesSelector.CheckedIDList.Length > selectedSeriesIdList.Count Then
-                'Removed Series
-                If pTimeSeriesPlot.HasEditingCurve Then
-                    pTimeSeriesPlot.EditCurvePointList = pTimeSeriesPlot.CopyCurvePointList(pTimeSeriesPlot.EditingCurve)
-                    pTimeSeriesPlot.EditCurveLable = pTimeSeriesPlot.EditingCurve.Label.Text
-                    pTimeSeriesPlot.EditCurveTitle = pTimeSeriesPlot.EditingCurve.Link.Title
+            Dim idsToRemove = New List(Of Integer)
+            Dim idsToAdd = New List(Of Integer)()
+
+            For Each Id As Integer In selectedSeriesIdList
+                If Not _seriesSelector.CheckedIDList.Contains(Id) Then
+                    idsToRemove.Add(Id)
                 End If
+            Next
 
-                Dim curveIndex = 0
-                While _seriesSelector.CheckedIDList.Length <> selectedSeriesIdList.Count
+            For Each Id As Integer In _seriesSelector.CheckedIDList
+                If Not selectedSeriesIdList.Contains(Id) Then
+                    idsToAdd.Add(Id)
+                End If
+            Next
 
-                    If Not _seriesSelector.CheckedIDList.Contains(selectedSeriesIdList(curveIndex)) Then
-                        removeSeries(curveIndex)
-                    Else
-                        curveIndex += 1
-                    End If
-
-                End While
-            Else
-                'Added Series
-                Dim curveIndex = 0
-                While _seriesSelector.CheckedIDList.Length <> selectedSeriesIdList.Count
-
-                    If Not selectedSeriesIdList.Contains(_seriesSelector.CheckedIDList(curveIndex)) Then
-                        addSeries(_seriesSelector.CheckedIDList(curveIndex))
-                    Else
-                        curveIndex += 1
-                    End If
-
-                End While
+            If idsToRemove.Count > 0 And pTimeSeriesPlot.HasEditingCurve Then
+                pTimeSeriesPlot.EditCurvePointList = pTimeSeriesPlot.CopyCurvePointList(pTimeSeriesPlot.EditingCurve)
+                pTimeSeriesPlot.EditCurveLable = pTimeSeriesPlot.EditingCurve.Label.Text
+                pTimeSeriesPlot.EditCurveTitle = pTimeSeriesPlot.EditingCurve.Link.Title
             End If
+
+            For Each Id As Integer In idsToRemove
+                removeSeries(Id)
+            Next
+
+            For Each Id As Integer In idsToAdd
+                addSeries(Id)
+            Next
         End Sub
 
         Private Sub DoSeriesCheck()
@@ -170,8 +167,6 @@ Namespace Controls
                 Return
             End If
 
-            'Declaring all variables
-            Dim curveIndex As Integer
             If Not _seriesSelector.CheckedIDList.Length > selectedSeriesIdList.Count Then
 
                 If pTimeSeriesPlot.HasEditingCurve Then
@@ -179,9 +174,7 @@ Namespace Controls
                     pTimeSeriesPlot.EditCurveLable = pTimeSeriesPlot.EditingCurve.Label.Text
                     pTimeSeriesPlot.EditCurveTitle = pTimeSeriesPlot.EditingCurve.Link.Title
                 End If
-
-                curveIndex = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
-                removeSeries(curveIndex)
+                removeSeries(_seriesSelector.SelectedSeriesID)
 
             Else
                 addSeries(_seriesSelector.SelectedSeriesID)
@@ -212,12 +205,14 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub removeSeries(curveIndex As Integer)
-            Dim Id = selectedSeriesIdList(curveIndex)
+        Private Sub removeSeries(Id As Integer)
+            Dim curveIndex = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
             selectedSeriesIdList.Remove(Id)
+
             If SeriesRowsCount(Id) = 0 Then
                 nodataseriescount -= 1
             End If
+
             If (selectedSeriesIdList.Count = 0) Then
                 pTimeSeriesPlot.Clear()
             ElseIf (selectedSeriesIdList.Count = 1) Then
@@ -225,6 +220,7 @@ Namespace Controls
                     pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
                     curveIndex = pTimeSeriesPlot.CurveID(0)
                     pTimeSeriesPlot.Remove(0)
+
                     If SeriesRowsCount(Id) = 0 Then
                         nodataseriescount += 1
                     ElseIf Not curveIndex = newseriesID Then
@@ -247,7 +243,6 @@ Namespace Controls
                 Catch
                     nodataseriescount -= 1
                 End Try
-
             End If
         End Sub
 
