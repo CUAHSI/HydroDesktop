@@ -107,7 +107,7 @@ namespace HydroDesktop.DataDownload.Options
             this.Icon = global::HydroDesktop.DataDownload.Properties.Resources.settings_16i;
             this.Name = "DownloadOptionsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Download Options";
+            this.Text = "Download Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 
