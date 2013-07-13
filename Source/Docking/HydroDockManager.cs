@@ -216,8 +216,7 @@ namespace HydroDesktop.Docking
             {
                 info.WeifenLuoDockPanel.Activate();
 
-                if(info.WeifenLuoDockPanel != MainDockPanel.ActiveContent)
-                    OnActivePanelChanged(key);
+                OnActivePanelChanged(key);
             }
         }
 
