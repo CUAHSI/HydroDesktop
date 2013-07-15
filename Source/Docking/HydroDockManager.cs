@@ -156,7 +156,6 @@ namespace HydroDesktop.Docking
             content.Show(MainDockPanel);
 
             //event handler for closing
-            content.FormClosing += content_FormClosing;
             content.FormClosed += content_FormClosed;
             content.VisibleChanged += content_VisibleChanged;
 
@@ -193,7 +192,6 @@ namespace HydroDesktop.Docking
             content.Close();
 
             //remove event handlers
-            content.FormClosing -= content_FormClosing;
             content.FormClosed -= content_FormClosed;
             content.VisibleChanged -= content_VisibleChanged;
             dockInfo.DotSpatialDockPanel.PropertyChanged -= panel_PropertyChanged;
@@ -317,15 +315,6 @@ namespace HydroDesktop.Docking
             {
                 OnPanelClosed(c.Tag.ToString());
            } 
-        }
-
-        void content_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            var c = sender as DockContent;
-            if (c != null)
-            {
-                OnPanelClosed(c.Tag.ToString());
-            }
         }
 
         void content_VisibleChanged(object sender, EventArgs e)
