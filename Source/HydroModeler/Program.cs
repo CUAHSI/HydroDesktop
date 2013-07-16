@@ -410,7 +410,14 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
         }
         void getHelp(object sender, EventArgs e)
         {
-            LocalHelp.OpenHelpFile(_localHelpUri);
+            try
+            {
+                LocalHelp.OpenHelpFile(_localHelpUri);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
