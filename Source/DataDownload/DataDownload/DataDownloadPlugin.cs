@@ -150,7 +150,7 @@ namespace HydroDesktop.DataDownload
             DownloadManager.Completed += DownloadManager_Completed;
 
             App.ExtensionsActivated += AppOnExtensionsActivated;
-            App.DockManager.PanelHidden += DockManager_PanelClosed;
+            App.DockManager.PanelHidden += DockManager_PanelHidden;
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
 
             // Update SeriesControl ContextMenu
@@ -172,7 +172,7 @@ namespace HydroDesktop.DataDownload
             }
         }
 
-        void DockManager_PanelClosed(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        void DockManager_PanelHidden(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == "kDataExplorer")
             {
@@ -199,7 +199,7 @@ namespace HydroDesktop.DataDownload
             App.SerializationManager.Deserializing -= SerializationManager_Deserializing;
             DownloadManager.Completed -= DownloadManager_Completed;
             App.ExtensionsActivated -= AppOnExtensionsActivated;
-            App.DockManager.PanelHidden -= DockManager_PanelClosed;
+            App.DockManager.PanelHidden -= DockManager_PanelHidden;
 
             foreach (var layer in App.Map.MapFrame.Layers)
                 UnattachLayerFromPlugin(layer);
