@@ -27,8 +27,8 @@ namespace HydroShare
 
         public override void Activate()
         {
-           AddHydroShareRibbon();
-           base.Activate();
+           //AddHydroShareRibbon();
+           //base.Activate();
 
            //App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;   
         }

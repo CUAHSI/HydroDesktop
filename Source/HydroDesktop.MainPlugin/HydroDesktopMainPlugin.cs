@@ -362,10 +362,6 @@
                 {
                     App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
                 }
-                else
-                {
-                    App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
-                }
             }
         }
 

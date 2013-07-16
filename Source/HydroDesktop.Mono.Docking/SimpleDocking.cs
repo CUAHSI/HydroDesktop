@@ -177,7 +177,7 @@ namespace DemoMap
         #region OnPanelHidden
 
         /// <summary>
-        /// Triggers the PanelRemoved event.
+        /// Triggers the PanelHidden event.
         /// </summary>
         public virtual void OnPanelHidden(DockablePanelEventArgs ea)
         {

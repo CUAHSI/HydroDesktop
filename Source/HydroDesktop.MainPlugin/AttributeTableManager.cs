@@ -35,7 +35,8 @@ namespace HydroDesktop.Main
             App.HeaderControl.Add(_btnAttributeTable = new SimpleActionItem(HeaderControl.HomeRootItemKey, "View Attribute Table", AttributeTable_Click) { GroupCaption = "Map Tool", SmallImage = Resources.table_16x16, LargeImage = Resources.table_32x32, Enabled = true, ToggleGroupKey = "table" });
             App.Map.LayerAdded += Map_LayerAdded;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
-            App.DockManager.PanelHidden += DockManager_PanelClosed;
+            App.DockManager.PanelHidden += DockManager_PanelHidden;
+                ;
             App.DockManager.ActivePanelChanged += DockManager_ActivePanelChanged;
 
             _showTableManagerPanel = false;
@@ -57,7 +58,7 @@ namespace HydroDesktop.Main
             }
         }
 
-        void DockManager_PanelClosed(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
+        void DockManager_PanelHidden(object sender, DotSpatial.Controls.Docking.DockablePanelEventArgs e)
         {
             if (e.ActivePanelKey == "kDataExplorer")
             {

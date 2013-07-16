@@ -391,7 +391,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error occured while loading the file...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to load file.", "Error occured while loading the file...", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _composition.Release();
             }
 
@@ -422,7 +422,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             {
                 MessageBox.Show(
                     
-                    ex.Message,
+                    "Unable to load model.",
                     "Failed to load model...",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -2735,7 +2735,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                         catch (Exception ex)
                         {
                             MessageBox.Show(
-                                ex.Message.ToString(),
+                                "Unable to load model.",
                                 "Failed to load model...",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
@@ -2888,226 +2888,172 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             Color groupColor = Color.RoyalBlue;
             Color itemColor = Color.Gray;
 
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(file);
-            Dictionary<string, string> args = new Dictionary<string, string>();
-
-            //get root element
-            XmlElement root = doc.DocumentElement;
-
-            //get root children
-            XmlNodeList elements = root.ChildNodes;
-
-
-            //get the linkable component node
-            XmlNode linkableComponent = root.SelectSingleNode("/LinkableComponent");
-            if (linkableComponent == null)
-                linkableComponent = (XmlNode)root;
-
-            //get the class name and assembly path
-            string className = linkableComponent.OuterXml.Split('=')[1].Split('\"')[1];
-            string assembly = linkableComponent.OuterXml.Split('=')[2].Split('\"')[1];
-
-            //loop through the root children
-            foreach (XmlNode Arguments in elements)
+            try
             {
-                //get arguments node
-                if (Arguments.Name == "Arguments")
+                XmlDocument doc = new XmlDocument();
+                doc.Load(file);
+                Dictionary<string, string> args = new Dictionary<string, string>();
+
+                //get root element
+                XmlElement root = doc.DocumentElement;
+
+                //get root children
+                XmlNodeList elements = root.ChildNodes;
+
+
+                //get the linkable component node
+                XmlNode linkableComponent = root.SelectSingleNode("/LinkableComponent");
+                if (linkableComponent == null)
+                    linkableComponent = (XmlNode)root;
+
+                //get the class name and assembly path
+                string className = linkableComponent.OuterXml.Split('=')[1].Split('\"')[1];
+                string assembly = linkableComponent.OuterXml.Split('=')[2].Split('\"')[1];
+
+                //loop through the root children
+                foreach (XmlNode Arguments in elements)
                 {
-                    //get arguments children
-                    XmlNodeList Argument = Arguments.ChildNodes;
-
-                    //loop through args
-                    foreach (XmlNode arg in Argument)
+                    //get arguments node
+                    if (Arguments.Name == "Arguments")
                     {
-                        //-- get the argument key
-                        string Key = arg.OuterXml.Split(' ')[1].Split('=')[1];
-                        Key = Key.Remove(0, 1).Remove(Key.Length - 2, 1);
+                        //get arguments children
+                        XmlNodeList Argument = Arguments.ChildNodes;
 
-                        //-- get the argument value
-                        string Value = arg.OuterXml.Split(' ')[3].Split('=')[1];
-                        for (int i = 4; i <= arg.OuterXml.Split(' ').Length - 1; i++)
-                            Value += " " + arg.OuterXml.Split(' ')[i];
-                        //-- replace xml characters in value
-                        Value = Value.Replace("/>", "");
-                        Value = Value.Replace(">", "");
-                        //Value = Value.Replace(".\\", "");
-                        //Value = Value.Replace("\\", "");
-                        Value = Value.Replace("\"", "");
-
-                        ////remove /> characters if there isnt a space after this element
-                        //if(arg.OuterXml.Split(' ').Length == 3)        
-                        //    Value = Value.Remove(0, 1).Remove(Value.Length - 2, 1);
-
-                        try
+                        //loop through args
+                        foreach (XmlNode arg in Argument)
                         {
-                            args.Add(Key, Value);
-                        }
-                        catch (Exception)
-                        {
-                            while (args.ContainsKey(Key))
-                                Key += " ";
+                            //-- get the argument key
+                            string Key = arg.OuterXml.Split(' ')[1].Split('=')[1];
+                            Key = Key.Remove(0, 1).Remove(Key.Length - 2, 1);
 
-                            args.Add(Key, Value);
+                            //-- get the argument value
+                            string Value = arg.OuterXml.Split(' ')[3].Split('=')[1];
+                            for (int i = 4; i <= arg.OuterXml.Split(' ').Length - 1; i++)
+                                Value += " " + arg.OuterXml.Split(' ')[i];
+                            //-- replace xml characters in value
+                            Value = Value.Replace("/>", "");
+                            Value = Value.Replace(">", "");
+                            //Value = Value.Replace(".\\", "");
+                            //Value = Value.Replace("\\", "");
+                            Value = Value.Replace("\"", "");
+
+                            ////remove /> characters if there isnt a space after this element
+                            //if(arg.OuterXml.Split(' ').Length == 3)        
+                            //    Value = Value.Remove(0, 1).Remove(Value.Length - 2, 1);
+
+                            try
+                            {
+                                args.Add(Key, Value);
+                            }
+                            catch (Exception)
+                            {
+                                while (args.ContainsKey(Key))
+                                    Key += " ";
+
+                                args.Add(Key, Value);
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
-            }
 
 
 
-            this.properties.BeginUpdate();
+                this.properties.BeginUpdate();
 
-            ListViewItem li;
-            ListViewItem.ListViewSubItem lsi;
+                ListViewItem li;
+                ListViewItem.ListViewSubItem lsi;
 
 
-            li = new ListViewItem("Omi Arguments");
-            li.UseItemStyleForSubItems = true;
-            //li.BackColor = headerColor;
-            li.ForeColor = headerColor;
-            li.Font = new Font(li.Font, FontStyle.Bold);
-            this.properties.Items.Add(li);
+                li = new ListViewItem("Omi Arguments");
+                li.UseItemStyleForSubItems = true;
+                //li.BackColor = headerColor;
+                li.ForeColor = headerColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                this.properties.Items.Add(li);
 
-            //set the class name 
-            li = new ListViewItem("Class");
-            li.UseItemStyleForSubItems = false;
-            //li.BackColor = itemColor;
-            li.ForeColor = itemColor;
-            li.Font = new Font(li.Font, FontStyle.Bold);
-            lsi = new ListViewItem.ListViewSubItem();
-            lsi.Text = className;
-            li.SubItems.Add(lsi);
-            this.properties.Items.Add(li);
-
-            //set the assembly name
-            li = new ListViewItem("Assembly");
-            li.UseItemStyleForSubItems = false;
-            //li.BackColor = itemColor;
-            li.ForeColor = itemColor;
-            li.Font = new Font(li.Font, FontStyle.Bold);
-            lsi = new ListViewItem.ListViewSubItem();
-            lsi.Text = assembly;
-            li.SubItems.Add(lsi);
-            this.properties.Items.Add(li);
-
-            foreach (KeyValuePair<string, string> kvp in args)
-            {
-                //
-                // populate the properties window
-                //
-                li = new ListViewItem(kvp.Key);
+                //set the class name 
+                li = new ListViewItem("Class");
                 li.UseItemStyleForSubItems = false;
                 //li.BackColor = itemColor;
                 li.ForeColor = itemColor;
                 li.Font = new Font(li.Font, FontStyle.Bold);
                 lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = kvp.Value;
+                lsi.Text = className;
                 li.SubItems.Add(lsi);
                 this.properties.Items.Add(li);
-            }
 
+                //set the assembly name
+                li = new ListViewItem("Assembly");
+                li.UseItemStyleForSubItems = false;
+                //li.BackColor = itemColor;
+                li.ForeColor = itemColor;
+                li.Font = new Font(li.Font, FontStyle.Bold);
+                lsi = new ListViewItem.ListViewSubItem();
+                lsi.Text = assembly;
+                li.SubItems.Add(lsi);
+                this.properties.Items.Add(li);
 
-            //loop through the arguments, and see if any of the xml data can be loaded
-            foreach (KeyValuePair<string, string> kvp in args)
-            {
-                if (kvp.Value.Contains(".xml"))
+                foreach (KeyValuePair<string, string> kvp in args)
                 {
-                    try
+                    //
+                    // populate the properties window
+                    //
+                    li = new ListViewItem(kvp.Key);
+                    li.UseItemStyleForSubItems = false;
+                    //li.BackColor = itemColor;
+                    li.ForeColor = itemColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = kvp.Value;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+                }
+
+
+                //loop through the arguments, and see if any of the xml data can be loaded
+                foreach (KeyValuePair<string, string> kvp in args)
+                {
+                    if (kvp.Value.Contains(".xml"))
                     {
-                        //load the document
-                        doc = new XmlDocument();
-                        int characters = file.Split('\\')[file.Split('\\').Length - 1].Length;
-                        string path = System.IO.Path.GetFullPath(file.Remove(file.Length - characters) + kvp.Value);
-                        doc.Load(path);
-                        //get root element
-                        root = doc.DocumentElement;
-
-                        //get input and output exchangeitems
-                        XmlNodeList outputs = root.SelectNodes("/Configuration/ExchangeItems/OutputExchangeItem");
-                        XmlNodeList inputs = root.SelectNodes("/Configuration/ExchangeItems/InputExchangeItem");
-                        //get timehorizon
-                        XmlNode timeHorizon = root.SelectSingleNode("/Configuration/TimeHorizon");
-                        //get model info
-                        XmlNode modelInfo = root.SelectSingleNode("/Configuration/ModelInfo");
-
-                        #region Add Output Exchange Items
-                        //loop through output and input exchange items
-                        foreach (XmlNode output in outputs)
+                        try
                         {
-                            //add Exchange Item Property
-                            li = new ListViewItem("Output Exchange Item");
-                            li.UseItemStyleForSubItems = true;
-                            li.ForeColor = headerColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            this.properties.Items.Add(li);
+                            //load the document
+                            doc = new XmlDocument();
+                            int characters = file.Split('\\')[file.Split('\\').Length - 1].Length;
+                            string path = System.IO.Path.GetFullPath(file.Remove(file.Length - characters) + kvp.Value);
+                            doc.Load(path);
+                            //get root element
+                            root = doc.DocumentElement;
 
-                            //add ElementSet Property
-                            li = new ListViewItem("Element Set");
-                            li.UseItemStyleForSubItems = false;
-                            li.ForeColor = groupColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            this.properties.Items.Add(li);
+                            //get input and output exchangeitems
+                            XmlNodeList outputs = root.SelectNodes("/Configuration/ExchangeItems/OutputExchangeItem");
+                            XmlNodeList inputs = root.SelectNodes("/Configuration/ExchangeItems/InputExchangeItem");
+                            //get timehorizon
+                            XmlNode timeHorizon = root.SelectSingleNode("/Configuration/TimeHorizon");
+                            //get model info
+                            XmlNode modelInfo = root.SelectSingleNode("/Configuration/ModelInfo");
 
-                            //Add Element Set Items
-                            foreach (XmlNode e in output.FirstChild.ChildNodes)
+                            #region Add Output Exchange Items
+                            //loop through output and input exchange items
+                            foreach (XmlNode output in outputs)
                             {
-                                li = new ListViewItem(e.Name);
-                                li.UseItemStyleForSubItems = false;
-                                li.ForeColor = itemColor;
+                                //add Exchange Item Property
+                                li = new ListViewItem("Output Exchange Item");
+                                li.UseItemStyleForSubItems = true;
+                                li.ForeColor = headerColor;
                                 li.Font = new Font(li.Font, FontStyle.Bold);
-                                lsi = new ListViewItem.ListViewSubItem();
-                                lsi.Text = e.FirstChild.Value;
-                                li.SubItems.Add(lsi);
                                 this.properties.Items.Add(li);
-                            }
 
-                            //add Quantity Property
-                            li = new ListViewItem("Quantity");
-                            li.UseItemStyleForSubItems = false;
-                            li.ForeColor = groupColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            this.properties.Items.Add(li);
-
-                            //Add Quantity Items
-                            foreach (XmlNode e in output.FirstChild.NextSibling.ChildNodes)
-                            {
-                                li = new ListViewItem(e.Name);
+                                //add ElementSet Property
+                                li = new ListViewItem("Element Set");
                                 li.UseItemStyleForSubItems = false;
-                                li.ForeColor = itemColor;
-                                lsi = new ListViewItem.ListViewSubItem();
+                                li.ForeColor = groupColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
+                                this.properties.Items.Add(li);
 
-                                if (e.Name == "Dimensions")
-                                {
-                                    XmlNodeList dims = e.ChildNodes;
-                                    string dimension = null;
-                                    foreach (XmlNode dim in dims)
-                                    {
-                                        dimension += "[" + dim.FirstChild.InnerText + " ^" + dim.FirstChild.NextSibling.InnerText + "]";
-                                    }
-                                    lsi.Text = dimension;
-                                    li.SubItems.Add(lsi);
-                                    this.properties.Items.Add(li);
-                                }
-                                else if (e.Name == "Unit")
-                                {
-                                    XmlNodeList units = e.ChildNodes;
-                                    foreach (XmlNode unit in units)
-                                    {
-                                        li = new ListViewItem("Unit: " + unit.Name);
-                                        li.UseItemStyleForSubItems = false;
-                                        li.ForeColor = itemColor;
-                                        li.Font = new Font(li.Font, FontStyle.Bold);
-                                        lsi = new ListViewItem.ListViewSubItem();
-                                        lsi.Text = unit.FirstChild.Value;
-                                        li.SubItems.Add(lsi);
-                                        this.properties.Items.Add(li);
-
-                                    }
-                                }
-                                else
+                                //Add Element Set Items
+                                foreach (XmlNode e in output.FirstChild.ChildNodes)
                                 {
                                     li = new ListViewItem(e.Name);
                                     li.UseItemStyleForSubItems = false;
@@ -3119,89 +3065,88 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                     this.properties.Items.Add(li);
                                 }
 
-
-
-                            }
-
-
-                        }
-                        #endregion
-
-                        #region Add Input Exchange Items
-                        foreach (XmlNode input in inputs)
-                        {
-                            //add Exchange Item Property
-                            li = new ListViewItem("Input Exchange Item");
-                            li.UseItemStyleForSubItems = true;
-                            li.ForeColor = headerColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            this.properties.Items.Add(li);
-
-                            //add ElementSet Property
-                            li = new ListViewItem("Element Set");
-                            li.UseItemStyleForSubItems = false;
-                            li.ForeColor = groupColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            this.properties.Items.Add(li);
-
-                            //Add Element Set Items
-                            foreach (XmlNode e in input.FirstChild.ChildNodes)
-                            {
-                                li = new ListViewItem(e.Name);
+                                //add Quantity Property
+                                li = new ListViewItem("Quantity");
                                 li.UseItemStyleForSubItems = false;
-                                li.ForeColor = itemColor;
+                                li.ForeColor = groupColor;
                                 li.Font = new Font(li.Font, FontStyle.Bold);
-                                lsi = new ListViewItem.ListViewSubItem();
-                                lsi.Text = e.FirstChild.Value;
-                                li.SubItems.Add(lsi);
                                 this.properties.Items.Add(li);
-                            }
 
-                            //add Quantity Property
-                            li = new ListViewItem("Quantity");
-                            li.UseItemStyleForSubItems = false;
-                            li.ForeColor = groupColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            this.properties.Items.Add(li);
-
-                            //Add Quantity Items
-                            foreach (XmlNode e in input.FirstChild.NextSibling.ChildNodes)
-                            {
-                                li = new ListViewItem(e.Name);
-                                li.UseItemStyleForSubItems = false;
-                                li.ForeColor = itemColor;
-                                li.Font = new Font(li.Font, FontStyle.Bold);
-                                lsi = new ListViewItem.ListViewSubItem();
-
-                                if (e.Name == "Dimensions")
+                                //Add Quantity Items
+                                foreach (XmlNode e in output.FirstChild.NextSibling.ChildNodes)
                                 {
-                                    XmlNodeList dims = e.ChildNodes;
-                                    string dimension = null;
-                                    foreach (XmlNode dim in dims)
+                                    li = new ListViewItem(e.Name);
+                                    li.UseItemStyleForSubItems = false;
+                                    li.ForeColor = itemColor;
+                                    lsi = new ListViewItem.ListViewSubItem();
+
+                                    if (e.Name == "Dimensions")
                                     {
-                                        dimension += "[" + dim.FirstChild.InnerText + "^" + dim.FirstChild.NextSibling.InnerText + "]";
+                                        XmlNodeList dims = e.ChildNodes;
+                                        string dimension = null;
+                                        foreach (XmlNode dim in dims)
+                                        {
+                                            dimension += "[" + dim.FirstChild.InnerText + " ^" + dim.FirstChild.NextSibling.InnerText + "]";
+                                        }
+                                        lsi.Text = dimension;
+                                        li.SubItems.Add(lsi);
+                                        this.properties.Items.Add(li);
                                     }
-                                    lsi.Text = dimension;
-                                    li.SubItems.Add(lsi);
-                                    this.properties.Items.Add(li);
-                                }
-                                else if (e.Name == "Unit")
-                                {
-                                    XmlNodeList units = e.ChildNodes;
-                                    foreach (XmlNode unit in units)
+                                    else if (e.Name == "Unit")
                                     {
-                                        li = new ListViewItem("Unit: " + unit.Name);
+                                        XmlNodeList units = e.ChildNodes;
+                                        foreach (XmlNode unit in units)
+                                        {
+                                            li = new ListViewItem("Unit: " + unit.Name);
+                                            li.UseItemStyleForSubItems = false;
+                                            li.ForeColor = itemColor;
+                                            li.Font = new Font(li.Font, FontStyle.Bold);
+                                            lsi = new ListViewItem.ListViewSubItem();
+                                            lsi.Text = unit.FirstChild.Value;
+                                            li.SubItems.Add(lsi);
+                                            this.properties.Items.Add(li);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        li = new ListViewItem(e.Name);
                                         li.UseItemStyleForSubItems = false;
                                         li.ForeColor = itemColor;
                                         li.Font = new Font(li.Font, FontStyle.Bold);
                                         lsi = new ListViewItem.ListViewSubItem();
-                                        lsi.Text = unit.FirstChild.Value;
+                                        lsi.Text = e.FirstChild.Value;
                                         li.SubItems.Add(lsi);
                                         this.properties.Items.Add(li);
-
                                     }
+
+
+
                                 }
-                                else
+
+
+                            }
+                            #endregion
+
+                            #region Add Input Exchange Items
+                            foreach (XmlNode input in inputs)
+                            {
+                                //add Exchange Item Property
+                                li = new ListViewItem("Input Exchange Item");
+                                li.UseItemStyleForSubItems = true;
+                                li.ForeColor = headerColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
+                                this.properties.Items.Add(li);
+
+                                //add ElementSet Property
+                                li = new ListViewItem("Element Set");
+                                li.UseItemStyleForSubItems = false;
+                                li.ForeColor = groupColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
+                                this.properties.Items.Add(li);
+
+                                //Add Element Set Items
+                                foreach (XmlNode e in input.FirstChild.ChildNodes)
                                 {
                                     li = new ListViewItem(e.Name);
                                     li.UseItemStyleForSubItems = false;
@@ -3213,59 +3158,121 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                                     this.properties.Items.Add(li);
                                 }
 
+                                //add Quantity Property
+                                li = new ListViewItem("Quantity");
+                                li.UseItemStyleForSubItems = false;
+                                li.ForeColor = groupColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
+                                this.properties.Items.Add(li);
 
+                                //Add Quantity Items
+                                foreach (XmlNode e in input.FirstChild.NextSibling.ChildNodes)
+                                {
+                                    li = new ListViewItem(e.Name);
+                                    li.UseItemStyleForSubItems = false;
+                                    li.ForeColor = itemColor;
+                                    li.Font = new Font(li.Font, FontStyle.Bold);
+                                    lsi = new ListViewItem.ListViewSubItem();
+
+                                    if (e.Name == "Dimensions")
+                                    {
+                                        XmlNodeList dims = e.ChildNodes;
+                                        string dimension = null;
+                                        foreach (XmlNode dim in dims)
+                                        {
+                                            dimension += "[" + dim.FirstChild.InnerText + "^" + dim.FirstChild.NextSibling.InnerText + "]";
+                                        }
+                                        lsi.Text = dimension;
+                                        li.SubItems.Add(lsi);
+                                        this.properties.Items.Add(li);
+                                    }
+                                    else if (e.Name == "Unit")
+                                    {
+                                        XmlNodeList units = e.ChildNodes;
+                                        foreach (XmlNode unit in units)
+                                        {
+                                            li = new ListViewItem("Unit: " + unit.Name);
+                                            li.UseItemStyleForSubItems = false;
+                                            li.ForeColor = itemColor;
+                                            li.Font = new Font(li.Font, FontStyle.Bold);
+                                            lsi = new ListViewItem.ListViewSubItem();
+                                            lsi.Text = unit.FirstChild.Value;
+                                            li.SubItems.Add(lsi);
+                                            this.properties.Items.Add(li);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        li = new ListViewItem(e.Name);
+                                        li.UseItemStyleForSubItems = false;
+                                        li.ForeColor = itemColor;
+                                        li.Font = new Font(li.Font, FontStyle.Bold);
+                                        lsi = new ListViewItem.ListViewSubItem();
+                                        lsi.Text = e.FirstChild.Value;
+                                        li.SubItems.Add(lsi);
+                                        this.properties.Items.Add(li);
+                                    }
+
+
+
+                                }
+                            }
+                            #endregion
+
+                            //read time horizion
+
+                            //add TimeHorizon Property
+                            li = new ListViewItem("Time Horizon");
+                            li.UseItemStyleForSubItems = true;
+                            li.ForeColor = headerColor;
+                            li.Font = new Font(li.Font, FontStyle.Bold);
+                            this.properties.Items.Add(li);
+                            foreach (XmlNode child in timeHorizon.ChildNodes)
+                            {
+                                li = new ListViewItem(child.Name);
+                                li.UseItemStyleForSubItems = false;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
+                                lsi = new ListViewItem.ListViewSubItem();
+                                lsi.Text = child.FirstChild.Value;
+                                li.SubItems.Add(lsi);
+                                this.properties.Items.Add(li);
+
+                            }
+
+
+
+                            //read model info
+
+                            //add Model Info Poroperty
+                            li = new ListViewItem("Model Info");
+                            li.UseItemStyleForSubItems = true;
+                            li.ForeColor = headerColor;
+                            li.Font = new Font(li.Font, FontStyle.Bold);
+                            this.properties.Items.Add(li);
+                            foreach (XmlNode child in modelInfo.ChildNodes)
+                            {
+                                li = new ListViewItem(child.Name);
+                                li.UseItemStyleForSubItems = false;
+                                li.ForeColor = itemColor;
+                                li.Font = new Font(li.Font, FontStyle.Bold);
+                                lsi = new ListViewItem.ListViewSubItem();
+                                lsi.Text = child.FirstChild.Value;
+                                li.SubItems.Add(lsi);
+                                this.properties.Items.Add(li);
 
                             }
                         }
-                        #endregion
-
-                        //read time horizion
-
-                        //add TimeHorizon Property
-                        li = new ListViewItem("Time Horizon");
-                        li.UseItemStyleForSubItems = true;
-                        li.ForeColor = headerColor;
-                        li.Font = new Font(li.Font, FontStyle.Bold);
-                        this.properties.Items.Add(li);
-                        foreach (XmlNode child in timeHorizon.ChildNodes)
-                        {
-                            li = new ListViewItem(child.Name);
-                            li.UseItemStyleForSubItems = false;
-                            li.ForeColor = itemColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            lsi = new ListViewItem.ListViewSubItem();
-                            lsi.Text = child.FirstChild.Value;
-                            li.SubItems.Add(lsi);
-                            this.properties.Items.Add(li);
-
-                        }
-
-
-
-                        //read model info
-
-                        //add Model Info Poroperty
-                        li = new ListViewItem("Model Info");
-                        li.UseItemStyleForSubItems = true;
-                        li.ForeColor = headerColor;
-                        li.Font = new Font(li.Font, FontStyle.Bold);
-                        this.properties.Items.Add(li);
-                        foreach (XmlNode child in modelInfo.ChildNodes)
-                        {
-                            li = new ListViewItem(child.Name);
-                            li.UseItemStyleForSubItems = false;
-                            li.ForeColor = itemColor;
-                            li.Font = new Font(li.Font, FontStyle.Bold);
-                            lsi = new ListViewItem.ListViewSubItem();
-                            lsi.Text = child.FirstChild.Value;
-                            li.SubItems.Add(lsi);
-                            this.properties.Items.Add(li);
-
-                        }
+                        catch (Exception) { }
                     }
-                    catch (Exception) { }
                 }
             }
+            catch (Exception)
+            {
+
+            }
+
             this.properties.EndUpdate();
         }
         private void properties_populateOPR(string file)
@@ -3282,138 +3289,144 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
             Color groupColor = Color.RoyalBlue;
             Color itemColor = Color.Gray;
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(file);
-            Dictionary<string, string> args = new Dictionary<string, string>();
-
-            //get root element
-            XmlElement root = doc.DocumentElement;
-
-            //get root children
-            XmlNodeList elements = root.ChildNodes;
-
-            List<UiLink> links = new List<UiLink>();
-
-
-            foreach (XmlNode children in elements)
+            try
             {
-                if (children.Name == "links")
+                XmlDocument doc = new XmlDocument();
+                doc.Load(file);
+                Dictionary<string, string> args = new Dictionary<string, string>();
+
+                //get root element
+                XmlElement root = doc.DocumentElement;
+
+                //get root children
+                XmlNodeList elements = root.ChildNodes;
+
+                List<UiLink> links = new List<UiLink>();
+
+
+                foreach (XmlNode children in elements)
                 {
-                    //loop through the links
-                    foreach (XmlNode child in children)
+                    if (children.Name == "links")
                     {
-                        /*TODO:  This catches the instance when a link has yet to be formed between two components.
-                                 In the future it should also load this information, right now its just omitting it.base */
-                        try
+                        //loop through the links
+                        foreach (XmlNode child in children)
                         {
-                            //get some data from the opr file and store it in the UiLink class
-                            string provider = child.OuterXml.Split('=')[1].Split('\"')[1];
-                            string accepter = child.OuterXml.Split('=')[2].Split('\"')[1];
-                            int id = Convert.ToInt32(child.InnerXml.Split('=')[1].Split('\"')[1]);
-                            string p_element = child.InnerXml.Split('=')[2].Split('\"')[1];
-                            string p_quantity = child.InnerXml.Split('=')[3].Split('\"')[1];
-                            string a_element = child.InnerXml.Split('=')[4].Split('\"')[1];
-                            string a_quantity = child.InnerXml.Split('=')[5].Split('\"')[1];
-                            string dataop = "none";
-                            if (child.ChildNodes[0].HasChildNodes)
+                            /*TODO:  This catches the instance when a link has yet to be formed between two components.
+                                     In the future it should also load this information, right now its just omitting it.base */
+                            try
                             {
-                                dataop = (child.InnerXml.Split('=')[6].Split('\"')[1]);
+                                //get some data from the opr file and store it in the UiLink class
+                                string provider = child.OuterXml.Split('=')[1].Split('\"')[1];
+                                string accepter = child.OuterXml.Split('=')[2].Split('\"')[1];
+                                int id = Convert.ToInt32(child.InnerXml.Split('=')[1].Split('\"')[1]);
+                                string p_element = child.InnerXml.Split('=')[2].Split('\"')[1];
+                                string p_quantity = child.InnerXml.Split('=')[3].Split('\"')[1];
+                                string a_element = child.InnerXml.Split('=')[4].Split('\"')[1];
+                                string a_quantity = child.InnerXml.Split('=')[5].Split('\"')[1];
+                                string dataop = "none";
+                                if (child.ChildNodes[0].HasChildNodes)
+                                {
+                                    dataop = (child.InnerXml.Split('=')[6].Split('\"')[1]);
 
+                                }
+
+                                links.Add(new UiLink(id, provider, accepter, p_element, p_quantity, a_element, a_quantity, dataop));
                             }
-
-                            links.Add(new UiLink(id, provider, accepter, p_element, p_quantity, a_element, a_quantity, dataop));
-                        }
-                        catch (Exception)
-                        {
+                            catch (Exception)
+                            {
+                            }
                         }
                     }
                 }
+
+
+                this.properties.BeginUpdate();
+
+                ListViewItem li;
+                ListViewItem.ListViewSubItem lsi;
+
+                for (int i = 0; i <= links.Count - 1; i++)
+                {
+                    li = new ListViewItem("Link id=" + links[i].linkID.ToString());
+                    li.UseItemStyleForSubItems = true;
+                    li.ForeColor = headerColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    this.properties.Items.Add(li);
+
+                    //set the providing model name 
+                    li = new ListViewItem("Providing Model");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = groupColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].provider;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                    //set the providing model name 
+                    li = new ListViewItem("Quantity");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = itemColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].provider_quantity;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                    //set the accepting model name
+                    li = new ListViewItem("Element Set");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = itemColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].provider_elementset;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                    //set the accepting model name
+                    li = new ListViewItem("Accepting Model");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = groupColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].accepter;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                    //set the providing model name 
+                    li = new ListViewItem("Quantity");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = itemColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].accepter_quantity;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                    //set the accepting model name
+                    li = new ListViewItem("Element Set");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = itemColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].accepter_elementset;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                    //set the accepting model name
+                    li = new ListViewItem("Data Operation");
+                    li.UseItemStyleForSubItems = false;
+                    li.ForeColor = groupColor;
+                    li.Font = new Font(li.Font, FontStyle.Bold);
+                    lsi = new ListViewItem.ListViewSubItem();
+                    lsi.Text = links[i].dataoperation;
+                    li.SubItems.Add(lsi);
+                    this.properties.Items.Add(li);
+
+                }
             }
-
-
-            this.properties.BeginUpdate();
-
-            ListViewItem li;
-            ListViewItem.ListViewSubItem lsi;
-
-            for (int i = 0; i <= links.Count - 1; i++)
+            catch (Exception e)
             {
-                li = new ListViewItem("Link id=" + links[i].linkID.ToString());
-                li.UseItemStyleForSubItems = true;
-                li.ForeColor = headerColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                this.properties.Items.Add(li);
-
-                //set the providing model name 
-                li = new ListViewItem("Providing Model");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = groupColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].provider;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
-                //set the providing model name 
-                li = new ListViewItem("Quantity");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = itemColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].provider_quantity;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
-                //set the accepting model name
-                li = new ListViewItem("Element Set");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = itemColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].provider_elementset;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
-                //set the accepting model name
-                li = new ListViewItem("Accepting Model");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = groupColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].accepter;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
-                //set the providing model name 
-                li = new ListViewItem("Quantity");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = itemColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].accepter_quantity;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
-                //set the accepting model name
-                li = new ListViewItem("Element Set");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = itemColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].accepter_elementset;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
-                //set the accepting model name
-                li = new ListViewItem("Data Operation");
-                li.UseItemStyleForSubItems = false;
-                li.ForeColor = groupColor;
-                li.Font = new Font(li.Font, FontStyle.Bold);
-                lsi = new ListViewItem.ListViewSubItem();
-                lsi.Text = links[i].dataoperation;
-                li.SubItems.Add(lsi);
-                this.properties.Items.Add(li);
-
             }
             this.properties.EndUpdate();
 
