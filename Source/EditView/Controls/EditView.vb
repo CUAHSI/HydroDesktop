@@ -159,6 +159,9 @@ Namespace Controls
             For Each Id As Integer In idsToAdd
                 addSeries(Id)
             Next
+
+            pTimeSeriesPlot.Refreshing()
+
         End Sub
 
         Private Sub DoSeriesCheck()
@@ -206,7 +209,7 @@ Namespace Controls
         End Sub
 
         Private Sub removeSeries(Id As Integer)
-            Dim curveIndex = selectedSeriesIdList.IndexOf(_seriesSelector.SelectedSeriesID)
+            Dim curveIndex = selectedSeriesIdList.IndexOf(Id)
             selectedSeriesIdList.Remove(Id)
 
             If SeriesRowsCount(Id) = 0 Then

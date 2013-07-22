@@ -363,6 +363,8 @@ Namespace Controls
                         Else
                             .YAxisList.Remove(.YAxisList(i))
                         End If
+
+                        Exit For
                     End If
                 Next
                 For i = 0 To .Y2AxisList.Count - 1
