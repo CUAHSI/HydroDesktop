@@ -44,6 +44,15 @@ namespace HydroDesktop.MainApplication
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (appManager.Map.FunctionMode == FunctionMode.Pan)
+                button1.Focus();
+            if (appManager.Map.FunctionMode == FunctionMode.ZoomIn)
+                button2.Focus();
+            if (appManager.Map.FunctionMode == FunctionMode.ZoomOut)
+                button3.Focus();
+            if(appManager.Map.FunctionMode == FunctionMode.Select)
+                button4.Focus();
+
             IEnvelope env; 
             appManager.Map.MapFrame.ClearSelection(out env);
         }
