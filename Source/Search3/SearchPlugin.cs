@@ -432,16 +432,19 @@ namespace Search3
         {
             //try to save the search result layer and re-add it
             var hdProjectPath = HydroDesktop.Configuration.Settings.Instance.CurrentProjectDirectory;
+            String timeStamp = string.Format("{0}_{1}{2}{3}",
+                DateTime.Now.Date.ToString("yyyy-MM-dd"), DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
             var loadedFeatures = new List<SearchResultItem>(searchResult.ResultItems.Count());
             Debug.WriteLine(searchResult.ResultItems.Count());
             foreach (var key in searchResult.ResultItems)
             {
-                Debug.WriteLine("hdProjectPath: " + hdProjectPath);
-                Debug.WriteLine("The other part: " + string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode));
+                Debug.WriteLine("hdProjectPath: " + hdProjectPath + "/Search Results");
+                Debug.WriteLine("The other part: " + string.Format(Properties.Settings.Default.SearchResultNameMask, timeStamp, key.ServiceCode));
                 var fs = key.FeatureSet;
-                var filename = Path.Combine(hdProjectPath,
-                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode));
+
+                var filename = Path.Combine(hdProjectPath + "/Search Results",
+                                            string.Format(Properties.Settings.Default.SearchResultNameMask, timeStamp, key.ServiceCode));
                 fs.Filename = filename;
                 fs.Save();
                 loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));
