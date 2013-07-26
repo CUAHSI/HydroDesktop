@@ -440,11 +440,11 @@ namespace Search3
             foreach (var key in searchResult.ResultItems)
             {
                 Debug.WriteLine("hdProjectPath: " + hdProjectPath + "/Search Results");
-                Debug.WriteLine("The other part: " + string.Format(Properties.Settings.Default.SearchResultNameMask, timeStamp, key.ServiceCode));
+                Debug.WriteLine("The other part: " + string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode, timeStamp));
                 var fs = key.FeatureSet;
 
                 var filename = Path.Combine(hdProjectPath + "/Search Results",
-                                            string.Format(Properties.Settings.Default.SearchResultNameMask, timeStamp, key.ServiceCode));
+                                            string.Format(Properties.Settings.Default.SearchResultNameMask, key.ServiceCode, timeStamp));
                 fs.Filename = filename;
                 fs.Save();
                 loadedFeatures.Add(new SearchResultItem(key.ServiceCode, FeatureSet.OpenFile(filename)));

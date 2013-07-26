@@ -61,7 +61,7 @@ namespace Search3.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("{0}_searchresult_{1}.shp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("searchresult_{0}_{1}.shp")]
         public string SearchResultNameMask {
             get {
                 return ((string)(this["SearchResultNameMask"]));
