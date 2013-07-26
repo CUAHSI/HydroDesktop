@@ -20,6 +20,15 @@ namespace HydroDesktop.DataDownload.Options
             {
                 textBox1.Text = client.ValuesPerReq.ToString();
             }
+
+            if (Downloading.DownloadManager.singleThread == true)
+            {
+                checkBox2.Checked = true;
+            }
+            else
+            {
+                checkBox2.Checked = false;
+            }
         }
 
         private void button1_Click(object sender, System.EventArgs e)
@@ -42,6 +51,15 @@ namespace HydroDesktop.DataDownload.Options
             else
             {
                 label2.Text = "Invalid Input";  
+            }
+
+            if (checkBox2.Checked == true)
+            {
+                Downloading.DownloadManager.singleThread = true;
+            }
+            else
+            {
+                Downloading.DownloadManager.singleThread = false;
             }
         }
 
@@ -73,8 +91,6 @@ namespace HydroDesktop.DataDownload.Options
                 label2.Text = "";
                 textBox1.Enabled = true;
             }
-        }
-
-      
+        }     
     }
 }

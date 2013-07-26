@@ -22,6 +22,7 @@ namespace HydroDesktop.DataDownload.Downloading
         private DownloadManagerUI _downloadManagerUI;
         private static readonly object _syncObjForDownload = new object();
         private readonly List<OneSeriesDownloadInfo> _savedData = new List<OneSeriesDownloadInfo>();
+        public static bool singleThread;
 
         #endregion
 
@@ -262,7 +263,14 @@ namespace HydroDesktop.DataDownload.Downloading
 
             var downloadList = Information.StartArgs.ItemsToDownload;
             var indeces = Information.IndecesToDownload;
-            const int maxThreadsToDownloadCount = 16;                     // max count of downloading threads
+
+            // max count of downloading threads
+            int maxThreadsToDownloadCount = 16;
+            if (singleThread == true)
+            {
+                maxThreadsToDownloadCount = 1;
+            }
+           
             var commonInfo = new CommnonDoDownloadInfo(new Downloader()); // common info, shared through downloading threads
 
             // Starting (if possible) maxThreadsToDownloadCount downloading threads 
