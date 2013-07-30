@@ -204,6 +204,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.HeaderControl"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroShare", "HydroShare\HydroShare.csproj", "{764FCBD2-3B42-4B77-818A-4D4115C66C1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShaleDataNetwork", "ShaleDataNetwork\ShaleDataNetwork.csproj", "{B0526359-9A59-42FE-AE66-B0ADED8AB53B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -512,6 +514,13 @@ Global
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Release|x86.ActiveCfg = Release|Any CPU
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Debug|x86.ActiveCfg = Debug|x86
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Debug|x86.Build.0 = Debug|x86
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|x86.ActiveCfg = Release|x86
+		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
