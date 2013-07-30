@@ -70,40 +70,41 @@
     </Reference>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.12\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
       <HintPath>..\packages\DotSpatial.Data.Forms.1.5.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\packages\DotSpatial.Extensions.1.5.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
       <HintPath>..\packages\DotSpatial.Modeling.Forms.1.5.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Mono">
       <HintPath>..\packages\DotSpatial.Mono.1.5.1\lib\net40\DotSpatial.Mono.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1195\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar, Version=0.11.9.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1195\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
@@ -114,37 +115,37 @@
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections.Forms">
       <HintPath>..\packages\DotSpatial.Projections.Forms.1.5.1\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
       <HintPath>..\packages\DotSpatial.Serialization.1.5.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.1\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\packages\DotSpatial.Topology.1.5.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
@@ -161,7 +162,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1194\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1195\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -247,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="credits.txt" />
+    <Content Include="Resources\box_closed_32x32.png" />
     <Content Include="Resources\cursor_arrow_16x16.png" />
     <Content Include="Resources\cursor_arrow_32x32.png" />
     <Content Include="Resources\deselect_16x16.png" />
@@ -255,8 +258,10 @@
     <Content Include="Resources\disk_32x32.png" />
     <Content Include="Resources\document_empty_16x16.png" />
     <Content Include="Resources\document_empty_32x32.png" />
+    <Content Include="Resources\draw_eraser.png" />
     <Content Include="Resources\folder_16x16.png" />
     <Content Include="Resources\folder_32x32.png" />
+    <Content Include="Resources\google_custom_search.png" />
     <Content Include="Resources\info_rhombus_16x16.png" />
     <Content Include="Resources\info_rhombus_32x32.png" />
     <Content Include="Resources\layer_add_16x16.png" />
@@ -267,6 +272,14 @@
     <Content Include="Resources\layer_save_32x32.png" />
     <Content Include="Resources\measure_16x16.png" />
     <Content Include="Resources\measure_32x32.png" />
+    <Content Include="Resources\plugin_16x16.png" />
+    <Content Include="Resources\plugin_32x32.png" />
+    <Content Include="Resources\plugin_add_16x16.png" />
+    <Content Include="Resources\plugin_add_32x32.png" />
+    <Content Include="Resources\plugin_delete_16x16.png" />
+    <Content Include="Resources\plugin_delete_32x32.png" />
+    <Content Include="Resources\plugin_disabled_16x16.png" />
+    <Content Include="Resources\plugin_disabled_32x32.png" />
     <Content Include="Resources\printer_16x16.png" />
     <Content Include="Resources\printer_32x32.png" />
     <Content Include="Resources\save_as_16x16.png" />
