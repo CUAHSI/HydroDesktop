@@ -38,7 +38,7 @@ namespace Search3
 
         private SimpleActionItem _rbAddMoreKeywords;
         private TextEntryActionItem _currentKeywords;
-        private DropDownActionItem _dropdownKeywords;
+        public DropDownActionItem _dropdownKeywords;
 
         private SimpleActionItem rbDrawBox;
         private SimpleActionItem rbSelect;
@@ -46,12 +46,13 @@ namespace Search3
         private SimpleActionItem _currentView;
         private bool _useCurrentView;
         private Searcher _searcher;
-        private readonly SearchSettings _searchSettings = new SearchSettings();
+        public readonly SearchSettings _searchSettings = new SearchSettings();
         //private SearchStatusDisplay searchSummary;
 
         private readonly string _datesFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
         private const string KEYWORDS_SEPARATOR = ";";
+        private RootItem tabb = new RootItem(SharedConstants.SearchRootkey, Msg.Search) { SortOrder = -5 };
      
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
@@ -105,8 +106,7 @@ namespace Search3
 
             //Search ribbon tab
             //setting the sort order to small positive number to display it to the right of home tab
-            head.Add(new RootItem(_searchKey, Msg.Search) { SortOrder = -5 });
-
+            head.Add(tabb);
             #region Area group
             // Added as a temporary measure to prevent disabling and enabling of draw rectangle button when repeatedly clicked.  If clicked once, it shouldn't be disabled after clicking the same button again.
             SimpleActionItem dummy = new SimpleActionItem(_searchKey, "Dummy", rbDrawBox_Click) { GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, Visible = false };
@@ -776,7 +776,7 @@ namespace Search3
 
         }
 
-        private void UpdateKeywordsCaption()
+        public void UpdateKeywordsCaption()
         {
             const string separator = KEYWORDS_SEPARATOR + " ";
             var text = string.Join(separator, _searchSettings.KeywordsSettings.SelectedKeywords);
@@ -1039,6 +1039,11 @@ namespace Search3
         public string HisCentralUrl
         {
             get { return _searchSettings.CatalogSettings.HISCentralUrl; }
+        }
+
+        public void setSearchTabCaption(string caption)
+        {
+            tabb.Caption = caption;
         }
     }
 }

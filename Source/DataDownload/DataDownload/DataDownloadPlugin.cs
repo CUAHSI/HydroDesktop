@@ -223,7 +223,7 @@ namespace HydroDesktop.DataDownload
         private void AppOnExtensionsActivated(object sender, EventArgs eventArgs)
         {
             // Add download button into search tab
-            if (App.GetExtension("Search3") != null && App.GetExtension("ShaleDataNetwork") == null)
+            if (App.GetExtension("Search3") != null)
             {
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Attribute Table", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
                 _btnSearchResults.PropertyChanged += btnSearchResults_enabled;
@@ -243,26 +243,6 @@ namespace HydroDesktop.DataDownload
                 App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download_Selected, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
 
                 //App.HeaderControl.Add(_btnUpdate = new SimpleActionItem(Msg.Update, Update_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Download, LargeImage = Resources.refresh_32x32, SmallImage = Resources.refresh_16x16, Enabled = false });
-            }
-
-            if (App.GetExtension("ShaleDataNetwork") != null)
-            {
-                string shale = "Shale Data Network";
-
-                App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Attribute Table", ShowSearchResults_Click) { RootKey = shale, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
-                _btnSearchResults.PropertyChanged += btnSearchResults_enabled;
-
-                if (!DotSpatial.Mono.Mono.IsRunningOnMono())
-                {
-                    App.HeaderControl.Add(_btnShowPopups = new SimpleActionItem("Show Map Popups", ShowPopups_Click) { RootKey = shale, GroupCaption = Msg.Results, SmallImage = Resources.popup_16x16, ToggleGroupKey = Msg.Download_Tools_Group, Enabled = false });
-                    _btnShowPopups.Toggling += ShowPopups_Click;
-                    _btnShowPopups.Enabled = false;
-                }
-                _showPopups = false;
-
-                App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Download Settings", Options_Click) { RootKey = shale, GroupCaption = Msg.Results, SmallImage = Resources.settings_16, ToolTipText = Msg.DownloadSettings, Enabled = true });
-                App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download_Selected, DoDownload) { RootKey = shale, GroupCaption = Msg.Results, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
-
             }
 
             if (!_showSearchResultsPanel)
