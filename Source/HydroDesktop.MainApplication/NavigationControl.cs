@@ -20,6 +20,19 @@ namespace HydroDesktop.MainApplication
         {
             this.appManager = appManager;
             InitializeComponent();
+
+            foreach (Control control in this.Controls)
+            {
+                control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
+            }
+        }
+
+        void control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
+            {
+                e.IsInputKey = true;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
