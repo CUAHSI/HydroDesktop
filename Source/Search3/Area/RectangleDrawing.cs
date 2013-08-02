@@ -24,6 +24,7 @@ namespace Search3.Area
         private bool _isActive;
         private int _numClicks;
         private Coordinate _startPoint;
+        private Color _color = Color.Red;
 
         #endregion
 
@@ -74,6 +75,15 @@ namespace Search3.Area
             get { return _isActive; }
         }
 
+        public Color Color
+        {
+            get { return _color; }
+            set { 
+                  _color = value;
+                  AddRectangleLayer(_color);
+                }
+        }
+
         /// <summary>
         /// Activates the rectangle drawing function
         /// </summary>
@@ -88,7 +98,7 @@ namespace Search3.Area
             _isActive = true;
             _mainMap.Cursor = Cursors.Cross;
             _mainMap.FunctionMode = FunctionMode.Select;
-            AddRectangleLayer(Color.Red.ToTransparent(0.5f));
+            AddRectangleLayer(_color);
             DisableLayerSelection();
         }
 
@@ -197,8 +207,6 @@ namespace Search3.Area
         /// </summary>
         public void RestoreSearchRectangle(double minLon, double minLat, double maxLon, double maxLat)
         {
-            _rectangleLayer.Symbolizer = new PolygonSymbolizer(Color.Gold.ToTransparent(0.5f), Color.Gold);
-            AddRectangleLayer(Color.Yellow.ToTransparent(0.5f));
            
             if (_rectangleLayer != null)
             {
@@ -255,17 +263,19 @@ namespace Search3.Area
             if (_rectangleLayer == null)
             {
                 _rectangleLayer = _mainMap.GetAllLayers().OfType<MapPolygonLayer>().FirstOrDefault(lay => lay.LegendText == Properties.Resources.RectangleLayerName);
-            }
-            if (_rectangleLayer == null)
-            {
+
                 var rectangleFs = new FeatureSet(FeatureType.Polygon);
                 rectangleFs.DataTable.Columns.Add(new DataColumn("ID"));
                 rectangleFs.Projection = _mainMap.Projection;
 
                 _rectangleLayer = new MapPolygonLayer(rectangleFs){LegendText = Properties.Resources.RectangleLayerName};
-                _rectangleLayer.Symbolizer = new PolygonSymbolizer(color, color.ToOpaque());
+                _rectangleLayer.Symbolizer = new PolygonSymbolizer(color.ToTransparent(0.5f), color);
                 _rectangleLayer.SelectionSymbolizer = _rectangleLayer.Symbolizer;
                 _mainMap.Layers.Add(_rectangleLayer);
+            }
+            else
+            {
+                _rectangleLayer.Symbolizer = new PolygonSymbolizer(color.ToTransparent(0.5f), color);
             }
         }
 
