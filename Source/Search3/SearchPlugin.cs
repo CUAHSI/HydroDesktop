@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -911,7 +912,16 @@ namespace Search3
                 _rectangleDrawing.Deactivated += _rectangleDrawing_Deactivated;
             }
 
-            _rectangleDrawing.Activate();
+            var currentMode = CurrentAreaSelectMode;
+            var navigationMode = App.Map.FunctionMode;
+            var rectangleExtent = _rectangleDrawing.RectangleExtent;
+
+            if (currentMode != AreaSelectMode.DrawBox)
+            {
+                CurrentAreaSelectMode = AreaSelectMode.DrawBox;
+                _rectangleDrawing.Activate();
+                App.Map.FunctionMode = navigationMode;
+            }
 
             if (WebServicesDialog.ShowDialog(_searchSettings.WebServicesSettings,
                                              _searchSettings.CatalogSettings,
@@ -921,7 +931,18 @@ namespace Search3
             {
                 UpdateWebServicesCaption();
             }
-            _rectangleDrawing.Deactivate();
+
+            if (currentMode != AreaSelectMode.DrawBox)
+            {
+                _rectangleDrawing.Deactivate();
+                CurrentAreaSelectMode = currentMode;
+                App.Map.FunctionMode = navigationMode;
+            }
+            else
+            {
+                _rectangleDrawing.Color = Color.Red;
+                _rectangleDrawing.RestoreSearchRectangle(rectangleExtent.MinX, rectangleExtent.MinY, rectangleExtent.MaxX, rectangleExtent.MaxY);
+            }
         }
 
         private void UpdateWebServicesCaption()

@@ -322,8 +322,9 @@ namespace Search3.Settings.UI
 
                 Extent ex = App.Map.ViewExtents;
 
+                _rectangleDrawing.Color = Color.Gold;
                 _rectangleDrawing.RestoreSearchRectangle(node.ServiceBoundingBox.XMin, node.ServiceBoundingBox.YMin, node.ServiceBoundingBox.XMax, node.ServiceBoundingBox.YMax);
- 
+
                 App.Map.ViewExtents = ex;
             }
             else if (e.ColumnIndex == 8)
