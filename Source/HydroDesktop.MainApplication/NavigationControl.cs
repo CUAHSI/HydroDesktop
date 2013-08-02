@@ -25,6 +25,20 @@ namespace HydroDesktop.MainApplication
             {
                 control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
             }
+
+            appManager.Map.FunctionModeChanged += Map_FunctionModeChanged;
+        }
+
+        void Map_FunctionModeChanged(object sender, EventArgs e)
+        {
+            if (appManager.Map.FunctionMode == FunctionMode.Pan)
+                button1.Focus();
+            if (appManager.Map.FunctionMode == FunctionMode.ZoomIn)
+                button2.Focus();
+            if (appManager.Map.FunctionMode == FunctionMode.ZoomOut)
+                button3.Focus();
+            if (appManager.Map.FunctionMode == FunctionMode.Select)
+                button4.Focus();
         }
 
         void control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

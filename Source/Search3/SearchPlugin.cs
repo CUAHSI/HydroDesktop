@@ -463,8 +463,8 @@ namespace Search3
         {
             if (App.Map.FunctionMode == FunctionMode.Select && CurrentAreaSelectMode != AreaSelectMode.DrawBox)
             {
-                CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
-               // rbSelect.Toggle();
+                rbSelect_Click(this, new EventArgs());
+                rbSelect.Toggle();
             }
         }
 
@@ -476,8 +476,8 @@ namespace Search3
 
         private enum AreaSelectMode
         {
-            DrawBox,
             SelectPolygons,
+            DrawBox,
             SelectAttribute
         }
 
@@ -546,7 +546,8 @@ namespace Search3
             DeactivateDrawBox();
             DeactivateCurrentView();
 
-            App.Map.FunctionMode = FunctionMode.Select;
+            if(App.Map.FunctionMode != FunctionMode.Select)
+                App.Map.FunctionMode = FunctionMode.Select;
             CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
 
             //   var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
@@ -633,6 +634,10 @@ namespace Search3
         void CurrentView_Click(object sender, EventArgs e)
         {
             _useCurrentView = true;
+
+            DeactivateDrawBox();
+            CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
+            App.Map.FunctionMode = FunctionMode.Pan;
         }
 
         void rbAttribute_Click(object sender, EventArgs e)
