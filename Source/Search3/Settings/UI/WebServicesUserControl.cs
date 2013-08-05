@@ -24,6 +24,7 @@ namespace Search3.Settings.UI
         private CatalogSettings _catalogSettings;
         private AppManager App;
         private RectangleDrawing _rectangleDrawing;
+        private bool local;
 
         #endregion
 
@@ -152,22 +153,22 @@ namespace Search3.Settings.UI
                 colTB6.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 gridViewWebServices.Columns.Add(colTB6);
 
-                DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
-                dgvic.HeaderText = "View Extents";
-                dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-                dgvic.ValuesAreIcons = true;
-                dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
-                gridViewWebServices.Columns.Add(dgvic);
+                if (local == false)
+                {
+                    DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
+                    dgvic.HeaderText = "View Extents";
+                    dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                    dgvic.ValuesAreIcons = true;
+                    dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
+                    gridViewWebServices.Columns.Add(dgvic);
 
-                DataGridViewImageColumn dgvic2 = new DataGridViewImageColumn();
-                dgvic2.HeaderText = "More Info";
-                dgvic2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-                dgvic2.ValuesAreIcons = true;
-                dgvic2.Icon = Search3.Properties.Resources.more_info;
-                gridViewWebServices.Columns.Add(dgvic2);
-             
-               
-              
+                    DataGridViewImageColumn dgvic2 = new DataGridViewImageColumn();
+                    dgvic2.HeaderText = "More Info";
+                    dgvic2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                    dgvic2.ValuesAreIcons = true;
+                    dgvic2.Icon = Search3.Properties.Resources.more_info;
+                    gridViewWebServices.Columns.Add(dgvic2);
+                }
 
                 gridViewWebServices.AllowUserToAddRows = true;
                 foreach (var webNode in webServiceNodeCollection)
@@ -185,31 +186,6 @@ namespace Search3.Settings.UI
                     gridViewWebServices.Rows.Add(row);
                 }
                 gridViewWebServices.AllowUserToAddRows = false;
-
-              //  gridViewWebServices.Rows[0].Cells["Web Service"].Tag;
-
-                //gridViewWebServices.Data
-                /*
-                var Rows = gridViewWebServices.Rows;
-                var clrBule = Color.FromKnownColor(KnownColor.Blue);
-                var prototype = gridViewWebServices.Font;
-                var font = new Font(prototype, FontStyle.Underline);
-
-                foreach (var webNode in webServiceNodeCollection)
-                {
-              
-                    var node = new DataRow
-                    {
-                        ForeColor = clrBule,
-                        NodeFont = font,
-                        Text = webNode.Title,
-                        Name = webNode.ServiceID.ToString(CultureInfo.InvariantCulture),
-                        Checked = webNode.Checked,
-                        Tag = webNode
-                    };
-                    parentRows.Add(node);
-                }
-                gridViewWebServices.Sort();*/
             }
             finally
             {
@@ -226,13 +202,13 @@ namespace Search3.Settings.UI
         /// <summary>
         /// Refresh all web services.
         /// </summary>
-        public void RefreshWebServices()
+        public void RefreshWebServices(bool local)
         {
             if (_webServicesSettings == null)
             {
                 return;
             }
-
+            this.local = local;
             _webServicesSettings.RefreshWebServices(_catalogSettings);
             RefreshWebServicesGridView(_webServicesSettings.WebServices);
         }
@@ -287,10 +263,10 @@ namespace Search3.Settings.UI
         /// <param name="webServicesSettings">WebServices settings to set.</param>
         /// <param name="catalogSettings">Catalog settings </param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="webServicesSettings"/> is null.</exception>
-        public void SetSettings(WebServicesSettings webServicesSettings, CatalogSettings catalogSettings)
+        public void SetSettings(WebServicesSettings webServicesSettings, CatalogSettings catalogSettings, bool local)
         {
             if (webServicesSettings == null) throw new ArgumentNullException("webServicesSettings");
-
+            this.local = local;
             _catalogSettings = catalogSettings;
             _webServicesSettings = webServicesSettings;
             RefreshWebServicesGridView(webServicesSettings.WebServices);

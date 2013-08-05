@@ -16,6 +16,7 @@ namespace Search3.Settings.UI
         private readonly IMetadataFetcherPlugin _metadataFetcher;
         private AppManager _app;
         private RectangleDrawing _rectangleDrawing;
+        private bool local;
         #endregion
 
         #region Constructors
@@ -32,18 +33,20 @@ namespace Search3.Settings.UI
             _keywordsSettings = keywordsSettings;
             _metadataFetcher = metadataFetcher;
          
-
-            webServicesUserControl1.SetSettings(settings, catalogSettings);
-            
+ 
             switch (_catalogSettings.TypeOfCatalog)
             {
                 case TypeOfCatalog.HisCentral:
                     rbHisCentral.Checked = true;
+                    local = false;
                     break;
                 case TypeOfCatalog.LocalMetadataCache:
                     rbLocalMetadataCache.Checked = true;
+                    local = true;
                     break;
             }
+            webServicesUserControl1.SetSettings(settings, catalogSettings, local);
+
             rbHisCentral.CheckedChanged += rbTypeOfCatalog_CheckedChanged;
             rbLocalMetadataCache.CheckedChanged += rbTypeOfCatalog_CheckedChanged;
             UpdateCatalogSettings();
@@ -105,10 +108,12 @@ namespace Search3.Settings.UI
             switch (typeOfCatalog)
             {
                 case TypeOfCatalog.LocalMetadataCache:
+                    local = true;
                     bntAddLocalDataSource.Text = "Add Data Source...";
                     btnManageDataSources.Enabled = true;
                     break;
                 case TypeOfCatalog.HisCentral:
+                    local = false;
                     bntAddLocalDataSource.Text = "Advanced Options...";
                     btnManageDataSources.Enabled = false;
                     break;
@@ -129,7 +134,7 @@ namespace Search3.Settings.UI
             paButtons.Enabled = false;
             try
             {
-                webServicesUserControl1.RefreshWebServices();
+                webServicesUserControl1.RefreshWebServices(local);
             }
             finally
             {
