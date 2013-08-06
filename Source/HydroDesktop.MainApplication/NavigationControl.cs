@@ -16,37 +16,45 @@ namespace HydroDesktop.MainApplication
     public partial class NavigationControl : UserControl
     {
         private AppManager appManager;
+        private Button button6;
+
         public NavigationControl(AppManager appManager)
         {
             this.appManager = appManager;
+            button6 = new Button();
+            button6.Size = Size.Empty;
+            this.Controls.Add(button6);
             InitializeComponent();
 
-            foreach (Control control in this.Controls)
-            {
-                control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
-            }
-
             appManager.Map.FunctionModeChanged += Map_FunctionModeChanged;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Space:
+                    return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         void Map_FunctionModeChanged(object sender, EventArgs e)
         {
             if (appManager.Map.FunctionMode == FunctionMode.Pan)
                 button1.Focus();
-            if (appManager.Map.FunctionMode == FunctionMode.ZoomIn)
+            else if (appManager.Map.FunctionMode == FunctionMode.ZoomIn)
                 button2.Focus();
-            if (appManager.Map.FunctionMode == FunctionMode.ZoomOut)
+            else if (appManager.Map.FunctionMode == FunctionMode.ZoomOut)
                 button3.Focus();
-            if (appManager.Map.FunctionMode == FunctionMode.Select)
+            else if (appManager.Map.FunctionMode == FunctionMode.Select)
                 button4.Focus();
-        }
-
-        void control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
-            {
-                e.IsInputKey = true;
-            }
+            else
+                button6.Focus();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -73,12 +81,14 @@ namespace HydroDesktop.MainApplication
         {
             if (appManager.Map.FunctionMode == FunctionMode.Pan)
                 button1.Focus();
-            if (appManager.Map.FunctionMode == FunctionMode.ZoomIn)
+            else if (appManager.Map.FunctionMode == FunctionMode.ZoomIn)
                 button2.Focus();
-            if (appManager.Map.FunctionMode == FunctionMode.ZoomOut)
+            else if (appManager.Map.FunctionMode == FunctionMode.ZoomOut)
                 button3.Focus();
-            if(appManager.Map.FunctionMode == FunctionMode.Select)
+            else if (appManager.Map.FunctionMode == FunctionMode.Select)
                 button4.Focus();
+            else
+                button6.Focus();
 
             IEnvelope env; 
             appManager.Map.MapFrame.ClearSelection(out env);
