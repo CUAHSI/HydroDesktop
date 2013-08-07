@@ -30,6 +30,11 @@ namespace Search3.Settings.UI
 
         #region Constructors
 
+        public WebServicesUserControl()
+        {
+            InitializeComponent();
+        }
+
         public WebServicesUserControl(AppManager App, RectangleDrawing _rectangleDrawing)
         {
             this.App = App;
@@ -39,8 +44,7 @@ namespace Search3.Settings.UI
             gridViewWebServices.CellContentClick += gridViewWebServices_OpenUrl;
             gridViewWebServices.CellValueChanged += gridViewWebServices_AfterCheck;  
         }
-
-     
+        
 
         #endregion
 
