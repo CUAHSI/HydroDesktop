@@ -914,13 +914,18 @@ namespace Search3
 
             var currentMode = CurrentAreaSelectMode;
             var navigationMode = App.Map.FunctionMode;
-            var rectangleExtent = _rectangleDrawing.RectangleExtent;
+            Box rectangleExtent = null;
 
             if (currentMode != AreaSelectMode.DrawBox)
             {
                 CurrentAreaSelectMode = AreaSelectMode.DrawBox;
                 _rectangleDrawing.Activate();
                 App.Map.FunctionMode = navigationMode;
+            }
+            else
+            {
+                rectangleExtent = Area.AreaHelper.ReprojectBoxToWGS84(_searchSettings.AreaSettings.AreaRectangle,
+                                                              _searchSettings.AreaSettings.RectangleProjection);
             }
 
             if (WebServicesDialog.ShowDialog(_searchSettings.WebServicesSettings,
@@ -932,6 +937,8 @@ namespace Search3
                 UpdateWebServicesCaption();
             }
 
+            _rectangleDrawing.Color = Color.Red;
+
             if (currentMode != AreaSelectMode.DrawBox)
             {
                 _rectangleDrawing.Deactivate();
@@ -940,8 +947,7 @@ namespace Search3
             }
             else
             {
-                _rectangleDrawing.Color = Color.Red;
-                _rectangleDrawing.RestoreSearchRectangle(rectangleExtent.MinX, rectangleExtent.MinY, rectangleExtent.MaxX, rectangleExtent.MaxY);
+                _rectangleDrawing.RestoreSearchRectangle(rectangleExtent.XMin, rectangleExtent.YMin, rectangleExtent.XMax, rectangleExtent.YMax);
             }
         }
 
