@@ -494,6 +494,11 @@ namespace Search3
 
         void rbDrawBox_Click(object sender, EventArgs e)
         {
+            do_rbDrawBox_Click();
+        }
+
+        void do_rbDrawBox_Click()
+        {
             CurrentAreaSelectMode = AreaSelectMode.DrawBox;
 
             DeactivateSelectAreaByPolygon();
@@ -508,6 +513,7 @@ namespace Search3
 
             _rectangleDrawing.Activate();
         }
+        
 
         void _rectangleDrawing_Deactivated(object sender, EventArgs e)
         {
@@ -922,7 +928,7 @@ namespace Search3
                 _rectangleDrawing.Activate();
                 App.Map.FunctionMode = navigationMode;
             }
-            else
+            else if (_searchSettings.AreaSettings.AreaRectangle != null)
             {
                 rectangleExtent = Area.AreaHelper.ReprojectBoxToWGS84(_searchSettings.AreaSettings.AreaRectangle,
                                                               _searchSettings.AreaSettings.RectangleProjection);
@@ -945,10 +951,16 @@ namespace Search3
                 CurrentAreaSelectMode = currentMode;
                 App.Map.FunctionMode = navigationMode;
             }
-            else
+            else if (rectangleExtent == null)
+            {
+                _rectangleDrawing.Deactivate();
+                do_rbDrawBox_Click();
+            }
+            else 
             {
                 _rectangleDrawing.RestoreSearchRectangle(rectangleExtent.XMin, rectangleExtent.YMin, rectangleExtent.XMax, rectangleExtent.YMax);
             }
+           
         }
 
         private void UpdateWebServicesCaption()
