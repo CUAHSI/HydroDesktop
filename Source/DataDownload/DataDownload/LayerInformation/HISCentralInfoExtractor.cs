@@ -64,7 +64,12 @@ namespace HydroDesktop.DataDownload.LayerInformation
                         {
                             foreach (var info in infos)
                             {
-                                _services.Add(info.EndpointURL, info.DescriptionURL);
+                                try
+                                {
+                                    _services.Add(info.EndpointURL, info.DescriptionURL);
+                                }
+                                catch (Exception e)
+                                { }
                             }
                         }
                     }
