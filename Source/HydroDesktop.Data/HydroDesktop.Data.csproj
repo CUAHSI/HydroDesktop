@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -57,9 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls, Version=1.5.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Controls.1.5.12\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\DotSpatial.Controls.1.5.13\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
@@ -104,11 +102,8 @@
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\packages\DotSpatial.Symbology.1.5.1\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
+    <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.Symbology.1.5.2\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
