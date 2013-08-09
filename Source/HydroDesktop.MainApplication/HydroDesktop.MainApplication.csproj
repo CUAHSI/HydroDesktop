@@ -180,6 +180,7 @@
     <ProjectReference Include="..\Search3\Search3.csproj">
       <Project>{FB01F6EE-89C0-4A64-B023-C8CC566FF803}</Project>
       <Name>Search3</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
