@@ -238,7 +238,7 @@ namespace HydroDesktop.DataDownload
                 }
                 _showPopups = false;
 
-                App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Download Settings", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.settings_16, ToolTipText = Msg.DownloadSettings, Enabled = true });
+                App.HeaderControl.Add(_btnSearchOptions = new SimpleActionItem("Download Settings", Options_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.settings_16, ToolTipText = Msg.DownloadSettings, Enabled = false });
 
                 App.HeaderControl.Add(_btnDownloadInSearch = new SimpleActionItem(Msg.Download_Selected, DoDownload) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, LargeImage = Resources.download_32, SmallImage = Resources.download_16, ToolTipText = Msg.DownloadTooTip, Enabled = false });
 
@@ -602,6 +602,10 @@ namespace HydroDesktop.DataDownload
                 if (_btnDownloadInSearch != null)
                 {
                     _btnDownloadInSearch.Enabled = true;
+                }
+                if (_btnSearchOptions != null)
+                {
+                    _btnSearchOptions.Enabled = true;
                 }
                 //if (_btnSearchOptions != null)
                 //{
