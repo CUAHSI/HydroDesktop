@@ -58,6 +58,7 @@
   <ItemGroup>
     <Reference Include="DotSpatial.Controls, Version=1.5.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Controls.1.5.13\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
@@ -104,6 +105,7 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.2\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
