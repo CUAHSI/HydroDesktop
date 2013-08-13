@@ -6,8 +6,8 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroShare.Properties;
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
+//using IronPython.Hosting;
+//using Microsoft.Scripting.Hosting;
 
 namespace HydroShare
 {
@@ -79,8 +79,8 @@ namespace HydroShare
 
         void pythonTest_Click(object sender, EventArgs e)
         {
-            var ipy = Python.CreateRuntime();
-            dynamic test = ipy.ExecuteFile(@"C:\users\cuyler frisby\documents\python\test.py");
+           // var ipy = Python.CreateRuntime();
+           // dynamic test = ipy.ExecuteFile(@"C:\users\cuyler frisby\documents\python\test.py");
             //dynamic test = ipy.UseFile(@"C:\Users\Cuyler Frisby\Documents\Python\bagit-1.2.1\bagit.py");
             //test.make_bag("C:\\Users\\Cuyler Frisby\\Desktop\\NorthAmerica Bag Test", "None", 1);
             //test.Simple();
@@ -90,9 +90,9 @@ namespace HydroShare
         {
             static void Main()
             {
-                var ipy = Python.CreateRuntime();
-                dynamic test = ipy.UseFile("Test.py");
-                test.Simple();
+            //    var ipy = Python.CreateRuntime();
+               // dynamic test = ipy.UseFile("Test.py");
+                //test.Simple();
             }
         }
        
