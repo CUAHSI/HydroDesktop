@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -67,11 +67,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\packages\DotSpatial.Controls.1.5.13\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Controls.1.5.14\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -81,9 +82,11 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\packages\DotSpatial.Extensions.1.5.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -93,13 +96,15 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1198\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1199\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -109,9 +114,11 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
       <HintPath>..\packages\DotSpatial.Serialization.1.5.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -119,9 +126,11 @@
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.2\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -131,10 +140,11 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1198\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1199\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
