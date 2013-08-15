@@ -374,7 +374,6 @@
             {
                 App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 App.DockManager.SelectPanel("kMap");
-                App.DockManager.HidePanel("kHydroModelerDock");
                 App.DockManager.SelectPanel("kLegend");
                 App.DockManager.ShowPanel(SharedConstants.SeriesViewKey);
                 showCoordinates = true;
@@ -388,7 +387,6 @@
             }
             else if (e.SelectedRootKey == "kHydroGraph_01" || e.SelectedRootKey == SharedConstants.TableRootKey || e.SelectedRootKey == "kHydroEditView" || e.SelectedRootKey == "kHydroR")
             {
-                App.DockManager.HidePanel("kHydroModelerDock");
                 App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
                 App.DockManager.ShowPanel("kLegend");
             }
