@@ -9,6 +9,7 @@
     using DotSpatial.Controls.Header;
     using HydroDesktop.Database;
     using HydroDesktop.Interfaces;
+    using HydroDesktop.Common;
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
@@ -358,10 +359,10 @@
             {
                 //if the clicked root item was 'search', then don't select the map root item
                 //(the user intended to show search tab and map panel)
-                if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
-                {
-                    App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
-                }
+               // if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
+               // {
+             //       App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+             //   }
             }
         }
 
@@ -369,11 +370,28 @@
         {
             Boolean showCoordinates = false;
 
-            if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
+            if (e.SelectedRootKey == SharedConstants.SearchRootkey || e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
+                App.DockManager.HidePanel("kHydroModelerDock");
+                App.DockManager.SelectPanel("kLegend");
+                App.DockManager.ShowPanel(SharedConstants.SeriesViewKey);
                 App.DockManager.SelectPanel("kMap");
                 showCoordinates = true;
             }
+            else if (e.SelectedRootKey == "RootRibbonHydroModeler")
+            {
+                //hide panels
+                App.DockManager.HidePanel("kLegend");
+                App.DockManager.HidePanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+                App.DockManager.SelectPanel("kHydroModelerDock");
+            }
+            else if (e.SelectedRootKey == "kHydroGraph_01" || e.SelectedRootKey == SharedConstants.TableRootKey || e.SelectedRootKey == "kHydroEditView" || e.SelectedRootKey == "kHydroR")
+            {
+                App.DockManager.HidePanel("kHydroModelerDock");
+                App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+                App.DockManager.ShowPanel("kLegend");
+            }
+
             if (e.SelectedRootKey == "kHydroSearchV3")
                     showCoordinates = true;
 
