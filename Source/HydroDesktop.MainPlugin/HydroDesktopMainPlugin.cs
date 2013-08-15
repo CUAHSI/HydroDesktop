@@ -359,10 +359,10 @@
             {
                 //if the clicked root item was 'search', then don't select the map root item
                 //(the user intended to show search tab and map panel)
-               // if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
-               // {
-             //       App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
-             //   }
+                if (!App.SerializationManager.GetCustomSetting("SearchRootClicked", false))
+                {
+                    App.HeaderControl.SelectRoot(HeaderControl.HomeRootItemKey);
+                }
             }
         }
 
@@ -372,10 +372,11 @@
 
             if (e.SelectedRootKey == SharedConstants.SearchRootkey || e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
+                App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
+                App.DockManager.SelectPanel("kMap");
                 App.DockManager.HidePanel("kHydroModelerDock");
                 App.DockManager.SelectPanel("kLegend");
                 App.DockManager.ShowPanel(SharedConstants.SeriesViewKey);
-                App.DockManager.SelectPanel("kMap");
                 showCoordinates = true;
             }
             else if (e.SelectedRootKey == "RootRibbonHydroModeler")
@@ -394,6 +395,8 @@
 
             if (e.SelectedRootKey == "kHydroSearchV3")
                     showCoordinates = true;
+            else
+                App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
 
             if (latLongDisplay != null)
                 latLongDisplay.ShowCoordinates = showCoordinates;
