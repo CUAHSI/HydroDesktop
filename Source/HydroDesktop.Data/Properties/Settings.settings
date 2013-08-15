@@ -1,0 +1,40 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydroDesktop.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="defaultHISCentralURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral.asmx</Value>
+    </Setting>
+    <Setting Name="hisCentralURLList" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;http://hiscentral.cuahsi.org/webservices/hiscentral.asmx&lt;/string&gt;
+  &lt;string&gt;http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="DefaultHDProjectName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">default.hdprj</Value>
+    </Setting>
+    <Setting Name="settingsFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">settings.xml</Value>
+    </Setting>
+    <Setting Name="TempDirectoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HydroDesktop</Value>
+    </Setting>
+    <Setting Name="defaultProjectDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">projects\default</Value>
+    </Setting>
+    <Setting Name="ApplicationDirectoryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HydroDesktop</Value>
+    </Setting>
+    <Setting Name="DefaultDatabaseName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">default.sqlite</Value>
+    </Setting>
+    <Setting Name="DefaultMetadataCacheName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MetadataCache.sqlite</Value>
+    </Setting>
+    <Setting Name="DownloadOption" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Append</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
