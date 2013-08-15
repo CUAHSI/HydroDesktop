@@ -110,10 +110,10 @@ namespace HydroDesktop.Database
         public DataTable GetTableForExportFromTimeSeriesPlot(long seriesID)
         {
             var query =
-                "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.DataValue, dv.LocalDateTime, U.UnitsName " +
-                "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U " +
+                "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.DataValue, dv.LocalDateTime, U.UnitsName, S.Citation " +
+                "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U, Sources S " +
                 "WHERE v.VariableID = ds.VariableID AND s.SiteID = ds.SiteID AND dv.SeriesID = ds.SeriesID AND U.UnitsID = v.VariableUnitsID AND ds.SeriesID = " +
-                seriesID;
+                seriesID + " AND S.SourceID = ds.SourceID ";
             return DbOperations.LoadTable(TableName, query);
         }
 
@@ -121,7 +121,7 @@ namespace HydroDesktop.Database
         {
             var sql =
                 "SELECT ds.SeriesID, s.SiteName, v.VariableName, dv.LocalDateTime, dv.DataValue, U1.UnitsName As VarUnits, v.DataType, s.SiteID, s.SiteCode, v.VariableID, v.VariableCode, " +
-                "S.Organization, S.SourceDescription, S.SourceLink, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
+                "S.Organization, S.SourceDescription, S.SourceLink, S.Citation, v.ValueType, v.TimeSupport, U2.UnitsName As TimeUnits, v.IsRegular, v.NoDataValue, " +
                 "dv.UTCOffset, dv.DateTimeUTC, s.Latitude, s.Longitude, dv.ValueAccuracy, dv.CensorCode, m.MethodDescription, q.QualityControlLevelCode, v.SampleMedium, v.GeneralCategory, " +
                 "OffsetValue, OT.OffsetDescription, Un.UnitsAbbreviation as OffsetUnits, QL.QualifierCode " +
                 "FROM DataSeries ds, Sites s, Variables v, DataValues dv, Units U1, Units U2, Methods m, QualityControlLevels q, Sources S " +
