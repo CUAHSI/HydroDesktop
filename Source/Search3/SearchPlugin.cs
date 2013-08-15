@@ -218,15 +218,15 @@ namespace Search3
         {
             if (e.SelectedRootKey == _searchKey)
             {
-                App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
-                App.DockManager.SelectPanel("kMap");
+                //App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
+                //App.DockManager.SelectPanel("kMap");
 
                 //searchSummary.ShowSearchStatus = true;
                 //searchSummary.UpdateStatus();
             }
             else
             {
-                App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
+               // App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
                 //searchSummary.ShowSearchStatus = false;
             }
         }
