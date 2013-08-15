@@ -218,7 +218,6 @@ namespace Search3
         {
             if (e.SelectedRootKey == _searchKey)
             {
-                //App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 //App.DockManager.SelectPanel("kMap");
 
                 //searchSummary.ShowSearchStatus = true;
@@ -226,7 +225,6 @@ namespace Search3
             }
             else
             {
-               // App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
                 //searchSummary.ShowSearchStatus = false;
             }
         }
