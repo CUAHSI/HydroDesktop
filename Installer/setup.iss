@@ -315,6 +315,7 @@ Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_4"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
 Type: filesandordirs; Name: "{userappdata}\{#SrcApp}"
 Type: filesandordirs; Name: "{localappdata}\CUAHSI\{#SrcApp}*"
+Type: filesandordirs; Name: "{localappdata}\Temp\HydroDesktop"
 
 [Dirs]
 Name: {app}; Permissions: everyone-modify; Flags: uninsalwaysuninstall
