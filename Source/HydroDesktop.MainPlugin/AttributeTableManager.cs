@@ -114,7 +114,7 @@ namespace HydroDesktop.Main
                 grp.LayerAdded += Map_LayerAdded;
             }
 
-            if (addedLayer.ContextMenuItems.Exists(item => item.Name == contextMenuItemName))
+            if (addedLayer == null || addedLayer.ContextMenuItems == null || addedLayer.ContextMenuItems.Exists(item => item.Name == contextMenuItemName))
             {
                 // assume menu item already exists. Do nothing.
                 return;
