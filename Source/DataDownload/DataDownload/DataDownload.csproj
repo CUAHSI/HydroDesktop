@@ -68,19 +68,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\packages\DotSpatial.Controls.1.5.14\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Controls.1.5.15\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
 	  <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Data.1.5.11\lib\net40-Client\DotSpatial.Data.dll</HintPath>
 	  <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
       <HintPath>..\..\packages\DotSpatial.Data.Forms.1.5.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
 	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -91,10 +89,12 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
       <HintPath>..\..\packages\DotSpatial.Modeling.Forms.1.5.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
 	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -105,10 +105,12 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\..\packages\DotSpatial.Projections.1.5.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
 	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -119,10 +121,12 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
       <HintPath>..\..\packages\DotSpatial.Serialization.1.5.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
 	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
@@ -131,6 +135,7 @@
       <HintPath>..\..\packages\DotSpatial.Symbology.1.5.2\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
 	  <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
@@ -138,10 +143,12 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\..\packages\DotSpatial.Topology.1.5.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
 	  <Private>False</Private>
+      <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>

@@ -57,12 +57,13 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls">
-      <HintPath>..\packages\DotSpatial.Controls.1.5.14\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+    <Reference Include="DotSpatial.Controls, Version=1.5.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial.Controls.1.5.15\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.5.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Data.1.5.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Data.1.5.11\lib\net40-Client\DotSpatial.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Data.Forms.1.5.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
