@@ -13,6 +13,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Controls.Header;
 using DotSpatial.Topology;
+using System.ComponentModel;
 
 namespace Search3.Settings.UI
 {
@@ -42,7 +43,7 @@ namespace Search3.Settings.UI
             InitializeComponent();
 
             gridViewWebServices.CellContentClick += gridViewWebServices_OpenUrl;
-            gridViewWebServices.CellValueChanged += gridViewWebServices_AfterCheck;  
+            gridViewWebServices.CellValueChanged += gridViewWebServices_AfterCheck;
         }
         
 
@@ -193,6 +194,7 @@ namespace Search3.Settings.UI
             }
             finally
             {
+                gridViewWebServices.Sort(gridViewWebServices.Columns["Service Name"], ListSortDirection.Ascending);
                 gridViewWebServices.ResumeLayout();
             }
         }
