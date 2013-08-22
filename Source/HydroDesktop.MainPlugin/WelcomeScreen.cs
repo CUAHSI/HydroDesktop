@@ -37,6 +37,7 @@ namespace HydroDesktop.Main
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
         private ProjectManager myProjectManager;
+        
 
         
         #endregion
@@ -105,7 +106,11 @@ namespace HydroDesktop.Main
                 {
                     string newProjectFile = CopyToDocumentsFolder(projectFile);
                     _app.SerializationManager.OpenProject(newProjectFile);
-
+                   if(newProjectFile.ToLower().Contains("sampleprojects") 
+                      && WebUtilities.IsInternetAvailable() == true)
+                    {
+                        myProjectManager.ProjectToGeoLocation();
+                    } 
                 }
                 catch (Exception ex)
                 {
@@ -122,6 +127,7 @@ namespace HydroDesktop.Main
 
                 this.DialogResult = DialogResult.OK;
                     
+               
                 this.Close();
             }
         }
@@ -400,7 +406,7 @@ namespace HydroDesktop.Main
             {
                 MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
-        }      
+        }
     } 
 
     public class ProjectFileInfo
