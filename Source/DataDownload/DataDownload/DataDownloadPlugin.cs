@@ -576,6 +576,13 @@ namespace HydroDesktop.DataDownload
         void Layers_LayerRemoved(object sender, LayerEventArgs e)
         {
             UnattachLayerFromPlugin(e.Layer);
+            //Hack to make it so the Selection Status display would update when a layer was removed.
+            App.Map.Layers.SelectedLayer = null;
+
+            FunctionMode f = App.Map.FunctionMode;
+            App.Map.FunctionMode = f;
+           
+       
         }
 
         private void AttachLayerToPlugin(ILayer layer, bool isDeserializing = false)

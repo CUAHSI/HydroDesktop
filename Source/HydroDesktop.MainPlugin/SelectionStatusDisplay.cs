@@ -20,6 +20,8 @@ namespace HydroDesktop.Main
         
 
             App.Map.SelectionChanged += Map_SelectionChanged;
+            // Hack to make it so the Status Panel would update.
+            App.Map.FunctionModeChanged += Map_LayerRemoved;
             App.Map.MapFrame.LayerSelected +=MapFrame_LayerSelected;
 
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
@@ -49,6 +51,11 @@ namespace HydroDesktop.Main
             UpdateStatusPanel();
         }
 
+        void Map_LayerRemoved(object sender, EventArgs e)
+        {
+            UpdateStatusPanel();
+        }
+
         void UpdateStatusPanel()
         {
             if (App.Map.MapFrame.IsSelected)
@@ -57,11 +64,15 @@ namespace HydroDesktop.Main
             }
             else
             {
-                var selected = App.Map.Layers.SelectedLayer as IMapFeatureLayer; 
+                var selected = App.Map.Layers.SelectedLayer as IMapFeatureLayer;
                 if (selected != null && selected.Selection != null)
                 {
                     var layName = selected.LegendText;
-                    SelectionStatusPanel.Caption = String.Format("layer: {0} Selected: {1}", layName, selected.Selection.Count);
+                    SelectionStatusPanel.Caption = String.Format("Layer: {0}, Selected: {1}", layName, selected.Selection.Count);
+                }
+                else
+                {
+                    SelectionStatusPanel.Caption = "No Layer Selected";
                 }
             }
         }
