@@ -384,8 +384,9 @@ namespace Search3
 
         void _searcher_Completed(object sender, CompletedEventArgs e)
         {
-            // DeactivateSelectAreaByPolygon(); //Added 1/21/13 Hullinger
-            DeactivateDrawBox();
+          
+            rbSelect_Click(this, new EventArgs());
+            rbSelect.Toggle();
 
             if (e.Result == null) return;
             e.ProgressHandler.ReportMessage("Adding Sites to Map...");
