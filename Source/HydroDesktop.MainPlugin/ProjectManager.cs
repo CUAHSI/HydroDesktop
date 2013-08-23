@@ -127,8 +127,10 @@ namespace HydroDesktop.Main
             {
                 string locationsRequest = "http://ip-api.com/xml";
                 double[] xy = GetLocation(locationsRequest);
+                if (xy[0] == 0.0 || xy[1] == 0.0)
+                    return;
                 xy = LatLonReproject(xy[1], xy[0]);
-                App.Map.MapFrame.ViewExtents = (new Envelope(xy[0] - 500000, xy[0] + 500000, xy[1] - 500000, xy[1] + 500000)).ToExtent();
+                App.Map.MapFrame.ViewExtents = (new Envelope(xy[0] - 420000, xy[0] + 420000, xy[1] - 420000, xy[1] + 420000)).ToExtent();
             }
             catch (Exception e)
             {
