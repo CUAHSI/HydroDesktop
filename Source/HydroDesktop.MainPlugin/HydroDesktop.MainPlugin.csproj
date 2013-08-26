@@ -115,7 +115,7 @@
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1201\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1202\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar, Version=0.11.9.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -191,7 +191,7 @@
     </Reference>
     <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1201\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1202\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
