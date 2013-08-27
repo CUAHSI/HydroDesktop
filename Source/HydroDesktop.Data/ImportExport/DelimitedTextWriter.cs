@@ -38,7 +38,8 @@ namespace HydroDesktop.ImportExport
 		private TextWriter _textStream;
 		private bool _isDisposed;
 		private readonly string _delimiter;
-        private static string citationInfo = "HydroDesktop is in development at Brigham Young University and led by Dr. Daniel P. Ames (dan.ames@byu.edu).\n" +
+        private static string citationInfo = 
+                                   "HydroDesktop is in development at Brigham Young University and led by Dr. Daniel P. Ames (dan.ames@byu.edu).\n" +
                                    "Development is supported by the Consortium of Universities for the Advancement of Hydrologic Sciences, Inc.\n" +
                                    "(CUAHSI) under NSF Grant Nos. 03-26064 and 07-53521.\n\n" +
 
@@ -47,7 +48,7 @@ namespace HydroDesktop.ImportExport
 
                                    "Ames, D.P., Horsburgh, J.S., Cao, Y., Kadlec, J., Whiteaker, T., and Valentine, D., 2012.\n" +
                                    "HydroDesktop: Web Services-Based Software for Hydrologic Data Discovery, Download, Visualization,\n" +
-                                   "and Analysis. Environmental Modeling & Software. Vol 37, pp 146-156. http:\\dx.doi.org/10.1016/j.envsoft.2012.03.013";
+                                   "and Analysis. Environmental Modeling & Software. Vol 37, pp 146-156. http:\\dx.doi.org/10.1016/j.envsoft.2012.03.013\n\n";
                                                                                                                                                   
 		#endregion
 
@@ -344,7 +345,8 @@ namespace HydroDesktop.ImportExport
                     }
                 }
 
-             //   outputStream.Write(citationInfo);
+                outputStream.Write(citationInfo);
+                outputStream.WriteLine();
 
                 // Write each column name from the data table
                 for (int i = 0; i < columnCount; i++)
