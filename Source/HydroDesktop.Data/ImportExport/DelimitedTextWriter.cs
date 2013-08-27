@@ -27,6 +27,7 @@ namespace HydroDesktop.ImportExport
 		None
 	}
 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 	/// <summary>
 	/// Writes items to a text file in which items should be separated by a delimiter
 	/// </summary>
@@ -37,7 +38,17 @@ namespace HydroDesktop.ImportExport
 		private TextWriter _textStream;
 		private bool _isDisposed;
 		private readonly string _delimiter;
+        private static string citationInfo = "HydroDesktop is in development at Brigham Young University and led by Dr. Daniel P. Ames (dan.ames@byu.edu).\n" +
+                                   "Development is supported by the Consortium of Universities for the Advancement of Hydrologic Sciences, Inc.\n" +
+                                   "(CUAHSI) under NSF Grant Nos. 03-26064 and 07-53521.\n\n" +
 
+                                   "If you use HydroDesktop in your research, please consider citing both the HydroDesktop web site\n" +
+                                   "(www.hydrodesktop.org) and the paper that describes the software:\n\n" +
+
+                                   "Ames, D.P., Horsburgh, J.S., Cao, Y., Kadlec, J., Whiteaker, T., and Valentine, D., 2012.\n" +
+                                   "HydroDesktop: Web Services-Based Software for Hydrologic Data Discovery, Download, Visualization,\n" +
+                                   "and Analysis. Environmental Modeling & Software. Vol 37, pp 146-156. http:\\dx.doi.org/10.1016/j.envsoft.2012.03.013";
+                                                                                                                                                  
 		#endregion
 
 		#region Constructor
@@ -332,6 +343,8 @@ namespace HydroDesktop.ImportExport
                         totalSteps = dataTable.Rows.Count;
                     }
                 }
+
+             //   outputStream.Write(citationInfo);
 
                 // Write each column name from the data table
                 for (int i = 0; i < columnCount; i++)
