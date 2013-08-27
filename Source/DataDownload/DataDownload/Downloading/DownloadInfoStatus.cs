@@ -28,6 +28,6 @@ namespace HydroDesktop.DataDownload.Downloading
         /// <summary>
         /// Downloaded and saved with warnings.
         /// </summary>
-        OkWithWarnings
+        OkWithWarning
     }
 }
