@@ -238,13 +238,18 @@ Namespace Controls
                         pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.Title.Text = "Date and Time"
                     End If
                 Catch
-                    nodataseriescount -= 1
+                    If Not nodataseriescount = 0 Then
+                        nodataseriescount -= 1
+                    End If
+
                 End Try
             Else
                 Try
                     pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
                 Catch
-                    nodataseriescount -= 1
+                    If Not nodataseriescount = 0 Then
+                        nodataseriescount -= 1
+                    End If
                 End Try
             End If
         End Sub

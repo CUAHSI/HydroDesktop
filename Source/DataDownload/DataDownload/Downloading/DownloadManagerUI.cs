@@ -208,7 +208,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 e.CellStyle.Font = new Font(dgvDownloadData.Font, FontStyle.Bold);
                 e.CellStyle.ForeColor = Color.White;
-                e.CellStyle.BackColor = Color.FromArgb(240, 0, 30);
+                e.CellStyle.BackColor = Color.FromArgb(214, 73, 55);
             }
             else if (dInfo.Status == DownloadInfoStatus.Ok)
             {
