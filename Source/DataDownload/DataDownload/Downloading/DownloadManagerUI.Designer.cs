@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DownloadManagerUI));
             this.pbTotal = new System.Windows.Forms.ProgressBar();
             this.lbOutput = new System.Windows.Forms.ListBox();
@@ -54,10 +56,10 @@
             this.paCommonButtons = new System.Windows.Forms.Panel();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.paWorkButtons = new System.Windows.Forms.Panel();
-            this.redownloadControl1 = new HydroDesktop.DataDownload.Downloading.RedownloadControl();
             this.chbAutoScroll = new System.Windows.Forms.CheckBox();
             this.btnCopyLog = new System.Windows.Forms.Button();
             this.btnSendError = new System.Windows.Forms.Button();
+            this.redownloadControl1 = new HydroDesktop.DataDownload.Downloading.RedownloadControl();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDownloadData)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.paProgress.SuspendLayout();
@@ -73,7 +75,7 @@
             this.pbTotal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbTotal.Location = new System.Drawing.Point(3, 3);
             this.pbTotal.Name = "pbTotal";
-            this.pbTotal.Size = new System.Drawing.Size(537, 24);
+            this.pbTotal.Size = new System.Drawing.Size(542, 24);
             this.pbTotal.TabIndex = 2;
             // 
             // lbOutput
@@ -82,7 +84,7 @@
             this.lbOutput.FormattingEnabled = true;
             this.lbOutput.Location = new System.Drawing.Point(3, 312);
             this.lbOutput.Name = "lbOutput";
-            this.lbOutput.Size = new System.Drawing.Size(638, 140);
+            this.lbOutput.Size = new System.Drawing.Size(643, 140);
             this.lbOutput.TabIndex = 4;
             // 
             // lblTotalInfo
@@ -91,7 +93,7 @@
             this.lblTotalInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalInfo.Location = new System.Drawing.Point(3, 30);
             this.lblTotalInfo.Name = "lblTotalInfo";
-            this.lblTotalInfo.Size = new System.Drawing.Size(537, 19);
+            this.lblTotalInfo.Size = new System.Drawing.Size(542, 19);
             this.lblTotalInfo.TabIndex = 7;
             this.lblTotalInfo.Text = "lblTotalInfo";
             // 
@@ -120,12 +122,28 @@
             // 
             this.dgvDownloadData.AllowUserToAddRows = false;
             this.dgvDownloadData.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDownloadData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDownloadData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDownloadData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDownloadData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDownloadData.Location = new System.Drawing.Point(3, 145);
             this.dgvDownloadData.Name = "dgvDownloadData";
             this.dgvDownloadData.ReadOnly = true;
-            this.dgvDownloadData.Size = new System.Drawing.Size(638, 115);
+            this.dgvDownloadData.Size = new System.Drawing.Size(643, 115);
             this.dgvDownloadData.TabIndex = 11;
             // 
             // tableLayoutPanel1
@@ -140,7 +158,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(638, 136);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(643, 136);
             this.tableLayoutPanel1.TabIndex = 12;
             // 
             // paProgress
@@ -149,7 +167,7 @@
             this.paProgress.Dock = System.Windows.Forms.DockStyle.Fill;
             this.paProgress.Location = new System.Drawing.Point(3, 3);
             this.paProgress.Name = "paProgress";
-            this.paProgress.Size = new System.Drawing.Size(543, 130);
+            this.paProgress.Size = new System.Drawing.Size(548, 130);
             this.paProgress.TabIndex = 13;
             // 
             // tableLayoutPanel2
@@ -166,7 +184,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(543, 130);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(548, 130);
             this.tableLayoutPanel2.TabIndex = 8;
             // 
             // paProgressInformation
@@ -186,7 +204,7 @@
             this.paProgressInformation.Dock = System.Windows.Forms.DockStyle.Fill;
             this.paProgressInformation.Location = new System.Drawing.Point(3, 52);
             this.paProgressInformation.Name = "paProgressInformation";
-            this.paProgressInformation.Size = new System.Drawing.Size(537, 75);
+            this.paProgressInformation.Size = new System.Drawing.Size(542, 75);
             this.paProgressInformation.TabIndex = 8;
             // 
             // lcValuesPerRequestInfo
@@ -301,7 +319,7 @@
             // 
             this.paCommonButtons.Controls.Add(this.btnCancelClose);
             this.paCommonButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.paCommonButtons.Location = new System.Drawing.Point(552, 3);
+            this.paCommonButtons.Location = new System.Drawing.Point(557, 3);
             this.paCommonButtons.Name = "paCommonButtons";
             this.paCommonButtons.Size = new System.Drawing.Size(83, 130);
             this.paCommonButtons.TabIndex = 13;
@@ -322,7 +340,7 @@
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.45454F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.54546F));
-            this.tlpMain.Size = new System.Drawing.Size(644, 455);
+            this.tlpMain.Size = new System.Drawing.Size(649, 455);
             this.tlpMain.TabIndex = 13;
             // 
             // paWorkButtons
@@ -335,16 +353,8 @@
             this.paWorkButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.paWorkButtons.Location = new System.Drawing.Point(3, 266);
             this.paWorkButtons.Name = "paWorkButtons";
-            this.paWorkButtons.Size = new System.Drawing.Size(638, 40);
+            this.paWorkButtons.Size = new System.Drawing.Size(643, 40);
             this.paWorkButtons.TabIndex = 13;
-            // 
-            // redownloadControl1
-            // 
-            this.redownloadControl1.Location = new System.Drawing.Point(254, 4);
-            this.redownloadControl1.Name = "redownloadControl1";
-            this.redownloadControl1.Size = new System.Drawing.Size(234, 30);
-            this.redownloadControl1.TabIndex = 16;
-            this.redownloadControl1.DoRedownload += new System.EventHandler<HydroDesktop.DataDownload.Downloading.RedownloadArgs>(this.redownloadControl1_DoRedownload);
             // 
             // chbAutoScroll
             // 
@@ -377,11 +387,19 @@
             this.btnSendError.Text = "Send error";
             this.btnSendError.UseVisualStyleBackColor = true;
             // 
+            // redownloadControl1
+            // 
+            this.redownloadControl1.Location = new System.Drawing.Point(254, 4);
+            this.redownloadControl1.Name = "redownloadControl1";
+            this.redownloadControl1.Size = new System.Drawing.Size(234, 30);
+            this.redownloadControl1.TabIndex = 16;
+            this.redownloadControl1.DoRedownload += new System.EventHandler<HydroDesktop.DataDownload.Downloading.RedownloadArgs>(this.redownloadControl1_DoRedownload);
+            // 
             // DownloadManagerUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 455);
+            this.ClientSize = new System.Drawing.Size(649, 455);
             this.Controls.Add(this.tlpMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
