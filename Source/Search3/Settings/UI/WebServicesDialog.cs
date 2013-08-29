@@ -191,5 +191,12 @@ namespace Search3.Settings.UI
         }
 
         #endregion
+
+        private void WebServicesDialog_MouseEnter(object sender, EventArgs e)
+        {
+            webServicesUserControl1.Focus();
+        }
+
+       
     }
 }
