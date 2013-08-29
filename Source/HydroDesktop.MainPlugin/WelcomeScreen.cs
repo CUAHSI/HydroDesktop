@@ -106,7 +106,8 @@ namespace HydroDesktop.Main
                 {
                     string newProjectFile = CopyToDocumentsFolder(projectFile);
                     _app.SerializationManager.OpenProject(newProjectFile);
-                   if(newProjectFile.ToLower().Contains("sampleprojects") 
+                   if((newProjectFile.Contains("North America Map")
+                      || newProjectFile.Contains("World Map")) 
                       && WebUtilities.IsInternetAvailable() == true)
                     {
                         myProjectManager.ProjectToGeoLocation();
