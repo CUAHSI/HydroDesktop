@@ -1,0 +1,14 @@
+# MSBUILD Response file
+# used to set the preferences for an automated build
+/p:SendEmail=false
+/p:EmailTo=his-dev@sdsc.edu
+/p:EmailFrom=me@example.com
+/p:EmailServerUserName=me
+/p:EmailPassword=none
+/p:EmailServer=relay.sdsc.edu
+/p:EmailEnableSSL=false
+######################
+# codeplex
+###############
+#/p:User=Codeplex
+#/p:Password=None
