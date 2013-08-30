@@ -119,7 +119,7 @@
     </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar, Version=0.11.9.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1198\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1199\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1200\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
