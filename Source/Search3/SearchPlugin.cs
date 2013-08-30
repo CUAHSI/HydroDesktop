@@ -503,6 +503,14 @@ namespace Search3
             DeactivateSelectAreaByPolygon();
             DeactivateCurrentView();
 
+            var layers = App.Map.MapFrame.GetAllLayers();
+            App.Map.MapFrame.IsSelected = false;
+            foreach (var layer in layers)
+            {
+                layer.IsSelected = false;
+                layer.GetParentItem().IsSelected = false;
+            }
+
             if (_rectangleDrawing == null)
             {
                 _rectangleDrawing = new RectangleDrawing((Map)App.Map);
@@ -511,6 +519,7 @@ namespace Search3
             }
 
             _rectangleDrawing.Activate();
+            App.Map.Legend.RefreshNodes();
         }
         
 
@@ -555,26 +564,6 @@ namespace Search3
             if(App.Map.FunctionMode != FunctionMode.Select)
                 App.Map.FunctionMode = FunctionMode.Select;
             CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
-
-            //   var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
-            //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
-            //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
-            var layers = App.Map.MapFrame.GetAllLayers();
-            bool selected = false;
-            foreach (var layer in layers)
-            {
-                if (layer.IsSelected)
-                {
-                    selected = true;
-                }
-            }
-
-           // App.Map.MapFrame.GetAllLayers().ForEach(r => r.IsSelected = false);
-            if (selected == false)
-            {
-                App.Map.MapFrame.IsSelected = true; ///////  This was formerly deleted
-            }
-            App.Map.Legend.RefreshNodes();
         }
 
         private void DeactivateSelectAreaByPolygon()
@@ -657,8 +646,6 @@ namespace Search3
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
             SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
-
-            //App.Map.FunctionMode = FunctionMode.Select;
         }
 
         public void DeactivateCurrentView()
