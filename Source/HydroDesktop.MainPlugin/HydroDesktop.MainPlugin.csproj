@@ -122,8 +122,7 @@
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1198\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1188\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1200\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
