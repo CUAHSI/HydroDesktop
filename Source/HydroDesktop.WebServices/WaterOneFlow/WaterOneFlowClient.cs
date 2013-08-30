@@ -20,7 +20,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		//the directory where downloaded files are stored
 		private string _downloadDirectory;
 
-        private static int valuesPerReq = 5000;
+        private static int valuesPerReq = 10000;
         private static bool allInOneRequest = false;
 
 		//the object containing additional metadata information
