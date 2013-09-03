@@ -345,7 +345,7 @@ namespace HydroDesktop.ImportExport
                     }
                 }
 
-                outputStream.Write(citationInfo);
+                outputStream.Write("\"" + citationInfo + "\"");
                 outputStream.WriteLine();
 
                 // Write each column name from the data table
