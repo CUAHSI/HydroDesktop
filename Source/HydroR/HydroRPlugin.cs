@@ -89,6 +89,8 @@ namespace HydroR
         {
             Properties.Settings.Default.PathToR = _hydroRControl.PathToR;
             Properties.Settings.Default.Save();
+
+            _hydroRControl.closeR();
         }
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
