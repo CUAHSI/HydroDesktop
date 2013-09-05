@@ -228,6 +228,8 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
             _map.AddLabels(_layer, string.Format("[{0}]", attributeName),
                                           string.Format("[ValueCount] > {0}", 10),
                                           symb, "Category Default");
+            _layer.ShowLabels = false;
+            
         }
 
         #endregion
