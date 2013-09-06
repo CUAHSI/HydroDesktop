@@ -158,15 +158,15 @@ namespace Search3.Settings.UI
                 colTB6.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 gridViewWebServices.Columns.Add(colTB6);
 
+                DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
+                dgvic.HeaderText = "View Extents";
+                dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                dgvic.ValuesAreIcons = true;
+                dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
+                gridViewWebServices.Columns.Add(dgvic);
+
                 if (local == false)
                 {
-                    DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
-                    dgvic.HeaderText = "View Extents";
-                    dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-                    dgvic.ValuesAreIcons = true;
-                    dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
-                    gridViewWebServices.Columns.Add(dgvic);
-
                     DataGridViewImageColumn dgvic2 = new DataGridViewImageColumn();
                     dgvic2.HeaderText = "More Info";
                     dgvic2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
