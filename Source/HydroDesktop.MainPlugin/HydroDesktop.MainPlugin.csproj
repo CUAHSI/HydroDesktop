@@ -125,12 +125,7 @@
       <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1200\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
-      <HintPath>..\packages\DotSpatial.Projections.1.5.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
+      <HintPath>..\packages\DotSpatial.Projections.1.5.11\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections.Forms">
