@@ -569,7 +569,9 @@ Namespace Controls
         'Change Y value by Interpolating
         Public Sub btnInterpolate_Click()
             If Editing Then
-                If MsgBox("Are You Sure You Want to Interpolate the Selected Values?", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
+                If MsgBox("         The Selected Value Range will be Interpolated." + Environment.NewLine +
+                          "            This creates new intermediary data points." + Environment.NewLine + Environment.NewLine +
+                        "Are You Sure You Want to Interpolate the Selected Values?", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
                     If dgvDataValues.SelectedRows.Count >= 1 Then
                         Dim returned As Boolean = False
                         If pTimeSeriesPlot.HasEditingCurve Then
@@ -579,7 +581,6 @@ Namespace Controls
                         Else
                             ChangeValueByInterpolating(returned)
                         End If
-
                         RefreshDataGridView()
                     Else
                         MsgBox(ErrMsgForNotPointSelected)
