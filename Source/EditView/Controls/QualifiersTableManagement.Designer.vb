@@ -46,7 +46,7 @@ Namespace Controls
             '
             'btnSubmit
             '
-            Me.btnSubmit.Location = New System.Drawing.Point(15, 157)
+            Me.btnSubmit.Location = New System.Drawing.Point(15, 152)
             Me.btnSubmit.Name = "btnSubmit"
             Me.btnSubmit.Size = New System.Drawing.Size(201, 31)
             Me.btnSubmit.TabIndex = 17
@@ -106,14 +106,14 @@ Namespace Controls
             '
             'btnCancel
             '
-            Me.btnCancel.Location = New System.Drawing.Point(222, 157)
+            Me.btnCancel.Location = New System.Drawing.Point(222, 152)
             Me.btnCancel.Name = "btnCancel"
             Me.btnCancel.Size = New System.Drawing.Size(203, 31)
             Me.btnCancel.TabIndex = 21
             Me.btnCancel.Text = "Cancel"
             Me.btnCancel.UseVisualStyleBackColor = True
             '
-            'fQualifiersTableManagement
+            'QualifiersTableManagement
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -129,10 +129,10 @@ Namespace Controls
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "fQualifiersTableManagement"
+            Me.Name = "QualifiersTableManagement"
             Me.ShowInTaskbar = False
             Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-            Me.Text = "Qualifiers Table Management"
+            Me.Text = "Flag Values with Qualifiers"
             CType(Me.ConfigBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
