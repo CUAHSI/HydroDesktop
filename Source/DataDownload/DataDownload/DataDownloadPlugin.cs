@@ -578,6 +578,7 @@ namespace HydroDesktop.DataDownload
             UnattachLayerFromPlugin(e.Layer);
             //Hack to make it so the Selection Status display would update when a layer was removed.
             App.Map.Layers.SelectedLayer = null;
+            App.DockManager.HidePanel("kDataExplorer");
 
             FunctionMode f = App.Map.FunctionMode;
             App.Map.FunctionMode = f;
