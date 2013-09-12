@@ -129,11 +129,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.Symbology.1.5.2\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
+      <HintPath>..\packages\DotSpatial.Symbology.1.5.3\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
