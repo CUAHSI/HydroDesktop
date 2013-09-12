@@ -116,11 +116,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\packages\DotSpatial.Symbology.1.5.2\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
-      <Private>False</Private>
+      <HintPath>..\packages\DotSpatial.Symbology.1.5.3\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
