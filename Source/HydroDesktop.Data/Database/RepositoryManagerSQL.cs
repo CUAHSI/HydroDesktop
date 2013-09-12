@@ -1239,13 +1239,12 @@ namespace HydroDesktop.Database
 
         private long? GetUnitID(DbConnection conn, Unit unit)
         {
-            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsType = ? AND UnitsAbbreviation = ?";
+            const string sqlUnits = "SELECT UnitsID FROM Units WHERE UnitsName = ? AND UnitsAbbreviation = ?";
 
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = sqlUnits;
                 cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Name));
-                cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.UnitsType));
                 cmd.Parameters.Add(_db.CreateParameter(DbType.String, unit.Abbreviation));
 
                 var result = cmd.ExecuteScalar();
