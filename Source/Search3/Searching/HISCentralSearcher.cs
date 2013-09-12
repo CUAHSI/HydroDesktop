@@ -18,7 +18,6 @@ namespace Search3.Searching
         #region Fields
 
         private readonly string _hisCentralUrl;
-        private static readonly CultureInfo _usaCulture = new CultureInfo("en-US");
         private static readonly CultureInfo _invariantCulture = CultureInfo.InvariantCulture;
 
         #endregion
@@ -93,13 +92,13 @@ namespace Search3.Searching
             url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
-            url.Append(Uri.EscapeDataString(xMin.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(xMin.ToString(_invariantCulture)));
             url.Append("&xmax=");
-            url.Append(Uri.EscapeDataString(xMax.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(xMax.ToString(_invariantCulture)));
             url.Append("&ymin=");
-            url.Append(Uri.EscapeDataString(yMin.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(yMin.ToString(_invariantCulture)));
             url.Append("&ymax=");
-            url.Append(Uri.EscapeDataString(yMax.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(yMax.ToString(_invariantCulture)));
 
             //to append the keyword
             url.Append("&conceptKeyword=");
