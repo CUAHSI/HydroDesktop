@@ -92,7 +92,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\packages\DotSpatial.Data.1.5.11\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Data.1.5.12\lib\net40-Client\DotSpatial.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms">
