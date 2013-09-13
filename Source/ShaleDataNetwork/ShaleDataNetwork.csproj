@@ -78,7 +78,8 @@
       <HintPath>..\packages\DotSpatial.Controls.1.5.16\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
-      <HintPath>..\packages\DotSpatial.Data.1.5.11\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Data.1.5.12\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Data.Forms.1.5.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
