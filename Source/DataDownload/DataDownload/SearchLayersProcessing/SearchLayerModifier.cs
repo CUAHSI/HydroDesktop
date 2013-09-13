@@ -335,7 +335,9 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
                     LegendText = legendText,
                     SelectionSymbolizer = new PointSymbolizer(image, imageSize + 2)
                 };
-                myCategory.SelectionSymbolizer.SetFillColor(Color.Yellow);
+                
+                myCategory.SelectionSymbolizer.SetFillColor(Color.FromArgb(180, 255, 20));
+                myCategory.SelectionSymbolizer.SetOutline(Color.Yellow, 3);
                 scheme.AddCategory(myCategory);
 
                 // add category for downloaded
@@ -346,14 +348,15 @@ namespace HydroDesktop.DataDownload.SearchLayersProcessing
 
                     filterEx = string.Format("{0} AND not([{1}] is null)", baseFilter, seriesID);
                     legendText = myCategory.LegendText + " (downloaded)";
-                    var categorieForDownload = new PointCategory(mySymbolizer)
+                    var categoryForDownload = new PointCategory(mySymbolizer)
                     {
                         FilterExpression = filterEx,
                         LegendText = legendText,
                         SelectionSymbolizer = new PointSymbolizer(image, imageSize + 2)
                     };
-                    categorieForDownload.SelectionSymbolizer.SetFillColor(Color.Yellow);
-                    scheme.AddCategory(categorieForDownload);
+                    categoryForDownload.SelectionSymbolizer.SetFillColor(Color.FromArgb(180, 255, 20));
+                    categoryForDownload.SelectionSymbolizer.SetOutline(Color.Yellow, 3);
+                    scheme.AddCategory(categoryForDownload);
                 }
             }
             scheme.AppearsInLegend = true;
