@@ -50,9 +50,8 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls, Version=1.5.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Controls.1.5.16\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\packages\DotSpatial.Controls.1.5.17\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.5.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
@@ -86,11 +85,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology">
-      <HintPath>..\packages\DotSpatial.Symbology.1.5.3\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Symbology.1.5.4\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
-      <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.1\lib\net40\DotSpatial.Symbology.Forms.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.2\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Topology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=MSIL">
