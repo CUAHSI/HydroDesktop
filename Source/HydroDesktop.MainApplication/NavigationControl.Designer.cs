@@ -113,6 +113,7 @@
             this.Location = new System.Drawing.Point(17, 17);
             this.Name = "NavigationControl";
             this.Size = new System.Drawing.Size(30, 154);
+            this.MouseHover += new System.EventHandler(this.NavigationControl_MouseHover);
             this.ResumeLayout(false);
 
         }
