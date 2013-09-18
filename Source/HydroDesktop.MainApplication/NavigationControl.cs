@@ -98,30 +98,40 @@ namespace HydroDesktop.MainApplication
         {
             System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
             ToolTip1.SetToolTip(this.button1, "Pan");
+            this.Cursor = Cursors.Arrow;
         }
 
         private void button2_MouseHover(object sender, EventArgs e)
         {
             System.Windows.Forms.ToolTip ToolTip2 = new System.Windows.Forms.ToolTip();
             ToolTip2.SetToolTip(this.button2, "Zoom In");
+            this.Cursor = Cursors.Arrow;
         }
 
         private void button3_MouseHover(object sender, EventArgs e)
         {
             System.Windows.Forms.ToolTip ToolTip3 = new System.Windows.Forms.ToolTip();
             ToolTip3.SetToolTip(this.button3, "Zoom Out");
+            this.Cursor = Cursors.Arrow;
         }
 
         private void button4_MouseHover(object sender, EventArgs e)
         {
             System.Windows.Forms.ToolTip ToolTip4 = new System.Windows.Forms.ToolTip();
             ToolTip4.SetToolTip(this.button4, "Select");
+            this.Cursor = Cursors.Arrow;
         }
 
         private void button5_MouseHover(object sender, EventArgs e)
         {
             System.Windows.Forms.ToolTip ToolTip5 = new System.Windows.Forms.ToolTip();
             ToolTip5.SetToolTip(this.button5, "Deselect");
+            this.Cursor = Cursors.Arrow;
+        }
+
+        private void NavigationControl_MouseHover(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
         }
     }
 }
