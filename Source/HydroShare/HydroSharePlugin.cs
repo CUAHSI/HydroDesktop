@@ -6,8 +6,10 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroShare.Properties;
-//using IronPython.Hosting;
-//using Microsoft.Scripting.Hosting;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+using System.Diagnostics;
+using System.IO;
 
 namespace HydroShare
 {
@@ -27,8 +29,8 @@ namespace HydroShare
 
         public override void Activate()
         {
-           //AddHydroShareRibbon();
-           //base.Activate();
+           AddHydroShareRibbon();
+           base.Activate();
 
            //App.HeaderControl.RootItemSelected += HeaderControl_RootItemSelected;   
         }
@@ -39,8 +41,8 @@ namespace HydroShare
            //App.HeaderControl.RootItemSelected -= HeaderControl_RootItemSelected;
          
 
-            //App.HeaderControl.RemoveAll();
-            //base.Deactivate();
+           App.HeaderControl.RemoveAll();
+           base.Deactivate();
         }
 
         #endregion
@@ -79,11 +81,50 @@ namespace HydroShare
 
         void pythonTest_Click(object sender, EventArgs e)
         {
+
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = @"python";
+            String cmd = @"C:\Plugins\Hydroshare\GetShapefilesFromHydroShareMyFrame1.py";
+            String args = @"";
+            start.Arguments = string.Format("{0} {1}", cmd, args);
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            using (Process process = Process.Start(start))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    Console.Write(result);
+                }
+            }
+
            // var ipy = Python.CreateRuntime();
            // dynamic test = ipy.ExecuteFile(@"C:\users\cuyler frisby\documents\python\test.py");
             //dynamic test = ipy.UseFile(@"C:\Users\Cuyler Frisby\Documents\Python\bagit-1.2.1\bagit.py");
             //test.make_bag("C:\\Users\\Cuyler Frisby\\Desktop\\NorthAmerica Bag Test", "None", 1);
             //test.Simple();
+
+            /*ScriptRuntime ipy = Python.CreateRuntime();
+            ScriptEngine engine = ipy.GetEngine("Python");
+            var paths = engine.GetSearchPaths();
+            paths.Add(@"C:\Program Files\IronPython 2.7");
+            paths.Add(@"C:\Users\Student\Documents\HD-3\Binaries\Plugins\HydroShare\Lib");
+            engine.SetSearchPaths(paths);
+
+
+            dynamic test = ipy.ExecuteFile(System.IO.Path.Combine("Plugins", "HydroShare", "Lib", "GetShapefilesFromHydroShareMyFrame1.py"));
+
+            test.test();
+            //dynamic test = ipy.UseFile(@"C:\Users\Cuyler Frisby\Documents\Python\bagit-1.2.1\bagit.py");
+
+            /*dynamic test = ipy.ExecuteFile(System.IO.Path.Combine("Plugins", "HydroShare", "Lib", "hydrosharedownload.py"));
+            IList<object> originalResult = (IList<object>)test.retrieveList();
+            List<string> typeSafeResult = new List<string>();
+            foreach (object element in originalResult)
+            {
+                typeSafeResult.Add((string)element);
+            }
+            String x = typeSafeResult[0];*/
         }
 
         public class dynamic_demo
