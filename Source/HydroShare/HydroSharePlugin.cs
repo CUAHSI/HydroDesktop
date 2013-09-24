@@ -6,7 +6,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroShare.Properties;
-using IronPython.Hosting;
+//using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using System.Diagnostics;
 using System.IO;
@@ -82,22 +82,32 @@ namespace HydroShare
         void pythonTest_Click(object sender, EventArgs e)
         {
 
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = @"python";
-            String cmd = @"C:\Plugins\Hydroshare\GetShapefilesFromHydroShareMyFrame1.py";
-            String args = @"";
+            ProcessStartInfo start = new ProcessStartInfo("python");
+            String cmd = @"Plugins\Hydroshare\Lib\GetShapefilesFromHydroShareMyFrame1.py";
+            String args = @"C:\";
             start.Arguments = string.Format("{0} {1}", cmd, args);
             start.UseShellExecute = false;
+            start.CreateNoWindow = true;
             start.RedirectStandardOutput = true;
-            using (Process process = Process.Start(start))
+            start.RedirectStandardError = true;
+
+            Process process = new Process();
+            process.StartInfo = start;
+            process.Start();
+
+            string err;
+            string s;
+            while (((err = process.StandardError.ReadLine()) != null) 
+                | ((s = process.StandardOutput.ReadLine()) != null))
             {
-                using (StreamReader reader = process.StandardOutput)
-                {
-                    string result = reader.ReadToEnd();
-                    Console.Write(result);
-                }
+                if(s!=null)
+                    Console.WriteLine(s);
+                if(err!=null)
+                    Console.WriteLine(err);
             }
 
+
+            
            // var ipy = Python.CreateRuntime();
            // dynamic test = ipy.ExecuteFile(@"C:\users\cuyler frisby\documents\python\test.py");
             //dynamic test = ipy.UseFile(@"C:\Users\Cuyler Frisby\Documents\Python\bagit-1.2.1\bagit.py");
