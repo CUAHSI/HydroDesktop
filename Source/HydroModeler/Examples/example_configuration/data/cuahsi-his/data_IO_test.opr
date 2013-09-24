@@ -1,0 +1,20 @@
+<guiComposition version="1.0">
+  <models>
+    <model omi="..\..\models\infiltration\NRCS-Curve-Number\CNMethod.omi" rect_x="227" rect_y="38" rect_width="100" rect_height="51" />
+    <model omi="DbReader.omi" rect_x="34" rect_y="37" rect_width="100" rect_height="51" />
+    <model omi="DbWriter.omi" rect_x="70" rect_y="132" rect_width="100" rect_height="51" />
+    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="225" rect_y="138" rect_width="100" rect_height="51" />
+  </models>
+  <links>
+    <uilink model_providing="DbReader" model_accepting="Curve Number Method">
+      <link id="2" source_elementset="SmithBranchNexrad" source_quantity="rainfall" target_elementset="SmithBranch" target_quantity="Rainfall" />
+    </uilink>
+    <uilink model_providing="Curve Number Method" model_accepting="Oatc.OpenMI.Gui.Trigger">
+      <link id="6" source_elementset="Smith Branch" source_quantity="Excess Rainfall" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+    </uilink>
+    <uilink model_providing="Curve Number Method" model_accepting="DbWriter">
+      <link id="4" source_elementset="Smith Branch" source_quantity="Excess Rainfall" target_elementset="any element set" target_quantity="any quantity" />
+    </uilink>
+  </links>
+  <runproperties listenedeventtypes="11111111111" triggerinvoke="08/21/2009 10:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+</guiComposition>
