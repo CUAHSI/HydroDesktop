@@ -94,7 +94,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
-      <HintPath>..\packages\DotSpatial.Projections.1.5.11\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Projections.1.5.12\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=MSIL">

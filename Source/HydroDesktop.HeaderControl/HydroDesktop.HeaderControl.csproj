@@ -74,8 +74,10 @@
     <Reference Include="DotSpatial.Plugins.Ribbon">
       <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.29\lib\net40-client\DotSpatial.Plugins.Ribbon.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Projections">
-      <HintPath>..\packages\DotSpatial.Projections.1.5.11\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+    <Reference Include="DotSpatial.Projections, Version=0.11.9.6, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotSpatial.Projections.1.5.12\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
       <HintPath>..\packages\DotSpatial.Serialization.1.5.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
