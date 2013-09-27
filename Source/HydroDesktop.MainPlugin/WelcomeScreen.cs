@@ -55,9 +55,10 @@ namespace HydroDesktop.Main
             _recentProjectFiles = new List<ProjectFileInfo>();
             bsRecentFiles = new BindingSource(RecentProjectFiles, null);
             lstRecentProjects.DataSource = bsRecentFiles;
-            lstRecentProjects.DoubleClick += lstRecentProjects_DoubleClick;
 
+            lstRecentProjects.DoubleClick += lstRecentProjects_DoubleClick;
             lstProjectTemplates.DoubleClick += lstProjectTemplates_DoubleClick;
+            FormClosing += WelcomeScreen_FormClosing;
 
             if (lstProjectTemplates.Items.Count > 0)
             {
@@ -281,6 +282,16 @@ namespace HydroDesktop.Main
         void lstProjectTemplates_DoubleClick(object sender, EventArgs e)
         {
             CreateProjectFromTemplate();
+        }
+
+        private void WelcomeScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Create an empty project if the x button is clicked
+            if (this.DialogResult != DialogResult.OK)
+            {
+                e.Cancel = true;
+                CreateEmptyProject();
+            }
         }
 
         #endregion
