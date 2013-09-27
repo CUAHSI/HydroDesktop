@@ -933,7 +933,7 @@ namespace Search3
 
             if (currentMode != AreaSelectMode.DrawBox)
             {
-                _rectangleDrawing.Deactivate();
+                DeactivateDrawBox();
                 CurrentAreaSelectMode = currentMode;
                 App.Map.FunctionMode = navigationMode;
             }
