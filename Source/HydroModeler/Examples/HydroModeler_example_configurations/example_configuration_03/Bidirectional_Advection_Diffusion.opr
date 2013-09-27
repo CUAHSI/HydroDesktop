@@ -1,0 +1,19 @@
+<guiComposition version="1.0">
+  <models>
+    <model omi="models\sed\Sediment_Diff.omi" rect_x="85" rect_y="92" rect_width="115" rect_height="75" />
+    <model omi="models\water\Water_adv.omi" rect_x="378" rect_y="95" rect_width="115" rect_height="75" />
+    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="391" rect_y="272" rect_width="100" rect_height="100" />
+  </models>
+  <links>
+    <uilink model_providing="Sediment Diffusion" model_accepting="Water Advection">
+      <link id="2" source_elementset="sed" source_quantity="Concentration" target_elementset="sed" target_quantity="Concentration" />
+    </uilink>
+    <uilink model_providing="Water Advection" model_accepting="Oatc.OpenMI.Gui.Trigger">
+      <link id="6" source_elementset="water" source_quantity="Concentration" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+    </uilink>
+    <uilink model_providing="Water Advection" model_accepting="Sediment Diffusion">
+      <link id="4" source_elementset="water" source_quantity="Concentration" target_elementset="water" target_quantity="Concentration" />
+    </uilink>
+  </links>
+  <runproperties listenedeventtypes="11111111111" triggerinvoke="08/20/2009 01:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+</guiComposition>
