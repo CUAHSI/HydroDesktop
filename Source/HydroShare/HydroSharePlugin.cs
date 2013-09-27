@@ -7,7 +7,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroShare.Properties;
 //using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
+//using Microsoft.Scripting.Hosting;
 using System.Diagnostics;
 using System.IO;
 
