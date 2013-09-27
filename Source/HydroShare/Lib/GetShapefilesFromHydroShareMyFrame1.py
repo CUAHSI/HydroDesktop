@@ -31,6 +31,7 @@ class GetShapefilesFromHydroShareMyFrame1( GetShapefiles.MyFrame1 ):
     def clk_GetData( self, event ):
         if self.lst_AvailableItems.GetSelection() >= 0:
             self.hydrosharedownloader.downloadFile(self.lst_AvailableItems.GetString(self.lst_AvailableItems.GetSelection()))
+        self.Close()
     
 def open():
     app = wx.App(0)
