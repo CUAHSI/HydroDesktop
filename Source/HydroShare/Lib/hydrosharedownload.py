@@ -47,17 +47,13 @@ class HydroshareDownloader():
         zipped = zipfile.ZipFile(saved_loc)
         temp_path = os.path.join(self.file_path, "result")
         save_path = os.path.join(self.file_path, resource)
-        try:
-            os.makedirs(temp_path)
-            os.makedirs(save_path)
-        except OSError as exception:
-            if exception.errno != errno.EEXIST:
-                raise
+        os.makedirs(temp_path)
+        os.makedirs(save_path)
 
         zipped.extractall(temp_path)
-        data_zipped = zipfile.ZipFile(os.path.join(temp_path, data, )
+        #data_zipped = zipfile.ZipFile(os.path.join(temp_path, data, )
 
-        
+        a
     def test(self):
         '''Test this script.'''
         self.test_retrieveList()
