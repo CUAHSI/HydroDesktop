@@ -24,14 +24,20 @@ class GetShapefilesFromHydroShareMyFrame1( GetShapefiles.MyFrame1 ):
     def clk_Refresh( self, event):
         self.lst_AvailableItems.Clear()
         self.populateList()
+
+    def clk_FilterSearch( self, event ):
+		# TODO: Implement clk_FilterSearch
+		pass
     
     def clk_Cancel( self, event ):
         self.Close()
     
     def clk_GetData( self, event ):
-        if self.lst_AvailableItems.GetSelection() >= 0:
-            self.hydrosharedownloader.downloadFile(self.lst_AvailableItems.GetString(self.lst_AvailableItems.GetSelection()))
-        self.Close()
+        if self.lst_AvailableItems.GetSelections() >= 0:
+			selected_items = []
+			selected_items = self.lst_AvailableItems.GetSelections()
+			for item in selected_items:
+				self.hydrosharedownloader.downloadFile(self.lst_AvailableItems.GetString(item))
     
 def open():
     app = wx.App(0)
