@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -127,7 +127,7 @@
     </Reference>
     <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1202\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1205\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.12\lib\net40-Client\DotSpatial.Projections.dll</HintPath>

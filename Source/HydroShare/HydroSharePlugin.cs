@@ -81,10 +81,11 @@ namespace HydroShare
 
         void pythonTest_Click(object sender, EventArgs e)
         {
-
+            //String save_path = App.SerializationManager.CurrentProjectDirectory;
+            String save_path = @"C:\Users\Student\Documents"; // Change this to save to a specific folder
             ProcessStartInfo start = new ProcessStartInfo("python");
-            String cmd = @"Plugins\Hydroshare\Lib\GetShapefilesFromHydroShareMyFrame1.py";
-            String args = @"C:\";
+            String cmd = @"C:\Users\Student\Documents\HD-3\Binaries\Plugins\HydroShare\Lib\GetShapefilesFromHydroShareMyFrame1.py";
+            String args = save_path;
             start.Arguments = string.Format("{0} {1}", cmd, args);
             start.UseShellExecute = false;
             start.CreateNoWindow = true;

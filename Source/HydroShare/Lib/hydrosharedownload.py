@@ -1,6 +1,7 @@
 import urllib2
 import os
 import json
+import zipfile
 
 class HydroshareDownloader():
     #base_url points to the Export.php script that packages data files for download.
@@ -25,6 +26,8 @@ class HydroshareDownloader():
         file = urllib2.urlopen(self.base_url.format(resource))
         with open(save_loc, "wb") as code:
             code.write(file.read())
+        
+        self.unzipData(save_loc, resource)
 
     def retrieveList(self):
         '''Download list of files as JSON string and filters it to return list of available files.'''
@@ -40,6 +43,17 @@ class HydroshareDownloader():
         
         return filtered_files
 
+    def unzipData(self, saved_loc, resource):
+        zipped = zipfile.ZipFile(saved_loc)
+        temp_path = os.path.join(self.file_path, "result")
+        save_path = os.path.join(self.file_path, resource)
+        os.makedirs(temp_path)
+        os.makedirs(save_path)
+
+        zipped.extractall(temp_path)
+        #data_zipped = zipfile.ZipFile(os.path.join(temp_path, data, )
+
+        a
     def test(self):
         '''Test this script.'''
         self.test_retrieveList()
@@ -47,11 +61,11 @@ class HydroshareDownloader():
 
     def test_downloadFile(self):
         '''Test method that saves a test file to same folder as script'''
-        downloadFile("TimeSeriesTest", "")
+        self.downloadFile("EdgarRanchComparisonTest1")
 
     def test_retrieveList(self):
         '''Test method that retrieves and prints the list of files from HydroShare'''
-        list = retrieveList()
+        list = self.retrieveList()
         for file in list:
             print(file)
 
