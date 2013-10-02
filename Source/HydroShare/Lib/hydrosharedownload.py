@@ -51,9 +51,12 @@ class HydroshareDownloader():
         os.makedirs(save_path)
 
         zipped.extractall(temp_path)
-        #data_zipped = zipfile.ZipFile(os.path.join(temp_path, data, )
 
-        a
+        for f in os.listdir(os.path.join(temp_path, "data")):
+            if f.endswith(".zip"):
+                data_zipped = zipfile.ZipFile(os.path.join(temp_path, "data", f))
+                data_zipped.extractall(save_path)
+
     def test(self):
         '''Test this script.'''
         self.test_retrieveList()
