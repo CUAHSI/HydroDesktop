@@ -6,7 +6,7 @@ import hydrosharedownload
 import sys
 
 # Implementing MyFrame1
-class GetShapefilesFromHydroShareMyFrame1( GetShapefiles.MyFrame1 ):
+class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
     hydrosharedownloader = None
 
     def __init__( self, parent ):
@@ -43,9 +43,11 @@ class GetShapefilesFromHydroShareMyFrame1( GetShapefiles.MyFrame1 ):
 def open():
     app = wx.App(0)
     
-    frame = GetShapefilesFromHydroShareMyFrame1(None)
+    frame = HydroShareDownloadDialog(None)
     frame.Show()
     frame.populateList()
+
+    #If there is an argument provided when running this, set it as our downloader's savepath.
     if len(sys.argv) > 1:
         frame.hydrosharedownloader.file_path = sys.argv[1]
     app.MainLoop()

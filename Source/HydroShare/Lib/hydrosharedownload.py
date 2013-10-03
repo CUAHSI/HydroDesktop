@@ -2,6 +2,7 @@ import urllib2
 import os
 import json
 import zipfile
+import shutil
 
 class HydroshareDownloader():
     #base_url points to the Export.php script that packages data files for download.
@@ -27,35 +28,69 @@ class HydroshareDownloader():
         with open(save_loc, "wb") as code:
             code.write(file.read())
         
+        #Unzip the data in save_loc with the given name resource.
         self.unzipData(save_loc, resource)
 
     def retrieveList(self):
         '''Download list of files as JSON string and filters it to return list of available files.'''
+        #Load the data from the url into data
         data = urllib2.urlopen(self.list_url)
 
+        #Turn the data from a raw string into JSON
         all_files = json.load(data)
+
+        #Filtered_files is used as a hack to filter the list to see just the files we want
         filtered_files = []
-        	
+        
+        #Look through all nodes in the JSON data
         for file in all_files:
+            #If the node is one of these two types then we will show it in our list
             if (file["type"] == "hydroshare_time_series" 
             or file["type"] == "hydroshare_geoanalytics"):
+                #Access the node's title through the JSON key "title"
                 filtered_files.append(file["title"])
         
         return filtered_files
 
     def unzipData(self, saved_loc, resource):
+        '''Unzip the downloaded files and move them to a permanent home'''
+        #Create a ZipFile object from the saved file.
         zipped = zipfile.ZipFile(saved_loc)
-        temp_path = os.path.join(self.file_path, "result")
-        save_path = os.path.join(self.file_path, resource)
+
+        #Create two folders, one temporary "result" folder and one folder with the same name as the resource.
+        #The final_save_path folder named after the resource will be used to store the data files that are extracted.
+        temp_path = os.path.join(self.file_path, "hydro_share_download_result_temp_folder")
+        final_save_path = os.path.join(self.file_path, resource)
+
+        #If the temp folder exists does just delete it.
+        if os.path.exists(temp_path):
+            shutil.rmtree(temp_path)
         os.makedirs(temp_path)
-        os.makedirs(save_path)
 
+        #Make sure the final save path folder doesn't exist already before we create it
+        #TODO: If the folder does already exist (for example, if the user already downloaded this data),
+        #then we are simply going to overwrite any files that we download with the same name. 
+        #This might not be ideal.
+        if not os.path.exists(final_save_path):
+            os.makedirs(final_save_path)
+
+        #Extract all files to the temporary folder and then close the file.
         zipped.extractall(temp_path)
+        zipped.close()
 
+        #Check if there is another .zip file containing the data, if so, unzip it to the final folder.
         for f in os.listdir(os.path.join(temp_path, "data")):
+            #Extract any and all files with .zip that we find in the results/data folder.
             if f.endswith(".zip"):
                 data_zipped = zipfile.ZipFile(os.path.join(temp_path, "data", f))
-                data_zipped.extractall(save_path)
+                #Extract these files to the final save folder, then close the zip file.
+                data_zipped.extractall(final_save_path)
+                data_zipped.close()
+                #Print the filepath to the final save folder so Hydrodesktop knows where to look for files
+                print final_save_path
+
+        #Remove the temporary folder when finished.
+        shutil.rmtree(temp_path)
 
     def test(self):
         '''Test this script.'''
