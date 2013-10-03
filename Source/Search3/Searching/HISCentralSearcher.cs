@@ -227,15 +227,24 @@ namespace Search3.Searching
                             break;
                         case "begindate":
                             reader.Read();
-                            series.BeginDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.BeginDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            else
+                                return null;
                             break;
                         case "enddate":
                             reader.Read();
-                            series.EndDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.EndDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            else
+                                return null;
                             break;
                         case "valuecount":
                             reader.Read();
-                            series.ValueCount = Convert.ToInt32(reader.Value);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.ValueCount = Convert.ToInt32(reader.Value);
+                            else
+                                return null;
                             break;
                         case "sitename":
                             reader.Read();
@@ -243,11 +252,17 @@ namespace Search3.Searching
                             break;
                         case "latitude":
                             reader.Read();
-                            series.Latitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.Latitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            else
+                                return null;
                             break;
                         case "longitude":
                             reader.Read();
-                            series.Longitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.Longitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            else
+                                return null;
                             break;
                         case "datatype":
                             reader.Read();
@@ -275,11 +290,13 @@ namespace Search3.Searching
                             break;
                         case "timesupport":
                             reader.Read();
-                            series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
                             break;
                         case "isregular":
                             reader.Read();
-                            series.IsRegular = Convert.ToBoolean(reader.Value);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.IsRegular = Convert.ToBoolean(reader.Value);
                             break;
                         case "variableunits":
                             reader.Read();
