@@ -163,10 +163,10 @@ Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{ap
 
 
 ;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
-Source: "..\Binaries\Windows Extensions\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 
 ;MenuBar package
@@ -174,9 +174,9 @@ Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.MenuBar.dll"; Des
 
 ;AttributeDataExplorer package
 Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Printing.v12.2.Core.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraGrid.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 
 ;GeostatisticalTool package
 ;Source: "..\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
@@ -302,12 +302,13 @@ Type: files; Name: "{app}\settings.xml"
 Type: files; Name: "{app}\q_save.xml"
 Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
 Type: files; Name: "{app}\hydrodesktop_log.txt"
-Type: files; Name: "{app}\trace.log"
+Type: files; Name: "{app}\trace*"
 Type: filesandordirs; Name: "{app}\Windows Extensions"
 Type: filesandordirs; Name: "{app}\Help"
 Type: filesandordirs; Name: "{app}\Support"
 Type: filesandordirs; Name: "{app}\x64"
 Type: filesandordirs; Name: "{app}\x86"
+Type: filesandordirs; Name: "{app}\backup"
 Type: filesandordirs; Name: "{userappdata}\HydroDesktop.exe"
 Type: filesandordirs; Name: "{userappdata}\HydroDesktop"
 Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_4.exe"
