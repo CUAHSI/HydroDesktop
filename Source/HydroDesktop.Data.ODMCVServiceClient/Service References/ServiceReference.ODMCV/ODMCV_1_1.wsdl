@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://his.cuahsi.org/his/1.1/ws/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://his.cuahsi.org/his/1.1/ws/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://his.cuahsi.org/his/1.1/ws/">
+      <s:element name="GetCensorCodeCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCensorCodeCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCensorCodeCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataTypeCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDataTypeCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataTypeCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGeneralCategoryCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetGeneralCategoryCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGeneralCategoryCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSampleMediumCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSampleMediumCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSampleMediumCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSampleTypeCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSampleTypeCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSampleTypeCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTopicCategoryCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTopicCategoryCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTopicCategoryCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetValueTypeCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetValueTypeCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetValueTypeCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVariableNameCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetVariableNameCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVariableNameCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVerticalDatumCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetVerticalDatumCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVerticalDatumCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSpatialReferences">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSpatialReferencesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSpatialReferencesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnits">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetUnitsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUnitsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSpeciationCV">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSpeciationCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSpeciationCVResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetCensorCodeCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCensorCodeCV" />
+  </wsdl:message>
+  <wsdl:message name="GetCensorCodeCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCensorCodeCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataTypeCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataTypeCV" />
+  </wsdl:message>
+  <wsdl:message name="GetDataTypeCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataTypeCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGeneralCategoryCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGeneralCategoryCV" />
+  </wsdl:message>
+  <wsdl:message name="GetGeneralCategoryCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGeneralCategoryCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleMediumCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSampleMediumCV" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleMediumCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSampleMediumCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleTypeCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSampleTypeCV" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleTypeCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSampleTypeCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTopicCategoryCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTopicCategoryCV" />
+  </wsdl:message>
+  <wsdl:message name="GetTopicCategoryCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTopicCategoryCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetValueTypeCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetValueTypeCV" />
+  </wsdl:message>
+  <wsdl:message name="GetValueTypeCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetValueTypeCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVariableNameCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVariableNameCV" />
+  </wsdl:message>
+  <wsdl:message name="GetVariableNameCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVariableNameCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVerticalDatumCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVerticalDatumCV" />
+  </wsdl:message>
+  <wsdl:message name="GetVerticalDatumCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVerticalDatumCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSpatialReferencesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSpatialReferences" />
+  </wsdl:message>
+  <wsdl:message name="GetSpatialReferencesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSpatialReferencesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnitsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnits" />
+  </wsdl:message>
+  <wsdl:message name="GetUnitsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnitsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSpeciationCVSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSpeciationCV" />
+  </wsdl:message>
+  <wsdl:message name="GetSpeciationCVSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSpeciationCVResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ODMCVServiceSoap">
+    <wsdl:operation name="GetCensorCodeCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the CensorCode Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetCensorCodeCVSoapIn" />
+      <wsdl:output message="tns:GetCensorCodeCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataTypeCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the DataType Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataTypeCVSoapIn" />
+      <wsdl:output message="tns:GetDataTypeCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGeneralCategoryCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the GeneralCategory Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetGeneralCategoryCVSoapIn" />
+      <wsdl:output message="tns:GetGeneralCategoryCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleMediumCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the SampleMedium Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetSampleMediumCVSoapIn" />
+      <wsdl:output message="tns:GetSampleMediumCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleTypeCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the SampleType Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetSampleTypeCVSoapIn" />
+      <wsdl:output message="tns:GetSampleTypeCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTopicCategoryCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the TopicCategory Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetTopicCategoryCVSoapIn" />
+      <wsdl:output message="tns:GetTopicCategoryCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetValueTypeCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the ValueType Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetValueTypeCVSoapIn" />
+      <wsdl:output message="tns:GetValueTypeCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVariableNameCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the VariableName Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetVariableNameCVSoapIn" />
+      <wsdl:output message="tns:GetVariableNameCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVerticalDatumCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the VerticalDatum Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetVerticalDatumCVSoapIn" />
+      <wsdl:output message="tns:GetVerticalDatumCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSpatialReferences">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the SpatialReferences Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetSpatialReferencesSoapIn" />
+      <wsdl:output message="tns:GetSpatialReferencesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnits">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the Units Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetUnitsSoapIn" />
+      <wsdl:output message="tns:GetUnitsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSpeciationCV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method returns a string (formatted as XML) with all of the items in the Speciation Controlled Vocabulary.</wsdl:documentation>
+      <wsdl:input message="tns:GetSpeciationCVSoapIn" />
+      <wsdl:output message="tns:GetSpeciationCVSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ODMCVServiceSoap" type="tns:ODMCVServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCensorCodeCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetCensorCodeCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataTypeCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetDataTypeCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGeneralCategoryCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetGeneralCategoryCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleMediumCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSampleMediumCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleTypeCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSampleTypeCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTopicCategoryCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetTopicCategoryCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetValueTypeCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetValueTypeCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVariableNameCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetVariableNameCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVerticalDatumCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetVerticalDatumCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSpatialReferences">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSpatialReferences" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnits">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetUnits" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSpeciationCV">
+      <soap:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSpeciationCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ODMCVServiceSoap12" type="tns:ODMCVServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCensorCodeCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetCensorCodeCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataTypeCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetDataTypeCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGeneralCategoryCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetGeneralCategoryCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleMediumCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSampleMediumCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleTypeCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSampleTypeCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTopicCategoryCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetTopicCategoryCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetValueTypeCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetValueTypeCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVariableNameCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetVariableNameCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVerticalDatumCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetVerticalDatumCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSpatialReferences">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSpatialReferences" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnits">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetUnits" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSpeciationCV">
+      <soap12:operation soapAction="http://his.cuahsi.org/his/1.1/ws/GetSpeciationCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ODMCVService">
+    <wsdl:port name="ODMCVServiceSoap" binding="tns:ODMCVServiceSoap">
+      <soap:address location="http://odm.usu.edu/ODMCV_1_1/ODMCV_1_1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ODMCVServiceSoap12" binding="tns:ODMCVServiceSoap12">
+      <soap12:address location="http://odm.usu.edu/ODMCV_1_1/ODMCV_1_1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
