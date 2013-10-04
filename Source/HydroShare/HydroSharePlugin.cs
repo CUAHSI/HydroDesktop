@@ -132,7 +132,7 @@ namespace HydroShare
         {
             //Set the save_path to which we will save the downloaded files.
             String save_path = retreiveSavePath();
-
+            
             //Only open the Python script if we know where we will be storing the files.
             if (save_path != null)
             {

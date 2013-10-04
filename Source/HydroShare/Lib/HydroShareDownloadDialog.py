@@ -14,7 +14,7 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
         self.hydrosharedownloader = hydrosharedownload.HydroshareDownloader()
         
     def populateList(self):
-        filtered_files = self.hydrosharedownloader.retrieveList()
+        filtered_files = self.hydrosharedownloader.retrieveList(self.rdo_FilterSearch.GetStringSelection())
         i=0
         for item in filtered_files:
             self.lst_AvailableItems.Insert(item, i)

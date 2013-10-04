@@ -31,8 +31,10 @@ class HydroshareDownloader():
         #Unzip the data in save_loc with the given name resource.
         self.unzipData(save_loc, resource)
 
-    def retrieveList(self):
+    def retrieveList(self, filter=""):
         '''Download list of files as JSON string and filters it to return list of available files.'''
+        #Optional filter argument could later be used to know which list to return.
+
         #Load the data from the url into data
         data = urllib2.urlopen(self.list_url)
 
@@ -44,11 +46,22 @@ class HydroshareDownloader():
         
         #Look through all nodes in the JSON data
         for file in all_files:
-            #If the node is one of these two types then we will show it in our list
-            if (file["type"] == "hydroshare_time_series" 
-            or file["type"] == "hydroshare_geoanalytics"):
-                #Access the node's title through the JSON key "title"
-                filtered_files.append(file["title"])
+            
+            #This if-elif-else block doesn't seem to be working very well, but I'm leaving it in anyways.
+            #Basically we just return the correct list based on the "filter" parameter passed in, but for whatever reason only
+            #"Spatial Data" works, which is actually good for now because that's the only ones that we can download, extract, and open in HydroDesktop for now.
+            if (filter == u"Spatial Data"):
+                if (file["type"] == "hydroshare_geoanalytics"):
+                    filtered_files.append(file["title"])
+            elif (filter == u"Time Series"):
+                if (file["type"] == "hydroshare_time_series"):
+                    filter_files.append(file["title"])
+            else:
+                #If the node is one of these two types then we will show it in our list
+                if (file["type"] == "hydroshare_time_series" 
+                or file["type"] == "hydroshare_geoanalytics"):
+                    #Access the node's title through the JSON key "title"
+                    filtered_files.append(file["title"])
         
         return filtered_files
 
@@ -86,9 +99,10 @@ class HydroshareDownloader():
                 #Extract these files to the final save folder, then close the zip file.
                 data_zipped.extractall(final_save_path)
                 data_zipped.close()
-                #Print the filepath to the final save folder so Hydrodesktop knows where to look for files
+                #Print the filepath of the final save folder back to HydroDesktop so Hydrodesktop knows where to look for files
                 print final_save_path
-
+        #Copy metadata file to the final_save_path
+        shutil.copyfile(os.path.join(temp_path, "data", "sciencemetadata.xml"), os.path.join(final_save_path, "sciencemetadata.xml"))
         #Remove the temporary folder when finished.
         shutil.rmtree(temp_path)
 
