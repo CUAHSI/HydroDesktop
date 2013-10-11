@@ -46,6 +46,7 @@ namespace Search3
         private RectangleDrawing _rectangleDrawing;
         private SimpleActionItem _currentView;
         private bool _useCurrentView;
+        bool invalidWord = false;
         private Searcher _searcher;
         public readonly SearchSettings _searchSettings = new SearchSettings();
         //private SearchStatusDisplay searchSummary;
@@ -332,8 +333,12 @@ namespace Search3
                 // Check for Keywords count
                 var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
                 if (selectedKeywords.Count == 0)
-                    throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
-
+                {
+                    if (invalidWord == false)
+                        throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
+                    else
+                        throw new SearchSettingsValidationException("The keywords selected were not defined in the list of possible search terms. Please provide different search terms.");
+                }
                 // Check for checked webservices
                 var webServicesCount = _searchSettings.WebServicesSettings.CheckedCount;
                 if (webServicesCount == 0)
@@ -871,8 +876,10 @@ namespace Search3
                         toDelete.Add(cur);
                     }
                 }
+                invalidWord = false;
                 if (toDelete.Count > 0)
                 {
+                    invalidWord = true;
                     var res = MessageBox.Show(Shell,
                                     "The next invalid Keywords will be removed from the search criteria:" +
                                     Environment.NewLine +

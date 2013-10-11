@@ -322,7 +322,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 }
 
                 // Set loop dates to next interval
-                loopStartDate = loopEndDate.AddDays(1);
+                loopStartDate = loopEndDate.AddMinutes(1); //AddDays(1);
                 loopEndDate = loopStartDate.AddDays(daysPerInteval);
             }
 
