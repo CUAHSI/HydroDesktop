@@ -189,7 +189,17 @@ namespace HydroDesktop.Main
                     }
                 }
             }
-
+            if(allSampleProjects.Count >= 3)
+            {
+                if (allSampleProjects.ElementAt(0).Name == "Europe Map" &&
+                    allSampleProjects.ElementAt(1).Name == "North America Map" &&
+                    allSampleProjects.ElementAt(2).Name == "World Map")
+                {
+                    SampleProjectInfo europe = allSampleProjects.ElementAt(0) as SampleProjectInfo;
+                    allSampleProjects.RemoveAt(0);
+                    allSampleProjects.Insert(2, europe);
+                }
+            }
             resultList.AddRange(allSampleProjects);
             return resultList;
         }

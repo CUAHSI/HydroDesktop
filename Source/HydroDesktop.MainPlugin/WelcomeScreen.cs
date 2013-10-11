@@ -245,9 +245,12 @@ namespace HydroDesktop.Main
         {
             SampleProjectInstaller spi = new SampleProjectInstaller();
             List<SampleProjectInfo> sampleProjects1 = spi.FindSampleProjectFiles();
+       
             IEnumerable<ISampleProject> sampleProjects2 = spi.SetupInstalledSampleProjects(sampleProjects1);
 
+            
             SampleProjects = sampleProjects2;
+            
 
             lstProjectTemplates.DataSource = SampleProjects;
             lstProjectTemplates.DisplayMember = "Name";
