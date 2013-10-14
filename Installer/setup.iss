@@ -163,10 +163,10 @@ Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{ap
 
 
 ;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
-Source: "..\Binaries\Windows Extensions\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 
 ;MenuBar package
