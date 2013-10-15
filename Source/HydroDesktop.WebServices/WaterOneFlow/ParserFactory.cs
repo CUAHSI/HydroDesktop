@@ -13,6 +13,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 case "1.0":
                     parser = new WaterOneFlow10Parser();
                     break;
+                case "1.1":
+                    parser = new WaterOneFlow11Parser();
+                    break;
+                case "2.0":
+                    parser = new WaterOneFlow20Parser();
+                    break;
                 default:
                     parser = new WaterOneFlow11Parser();
                     break;

@@ -167,6 +167,7 @@
     <Compile Include="WaterOneFlow\SeriesCodeHelper.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlow10Parser.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlow11Parser.cs" />
+    <Compile Include="WaterOneFlow\WaterOneFlow20Parser.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowClient.cs">
       <SubType>Code</SubType>
     </Compile>
