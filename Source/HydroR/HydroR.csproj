@@ -227,7 +227,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="HydroR_1.2.tar.gz">
+    <Content Include="HydroR_1.2.tar.gz" />
+    <Content Include="HydroR_1.3.tar.gz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="package.nuspec" />
