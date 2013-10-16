@@ -112,7 +112,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
 
         void HeaderControl_RootItemSelected(object sender, RootItemEventArgs e)
         {
-            if (ignoreRootSelected) return;
+         /*   if (ignoreRootSelected) return;
 
             if (e.SelectedRootKey == "RootRibbonHydroModeler")
             {
@@ -132,6 +132,7 @@ namespace Oatc.OpenMI.Gui.ConfigurationEditor
                 App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
                 App.DockManager.ShowPanel("kLegend");
             }
+           */
         }
         #endregion
 

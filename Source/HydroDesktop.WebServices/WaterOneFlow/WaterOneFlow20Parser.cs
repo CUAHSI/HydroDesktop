@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
-using HydroDesktop.DataModel;
+using HydroDesktop.Interfaces.ObjectModel;
+//using HydroDesktop.DataModel;
 
-namespace HydroDesktop.WebServices
+namespace HydroDesktop.WebServices.WaterOneFlow
 {
     /// <summary>
     /// Parses a WaterML response into a HydroDesktop domain object
@@ -14,6 +15,7 @@ namespace HydroDesktop.WebServices
     /// </summary>
     public class WaterOneFlow20Parser : IWaterOneFlowParser
     {
+
         #region Variables
 
         #endregion
@@ -58,51 +60,49 @@ namespace HydroDesktop.WebServices
         /// <param name="xmlFile"></param>
         public IList<Series> ParseGetValues(string xmlFile)
         {
-            throw new NotImplementedException("ParseGetValues is not implemented for WaterML 2.0");
-            
-            QueryInfo qry = null;
-            Site site = null;
-            Variable varInfo = null;
-            Series series = null;
-            
-            using (XmlTextReader reader = new XmlTextReader(xmlFile))
+            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
             {
-                while (reader.Read())
+                return ParseGetValues(fileStream);
+            } 
+        }
+
+        private IList<Series> ReadDataValues(XmlNodeList observations)
+        {
+            IList<Series> seriesList = new List<Series>();
+
+            //loop through each series observation
+            foreach (XmlNode observation in observations)
+            {
+                XmlDocument xml = new XmlDocument();
+                //xml.ImportNode(observation, false);
+                xml.LoadXml(observation.OuterXml);
+                XmlNodeList times = xml.GetElementsByTagName("wml2:time");
+                XmlNodeList values = xml.GetElementsByTagName("wml2:value");
+                Series newSeries = new Series();
+
+                //add begin and end datetime to the series
+                try
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        if (reader.Name == "queryInfo")
-                        {
-                            //Read the 'Query Info'
-                            qry = ReadQueryInfo(reader);
-                        }
-                        else if (reader.Name == "Source")
-                        {
-                            //Read the site information
-                            site = ReadSite(reader);
-                        }
-                        else if (reader.Name == "variable")
-                        {
-                            //Read the variable information
-                            varInfo = ReadVariable(reader);
-                        }
-                        else if (reader.Name == "values")
-                        {
-                            //Read the time series and data values information
-                            series = ReadDataValues(reader);
-                            if (varInfo != null)
-                            {
-                                series.Variable = varInfo;
-                            }
-                            if (site != null)
-                            {
-                                series.Site = site;
-                            }
-                        }
-                    }
+                    newSeries.BeginDateTime = Convert.ToDateTime(xml.GetElementsByTagName("gml:beginPosition").Item(0).FirstChild.Value);
+                    newSeries.EndDateTime = Convert.ToDateTime(xml.GetElementsByTagName("gml:endPosition").Item(0).FirstChild.Value);
+                } catch{}
+
+                //add each node to the series
+                for (int i = 0; i < times.Count; i++)
+                {
+                    Double value = Double.Parse(values.Item(i).FirstChild.Value);
+                    DateTime time = Convert.ToDateTime(times.Item(i).FirstChild.Value);
+
+                    DataValue dataValue = new DataValue(value, time, 0);
+                    newSeries.DataValueList.Add(dataValue);
+                    dataValue.Series = newSeries;
                 }
-                return CheckDataSeries(series);
+
+                //add parsed series data to list
+                seriesList.Add(newSeries);
             }
+
+            return seriesList;
         }
 
         /// <summary>
@@ -178,10 +178,6 @@ namespace HydroDesktop.WebServices
                     {
                         r.Read();
                         site.VerticalDatum = r.Value;
-                    }
-                    else if (r.Name == "timeZoneInfo")
-                    {
-                        site.TimeZone = ReadTimeZoneInfo(r);
                     }
                 }
                 else if (r.NodeType == XmlNodeType.EndElement && r.Name == "Source")
@@ -363,215 +359,6 @@ namespace HydroDesktop.WebServices
                 }
             }
             return varInfo;
-        }
-
-        /// <summary>
-        /// Reads the DataValues section
-        /// </summary>
-        private Series ReadDataValues(XmlTextReader r)
-        {
-            Series series = new Series();
-            IList<DataValue> lst = series.DataValues;
-
-            Dictionary<string, Qualifier> qualifiers = new Dictionary<string, Qualifier>();
-            Dictionary<string, Method> methods = new Dictionary<string, Method>();
-            Dictionary<string, Source> sources = new Dictionary<string, Source>();
-            Dictionary<string, QualityControlLevel> qualityControlLevels = new Dictionary<string, QualityControlLevel>();
-            Dictionary<string, Sample> samples = new Dictionary<string,Sample>();
-            Dictionary<string, OffsetType> offsets = new Dictionary<string, OffsetType>();
-
-            //lookup for samples, qualifiers and vertical offsets
-            var sampleLookup = new Dictionary<DataValue, string>();
-            var offsetLookup = new Dictionary<DataValue, string>();
-            //var qualifierLookup = new Dictionary<DataValue, string>();
-            var methodLookup = new Dictionary<DataValue, string>();
-            var sourceLookup = new Dictionary<DataValue, string>();
-
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element)
-                {
-                    if (r.Name == "values" && r.HasAttributes)
-                    {
-                        series.ValueCount = Convert.ToInt32(r.GetAttribute("count"));
-                    }
-                    else if (r.Name == "value")
-                    {
-                        DataValue val = series.CreateDataValue();
-
-                        //the default value of censor code is 'nc'
-                        val.CensorCode = "nc";
-                        
-                        if (r.HasAttributes)
-                        {
-                            string censorCode = r.GetAttribute("censorCode");
-                            if (!string.IsNullOrEmpty(censorCode))
-                            {
-                                val.CensorCode = r.GetAttribute("censorCode");
-                            }
-                            val.LocalDateTime = Convert.ToDateTime(r.GetAttribute("dateTime"));
-                            val.DateTimeUTC = val.LocalDateTime;
-                            val.UTCOffset = 0.0;
-
-                            //method
-                            string methodID = r.GetAttribute("methodID");
-                            if (String.IsNullOrEmpty(methodID))
-                            {
-                                methodID = "unknown"; //when a method is unspecified
-                            }
-                            if (!methods.ContainsKey(methodID))
-                            {
-                                Method newMethod = Method.Unknown;
-                                methods.Add(methodID, newMethod);
-                            }
-                            methodLookup.Add(val, methodID);
-
-                            //quality control level
-                            string qualityCode = r.GetAttribute("qualityControlLevel");
-                            if (String.IsNullOrEmpty(qualityCode))
-                            {
-                                qualityCode = "unknown"; //when the quality control level is unspecified
-                            }
-                            if (!qualityControlLevels.ContainsKey(qualityCode))
-                            {
-                                QualityControlLevel qualControl = QualityControlLevel.Unknown;
-                                qualControl.Code = qualityCode;
-                                qualControl.Definition = qualityCode;
-                                qualControl.Explanation = qualityCode;
-                                qualityControlLevels.Add(qualityCode, qualControl);
-                                val.QualityControlLevel = qualControl;
-                                series.QualityControlLevels.Add(qualControl);
-                            }
-                            else
-                            {
-                                val.QualityControlLevel = qualityControlLevels[qualityCode];
-                            }                           
-
-                            //source
-                            string sourceID = r.GetAttribute("sourceID");
-                            if (String.IsNullOrEmpty(sourceID))
-                            {
-                                sourceID = "unknown"; //when a source is unspecified
-                            }
-                            if (!sources.ContainsKey(sourceID))
-                            {
-                                sources.Add(sourceID, Source.Unknown);
-                            }
-                            sourceLookup.Add(val, sourceID);
-
-                            //sample
-                            string sampleID = r.GetAttribute("sampleID");
-                            if (!String.IsNullOrEmpty(sampleID))
-                            {
-                                if (!samples.ContainsKey(sampleID))
-                                {
-                                    samples.Add(sampleID, new Sample());
-                                    sampleLookup.Add(val, sampleID);
-                                }
-                            }
-
-                            //qualifiers
-                            string qualifierCodes = r.GetAttribute("qualifiers");
-                            if (!String.IsNullOrEmpty(qualifierCodes))
-                            {
-                                if (!qualifiers.ContainsKey(qualifierCodes))
-                                {
-                                    Qualifier newQualifier = new Qualifier();
-                                    newQualifier.Code = qualifierCodes;
-                                    qualifiers.Add(qualifierCodes, newQualifier);
-                                    val.Qualifier = newQualifier;
-                                }
-                                else
-                                {
-                                    val.Qualifier = qualifiers[qualifierCodes];
-                                }
-                            }
-                            
-                            //vertical offset
-                            string offsetID = r.GetAttribute("offsetTypeID");
-                            if (!String.IsNullOrEmpty(offsetID))
-                            {
-                                if (!offsets.ContainsKey(offsetID))
-                                {
-                                    offsets.Add(offsetID, new OffsetType());
-                                }
-                                offsetLookup.Add(val, offsetID);
-
-                                string offsetValue = r.GetAttribute("offsetValue");
-                                if (!String.IsNullOrEmpty(offsetValue))
-                                {
-                                    val.OffsetValue = Convert.ToDouble(offsetValue);
-                                }
-                            }
-                        }
-                        
-                        //data value
-                        r.Read();
-                        val.Value = r.ReadContentAsDouble();
-
-                    }
-                    else if (r.Name == "method")
-                    {
-                        ReadMethod(r, methods);
-                    }
-                    else if (r.Name == "source")
-                    {
-                        ReadSource(r, sources);
-                    }
-                    else if (r.Name == "qualityControlLevel")
-                    {
-                        //quality control level seems to be included with each value
-                    }
-                    else if (r.Name == "qualifier")
-                    {
-                        ReadQualifier(r, qualifiers);
-                    }
-                    else if (r.Name == "sample")
-                    {
-                        ReadSample(r, samples);
-                    }
-                    else if (r.Name == "offset")
-                    {
-                        ReadOffset(r, offsets);
-                    }
-                }
-            }
-
-            //to assign relations of each variable
-            foreach (DataValue val in lst)
-            {
-                if (sampleLookup.ContainsKey(val))
-                {
-                    val.Sample = samples[sampleLookup[val]];
-                }
-                if (offsetLookup.ContainsKey(val))
-                {
-                    val.OffsetType = offsets[offsetLookup[val]];
-                }
-                if (methodLookup.ContainsKey(val))
-                {
-                    Method newMethod = methods[methodLookup[val]];
-                    val.Method = newMethod;
-                    if (!series.Methods.Contains(newMethod))
-                    {
-                        series.Methods.Add(newMethod);
-                    }
-                }
-                if (sourceLookup.ContainsKey(val))
-                {
-                    Source newSource = sources[sourceLookup[val]];
-                    val.Source = newSource;
-                    if (!series.Sources.Contains(newSource))
-                    {
-                        series.Sources.Add(newSource);
-                    }
-                }
-            }
-
-            //to check the qualifiers
-            CheckQualifiers(qualifiers);
-
-            return series;
         }
 
         /// <summary>
@@ -799,41 +586,90 @@ namespace HydroDesktop.WebServices
             }
         }
 
-        /// <summary>
-        /// Checks data series to make sure that the time zone information
-        /// is correct. Also check if it is a composite series and if it is composite then
-        /// separates it into multiple series.
-        /// </summary>
-        /// <param name="series"></param>
-        private IList<Series> CheckDataSeries(Series series)
+
+        public IList<Site> ParseGetSites(string xmlFile)
         {
-            series.BeginDateTime = series.DataValues[0].LocalDateTime;
-            series.EndDateTime = series.DataValues[series.DataValues.Count - 1].LocalDateTime;
-            series.ValueCount = series.DataValues.Count;
-            if (series.Site.TimeZone != TimeZoneInfo.Utc)
-            {
-                TimeSpan utcOffset = series.Site.TimeZone.BaseUtcOffset;
-                double utcOffsetHours = utcOffset.TotalHours;
-                series.BeginDateTimeUTC = series.BeginDateTime + utcOffset;
-                series.EndDateTimeUTC = series.EndDateTime + utcOffset;
-                foreach (DataValue val in series.DataValues)
-                {
-                    val.UTCOffset = utcOffsetHours;
-                    val.DateTimeUTC = val.LocalDateTime + utcOffset;
-                }
-            }
-            else
-            {
-                series.BeginDateTimeUTC = series.BeginDateTime;
-                series.EndDateTimeUTC = series.EndDateTime;
-            }
+            throw new NotImplementedException();
+        }
 
-            //set the checked and creation date time
-            series.CreationDateTime = DateTime.Now;
-            series.LastCheckedDateTime = DateTime.Now;
-            series.UpdateDateTime = series.LastCheckedDateTime;
+        public IList<Site> ParseGetSites(Stream stream)
+        {
+            throw new NotImplementedException();
+        }
 
-            return series.GetListOfSimpleSeries();
+        public IList<SeriesMetadata> ParseGetSiteInfo(string xmlFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<SeriesMetadata> ParseGetSiteInfo(Stream stream)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Series> ParseGetValues(Stream stream)
+        {
+            XmlDocument xml = new XmlDocument();
+            xml.Load(stream);
+            XmlNodeList observations = xml.GetElementsByTagName("wml2:observationMember");
+
+            //Site site = null;
+            //Variable varInfo = null;
+            IList<Series> seriesList = null;
+
+            //get the data values and put them into a list of series
+            seriesList = ReadDataValues(observations);
+
+            foreach (var series in seriesList)
+            {
+                //if (varInfo != null)
+                //{
+                //    series.Variable = varInfo;
+                //}
+                //if (site != null)
+                //{
+                //    series.Site = site;
+                //}
+
+                //ensure that properties are re-calculated
+                series.UpdateSeriesInfoFromDataValues();
+
+                //set the checked and creation date time
+                series.CreationDateTime = DateTime.Now;
+                series.LastCheckedDateTime = DateTime.Now;
+                series.UpdateDateTime = series.LastCheckedDateTime;
+            }
+            return seriesList ?? (new List<Series>(0));
+        }
+
+        IList<Site> IWaterOneFlowParser.ParseGetSites(string xmlFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        IList<Site> IWaterOneFlowParser.ParseGetSites(Stream stream)
+        {
+            throw new NotImplementedException();
+        }
+
+        IList<SeriesMetadata> IWaterOneFlowParser.ParseGetSiteInfo(string xmlFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        IList<SeriesMetadata> IWaterOneFlowParser.ParseGetSiteInfo(Stream stream)
+        {
+            throw new NotImplementedException();
+        }
+
+        IList<Series> IWaterOneFlowParser.ParseGetValues(string xmlFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        IList<Series> IWaterOneFlowParser.ParseGetValues(Stream stream)
+        {
+            throw new NotImplementedException();
         }
     }
 }

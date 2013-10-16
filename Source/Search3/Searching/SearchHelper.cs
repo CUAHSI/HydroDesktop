@@ -67,7 +67,7 @@ namespace Search3.Searching
             tab.Columns.Add(new DataColumn("Longitude", typeof(double)));
             tab.Columns.Add(new DataColumn("IsRegular", typeof(bool)));
             tab.Columns.Add(new DataColumn("Units", typeof(string)));
-
+          
             return fs;
         }
 

@@ -8,6 +8,11 @@ using DotSpatial.Projections;
 using DotSpatial.Topology;
 using HydroDesktop.Configuration;
 using HydroDesktop.Database;
+using System.Net;
+using System.Xml;
+using System.Globalization;
+using System.Drawing;
+using System.Timers;
 
 namespace HydroDesktop.Main
 {
@@ -115,6 +120,93 @@ namespace HydroDesktop.Main
             App.SerializationManager.OpenProject(projectFileName);
             App.ProgressHandler.Progress("Project opened", 0, "");
         }
+
+        public void ProjectToGeoLocation()
+        { 
+            try
+            {
+                string locationsRequest = "http://ip-api.com/xml";
+                double[] xy = GetLocation(locationsRequest);
+                if (xy[0] == 0.0 || xy[1] == 0.0)
+                    return;
+                xy = LatLonReproject(xy[1], xy[0]);
+                App.Map.MapFrame.ViewExtents = (new Envelope(xy[0] - 420000, xy[0] + 420000, xy[1] - 420000, xy[1] + 420000)).ToExtent();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+          
+        }
+
+     
+        private static double[] GetLocation(string requestUrl)
+        {
+            double[] location = new double[2];
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+ 
+                using (var reader = XmlReader.Create(response.GetResponseStream()))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.NodeType == XmlNodeType.Element)
+                        {
+                            if (reader.Name == "lat")
+                            {
+                                reader.Read();
+                                location[0] = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            }
+                            else if (reader.Name == "lon")
+                            {
+                                reader.Read();
+                                location[1] = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            }
+                        }
+                    }
+                }
+                return location;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        private double[] LatLonReproject(double x, double y)
+        {
+            double[] xy = new double[2] { x, y };
+
+            //Change y coordinate to be less than 90 degrees to prevent a bug.
+            if (xy[1] >= 90) xy[1] = 89.9;
+            if (xy[1] <= -90) xy[1] = -89.9;
+
+            //Need to convert points to proper projection. Currently describe WGS84 points which may or may not be accurate.
+            bool isWgs84;
+
+            String wgs84String = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            String mapProjEsriString = App.Map.Projection.ToEsriString();
+            isWgs84 = (mapProjEsriString.Equals(wgs84String));
+
+            //If the projection is not WGS84, then convert points to properly describe desired location.
+            if (!isWgs84)
+            {
+                double[] z = new double[1];
+                ProjectionInfo wgs84Projection = ProjectionInfo.FromEsriString(wgs84String);
+                ProjectionInfo currentMapProjection = ProjectionInfo.FromEsriString(mapProjEsriString);
+                Reproject.ReprojectPoints(xy, z, wgs84Projection, currentMapProjection, 0, 1);
+            }
+
+            //Return array with 1 x and 1 y value.
+            return xy;
+        }
+
+       
+
+
 
         private void DisableProgressReportingForLayers() {
             foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
@@ -254,5 +346,6 @@ namespace HydroDesktop.Main
             }
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
         }
+
     }
 }

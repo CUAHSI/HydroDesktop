@@ -75,6 +75,21 @@ namespace HydroR
             _seriesSelector.RefreshSelection();
         }
 
+        public void closeR()
+        {
+            checkProcess();
+            if (p != null)
+            {
+                try
+                {
+                    closeWindow();
+                }
+                catch
+                {
+                }
+            }
+        }
+
         //this function sends input from Hydrodesktop to R
         void sendString(string input)
         {

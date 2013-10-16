@@ -14904,6 +14904,12 @@
     <ConceptName>Specific conductance</ConceptName>
     <ConceptPath>Hydrosphere/Chemical/Inorganic/Major/Major, bulk properties/</ConceptPath>
   </OntologyPath>
+   <OntologyPath>
+    <conceptID>2297</conceptID>
+    <SearchableKeyword>Conductivity</SearchableKeyword>
+    <ConceptName>Specific conductance</ConceptName>
+    <ConceptPath>Hydrosphere/Chemical/Inorganic/Major/Major, bulk properties/</ConceptPath>
+  </OntologyPath>
   <OntologyPath>
     <conceptID>2298</conceptID>
     <SearchableKeyword>Hardness</SearchableKeyword>

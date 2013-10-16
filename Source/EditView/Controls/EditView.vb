@@ -238,13 +238,18 @@ Namespace Controls
                         pTimeSeriesPlot.zgTimeSeries.GraphPane.XAxis.Title.Text = "Date and Time"
                     End If
                 Catch
-                    nodataseriescount -= 1
+                    If Not nodataseriescount = 0 Then
+                        nodataseriescount -= 1
+                    End If
+
                 End Try
             Else
                 Try
                     pTimeSeriesPlot.Remove(curveIndex - nodataseriescount)
                 Catch
-                    nodataseriescount -= 1
+                    If Not nodataseriescount = 0 Then
+                        nodataseriescount -= 1
+                    End If
                 End Try
             End If
         End Sub
@@ -564,7 +569,9 @@ Namespace Controls
         'Change Y value by Interpolating
         Public Sub btnInterpolate_Click()
             If Editing Then
-                If MsgBox("Are You Sure You Want to Interpolate the Selected Values?", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
+                If MsgBox("         The Selected Value Range will be Interpolated." + Environment.NewLine +
+                          "            This creates new intermediary data points." + Environment.NewLine + Environment.NewLine +
+                        "Are You Sure You Want to Interpolate the Selected Values?", MsgBoxStyle.YesNo Or vbDefaultButton2, "Question") = MsgBoxResult.Yes Then
                     If dgvDataValues.SelectedRows.Count >= 1 Then
                         Dim returned As Boolean = False
                         If pTimeSeriesPlot.HasEditingCurve Then
@@ -574,7 +581,6 @@ Namespace Controls
                         Else
                             ChangeValueByInterpolating(returned)
                         End If
-
                         RefreshDataGridView()
                     Else
                         MsgBox(ErrMsgForNotPointSelected)

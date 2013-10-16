@@ -37,6 +37,7 @@ namespace HydroDesktop.Main
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
         private ProjectManager myProjectManager;
+        
 
         
         #endregion
@@ -54,9 +55,10 @@ namespace HydroDesktop.Main
             _recentProjectFiles = new List<ProjectFileInfo>();
             bsRecentFiles = new BindingSource(RecentProjectFiles, null);
             lstRecentProjects.DataSource = bsRecentFiles;
-            lstRecentProjects.DoubleClick += lstRecentProjects_DoubleClick;
 
+            lstRecentProjects.DoubleClick += lstRecentProjects_DoubleClick;
             lstProjectTemplates.DoubleClick += lstProjectTemplates_DoubleClick;
+            FormClosing += WelcomeScreen_FormClosing;
 
             if (lstProjectTemplates.Items.Count > 0)
             {
@@ -105,7 +107,12 @@ namespace HydroDesktop.Main
                 {
                     string newProjectFile = CopyToDocumentsFolder(projectFile);
                     _app.SerializationManager.OpenProject(newProjectFile);
-
+                   if((newProjectFile.Contains("North America Map")
+                      || newProjectFile.Contains("World Map")) 
+                      && WebUtilities.IsInternetAvailable() == true)
+                    {
+                        myProjectManager.ProjectToGeoLocation();
+                    } 
                 }
                 catch (Exception ex)
                 {
@@ -122,6 +129,7 @@ namespace HydroDesktop.Main
 
                 this.DialogResult = DialogResult.OK;
                     
+               
                 this.Close();
             }
         }
@@ -237,9 +245,12 @@ namespace HydroDesktop.Main
         {
             SampleProjectInstaller spi = new SampleProjectInstaller();
             List<SampleProjectInfo> sampleProjects1 = spi.FindSampleProjectFiles();
+       
             IEnumerable<ISampleProject> sampleProjects2 = spi.SetupInstalledSampleProjects(sampleProjects1);
 
+            
             SampleProjects = sampleProjects2;
+            
 
             lstProjectTemplates.DataSource = SampleProjects;
             lstProjectTemplates.DisplayMember = "Name";
@@ -274,6 +285,16 @@ namespace HydroDesktop.Main
         void lstProjectTemplates_DoubleClick(object sender, EventArgs e)
         {
             CreateProjectFromTemplate();
+        }
+
+        private void WelcomeScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Create an empty project if the x button is clicked
+            if (this.DialogResult != DialogResult.OK)
+            {
+                e.Cancel = true;
+                CreateEmptyProject();
+            }
         }
 
         #endregion
@@ -400,7 +421,7 @@ namespace HydroDesktop.Main
             {
                 MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
-        }      
+        }
     } 
 
     public class ProjectFileInfo

@@ -9,6 +9,7 @@
     using DotSpatial.Controls.Header;
     using HydroDesktop.Database;
     using HydroDesktop.Interfaces;
+    using HydroDesktop.Common;
 
     public class HydroDesktopMainPlugin : Extension, IPartImportsSatisfiedNotification
     {
@@ -369,13 +370,31 @@
         {
             Boolean showCoordinates = false;
 
-            if (e.SelectedRootKey == HeaderControl.HomeRootItemKey)
+            if (e.SelectedRootKey == SharedConstants.SearchRootkey || e.SelectedRootKey == HeaderControl.HomeRootItemKey)
             {
+                App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
                 App.DockManager.SelectPanel("kMap");
+                App.DockManager.SelectPanel("kLegend");
+                App.DockManager.ShowPanel(SharedConstants.SeriesViewKey);
                 showCoordinates = true;
             }
+            else if (e.SelectedRootKey == "RootRibbonHydroModeler")
+            {
+                //hide panels
+                App.DockManager.HidePanel("kLegend");
+                App.DockManager.HidePanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+                App.DockManager.SelectPanel("kHydroModelerDock");
+            }
+            else if (e.SelectedRootKey == "kHydroGraph_01" || e.SelectedRootKey == SharedConstants.TableRootKey || e.SelectedRootKey == "kHydroEditView" || e.SelectedRootKey == "kHydroR")
+            {
+                App.DockManager.SelectPanel(HydroDesktop.Common.SharedConstants.SeriesViewKey);
+                App.DockManager.ShowPanel("kLegend");
+            }
+
             if (e.SelectedRootKey == "kHydroSearchV3")
                     showCoordinates = true;
+            else
+                App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
 
             if (latLongDisplay != null)
                 latLongDisplay.ShowCoordinates = showCoordinates;

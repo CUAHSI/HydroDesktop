@@ -205,14 +205,23 @@ namespace HydroDesktop.DataDownload.Downloading
 
             if (dInfo.Status == DownloadInfoStatus.Error)
             {
-                e.CellStyle.BackColor = Color.Red;
+                e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                e.CellStyle.Font = new Font("Arial", 9, FontStyle.Bold);
+                e.CellStyle.ForeColor = Color.White;
+                e.CellStyle.BackColor = Color.FromArgb(214, 73, 55);
             }
             else if (dInfo.Status == DownloadInfoStatus.Ok)
             {
-                e.CellStyle.BackColor = Color.Green;
+                e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                e.CellStyle.Font = new Font("Arial", 9, FontStyle.Bold);
+                e.CellStyle.ForeColor = Color.White;
+                e.CellStyle.BackColor = Color.ForestGreen;
             }
-            else if (dInfo.Status == DownloadInfoStatus.OkWithWarnings)
+            else if (dInfo.Status == DownloadInfoStatus.OkWithWarning)
             {
+                e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                e.CellStyle.Font = new Font("Arial", 9, FontStyle.Bold);
+                e.CellStyle.ForeColor = Color.White;
                 e.CellStyle.BackColor = Color.Orange;
             }
         }

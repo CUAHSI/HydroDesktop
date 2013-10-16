@@ -19,6 +19,10 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
             var wof11 = new DataServiceInfo { Version = 1.1 };
             var parser11 = target.GetParser(wof11);
             Assert.IsTrue(parser11 is WaterOneFlow11Parser);
+
+            var wof20 = new DataServiceInfo { Version = 2.0 };
+            var parser20 = target.GetParser(wof20);
+            Assert.IsTrue(parser20 is WaterOneFlow20Parser);
         }
     }
 }

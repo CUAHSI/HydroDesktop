@@ -466,7 +466,7 @@ namespace HydroDesktop.DataDownload.Downloading
                     if (numSavedValues == 0)
                     {
                         DoLogWarn(string.Format("In {0} saved 0 values.", series));
-                        dInfo.Status = DownloadInfoStatus.OkWithWarnings;
+                        dInfo.Status = DownloadInfoStatus.OkWithWarning;
                     }
                     else
                         dInfo.Status = DownloadInfoStatus.Ok;
