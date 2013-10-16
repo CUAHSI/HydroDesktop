@@ -85,6 +85,9 @@ namespace HydroDesktop.Interfaces.ObjectModel
         public string ConceptKeyword { get; set; }
 
         public bool IsRegular { get; set; }
+
         public string VariableUnits { get; set; }
+
+        public string Citation { get; set; }
     }
 }

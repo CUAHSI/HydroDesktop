@@ -196,6 +196,7 @@
             this.Name = "WebServicesDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select Data Sources";
+            this.MouseEnter += new System.EventHandler(this.WebServicesDialog_MouseEnter);
             this.paButtons.ResumeLayout(false);
             this.gbTypeOfCatalog.ResumeLayout(false);
             this.gbTypeOfCatalog.PerformLayout();

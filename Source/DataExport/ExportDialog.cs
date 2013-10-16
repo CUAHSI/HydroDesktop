@@ -207,6 +207,13 @@ namespace HydroDesktop.ExportToCSV
                 var tbl = repo.GetTableForExport(Convert.ToInt64(row["SeriesID"]), noDataValue, dateColumn, firstDate,
                                                  lastDate);
 
+                //Check for cancel
+                if (backgroundWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return "Data Export Cancelled.";
+                }
+
                 //Construct columns that were selected
                 for (int i = 0; i < tbl.Columns.Count; i++)
                 {
@@ -215,6 +222,13 @@ namespace HydroDesktop.ExportToCSV
                     {
                         tbl.Columns.Remove(column);
                         i--;
+                    }
+
+                    //Check for cancel
+                    if (backgroundWorker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return "Data Export Cancelled.";
                     }
                 }
 

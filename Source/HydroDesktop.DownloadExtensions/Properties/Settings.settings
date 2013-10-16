@@ -16,6 +16,7 @@
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;DotSpatial.SampleProjects.NorthAmerica&lt;/string&gt;
   &lt;string&gt;DotSpatial.SampleProjects.World&lt;/string&gt;
+  &lt;string&gt;Dotspatial.SampleProjects.Europe&lt;/string&gt;
   &lt;string&gt;SampleProjects.jacobs_well_spring&lt;/string&gt;
   &lt;string&gt;SampleProjects.elbe&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>

@@ -46,6 +46,7 @@ namespace Search3
         private RectangleDrawing _rectangleDrawing;
         private SimpleActionItem _currentView;
         private bool _useCurrentView;
+        bool invalidWord = false;
         private Searcher _searcher;
         public readonly SearchSettings _searchSettings = new SearchSettings();
         //private SearchStatusDisplay searchSummary;
@@ -218,15 +219,13 @@ namespace Search3
         {
             if (e.SelectedRootKey == _searchKey)
             {
-                App.SerializationManager.SetCustomSetting("SearchRootClicked", true);
-                App.DockManager.SelectPanel("kMap");
+                //App.DockManager.SelectPanel("kMap");
 
                 //searchSummary.ShowSearchStatus = true;
                 //searchSummary.UpdateStatus();
             }
             else
             {
-                App.SerializationManager.SetCustomSetting("SearchRootClicked", false);
                 //searchSummary.ShowSearchStatus = false;
             }
         }
@@ -334,8 +333,12 @@ namespace Search3
                 // Check for Keywords count
                 var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
                 if (selectedKeywords.Count == 0)
-                    throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
-
+                {
+                    if (invalidWord == false)
+                        throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
+                    else
+                        throw new SearchSettingsValidationException("The keywords selected were not defined in the list of possible search terms. Please provide different search terms.");
+                }
                 // Check for checked webservices
                 var webServicesCount = _searchSettings.WebServicesSettings.CheckedCount;
                 if (webServicesCount == 0)
@@ -386,8 +389,9 @@ namespace Search3
 
         void _searcher_Completed(object sender, CompletedEventArgs e)
         {
-            // DeactivateSelectAreaByPolygon(); //Added 1/21/13 Hullinger
-            DeactivateDrawBox();
+          
+            rbSelect_Click(this, new EventArgs());
+            rbSelect.Toggle();
 
             if (e.Result == null) return;
             e.ProgressHandler.ReportMessage("Adding Sites to Map...");
@@ -504,6 +508,14 @@ namespace Search3
             DeactivateSelectAreaByPolygon();
             DeactivateCurrentView();
 
+            var layers = App.Map.MapFrame.GetAllLayers();
+            App.Map.MapFrame.IsSelected = false;
+            foreach (var layer in layers)
+            {
+                layer.IsSelected = false;
+                layer.GetParentItem().IsSelected = false;
+            }
+
             if (_rectangleDrawing == null)
             {
                 _rectangleDrawing = new RectangleDrawing((Map)App.Map);
@@ -512,6 +524,7 @@ namespace Search3
             }
 
             _rectangleDrawing.Activate();
+            App.Map.Legend.RefreshNodes();
         }
         
 
@@ -556,26 +569,6 @@ namespace Search3
             if(App.Map.FunctionMode != FunctionMode.Select)
                 App.Map.FunctionMode = FunctionMode.Select;
             CurrentAreaSelectMode = AreaSelectMode.SelectPolygons;
-
-            //   var isWorldTemplate = App.SerializationManager.GetCustomSetting("world_template", "false");
-            //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, Convert.ToBoolean(isWorldTemplate));
-            //  AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
-            var layers = App.Map.MapFrame.GetAllLayers();
-            bool selected = false;
-            foreach (var layer in layers)
-            {
-                if (layer.IsSelected)
-                {
-                    selected = true;
-                }
-            }
-
-           // App.Map.MapFrame.GetAllLayers().ForEach(r => r.IsSelected = false);
-            if (selected == false)
-            {
-                App.Map.MapFrame.IsSelected = true; ///////  This was formerly deleted
-            }
-            App.Map.Legend.RefreshNodes();
         }
 
         private void DeactivateSelectAreaByPolygon()
@@ -658,8 +651,6 @@ namespace Search3
             AreaHelper.SelectFirstVisiblePolygonLayer((Map)App.Map, false);
             SelectAreaByAttributeDialog.ShowDialog((Map)App.Map);
             Map_SelectionChanged(this, EventArgs.Empty);
-
-            //App.Map.FunctionMode = FunctionMode.Select;
         }
 
         public void DeactivateCurrentView()
@@ -885,8 +876,10 @@ namespace Search3
                         toDelete.Add(cur);
                     }
                 }
+                invalidWord = false;
                 if (toDelete.Count > 0)
                 {
+                    invalidWord = true;
                     var res = MessageBox.Show(Shell,
                                     "The next invalid Keywords will be removed from the search criteria:" +
                                     Environment.NewLine +
@@ -947,7 +940,7 @@ namespace Search3
 
             if (currentMode != AreaSelectMode.DrawBox)
             {
-                _rectangleDrawing.Deactivate();
+                DeactivateDrawBox();
                 CurrentAreaSelectMode = currentMode;
                 App.Map.FunctionMode = navigationMode;
             }

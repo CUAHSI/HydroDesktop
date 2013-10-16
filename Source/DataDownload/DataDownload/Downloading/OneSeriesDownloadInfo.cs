@@ -276,7 +276,7 @@ namespace HydroDesktop.DataDownload.Downloading
                    case DownloadInfoStatus.Pending:
                         return 0;
                     case DownloadInfoStatus.Error:
-                    case DownloadInfoStatus.OkWithWarnings:
+                    case DownloadInfoStatus.OkWithWarning:
                     case DownloadInfoStatus.Ok:
                         return 100;
                     case DownloadInfoStatus.Downloaded:

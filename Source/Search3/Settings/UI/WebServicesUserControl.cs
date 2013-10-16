@@ -13,6 +13,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Controls.Header;
 using DotSpatial.Topology;
+using System.ComponentModel;
 
 namespace Search3.Settings.UI
 {
@@ -42,7 +43,7 @@ namespace Search3.Settings.UI
             InitializeComponent();
 
             gridViewWebServices.CellContentClick += gridViewWebServices_OpenUrl;
-            gridViewWebServices.CellValueChanged += gridViewWebServices_AfterCheck;  
+            gridViewWebServices.CellValueChanged += gridViewWebServices_AfterCheck;
         }
         
 
@@ -157,15 +158,15 @@ namespace Search3.Settings.UI
                 colTB6.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 gridViewWebServices.Columns.Add(colTB6);
 
+                DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
+                dgvic.HeaderText = "View Extents";
+                dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                dgvic.ValuesAreIcons = true;
+                dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
+                gridViewWebServices.Columns.Add(dgvic);
+
                 if (local == false)
                 {
-                    DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
-                    dgvic.HeaderText = "View Extents";
-                    dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-                    dgvic.ValuesAreIcons = true;
-                    dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
-                    gridViewWebServices.Columns.Add(dgvic);
-
                     DataGridViewImageColumn dgvic2 = new DataGridViewImageColumn();
                     dgvic2.HeaderText = "More Info";
                     dgvic2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
@@ -193,6 +194,7 @@ namespace Search3.Settings.UI
             }
             finally
             {
+                gridViewWebServices.Sort(gridViewWebServices.Columns["Service Name"], ListSortDirection.Ascending);
                 gridViewWebServices.ResumeLayout();
             }
         }

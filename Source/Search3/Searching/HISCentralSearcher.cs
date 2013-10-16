@@ -18,7 +18,6 @@ namespace Search3.Searching
         #region Fields
 
         private readonly string _hisCentralUrl;
-        private static readonly CultureInfo _usaCulture = new CultureInfo("en-US");
         private static readonly CultureInfo _invariantCulture = CultureInfo.InvariantCulture;
 
         #endregion
@@ -93,13 +92,13 @@ namespace Search3.Searching
             url.Append(_hisCentralUrl);
             url.Append("/GetSeriesCatalogForBox2");
             url.Append("?xmin=");
-            url.Append(Uri.EscapeDataString(xMin.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(xMin.ToString(_invariantCulture)));
             url.Append("&xmax=");
-            url.Append(Uri.EscapeDataString(xMax.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(xMax.ToString(_invariantCulture)));
             url.Append("&ymin=");
-            url.Append(Uri.EscapeDataString(yMin.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(yMin.ToString(_invariantCulture)));
             url.Append("&ymax=");
-            url.Append(Uri.EscapeDataString(yMax.ToString(_usaCulture)));
+            url.Append(Uri.EscapeDataString(yMax.ToString(_invariantCulture)));
 
             //to append the keyword
             url.Append("&conceptKeyword=");
@@ -228,15 +227,24 @@ namespace Search3.Searching
                             break;
                         case "begindate":
                             reader.Read();
-                            series.BeginDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.BeginDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            else
+                                return null;
                             break;
                         case "enddate":
                             reader.Read();
-                            series.EndDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.EndDate = Convert.ToDateTime(reader.Value, _invariantCulture);
+                            else
+                                return null;
                             break;
                         case "valuecount":
                             reader.Read();
-                            series.ValueCount = Convert.ToInt32(reader.Value);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.ValueCount = Convert.ToInt32(reader.Value);
+                            else
+                                return null;
                             break;
                         case "sitename":
                             reader.Read();
@@ -244,11 +252,17 @@ namespace Search3.Searching
                             break;
                         case "latitude":
                             reader.Read();
-                            series.Latitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.Latitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            else
+                                return null;
                             break;
                         case "longitude":
                             reader.Read();
-                            series.Longitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.Longitude = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            else
+                                return null;
                             break;
                         case "datatype":
                             reader.Read();
@@ -276,11 +290,13 @@ namespace Search3.Searching
                             break;
                         case "timesupport":
                             reader.Read();
-                            series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.TimeSupport = Convert.ToDouble(reader.Value, CultureInfo.InvariantCulture);
                             break;
                         case "isregular":
                             reader.Read();
-                            series.IsRegular = Convert.ToBoolean(reader.Value);
+                            if (!String.IsNullOrWhiteSpace(reader.Value))
+                                series.IsRegular = Convert.ToBoolean(reader.Value);
                             break;
                         case "variableunits":
                             reader.Read();
