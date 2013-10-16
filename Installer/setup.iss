@@ -155,7 +155,7 @@ Source: "..\Binaries\Application Extensions\NuGet.Core.dll"; DestDir: "{app}\App
 
 ;Windows specific folders
 Source: "..\Binaries\Windows Extensions\HydroR\HydroR.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\HydroR\HydroR_1.2.tar.gz"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\HydroR\HydroR_1.3.tar.gz"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\HydroDesktop.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Support\Windows\System.Data.SQLite.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
