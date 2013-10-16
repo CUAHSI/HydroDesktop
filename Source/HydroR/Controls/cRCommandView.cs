@@ -399,7 +399,7 @@ namespace HydroR
             {
                 count++;
                 //output = standardinput("install.packages(\"" + changeSlash(Path.GetDirectoryName(this.GetType().Assembly.Location)) + "/HydroR_1.1.tar.gz\",repos=NULL, type = \"source\")\n is.element(\"HydroR\", installed.packages()[,1])");
-                sendLineToR("install.packages(\"" + changeSlash(Path.GetDirectoryName(this.GetType().Assembly.Location)) + "/HydroR_1.2.tar.gz\",repos=NULL, type = \"source\")");
+                sendLineToR("install.packages(\"" + changeSlash(Path.GetDirectoryName(this.GetType().Assembly.Location)) + "/HydroR_1.3.tar.gz\",repos=NULL, type = \"source\")");
                 pushButton("{ENTER}");
                 output = standardinput("is.element(\"HydroR\", installed.packages()[,1])");
                 installed = output.Contains("TRUE");
