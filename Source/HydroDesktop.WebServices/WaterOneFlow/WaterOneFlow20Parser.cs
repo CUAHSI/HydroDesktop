@@ -74,7 +74,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             foreach (XmlNode observation in observations)
             {
                 XmlDocument xml = new XmlDocument();
-                //xml.ImportNode(observation, false);
                 xml.LoadXml(observation.OuterXml);
                 XmlNodeList times = xml.GetElementsByTagName("wml2:time");
                 XmlNodeList values = xml.GetElementsByTagName("wml2:value");
