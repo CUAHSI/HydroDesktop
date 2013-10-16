@@ -38,8 +38,8 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
         [Test]
         public void ParseISOMetadataV2()
         {
-            var xmlPath = @"TestFiles\v20\GetValues_Mendon_usu3.xml";
-            var target = new WaterOneFlow11Parser();
+            var xmlPath = @"TestFiles\v20\GetValues_Mendon_usu3_wml2.xml";
+            var target = new WaterOneFlow20Parser();
 
             var result = target.ParseGetValues(xmlPath);
             var series = result[0];
