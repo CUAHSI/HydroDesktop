@@ -23,57 +23,101 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads DataValues from a WaterML2.0 XML file
         /// </summary>
-        /// <param name="xmlFile"></param>
-        private IList<Series> ReadDataValues(XmlNodeList observations)
+        /// <param name="XmlNodeList"></param>
+        private IList<Series> ReadDataValues(XmlDocument wmlDoc)
         {
             IList<Series> seriesList = new List<Series>();
+            XmlNodeList observations = wmlDoc.GetElementsByTagName("wml2:observationMember");
 
-            //loop through each series observation
-            foreach (XmlNode observation in observations)
+            if (observations.Count == 0)
             {
-                XmlDocument xml = new XmlDocument();
-                xml.LoadXml(observation.OuterXml);
-
-                XmlNodeList tvps = xml.GetElementsByTagName("wml2:MeasurementTVP");
                 Series newSeries = new Series();
-
-                //add Begin and End datetime to the series
-                try
-                {
-                    newSeries.BeginDateTime = Convert.ToDateTime(xml.GetElementsByTagName("gml:beginPosition").Item(0).FirstChild.Value);
-                    newSeries.EndDateTime = Convert.ToDateTime(xml.GetElementsByTagName("gml:endPosition").Item(0).FirstChild.Value);
-                } catch{}
-
-                //add each Time-Value-Pair to the series
-                foreach(XmlNode tvp in tvps)
-                {
-                    Double value = -9999;
-                    DateTime time = new DateTime();
-
-                    //parse Time-Value-Pair
-                    foreach (XmlNode child in tvp.ChildNodes)
-                    {
-                        if (!String.IsNullOrEmpty(child.Name))
-                        {
-                            if (child.Name.ToLower() == "wml2:value")
-                                value = Double.Parse(child.FirstChild.Value);
-                            if (child.Name.ToLower() == "wml2:time")
-                                time = Convert.ToDateTime(child.FirstChild.Value);
-                        }
-                    }
-
-                    //add parsed Time-Value-Pair to series
-                    DataValue dataValue = new DataValue(value, time, 0);
-                    newSeries.DataValueList.Add(dataValue);
-                    dataValue.Series = newSeries;
-                }
+                newSeries = ReadDataSeries(wmlDoc);
 
                 //add parsed series data to list
-                if(newSeries.GetValueCount() > 0)
+                if (newSeries.GetValueCount() > 0)
                     seriesList.Add(newSeries);
+            }
+            else
+            {
+                //loop through each series observation
+                foreach (XmlNode observation in observations)
+                {
+                    Series newSeries = new Series();
+                    XmlDocument xml = new XmlDocument();
+                    xml.LoadXml(observation.OuterXml);
+                    newSeries = ReadDataSeries(xml);
+
+                    //add parsed series data to list
+                    if (newSeries.GetValueCount() > 0)
+                        seriesList.Add(newSeries);
+                }
             }
 
             return seriesList;
+        }
+
+        /// <summary>
+        /// Reads DataValues from a Series
+        /// </summary>
+        /// <param name="XmlNodeList"></param>
+        private Series ReadDataSeries(XmlDocument xml)
+        {
+            Series newSeries = new Series();
+            XmlNodeList tvps = xml.GetElementsByTagName("wml2:MeasurementTVP");
+
+            //add Begin and End datetime to the series
+            try
+            {
+                XmlNode begin = xml.GetElementsByTagName("gml:beginPosition").Item(0);
+                XmlNode end = xml.GetElementsByTagName("gml:endPosition").Item(0);
+                newSeries.BeginDateTime = Convert.ToDateTime(begin.FirstChild.Value);
+                newSeries.EndDateTime = Convert.ToDateTime(end.FirstChild.Value);
+            }
+            catch { }
+
+            //add each Time-Value-Pair to the series
+            foreach (XmlNode tvp in tvps)
+            {
+                Double value = -9999;
+                DateTime time = new DateTime();
+
+                //parse Time-Value-Pair
+                foreach (XmlNode child in tvp.ChildNodes)
+                {
+                    if (!String.IsNullOrEmpty(child.Name))
+                    {
+                        if (child.Name.ToLower() == "wml2:value")
+                            value = Double.Parse(child.FirstChild.Value);
+                        if (child.Name.ToLower() == "wml2:time")
+                            time = Convert.ToDateTime(child.FirstChild.Value);
+                    }
+                }
+
+                //add parsed Time-Value-Pair to series
+                DataValue dataValue = new DataValue(value, time, 0);
+                newSeries.DataValueList.Add(dataValue);
+                dataValue.Series = newSeries;
+            }
+            return newSeries;
+        }
+
+        /// <summary>
+        /// Reads DataValues from a WaterML2.0 XML file
+        /// </summary>
+        /// <param name="XmlNodeList"></param>
+        private Site ReadSite(XmlDocument wmlDoc)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Reads DataValues from a WaterML2.0 XML file
+        /// </summary>
+        /// <param name="XmlNodeList"></param>
+        private Variable ReadVariable(XmlDocument wmlDoc)
+        {
+            throw new NotImplementedException();
         }
 
         public IList<Site> ParseGetSites(string xmlFile)
@@ -114,19 +158,18 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <param name="xmlFile"></param>
         public IList<Series> ParseGetValues(Stream stream)
         {
-            XmlDocument xml = new XmlDocument();
-            xml.Load(stream);
+            XmlDocument wmlDoc = new XmlDocument();
+            wmlDoc.Load(stream);
 
             Site site = null;
             Variable varInfo = null;
             IList<Series> seriesList = null;
 
             //get the data values and put them into a list of series
-            XmlNodeList observations = xml.GetElementsByTagName("wml2:observationMember");
-            seriesList = ReadDataValues(observations);
+            seriesList = ReadDataValues(wmlDoc);
 
-            //site = parseSite();
-            //varInfo = parseVariable();
+            //site = readSite(wmlDoc);
+            //varInfo = readVariable(wmlDoc);
 
             foreach (var series in seriesList)
             {
