@@ -4,6 +4,8 @@ import wx
 import GetShapefiles
 import hydrosharedownload
 import sys
+import urllib2
+import json
 
 # Implementing MyFrame1
 class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
@@ -14,10 +16,31 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
         self.hydrosharedownloader = hydrosharedownload.HydroshareDownloader()
         
     def populateList(self):
-        filtered_files = self.hydrosharedownloader.retrieveList(self.rdo_FilterSearch.GetStringSelection())
+        filtered_files = self.hydrosharedownloader.retrieveList(self.cmb_FilterSearch.GetStringSelection())
         i=0
         for item in filtered_files:
             self.lst_AvailableItems.Insert(item, i)
+            i+=1
+
+    def populateFilterSearch(self):
+
+        #Load the data from the url into data
+        data = urllib2.urlopen("http://dev.hydroshare.org/?q=my_services/node.json")
+
+        #Turn the data from a raw string into JSON
+        all_files = json.load(data)
+
+        resource_types = []
+
+        #Look through all nodes in the JSON data
+        for file in all_files:
+
+            #Cycle through the files and extract unique resource types to add to resource_types
+            if (file["type"] not in resource_types):
+                resource_types.append(file["type"])
+        i=0
+        for item in resource_types:
+            self.cmb_FilterSearch.Insert(item, i)
             i+=1
     
     # Handlers for MyFrame1 events.
@@ -46,6 +69,7 @@ def open():
     frame = HydroShareDownloadDialog(None)
     frame.Show()
     frame.populateList()
+    frame.populateFilterSearch()
 
     #If there is an argument provided when running this, set it as our downloader's savepath.
     if len(sys.argv) > 1:

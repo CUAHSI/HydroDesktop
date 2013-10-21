@@ -50,16 +50,16 @@ class HydroshareDownloader():
             #This if-elif-else block doesn't seem to be working very well, but I'm leaving it in anyways.
             #Basically we just return the correct list based on the "filter" parameter passed in, but for whatever reason only
             #"Spatial Data" works, which is actually good for now because that's the only ones that we can download, extract, and open in HydroDesktop for now.
-            if (filter == u"Spatial Data"):
-                if (file["type"] == "hydroshare_geoanalytics"):
+            if (filter == u"hydroshare_geoanalytics"):
+                if (file["type"] == u"hydroshare_geoanalytics"):
                     filtered_files.append(file["title"])
-            elif (filter == u"Time Series"):
+            elif (filter == u"hydroshare_time_series"):
                 if (file["type"] == "hydroshare_time_series"):
                     filter_files.append(file["title"])
             else:
                 #If the node is one of these two types then we will show it in our list
-                if (file["type"] == "hydroshare_time_series" 
-                or file["type"] == "hydroshare_geoanalytics"):
+                #if (file["type"] == "hydroshare_time_series" 
+                #or file["type"] == "hydroshare_geoanalytics"):
                     #Access the node's title through the JSON key "title"
                     filtered_files.append(file["title"])
         

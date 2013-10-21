@@ -25,14 +25,16 @@ class MyFrame1 ( wx.Frame ):
 		self.btn_refresh = wx.Button( self, wx.ID_ANY, u"Refresh List", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer1.Add( self.btn_refresh, 0, wx.ALL|wx.EXPAND, 5 )
 		
-		rdo_FilterSearchChoices = [ u"Spatial Data", u"Time Series" ]
-		self.rdo_FilterSearch = wx.RadioBox( self, wx.ID_ANY, u"Filter Search", wx.DefaultPosition, wx.DefaultSize, rdo_FilterSearchChoices, 2, wx.RA_SPECIFY_COLS )
-		self.rdo_FilterSearch.SetSelection( 0 )
-		bSizer1.Add( self.rdo_FilterSearch, 0, wx.ALIGN_CENTER|wx.EXPAND, 1 )
+		cmb_FilterSearchChoices = []
+		self.cmb_FilterSearch = wx.ComboBox( self, wx.ID_ANY, u"Filter Search ...", wx.DefaultPosition, wx.DefaultSize, cmb_FilterSearchChoices, 0 )
+		bSizer1.Add( self.cmb_FilterSearch, 0, wx.ALL|wx.EXPAND, 5 )
 		
 		lst_AvailableItemsChoices = []
 		self.lst_AvailableItems = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, lst_AvailableItemsChoices, wx.LB_MULTIPLE|wx.LB_NEEDED_SB )
 		bSizer1.Add( self.lst_AvailableItems, 1, wx.ALL|wx.EXPAND, 5 )
+		
+		self.gag_ProgressBar = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		bSizer1.Add( self.gag_ProgressBar, 0, wx.ALL|wx.EXPAND, 5 )
 		
 		bSizer3 = wx.BoxSizer( wx.HORIZONTAL )
 		
@@ -49,7 +51,7 @@ class MyFrame1 ( wx.Frame ):
 		
 		# Connect Events
 		self.btn_refresh.Bind( wx.EVT_BUTTON, self.clk_Refresh )
-		self.rdo_FilterSearch.Bind( wx.EVT_RADIOBOX, self.clk_FilterSearch )
+		self.cmb_FilterSearch.Bind( wx.EVT_COMBOBOX, self.clk_FilterSearch )
 		self.btn_cancel.Bind( wx.EVT_BUTTON, self.clk_Cancel )
 		self.btn_GetData.Bind( wx.EVT_BUTTON, self.clk_GetData )
 	
