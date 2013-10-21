@@ -292,8 +292,11 @@ namespace HydroDesktop.Main
             // Create an empty project if the x button is clicked
             if (this.DialogResult != DialogResult.OK)
             {
-                e.Cancel = true;
-                CreateEmptyProject();
+                if (String.IsNullOrEmpty(_app.SerializationManager.CurrentProjectFile))
+                {
+                    e.Cancel = true;
+                    CreateEmptyProject();
+                }
             }
         }
 

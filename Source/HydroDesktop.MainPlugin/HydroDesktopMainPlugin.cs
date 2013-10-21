@@ -129,7 +129,7 @@
             }
             else
             {
-                var res = MessageBox.Show(string.Format("Exit Hydrodesktop?"),
+                var res = MessageBox.Show(string.Format("Exit HydroDesktop?"),
                                     HYDRODESKTOP_NAME,
                                     MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
                                     MessageBoxDefaultButton.Button2);
