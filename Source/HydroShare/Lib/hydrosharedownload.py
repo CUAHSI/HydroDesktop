@@ -16,7 +16,7 @@ class HydroshareDownloader():
 
     def downloadFile(self, resource):
         '''Downloads a file with given name from HydroShare and saves it to the specified location.'''
-    
+
         #Remove spaces from Resource name
         resource = resource.replace(" ", "")
         	

@@ -14,6 +14,7 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
     def __init__( self, parent ):
         GetShapefiles.MyFrame1.__init__( self, parent )
         self.hydrosharedownloader = hydrosharedownload.HydroshareDownloader()
+        self.gag_ProgressBar.Show(False)
         
     def populateList(self):
         filtered_files = self.hydrosharedownloader.retrieveList(self.cmb_FilterSearch.GetStringSelection())
@@ -56,6 +57,8 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
         self.Close()
     
     def clk_GetData( self, event ):
+        self.gag_ProgressBar.Show()
+        self.Layout()
         if self.lst_AvailableItems.GetSelections() >= 0:
 			selected_items = []
 			selected_items = self.lst_AvailableItems.GetSelections()
