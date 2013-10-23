@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using HydroDesktop.Interfaces.ObjectModel;
+using System.Globalization;
 //using HydroDesktop.DataModel;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
@@ -65,14 +66,23 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         {
             Series newSeries = new Series();
             XmlNodeList tvps = xml.GetElementsByTagName("wml2:MeasurementTVP");
+            XmlNodeList seriesNodes = xml.ChildNodes;
 
             //add Begin and End datetime to the series
             try
             {
                 XmlNode begin = xml.GetElementsByTagName("gml:beginPosition").Item(0);
                 XmlNode end = xml.GetElementsByTagName("gml:endPosition").Item(0);
-                newSeries.BeginDateTime = Convert.ToDateTime(begin.FirstChild.Value);
-                newSeries.EndDateTime = Convert.ToDateTime(end.FirstChild.Value);
+
+                if (begin.FirstChild.Value.Length > 19)
+                    newSeries.BeginDateTime = Convert.ToDateTime(begin.FirstChild.Value.Remove(19));
+                else
+                    newSeries.BeginDateTime = Convert.ToDateTime(begin.FirstChild.Value);
+
+                if (end.FirstChild.Value.Length > 19)
+                    newSeries.EndDateTime = Convert.ToDateTime(end.FirstChild.Value.Remove(19));
+                else
+                    newSeries.EndDateTime = Convert.ToDateTime(end.FirstChild.Value);
             }
             catch { }
 
@@ -81,6 +91,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             {
                 Double value = -9999;
                 DateTime time = new DateTime();
+                double utcOffset = 0;
 
                 //parse Time-Value-Pair
                 foreach (XmlNode child in tvp.ChildNodes)
@@ -90,12 +101,25 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                         if (child.Name.ToLower() == "wml2:value")
                             value = Double.Parse(child.FirstChild.Value);
                         if (child.Name.ToLower() == "wml2:time")
-                            time = Convert.ToDateTime(child.FirstChild.Value);
+                        {
+                            String dateTime = child.FirstChild.Value;
+                            String utcoffset = "Z";
+                            if (dateTime.Length > 19)
+                            {
+                                utcoffset = dateTime.Substring(19);
+                                dateTime = dateTime.Remove(19);
+                            }
+                            time = Convert.ToDateTime(dateTime);
+                            if (utcoffset.ToLower() == "z")
+                                utcOffset = 0;
+                            else
+                                utcOffset = ConvertUtcOffset(utcoffset);
+                        }
                     }
                 }
 
                 //add parsed Time-Value-Pair to series
-                DataValue dataValue = new DataValue(value, time, 0);
+                DataValue dataValue = new DataValue(value, time, utcOffset);
                 newSeries.DataValueList.Add(dataValue);
                 dataValue.Series = newSeries;
             }
@@ -191,6 +215,24 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 series.UpdateDateTime = series.LastCheckedDateTime;
             }
             return seriesList ?? (new List<Series>(0));
+        }
+
+        /// <summary>
+        /// Converts the 'UTC Offset' value to a double digit in hours
+        /// </summary>
+        /// <param name="offsetString"></param>
+        /// <returns></returns>
+        private double ConvertUtcOffset(string offsetString)
+        {
+            int colonIndex = offsetString.IndexOf(":", StringComparison.Ordinal);
+            double minutes = 0.0;
+            double hours = 0.0;
+            if (colonIndex > 0 && colonIndex < offsetString.Length - 1)
+            {
+                minutes = Convert.ToDouble(offsetString.Substring(colonIndex + 1), CultureInfo.InvariantCulture);
+                hours = Convert.ToDouble((offsetString.Substring(0, colonIndex)), CultureInfo.InvariantCulture);
+            }
+            return hours + (minutes / 60.0);
         }
     }
 }
