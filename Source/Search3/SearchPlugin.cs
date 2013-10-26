@@ -812,6 +812,7 @@ namespace Search3
 
                     // This code has no other purpose than to  immediately trigger the text to change to Multiple Selected.
                     // Without it, you have to hover or click on something in the ribbon for the change to occur.
+                   
                     _dropdownKeywords.Enabled = false;
                     _dropdownKeywords.Enabled = true;
                     
