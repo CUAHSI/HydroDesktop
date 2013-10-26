@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.6.11"
-#define SrcApp "HydroDesktop_1_6_11.exe"
+#define AppName "HydroDesktop 1.6.12"
+#define SrcApp "HydroDesktop_1_6_12.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -37,7 +37,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{0BBF8E84-E6DC-46D9-82EC-99AEB82C994D}
+AppID={{CB4A76AF-51BC-499A-B078-0E2BE613E9B1}
 
 PrivilegesRequired=poweruser
 MinVersion=,5.01
@@ -163,10 +163,10 @@ Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{ap
 
 
 ;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
-Source: "..\Binaries\Windows Extensions\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 
 ;MenuBar package
