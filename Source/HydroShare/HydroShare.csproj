@@ -125,6 +125,9 @@
     <Content Include="Lib\hydrosharedownload.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Upload_32x32.jpg" />
+    <None Include="Resources\Download_32x32.jpg" />
+    <Content Include="Resources\Download_32x32.png" />
     <Content Include="Resources\python_16x16.png" />
     <Content Include="Resources\python_32x32.png" />
   </ItemGroup>
