@@ -58,13 +58,15 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
     
     def clk_GetData( self, event ):
         self.gag_ProgressBar.Show()
+        self.gag_ProgressBar.Pulse()
         self.Layout()
         if self.lst_AvailableItems.GetSelections() >= 0:
-			selected_items = []
-			selected_items = self.lst_AvailableItems.GetSelections()
-			for item in selected_items:
-				self.hydrosharedownloader.downloadFile(self.lst_AvailableItems.GetString(item))
-			self.Close()
+            selected_items = []
+            selected_items = self.lst_AvailableItems.GetSelections()
+            for item in selected_items:
+                self.gag_ProgressBar.Pulse()
+                self.hydrosharedownloader.downloadFile(self.lst_AvailableItems.GetString(item))
+            self.Close()
     
 def open():
     app = wx.App(0)

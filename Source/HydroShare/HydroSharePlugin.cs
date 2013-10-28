@@ -18,7 +18,8 @@ namespace HydroShare
 
         //private SimpleActionItem test1;
         //private SimpleActionItem test2;
-        private SimpleActionItem pythonTest;
+        private SimpleActionItem hydroShareDownload;
+        private SimpleActionItem hydroShareUpload;
 
         private readonly string _hydroShareKey = SharedConstants.HydroShareRootkey;
 
@@ -53,13 +54,21 @@ namespace HydroShare
 
             //test1 = new SimpleActionItem(_hydroShareKey, "", test_Click) { LargeImage = Resources.satisfied, GroupCaption = "Happy/Sad", Visible = true };
             //test2 = new SimpleActionItem(_hydroShareKey, "", test_Click) { LargeImage = Resources.sad, GroupCaption = "Happy/Sad", Visible = false };
-            pythonTest = new SimpleActionItem(_hydroShareKey, "", pythonTest_Click) { LargeImage = Resources.python_32x32, GroupCaption = "Python", Visible = true };  
+            hydroShareDownload = new SimpleActionItem(_hydroShareKey, "Download", hydroShareDownload_Click) { LargeImage = Resources.Download_32x32, GroupCaption = "HydroShare", Visible = true };
+            hydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", hydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "HydroShare", Visible = true };  
 
             //head.Add(test1);
             //head.Add(test2);
-            head.Add(pythonTest);
+            head.Add(hydroShareDownload);
+            head.Add(hydroShareUpload);
          
         }
+
+        private void hydroShareUpload_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// Should be called with all filepaths returned from the HydroShareDownload Python script.
@@ -128,7 +137,7 @@ namespace HydroShare
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void pythonTest_Click(object sender, EventArgs e)
+        private void hydroShareDownload_Click(object sender, EventArgs e)
         {
             //Set the save_path to which we will save the downloaded files.
             String save_path = retreiveSavePath();
