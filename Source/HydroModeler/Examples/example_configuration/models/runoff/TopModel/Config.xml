@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Region1</ID>
+        <Description>numerical-analysis, Columbia SC</Description>
+      </ElementSet>
+      <Quantity>
+        <ID>ConcentrationBC1</ID>
+        <Description>C</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>ppm</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>ppm</ID>
+          <Description>ppm</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Region1</ID>
+        <Description>Smith Branch Watershed, Columbia SC</Description>
+        <Version>1</Version>
+        <ShapefilePath>.\StreamNet.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>ConcentrationBC2</ID>
+        <Description>Excess Rainfall</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>in</ID>
+          <Description>inches</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>08/20/2009 00:00:00 AM</StartDateTime>
+    <EndDateTime>08/20/2009 00:20:00 AM</EndDateTime>
+    <TimeStepInSeconds>1</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>Water Component</ID>
+    <Description>ghg</Description>
+  </ModelInfo>
+</Configuration>
