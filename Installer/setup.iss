@@ -178,6 +178,9 @@ Source: "..\Binaries\Windows Extensions\DevExpress.Printing.v11.2.Core.dll"; Des
 Source: "..\Binaries\Windows Extensions\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Windows Extensions\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
 
 ;GeostatisticalTool package
 ;Source: "..\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
