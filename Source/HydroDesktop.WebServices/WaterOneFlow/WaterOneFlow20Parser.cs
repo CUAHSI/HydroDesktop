@@ -31,6 +31,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             XmlNodeList observations = wmlDoc.GetElementsByTagName("wml2:observationMember");
 
             if (observations.Count == 0)
+                observations = wmlDoc.GetElementsByTagName("om:OM_Observation");
+
+            if (observations.Count == 0)
             {
                 Series newSeries = new Series();
                 newSeries = ReadDataSeries(wmlDoc);
@@ -39,20 +42,18 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 if (newSeries.GetValueCount() > 0)
                     seriesList.Add(newSeries);
             }
-            else
-            {
-                //loop through each series observation
-                foreach (XmlNode observation in observations)
-                {
-                    Series newSeries = new Series();
-                    XmlDocument xml = new XmlDocument();
-                    xml.LoadXml(observation.OuterXml);
-                    newSeries = ReadDataSeries(xml);
 
-                    //add parsed series data to list
-                    if (newSeries.GetValueCount() > 0)
-                        seriesList.Add(newSeries);
-                }
+            //loop through each series observation
+            foreach (XmlNode observation in observations)
+            {
+                Series newSeries = new Series();
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(observation.OuterXml);
+                newSeries = ReadDataSeries(xml);
+
+                //add parsed series data to list
+                if (newSeries.GetValueCount() > 0)
+                    seriesList.Add(newSeries);
             }
 
             return seriesList;
@@ -65,8 +66,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         private Series ReadDataSeries(XmlDocument xml)
         {
             Series newSeries = new Series();
-            XmlNodeList tvps = xml.GetElementsByTagName("wml2:MeasurementTVP");
-            XmlNodeList seriesNodes = xml.ChildNodes;
+            XmlNodeList tvps = GetTVPList(xml);
+            GetSeriesMetadata(xml, newSeries);
+            GetDefaultNodeMetadata(xml, newSeries);
 
             //add Begin and End datetime to the series
             try
@@ -98,9 +100,9 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 {
                     if (!String.IsNullOrEmpty(child.Name))
                     {
-                        if (child.Name.ToLower() == "wml2:value")
+                        if (child.Name.ToLower() == "wml2:value" && child.HasChildNodes)
                             value = Double.Parse(child.FirstChild.Value);
-                        if (child.Name.ToLower() == "wml2:time")
+                        if (child.Name.ToLower() == "wml2:time" && child.HasChildNodes)
                         {
                             String dateTime = child.FirstChild.Value;
                             String utcoffset = "Z";
@@ -115,6 +117,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             else
                                 utcOffset = ConvertUtcOffset(utcoffset);
                         }
+                        if (child.Name.ToLower() == "wml2:metadata" && child.HasChildNodes)
+                            GetNodeMetadata(child, newSeries);
                     }
                 }
 
@@ -124,6 +128,43 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 dataValue.Series = newSeries;
             }
             return newSeries;
+        }
+
+        private XmlNodeList GetTVPList(XmlDocument xml)
+        {
+            XmlNodeList tvps = xml.GetElementsByTagName("wml2:MeasurementTVP");
+            if(tvps.Count == 0)
+                tvps = xml.GetElementsByTagName("wml2:CategoricalTVP");
+            if (tvps.Count == 0)
+                tvps = xml.GetElementsByTagName("wml2:TimeValuePair");
+
+            return tvps;
+        }
+
+        private void GetSeriesMetadata(XmlDocument xml, Series newSeries)
+        {
+            XmlNodeList meta = xml.GetElementsByTagName("wml2:MeasurementTimeseriesMetadata");
+            if (meta.Count == 0)
+                meta = xml.GetElementsByTagName("wml2:TimeseriesMetadata");
+            if (meta.Count == 0)
+                meta = xml.GetElementsByTagName("wml2:CategoricalTimeseriesMetadata");
+        }
+
+        private void GetDefaultNodeMetadata(XmlDocument xml, Series newSeries)
+        {
+            XmlNodeList meta = xml.GetElementsByTagName("wml2:DefaultTVPMeasurementMetadata");
+            if (meta.Count == 0)
+                meta = xml.GetElementsByTagName("wml2:DefaultTVPCategoricalMetadata");
+            if (meta.Count == 0)
+                meta = xml.GetElementsByTagName("wml2:DefaultTVPMetadata");
+        }
+
+        private void GetNodeMetadata(XmlNode xmlNode, Series newSeries)
+        {
+            foreach (XmlNode child in xmlNode.FirstChild.ChildNodes)
+            {
+
+            }
         }
 
         /// <summary>
