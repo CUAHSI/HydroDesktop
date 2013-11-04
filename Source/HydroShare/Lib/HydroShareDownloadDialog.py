@@ -6,6 +6,7 @@ import hydrosharedownload
 import sys
 import urllib2
 import json
+import time
 
 # Implementing MyFrame1
 class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
@@ -54,16 +55,21 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
     
     def clk_Cancel( self, event ):
         self.Close()
+
+    def ProgressBar(self):
+        self.gag_ProgressBar.Show()
+        self.Update()
+        for n in range(100):
+            time.sleep(0.01)
+            self.gag_ProgressBar.Pulse()
+            self.Update()
     
     def clk_GetData( self, event ):
-        self.gag_ProgressBar.Show()
-        self.gag_ProgressBar.Pulse()
-        self.Layout()
+        self.ProgressBar()
         if self.lst_AvailableItems.GetSelections() >= 0:
             selected_items = []
             selected_items = self.lst_AvailableItems.GetSelections()
             for item in selected_items:
-                self.gag_ProgressBar.Pulse()
                 self.hydrosharedownloader.downloadFile(self.lst_AvailableItems.GetString(item))
             self.Close()
     

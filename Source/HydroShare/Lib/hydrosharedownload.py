@@ -19,6 +19,7 @@ class HydroshareDownloader():
 
         #Remove spaces from Resource name
         resource = resource.replace(" ", "")
+        print resource
         	
         #Combine the Save folder with the resource name
         save_loc = os.path.join(self.file_path, resource + ".zip")
