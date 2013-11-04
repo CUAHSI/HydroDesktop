@@ -76,15 +76,15 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 XmlNode begin = xml.GetElementsByTagName("gml:beginPosition").Item(0);
                 XmlNode end = xml.GetElementsByTagName("gml:endPosition").Item(0);
 
-                if (begin.FirstChild.Value.Length > 19)
-                    newSeries.BeginDateTime = Convert.ToDateTime(begin.FirstChild.Value.Remove(19));
+                if (begin.InnerText.Length > 19)
+                    newSeries.BeginDateTime = Convert.ToDateTime(begin.InnerText.Remove(19));
                 else
-                    newSeries.BeginDateTime = Convert.ToDateTime(begin.FirstChild.Value);
+                    newSeries.BeginDateTime = Convert.ToDateTime(begin.InnerText);
 
-                if (end.FirstChild.Value.Length > 19)
-                    newSeries.EndDateTime = Convert.ToDateTime(end.FirstChild.Value.Remove(19));
+                if (end.InnerText.Length > 19)
+                    newSeries.EndDateTime = Convert.ToDateTime(end.InnerText.Remove(19));
                 else
-                    newSeries.EndDateTime = Convert.ToDateTime(end.FirstChild.Value);
+                    newSeries.EndDateTime = Convert.ToDateTime(end.InnerText);
             }
             catch { }
 
@@ -100,11 +100,11 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 {
                     if (!String.IsNullOrEmpty(child.Name))
                     {
-                        if (child.Name.ToLower() == "wml2:value" && child.HasChildNodes)
-                            value = Double.Parse(child.FirstChild.Value);
-                        if (child.Name.ToLower() == "wml2:time" && child.HasChildNodes)
+                        if (child.Name.ToLower() == "wml2:value" && child.InnerText != "")
+                            value = Double.Parse(child.InnerText);
+                        if (child.Name.ToLower() == "wml2:time" && child.InnerText != "")
                         {
-                            String dateTime = child.FirstChild.Value;
+                            String dateTime = child.InnerText;
                             String utcoffset = "Z";
                             if (dateTime.Length > 19)
                             {
@@ -117,7 +117,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                             else
                                 utcOffset = ConvertUtcOffset(utcoffset);
                         }
-                        if (child.Name.ToLower() == "wml2:metadata" && child.HasChildNodes)
+                        if (child.Name.ToLower() == "wml2:metadata" && child.InnerText != "")
                             GetNodeMetadata(child, newSeries);
                     }
                 }
@@ -157,6 +157,41 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 meta = xml.GetElementsByTagName("wml2:DefaultTVPCategoricalMetadata");
             if (meta.Count == 0)
                 meta = xml.GetElementsByTagName("wml2:DefaultTVPMetadata");
+
+            if(meta.Count != 0)
+            {
+                foreach (XmlNode child in meta.Item(0).ChildNodes)
+                {
+                    if (child.Name == "wml2:quality")
+                    {
+
+                    }
+                    if (child.Name == "wml2:qualifier")
+                    {
+
+                    }
+                    if (child.Name == "wml2:processing")
+                    {
+                    }
+                    if (child.Name == "wml2:uom")
+                    {
+
+                    }
+                    if (child.Name == "wml2:interpolationType")
+                    {
+                        foreach (XmlAttribute attribute in child.Attributes)
+                        {
+                            if (attribute.Name == "xlink:href")
+                            {
+                                string interpolationType = attribute.InnerText.Split('/').Last();
+                                if (newSeries.Variable == null)
+                                    newSeries.Variable = new Variable();
+                                newSeries.Variable.DataType = interpolationType;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void GetNodeMetadata(XmlNode xmlNode, Series newSeries)
