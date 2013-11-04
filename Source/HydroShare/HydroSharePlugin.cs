@@ -52,13 +52,9 @@ namespace HydroShare
             var head = App.HeaderControl;
             head.Add(new RootItem(_hydroShareKey, Resources.HydroShare) { SortOrder = 180 });
 
-            //test1 = new SimpleActionItem(_hydroShareKey, "", test_Click) { LargeImage = Resources.satisfied, GroupCaption = "Happy/Sad", Visible = true };
-            //test2 = new SimpleActionItem(_hydroShareKey, "", test_Click) { LargeImage = Resources.sad, GroupCaption = "Happy/Sad", Visible = false };
             hydroShareDownload = new SimpleActionItem(_hydroShareKey, "Download", hydroShareDownload_Click) { LargeImage = Resources.Download_32x32, GroupCaption = "HydroShare", Visible = true };
             hydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", hydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "HydroShare", Visible = true };  
 
-            //head.Add(test1);
-            //head.Add(test2);
             head.Add(hydroShareDownload);
             head.Add(hydroShareUpload);
          
@@ -186,28 +182,6 @@ namespace HydroShare
                 }
             }
         }
-
-/*void test_Click(object sender, EventArgs e)
-{
-            
-    if (test1.Visible == true)
-    {
-        test2.Visible = true;
-        test1.Visible = false;
-    }
-    else
-    {
-        test1.Visible = true;
-        test2.Visible = false;
-    }
-
-}*/
-                       
-    // var ipy = Python.CreateRuntime();
-    // dynamic test = ipy.ExecuteFile(@"C:\users\cuyler frisby\documents\python\test.py");
-    //dynamic test = ipy.UseFile(@"C:\Users\Cuyler Frisby\Documents\Python\bagit-1.2.1\bagit.py");
-    //test.make_bag("C:\\Users\\Cuyler Frisby\\Desktop\\NorthAmerica Bag Test", "None", 1);
-    //test.Simple();
 
     /*ScriptRuntime ipy = Python.CreateRuntime();
     ScriptEngine engine = ipy.GetEngine("Python");

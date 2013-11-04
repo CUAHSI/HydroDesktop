@@ -25,6 +25,8 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
 
     def populateFilterSearch(self):
 
+        self.cmb_FilterSearch.Insert("All", 0)
+
         #Load the data from the url into data
         data = urllib2.urlopen("http://dev.hydroshare.org/?q=my_services/node.json")
 
@@ -32,26 +34,23 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
         all_files = json.load(data)
 
         resource_types = []
+        usableResourceTypes = ["hydroshare_geoanalytics", "hydroshare_time_series"]
 
         #Look through all nodes in the JSON data
         for file in all_files:
 
             #Cycle through the files and extract unique resource types to add to resource_types
-            if (file["type"] not in resource_types):
+            if (file["type"] not in resource_types and file["type"] in usableResourceTypes):
                 resource_types.append(file["type"])
-        i=0
+        i=1
         for item in resource_types:
             self.cmb_FilterSearch.Insert(item, i)
             i+=1
     
     # Handlers for MyFrame1 events.
-    def clk_Refresh( self, event):
+    def clk_FilterSearch( self, event ):
         self.lst_AvailableItems.Clear()
         self.populateList()
-
-    def clk_FilterSearch( self, event ):
-		# TODO: Implement clk_FilterSearch
-		pass
     
     def clk_Cancel( self, event ):
         self.Close()
