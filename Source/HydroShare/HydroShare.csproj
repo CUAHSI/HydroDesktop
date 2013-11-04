@@ -110,12 +110,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\satisfied.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sad.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Lib\GetShapefiles.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -127,9 +121,6 @@
     </Content>
     <None Include="Resources\Upload_32x32.jpg" />
     <None Include="Resources\Download_32x32.jpg" />
-    <Content Include="Resources\Download_32x32.png" />
-    <Content Include="Resources\python_16x16.png" />
-    <Content Include="Resources\python_32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
