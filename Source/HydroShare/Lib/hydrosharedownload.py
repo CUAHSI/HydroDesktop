@@ -43,24 +43,17 @@ class HydroshareDownloader():
 
         #Filtered_files is used as a hack to filter the list to see just the files we want
         filtered_files = []
+        usableResourceTypes = ["hydroshare_geoanalytics", "hydroshare_time_series"]
         
-        #Look through all nodes in the JSON data
-        for file in all_files:
-            
-            #This if-elif-else block doesn't seem to be working very well, but I'm leaving it in anyways.
-            #Basically we just return the correct list based on the "filter" parameter passed in, but for whatever reason only
-            #"Spatial Data" works, which is actually good for now because that's the only ones that we can download, extract, and open in HydroDesktop for now.
-            if (filter == u"hydroshare_geoanalytics"):
-                if (file["type"] == u"hydroshare_geoanalytics"):
+        #This block of code determines which resources will show in the list box based on the filter criteria
+        if filter == "" or filter == "All":
+            for file in all_files:
+                if file["type"] in usableResourceTypes:
                     filtered_files.append(file["title"])
-            elif (filter == u"hydroshare_time_series"):
-                if (file["type"] == "hydroshare_time_series"):
-                    filter_files.append(file["title"])
-            else:
-                #If the node is one of these two types then we will show it in our list
-                #if (file["type"] == "hydroshare_time_series" 
-                #or file["type"] == "hydroshare_geoanalytics"):
-                    #Access the node's title through the JSON key "title"
+
+        else:
+            for file in all_files:
+                if filter == file["type"]:
                     filtered_files.append(file["title"])
         
         return filtered_files
