@@ -335,7 +335,10 @@ namespace Search3
                 if (selectedKeywords.Count == 0)
                 {
                     if (invalidWord == false)
-                        throw new SearchSettingsValidationException("Please provide at least one Keyword for search.");
+                    {
+                        selectedKeywords.Add("All");
+                        _dropdownKeywords.SelectedItem = "All";
+                    }
                     else
                         throw new SearchSettingsValidationException("The keywords selected were not defined in the list of possible search terms. Please provide different search terms.");
                 }
@@ -815,7 +818,6 @@ namespace Search3
                    
                     _dropdownKeywords.Enabled = false;
                     _dropdownKeywords.Enabled = true;
-                    
                 }
                 else if (selectedKeywords.Count == 1)
                 {
