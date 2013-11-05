@@ -13,7 +13,6 @@
     <tags></tags>
     <dependencies>
       <dependency id="SampleProjects.Shale"/>
-      <dependency id="DotSpatial.Controls"/>
     </dependencies>
   </metadata>  
 </package>
