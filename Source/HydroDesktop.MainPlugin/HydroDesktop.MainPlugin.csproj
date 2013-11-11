@@ -311,6 +311,7 @@
     <Content Include="Resources\select_32x32.png" />
     <Content Include="Resources\table_16x16.png" />
     <Content Include="Resources\table_32x32.png" />
+    <None Include="Resources\welcomeLogo5.png" />
     <Content Include="Resources\zoom_16x16.png" />
     <Content Include="Resources\zoom_32x32.png" />
     <Content Include="Resources\zoom_coordinate_16x16.png" />
