@@ -44,9 +44,9 @@
             this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.panelStatus = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.QuickStartButton = new System.Windows.Forms.Button();
             this.HelpButton = new System.Windows.Forms.Button();
+            this.QuickStartButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -69,7 +69,7 @@
             // lblProductVersion
             // 
             this.lblProductVersion.AutoSize = true;
-            this.lblProductVersion.Location = new System.Drawing.Point(41, 63);
+            this.lblProductVersion.Location = new System.Drawing.Point(41, 83);
             this.lblProductVersion.Name = "lblProductVersion";
             this.lblProductVersion.Size = new System.Drawing.Size(145, 13);
             this.lblProductVersion.TabIndex = 8;
@@ -191,27 +191,6 @@
             this.panelStatus.Size = new System.Drawing.Size(393, 23);
             this.panelStatus.TabIndex = 17;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(15, 20);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(200, 40);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            // 
-            // QuickStartButton
-            // 
-            this.QuickStartButton.Image = ((System.Drawing.Image)(resources.GetObject("QuickStartButton.Image")));
-            this.QuickStartButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.QuickStartButton.Location = new System.Drawing.Point(22, 121);
-            this.QuickStartButton.Name = "QuickStartButton";
-            this.QuickStartButton.Size = new System.Drawing.Size(171, 30);
-            this.QuickStartButton.TabIndex = 9;
-            this.QuickStartButton.Text = "View Quick Start Guide";
-            this.QuickStartButton.UseVisualStyleBackColor = true;
-            this.QuickStartButton.Click += new System.EventHandler(this.QuickStartButton_Click);
-            // 
             // HelpButton
             // 
             this.HelpButton.Image = ((System.Drawing.Image)(resources.GetObject("HelpButton.Image")));
@@ -225,6 +204,27 @@
             this.HelpButton.UseVisualStyleBackColor = true;
             this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
             // 
+            // QuickStartButton
+            // 
+            this.QuickStartButton.Image = ((System.Drawing.Image)(resources.GetObject("QuickStartButton.Image")));
+            this.QuickStartButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.QuickStartButton.Location = new System.Drawing.Point(22, 121);
+            this.QuickStartButton.Name = "QuickStartButton";
+            this.QuickStartButton.Size = new System.Drawing.Size(171, 30);
+            this.QuickStartButton.TabIndex = 9;
+            this.QuickStartButton.Text = "View Quick Start Guide";
+            this.QuickStartButton.UseVisualStyleBackColor = true;
+            this.QuickStartButton.Click += new System.EventHandler(this.QuickStartButton_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.welcomeLogo5;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 36);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(198, 41);
+            this.pictureBox1.TabIndex = 19;
+            this.pictureBox1.TabStop = false;
+            // 
             // WelcomeScreen
             // 
             this.AcceptButton = this.btnOK;
@@ -232,6 +232,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Snow;
             this.ClientSize = new System.Drawing.Size(494, 274);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.HelpButton);
             this.Controls.Add(this.QuickStartButton);
             this.Controls.Add(this.panelStatus);
@@ -239,7 +240,6 @@
             this.Controls.Add(this.groupBoxProject);
             this.Controls.Add(this.lblProductVersion);
             this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -273,8 +273,8 @@
         private System.Windows.Forms.ToolStripStatusLabel lblProgress;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Panel panelStatus;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button QuickStartButton;
         private System.Windows.Forms.Button HelpButton;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
