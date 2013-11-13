@@ -167,8 +167,10 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoShared.cs">
@@ -182,6 +184,12 @@
     <Compile Include="Controls\DelimiterSelector.Designer.cs">
       <DependentUpon>DelimiterSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SelectFeatureLayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\SelectFeatureLayer.Designer.cs">
+      <DependentUpon>SelectFeatureLayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataSitesLayerTools.cs" />
     <Compile Include="IProgressHandler.cs" />
     <Compile Include="LayerConstants.cs" />
@@ -189,6 +197,7 @@
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILogInitializer.cs" />
     <Compile Include="Logging\TraceLogInitializer.cs" />
+    <Compile Include="Tools\LegendExtensions.cs" />
     <Compile Include="UserMessage\IUserMessage.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="ObservableObject.T.cs" />
@@ -210,6 +219,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\DelimiterSelector.resx">
       <DependentUpon>DelimiterSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SelectFeatureLayer.resx">
+      <DependentUpon>SelectFeatureLayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
