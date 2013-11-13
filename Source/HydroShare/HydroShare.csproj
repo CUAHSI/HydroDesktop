@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.17\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.5.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,9 +68,11 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.5\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.2\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Topology">
       <HintPath>..\packages\DotSpatial.Topology.1.5.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
@@ -134,6 +137,7 @@
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
