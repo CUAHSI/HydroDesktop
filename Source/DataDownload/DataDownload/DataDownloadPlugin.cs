@@ -11,16 +11,16 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using HydroDesktop.Interfaces.PluginContracts;
 using Hydrodesktop.Common;
 using HydroDesktop.Common;
+using HydroDesktop.Common.Controls;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.DataDownload.Downloading;
 using HydroDesktop.DataDownload.LayerInformation;
 using HydroDesktop.DataDownload.Properties;
 using HydroDesktop.DataDownload.SearchLayersProcessing;
-using HydroDesktop.WebServices;
 using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.PluginContracts;
 using Msg = HydroDesktop.DataDownload.MessageStrings;
 using HydroDesktop.DataDownload.Options;
 
@@ -481,25 +481,46 @@ namespace HydroDesktop.DataDownload
 
         private void ShowSearchResults_Click(object sender, EventArgs e)
         {
-            
             _showSearchResultsPanel = !_showSearchResultsPanel;
 
             if (ShowSearchResultsPanel)
             {
-                IMapFrame mainMapFrame = App.Map.MapFrame;
-                List<ILayer> layers = mainMapFrame.GetAllLayers();
-                bool isActive = false;
+                //todo: Copy and paste from AttributeTableManager.AttributeTable_Click
+                var featureLayers = App.Map.MapFrame.GetAllLayers()
+                 .OfType<IFeatureLayer>()
+                 .Reverse().ToList();
 
-                foreach (ILayer layer in layers.Where(l => l.IsSelected))
+                var isActive = false;
+                foreach (var fl in featureLayers.Where(l => l.IsSelected))
                 {
-                    IFeatureLayer fl = layer as IFeatureLayer;
-
-                    if (fl == null)
-                        continue;
                     isActive = ShowAttributes(fl);
-
                     if (isActive)
                         break;
+                }
+
+                // No selected layers in feature layers
+                if (!isActive)
+                {
+                    IFeatureLayer toSelect = null;
+                    if (featureLayers.Count == 1)
+                    {
+                        toSelect = featureLayers[0];
+                    }
+                    else
+                    {
+                        var sf = new SelectFeatureLayer(featureLayers);
+                        if (sf.ShowDialog(App.Map.MapFrame.Parent) == DialogResult.OK)
+                        {
+                            toSelect = sf.SelectedLayer;
+                        }
+                    }
+                    if (toSelect != null)
+                    {
+                        App.Legend.ForEachRecursively<ILayer>(d => d.IsSelected = false);
+                        toSelect.IsSelected = true;
+                        App.Legend.RefreshNodes();
+                        isActive = ShowAttributes(toSelect);
+                    }
                 }
 
                 if (isActive == false)

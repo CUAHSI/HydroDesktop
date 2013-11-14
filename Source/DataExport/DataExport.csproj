@@ -125,6 +125,7 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.5\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.2\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
@@ -142,10 +143,6 @@
     </Reference>
     <Reference Include="HydroDesktop.Configuration">
       <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Data">
-      <HintPath>..\..\Binaries\HydroDesktop.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HydroDesktop.Help">
@@ -219,6 +216,11 @@
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
+      <Name>HydroDesktop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
