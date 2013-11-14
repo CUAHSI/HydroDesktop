@@ -20,6 +20,8 @@ namespace HydroShare
         //private SimpleActionItem test2;
         private SimpleActionItem hydroShareDownload;
         private SimpleActionItem hydroShareUpload;
+        private SimpleActionItem csHydroShareDownload;
+        private SimpleActionItem csHydroShareUpload;
 
         private readonly string _hydroShareKey = SharedConstants.HydroShareRootkey;
 
@@ -52,12 +54,26 @@ namespace HydroShare
             var head = App.HeaderControl;
             head.Add(new RootItem(_hydroShareKey, Resources.HydroShare) { SortOrder = 180 });
 
-            hydroShareDownload = new SimpleActionItem(_hydroShareKey, "Download", hydroShareDownload_Click) { LargeImage = Resources.Download_32x32, GroupCaption = "HydroShare", Visible = true };
-            hydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", hydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "HydroShare", Visible = true };  
+            hydroShareDownload = new SimpleActionItem(_hydroShareKey, "Download", hydroShareDownload_Click) { LargeImage = Resources.Download_32x32, GroupCaption = "Python", Visible = true };
+            hydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", hydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "Python", Visible = true };
+            csHydroShareDownload = new SimpleActionItem(_hydroShareKey, "Download", csHydroShareDownload_Click) { LargeImage = Resources.Download_32x32, GroupCaption = "C#", Visible = true };
+            csHydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", csHydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "C#", Visible = true };
 
             head.Add(hydroShareDownload);
             head.Add(hydroShareUpload);
+            head.Add(csHydroShareDownload);
+            head.Add(csHydroShareUpload);
          
+        }
+
+        private void csHydroShareUpload_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void csHydroShareDownload_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void hydroShareUpload_Click(object sender, EventArgs e)
