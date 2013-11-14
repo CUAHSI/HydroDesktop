@@ -75,6 +75,14 @@ namespace HydroShare
             uploadForm1 form1 = new uploadForm1();
             form1.StartPosition = FormStartPosition.CenterScreen;
             form1.Visible = true;
-        }  
+        }
+
+        private void LaunchBrowser_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            testForm browser = new testForm();
+            browser.StartPosition = FormStartPosition.CenterScreen;
+            browser.Visible = true;
+        }
     }
 }

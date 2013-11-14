@@ -70,6 +70,7 @@
             this.backBT = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
+            this.LaunchBrowser = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -465,12 +466,24 @@
             this.label22.TabIndex = 122;
             this.label22.Text = "* = Required";
             // 
+            // LaunchBrowser
+            // 
+            this.LaunchBrowser.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LaunchBrowser.Location = new System.Drawing.Point(128, 308);
+            this.LaunchBrowser.Name = "LaunchBrowser";
+            this.LaunchBrowser.Size = new System.Drawing.Size(80, 28);
+            this.LaunchBrowser.TabIndex = 123;
+            this.LaunchBrowser.Text = "Browser";
+            this.LaunchBrowser.UseVisualStyleBackColor = true;
+            this.LaunchBrowser.Click += new System.EventHandler(this.LaunchBrowser_Click);
+            // 
             // uploadForm2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HighlightText;
             this.ClientSize = new System.Drawing.Size(550, 348);
+            this.Controls.Add(this.LaunchBrowser);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.backBT);
@@ -529,5 +542,6 @@
         private System.Windows.Forms.Button backBT;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button LaunchBrowser;
     }
 }
