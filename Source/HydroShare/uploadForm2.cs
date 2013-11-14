@@ -13,20 +13,32 @@ namespace HydroShare
 {
     public partial class uploadForm2 : Form
     {
-        public uploadForm2()
+        string[] prevInputs;
+
+        public uploadForm2(string[] inputs)
         {
             InitializeComponent();
+            prevInputs = inputs;
         }
 
+        
         //cancel CLICK
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (MessageBox.Show("This will delete all information in this form. Are you sure you want to proceed?", "Caution", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+            {
+                //do nothing
+            }
         }
 
         //finish and upload CLICK
         private void button1_Click(object sender, EventArgs e)
         {
+            System.IO.File.WriteAllLines(@"C:\Users\Temp\Desktop\WriteLines.txt", prevInputs);
             /*
             string url = "http://dev.hyrdroshare.org";
             string file = fileTB.Text;
@@ -56,5 +68,13 @@ namespace HydroShare
                 fileTB.Text = folderPath;
             }
         }
+
+        private void backBT_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            uploadForm1 form1 = new uploadForm1();
+            form1.StartPosition = FormStartPosition.CenterScreen;
+            form1.Visible = true;
+        }  
     }
 }

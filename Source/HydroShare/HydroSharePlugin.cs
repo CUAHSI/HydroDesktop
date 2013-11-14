@@ -64,8 +64,8 @@ namespace HydroShare
         {
             
             uploadForm1 form1  = new uploadForm1();
-            form1.Visible = true;
             form1.StartPosition = FormStartPosition.CenterScreen;
+            form1.Visible = true;
             //form1.SetDesktopLocation(500, 400);
             //throw new NotImplementedException();
         }
