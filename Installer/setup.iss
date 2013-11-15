@@ -83,8 +83,8 @@ ChangesAssociations=true
 Compression=lzma/Normal
 SolidCompression=true
 InternalCompressLevel=Normal
-;WizardImageFile=Source\..\..\Documents\WizImage-MW.bmp
-;WizardSmallImageFile=Source\..\..\Documents\WizSmallImage-MW.bmp
+WizardImageFile=SetupImage.bmp
+WizardSmallImageFile=SetupImageSmall.bmp
 ;#ifdef Debug
 ;SetupLogging=true
 ;#endif
