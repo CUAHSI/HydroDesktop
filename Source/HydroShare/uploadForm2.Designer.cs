@@ -1,3 +1,4 @@
+﻿//uploadForm2.Designer.cs Expand code view to full page width Compare with other versions:  
 ﻿namespace HydroShare
 {
     partial class uploadForm2
