@@ -56,7 +56,12 @@ namespace Aggregation_Plugin
         {
             
             var parFM = new Parameters_form();
-            var res = parFM.ShowDialog();
+            if (parFM.Visible == false)
+            {
+                parFM.Show(App.Map.MapFrame != null ? App.Map.MapFrame.Parent : null);
+            }
+            //var res = parFM.ShowDialog();
+            App.Map.FunctionMode = FunctionMode.Select;
 
         }
 
