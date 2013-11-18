@@ -68,7 +68,10 @@ namespace HydroShare
 
         private void csHydroShareUpload_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            uploadForm1 form1 = new uploadForm1();
+            form1.StartPosition = FormStartPosition.CenterScreen;
+            form1.Visible = true;
+            //throw new NotImplementedException();
         }
 
         private void csHydroShareDownload_Click(object sender, EventArgs e)
@@ -78,12 +81,7 @@ namespace HydroShare
 
         private void hydroShareUpload_Click(object sender, EventArgs e)
         {
-            
-            uploadForm1 form1  = new uploadForm1();
-            form1.StartPosition = FormStartPosition.CenterScreen;
-            form1.Visible = true;
-            //form1.SetDesktopLocation(500, 400);
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
 
