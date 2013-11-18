@@ -206,6 +206,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroShare", "HydroShare\Hy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShaleDataNetwork", "ShaleDataNetwork\ShaleDataNetwork.csproj", "{B0526359-9A59-42FE-AE66-B0ADED8AB53B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aggregation_Plugin", "Aggregation_Plugin\Aggregation_Plugin.csproj", "{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -521,6 +523,12 @@ Global
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|x86.ActiveCfg = Release|x86
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|x86.Build.0 = Release|x86
+		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
