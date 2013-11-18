@@ -35,8 +35,16 @@
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\..\Binaries\DotSpatial.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Data, Version=1.5.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Binaries\DotSpatial.Data.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Extensions">
       <HintPath>..\..\Binaries\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Binaries\DotSpatial.Symbology.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
