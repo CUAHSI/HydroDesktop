@@ -376,7 +376,7 @@ namespace Search3
                         return;
                     }
                 }
-
+                
                 // Run search
                 _searcher.Run(_searchSettings);
             }

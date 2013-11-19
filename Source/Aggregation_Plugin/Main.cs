@@ -55,7 +55,7 @@ namespace Aggregation_Plugin
         private void CRWR_Click(object sender, EventArgs e)
         {
             
-            var parFM = new Parameters_form();
+            var parFM = new Parameters_form(App);
             if (parFM.Visible == false)
             {
                 parFM.Show(App.Map.MapFrame != null ? App.Map.MapFrame.Parent : null);
