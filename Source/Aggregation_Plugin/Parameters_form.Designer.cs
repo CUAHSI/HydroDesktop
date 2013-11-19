@@ -42,7 +42,7 @@
             // 
             // OK_click
             // 
-            this.OK_click.Location = new System.Drawing.Point(41, 116);
+            this.OK_click.Location = new System.Drawing.Point(59, 116);
             this.OK_click.Name = "OK_click";
             this.OK_click.Size = new System.Drawing.Size(75, 23);
             this.OK_click.TabIndex = 0;
@@ -51,7 +51,8 @@
             // 
             // Cancel_click
             // 
-            this.Cancel_click.Location = new System.Drawing.Point(122, 116);
+            this.Cancel_click.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel_click.Location = new System.Drawing.Point(140, 116);
             this.Cancel_click.Name = "Cancel_click";
             this.Cancel_click.Size = new System.Drawing.Size(75, 23);
             this.Cancel_click.TabIndex = 1;
@@ -63,7 +64,7 @@
             this.PolygonLayerList.FormattingEnabled = true;
             this.PolygonLayerList.Location = new System.Drawing.Point(82, 9);
             this.PolygonLayerList.Name = "PolygonLayerList";
-            this.PolygonLayerList.Size = new System.Drawing.Size(121, 21);
+            this.PolygonLayerList.Size = new System.Drawing.Size(170, 21);
             this.PolygonLayerList.TabIndex = 2;
             // 
             // SiteList
@@ -71,7 +72,7 @@
             this.SiteList.FormattingEnabled = true;
             this.SiteList.Location = new System.Drawing.Point(82, 36);
             this.SiteList.Name = "SiteList";
-            this.SiteList.Size = new System.Drawing.Size(121, 21);
+            this.SiteList.Size = new System.Drawing.Size(170, 21);
             this.SiteList.TabIndex = 3;
             // 
             // Polygon_Label
@@ -108,7 +109,7 @@
             // 
             this.Output_txt.Location = new System.Drawing.Point(82, 89);
             this.Output_txt.Name = "Output_txt";
-            this.Output_txt.Size = new System.Drawing.Size(121, 20);
+            this.Output_txt.Size = new System.Drawing.Size(170, 20);
             this.Output_txt.TabIndex = 7;
             // 
             // VariableList
@@ -116,7 +117,7 @@
             this.VariableList.FormattingEnabled = true;
             this.VariableList.Location = new System.Drawing.Point(82, 63);
             this.VariableList.Name = "VariableList";
-            this.VariableList.Size = new System.Drawing.Size(121, 21);
+            this.VariableList.Size = new System.Drawing.Size(170, 21);
             this.VariableList.TabIndex = 8;
             // 
             // Output_Label
@@ -135,7 +136,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(217, 147);
+            this.CancelButton = this.Cancel_click;
+            this.ClientSize = new System.Drawing.Size(264, 147);
             this.Controls.Add(this.Output_Label);
             this.Controls.Add(this.VariableList);
             this.Controls.Add(this.Output_txt);
