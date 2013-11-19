@@ -35,7 +35,7 @@
             this.Polygon_Label = new System.Windows.Forms.Label();
             this.Point_Label = new System.Windows.Forms.Label();
             this.Variable_Label = new System.Windows.Forms.Label();
-            this.Output_txt = new System.Windows.Forms.TextBox();
+            this.Output = new System.Windows.Forms.TextBox();
             this.VariableList = new System.Windows.Forms.ComboBox();
             this.Output_Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -48,6 +48,7 @@
             this.OK_click.TabIndex = 0;
             this.OK_click.Text = "OK";
             this.OK_click.UseVisualStyleBackColor = true;
+            this.OK_click.Click += new System.EventHandler(this.OK_click_Click);
             // 
             // Cancel_click
             // 
@@ -105,12 +106,12 @@
             this.Variable_Label.TabIndex = 6;
             this.Variable_Label.Text = "Variable";
             // 
-            // Output_txt
+            // Output
             // 
-            this.Output_txt.Location = new System.Drawing.Point(82, 89);
-            this.Output_txt.Name = "Output_txt";
-            this.Output_txt.Size = new System.Drawing.Size(170, 20);
-            this.Output_txt.TabIndex = 7;
+            this.Output.Location = new System.Drawing.Point(82, 89);
+            this.Output.Name = "Output";
+            this.Output.Size = new System.Drawing.Size(170, 20);
+            this.Output.TabIndex = 7;
             // 
             // VariableList
             // 
@@ -140,7 +141,7 @@
             this.ClientSize = new System.Drawing.Size(264, 147);
             this.Controls.Add(this.Output_Label);
             this.Controls.Add(this.VariableList);
-            this.Controls.Add(this.Output_txt);
+            this.Controls.Add(this.Output);
             this.Controls.Add(this.Variable_Label);
             this.Controls.Add(this.Point_Label);
             this.Controls.Add(this.Polygon_Label);
@@ -164,7 +165,7 @@
         private System.Windows.Forms.Label Polygon_Label;
         private System.Windows.Forms.Label Point_Label;
         private System.Windows.Forms.Label Variable_Label;
-        private System.Windows.Forms.TextBox Output_txt;
+        private System.Windows.Forms.TextBox Output;
         private System.Windows.Forms.ComboBox VariableList;
         private System.Windows.Forms.Label Output_Label;
     }

@@ -11,6 +11,9 @@ using DotSpatial.Controls.Header;
 using System.Windows.Controls;
 using DotSpatial.Data;
 using DotSpatial.Topology;
+using HydroDesktop.Database;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Configuration;
 
 namespace Aggregation_Plugin
 {
@@ -20,7 +23,12 @@ namespace Aggregation_Plugin
         FeatureSet polygons = new FeatureSet(FeatureType.Polygon);
         List<PolygonData> polygonData = new List<PolygonData>();
         HashSet<String> variables = new HashSet<String>();
-
+        IDataValuesRepository dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
+        DbOperations dbOperations = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Parameters_form(AppManager App)
         {
             InitializeComponent();
@@ -29,14 +37,35 @@ namespace Aggregation_Plugin
             populateSites();
             App.Map.MapFrame.SelectionChanged += SelectionChanged;
             PolygonLayerList.SelectedValueChanged += SelectionChanged;
+            SiteList.SelectedValueChanged += SelectionChanged;
+            VariableList.Text = "Select Variable..."; 
+            SiteList.Text = "Select Site..."; 
+            PolygonLayerList.Text = "Select Polygon Layer..."; 
         }
 
+        /// <summary>
+        /// To be Documented
+        /// </summary>
         private void SelectionChanged(object sender, EventArgs e)
         {
-            if (PolygonLayerList.SelectedValue != null)
+            if (PolygonLayerList.SelectedValue != null && SiteList.SelectedValue != null)
                 getPolygons((IMapPolygonLayer)PolygonLayerList.SelectedValue);
         }
 
+        /// <summary>
+        /// To be Documented
+        /// </summary>
+        private void OK_click_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(Output.Text) )
+            {
+                AggregateData();
+            }
+        }
+
+        /// <summary>
+        /// To be Documented
+        /// </summary>
         private void populatePolygonLayerDropdown()
         {
             var map = (Map)App.Map;
@@ -53,6 +82,9 @@ namespace Aggregation_Plugin
             }
         }
 
+        /// <summary>
+        /// To be Documented
+        /// </summary>
         private void populateSites()
         {
             var map = (Map)App.Map;
@@ -69,6 +101,9 @@ namespace Aggregation_Plugin
             }
         }
 
+        /// <summary>
+        /// To be Documented
+        /// </summary>
         private void populateVariables()
         {
             polygonData.Clear();
@@ -78,49 +113,50 @@ namespace Aggregation_Plugin
                 PolygonData data = new PolygonData();
                 data.polygon = polygon;
 
-                foreach (var item in SiteList.Items)
+                IMapPointLayer pointLayer = ((KeyValuePair<IMapPointLayer, string>)SiteList.SelectedItem).Key;
+                var features = pointLayer.DataSet.Features;
+
+                foreach (IFeature point in features)
                 {
-                    IMapPointLayer pointLayer = ((KeyValuePair<IMapPointLayer, string>)item).Key;
-                    var features = pointLayer.DataSet.Features;
-
-                    foreach (IFeature point in features)
+                    if (point.Intersects(polygon))
                     {
-                        if (point.Intersects(polygon))
+                        SiteData siteData = new SiteData();
+                        siteData.site = point;
+
+                        foreach (var fld in point.ParentFeatureSet.GetColumns())
                         {
-                            SiteData siteData = new SiteData();
-                            siteData.site = point;
+                            var getColumnValue = (Func<string, string>)(column => (point.DataRow[column].ToString()));
+                            var strValue = getColumnValue(fld.ColumnName);
 
-                            foreach (var fld in point.ParentFeatureSet.GetColumns())
+                            switch (fld.ColumnName)
                             {
-                                var getColumnValue = (Func<string, string>)(column => (point.DataRow[column].ToString()));
-                                var strValue = getColumnValue(fld.ColumnName);
-
-                                switch (fld.ColumnName)
-                                {
-                                    case "SiteCode":
-                                        siteData.siteCode = strValue;
-                                        break;
-                                    case "VarCode":
-                                        siteData.variableCode = strValue;
-                                        break;
-                                    case "VarName":
-                                        siteData.variableName = strValue;
-                                        break;
-                                }
+                                case "SiteCode":
+                                    siteData.siteCode = strValue;
+                                    break;
+                                case "VarCode":
+                                    siteData.variableCode = strValue;
+                                    break;
+                                case "VarName":
+                                    siteData.variableName = strValue;
+                                    break;
                             }
-
-                            data.sites.Add(siteData);
-                            variables.Add(siteData.variableName);
                         }
+
+                        data.sites.Add(siteData);
+                        variables.Add(siteData.variableName);
                     }
                 }
 
                 polygonData.Add(data);
             }
 
-            VariableList.DataSource = new BindingSource(variables, null);
+            if(variables.Count > 0)
+                VariableList.DataSource = new BindingSource(variables, null);
         }
 
+        /// <summary>
+        /// To be Documented
+        /// </summary>
         private void getPolygons(IMapPolygonLayer polyLayer)
         {
             polygons.Features.Clear();
@@ -138,5 +174,55 @@ namespace Aggregation_Plugin
             populateVariables();
         }
 
+        /// <summary>
+        /// To be Documented
+        /// </summary>
+        private void AggregateData()
+        {
+            foreach (var polygon in polygonData)
+            {
+                foreach(var site in polygon.sites)
+                {
+                    if((String)VariableList.SelectedItem == site.variableName)
+                    {
+                        site.variableID = getVariableId(site.variableCode);
+                        site.siteID = getSiteId(site.siteCode);
+
+                        getSeriesID(site.siteID, site.variableID, polygon);
+                    }
+                }
+            }
+        }
+
+        private int getVariableId(String variableCode)
+        {
+            var query =
+                "SELECT VariableID FROM Variables WHERE VariableCode = "
+                + "'" + variableCode + "'";
+            var result = dbOperations.ExecuteSingleOutput(query);
+            return Convert.ToInt32(result);
+        }
+
+        private int getSiteId(String siteCode)
+        {
+            var query =
+                "SELECT SiteID FROM Sites WHERE SiteCode = "
+                + "'" + siteCode + "'";
+            var result = dbOperations.ExecuteSingleOutput(query);
+            return Convert.ToInt32(result);
+        }
+
+        private void getSeriesID(int siteID, int variableID, PolygonData polygon)
+        {
+            var query =
+                "SELECT SeriesID FROM DataSeries WHERE SiteID = '"
+                + siteID + "'" + 
+                "AND VariableID = '"
+                + variableID + "'";
+            DataTable result = dbOperations.LoadTable(query);
+
+            foreach (DataRow row in result.Rows)
+                polygon.dataSeries.Add(Convert.ToInt32(row.ItemArray.First()));
+        }
     }
 }

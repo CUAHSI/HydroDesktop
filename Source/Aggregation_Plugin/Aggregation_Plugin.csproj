@@ -100,6 +100,24 @@
   <ItemGroup>
     <None Include="Resources\CRWR_Logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
+      <Project>{882c41f5-6a96-419f-9153-8d277ed91464}</Project>
+      <Name>HydroDesktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
+      <Name>HydroDesktop.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0b9ba90b-2016-4754-915a-0ad74fd0067a}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
