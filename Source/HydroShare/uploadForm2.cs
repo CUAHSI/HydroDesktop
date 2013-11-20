@@ -47,6 +47,9 @@ namespace HydroShare
             */
 
             this.Close();
+            printForm print = new printForm();
+            print.StartPosition = FormStartPosition.CenterScreen;
+            print.Visible = true;
         }
 
         //browse CLICK
@@ -80,7 +83,7 @@ namespace HydroShare
         private void LaunchBrowser_Click(object sender, EventArgs e)
         {
             this.Close();
-            testForm browser = new testForm();
+            gotoWeb browser = new gotoWeb();
             browser.StartPosition = FormStartPosition.CenterScreen;
             browser.Visible = true;
         }
