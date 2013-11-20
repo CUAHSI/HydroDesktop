@@ -191,8 +191,12 @@ namespace Aggregation_Plugin
                         getSeriesID(site.siteID, site.variableID, polygon);
                     }
                 }
+
+                DataTable averageTable = getAverageTable(polygon);
             }
         }
+
+
 
         private int getVariableId(String variableCode)
         {
@@ -224,5 +228,19 @@ namespace Aggregation_Plugin
             foreach (DataRow row in result.Rows)
                 polygon.dataSeries.Add(Convert.ToInt32(row.ItemArray.First()));
         }
+
+        private DataTable getAverageTable(PolygonData polygon)
+        {
+            var query =
+                "SELECT DataValues.LocalDateTime, AVG(DataValues.DataValue) FROM DataValues"
+                + " LEFT JOIN DataSeries ON DataValues.SeriesID == DataSeries.SeriesID"
+                + " LEFT JOIN Variables ON DataSeries.VariableID == Variables.VariableID"
+                + " WHERE DataValues.SeriesID IN ({0}) AND DataValues.DataValue != Variables.NoDataValue"
+                + " GROUP BY DataValues.LocalDateTime";
+            var formatted = String.Format(query, String.Join(",", polygon.dataSeries.ToArray()));
+            DataTable result = dbOperations.LoadTable(formatted);
+            return result;
+        }
+
     }
 }
