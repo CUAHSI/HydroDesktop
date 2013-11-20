@@ -213,7 +213,7 @@ namespace Aggregation_Plugin
             Series series = new Series();
             foreach (DataRow row in averageTable.Rows)
             {
-                series.AddDataValue((DateTime)row["LocalDateTime"], (Double)row["DataValue"]);
+                series.AddDataValue((DateTime)row["LocalDateTime"], (Double)row["AVG(DataValues.DataValue)"]);
             }
             /* series.Site;
              *   site.Code
