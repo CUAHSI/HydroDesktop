@@ -22,6 +22,8 @@ namespace HydroShare
         private SimpleActionItem hydroShareUpload;
         private SimpleActionItem csHydroShareDownload;
         private SimpleActionItem csHydroShareUpload;
+        private SimpleActionItem addUser;
+        private SimpleActionItem editUser;
 
         private readonly string _hydroShareKey = SharedConstants.HydroShareRootkey;
 
@@ -58,12 +60,16 @@ namespace HydroShare
             hydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", hydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "Python", Visible = true };
             csHydroShareDownload = new SimpleActionItem(_hydroShareKey, "Download", csHydroShareDownload_Click) { LargeImage = Resources.Download_32x32, GroupCaption = "C#", Visible = true };
             csHydroShareUpload = new SimpleActionItem(_hydroShareKey, "Upload", csHydroShareUpload_Click) { LargeImage = Resources.Upload_32x32, GroupCaption = "C#", Visible = true };
+            addUser = new SimpleActionItem(_hydroShareKey, "Add account", addUser_Click) { LargeImage = Resources.addUser_32x32, GroupCaption = "HydroShare account", Visible = true };
+            editUser = new SimpleActionItem(_hydroShareKey, "Edit account", editUser_Click) { LargeImage = Resources.editUser_32x32, GroupCaption = "HydroShare account", Visible = true };
+
 
             head.Add(hydroShareDownload);
             head.Add(hydroShareUpload);
             head.Add(csHydroShareDownload);
             head.Add(csHydroShareUpload);
-         
+            head.Add(addUser);
+            head.Add(editUser);
         }
 
         private void csHydroShareUpload_Click(object sender, EventArgs e)
@@ -82,6 +88,21 @@ namespace HydroShare
         private void hydroShareUpload_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void addUser_Click(object sender, EventArgs e)
+        {
+            addUserForm addUser = new addUserForm();
+            addUser.StartPosition = FormStartPosition.CenterScreen;
+            addUser.Visible = true;
+           
+        }
+
+        private void editUser_Click(object sender, EventArgs e)
+        {
+            editUserForm editUser = new editUserForm();
+            editUser.StartPosition = FormStartPosition.CenterScreen;
+            editUser.Visible = true;
         }
 
 

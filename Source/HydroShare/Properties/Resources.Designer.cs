@@ -63,9 +63,29 @@ namespace HydroShare.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap addUser_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("addUser_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Download_32x32 {
             get {
                 object obj = ResourceManager.GetObject("Download_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap editUser_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("editUser_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
