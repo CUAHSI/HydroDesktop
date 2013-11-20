@@ -14,6 +14,8 @@ using DotSpatial.Topology;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Configuration;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace Aggregation_Plugin
 {
@@ -25,6 +27,7 @@ namespace Aggregation_Plugin
         HashSet<String> variables = new HashSet<String>();
         IDataValuesRepository dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
         DbOperations dbOperations = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+        private readonly IRepositoryManager _repositoryManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
         
         /// <summary>
         /// Constructor
@@ -193,7 +196,38 @@ namespace Aggregation_Plugin
                 }
 
                 DataTable averageTable = getAverageTable(polygon);
+                Series seriesToSave = getSeriesFromTable(averageTable);
+                Theme theme = getThemeFromTable(averageTable);
+               // _repositoryManager.SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues);
+                _repositoryManager.SaveSeries(seriesToSave, theme, OverwriteOptions.Append);
             }
+        }
+
+        private Theme getThemeFromTable(DataTable averageTable)
+        {
+            return new Theme();
+        }
+
+        private Series getSeriesFromTable(DataTable averageTable)
+        {
+            Series series = new Series();
+            foreach (DataRow row in averageTable.Rows)
+            {
+                series.AddDataValue((DateTime)row["LocalDateTime"], (Double)row["DataValue"]);
+            }
+            /* series.Site;
+             *   site.Code
+             *   site.SpatialReference.SRSID;
+             *   site.SpatialReference.SRSName;
+             *   site.LocalProjection.SRSID;
+             *   site.LocalProjection.SRSName;
+             *   site.LocalProjection.SRSID;
+             *   site.LocalProjection.SRSName;
+             series.Variable;
+             series.Method;
+             series.QualityControlLevel;
+             series.Source;*/
+            return series;
         }
 
 
