@@ -60,9 +60,10 @@ namespace Aggregation_Plugin
         /// </summary>
         private void OK_click_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(Output.Text) )
+            if (!String.IsNullOrEmpty(OutputSiteName.Text) )
             {
                 AggregateData();
+                Parameters_form.ActiveForm.Close();
             }
         }
 
@@ -197,40 +198,69 @@ namespace Aggregation_Plugin
 
                 DataTable averageTable = getAverageTable(polygon);
                 Series seriesToSave = getSeriesFromTable(averageTable);
-                Theme theme = getThemeFromTable(averageTable);
+                Theme theme = getThemeParameters();
                // _repositoryManager.SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues);
                 _repositoryManager.SaveSeries(seriesToSave, theme, OverwriteOptions.Append);
             }
         }
 
-        private Theme getThemeFromTable(DataTable averageTable)
-        {
-            return new Theme();
-        }
-
         private Series getSeriesFromTable(DataTable averageTable)
         {
-            Series series = new Series();
+           Series series = new Series();
+           series.Site = getSitesParameters();
+           series.Variable = getVariablesParameters();
+
             foreach (DataRow row in averageTable.Rows)
             {
                 series.AddDataValue((DateTime)row["LocalDateTime"], (Double)row["AVG(DataValues.DataValue)"]);
             }
-            /* series.Site;
-             *   site.Code
-             *   site.SpatialReference.SRSID;
-             *   site.SpatialReference.SRSName;
-             *   site.LocalProjection.SRSID;
-             *   site.LocalProjection.SRSName;
-             *   site.LocalProjection.SRSID;
-             *   site.LocalProjection.SRSName;
-             series.Variable;
-             series.Method;
-             series.QualityControlLevel;
-             series.Source;*/
             return series;
         }
 
+        private Variable getVariablesParameters()
+        {
+            Variable variable = new Variable();
+            variable.Code = OutputSiteCode.Text + ":" + VariableList.Text;
+            variable.Name = VariableList.Text;
+            variable.Speciation = "Unknown";
+            variable.SampleMedium = "Not Relevant";
+            variable.ValueType = "Derived Value";
+            variable.IsRegular = false;
+            variable.IsCategorical = false;
+            //variable.TimeSupport = 0.0;
+            variable.DataType = "Average";
+            variable.GeneralCategory = "Unknown";
+            variable.NoDataValue = -9999;
+            return variable;
+        }
 
+        private Site getSitesParameters()
+        {
+            Site site = new Site();
+            site.Code = OutputSiteCode.Text;
+            site.Name = OutputSiteName.Text;
+            site.Latitude = 12;
+            site.Longitude = 12;
+            //site.Elevation_m = 12;
+            //site.VerticalDatum = "verticalDatum";
+            //site.LocalX = 12;
+            //site.LocalY = 12;
+            //site.PosAccuracy_m = 12;
+            //site.State = "utah";
+            //site.County = "utah";
+            //site.Comments = "testing";
+            //site.Country = "Mexico";
+            //site.SiteType = "Type";
+            return site;
+        }
+
+        private Theme getThemeParameters()
+        {
+            Theme theme = new Theme();
+            theme.Name = "";
+            theme.Description = "";
+            return theme;
+        }
 
         private int getVariableId(String variableCode)
         {
