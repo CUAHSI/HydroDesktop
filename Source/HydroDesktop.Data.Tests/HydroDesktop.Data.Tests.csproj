@@ -125,7 +125,6 @@
     <Compile Include="sqlite\SqliteDataRepositoryTest.cs" />
     <Compile Include="TestConfig.cs" />
     <Compile Include="DatabaseTests\DataManagerSQLTest.cs" />
-    <Compile Include="DatabaseTests\MetadataCacheManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitConversions\UnitConverterTest.cs" />
   </ItemGroup>

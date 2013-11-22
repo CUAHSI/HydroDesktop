@@ -98,7 +98,7 @@ namespace HydroDesktop.WebServices
             return req;
         }
 
-        
+
         /// <summary>
         /// Creates the HTTP SOAP web request for GetValues method
         /// </summary>
@@ -107,9 +107,9 @@ namespace HydroDesktop.WebServices
         /// <param name="fullVariableCode">full variable code (NetworkPrefix:Variable)</param>
         /// <param name="startDate">start date</param>
         /// <param name="endDate">end date</param>
+        /// <param name="reqTimeOut">Request timeout, in seconds</param>
         /// <returns>Returns the fully initialized web request object</returns>
-        public static HttpWebRequest CreateGetValuesRequest(string url, string fullSiteCode, string fullVariableCode,
-            DateTime startDate, DateTime endDate)
+        public static HttpWebRequest CreateGetValuesRequest(string url, string fullSiteCode, string fullVariableCode, DateTime startDate, DateTime endDate, int reqTimeOut = 100)
         {
             url = url.Trim().ToLower();
             //for http request, we need to remove the ?WSDL part from the url
@@ -128,7 +128,8 @@ namespace HydroDesktop.WebServices
             XmlDocument doc = new XmlDocument();
             doc.Load(new StringReader(soapEnvelope));
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            var req = (HttpWebRequest)WebRequest.Create(url);
+            req.Timeout = reqTimeOut*1000;
 
             //this is the valid SoapAction header for GetValues web method
             string soapAction = soapNamespace + "GetValuesObject";
