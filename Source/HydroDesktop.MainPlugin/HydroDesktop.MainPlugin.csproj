@@ -271,7 +271,6 @@
     <None Include="Resources\Logo_Small1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="credits.txt" />
     <Content Include="Resources\box_closed_32x32.png" />
     <Content Include="Resources\cursor_arrow_16x16.png" />
     <Content Include="Resources\cursor_arrow_32x32.png" />
