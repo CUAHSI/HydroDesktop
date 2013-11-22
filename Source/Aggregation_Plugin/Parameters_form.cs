@@ -14,6 +14,9 @@ using DotSpatial.Topology;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Configuration;
+using HydroDesktop.Interfaces;
+using HydroDesktop.Interfaces.ObjectModel;
+using DotSpatial.Projections;
 
 namespace Aggregation_Plugin
 {
@@ -23,8 +26,10 @@ namespace Aggregation_Plugin
         FeatureSet polygons = new FeatureSet(FeatureType.Polygon);
         List<PolygonData> polygonData = new List<PolygonData>();
         HashSet<String> variables = new HashSet<String>();
-        IDataValuesRepository dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
+        //IDataValuesRepository dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
+        IUnitsRepository UnitsRepository = RepositoryFactory.Instance.Get<IUnitsRepository>();
         DbOperations dbOperations = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
+        private readonly IRepositoryManager _repositoryManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
         
         /// <summary>
         /// Constructor
@@ -57,10 +62,17 @@ namespace Aggregation_Plugin
         /// </summary>
         private void OK_click_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(Output.Text) )
+            if (PolygonLayerList.SelectedValue != null &&
+                SiteList.SelectedValue != null &&
+                VariableList.SelectedValue != null &&
+                !String.IsNullOrEmpty(OutputSiteName.Text) &&
+                !String.IsNullOrEmpty(OutputSiteCode.Text))
             {
                 AggregateData();
+                Parameters_form.ActiveForm.Close();
             }
+            else
+                MessageBox.Show("Please complete the missing parts of the form.");
         }
 
         /// <summary>
@@ -185,20 +197,119 @@ namespace Aggregation_Plugin
                 {
                     if((String)VariableList.SelectedItem == site.variableName)
                     {
-                        site.variableID = getVariableId(site.variableCode);
+                        site.variableID = getVariableID(site.variableCode);
                         site.siteID = getSiteId(site.siteCode);
 
                         getSeriesID(site.siteID, site.variableID, polygon);
                     }
                 }
+
+                Series seriesToSave = getSeriesFromTable(polygon);
+                Theme theme = getThemeParameters();
+               // _repositoryManager.SaveSeries(int siteID, int variableID, string methodDescription, string themeName, DataTable dataValues);
+                _repositoryManager.SaveSeries(seriesToSave, theme, OverwriteOptions.Append);
             }
         }
 
-        private int getVariableId(String variableCode)
+        private Series getSeriesFromTable(PolygonData polygon)
+        {
+            DataTable averageTable = getAverageTable(polygon);
+            Series series = new Series();
+            series.Site = getSitesParameters(polygon);
+            var site = polygon.sites.Find(f => f.variableName == VariableList.SelectedValue.ToString());
+            series.Variable = getVariablesParameters(site.variableID);
+            series.CreationDateTime = DateTime.Now;
+            series.LastCheckedDateTime = DateTime.Now;
+            series.UpdateDateTime = DateTime.Now;
+
+            foreach (DataRow row in averageTable.Rows)
+            {
+                series.AddDataValue((DateTime)row["LocalDateTime"], (Double)row["AVG(DataValues.DataValue)"]);
+            }
+            return series;
+        }
+
+        private Variable getVariablesParameters(int variableID)
+        {
+            Variable variable = new Variable();
+            variable.Code = OutputSiteCode.Text + ":" + VariableList.Text;
+            variable.Name = VariableList.Text;
+            variable.Speciation = "Unknown";
+            variable.SampleMedium = "Not Relevant";
+            variable.ValueType = "Derived Value";
+            variable.IsRegular = false;
+            variable.IsCategorical = false;
+            //variable.TimeSupport = 0.0;
+            variable.DataType = "Average";
+            variable.GeneralCategory = "Unknown";
+            variable.NoDataValue = -9999;
+            int timesUnitsID = getTimeUnitsID(variableID);
+            variable.TimeUnit = UnitsRepository.GetByKey(timesUnitsID);
+            int variableUnitsID = getVariableUnitsID(variableID);
+            variable.VariableUnit = UnitsRepository.GetByKey(variableUnitsID);
+
+            return variable;
+        }
+
+        private Site getSitesParameters(PolygonData polygon)
+        {
+            IFeature centroid = polygon.polygon.Centroid();
+            Site site = new Site();
+            var xy = new[] {centroid.Coordinates.First().X, centroid.Coordinates.First().Y};
+            String projectionString = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[" +
+                "\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            var _wgs84Projection = ProjectionInfo.FromEsriString(projectionString);
+            Reproject.ReprojectPoints(xy, new double[] { 0, 0 }, App.Map.Projection, _wgs84Projection, 0, 1);
+
+            site.Code = OutputSiteCode.Text + ':' + polygonData.IndexOf(polygon);
+            site.Name = OutputSiteName.Text + ':' + polygonData.IndexOf(polygon);
+            site.Latitude = xy[1];
+            site.Longitude = xy[0];
+            //site.Elevation_m = 12;
+            site.VerticalDatum = "Unkown";
+            //site.LocalX = 12;
+            //site.LocalY = 12;
+            //site.PosAccuracy_m = 12;
+            site.State = "";
+            site.County = "";
+            //site.Comments = "testing";
+            //site.Country = "Mexico";
+            //site.SiteType = "Type";
+            
+            return site;
+        }
+
+        private Theme getThemeParameters()
+        {
+            Theme theme = new Theme();
+            theme.Name = "CRWR Aggregation";
+            //theme.Description = "";
+            return theme;
+        }
+
+        private int getVariableID(String variableCode)
         {
             var query =
                 "SELECT VariableID FROM Variables WHERE VariableCode = "
                 + "'" + variableCode + "'";
+            var result = dbOperations.ExecuteSingleOutput(query);
+            return Convert.ToInt32(result);
+        }
+
+        private int getVariableUnitsID(int variableID)
+        {
+            var query =
+                "SELECT VariableUnitsID FROM Variables WHERE VariableID = "
+                + variableID.ToString();
+            var result = dbOperations.ExecuteSingleOutput(query);
+            return Convert.ToInt32(result);
+        }
+
+        private int getTimeUnitsID(int variableID)
+        {
+            var query =
+                "SELECT TimeUnitsID FROM Variables WHERE VariableID = "
+                + variableID.ToString();
             var result = dbOperations.ExecuteSingleOutput(query);
             return Convert.ToInt32(result);
         }
@@ -224,5 +335,19 @@ namespace Aggregation_Plugin
             foreach (DataRow row in result.Rows)
                 polygon.dataSeries.Add(Convert.ToInt32(row.ItemArray.First()));
         }
+
+        private DataTable getAverageTable(PolygonData polygon)
+        {
+            var query =
+                "SELECT DataValues.LocalDateTime, AVG(DataValues.DataValue) FROM DataValues"
+                + " LEFT JOIN DataSeries ON DataValues.SeriesID == DataSeries.SeriesID"
+                + " LEFT JOIN Variables ON DataSeries.VariableID == Variables.VariableID"
+                + " WHERE DataValues.SeriesID IN ({0}) AND DataValues.DataValue != Variables.NoDataValue"
+                + " GROUP BY DataValues.LocalDateTime";
+            var formatted = String.Format(query, String.Join(",", polygon.dataSeries.ToArray()));
+            DataTable result = dbOperations.LoadTable(formatted);
+            return result;
+        }
+
     }
 }

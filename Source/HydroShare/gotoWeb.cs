@@ -43,14 +43,20 @@ namespace HydroShare
         {
             // "q" is the name of the Google search textbox
 
-            SetText("name", "q", "Dog");
-
-            // "btnG" is the name of the Google search submit button
-
-            ClickButton("name", "btnK");
-
+            SetText("name", "username", "martinn");
+            SetText("name", "password", "");
+            passwordEntry psw = new passwordEntry();
+            psw.StartPosition = FormStartPosition.CenterScreen;
+            psw.Visible = true;
+            SetText("name", "password", psw.password);
+            //ClickButton("type", "submit");
+            
+            //SetText("name", "search", "dog");
+            // "btnK" is the name of the Google search submit button
+            // "go" is the name of the Wiki search submit button
+            //ClickButton("name", "go");
+            //this.Close();
             return;
-
         }
     }
 }
