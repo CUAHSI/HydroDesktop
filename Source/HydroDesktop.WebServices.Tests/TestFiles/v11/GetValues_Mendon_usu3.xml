@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<timeSeriesResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cuahsi.org/waterML/1.1/">
+  <queryInfo>
+    <creationTime>2012-06-06T11:57:42.6435015-07:00</creationTime>
+    <criteria MethodCalled="GetValues">
+      <parameter name="site" value="LBR_TEST:USU-LBR-Mendon" />
+      <parameter name="variable" value="LBR_TEST:USU3" />
+      <parameter name="startDate" value="2005-08-05" />
+      <parameter name="endDate" value="2005-08-06" />
+    </criteria>
+  </queryInfo>
+  <timeSeries>
+    <sourceInfo xsi:type="SiteInfoType">
+      <siteName>Little Bear River at Mendon Road near Mendon, Utah</siteName>
+      <siteCode network="LittleBearRiver" siteID="1">USU-LBR-Mendon</siteCode>
+      <geoLocation>
+        <geogLocation xsi:type="LatLonPointType" srs="EPSG:4269">
+          <latitude>41.718473</latitude>
+          <longitude>-111.946402</longitude>
+        </geogLocation>
+        <localSiteXY projectionInformation=" NAD83 / UTM zone 12N">
+          <X>421276.323</X>
+          <Y>4618952.04</Y>
+        </localSiteXY>
+      </geoLocation>
+      <elevation_m>1345</elevation_m>
+      <verticalDatum>NGVD29</verticalDatum>
+      <siteProperty name="County">Cache</siteProperty>
+      <siteProperty name="State">Utah</siteProperty>
+      <siteProperty name="Site Comments">Located below county road bridge at Mendon Road crossing</siteProperty>
+    </sourceInfo>
+    <variable>
+      <variableCode vocabulary="LittleBearRiver" default="true" variableID="3">USU3</variableCode>
+      <variableName>Battery voltage</variableName>
+      <valueType>Field Observation</valueType>
+      <dataType>Minimum</dataType>
+      <generalCategory>Instrumentation</generalCategory>
+      <sampleMedium>Other</sampleMedium>
+      <unit>
+        <unitName>volts</unitName>
+        <unitType>Potential Difference</unitType>
+        <unitAbbreviation>V</unitAbbreviation>
+        <unitCode>168</unitCode>
+      </unit>
+      <noDataValue>-9999</noDataValue>
+      <timeScale isRegular="true">
+        <unit>
+          <unitName>minute</unitName>
+          <unitType>Time</unitType>
+          <unitAbbreviation>min</unitAbbreviation>
+          <unitCode>102</unitCode>
+        </unit>
+        <timeSupport>30</timeSupport>
+      </timeScale>
+      <speciation>Not Applicable</speciation>
+    </variable>
+    <values>
+      <value censorCode="nc" dateTime="2005-08-05T00:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T07:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.91645</value>
+      <value censorCode="nc" dateTime="2005-08-05T00:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T07:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.91477</value>
+      <value censorCode="nc" dateTime="2005-08-05T01:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T08:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.90721</value>
+      <value censorCode="nc" dateTime="2005-08-05T01:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T08:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.90301</value>
+      <value censorCode="nc" dateTime="2005-08-05T02:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T09:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.89882</value>
+      <value censorCode="nc" dateTime="2005-08-05T02:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T09:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.88874</value>
+      <value censorCode="nc" dateTime="2005-08-05T03:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T10:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.88958</value>
+      <value censorCode="nc" dateTime="2005-08-05T03:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T10:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.88706</value>
+      <value censorCode="nc" dateTime="2005-08-05T04:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T11:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.88706</value>
+      <value censorCode="nc" dateTime="2005-08-05T04:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T11:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.87783</value>
+      <value censorCode="nc" dateTime="2005-08-05T05:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T12:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.87615</value>
+      <value censorCode="nc" dateTime="2005-08-05T05:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T12:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.87531</value>
+      <value censorCode="nc" dateTime="2005-08-05T06:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T13:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.86188</value>
+      <value censorCode="nc" dateTime="2005-08-05T06:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T13:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.86608</value>
+      <value censorCode="nc" dateTime="2005-08-05T07:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T14:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.86608</value>
+      <value censorCode="nc" dateTime="2005-08-05T07:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T14:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.87195</value>
+      <value censorCode="nc" dateTime="2005-08-05T08:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T15:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.86944</value>
+      <value censorCode="nc" dateTime="2005-08-05T08:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T15:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.88455</value>
+      <value censorCode="nc" dateTime="2005-08-05T09:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T16:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.12379</value>
+      <value censorCode="nc" dateTime="2005-08-05T09:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T16:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.21193</value>
+      <value censorCode="nc" dateTime="2005-08-05T10:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T17:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.41339</value>
+      <value censorCode="nc" dateTime="2005-08-05T10:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T17:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.38653</value>
+      <value censorCode="nc" dateTime="2005-08-05T11:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T18:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.36806</value>
+      <value censorCode="nc" dateTime="2005-08-05T11:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T18:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.34372</value>
+      <value censorCode="nc" dateTime="2005-08-05T12:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T19:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.30427</value>
+      <value censorCode="nc" dateTime="2005-08-05T12:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T19:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.27321</value>
+      <value censorCode="nc" dateTime="2005-08-05T13:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T20:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.23963</value>
+      <value censorCode="nc" dateTime="2005-08-05T13:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T20:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.21025</value>
+      <value censorCode="nc" dateTime="2005-08-05T14:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T21:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.21025</value>
+      <value censorCode="nc" dateTime="2005-08-05T14:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T21:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.18758</value>
+      <value censorCode="nc" dateTime="2005-08-05T15:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T22:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.18171</value>
+      <value censorCode="nc" dateTime="2005-08-05T15:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T22:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.17247</value>
+      <value censorCode="nc" dateTime="2005-08-05T16:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T23:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.16996</value>
+      <value censorCode="nc" dateTime="2005-08-05T16:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-05T23:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.16156</value>
+      <value censorCode="nc" dateTime="2005-08-05T17:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T00:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.16996</value>
+      <value censorCode="nc" dateTime="2005-08-05T17:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T00:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.17499</value>
+      <value censorCode="nc" dateTime="2005-08-05T18:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T01:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.18842</value>
+      <value censorCode="nc" dateTime="2005-08-05T18:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T01:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.22032</value>
+      <value censorCode="nc" dateTime="2005-08-05T19:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T02:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.0751</value>
+      <value censorCode="nc" dateTime="2005-08-05T19:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T02:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.04908</value>
+      <value censorCode="nc" dateTime="2005-08-05T20:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T03:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.02557</value>
+      <value censorCode="nc" dateTime="2005-08-05T20:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T03:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.02222</value>
+      <value censorCode="nc" dateTime="2005-08-05T21:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T04:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.00543</value>
+      <value censorCode="nc" dateTime="2005-08-05T21:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T04:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">13.00291</value>
+      <value censorCode="nc" dateTime="2005-08-05T22:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T05:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.98864</value>
+      <value censorCode="nc" dateTime="2005-08-05T22:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T05:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.9836</value>
+      <value censorCode="nc" dateTime="2005-08-05T23:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T06:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.97772</value>
+      <value censorCode="nc" dateTime="2005-08-05T23:30:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T06:30:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.97437</value>
+      <value censorCode="nc" dateTime="2005-08-06T00:00:00" timeOffset="-07:00" dateTimeUTC="2005-08-06T07:00:00" methodCode="4" sourceCode="1" qualityControlLevelCode="0">12.95674</value>
+      <qualityControlLevel qualityControlLevelID="0">
+        <qualityControlLevelCode>0</qualityControlLevelCode>
+        <definition>Raw data</definition>
+        <explanation>Raw and unprocessed data and data products that have not undergone quality control.  Depending on the variable, data type, and data transmission system, raw data may be available within seconds or minutes after the measurements have been made. Examples include real time precipitation, streamflow and water quality measurements.</explanation>
+      </qualityControlLevel>
+      <method methodID="4">
+        <methodCode>4</methodCode>
+        <methodDescription>Battery voltage measured by Campbell Scientific CR206 datalogger.</methodDescription>
+        <methodLink>http://www.campbellsci.com</methodLink>
+      </method>
+      <source sourceID="1">
+        <sourceCode>1</sourceCode>
+        <organization>Utah State University Utah Water Research Laboratory</organization>
+        <sourceDescription>Continuous water quality monitoring by Utah State University as part of the USDA CEAP Grant</sourceDescription>
+        <metadata>
+          <topicCategory>inlandWaters</topicCategory>
+          <title>Little Bear River Conservation Effects Assessment Project water quality data.</title>
+          <abstract>Abstract</abstract>
+          <profileVersion>ProfileVersion</profileVersion>
+		  <metadataLink>MetadataLink</metadataLink>
+        </metadata>
+        <contactInformation>
+          <contactName>Jeff Horsburgh</contactName>
+          <typeOfContact>main</typeOfContact>
+          <email>jeff.horsburgh@usu.edu</email>
+          <phone>1-435-797-2946</phone>
+          <address xsi:type="xsd:string">8200 Old Main Hill
+,Logan, UT 84322-8200</address>
+        </contactInformation>
+        <sourceLink>http://www.bearriverinfo.org</sourceLink>
+        <citation>Continuous water quality monitoring by Jeff Horsburgh, David Stevens, Nancy Mesner and others from Utah State University as part of the USDA Conservation Effects Assessment Grant</citation>
+      </source>
+      <censorCode>
+        <censorCode>nc</censorCode>
+        <censorCodeDescription>not censored</censorCodeDescription>
+      </censorCode>
+    </values>
+  </timeSeries>
+</timeSeriesResponse>
