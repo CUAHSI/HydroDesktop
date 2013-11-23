@@ -192,7 +192,7 @@ Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v11.2.dll"; DestD
 ;WebMap package
 Source: "..\Binaries\Application Extensions\BruTile.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\BruTile.Desktop.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\BruTile.MbTiles.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
+Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll.config"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
 ;SampleProjects
