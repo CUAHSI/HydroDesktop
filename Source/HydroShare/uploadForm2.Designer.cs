@@ -1,3 +1,4 @@
+﻿//uploadForm2.Designer.cs Expand code view to full page width Compare with other versions:  
 ﻿namespace HydroShare
 {
     partial class uploadForm2
@@ -378,7 +379,7 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(300, 308);
+            this.button4.Location = new System.Drawing.Point(310, 350);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(80, 28);
             this.button4.TabIndex = 117;
@@ -389,7 +390,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(386, 290);
+            this.button1.Location = new System.Drawing.Point(396, 332);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(142, 46);
             this.button1.TabIndex = 119;
@@ -400,7 +401,7 @@
             // backBT
             // 
             this.backBT.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backBT.Location = new System.Drawing.Point(214, 308);
+            this.backBT.Location = new System.Drawing.Point(224, 350);
             this.backBT.Name = "backBT";
             this.backBT.Size = new System.Drawing.Size(80, 28);
             this.backBT.TabIndex = 120;
@@ -451,7 +452,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(2, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(543, 281);
+            this.groupBox1.Size = new System.Drawing.Size(543, 321);
             this.groupBox1.TabIndex = 121;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Document Information (continued)";
@@ -460,7 +461,7 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(6, 293);
+            this.label22.Location = new System.Drawing.Point(16, 335);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(73, 13);
             this.label22.TabIndex = 122;
@@ -469,7 +470,7 @@
             // LaunchBrowser
             // 
             this.LaunchBrowser.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LaunchBrowser.Location = new System.Drawing.Point(128, 308);
+            this.LaunchBrowser.Location = new System.Drawing.Point(138, 350);
             this.LaunchBrowser.Name = "LaunchBrowser";
             this.LaunchBrowser.Size = new System.Drawing.Size(80, 28);
             this.LaunchBrowser.TabIndex = 123;
@@ -482,7 +483,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.ClientSize = new System.Drawing.Size(550, 348);
+            this.ClientSize = new System.Drawing.Size(553, 390);
             this.Controls.Add(this.LaunchBrowser);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.groupBox1);

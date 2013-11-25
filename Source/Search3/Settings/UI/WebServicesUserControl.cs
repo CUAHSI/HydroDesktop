@@ -114,7 +114,7 @@ namespace Search3.Settings.UI
             try
             {
                 gridViewWebServices.Columns.Clear();
-               
+                Graphics g = CreateGraphics();
                 DataGridViewCheckBoxColumn colCB = new DataGridViewCheckBoxColumn();
                 colCB.Name = "chkcol";
                 colCB.HeaderText = "";
@@ -123,44 +123,45 @@ namespace Search3.Settings.UI
                 gridViewWebServices.Columns.Add(colCB);
 
                 DataGridViewTextBoxColumn colTB = new DataGridViewTextBoxColumn();
-                colTB.Name = "Service Name";
+                colTB.Name = "ServiceNameCol";
                 colTB.HeaderText = "Service Name";
-                colTB.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                colTB.Width = (int)g.MeasureString(colTB.Name, gridViewWebServices.Font).Width;
                 gridViewWebServices.Columns.Add(colTB);
 
                 DataGridViewTextBoxColumn colTB2 = new DataGridViewTextBoxColumn();
-                colTB2.Name = "Service Code";
-                colTB2.HeaderText = "Service Code";
-                colTB2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                colTB2.Name = "ServiceCodeCol";
+                colTB2.HeaderText = "Service Code  ";
+                colTB2.Width = (int)g.MeasureString(colTB2.Name, gridViewWebServices.Font).Width;
                 gridViewWebServices.Columns.Add(colTB2);
 
                 DataGridViewTextBoxColumn colTB3 = new DataGridViewTextBoxColumn();
-                colTB3.Name = "Organization";
+                colTB3.Name = "OrganizationCol";
                 colTB3.HeaderText = "Organization";
-                colTB3.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                colTB3.Width = (int)g.MeasureString(colTB3.Name, gridViewWebServices.Font).Width;
                 gridViewWebServices.Columns.Add(colTB3);
 
                 DataGridViewTextBoxColumn colTB4 = new DataGridViewTextBoxColumn();
-                colTB4.Name = "# Sites";
+                colTB4.Name = "#SitesCol";
                 colTB4.HeaderText = "# Sites";
-                colTB4.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                colTB4.Width = (int)g.MeasureString(colTB4.Name, gridViewWebServices.Font).Width;
                 gridViewWebServices.Columns.Add(colTB4);
 
                 DataGridViewTextBoxColumn colTB5 = new DataGridViewTextBoxColumn();
-                colTB5.Name = "# Variables";
+                colTB5.Name = "#VariablesCol";
                 colTB5.HeaderText = "# Variables";
-                colTB5.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                colTB5.Width = (int)g.MeasureString(colTB5.Name, gridViewWebServices.Font).Width;
                 gridViewWebServices.Columns.Add(colTB5);
 
                 DataGridViewTextBoxColumn colTB6 = new DataGridViewTextBoxColumn();
-                colTB6.Name = "# Values";
+                colTB6.Name = "#ValuesCol";
                 colTB6.HeaderText = "# Values";
-                colTB6.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                colTB6.Width = (int)g.MeasureString(colTB6.Name, gridViewWebServices.Font).Width;
                 gridViewWebServices.Columns.Add(colTB6);
 
                 DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
+                dgvic.Name = "ViewExtentsCol";
                 dgvic.HeaderText = "View Extents";
-                dgvic.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                dgvic.Width = (int)g.MeasureString(dgvic.Name, gridViewWebServices.Font).Width;
                 dgvic.ValuesAreIcons = true;
                 dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
                 gridViewWebServices.Columns.Add(dgvic);
@@ -168,12 +169,15 @@ namespace Search3.Settings.UI
                 if (local == false)
                 {
                     DataGridViewImageColumn dgvic2 = new DataGridViewImageColumn();
+                    dgvic2.Name = "MoreInfoCol";
                     dgvic2.HeaderText = "More Info";
-                    dgvic2.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                    dgvic2.Width = (int)g.MeasureString(dgvic2.Name, gridViewWebServices.Font).Width;
                     dgvic2.ValuesAreIcons = true;
                     dgvic2.Icon = Search3.Properties.Resources.more_info;
                     gridViewWebServices.Columns.Add(dgvic2);
                 }
+
+      
 
                 gridViewWebServices.AllowUserToAddRows = true;
                 foreach (var webNode in webServiceNodeCollection)
@@ -191,10 +195,12 @@ namespace Search3.Settings.UI
                     gridViewWebServices.Rows.Add(row);
                 }
                 gridViewWebServices.AllowUserToAddRows = false;
+            
+         
             }
             finally
             {
-                gridViewWebServices.Sort(gridViewWebServices.Columns["Service Name"], ListSortDirection.Ascending);
+                gridViewWebServices.Sort(gridViewWebServices.Columns["ServiceNameCol"], ListSortDirection.Ascending);
                 gridViewWebServices.ResumeLayout();
             }
         }

@@ -78,6 +78,9 @@
       <HintPath>..\packages\DotSpatial.Modeling.Forms.1.5.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotSpatial.Mono">
+      <HintPath>..\packages\DotSpatial.Mono.1.5.1\lib\net40\DotSpatial.Mono.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.12\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
@@ -117,11 +120,11 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="AssemblySetup.cs" />
     <Compile Include="DatabaseTests\SqlLiteHelperTest.cs" />
     <Compile Include="sqlite\SqliteDataRepositoryTest.cs" />
     <Compile Include="TestConfig.cs" />
     <Compile Include="DatabaseTests\DataManagerSQLTest.cs" />
-    <Compile Include="DatabaseTests\MetadataCacheManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitConversions\UnitConverterTest.cs" />
   </ItemGroup>
