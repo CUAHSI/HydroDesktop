@@ -70,7 +70,7 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
             const string DATES_FORMAT = "MM/dd/yyyy";
             var provider = CultureInfo.InvariantCulture;
             
-            var target = new WaterOneFlowClient(url);
+            var target = new WaterOneFlowClient(url, 5);
             var start = DateTime.ParseExact(startDate, DATES_FORMAT, provider);
             var end = DateTime.ParseExact(endDate, DATES_FORMAT, provider);
             try

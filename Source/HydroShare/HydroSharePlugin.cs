@@ -87,7 +87,9 @@ namespace HydroShare
 
         private void csHydroShareDownload_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            downloadForm hydroShareDownload = new downloadForm();
+            hydroShareDownload.StartPosition = FormStartPosition.CenterScreen;
+            hydroShareDownload.Visible = true;
         }
 
         private void hydroShareUpload_Click(object sender, EventArgs e)
