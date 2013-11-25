@@ -52,9 +52,6 @@ namespace HydroDesktop.Data.Tests.DatabaseTests
         {
             var manager = RepositoryFactory.Instance.Get<IRepositoryManager>(TestConfig.DbOperations);
 
-            Random rnd = new Random();
-            int randomNumber = rnd.Next(10000);
-
             Site mySite = CreateRandomSite();
             Variable myVariable = CreateRandomVariable();
             Method myMethod = CreateRandomMethod();
@@ -91,24 +88,6 @@ namespace HydroDesktop.Data.Tests.DatabaseTests
             manager.SaveSeries(mySeries1, myTheme, OverwriteOptions.Copy);
             manager.SaveSeries(mySeries2, myTheme, OverwriteOptions.Copy);
         }
-
-        //public void TestDeleteSeries1()
-        //{
-        //    //1) create series1 at site1
-        //    //2) create series2 at site1
-        //    //3) delete series1 - site1 should remain
-        //    //4) delete series2 - site2 should be deleted
-
-        //    Random rnd = new Random();
-
-        //    Series s1 = DataSeriesTest.CreateSeries(rnd.Next(10000));
-
-        //    Site mySite = SitesTest.CreateSite(rnd.Next(10000));
-            
-            
-        //    RepositoryManagerSQL manager = TestConfig.SQLRepositoryManager;
-        //    DataTable fullSeriesTable = manager.GetSeriesListTable();
-        //}
 
         private static Series CreateRandomSeries(Site site, Variable variable, Method method, QualityControlLevel qc, Source source)
         {

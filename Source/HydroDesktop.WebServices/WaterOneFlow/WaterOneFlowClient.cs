@@ -26,26 +26,29 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		//the object containing additional metadata information
 		//about the web service including service version
 		private readonly DataServiceInfo _serviceInfo;
+	    private readonly int _reqTimeOut;
 
-		#endregion
+	    #endregion
 
 
 		#region Constructors
 
-		/// <summary>
-		/// Creates a new instance of a WaterOneFlow web service client
-		/// which communicates with the specified web service.
-		/// </summary>
-		/// <param name="serviceInfo">The object with web service information</param>
-		/// <remarks>Throws an exception if the web service is not a valid
-		/// WaterOneFlow service</remarks>
-		public WaterOneFlowClient(DataServiceInfo serviceInfo)
+	    /// <summary>
+	    /// Creates a new instance of a WaterOneFlow web service client
+	    /// which communicates with the specified web service.
+	    /// </summary>
+	    /// <param name="serviceInfo">The object with web service information</param>
+	    /// <param name="reqTimeOut">Request timeout, in seconds</param>
+	    /// <remarks>Throws an exception if the web service is not a valid
+	    /// WaterOneFlow service</remarks>
+	    public WaterOneFlowClient(DataServiceInfo serviceInfo, int reqTimeOut = 100)
 		{
 			_serviceURL = serviceInfo.EndpointURL;
 
 			//find out the WaterOneFlow version of this web service
 			_serviceInfo = serviceInfo;
-            _serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(_serviceURL);
+	        _reqTimeOut = reqTimeOut;
+	        _serviceInfo.Version = WebServiceHelper.GetWaterOneFlowVersion(_serviceURL);
 
             //assign the waterOneFlow parser
             _parser = new ParserFactory().GetParser(ServiceInfo);
@@ -53,16 +56,17 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             SaveXmlFiles = true; // for backward-compatibility
 		}
 
-		/// <summary>
-		/// Creates a new instance of a WaterOneFlow web service client.
-		/// The constructor will throw an exception if the url is an invalid
-		/// WaterOneFlow web service url.
-		/// </summary>
-		/// <param name="asmxURL">The url of the .asmx web page</param>
-		/// <remarks>Throws an exception if the web service is not a valid
-		/// WaterOneFlow service</remarks>
-        public WaterOneFlowClient(string asmxURL) :
-            this(new DataServiceInfo(asmxURL, asmxURL.Replace(@"http://", "")))
+	    /// <summary>
+	    /// Creates a new instance of a WaterOneFlow web service client.
+	    /// The constructor will throw an exception if the url is an invalid
+	    /// WaterOneFlow web service url.
+	    /// </summary>
+	    /// <param name="asmxURL">The url of the .asmx web page</param>
+        /// <param name="reqTimeOut">Request timeout, in seconds</param>
+	    /// <remarks>Throws an exception if the web service is not a valid
+	    /// WaterOneFlow service</remarks>
+	    public WaterOneFlowClient(string asmxURL, int reqTimeOut = 100) :
+            this(new DataServiceInfo(asmxURL, asmxURL.Replace(@"http://", "")), reqTimeOut)
 		{
 		}
 
@@ -167,7 +171,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 		    }
 		    else
 		    {
-		        var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime, endTime);
+                var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime, endTime, _reqTimeOut);
 		        using (var resp = (HttpWebResponse) req.GetResponse())
 		        {
 		            using (var stream = resp.GetResponseStream())
