@@ -95,35 +95,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="addUserForm.cs">
+    <Compile Include="Forms\chooseUploadType.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="addUserForm.Designer.cs">
+    <Compile Include="Forms\chooseUploadType.Designer.cs">
+      <DependentUpon>chooseUploadType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\addUserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\addUserForm.Designer.cs">
       <DependentUpon>addUserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="editUserForm.cs">
+    <Compile Include="Forms\editUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="editUserForm.Designer.cs">
+    <Compile Include="Forms\editUserForm.Designer.cs">
       <DependentUpon>editUserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="gotoWeb.cs">
+    <Compile Include="Forms\gotoWeb.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="gotoWeb.Designer.cs">
+    <Compile Include="Forms\gotoWeb.Designer.cs">
       <DependentUpon>gotoWeb.cs</DependentUpon>
     </Compile>
-    <Compile Include="HydroSharePlugin.cs" />
-    <Compile Include="passwordEntry.cs">
+    <Compile Include="Forms\hydroshareLogIn.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="passwordEntry.Designer.cs">
+    <Compile Include="Forms\hydroshareLogIn.Designer.cs">
+      <DependentUpon>hydroshareLogIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\logIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\logIn.Designer.cs">
+      <DependentUpon>logIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HydroSharePlugin.cs" />
+    <Compile Include="Forms\passwordEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\passwordEntry.Designer.cs">
       <DependentUpon>passwordEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="printForm.cs">
+    <Compile Include="Forms\printForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="printForm.Designer.cs">
+    <Compile Include="Forms\printForm.Designer.cs">
       <DependentUpon>printForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,16 +150,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="uploadForm1.cs">
+    <Compile Include="Forms\uploadForm1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="uploadForm1.Designer.cs">
+    <Compile Include="Forms\uploadForm1.Designer.cs">
       <DependentUpon>uploadForm1.cs</DependentUpon>
     </Compile>
-    <Compile Include="uploadForm2.cs">
+    <Compile Include="Forms\uploadForm2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="uploadForm2.Designer.cs">
+    <Compile Include="Forms\uploadForm2.Designer.cs">
       <DependentUpon>uploadForm2.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -149,29 +167,38 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="addUserForm.resx">
+    <EmbeddedResource Include="Forms\addUserForm.resx">
       <DependentUpon>addUserForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="editUserForm.resx">
+    <EmbeddedResource Include="Forms\chooseUploadType.resx">
+      <DependentUpon>chooseUploadType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\editUserForm.resx">
       <DependentUpon>editUserForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="gotoWeb.resx">
+    <EmbeddedResource Include="Forms\gotoWeb.resx">
       <DependentUpon>gotoWeb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="passwordEntry.resx">
+    <EmbeddedResource Include="Forms\hydroshareLogIn.resx">
+      <DependentUpon>hydroshareLogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\passwordEntry.resx">
       <DependentUpon>passwordEntry.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="printForm.resx">
+    <EmbeddedResource Include="Forms\printForm.resx">
       <DependentUpon>printForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\logIn.resx">
+      <DependentUpon>logIn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="uploadForm1.resx">
+    <EmbeddedResource Include="Forms\uploadForm1.resx">
       <DependentUpon>uploadForm1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="uploadForm2.resx">
+    <EmbeddedResource Include="Forms\uploadForm2.resx">
       <DependentUpon>uploadForm2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -183,6 +210,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\HydroDesktopSplashLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lib\GetShapefiles.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -192,6 +222,8 @@
     <Content Include="Lib\hydrosharedownload.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\hydroshare_logo1.png" />
+    <None Include="Resources\hydroshare_logo.png" />
     <None Include="Resources\editUser_32x32.jpg" />
     <None Include="Resources\addUser_32x32.jpg" />
     <None Include="Resources\errorImage1.png" />

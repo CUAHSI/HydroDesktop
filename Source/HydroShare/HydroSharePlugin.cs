@@ -9,6 +9,7 @@ using HydroShare.Properties;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using HydroShare.Forms;
 
 namespace HydroShare
 {
@@ -74,9 +75,13 @@ namespace HydroShare
 
         private void csHydroShareUpload_Click(object sender, EventArgs e)
         {
-            uploadForm1 form1 = new uploadForm1();
-            form1.StartPosition = FormStartPosition.CenterScreen;
-            form1.Visible = true;
+            logIn l = new logIn();
+            l.StartPosition = FormStartPosition.CenterScreen;
+            l.Visible = true;
+           
+            //uploadForm1 form1 = new uploadForm1();
+            //form1.StartPosition = FormStartPosition.CenterScreen;
+            //form1.Visible = true;
             //throw new NotImplementedException();
         }
 
@@ -87,7 +92,7 @@ namespace HydroShare
 
         private void hydroShareUpload_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("This button is only implemented in c#", "No Python", MessageBoxButtons.OK);
         }
 
         private void addUser_Click(object sender, EventArgs e)

@@ -111,11 +111,41 @@ namespace HydroShare.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HydroDesktopSplashLogo {
+            get {
+                object obj = ResourceManager.GetObject("HydroDesktopSplashLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HydroShare.
         /// </summary>
         internal static string HydroShare {
             get {
                 return ResourceManager.GetString("HydroShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hydroshare_logo {
+            get {
+                object obj = ResourceManager.GetObject("hydroshare_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hydroshare_logo1 {
+            get {
+                object obj = ResourceManager.GetObject("hydroshare_logo1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
