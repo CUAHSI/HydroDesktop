@@ -80,9 +80,9 @@ namespace HydroShare
         private void LaunchBrowser_Click(object sender, EventArgs e)
         {
             this.Close();
-            testForm browser = new testForm();
-            browser.StartPosition = FormStartPosition.CenterScreen;
-            browser.Visible = true;
+            //testForm browser = new testForm();
+            //browser.StartPosition = FormStartPosition.CenterScreen;
+            //browser.Visible = true;
         }
     }
 }
