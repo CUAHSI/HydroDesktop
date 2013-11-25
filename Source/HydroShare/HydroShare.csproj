@@ -87,6 +87,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -106,6 +107,12 @@
     </Compile>
     <Compile Include="Forms\addUserForm.Designer.cs">
       <DependentUpon>addUserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\downloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\downloadForm.Designer.cs">
+      <DependentUpon>downloadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\editUserForm.cs">
       <SubType>Form</SubType>
@@ -162,6 +169,7 @@
     <Compile Include="Forms\uploadForm2.Designer.cs">
       <DependentUpon>uploadForm2.cs</DependentUpon>
     </Compile>
+    <Compile Include="RestClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -172,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\chooseUploadType.resx">
       <DependentUpon>chooseUploadType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\downloadForm.resx">
+      <DependentUpon>downloadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\editUserForm.resx">
       <DependentUpon>editUserForm.cs</DependentUpon>
