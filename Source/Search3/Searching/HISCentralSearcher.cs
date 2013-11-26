@@ -31,6 +31,11 @@ namespace Search3.Searching
         /// <param name="hisCentralUrl">The URL of HIS Central</param>
         public HISCentralSearcher(string hisCentralUrl)
         {
+            hisCentralUrl = hisCentralUrl.Trim();
+            if (hisCentralUrl.EndsWith("?WSDL", StringComparison.OrdinalIgnoreCase))
+            {
+                hisCentralUrl = hisCentralUrl.ToUpperInvariant().Replace("?WSDL", "");
+            }
             _hisCentralUrl = hisCentralUrl;
         }
 
