@@ -68,6 +68,10 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.17\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
@@ -316,12 +320,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Search3.dll.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="App.config" />
     <None Include="package.nuspec" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -379,9 +378,6 @@
     <None Include="Resources\more_info.ico" />
     <None Include="Resources\view_extents.ico" />
     <None Include="Resources\view_extents_16_16x16.ico" />
-    <Content Include="Search3.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\zoom_selection_16x16.png" />
     <None Include="Resources\zoom_out_16x16.png" />
     <None Include="Resources\zoom_in_16x16.png" />

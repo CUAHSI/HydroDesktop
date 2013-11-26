@@ -127,9 +127,6 @@
   <data name="select_date_v1_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\select_date_v1_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="wgs_84_esri_string" xml:space="preserve">
-    <value>GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223562997]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]]</value>
-  </data>
   <data name="Draw_Box_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Draw_Box_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -171,9 +168,6 @@
   </data>
   <data name="server_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\server_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="web_mercator_esri_string" xml:space="preserve">
-    <value />
   </data>
   <data name="hand_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hand_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -17,6 +17,8 @@ namespace Search3.Area
     /// </summary>
     public class RectangleDrawing
     {
+        private static readonly ProjectionInfo _wgs84Projection = ProjectionInfo.FromEsriString(KnownCoordinateSystems.Geographic.World.WGS1984.ToEsriString());
+
         #region Fields
 
         private readonly Map _mainMap;
@@ -228,9 +230,8 @@ namespace Search3.Area
                 array[5] = maxLat1;
                 array[6] = maxLon1;
                 array[7] = minLat1;
-
-                ProjectionInfo wgs84 = ProjectionInfo.FromEsriString(Properties.Resources.wgs_84_esri_string);
-                Reproject.ReprojectPoints(array, new double[] { 0, 0, 0, 0 }, wgs84, _mainMap.Projection, 0, numPoints);
+                
+                Reproject.ReprojectPoints(array, new double[] { 0, 0, 0, 0 }, _wgs84Projection, _mainMap.Projection, 0, numPoints);
 
                 //form the coordinate array and add rectangle feature
                 var coords = new Coordinate[5];
