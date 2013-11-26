@@ -21,7 +21,11 @@
             {
                 return _catalogSettings ??
                        (_catalogSettings =
-                        new CatalogSettings {TypeOfCatalog = Properties.Settings.Default.TypeOfCatalog});
+                           new CatalogSettings
+                           {
+                               TypeOfCatalog = Properties.Settings.Default.TypeOfCatalog,
+                               HISCentralUrl = Properties.Settings.Default.HISCENTRAL_URL
+                           });
             }
         }
         

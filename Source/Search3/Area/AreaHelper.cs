@@ -13,7 +13,7 @@ namespace Search3.Area
     {
         #region Fields
 
-        private static readonly ProjectionInfo _wgs84Projection = ProjectionInfo.FromEsriString(Resources.wgs_84_esri_string);
+        private static readonly ProjectionInfo _wgs84Projection = ProjectionInfo.FromEsriString(KnownCoordinateSystems.Geographic.World.WGS1984.ToEsriString());
 
         #endregion
 

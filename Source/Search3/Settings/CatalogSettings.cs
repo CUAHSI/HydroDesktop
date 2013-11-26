@@ -9,36 +9,6 @@ namespace Search3.Settings
     /// </summary>
     public class CatalogSettings : ObservableObject<CatalogSettings>
     {
-        /// <summary>
-        /// Gets default url of HisCentral
-        /// </summary>
-        private string _HISCENTRAL_URL_1 = "http://hiscentral.cuahsi.org/webservices/hiscentral_1_1.asmx";
-        public string HISCENTRAL_URL_1
-        {
-            get { return _HISCENTRAL_URL_1; }
-            set
-            {
-                _HISCENTRAL_URL_1 = value;
-                NotifyPropertyChanged(() => TypeOfCatalog);
-            }
-        }
-
-        /// <summary>
-        /// Gets secondary url of HisCentral
-        /// </summary>
-        private string _HISCENTRAL_URL_2 = "http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx";
-        public string HISCENTRAL_URL_2
-        {
-            // return the desired field 
-            get { return _HISCENTRAL_URL_2; }
-            set
-            {
-                _HISCENTRAL_URL_2 = value;
-                NotifyPropertyChanged(() => TypeOfCatalog);
-            }
-        }
-    
-
         private string _hisCentralUrl;
         public string HISCentralUrl
         {
@@ -59,12 +29,6 @@ namespace Search3.Settings
                 _typeOfCatalog = value;
                 NotifyPropertyChanged(() => TypeOfCatalog);
             }
-        }
-
-        public CatalogSettings()
-        {
-            TypeOfCatalog = TypeOfCatalog.HisCentral;
-            HISCentralUrl = HISCENTRAL_URL_1;
         }
 
         /// <summary>
