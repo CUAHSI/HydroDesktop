@@ -155,6 +155,7 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.5\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.2\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
@@ -168,14 +169,6 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -259,13 +252,24 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
       <Name>HydroDesktop.Data</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help.csproj">
       <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
       <Name>HydroDesktop.Help</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0b9ba90b-2016-4754-915a-0ad74fd0067a}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

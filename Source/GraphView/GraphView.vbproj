@@ -133,14 +133,6 @@
       <HintPath>..\packages\DotSpatial.Topology.1.5.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -380,9 +372,19 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
+      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
+      <Name>HydroDesktop.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
       <Name>HydroDesktop.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0b9ba90b-2016-4754-915a-0ad74fd0067a}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.ZedGraphEx\HydroDesktop.ZedGraphEx.csproj">
