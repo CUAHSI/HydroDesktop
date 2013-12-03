@@ -181,11 +181,6 @@
       <Project>{42b7a22c-fd5d-4ef3-856f-e01f8dd8a82b}</Project>
       <Name>HydroDesktop.ErrorReporting</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Search3\Search3.csproj">
-      <Project>{FB01F6EE-89C0-4A64-B023-C8CC566FF803}</Project>
-      <Name>Search3</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
