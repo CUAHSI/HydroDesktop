@@ -14,7 +14,7 @@ namespace HydroShare
     public partial class downloadForm : Form
     {
         string base_url = "http://dev.hydroshare.org/export.php?file=http://dev.hydroshare.org/sites/default/files/{0}.zip";
-        string list_url = "http://dev.hydroshare.org/?q=my_services/node.json";
+        string list_url = "http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd";
 
         public downloadForm()
         {
