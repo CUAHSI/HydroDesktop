@@ -374,9 +374,7 @@
     <None Include="Resources\select_date_v1_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\information.ico" />
     <None Include="Resources\more_info.ico" />
-    <None Include="Resources\view_extents.ico" />
     <None Include="Resources\view_extents_16_16x16.ico" />
     <None Include="Resources\zoom_selection_16x16.png" />
     <None Include="Resources\zoom_out_16x16.png" />
@@ -389,12 +387,12 @@
     <None Include="Resources\HydroDesktop.ico" />
     <None Include="Resources\hand_16x16.png" />
     <None Include="Resources\deselect_16x16.png" />
-    <Content Include="Resources\current_view_16.png" />
-    <Content Include="Resources\current_view_32.png" />
-    <Content Include="Resources\keyword_16.ico" />
-    <Content Include="Resources\OntologyTree.xml">
+    <None Include="Resources\current_view_16.png" />
+    <None Include="Resources\current_view_32.png" />
+    <None Include="Resources\keyword_16.ico" />
+    <None Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Resources\select_poly_16.png" />
     <None Include="Resources\select_poly_32.png" />
     <None Include="Resources\select_table_16.png" />
@@ -404,10 +402,10 @@
     <None Include="Resources\option_32.png" />
     <None Include="Resources\server_16.png" />
     <None Include="Resources\server_32.png" />
-    <Content Include="Resources\search_32.ico" />
-    <Content Include="Resources\Synonyms.xml">
+    <None Include="Resources\search_32.ico" />
+    <None Include="Resources\Synonyms.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
