@@ -21,19 +21,23 @@ namespace HydroShare
             if (geoRB.Checked)
             {
                 this.Close();
-                uploadForm1 form1 = new uploadForm1();
+                uploadForm1_geo form1 = new uploadForm1_geo();
                 form1.StartPosition = FormStartPosition.CenterScreen;
                 form1.Visible = true;
             }
             if (otherRB.Checked)
             {
-                MessageBox.Show("This form is not yet created.", "Error", MessageBoxButtons.OK);
-                //this.Close();
+                this.Close();
+                uploadForm1_other form1 = new uploadForm1_other();
+                form1.StartPosition = FormStartPosition.CenterScreen;
+                form1.Visible = true;
             }
             if (timeRB.Checked)
             {
-                MessageBox.Show("This form is not yet created.", "Error", MessageBoxButtons.OK);
-                //this.Close();
+                this.Close();
+                uploadForm1_time form1 = new uploadForm1_time();
+                form1.StartPosition = FormStartPosition.CenterScreen;
+                form1.Visible = true;
             }
 
             if ((!geoRB.Checked)&&(!otherRB.Checked)&&(!timeRB.Checked))
