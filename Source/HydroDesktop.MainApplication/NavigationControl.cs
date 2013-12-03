@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Controls.Header;
 using DotSpatial.Topology;
-using Search3;
 
 namespace HydroDesktop.MainApplication
 {
@@ -23,7 +16,7 @@ namespace HydroDesktop.MainApplication
             this.appManager = appManager;
             button6 = new Button();
             button6.Size = Size.Empty;
-            this.Controls.Add(button6);
+            Controls.Add(button6);
             InitializeComponent();
 
             appManager.Map.FunctionModeChanged += Map_FunctionModeChanged;
@@ -96,42 +89,42 @@ namespace HydroDesktop.MainApplication
 
         private void button1_MouseHover(object sender, EventArgs e)
         {
-            System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
-            ToolTip1.SetToolTip(this.button1, "Pan");
-            this.Cursor = Cursors.Arrow;
+            var ToolTip1 = new ToolTip();
+            ToolTip1.SetToolTip(button1, "Pan");
+            Cursor = Cursors.Arrow;
         }
 
         private void button2_MouseHover(object sender, EventArgs e)
         {
-            System.Windows.Forms.ToolTip ToolTip2 = new System.Windows.Forms.ToolTip();
-            ToolTip2.SetToolTip(this.button2, "Zoom In");
-            this.Cursor = Cursors.Arrow;
+            var ToolTip2 = new ToolTip();
+            ToolTip2.SetToolTip(button2, "Zoom In");
+            Cursor = Cursors.Arrow;
         }
 
         private void button3_MouseHover(object sender, EventArgs e)
         {
-            System.Windows.Forms.ToolTip ToolTip3 = new System.Windows.Forms.ToolTip();
-            ToolTip3.SetToolTip(this.button3, "Zoom Out");
-            this.Cursor = Cursors.Arrow;
+            var ToolTip3 = new ToolTip();
+            ToolTip3.SetToolTip(button3, "Zoom Out");
+            Cursor = Cursors.Arrow;
         }
 
         private void button4_MouseHover(object sender, EventArgs e)
         {
-            System.Windows.Forms.ToolTip ToolTip4 = new System.Windows.Forms.ToolTip();
-            ToolTip4.SetToolTip(this.button4, "Select");
-            this.Cursor = Cursors.Arrow;
+            var ToolTip4 = new ToolTip();
+            ToolTip4.SetToolTip(button4, "Select");
+            Cursor = Cursors.Arrow;
         }
 
         private void button5_MouseHover(object sender, EventArgs e)
         {
-            System.Windows.Forms.ToolTip ToolTip5 = new System.Windows.Forms.ToolTip();
-            ToolTip5.SetToolTip(this.button5, "Deselect");
-            this.Cursor = Cursors.Arrow;
+            var ToolTip5 = new ToolTip();
+            ToolTip5.SetToolTip(button5, "Deselect");
+            Cursor = Cursors.Arrow;
         }
 
         private void NavigationControl_MouseHover(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.Arrow;
+            Cursor = Cursors.Arrow;
         }
     }
 }

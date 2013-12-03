@@ -14,9 +14,9 @@
     <language>en-US</language>
     <tags>HideReleaseFromEndUser</tags>
     <dependencies>
+      <dependency id="HydroDesktop.Common"/>
       <dependency id="HydroDesktop.Configuration"/>
       <dependency id="HydroDesktop.Interfaces" />
-      <dependency id="log4net" />
     </dependencies>
   </metadata> 
 </package>
