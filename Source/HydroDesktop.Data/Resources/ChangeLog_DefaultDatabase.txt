@@ -1,0 +1,23 @@
+﻿-- These indexes need to optimize queries in tableView
+CREATE INDEX ix_dataValues_SeriesID ON DataValues(SeriesID ASC);
+CREATE INDEX ix_dataValues_SeriesID_LocalDateTime ON DataValues(SeriesID ASC, LocalDateTime ASC);
+
+-- Columns for Unit Conversions
+ALTER TABLE Units
+ADD COLUMN Dimension nvarchar;
+
+ALTER TABLE Units
+ADD COLUMN ConversionFactorToSI float;
+
+ALTER TABLE Units
+ADD COLUMN OffsetToSI float;
+
+ALTER TABLE UnitConversions
+ADD COLUMN Offset float;
+
+-- Site: SiteType/Country columns
+ALTER TABLE Sites
+ADD COLUMN SiteType nvarchar;
+
+ALTER TABLE Sites
+ADD COLUMN Country nvarchar;

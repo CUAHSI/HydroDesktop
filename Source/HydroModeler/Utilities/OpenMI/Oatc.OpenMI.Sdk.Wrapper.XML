@@ -1,0 +1,825 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Oatc.OpenMI.Sdk.Wrapper</name>
+    </assembly>
+    <members>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.IEngine">
+            <summary>
+            The class Oatc.OpenMI.Sdk.Wrapper.LinkableEngine will access the model engine through
+            this interface.
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.IRunEngine">
+            <summary>
+            The IRunEngine is the interface the ModelEngine component
+            The Class Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine will access the
+            model engine component through this interface.
+            </summary>
+            <remarks>
+            None 
+            </remarks>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.Initialize(System.Collections.Hashtable)">
+            <summary>
+            Initialize will typically be invoked just after creation of the object
+            that implements the IRunEngine interface.
+            </summary>
+            <param name="properties">
+            Hashtable with the same contents as the Component arguments
+            in the ILinkableComponent interface. Typically any information
+            needed for initialization of the model will be included in this table.
+            This could be path and file names for input files.
+            </param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.Finish">
+            <summary>
+            This method will be invoked after all computations are completed. Deallocation of memory
+            and closing files could be implemented in this method
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.Dispose">
+            <summary>
+            This method will be invoked after all computations are completed
+            and after the Finish method has been invoked
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.PerformTimeStep">
+            <summary>
+            This method will make the model engine perform one time step.
+            </summary>
+            <returns> Returns true if the time step was completed,
+            otherwise it will return false
+            </returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetCurrentTime">
+            <summary>
+            Get the current time of the model engine
+            </summary>
+            <returns>The current time for the model engine</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetInputTime(System.String,System.String)">
+            <summary>
+            Get the time for which the next input is needed for
+            a specific Quantity and ElementSet combination
+            </summary>
+            <param name="QuantityID">ID for the quantity</param>
+            <param name="ElementSetID">ID for the ElementSet</param> 
+            <returns>ITimeSpan or ITimeStamp	</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetEarliestNeededTime">
+            <summary>
+            Get earlist needed time, which can be used 
+            to clear the buffer. For most time stepping model engines this
+            time will be the time for the previous time step.
+            </summary>
+            <returns>TimeStamp</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.SetValues(System.String,System.String,OpenMI.Standard.IValueSet)">
+            <summary>
+            Sets values in the model engine
+            </summary>
+            <param name="QuantityID">quantityID associated to the values</param>
+            <param name="ElementSetID">elementSetID associated to the values</param> 
+            <param name="values">The values</param> 
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetValues(System.String,System.String)">
+            <summary>
+            Gets values from the model engine
+            </summary>
+            <param name="QuantityID">quantityID associated to the requested values</param>
+            <param name="ElementSetID">elementSetID associated to the requested values</param>  
+            <returns>The requested values</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetMissingValueDefinition">
+            <summary>
+            In some situations a valied values cannot be return when the 
+            Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetValues is invoked. In such case a missing values
+            can be returned. The GetMissingValeusDefinition method can be used to query which definition
+            of a missing value that applies to this particular model component. Example of missing value
+            definition could be: -999.99
+            </summary>
+            <returns>Missing value definition</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetComponentID">
+            <summary>
+            Get the ComponentID. The component ID is the name of the non-populated component. This is typically 
+            the product name of your model engine.
+            </summary>
+            <returns>Component ID</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IRunEngine.GetComponentDescription">
+            <summary>
+            Get a description of your component. This description refers to the non-populated component. This is 
+            typically a description of what your component does and which methods that are used. E.g. "Finite element
+            based ground water model".
+            </summary>
+            <returns>Component description</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetModelID">
+            <summary>
+            Returns the ModelID. The ModelID identifies the populated model component. 
+            Example: "River Rhine"
+            </summary>
+            <returns>ModelID</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetModelDescription">
+            <summary>
+            Return the Model Description. The Model Description is a description of the populated
+            model component.
+            </summary>
+            <returns>Model description</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetTimeHorizon">
+            <summary>
+            Return the time horison for the populated model compoent. The Time Horizon for a model i typically
+            the same as the simulation period, which normally depend on de available input data. When you model 
+            is running in the OpenMI environment, the model component must be able to return values within the 
+            TimeHorizon
+            </summary>
+            <returns>TimeHorizon</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetInputExchangeItemCount">
+            <summary>
+            Returns the number of input exchange items for the populated model component.
+            </summary>
+            <returns>InputExchangeItemCount</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetOutputExchangeItemCount">
+            <summary>
+            Returns the number of output exchange items for the populated model component.
+            </summary>
+            <returns>OutputExchangeItemCount</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetOutputExchangeItem(System.Int32)">
+            <summary>
+            Returns a specific output exchange item from the populated model component.
+            </summary>
+            <param name="exchangeItemIndex">index number</param>
+            <returns>OutputExchangeItem according the the index number</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IEngine.GetInputExchangeItem(System.Int32)">
+            <summary>
+            Returns a specific input exchange item from the populated model component.
+            </summary>
+            <param name="exchangeItemIndex">index number</param>
+            <returns>InputExchangeItem according the the index number</returns>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.SmartLink">
+            <summary>
+            The SmartLink contains the link and a reference to the engine
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.SmartLink._link">
+            <summary>
+            Reference to the Link
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.SmartLink._engine">
+            <summary>
+            Reference to the engine
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartLink.GetErrors">
+            <summary>
+            Error messages 
+            </summary>
+            <returns>Error Messages</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartLink.GetWarnings">
+            <summary>
+            Warining
+            </summary>
+            <returns>warnings</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartLink.link">
+            <summary>
+            The ILink object contained in the SmartLink
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartLink.Engine">
+            <summary>
+            Reference to the engine
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.TimeValueSet">
+            <summary>
+            Combined ITime and IValueSet. Used in connection with the IAdvancedEngine interface
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.TimeValueSet.#ctor(OpenMI.Standard.ITime,OpenMI.Standard.IValueSet)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="time">ITime object</param>
+            <param name="valueSet">IValuesSet object</param>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.TimeValueSet.Time">
+            <summary>
+            The time
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.TimeValueSet.ValueSet">
+            <summary>
+            The values
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink">
+            <summary>
+            Smart output link
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.#ctor(Oatc.OpenMI.Sdk.Wrapper.IRunEngine,OpenMI.Standard.ILink)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="engine">reference to the engine</param>
+            <param name="link">The ILink object</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.Initialize">
+            <summary>
+            Initialize will create buffers, prepare data operations and create the mapping matrice when georeferenced links are used.
+            The initialize method should be invoked in the ILinkableComponent prepare method (is done from the LinkableRunEngine).
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.GetLastBufferedTime">
+            <summary>
+            The last time in the buffer
+            </summary>
+            <returns>the latest time in the buffer</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.UpdateBuffer">
+            <summary>
+            Update the associated buffer with the last values calculated by the engine
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.GetValue(OpenMI.Standard.ITime)">
+            <summary>
+            Retrieves a value from the buffer that applies to the time passes as argument. 
+            During this process the buffer will do temporal operations, 
+            such as extrapolations, interpolations, or aggregation
+            </summary>
+            <param name="time">The time for which the values should apply</param>
+            <returns>The values</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.ConvertUnit(OpenMI.Standard.IValueSet)">
+            <summary>
+            Convert the units according the what is specified in the link
+            </summary>
+            <param name="values">The values</param>
+            <returns>The unit converted values</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.KeepCurrentBufferState(System.String)">
+            <summary>
+            Saves a copy of the buffer
+            </summary>
+            <param name="bufferStateID">ID for the saved buffer state</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.ClearBufferState(System.String)">
+            <summary>
+            Clears a buffer state
+            </summary>
+            <param name="bufferStateID">ID for the state to clear</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.RestoreBufferState(System.String)">
+            <summary>
+            Restores the buffer with a previously saved buffer state
+            </summary>
+            <param name="bufferStateID">ID for the state to restore</param>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartOutputLink.SmartBuffer">
+            <summary>
+            The SmartBuffer associated to the SmartOutputLink
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.IAdvancedEngine">
+            <summary>
+            The IAdvancedEngine interface is introduced in order to facilitate models
+            where different quantities are calculated base on different time step lengths.
+            One example of such model could be a multi-domain model such a models for combined
+            ground water and surface water. Typically the time step length for the ground 
+            water calculations will be much longer that the time step length for the surface 
+            water calculations. In the IEngine interface values are pulled from the engine 
+            through the GetValues method, which returns a IValueSet. In this cases it will 
+            be assumed that the accociated time is the current time which is obtained through 
+            the IEngine interface through the GetCurrentTime. By use of the IAdvanceEngine 
+            interface accociated values can be pulled from the engine through the 
+            GetValues method that will return an instance of the TimeValues class, 
+            which contains a IValueSet and the associated ITime. The IAdvanced i
+            nterface is implemented as a separate interface in order to facilitate 
+            backward compatibility. 
+            Summary description for IAdvancedEngine.
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.IAdvancedEngine.GetValues(System.String,System.String)">
+            <summary>
+            The GetValues method will return an instance of the TimeValues class, 
+            which is the currently calculated values as IValueSet and the associated time as ITime.
+            </summary>
+            <param name="quantityID">The Quantity ID for the requested values</param>
+            <param name="ElementSetID">The ElementSet ID for the requested values</param>
+            <returns>TimeValueSet which is the calculated values and the associated time</returns>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine">
+            <summary>
+            The LinkableRunEngine  implements the run time part of the ILinkableComponent interface. 
+            The remaining methods are implemented in the derived LinkableEngine class. There are 
+            historical reasons for splitting the functionality between the two classes. 
+            The LinkableRunEngine class and the LinkableEngine class could be merged, 
+            but for the time being these are keeps as they are in order to support backward compatibility. 
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._smartInputLinks">
+            <summary>
+            List of SmartInputLinks
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._smartOutputLinks">
+            <summary>
+            List of SmartOutput Links
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._engineApiAccess">
+            <summary>
+            Reference to the engine. Must be assigned in the derived class
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._engineWasAssigned">
+            <summary>
+            True if the _engineApiAccess was assigned
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._initializeWasInvoked">
+            <summary>
+            True if the Initialize method was invoked
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._prepareForCompotationWasInvoked">
+            <summary>
+            True if the Prepare method was invoked
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._isBusy">
+            <summary>
+            True if the component is gathering data from other LinkableComponents
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._publishedEventTypes">
+            <summary>
+            Arraylist of published event types
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._timeEpsilon">
+            <summary>
+            used when comparing time in the IsLater method (see property TimeEpsilon)
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._validationWarningMessages">
+            <summary>
+            Current validation string from the Validate method
+            </summary>
+        </member>
+        <member name="F:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine._validationErrorMessages">
+            <summary>
+            The current validateion error message
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.#ctor">
+            <summary>
+            Constructor method for the LinkableRunEngine class
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.AddLink(OpenMI.Standard.ILink)">
+            <summary>
+            Add a link to the LinkableComponent
+            </summary>
+            <param name="newLink">The Link</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.CreateInputLink(Oatc.OpenMI.Sdk.Wrapper.IRunEngine,OpenMI.Standard.ILink)">
+            <summary>
+            Creates a new input link 
+            </summary>
+            <param name="engine">The engine</param>
+            <param name="link">The link</param>
+            <returns>The new input link</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.CreateOutputLink(Oatc.OpenMI.Sdk.Wrapper.IRunEngine,OpenMI.Standard.ILink)">
+            <summary>
+            Creates a new output link 
+            </summary>
+            <param name="engine">The engine</param>
+            <param name="link">The link</param>
+            <returns>The new output link</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.Dispose">
+            <summary>
+            Implementaion of the same method in the
+            OpenMI.Standard.ILinkableComponent
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetValues(OpenMI.Standard.ITime,System.String)">
+            <summary>
+            Implementation of the same method in
+            OpenMI.Standard.ILInkableComponent
+            </summary>
+            <param name="time">Time (ITimeSpan or ITimeStamp) for which values are requested</param>
+            <param name="LinkID">LinkID associated to the requested values</param>
+            <returns>The values</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.Finish">
+            <summary>
+            Finish
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.Initialize(OpenMI.Standard.IArgument[])">
+            <summary>
+            Initialize
+            </summary>
+            <param name="properties">Initialization parameters</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.Prepare">
+            <summary>
+            Prepare. This method will be invoked after end of configuration and before the first GetValues call
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.RemoveLink(System.String)">
+            <summary>
+            Remove a link
+            </summary>
+            <param name="LinkID">Link ID for the link to be removed</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetAcceptingLinks">
+            <summary>
+            Returns an array of input ILink which contains links already added to this component.
+            </summary>
+            <returns>Returns an array of ILink which contains links already added to this component</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetProvidingLinks">
+            <summary>
+            Returns an array of output ILink which contains links already added to this component.
+            </summary>
+            <returns>Returns an array of output ILink which contains links already added to this component.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.SetEngineApiAccess">
+            <summary>
+            Set reference to the engine
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.KeepCurrentState">
+            <summary>
+            Keep Curren state
+            </summary>
+            <returns>ID for the state keept</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.RestoreState(System.String)">
+            <summary>
+            Restore a state
+            </summary>
+            <param name="stateID">ID for the state to restore</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.ClearState(System.String)">
+            <summary>
+            Clear a state
+            </summary>
+            <param name="stateID">ID for the state to clear</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetPublishedEventType(System.Int32)">
+            <summary>
+            Get the published event types.
+            </summary>
+            <param name="providedEventTypeIndex">index for the requested event type</param>
+            <returns>the requested event type</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetPublishedEventTypeCount">
+            <summary>
+            Get the number of published event types
+            </summary>
+            <returns>Number of published event types</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.TimeToTimeStamp(OpenMI.Standard.ITime)">
+            <summary>
+            Convert a ITime object to a ITimeStamp.
+            </summary>
+            <param name="time">The ITime object to convert</param>
+            <returns>The converted time</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.IsLater(OpenMI.Standard.ITime,OpenMI.Standard.ITime)">
+            <summary>
+            Will compare two times. If the first argument t1, is later than the second argument t2
+            the method will return true. Otherwise false will be returned. t1 and t2 can be of types
+            ITimeSpan or ITimeStamp.
+            </summary>
+            <param name="t1">First time</param>
+            <param name="t2">Second time</param>
+            <returns>isLater</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.ITimeToString(OpenMI.Standard.ITime)">
+            <summary>
+            Converts a ITime object to a formatted string
+            </summary>
+            <param name="time">The time to convert</param>
+            <returns>The formatted string</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetInputExchangeItem(System.Int32)">
+            <summary>
+            get an input exchange item
+            </summary>
+            <param name="index">index number for the requested input exchange item</param>
+            <returns>the requested input exchange item</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.GetOutputExchangeItem(System.Int32)">
+            <summary>
+            get an output exchange item.
+            </summary>
+            <param name="index">index number for the requested exchange item</param>
+            <returns>the requested exchange item</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.Validate">
+            <summary>
+            Validate the component
+            </summary>
+            <returns>Empty string if no warnings were issued, or a description if there were warnings</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.EarliestInputTime">
+            <summary>
+            Implementation of the same method in the 
+            OpenMI.Standard.ILinkableComponent interface
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.TimeEpsilon">
+            <summary>
+            This _timeEpsilon variable is used when comparing the current time in the engine with
+            the time specified in the parameters for the GetValue method. 
+            if ( requestedTime > engineTime + _timeEpsilon) then PerformTimestep()..
+            The default values for _timeEpsilon is double.Epsilon = 4.94065645841247E-324
+            The default value may be too small for some engines, in which case the _timeEpsilon can
+            be changed the class that you have inherited from LinkableRunEngine og LinkableEngine.
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.ComponentDescription">
+            <summary>
+            Description of the component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.ComponentID">
+            <summary>
+            ID for the component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.EngineApiAccess">
+            <summary>
+            Get the reference to the engine
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.ModelDescription">
+            <summary>
+            Model descscription
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.ModelID">
+            <summary>
+            Model ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.TimeHorizon">
+            <summary>
+            Time Horizon
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.InputExchangeItemCount">
+            <summary>
+            Number of input exchange items
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableRunEngine.OutputExchangeItemCount">
+            <summary>
+            number of output exchange items
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine">
+            <summary>
+            The LinkableEngine class inplements the ILinkableComponent interface.
+            In normal usage of the Wrapper package, the person migrating a model will inherit  
+            his own class from this class. The LinkableEngine class is an abstract class due to the 
+            abstract method SetEngineApiAccess. This method must be overridden in the derived class.
+            
+            Implementation of the ILinkableComponent methods are done partly in this class (LinkebleEngine class) 
+            and partly in the parent class – LinkableRunEngine class. There are historical reasons for 
+            dividing the implementation into two classes, and basically the LinkebleEngine class and the 
+            LinkebleRunEngine class could be merged. However, in order to keep the backward compatibility 
+            the two classes still exists.   
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.#ctor">
+            <summary>
+            constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.GetInputExchangeItem(System.Int32)">
+            <summary>
+            Get an input exchange item
+            </summary>
+            <param name="index">index of the requested input exchange item</param>
+            <returns>The input exchange item</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.GetOutputExchangeItem(System.Int32)">
+            <summary>
+            get a output exchange item
+            </summary>
+            <param name="index">index number of the requested output exchange item</param>
+            <returns>The requested exchange item</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.SetEngineApiAccess">
+            <summary>
+            The SetEngineApiAccess() method is abstract and as such should be overridden in the derived class. 
+            This method should set the reference to the class that implements the IEngine interface. 
+            The property EngineApiAccess, which is implemented in the LinkableRunEngine class is used 
+            to assign this reference.  
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.InputExchangeItemCount">
+            <summary>
+            Number of input exchange items
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.OutputExchangeItemCount">
+            <summary>
+            Number of output exchange items
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.ModelDescription">
+            <summary>
+            Model description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.ModelID">
+            <summary>
+            Model ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinkableEngine.TimeHorizon">
+            <summary>
+            Time TimeHorizon for the model, which is the time period in which the model can be requested
+            for values
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.SmartInputLink">
+            <summary>
+            The SmartInputLink contains the ILink object. The smart input link 
+            has a reference to the engine, which enables the SmartInputLink to update input.
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartInputLink.#ctor(Oatc.OpenMI.Sdk.Wrapper.IRunEngine,OpenMI.Standard.ILink)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="engine">Reference to the engine</param>
+            <param name="link">Reference to the link</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartInputLink.UpdateInput">
+            <summary>
+            Retrieves data from the providing LinkableComponent as defined 
+            in the Link and sets this data in the engine
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartInputLink.SendEvent(OpenMI.Standard.EventType,OpenMI.Standard.ILinkableComponent)">
+            <summary>
+            Send event
+            </summary>
+            <param name="eventType">the event type to send</param>
+            <param name="sender">reference to the sender (this)</param>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation">
+            <summary>
+            The LinearDataOperation class is an implementation of the IDataOperation interface. 
+            The LinearDataOperation can make linear conversion on ScalarSets. The ax+b type of operations.
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.IsValid(OpenMI.Standard.IInputExchangeItem,OpenMI.Standard.IOutputExchangeItem,OpenMI.Standard.IDataOperation[])">
+            <summary>
+            The linear dataoperation is valid for any input and output exchange items and can be combined with any other
+            dataopertion, consequently this method always return true.
+            See also documentation for : OpenMI.Standard.IDataOperation for details
+            </summary>
+            <param name="inputExchangeItem">inputExchangeItem</param>
+            <param name="outputExchangeItem">outputExchangeItem</param>
+            <param name="SelectedDataOperations">SelectedDataOperations</param>
+            <returns></returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.Initialize(OpenMI.Standard.IArgument[])">
+            <summary>
+            Initialises the data operation. Nothing is done for the Linear dataoperation
+            </summary>
+            <param name="properties">arguments</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.GetArgument(System.Int32)">
+            <summary>
+            Returns the arguments for the Linear Dataoperation
+            </summary>
+            <param name="argumentIndex">Argument index</param>
+            <returns></returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.Prepare">
+            <summary>
+            The prepare method should be called before the PerformDataOperation. This method is
+            not part of the OpenMI.Standard.IDataOperation interface. This method will convert
+            the arguments which originally are defined as strings to doubles and subsequently assign 
+            these values to private field variables. The prepare method is introduced for performance
+            reasons.
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.PerformDataOperation(OpenMI.Standard.IValueSet)">
+            <summary>
+            The ValueSet is converted. This method does not support VectorSet, so if the ValueSet is a Vectorset
+            an exception will be thrown. The parameters passed in this method is not used, since all needed information
+            is already assigned in the Prepare method.
+            </summary>
+            <param name="values">argumens but not used in this method</param>
+            <returns>The converted ValueSet</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.Clone">
+            <summary>
+            Creates a copy of the current instance.
+            </summary>
+            <returns>Copy of the instance</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.ID">
+            <summary>
+            DataOperation ID. In this class always "Linear Conversions" (is hardcoded)
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.LinearConversionDataOperation.ArgumentCount">
+            <summary>
+            Number of dataoperation arguments. For the Linear dataoperation this number is always 3 (coefficient a, offset b and description text)
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation">
+            <summary>
+            The SmartBuffer data operation class is used to define the temporal relaxations factors and to define the level of validation 
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.IsValid(OpenMI.Standard.IInputExchangeItem,OpenMI.Standard.IOutputExchangeItem,OpenMI.Standard.IDataOperation[])">
+            <summary>
+            This data operation can be combined with any other data operation, so this method always return true
+            </summary>
+            <param name="inputExchangeItem">input exchange items</param>
+            <param name="outputExchangeItem">output exchange items</param>
+            <param name="SelectedDataOperations">the selected data operations</param>
+            <returns>true if valid, false if invalid</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.Initialize(OpenMI.Standard.IArgument[])">
+            <summary>
+            Initialize
+            </summary>
+            <param name="properties">parameters</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.GetArgument(System.Int32)">
+            <summary>
+            get argument
+            </summary>
+            <param name="argumentIndex">index for the requested argument</param>
+            <returns>the requested argument</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.Prepare">
+            <summary>
+            prepare
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.Clone">
+            <summary>
+            Creates a copy of the current instance.
+            </summary>
+            <returns>Copy of the instance</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.ID">
+            <summary>
+            Data operation ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.ArgumentCount">
+            <summary>
+            Number of arguments
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.DoExtendedValidation">
+            <summary>
+            If true the component will do extended data validation
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Wrapper.SmartBufferDataOperation.RelaxationFactor">
+            <summary>
+            Relaxation factor for temporal extrapolation
+            </summary>
+        </member>
+    </members>
+</doc>
