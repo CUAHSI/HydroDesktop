@@ -279,7 +279,7 @@ namespace SeriesView
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to remove this series (ID: " + _clickedSeriesID + ")?",
-                                "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
+                                "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes))
             {
                 var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                 manager.DeleteSeries(_clickedSeriesID);
@@ -844,21 +844,20 @@ namespace SeriesView
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            SetEnableToButtons(false);
             if (MessageBox.Show("Remove all of the checked data sets?",
                 "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes))
             {
-              int[] CheckedRows = GetCheckedIDs(); // Gets all the ids of rows that are checked
+                SetEnableToButtons(false);
 
-                foreach (var id in CheckedRows ) // Deletes all those rows with thoses ids
+                var CheckedRows = GetCheckedIDs(); // Gets all the ids of rows that are checked
+                foreach (var id in CheckedRows) // Deletes all those rows with thoses ids
                 {
                     var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
                     manager.DeleteSeries(id);
-                    RefreshSelection();
                 }
+                RefreshSelection();
+                SetEnableToButtons(true);
             }
-            SetEnableToButtons(true);
-            
         }
 
     }
