@@ -138,6 +138,18 @@
     <Compile Include="Forms\logIn.Designer.cs">
       <DependentUpon>logIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\uploadForm1_other.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\uploadForm1_other.Designer.cs">
+      <DependentUpon>uploadForm1_other.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\uploadForm1_time.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\uploadForm1_time.Designer.cs">
+      <DependentUpon>uploadForm1_time.cs</DependentUpon>
+    </Compile>
     <Compile Include="HydroSharePlugin.cs" />
     <Compile Include="Forms\passwordEntry.cs">
       <SubType>Form</SubType>
@@ -157,17 +169,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Forms\uploadForm1.cs">
+    <Compile Include="Forms\uploadForm1_geo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\uploadForm1.Designer.cs">
-      <DependentUpon>uploadForm1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\uploadForm2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\uploadForm2.Designer.cs">
-      <DependentUpon>uploadForm2.cs</DependentUpon>
+    <Compile Include="Forms\uploadForm1_geo.Designer.cs">
+      <DependentUpon>uploadForm1_geo.cs</DependentUpon>
     </Compile>
     <Compile Include="RestClient.cs" />
   </ItemGroup>
@@ -202,15 +208,18 @@
     <EmbeddedResource Include="Forms\logIn.resx">
       <DependentUpon>logIn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\uploadForm1_other.resx">
+      <DependentUpon>uploadForm1_other.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\uploadForm1_time.resx">
+      <DependentUpon>uploadForm1_time.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\uploadForm1.resx">
-      <DependentUpon>uploadForm1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\uploadForm2.resx">
-      <DependentUpon>uploadForm2.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\uploadForm1_geo.resx">
+      <DependentUpon>uploadForm1_geo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
