@@ -29,7 +29,7 @@ class HydroShareDownloadDialog( GetShapefiles.MyFrame1 ):
         self.cmb_FilterSearch.Insert("All", 0)
 
         #Load the data from the url into data
-        data = urllib2.urlopen("http://dev.hydroshare.org/?q=my_services/node.json")
+        data = urllib2.urlopen("http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd")
 
         #Turn the data from a raw string into JSON
         all_files = json.load(data)
