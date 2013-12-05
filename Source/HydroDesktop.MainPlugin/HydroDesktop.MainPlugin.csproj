@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroDesktop.Main</RootNamespace>
     <AssemblyName>HydroDesktop.MainPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
@@ -60,13 +60,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BruTile, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BruTile, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1211\lib\net403-Client\BruTile.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-client\BruTile.dll</HintPath>
     </Reference>
-    <Reference Include="BruTile.Desktop, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BruTile.Desktop, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1211\lib\net403-Client\BruTile.Desktop.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-client\BruTile.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.17\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
@@ -125,9 +125,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1200\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotSpatial.Plugins.WebMap, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1211\lib\net403-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.12\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
