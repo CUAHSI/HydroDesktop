@@ -42,7 +42,7 @@
             this.cmb_FilterSearch.Size = new System.Drawing.Size(260, 21);
             this.cmb_FilterSearch.TabIndex = 0;
             this.cmb_FilterSearch.Text = "Filter Search...";
-            this.cmb_FilterSearch.SelectedIndexChanged += new System.EventHandler(this.lst_AvailableItems_Click);
+            this.cmb_FilterSearch.SelectedIndexChanged += new System.EventHandler(this.cmb_FilterSearch_SelectedIndexChanged);
             // 
             // lst_AvailableItems
             // 
@@ -51,6 +51,7 @@
             this.lst_AvailableItems.Name = "lst_AvailableItems";
             this.lst_AvailableItems.Size = new System.Drawing.Size(259, 199);
             this.lst_AvailableItems.TabIndex = 1;
+            this.lst_AvailableItems.SelectedIndexChanged += new System.EventHandler(this.lst_AvailableItems_Click);
             // 
             // btn_Cancel
             // 
