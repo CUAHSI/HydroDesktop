@@ -428,7 +428,7 @@ namespace HydroDesktop.DataDownload.Downloading
         {
             if (!cancelled && MessageBox.Show("Downloading in progress. Do you want to cancel it?", 
                                 "Cancel downloading",
-                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 _manager.Cancel();
                 return true;
