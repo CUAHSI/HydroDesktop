@@ -22,7 +22,6 @@ namespace HydroDesktop.DataDownload.Downloading
         private DownloadManagerUI _downloadManagerUI;
         private static readonly object _syncObjForDownload = new object();
         private readonly List<OneSeriesDownloadInfo> _savedData = new List<OneSeriesDownloadInfo>();
-        public static bool singleThread;
 
         #endregion
 
@@ -137,8 +136,6 @@ namespace HydroDesktop.DataDownload.Downloading
             _downloadManagerUI = new DownloadManagerUI(this);
             ShowUI();
 
-          
-
             DoLogInfo("Starting downloading...");
             _worker.RunWorkerAsync();
           
@@ -204,23 +201,10 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private void DoLog(LogKind logKind, string message, Exception exception = null)
         {
-            switch (logKind)
-            {
-                case LogKind.Error:
-                    //Log.Error(message, exception);
-                    break;
-                case LogKind.Info:
-                    //Log.Info(message, exception);
-                    break;
-                case LogKind.Warn:
-                    //Log.Warn(message, exception);
-                    break;
-            }
-
             var handler = OnMessage;
             if (handler != null)
             {
-                handler(this, new LogMessageEventArgs(message, exception));
+                handler(this, new LogMessageEventArgs(message, logKind, exception));
             }
         }
 
@@ -266,12 +250,12 @@ namespace HydroDesktop.DataDownload.Downloading
 
             // max count of downloading threads
             int maxThreadsToDownloadCount = 16;
-            if (singleThread == true)
+            if (Information.StartArgs.DownloadOptions.UseSingleThread)
             {
                 maxThreadsToDownloadCount = 1;
             }
-           
-            var commonInfo = new CommnonDoDownloadInfo(new Downloader()); // common info, shared through downloading threads
+
+            var commonInfo = new CommnonDoDownloadInfo(new Downloader(Information.StartArgs.DownloadOptions)); // common info, shared through downloading threads
 
             // Starting (if possible) maxThreadsToDownloadCount downloading threads 
             for (int i = 0, startedThreadsCount = 0; startedThreadsCount < maxThreadsToDownloadCount &&
@@ -573,13 +557,6 @@ namespace HydroDesktop.DataDownload.Downloading
             public ManualResetEvent SavingWaitingEvent { get; set; }
         }
 
-        enum LogKind
-        {
-            Info,
-            Error,
-            Warn
-        }
-
         private class GetValueProgressHandler : IGetValuesProgressHandler
         {
             private readonly DownloadManager _manager;
@@ -632,14 +609,29 @@ namespace HydroDesktop.DataDownload.Downloading
         public Exception Exception { get; private set; }
 
         /// <summary>
-        /// Creates new instance of M<see cref="LogMessageEventArgs"/>
+        /// Log Kind
+        /// </summary>
+        public LogKind LogKind { get; set; }
+
+        /// <summary>
+        /// Creates new instance of <see cref="LogMessageEventArgs"/>
         /// </summary>
         /// <param name="message">Message</param>
         /// <param name="exception">Exception</param>
-        public LogMessageEventArgs(string message, Exception exception = null)
+        /// <param name="logKind"></param>
+        public LogMessageEventArgs(string message, LogKind logKind, Exception exception = null)
         {
             Message = message;
             Exception = exception;
+            LogKind = logKind;
         }
+    }
+
+
+    public enum LogKind
+    {
+        Info,
+        Error,
+        Warn
     }
 }

@@ -167,15 +167,13 @@ namespace HydroDesktop.WebServices
             {
                 return 1.0;
             }
-            else if (url.Contains("cuahsi_1_1"))
+            if (url.Contains("cuahsi_1_1"))
             {
                 return 1.1;
             }
-            else
-            {
-                return 1.0;
-            }
+            return 1.0;
         }
+
         /// <summary>
         /// Finds out the SOAP namespace (1.0 or 1.1) from the 
         /// WSDL URL. This function assumes that the url is in format ".../cuahsi_1_0.asmx?wsdl" or

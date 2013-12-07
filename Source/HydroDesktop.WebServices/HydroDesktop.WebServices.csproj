@@ -74,7 +74,6 @@
     <Compile Include="ServiceIconHelper.cs" />
     <Compile Include="SoapHelper.cs" />
     <Compile Include="WaterOneFlow\IGetValuesProgressHandler.cs" />
-    <Compile Include="WaterOneFlow\IWaterOneFlowClient.cs" />
     <Compile Include="WaterOneFlow\IWaterOneFlowParser.cs" />
     <Compile Include="WaterOneFlow\ParserFactory.cs" />
     <Compile Include="WaterOneFlow\RestWaterOneFlowClient.cs" />
@@ -315,9 +314,6 @@
       <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

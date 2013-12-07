@@ -6,7 +6,6 @@ using System.Xml;
 using System.IO;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
-//using HydroDesktop.DataModel;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
 {
@@ -24,7 +23,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads DataValues from a WaterML2.0 XML file
         /// </summary>
-        /// <param name="XmlNodeList"></param>
         private IList<Series> ReadDataValues(XmlDocument wmlDoc)
         {
             IList<Series> seriesList = new List<Series>();
@@ -62,7 +60,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads DataValues from a Series
         /// </summary>
-        /// <param name="XmlNodeList"></param>
         private Series ReadDataSeries(XmlDocument xml)
         {
             Series newSeries = new Series();
@@ -214,7 +211,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <summary>
         /// Reads DataValues from a WaterML2.0 XML file
         /// </summary>
-        /// <param name="XmlNodeList"></param>
         private Variable ReadVariable(XmlDocument wmlDoc)
         {
             throw new NotImplementedException();
@@ -251,11 +247,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
                 return ParseGetValues(fileStream);
             }
         }
-
-        /// <summary>
-        /// Parses a WaterML TimeSeriesResponse XML file
-        /// </summary>
-        /// <param name="xmlFile"></param>
+    
         public IList<Series> ParseGetValues(Stream stream)
         {
             XmlDocument wmlDoc = new XmlDocument();
