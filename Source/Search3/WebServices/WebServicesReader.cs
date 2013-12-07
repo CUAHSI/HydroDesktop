@@ -11,7 +11,7 @@ namespace Search3.WebServices
         /// </summary>
         /// <param name="catalogSettings">Catalog settings</param>
         /// <returns>Collection of web services.</returns>
-        /// <exception cref="ArgumentNullException"><param name="catalogSettings"/> should be not null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="catalogSettings"/> should be not null.</exception>
         /// <exception cref="Exception">Any exception may raised during load process.</exception>
         public static IEnumerable<WebServiceNode> GetWebServices(CatalogSettings catalogSettings)
         {

@@ -46,6 +46,7 @@
     <Optimize>true</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\..\Binaries\HydroDesktop_1_6_dev.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
