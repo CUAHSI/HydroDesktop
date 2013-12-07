@@ -3,9 +3,9 @@ using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
 {
-    public class ParserFactory
+    public static class ParserFactory
     {
-        public IWaterOneFlowParser GetParser(DataServiceInfo dataService)
+        public static IWaterOneFlowParser GetParser(DataServiceInfo dataService)
         {
             IWaterOneFlowParser parser;
             switch (dataService.Version.ToString("F1", CultureInfo.InvariantCulture))

@@ -11,15 +11,13 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     /// web service
     /// </summary>
     /// <remarks>This implementation is not tested, contains some hard-coded URL's and needs refactoring</remarks>
-    public class RestWaterOneFlowClient : IWaterOneFlowClient
+    public class RestWaterOneFlowClient
     {
         #region Variables
 
         private string _downloadDirectory;
         
         private WaterOneFlow10Parser _parser;
-
-
 
         #endregion
 
@@ -89,38 +87,10 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// Gets the information about all sites available at this web service.
         /// </summary>
         /// <returns>The list of all sites supported by this web service.</returns>
-        public IList<HydroDesktop.Interfaces.ObjectModel.Site> GetSites()
+        public IList<Site> GetSites()
         {
             string xmlFile = GetSitesXML();
             return _parser.ParseGetSites(xmlFile);
-        }
-
-
-        /// <summary>
-        /// Gets the information about all sites available at this web service within a bounding box.
-        /// </summary>
-        /// <param name="westLongitude">Longitude of western edge of bounding box</param>
-        /// <param name="southLatitude">Latitude of southern edge of bounding box</param>
-        /// <param name="eastLongitude">Longitude of eastern edge of bounding box</param>
-        /// <param name="northLatitude">Latitude of northern edge of bounding box</param>
-        /// <returns>The list of all sites supported by this web service within a bounding box.</returns>
-        public IList<HydroDesktop.Interfaces.ObjectModel.Site> GetSites(double westLongitude, double southLatitude, double eastLongitude, double northLatitude)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Gets the information about sites within a bounding box, from the web service as a XML document in the WaterML format
-        /// </summary>
-        /// <param name="westLongitude">Longitude of western edge of bounding box</param>
-        /// <param name="southLatitude">Latitude of southern edge of bounding box</param>
-        /// <param name="eastLongitude">Longitude of eastern edge of bounding box</param>
-        /// <param name="northLatitude">Latitude of northern edge of bounding box</param>
-        /// <returns>The downloaded XML file name</returns>
-        public string GetSitesXML(double westLongitude, double southLatitude, double eastLongitude, double northLatitude)
-        {
-            throw new NotImplementedException();
         }
 
 
@@ -163,7 +133,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         /// <remarks>Usually the list of Series returned will only contain one series. However in some
         /// cases, it will contain two or more series with the same site code and variable code, but
         /// with a different method or quality control level</remarks>
-        public IList<HydroDesktop.Interfaces.ObjectModel.Series> GetValues(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
+        public IList<Series> GetValues(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
         {
             
             string xmlFile = GetValuesXML(siteCode, variableCode, startTime, endTime);
@@ -202,39 +172,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
         }
 
-
-        /// <summary>
-        /// Gets or sets the ServiceID (assigned code) corresponding to this web service
-        /// </summary>
-        public int ServiceID
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-
-        /// <summary>
-        /// Gets information about the web service used by this web service client
-        /// </summary>
-        public HydroDesktop.Interfaces.ObjectModel.DataServiceInfo ServiceInfo
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-
-        /// <summary>
-        /// The URL address of the web service being used
-        /// </summary>
-        public string ServiceURL
-        {
-            get { throw new NotImplementedException(); }
-        }
 
         #endregion
     }
