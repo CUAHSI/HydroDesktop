@@ -205,16 +205,15 @@ namespace HydroDesktop.Database
         /// <param name="sqlString">the SQL string</param>
         public void ExecuteNonQuery(string sqlString)
         {
-            DbConnection conn = CreateConnection();
-            conn.Open();
-
-            DbCommand cmd = conn.CreateCommand();
-            cmd.CommandText = sqlString;
-
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            cmd.Dispose();
-            conn.Dispose();
+            using (var conn = CreateConnection())
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         /// <summary>
