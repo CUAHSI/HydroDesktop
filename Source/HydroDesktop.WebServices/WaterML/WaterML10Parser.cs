@@ -4,14 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterOneFlow;
 
-namespace HydroDesktop.WebServices.WaterOneFlow
+namespace HydroDesktop.WebServices.WaterML
 {
     /// <summary>
-    /// Parses a WaterML response into a HydroDesktop domain object
-    /// The WaterML should be in the 1.0 version.
+    /// Parses a WaterML 1.0  files to HydroDesktop domain objects
     /// </summary>
-    public class WaterOneFlow10Parser : WaterOneFlowParser
+    public class WaterML10Parser : WaterML10FamilyParser
     {
         /// <summary>
         /// Reads information about variable

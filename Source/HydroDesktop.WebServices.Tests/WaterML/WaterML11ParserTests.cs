@@ -1,17 +1,17 @@
 ﻿using System;
-using HydroDesktop.WebServices.WaterOneFlow;
+using HydroDesktop.WebServices.WaterML;
 using NUnit.Framework;
 
-namespace HydroDesktop.WebServices.Tests.WaterOneFlow
+namespace HydroDesktop.WebServices.Tests.WaterML
 {
     [TestFixture]
-    public class WaterOneFlow11ParserTests
+    public class WaterML11ParserTests
     {
         [Test]
         public void ParseSiteInfo()
         {
             var xmlPath = @"TestFiles\v11\Site-RCEW2-012-20120604043508874.xml";
-            var target = new WaterOneFlow11Parser();
+            var target = new WaterML11Parser();
 
             var result = target.ParseGetSiteInfo(xmlPath);
             Assert.IsTrue(result.Count > 1);
@@ -39,7 +39,7 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
         public void ParseISOMetadata()
         {
             var xmlPath = @"TestFiles\v11\GetValues_Mendon_usu3.xml";
-            var target = new WaterOneFlow11Parser();
+            var target = new WaterML11Parser();
 
             var result = target.ParseGetValues(xmlPath);
             var series = result[0];
@@ -57,7 +57,7 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
         public  void ParseDataValues()
         {
             var xmlPath = @"TestFiles\v11\GetValues_Mendon_usu3.xml";
-            var target = new WaterOneFlow11Parser();
+            var target = new WaterML11Parser();
 
             var result = target.ParseGetValues(xmlPath);
             var series = result[0];

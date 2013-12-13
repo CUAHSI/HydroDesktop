@@ -1,5 +1,5 @@
 ﻿
-namespace HydroDesktop.WebServices.WaterOneFlow
+namespace HydroDesktop.WebServices.WaterML
 {
     internal static class SeriesCodeHelper
     {
