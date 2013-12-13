@@ -76,6 +76,7 @@ namespace ImportFromWaterML
             IList<Series> seriesList = null;
             try
             {
+                // todo: Support of other WML verions - 1.1 and 2.0
                 var parser = new WaterOneFlow10Parser();
                 seriesList = parser.ParseGetValues(xmlFile);
                 if (seriesList == null)

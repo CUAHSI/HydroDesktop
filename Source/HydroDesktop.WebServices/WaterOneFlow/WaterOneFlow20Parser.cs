@@ -15,11 +15,6 @@ namespace HydroDesktop.WebServices.WaterOneFlow
     /// </summary>
     public class WaterOneFlow20Parser : IWaterOneFlowParser
     {
-
-        #region Variables
-
-        #endregion      
-
         /// <summary>
         /// Reads DataValues from a WaterML2.0 XML file
         /// </summary>
@@ -199,37 +194,12 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
         }
 
-        /// <summary>
-        /// Reads DataValues from a WaterML2.0 XML file
-        /// </summary>
-        /// <param name="XmlNodeList"></param>
-        private Site ReadSite(XmlDocument wmlDoc)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Reads DataValues from a WaterML2.0 XML file
-        /// </summary>
-        private Variable ReadVariable(XmlDocument wmlDoc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Site> ParseGetSites(string xmlFile)
-        {
-            throw new NotImplementedException();
-        }
 
         public IList<Site> ParseGetSites(Stream stream)
         {
             throw new NotImplementedException();
         }
-
-        public IList<SeriesMetadata> ParseGetSiteInfo(string xmlFile)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public IList<SeriesMetadata> ParseGetSiteInfo(Stream stream)
         {
