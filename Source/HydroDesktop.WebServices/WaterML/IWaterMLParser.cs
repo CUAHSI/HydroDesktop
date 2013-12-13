@@ -2,13 +2,12 @@
 using System.IO;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.WebServices.WaterOneFlow
+namespace HydroDesktop.WebServices.WaterML
 {
     /// <summary>
-    /// Contains methods for parsing the xml (WaterML) files returned
-    /// by different versions of the WaterOneFlow web services
+    /// Contains methods for parsing the WaterML files
     /// </summary>
-    public interface IWaterOneFlowParser
+    public interface IWaterMLParser
     {
         /// <summary>
         /// Reads the stream returned by GetSites call to a WaterOneFlow web service.

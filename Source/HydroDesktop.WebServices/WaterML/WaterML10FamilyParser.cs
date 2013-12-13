@@ -5,9 +5,12 @@ using System.IO;
 using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.WebServices.WaterOneFlow
+namespace HydroDesktop.WebServices.WaterML
 {
-    public abstract class WaterOneFlowParser : IWaterOneFlowParser
+    /// <summary>
+    /// Base class for WaterML1.0 family parsers
+    /// </summary>
+    public abstract class WaterML10FamilyParser : IWaterMLParser
     {
         #region Fields
 
@@ -753,28 +756,5 @@ namespace HydroDesktop.WebServices.WaterOneFlow
 
         protected abstract Variable ReadVariable(XmlReader r);
         protected abstract IList<Series> ReadDataValues(XmlReader r);
-    }
-
-    /// <summary>
-    /// Represents WaterML 1.0/1.1 ContactInformationType
-    /// </summary>
-    public class ContactInformationType
-    {
-        public string ContactName { get; set; }
-        public string TypeOfContact { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-    }
-
-    class DataValueWrapper
-    {
-        public DataValue DataValue { get; set; }
-        public string SeriesCode { get; set; }
-        public string SourceID { get; set; }
-        public string MethodID { get; set; }
-        public string OffsetID { get; set; }
-        public string SampleID { get; set; }
-        public string QualityID { get; set; }
     }
 }

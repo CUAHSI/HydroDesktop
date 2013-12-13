@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterML;
 using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.Plugins.WaterML2Client
@@ -70,7 +71,7 @@ namespace HydroDesktop.Plugins.WaterML2Client
             }
 
             
-            var parser = new WaterOneFlow20Parser();
+            var parser = new WaterML20Parser();
             IList<Series> seriesList;
             try
             {

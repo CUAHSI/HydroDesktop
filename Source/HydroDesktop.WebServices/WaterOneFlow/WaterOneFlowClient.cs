@@ -4,18 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterML;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
 {
     /// <summary>
-    /// Special class for communicating with WaterML / WaterOneFlow web services
+    /// Special class for communicating WaterOneFlow web services
     /// </summary>
     public class WaterOneFlowClient
     {
         #region Fields
 
         private readonly string _serviceURL;
-        private readonly IWaterOneFlowParser _parser;
+        private readonly IWaterMLParser _parser;
         private string _downloadDirectory;
         private readonly DataServiceInfo _serviceInfo;
         private readonly int _reqTimeOut;

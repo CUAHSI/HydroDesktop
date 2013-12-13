@@ -7,6 +7,7 @@ using HydroDesktop.DataDownload.Downloading.Exceptions;
 using HydroDesktop.DataDownload.Options;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterML;
 using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading

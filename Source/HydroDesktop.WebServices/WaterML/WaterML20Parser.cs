@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.IO;
-using HydroDesktop.Interfaces.ObjectModel;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.WebServices.WaterOneFlow
+namespace HydroDesktop.WebServices.WaterML
 {
     /// <summary>
-    /// Parses a WaterML response into a HydroDesktop domain object
-    /// The WaterML should be in the 2.0 version.
+    /// Parses a WaterML 2.0 files to HydroDesktop domain objects
     /// </summary>
-    public class WaterOneFlow20Parser : IWaterOneFlowParser
+    public class WaterML20Parser : IWaterMLParser
     {
         /// <summary>
         /// Reads DataValues from a WaterML2.0 XML file

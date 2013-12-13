@@ -1,17 +1,17 @@
 ﻿using System;
-using HydroDesktop.WebServices.WaterOneFlow;
+using HydroDesktop.WebServices.WaterML;
 using NUnit.Framework;
 
-namespace HydroDesktop.WebServices.Tests.WaterOneFlow
+namespace HydroDesktop.WebServices.Tests.WaterML
 {
     [TestFixture]
-    public class WaterOneFlow20ParserTests
+    public class WaterML20ParserTests
     {
         [Test]
         public  void ParseDataValuesV2()
         {
             var xmlPath = @"TestFiles\v20\GetValues_Mendon_usu3_wml2.xml";
-            var target = new WaterOneFlow20Parser();
+            var target = new WaterML20Parser();
 
             var result = target.ParseGetValues(xmlPath);
             var series = result[0];

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HydroDesktop.WebServices
+namespace Search3
 {
     /// <summary>
     /// Represents a latitude / longitude bounding box.
