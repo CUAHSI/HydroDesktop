@@ -290,7 +290,7 @@
             // fromFileToolStripMenuItem
             // 
             this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.fromFileToolStripMenuItem.Text = "From &File...";
             this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fromFileToolStripMenuItem_Click);
             // 
