@@ -192,6 +192,11 @@ namespace HydroDesktop.Interfaces.ObjectModel
         public virtual int SiteCount { get; set; }
 
         /// <summary>
+        /// The total number of sites provided by the web service
+        /// </summary>
+        public virtual int VariableCount { get; set; }
+
+        /// <summary>
         /// The Id of this web service as specified by HIS Central
         /// Only specify this property when the web service is 
         /// registered at HIS Central.
