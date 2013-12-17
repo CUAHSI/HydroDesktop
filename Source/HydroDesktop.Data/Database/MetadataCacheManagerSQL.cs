@@ -6,33 +6,34 @@ using System.Globalization;
 using System.Linq;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
+using System.Data.SQLite;
 
 namespace HydroDesktop.Database
 {
-	/// <summary>
-	/// This class is responsible for communication with the 'Metadata Cache' database
+    /// <summary>
+    /// This class is responsible for communication with the 'Metadata Cache' database
     /// This is an alternative implementation internally using SQL queries instead of NHibernate.
     /// This is to compare saving speed.
-	/// </summary>
-	public class MetadataCacheManagerSQL
-	{
-		#region Variables
+    /// </summary>
+    public class MetadataCacheManagerSQL
+    {
+        #region Variables
 
         //helper class which communicates with the database
         private readonly DbOperations _db;
 
-	    #endregion
+        #endregion
 
-		#region Constructor
-		/// <summary>
-		/// Creates a new instance of the manager given a connection string
-		/// </summary>
-		/// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
-		/// <param name="connectionString">The connection string</param>
-		public MetadataCacheManagerSQL ( DatabaseTypes dbType, string connectionString )
-		{
+        #region Constructor
+        /// <summary>
+        /// Creates a new instance of the manager given a connection string
+        /// </summary>
+        /// <param name="dbType">The type of the database (SQLite, SQLServer, ...)</param>
+        /// <param name="connectionString">The connection string</param>
+        public MetadataCacheManagerSQL(DatabaseTypes dbType, string connectionString)
+        {
             _db = new DbOperations(connectionString, dbType);
-		}
+        }
         /// <summary>
         /// Creates a new instance of the manager using a DbOperations object
         /// </summary>
@@ -41,74 +42,74 @@ namespace HydroDesktop.Database
         {
             _db = db;
         }
-		#endregion
+        #endregion
 
-		private bool NumberIsBetween ( double numberToCheck, double bounds1, double bounds2, bool inclusiveAtBounds )
-		{
-			double lowerBound, upperBound;
+        private bool NumberIsBetween(double numberToCheck, double bounds1, double bounds2, bool inclusiveAtBounds)
+        {
+            double lowerBound, upperBound;
 
-			if ( bounds1 > bounds2 )
-			{
-				lowerBound = bounds2;
-				upperBound = bounds1;
-			}
-			else
-			{
-				lowerBound = bounds1;
-				upperBound = bounds2;
-			}
+            if (bounds1 > bounds2)
+            {
+                lowerBound = bounds2;
+                upperBound = bounds1;
+            }
+            else
+            {
+                lowerBound = bounds1;
+                upperBound = bounds2;
+            }
 
-		    return inclusiveAtBounds
-		               ? numberToCheck >= lowerBound && numberToCheck <= upperBound
-		               : numberToCheck > lowerBound && numberToCheck < upperBound;
-		}
+            return inclusiveAtBounds
+                       ? numberToCheck >= lowerBound && numberToCheck <= upperBound
+                       : numberToCheck > lowerBound && numberToCheck < upperBound;
+        }
 
-		private bool EnvelopesIntersect ( double env1xMin, double env1xMax, double env1yMin, double env1yMax, double env2xMin, double env2xMax, double env2yMin, double env2yMax )
-		{
-			return (((NumberIsBetween ( env1xMin, env2xMin, env2xMax, true ) || NumberIsBetween ( env1xMax, env2xMin, env2xMax, true )) && (NumberIsBetween ( env1yMin, env2yMin, env2yMax, true ) || NumberIsBetween ( env1yMax, env2yMin, env2yMax, true ))) ||
-					((NumberIsBetween ( env2xMin, env1xMin, env1xMax, true ) || NumberIsBetween ( env2xMax, env1xMin, env1xMax, true )) && (NumberIsBetween ( env2yMin, env1yMin, env1yMax, true ) || NumberIsBetween ( env2yMax, env1yMin, env1yMax, true ))));
-		}
+        private bool EnvelopesIntersect(double env1xMin, double env1xMax, double env1yMin, double env1yMax, double env2xMin, double env2xMax, double env2yMin, double env2yMax)
+        {
+            return (((NumberIsBetween(env1xMin, env2xMin, env2xMax, true) || NumberIsBetween(env1xMax, env2xMin, env2xMax, true)) && (NumberIsBetween(env1yMin, env2yMin, env2yMax, true) || NumberIsBetween(env1yMax, env2yMin, env2yMax, true))) ||
+                    ((NumberIsBetween(env2xMin, env1xMin, env1xMax, true) || NumberIsBetween(env2xMax, env1xMin, env1xMax, true)) && (NumberIsBetween(env2yMin, env1yMin, env1yMax, true) || NumberIsBetween(env2yMax, env1yMin, env1yMax, true))));
+        }
 
-		private bool PointIntersectsEnvelope ( double pointX, double pointY, double envXMin, double envXMax, double envYMin, double envYMax )
-		{
-			return (NumberIsBetween ( pointX, envXMin, envXMax, true ) && NumberIsBetween ( pointY, envYMin, envYMax, true ));
-		}
+        private bool PointIntersectsEnvelope(double pointX, double pointY, double envXMin, double envXMax, double envYMin, double envYMax)
+        {
+            return (NumberIsBetween(pointX, envXMin, envXMax, true) && NumberIsBetween(pointY, envYMin, envYMax, true));
+        }
 
-		private bool DateRangesOverlap ( DateTime startDate1, DateTime endDate1, DateTime startDate2, DateTime endDate2 )
-		{
-			return (((startDate1 >= startDate2) && (startDate1 <= endDate2)) ||
-					((endDate1 >= startDate2) && (endDate1 <= endDate2)) ||
-					((startDate2 >= startDate1) && (startDate2 <= endDate1)) ||
-					((endDate2 >= startDate1) && (endDate2 <= endDate1)));
-		}
-
-        
-
-		#region Public Methods
+        private bool DateRangesOverlap(DateTime startDate1, DateTime endDate1, DateTime startDate2, DateTime endDate2)
+        {
+            return (((startDate1 >= startDate2) && (startDate1 <= endDate2)) ||
+                    ((endDate1 >= startDate2) && (endDate1 <= endDate2)) ||
+                    ((startDate2 >= startDate1) && (startDate2 <= endDate1)) ||
+                    ((endDate2 >= startDate1) && (endDate2 <= endDate1)));
+        }
 
 
 
-		/// <summary>
-		/// Get all data services saved in the metadata cache database
-		/// </summary>
-		public IList<DataServiceInfo> GetAllServices ()
-		{
-			const string sql = "SELECT * FROM DataServices";
+        #region Public Methods
+
+
+
+        /// <summary>
+        /// Get all data services saved in the metadata cache database
+        /// </summary>
+        public IList<DataServiceInfo> GetAllServices()
+        {
+            const string sql = "SELECT * FROM DataServices";
 
             var tbl = _db.LoadTable("services", sql);
 
             IList<DataServiceInfo> services = null;
 
-			services = new List<DataServiceInfo> ();
-			if ( tbl.Rows.Count > 0 )
+            services = new List<DataServiceInfo>();
+            if (tbl.Rows.Count > 0)
             {
-                foreach(DataRow row in tbl.Rows)
+                foreach (DataRow row in tbl.Rows)
                 {
                     services.Add(ServiceFromDataRow(row));
                 }
             }
             return services;
-		}
+        }
 
         /// <summary>
         /// Get data service by serviceUrl
@@ -122,9 +123,9 @@ namespace HydroDesktop.Database
             return tbl.Rows.Count == 1 ? ServiceFromDataRow(tbl.Rows[0]) : null;
         }
 
-	    #endregion
+        #endregion
 
-	    /// <summary>
+        /// <summary>
         /// Gets a list of all services within the bounding box
         /// </summary>
         /// <param name="xMin">minimum x (longitude)</param>
@@ -132,9 +133,9 @@ namespace HydroDesktop.Database
         /// <param name="yMin">minimum y (latitude)</param>
         /// <param name="yMax">maximum y (latitude)</param>
         /// <returns>the list of serviceInfo objects matching the criteria</returns>
-		public IList<DataServiceInfo> GetServicesInBox ( double xMin, double xMax, double yMin, double yMax )
-		{
-			//IList<DataServiceInfo> services = null;
+        public IList<DataServiceInfo> GetServicesInBox(double xMin, double xMax, double yMin, double yMax)
+        {
+            //IList<DataServiceInfo> services = null;
 
             string sql = "SELECT * FROM DataServicesCache WHERE " +
                 String.Format("EastLongitude BETWEEN {0} AND {1}", xMin, xMax) +
@@ -155,7 +156,7 @@ namespace HydroDesktop.Database
                 }
             }
             return services;
-		}
+        }
 
         private string DetailedSeriesSQLQuery()
         {
@@ -167,12 +168,12 @@ namespace HydroDesktop.Database
                                "BeginDateTime, EndDateTime, DataSeriesCache.ValueCount, ServiceTitle, ServiceEndpointURL " +
                                "FROM DataSeriesCache " +
                                "LEFT JOIN SitesCache ON DataSeriesCache.SiteID = SitesCache.SiteID " +
-                               "LEFT JOIN VariablesCache ON DataSeriesCache.VariableID = VariablesCache.VariableID " + 
+                               "LEFT JOIN VariablesCache ON DataSeriesCache.VariableID = VariablesCache.VariableID " +
                                "LEFT JOIN DataServices ON DataSeriesCache.ServiceID = DataServices.ServiceID";
             return sql;
         }
 
-	    private DataServiceInfo ServiceFromDataRow(System.Data.DataRow row)
+        private DataServiceInfo ServiceFromDataRow(System.Data.DataRow row)
         {
             DataServiceInfo dsi = new DataServiceInfo();
             dsi.Id = DataReader.ReadInteger(row["ServiceID"]);
@@ -194,6 +195,9 @@ namespace HydroDesktop.Database
             dsi.IsHarvested = DataReader.ReadBoolean(row["IsHarvested"]);
             dsi.HarveDateTime = DataReader.ReadDateTime(row["HarveDateTime"]);
             dsi.ServiceTitle = DataReader.ReadString(row["ServiceTitle"]);
+            dsi.ValueCount = DataReader.ReadInteger(row["ValueCount"]);
+            dsi.SiteCount = DataReader.ReadInteger(row["SiteCount"]);
+            dsi.VariableCount = DataReader.ReadInteger(row["VariableCount"]);
             return dsi;
         }
 
@@ -286,7 +290,7 @@ namespace HydroDesktop.Database
             result.VariableCode = Convert.ToString(row["VariableCode"]);
             result.DataType = Convert.ToString(row["DataType"]);
             result.ValueType = Convert.ToString(row["ValueType"]);
-            
+
             result.SampleMedium = Convert.ToString(row["SampleMedium"]);
             result.TimeSupport = Convert.ToDouble(row["TimeSupport"], CultureInfo.InvariantCulture);
             result.GeneralCategory = Convert.ToString(row["GeneralCategory"]);
@@ -309,8 +313,8 @@ namespace HydroDesktop.Database
         /// <param name="yMin">minimum Y (latitude)</param>
         /// <param name="yMax">maximum Y (latitude)</param>
         /// <returns>the list of data series metadata matching the search criteria</returns>
-		public IList<SeriesDataCart> GetSeriesListInBox ( double xMin, double xMax, double yMin, double yMax )
-		{
+        public IList<SeriesDataCart> GetSeriesListInBox(double xMin, double xMax, double yMin, double yMax)
+        {
             string sql1 = DetailedSeriesSQLQuery();
             const string sqlWhere = " WHERE Latitude > @minlat AND Latitude <= @maxlat AND Longitude > @minlon AND Longitude <= @maxlon";
             string sql = sql1 + sqlWhere;
@@ -328,11 +332,11 @@ namespace HydroDesktop.Database
             cmd.Parameters[3].Value = xMax;
 
             DataTable seriesTable = _db.LoadTable("seriesTable", cmd);
-            
+
             //DataTable seriesTable = _db.LoadTable("seriesTable", sql);
 
             return (from DataRow row in seriesTable.Rows select SeriesDataCartFromRow(row)).ToList();
-		}
+        }
 
         /// <summary>
         /// Gets a data table of all data series within the bounding box
@@ -346,8 +350,8 @@ namespace HydroDesktop.Database
         /// <param name="endDate">end date</param>
         /// <param name="networkIDs">larray of service codes</param>
         /// <returns>the list of data series metadata matching the search criteria</returns>
-		public DataTable GetSeriesDataTableInBox ( double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs )
-		{
+        public DataTable GetSeriesDataTableInBox(double xMin, double xMax, double yMin, double yMax, string[] conceptCodes, DateTime startDate, DateTime endDate, int[] networkIDs)
+        {
             string sql1 = DetailedSeriesSQLQuery();
             string sqlWhere1 = " WHERE Latitude >= @minlat AND Latitude <= @maxlat AND Longitude >= @minlon AND Longitude <= @maxlon";
             string sqlWhere2 = "";
@@ -385,7 +389,7 @@ namespace HydroDesktop.Database
 
             //date and time
             const string sqlWhere3 = " AND ( (BeginDateTime < @p1 AND EndDateTime > @p2) OR (BeginDateTime > @p1 AND BeginDateTime <= @p2) OR (EndDateTime > @p1 AND EndDateTime <= @p2) )";
-            
+
             //network IDs
             string sqlWhere4 = "";
 
@@ -413,7 +417,7 @@ namespace HydroDesktop.Database
             _db.AddParameter(cmd, "@maxlat", DbType.Double);
             _db.AddParameter(cmd, "@minlon", DbType.Double);
             _db.AddParameter(cmd, "@maxlon", DbType.Double);
-            
+
             _db.AddParameter(cmd, "@p1", DbType.DateTime);
             _db.AddParameter(cmd, "@p2", DbType.DateTime);
             cmd.Parameters[0].Value = yMin;
@@ -422,10 +426,10 @@ namespace HydroDesktop.Database
             cmd.Parameters[3].Value = xMax;
             cmd.Parameters[4].Value = startDate;
             cmd.Parameters[5].Value = endDate;
-            
+
             var seriesTable = _db.LoadTable("seriesTable", cmd);
             return seriesTable;
-		}
+        }
 
         /// <summary>
         /// Gets a list of all data series within the bounding box
@@ -445,11 +449,11 @@ namespace HydroDesktop.Database
             return (from DataRow row in dt.Rows select SeriesDataCartFromRow(row)).ToList();
         }
 
-	    /// <summary>
-		/// Gets all variables that are currently stored in the metadata cache database
-		/// </summary>
-		public IList<Variable> GetVariables()
-		{
+        /// <summary>
+        /// Gets all variables that are currently stored in the metadata cache database
+        /// </summary>
+        public IList<Variable> GetVariables()
+        {
             string sql = "SELECT * FROM VariablesCache";
 
             DataTable tbl = _db.LoadTable(sql);
@@ -460,7 +464,7 @@ namespace HydroDesktop.Database
                 variables.Add(v);
             }
             return variables;
-		}
+        }
 
         /// <summary>
         /// Gets all variables that are currently stored in the metadata cache database
@@ -511,20 +515,28 @@ namespace HydroDesktop.Database
             return variableNames;
         }
 
-		/// <summary>
-		/// Saves a new data service object to the database. If an entry with the same
-		/// web service URL already exists in the database, update it.
-		/// </summary>
-		/// <param name="service">the ServiceInfo object to be saved to the DB</param>
-		public void SaveDataService ( DataServiceInfo service )
-		{
-		    const string sqlInsert = "INSERT INTO DataServices(" +
-		                             "ServiceCode, ServiceName, ServiceType, ServiceVersion, ServiceProtocol, " +
-		                             "ServiceEndpointURL, ServiceDescriptionURL, NorthLatitude, SouthLatitude, EastLongitude, WestLongitude, " +
-		                             "Abstract, ContactName, ContactEmail, Citation, IsHarvested, HarveDateTime, ServiceTitle) " +
-		                             "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        /// <summary>
+        /// Saves a new data service object to the database. If an entry with the same
+        /// web service URL already exists in the database, update it.
+        /// </summary>
+        /// <param name="service">the ServiceInfo object to be saved to the DB</param>
+        public void SaveDataService(DataServiceInfo service)
+        {
+            if (!columnExists("SiteCount"))
+            {
+                addColumn("SiteCount");
+            }
+            if (!columnExists("VariableCount"))
+            {
+                addColumn("VariableCount");
+            }
+            const string sqlInsert = "INSERT INTO DataServices(" +
+                                     "ServiceCode, ServiceName, ServiceType, ServiceVersion, ServiceProtocol, " +
+                                     "ServiceEndpointURL, ServiceDescriptionURL, NorthLatitude, SouthLatitude, EastLongitude, WestLongitude, " +
+                                     "Abstract, ContactName, ContactEmail, Citation, IsHarvested, HarveDateTime, ServiceTitle, SiteCount, VariableCount) " +
+                                     "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-		    using (DbConnection conn = _db.CreateConnection())
+            using (DbConnection conn = _db.CreateConnection())
             {
                 conn.Open();
 
@@ -551,25 +563,26 @@ namespace HydroDesktop.Database
                         cmd.Parameters.Add(_db.CreateParameter(DbType.Boolean, service.IsHarvested));
                         cmd.Parameters.Add(_db.CreateParameter(DbType.DateTime, service.HarveDateTime));
                         cmd.Parameters.Add(_db.CreateParameter(DbType.String, service.ServiceTitle));
-
+                        cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, service.SiteCount));
+                        cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, service.VariableCount));
                         cmd.ExecuteNonQuery();
                     }
                     tran.Commit();
                 }
             }
-		}
+        }
 
-	    /// <summary>
-		/// Deletes all entries in the metadata cache database that were
-		/// added by the data service
-		/// </summary>
+        /// <summary>
+        /// Deletes all entries in the metadata cache database that were
+        /// added by the data service
+        /// </summary>
         /// <param name="service">The serviceInfo object to be deleted</param>
-		/// <param name="deleteService">Set to true if the record in the DataServices
-		/// table should also be deleted. Set to false if the record in the DataServices
-		/// table should be kept</param>
-		/// <returns>The total number of records deleted</returns>
-		public int DeleteRecordsForService ( DataServiceInfo service, bool deleteService )
-		{
+        /// <param name="deleteService">Set to true if the record in the DataServices
+        /// table should also be deleted. Set to false if the record in the DataServices
+        /// table should be kept</param>
+        /// <returns>The total number of records deleted</returns>
+        public int DeleteRecordsForService(DataServiceInfo service, bool deleteService)
+        {
             string serviceID = service.Id.ToString(CultureInfo.InvariantCulture);
 
             string sqlDelete = "DELETE FROM DataSeriesCache WHERE ServiceID = " + serviceID + "; " +
@@ -577,13 +590,13 @@ namespace HydroDesktop.Database
                 "DELETE FROM VariablesCache WHERE ServiceID = " + serviceID + "; " +
                 "DELETE FROM SourcesCache WHERE ServiceID = " + serviceID + "; " +
                 "DELETE FROM MethodsCache WHERE ServiceID = " + serviceID + "; " +
-                "DELETE FROM QualityControlLevelsCache WHERE ServiceID = " + serviceID + ";" + 
-				"DELETE FROM ISOMetadataCache WHERE ServiceID = " + serviceID + ";";
+                "DELETE FROM QualityControlLevelsCache WHERE ServiceID = " + serviceID + ";" +
+                "DELETE FROM ISOMetadataCache WHERE ServiceID = " + serviceID + ";";
 
-			if ( deleteService )
-			{
-				sqlDelete += "DELETE FROM DataServices WHERE ServiceID = " + serviceID + ";";
-			}
+            if (deleteService)
+            {
+                sqlDelete += "DELETE FROM DataServices WHERE ServiceID = " + serviceID + ";";
+            }
 
             using (var conn = _db.CreateConnection())
             {
@@ -601,7 +614,7 @@ namespace HydroDesktop.Database
 
             }
             return 0;
-		}
+        }
 
 
         /// <summary>
@@ -622,7 +635,7 @@ namespace HydroDesktop.Database
                 "FROM DataSeriesCache WHERE SeriesID = " + seriesID;
 
             DataTable seriesTable = _db.LoadTable("seriesTable", sqlSeries);
-            
+
             if (seriesTable.Rows.Count == 0) return false;
 
             DataRow seriesRow = seriesTable.Rows[0];
@@ -745,7 +758,7 @@ namespace HydroDesktop.Database
                             cmdDeleteQuality.CommandText = sqlDeleteQuality;
                             cmdDeleteQuality.ExecuteNonQuery();
                         }
-                    }  
+                    }
 
                     //finally delete the series
                     using (DbCommand cmdDeleteSeries = conn.CreateCommand())
@@ -763,35 +776,35 @@ namespace HydroDesktop.Database
 
 
 
-		/// <summary>
-		/// Check if the series with the same site, variable, method,
-		/// source, quality control level and data service already
-		/// exists in the database.
-		/// </summary>
-		/// <param name="seriesToCheck">the series to be checked</param>
-		/// <returns>The series from the db, or NULL if it doesn't exist</returns>
+        /// <summary>
+        /// Check if the series with the same site, variable, method,
+        /// source, quality control level and data service already
+        /// exists in the database.
+        /// </summary>
+        /// <param name="seriesToCheck">the series to be checked</param>
+        /// <returns>The series from the db, or NULL if it doesn't exist</returns>
         /// <remarks>Not implemented</remarks>
-		private SeriesMetadata CheckIfSeriesExists ( SeriesMetadata seriesToCheck )
-		{
+        private SeriesMetadata CheckIfSeriesExists(SeriesMetadata seriesToCheck)
+        {
             throw new NotImplementedException();
-		}
+        }
 
-		/// <summary>
-		/// Saves the series metadata to the metadata cache database.
-		/// This method also automatically saves the site, variable,
-		/// method, source and quality control level of the series.
-		/// </summary>
-		/// <param name="series">The series to be saved</param>
-		/// <param name="dataService">The web service containing the series</param>
-		public void SaveSeries ( SeriesMetadata series, DataServiceInfo dataService )
-		{
+        /// <summary>
+        /// Saves the series metadata to the metadata cache database.
+        /// This method also automatically saves the site, variable,
+        /// method, source and quality control level of the series.
+        /// </summary>
+        /// <param name="series">The series to be saved</param>
+        /// <param name="dataService">The web service containing the series</param>
+        public void SaveSeries(SeriesMetadata series, DataServiceInfo dataService)
+        {
             string sqlSite = "SELECT SiteID FROM SitesCache WHERE SiteCode = ?";
-            string sqlVariable = "SELECT VariableID FROM VariablesCache WHERE VariableCode = ?";            
+            string sqlVariable = "SELECT VariableID FROM VariablesCache WHERE VariableCode = ?";
             string sqlMethod = "SELECT MethodID FROM MethodsCache WHERE MethodDescription = ?";
-            string sqlSource = "SELECT SourceID FROM SourcesCache WHERE Organization = ?";          
-            string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevelsCache WHERE Definition = ?";           
+            string sqlSource = "SELECT SourceID FROM SourcesCache WHERE Organization = ?";
+            string sqlQuality = "SELECT QualityControlLevelID FROM QualityControlLevelsCache WHERE Definition = ?";
             string sqlRowID = "; SELECT LAST_INSERT_ROWID();";
-            
+
             string sqlSaveSite = "INSERT INTO SitesCache(SiteCode, SiteName, Latitude, Longitude, LatLongDatumSRSID, LatLongDatumName, " +
                 "Elevation_m, VerticalDatum, LocalX, LocalY, LocalProjectionSRSID, LocalProjectionName, " +
                 "PosAccuracy_m, State, County, Comments, ServiceID) " +
@@ -820,7 +833,7 @@ namespace HydroDesktop.Database
 
             int siteID = 0;
             int variableID = 0;
-            
+
             int methodID = 0;
             int qualityControlLevelID = 0;
             int sourceID = 0;
@@ -828,7 +841,7 @@ namespace HydroDesktop.Database
             int seriesID = 0;
 
 
-		    //check the ServiceID (must be already set)
+            //check the ServiceID (must be already set)
             if (dataService.Id <= 0)
             {
                 throw new ArgumentException("The DataServiceID must be set.");
@@ -997,7 +1010,7 @@ namespace HydroDesktop.Database
                         //to set the code
                         int qcCode = 0;
                         int.TryParse(qc.Code, out qcCode);
-                        
+
                         using (DbCommand cmd13 = conn.CreateCommand())
                         {
                             cmd13.CommandText = sqlSaveQualityControl;
@@ -1069,7 +1082,7 @@ namespace HydroDesktop.Database
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.DateTime, series.EndDateTimeUTC));
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.Int32, series.ValueCount));
                         cmd18.Parameters.Add(_db.CreateParameter(DbType.Int32, dataService.Id));
-                        
+
                         object seriesIDResult = cmd18.ExecuteScalar();
                         seriesID = Convert.ToInt32(seriesIDResult);
                     }
@@ -1079,7 +1092,7 @@ namespace HydroDesktop.Database
                 }
                 conn.Close();
             }
-		}
+        }
 
         /// <summary>
         /// updates the data row corresponding to the serviceInfo object
@@ -1098,9 +1111,17 @@ namespace HydroDesktop.Database
         /// <param name="serviceInfo">the corresponding ServiceInfo</param>
         public void UpdateDataRow(DataServiceInfo serviceInfo)
         {
+            if (!columnExists("SiteCount")) {
+                addColumn("SiteCount");   
+            }
+            if (!columnExists("VariableCount"))
+            {
+                addColumn("VariableCount");
+            }
+            
             string sql = "UPDATE DataServices SET " +
                 "IsHarvested=?,HarveDateTime=?,ServiceName=?,ServiceVersion=?,ServiceType=?,ServiceProtocol=?," +
-                "EastLongitude=?,WestLongitude=?,NorthLatitude=?,SouthLatitude=? WHERE ServiceID = ?";
+                "EastLongitude=?,WestLongitude=?,NorthLatitude=?,SouthLatitude=?,SiteCount=?, VariableCount=?, ValueCount=? WHERE ServiceID = ?";
 
             using (DbConnection conn = _db.CreateConnection())
             {
@@ -1121,14 +1142,62 @@ namespace HydroDesktop.Database
                         cmd.Parameters.Add(_db.CreateParameter(DbType.Double, serviceInfo.WestLongitude));
                         cmd.Parameters.Add(_db.CreateParameter(DbType.Double, serviceInfo.NorthLatitude));
                         cmd.Parameters.Add(_db.CreateParameter(DbType.Double, serviceInfo.SouthLatitude));
+                        cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, serviceInfo.SiteCount));
+                        cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, serviceInfo.VariableCount));
+                        cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, serviceInfo.ValueCount));
                         cmd.Parameters.Add(_db.CreateParameter(DbType.Int32, serviceInfo.Id));
 
                         cmd.ExecuteNonQuery();
                     }
-                                        
+
                     tran.Commit();
                 }
             }
         }
-	}
+
+        private void addColumn(string colName)
+        {
+            string sql = "ALTER TABLE DataServices ADD COLUMN " + colName +" INTEGER";
+            using (DbConnection conn = _db.CreateConnection())
+            {
+                conn.Open();
+                using (DbTransaction tran = conn.BeginTransaction())
+                {
+                    using (DbCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = sql;
+                        cmd.ExecuteNonQuery();
+                    }
+                    tran.Commit();
+                }
+            }
+        }
+
+        private bool columnExists(string colName)
+        {
+            try
+            {
+                string sql = "Select " + colName + " from DataServices";
+                using (DbConnection conn = _db.CreateConnection())
+                {
+                    conn.Open();
+                    using (DbTransaction tran = conn.BeginTransaction())
+                    {
+                        using (DbCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = sql;
+                            cmd.ExecuteNonQuery();
+                        }
+                        tran.Commit();
+                    }
+                }
+                return true;
+            }
+            catch (SQLiteException e)
+            {
+                return false;
+            }
+        }
+    }
 }
+
