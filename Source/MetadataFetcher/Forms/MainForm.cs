@@ -742,7 +742,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				serviceInfo.WestLongitude = west;
 				serviceInfo.NorthLatitude = north;
 				serviceInfo.SouthLatitude = south;
-
+                serviceInfo.VariableCount = (cacheManager.GetVariablesByService((int)serviceInfo.Id)).Count;
 				cacheManager.UpdateDataRow ( serviceInfo ); // Updates properties like harvest datetime and service extent
 
 				foreach ( SeriesMetadata series in seriesList )
@@ -877,7 +877,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				serviceInfo.Version = waterOneFlowServiceInfo.Version;
 				serviceInfo.ServiceType = waterOneFlowServiceInfo.ServiceType;
 				serviceInfo.Protocol = waterOneFlowServiceInfo.Protocol;
-
+                serviceInfo.VariableCount = (cacheManager.GetVariablesByService((int)serviceInfo.Id)).Count;
 				cacheManager.UpdateDataRow ( serviceInfo ); 
 
 				// Check for cancel
@@ -930,7 +930,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				double west = 360;
 				double north = -90;
 				double south = 90;
-
+                int valueCount = 0;
 				foreach ( Site site in siteList )
 				{
 					// Check for cancel
@@ -952,6 +952,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
                     try
                     {
                         currentSeriesList = waterOneFlowClient.GetSiteInfo(site.Code);
+                      
                     }
                     catch (WebException ex)
                     {
@@ -988,6 +989,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
                         continue;
                     }
 
+              
 					// Update service extent 
 					if ( site.Latitude > north )
 					{
@@ -1005,10 +1007,12 @@ namespace HydroDesktop.MetadataFetcher.Forms
 					{
 						west = site.Longitude;
 					}
-
+                   
 					// Save series info to metadata cache database
 					foreach ( SeriesMetadata series in currentSeriesList )
 					{
+                
+                        valueCount += series.ValueCount;
 						// Check for cancel
 						if ( bgwMain.CancellationPending )
 						{
@@ -1079,7 +1083,9 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				serviceInfo.WestLongitude = west;
 				serviceInfo.NorthLatitude = north;
 				serviceInfo.SouthLatitude = south;
-
+                serviceInfo.SiteCount = siteList.Count;
+                serviceInfo.ValueCount = valueCount;
+                serviceInfo.VariableCount = (cacheManager.GetVariablesByService((int)serviceInfo.Id)).Count;
 				cacheManager.UpdateDataRow ( serviceInfo ); // Updates properties like harvest datetime and service extent
 			}
 

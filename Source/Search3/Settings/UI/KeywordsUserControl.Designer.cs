@@ -48,9 +48,9 @@ namespace Search3.Settings.UI
             // 
             // tboTypeKeyword
             // 
-            this.tboTypeKeyword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tboTypeKeyword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tboTypeKeyword.ForeColor = System.Drawing.Color.Gray;
             this.tboTypeKeyword.Location = new System.Drawing.Point(14, 10);
             this.tboTypeKeyword.Name = "tboTypeKeyword";
@@ -68,8 +68,8 @@ namespace Search3.Settings.UI
             // 
             // lblKeywordRelation
             // 
-            this.lblKeywordRelation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblKeywordRelation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblKeywordRelation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblKeywordRelation.Location = new System.Drawing.Point(14, 44);
             this.lblKeywordRelation.Name = "lblKeywordRelation";
@@ -141,9 +141,9 @@ namespace Search3.Settings.UI
             // 
             // treeviewOntology
             // 
-            this.treeviewOntology.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeviewOntology.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.treeviewOntology.BackColor = System.Drawing.SystemColors.Window;
             this.treeviewOntology.HideSelection = false;
             this.treeviewOntology.Indent = 19;
