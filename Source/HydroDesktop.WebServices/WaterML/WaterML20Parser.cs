@@ -13,9 +13,146 @@ namespace HydroDesktop.WebServices.WaterML
     /// </summary>
     public class WaterML20Parser : IWaterMLParser
     {
+        private static readonly XmlReaderSettings _readerSettings = new XmlReaderSettings { IgnoreWhitespace = true, DtdProcessing = DtdProcessing.Parse };
+
+        public IList<Site> ParseGetSites(Stream stream)
+        {
+            throw new NotImplementedException();
+        }
+        
+
+        public IList<SeriesMetadata> ParseGetSiteInfo(Stream stream)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
-        /// Reads DataValues from a WaterML2.0 XML file
+        /// Parses a WaterML 2.0 timeseries XML file
         /// </summary>
+        public IList<Series> ParseGetValues(string xmlFile)
+        {
+            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
+            {
+                return ParseGetValues(fileStream);
+            }
+        }
+
+        public IList<Series> ParseGetValues(Stream stream)
+        {
+            var txtReader = new StreamReader(stream);
+            using (var reader = XmlReader.Create(txtReader, _readerSettings))
+            {
+                while (reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        var name = reader.Name.ToLower();
+                        if (name == "wml2:collection")
+                        {
+                            var subReader = reader.ReadSubtree();
+                            return ReadWMLTimeSeriesCollection(subReader).ToList();
+                        }
+                    }
+                }
+                return Enumerable.Empty<Series>().ToList();
+            }
+        }
+
+        private IEnumerable<Series> ReadWMLTimeSeriesCollection(XmlReader reader)
+        {
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    var name = reader.Name.ToLower();
+                    if (name == "wml2:observationmember")
+                    {
+                        var subReader = reader.ReadSubtree();
+                        while (subReader.Read())
+                        {
+                            if (subReader.NodeType == XmlNodeType.Element &&
+                                subReader.Name.ToLower() == "om:result")
+                            {
+                                var sub2 = subReader.ReadSubtree();
+                                while (sub2.Read())
+                                {
+                                    if (sub2.NodeType == XmlNodeType.Element &&
+                                        sub2.Name.ToLower() == "wml2:timeseries")
+                                        yield return ReadOneSeries(sub2.ReadSubtree());  
+                                }
+                                subReader.Skip();
+                            }
+                        }
+                        reader.Skip();
+                    }
+                }
+            }
+        }
+
+        private Series ReadOneSeries(XmlReader reader)
+        {
+            var series = new Series();
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    if (reader.Name.ToLower() == "wml2:point")
+                    {
+                        var subReader = reader.ReadSubtree();
+                        while (subReader.Read())
+                        {
+                            if (subReader.NodeType == XmlNodeType.Element)
+                            {
+                                switch (subReader.Name.ToLower())
+                                {
+                                    case "wml2:timevaluepairmeasure":
+                                        series.DataValueList.Add(new DataValue());
+                                }
+                            }
+                        }
+
+                        reader.Skip();
+                    }
+                }
+            }
+
+            //ensure that properties are re-calculated
+            series.UpdateSeriesInfoFromDataValues();
+
+            //set the checked and creation date time
+            series.CreationDateTime = DateTime.Now;
+            series.LastCheckedDateTime = DateTime.Now;
+            series.UpdateDateTime = series.LastCheckedDateTime;
+
+            return series;
+        }
+
+        #region Old
+
+        public IList<Series> ParseGetValuesOld(Stream stream)
+        {
+            XmlDocument wmlDoc = new XmlDocument();
+            wmlDoc.Load(stream);
+
+            //get the data values and put them into a list of series
+            var seriesList = ReadDataValues(wmlDoc);
+
+            //site = readSite(wmlDoc);
+            //varInfo = readVariable(wmlDoc);
+
+            foreach (var series in seriesList)
+            {
+                //ensure that properties are re-calculated
+                series.UpdateSeriesInfoFromDataValues();
+
+                //set the checked and creation date time
+                series.CreationDateTime = DateTime.Now;
+                series.LastCheckedDateTime = DateTime.Now;
+                series.UpdateDateTime = series.LastCheckedDateTime;
+            }
+            return seriesList;
+        }
+
         private IList<Series> ReadDataValues(XmlDocument wmlDoc)
         {
             IList<Series> seriesList = new List<Series>();
@@ -50,9 +187,6 @@ namespace HydroDesktop.WebServices.WaterML
             return seriesList;
         }
 
-        /// <summary>
-        /// Reads DataValues from a Series
-        /// </summary>
         private Series ReadDataSeries(XmlDocument xml)
         {
             Series newSeries = new Series();
@@ -107,8 +241,6 @@ namespace HydroDesktop.WebServices.WaterML
                             else
                                 utcOffset = ConvertUtcOffset(utcoffset);
                         }
-                        if (child.Name.ToLower() == "wml2:metadata" && child.InnerText != "")
-                            GetNodeMetadata(child, newSeries);
                     }
                 }
 
@@ -123,7 +255,7 @@ namespace HydroDesktop.WebServices.WaterML
         private XmlNodeList GetTVPList(XmlDocument xml)
         {
             XmlNodeList tvps = xml.GetElementsByTagName("wml2:MeasurementTVP");
-            if(tvps.Count == 0)
+            if (tvps.Count == 0)
                 tvps = xml.GetElementsByTagName("wml2:CategoricalTVP");
             if (tvps.Count == 0)
                 tvps = xml.GetElementsByTagName("wml2:TimeValuePair");
@@ -148,7 +280,7 @@ namespace HydroDesktop.WebServices.WaterML
             if (meta.Count == 0)
                 meta = xml.GetElementsByTagName("wml2:DefaultTVPMetadata");
 
-            if(meta.Count != 0)
+            if (meta.Count != 0)
             {
                 foreach (XmlNode child in meta.Item(0).ChildNodes)
                 {
@@ -184,80 +316,10 @@ namespace HydroDesktop.WebServices.WaterML
             }
         }
 
-        private void GetNodeMetadata(XmlNode xmlNode, Series newSeries)
-        {
-            foreach (XmlNode child in xmlNode.FirstChild.ChildNodes)
-            {
-
-            }
-        }
-
-
-        public IList<Site> ParseGetSites(Stream stream)
-        {
-            throw new NotImplementedException();
-        }
-        
-
-        public IList<SeriesMetadata> ParseGetSiteInfo(Stream stream)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Parses a WaterML TimeSeriesResponse XML file
-        /// </summary>
-        /// <param name="xmlFile"></param>
-        public IList<Series> ParseGetValues(string xmlFile)
-        {
-            using (var fileStream = new FileStream(xmlFile, FileMode.Open))
-            {
-                return ParseGetValues(fileStream);
-            }
-        }
-    
-        public IList<Series> ParseGetValues(Stream stream)
-        {
-            XmlDocument wmlDoc = new XmlDocument();
-            wmlDoc.Load(stream);
-
-            Site site = null;
-            Variable varInfo = null;
-            IList<Series> seriesList = null;
-
-            //get the data values and put them into a list of series
-            seriesList = ReadDataValues(wmlDoc);
-
-            //site = readSite(wmlDoc);
-            //varInfo = readVariable(wmlDoc);
-
-            foreach (var series in seriesList)
-            {
-                if (varInfo != null)
-                {
-                    series.Variable = varInfo;
-                }
-                if (site != null)
-                {
-                    series.Site = site;
-                }
-
-                //ensure that properties are re-calculated
-                series.UpdateSeriesInfoFromDataValues();
-
-                //set the checked and creation date time
-                series.CreationDateTime = DateTime.Now;
-                series.LastCheckedDateTime = DateTime.Now;
-                series.UpdateDateTime = series.LastCheckedDateTime;
-            }
-            return seriesList ?? (new List<Series>(0));
-        }
 
         /// <summary>
         /// Converts the 'UTC Offset' value to a double digit in hours
         /// </summary>
-        /// <param name="offsetString"></param>
-        /// <returns></returns>
         private double ConvertUtcOffset(string offsetString)
         {
             int colonIndex = offsetString.IndexOf(":", StringComparison.Ordinal);
@@ -270,5 +332,7 @@ namespace HydroDesktop.WebServices.WaterML
             }
             return hours + (minutes / 60.0);
         }
+
+        #endregion
     }
 }
