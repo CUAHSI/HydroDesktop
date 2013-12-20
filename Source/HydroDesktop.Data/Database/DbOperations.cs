@@ -19,7 +19,8 @@ namespace HydroDesktop.Database
         
         private readonly string _connectionString;
         private string _errorMessage = "";
-        
+
+        private readonly Stopwatch _sw = new Stopwatch();
         /// <summary>
         /// Creates a new instance of the dbOperations object. 
         /// </summary>
@@ -98,7 +99,8 @@ namespace HydroDesktop.Database
                 da.SelectCommand = dbFactory.CreateCommand();
                 da.SelectCommand.CommandText = commandText;
                 da.SelectCommand.Connection = connection1;
-                var dt = new DataTable {TableName = "table"};
+                DataTable dt = new DataTable();
+                dt.TableName = "table";
                 da.Fill(dt);
                 
                 return true;
@@ -205,15 +207,16 @@ namespace HydroDesktop.Database
         /// <param name="sqlString">the SQL string</param>
         public void ExecuteNonQuery(string sqlString)
         {
-            using (var conn = CreateConnection())
-            {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = sqlString;
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            DbConnection conn = CreateConnection();
+            conn.Open();
+
+            DbCommand cmd = conn.CreateCommand();
+            cmd.CommandText = sqlString;
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            cmd.Dispose();
+            conn.Dispose();
         }
 
         /// <summary>
@@ -672,6 +675,9 @@ namespace HydroDesktop.Database
         /// <returns>The resulting data table</returns>
         public DataTable LoadTable(string sqlQuery)
         {
+            _sw.Reset();
+            _sw.Start();
+            
             var conn = CreateConnection();
             conn.Open();
             var da = dbFactory.CreateDataAdapter();
@@ -682,6 +688,9 @@ namespace HydroDesktop.Database
             dt.TableName = "table";
             da.Fill(dt);
             conn.Close();
+
+            _sw.Stop();
+            Debug.WriteLine("LoadTable:" + sqlQuery + " " + _sw.ElapsedMilliseconds + "ms");
 
             return dt;
         }
@@ -695,6 +704,9 @@ namespace HydroDesktop.Database
         /// <returns>The resulting data table</returns>
         public DataTable LoadTable(string tableName, string sqlQuery)
         {
+            _sw.Reset();
+            _sw.Start();
+            
             var conn = CreateConnection();
             conn.Open();
             var da = dbFactory.CreateDataAdapter();
@@ -706,6 +718,10 @@ namespace HydroDesktop.Database
             var dt = new DataTable {TableName = tableName};
             da.Fill(dt);
             conn.Close();
+
+            _sw.Stop();
+            Debug.WriteLine("LoadTable:" + sqlQuery + " " + _sw.ElapsedMilliseconds + "ms");
+
             return dt;
         }
 

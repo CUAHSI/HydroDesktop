@@ -1,48 +1,96 @@
-﻿using System;
-using System.Windows.Forms;
-using HydroDesktop.Common.Tools;
+﻿using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Options
 {
     public partial class DownloadOptionsDialog : Form
     {
-        private readonly DownloadOptions _options;
+        string regex = "^(?![0]+$)[0-9]+$";
 
-        public DownloadOptionsDialog(DownloadOptions options)
+        public DownloadOptionsDialog()
         {
-            _options = options;
             InitializeComponent();
+            WaterOneFlowClient client = new WaterOneFlowClient();
+            if (client.AllInOneRequest == true)
+            {
+                checkBox1.Checked = true;
+            }
+            else
+            {
+                textBox1.Text = client.ValuesPerReq.ToString();
+            }
 
-            nudNumberOfValues.AddBinding(d => d.Value, options, d => d.NumberOfValuesPerRequest);
-            chbUseSingleThread.AddBinding(d => d.Checked, options, d => d.UseSingleThread);
-            chbGetAllValuesInOneRequest.AddBinding(d => d.Checked, options, d => d.GetAllValuesInOneRequest);
-            checkBox1_CheckedChanged(this, EventArgs.Empty);
+            if (Downloading.DownloadManager.singleThread == true)
+            {
+                checkBox2.Checked = true;
+            }
+            else
+            {
+                checkBox2.Checked = false;
+            }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, System.EventArgs e)
         {
-            nudNumberOfValues.Enabled = !chbGetAllValuesInOneRequest.Checked;
-        }  
-    }
+            if (checkBox1.Checked == true)
+            {
+                label2.Text = "";
+                this.DialogResult = DialogResult.OK;
+                WaterOneFlowClient client = new WaterOneFlowClient();
+                client.AllInOneRequest = true;
+            }
+            else if (checkValue() == true)
+            {
+                label2.Text = ""; 
+                this.DialogResult = DialogResult.OK;
+                WaterOneFlowClient client = new WaterOneFlowClient();
+                client.AllInOneRequest = false;
+                client.ValuesPerReq = int.Parse(this.textBox1.Text);
+            }
+            else
+            {
+                label2.Text = "Invalid Input";  
+            }
 
-    public class DownloadOptions
-    {
-        public DownloadOptions()
-        {
-            
+            if (checkBox2.Checked == true)
+            {
+                Downloading.DownloadManager.singleThread = true;
+            }
+            else
+            {
+                Downloading.DownloadManager.singleThread = false;
+            }
         }
 
-        public DownloadOptions(DownloadOptions source)
+        private bool checkValue()
         {
-            NumberOfValuesPerRequest = source.NumberOfValuesPerRequest;
-            UseSingleThread = source.UseSingleThread;
-            GetAllValuesInOneRequest = source.GetAllValuesInOneRequest;
+            Match match;
+            match = Regex.Match(this.textBox1.Text, regex);
+            if (match.Success)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
-        
-// ReSharper disable MemberCanBePrivate.Global
-        public int NumberOfValuesPerRequest { get; set; }
-        public bool UseSingleThread { get; set; }
-        public bool GetAllValuesInOneRequest { get; set; }
-// ReSharper restore MemberCanBePrivate.Global
+
+        private void checkBox1_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                textBox1.Text = "";
+                label2.Text = "";
+                textBox1.Enabled = false;
+            }
+            else
+            {
+                label2.Text = "";
+                textBox1.Enabled = true;
+            }
+        }     
     }
 }

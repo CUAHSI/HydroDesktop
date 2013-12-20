@@ -133,7 +133,6 @@
             this.fileTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileTB.Location = new System.Drawing.Point(112, 186);
             this.fileTB.Name = "fileTB";
-            this.fileTB.ReadOnly = true;
             this.fileTB.Size = new System.Drawing.Size(476, 21);
             this.fileTB.TabIndex = 120;
             // 
@@ -153,7 +152,6 @@
             this.coverageSpatialTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.coverageSpatialTB.Location = new System.Drawing.Point(112, 160);
             this.coverageSpatialTB.Name = "coverageSpatialTB";
-            this.coverageSpatialTB.ReadOnly = true;
             this.coverageSpatialTB.Size = new System.Drawing.Size(476, 21);
             this.coverageSpatialTB.TabIndex = 118;
             // 
@@ -173,7 +171,6 @@
             this.rightsTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rightsTB.Location = new System.Drawing.Point(112, 134);
             this.rightsTB.Name = "rightsTB";
-            this.rightsTB.ReadOnly = true;
             this.rightsTB.Size = new System.Drawing.Size(476, 21);
             this.rightsTB.TabIndex = 116;
             // 
@@ -193,7 +190,6 @@
             this.nameTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nameTB.Location = new System.Drawing.Point(112, 82);
             this.nameTB.Name = "nameTB";
-            this.nameTB.ReadOnly = true;
             this.nameTB.Size = new System.Drawing.Size(476, 21);
             this.nameTB.TabIndex = 69;
             // 
@@ -213,7 +209,6 @@
             this.sourceSubjectTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sourceSubjectTB.Location = new System.Drawing.Point(112, 30);
             this.sourceSubjectTB.Name = "sourceSubjectTB";
-            this.sourceSubjectTB.ReadOnly = true;
             this.sourceSubjectTB.Size = new System.Drawing.Size(476, 21);
             this.sourceSubjectTB.TabIndex = 71;
             // 
@@ -233,7 +228,6 @@
             this.emailTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailTB.Location = new System.Drawing.Point(112, 108);
             this.emailTB.Name = "emailTB";
-            this.emailTB.ReadOnly = true;
             this.emailTB.Size = new System.Drawing.Size(476, 21);
             this.emailTB.TabIndex = 67;
             // 
@@ -253,7 +247,6 @@
             this.titleTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleTB.Location = new System.Drawing.Point(112, 56);
             this.titleTB.Name = "titleTB";
-            this.titleTB.ReadOnly = true;
             this.titleTB.Size = new System.Drawing.Size(476, 21);
             this.titleTB.TabIndex = 65;
             // 

@@ -8,6 +8,8 @@ namespace HydroDesktop.SplashScreenManager
     {
         public void ProcessCommand(Enum cmd, object arg)
         {
+            //if (SplashScreenManager.Default != null)
+            //    SplashScreenManager.Default.SendCommand(cmd, arg);
             SplashScreen.UdpateStatusText(arg.ToString());
         }
 

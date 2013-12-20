@@ -22,6 +22,7 @@ namespace HydroDesktop.DataDownload.Downloading
         private DownloadManagerUI _downloadManagerUI;
         private static readonly object _syncObjForDownload = new object();
         private readonly List<OneSeriesDownloadInfo> _savedData = new List<OneSeriesDownloadInfo>();
+        public static bool singleThread;
 
         #endregion
 
@@ -136,6 +137,8 @@ namespace HydroDesktop.DataDownload.Downloading
             _downloadManagerUI = new DownloadManagerUI(this);
             ShowUI();
 
+          
+
             DoLogInfo("Starting downloading...");
             _worker.RunWorkerAsync();
           
@@ -201,10 +204,23 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private void DoLog(LogKind logKind, string message, Exception exception = null)
         {
+            switch (logKind)
+            {
+                case LogKind.Error:
+                    //Log.Error(message, exception);
+                    break;
+                case LogKind.Info:
+                    //Log.Info(message, exception);
+                    break;
+                case LogKind.Warn:
+                    //Log.Warn(message, exception);
+                    break;
+            }
+
             var handler = OnMessage;
             if (handler != null)
             {
-                handler(this, new LogMessageEventArgs(message, logKind, exception));
+                handler(this, new LogMessageEventArgs(message, exception));
             }
         }
 
@@ -250,12 +266,12 @@ namespace HydroDesktop.DataDownload.Downloading
 
             // max count of downloading threads
             int maxThreadsToDownloadCount = 16;
-            if (Information.StartArgs.DownloadOptions.UseSingleThread)
+            if (singleThread == true)
             {
                 maxThreadsToDownloadCount = 1;
             }
-
-            var commonInfo = new CommnonDoDownloadInfo(new Downloader(Information.StartArgs.DownloadOptions)); // common info, shared through downloading threads
+           
+            var commonInfo = new CommnonDoDownloadInfo(new Downloader()); // common info, shared through downloading threads
 
             // Starting (if possible) maxThreadsToDownloadCount downloading threads 
             for (int i = 0, startedThreadsCount = 0; startedThreadsCount < maxThreadsToDownloadCount &&
@@ -449,7 +465,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
                     if (numSavedValues == 0)
                     {
-                        DoLogWarn(string.Format("Saved 0 values for {0}", dInfo.SeriesDescription));
+                        DoLogWarn(string.Format("In {0} saved 0 values.", series));
                         dInfo.Status = DownloadInfoStatus.OkWithWarning;
                     }
                     else
@@ -557,6 +573,13 @@ namespace HydroDesktop.DataDownload.Downloading
             public ManualResetEvent SavingWaitingEvent { get; set; }
         }
 
+        enum LogKind
+        {
+            Info,
+            Error,
+            Warn
+        }
+
         private class GetValueProgressHandler : IGetValuesProgressHandler
         {
             private readonly DownloadManager _manager;
@@ -609,29 +632,14 @@ namespace HydroDesktop.DataDownload.Downloading
         public Exception Exception { get; private set; }
 
         /// <summary>
-        /// Log Kind
-        /// </summary>
-        public LogKind LogKind { get; set; }
-
-        /// <summary>
-        /// Creates new instance of <see cref="LogMessageEventArgs"/>
+        /// Creates new instance of M<see cref="LogMessageEventArgs"/>
         /// </summary>
         /// <param name="message">Message</param>
         /// <param name="exception">Exception</param>
-        /// <param name="logKind"></param>
-        public LogMessageEventArgs(string message, LogKind logKind, Exception exception = null)
+        public LogMessageEventArgs(string message, Exception exception = null)
         {
             Message = message;
             Exception = exception;
-            LogKind = logKind;
         }
-    }
-
-
-    public enum LogKind
-    {
-        Info,
-        Error,
-        Warn
     }
 }

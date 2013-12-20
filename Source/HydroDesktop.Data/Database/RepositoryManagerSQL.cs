@@ -187,18 +187,20 @@ namespace HydroDesktop.Database
         /// some of the existing data values in the database may be overwritten.</param>
         public int SaveSeries(Series seriesToSave, Theme theme, OverwriteOptions overwrite)
         {
-            switch (overwrite)
+            if (overwrite == OverwriteOptions.Append || overwrite == OverwriteOptions.Fill)
             {
-                case OverwriteOptions.Fill:
-                case OverwriteOptions.Append:
-                    return SaveSeriesAppend(seriesToSave, theme);
-                case OverwriteOptions.Copy:
-                    return SaveSeriesAsCopy(seriesToSave, theme);
-                case OverwriteOptions.Overwrite:
-                    return SaveSeriesOverwrite(seriesToSave, theme);
-                default:
-                    goto case OverwriteOptions.Append;
+                return SaveSeriesAppend(seriesToSave, theme);
             }
+            if (overwrite == OverwriteOptions.Copy)
+            {
+                return SaveSeriesAsCopy(seriesToSave, theme);
+            }
+            if (overwrite == OverwriteOptions.Overwrite)
+            {
+                return SaveSeriesOverwrite(seriesToSave, theme);
+            }
+            //default option is 'append'...
+            return SaveSeriesAppend(seriesToSave, theme);
         }
 
         /// <summary>
@@ -213,7 +215,7 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesAppend(Series series, Theme theme)
         {
-            const string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
+            string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
             string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
@@ -226,12 +228,12 @@ namespace HydroDesktop.Database
             string sqlUpdateSeries = "UPDATE DataSeries SET BeginDateTime = ?, BeginDateTimeUTC = ?, EndDateTime = ?, EndDateTimeUTC = ?, " +
                 "ValueCount = ?, UpdateDateTime = ? WHERE SeriesID = ?";
 
-            int siteID;
-            int variableID;
-            int methodID;
-            int qualityControlLevelID;
-            int sourceID;
-            int seriesID;
+            int siteID = 0;
+            int variableID = 0;
+            int methodID = 0;
+            int qualityControlLevelID = 0;
+            int sourceID = 0;
+            int seriesID = 0;
             long themeID = 0;
             
             object seriesIDResult = null;
@@ -239,12 +241,14 @@ namespace HydroDesktop.Database
             int numSavedValues = 0;
 
             bool seriesAlreadyExists = false;
-            var beginTimeDb = DateTime.MinValue;
-            var endTimeDb = DateTime.MinValue;
-            var valueCountDb = 0;
+            DateTime beginTimeDb = DateTime.MinValue;
+            DateTime beginTimeUtcDb = beginTimeDb;
+            DateTime endTimeDb = DateTime.MinValue;
+            DateTime endTimeUtcDb = endTimeDb;
+            int valueCountDb = 0;
 
             //Step 1 Begin Transaction
-            using (var conn = _db.CreateConnection())
+            using (DbConnection conn = _db.CreateConnection())
             {
                 conn.Open();
 
@@ -276,7 +280,9 @@ namespace HydroDesktop.Database
                             try
                             {
                                 beginTimeDb = Convert.ToDateTime(reader[1]);
+                                beginTimeUtcDb = Convert.ToDateTime(reader[2]);
                                 endTimeDb = Convert.ToDateTime(reader[3]);
+                                endTimeUtcDb = Convert.ToDateTime(reader[4]);
                                 valueCountDb = Convert.ToInt32(reader[5]);
                             }
                             catch { }
@@ -463,8 +469,8 @@ namespace HydroDesktop.Database
         /// <returns>Number of DataValue saved</returns>
         private int SaveSeriesOverwrite(Series series, Theme theme)
         {
-            const string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
-            const string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
+            string sqlThemeSeries = "SELECT ThemeID FROM DataThemes WHERE ThemeID = ? AND SeriesID = ?";
+            string sqlSeries = "SELECT SeriesID, BeginDateTime, BeginDateTimeUTC, EndDateTime, EndDateTimeUTC, ValueCount FROM DataSeries WHERE SiteID = ? AND VariableID = ? AND MethodID = ? AND QualityControlLevelID = ? AND SourceID = ?";
             string sqlSaveSeries = "INSERT INTO DataSeries(SiteID, VariableID, MethodID, SourceID, QualityControlLevelID, " +
                 "IsCategorical, BeginDateTime, EndDateTime, BeginDateTimeUTC, EndDateTimeUTC, ValueCount, CreationDateTime, " +
                 "Subscribed, UpdateDateTime, LastCheckedDateTime) " +
@@ -473,17 +479,17 @@ namespace HydroDesktop.Database
             string sqlSaveTheme1 = "INSERT INTO DataThemeDescriptions(ThemeName, ThemeDescription) VALUES (?,?)" + LastRowIDSelect;
             string sqlSaveTheme2 = "INSERT INTO DataThemes(ThemeID,SeriesID) VALUEs (?,?)";
 
-            const string sqlUpdateSeries = "UPDATE DataSeries SET BeginDateTime = ?, BeginDateTimeUTC = ?, EndDateTime = ?, EndDateTimeUTC = ?, " +
-                                           "ValueCount = ?, UpdateDateTime = ? WHERE SeriesID = ?";
+            string sqlUpdateSeries = "UPDATE DataSeries SET BeginDateTime = ?, BeginDateTimeUTC = ?, EndDateTime = ?, EndDateTimeUTC = ?, " +
+                "ValueCount = ?, UpdateDateTime = ? WHERE SeriesID = ?";
 
-            const string sqlDeleteValues = "DELETE FROM DataValues WHERE SeriesID = ? AND LocalDateTime >= ? AND LocalDateTime <= ?";
+            string sqlDeleteValues = "DELETE FROM DataValues WHERE SeriesID = ? AND LocalDateTime >= ? AND LocalDateTime <= ?";
 
-            int siteID;
-            int variableID;
-            int methodID;
-            int qualityControlLevelID;
-            int sourceID;
-            int seriesID;
+            int siteID = 0;
+            int variableID = 0;
+            int methodID = 0;
+            int qualityControlLevelID = 0;
+            int sourceID = 0;
+            int seriesID = 0;
             long themeID = 0;
             
             object seriesIDResult = null;
@@ -492,7 +498,9 @@ namespace HydroDesktop.Database
 
             bool seriesAlreadyExists;
             DateTime beginTimeDb = DateTime.MinValue;
+            DateTime beginTimeUtcDb = beginTimeDb;
             DateTime endTimeDb = DateTime.MinValue;
+            DateTime endTimeUtcDb = endTimeDb;
             int valueCountDb = 0;
 
             //Step 1 Begin Transaction
@@ -529,7 +537,9 @@ namespace HydroDesktop.Database
                             try
                             {
                                 beginTimeDb = Convert.ToDateTime(reader[1]);
+                                beginTimeUtcDb = Convert.ToDateTime(reader[2]);
                                 endTimeDb = Convert.ToDateTime(reader[3]);
+                                endTimeUtcDb = Convert.ToDateTime(reader[4]);
                                 valueCountDb = Convert.ToInt32(reader[5]);
                             }
                             catch { }

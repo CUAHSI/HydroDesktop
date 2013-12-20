@@ -4,10 +4,8 @@ using System.IO;
 using System.Reflection;
 using HydroDesktop.Database;
 using HydroDesktop.DataDownload.Downloading.Exceptions;
-using HydroDesktop.DataDownload.Options;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.WebServices.WaterML;
 using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.DataDownload.Downloading
@@ -24,7 +22,6 @@ namespace HydroDesktop.DataDownload.Downloading
         private readonly Dictionary<string, WaterOneFlowClient> _services = new Dictionary<string, WaterOneFlowClient>();
         private static readonly object _syncObject = new object();
         private readonly IRepositoryManager _repositoryManager;
-        private readonly DownloadOptions _options;
 
         #endregion
 
@@ -33,9 +30,8 @@ namespace HydroDesktop.DataDownload.Downloading
         /// <summary>
         /// Default constructor with default connection string (from settings).
         /// </summary>
-        public Downloader(DownloadOptions options)
+        public Downloader()
         {
-            _options = options;
             _repositoryManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
         }
 
@@ -53,6 +49,8 @@ namespace HydroDesktop.DataDownload.Downloading
         private WaterOneFlowClient GetWsClientInstance(string wsdl)
         {
             WaterOneFlowClient wsClient;
+
+
             lock (_syncObject)
             {
                 //To Access the dynamic WSDLs
@@ -62,9 +60,7 @@ namespace HydroDesktop.DataDownload.Downloading
                 }
                 else
                 {
-                    wsClient = new WaterOneFlowClient(wsdl,
-                        valuesPerReq: _options.NumberOfValuesPerRequest,
-                        allInOneRequest: _options.GetAllValuesInOneRequest);
+                    wsClient = new WaterOneFlowClient(wsdl);
                     _services.Add(wsdl, wsClient);
                 }
             }
@@ -114,7 +110,7 @@ namespace HydroDesktop.DataDownload.Downloading
         public IEnumerable<Series> DataSeriesFromXml(OneSeriesDownloadInfo dInfo)
         {
             var client = GetWsClientInstance(dInfo.Wsdl);
-            var parser = ParserFactory.GetParser(client.ServiceInfo);
+            var parser = new ParserFactory().GetParser(client.ServiceInfo);
             var result = new List<Series>();
             foreach (var xmlFile in dInfo.FilesWithData)
             {

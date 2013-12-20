@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using HydroDesktop.Database;
@@ -7,14 +8,10 @@ using HydroDesktop.Interfaces.ObjectModel;
 
 namespace TableView
 {
-    /// <summary>
-    /// Form for deleting themes from database
-    /// </summary>
     public partial class DeleteThemeForm : Form
     {
-        /// <summary>
-        /// Creates new instance of <see cref="DeleteThemeForm"/>
-        /// </summary>
+        private readonly Dictionary<string, Theme> _themeLookup = new Dictionary<string, Theme>();
+
         public DeleteThemeForm()
         {
             InitializeComponent();
@@ -34,8 +31,12 @@ namespace TableView
         {
             var repoManager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
             var themeList = repoManager.GetAll();
-            checkListThemes.DataSource = themeList;
-            checkListThemes.DisplayMember = "Name";
+
+            foreach (var theme in themeList)
+            {
+                _themeLookup.Add(theme.Name, theme);
+                checkListThemes.Items.Add(theme.Name);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -53,24 +54,37 @@ namespace TableView
                 return;
             }
             
-            var numCheckedThemes = checkListThemes.CheckedItems.Count;
-            var reply = MessageBox.Show("Are you sure to remove " + numCheckedThemes +
+            int numCheckedThemes = checkListThemes.CheckedItems.Count;
+
+            
+            DialogResult reply = MessageBox.Show("Are you sure to remove " + numCheckedThemes +
                 " theme(s) with all sites, variables, time series and data values? ","Remove Theme",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (reply != DialogResult.Yes) return;
 
-            gbxDelete.Visible = false;
-            gbxProgress.Visible = true;
-
-            //get the list of checked themes to delete
-            var themeIDList = new long[numCheckedThemes];
-            for (var i = 0; i < checkListThemes.CheckedItems.Count; i++)
+            if (reply == DialogResult.Yes)
             {
-                themeIDList[i] = ((Theme) checkListThemes.CheckedItems[i]).Id;
-            }
+                gbxDelete.Visible = false;
+                gbxProgress.Visible = true;
 
-            //launch the background worker..
-            bgwMain.RunWorkerAsync(themeIDList);
+                //get the list of checked themes to delete
+                var themeIDList = new int[numCheckedThemes];
+                int index = 0;
+                foreach (object checkedItem in checkListThemes.CheckedItems)
+                {  
+                    string name = checkedItem.ToString();
+                    int id = Convert.ToInt32(_themeLookup[name].Id);
+                    themeIDList[index] = id;
+                    index++;
+                }
+
+                var manager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
+                var parameters = new object[2];
+                parameters[0] = themeIDList;
+                parameters[1] = manager;
+                
+                //launch the background worker..
+                bgwMain.RunWorkerAsync(parameters);
+            }
         }
 
         /// <summary>
@@ -78,8 +92,11 @@ namespace TableView
         /// </summary>
         private void DeleteThemeForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!bgwMain.IsBusy) return;
-            Cancel_worker();
+            if (bgwMain.IsBusy)
+            {
+                Cancel_worker();
+                e.Cancel = true;
+            }
         }
 
         #region BackgroundWorker
@@ -105,17 +122,17 @@ namespace TableView
         /// <summary>
         /// BackgroundWorker Do event, used to call for the BackgroundWorker method.
         /// </summary>
-        private static void bgwMain_DoWork(object sender, DoWorkEventArgs e)
+        private void bgwMain_DoWork(object sender, DoWorkEventArgs e)
         {
-            var worker = (BackgroundWorker)sender;
-            var themeIdList = (long[])e.Argument;
-            var manager = RepositoryFactory.Instance.Get<IDataThemesRepository>();
-            foreach (var themeId in themeIdList)
+            var parameters = (object[])e.Argument;
+            var worker = sender as BackgroundWorker;
+
+            var themeIdList = (int[])parameters[0];
+            var manager = (IDataThemesRepository)parameters[1];
+
+            foreach (int themeId in themeIdList)
             {
-                if (manager.DeleteTheme(themeId, worker))
-                {
-                    e.Result = "Theme deleted successfully.";
-                }
+                manager.DeleteTheme(themeId, worker, e);
             }
         }
 
@@ -145,17 +162,18 @@ namespace TableView
 
             if (e.Error != null)
             {
-                MessageBox.Show(e.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Error.Message);
             }
-            else if (e.Cancelled)
+
+            else if (e.Cancelled || e.Result.ToString() == "Data Export Cancelled.")
             {
-                MessageBox.Show("Operation was cancelled.", "Finish", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Operation was cancelled.");
                 DialogResult = DialogResult.OK;
                 Close();
             }
             else
             {
-                MessageBox.Show(e.Result.ToString(), "Finish", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(e.Result.ToString());
                 DialogResult = DialogResult.OK;
                 Close();
             }

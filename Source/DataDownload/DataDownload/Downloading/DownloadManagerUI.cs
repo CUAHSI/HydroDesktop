@@ -21,7 +21,6 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private readonly DownloadManager _manager;
         private bool _closeAfterCompleted;
-        private bool _cancelled;
 
         #endregion
 
@@ -69,6 +68,7 @@ namespace HydroDesktop.DataDownload.Downloading
             get { return chbAutoScroll.Checked; }
         }
 
+        private bool cancelled { get; set; }
 
         #endregion
 
@@ -349,7 +349,7 @@ namespace HydroDesktop.DataDownload.Downloading
 
         void _manager_Canceled(object sender, EventArgs e)
         {
-            _cancelled = true;
+            cancelled = true;
             btnCancelClose.Enabled = false;
             _closeAfterCompleted = true;
         }
@@ -397,13 +397,15 @@ namespace HydroDesktop.DataDownload.Downloading
         void _manager_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pbTotal.Value = e.ProgressPercentage;
-            if(_cancelled==false)
+            if(cancelled==false)
             {
                 lblTotalInfo.Text = e.UserState != null? e.UserState.ToString() : string.Empty;
                 //This section needed to update the values per request. It has this condition to prevent showing incorrect value.
                 if (lblTotalInfo.Text != "Connecting to server...")
                 {
-                    lcValuesPerRequestInfo.Text = _manager.Information.StartArgs.DownloadOptions.NumberOfValuesPerRequest.ToString(CultureInfo.InvariantCulture);
+                    WaterOneFlowClient client = new WaterOneFlowClient();
+                    int values = client.ValuesPerReq;
+                    lcValuesPerRequestInfo.Text = values.ToString();
                 }
             }
             else
@@ -424,9 +426,9 @@ namespace HydroDesktop.DataDownload.Downloading
 
         private bool DoCancel()
         {
-            if (!_cancelled && MessageBox.Show("Downloading in progress. Do you want to cancel it?", 
+            if (!cancelled && MessageBox.Show("Downloading in progress. Do you want to cancel it?", 
                                 "Cancel downloading",
-                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 _manager.Cancel();
                 return true;

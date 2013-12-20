@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroDesktop.Main</RootNamespace>
     <AssemblyName>HydroDesktop.MainPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
@@ -27,7 +27,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>..\..\Binaries\Application Extensions\HydroDesktop.MainPlugin.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,13 +60,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BruTile, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BruTile, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-client\BruTile.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1211\lib\net403-Client\BruTile.dll</HintPath>
     </Reference>
-    <Reference Include="BruTile.Desktop, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BruTile.Desktop, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-client\BruTile.Desktop.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1211\lib\net403-Client\BruTile.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls">
       <HintPath>..\packages\DotSpatial.Controls.1.5.17\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
@@ -126,9 +125,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotSpatial.Plugins.MenuBar.1.0.1200\lib\net40-Client\DotSpatial.Plugins.MenuBar.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.WebMap, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotSpatial.Plugins.WebMap, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
+      <HintPath>..\packages\DotSpatial.Plugins.WebMap.1.0.1211\lib\net403-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\packages\DotSpatial.Projections.1.5.12\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
@@ -156,7 +155,6 @@
     </Reference>
     <Reference Include="DotSpatial.Symbology">
       <HintPath>..\packages\DotSpatial.Symbology.1.5.5\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\packages\DotSpatial.Symbology.Forms.1.5.2\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
@@ -170,6 +168,14 @@
       <Private>False</Private>
       <Private>False</Private>
       <Private>False</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -253,24 +259,13 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
-      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
-      <Name>HydroDesktop.Configuration</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
       <Name>HydroDesktop.Data</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help.csproj">
       <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
       <Name>HydroDesktop.Help</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
-      <Project>{0b9ba90b-2016-4754-915a-0ad74fd0067a}</Project>
-      <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

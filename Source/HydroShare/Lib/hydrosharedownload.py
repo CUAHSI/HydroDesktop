@@ -9,7 +9,7 @@ class HydroshareDownloader():
     base_url="http://dev.hydroshare.org/export.php?file=http://dev.hydroshare.org/sites/default/files/{0}.zip"
     	
     #The url from which a list of available resources can be found
-    list_url="http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd"
+    list_url="http://dev.hydroshare.org/?q=my_services/node.json"
 
     #Local filepath where the downloaded files will be saved
     file_path=""

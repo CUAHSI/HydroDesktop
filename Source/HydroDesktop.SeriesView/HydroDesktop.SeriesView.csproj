@@ -123,6 +123,18 @@
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HydroDesktop.Common">
+      <HintPath>..\..\Binaries\HydroDesktop.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -210,24 +222,9 @@
     <None Include="Resources\timeSeries.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
-      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
-      <Name>HydroDesktop.Common</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
-      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
-      <Name>HydroDesktop.Configuration</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
       <Name>HydroDesktop.Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
-      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
-      <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.ObjectModel.Controls\HydroDesktop.ObjectModel.Controls.csproj">

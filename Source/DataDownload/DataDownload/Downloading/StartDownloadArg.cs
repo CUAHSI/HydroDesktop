@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DotSpatial.Symbology;
-using HydroDesktop.DataDownload.Options;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.DataDownload.Downloading
@@ -42,7 +41,6 @@ namespace HydroDesktop.DataDownload.Downloading
         /// Collection of all items to be downloaded.
         /// </summary>
         public ReadOnlyCollection<OneSeriesDownloadInfo> ItemsToDownload { get; private set; }
-
         /// <summary>
         /// Data theme.
         /// </summary>
@@ -52,7 +50,5 @@ namespace HydroDesktop.DataDownload.Downloading
         /// Gets or sets source feature layer
         /// </summary>
         public IFeatureLayer FeatureLayer { get; set; }
-
-        public DownloadOptions DownloadOptions { get; set; }
     }
 }

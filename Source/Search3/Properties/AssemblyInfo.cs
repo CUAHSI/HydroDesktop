@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CUAHSI")]
 [assembly: AssemblyProduct("Search3")]
-[assembly: AssemblyCopyright("Copyright © CUAHSI 2011-2013")]
+[assembly: AssemblyCopyright("Copyright © CUAHSI 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

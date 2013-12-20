@@ -115,12 +115,27 @@
       <HintPath>..\packages\DotSpatial.Topology.1.5.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.WebServices">
+      <HintPath>..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoShared.cs">
@@ -209,14 +224,14 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
+      <Name>HydroDesktop.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Help\HydroDesktop.Help.csproj">
       <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
       <Name>HydroDesktop.Help</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
-      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
-      <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Search3\Search3.csproj">

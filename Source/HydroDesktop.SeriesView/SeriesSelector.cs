@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -24,14 +25,16 @@ namespace SeriesView
         private DataTable _methodTable;
         private DataTable _sourceTable;
         private DataTable _qcLevelTable;
+
+        //private clicked series and selected seriesID
+        private int _clickedSeriesID;
+
         private bool _checkedAllChanging; //checked all indicator
         private bool _checkBoxesVisible = true;
+
         private bool _needShowVariableNameWithDataType;
-        private string _siteDisplayColumn = "SiteName";
-        private const string _siteCodeColumn = "SiteCode";
 
         private const string Column_Checked = "Checked";
-        private const string Column_ThemeId = "ThemeID";
         private const string Column_VariableName = "VariableName";
         private const string Column_SeriesID = "SeriesID";
         private const string Column_ThemeName = "ThemeName";
@@ -41,6 +44,8 @@ namespace SeriesView
         #endregion
 
         internal SeriesViewPlugin ParentPlugin { get; set; }
+
+        #region Constructor
 
         public SeriesSelector()
         {
@@ -65,33 +70,14 @@ namespace SeriesView
             Disposed += SeriesSelector_Disposed;
         }
 
-        private SeriesItem SelectedSeriesItem
-        {
-            get
-            {
-                if (dgvSeries.SelectedRows.Count == 0) return null;
-                return new SeriesItem(dgvSeries.SelectedRows[0]);
-            }
-        }
-
-        private IEnumerable<SeriesItem> GetCheckedSeriesItems()
-        {
-            foreach (DataGridViewRow dr in dgvSeries.Rows)
-            {
-                var isChecked = Convert.ToBoolean(dr.Cells[Column_Checked].Value);
-                if (isChecked)
-                {
-                    yield return new SeriesItem(dr);
-                }
-            }
-        }
+        #endregion
 
         #region Event Handlers
 
         void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             // We shouldn't show the context menu when a series has not been loaded.
-            e.Cancel = SelectedSeriesID == 0;
+            e.Cancel = (_clickedSeriesID == 0);
         }
 
         private void dgvSeries_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -118,10 +104,14 @@ namespace SeriesView
 
         private void dgvSeries_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex < 0) return;
-            if (e.Button == MouseButtons.Right)
+            if (e.RowIndex >= 0)
             {
-                dgvSeries.Rows[e.RowIndex].Selected = true;
+                _clickedSeriesID = Convert.ToInt32(dgvSeries.Rows[e.RowIndex].Cells[Column_SeriesID].Value);
+
+                if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+                {
+                    dgvSeries.Rows[e.RowIndex].Selected = true;
+                }
             }
         }
 
@@ -279,7 +269,7 @@ namespace SeriesView
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var series = RepositoryFactory.Instance.Get<IDataSeriesRepository>().GetByKey(SelectedSeriesID);
+            var series = RepositoryFactory.Instance.Get<IDataSeriesRepository>().GetByKey(_clickedSeriesID);
             if (series != null)
             {
                 new SeriesProperties(series).Show(this);
@@ -288,13 +278,13 @@ namespace SeriesView
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!MessageBox.Show("Are you sure you want to remove selected dataset?",
-                "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes)) return;
-
-            var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
-            var s = SelectedSeriesItem;
-            manager.DeleteSeries(s.SeriesId, s.ThemeId);
-            RefreshSelection();
+            if (MessageBox.Show("Are you sure you want to remove this series (ID: " + _clickedSeriesID + ")?",
+                                "Confirm", MessageBoxButtons.YesNo).Equals(DialogResult.Yes))
+            {
+                var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
+                manager.DeleteSeries(_clickedSeriesID);
+                RefreshSelection();
+            }
         }
 
         private void btnApplyFilter_Click(object sender, EventArgs e)
@@ -322,6 +312,9 @@ namespace SeriesView
 
         #region ISeriesSelector Members
 
+        private string _siteDisplayColumn = "SiteName";
+        private string _siteCodeColumn = "SiteCode";
+
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string SiteDisplayColumn
         {
@@ -339,10 +332,7 @@ namespace SeriesView
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int[] CheckedIDList
         {
-            get
-            {
-                return GetCheckedSeriesItems().Select(d => d.SeriesId).ToArray();
-            }
+            get { return GetCheckedIDs(); }
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -351,6 +341,9 @@ namespace SeriesView
             get { return GetVisibleIDs(); }
         }
 
+        /// <summary>
+        /// Get the context menu that appears on right-click of a series
+        /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CheckBoxesVisible
         {
@@ -367,8 +360,7 @@ namespace SeriesView
         {
             get
             {
-                if (dgvSeries.SelectedRows.Count == 0) return 0;
-                return Convert.ToInt32(dgvSeries.SelectedRows[0].Cells[Column_SeriesID].Value);
+                return _clickedSeriesID;
             }
             set
             {
@@ -379,9 +371,11 @@ namespace SeriesView
                     if (rowSeriesID == value)
                     {
                         dr.Selected = true;
+                        _clickedSeriesID = rowSeriesID;
                         break;
                     }
                 }
+                //if no match found, don't select any rows
             }
         }
 
@@ -424,6 +418,8 @@ namespace SeriesView
             SetupDatabase();
         }
 
+
+
         public event SeriesEventHandler SeriesCheck;
         public event EventHandler Refreshed;
 
@@ -461,6 +457,8 @@ namespace SeriesView
                 {
                     row.Cells[Column_Checked].Value = isCheckedValue;
                     var seriesID = Convert.ToInt32(row.Cells[Column_SeriesID].Value);
+                    _clickedSeriesID = seriesID;
+
                     dgvSeries.Refresh();
                     OnSeriesCheck(seriesID, isCheckedValue);
                     Application.DoEvents();
@@ -585,6 +583,7 @@ namespace SeriesView
 
             OnSelectionRefreshed();
         }
+
 
         /// <summary>
         /// Resets the filter options
@@ -723,6 +722,20 @@ namespace SeriesView
             }
         }
 
+        private int[] GetCheckedIDs()
+        {
+            var seriesIDs = new List<int>();
+            foreach (DataGridViewRow dr in dgvSeries.Rows)
+            {
+                var isChecked = Convert.ToBoolean(dr.Cells[Column_Checked].Value);
+                if (isChecked)
+                {
+                    seriesIDs.Add(Convert.ToInt32(dr.Cells[Column_SeriesID].Value));
+                }
+            }
+            return seriesIDs.ToArray();
+        }
+
         private int[] GetVisibleIDs()
         {
             var list = new List<int>();
@@ -738,24 +751,33 @@ namespace SeriesView
 
         #endregion
 
+        #region Data Export
+
         /// <summary>
         /// Export the Selected Series to *.txt File
         /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Get the checked IDs
-            var checkedIDs = CheckedIDList;
+            var checkedIDs = new int[CheckedIDList.Length];
+            if (checkedIDs.Length > 0)
+            {
+                Array.Copy(CheckedIDList, checkedIDs, checkedIDs.Length);
+            }
+
             if (checkedIDs.Length == 0)
             {
                 //If no series are checked, export the clicked series only.
-                var selectedId = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells[Column_SeriesID].Value);
-                if (selectedId > 0)
+                _clickedSeriesID = Convert.ToInt32(dgvSeries.SelectedRows[0].Cells[Column_SeriesID].Value);
+                if (_clickedSeriesID > 0)
                 {
-                    checkedIDs = new[] { selectedId };
+                    checkedIDs = new[] { _clickedSeriesID };
                 }
                 else
                 {
-                    MessageBox.Show("Please select at least one series.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Please select at least one series");
                     return;
                 }
             }
@@ -784,6 +806,8 @@ namespace SeriesView
                 exportPlugin.Export(table);
             }
         }
+
+        #endregion
 
         private void btnEditFilter_Click(object sender, EventArgs e)
         {
@@ -820,39 +844,21 @@ namespace SeriesView
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            SetEnableToButtons(false);
             if (MessageBox.Show("Remove all of the checked data sets?",
                 "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes))
             {
-                SetEnableToButtons(false);
+              int[] CheckedRows = GetCheckedIDs(); // Gets all the ids of rows that are checked
 
-                foreach (var seriesItem in GetCheckedSeriesItems()) 
+                foreach (var id in CheckedRows ) // Deletes all those rows with thoses ids
                 {
                     var manager = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
-                    manager.DeleteSeries(seriesItem.SeriesId, seriesItem.ThemeId);
+                    manager.DeleteSeries(id);
+                    RefreshSelection();
                 }
-                RefreshSelection();
-                SetEnableToButtons(true);
             }
-        }
-
-        private class SeriesItem
-        {
-            private readonly DataGridViewRow _row;
-
-            public SeriesItem(DataGridViewRow row)
-            {
-                _row = row;
-            }
-
-            public int SeriesId
-            {
-                get { return Convert.ToInt32(_row.Cells[Column_SeriesID].Value); }
-            }
-
-            public int ThemeId
-            {
-                get { return Convert.ToInt32(_row.Cells[Column_ThemeId].Value); }
-            }
+            SetEnableToButtons(true);
+            
         }
 
     }

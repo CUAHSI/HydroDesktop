@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
-using HydroDesktop.WebServices.WaterML;
-
+using HydroDesktop.WebServices.WaterOneFlow;
 namespace ImportFromWaterML
 {
     /// <summary>
@@ -14,6 +15,31 @@ namespace ImportFromWaterML
     /// </summary>
     public class Downloader
     {
+        #region File I/O Methods
+        /// <summary>
+        /// Gets the temporary directory for xml files downloaded
+        /// by HydroDesktop
+        /// </summary>
+        /// <returns>the directory path</returns>
+        public string GetXmlTempDirectory()
+        {
+            //Check if we need to create a temporary folder for storing the xml file
+            string tempDirectory = Path.Combine(Path.GetTempPath(), "HydroDesktop");
+            if (Directory.Exists(tempDirectory) == false)
+            {
+                try
+                {
+                    Directory.CreateDirectory(tempDirectory);
+                }
+                catch
+                {
+                    tempDirectory = Path.GetTempPath();
+                }
+            }
+            return tempDirectory;
+        }
+        #endregion
+
         #region Database Methods
 
         public bool ValidateSeriesList(IList<Series> seriesList)
@@ -50,8 +76,7 @@ namespace ImportFromWaterML
             IList<Series> seriesList = null;
             try
             {
-                // todo: Support of other WML verions - 1.1 and 2.0
-                var parser = new WaterML10Parser();
+                var parser = new WaterOneFlow10Parser();
                 seriesList = parser.ParseGetValues(xmlFile);
                 if (seriesList == null)
                 {
@@ -99,7 +124,17 @@ namespace ImportFromWaterML
 
             return true;
         }
+
         
+
+        public DateTime ConvertDateTime(object timeObj)
+        {
+            if (timeObj == null) return DateTime.MinValue;
+
+            string timeStr = timeObj.ToString();
+            timeStr = timeStr.Replace("T", " ");
+            return Convert.ToDateTime(timeStr, CultureInfo.InvariantCulture);
+        }
 
         #endregion
     }

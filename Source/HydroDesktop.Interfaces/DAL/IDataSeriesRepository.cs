@@ -86,9 +86,8 @@ namespace HydroDesktop.Interfaces
         /// Deletes a series given it's ID. The series is only deleted when it belongs to one theme.
         /// </summary>
         /// <param name="seriesID">The database ID of the series</param>
-        /// <param name="themeId">Theme Id</param>
         /// <returns>true if series was deleted, false otherwise</returns>
-        void DeleteSeries(long seriesID, long themeId);
+        void DeleteSeries(int seriesID);
 
         /// <summary>
         /// Check that exists series with given Site and Variable.

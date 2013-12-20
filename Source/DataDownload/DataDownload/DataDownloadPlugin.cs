@@ -35,11 +35,11 @@ namespace HydroDesktop.DataDownload
 
         private SimpleActionItem _btnDownloadInSearch;
         private SimpleActionItem _btnShowPopups;
+        //private SimpleActionItem _btnUpdate;
         private SimpleActionItem _btnSearchOptions;
         private SimpleActionItem _btnSearchResults;
         private ToolStripItem _seriesControlUpdateValuesMenuItem;
         private SearchLayerInformer _searchLayerInformer;
-        private DownloadOptions _downloadOptions = new DownloadOptions {NumberOfValuesPerRequest = 10000};
 
         #endregion
 
@@ -109,7 +109,6 @@ namespace HydroDesktop.DataDownload
             if (ShowIfBusy()) return;
 
             startArgs.FeatureLayer = layer;
-            startArgs.DownloadOptions = _downloadOptions;
             DownloadManager.Start(startArgs);
         }
 
@@ -138,6 +137,11 @@ namespace HydroDesktop.DataDownload
         public override void Activate()
         {
             if (App == null) throw new Exception("App");
+
+            // Initialize menu
+
+            var metadataRootKey = SharedConstants.MetadataRootKey;
+            var header = App.HeaderControl;
 
             // Subscribe to events
             App.Map.LayerAdded += Map_LayerAdded;
@@ -258,16 +262,33 @@ namespace HydroDesktop.DataDownload
             }
         }
 
-        private void Options_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Select or deselect Features
+        /// </summary>
+        private void SelectionTool_Click(object sender, EventArgs e)
         {
-            var copyOptions = new DownloadOptions(_downloadOptions);
-            using (var optionsDialog = new DownloadOptionsDialog(copyOptions))
+            App.Map.FunctionMode = FunctionMode.Select;
+        }
+
+        /// <summary>
+        /// Deselect all features in all layers
+        /// </summary>
+        private void DeselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
             {
-                if (optionsDialog.ShowDialog() == DialogResult.OK)
+                var mapFeatureLayer = layer as IMapFeatureLayer;
                 {
-                    _downloadOptions = copyOptions;
+                    if (mapFeatureLayer != null)
+                        mapFeatureLayer.UnSelectAll();
                 }
             }
+        }
+
+        private void Options_Click(object sender, EventArgs e)
+        {
+            DownloadOptionsDialog OptionsDialog = new DownloadOptionsDialog();
+            OptionsDialog.ShowDialog();   
         }
 
         private void ShowPopups_Click(object sender, EventArgs e)
@@ -354,6 +375,72 @@ namespace HydroDesktop.DataDownload
 
         //    App.Map.ViewExtents = envelope.ToExtent();
         //}
+
+        /// <summary>
+        /// Move (Pan) the map
+        /// </summary>
+        private void PanTool_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.Pan;
+        }
+
+        /// <summary>
+        /// Zoom In
+        /// </summary>
+        private void ZoomIn_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.ZoomIn;
+        }
+
+        /// <summary>
+        /// Zoom Out
+        /// </summary>
+        private void ZoomOut_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.ZoomOut;
+        }
+
+        /// <summary>
+        /// Zoom to maximum extents
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void ZoomToMaxExtents_Click(object sender, EventArgs e)
+        {
+            App.Map.ZoomToMaxExtent();
+        }
+
+
+        /// <summary>
+        /// Zoom to the currently selected layer
+        /// </summary>
+        private void ZoomToLayer_Click(object sender, EventArgs e)
+        {
+            var layer = App.Map.Layers.SelectedLayer;
+            if (layer != null)
+            {
+                ZoomToLayer(layer);
+            }
+        }
+
+        private void ZoomToLayer(IRenderable layerToZoom)
+        {
+            const double eps = 1e-7;
+            var layerEnvelope = layerToZoom.Extent.ToEnvelope();
+            if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
+            {
+                layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84
+            }
+            else
+            {
+                const double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                double newExtentWidth = App.Map.ViewExtents.Width * zoomInFactor;
+                double newExtentHeight = App.Map.ViewExtents.Height * zoomInFactor;
+                layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);
+            }
+
+            App.Map.ViewExtents = layerEnvelope.ToExtent();
+        }
 
 
 

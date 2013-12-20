@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -78,7 +79,7 @@ namespace HydroDesktop.Database
 
         public DataTable GetDetailedSeriesTable()
         {
-            var sql = DetailedSeriesSQLQuery();
+            string sql = DetailedSeriesSQLQuery();
             sql += " ORDER BY VariableName, SiteName";
             var table = DbOperations.LoadTable("SeriesListTable", sql);
             return table;
@@ -86,7 +87,7 @@ namespace HydroDesktop.Database
 
         public DataTable GetSeriesTable(string seriesDataFilter)
         {
-            var sql = DetailedSeriesSQLQuery() +
+            string sql = DetailedSeriesSQLQuery() +
                 " WHERE " + seriesDataFilter;
 
             var table = DbOperations.LoadTable("SeriesListTable", sql);
@@ -97,7 +98,7 @@ namespace HydroDesktop.Database
         {
             var seriesIDs = listOfSeriesID.ToArray();
             var sqlIn = new StringBuilder();
-            for (var i = 0; i < seriesIDs.Length; i++)
+            for (int i = 0; i < seriesIDs.Length; i++)
             {
                 sqlIn.Append(seriesIDs[i].ToString(CultureInfo.InvariantCulture));
                 if (i < seriesIDs.Length - 1)
@@ -105,7 +106,7 @@ namespace HydroDesktop.Database
                     sqlIn.Append(",");
                 }
             }
-            var filter = "DataThemes.SeriesID in (" + sqlIn + ")";
+            string filter = "DataThemes.SeriesID in (" + sqlIn + ")";
             return GetSeriesTable(filter);
         }
 
@@ -148,9 +149,9 @@ namespace HydroDesktop.Database
             if (mySite.Id <= 0) throw new ArgumentException("The site must have a valid ID");
             Contract.EndContractBlock();
 
-            var sqlQuery = DetailedSeriesSQLQuery();
+            string sqlQuery = DetailedSeriesSQLQuery();
             sqlQuery += string.Format(" WHERE DataSeries.SiteID = {0}", mySite.Id);
-            var tbl = DbOperations.LoadTable(sqlQuery);
+            DataTable tbl = DbOperations.LoadTable(sqlQuery);
             return SeriesListFromTable(tbl);
         }
 
@@ -164,8 +165,8 @@ namespace HydroDesktop.Database
         {
             if (site.Id <= 0) throw new ArgumentException("site must have a valid ID");
 
-            var filter = "DataSeries.SiteID = " + site.Id;
-            var seriesTable = GetSeriesTable(filter);
+            string filter = "DataSeries.SiteID = " + site.Id;
+            DataTable seriesTable = GetSeriesTable(filter);
             return SeriesListFromTable(seriesTable);
         }
 
@@ -209,49 +210,39 @@ namespace HydroDesktop.Database
             return Convert.ToInt64(res) > 0;
         }
 
-        public void DeleteSeries(long seriesID, long themeId)
+        public void DeleteSeries(int seriesID)
         {
             var _db = DbOperations;
 
-            var sqlTheme2 = "SELECT count(ThemeID) from DataThemes where ThemeID = " + themeId;
-            var sqlTheme = "SELECT ThemeID from DataThemes where SeriesID = " + seriesID;
-            var sqlDeleteSeriesThemeDescription = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + themeId;
+            string sqlTheme =
+                "SELECT ThemeID from DataThemes where SeriesID = " + seriesID;
+            DataTable tblTheme = _db.LoadTable("tblTheme", sqlTheme);
 
-            var tblTheme = _db.LoadTable("tblTheme", sqlTheme);
+            //if the series belongs to multiple themes, do not delete it.
+            if (tblTheme.Rows.Count != 1) return;
 
-
-            //if the series belongs to multiple themes, remove link from theme
-            if (tblTheme.Rows.Count != 1)
-            {
-                _db.ExecuteNonQuery("DELETE FROM DataThemes WHERE SeriesID=? and ThemeId=?", new object[] { seriesID, themeId });
-                var themesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlTheme2));
-                if (themesCount == 0)
-                {
-                    _db.ExecuteNonQuery(sqlDeleteSeriesThemeDescription);
-                }
-                return;
-            }
-
-            // otherwise, delete the series
+            //otherwise, delete the series
             var seriesToDel = GetByKey(seriesID);
 
             //SQL Queries
+            string sqlTheme2 = "SELECT count(ThemeID) from DataThemes where ThemeID = " + tblTheme.Rows[0].GetDataOrNull("ThemeID");
             var sqlSite = "SELECT count(SiteID) from DataSeries where SiteID = " + seriesToDel.Site.Id;
-            var sqlVariable = "SELECT count(VariableID) from DataSeries where VariableID = " + seriesToDel.Variable.Id;
-            var sqlSource = "SELECT count(SourceID) from DataSeries where SourceID = " + seriesToDel.Source.Id;
-            var sqlMethod = "SELECT count(MethodID) from DataSeries where MethodID = " + seriesToDel.Method.Id;
-            var sqlQuality = "SELECT count(QualityControlLevelID) from DataSeries where QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
+            string sqlVariable = "SELECT count(VariableID) from DataSeries where VariableID = " + seriesToDel.Variable.Id;
+            string sqlSource = "SELECT count(SourceID) from DataSeries where SourceID = " + seriesToDel.Source.Id;
+            string sqlMethod = "SELECT count(MethodID) from DataSeries where MethodID = " + seriesToDel.Method.Id;
+            string sqlQuality = "SELECT count(QualityControlLevelID) from DataSeries where QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
 
             //SQL Delete Commands
-            var sqlDeleteValues = "DELETE FROM DataValues WHERE SeriesID = " + seriesID;
-            var sqlDeleteSeries = "DELETE FROM DataSeries WHERE SeriesID = " + seriesID;
-            var sqlDeleteSeriesTheme = "DELETE FROM DataThemes WHERE SeriesID = " + seriesID;
+            string sqlDeleteValues = "DELETE FROM DataValues WHERE SeriesID = " + seriesID;
+            string sqlDeleteSeries = "DELETE FROM DataSeries WHERE SeriesID = " + seriesID;
+            string sqlDeleteSeriesTheme = "DELETE FROM DataThemes WHERE SeriesID = " + seriesID;
+            string sqlDeleteSeriesThemeDescription = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + tblTheme.Rows[0].GetDataOrNull("ThemeID");
 
-            var sqlDeleteSite = "DELETE FROM Sites WHERE SiteID = " + seriesToDel.Site.Id;
-            var sqlDeleteVariable = "DELETE FROM Variables WHERE VariableID = " + seriesToDel.Variable.Id;
-            var sqlDeleteMethod = "DELETE FROM Methods WHERE MethodID = " + seriesToDel.Method.Id;
-            var sqlDeleteSource = "DELETE FROM Sources WHERE SourceID = " + seriesToDel.Source.Id;
-            var sqlDeleteQuality = "DELETE FROM QualityControlLevels WHERE QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
+            string sqlDeleteSite = "DELETE FROM Sites WHERE SiteID = " + seriesToDel.Site.Id;
+            string sqlDeleteVariable = "DELETE FROM Variables WHERE VariableID = " + seriesToDel.Variable.Id;
+            string sqlDeleteMethod = "DELETE FROM Methods WHERE MethodID = " + seriesToDel.Method.Id;
+            string sqlDeleteSource = "DELETE FROM Sources WHERE SourceID = " + seriesToDel.Source.Id;
+            string sqlDeleteQuality = "DELETE FROM QualityControlLevels WHERE QualityControlLevelID = " + seriesToDel.QualityControlLevel.Id;
 
             //Begin Transaction
             using (var conn = _db.CreateConnection())
@@ -275,7 +266,7 @@ namespace HydroDesktop.Database
                     var variablesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlVariable));
                     if (variablesCount == 1)
                     {
-                        using (var cmdDeleteVariable = conn.CreateCommand())
+                        using (DbCommand cmdDeleteVariable = conn.CreateCommand())
                         {
                             cmdDeleteVariable.CommandText = sqlDeleteVariable;
                             cmdDeleteVariable.ExecuteNonQuery();
@@ -286,7 +277,7 @@ namespace HydroDesktop.Database
                     var methodsCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlMethod));
                     if (methodsCount == 1)
                     {
-                        using (var cmdDeleteMethod = conn.CreateCommand())
+                        using (DbCommand cmdDeleteMethod = conn.CreateCommand())
                         {
                             cmdDeleteMethod.CommandText = sqlDeleteMethod;
                             cmdDeleteMethod.ExecuteNonQuery();
@@ -297,7 +288,7 @@ namespace HydroDesktop.Database
                     var sourcesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlSource));
                     if (sourcesCount == 1)
                     {
-                        using (var cmdDeleteSource = conn.CreateCommand())
+                        using (DbCommand cmdDeleteSource = conn.CreateCommand())
                         {
                             cmdDeleteSource.CommandText = sqlDeleteSource;
                             cmdDeleteSource.ExecuteNonQuery();
@@ -308,7 +299,7 @@ namespace HydroDesktop.Database
                     var qualitiesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlQuality));
                     if (qualitiesCount == 1)
                     {
-                        using (var cmdDeleteQuality = conn.CreateCommand())
+                        using (DbCommand cmdDeleteQuality = conn.CreateCommand())
                         {
                             cmdDeleteQuality.CommandText = sqlDeleteQuality;
                             cmdDeleteQuality.ExecuteNonQuery();
@@ -316,19 +307,19 @@ namespace HydroDesktop.Database
                     }
 
                     //delete the data values
-                    using (var cmdDeleteValues = conn.CreateCommand())
+                    using (DbCommand cmdDeleteValues = conn.CreateCommand())
                     {
                         cmdDeleteValues.CommandText = sqlDeleteValues;
                         cmdDeleteValues.ExecuteNonQuery();
                     }
 
                     //finally delete the series
-                    using (var cmdDeleteSeries = conn.CreateCommand())
+                    using (DbCommand cmdDeleteSeries = conn.CreateCommand())
                     {
                         cmdDeleteSeries.CommandText = sqlDeleteSeries;
                         cmdDeleteSeries.ExecuteNonQuery();
                     }
-                    using (var cmdDeleteSeriesTheme = conn.CreateCommand())
+                    using (DbCommand cmdDeleteSeriesTheme = conn.CreateCommand())
                     {
                         cmdDeleteSeriesTheme.CommandText = sqlDeleteSeriesTheme;
                         cmdDeleteSeriesTheme.ExecuteNonQuery();
@@ -342,9 +333,21 @@ namespace HydroDesktop.Database
                 var themesCount = Convert.ToInt32(_db.ExecuteSingleOutput(sqlTheme2));
                 if (themesCount == 0)
                 {
-                    _db.ExecuteNonQuery(sqlDeleteSeriesThemeDescription);
+                    using (var cmdDeleteTheme = conn.CreateCommand())
+                    {
+                        cmdDeleteTheme.CommandText = sqlDeleteSeriesThemeDescription;
+                        cmdDeleteTheme.ExecuteNonQuery();
+                    }
                 }
             }
+
+            //remove seriesID from 'Selection'
+            string dele2 = "DELETE from Selection WHERE SeriesID=" + seriesID;
+            try
+            {
+                _db.ExecuteNonQuery(dele2);
+            }
+            catch { }
         }
 
         public Tuple<DateTime, DateTime> GetDateTimes(long seriesID)
@@ -446,7 +449,7 @@ namespace HydroDesktop.Database
             //QualityControlLevelID value
             sqlString.Append(qualityControlLevelID + ", ");
             //BeginDateTime, EndDateTime, BeginDateTimeUTC and EndDateTimeUTC values
-            for(var i =7; i<=10; i++)
+            for(int i =7; i<=10; i++)
             {
                 var tempstring = Convert.ToDateTime(row[i]).ToString("yyyy-MM-dd HH:mm:ss");
                 sqlString.Append("'" + tempstring + "', ");
@@ -481,11 +484,11 @@ namespace HydroDesktop.Database
                 var newValueID = DbOperations.GetNextID("DataValues", "ValueID");
                 var query = new StringBuilder("BEGIN TRANSACTION; ");
 
-                for (var i = 0; i <= chunkLength - 1; i++)
+                for (int i = 0; i <= chunkLength - 1; i++)
                 {
-                    var newvalue = 0.0;
-                    var sqlString = string.Empty;
-                    var UTC = 0.0;
+                    double newvalue = 0.0;
+                    string sqlString = string.Empty;
+                    double UTC = 0.0;
 
                     switch (mode)
                     {
@@ -596,10 +599,10 @@ namespace HydroDesktop.Database
                 var query = new StringBuilder("BEGIN TRANSACTION; ");
 
 
-                for (var i = 0; i < chunkLength; i++)
+                for (int i = 0; i < chunkLength; i++)
                 {
                     // Calculating value
-                    var newvalue = 0.0;
+                    double newvalue = 0.0;
                     if (isAlgebraic)
                     {
                         var currentvalue = Convert.ToDouble(dt.Rows[index]["DataValue"]);

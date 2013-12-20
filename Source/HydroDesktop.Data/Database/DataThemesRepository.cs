@@ -68,6 +68,7 @@ namespace HydroDesktop.Database
             var table = DbOperations.LoadTable("ThemeTable", sql);
             return table;
         }
+        
 
         public int? GetID(string themeName)
         {
@@ -78,43 +79,93 @@ namespace HydroDesktop.Database
         }
 
         /// <summary>
+        /// Deletes a theme and all its series as long as the series don't belong to any other theme.
+        /// </summary>
+        /// <param name="themeID">The Theme ID</param>
+        /// <returns>true if successful, false otherwise</returns>
+        public bool DeleteTheme(int themeID)
+        {
+            string sqlTheme = "SELECT SeriesID FROM DataThemes where ThemeID = " + themeID;
+            DataTable tblSeries = DbOperations.LoadTable("tblSeries", sqlTheme);
+
+            foreach (DataRow seriesRow in tblSeries.Rows)
+            {
+                int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
+
+                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
+                seriesRepository.DeleteSeries(seriesID);
+            }
+
+            //delete the actual theme
+            string sqlDeleteTheme = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + themeID;
+            try
+            {
+                DbOperations.ExecuteNonQuery(sqlDeleteTheme);
+            }
+            catch { }
+
+            //re-check the number of series in the theme
+
+            return true;
+        }
+
+        /// <summary>
         /// Delete a theme - a background worker and progress bar is used
         /// </summary>
         /// <param name="themeID">The themeID (this needs to be a valid ID)</param>
         /// <param name="worker">The background worker component</param>
-        /// <returns>True - on success, otherwise false.</returns>
-        public bool DeleteTheme(long themeID, BackgroundWorker worker = null)
+        /// <param name="e">The arguments for background worker</param>
+        /// <returns></returns>
+        public bool DeleteTheme(int themeID, BackgroundWorker worker, DoWorkEventArgs e)
         {
-            var sqlTheme = "SELECT SeriesID FROM DataThemes where ThemeID = " + themeID;
-            var sqlDeleteTheme = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + themeID;
-            var sqlDeleteTheme2 = "DELETE FROM DataThemes WHERE ThemeID = " + themeID;
+            string sqlTheme = "SELECT SeriesID FROM DataThemes where ThemeID = " + themeID;
+            DataTable tblSeries = DbOperations.LoadTable("tblSeries", sqlTheme);
 
-            var tblSeries = DbOperations.LoadTable("tblSeries", sqlTheme);
-            var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
-            for (var i = 0; i < tblSeries.Rows.Count; i++)
+            int numSeries = tblSeries.Rows.Count;
+            int count = 0;
+
+            if (numSeries == 0)
             {
-                // Check cancellation
-                if (worker != null && worker.CancellationPending)
+                return false;
+            }
+
+            foreach (DataRow seriesRow in tblSeries.Rows)
+            {
+                if (worker != null)
                 {
-                    return false;
+                    //check cancellation
+                    if (e != null && worker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return false;
+                    }
                 }
 
-                var seriesRow = tblSeries.Rows[i];
-                var seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
-                seriesRepository.DeleteSeries(seriesID, themeID);
+                int seriesID = Convert.ToInt32(seriesRow["SeriesID"]);
 
-                // Progress report
+                var seriesRepository = RepositoryFactory.Instance.Get<IDataSeriesRepository>();
+                seriesRepository.DeleteSeries(seriesID);
+
+                //progress report
+                count++;
+
                 if (worker != null && worker.WorkerReportsProgress)
                 {
-                    var percent = (int)(((i + 1) / (float)tblSeries.Rows.Count) * 100);
-                    var userState = "Deleting series " + (i + 1) + " of " + tblSeries.Rows.Count + "...";
+                    var percent = (int)((count / (float)numSeries) * 100);
+                    var userState = "Deleting series " + count + " of " + numSeries + "...";
                     worker.ReportProgress(percent, userState);
                 }
             }
 
-            // Delete the actual theme
-            DbOperations.ExecuteNonQuery(sqlDeleteTheme2);
-            DbOperations.ExecuteNonQuery(sqlDeleteTheme);
+            //delete the actual theme
+
+            string sqlDeleteTheme = "DELETE FROM DataThemeDescriptions WHERE ThemeID = " + themeID;
+            try
+            {
+                DbOperations.ExecuteNonQuery(sqlDeleteTheme);
+                e.Result = "Theme deleted successfully";
+            }
+            catch { }
 
             return true;
         }

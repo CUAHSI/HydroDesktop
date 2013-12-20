@@ -134,8 +134,7 @@ namespace DataAggregation.UI
             cmbVariable.DataSource = uniqueVariables;
 
             //
-            btnOK.Enabled = _layer.DataSet.Features.Count > 0 &&
-                            uniqueVariables.Count > 0;
+            btnOK.Enabled = _layer.DataSet.Features.Count > 0;
         }
 
         #endregion

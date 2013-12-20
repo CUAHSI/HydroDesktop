@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="All_Data_Censored" xml:space="preserve">
-    <value>All data is censored, so there is no data to display</value>
+    <value>All data is censored, so there is no data do display</value>
   </data>
   <data name="Export_Time_Series" xml:space="preserve">
     <value>Export Time Series...</value>

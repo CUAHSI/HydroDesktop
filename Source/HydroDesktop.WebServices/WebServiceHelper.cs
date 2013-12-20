@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml;
+using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices
 {
@@ -26,10 +27,10 @@ namespace HydroDesktop.WebServices
             }
 
             //get the valid SOAP namespace
-            var soapNamespace = GetCuahsiSoapNamespace(url);
+            string soapNamespace = GetCuahsiSoapNamespace(url);
 
             //create the SOAP Envelope
-            var soapEnvelope = CreateSoapEnvelopeForGetSites(soapNamespace);
+            string soapEnvelope = CreateSoapEnvelopeForGetSites(soapNamespace);
 
             //send the SOAP envelope to the service as a xml document
             var doc = new XmlDocument();
@@ -38,12 +39,15 @@ namespace HydroDesktop.WebServices
             var req = (HttpWebRequest)WebRequest.Create(url);
 
             //this is the valid SoapAction header for GetValues web method
-            var soapAction = soapNamespace == Properties.Resources.CUAHSI_1_1_Namespace
+            string soapAction = soapNamespace == Properties.Resources.CUAHSI_1_1_Namespace
                                     ? soapNamespace + "GetSitesObject"
                                     : soapNamespace + "GetSites";
 
             req.Headers.Add("SOAPAction", soapAction);
+            //req.Headers.Add("Content-Type", "text/xml");
             req.ContentType = "text/xml";
+            //req.ContentType = "text/xml;charset=\"utf-8\"";
+            //req.Accept = "text/xml";
             req.Method = "POST";
             var stm = req.GetRequestStream();
             doc.Save(stm);
@@ -68,10 +72,10 @@ namespace HydroDesktop.WebServices
             }
 
             //get the valid SOAP namespace
-            var soapNamespace = GetCuahsiSoapNamespace(url);
+            string soapNamespace = GetCuahsiSoapNamespace(url);
 
             //create the SOAP Envelope
-            var soapEnvelope = CreateSoapEnvelopeForGetSiteInfo(soapNamespace, fullSiteCode);
+            string soapEnvelope = CreateSoapEnvelopeForGetSiteInfo(soapNamespace, fullSiteCode);
 
             //send the SOAP envelope to the service as a xml document
             var doc = new XmlDocument();
@@ -80,7 +84,7 @@ namespace HydroDesktop.WebServices
             var req = (HttpWebRequest)WebRequest.Create(url);
 
             //this is the valid SoapAction header for GetValues web method
-            var soapAction = soapNamespace + "GetSiteInfoObject";
+            string soapAction = soapNamespace + "GetSiteInfoObject";
 
             req.Headers.Add("SOAPAction", soapAction);
 
@@ -103,8 +107,9 @@ namespace HydroDesktop.WebServices
         /// <param name="fullVariableCode">full variable code (NetworkPrefix:Variable)</param>
         /// <param name="startDate">start date</param>
         /// <param name="endDate">end date</param>
+        /// <param name="reqTimeOut">Request timeout, in seconds</param>
         /// <returns>Returns the fully initialized web request object</returns>
-        public static HttpWebRequest CreateGetValuesRequest(string url, string fullSiteCode, string fullVariableCode, DateTime startDate, DateTime endDate)
+        public static HttpWebRequest CreateGetValuesRequest(string url, string fullSiteCode, string fullVariableCode, DateTime startDate, DateTime endDate, int reqTimeOut = 100)
         {
             url = url.Trim().ToLower();
             //for http request, we need to remove the ?WSDL part from the url
@@ -114,30 +119,41 @@ namespace HydroDesktop.WebServices
             }
 
             //get the valid SOAP namespace
-            var soapNamespace = GetCuahsiSoapNamespace(url);
+            string soapNamespace = GetCuahsiSoapNamespace(url);
 
             //create the SOAP Envelope
-            var soapEnvelope = CreateSoapEnvelope(soapNamespace, fullSiteCode, fullVariableCode, startDate, endDate);
+            string soapEnvelope = CreateSoapEnvelope(soapNamespace, fullSiteCode, fullVariableCode, startDate, endDate);
 
             //send the SOAP envelope to the service as a xml document
-            var doc = new XmlDocument();
+            XmlDocument doc = new XmlDocument();
             doc.Load(new StringReader(soapEnvelope));
 
             var req = (HttpWebRequest)WebRequest.Create(url);
+            req.Timeout = reqTimeOut*1000;
 
             //this is the valid SoapAction header for GetValues web method
-            var soapAction = soapNamespace + "GetValuesObject";
+            string soapAction = soapNamespace + "GetValuesObject";
  
             req.Headers.Add("SOAPAction", soapAction);
 
             req.ContentType = "text/xml;charset=\"utf-8\"";
             req.Accept = "text/xml";
             req.Method = "POST";
-            var stm = req.GetRequestStream();
+            Stream stm = req.GetRequestStream();
             doc.Save(stm);
             stm.Close();
 
             return req;
+        }
+
+        /// <summary>
+        /// Given a Series Data cart, creates a GetValues web request
+        /// </summary>
+        /// <param name="dc">the series data cart containing information about the site, variable, begin data and end date</param>
+        /// <returns>the web request for getting the values</returns>
+        public static HttpWebRequest CreateGetValuesRequest(SeriesDataCart dc)
+        {
+            return CreateGetValuesRequest(dc.ServURL, dc.SiteCode, dc.VariableCode, dc.BeginDate, dc.EndDate);
         }
 
         /// <summary>
@@ -151,13 +167,15 @@ namespace HydroDesktop.WebServices
             {
                 return 1.0;
             }
-            if (url.Contains("cuahsi_1_1"))
+            else if (url.Contains("cuahsi_1_1"))
             {
                 return 1.1;
             }
-            return 1.0;
+            else
+            {
+                return 1.0;
+            }
         }
-
         /// <summary>
         /// Finds out the SOAP namespace (1.0 or 1.1) from the 
         /// WSDL URL. This function assumes that the url is in format ".../cuahsi_1_0.asmx?wsdl" or
@@ -167,7 +185,7 @@ namespace HydroDesktop.WebServices
         /// <returns>the correctly formatted SOAP namespace</returns>
         public static string GetCuahsiSoapNamespace(string url)
         {
-            var soapNamespace = String.Empty;
+            string soapNamespace = String.Empty;
             if (url.Contains("cuahsi_1_0"))
             {
                 soapNamespace = Properties.Resources.CUAHSI_1_0_Namespace;
@@ -183,7 +201,66 @@ namespace HydroDesktop.WebServices
             
             return soapNamespace;
         }
-       
+
+        /// <summary>
+        /// Creates the HTTP SOAP web request for GetValues method
+        /// </summary>
+        /// <param name="dataCart">The series data cart containing the GetValues parameters</param>
+        /// <returns>Returns the fully initialized web request object</returns>
+        public static HttpWebRequest CreatePostRequest(SeriesDataCart dataCart)
+        {
+            string url = dataCart.ServURL;
+            string fullSiteCode = dataCart.SiteCode;
+            string fullVariableCode = dataCart.VariableCode;
+            DateTime startDate = dataCart.BeginDate;
+            DateTime endDate = dataCart.EndDate;
+
+            url = url.Trim().ToLower();
+            //for http request, we need to remove the ?WSDL part from the url
+            if (url.EndsWith("?wsdl"))
+            {
+                url = url.Replace("?wsdl", "");
+            }
+
+            //get the valid SOAP namespace
+            string soapNamespace = GetCuahsiSoapNamespace(url);
+
+            //create the SOAP Envelope
+            string soapEnvelope = CreateSoapEnvelope(soapNamespace, fullSiteCode, fullVariableCode, startDate, endDate);
+
+            //send the SOAP envelope to the service as a xml document
+            XmlDocument doc = new XmlDocument();
+            doc.Load(new StringReader(soapEnvelope));
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+            //this is the valid SoapAction header for GetValues web method
+            string soapAction = soapNamespace + "GetValuesObject";
+
+            req.Headers.Add("SOAPAction", soapAction);
+
+            req.ContentType = "text/xml;charset=\"utf-8\"";
+            req.Accept = "text/xml";
+            req.Method = "POST";
+            Stream stm = req.GetRequestStream();
+            doc.Save(stm);
+            stm.Close();
+
+            return req;
+        }
+        /// <summary>
+        /// Gets the name of the data cart
+        /// </summary>
+        /// <param name="cart">the series data cart object</param>
+        /// <returns>the unique name of the series data cart</returns>
+        public static string GetDataCartName(SeriesDataCart cart)
+        {
+            string str = String.Format("{0}-{1}", cart.SiteCode, cart.VariableCode);
+            string str2 = str.Replace("/", "_");
+            string str3 = str2.Replace(@"\", "_");
+            string str4 = str3.Replace(":", "_");
+            return str4;
+        }
         /// <summary>
         /// Creates the SOAP Envelope for the GetValues request
         /// </summary>
@@ -198,15 +275,15 @@ namespace HydroDesktop.WebServices
         {
 
             //to format the beginDate and endDate
-            var startDateStr = startDate.ToString("yyyy-MM-ddTHH:mm");
-            var endDateStr = endDate.ToString("yyyy-MM-ddTHH:mm");
+            string startDateStr = startDate.ToString("yyyy-MM-ddTHH:mm");
+            string endDateStr = endDate.ToString("yyyy-MM-ddTHH:mm");
 
             //create the AuthToken (currently, only empty AuthToken is supported)
-            var authToken = String.Empty;
+            string authToken = String.Empty;
 
-            var webMethodName = "GetValuesObject";
+            string webMethodName = "GetValuesObject";
 
-            var soapEnv = new StringBuilder();
+            StringBuilder soapEnv = new StringBuilder();
             soapEnv.AppendLine(@"<?xml version=""1.0"" encoding=""utf-8""?>");
             soapEnv.AppendLine(@"<soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">");
             soapEnv.AppendLine("<soap:Body>");
@@ -232,7 +309,7 @@ namespace HydroDesktop.WebServices
         public static string CreateSoapEnvelopeForGetSiteInfo(string soapNamespace, string fullSiteCode)
         {
             //create the AuthToken (currently, only empty AuthToken is supported)
-            var authToken = String.Empty;
+            string authToken = String.Empty;
 
             const string webMethodName = "GetSiteInfoObject";
 
@@ -257,16 +334,16 @@ namespace HydroDesktop.WebServices
         /// <returns>The SOAP envelope that needs to be sent with the GetSites request</returns>
         public static string CreateSoapEnvelopeForGetSites(string soapNamespace)
         {
-            var webMethodName = "GetSites";
+            string webMethodName = "GetSites";
             if (soapNamespace == Properties.Resources.CUAHSI_1_1_Namespace)
             {
                 webMethodName = "GetSitesObject";
             }
             
             //create the AuthToken (currently, only empty AuthToken is supported)
-            var authToken = String.Empty;
+            string authToken = String.Empty;
 
-            var soapEnv = new StringBuilder();
+            StringBuilder soapEnv = new StringBuilder();
             soapEnv.AppendLine(@"<?xml version=""1.0"" encoding=""utf-8""?>");
             soapEnv.AppendLine(@"<soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">");
             soapEnv.AppendLine("<soap:Body>");

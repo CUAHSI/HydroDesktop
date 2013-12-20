@@ -14,6 +14,7 @@ using HydroDesktop.Common;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
+using HydroDesktop.WebServices;
 using HydroDesktop.Help;
 using Search3.Area;
 using Search3.Keywords;

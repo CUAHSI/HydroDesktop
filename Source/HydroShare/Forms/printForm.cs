@@ -12,59 +12,23 @@ namespace HydroShare
 {
     public partial class printForm : Form
     {
-        uploadForm1_geo form_geo = new uploadForm1_geo();
-        uploadForm1_other form_other = new uploadForm1_other();
-        uploadForm1_time form_time = new uploadForm1_time();
+        uploadForm1 form1 = new uploadForm1();
 
-        public printForm(uploadForm1_geo f1)
+        public printForm(uploadForm1 f1)
         {
             InitializeComponent();
-            form_geo = f1;
+            form1 = f1;
 
             this.timeStampTB.Text = Convert.ToString(DateTime.Now);
-            this.nameTB.Text = form_geo.name;
-            this.sourceSubjectTB.Text = form_geo.sSubject;
-            this.titleTB.Text = form_geo.title;
-            this.emailTB.Text = form_geo.email;
-            this.rightsTB.Text = form_geo.rights;
-            this.coverageSpatialTB.Text = form_geo.coverageSpatial;
-            this.fileTB.Text = form_geo.file;
+            this.nameTB.Text = form1.name;
+            this.sourceSubjectTB.Text = form1.sSubject;
+            this.titleTB.Text = form1.title;
+            this.emailTB.Text = form1.email;
+            this.rightsTB.Text = form1.rights;
+            this.coverageSpatialTB.Text = form1.coverageSpatial;
+            this.fileTB.Text = form1.file;
 
             
-        }
-
-        public printForm(uploadForm1_other f1)
-        {
-            InitializeComponent();
-            form_other = f1;
-
-            this.timeStampTB.Text = Convert.ToString(DateTime.Now);
-            this.nameTB.Text = form_geo.name;
-            this.sourceSubjectTB.Text = form_geo.sSubject;
-            this.titleTB.Text = form_geo.title;
-            this.emailTB.Text = form_geo.email;
-            this.rightsTB.Text = form_geo.rights;
-            this.coverageSpatialTB.Text = form_geo.coverageSpatial;
-            this.fileTB.Text = form_geo.file;
-
-
-        }
-
-        public printForm(uploadForm1_time f1)
-        {
-            InitializeComponent();
-            form_time = f1;
-
-            this.timeStampTB.Text = Convert.ToString(DateTime.Now);
-            this.nameTB.Text = form_geo.name;
-            this.sourceSubjectTB.Text = form_geo.sSubject;
-            this.titleTB.Text = form_geo.title;
-            this.emailTB.Text = form_geo.email;
-            this.rightsTB.Text = form_geo.rights;
-            this.coverageSpatialTB.Text = form_geo.coverageSpatial;
-            this.fileTB.Text = form_geo.file;
-
-
         }
 
         private void printButton_Click(object sender, EventArgs e)

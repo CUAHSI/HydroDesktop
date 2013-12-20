@@ -26,7 +26,6 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DocumentationFile>..\..\Binaries\Plugins\Search3\Search3.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -155,6 +154,18 @@
       <Private>False</Private>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.WebServices">
+      <HintPath>..\..\Binaries\HydroDesktop.WebServices.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
@@ -177,7 +188,6 @@
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Area\RectangleDrawing.cs" />
-    <Compile Include="Box.cs" />
     <Compile Include="Keywords\Constants.cs" />
     <Compile Include="Keywords\DbKeywordsList.cs" />
     <Compile Include="Keywords\HisCentralKeywordsList.cs" />
@@ -364,7 +374,9 @@
     <None Include="Resources\select_date_v1_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\information.ico" />
     <None Include="Resources\more_info.ico" />
+    <None Include="Resources\view_extents.ico" />
     <None Include="Resources\view_extents_16_16x16.ico" />
     <None Include="Resources\zoom_selection_16x16.png" />
     <None Include="Resources\zoom_out_16x16.png" />
@@ -377,12 +389,12 @@
     <None Include="Resources\HydroDesktop.ico" />
     <None Include="Resources\hand_16x16.png" />
     <None Include="Resources\deselect_16x16.png" />
-    <None Include="Resources\current_view_16.png" />
-    <None Include="Resources\current_view_32.png" />
-    <None Include="Resources\keyword_16.ico" />
-    <None Include="Resources\OntologyTree.xml">
+    <Content Include="Resources\current_view_16.png" />
+    <Content Include="Resources\current_view_32.png" />
+    <Content Include="Resources\keyword_16.ico" />
+    <Content Include="Resources\OntologyTree.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Resources\select_poly_16.png" />
     <None Include="Resources\select_poly_32.png" />
     <None Include="Resources\select_table_16.png" />
@@ -392,10 +404,10 @@
     <None Include="Resources\option_32.png" />
     <None Include="Resources\server_16.png" />
     <None Include="Resources\server_32.png" />
-    <None Include="Resources\search_32.ico" />
-    <None Include="Resources\Synonyms.xml">
+    <Content Include="Resources\search_32.ico" />
+    <Content Include="Resources\Synonyms.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HydroDesktop.Common\HydroDesktop.Common.csproj">
@@ -403,24 +415,9 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
-      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
-      <Name>HydroDesktop.Configuration</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\HydroDesktop.Data\HydroDesktop.Data.csproj">
       <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
       <Name>HydroDesktop.Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
-      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
-      <Name>HydroDesktop.Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroDesktop.WebServices\HydroDesktop.WebServices.csproj">
-      <Project>{7D649595-3CD3-4F13-A59B-5F7B8716FDFA}</Project>
-      <Name>HydroDesktop.WebServices</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
