@@ -42,5 +42,16 @@ namespace HydroDesktop.WebServices.Tests.WaterML
             Assert.AreEqual(expectedEndDateTime, series.EndDateTime);
             Assert.AreEqual(expectedEndDateTimeUTC, series.EndDateTimeUTC);
         }
+
+        [Test]
+        [TestCase(@"TestFiles\v20\TimeSeries_1.xml")]
+        [TestCase(@"TestFiles\v20\TimeSeries_2.xml")]
+        [TestCase(@"TestFiles\v20\TimeSeries_3.xml")]
+        public void ParseGetValues(string xmlFile)
+        {
+            var target = new WaterML20Parser();
+            var series = target.ParseGetValues(xmlFile);
+            Assert.IsTrue(series.Count > 0);
+        }
     }
 }

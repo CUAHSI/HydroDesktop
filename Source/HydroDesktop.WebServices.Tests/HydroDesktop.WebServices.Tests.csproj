@@ -163,9 +163,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="TestFiles\v20\TimeSeries_1.xml" />
-    <Content Include="TestFiles\v20\TimeSeries_2.xml" />
-    <Content Include="TestFiles\v20\TimeSeries_3.xml" />
+    <Content Include="TestFiles\v20\TimeSeries_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\v20\TimeSeries_2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\v20\TimeSeries_3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
