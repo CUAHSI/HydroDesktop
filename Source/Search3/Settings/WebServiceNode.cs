@@ -22,6 +22,21 @@ namespace Search3.Settings
         }
 
         public WebServiceNode(string title, string serviceCode, int serviceID, string descriptionUrl, string serviceUrl,
+        Box boundingBox, int sites, int variables, int values)
+        {
+            ServiceID = serviceID;
+            ServiceCode = serviceCode;
+            Title = title;
+            DescriptionUrl = descriptionUrl;
+            ServiceUrl = serviceUrl;
+            ServiceBoundingBox = boundingBox;
+            Sites = sites;
+            Variables = variables;
+            Values = values;
+            Checked = true;
+        }
+
+        public WebServiceNode(string title, string serviceCode, int serviceID, string descriptionUrl, string serviceUrl,
             Box boundingBox, string organization, long sites, long variables, long values)
         {
             ServiceID = serviceID;

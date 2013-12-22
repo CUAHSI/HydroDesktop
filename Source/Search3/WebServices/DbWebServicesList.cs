@@ -15,7 +15,7 @@ namespace Search3.WebServices
                 new WebServiceNode(service.ServiceTitle,
                                    service.ServiceCode, (int) service.Id, service.DescriptionURL, service.EndpointURL,
                                    new Box(service.WestLongitude, service.EastLongitude,
-                                           service.SouthLatitude, service.NorthLatitude))).ToList();
+                                           service.SouthLatitude, service.NorthLatitude), service.SiteCount, service.VariableCount, (int)service.ValueCount)).ToList();
         }
     }
 }
