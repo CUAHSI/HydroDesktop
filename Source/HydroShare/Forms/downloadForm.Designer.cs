@@ -31,7 +31,7 @@
             this.cmb_FilterSearch = new System.Windows.Forms.ComboBox();
             this.lst_AvailableItems = new System.Windows.Forms.ListBox();
             this.btn_Cancel = new System.Windows.Forms.Button();
-            this.btn_GetData = new System.Windows.Forms.Button();
+            this.btn_Download = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cmb_FilterSearch
@@ -63,21 +63,22 @@
             this.btn_Cancel.UseVisualStyleBackColor = true;
             this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
-            // btn_GetData
+            // btn_Download
             // 
-            this.btn_GetData.Location = new System.Drawing.Point(146, 245);
-            this.btn_GetData.Name = "btn_GetData";
-            this.btn_GetData.Size = new System.Drawing.Size(126, 23);
-            this.btn_GetData.TabIndex = 3;
-            this.btn_GetData.Text = "Download";
-            this.btn_GetData.UseVisualStyleBackColor = true;
+            this.btn_Download.Location = new System.Drawing.Point(146, 245);
+            this.btn_Download.Name = "btn_Download";
+            this.btn_Download.Size = new System.Drawing.Size(126, 23);
+            this.btn_Download.TabIndex = 3;
+            this.btn_Download.Text = "Download";
+            this.btn_Download.UseVisualStyleBackColor = true;
+            this.btn_Download.Click += new System.EventHandler(this.btn_Download_Click);
             // 
             // downloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(285, 277);
-            this.Controls.Add(this.btn_GetData);
+            this.Controls.Add(this.btn_Download);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.lst_AvailableItems);
             this.Controls.Add(this.cmb_FilterSearch);
@@ -93,6 +94,6 @@
         private System.Windows.Forms.ComboBox cmb_FilterSearch;
         private System.Windows.Forms.ListBox lst_AvailableItems;
         private System.Windows.Forms.Button btn_Cancel;
-        private System.Windows.Forms.Button btn_GetData;
+        private System.Windows.Forms.Button btn_Download;
     }
 }
