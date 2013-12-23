@@ -8,13 +8,15 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Web.Script.Serialization;
+using System.IO;
+using Ionic.Zlib;
 
 namespace HydroShare
 {
     public partial class downloadForm : Form
     {
-        string base_url = "http://dev.hydroshare.org/export.php?file=http://dev.hydroshare.org/sites/default/files/{0}.zip";
-        string list_url = "http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd";
+        string base_url = "http://dev.hydroshare.org/export.php?file=http://dev.hydroshare.org/sites/default/files/";
+        List<string> list_urls = new List<string> { "http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd", "http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd&page=1", "http://dev.hydroshare.org/?q=my_services/node.json&api-key=581d46dd&page=2"};
 
         public downloadForm()
         {
@@ -23,12 +25,14 @@ namespace HydroShare
 
         public List<string> retrieveList(string filter = "")
         {
+            List<string> filtered_files = new List<string>{};
+            foreach (string list_url in list_urls)
+            {
             var client = new RestClient(list_url);
             var json = client.MakeRequest();
 
             var serializer = new JavaScriptSerializer();
             var all_files = serializer.Deserialize<List<Dictionary<string,string>>>(json);
-            List<string> filtered_files = new List<string>{};
 
             if (filter == "" || filter == "All")
             {
@@ -47,29 +51,45 @@ namespace HydroShare
                     }
                 }
             }
+            }
+            filtered_files.Sort();
             return filtered_files;
             }
 
         public List<string> populateFilterSearch()
         {
             List<string> filterOptions = new List<string> { "All" };
-            //List<string> usableResourceTypes = new List<string> { "hydroshare_geoanalytics", "hydroshare_time_series", "Time Series", "Geonanalytics" };
+            foreach (string list_url in list_urls)
+            {               
+                //List<string> usableResourceTypes = new List<string> { "hydroshare_geoanalytics", "hydroshare_time_series", "Time Series", "Geonanalytics" };
 
-            var client = new RestClient(list_url);
-            var json = client.MakeRequest();
+                var client = new RestClient(list_url);
+                var json = client.MakeRequest();
 
-            var serializer = new JavaScriptSerializer();
-            var all_files = serializer.Deserialize<List<Dictionary<string, string>>>(json);
+                var serializer = new JavaScriptSerializer();
+                var all_files = serializer.Deserialize<List<Dictionary<string, string>>>(json);
 
-            foreach (Dictionary<string, string> file in all_files)
-            {
-                if (filterOptions.Contains(file["type"]) == false/* && usableResourceTypes.Contains(file["type"])*/)
+                foreach (Dictionary<string, string> file in all_files)
                 {
-                    filterOptions.Add(file["type"]);
+                    if (filterOptions.Contains(file["type"]) == false/* && usableResourceTypes.Contains(file["type"])*/)
+                    {
+                        filterOptions.Add(file["type"]);
+                    }
                 }
             }
-
+            filterOptions.Sort();
             return filterOptions;
+        }
+
+        public void downloadFile(string resourceName)
+        {
+            resourceName = resourceName.Replace(" ", "");
+            string save_loc = Application.StartupPath + resourceName + ".zip";
+            string path = Path.GetTempFileName();
+
+            WebClient fileReader = new WebClient();
+            fileReader.DownloadFile(base_url + resourceName + ".zip", save_loc);
+
         }
 
         private void downloadForm_Load(object sender, EventArgs e)
@@ -102,6 +122,13 @@ namespace HydroShare
             {
                 lst_AvailableItems.Items.Add(s);
             }
+
+        }
+
+        private void btn_Download_Click(object sender, EventArgs e)
+        {
+            downloadFile(lst_AvailableItems.SelectedItem.ToString());
+            this.Close();
 
         }
     }
