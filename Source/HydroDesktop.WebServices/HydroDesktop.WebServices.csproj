@@ -73,6 +73,7 @@
     <Compile Include="ServiceIconHelper.cs" />
     <Compile Include="WaterML\ContactInformationType.cs" />
     <Compile Include="WaterML\DataValueWrapper.cs" />
+    <Compile Include="WaterML\ParserHelper.cs" />
     <Compile Include="WaterOneFlow\IGetValuesProgressHandler.cs" />
     <Compile Include="WaterML\IWaterMLParser.cs" />
     <Compile Include="WaterML\ParserFactory.cs" />
