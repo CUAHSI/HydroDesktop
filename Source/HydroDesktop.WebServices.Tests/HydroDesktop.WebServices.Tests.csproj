@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroDesktop.WebServices.Tests</RootNamespace>
-    <AssemblyName>Tests.HydroDesktop.WebService</AssemblyName>
+    <AssemblyName>HydroDesktop.WebServices.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -126,6 +126,7 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="WaterML\ParserHelperTests.cs" />
     <Compile Include="WaterML\WaterML20ParserTests.cs" />
     <Compile Include="WaterML\WaterML11ParserTests.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowClientTests.cs" />

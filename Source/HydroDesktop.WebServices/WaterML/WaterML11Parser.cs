@@ -223,7 +223,7 @@ namespace HydroDesktop.WebServices.WaterML
 
                             //utcOffset
                             var utcOffset = r.GetAttribute("timeOffset");
-                            val.UTCOffset = !String.IsNullOrEmpty(utcOffset) ? ConvertUtcOffset(utcOffset) : 0.0;
+                            val.UTCOffset = !String.IsNullOrEmpty(utcOffset) ? ParserHelper.ConvertUtcOffset(utcOffset) : 0.0;
 
                             //dateTimeUtc
                             var dateTimeUTC = r.GetAttribute("dateTimeUTC");
@@ -598,24 +598,6 @@ namespace HydroDesktop.WebServices.WaterML
                     qual.Description = "unknown";
                 }
             }
-        }
-
-        /// <summary>
-        /// Converts the 'UTC Offset' value to a double digit in hours
-        /// </summary>
-        /// <param name="offsetString"></param>
-        /// <returns></returns>
-        private double ConvertUtcOffset(string offsetString)
-        {
-            int colonIndex = offsetString.IndexOf(":", StringComparison.Ordinal);
-            double minutes = 0.0;
-            double hours = 0.0;
-            if (colonIndex > 0 && colonIndex < offsetString.Length - 1)
-            {
-                minutes = Convert.ToDouble(offsetString.Substring(colonIndex + 1), CultureInfo.InvariantCulture);
-                hours = Convert.ToDouble((offsetString.Substring(0, colonIndex)), CultureInfo.InvariantCulture);
-            }
-            return hours + (minutes / 60.0);
         }
     }
 }
