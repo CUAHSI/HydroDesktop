@@ -758,8 +758,8 @@ namespace Search3
             App.HeaderControl.Add(_rbAddMoreKeywords);
 
             // Clear current keywords text
-            _currentKeywords.Text = string.Empty;
-
+            _currentKeywords.Text = String.Empty;
+            
             //   _currentKeywords.PropertyChanged += 
 
             if (dummy != null)
@@ -770,9 +770,9 @@ namespace Search3
 
             UpdateKeywordsCaption();
 
-      
-            _dropdownKeywords.SelectedItem = "";
-            _currentKeywords.Text = "";
+            var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
+            selectedKeywords.Add("All");
+            _dropdownKeywords.SelectedItem = "All";
 
         }
 
