@@ -333,14 +333,8 @@ namespace Search3
                 // Check for Keywords count
                 var selectedKeywords = _searchSettings.KeywordsSettings.SelectedKeywords.ToList();
                 if (selectedKeywords.Count == 0)
-                {
-                    if (invalidWord == false)
-                    {
-                        selectedKeywords.Add("All");
-                        _dropdownKeywords.SelectedItem = "All";
-                    }
-                    else
-                        throw new SearchSettingsValidationException("The keywords selected were not defined in the list of possible search terms. Please provide different search terms.");
+                {     
+                    throw new SearchSettingsValidationException("Selected search term is invalid or no search terms have been provided. Please provide different search terms.");
                 }
                 // Check for checked webservices
                 var webServicesCount = _searchSettings.WebServicesSettings.CheckedCount;
