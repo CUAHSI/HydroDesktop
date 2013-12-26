@@ -302,8 +302,8 @@
     <Content Include="Resources\layer_save_32x32.png" />
     <Content Include="Resources\measure_16x16.png" />
     <Content Include="Resources\measure_32x32.png" />
-    <Content Include="Resources\plugin_16x16.png" />
-    <Content Include="Resources\plugin_32x32.png" />
+    <None Include="Resources\plugin_16x16.png" />
+    <None Include="Resources\plugin_32x32.png" />
     <Content Include="Resources\plugin_add_16x16.png" />
     <Content Include="Resources\plugin_add_32x32.png" />
     <Content Include="Resources\plugin_delete_16x16.png" />

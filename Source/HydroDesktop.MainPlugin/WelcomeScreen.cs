@@ -12,6 +12,11 @@ using DotSpatial.Projections;
 using HydroDesktop.Common;
 using HydroDesktop.Configuration;
 using HydroDesktop.Help;
+using System.Threading.Tasks;
+using NuGet;
+using System.Drawing;
+using System.Linq;
+using DotSpatial.Plugins.ExtensionManager;
 
 namespace HydroDesktop.Main
 {
@@ -33,6 +38,9 @@ namespace HydroDesktop.Main
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
         private readonly string _remoteHelpUri = Properties.Settings.Default.remoteHelpUri;
         private readonly string _quickStartUri = Properties.Settings.Default.quickStartUri;
+
+        private readonly Packages packages = new Packages();
+        private readonly DownloadForm downloadDialog = new DownloadForm();
 
         private Extent _defaultMapExtent = new Extent(-170, -50, 170, 50);
 
@@ -64,6 +72,9 @@ namespace HydroDesktop.Main
             {
                 lstProjectTemplates.SelectedIndex = 0;
             }
+            uxFeedSelection.SelectedIndexChanged += uxFeedSelection_SelectedIndexChanged;
+            this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
+            this.uxFeedSelection.SelectedIndex = 0;
         }
 
         #endregion
@@ -252,10 +263,19 @@ namespace HydroDesktop.Main
             SampleProjects = sampleProjects2;
             
 
+            //lstProjectTemplates.DataSource = SampleProjects;
+           // lstProjectTemplates.DisplayMember = "Name";
+
+            FindRecentProjectFiles();
+
+            IEnumerable<ISampleProject> sampleProjects3 = new List<ISampleProject>();
+            ((List<ISampleProject>)sampleProjects3).AddRange(SampleProjects);
+            ((List<ISampleProject>)sampleProjects3).AddRange(RecentProjectFiles);
+            SampleProjects = sampleProjects3;
+
             lstProjectTemplates.DataSource = SampleProjects;
             lstProjectTemplates.DisplayMember = "Name";
 
-            FindRecentProjectFiles();
         }
 
         
@@ -347,7 +367,7 @@ namespace HydroDesktop.Main
 
             List<string> existingRecentFiles = new List<string>();
                 
-            foreach (string recentFile in Settings.Instance.RecentProjectFiles)
+            foreach (string recentFile in HydroDesktop.Configuration.Settings.Instance.RecentProjectFiles)
             {              
                 if (File.Exists(recentFile))
                 {
@@ -358,10 +378,10 @@ namespace HydroDesktop.Main
                 }
             }
 
-            Settings.Instance.RecentProjectFiles.Clear();
+            HydroDesktop.Configuration.Settings.Instance.RecentProjectFiles.Clear();
             foreach (string recentFile in existingRecentFiles)
             {
-                Settings.Instance.RecentProjectFiles.Add(recentFile);
+                HydroDesktop.Configuration.Settings.Instance.RecentProjectFiles.Add(recentFile);
                 RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
             }
 
@@ -372,8 +392,63 @@ namespace HydroDesktop.Main
             lstRecentProjects.SelectedIndex = -1;
         }
 
+        private void UpdateInstalledProjectsList()
+        {
+           
+        }
 
+        private IEnumerable<SampleProjectInfo> FindSampleProjectFiles()
+        {
+            List<SampleProjectInfo> list = new List<SampleProjectInfo>();
+            if (Directory.Exists(AppManager.AbsolutePathToExtensions))
+            {
+                foreach (string current in Directory.EnumerateFiles(AppManager.AbsolutePathToExtensions, "*.dspx", SearchOption.AllDirectories))
+                {
+                    list.Add(new SampleProjectInfo
+                    {
+                        AbsolutePathToProjectFile = current,
+                        Name = Path.GetFileNameWithoutExtension(current),
+                        Description = "description",
+                        Version = "1.0"
+                    });
+                }
+            }
+            return list;
+        }
 
+        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string feedUrl;
+            if (uxFeedSelection.SelectedIndex == 1)
+                feedUrl = "https://nuget.org/api/v2/";
+            else
+                feedUrl = "https://www.myget.org/F/cuahsi/";
+
+            packages.SetNewSource(feedUrl);
+            this.UpdatePackageList();
+        }
+
+        private void UpdatePackageList()
+        {
+            this.uxOnlineProjects.Items.Add("Loading...");
+            Task<IPackage[]> task = Task.Factory.StartNew<IPackage[]>(delegate
+            {
+                return (
+                    from p in this.packages.Repo.GetPackages()
+                    where p.IsLatestVersion && (p.Tags.Contains("DotSpatialSampleProject") || p.Tags.Contains("SampleProject"))
+                    select p).ToArray<IPackage>();
+            });
+            task.ContinueWith(delegate(Task<IPackage[]> t)
+            {
+                this.uxOnlineProjects.Items.Clear();
+                if (t.Exception == null)
+                {
+                    this.uxOnlineProjects.Items.AddRange(t.Result);
+                    return;
+                }
+                this.uxOnlineProjects.Items.Add(t.Exception.Message);
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
         #endregion
 
@@ -425,9 +500,111 @@ namespace HydroDesktop.Main
                 MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
         }
+        private void btnOKOnline_Click(object sender, EventArgs e)
+        {
+            if (this.uxOnlineProjects.SelectedItem != null)
+            {
+                this.btnInstall.Enabled = false;
+                downloadDialog.Show();
+                IPackage pack = this.uxOnlineProjects.SelectedItem as IPackage;
+                
+                var inactiveExtensions = _app.Extensions.Where(a => a.IsActive == false).ToArray();
+
+                Task task = Task.Factory.StartNew(delegate
+                {
+                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                    if (dependency.Count() > 0)
+                    {
+                        foreach (PackageDependency dependentPackage in dependency)
+                        {
+                            _app.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
+                            downloadDialog.ShowDownloadStatus(dependentPackage);
+                            downloadDialog.SetProgressBarPercent(0);
+
+                            var dependentpack = packages.Install(dependentPackage.Id);
+                            if (dependentpack == null)
+                            {
+                                string message = "We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet.";
+                                MessageBox.Show(message);
+                                return;
+                            }
+                        }
+                    }
+
+                    this._app.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+                    downloadDialog.ShowDownloadStatus(pack);
+                    downloadDialog.SetProgressBarPercent(0);
+
+                    this.packages.Install(pack.Id);
+                });
+                task.ContinueWith(delegate(Task t)
+                {
+                    this._app.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
+                    this.UpdateInstalledProjectsList();
+                    // Load the extension.
+                    _app.RefreshExtensions();
+                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                    _app.ProgressHandler.Progress(null, 50, "Installing " + pack.Title);
+
+                    // Activate the extension(s) that was installed.
+                    var extensions = _app.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
+
+                    if (extensions.Count() > 0 && !_app.EnsureRequiredImportsAreAvailable())
+                        return;
+
+                    foreach (var item in extensions)
+                    {
+                        item.TryActivate();
+                    }
+                    this._app.ProgressHandler.Progress(null, 0, "Ready.");
+                    downloadDialog.Visible = false;
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+        private void uxOnlineProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.uxOnlineProjects.Items.Count == 0)
+            {
+                this.btnInstall.Enabled = false;
+                return;
+            }
+            IPackage package = this.uxOnlineProjects.SelectedItem as IPackage;
+            if (package == null)
+            {
+                this.btnInstall.Enabled = false;
+                return;
+            }
+            if (IsPackageInstalled(package))
+            {
+                this.btnInstall.Enabled = false;
+                return;
+            }
+            this.btnInstall.Enabled = true;
+        }
+        private static bool IsPackageInstalled(IPackage pack)
+        {
+            string packagePath = GetPackagePath(pack);
+
+            if (Directory.Exists(packagePath))
+            {
+                return NuGet.EnumerableExtensions.Any<string>(Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories));
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private static string GetPackagePath(IPackage pack)
+        {
+            return Path.Combine(AppManager.AbsolutePathToExtensions, "Packages", GetPackageFolderName(pack));
+        }
+        private static string GetPackageFolderName(IPackage pack)
+        {
+            return string.Format("{0}.{1}", pack.Id, pack.Version);
+        }
     } 
 
-    public class ProjectFileInfo
+    public class ProjectFileInfo : ISampleProject
     {
         public ProjectFileInfo(string fullPath)
         {
@@ -465,5 +642,69 @@ namespace HydroDesktop.Main
         {
             return (Name != null ? Name.GetHashCode() : 0);
         }
+
+        string ISampleProject.AbsolutePathToProjectFile
+        {
+            get { return FullPath; }
+        }
+
+        string ISampleProject.Description
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        string ISampleProject.Name
+        {
+            get { return Name; }
+        }
     }
+
+    public class CustomListBox : ListBox
+    {
+        public CustomListBox()
+        {
+            this.DrawMode = DrawMode.OwnerDrawVariable; // We're using custom drawing.
+            this.ItemHeight = 13; // Set the item height to 40.
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            // Make sure we're not trying to draw something that isn't there.
+            if (e.Index >= this.Items.Count || e.Index <= -1)
+                return;
+
+            // Get the item object.
+            ISampleProject item = (ISampleProject)this.Items[e.Index];
+            if (item == null)
+                return;
+
+            // Draw the background color depending on 
+            // if the item is selected or not.
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                // The item is selected.
+                // We want a blue background color.
+                e.Graphics.FillRectangle(new SolidBrush(Color.Blue), e.Bounds);
+                // Draw the item.
+                string text = item.Name;
+                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
+                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.White),
+                    new PointF(3, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+            }
+            else
+            {
+                // The item is NOT selected.
+                // We want a white background color.
+                e.Graphics.FillRectangle(new SolidBrush(Color.White), e.Bounds);
+                // Draw the item.
+                string text = item.Name;
+                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
+                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Black),
+                    new PointF(3, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+            }
+
+           
+        }
+    }
+
 }

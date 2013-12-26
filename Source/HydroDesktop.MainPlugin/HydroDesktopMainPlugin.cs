@@ -62,6 +62,12 @@
             //show latitude, longitude coordinate display
             latLongDisplay = new CoordinateDisplay(App);
             base.Activate();
+
+            SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenProjects_Click);
+            simpleActionItem.GroupCaption = "kApplicationMenu";
+            simpleActionItem.LargeImage = HydroDesktop.Main.Properties.Resources.plugin_32x32;
+            simpleActionItem.SmallImage = HydroDesktop.Main.Properties.Resources.plugin_16x16;
+            base.App.HeaderControl.Add(simpleActionItem);
         }
 
         void App_ExtensionsActivated(object sender, EventArgs e)
@@ -398,6 +404,11 @@
 
             if (latLongDisplay != null)
                 latLongDisplay.ShowCoordinates = showCoordinates;
+        }
+
+        private void OpenProjects_Click(object sender, EventArgs e)
+        {
+            ShowWelcomeScreen();
         }
     }
 }

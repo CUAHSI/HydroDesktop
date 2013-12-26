@@ -189,6 +189,7 @@ namespace HydroDesktop.Main
                     }
                 }
             }
+          
             if(allSampleProjects.Count >= 3)
             {
                 if (allSampleProjects.ElementAt(0).Name == "Europe Map" &&
@@ -200,6 +201,12 @@ namespace HydroDesktop.Main
                     allSampleProjects.Insert(2, europe);
                 }
             }
+
+            foreach (SampleProjectInfo p in allSampleProjects)
+            {
+                p.Name = p.Name + " (Template)";
+            }
+
             resultList.AddRange(allSampleProjects);
             return resultList;
         }

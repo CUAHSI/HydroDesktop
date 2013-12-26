@@ -32,24 +32,34 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeScreen));
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.lblProductVersion = new System.Windows.Forms.Label();
-            this.lstRecentProjects = new System.Windows.Forms.ListBox();
             this.bsRecentFiles = new System.Windows.Forms.BindingSource(this.components);
             this.groupBoxProject = new System.Windows.Forms.GroupBox();
             this.btnBrowseProject = new System.Windows.Forms.Button();
-            this.rbOpenExistingProject = new System.Windows.Forms.RadioButton();
-            this.rbEmptyProject = new System.Windows.Forms.RadioButton();
-            this.lstProjectTemplates = new System.Windows.Forms.ListBox();
-            this.rbNewProjectTemplate = new System.Windows.Forms.RadioButton();
             this.btnOK = new System.Windows.Forms.Button();
+            this.rbEmptyProject = new System.Windows.Forms.RadioButton();
+            this.lstProjectTemplates = new CustomListBox();
+            this.rbNewProjectTemplate = new System.Windows.Forms.RadioButton();
             this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.HelpButton = new System.Windows.Forms.Button();
             this.QuickStartButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.uxFeedSelection = new System.Windows.Forms.ComboBox();
+            this.btnInstall = new System.Windows.Forms.Button();
+            this.uxOnlineProjects = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.rbOpenExistingProject = new System.Windows.Forms.RadioButton();
+            this.lstRecentProjects = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -75,33 +85,21 @@
             this.lblProductVersion.TabIndex = 8;
             this.lblProductVersion.Text = "CUAHSI HydroDesktop 1.5.0";
             // 
-            // lstRecentProjects
-            // 
-            this.lstRecentProjects.FormattingEnabled = true;
-            this.lstRecentProjects.Location = new System.Drawing.Point(23, 145);
-            this.lstRecentProjects.Name = "lstRecentProjects";
-            this.lstRecentProjects.Size = new System.Drawing.Size(245, 56);
-            this.lstRecentProjects.TabIndex = 6;
-            this.lstRecentProjects.Click += new System.EventHandler(this.lstRecentProjects_Click);
-            // 
-            // bsRecentFiles
-            // 
-            this.bsRecentFiles.DataSource = this.lstRecentProjects.CustomTabOffsets;
-            // 
             // groupBoxProject
             // 
-            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxProject.Controls.Add(this.btnBrowseProject);
+            this.groupBoxProject.Controls.Add(this.btnOK);
             this.groupBoxProject.Controls.Add(this.rbOpenExistingProject);
             this.groupBoxProject.Controls.Add(this.rbEmptyProject);
             this.groupBoxProject.Controls.Add(this.lstProjectTemplates);
             this.groupBoxProject.Controls.Add(this.rbNewProjectTemplate);
             this.groupBoxProject.Controls.Add(this.lstRecentProjects);
-            this.groupBoxProject.Location = new System.Drawing.Point(208, 1);
+            this.groupBoxProject.Location = new System.Drawing.Point(6, 3);
             this.groupBoxProject.Name = "groupBoxProject";
-            this.groupBoxProject.Size = new System.Drawing.Size(274, 236);
+            this.groupBoxProject.Size = new System.Drawing.Size(288, 204);
             this.groupBoxProject.TabIndex = 13;
             this.groupBoxProject.TabStop = false;
             // 
@@ -109,7 +107,7 @@
             // 
             this.btnBrowseProject.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseProject.Image")));
             this.btnBrowseProject.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBrowseProject.Location = new System.Drawing.Point(138, 117);
+            this.btnBrowseProject.Location = new System.Drawing.Point(99, 14);
             this.btnBrowseProject.Name = "btnBrowseProject";
             this.btnBrowseProject.Size = new System.Drawing.Size(78, 22);
             this.btnBrowseProject.TabIndex = 5;
@@ -118,20 +116,21 @@
             this.btnBrowseProject.UseVisualStyleBackColor = true;
             this.btnBrowseProject.Click += new System.EventHandler(this.btnBrowseProject_Click);
             // 
-            // rbOpenExistingProject
+            // btnOK
             // 
-            this.rbOpenExistingProject.AutoSize = true;
-            this.rbOpenExistingProject.Location = new System.Drawing.Point(6, 120);
-            this.rbOpenExistingProject.Name = "rbOpenExistingProject";
-            this.rbOpenExistingProject.Size = new System.Drawing.Size(126, 17);
-            this.rbOpenExistingProject.TabIndex = 4;
-            this.rbOpenExistingProject.Text = "Open Existing Project";
-            this.rbOpenExistingProject.UseVisualStyleBackColor = true;
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Location = new System.Drawing.Point(207, 175);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 8;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // rbEmptyProject
             // 
             this.rbEmptyProject.AutoSize = true;
-            this.rbEmptyProject.Location = new System.Drawing.Point(6, 213);
+            this.rbEmptyProject.Location = new System.Drawing.Point(6, 176);
             this.rbEmptyProject.Name = "rbEmptyProject";
             this.rbEmptyProject.Size = new System.Drawing.Size(149, 17);
             this.rbEmptyProject.TabIndex = 7;
@@ -141,9 +140,9 @@
             // lstProjectTemplates
             // 
             this.lstProjectTemplates.FormattingEnabled = true;
-            this.lstProjectTemplates.Location = new System.Drawing.Point(23, 42);
+            this.lstProjectTemplates.Location = new System.Drawing.Point(20, 42);
             this.lstProjectTemplates.Name = "lstProjectTemplates";
-            this.lstProjectTemplates.Size = new System.Drawing.Size(245, 69);
+            this.lstProjectTemplates.Size = new System.Drawing.Size(262, 121);
             this.lstProjectTemplates.TabIndex = 3;
             // 
             // rbNewProjectTemplate
@@ -152,22 +151,11 @@
             this.rbNewProjectTemplate.Checked = true;
             this.rbNewProjectTemplate.Location = new System.Drawing.Point(6, 19);
             this.rbNewProjectTemplate.Name = "rbNewProjectTemplate";
-            this.rbNewProjectTemplate.Size = new System.Drawing.Size(190, 17);
+            this.rbNewProjectTemplate.Size = new System.Drawing.Size(87, 17);
             this.rbNewProjectTemplate.TabIndex = 2;
             this.rbNewProjectTemplate.TabStop = true;
-            this.rbNewProjectTemplate.Text = "Create New Project From Template";
+            this.rbNewProjectTemplate.Text = "Open Project";
             this.rbNewProjectTemplate.UseVisualStyleBackColor = true;
-            // 
-            // btnOK
-            // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(407, 243);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 8;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // lblProgress
             // 
@@ -184,11 +172,11 @@
             // 
             // panelStatus
             // 
-            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelStatus.Location = new System.Drawing.Point(8, 243);
+            this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelStatus.Location = new System.Drawing.Point(8, 232);
             this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(393, 23);
+            this.panelStatus.Size = new System.Drawing.Size(431, 23);
             this.panelStatus.TabIndex = 17;
             // 
             // HelpButton
@@ -225,19 +213,120 @@
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(212, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(308, 239);
+            this.tabControl1.TabIndex = 20;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBoxProject);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(300, 213);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Projects";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.uxFeedSelection);
+            this.tabPage2.Controls.Add(this.btnInstall);
+            this.tabPage2.Controls.Add(this.uxOnlineProjects);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(300, 213);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Online";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // uxFeedSelection
+            // 
+            this.uxFeedSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxFeedSelection.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxFeedSelection.FormattingEnabled = true;
+            this.uxFeedSelection.Items.AddRange(new object[] {
+            "Official Sample Projects",
+            "User Uploaded Sample Projects"});
+            this.uxFeedSelection.Location = new System.Drawing.Point(246, 6);
+            this.uxFeedSelection.Name = "uxFeedSelection";
+            this.uxFeedSelection.Size = new System.Drawing.Size(179, 23);
+            this.uxFeedSelection.TabIndex = 16;
+            this.uxFeedSelection.Visible = false;
+            // 
+            // btnInstall
+            // 
+            this.btnInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInstall.Enabled = false;
+            this.btnInstall.Location = new System.Drawing.Point(222, 186);
+            this.btnInstall.Name = "btnInstall";
+            this.btnInstall.Size = new System.Drawing.Size(72, 23);
+            this.btnInstall.TabIndex = 7;
+            this.btnInstall.Text = "Install";
+            this.btnInstall.UseVisualStyleBackColor = true;
+            this.btnInstall.Click += new System.EventHandler(this.btnOKOnline_Click);
+            // 
+            // uxOnlineProjects
+            // 
+            this.uxOnlineProjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxOnlineProjects.FormattingEnabled = true;
+            this.uxOnlineProjects.Location = new System.Drawing.Point(6, 35);
+            this.uxOnlineProjects.Name = "uxOnlineProjects";
+            this.uxOnlineProjects.Size = new System.Drawing.Size(288, 147);
+            this.uxOnlineProjects.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(231, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Please select an online sample project to install:";
+            // 
+            // rbOpenExistingProject
+            // 
+            this.rbOpenExistingProject.AutoSize = true;
+            this.rbOpenExistingProject.Location = new System.Drawing.Point(506, 112);
+            this.rbOpenExistingProject.Name = "rbOpenExistingProject";
+            this.rbOpenExistingProject.Size = new System.Drawing.Size(126, 17);
+            this.rbOpenExistingProject.TabIndex = 4;
+            this.rbOpenExistingProject.Text = "Open Existing Project";
+            this.rbOpenExistingProject.UseVisualStyleBackColor = true;
+            this.rbOpenExistingProject.Visible = false;
+            // 
+            // lstRecentProjects
+            // 
+            this.lstRecentProjects.FormattingEnabled = true;
+            this.lstRecentProjects.Location = new System.Drawing.Point(503, 147);
+            this.lstRecentProjects.Name = "lstRecentProjects";
+            this.lstRecentProjects.Size = new System.Drawing.Size(245, 56);
+            this.lstRecentProjects.TabIndex = 6;
+            this.lstRecentProjects.Visible = false;
+            this.lstRecentProjects.Click += new System.EventHandler(this.lstRecentProjects_Click);
+            // 
             // WelcomeScreen
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Snow;
-            this.ClientSize = new System.Drawing.Size(494, 274);
+            this.ClientSize = new System.Drawing.Size(532, 263);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.HelpButton);
             this.Controls.Add(this.QuickStartButton);
             this.Controls.Add(this.panelStatus);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.groupBoxProject);
             this.Controls.Add(this.lblProductVersion);
             this.Controls.Add(this.checkBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -252,6 +341,10 @@
             this.groupBoxProject.ResumeLayout(false);
             this.groupBoxProject.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,10 +354,8 @@
 
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label lblProductVersion;
-        private System.Windows.Forms.ListBox lstRecentProjects;
         private System.Windows.Forms.BindingSource bsRecentFiles;
         private System.Windows.Forms.GroupBox groupBoxProject;
-        private System.Windows.Forms.RadioButton rbOpenExistingProject;
         private System.Windows.Forms.RadioButton rbEmptyProject;
         private System.Windows.Forms.ListBox lstProjectTemplates;
         private System.Windows.Forms.RadioButton rbNewProjectTemplate;
@@ -276,5 +367,14 @@
         private System.Windows.Forms.Button QuickStartButton;
         private System.Windows.Forms.Button HelpButton;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox uxFeedSelection;
+        private System.Windows.Forms.ListBox uxOnlineProjects;
+        private System.Windows.Forms.Button btnInstall;
+        private System.Windows.Forms.RadioButton rbOpenExistingProject;
+        private System.Windows.Forms.ListBox lstRecentProjects;
     }
 }
