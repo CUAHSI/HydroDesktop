@@ -35,6 +35,7 @@
             this.cbTheme = new System.Windows.Forms.ComboBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.lblDownloading = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnDownload
@@ -92,6 +93,7 @@
             this.btnClose.TabIndex = 6;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnAdd
             // 
@@ -104,11 +106,22 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // lblDownloading
+            // 
+            this.lblDownloading.AutoSize = true;
+            this.lblDownloading.Location = new System.Drawing.Point(99, 23);
+            this.lblDownloading.Name = "lblDownloading";
+            this.lblDownloading.Size = new System.Drawing.Size(78, 13);
+            this.lblDownloading.TabIndex = 1;
+            this.lblDownloading.Text = "Downloading...";
+            this.lblDownloading.Visible = false;
+            // 
             // WMLDownloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 214);
+            this.Controls.Add(this.lblDownloading);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblVariable);
@@ -116,8 +129,12 @@
             this.Controls.Add(this.tbTimeSeriesUrl);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDownload);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "WMLDownloadForm";
-            this.Text = "WMLDownloadForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "WaterML2 Download Form";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +149,6 @@
         private System.Windows.Forms.ComboBox cbTheme;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Label lblDownloading;
     }
 }
