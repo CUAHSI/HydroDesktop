@@ -68,8 +68,7 @@
             simpleActionItem.LargeImage = HydroDesktop.Main.Properties.Resources.plugin_32x32;
             simpleActionItem.SmallImage = HydroDesktop.Main.Properties.Resources.plugin_16x16;
             base.App.HeaderControl.Add(simpleActionItem);
-            base.App.HeaderControl.RemoveAll();
-    
+     
         }
 
         void App_ExtensionsActivated(object sender, EventArgs e)
