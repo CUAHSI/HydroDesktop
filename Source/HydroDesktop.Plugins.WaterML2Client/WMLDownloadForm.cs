@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterML;
-using HydroDesktop.WebServices.WaterOneFlow;
 
 namespace HydroDesktop.Plugins.WaterML2Client
 {
     public partial class WMLDownloadForm : Form
     {
         private string _file;
+        private Thread _workerThread;
 
         public WMLDownloadForm()
         {
@@ -31,29 +28,93 @@ namespace HydroDesktop.Plugins.WaterML2Client
             cbTheme.ValueMember = "Id";
         }
 
+        private void SetControlsForDownloading(bool downloading)
+        {
+            tbTimeSeriesUrl.Enabled = !downloading;
+            cbTheme.Enabled = !downloading;
+            btnAdd.Enabled = !downloading;
+            btnClose.Enabled = !downloading;
+
+            if (!downloading)
+            {
+                btnDownload.Text = "Download";
+                lblDownloading.Visible = false;
+            }
+            else
+            {
+                btnDownload.Text = "Cancel";
+                lblDownloading.Visible = true;
+            }
+        }
+
         private void btnDownload_Click(object sender, EventArgs e)
         {
+            var wt = _workerThread;
+            if (wt != null)
+            {
+                wt.Abort();
+                return;
+            }
+
             var url = tbTimeSeriesUrl.Text;
             if (String.IsNullOrEmpty(url))
             {
                 MessageBox.Show(this, "Not valid url.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            
-            using (var wb = new WebClient())
+
+            SetControlsForDownloading(true);
+            var bw = new BackgroundWorker();
+            bw.DoWork += delegate(object s, DoWorkEventArgs args)
             {
-                try
+                _workerThread = new Thread((ThreadStart) delegate
                 {
-                    var file = Path.GetTempFileName();
-                    wb.DownloadFile(tbTimeSeriesUrl.Text, file);
-                    _file = file;
-                    MessageBox.Show(this, "File downloaded.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
+                    try
+                    {
+                        using (var wb = new WebClient())
+                        {
+                            var file = Path.GetTempFileName();
+                            wb.DownloadFile(tbTimeSeriesUrl.Text, file);
+                            args.Result = file;
+                        }
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        args.Cancel = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        args.Result = ex;
+                    }
+                });
+                _workerThread.Start();
+                _workerThread.Join();
+            };
+            bw.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
+            {
+                _workerThread = null;
+                SetControlsForDownloading(false);
+
+                if (args.Cancelled)
                 {
-                    MessageBox.Show(this, ex.Message, "Download failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "Cancelled.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            }
+                else
+                {
+                    var ex = args.Result as Exception ?? args.Error;
+                    if (ex != null)
+                    {
+                        MessageBox.Show(this, ex.Message, "Download failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        _file = (string) args.Result;
+                        MessageBox.Show(this, "File downloaded.", "Information", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                }
+            };
+            bw.RunWorkerAsync();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -83,12 +144,27 @@ namespace HydroDesktop.Plugins.WaterML2Client
                 return;
             }
 
-            var db = RepositoryFactory.Instance.Get<IRepositoryManager>();
-            var theme = new Theme(themeName);
-            foreach (var series in seriesList)
+            try
             {
-                db.SaveSeries(series, theme, OverwriteOptions.Copy);
+                var db = RepositoryFactory.Instance.Get<IRepositoryManager>();
+                var theme = new Theme(themeName);
+                foreach (var series in seriesList)
+                {
+                    db.SaveSeries(series, theme, OverwriteOptions.Copy);
+                }
+                MessageBox.Show(this, "Saved.", "Information", MessageBoxButtons.OK,
+                           MessageBoxIcon.Information);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

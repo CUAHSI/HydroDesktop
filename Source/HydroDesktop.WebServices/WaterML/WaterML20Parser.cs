@@ -129,6 +129,30 @@ namespace HydroDesktop.WebServices.WaterML
                     }
                 }
             }
+            
+            // Set variable
+            var varInfo = new Variable
+            {
+                Speciation = "Not Applicable",
+                DataType = "Unknown",
+                GeneralCategory = "Unknown",
+                SampleMedium = "Unknown",
+                ValueType = "Unknown",
+                TimeUnit = Unit.UnknownTimeUnit,
+                VariableUnit = Unit.Unknown,
+                Code = "Unknown",
+                Name = "Unknown",
+                NoDataValue = -9999
+            };
+            series.Variable = varInfo;
+
+            // Set site
+            var site = new Site
+            {
+                Name = "Unknown",
+                Code = "Unknown"
+            };
+            series.Site = site;
 
             //ensure that properties are re-calculated
             series.UpdateSeriesInfoFromDataValues();

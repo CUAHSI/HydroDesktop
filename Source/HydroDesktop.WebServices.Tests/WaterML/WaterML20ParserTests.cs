@@ -17,7 +17,11 @@ namespace HydroDesktop.WebServices.Tests.WaterML
             var target = new WaterML20Parser();
             var series = target.ParseGetValues(xmlFile);
             Assert.IsTrue(series.Count > 0);
-            Assert.AreEqual(valuesCount, series[0].DataValueList.Count);
+
+            var s = series[0];
+            Assert.AreEqual(valuesCount, s.DataValueList.Count);
+            Assert.IsNotNull(s.Site);
+            Assert.IsNotNull(s.Variable);
         }
     }
 }
