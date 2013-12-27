@@ -312,6 +312,7 @@
     <Content Include="Resources\plugin_disabled_32x32.png" />
     <Content Include="Resources\printer_16x16.png" />
     <Content Include="Resources\printer_32x32.png" />
+    <None Include="Resources\recent_project.png" />
     <Content Include="Resources\save_as_16x16.png" />
     <Content Include="Resources\save_as_32x32.png" />
     <Content Include="Resources\select_16x16.png" />
@@ -319,6 +320,7 @@
     <Content Include="Resources\table_16x16.png" />
     <Content Include="Resources\table_32x32.png" />
     <None Include="Resources\welcomeLogo5.png" />
+    <None Include="Resources\Template.png" />
     <Content Include="Resources\zoom_16x16.png" />
     <Content Include="Resources\zoom_32x32.png" />
     <Content Include="Resources\zoom_coordinate_16x16.png" />

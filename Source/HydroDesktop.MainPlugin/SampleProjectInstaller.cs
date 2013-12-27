@@ -202,11 +202,6 @@ namespace HydroDesktop.Main
                 }
             }
 
-            foreach (SampleProjectInfo p in allSampleProjects)
-            {
-                p.Name = p.Name + " (Template)";
-            }
-
             resultList.AddRange(allSampleProjects);
             return resultList;
         }

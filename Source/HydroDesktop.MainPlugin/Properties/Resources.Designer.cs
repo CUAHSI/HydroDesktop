@@ -123,6 +123,16 @@ namespace HydroDesktop.Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap recent_project {
+            get {
+                object obj = ResourceManager.GetObject("recent_project", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap table_16x16 {
             get {
                 object obj = ResourceManager.GetObject("table_16x16", resourceCulture);
@@ -136,6 +146,16 @@ namespace HydroDesktop.Main.Properties {
         internal static System.Drawing.Bitmap table_32x32 {
             get {
                 object obj = ResourceManager.GetObject("table_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Template {
+            get {
+                object obj = ResourceManager.GetObject("Template", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

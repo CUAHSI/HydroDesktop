@@ -684,12 +684,19 @@ namespace HydroDesktop.Main
             {
                 // The item is selected.
                 // We want a blue background color.
-                e.Graphics.FillRectangle(new SolidBrush(Color.Blue), e.Bounds);
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(51, 153, 255)), e.Bounds);
                 // Draw the item.
                 string text = item.Name;
                 SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
                 e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.White),
-                    new PointF(3, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+                if (!(item is ProjectFileInfo))
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
+                else {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
             }
             else
             {
@@ -700,7 +707,15 @@ namespace HydroDesktop.Main
                 string text = item.Name;
                 SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
                 e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Black),
-                    new PointF(3, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+                if (!(item is ProjectFileInfo))
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
+                else
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
             }
 
            
