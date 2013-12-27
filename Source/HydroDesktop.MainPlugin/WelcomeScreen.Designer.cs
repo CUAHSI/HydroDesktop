@@ -49,6 +49,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnUninstall = new System.Windows.Forms.Button();
             this.uxFeedSelection = new System.Windows.Forms.ComboBox();
             this.btnInstall = new System.Windows.Forms.Button();
             this.uxOnlineProjects = new System.Windows.Forms.ListBox();
@@ -79,7 +80,7 @@
             // lblProductVersion
             // 
             this.lblProductVersion.AutoSize = true;
-            this.lblProductVersion.Location = new System.Drawing.Point(41, 83);
+            this.lblProductVersion.Location = new System.Drawing.Point(41, 75);
             this.lblProductVersion.Name = "lblProductVersion";
             this.lblProductVersion.Size = new System.Drawing.Size(145, 13);
             this.lblProductVersion.TabIndex = 8;
@@ -100,7 +101,7 @@
             this.groupBoxProject.Controls.Add(this.lstRecentProjects);
             this.groupBoxProject.Location = new System.Drawing.Point(-4, -9);
             this.groupBoxProject.Name = "groupBoxProject";
-            this.groupBoxProject.Size = new System.Drawing.Size(308, 226);
+            this.groupBoxProject.Size = new System.Drawing.Size(308, 238);
             this.groupBoxProject.TabIndex = 13;
             this.groupBoxProject.TabStop = false;
             // 
@@ -108,7 +109,7 @@
             // 
             this.btnBrowseProject.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseProject.Image")));
             this.btnBrowseProject.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBrowseProject.Location = new System.Drawing.Point(99, 22);
+            this.btnBrowseProject.Location = new System.Drawing.Point(99, 18);
             this.btnBrowseProject.Name = "btnBrowseProject";
             this.btnBrowseProject.Size = new System.Drawing.Size(78, 22);
             this.btnBrowseProject.TabIndex = 5;
@@ -120,7 +121,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(226, 197);
+            this.btnOK.Location = new System.Drawing.Point(217, 187);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 8;
@@ -153,7 +154,7 @@
             // 
             this.rbNewProjectTemplate.AutoSize = true;
             this.rbNewProjectTemplate.Checked = true;
-            this.rbNewProjectTemplate.Location = new System.Drawing.Point(6, 24);
+            this.rbNewProjectTemplate.Location = new System.Drawing.Point(6, 21);
             this.rbNewProjectTemplate.Name = "rbNewProjectTemplate";
             this.rbNewProjectTemplate.Size = new System.Drawing.Size(87, 17);
             this.rbNewProjectTemplate.TabIndex = 2;
@@ -188,16 +189,16 @@
             // 
             this.panelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelStatus.Location = new System.Drawing.Point(8, 232);
+            this.panelStatus.Location = new System.Drawing.Point(8, 221);
             this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(431, 23);
+            this.panelStatus.Size = new System.Drawing.Size(423, 23);
             this.panelStatus.TabIndex = 17;
             // 
             // HelpButton
             // 
             this.HelpButton.Image = ((System.Drawing.Image)(resources.GetObject("HelpButton.Image")));
             this.HelpButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.HelpButton.Location = new System.Drawing.Point(22, 165);
+            this.HelpButton.Location = new System.Drawing.Point(20, 164);
             this.HelpButton.Name = "HelpButton";
             this.HelpButton.Size = new System.Drawing.Size(171, 30);
             this.HelpButton.TabIndex = 18;
@@ -210,7 +211,7 @@
             // 
             this.QuickStartButton.Image = ((System.Drawing.Image)(resources.GetObject("QuickStartButton.Image")));
             this.QuickStartButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.QuickStartButton.Location = new System.Drawing.Point(22, 121);
+            this.QuickStartButton.Location = new System.Drawing.Point(20, 121);
             this.QuickStartButton.Name = "QuickStartButton";
             this.QuickStartButton.Size = new System.Drawing.Size(171, 30);
             this.QuickStartButton.TabIndex = 9;
@@ -221,7 +222,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::HydroDesktop.Main.Properties.Resources.welcomeLogo5;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 36);
+            this.pictureBox1.Location = new System.Drawing.Point(8, 35);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(198, 41);
             this.pictureBox1.TabIndex = 19;
@@ -234,7 +235,7 @@
             this.tabControl1.Location = new System.Drawing.Point(212, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(308, 239);
+            this.tabControl1.Size = new System.Drawing.Size(308, 235);
             this.tabControl1.TabIndex = 20;
             // 
             // tabPage1
@@ -244,13 +245,14 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(300, 213);
+            this.tabPage1.Size = new System.Drawing.Size(300, 209);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Projects";
             // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Snow;
+            this.tabPage2.Controls.Add(this.btnUninstall);
             this.tabPage2.Controls.Add(this.uxFeedSelection);
             this.tabPage2.Controls.Add(this.btnInstall);
             this.tabPage2.Controls.Add(this.uxOnlineProjects);
@@ -258,9 +260,22 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(300, 213);
+            this.tabPage2.Size = new System.Drawing.Size(300, 209);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Online";
+            // 
+            // btnUninstall
+            // 
+            this.btnUninstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUninstall.Enabled = false;
+            this.btnUninstall.Location = new System.Drawing.Point(213, 178);
+            this.btnUninstall.Name = "btnUninstall";
+            this.btnUninstall.Size = new System.Drawing.Size(75, 23);
+            this.btnUninstall.TabIndex = 6;
+            this.btnUninstall.Text = "Uninstall";
+            this.btnUninstall.UseVisualStyleBackColor = true;
+            this.btnUninstall.Visible = false;
+            this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
             // 
             // uxFeedSelection
             // 
@@ -280,7 +295,7 @@
             // 
             this.btnInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInstall.Enabled = false;
-            this.btnInstall.Location = new System.Drawing.Point(222, 188);
+            this.btnInstall.Location = new System.Drawing.Point(213, 178);
             this.btnInstall.Name = "btnInstall";
             this.btnInstall.Size = new System.Drawing.Size(75, 23);
             this.btnInstall.TabIndex = 7;
@@ -294,9 +309,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxOnlineProjects.FormattingEnabled = true;
-            this.uxOnlineProjects.Location = new System.Drawing.Point(6, 35);
+            this.uxOnlineProjects.Location = new System.Drawing.Point(12, 35);
             this.uxOnlineProjects.Name = "uxOnlineProjects";
-            this.uxOnlineProjects.Size = new System.Drawing.Size(288, 147);
+            this.uxOnlineProjects.Size = new System.Drawing.Size(274, 134);
             this.uxOnlineProjects.TabIndex = 5;
             // 
             // label2
@@ -313,9 +328,9 @@
             this.lstProjectTemplates.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.lstProjectTemplates.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstProjectTemplates.FormattingEnabled = true;
-            this.lstProjectTemplates.Location = new System.Drawing.Point(20, 48);
+            this.lstProjectTemplates.Location = new System.Drawing.Point(16, 44);
             this.lstProjectTemplates.Name = "lstProjectTemplates";
-            this.lstProjectTemplates.Size = new System.Drawing.Size(262, 134);
+            this.lstProjectTemplates.Size = new System.Drawing.Size(274, 134);
             this.lstProjectTemplates.TabIndex = 3;
             // 
             // WelcomeScreen
@@ -324,7 +339,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Snow;
-            this.ClientSize = new System.Drawing.Size(532, 263);
+            this.ClientSize = new System.Drawing.Size(524, 252);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.HelpButton);
@@ -378,6 +393,7 @@
         private System.Windows.Forms.Button btnInstall;
         private System.Windows.Forms.RadioButton rbOpenExistingProject;
         private System.Windows.Forms.ListBox lstRecentProjects;
+        private System.Windows.Forms.Button btnUninstall;
         private CustomListBox lstProjectTemplates;
     }
 }

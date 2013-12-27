@@ -261,11 +261,6 @@ namespace HydroDesktop.Main
 
             
             SampleProjects = sampleProjects2;
-            
-
-            //lstProjectTemplates.DataSource = SampleProjects;
-           // lstProjectTemplates.DisplayMember = "Name";
-
             FindRecentProjectFiles();
 
             IEnumerable<ISampleProject> sampleProjects3 = new List<ISampleProject>();
@@ -394,7 +389,33 @@ namespace HydroDesktop.Main
 
         private void UpdateInstalledProjectsList()
         {
-           
+
+            this.SampleProjects = this.FindSampleProjectFiles();
+            if (!NuGet.EnumerableExtensions.Any<SampleProjectInfo>(((List<SampleProjectInfo>)this.SampleProjects)))
+            {
+                if (RecentProjectFiles.Count == 0)
+                {
+                    this.lstProjectTemplates.DataSource = null;
+                    this.lstProjectTemplates.Items.Add("No projects were found. Please install the online templates.");
+                    return;
+                }
+            }
+            SampleProjectInstaller spi = new SampleProjectInstaller();
+            List<SampleProjectInfo> sampleProjects1 = spi.FindSampleProjectFiles();
+
+            IEnumerable<ISampleProject> sampleProjects2 = spi.SetupInstalledSampleProjects(sampleProjects1);
+            SampleProjects = sampleProjects2;
+
+            FindRecentProjectFiles();
+            IEnumerable<ISampleProject> sampleProjects3 = new List<ISampleProject>();
+            ((List<ISampleProject>)sampleProjects3).AddRange(SampleProjects);
+            ((List<ISampleProject>)sampleProjects3).AddRange(RecentProjectFiles);
+            SampleProjects = sampleProjects3;
+
+            this.lstProjectTemplates.DataSource = this.SampleProjects;
+            this.lstProjectTemplates.DisplayMember = "Name";
+            this.uxOnlineProjects.SelectedIndex = 0;
+            this.btnInstall.Enabled = true;
         }
 
         private IEnumerable<SampleProjectInfo> FindSampleProjectFiles()
@@ -414,18 +435,6 @@ namespace HydroDesktop.Main
                 }
             }
             return list;
-        }
-
-        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string feedUrl;
-            if (uxFeedSelection.SelectedIndex == 1)
-                feedUrl = "https://nuget.org/api/v2/";
-            else
-                feedUrl = "https://www.myget.org/F/cuahsi/";
-
-            packages.SetNewSource(feedUrl);
-            this.UpdatePackageList();
         }
 
         private void UpdatePackageList()
@@ -450,7 +459,80 @@ namespace HydroDesktop.Main
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        private void UninstallSampleProject(SampleProjectInfo sample)
+        {
+            if (this._app.SerializationManager.CurrentProjectFile == sample.AbsolutePathToProjectFile)
+            {
+                MessageBox.Show("Cannot uninstall " + sample.Name + ". The project is currently open. Please close current project and try again.");
+                return;
+            }
+            string directoryName = Path.GetDirectoryName(sample.AbsolutePathToProjectFile);
+            DirectoryInfo parent = Directory.GetParent(directoryName);
+            try
+            {
+                foreach (string current in Directory.EnumerateFiles(directoryName))
+                {
+                    File.Delete(current);
+                }
+                Directory.Delete(directoryName);
+                FileInfo[] files = parent.GetFiles();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    FileInfo fileInfo = files[i];
+                    fileInfo.Delete();
+                }
+                if (!NuGet.EnumerableExtensions.Any<DirectoryInfo>(parent.GetDirectories()) && !NuGet.EnumerableExtensions.Any<FileInfo>(parent.GetFiles()))
+                {
+                    parent.Delete();
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Some files could not be uninstalled. " + ex.Message);
+            }
+            MessageBox.Show("The project was successfully uninstalled.");
+        }
         #endregion
+
+        private void btnUninstall_Click(object sender, EventArgs e)
+        {
+            SampleProjectInfo sample = findTemplate(this.uxOnlineProjects.SelectedItem as IPackage);
+            //SampleProjectInfo sample = this.lstProjectTemplates.SelectedItem as SampleProjectInfo;
+           // IPackage package = this.uxOnlineProjects.SelectedItem as IPackage;
+          
+            this.UninstallSampleProject(sample);
+            this.UpdateInstalledProjectsList();
+            int temp = uxOnlineProjects.SelectedIndex;
+            this.uxOnlineProjects.SelectedIndex = temp + 1;
+            this.uxOnlineProjects.SelectedIndex = temp;
+        }
+
+        private SampleProjectInfo findTemplate(IPackage package)
+        {
+            string packagePath = GetPackagePath(package);
+            List<SampleProjectInfo> projectTemplates = this.FindSampleProjectFiles() as List<SampleProjectInfo>; 
+            foreach (SampleProjectInfo p in projectTemplates)
+            {
+                if(p.AbsolutePathToProjectFile.Contains(packagePath)) 
+                {
+                    return p;
+                }
+            }
+            
+            return null;
+        }
+
+        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string feedUrl;
+            if (uxFeedSelection.SelectedIndex == 1)
+                feedUrl = "https://nuget.org/api/v2/";
+            else
+                feedUrl = "https://www.myget.org/F/cuahsi/";
+
+            packages.SetNewSource(feedUrl);
+            this.UpdatePackageList();
+        }
 
         private void lstRecentProjects_Click(object sender, EventArgs e)
         {
@@ -566,20 +648,33 @@ namespace HydroDesktop.Main
             if (this.uxOnlineProjects.Items.Count == 0)
             {
                 this.btnInstall.Enabled = false;
+                this.btnInstall.Visible = true;
+                this.btnUninstall.Enabled = false;
+                this.btnUninstall.Visible = false;
                 return;
             }
             IPackage package = this.uxOnlineProjects.SelectedItem as IPackage;
             if (package == null)
             {
+       
                 this.btnInstall.Enabled = false;
+                this.btnInstall.Visible = true;
+                this.btnUninstall.Enabled = false;
+                this.btnUninstall.Visible = false;
                 return;
             }
             if (IsPackageInstalled(package))
             {
+                this.btnInstall.Visible = false;
                 this.btnInstall.Enabled = false;
+                this.btnUninstall.Enabled = true;
+                this.btnUninstall.Visible = true;
                 return;
             }
+            this.btnInstall.Visible = true;
             this.btnInstall.Enabled = true;
+            this.btnUninstall.Enabled = false;
+            this.btnUninstall.Visible = false;
         }
         private static bool IsPackageInstalled(IPackage pack)
         {
