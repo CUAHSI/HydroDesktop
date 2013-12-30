@@ -64,7 +64,7 @@
             base.Activate();
 
             //Used for adding the new Welcome form to the menu.  The new Welcome form will replace the "Open sample project..." form.
-            SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Projects..", OpenProjects_Click);
+            SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Projects...", OpenProjects_Click);
             simpleActionItem.GroupCaption = "kApplicationMenu";
             simpleActionItem.LargeImage = HydroDesktop.Main.Properties.Resources.logo_32x32;
             simpleActionItem.SmallImage = HydroDesktop.Main.Properties.Resources.logo_16x16;
