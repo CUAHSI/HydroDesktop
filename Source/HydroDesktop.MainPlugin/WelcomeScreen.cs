@@ -676,7 +676,7 @@ namespace HydroDesktop.Main
             this.btnUninstall.Enabled = false;
             this.btnUninstall.Visible = false;
         }
-        private static bool IsPackageInstalled(IPackage pack)
+        public static bool IsPackageInstalled(IPackage pack)
         {
             string packagePath = GetPackagePath(pack);
 
@@ -759,7 +759,7 @@ namespace HydroDesktop.Main
         public CustomListBox()
         {
             this.DrawMode = DrawMode.OwnerDrawVariable; // We're using custom drawing.
-            this.ItemHeight = 13; // Set the item height to 40.
+            this.ItemHeight = 14; // Set the item height to 40.
         }
 
         protected override void OnDrawItem(DrawItemEventArgs e)
@@ -787,10 +787,10 @@ namespace HydroDesktop.Main
                     new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
                 if (!(item is ProjectFileInfo))
                 {
-                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
                 }
                 else {
-                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
                 }
             }
             else
@@ -805,15 +805,89 @@ namespace HydroDesktop.Main
                     new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
                 if (!(item is ProjectFileInfo))
                 {
-                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
                 }
                 else
                 {
-                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
                 }
             }
 
            
+        }
+    }
+
+    public class OnlineListBox : ListBox
+    {
+        public OnlineListBox()
+        {
+            this.DrawMode = DrawMode.OwnerDrawVariable; // We're using custom drawing.
+            this.ItemHeight = 14; // Set the item height to 40.
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            // Make sure we're not trying to draw something that isn't there.
+            if (e.Index >= this.Items.Count || e.Index <= -1)
+                return;
+
+            // Get the item object.
+            string loading = this.Items[e.Index] as string;
+            if(loading != null) 
+            {
+                SizeF stringSize = e.Graphics.MeasureString(loading, this.Font);
+                e.Graphics.DrawString(loading, this.Font, new SolidBrush(Color.Black),
+                    new PointF(0, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+            }
+            else 
+            {
+            IPackage item = (IPackage)this.Items[e.Index];
+            if (item == null)
+                return;
+
+            // Draw the background color depending on 
+            // if the item is selected or not.
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                // The item is selected.
+                // We want a blue background color.
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(51, 153, 255)), e.Bounds);
+                // Draw the item.
+                string text = item.ToString();
+                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
+                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.White),
+                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+                if (HydroDesktop.Main.WelcomeScreen.IsPackageInstalled(item))
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.check_mark, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
+                else
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.download, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
+            }
+            else
+            {
+                // The item is NOT selected.
+                // We want a white background color.
+                e.Graphics.FillRectangle(new SolidBrush(Color.White), e.Bounds);
+                // Draw the item.
+                string text = item.ToString();
+                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
+                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Black),
+                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+                if (HydroDesktop.Main.WelcomeScreen.IsPackageInstalled(item))
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.check_mark, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
+                else
+                {
+                    e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.download, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
+                }
+            }
+
+
+        }
         }
     }
 

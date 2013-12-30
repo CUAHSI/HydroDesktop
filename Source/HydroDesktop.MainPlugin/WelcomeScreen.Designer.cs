@@ -52,9 +52,9 @@
             this.btnUninstall = new System.Windows.Forms.Button();
             this.uxFeedSelection = new System.Windows.Forms.ComboBox();
             this.btnInstall = new System.Windows.Forms.Button();
-            this.uxOnlineProjects = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lstProjectTemplates = new HydroDesktop.Main.CustomListBox();
+            this.uxOnlineProjects = new HydroDesktop.Main.OnlineListBox();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -255,8 +255,8 @@
             this.tabPage2.Controls.Add(this.btnUninstall);
             this.tabPage2.Controls.Add(this.uxFeedSelection);
             this.tabPage2.Controls.Add(this.btnInstall);
-            this.tabPage2.Controls.Add(this.uxOnlineProjects);
             this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.uxOnlineProjects);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -303,35 +303,39 @@
             this.btnInstall.UseVisualStyleBackColor = true;
             this.btnInstall.Click += new System.EventHandler(this.btnOKOnline_Click);
             // 
-            // uxOnlineProjects
-            // 
-            this.uxOnlineProjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxOnlineProjects.FormattingEnabled = true;
-            this.uxOnlineProjects.Location = new System.Drawing.Point(12, 35);
-            this.uxOnlineProjects.Name = "uxOnlineProjects";
-            this.uxOnlineProjects.Size = new System.Drawing.Size(274, 134);
-            this.uxOnlineProjects.TabIndex = 5;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(9, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(231, 13);
+            this.label2.Size = new System.Drawing.Size(211, 13);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Please select an online sample project to install:";
+            this.label2.Text = "Please select a project to install or uninstall:";
             // 
             // lstProjectTemplates
             // 
             this.lstProjectTemplates.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.lstProjectTemplates.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstProjectTemplates.FormattingEnabled = true;
+            this.lstProjectTemplates.ItemHeight = 14;
             this.lstProjectTemplates.Location = new System.Drawing.Point(16, 44);
             this.lstProjectTemplates.Name = "lstProjectTemplates";
             this.lstProjectTemplates.Size = new System.Drawing.Size(274, 134);
             this.lstProjectTemplates.TabIndex = 3;
+            // 
+            // uxOnlineProjects
+            // 
+            this.uxOnlineProjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxOnlineProjects.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.uxOnlineProjects.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxOnlineProjects.FormattingEnabled = true;
+            this.uxOnlineProjects.ItemHeight = 14;
+            this.uxOnlineProjects.Location = new System.Drawing.Point(12, 35);
+            this.uxOnlineProjects.Name = "uxOnlineProjects";
+            this.uxOnlineProjects.Size = new System.Drawing.Size(274, 134);
+            this.uxOnlineProjects.TabIndex = 5;
             // 
             // WelcomeScreen
             // 
@@ -389,7 +393,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox uxFeedSelection;
-        private System.Windows.Forms.ListBox uxOnlineProjects;
+        private OnlineListBox uxOnlineProjects;
         private System.Windows.Forms.Button btnInstall;
         private System.Windows.Forms.RadioButton rbOpenExistingProject;
         private System.Windows.Forms.ListBox lstRecentProjects;
