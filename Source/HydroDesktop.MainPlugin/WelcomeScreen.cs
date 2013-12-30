@@ -55,7 +55,6 @@ namespace HydroDesktop.Main
         public WelcomeScreen(ProjectManager projManager)
         {
             InitializeComponent();
-
             myProjectManager = projManager;
             lblProductVersion.Text = "CUAHSI HydroDesktop " + AppContext.Instance.ProductVersion;
             
@@ -75,6 +74,7 @@ namespace HydroDesktop.Main
             uxFeedSelection.SelectedIndexChanged += uxFeedSelection_SelectedIndexChanged;
             this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
             this.uxFeedSelection.SelectedIndex = 0;
+            downloadDialog.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         }
 
         #endregion
@@ -497,14 +497,15 @@ namespace HydroDesktop.Main
         private void btnUninstall_Click(object sender, EventArgs e)
         {
             SampleProjectInfo sample = findTemplate(this.uxOnlineProjects.SelectedItem as IPackage);
-            //SampleProjectInfo sample = this.lstProjectTemplates.SelectedItem as SampleProjectInfo;
-           // IPackage package = this.uxOnlineProjects.SelectedItem as IPackage;
-          
+           
             this.UninstallSampleProject(sample);
             this.UpdateInstalledProjectsList();
+
+            // This is used to refresh the view
             int temp = uxOnlineProjects.SelectedIndex;
-            this.uxOnlineProjects.SelectedIndex = temp + 1;
+            this.uxOnlineProjects.SelectedIndex += 1;
             this.uxOnlineProjects.SelectedIndex = temp;
+            
         }
 
         private SampleProjectInfo findTemplate(IPackage package)
@@ -640,7 +641,14 @@ namespace HydroDesktop.Main
                     }
                     this._app.ProgressHandler.Progress(null, 0, "Ready.");
                     downloadDialog.Visible = false;
+
+                    // This is used to refresh the view
+                    int temp = uxOnlineProjects.SelectedIndex;
+                    this.uxOnlineProjects.SelectedIndex = temp + 1;
+                    this.uxOnlineProjects.SelectedIndex = temp;
+
                 }, TaskScheduler.FromCurrentSynchronizationContext());
+             
             }
         }
         private void uxOnlineProjects_SelectedIndexChanged(object sender, EventArgs e)
@@ -789,7 +797,8 @@ namespace HydroDesktop.Main
                 {
                     e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
                 }
-                else {
+                else 
+                {
                     e.Graphics.DrawImage(HydroDesktop.Main.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
                 }
             }
