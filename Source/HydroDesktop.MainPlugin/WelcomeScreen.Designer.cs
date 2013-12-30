@@ -35,9 +35,10 @@
             this.bsRecentFiles = new System.Windows.Forms.BindingSource(this.components);
             this.groupBoxProject = new System.Windows.Forms.GroupBox();
             this.btnBrowseProject = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.btnOK = new HydroDesktop.Main.CustomButton();
             this.rbOpenExistingProject = new System.Windows.Forms.RadioButton();
             this.rbEmptyProject = new System.Windows.Forms.RadioButton();
+            this.lstProjectTemplates = new HydroDesktop.Main.CustomListBox();
             this.rbNewProjectTemplate = new System.Windows.Forms.RadioButton();
             this.lstRecentProjects = new System.Windows.Forms.ListBox();
             this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
@@ -49,11 +50,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnUninstall = new System.Windows.Forms.Button();
+            this.btnUninstall = new HydroDesktop.Main.CustomButton();
             this.uxFeedSelection = new System.Windows.Forms.ComboBox();
-            this.btnInstall = new System.Windows.Forms.Button();
+            this.btnInstall = new HydroDesktop.Main.CustomButton();
             this.label2 = new System.Windows.Forms.Label();
-            this.lstProjectTemplates = new HydroDesktop.Main.CustomListBox();
             this.uxOnlineProjects = new HydroDesktop.Main.OnlineListBox();
             ((System.ComponentModel.ISupportInitialize)(this.bsRecentFiles)).BeginInit();
             this.groupBoxProject.SuspendLayout();
@@ -120,13 +120,17 @@
             // 
             // btnOK
             // 
+            this.btnOK.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(217, 187);
+            this.btnOK.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnOK.Location = new System.Drawing.Point(215, 187);
             this.btnOK.Name = "btnOK";
+            this.btnOK.RoundCorners = ((HydroDesktop.Main.Corners)((((HydroDesktop.Main.Corners.TopLeft | HydroDesktop.Main.Corners.TopRight) 
+            | HydroDesktop.Main.Corners.BottomLeft) 
+            | HydroDesktop.Main.Corners.BottomRight)));
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 8;
             this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // rbOpenExistingProject
@@ -149,6 +153,17 @@
             this.rbEmptyProject.TabIndex = 7;
             this.rbEmptyProject.Text = "Create New Empty Project";
             this.rbEmptyProject.UseVisualStyleBackColor = true;
+            // 
+            // lstProjectTemplates
+            // 
+            this.lstProjectTemplates.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.lstProjectTemplates.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstProjectTemplates.FormattingEnabled = true;
+            this.lstProjectTemplates.ItemHeight = 14;
+            this.lstProjectTemplates.Location = new System.Drawing.Point(16, 44);
+            this.lstProjectTemplates.Name = "lstProjectTemplates";
+            this.lstProjectTemplates.Size = new System.Drawing.Size(274, 134);
+            this.lstProjectTemplates.TabIndex = 3;
             // 
             // rbNewProjectTemplate
             // 
@@ -267,13 +282,17 @@
             // btnUninstall
             // 
             this.btnUninstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUninstall.BackColor = System.Drawing.Color.FromArgb(217, 102, 89);
             this.btnUninstall.Enabled = false;
-            this.btnUninstall.Location = new System.Drawing.Point(213, 178);
+            this.btnUninstall.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnUninstall.Location = new System.Drawing.Point(211, 178);
             this.btnUninstall.Name = "btnUninstall";
+            this.btnUninstall.RoundCorners = ((HydroDesktop.Main.Corners)((((HydroDesktop.Main.Corners.TopLeft | HydroDesktop.Main.Corners.TopRight) 
+            | HydroDesktop.Main.Corners.BottomLeft) 
+            | HydroDesktop.Main.Corners.BottomRight)));
             this.btnUninstall.Size = new System.Drawing.Size(75, 23);
             this.btnUninstall.TabIndex = 6;
             this.btnUninstall.Text = "Uninstall";
-            this.btnUninstall.UseVisualStyleBackColor = true;
             this.btnUninstall.Visible = false;
             this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
             // 
@@ -294,13 +313,17 @@
             // btnInstall
             // 
             this.btnInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInstall.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.btnInstall.Enabled = false;
-            this.btnInstall.Location = new System.Drawing.Point(213, 178);
+            this.btnInstall.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnInstall.Location = new System.Drawing.Point(211, 178);
             this.btnInstall.Name = "btnInstall";
+            this.btnInstall.RoundCorners = ((HydroDesktop.Main.Corners)((((HydroDesktop.Main.Corners.TopLeft | HydroDesktop.Main.Corners.TopRight) 
+            | HydroDesktop.Main.Corners.BottomLeft) 
+            | HydroDesktop.Main.Corners.BottomRight)));
             this.btnInstall.Size = new System.Drawing.Size(75, 23);
             this.btnInstall.TabIndex = 7;
             this.btnInstall.Text = "Install";
-            this.btnInstall.UseVisualStyleBackColor = true;
             this.btnInstall.Click += new System.EventHandler(this.btnOKOnline_Click);
             // 
             // label2
@@ -311,17 +334,6 @@
             this.label2.Size = new System.Drawing.Size(211, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "Please select a project to install or uninstall:";
-            // 
-            // lstProjectTemplates
-            // 
-            this.lstProjectTemplates.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.lstProjectTemplates.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstProjectTemplates.FormattingEnabled = true;
-            this.lstProjectTemplates.ItemHeight = 14;
-            this.lstProjectTemplates.Location = new System.Drawing.Point(16, 44);
-            this.lstProjectTemplates.Name = "lstProjectTemplates";
-            this.lstProjectTemplates.Size = new System.Drawing.Size(274, 134);
-            this.lstProjectTemplates.TabIndex = 3;
             // 
             // uxOnlineProjects
             // 
@@ -380,7 +392,7 @@
         private System.Windows.Forms.GroupBox groupBoxProject;
         private System.Windows.Forms.RadioButton rbEmptyProject;
         private System.Windows.Forms.RadioButton rbNewProjectTemplate;
-        private System.Windows.Forms.Button btnOK;
+        private CustomButton btnOK;
         private System.Windows.Forms.Button btnBrowseProject;
         private System.Windows.Forms.ToolStripStatusLabel lblProgress;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
@@ -394,10 +406,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox uxFeedSelection;
         private OnlineListBox uxOnlineProjects;
-        private System.Windows.Forms.Button btnInstall;
+        private CustomButton btnInstall;
         private System.Windows.Forms.RadioButton rbOpenExistingProject;
         private System.Windows.Forms.ListBox lstRecentProjects;
-        private System.Windows.Forms.Button btnUninstall;
+        private CustomButton btnUninstall;
         private CustomListBox lstProjectTemplates;
     }
 }
