@@ -63,10 +63,11 @@
             latLongDisplay = new CoordinateDisplay(App);
             base.Activate();
 
-            SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenProjects_Click);
+            //Used for adding the new Welcome form to the menu.  The new Welcome form will replace the "Open sample project..." form.
+            SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Projects..", OpenProjects_Click);
             simpleActionItem.GroupCaption = "kApplicationMenu";
-            simpleActionItem.LargeImage = HydroDesktop.Main.Properties.Resources.plugin_32x32;
-            simpleActionItem.SmallImage = HydroDesktop.Main.Properties.Resources.plugin_16x16;
+            simpleActionItem.LargeImage = HydroDesktop.Main.Properties.Resources.logo_32x32;
+            simpleActionItem.SmallImage = HydroDesktop.Main.Properties.Resources.logo_16x16;
             base.App.HeaderControl.Add(simpleActionItem);
      
         }
