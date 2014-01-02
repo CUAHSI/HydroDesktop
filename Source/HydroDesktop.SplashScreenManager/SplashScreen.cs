@@ -20,7 +20,7 @@ namespace HydroDesktop.SplashScreenManager
     public static class SplashScreen
     {
         static SplashScreenForm sf = null;
-
+        
         /// <summary>
         /// Displays the splashscreen
         /// </summary>
@@ -30,6 +30,7 @@ namespace HydroDesktop.SplashScreenManager
             {
                 sf = new SplashScreenForm();
                 sf.ShowSplashScreen();
+             
             }
         }
 

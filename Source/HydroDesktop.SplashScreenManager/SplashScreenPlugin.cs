@@ -6,6 +6,7 @@ namespace HydroDesktop.SplashScreenManager
 {
     public class SplashScreenPlugin : ISplashScreenManager
     {
+
         public void ProcessCommand(Enum cmd, object arg)
         {
             SplashScreen.UdpateStatusText(arg.ToString());
@@ -14,11 +15,13 @@ namespace HydroDesktop.SplashScreenManager
         public void Activate()
         {
             SplashScreen.ShowSplashScreen();
+           
         }
 
         public void Deactivate()
         {
             SplashScreen.CloseSplashScreen();
+          
         }
     }
 }

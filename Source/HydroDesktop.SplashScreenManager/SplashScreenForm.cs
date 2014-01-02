@@ -79,9 +79,11 @@ namespace HydroDesktop.SplashScreenManager
                 BeginInvoke(new StringParameterDelegate(UdpateStatusText), new object[] { Text });
                 return;
             }
-            // Must be on the UI thread if we've got this far
+
             label1.Text = Text;
-            Application.DoEvents(); //necessary, otherwise it does not refresh
+            // Must be on the UI thread if we've got this far
+            Application.DoEvents();
+            
         }
 
         /// <summary>

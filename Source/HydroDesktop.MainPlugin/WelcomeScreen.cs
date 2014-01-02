@@ -111,6 +111,11 @@ namespace HydroDesktop.Main
                     DialogResult = DialogResult.None;
                     return;
                 }
+                if (lstProjectTemplates.SelectedItem as string != null)
+                {
+                    return;
+                }
+
                 var selectedTemplate = lstProjectTemplates.SelectedItem as ISampleProject;
                 string projectFile = selectedTemplate.AbsolutePathToProjectFile;
 
@@ -396,7 +401,7 @@ namespace HydroDesktop.Main
                 if (RecentProjectFiles.Count == 0)
                 {
                     this.lstProjectTemplates.DataSource = null;
-                    this.lstProjectTemplates.Items.Add("No projects were found. Please install the online templates.");
+                    this.lstProjectTemplates.Items.Add("No projects were found. \nPlease install the online templates.");
                     return;
                 }
             }
@@ -777,6 +782,9 @@ namespace HydroDesktop.Main
                 return;
 
             // Get the item object.
+            if(this.Items[e.Index] is ISampleProject)
+            {
+            
             ISampleProject item = (ISampleProject)this.Items[e.Index];
             if (item == null)
                 return;
@@ -822,7 +830,14 @@ namespace HydroDesktop.Main
                 }
             }
 
-           
+        }
+        else if (this.Items[e.Index] is string)
+        {
+            string text = this.Items[e.Index] as string;
+            SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
+            e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Gray),
+            new PointF(0, e.Bounds.Y + (e.Bounds.Height - stringSize.Height/2) / 2));
+        }
         }
     }
 
