@@ -296,6 +296,8 @@
     <None Include="Resources\down %281%29.png" />
     <None Include="Resources\down.1.png" />
     <None Include="Resources\down.1.002.png" />
+    <None Include="Resources\download.ico" />
+    <None Include="Resources\down %281%29.ico" />
     <Content Include="Resources\draw_eraser.png" />
     <Content Include="Resources\folder_16x16.png" />
     <Content Include="Resources\folder_32x32.png" />

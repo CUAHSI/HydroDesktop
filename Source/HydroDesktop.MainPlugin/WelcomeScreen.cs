@@ -75,6 +75,7 @@ namespace HydroDesktop.Main
             this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
             this.uxFeedSelection.SelectedIndex = 0;
             downloadDialog.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            downloadDialog.Icon = HydroDesktop.Main.Properties.Resources.download_icon;
         }
 
         #endregion
