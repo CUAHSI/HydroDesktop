@@ -6,6 +6,7 @@ using DotSpatial.Extensions;
 using DotSpatial.Plugins.ExtensionManager;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace HydroDesktop.DownloadExtensions
 {
@@ -24,6 +25,8 @@ namespace HydroDesktop.DownloadExtensions
         /// </summary>
         [Import]
         private AppManager App { get; set; }
+
+        private string message = null;
 
         #region ISatisfyImportsExtension Members
 
@@ -67,14 +70,29 @@ namespace HydroDesktop.DownloadExtensions
             //    packages.Install("Newtonsoft.Json");
             //    packages.Install("EPADelineation");
             //}
+            Thread updateThread = new Thread(() => InstallSampleProjects());
+            updateThread.Start();
 
+            //Update splash screen's progress bar while thread is active.
+            while (updateThread.IsAlive)
+            {
+                if(message != null)
+                    App.UpdateProgress(message);
+            }
+            updateThread.Join(100);
+
+            //App.RefreshExtensions();
+        }
+
+        private void InstallSampleProjects()
+        {
             foreach (string sampleProject in Properties.Settings.Default.ExternalSampleProjects)
             {
                 if (!SampleProjectFinder.IsSampleProjectInstalled(sampleProject))
                 {
                     try
                     {
-                        App.UpdateProgress("Downloading " + sampleProject + " sample project...");
+                        message = "Downloading " + sampleProject + " sample project...";
                         packages.Install(sampleProject);
                     }
                     catch (Exception ex)
@@ -83,7 +101,6 @@ namespace HydroDesktop.DownloadExtensions
                     }
                 }
             }
-            //App.RefreshExtensions();
         }
 
         public int Priority
@@ -95,5 +112,6 @@ namespace HydroDesktop.DownloadExtensions
         }
 
         #endregion
+
     }
 }
