@@ -85,10 +85,9 @@
     <Reference Include="DevExpress.XtraLayout.v12.2">
       <HintPath>..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.XtraLayout.v12.2.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Data, Version=1.5.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotSpatial.Data.1.5.12\lib\net40-Client\DotSpatial.Data.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\packages\DotSpatial.Data.1.5.13\lib\net40-client\DotSpatial.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotSpatial.Plugins.AttributeDataExplorer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
