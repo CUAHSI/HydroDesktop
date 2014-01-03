@@ -136,7 +136,7 @@
     <value>Current view is too large. Search can take a long time. Do you want to continue?</value>
   </data>
   <data name="Current_View_Tooltip" xml:space="preserve">
-    <value>Use the current ViewExtents of the map as the search area rectangle.</value>
+    <value>Use the current view extents of the map as the search area.</value>
   </data>
   <data name="Deselect_All" xml:space="preserve">
     <value>Clear Selection</value>
@@ -146,6 +146,9 @@
   </data>
   <data name="Draw_Box" xml:space="preserve">
     <value>Draw Box</value>
+  </data>
+  <data name="Draw_Box_Tooltip" xml:space="preserve">
+    <value>Draw a rectangle for your search area</value>
   </data>
   <data name="Draw_Rectangle" xml:space="preserve">
     <value>   Draw    Rectangle</value>
@@ -193,7 +196,7 @@
     <value>Select Features</value>
   </data>
   <data name="Select_Features_Tooltip" xml:space="preserve">
-    <value>Click in the map to select features</value>
+    <value>Click in the map to select features for searching</value>
   </data>
   <data name="Select_Polygons" xml:space="preserve">
     <value>Select Polygons</value>

@@ -127,7 +127,7 @@ namespace Search3
             head.Add(rbSelect = new SimpleActionItem(_searchKey, Msg.Select_Features, rbSelect_Click) { ToolTipText = Msg.Select_Features_Tooltip, LargeImage = Resources.select_poly_32, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area, });
             _searchSettings.AreaSettings.PolygonsChanged += AreaSettings_PolygonsChanged;
 
-            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
+            head.Add(rbDrawBox = new SimpleActionItem(_searchKey, Msg.Draw_Rectangle, rbDrawBox_Click) { ToolTipText = Msg.Draw_Box_Tooltip, LargeImage = Resources.Draw_Box_32, SmallImage = Resources.Draw_Box_16, GroupCaption = Msg.Area, ToggleGroupKey = Msg.Area });
             _searchSettings.AreaSettings.AreaRectangleChanged += Instance_AreaRectangleChanged;
 
            // head.Add(new SimpleActionItem(_searchKey, Msg.Deselect_All, delegate { IEnvelope env; App.Map.MapFrame.ClearSelection(out env); }) { GroupCaption = Msg.Area, ToolTipText = Msg.Deselect_All_Tooltip, SmallImage = Resources.deselect_16x16 });
