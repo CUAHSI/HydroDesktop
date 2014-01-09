@@ -276,7 +276,7 @@ namespace HydroDesktop.Main
 
             lstProjectTemplates.DataSource = SampleProjects;
             lstProjectTemplates.DisplayMember = "Name";
-
+            UpdateInstalledProjectsList();
         }
 
         
