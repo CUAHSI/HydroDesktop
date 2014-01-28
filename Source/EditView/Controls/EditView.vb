@@ -766,9 +766,9 @@ Namespace Controls
         Private Sub DateFilter(ByVal DateBefore As DateTime, ByVal DateAfter As DateTime)
             For i As Integer = 0 To dgvDataValues.Rows.Count - 1
                 If DateAfter > DateBefore Then
-                    dgvDataValues.Rows(i).Selected = dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter.ToOADate Or dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore.ToOADate
+                    dgvDataValues.Rows(i).Selected = dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter Or dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore
                 Else
-                    dgvDataValues.Rows(i).Selected = dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter.ToOADate And dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore.ToOADate
+                    dgvDataValues.Rows(i).Selected = dgvDataValues.Rows(i).Cells("LocalDateTime").Value >= DateAfter And dgvDataValues.Rows(i).Cells("LocalDateTime").Value <= DateBefore
                 End If
             Next
         End Sub
