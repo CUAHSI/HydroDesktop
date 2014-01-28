@@ -108,7 +108,7 @@ namespace HydroDesktop.ErrorReporting.CodePlex
                 form.Elements.Add(new HtmlElement("PostedFile", null) {IsFile = true,});
             }   
             
-            form.Elements.Add(new HtmlElement("SubscribeCheckBox", "false"));
+            form.Elements.Add(new HtmlElement("SubscribeCheckBox", "true"));
             form.Elements.Add(new HtmlElement("EmailSubscriptionTypeList", "1"));
             form.Elements.Add(new HtmlElement("StopNotificationsCheckBox", "false"));
             form.Elements.Add(new HtmlElement("SelectedSubscriptionItem", "1"));
