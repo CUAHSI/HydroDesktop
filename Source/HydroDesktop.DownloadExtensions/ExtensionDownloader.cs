@@ -70,7 +70,7 @@ namespace HydroDesktop.DownloadExtensions
             //    packages.Install("Newtonsoft.Json");
             //    packages.Install("EPADelineation");
             //}
-            Thread updateThread = new Thread(() => InstallSampleProjects());
+           /* Thread updateThread = new Thread(() => InstallSampleProjects());
             updateThread.Start();
 
             //Update splash screen's progress bar while thread is active.
@@ -80,7 +80,7 @@ namespace HydroDesktop.DownloadExtensions
                     App.UpdateProgress(message);
             }
             updateThread.Join(100);
-
+            */
             //App.RefreshExtensions();
         }
 

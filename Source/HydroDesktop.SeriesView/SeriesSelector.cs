@@ -513,13 +513,22 @@ namespace SeriesView
             _needShowVariableNameWithDataType = false;
             foreach (DataRow row in tbl.Rows)
             {
-                var variable = row[Column_VariableName].ToString();
-                var site = row["SiteID"].ToString();
-                if (tbl.Select(string.Format("VariableName = '{0}' and SiteID = '{1}'", variable, site)).Length >= 2)
+                var variable = row[Column_VariableName];
+                var site = row["SiteID"];
+                // As variable may contain some special characters like ',],etc so
+                // we will use direct loop instead tbl.Select(...) to avoid query format errors
+                var cnt = 0;
+                foreach (DataRow row1 in tbl.Rows)
                 {
-                    _needShowVariableNameWithDataType = true;
-                    break;
+                    if (Equals(row1[Column_VariableName], variable) &&
+                        Equals(row1["SiteID"], site)) cnt++;
+                    if (cnt >= 2)
+                    {
+                        _needShowVariableNameWithDataType = true;
+                        break;
+                    }
                 }
+                if (_needShowVariableNameWithDataType) break;
             }
 
             var column = dgvSeries.Columns[Column_Checked];
@@ -548,8 +557,8 @@ namespace SeriesView
             column.Width = size;
 
             column = dgvSeries.Columns[Column_ThemeName];
-            column.HeaderText = "Data Network";
             Debug.Assert(column != null, "column != null");
+            column.HeaderText = "Data Network";
             column.DisplayIndex = 4;
             column.ReadOnly = true;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
