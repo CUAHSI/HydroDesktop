@@ -47,6 +47,9 @@ namespace HydroDesktop.DownloadExtensions.Properties {
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>DotSpatial.SampleProjects.NorthAmerica</string>
   <string>DotSpatial.SampleProjects.World</string>
+  <string>Dotspatial.SampleProjects.Europe</string>
+  <string>SampleProjects.jacobs_well_spring</string>
+  <string>SampleProjects.elbe</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection ExternalSampleProjects {
             get {

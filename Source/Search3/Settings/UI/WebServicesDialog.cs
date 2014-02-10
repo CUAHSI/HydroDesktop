@@ -177,6 +177,7 @@ namespace Search3.Settings.UI
                     if (_metadataFetcher != null)
                     {
                         _metadataFetcher.AddServices();
+                        RefreshWebServices();
                     }
                     break;
             }

@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterOneFlow;
+using System.Threading;
 
 namespace HydroDesktop.MetadataFetcher.Forms
 {
@@ -378,6 +379,16 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				double south = 90;
                 int valueCount = 0;
 
+             
+                IList<Site> siteList1 = (siteList as List<Site>).GetRange(0, (siteList.Count/2)-1);
+                IList<Site> siteList2 = (siteList as List<Site>).GetRange(siteList.Count/2, siteList.Count-1);
+
+                var thread1 = new Thread(() => ProcessSites(siteList1));
+                    thread1.Start();
+                    var thread2 = new Thread(() => ProcessSites(siteList2));
+                    thread2.Start();
+                   
+             
 				foreach (var site in siteList)
 				{
 					// Check for cancel
@@ -552,6 +563,114 @@ namespace HydroDesktop.MetadataFetcher.Forms
 
 			return message;
 		}
+
+        private void ProcessSites(IList<Interfaces.ObjectModel.Site> siteList)
+        {
+            /*foreach (var site in siteList)
+            {
+                // Check for cancel
+                if (bgwMain.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return "Operation cancelled";
+                }
+
+                // Update progress
+                currentStep++;
+                bgwMain.ReportProgress(100 * currentStep / totalSteps,
+                    "Processing site " + currentStep + " of " + totalSteps +
+                    " from service " + currentService + " of " + totalServices + "...");
+
+                // Get series for this site
+                IList<SeriesMetadata> currentSeriesList;
+
+                try
+                {
+                    currentSeriesList = waterOneFlowClient.GetSiteInfo(site.Code);
+                }
+                catch (WebException ex)
+                {
+                    // Flag the error and continue to the next site
+                    siteErrorCount++;
+
+                    if (siteErrorCount == 1)
+                    {
+                        firstSiteError = ex.Message;
+                    }
+
+                    if (ex.Response != null)
+                    {
+                        var rdr = new StreamReader(ex.Response.GetResponseStream());
+                        rdr.ReadToEnd();
+                    }
+
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    // Flag the error and continue to the next site
+                    siteErrorCount++;
+
+                    if (siteErrorCount == 1)
+                    {
+                        firstSiteError = ex.Message;
+                    }
+
+                    continue;
+                }
+
+                // Update service extent 
+                if (site.Latitude > north)
+                {
+                    north = site.Latitude;
+                }
+                if (site.Latitude < south)
+                {
+                    south = site.Latitude;
+                }
+                if (site.Longitude > east)
+                {
+                    east = site.Longitude;
+                }
+                if (site.Longitude < west)
+                {
+                    west = site.Longitude;
+                }
+
+                // Save series info to metadata cache database
+                foreach (var series in currentSeriesList)
+                {
+                    valueCount += series.ValueCount;
+
+                    // Check for cancel
+                    if (bgwMain.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return "Operation cancelled";
+                    }
+
+                    try
+                    {
+                        cacheManager.SaveSeries(series, serviceInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Flag the error and continue to the next series
+                        saveErrorCount++;
+
+                        if (saveErrorCount == 1)
+                        {
+                            firstSaveError = ex.Message;
+                        }
+
+                        continue;
+                    }
+
+                    // Keep track of how many series were successfully processed
+                    seriesCount++;
+                }
+            }*/
+        }
 
 		/// <summary>
 		/// Disables/Enables controls and sets mouse cursor in preparation for a BackgroundWorker to run
@@ -766,6 +885,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 				_formIsClosing = false;
 				Hide ();
 			}
+
 		}
 
 		#endregion
