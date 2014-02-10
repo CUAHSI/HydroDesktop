@@ -14,10 +14,10 @@ using DotSpatial.Topology;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Configuration;
-using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
+using System.Collections;
 
 namespace Aggregation_Plugin
 {
@@ -29,7 +29,6 @@ namespace Aggregation_Plugin
 
         List<PolygonData> polygonData = new List<PolygonData>();
         HashSet<String> variables = new HashSet<String>();
-        //IDataValuesRepository dataValuesRepository = RepositoryFactory.Instance.Get<IDataValuesRepository>();
         IUnitsRepository UnitsRepository = RepositoryFactory.Instance.Get<IUnitsRepository>();
         DbOperations dbOperations = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
         private readonly IRepositoryManager _repositoryManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
@@ -43,31 +42,56 @@ namespace Aggregation_Plugin
             this.App = App;
             populatePolygonLayerDropdown();
             populateSites();
-            App.Map.MapFrame.SelectionChanged += SelectionChanged;
-            PolygonLayerList.SelectedValueChanged += SelectionChanged;
-            SiteList.SelectedValueChanged += SelectionChanged;
+            //App.Map.MapFrame.SelectionChanged += SelectionChanged;
+            PolygonLayerList.SelectedValueChanged += PolySelectionChanged;
+            SiteList.SelectedValueChanged += SiteSelectionChanged;
 
             PolygonLayerList.SelectedIndex = -1;
             SiteList.SelectedIndex = -1;
+            //SiteList.DataSource = new List<string>();
             VariableList.SelectedIndex = -1;
+            //VariableList.DataSource = new List<string>();
+
         }
 
         /// <summary>
         /// To be Documented
         /// </summary>
-        private void SelectionChanged(object sender, EventArgs e)
+        private void PolySelectionChanged(object sender, EventArgs e)
         {
+            if (PolygonLayerList.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            SiteList.SelectedIndex = -1;
+            VariableList.SelectedIndex = -1;
+            variables.Clear();
+
+            getPolygons((IMapPolygonLayer)PolygonLayerList.SelectedValue);
+        }
+
+        /// <summary>
+        /// To be Documented
+        /// </summary>
+        private void SiteSelectionChanged(object sender, EventArgs e)
+        {
+            VariableList.SelectedIndex = -1;
+            variables.Clear();
+
             if (PolygonLayerList.SelectedValue != null && SiteList.SelectedValue != null)
             {
-                getPolygons((IMapPolygonLayer)PolygonLayerList.SelectedValue);
+                populateVariables();
+                VariableList.SelectedIndex = -1;
             }
         }
 
         /// <summary>
         /// To be Documented
         /// </summary>
-        private void OK_click_Click(object sender, EventArgs e)
+        private void OK_Click(object sender, EventArgs e)
         {
+
             if (PolygonLayerList.SelectedValue != null &&
                 SiteList.SelectedValue != null &&
                 VariableList.SelectedValue != null &&
@@ -96,7 +120,7 @@ namespace Aggregation_Plugin
                 IFeatureLayer flayer = App.Map.Layers.Add(sitesPoints);
 
                 App.Map.AddLabels(flayer, string.Format("[{0}]", "SiteCode"),
-                                  "", symb, "");
+                                    "", symb, "");
                 flayer.ShowLabels = true;
 
                 MessageBox.Show("The time series aggregation is completed.", "CRWR Aggregation",
@@ -107,7 +131,7 @@ namespace Aggregation_Plugin
                 MessageBox.Show("Please complete the missing parts of the form.", "CRWR Aggregation");
         }
 
-        private void Cancel_click_Click(object sender, EventArgs e)
+        private void Cancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
         }
@@ -129,6 +153,9 @@ namespace Aggregation_Plugin
                 PolygonLayerList.DisplayMember = "Value";
                 PolygonLayerList.ValueMember = "Key";
             }
+
+            //getPolygons((IMapPolygonLayer));
+            //getPolygons((IMapPolygonLayer)PolygonLayerList.SelectedValue);
         }
 
         /// <summary>
@@ -220,7 +247,6 @@ namespace Aggregation_Plugin
                 polygons.Projection = App.Map.Projection;
             }
 
-            populateVariables();
         }
 
         /// <summary>

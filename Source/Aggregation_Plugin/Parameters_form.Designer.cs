@@ -50,7 +50,7 @@
             this.OK_click.TabIndex = 11;
             this.OK_click.Text = "OK";
             this.OK_click.UseVisualStyleBackColor = true;
-            this.OK_click.Click += new System.EventHandler(this.OK_click_Click);
+            this.OK_click.Click += new System.EventHandler(this.OK_Click);
             // 
             // Cancel_click
             // 
