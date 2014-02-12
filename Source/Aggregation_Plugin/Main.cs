@@ -9,7 +9,13 @@ using System.Windows.Forms;
 namespace Aggregation_Plugin
 {
     /// <summary>
-    /// HelloTim for HydroDesktop
+    /// This plug-in combinea data from multiple stations into a single time series.
+    /// The plug-in takes the time series data from stations within a polygon and
+    /// computes an average for each time stamp, the computed values are stored in
+    /// a new time series.
+    /// The aggregated time series is linked to a new point layer, this point layer
+    /// is located at the centroids of the input polygons. The time series are stored
+    /// in the hydrodesktop sqlite database.
     /// </summary>
     public class Main : Extension
     {

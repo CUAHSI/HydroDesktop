@@ -42,20 +42,17 @@ namespace Aggregation_Plugin
             this.App = App;
             populatePolygonLayerDropdown();
             populateSites();
-            //App.Map.MapFrame.SelectionChanged += SelectionChanged;
             PolygonLayerList.SelectedValueChanged += PolySelectionChanged;
             SiteList.SelectedValueChanged += SiteSelectionChanged;
-
             PolygonLayerList.SelectedIndex = -1;
             SiteList.SelectedIndex = -1;
-            //SiteList.DataSource = new List<string>();
             VariableList.SelectedIndex = -1;
-            //VariableList.DataSource = new List<string>();
 
         }
 
         /// <summary>
-        /// To be Documented
+        /// If the polygon layer is selected/changed, the other
+        /// variables are cleared and the polygon data is stored.
         /// </summary>
         private void PolySelectionChanged(object sender, EventArgs e)
         {
@@ -72,7 +69,8 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
-        /// To be Documented
+        /// If the site layer is selected/changed, the previous
+        /// values are cleared and the variables are (re)populated.
         /// </summary>
         private void SiteSelectionChanged(object sender, EventArgs e)
         {
@@ -87,7 +85,7 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
-        /// To be Documented
+        /// Run the tool.
         /// </summary>
         private void OK_Click(object sender, EventArgs e)
         {
@@ -137,7 +135,8 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
-        /// To be Documented
+        /// Create a list of the polygon layers available in
+        /// the map and populate the dropdown menu.
         /// </summary>
         private void populatePolygonLayerDropdown()
         {
@@ -154,12 +153,11 @@ namespace Aggregation_Plugin
                 PolygonLayerList.ValueMember = "Key";
             }
 
-            //getPolygons((IMapPolygonLayer));
-            //getPolygons((IMapPolygonLayer)PolygonLayerList.SelectedValue);
         }
 
         /// <summary>
-        /// To be Documented
+        /// Populate the sites dropdown menu from the
+        /// information in the map.
         /// </summary>
         private void populateSites()
         {
@@ -178,7 +176,9 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
-        /// To be Documented
+        /// Populate the variables available from the selected site
+        /// layer, the polygon layer, and the selected polygons in
+        /// the map within this layer.
         /// </summary>
         private void populateVariables()
         {
@@ -231,7 +231,8 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
-        /// To be Documented
+        /// This function stores the selected polygons in the
+        /// map from the polygon layer.
         /// </summary>
         private void getPolygons(IMapPolygonLayer polyLayer)
         {
@@ -250,7 +251,8 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
-        /// To be Documented
+        /// This function retrieves a table from the database,
+        /// creates and stores the new time series.
         /// </summary>
         private void AggregateData()
         {
@@ -274,6 +276,9 @@ namespace Aggregation_Plugin
             }
         }
 
+        /// <summary>
+        /// This function gets the time series (date - value)
+        /// </summary>
         private Series getSeriesFromTable(PolygonData polygon)
         {
             DataTable averageTable = getAverageTable(polygon);
@@ -292,6 +297,9 @@ namespace Aggregation_Plugin
             return series;
         }
 
+        /// <summary>
+        /// This function gets the variable information.
+        /// </summary>
         private Variable getVariablesParameters(int variableID)
         {
             Variable variable = new Variable();
@@ -314,6 +322,9 @@ namespace Aggregation_Plugin
             return variable;
         }
 
+        /// <summary>
+        /// This function gets the site information.
+        /// </summary>
         private Site getSitesParameters(PolygonData polygon)
         {
             IFeature centroid = polygon.polygon.Centroid();
@@ -350,6 +361,9 @@ namespace Aggregation_Plugin
             return site;
         }
 
+        /// <summary>
+        /// This function creates a new theme.
+        /// </summary>
         private Theme getThemeParameters()
         {
             Theme theme = new Theme();
@@ -358,6 +372,9 @@ namespace Aggregation_Plugin
             return theme;
         }
 
+        /// <summary>
+        /// This function gets the variable's ids.
+        /// </summary>
         private int getVariableID(String variableCode)
         {
             var query =
@@ -367,6 +384,9 @@ namespace Aggregation_Plugin
             return Convert.ToInt32(result);
         }
 
+        /// <summary>
+        /// This function gets the variable unit's ids.
+        /// </summary>
         private int getVariableUnitsID(int variableID)
         {
             var query =
@@ -376,6 +396,9 @@ namespace Aggregation_Plugin
             return Convert.ToInt32(result);
         }
 
+        /// <summary>
+        /// This function gets the time units's ids.
+        /// </summary>
         private int getTimeUnitsID(int variableID)
         {
             var query =
@@ -385,6 +408,9 @@ namespace Aggregation_Plugin
             return Convert.ToInt32(result);
         }
 
+        /// <summary>
+        /// This function gets the site's ids.
+        /// </summary>
         private int getSiteId(String siteCode)
         {
             var query =
@@ -394,6 +420,9 @@ namespace Aggregation_Plugin
             return Convert.ToInt32(result);
         }
 
+        /// <summary>
+        /// This function gets the serie's ids.
+        /// </summary>
         private void getSeriesID(int siteID, int variableID, PolygonData polygon)
         {
             var query =
@@ -407,6 +436,9 @@ namespace Aggregation_Plugin
                 polygon.dataSeries.Add(Convert.ToInt32(row.ItemArray.First()));
         }
 
+        /// <summary>
+        /// This function gets the data values.
+        /// </summary>
         private DataTable getAverageTable(PolygonData polygon)
         {
             var query =
