@@ -32,7 +32,7 @@ namespace Aggregation_Plugin
         IUnitsRepository UnitsRepository = RepositoryFactory.Instance.Get<IUnitsRepository>();
         DbOperations dbOperations = new DbOperations(Settings.Instance.DataRepositoryConnectionString, DatabaseTypes.SQLite);
         private readonly IRepositoryManager _repositoryManager = RepositoryFactory.Instance.Get<IRepositoryManager>();
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -85,18 +85,80 @@ namespace Aggregation_Plugin
         }
 
         /// <summary>
+        /// Checks that the input string is a valid name for sites in the HydroDesktop SQLite database.
+        /// </summary>
+        /// <param name="nameToTest"></param>
+        /// <returns>Empty string if name is valid.  Otherwise, returns a suggestion for making a valid name.</returns>
+        private string resultNameIsValid(string nameToTest)
+        {
+            // Check for alphanumeric characters only, or underscore, or hyphen
+            if (!nameToTest.All(char.IsLetterOrDigit))
+            {
+                return "Please use only alphanumeric characters, underscores, or hyphens in the name.";
+            }
+            
+            // Make sure this name doesn't already exist in the database
+            List<string> siteCodes = getSiteCodes();
+            if (siteCodes.Contains("CrwrAggregation:" + nameToTest))
+            {
+                return "This name already exists in the database.  Please try a different name.";
+            }
+
+            // Everything is OK, so return an empty string
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Run the tool.
         /// </summary>
         private void OK_Click(object sender, EventArgs e)
         {
-
             if (PolygonLayerList.SelectedValue != null &&
                 SiteList.SelectedValue != null &&
                 VariableList.SelectedValue != null &&
-                !String.IsNullOrEmpty(OutputSiteName.Text) &&
-                !String.IsNullOrEmpty(OutputLayerName.Text))
+                !String.IsNullOrEmpty(OutputResultName.Text))
             {
-                sitesPoints.Name = OutputLayerName.Text;
+                // Validate site name
+                string nameCheckResult = resultNameIsValid(OutputResultName.Text);
+                if (nameCheckResult != string.Empty)
+                {
+                    MessageBox.Show("Invalid site name. " + nameCheckResult, "CRWR Aggregation");
+                    return;
+                }
+
+                List<string> LegendElements = new List<string>();
+
+                    for (int i = 0; i < PolygonLayerList.Items.Count; i++)
+                    {
+                        LegendElements.Add(PolygonLayerList.Items[i].ToString().Split(',')[1].Substring(1));
+                    }
+                    for (int i = 0; i < SiteList.Items.Count; i++)
+                    {
+                        LegendElements.Add(SiteList.Items[i].ToString().Split(',')[1].Substring(1));
+                    }
+
+                    if (!LegendElements.Contains(PolygonLayerList.Text + "_agg]"))
+                    {
+                        sitesPoints.Name = PolygonLayerList.Text + "_agg";
+                    }
+                    else
+                    {
+                        int counter = 1;
+                        do
+                        {
+                            if (!LegendElements.Contains(PolygonLayerList.Text + "_agg (" + counter.ToString("D") + ")]"))
+                            {
+                                sitesPoints.Name = PolygonLayerList.Text + "_agg (" + counter.ToString("D") + ")";
+                            }
+                            else
+                            {
+                                counter = counter + 1;
+                            }
+
+                        } while (String.IsNullOrEmpty(sitesPoints.Name));
+
+                    }
+                
                 sitesPoints.Projection = App.Map.Projection;
                 sitesPoints.DataTable.Columns.Add(new DataColumn("SiteCode", typeof(string)));
 
@@ -303,7 +365,7 @@ namespace Aggregation_Plugin
         private Variable getVariablesParameters(int variableID)
         {
             Variable variable = new Variable();
-            variable.Code = OutputLayerName.Text + ":" + OutputSiteName.Text;
+            variable.Code = "CrwrAggregation:" + OutputResultName.Text;
             variable.Name = VariableList.Text;
             variable.Speciation = "Unknown";
             variable.SampleMedium = "Not Relevant";
@@ -339,12 +401,12 @@ namespace Aggregation_Plugin
 
             int indexNumber = (polygonData.IndexOf(polygon) + 1);
 
-            site.Code = OutputLayerName.Text + ':' + OutputSiteName.Text + indexNumber.ToString();
+            site.Code = "CrwrAggregation:" + OutputResultName.Text + indexNumber.ToString();
             newpoint.DataRow.BeginEdit();
             newpoint.DataRow["SiteCode"] = site.Code.ToString();
             newpoint.DataRow.EndEdit();
 
-            site.Name = OutputSiteName.Text + indexNumber.ToString();
+            site.Name = OutputResultName.Text + indexNumber.ToString();
             site.Latitude = xy[1];
             site.Longitude = xy[0];
             //site.Elevation_m = 12;
@@ -418,6 +480,21 @@ namespace Aggregation_Plugin
                 + "'" + siteCode + "'";
             var result = dbOperations.ExecuteSingleOutput(query);
             return Convert.ToInt32(result);
+        }
+
+        /// <summary>
+        /// This function gets the sitecodes's ids.
+        /// </summary>
+        private List<string> getSiteCodes()
+        {
+            var query = "SELECT VariableCode FROM Variables";
+            List<string> rowlist = new List<string>();
+
+            DataTable result = dbOperations.LoadTable(query);
+
+            foreach (DataRow row in result.Rows)
+                rowlist.Add(row["VariableCode"].ToString());
+            return rowlist;
         }
 
         /// <summary>
