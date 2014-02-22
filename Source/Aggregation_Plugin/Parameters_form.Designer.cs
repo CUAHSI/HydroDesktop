@@ -35,16 +35,14 @@
             this.Polygon_Label = new System.Windows.Forms.Label();
             this.Point_Label = new System.Windows.Forms.Label();
             this.Variable_Label = new System.Windows.Forms.Label();
-            this.OutputSiteName = new System.Windows.Forms.TextBox();
+            this.OutputResultName = new System.Windows.Forms.TextBox();
             this.VariableList = new System.Windows.Forms.ComboBox();
             this.Name_Label = new System.Windows.Forms.Label();
-            this.OutputLayerName = new System.Windows.Forms.TextBox();
-            this.Code_Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // OK_click
             // 
-            this.OK_click.Location = new System.Drawing.Point(71, 150);
+            this.OK_click.Location = new System.Drawing.Point(94, 115);
             this.OK_click.Name = "OK_click";
             this.OK_click.Size = new System.Drawing.Size(75, 23);
             this.OK_click.TabIndex = 11;
@@ -55,7 +53,7 @@
             // Cancel_click
             // 
             this.Cancel_click.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_click.Location = new System.Drawing.Point(152, 150);
+            this.Cancel_click.Location = new System.Drawing.Point(184, 115);
             this.Cancel_click.Name = "Cancel_click";
             this.Cancel_click.Size = new System.Drawing.Size(75, 23);
             this.Cancel_click.TabIndex = 12;
@@ -64,18 +62,20 @@
             // 
             // PolygonLayerList
             // 
+            this.PolygonLayerList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PolygonLayerList.FormattingEnabled = true;
             this.PolygonLayerList.Location = new System.Drawing.Point(94, 9);
             this.PolygonLayerList.Name = "PolygonLayerList";
-            this.PolygonLayerList.Size = new System.Drawing.Size(170, 21);
+            this.PolygonLayerList.Size = new System.Drawing.Size(254, 21);
             this.PolygonLayerList.TabIndex = 2;
             // 
             // SiteList
             // 
+            this.SiteList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SiteList.FormattingEnabled = true;
             this.SiteList.Location = new System.Drawing.Point(94, 36);
             this.SiteList.Name = "SiteList";
-            this.SiteList.Size = new System.Drawing.Size(170, 21);
+            this.SiteList.Size = new System.Drawing.Size(254, 21);
             this.SiteList.TabIndex = 4;
             // 
             // Polygon_Label
@@ -108,47 +108,31 @@
             this.Variable_Label.TabIndex = 5;
             this.Variable_Label.Text = "Variable";
             // 
-            // OutputSiteName
+            // OutputResultName
             // 
-            this.OutputSiteName.Location = new System.Drawing.Point(94, 89);
-            this.OutputSiteName.Name = "OutputSiteName";
-            this.OutputSiteName.Size = new System.Drawing.Size(170, 20);
-            this.OutputSiteName.TabIndex = 8;
+            this.OutputResultName.Location = new System.Drawing.Point(94, 89);
+            this.OutputResultName.Name = "OutputResultName";
+            this.OutputResultName.Size = new System.Drawing.Size(254, 20);
+            this.OutputResultName.TabIndex = 8;
             // 
             // VariableList
             // 
+            this.VariableList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.VariableList.FormattingEnabled = true;
             this.VariableList.Location = new System.Drawing.Point(94, 63);
             this.VariableList.Name = "VariableList";
-            this.VariableList.Size = new System.Drawing.Size(170, 21);
+            this.VariableList.Size = new System.Drawing.Size(254, 21);
             this.VariableList.TabIndex = 6;
             // 
             // Name_Label
             // 
             this.Name_Label.AutoSize = true;
-            this.Name_Label.Location = new System.Drawing.Point(31, 89);
+            this.Name_Label.Location = new System.Drawing.Point(19, 92);
             this.Name_Label.Name = "Name_Label";
             this.Name_Label.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.Name_Label.Size = new System.Drawing.Size(56, 13);
+            this.Name_Label.Size = new System.Drawing.Size(68, 13);
             this.Name_Label.TabIndex = 7;
-            this.Name_Label.Text = "Site Name";
-            // 
-            // OutputLayerName
-            // 
-            this.OutputLayerName.Location = new System.Drawing.Point(94, 115);
-            this.OutputLayerName.Name = "OutputLayerName";
-            this.OutputLayerName.Size = new System.Drawing.Size(170, 20);
-            this.OutputLayerName.TabIndex = 10;
-            // 
-            // Code_Label
-            // 
-            this.Code_Label.AutoSize = true;
-            this.Code_Label.Location = new System.Drawing.Point(24, 115);
-            this.Code_Label.Name = "Code_Label";
-            this.Code_Label.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.Code_Label.Size = new System.Drawing.Size(64, 13);
-            this.Code_Label.TabIndex = 9;
-            this.Code_Label.Text = "Layer Name";
+            this.Name_Label.Text = "Result Name";
             // 
             // Parameters_form
             // 
@@ -157,12 +141,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.Cancel_click;
-            this.ClientSize = new System.Drawing.Size(310, 185);
-            this.Controls.Add(this.Code_Label);
-            this.Controls.Add(this.OutputLayerName);
+            this.ClientSize = new System.Drawing.Size(363, 147);
             this.Controls.Add(this.Name_Label);
             this.Controls.Add(this.VariableList);
-            this.Controls.Add(this.OutputSiteName);
+            this.Controls.Add(this.OutputResultName);
             this.Controls.Add(this.Variable_Label);
             this.Controls.Add(this.Point_Label);
             this.Controls.Add(this.Polygon_Label);
@@ -186,10 +168,8 @@
         private System.Windows.Forms.Label Polygon_Label;
         private System.Windows.Forms.Label Point_Label;
         private System.Windows.Forms.Label Variable_Label;
-        private System.Windows.Forms.TextBox OutputSiteName;
+        private System.Windows.Forms.TextBox OutputResultName;
         private System.Windows.Forms.ComboBox VariableList;
         private System.Windows.Forms.Label Name_Label;
-        private System.Windows.Forms.TextBox OutputLayerName;
-        private System.Windows.Forms.Label Code_Label;
     }
 }
