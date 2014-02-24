@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>C:\Gonzalo\GRA_NASA_Fall_13\hydrodesktop_sourcecode\Binaries\Plugins\Aggregation_Plugin.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Plugins\Aggregation_Plugin.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
