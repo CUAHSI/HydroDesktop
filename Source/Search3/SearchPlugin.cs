@@ -172,7 +172,7 @@ namespace Search3
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = _searchKey;
             head.Add(rbServices);
-
+            head.Add(new SimpleActionItem(_searchKey, Msg.Add_Sites, rbSearch_Click) { GroupCaption = grpDataSources, LargeImage = Resources.data_sites_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
             #endregion
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Search, rbSearch_Click) { GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
