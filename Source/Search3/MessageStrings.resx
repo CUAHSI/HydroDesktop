@@ -120,6 +120,9 @@
   <data name="Add_More_Keywords" xml:space="preserve">
     <value>    Select Multiple Keywords</value>
   </data>
+  <data name="Add_Sites" xml:space="preserve">
+    <value>Add Sites Layer</value>
+  </data>
   <data name="Area" xml:space="preserve">
     <value>Search Area</value>
   </data>
