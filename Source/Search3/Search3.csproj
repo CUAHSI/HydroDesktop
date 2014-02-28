@@ -211,6 +211,12 @@
     <Compile Include="Settings\OntologyNode.cs" />
     <Compile Include="Settings\OntologyTree.cs" />
     <Compile Include="Settings\OntologyPath.cs" />
+    <Compile Include="Settings\UI\AddSitesLayerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\AddSitesLayerDialog.Designer.cs">
+      <DependentUpon>AddSitesLayerDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings\UI\DateSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Searching\SearchProgressForm.resx">
       <DependentUpon>SearchProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\AddSitesLayerDialog.resx">
+      <DependentUpon>AddSitesLayerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\UI\DateSettingsDialog.resx">
       <DependentUpon>DateSettingsDialog.cs</DependentUpon>
