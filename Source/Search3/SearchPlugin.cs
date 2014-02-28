@@ -48,6 +48,7 @@ namespace Search3
         private bool _useCurrentView;
         bool invalidWord = false;
         private Searcher _searcher;
+        private AddSitesLayerDialog _addSitesLayerDialog;
         public readonly SearchSettings _searchSettings = new SearchSettings();
         //private SearchStatusDisplay searchSummary;
 
@@ -172,7 +173,7 @@ namespace Search3
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = _searchKey;
             head.Add(rbServices);
-            head.Add(new SimpleActionItem(_searchKey, Msg.Add_Sites, rbSearch_Click) { GroupCaption = grpDataSources, LargeImage = Resources.data_sites_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Add_Sites, addDataSites_Click) { GroupCaption = grpDataSources, LargeImage = Resources.data_sites_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
             #endregion
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Search, rbSearch_Click) { GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
@@ -301,6 +302,12 @@ namespace Search3
                 return true;
             }
             return false;
+        }
+
+        void addDataSites_Click(object sender, EventArgs e)
+        {
+            _addSitesLayerDialog = new AddSitesLayerDialog();
+            _addSitesLayerDialog.Show();
         }
 
         void rbSearch_Click(object sender, EventArgs e)
