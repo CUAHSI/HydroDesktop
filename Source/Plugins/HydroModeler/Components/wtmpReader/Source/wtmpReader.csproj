@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,17 +31,17 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\..\..\..\research\code\HydroDesktopHG\Binaries\Plugins\HydroModeler\example_configuration\bin\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\research\code\HydroDesktopHG\Binaries\Plugins\HydroModeler\example_configuration\bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.DevelopmentSupport">
       <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.Sdk.DevelopmentSupport.dll</HintPath>
@@ -57,7 +57,7 @@
     </Reference>
     <Reference Include="SMW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\SMW.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
