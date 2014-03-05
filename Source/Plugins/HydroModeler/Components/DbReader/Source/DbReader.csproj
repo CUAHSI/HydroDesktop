@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +47,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Binaries\Plugins\HydroModeler\example_configuration\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,17 +55,17 @@
   <ItemGroup>
     <Reference Include="HydroDesktop.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HydroDesktop.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\HydroDesktop.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HydroDesktop.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oatc.OpenMI.Sdk.Backbone">
