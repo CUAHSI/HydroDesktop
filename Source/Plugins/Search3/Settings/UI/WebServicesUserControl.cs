@@ -120,42 +120,49 @@ namespace Search3.Settings.UI
                 colCB.HeaderText = "";
                 colCB.Width = 20;
                 colCB.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                colCB.ReadOnly = false;
                 gridViewWebServices.Columns.Add(colCB);
 
                 DataGridViewTextBoxColumn colTB = new DataGridViewTextBoxColumn();
                 colTB.Name = "ServiceNameCol";
                 colTB.HeaderText = "Service Name";
                 colTB.Width = (int)g.MeasureString(colTB.Name, gridViewWebServices.Font).Width;
+                colTB.ReadOnly = true;
                 gridViewWebServices.Columns.Add(colTB);
 
                 DataGridViewTextBoxColumn colTB2 = new DataGridViewTextBoxColumn();
                 colTB2.Name = "ServiceCodeCol";
                 colTB2.HeaderText = "Service Code  ";
                 colTB2.Width = (int)g.MeasureString(colTB2.Name, gridViewWebServices.Font).Width;
+                colTB2.ReadOnly = true;
                 gridViewWebServices.Columns.Add(colTB2);
 
                 DataGridViewTextBoxColumn colTB3 = new DataGridViewTextBoxColumn();
                 colTB3.Name = "OrganizationCol";
                 colTB3.HeaderText = "Organization";
                 colTB3.Width = (int)g.MeasureString(colTB3.Name, gridViewWebServices.Font).Width;
+                colTB3.ReadOnly = true;
                 gridViewWebServices.Columns.Add(colTB3);
 
                 DataGridViewTextBoxColumn colTB4 = new DataGridViewTextBoxColumn();
                 colTB4.Name = "#SitesCol";
                 colTB4.HeaderText = "# Sites";
                 colTB4.Width = (int)g.MeasureString(colTB4.Name, gridViewWebServices.Font).Width;
+                colTB4.ReadOnly = true;
                 gridViewWebServices.Columns.Add(colTB4);
 
                 DataGridViewTextBoxColumn colTB5 = new DataGridViewTextBoxColumn();
                 colTB5.Name = "#VariablesCol";
                 colTB5.HeaderText = "# Variables";
                 colTB5.Width = (int)g.MeasureString(colTB5.Name, gridViewWebServices.Font).Width;
+                colTB5.ReadOnly = true;
                 gridViewWebServices.Columns.Add(colTB5);
 
                 DataGridViewTextBoxColumn colTB6 = new DataGridViewTextBoxColumn();
                 colTB6.Name = "#ValuesCol";
                 colTB6.HeaderText = "# Values";
                 colTB6.Width = (int)g.MeasureString(colTB6.Name, gridViewWebServices.Font).Width;
+                colTB6.ReadOnly = true;
                 gridViewWebServices.Columns.Add(colTB6);
 
                 DataGridViewImageColumn dgvic = new DataGridViewImageColumn();
@@ -164,6 +171,7 @@ namespace Search3.Settings.UI
                 dgvic.Width = (int)g.MeasureString(dgvic.Name, gridViewWebServices.Font).Width;
                 dgvic.ValuesAreIcons = true;
                 dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
+                dgvic.ReadOnly = true;
                 gridViewWebServices.Columns.Add(dgvic);
 
                 if (local == false)
@@ -174,10 +182,9 @@ namespace Search3.Settings.UI
                     dgvic2.Width = (int)g.MeasureString(dgvic2.Name, gridViewWebServices.Font).Width;
                     dgvic2.ValuesAreIcons = true;
                     dgvic2.Icon = Search3.Properties.Resources.more_info;
+                    dgvic2.ReadOnly = true;
                     gridViewWebServices.Columns.Add(dgvic2);
-                }
-
-      
+                }      
 
                 gridViewWebServices.AllowUserToAddRows = true;
                 foreach (var webNode in webServiceNodeCollection)
@@ -194,8 +201,7 @@ namespace Search3.Settings.UI
                     row.Tag = webNode;
                     gridViewWebServices.Rows.Add(row);
                 }
-                gridViewWebServices.AllowUserToAddRows = false;
-            
+                gridViewWebServices.AllowUserToAddRows = false;           
          
             }
             finally
