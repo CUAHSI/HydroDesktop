@@ -187,14 +187,16 @@ namespace HydroDesktop.WebServices.WaterML
                             // with utc offset    : 2005-08-05T22:30:00-07:00
                             var withUtcOffset = dStr.Count(d => d == ':') == 3;
 
-                            const string baseFormat = "yyyy-MM-ddTHH:mm:ss";
-                            var dateStr = dStr.Substring(0, baseFormat.Length);
-                            dateTime = DateTime.ParseExact(dateStr, baseFormat, CultureInfo.InvariantCulture);
                             if (withUtcOffset)
                             {
-                                utcOffset = ParserHelper.ConvertUtcOffset(dStr.Substring(baseFormat.Length));
+                                var utcOffsetFirstSymb = dStr.LastIndexOf(":", StringComparison.Ordinal) - 3; // e.g. -07:00
+                                dateTime = DateTime.Parse(dStr.Substring(0, utcOffsetFirstSymb), CultureInfo.InvariantCulture);
+                                utcOffset = ParserHelper.ConvertUtcOffset(dStr.Substring(utcOffsetFirstSymb));
                             }
-                            
+                            else
+                            {
+                                dateTime = DateTime.Parse(dStr, CultureInfo.InvariantCulture);
+                            }
                             break;
 
                     }
