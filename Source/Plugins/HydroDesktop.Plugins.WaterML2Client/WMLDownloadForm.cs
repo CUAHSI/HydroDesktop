@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
@@ -14,8 +13,7 @@ namespace HydroDesktop.Plugins.WaterML2Client
 {
     public partial class WMLDownloadForm : Form
     {
-        private string _file;
-        private Thread _workerThread;
+        private WebClient _webClient;
 
         public WMLDownloadForm()
         {
@@ -32,111 +30,85 @@ namespace HydroDesktop.Plugins.WaterML2Client
         {
             tbTimeSeriesUrl.Enabled = !downloading;
             cbTheme.Enabled = !downloading;
-            btnAdd.Enabled = !downloading;
             btnClose.Enabled = !downloading;
+            btnOpenFile.Enabled = !downloading;
 
             if (!downloading)
             {
-                btnDownload.Text = "Download";
+                btnImport.Text = "Import";
                 lblDownloading.Visible = false;
             }
             else
             {
-                btnDownload.Text = "Cancel";
+                btnImport.Text = "Cancel";
                 lblDownloading.Visible = true;
             }
         }
 
-        private void btnDownload_Click(object sender, EventArgs e)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            var wt = _workerThread;
+            var wt = _webClient;
             if (wt != null)
             {
-                wt.Abort();
+                wt.CancelAsync();
                 return;
             }
 
             var url = tbTimeSeriesUrl.Text;
             if (String.IsNullOrEmpty(url))
             {
-                MessageBox.Show(this, "Not valid url.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, "Not valid url or file path.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            SetControlsForDownloading(true);
-            var bw = new BackgroundWorker();
-            bw.DoWork += delegate(object s, DoWorkEventArgs args)
-            {
-                _workerThread = new Thread((ThreadStart) delegate
-                {
-                    try
-                    {
-                        using (var wb = new WebClient())
-                        {
-                            var file = Path.GetTempFileName();
-                            wb.DownloadFile(tbTimeSeriesUrl.Text, file);
-                            args.Result = file;
-                        }
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        args.Cancel = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        args.Result = ex;
-                    }
-                });
-                _workerThread.Start();
-                _workerThread.Join();
-            };
-            bw.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
-            {
-                _workerThread = null;
-                SetControlsForDownloading(false);
-
-                if (args.Cancelled)
-                {
-                    MessageBox.Show(this, "Cancelled.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    var ex = args.Result as Exception ?? args.Error;
-                    if (ex != null)
-                    {
-                        MessageBox.Show(this, ex.Message, "Download failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {
-                        _file = (string) args.Result;
-                        MessageBox.Show(this, "File downloaded.", "Information", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                    }
-                }
-            };
-            bw.RunWorkerAsync();
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
             var themeName = cbTheme.Text;
             if (String.IsNullOrEmpty(themeName))
             {
                 MessageBox.Show(this, "Not valid theme.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (string.IsNullOrEmpty(_file) || !File.Exists(_file))
-            {
-                MessageBox.Show(this, "Not valid file to add.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
-            
+            // Check what selected:  url of file
+            if (!File.Exists(url))
+            {
+                SetControlsForDownloading(true);
+
+                _webClient = new WebClient();
+                var file = Path.GetTempFileName();
+                _webClient.DownloadFileAsync(new Uri(url), file);
+                _webClient.DownloadFileCompleted += delegate(object o, AsyncCompletedEventArgs args)
+                {
+                    _webClient.Dispose();
+                    _webClient = null;
+                    SetControlsForDownloading(false);
+                    if (args.Cancelled)
+                    {
+                        MessageBox.Show(this, "Download Cancelled.", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    if (args.Error != null)
+                    {
+                        MessageBox.Show(this, args.Error.Message, "Download Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    ImportFromFile(file, themeName);
+                };
+            }
+            else
+            {
+                ImportFromFile(url, themeName);
+            }
+        }
+
+        private void ImportFromFile(string fileName, string themeName)
+        {
             var parser = new WaterML20Parser();
             IList<Series> seriesList;
             try
             {
-                seriesList = parser.ParseGetValues(_file);
+                seriesList = parser.ParseGetValues(fileName);
             }
             catch (Exception ex)
             {
@@ -152,19 +124,29 @@ namespace HydroDesktop.Plugins.WaterML2Client
                 {
                     db.SaveSeries(series, theme, OverwriteOptions.Copy);
                 }
-                MessageBox.Show(this, "Saved.", "Information", MessageBoxButtons.OK,
+                MessageBox.Show(this, "Data imported successfully.", "Information", MessageBoxButtons.OK,
                            MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    tbTimeSeriesUrl.Text = ofd.FileName;
+                }
+            }
         }
     }
 }
