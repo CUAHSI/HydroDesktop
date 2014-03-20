@@ -277,7 +277,6 @@
       <DependentUpon>ProgressPage.cs</DependentUpon>
     </Compile>
     <Compile Include="WaterML\WaterMLImporter.cs" />
-    <Compile Include="WaterML\Downloader.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WaterML\WaterMLImporterImpl.cs" />

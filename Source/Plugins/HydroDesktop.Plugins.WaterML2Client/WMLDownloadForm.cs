@@ -13,10 +13,14 @@ namespace HydroDesktop.Plugins.WaterML2Client
 {
     public partial class WMLDownloadForm : Form
     {
+        private readonly ISeriesSelector _seriesControl;
         private WebClient _webClient;
 
-        public WMLDownloadForm()
+        public WMLDownloadForm(ISeriesSelector seriesControl)
         {
+            if (seriesControl == null) throw new ArgumentNullException("seriesControl");
+            _seriesControl = seriesControl;
+
             InitializeComponent();
 
             var themeTable = RepositoryFactory.Instance.Get<IDataThemesRepository>().GetAll();
@@ -71,11 +75,22 @@ namespace HydroDesktop.Plugins.WaterML2Client
             // Check what selected:  url of file
             if (!File.Exists(url))
             {
+                Uri uri;
+                try
+                {
+                    uri = new Uri(url);
+                }
+                catch (UriFormatException)
+                {
+                    MessageBox.Show(this, "Not valid url.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
                 SetControlsForDownloading(true);
 
                 _webClient = new WebClient();
                 var file = Path.GetTempFileName();
-                _webClient.DownloadFileAsync(new Uri(url), file);
+                _webClient.DownloadFileAsync(uri, file);
                 _webClient.DownloadFileCompleted += delegate(object o, AsyncCompletedEventArgs args)
                 {
                     _webClient.Dispose();
@@ -124,6 +139,7 @@ namespace HydroDesktop.Plugins.WaterML2Client
                 {
                     db.SaveSeries(series, theme, OverwriteOptions.Copy);
                 }
+                _seriesControl.RefreshSelection();
                 MessageBox.Show(this, "Data imported successfully.", "Information", MessageBoxButtons.OK,
                            MessageBoxIcon.Information);
             }

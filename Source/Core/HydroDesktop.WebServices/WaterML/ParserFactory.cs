@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using System.IO;
 using HydroDesktop.Interfaces.ObjectModel;
 
 namespace HydroDesktop.WebServices.WaterML
@@ -24,6 +26,22 @@ namespace HydroDesktop.WebServices.WaterML
                     break;
             }
             return parser;
+        }
+
+        public static IWaterMLParser GetParser(string fileName)
+        {
+            using (var fileStream = File.OpenRead(fileName))
+            using(var txtReader = new StreamReader(fileStream))
+            {
+                while (txtReader.Peek() != -1)
+                {
+                    var line = txtReader.ReadLine();
+                    if (String.IsNullOrEmpty(line)) continue;
+                    if (line.StartsWith("<wml2:Collection", StringComparison.OrdinalIgnoreCase))
+                        return new WaterML20Parser();
+                }
+            }
+            return new WaterML10Parser();
         }
     }
 }
