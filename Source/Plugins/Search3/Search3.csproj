@@ -144,6 +144,7 @@
       <DependentUpon>SelectAreaByAttributeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Area\RectangleDrawing.cs" />
+    <Compile Include="Box.cs" />
     <Compile Include="Keywords\Constants.cs" />
     <Compile Include="Keywords\DbKeywordsList.cs" />
     <Compile Include="Keywords\HisCentralKeywordsList.cs" />

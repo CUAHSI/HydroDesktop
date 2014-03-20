@@ -4,18 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using HydroDesktop.Interfaces.ObjectModel;
+using HydroDesktop.WebServices.WaterML;
 
 namespace HydroDesktop.WebServices.WaterOneFlow
 {
     /// <summary>
-    /// Special class for communicating with WaterML / WaterOneFlow web services
+    /// Special class for communicating WaterOneFlow web services
     /// </summary>
     public class WaterOneFlowClient
     {
         #region Fields
 
         private readonly string _serviceURL;
-        private readonly IWaterOneFlowParser _parser;
+        private readonly IWaterMLParser _parser;
         private string _downloadDirectory;
         private readonly DataServiceInfo _serviceInfo;
         private readonly int _reqTimeOut;
@@ -147,8 +148,8 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             }
             else
             {
-                var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime,
-                    endTime, _reqTimeOut);
+                var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime, endTime);
+                req.Timeout = _reqTimeOut*1000;
                 using (var resp = (HttpWebResponse) req.GetResponse())
                 {
                     using (var stream = resp.GetResponseStream())
@@ -182,6 +183,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             else
             {
                 var req = WebServiceHelper.CreateGetSiteInfoRequest(_serviceURL, siteCode);
+                req.Timeout = _reqTimeOut * 1000;
                 using (var resp = (HttpWebResponse) req.GetResponse())
                 {
                     using (var stream = resp.GetResponseStream())
@@ -212,6 +214,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             else
             {
                 var req = WebServiceHelper.CreateGetSitesRequest(_serviceURL);
+                req.Timeout = _reqTimeOut * 1000;
                 using (var resp = (HttpWebResponse) req.GetResponse())
                 {
                     using (var stream = resp.GetResponseStream())
@@ -315,6 +318,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             //generate the file name
             var fileName = Path.Combine(DownloadDirectory, "sites" + GenerateTimeStampString() + ".xml");
             var req = WebServiceHelper.CreateGetSitesRequest(_serviceURL);
+            req.Timeout = _reqTimeOut * 1000;
             SaveWebResponseToFile(req, fileName);
             return fileName;
         }
@@ -333,7 +337,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
             fileName = Path.Combine(DownloadDirectory, fileName);
 
             var req = WebServiceHelper.CreateGetSiteInfoRequest(_serviceURL, fullSiteCode);
-
+            req.Timeout = _reqTimeOut * 1000;
             SaveWebResponseToFile(req, fileName);
             return fileName;
         }
@@ -365,6 +369,7 @@ namespace HydroDesktop.WebServices.WaterOneFlow
         private string GetAndSavesValuesXML(string siteCode, string variableCode, DateTime startTime, DateTime endTime)
         {
             var req = WebServiceHelper.CreateGetValuesRequest(_serviceURL, siteCode, variableCode, startTime, endTime);
+            req.Timeout = _reqTimeOut * 1000;
             var filename = GenerateGetValuesFileName(siteCode, variableCode);
             SaveWebResponseToFile(req, filename);
             return filename;

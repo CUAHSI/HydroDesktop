@@ -64,7 +64,6 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Box.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -72,19 +71,20 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ServiceIconHelper.cs" />
-    <Compile Include="SoapHelper.cs" />
+    <Compile Include="WaterML\ContactInformationType.cs" />
+    <Compile Include="WaterML\DataValueWrapper.cs" />
+    <Compile Include="WaterML\IWaterMLParser.cs" />
+    <Compile Include="WaterML\ParserFactory.cs" />
+    <Compile Include="WaterML\ParserHelper.cs" />
+    <Compile Include="WaterML\SeriesCodeHelper.cs" />
+    <Compile Include="WaterML\WaterML10FamilyParser.cs" />
+    <Compile Include="WaterML\WaterML10Parser.cs" />
+    <Compile Include="WaterML\WaterML11Parser.cs" />
+    <Compile Include="WaterML\WaterML20Parser.cs" />
     <Compile Include="WaterOneFlow\IGetValuesProgressHandler.cs" />
-    <Compile Include="WaterOneFlow\IWaterOneFlowParser.cs" />
-    <Compile Include="WaterOneFlow\ParserFactory.cs" />
-    <Compile Include="WaterOneFlow\RestWaterOneFlowClient.cs" />
-    <Compile Include="WaterOneFlow\SeriesCodeHelper.cs" />
-    <Compile Include="WaterOneFlow\WaterOneFlow10Parser.cs" />
-    <Compile Include="WaterOneFlow\WaterOneFlow11Parser.cs" />
-    <Compile Include="WaterOneFlow\WaterOneFlow20Parser.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowClient.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WaterOneFlow\WaterOneFlowParser.cs" />
     <Compile Include="WebServiceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
