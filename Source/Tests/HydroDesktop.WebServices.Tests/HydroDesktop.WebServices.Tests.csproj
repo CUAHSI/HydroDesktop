@@ -130,43 +130,53 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="WaterOneFlow\WaterOneFlow20ParserTests.cs" />
-    <Compile Include="WaterOneFlow\WaterOneFlow11ParserTests.cs" />
+    <Compile Include="WaterML\ParserFactoryTests.cs" />
+    <Compile Include="WaterML\ParserHelperTests.cs" />
+    <Compile Include="WaterML\WaterML10ParserTests.cs" />
+    <Compile Include="WaterML\WaterML11ParserTests.cs" />
+    <Compile Include="WaterML\WaterML20ParserTests.cs" />
     <Compile Include="WaterOneFlow\WaterOneFlowClientTests.cs" />
-    <Compile Include="WaterOneFlow\ParserFactoryTests.cs" />
-    <Compile Include="WaterOneFlow\WaterOneFlow10ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestFiles\v10sites\Site-DCEW2-dcew.p1-20110216043840885.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v10sites\sites20100211051408633.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v10sites\sites20100828041541653.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v10sites\sites20100831054240254.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v10\NWISDV-08157700-NWISDV-00060-DataType-Average-20120603025214538.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v10\RioGrandeET-SEV-RioGrandeET-ET_Penman-20110211055032021.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v11\GetValues_Mendon_usu3.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="TestFiles\v20\TimeSeries_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v20\TimeSeries_2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v20\TimeSeries_3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v10\NWISDV-08157700-NWISDV-00060-DataType-Average-20120603025214538.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v10\RioGrandeET-SEV-RioGrandeET-ET_Penman-20110211055032021.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v10\Site-DCEW2-dcew.p1-20110216043840885.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v10\sites20100211051408633.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v10\sites20100828041541653.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v10\sites20100831054240254.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v11\GetValues_Mendon_usu3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="TestFiles\v11\Site-RCEW2-012-20120604043508874.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\v20\GetValues_Mendon_usu3_wml2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v11\Site-RCEW2-012-20120604043508874.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\v20\GetValues_Mendon_usu3_wml2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
