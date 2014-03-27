@@ -341,7 +341,6 @@
     <None Include="Resources\Draw_Box_32.png" />
     <None Include="Resources\keyword_16.png" />
     <None Include="Resources\keyword_32.png" />
-    <None Include="Resources\HydroDesktop.ico" />
     <None Include="Resources\hand_16x16.png" />
     <None Include="Resources\deselect_16x16.png" />
     <None Include="Resources\current_view_16.png" />
