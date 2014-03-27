@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>HydroDesktop.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\HydroDesktop.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -169,7 +169,6 @@
     <None Include="Resources\map_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HydroDesktop.ico" />
     <Content Include="HydroDesktopSplashLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
