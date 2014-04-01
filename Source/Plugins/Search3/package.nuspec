@@ -16,7 +16,7 @@
     </dependencies>
   </metadata> 
   <files>
-    <file src="app.config" target="lib\net40-Client\Search3.dll.config" />
+    <file src="app.config" target="lib\net40-Client\HydroDesktop.Plugins.Search.dll.config" />
     <file src="Resources\OntologyTree.xml" target="lib\net40-Client\Resources" />
     <file src="Resources\Synonyms.xml" target="lib\net40-Client\Resources" />
   </files>

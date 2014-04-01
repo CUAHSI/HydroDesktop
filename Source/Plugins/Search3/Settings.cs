@@ -1,4 +1,4 @@
-﻿namespace Search3.Properties
+﻿namespace HydroDesktop.Plugins.Search.Properties
 {
 
 

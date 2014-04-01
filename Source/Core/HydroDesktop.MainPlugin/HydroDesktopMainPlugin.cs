@@ -33,6 +33,11 @@
 
         private AttributeTableManager attributeManager;
 
+        public HydroDesktopMainPlugin()
+        {
+            DeactivationAllowed = false;
+        }
+
         public override void Activate()
         {
             if (SeriesControl == null)

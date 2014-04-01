@@ -5,11 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HydroDesktop.Common;
-using Search3.Keywords;
-using Search3.Searching.Exceptions;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Keywords;
+using HydroDesktop.Plugins.Search.Searching.Exceptions;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     /// <summary>
     /// Data series searcher.

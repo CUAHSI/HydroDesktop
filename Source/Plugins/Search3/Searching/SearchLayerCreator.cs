@@ -5,10 +5,10 @@ using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using Hydrodesktop.Common;
 using DotSpatial.Data;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Settings;
 using System.Diagnostics;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     class SearchLayerCreator
     {

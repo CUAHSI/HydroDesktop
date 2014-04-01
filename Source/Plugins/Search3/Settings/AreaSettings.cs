@@ -3,7 +3,7 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.WebServices;
 
-namespace Search3.Settings
+namespace HydroDesktop.Plugins.Search.Settings
 {
     public class AreaSettings
     {

@@ -15,13 +15,6 @@ using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.Help;
-using Search3.Area;
-using Search3.Keywords;
-using Search3.Properties;
-using Search3.Searching;
-using Search3.Searching.Exceptions;
-using Search3.Settings;
-using Search3.Settings.UI;
 using Msg = ShaleNetwork.MessageStrings;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
@@ -37,7 +30,7 @@ namespace ShaleNetwork
         private SimpleActionItem _Shale;
         private readonly string _searchKey = SharedConstants.SearchRootkey;
         private MapFunctionMeasure _Painter;
-        private Search3.SearchPlugin search3;
+        private HydroDesktop.Plugins.Search.SearchPlugin searchPlugin;
 
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
@@ -52,11 +45,10 @@ namespace ShaleNetwork
             base.Activate();
 
             App.ExtensionsActivated += AppOnExtensionsActivated;
-            if (App.GetExtension("Search3") != null)
-            {
-                search3 = (Search3.SearchPlugin)App.GetExtension("Search3");
-                search3.setSearchTabCaption(MessageStrings.Shale);
-            }
+            searchPlugin = (HydroDesktop.Plugins.Search.SearchPlugin)App.GetExtension("HydroDesktop.Plugins.Search");
+
+            if (searchPlugin != null)
+                searchPlugin.setSearchTabCaption(MessageStrings.Shale);
         }
 
         public override void Deactivate()
@@ -64,10 +56,8 @@ namespace ShaleNetwork
             App.HeaderControl.RemoveAll();
             base.Deactivate();
 
-            if (App.GetExtension("Search3") != null)
-            {
-                search3.setSearchTabCaption("Search");
-            }
+            if (searchPlugin != null)
+                searchPlugin.setSearchTabCaption("Search");
         }
 
         #endregion
@@ -96,11 +86,10 @@ namespace ShaleNetwork
 
         private void AppOnExtensionsActivated(object sender, EventArgs eventArgs)
         {
-            if (App.GetExtension("Search3") != null)
-            {
-                search3 = (Search3.SearchPlugin)App.GetExtension("Search3");
-                search3.setSearchTabCaption(MessageStrings.Shale);
-            }
+            searchPlugin = (HydroDesktop.Plugins.Search.SearchPlugin)App.GetExtension("HydroDesktop.Plugins.Search");
+
+            if (searchPlugin != null)
+                searchPlugin.setSearchTabCaption(MessageStrings.Shale);
         }
 
         #region Search
@@ -153,35 +142,35 @@ namespace ShaleNetwork
 
         void Shale_Click(object sender, EventArgs e)
         {
-            if (App.GetExtension("Search3") != null && App.GetExtension("Search3").IsActive)
+            if (searchPlugin != null && searchPlugin.IsActive)
             {
                 //ShaleDialog dialog = new ShaleDialog();
-                if (ShaleDialog.ShowDialog(search3._searchSettings.KeywordsSettings) == DialogResult.OK)
+                if (ShaleDialog.ShowDialog(searchPlugin._searchSettings.KeywordsSettings) == DialogResult.OK)
                 {
-                    var selectedKeywords = search3._searchSettings.KeywordsSettings.SelectedKeywords.ToList();
+                    var selectedKeywords = searchPlugin._searchSettings.KeywordsSettings.SelectedKeywords.ToList();
 
                     if (selectedKeywords.Count > 1)
                     {
-                        search3._dropdownKeywords.MultiSelect = true;
+                        searchPlugin._dropdownKeywords.MultiSelect = true;
 
                         // This code has no other purpose than to  immediately trigger the text to change to Multiple Selected.
                         // Without it, you have to hover or click on something in the ribbon for the change to occur.
-                        search3._dropdownKeywords.Enabled = false;
-                        search3._dropdownKeywords.Enabled = true;
+                        searchPlugin._dropdownKeywords.Enabled = false;
+                        searchPlugin._dropdownKeywords.Enabled = true;
 
                     }
                     else if (selectedKeywords.Count == 1)
                     {
-                        search3._dropdownKeywords.MultiSelect = false;
-                        search3._dropdownKeywords.SelectedItem = selectedKeywords[0];
+                        searchPlugin._dropdownKeywords.MultiSelect = false;
+                        searchPlugin._dropdownKeywords.SelectedItem = selectedKeywords[0];
                     }
                     else
                     {
-                        search3._dropdownKeywords.MultiSelect = false;
-                        search3._dropdownKeywords.SelectedItem = null;
+                        searchPlugin._dropdownKeywords.MultiSelect = false;
+                        searchPlugin._dropdownKeywords.SelectedItem = null;
                     }
 
-                    search3.UpdateKeywordsCaption();
+                    searchPlugin.UpdateKeywordsCaption();
                 }
             }
         }

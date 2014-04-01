@@ -1,4 +1,4 @@
-﻿namespace Search3.Settings.UI
+﻿namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     partial class WebServicesDialog
     {
@@ -40,7 +40,7 @@
             this.btnSelectNone = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.webServicesUserControl1 = new Search3.Settings.UI.WebServicesUserControl(_app, _rectangleDrawing);
+            this.webServicesUserControl1 = new HydroDesktop.Plugins.Search.Settings.UI.WebServicesUserControl(_app, _rectangleDrawing);
             this.paButtons.SuspendLayout();
             this.gbTypeOfCatalog.SuspendLayout();
             this.SuspendLayout();

@@ -1,4 +1,4 @@
-﻿namespace Search3.Settings.UI
+﻿namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     partial class KeywordsDialog
     {
@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KeywordsDialog));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.keywordsUserControl1 = new Search3.Settings.UI.KeywordsUserControl();
+            this.keywordsUserControl1 = new HydroDesktop.Plugins.Search.Settings.UI.KeywordsUserControl();
             this.SuspendLayout();
             // 
             // btnCancel

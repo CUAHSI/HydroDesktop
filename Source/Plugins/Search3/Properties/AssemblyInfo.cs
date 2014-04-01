@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Search3")]
-[assembly: AssemblyDescription("Search 3 Extension for HydroDesktop")]
+[assembly: AssemblyTitle("HydroDesktop.Plugins.Search")]
+[assembly: AssemblyDescription("Search Extension for HydroDesktop")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CUAHSI")]
-[assembly: AssemblyProduct("Search3")]
+[assembly: AssemblyProduct("HydroDesktop.Plugins.Search")]
 [assembly: AssemblyCopyright("Copyright © CUAHSI 2011-2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

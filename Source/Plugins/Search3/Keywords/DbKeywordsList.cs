@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Search3.Searching;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Searching;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.Keywords
+namespace HydroDesktop.Plugins.Search.Keywords
 {
     class DbKeywordsList : IOntologyReader
     {

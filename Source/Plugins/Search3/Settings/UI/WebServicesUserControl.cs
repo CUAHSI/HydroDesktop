@@ -6,8 +6,8 @@ using System.Windows.Forms;
 using System.Data;
 using System.Linq;
 using System.Diagnostics;
-using Search3.Settings;
-using Search3.Area;
+using HydroDesktop.Plugins.Search.Settings;
+using HydroDesktop.Plugins.Search.Area;
 using DotSpatial.Projections;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -15,7 +15,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Topology;
 using System.ComponentModel;
 
-namespace Search3.Settings.UI
+namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     public partial class WebServicesUserControl : UserControl
     {
@@ -170,7 +170,7 @@ namespace Search3.Settings.UI
                 dgvic.HeaderText = "View Extents";
                 dgvic.Width = (int)g.MeasureString(dgvic.Name, gridViewWebServices.Font).Width;
                 dgvic.ValuesAreIcons = true;
-                dgvic.Icon = Search3.Properties.Resources.view_extents_16_16x16;
+                dgvic.Icon = HydroDesktop.Plugins.Search.Properties.Resources.view_extents_16_16x16;
                 dgvic.ReadOnly = true;
                 gridViewWebServices.Columns.Add(dgvic);
 
@@ -181,7 +181,7 @@ namespace Search3.Settings.UI
                     dgvic2.HeaderText = "More Info";
                     dgvic2.Width = (int)g.MeasureString(dgvic2.Name, gridViewWebServices.Font).Width;
                     dgvic2.ValuesAreIcons = true;
-                    dgvic2.Icon = Search3.Properties.Resources.more_info;
+                    dgvic2.Icon = HydroDesktop.Plugins.Search.Properties.Resources.more_info;
                     dgvic2.ReadOnly = true;
                     gridViewWebServices.Columns.Add(dgvic2);
                 }      

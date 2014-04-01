@@ -5,9 +5,9 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using HydroDesktop.WebServices;
-using Search3.Properties;
+using HydroDesktop.Plugins.Search.Properties;
 
-namespace Search3.Area
+namespace HydroDesktop.Plugins.Search.Area
 {
     static class AreaHelper
     {

@@ -4,10 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using HydroDesktop.WebServices;
-using Search3.Searching;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Searching;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.WebServices
+namespace HydroDesktop.Plugins.Search.WebServices
 {
     class HisCentralWebServicesList : IWebServicesList
     {

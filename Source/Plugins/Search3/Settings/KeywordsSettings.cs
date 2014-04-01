@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Search3.Keywords;
+using HydroDesktop.Plugins.Search.Keywords;
 
-namespace Search3.Settings
+namespace HydroDesktop.Plugins.Search.Settings
 {
     public class KeywordsSettings
     {

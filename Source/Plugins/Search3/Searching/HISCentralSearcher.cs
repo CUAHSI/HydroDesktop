@@ -8,7 +8,7 @@ using System.Xml;
 using HydroDesktop.Common;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     /// <summary>
     /// Search for data series using HIS Central 

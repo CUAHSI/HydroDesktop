@@ -1,4 +1,4 @@
-﻿namespace Search3.Searching
+﻿namespace HydroDesktop.Plugins.Search.Searching
 {
     partial class SearchProgressForm
     {

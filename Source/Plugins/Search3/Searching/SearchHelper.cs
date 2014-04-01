@@ -7,7 +7,7 @@ using DotSpatial.Data;
 using DotSpatial.Topology;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
 	/// <summary>
 	/// Helper class - converts the search results list to a GIS Feature set that can be

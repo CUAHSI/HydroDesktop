@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Search3.Settings
+namespace HydroDesktop.Plugins.Search.Settings
 {
     public class OntologyTree
     {

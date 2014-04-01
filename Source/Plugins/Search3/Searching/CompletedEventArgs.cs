@@ -1,7 +1,7 @@
 using System;
 using HydroDesktop.Common;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     public class CompletedEventArgs : EventArgs
     {

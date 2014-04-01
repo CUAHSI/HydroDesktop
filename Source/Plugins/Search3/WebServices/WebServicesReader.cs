@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.WebServices
+namespace HydroDesktop.Plugins.Search.WebServices
 {
     static class WebServicesReader
     {

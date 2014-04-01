@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
-using Search3.WebServices;
+using HydroDesktop.Plugins.Search.WebServices;
 
-namespace Search3.Settings
+namespace HydroDesktop.Plugins.Search.Settings
 {
     public class WebServicesSettings
     {

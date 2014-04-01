@@ -99,50 +99,8 @@ Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Microsoft.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
-;Source: "..\Binaries\Help\html\*"; DestDir: "{app}\Help\html"; Flags: ignoreversion recursesubdirs;
 Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.5.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
 Source: "..\Documentation\HydroDesktop User Guide.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\DataAggregation\DataAggregation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\DataDownload\*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\ImportFromWaterML\DataImport.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ImportFromWaterML\Wizard.Controls.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ImportFromWaterML\Wizard.UI.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ExportToCSV\ExportToCSV.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ExcelExtension\Excel.dll"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ExcelExtension\ExcelExtension.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\ExcelExtension\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-;Source: "..\Binaries\Plugins\HydroModeler\Oatc.OpenMI.*.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
-;Source: "..\Binaries\Plugins\HydroModeler\OpenMI.Standard.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
-;Source: "..\Binaries\Plugins\HydroModeler\HydroModeler.dll"; DestDir: "{app}\Plugins\HydroModeler"; Flags: ignoreversion;
-;Source: "..\Binaries\Plugins\HydroModeler\HydroModeler_example_configurations\*"; DestDir: "{app}\Plugins\HydroModeler\HydroModeler_example_configurations"; Flags: recursesubdirs;
-
-Source: "..\Binaries\Plugins\MetadataFetcher\MetadataFetcher.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\Search3\Search3.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search3\Search3.dll.config"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search3\Resources\OntologyTree.xml"; DestDir: "{app}\Plugins\Resources"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\Search3\Resources\Synonyms.xml"; DestDir: "{app}\Plugins\Resources"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\TableView\TableView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\HelpTab\HelpTab.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\EPADelineation\EPADelineation.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-Source: "..\Binaries\Plugins\EPADelineation\Newtonsoft.Json.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\GraphView\GraphView.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-Source: "..\Binaries\Plugins\EditView\EditView.dll*"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-Source: "..\Binaries\Application Extensions\HydroDesktop.MainPlugin.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\HydroDesktop.SeriesView.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.ExtensionManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\HydroDesktop.SplashScreenManager.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\HydroDesktop.SimpleLegend.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\HydroDesktop.DownloadExtensions.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-
 
 Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion;
@@ -150,56 +108,13 @@ Source: "..\Binaries\x64\SQLite.Interop.dll"; DestDir: "{app}\x64"; Flags: ignor
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\NuGet.Core.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
 
+;Plugins
+Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Excludes: "ShaleNetwork, HydroShare, Aggregation_Plugin"; Flags: recursesubdirs ignoreversion;
 
-;Windows specific folders
-Source: "..\Binaries\Windows Extensions\HydroR\HydroR.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\HydroR\HydroR_1.3.tar.gz"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\HydroDesktop.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Support\Windows\System.Data.SQLite.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
-Source: "..\Binaries\Support\Windows\System.Data.SQLite.Linq.dll"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
-
-
-;include 3rd party packages. These packages are referenced in HydroDesktop.MainPlugin
-Source: "..\Binaries\Windows Extensions\DevExpress.Data.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Printing.v12.2.Core.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraGrid.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v12.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.Ribbon.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-
-;MenuBar package
-Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.MenuBar.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-
-;AttributeDataExplorer package
-Source: "..\Binaries\Windows Extensions\DotSpatial.Plugins.AttributeDataExplorer.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Printing.v11.2.Core.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraGrid.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraLayout.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Data.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.Utils.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraBars.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Windows Extensions\DevExpress.XtraEditors.v11.2.dll"; DestDir: "{app}\Windows Extensions"; Flags: ignoreversion;
-
-;GeostatisticalTool package
-;Source: "..\GeostatisticalTool\Lib\net40-client\GeostatisticalTool.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-;Source: "..\GeostatisticalTool\Lib\net40-client\MadInterfaces.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
-
-;WebMap package
-Source: "..\Binaries\Application Extensions\BruTile.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\BruTile.Desktop.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll.config"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-Source: "..\Binaries\Application Extensions\DotSpatial.Plugins.WebMap.dll"; DestDir: "{app}\Application Extensions"; Flags: ignoreversion;
-
-;SampleProjects
-;Source: "..\DotSpatial.SampleProjects.NorthAmerica\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.NorthAmerica"; Flags: recursesubdirs;
-;Source: "..\DotSpatial.SampleProjects.World\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\DotSpatial.SampleProjects.World"; Flags: recursesubdirs;
-;Source: "..\SampleProjects.jacobs_well_spring\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\jacobs_well_spring"; Flags: recursesubdirs;
-;Source: "..\SampleProjects.elbe\*"; Excludes: "*.nupkg"; DestDir: "{app}\hydrodesktop_sample_projects\elbe"; Flags: recursesubdirs;
+;Windows Specific Folders
+Source: "..\Binaries\Windows Extensions\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Excludes: "HydroModeler"; Flags: recursesubdirs ignoreversion;
+Source: "..\Binaries\Support\Windows\*"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#SrcApp}"
@@ -217,111 +132,15 @@ Root: HKCR; Subkey: "HD_Project\shell\open\command"; ValueType: string; ValueNam
 ;Filename: "{app}\HydroDesktop.exe"; Description: "{cm:LaunchProgram,HydroDesktop}"; Flags: nowait postinstall skipifsilent
 
 [InstallDelete]
-Type: files; Name: "{app}\Application Extensions\*"      
-Type: files; Name: "{app}\Windows Extensions\*"
-Type: files; Name: "{app}\Application Extensions\DotSpatial.Plugins.DockManager.dll"
-Type: files; Name: "{app}\DotSpatial.Common.dll"
-Type: files; Name: "{app}\DotSpatial.Desktop.dll"
-Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
-Type: files; Name: "{app}\FluentNHibernate.dll"
-Type: files; Name: "{app}\NHibernate.dll"
-Type: files; Name: "{app}\Plugins\1_SeriesView.*"
-Type: files; Name: "{app}\Plugins\FetchBasemap.*"
-Type: files; Name: "{app}\Plugins\FetchBasemap\*"
-Type: files; Name: "{app}\Plugins\TSA\*"
-Type: files; Name: "{app}\Plugins\TSA.*"
-Type: files; Name: "{app}\Plugins\Toolbox.*"
-Type: files; Name: "{app}\Plugins\Search2\*"
-Type: files; Name: "{app}\Plugins\Search\search.*"
-Type: files; Name: "{app}\Plugins\HelpTab\DataDownload.dll"
-Type: files; Name: "{app}\Plugins\MetadataFetcher\HIS_Database.*"
-Type: files; Name: "{app}\Plugins\DataFetcher\HIS_Database.*"
-Type: files; Name: "{app}\Plugins\ImportFromWaterML\ImportFromWaterML.*"
-Type: files; Name: "{app}\HydroDesktop.Database.*"
-Type: files; Name: "{app}\HydroDesktop.Help.*"
-Type: files; Name: "{app}\HydroDesktop.DataModel.*"
-Type: files; Name: "{app}\HydroDesktop.WebServices.*"
-Type: files; Name: "{app}\FetchBasemap\FetchBasemap.*"
-Type: files; Name: "{app}\settings.xml"
-Type: files; Name: "{app}\q_save.xml"
-Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
-Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.ExtensionManager.dll"
-Type: files; Name: "{app}\hydrodesktop_log.txt"
-Type: files; Name: "{app}\Plugins\DataAggregation\DataAggregation.dll"
-Type: files; Name: "{app}\Plugins\DataAggregation\DataAggregation.pdb"
-Type: files; Name: "{app}\Plugins\DataAggregation\DataAggregation.xml"
-Type: files; Name: "{app}\Plugins\DataAggregation\HydroDestkop.Configuration.dll"
-Type: files; Name: "{app}\Plugins\DataAggregation\HydroDestkop.Configuration.pdb"
-Type: files; Name: "{app}\Plugins\DataImport\DataImport.dll"
-Type: files; Name: "{app}\Plugins\DataImport\Excel.dll"
-Type: files; Name: "{app}\Plugins\DataImport\ICSharpCode.SharpZipLib.dll"
-Type: files; Name: "{app}\Plugins\DataImport\Wizard.Controls.dll"
-Type: files; Name: "{app}\Plugins\DataImport\Wizard.UI.dll"
-Type: files; Name: "{app}\Plugins\EPADelineation\EPADelineation.dll"
-Type: files; Name: "{app}\Plugins\EPADelineation\Newtonsoft.Json.dll"
-Type: files; Name: "{app}\Plugins\ExportToCSV\ExportToCSV.dll"
-Type: files; Name: "{app}\Plugins\ExportToCSV\HydroDesktop.Common.dll"
-Type: files; Name: "{app}\Plugins\GeostatisticalTool\GeostatisticalTool.dll"
-Type: files; Name: "{app}\Plugins\GeostatisticalTool\ZedGraph.dll"
-Type: files; Name: "{app}\Plugins\HelpTab\HelpTab.dll"
-Type: files; Name: "{app}\Plugins\MetadataFetcher\MetadataFetcher.dll"
-Type: files; Name: "{app}\Plugins\TableView\TableView.dll"
-Type: files; Name: "{app}\Plugins\WebMap\BruTile.dll"
-Type: files; Name: "{app}\Plugins\WebMap\DotSpatial.Plugins.WebMap.dll"
-Type: files; Name: "{app}\Plugins\ZDataDownload\DataDownload.dll"
-Type: files; Name: "{app}\Plugins\ZDataDownload\Log4net.dll"
-Type: files; Name: "{app}\Plugins\GraphView\GraphView.dll"
-Type: files; Name: "{app}\Plugins\EditView\EditView.dll"
-Type: files; Name: "{app}\Plugins\EditView\ZedGraph.dll"
-Type: files; Name: "{app}\Windows Extensions\GraphView\ZedGraph.dll"
-Type: files; Name: "{app}\Windows Extensions\HydroR\HydroR.dll"
-Type: files; Name: "{app}\Windows Extensions\HydroR\HydroR_1.2.tar.gz"
-
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_4.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_4"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5_2.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5_2"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5_3.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5_3"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5_4.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_5_4"
+Type: filesandordirs; Name: "{app}\*"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
+Type: filesandordirs; Name: "{localappdata}\CUAHSI\{#SrcApp}*"
+Type: filesandordirs; Name: "{localappdata}\Temp\HydroDesktop"
+Type: filesandordirs; Name: "{commonappdata}\{#SrcApp}"
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{app}\Application Extensions"
-Type: filesandordirs; Name: "{app}\Windows Extensions"
-Type: files; Name: "{app}\DotSpatial.Common.dll"
-Type: files; Name: "{app}\DotSpatial.Desktop.dll"
-Type: files; Name: "{app}\NDepend.Helpers.FileDirectoryPath.dll"
-Type: files; Name: "{app}\FluentNHibernate.dll"
-Type: files; Name: "{app}\NHibernate.dll"
-Type: filesandordirs; Name: "{app}\Plugins"
-Type: files; Name: "{app}\HydroDesktop.Database.*"
-Type: files; Name: "{app}\HydroDesktop.Help.*"
-Type: files; Name: "{app}\HydroDesktop.DataModel.*"
-Type: files; Name: "{app}\HydroDesktop.WebServices.*"
-Type: filesandordirs; Name: "{app}\FetchBasemap"
-Type: files; Name: "{app}\settings.xml"
-Type: files; Name: "{app}\q_save.xml"
-Type: files; Name: "{app}\System.Windows.Forms.Ribbon35.dll"
-Type: files; Name: "{app}\hydrodesktop_log.txt"
-Type: files; Name: "{app}\trace*"
-Type: filesandordirs; Name: "{app}\Windows Extensions"
-Type: filesandordirs; Name: "{app}\Help"
-Type: filesandordirs; Name: "{app}\Support"
-Type: filesandordirs; Name: "{app}\x64"
-Type: filesandordirs; Name: "{app}\x86"
-Type: filesandordirs; Name: "{app}\backup"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_4.exe"
-Type: filesandordirs; Name: "{userappdata}\HydroDesktop_1_4"
+Type: filesandordirs; Name: "{app}\*"
 Type: files; Name: "{userappdata}\hydrodesktop_log.txt"
-Type: filesandordirs; Name: "{userappdata}\{#SrcApp}"
 Type: filesandordirs; Name: "{localappdata}\CUAHSI\{#SrcApp}*"
 Type: filesandordirs; Name: "{localappdata}\Temp\HydroDesktop"
 Type: filesandordirs; Name: "{commonappdata}\{#SrcApp}"

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 
-namespace Search3.Area
+namespace HydroDesktop.Plugins.Search.Area
 {
     public partial class SelectAreaByAttributeDialog : Form
     {
