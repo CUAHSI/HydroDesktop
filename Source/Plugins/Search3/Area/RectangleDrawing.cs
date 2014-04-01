@@ -10,7 +10,7 @@ using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
 
-namespace Search3.Area
+namespace HydroDesktop.Plugins.Search.Area
 {
     /// <summary>
     /// This class is responsible for drawing the area rectangle

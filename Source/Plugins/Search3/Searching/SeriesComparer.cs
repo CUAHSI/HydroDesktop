@@ -5,7 +5,7 @@ using System.Text;
 using HydroDesktop.Interfaces.ObjectModel;
 using System.Diagnostics;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     class SeriesComparer : IEqualityComparer<SeriesDataCart>
     {

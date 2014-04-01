@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,12 +41,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\Binaries\Windows Extensions\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Windows Extensions\HydroDesktop.Docking\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <DocumentationFile>..\..\..\Binaries\Windows Extensions\HydroDesktop.Docking.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Windows Extensions\HydroDesktop.Docking\HydroDesktop.Docking.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
@@ -58,9 +58,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls, Version=1.6.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.0\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.1\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
@@ -73,9 +72,8 @@
       <HintPath>..\..\packages\DotSpatial.Data.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Extensions, Version=1.6.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.0\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+    <Reference Include="DotSpatial.Extensions">
+      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=MSIL">

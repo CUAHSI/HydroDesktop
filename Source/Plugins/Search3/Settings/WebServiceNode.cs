@@ -1,7 +1,7 @@
 using System;
 using HydroDesktop.WebServices;
 
-namespace Search3.Settings
+namespace HydroDesktop.Plugins.Search.Settings
 {
     public class WebServiceNode
     {

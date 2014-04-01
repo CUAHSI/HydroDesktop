@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
 
-namespace Search3.Settings.UI
+namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     public partial class AdvancedHisCentralOptionsDialog : Form
     {

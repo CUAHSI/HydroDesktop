@@ -1,5 +1,5 @@
 ﻿
-namespace Search3.Settings.UI
+namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     partial class KeywordsUserControl
     {

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -75,7 +75,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.0\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.1\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data">
@@ -87,7 +87,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
-      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.0\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
@@ -211,7 +211,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\HydroDesktop.Common\Hydrodesktop.Common.csproj">
+    <ProjectReference Include="..\..\Core\HydroDesktop.Common\HydroDesktop.Common.csproj">
       <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
@@ -226,9 +226,9 @@
       <Name>HydroDesktop.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Search3\Search3.csproj">
+    <ProjectReference Include="..\Search3\HydroDesktop.Plugins.Search.csproj">
       <Project>{fb01f6ee-89c0-4a64-b023-c8cc566ff803}</Project>
-      <Name>Search3</Name>
+      <Name>HydroDesktop.Plugins.Search</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

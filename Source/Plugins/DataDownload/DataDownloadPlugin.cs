@@ -219,7 +219,7 @@ namespace HydroDesktop.DataDownload
         private void AppOnExtensionsActivated(object sender, EventArgs eventArgs)
         {
             // Add download button into search tab
-            if (App.GetExtension("Search3") != null)
+            if (App.GetExtension("HydroDesktop.Plugins.Search") != null)
             {
                 App.HeaderControl.Add(_btnSearchResults = new SimpleActionItem("Show Attribute Table", ShowSearchResults_Click) { RootKey = SharedConstants.SearchRootkey, GroupCaption = Msg.Results, SmallImage = Resources.table_16x16, Enabled = false, ToggleGroupKey = MessageStrings.Search_Results_Tools_Group });
                 _btnSearchResults.PropertyChanged += btnSearchResults_enabled;

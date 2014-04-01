@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using HydroDesktop.Common;
 
-namespace Search3.Settings
+namespace HydroDesktop.Plugins.Search.Settings
 {
     /// <summary>
     /// Catalog settings 

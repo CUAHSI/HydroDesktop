@@ -6,7 +6,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     /// <summary>
     /// Searches in the 'MetadataCache' database

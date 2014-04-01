@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using HydroDesktop.WebServices;
-using Search3.Searching;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Searching;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.WebServices
+namespace HydroDesktop.Plugins.Search.WebServices
 {
     class DbWebServicesList : IWebServicesList
     {

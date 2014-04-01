@@ -23,51 +23,6 @@ namespace ShaleNetwork.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("HisCentral")]
-        public global::Search3.Settings.TypeOfCatalog TypeOfCatalog {
-            get {
-                return ((global::Search3.Settings.TypeOfCatalog)(this["TypeOfCatalog"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WebServices.xml")]
-        public string WebServicesFileName {
-            get {
-                return ((string)(this["WebServicesFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\Synonyms.xml")]
-        public string SynonymsFilename {
-            get {
-                return ((string)(this["SynonymsFilename"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\OntologyTree.xml")]
-        public string OntologyFilename {
-            get {
-                return ((string)(this["OntologyFilename"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("searchresult_{0}_{1}.shp")]
-        public string SearchResultNameMask {
-            get {
-                return ((string)(this["SearchResultNameMask"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://www.shalenetwork.org")]

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     public partial class SearchProgressForm : Form
     {

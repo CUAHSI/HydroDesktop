@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2B9CA5B9-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{7F39DEEA-2812-48F6-A324-627A97C3DA89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hydrodesktop.Common", "Core\HydroDesktop.Common\Hydrodesktop.Common.csproj", "{882C41F5-6A96-419F-9153-8D277ED91464}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Common", "Core\HydroDesktop.Common\HydroDesktop.Common.csproj", "{882C41F5-6A96-419F-9153-8D277ED91464}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Configuration", "Core\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj", "{0CCD3F11-0F48-427F-BC98-9DD6D875F4BB}"
 EndProject
@@ -88,7 +88,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroShare", "Plugins\Hydro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataFetcher", "Plugins\MetadataFetcher\MetadataFetcher.csproj", "{3AEF14A0-5567-4F53-A4E6-4F1F692A1448}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search3", "Plugins\Search3\Search3.csproj", "{FB01F6EE-89C0-4A64-B023-C8CC566FF803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Plugins.Search", "Plugins\Search3\HydroDesktop.Plugins.Search.csproj", "{FB01F6EE-89C0-4A64-B023-C8CC566FF803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShaleNetwork", "Plugins\ShaleNetwork\ShaleNetwork.csproj", "{B0526359-9A59-42FE-AE66-B0ADED8AB53B}"
 EndProject

@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.Keywords
+namespace HydroDesktop.Plugins.Search.Keywords
 {
     class HisCentralKeywordsList : IOntologyReader
     {

@@ -16,18 +16,18 @@ using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.WebServices;
-using Search3.Area;
-using Search3.Keywords;
-using Search3.Properties;
-using Search3.Searching;
-using Search3.Searching.Exceptions;
-using Search3.Settings;
-using Search3.Settings.UI;
-using Msg = Search3.MessageStrings;
+using HydroDesktop.Plugins.Search.Area;
+using HydroDesktop.Plugins.Search.Keywords;
+using HydroDesktop.Plugins.Search.Properties;
+using HydroDesktop.Plugins.Search.Searching;
+using HydroDesktop.Plugins.Search.Searching.Exceptions;
+using HydroDesktop.Plugins.Search.Settings;
+using HydroDesktop.Plugins.Search.Settings.UI;
+using Msg = HydroDesktop.Plugins.Search.MessageStrings;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
 
-namespace Search3
+namespace HydroDesktop.Plugins.Search
 {
     public class SearchPlugin : Extension, ISearchPlugin
     {

@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces.PluginContracts;
-using Search3.Area;
+using HydroDesktop.Plugins.Search.Area;
 
-namespace Search3.Settings.UI
+namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     public partial class WebServicesDialog : Form
     {

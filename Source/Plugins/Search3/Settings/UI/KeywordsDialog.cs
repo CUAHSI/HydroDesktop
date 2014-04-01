@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Search3.Settings.UI
+namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     public partial class KeywordsDialog : Form
     {

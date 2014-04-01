@@ -114,25 +114,25 @@ Namespace EditView
             'Main Function Panel
             Const mainFunctionGroup As String = "Main Functions"
 
-            btnSelectSeries = New SimpleActionItem("Edit Series", AddressOf btnSelectSeries_Click)
+            btnSelectSeries = New SimpleActionItem("Edit Series", New EventHandler(AddressOf btnSelectSeries_Click))
             btnSelectSeries.RootKey = kEditView
             btnSelectSeries.LargeImage = My.Resources.Edit
             btnSelectSeries.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnSelectSeries)
 
-            btnDeriveNewDataSeries = New SimpleActionItem("Derive Series", AddressOf _mainControl.btnDeriveNewDataSeries_Click)
+            btnDeriveNewDataSeries = New SimpleActionItem("Derive Series", New EventHandler(AddressOf _mainControl.btnDeriveNewDataSeries_Click))
             btnDeriveNewDataSeries.RootKey = kEditView
             btnDeriveNewDataSeries.LargeImage = My.Resources.DeriveNewSeries
             btnDeriveNewDataSeries.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnDeriveNewDataSeries)
 
-            btnRestoreData = New SimpleActionItem("Restore Data", AddressOf _mainControl.btnRestoreData_Click)
+            btnRestoreData = New SimpleActionItem("Restore Data", New EventHandler(AddressOf _mainControl.btnRestoreData_Click))
             btnRestoreData.RootKey = kEditView
             btnRestoreData.LargeImage = My.Resources.Restore
             btnRestoreData.GroupCaption = mainFunctionGroup
             App.HeaderControl.Add(btnRestoreData)
 
-            btnApplyToDatabase = New SimpleActionItem("Save To Database", AddressOf _mainControl.btnApplyToDatabase_Click)
+            btnApplyToDatabase = New SimpleActionItem("Save To Database", New EventHandler(AddressOf _mainControl.btnApplyToDatabase_Click))
             btnApplyToDatabase.RootKey = kEditView
             btnApplyToDatabase.LargeImage = My.Resources.Save
             btnApplyToDatabase.GroupCaption = mainFunctionGroup
@@ -141,31 +141,31 @@ Namespace EditView
             'Plot Function Panel
             Const editFunctionGroup As String = "Edit Functions"
 
-            btnChangeYValue = New SimpleActionItem("Change Value", AddressOf _mainControl.btnChangeYValue_Click)
+            btnChangeYValue = New SimpleActionItem("Change Value", New EventHandler(AddressOf _mainControl.btnChangeYValue_Click))
             btnChangeYValue.RootKey = kEditView
             btnChangeYValue.LargeImage = My.Resources.ChangeValue
             btnChangeYValue.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnChangeYValue)
 
-            btnInterpolate = New SimpleActionItem("Interpolate", AddressOf _mainControl.btnInterpolate_Click)
+            btnInterpolate = New SimpleActionItem("Interpolate", New EventHandler(AddressOf _mainControl.btnInterpolate_Click))
             btnInterpolate.RootKey = kEditView
             btnInterpolate.LargeImage = My.Resources.Interpolate
             btnInterpolate.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnInterpolate)
 
-            btnFlag = New SimpleActionItem("Flag", AddressOf _mainControl.btnFlag_Click)
+            btnFlag = New SimpleActionItem("Flag", New EventHandler(AddressOf _mainControl.btnFlag_Click))
             btnFlag.RootKey = kEditView
             btnFlag.LargeImage = My.Resources.Flag
             btnFlag.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnFlag)
 
-            btnAddNewPoint = New SimpleActionItem("Add Point", AddressOf _mainControl.btnAddNewPoint_Click)
+            btnAddNewPoint = New SimpleActionItem("Add Point", New EventHandler(AddressOf _mainControl.btnAddNewPoint_Click))
             btnAddNewPoint.RootKey = kEditView
             btnAddNewPoint.LargeImage = My.Resources.Add
             btnAddNewPoint.GroupCaption = editFunctionGroup
             App.HeaderControl.Add(btnAddNewPoint)
 
-            btnDeletePoint = New SimpleActionItem("Delete Point", AddressOf _mainControl.btnDeletePoint_Click)
+            btnDeletePoint = New SimpleActionItem("Delete Point", New EventHandler(AddressOf _mainControl.btnDeletePoint_Click))
             btnDeletePoint.RootKey = kEditView
             btnDeletePoint.LargeImage = My.Resources.Delete
             btnDeletePoint.GroupCaption = editFunctionGroup
@@ -174,7 +174,7 @@ Namespace EditView
             'Main Function Panel
             Const plotFunctionGroup As String = "Plot Function"
 
-            ckbShowLegend = New SimpleActionItem("Show Legend", AddressOf _mainControl.ckbShowLegend_Click)
+            ckbShowLegend = New SimpleActionItem("Show Legend", New EventHandler(AddressOf _mainControl.ckbShowLegend_Click))
             ckbShowLegend.RootKey = kEditView
             ckbShowLegend.LargeImage = My.Resources.Legend
             ckbShowLegend.GroupCaption = plotFunctionGroup

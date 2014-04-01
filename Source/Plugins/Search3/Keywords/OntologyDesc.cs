@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Search3.Settings;
+using HydroDesktop.Plugins.Search.Settings;
 
-namespace Search3.Keywords
+namespace HydroDesktop.Plugins.Search.Keywords
 {
     public class OntologyDesc
     {

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -56,9 +56,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls, Version=1.6.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+    <Reference Include="DotSpatial.Controls, Version=1.6.0.1, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.0\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.1\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Data, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
@@ -71,9 +71,9 @@
       <HintPath>..\..\packages\DotSpatial.Data.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Extensions, Version=1.6.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+    <Reference Include="DotSpatial.Extensions, Version=1.6.0.1, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.0\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=MSIL">

@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using DotSpatial.Data;
 
-namespace Search3.Searching
+namespace HydroDesktop.Plugins.Search.Searching
 {
     public class SearchResult
     {

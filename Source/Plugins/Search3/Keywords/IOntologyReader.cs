@@ -1,4 +1,4 @@
-namespace Search3.Keywords
+namespace HydroDesktop.Plugins.Search.Keywords
 {
     interface IOntologyReader
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Search3.Settings.UI
+namespace HydroDesktop.Plugins.Search.Settings.UI
 {
     public partial class KeywordsUserControl : UserControl
     {
@@ -29,7 +29,7 @@ namespace Search3.Settings.UI
             if (keywordsSettings == null) throw new ArgumentNullException("keywordsSettings");
 
             tboTypeKeyword.Clear();
-            tboTypeKeyword.Text = Search3.Keywords.Constants.EnterKeyword;
+            tboTypeKeyword.Text = HydroDesktop.Plugins.Search.Keywords.Constants.EnterKeyword;
             lblKeywordRelation.Text = "";
             tboTypeKeyword.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             var autoCompleteSource = new AutoCompleteStringCollection();
@@ -39,7 +39,7 @@ namespace Search3.Settings.UI
 
             tboTypeKeyword.Click += delegate(object sender, EventArgs e)
             {
-                if (tboTypeKeyword.Text == Search3.Keywords.Constants.EnterKeyword)
+                if (tboTypeKeyword.Text == HydroDesktop.Plugins.Search.Keywords.Constants.EnterKeyword)
                 {
                     tboTypeKeyword.Text = "";
                     tboTypeKeyword.ForeColor = System.Drawing.Color.Black;

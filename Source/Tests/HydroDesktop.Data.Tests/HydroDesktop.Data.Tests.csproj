@@ -57,9 +57,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.0\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotSpatial.Controls, Version=1.6.0.1, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.1\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Data">
       <HintPath>..\..\packages\DotSpatial.Data.1.6.0.0\lib\net40-Client\DotSpatial.Data.dll</HintPath>
@@ -69,9 +69,9 @@
       <HintPath>..\..\packages\DotSpatial.Data.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotSpatial.Extensions">
-      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.0\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotSpatial.Extensions, Version=1.6.0.1, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Modeling.Forms">
       <HintPath>..\..\packages\DotSpatial.Modeling.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>

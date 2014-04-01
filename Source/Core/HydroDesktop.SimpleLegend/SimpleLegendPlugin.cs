@@ -8,6 +8,11 @@ namespace HydroDesktop.SimpleLegend
     {
         private Legend legend1;
 
+        public SimpleLegendPlugin()
+        {
+            DeactivationAllowed = false;
+        }
+
         public override void Activate()
         {
             ShowLegend();

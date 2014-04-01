@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Search3.Searching.Exceptions
+namespace HydroDesktop.Plugins.Search.Searching.Exceptions
 {
     public class SearchSettingsValidationException : Exception
     {

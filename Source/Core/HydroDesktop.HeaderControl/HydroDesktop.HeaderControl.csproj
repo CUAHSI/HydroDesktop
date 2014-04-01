@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Windows Extensions\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Windows Extensions\HydroDesktop.HeaderControl\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -145,6 +145,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>md "$(TargetDir)..\DotSpatial.Plugins.Ribbon"
+move /y "$(TargetDir)DotSpatial.Plugins.Ribbon.*" "$(TargetDir)..\DotSpatial.Plugins.Ribbon\"
+move /y "$(TargetDir)DevExpress.*.v12.2.*" "$(TargetDir)..\DotSpatial.Plugins.Ribbon\"
+md "$(TargetDir)..\DotSpatial.Plugins.AttributeDataExplorer"
+move /y "$(TargetDir)DotSpatial.Plugins.AttributeDataExplorer.*" "$(TargetDir)..\DotSpatial.Plugins.AttributeDataExplorer\"
+move /y "$(TargetDir)DevExpress.*.v11.2.*" "$(TargetDir)..\DotSpatial.Plugins.AttributeDataExplorer\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

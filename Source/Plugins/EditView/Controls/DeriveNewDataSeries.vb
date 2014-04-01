@@ -385,9 +385,9 @@ Namespace Controls
                     _derivedVariable.DataType = "Maximum"
                 ElseIf rbtnMinimum.Checked Then
                     _derivedVariable.DataType = "Minimum"
-                ElseIf _rbtnAverage.Checked Then
+                ElseIf rbtnAverage.Checked Then
                     _derivedVariable.DataType = "Average"
-                ElseIf _rbtnSum.Checked Then
+                ElseIf rbtnSum.Checked Then
                     _derivedVariable.DataType = "Sum"
                 End If
             End If

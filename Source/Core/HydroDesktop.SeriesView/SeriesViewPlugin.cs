@@ -16,6 +16,11 @@
         [Export("SeriesControl")]
         private ISeriesSelector MainSeriesSelector = new SeriesSelector();
 
+        public SeriesViewPlugin()
+        {
+            DeactivationAllowed = false;
+        }
+
         public override void Activate()
         {
             ((SeriesSelector) MainSeriesSelector).ParentPlugin = this;

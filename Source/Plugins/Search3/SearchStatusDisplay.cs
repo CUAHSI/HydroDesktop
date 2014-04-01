@@ -5,7 +5,7 @@ using System.Text;
 using DotSpatial.Controls.Header;
 using DotSpatial.Controls;
 
-namespace Search3
+namespace HydroDesktop.Plugins.Search
 {
     /// <summary>
     /// Responsible for displaying search summary in the status bar

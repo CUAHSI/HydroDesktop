@@ -1,4 +1,4 @@
-﻿namespace Search3.Area
+﻿namespace HydroDesktop.Plugins.Search.Area
 {
     partial class SelectAreaByAttributeDialog
     {
