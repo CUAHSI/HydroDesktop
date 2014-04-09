@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DotSpatial.Data;
 
-namespace Aggregation_Plugin
+namespace Plugins.CRWRAggregation
 {
     class PolygonData
     {

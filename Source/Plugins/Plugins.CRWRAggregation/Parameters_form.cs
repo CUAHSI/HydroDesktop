@@ -19,7 +19,7 @@ using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using System.Collections;
 
-namespace Aggregation_Plugin
+namespace Plugins.CRWRAggregation
 {
     public partial class Parameters_form : Form
     {

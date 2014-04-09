@@ -1,7 +1,7 @@
 ﻿using System;
 using DotSpatial.Data;
 
-namespace Aggregation_Plugin
+namespace Plugins.CRWRAggregation
 {
     class SiteData
     {
