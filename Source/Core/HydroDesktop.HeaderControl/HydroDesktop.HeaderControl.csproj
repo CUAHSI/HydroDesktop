@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -34,55 +34,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.Data.v11.2.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Data.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.Data.v12.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Printing.v11.2.Core, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.Printing.v11.2.Core.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Printing.v12.2.Core">
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.Printing.v12.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.Utils.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.Utils.v12.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.XtraBars.v11.2.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.XtraBars.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.XtraBars.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.XtraEditors.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v12.2, Version=12.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.XtraEditors.v12.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.XtraGrid.v11.2.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.XtraGrid.v12.2">
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.XtraGrid.v12.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraLayout.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DevExpress.XtraLayout.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraLayout.v12.2">
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DevExpress.XtraLayout.v12.2.dll</HintPath>
@@ -96,10 +68,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\DotSpatial.Mono.1.6.0.0\lib\net40-Client\DotSpatial.Mono.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Plugins.AttributeDataExplorer, Version=1.4.28.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.AttributeDataExplorer.1.4.28\lib\net40-client\DotSpatial.Plugins.AttributeDataExplorer.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.Ribbon, Version=1.4.25.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DotSpatial.Plugins.Ribbon.1.4.38\lib\net40-client\DotSpatial.Plugins.Ribbon.dll</HintPath>
@@ -148,10 +116,7 @@
   <PropertyGroup>
     <PostBuildEvent>md "$(TargetDir)..\DotSpatial.Plugins.Ribbon"
 move /y "$(TargetDir)DotSpatial.Plugins.Ribbon.*" "$(TargetDir)..\DotSpatial.Plugins.Ribbon\"
-move /y "$(TargetDir)DevExpress.*.v12.2.*" "$(TargetDir)..\DotSpatial.Plugins.Ribbon\"
-md "$(TargetDir)..\DotSpatial.Plugins.AttributeDataExplorer"
-move /y "$(TargetDir)DotSpatial.Plugins.AttributeDataExplorer.*" "$(TargetDir)..\DotSpatial.Plugins.AttributeDataExplorer\"
-move /y "$(TargetDir)DevExpress.*.v11.2.*" "$(TargetDir)..\DotSpatial.Plugins.AttributeDataExplorer\"</PostBuildEvent>
+move /y "$(TargetDir)DevExpress.*.v12.2.*" "$(TargetDir)..\DotSpatial.Plugins.Ribbon\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

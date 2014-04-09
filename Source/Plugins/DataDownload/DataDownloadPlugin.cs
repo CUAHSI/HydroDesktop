@@ -453,7 +453,7 @@ namespace HydroDesktop.DataDownload
         {
             
             
-            //var ext = App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer");
+            //var ext = App.GetExtension("HydroDesktop.Plugins.AttributeDataExplorer");
             //if (ext == null) return;
 
             //if (e.SelectedRootKey == SharedConstants.MetadataRootKey)
