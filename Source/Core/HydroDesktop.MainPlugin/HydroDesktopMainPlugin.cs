@@ -79,7 +79,7 @@
 
         void App_ExtensionsActivated(object sender, EventArgs e)
         {
-            if (App.GetExtension("DotSpatial.Plugins.AttributeDataExplorer") != null)
+            if (App.GetExtension("HydroDesktop.Plugins.AttributeDataExplorer") != null)
             {
                 attributeManager = new AttributeTableManager(App);
             }

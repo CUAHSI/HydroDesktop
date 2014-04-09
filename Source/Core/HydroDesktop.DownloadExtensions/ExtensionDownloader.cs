@@ -11,8 +11,8 @@ using System.Threading;
 namespace HydroDesktop.DownloadExtensions
 {
     /// <summary>
-    /// The purpose of this extension is to download the Ribbon, MenuBar,
-    /// WebMap and AttributeDataExplorer extensions when the user starts
+    /// The purpose of this extension is to download the Ribbon, MenuBar and
+    /// WebMap extensions when the user starts
     /// HydroDesktop for the first time.
     /// </summary>
     public class ExtensionDownloader : ISatisfyImportsExtension
@@ -37,8 +37,7 @@ namespace HydroDesktop.DownloadExtensions
 
             ////installs the extensions from the online repository on-demand
             ////note: some of these packages will be shipped with the installer but they are installed from online
-            ////when running from Visual Studio solution (direct reference in Visual Studio is not allowed by the license of Ribbon and 
-            ////AttributeDataExplorer)
+            ////when running from Visual Studio solution (direct reference in Visual Studio is not allowed by the license of Ribbon)
 
             ////install the ribbon (must be downloaded first)
             //if (isHeaderControlNeeded && isStatusControlNeeded)

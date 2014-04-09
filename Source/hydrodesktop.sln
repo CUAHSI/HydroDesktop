@@ -96,6 +96,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableView", "Plugins\TableV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Plugins.WaterML2Client", "Plugins\HydroDesktop.Plugins.WaterML2Client\HydroDesktop.Plugins.WaterML2Client.csproj", "{D32C57DC-C687-4C24-9FA9-094BD91664F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Plugins.AttributeDataExplorer", "Plugins\HydroDesktop.Plugins.AttributeDataExplorer\HydroDesktop.Plugins.AttributeDataExplorer.csproj", "{FCAD6257-6532-44F3-87B6-FB4981A6CF42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -427,6 +429,12 @@ Global
 		{D32C57DC-C687-4C24-9FA9-094BD91664F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D32C57DC-C687-4C24-9FA9-094BD91664F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D32C57DC-C687-4C24-9FA9-094BD91664F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -474,6 +482,7 @@ Global
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B} = {7F39DEEA-2812-48F6-A324-627A97C3DA89}
 		{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4} = {7F39DEEA-2812-48F6-A324-627A97C3DA89}
 		{D32C57DC-C687-4C24-9FA9-094BD91664F0} = {7F39DEEA-2812-48F6-A324-627A97C3DA89}
+		{FCAD6257-6532-44F3-87B6-FB4981A6CF42} = {7F39DEEA-2812-48F6-A324-627A97C3DA89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
