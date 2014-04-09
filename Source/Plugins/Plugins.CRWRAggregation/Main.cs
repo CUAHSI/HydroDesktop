@@ -6,7 +6,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using System.Windows.Forms;
 
-namespace Aggregation_Plugin
+namespace Plugins.CRWRAggregation
 {
     /// <summary>
     /// This plug-in combinea data from multiple stations into a single time series.

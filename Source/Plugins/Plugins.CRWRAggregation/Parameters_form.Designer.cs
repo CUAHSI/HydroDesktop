@@ -1,4 +1,4 @@
-﻿namespace Aggregation_Plugin
+﻿namespace Plugins.CRWRAggregation
 {
     partial class Parameters_form
     {
