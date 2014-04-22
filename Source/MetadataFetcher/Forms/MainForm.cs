@@ -318,7 +318,7 @@ namespace HydroDesktop.MetadataFetcher.Forms
 
 				// Update service info in the metadata database
 				var waterOneFlowServiceInfo = waterOneFlowClient.ServiceInfo;
-
+           
 				serviceInfo.IsHarvested = false;
 				serviceInfo.ServiceName = waterOneFlowServiceInfo.ServiceName;
 				serviceInfo.Version = waterOneFlowServiceInfo.Version;
@@ -380,15 +380,8 @@ namespace HydroDesktop.MetadataFetcher.Forms
                 int valueCount = 0;
 
              
-                IList<Site> siteList1 = (siteList as List<Site>).GetRange(0, (siteList.Count/2)-1);
-                IList<Site> siteList2 = (siteList as List<Site>).GetRange(siteList.Count/2, siteList.Count-1);
-
-                var thread1 = new Thread(() => ProcessSites(siteList1));
-                    thread1.Start();
-                    var thread2 = new Thread(() => ProcessSites(siteList2));
-                    thread2.Start();
+               
                    
-             
 				foreach (var site in siteList)
 				{
 					// Check for cancel
