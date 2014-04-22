@@ -949,7 +949,6 @@ namespace HydroDesktop.Database
                             cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Name));
                             cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.UnitsType));
                             cmd09.Parameters.Add(_db.CreateParameter(DbType.String, variable.TimeUnit.Abbreviation));
-
                             cmd09.Parameters.Add(_db.CreateParameter(DbType.Int32, dataService.Id));
 
                             variableIDResult = cmd09.ExecuteScalar();
