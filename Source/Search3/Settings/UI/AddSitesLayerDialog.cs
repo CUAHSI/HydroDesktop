@@ -35,7 +35,7 @@ namespace Search3.Settings.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-           waterOneFlowClient = new WaterOneFlowClient(urlConnectionTextbox.Text);
+           waterOneFlowClient = new WaterOneFlowClient(urlTextbox.Text);
     
            // Update service info in the metadata database
            var waterOneFlowServiceInfo = waterOneFlowClient.ServiceInfo;
@@ -83,10 +83,15 @@ namespace Search3.Settings.UI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-
-            waterOneFlowClient = new WaterOneFlowClient(urlConnectionTextbox.Text);
+            waterOneFlowClient = new WaterOneFlowClient(urlTextbox.Text);
             var waterOneFlowServiceInfo = waterOneFlowClient.ServiceInfo;
+            
+            // Trim the query off of the URL if it still exists
+            int index = waterOneFlowServiceInfo.EndpointURL.IndexOf("?");
+            if (index > -1)
+            {
+                waterOneFlowServiceInfo.EndpointURL = waterOneFlowServiceInfo.EndpointURL.Substring(0, index);
+            }
 
             var serviceInfo = new DataServiceInfo();
             serviceInfo.IsHarvested = false;
@@ -238,10 +243,27 @@ namespace Search3.Settings.UI
             result.ValueCount = series.ValueCount;
 
             result.ServURL = waterOneFlowServiceInfo.EndpointURL;
-            result.ServCode = WebServiceTitle.Text;
+            result.ServCode = titleTextbox.Text;
 
             return result;
         }
+
+        private void CheckFields()
+        {
+            if (errorProvider1.GetError(titleTextbox).Equals("")
+                && errorProvider1.GetError(urlTextbox).Equals("")
+                && !String.IsNullOrEmpty(titleTextbox.Text)
+                && !String.IsNullOrEmpty(urlTextbox.Text))
+            {
+                button1.Enabled = true;        
+            }
+            else
+            {
+                button1.Enabled = false;
+            }
+        }
+
+
 
         /// <summary>
         /// Displays search results (all data series and sites complying to the search criteria)
@@ -275,7 +297,53 @@ namespace Search3.Settings.UI
             return searchLayerCreator.Create();
         }
 
-       
-   
+        private void titleTextbox_Validated(object sender, EventArgs e)
+        {
+            errorProvider1.SetError(titleTextbox, !String.IsNullOrEmpty(titleTextbox.Text) ? "" : "Please enter a title");
+            CheckFields();
+        }
+
+        private void urlTextbox_Validated(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(urlTextbox.Text))
+            {
+                errorProvider1.SetError(urlTextbox, "Please enter a valid URL");
+                CheckFields();
+                return;
+            }
+
+            if (!urlTextbox.Text.StartsWith("http://") && !urlTextbox.Text.StartsWith("https://"))
+            {
+                urlTextbox.Text = "http://" + urlTextbox.Text; //add http:// to the beginning
+            }
+            //check that the URL is Valid -- this is quite slow. Perhaps a REGEX would be better.
+            errorProvider1.SetError(urlTextbox, !WebOperations.IsUrlFormatValid(urlTextbox.Text) ? "Please enter a valid URL" : "");
+
+            CheckFields();
+        }
+    }
+
+    class WebOperations
+    {
+        #region Public Members
+        /// <summary>
+        /// Determines if the format of a URL string is valid
+        /// </summary>
+        /// <param name="url">The URL string to check</param>
+        /// <returns></returns>
+        public static bool IsUrlFormatValid(string url)
+        {
+            try
+            {
+                Uri urlCheck = new Uri(url);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 }
