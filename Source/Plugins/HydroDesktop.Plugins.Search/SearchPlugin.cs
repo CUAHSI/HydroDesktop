@@ -26,6 +26,7 @@ using HydroDesktop.Plugins.Search.Settings.UI;
 using Msg = HydroDesktop.Plugins.Search.MessageStrings;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
+using Search3.Settings.UI;
 
 namespace HydroDesktop.Plugins.Search
 {
@@ -48,6 +49,7 @@ namespace HydroDesktop.Plugins.Search
         private bool _useCurrentView;
         bool invalidWord = false;
         private Searcher _searcher;
+        private AddSitesLayerDialog _addSitesLayerDialog;
         public readonly SearchSettings _searchSettings = new SearchSettings();
         //private SearchStatusDisplay searchSummary;
 
@@ -172,7 +174,7 @@ namespace HydroDesktop.Plugins.Search
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = _searchKey;
             head.Add(rbServices);
-
+            head.Add(new SimpleActionItem(_searchKey, Msg.Add_Sites, addDataSites_Click) { GroupCaption = grpDataSources, LargeImage = Resources.data_sites, ToolTipText = Msg.Run_Search_Tooltip, });
             #endregion
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Search, rbSearch_Click) { GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
@@ -301,6 +303,12 @@ namespace HydroDesktop.Plugins.Search
                 return true;
             }
             return false;
+        }
+
+        void addDataSites_Click(object sender, EventArgs e)
+        {
+            _addSitesLayerDialog = new AddSitesLayerDialog(App);
+            _addSitesLayerDialog.ShowDialog(Shell);
         }
 
         void rbSearch_Click(object sender, EventArgs e)

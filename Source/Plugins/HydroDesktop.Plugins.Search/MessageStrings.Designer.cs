@@ -70,6 +70,15 @@ namespace HydroDesktop.Plugins.Search {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Sites Layer.
+        /// </summary>
+        internal static string Add_Sites {
+            get {
+                return ResourceManager.GetString("Add_Sites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search Area.
         /// </summary>
         internal static string Area {
