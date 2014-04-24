@@ -307,7 +307,7 @@ namespace Search3
         void addDataSites_Click(object sender, EventArgs e)
         {
             _addSitesLayerDialog = new AddSitesLayerDialog(App);
-            _addSitesLayerDialog.Show();
+            _addSitesLayerDialog.ShowDialog(Shell);
         }
 
         void rbSearch_Click(object sender, EventArgs e)
