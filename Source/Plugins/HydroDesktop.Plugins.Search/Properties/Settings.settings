@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydroDesktop.Plugins.Search.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TypeOfCatalog" Type="HydroDesktop.Plugins.Search.Settings.TypeOfCatalog" Scope="Application">
+      <Value Profile="(Default)">HisCentral</Value>
+    </Setting>
+    <Setting Name="WebServicesFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WebServices.xml</Value>
+    </Setting>
+    <Setting Name="SynonymsFilename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Resources\Synonyms.xml</Value>
+    </Setting>
+    <Setting Name="OntologyFilename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Resources\OntologyTree.xml</Value>
+    </Setting>
+    <Setting Name="SearchResultNameMask" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">searchresult_{0}_{1}.shp</Value>
+    </Setting>
+    <Setting Name="HISCENTRAL_URL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral_1_1.asmx</Value>
+    </Setting>
+    <Setting Name="HISCENTRAL_URL_1" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://hiscentral.cuahsi.org/webservices/hiscentral_1_1.asmx</Value>
+    </Setting>
+    <Setting Name="HISCENTRAL_URL_2" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://water.sdsc.edu/hiscentral/webservices/hiscentral.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
