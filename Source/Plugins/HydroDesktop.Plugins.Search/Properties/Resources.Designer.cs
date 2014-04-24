@@ -83,6 +83,26 @@ namespace HydroDesktop.Plugins.Search.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap data_sites {
+            get {
+                object obj = ResourceManager.GetObject("data_sites", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon data_sites1 {
+            get {
+                object obj = ResourceManager.GetObject("data_sites1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap deselect_16x16 {
             get {
                 object obj = ResourceManager.GetObject("deselect_16x16", resourceCulture);
