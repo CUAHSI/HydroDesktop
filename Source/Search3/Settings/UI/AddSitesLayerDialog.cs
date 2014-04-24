@@ -26,6 +26,7 @@ namespace Search3.Settings.UI
     {
         private WaterOneFlowClient waterOneFlowClient;
         private AppManager App;
+        private List<string> checkedVariables = new List<string>();
 
         public AddSitesLayerDialog(AppManager App)
         {
@@ -35,6 +36,8 @@ namespace Search3.Settings.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
+           variablesListBox.Items.Clear();
+
            waterOneFlowClient = new WaterOneFlowClient(urlTextbox.Text);
     
            // Update service info in the metadata database
@@ -48,7 +51,7 @@ namespace Search3.Settings.UI
            // Get all sites for this service
            IList<Site> siteList;
            siteList = waterOneFlowClient.GetSites();
-           var variableList = new List<Tuple<string, string>>();
+           var variableList = new List<string>();
            foreach (var site in siteList)
            {
                // Get series for this site
@@ -70,19 +73,36 @@ namespace Search3.Settings.UI
                // Save series info to metadata cache database
                foreach (var series in currentSeriesList)
                {
-                   var variable = new Tuple<string, string>(series.Variable.Code, series.Variable.Name);
-                   variableList.Add(variable);
+                   if(!variableList.Contains(series.Variable.Name))
+                   {
+                       var variable = series.Variable.Name;
+                       variableList.Add(variable);
+                   }
                }
            }
            foreach (var variable in variableList)
            {
-               this.variablesListBox.Items.Add(variable.Item2, false);
-               
+               this.variablesListBox.Items.Add(variable, false);      
+           }
+           if (variablesListBox.Items.Count != 0)
+           {
+               button1.Enabled = false;
+               button2.Enabled = true;
+               button3.Enabled = true;
+               button4.Enabled = true;
            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            variablesListBox.Enabled = false;
+            urlTextbox.Enabled = false;
+            titleTextbox.Enabled = false;
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = false;
+
             waterOneFlowClient = new WaterOneFlowClient(urlTextbox.Text);
             var waterOneFlowServiceInfo = waterOneFlowClient.ServiceInfo;
             
@@ -153,9 +173,20 @@ namespace Search3.Settings.UI
                 {
                     valueCount += series.ValueCount;
                     try
-                    {   
-                        var seriesDataCart = getDataCartFromMetadata(series, waterOneFlowServiceInfo);
-                        dataCartSeriesList.Add(seriesDataCart);
+                    {
+                        if (checkedVariables.Count != 0)
+                        {
+                            if (checkedVariables.Contains(series.Variable.Name))
+                            {
+                                var seriesDataCart = getDataCartFromMetadata(series, waterOneFlowServiceInfo);
+                                dataCartSeriesList.Add(seriesDataCart);
+                            }
+                        }
+                        else
+                        {
+                            var seriesDataCart = getDataCartFromMetadata(series, waterOneFlowServiceInfo);
+                            dataCartSeriesList.Add(seriesDataCart);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -164,7 +195,13 @@ namespace Search3.Settings.UI
 
                 }
                 totalDataCartSeriesList.AddRange(dataCartSeriesList);
-
+                variablesListBox.Enabled = true;
+                urlTextbox.Enabled = true;
+                titleTextbox.Enabled = true;
+                button1.Enabled = true;
+                button2.Enabled = true;
+                button3.Enabled = true;
+                button4.Enabled = true;
             }
 
             // Update service info
@@ -320,6 +357,50 @@ namespace Search3.Settings.UI
             errorProvider1.SetError(urlTextbox, !WebOperations.IsUrlFormatValid(urlTextbox.Text) ? "Please enter a valid URL" : "");
 
             CheckFields();
+        }
+
+        private void variablesListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked) 
+            {
+                checkedVariables.Add(variablesListBox.Items[e.Index] as string); 
+            }
+            else if (e.NewValue == CheckState.Unchecked) 
+            {
+                checkedVariables.Remove(variablesListBox.Items[e.Index] as string); 
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < variablesListBox.Items.Count; i++)
+            {
+                variablesListBox.SetItemChecked(i, true);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < variablesListBox.Items.Count; i++)
+            {
+                variablesListBox.SetItemChecked(i, false);
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            variablesListBox.Items.Clear();
+            checkedVariables.Clear();
+            urlTextbox.Clear();
+            titleTextbox.Clear();
+            urlTextbox.Clear();
+            titleTextbox.Enabled = true;
+            urlTextbox.Enabled = true;
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = false;
+
         }
     }
 
