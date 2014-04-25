@@ -11,7 +11,6 @@ namespace HydroDesktop.WebServices.Tests.WaterOneFlow
     {
         [Test]
         [TestCase(@"http://icewater.boisestate.edu/dcew2dataservices/cuahsi_1_0.asmx?WSDL")]
-        [TestCase(@"http://icewater.boisestate.edu/rcew2dataservices/cuahsi_1_1.asmx?WSDL")]
         [TestCase(@"http://icewater.usu.edu/MudLake/cuahsi_1_0.asmx?WSDL")]
         [TestCase(@"http://hydrodata.info/webservices/cuahsi_1_1.asmx?WSDL")]
         public void GetSites_SaveXmlFilesFlag_ReturnsSameData(string url)
