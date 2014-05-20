@@ -325,9 +325,6 @@
     <None Include="Resources\DateSetting.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TSA.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Binning.png" />
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +390,7 @@
   <ItemGroup>
     <Content Include="Resources\BoxWhiskerDiagram.png" />
     <Content Include="Resources\BoxWhiskerKey.png" />
+    <None Include="Resources\TSA.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\..\.nuget\nuget.targets" />

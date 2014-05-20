@@ -83,7 +83,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Choose one or more data series to plot..
+        '''  Looks up a localized string similar to Choose one or more series to plot..
         '''</summary>
         Friend Shared ReadOnly Property No_Data_Plot() As String
             Get
