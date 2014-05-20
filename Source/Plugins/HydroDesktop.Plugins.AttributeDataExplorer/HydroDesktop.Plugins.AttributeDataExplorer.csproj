@@ -7,11 +7,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>HydroDesktop.Plugins.AttributeDataExplorer</AssemblyName>
     <OutputType>Library</OutputType>
-    <RootNamespace>HydroDesktop</RootNamespace>
+    <RootNamespace>HydroDesktop.Plugins.AttributeDataExplorer</RootNamespace>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\Binaries\Windows Extensions\HydroDesktop.Plugins.AttributeDataExplorer\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.AttributeDataExplorer\</OutputPath>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
@@ -21,7 +21,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.AttributeDataExplorer\</OutputPath>
     <DebugSymbols>false</DebugSymbols>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
@@ -135,4 +135,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd "$(ProjectDir)"
+"$(ProjectDir)..\..\.nuget\nuget.exe" pack
+move /y "*.nupkg" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

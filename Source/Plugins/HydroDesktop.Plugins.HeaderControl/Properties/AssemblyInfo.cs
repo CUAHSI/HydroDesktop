@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HydroDesktop.Mono.Docking")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("HydroDesktop.Plugins.HeaderControl")]
+[assembly: AssemblyDescription("HydroDesktop Docking HeaderControl")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hewlett-Packard Company")]
-[assembly: AssemblyProduct("HydroDesktop.Mono.Docking")]
+[assembly: AssemblyProduct("HydroDesktop.Plugins.HeaderControl")]
 [assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("561ff743-f274-421e-8a9e-96bb26d3c3b8")]
+[assembly: Guid("fec7a94c-a4bb-498f-ab2a-b7c75dff38bf")]
 
 // Version information for an assembly consists of the following four values:
 //

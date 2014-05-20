@@ -7,16 +7,13 @@
     <owners />
     <licenseUrl>http://hydrodesktop.codeplex.com/license</licenseUrl>
     <projectUrl>http://hydrodesktop.codeplex.com/</projectUrl>
-    <iconUrl></iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <iconUrl>http://tinyurl.com/cc7votd</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
     <language>en-US</language>
     <tags></tags>
+    <dependencies>
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="HydroDesktop.Data" />
-    <dependency id="HydroDesktop.Configuration"/>
-    <dependency id="HydroDesktop.Interfaces" />
-  </dependencies>
 </package>

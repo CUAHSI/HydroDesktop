@@ -2,7 +2,7 @@
 using DotSpatial.Controls.Docking;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace HydroDesktop.Docking
+namespace HydroDesktop.Plugins.Docking
 {
     class DockPanelInfo
     {

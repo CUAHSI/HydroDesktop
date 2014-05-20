@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace HydroDesktop.Docking
+namespace HydroDesktop.Plugins.Docking
 {
     /// <summary>
     /// The DockManager implementation for HydroDesktop

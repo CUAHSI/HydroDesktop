@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("HydroDesktop.Plugins.WaterML2Client")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("WaterML2 Parsing")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("HydroDesktop Team")]
 [assembly: AssemblyProduct("HydroDesktop.Plugins.WaterML2Client")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]

@@ -8,14 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Graph")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("HydroDesktop.Plugins.GraphView")> 
+<Assembly: AssemblyDescription("Graph Data")> 
 <Assembly: AssemblyCompany("Utah State University")> 
 <Assembly: AssemblyProduct("Graph")> 
 <Assembly: AssemblyCopyright("Copyright ©  2009")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("a6747beb-6539-46da-8a49-8cde6e54ef6d")> 
+<Assembly: Guid("a6747beb-6539-46da-8a49-8cde6e54ef6d")>
+
+<Assembly: AssemblyVersion("1.0.0.0")> 
+<Assembly: AssemblyFileVersion("1.0.0.0")>

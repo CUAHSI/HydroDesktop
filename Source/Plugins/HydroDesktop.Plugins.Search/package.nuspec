@@ -8,16 +8,12 @@
     <licenseUrl>http://hydrodesktop.codeplex.com/license</licenseUrl>
     <projectUrl>http://hydrodesktop.codeplex.com/</projectUrl>
     <iconUrl>http://tinyurl.com/cc7votd</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
     <language>en-US</language>
     <tags></tags>
     <dependencies>
     </dependencies>
-  </metadata> 
-  <files>
-    <file src="app.config" target="lib\net40-Client\HydroDesktop.Plugins.Search.dll.config" />
-    <file src="Resources\OntologyTree.xml" target="lib\net40-Client\Resources" />
-    <file src="Resources\Synonyms.xml" target="lib\net40-Client\Resources" />
-  </files>
+  </metadata>
 </package>

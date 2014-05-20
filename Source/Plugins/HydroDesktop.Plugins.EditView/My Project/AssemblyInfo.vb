@@ -8,14 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Edit")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("HydroDesktop.Plugins.EditView")> 
+<Assembly: AssemblyDescription("Edid Data")> 
 <Assembly: AssemblyCompany("Utah State University")> 
 <Assembly: AssemblyProduct("Edit")> 
 <Assembly: AssemblyCopyright("Copyright ©  2010")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("a6747beb-6539-46da-8a49-8cde6e54ef6d")> 
+<Assembly: Guid("a6747beb-6539-46da-8a49-8cde6e54ef6d")>
+
+<Assembly: AssemblyVersion("1.0.0.0")> 
+<Assembly: AssemblyFileVersion("1.0.0.0")> 
