@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.7.1"
-#define SrcApp "HydroDesktop_1_7_1.exe"
+#define AppName "HydroDesktop 1.7.2"
+#define SrcApp "HydroDesktop_1_7_2.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -37,7 +37,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{94172FC0-CE5D-46CE-BDCD-89B11E38A74E}
+AppID={{DED92382-70DE-4917-9956-431324047ABD}
 
 PrivilegesRequired=poweruser
 MinVersion=,5.01
