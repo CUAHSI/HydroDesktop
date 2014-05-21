@@ -3,20 +3,21 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}</ProjectGuid>
+    <ProjectGuid>{11DA0AB7-F2EB-4D82-B72C-F255BA92426E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TableView</RootNamespace>
-    <AssemblyName>TableView</AssemblyName>
+    <RootNamespace>EPADelineation</RootNamespace>
+    <AssemblyName>EPADelineation</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -25,24 +26,23 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\TableView\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EPADelineation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Binaries\Plugins\TableView\TableView.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <DocumentationFile>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EPADelineation\HydroDesktop.Plugins.EPADelineation.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\TableView\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EPADelineation\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\Binaries\Plugins\TableView\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EPADelineation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -50,11 +50,10 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <DocumentationFile>..\..\..\Binaries\Plugins\TableView\TableView.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EPADelineation\HydroDesktop.Plugins.EPADelineation.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\Binaries\Plugins\TableView\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EPADelineation\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -62,6 +61,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
@@ -112,135 +112,82 @@
       <HintPath>..\..\packages\DotSpatial.Topology.1.6.0.0\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="ChangeDatabaseForm.cs">
+    <Compile Include="CallWebService.cs" />
+    <Compile Include="Progress.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChangeDatabaseForm.designer.cs">
-      <DependentUpon>ChangeDatabaseForm.cs</DependentUpon>
+    <Compile Include="Progress.Designer.cs">
+      <DependentUpon>Progress.cs</DependentUpon>
     </Compile>
-    <Compile Include="cTableView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="cTableView.Designer.cs">
-      <DependentUpon>cTableView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataGridViewNavigator.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DataGridViewNavigator.Designer.cs">
-      <DependentUpon>DataGridViewNavigator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DeleteThemeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeleteThemeForm.designer.cs">
-      <DependentUpon>DeleteThemeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TableViewPlugin.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeManager.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ChangeDatabaseForm.resx">
-      <DependentUpon>ChangeDatabaseForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="cTableView.resx">
-      <DependentUpon>cTableView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataGridViewNavigator.resx">
-      <DependentUpon>DataGridViewNavigator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DeleteThemeForm.resx">
-      <DependentUpon>DeleteThemeForm.cs</DependentUpon>
+    <EmbeddedResource Include="Progress.resx">
+      <DependentUpon>Progress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="SaveWatershed.resx">
+      <DependentUpon>SaveWatershed.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
     <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
-    <None Include="Resources\table2.png" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SaveWatershed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveWatershed.Designer.cs">
+      <DependentUpon>SaveWatershed.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\tableView.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\refreshTheme.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\delete_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\refreshTheme_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\changeDatabase.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\newDatabase.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\changeDatabase_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\newDatabase_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\series_parallel_32.png" />
-    <Content Include="Resources\series_sequence_32.png" />
+    <None Include="Resources\Delineation_icon_32.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\HydroDesktop.Common\HydroDesktop.Common.csproj">
-      <Project>{882c41f5-6a96-419f-9153-8d277ed91464}</Project>
+      <Project>{882C41F5-6A96-419F-9153-8D277ED91464}</Project>
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\HydroDesktop.Configuration\HydroDesktop.Configuration.csproj">
-      <Project>{0ccd3f11-0f48-427f-bc98-9dd6d875f4bb}</Project>
-      <Name>HydroDesktop.Configuration</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\HydroDesktop.Data\HydroDesktop.Data.csproj">
-      <Project>{CEB869C6-ED48-4846-9040-4E82AB58B86B}</Project>
-      <Name>HydroDesktop.Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
-      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
-      <Name>HydroDesktop.Interfaces</Name>
+    <ProjectReference Include="..\..\Core\HydroDesktop.Help\HydroDesktop.Help.csproj">
+      <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
+      <Name>HydroDesktop.Help</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

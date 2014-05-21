@@ -1,19 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{11DA0AB7-F2EB-4D82-B72C-F255BA92426E}</ProjectGuid>
+    <ProjectGuid>{C872275F-6717-43F1-BD8E-AF4AC077DB43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EPADelineation</RootNamespace>
-    <AssemblyName>EPADelineation</AssemblyName>
+    <RootNamespace>HydroR</RootNamespace>
+    <AssemblyName>HydroR</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>
-    </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -26,42 +24,43 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\EPADelineation\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Binaries\Plugins\EPADelineation\EPADelineation.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\HydroDesktop.Plugins.HydroR.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\EPADelineation\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\Binaries\Plugins\EPADelineation\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <DocumentationFile>..\..\..\Binaries\Plugins\EPADelineation\EPADelineation.XML</DocumentationFile>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+    <DocumentationFile>..\..\..\Binaries\Windows Extensions\HydroDesktop.Plugins.HydroR\HydroDesktop.Plugins.HydroR.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\Binaries\Plugins\EPADelineation\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
@@ -100,7 +99,8 @@
       <HintPath>..\..\packages\DotSpatial.Serialization.1.6.0.0\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Symbology">
+    <Reference Include="DotSpatial.Symbology, Version=1.6.0.0, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\DotSpatial.Symbology.1.6.0.0\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -112,72 +112,113 @@
       <HintPath>..\..\packages\DotSpatial.Topology.1.6.0.0\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="HydroDesktop.Configuration">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HydroDesktop.Interfaces">
+      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="CallWebService.cs" />
-    <Compile Include="Progress.cs">
+    <Compile Include="Classes\clsRSyntax.cs">
+    </Compile>
+    <Compile Include="Controls\cHighlight.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\REditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\REditor.Designer.cs">
+      <DependentUpon>REditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmInstallR.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Progress.Designer.cs">
-      <DependentUpon>Progress.cs</DependentUpon>
+    <Compile Include="Forms\frmInstallR.Designer.cs">
+      <DependentUpon>frmInstallR.cs</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs" />
+    <Compile Include="HydroRPlugin.cs" />
+    <Compile Include="Controls\cRCommandView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\cRCommandView.Designer.cs">
+      <DependentUpon>cRCommandView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Progress.resx">
-      <DependentUpon>Progress.cs</DependentUpon>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\cRCommandView.resx">
+      <DependentUpon>cRCommandView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\REditor.resx">
+      <DependentUpon>REditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmInstallR.resx">
+      <DependentUpon>frmInstallR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SaveWatershed.resx">
-      <DependentUpon>SaveWatershed.cs</DependentUpon>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="app.config" />
-    <None Include="package.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Include="HydroR_1.2.tar.gz" />
+    <Content Include="HydroR_1.3.tar.gz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="package.nuspec" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="SaveWatershed.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SaveWatershed.Designer.cs">
-      <DependentUpon>SaveWatershed.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Delineation_icon_32.png" />
+    <None Include="Icons\GenerateR.png" />
+    <None Include="Icons\OpenFile.png" />
+    <Content Include="Icons\Ricon.png" />
+    <None Include="Icons\RSettings_32.png" />
+    <None Include="Icons\RSettings_16.png" />
+    <Content Include="Icons\RSymbol.PNG" />
+    <None Include="Icons\SaveFile.png" />
+    <Content Include="Icons\selectLineSmall.png" />
+    <Content Include="Icons\sendAllSmall.png" />
+    <None Include="Icons\SendLine.png" />
+    <None Include="Icons\SendScript.png" />
+    <Content Include="Icons\sendSelectedSmall.png" />
+    <None Include="Icons\SendSelection.png" />
+    <None Include="Resources\RSymbol.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\HydroDesktop.Common\HydroDesktop.Common.csproj">
@@ -185,9 +226,9 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\HydroDesktop.Help\HydroDesktop.Help.csproj">
-      <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
-      <Name>HydroDesktop.Help</Name>
+    <ProjectReference Include="..\..\Core\HydroDesktop.Data\HydroDesktop.Data.csproj">
+      <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
+      <Name>HydroDesktop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
