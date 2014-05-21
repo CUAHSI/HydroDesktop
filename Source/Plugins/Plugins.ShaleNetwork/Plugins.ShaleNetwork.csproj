@@ -3,19 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C872275F-6717-43F1-BD8E-AF4AC077DB43}</ProjectGuid>
+    <ProjectGuid>{B0526359-9A59-42FE-AE66-B0ADED8AB53B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroR</RootNamespace>
-    <AssemblyName>HydroR</AssemblyName>
+    <RootNamespace>ShaleNetwork</RootNamespace>
+    <AssemblyName>ShaleNetwork</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -24,43 +20,58 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\HydroR\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Binaries\Plugins\HydroR\HydroR.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Binaries\Plugins\HydroR\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\Plugins.ShaleNetwork.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\Binaries\Windows Extensions\HydroR\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\Plugins.ShaleNetwork.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\Plugins.ShaleNetwork.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-    <DocumentationFile>..\..\..\Binaries\Windows Extensions\HydroR\HydroR.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\Binaries\Plugins\HydroR\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\..\Binaries\Plugins\Plugins.ShaleNetwork\Plugins.ShaleNetwork.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotSpatial.Controls">
@@ -99,8 +110,7 @@
       <HintPath>..\..\packages\DotSpatial.Serialization.1.6.0.0\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Symbology, Version=1.6.0.0, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DotSpatial.Symbology">
       <HintPath>..\..\packages\DotSpatial.Symbology.1.6.0.0\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -112,59 +122,28 @@
       <HintPath>..\..\packages\DotSpatial.Topology.1.6.0.0\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HydroDesktop.Configuration">
-      <HintPath>..\..\..\Binaries\HydroDesktop.Configuration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HydroDesktop.Interfaces">
-      <HintPath>..\..\..\Binaries\HydroDesktop.Interfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Classes\clsRSyntax.cs">
-    </Compile>
-    <Compile Include="Controls\cHighlight.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\REditor.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\REditor.Designer.cs">
-      <DependentUpon>REditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmInstallR.cs">
+    <Compile Include="Measure\MapFunctionMeasure.cs" />
+    <Compile Include="Measure\MeasureDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmInstallR.Designer.cs">
-      <DependentUpon>frmInstallR.cs</DependentUpon>
+    <Compile Include="Measure\MeasureMode.cs" />
+    <Compile Include="MessageStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="HydroRPlugin.cs" />
-    <Compile Include="Controls\cRCommandView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\cRCommandView.Designer.cs">
-      <DependentUpon>cRCommandView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -175,28 +154,42 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SearchPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\UI\ShaleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\UI\ShaleDialog.Designer.cs">
+      <DependentUpon>ShaleDialog.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\cRCommandView.resx">
-      <DependentUpon>cRCommandView.cs</DependentUpon>
+    <EmbeddedResource Include="Measure\MeasureDialog.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\REditor.resx">
-      <DependentUpon>REditor.cs</DependentUpon>
+    <EmbeddedResource Include="Measure\MeasureDialog.zh-CN.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmInstallR.resx">
-      <DependentUpon>frmInstallR.cs</DependentUpon>
+    <EmbeddedResource Include="MessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\UI\ShaleDialog.resx">
+      <DependentUpon>ShaleDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <Content Include="HydroR_1.2.tar.gz" />
-    <Content Include="HydroR_1.3.tar.gz">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="package.nuspec" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -205,20 +198,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Icons\GenerateR.png" />
-    <None Include="Icons\OpenFile.png" />
-    <Content Include="Icons\Ricon.png" />
-    <None Include="Icons\RSettings_32.png" />
-    <None Include="Icons\RSettings_16.png" />
-    <Content Include="Icons\RSymbol.PNG" />
-    <None Include="Icons\SaveFile.png" />
-    <Content Include="Icons\selectLineSmall.png" />
-    <Content Include="Icons\sendAllSmall.png" />
-    <None Include="Icons\SendLine.png" />
-    <None Include="Icons\SendScript.png" />
-    <Content Include="Icons\sendSelectedSmall.png" />
-    <None Include="Icons\SendSelection.png" />
-    <None Include="Resources\RSymbol.png" />
+    <None Include="Resources\SN_Logo.png" />
+    <Content Include="Resources\Area.png" />
+    <Content Include="Resources\Line.png" />
+    <Content Include="Resources\measure_16x16.png" />
+    <Content Include="Resources\measure_32x32.png" />
+    <Content Include="Resources\OntologyTree.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Synonyms.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\HydroDesktop.Common\HydroDesktop.Common.csproj">
@@ -226,9 +216,19 @@
       <Name>HydroDesktop.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\HydroDesktop.Data\HydroDesktop.Data.csproj">
-      <Project>{ceb869c6-ed48-4846-9040-4e82ab58b86b}</Project>
-      <Name>HydroDesktop.Data</Name>
+    <ProjectReference Include="..\..\Core\HydroDesktop.Help\HydroDesktop.Help.csproj">
+      <Project>{F09E70CC-9D65-45C2-A451-D22CFB400C26}</Project>
+      <Name>HydroDesktop.Help</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj">
+      <Project>{0B9BA90B-2016-4754-915A-0AD74FD0067A}</Project>
+      <Name>HydroDesktop.Interfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroDesktop.Plugins.Search\HydroDesktop.Plugins.Search.csproj">
+      <Project>{fb01f6ee-89c0-4a64-b023-c8cc566ff803}</Project>
+      <Name>HydroDesktop.Plugins.Search</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
