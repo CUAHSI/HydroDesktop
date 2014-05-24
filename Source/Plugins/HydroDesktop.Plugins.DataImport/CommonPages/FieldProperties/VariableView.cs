@@ -2,13 +2,13 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using DataImport.CommonPages.FieldProperties;
+using HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages
+namespace HydroDesktop.Plugins.DataImport.CommonPages
 {
     /// <summary>
     /// View of <see cref="Variable"/>

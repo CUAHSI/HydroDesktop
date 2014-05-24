@@ -23,7 +23,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl
 {
     internal static class NativeMethods
     {

@@ -17,7 +17,7 @@ using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 using PointShape = DotSpatial.Symbology.PointShape;
 
-namespace DataAggregation.UI
+namespace HydroDesktop.Plugins.DataAggregation.UI
 {
     /// <summary>
     /// Settings form for aggregation

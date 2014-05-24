@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.ExportToCSV
+﻿namespace HydroDesktop.Plugins.DataExport
 {
     partial class ExportDialog
     {

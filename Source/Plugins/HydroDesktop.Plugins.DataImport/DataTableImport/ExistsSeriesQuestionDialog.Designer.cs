@@ -1,4 +1,4 @@
-﻿namespace DataImport.DataTableImport
+﻿namespace HydroDesktop.Plugins.DataImport.DataTableImport
 {
     partial class ExistsSeriesQuestionDialog
     {

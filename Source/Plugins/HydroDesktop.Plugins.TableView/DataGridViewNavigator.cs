@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace TableView
+namespace HydroDesktop.Plugins.TableView
 {
     public partial class DataGridViewNavigator : UserControl
     {

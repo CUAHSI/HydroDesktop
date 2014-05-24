@@ -9,7 +9,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.DataTableImport
+namespace HydroDesktop.Plugins.DataImport.DataTableImport
 {
     class DataTableImporterImpl : IImporter
     {

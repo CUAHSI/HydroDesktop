@@ -15,13 +15,13 @@ using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.Help;
-using Msg = ShaleNetwork.MessageStrings;
+using Msg = Plugins.ShaleNetwork.MessageStrings;
 using DotSpatial.Topology;
 using DotSpatial.Symbology;
-using ShaleNetwork.Settings.UI;
-using ShaleNetwork.Measure;
+using Plugins.ShaleNetwork.Settings.UI;
+using Plugins.ShaleNetwork.Measure;
 
-namespace ShaleNetwork
+namespace Plugins.ShaleNetwork
 {
     public class SearchPlugin : Extension
     {

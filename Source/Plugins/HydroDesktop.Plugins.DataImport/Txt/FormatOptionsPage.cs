@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 using Wizard.UI;
 
-namespace DataImport.Txt
+namespace HydroDesktop.Plugins.DataImport.Txt
 {
     public partial class FormatOptionsPage : InternalWizardPage
     {

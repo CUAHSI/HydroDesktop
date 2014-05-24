@@ -197,7 +197,7 @@
     <None Include="DotSpatial.Plugins.WebMap.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="package.nuspec" />
+    <None Include="HydroDesktop.Plugins.MainPlugin.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

@@ -3,7 +3,7 @@ using System.Data;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces;
 
-namespace DataImport.WaterML
+namespace HydroDesktop.Plugins.DataImport.WaterML
 {
     /// <summary>
     /// WaterML Import Settings

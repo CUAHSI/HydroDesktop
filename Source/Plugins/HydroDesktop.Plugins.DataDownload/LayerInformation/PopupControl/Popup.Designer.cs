@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
+﻿namespace HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl
 {
     partial class Popup
     {

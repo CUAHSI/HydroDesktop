@@ -6,7 +6,7 @@ using DotSpatial.Symbology;
 using HydroDesktop.Common;
 using HydroDesktop.Interfaces.PluginContracts;
 
-namespace HydroDesktop.ExportToCSV
+namespace HydroDesktop.Plugins.DataExport
 {
     /// <summary>
     /// The main data export plugin class

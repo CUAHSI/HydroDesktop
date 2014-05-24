@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Wizard.UI;
 
-namespace DataImport.Excel
+namespace HydroDesktop.Plugins.DataImport.Excel
 {
     /// <summary>
     /// Format options page for Excel

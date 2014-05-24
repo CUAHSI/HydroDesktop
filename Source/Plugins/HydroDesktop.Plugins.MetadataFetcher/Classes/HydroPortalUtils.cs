@@ -4,7 +4,7 @@ using System.Net;
 using System.Xml;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.MetadataFetcher
+namespace HydroDesktop.Plugins.MetadataFetcher
 {
 	public class HydroPortalUtils
 	{

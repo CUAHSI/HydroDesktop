@@ -12,7 +12,7 @@ using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterOneFlow;
 using System.Threading;
 
-namespace HydroDesktop.MetadataFetcher.Forms
+namespace HydroDesktop.Plugins.MetadataFetcher.Forms
 {
 	public partial class MainForm : Form
 	{

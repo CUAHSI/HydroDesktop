@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-namespace HydroR
+namespace HydroDesktop.Plugins.HydroR
 {
     partial class cRCommandView
     {
@@ -89,7 +89,7 @@ namespace HydroR
             this.rtCommands.Name = "rtCommands";
             this.rtCommands.Size = new System.Drawing.Size(808, 625);
             this.rtCommands.TabIndex = 2;
-            this.rtCommands.Text = global::HydroR.Properties.Resources.PathToR;
+            this.rtCommands.Text = global::HydroDesktop.Plugins.HydroR.Properties.Resources.PathToR;
             this.rtCommands.WordWrap = false;
             // 
             // cRCommandView

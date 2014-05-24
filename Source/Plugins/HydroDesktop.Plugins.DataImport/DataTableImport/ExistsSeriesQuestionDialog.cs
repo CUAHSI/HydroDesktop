@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using HydroDesktop.Interfaces;
 
-namespace DataImport.DataTableImport
+namespace HydroDesktop.Plugins.DataImport.DataTableImport
 {
     /// <summary>
     /// Question dialog in case when series exists

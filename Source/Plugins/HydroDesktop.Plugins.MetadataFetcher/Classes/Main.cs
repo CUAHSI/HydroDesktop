@@ -3,11 +3,11 @@
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces.PluginContracts;
-using HydroDesktop.MetadataFetcher.Forms;
+using HydroDesktop.Plugins.MetadataFetcher.Forms;
 
 #endregion
 
-namespace HydroDesktop.MetadataFetcher
+namespace HydroDesktop.Plugins.MetadataFetcher
 {
     class Main : Extension, IMetadataFetcherPlugin
 	{

@@ -1,4 +1,4 @@
-﻿namespace DataImport.CommonPages.FieldProperties
+﻿namespace HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties
 {
     partial class CreateUnitForm
     {

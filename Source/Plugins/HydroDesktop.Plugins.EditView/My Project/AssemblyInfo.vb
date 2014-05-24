@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("HydroDesktop.Plugins.EditView")> 
 <Assembly: AssemblyDescription("Edid Data")> 
 <Assembly: AssemblyCompany("Utah State University")> 
-<Assembly: AssemblyProduct("Edit")> 
+<Assembly: AssemblyProduct("HydroDesktop.Plugins.EditView")> 
 <Assembly: AssemblyCopyright("Copyright ©  2010")> 
 <Assembly: AssemblyTrademark("")>
 

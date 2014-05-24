@@ -141,7 +141,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="package.nuspec" />
+    <None Include="HydroDesktop.Plugins.Docking.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

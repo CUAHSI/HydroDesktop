@@ -1,4 +1,4 @@
-﻿namespace ShaleNetwork.Settings.UI
+﻿namespace Plugins.ShaleNetwork.Settings.UI
 {
     partial class ShaleDialog
     {

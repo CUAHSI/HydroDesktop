@@ -1,4 +1,4 @@
-﻿namespace TableView
+﻿namespace HydroDesktop.Plugins.TableView
 {
     partial class ChangeDatabaseForm
     {

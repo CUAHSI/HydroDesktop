@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages
+namespace HydroDesktop.Plugins.DataImport.CommonPages
 {
     /// <summary>
     /// View of <see cref="Site"/>

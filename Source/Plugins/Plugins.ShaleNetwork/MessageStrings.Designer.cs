@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShaleNetwork {
+namespace Plugins.ShaleNetwork {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ShaleNetwork {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShaleNetwork.MessageStrings", typeof(MessageStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Plugins.ShaleNetwork.MessageStrings", typeof(MessageStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

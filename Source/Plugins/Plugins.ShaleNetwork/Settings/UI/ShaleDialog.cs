@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using HydroDesktop.Plugins.Search.Settings;
 using System.Diagnostics;
 
-namespace ShaleNetwork.Settings.UI
+namespace Plugins.ShaleNetwork.Settings.UI
 {
     public partial class ShaleDialog : Form
     {

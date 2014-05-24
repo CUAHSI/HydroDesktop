@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DotSpatial.Symbology;
-using HydroDesktop.DataDownload.Options;
+using HydroDesktop.Plugins.DataDownload.Options;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.DataDownload.Downloading
+namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     /// <summary>
     /// Class with information needed to call DownloadManager.Start()

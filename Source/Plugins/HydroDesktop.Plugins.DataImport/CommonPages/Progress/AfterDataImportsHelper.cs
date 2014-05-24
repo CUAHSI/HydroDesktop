@@ -12,7 +12,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Interfaces.ObjectModel;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 
-namespace DataImport.CommonPages.Progress
+namespace HydroDesktop.Plugins.DataImport.CommonPages.Progress
 {
     static class AfterDataImportsHelper
     {

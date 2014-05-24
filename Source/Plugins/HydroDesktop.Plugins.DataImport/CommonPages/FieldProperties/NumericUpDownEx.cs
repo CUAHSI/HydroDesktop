@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace DataImport.CommonPages
+namespace HydroDesktop.Plugins.DataImport.CommonPages
 {
     /// <summary>
     /// NumericUpDown with fixed ReadOnly behavior

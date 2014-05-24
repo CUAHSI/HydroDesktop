@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Wizard.UI;
 
-namespace DataImport.CommonPages.Complete
+namespace HydroDesktop.Plugins.DataImport.CommonPages.Complete
 {
     /// <summary>
     /// Wizard Complete page

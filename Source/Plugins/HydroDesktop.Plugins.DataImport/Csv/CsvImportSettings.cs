@@ -3,7 +3,7 @@ using System.Data;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces;
 
-namespace DataImport.Csv
+namespace HydroDesktop.Plugins.DataImport.Csv
 {
     /// <summary>
     /// Setting for csv

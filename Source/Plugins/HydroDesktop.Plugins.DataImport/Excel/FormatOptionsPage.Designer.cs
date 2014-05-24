@@ -1,4 +1,4 @@
-﻿namespace DataImport.Excel
+﻿namespace HydroDesktop.Plugins.DataImport.Excel
 {
     partial class FormatOptionsPage
     {

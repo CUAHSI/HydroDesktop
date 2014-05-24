@@ -1,4 +1,4 @@
-﻿namespace HydroShare
+﻿namespace HydroDesktop.Plugins.HydroShare
 {
     partial class chooseUploadType
     {

@@ -10,7 +10,7 @@ using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Newtonsoft.Json.Linq;
 
-namespace EPADelineation
+namespace HydroDesktop.Plugins.EPADelineation
 {
     class CallWebService
     {

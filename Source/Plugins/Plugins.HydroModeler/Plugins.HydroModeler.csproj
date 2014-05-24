@@ -110,9 +110,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -146,9 +143,9 @@
   <ItemGroup>
     <Content Include="HelpPage.htm" />
     <Content Include="OmiEd.ico" />
-    <None Include="package.nuspec" />
     <Content Include="Resources\select.png" />
     <None Include="packages.config" />
+    <None Include="Plugins.HydroModeler.nuspec" />
     <None Include="Resources\component_image.ico" />
     <None Include="Resources\model_image.ico" />
     <None Include="Resources\pan.cur" />
@@ -288,9 +285,12 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\..\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy.exe "$(ProjectDir)Examples\HydroModeler_example_configurations" "$(TargetDir)HydroModeler_example_configurations\" /e /y</PostBuildEvent>
+    <PostBuildEvent>xcopy.exe "$(ProjectDir)Examples\HydroModeler_example_configurations" "$(TargetDir)HydroModeler_example_configurations\" /e /y
+cd "$(ProjectDir)"
+"$(ProjectDir)..\..\.nuget\nuget.exe" pack "Plugins.HydroModeler.csproj"
+move /y "*.nupkg" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

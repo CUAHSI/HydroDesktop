@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Wizard.UI;
 
-namespace DataImport
+namespace HydroDesktop.Plugins.DataImport
 {
     /// <summary>
     /// Common interface for wizard importer

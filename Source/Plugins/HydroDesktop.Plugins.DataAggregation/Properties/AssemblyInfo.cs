@@ -5,7 +5,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DataAggregation")]
-[assembly: AssemblyDescription("CUAHSI")]
+[assembly: AssemblyDescription(
+    "Show average, minimum, maximum or sum of observation values in the map for multiple sites;" + 
+    " so that the values can be used by the interpolation tool. " + 
+    "This extension adds a new context menu Data - Show values in map... when user right-clicks on a Data Sites layer in the legend.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CUAHSI")]
 [assembly: AssemblyProduct("DataAggregation")]
@@ -20,3 +23,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("77677007-e979-4b29-a336-e9843bf37a2c")]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

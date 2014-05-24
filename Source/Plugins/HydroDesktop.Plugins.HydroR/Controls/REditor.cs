@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace HydroR.Controls
+namespace HydroDesktop.Plugins.HydroR.Controls
 {
     public partial class REditor : RichTextBox
     {

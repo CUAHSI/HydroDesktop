@@ -159,7 +159,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="package.nuspec" />
+    <None Include="HydroDesktop.Plugins.HelpTab.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\discuss_16x16.png" />
   </ItemGroup>

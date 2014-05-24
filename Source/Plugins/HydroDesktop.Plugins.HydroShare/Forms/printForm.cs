@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Printing;
 
-namespace HydroShare
+namespace HydroDesktop.Plugins.HydroShare
 {
     public partial class printForm : Form
     {

@@ -1,4 +1,4 @@
-namespace DataImport
+namespace HydroDesktop.Plugins.DataImport
 {
     /// <summary>
     /// Context for wizards

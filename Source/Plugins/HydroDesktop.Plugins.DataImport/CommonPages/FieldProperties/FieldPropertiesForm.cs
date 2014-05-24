@@ -8,7 +8,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages
+namespace HydroDesktop.Plugins.DataImport.CommonPages
 {
     /// <summary>
     /// Allow to modify properties of field to import

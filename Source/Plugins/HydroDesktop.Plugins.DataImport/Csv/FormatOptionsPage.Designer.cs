@@ -1,4 +1,4 @@
-﻿namespace DataImport.Csv
+﻿namespace HydroDesktop.Plugins.DataImport.Csv
 {
     partial class FormatOptionsPage
     {

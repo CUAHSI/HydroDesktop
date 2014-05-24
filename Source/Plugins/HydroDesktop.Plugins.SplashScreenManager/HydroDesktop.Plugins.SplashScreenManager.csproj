@@ -104,6 +104,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="HydroDesktop.Plugins.SplashScreenManager.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\newLogo14.png" />
   </ItemGroup>

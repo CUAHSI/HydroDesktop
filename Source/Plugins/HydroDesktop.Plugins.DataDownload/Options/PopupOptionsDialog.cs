@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace HydroDesktop.DataDownload.Options
+namespace HydroDesktop.Plugins.DataDownload.Options
 {
     public partial class PopupOptionsDialog : Form
     {

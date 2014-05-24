@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.DataDownload.Downloading
+﻿namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     partial class DownloadManagerUI
     {
@@ -59,7 +59,7 @@
             this.chbAutoScroll = new System.Windows.Forms.CheckBox();
             this.btnCopyLog = new System.Windows.Forms.Button();
             this.btnSendError = new System.Windows.Forms.Button();
-            this.redownloadControl1 = new HydroDesktop.DataDownload.Downloading.RedownloadControl();
+            this.redownloadControl1 = new HydroDesktop.Plugins.DataDownload.Downloading.RedownloadControl();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDownloadData)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.paProgress.SuspendLayout();
@@ -393,7 +393,7 @@
             this.redownloadControl1.Name = "redownloadControl1";
             this.redownloadControl1.Size = new System.Drawing.Size(234, 30);
             this.redownloadControl1.TabIndex = 16;
-            this.redownloadControl1.DoRedownload += new System.EventHandler<HydroDesktop.DataDownload.Downloading.RedownloadArgs>(this.redownloadControl1_DoRedownload);
+            this.redownloadControl1.DoRedownload += new System.EventHandler<HydroDesktop.Plugins.DataDownload.Downloading.RedownloadArgs>(this.redownloadControl1_DoRedownload);
             // 
             // DownloadManagerUI
             // 

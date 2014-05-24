@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace DataImport
+namespace HydroDesktop.Plugins.DataImport
 {
     /// <summary>
     /// Wizard settings for data importer

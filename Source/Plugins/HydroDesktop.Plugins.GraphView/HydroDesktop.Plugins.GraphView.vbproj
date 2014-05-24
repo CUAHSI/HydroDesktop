@@ -295,6 +295,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="HydroDesktop.Plugins.GraphView.nuspec" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -309,7 +310,6 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="package.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\TSA_icon.png" />
     <None Include="Icons\box.png" />

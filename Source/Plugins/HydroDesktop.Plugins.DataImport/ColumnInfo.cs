@@ -1,7 +1,7 @@
 using System;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport
+namespace HydroDesktop.Plugins.DataImport
 {
     /// <summary>
     /// Contains info about column to import

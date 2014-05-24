@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DataDownload")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("HydroDesktop.Plugins.DataDownload")]
+[assembly: AssemblyDescription("HydroDesktop DataDownload Plugin")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CUAHSI")]
-[assembly: AssemblyProduct("DataDownload")]
+[assembly: AssemblyProduct("HydroDesktop.Plugins.DataDownload")]
 [assembly: AssemblyCopyright("Copyright ©  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -23,3 +23,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("ba758765-ed1a-49ec-b380-a236bcb271c0")]
 
 [assembly: InternalsVisibleTo("DataDownloadTests")]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

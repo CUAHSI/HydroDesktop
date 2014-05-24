@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using DataImport.CommonPages.Complete;
-using DataImport.CommonPages.Progress;
+using HydroDesktop.Plugins.DataImport.CommonPages.Complete;
+using HydroDesktop.Plugins.DataImport.CommonPages.Progress;
 using Wizard.UI;
 
-namespace DataImport.WaterML
+namespace HydroDesktop.Plugins.DataImport.WaterML
 {
     class WaterMLImporter : IWizardImporter
     {

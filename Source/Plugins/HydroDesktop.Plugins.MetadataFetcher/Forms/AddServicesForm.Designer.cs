@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.MetadataFetcher.Forms
+﻿namespace HydroDesktop.Plugins.MetadataFetcher.Forms
 {
 	partial class AddServicesForm
 	{

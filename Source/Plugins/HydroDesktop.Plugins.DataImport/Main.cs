@@ -4,18 +4,18 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using DataImport;
-using DataImport.Csv;
-using DataImport.Excel;
-using DataImport.Properties;
-using DataImport.Txt;
-using DataImport.WaterML;
+using HydroDesktop.Plugins.DataImport;
+using HydroDesktop.Plugins.DataImport.Csv;
+using HydroDesktop.Plugins.DataImport.Excel;
+using HydroDesktop.Plugins.DataImport.Properties;
+using HydroDesktop.Plugins.DataImport.Txt;
+using HydroDesktop.Plugins.DataImport.WaterML;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 
-namespace ImportFromWaterML
+namespace HydroDesktop.Plugins.DataImport
 {
     public class Main : Extension
     {

@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 
-namespace DataImport.CommonPages.FieldProperties
+namespace HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties
 {
     /// <summary>
     /// Form that allow to specify column to import

@@ -1,4 +1,4 @@
-namespace HydroDesktop.DataDownload.Downloading
+namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     /// <summary>
     /// Statuses of DownloadInfo

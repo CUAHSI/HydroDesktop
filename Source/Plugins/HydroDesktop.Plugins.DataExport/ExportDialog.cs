@@ -11,7 +11,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Help;
 using HydroDesktop.Interfaces;
 
-namespace HydroDesktop.ExportToCSV
+namespace HydroDesktop.Plugins.DataExport
 {
     /// <summary>
     /// Export Data Form with BackgroundWorker and allow users to select themes to export.

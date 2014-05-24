@@ -6,7 +6,7 @@ using HydroDesktop.Interfaces.ObjectModel;
 using Wizard.UI;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 
-namespace DataImport.CommonPages.Progress
+namespace HydroDesktop.Plugins.DataImport.CommonPages.Progress
 {
     /// <summary>
     /// Progress page

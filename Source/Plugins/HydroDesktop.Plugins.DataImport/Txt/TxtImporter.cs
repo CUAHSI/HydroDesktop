@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
-using DataImport.CommonPages;
-using DataImport.CommonPages.Complete;
-using DataImport.CommonPages.Progress;
-using DataImport.CommonPages.SelectLayer;
-using DataImport.DataTableImport;
+using HydroDesktop.Plugins.DataImport.CommonPages;
+using HydroDesktop.Plugins.DataImport.CommonPages.Complete;
+using HydroDesktop.Plugins.DataImport.CommonPages.Progress;
+using HydroDesktop.Plugins.DataImport.CommonPages.SelectLayer;
+using HydroDesktop.Plugins.DataImport.DataTableImport;
 using Wizard.UI;
 
-namespace DataImport.Txt
+namespace HydroDesktop.Plugins.DataImport.Txt
 {
     class TxtImporter : IWizardImporter
     {
