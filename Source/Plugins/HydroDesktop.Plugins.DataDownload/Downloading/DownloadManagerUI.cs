@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using HydroDesktop.WebServices.WaterOneFlow;
 using HydroDesktop.Common.Tools;
 
-namespace HydroDesktop.DataDownload.Downloading
+namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     /// <summary>
     /// DownloadManager UI implementation

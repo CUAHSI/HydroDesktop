@@ -1,4 +1,4 @@
-﻿namespace DataImport.CommonPages
+﻿namespace HydroDesktop.Plugins.DataImport.CommonPages
 {
     partial class FieldPropertiesPage
     {

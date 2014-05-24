@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HydroDesktop.DataDownload.LayerInformation
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation
 {
     public class ServiceInfoGroup
     {

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using Wizard.UI;
 
-namespace DataImport.CommonPages.SelectLayer
+namespace HydroDesktop.Plugins.DataImport.CommonPages.SelectLayer
 {
     public partial class DataLayerPage : InternalWizardPage
     {

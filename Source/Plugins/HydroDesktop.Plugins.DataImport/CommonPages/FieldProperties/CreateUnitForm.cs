@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages.FieldProperties
+namespace HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties
 {
     /// <summary>
     /// Allow to create new Unit

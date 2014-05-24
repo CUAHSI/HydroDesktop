@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>HydroDesktop.Plugins.AttributeDataExplorer</RootNamespace>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.AttributeDataExplorer\</OutputPath>
@@ -133,6 +134,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MainForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HydroDesktop.Plugins.AttributeDataExplorer.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

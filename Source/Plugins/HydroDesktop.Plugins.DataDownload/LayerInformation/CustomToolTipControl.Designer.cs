@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.DataDownload.LayerInformation
+﻿namespace HydroDesktop.Plugins.DataDownload.LayerInformation
 {
     partial class CustomToolTipControl
     {

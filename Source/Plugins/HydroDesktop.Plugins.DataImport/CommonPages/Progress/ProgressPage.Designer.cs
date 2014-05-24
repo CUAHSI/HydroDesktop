@@ -1,4 +1,4 @@
-﻿namespace DataImport.CommonPages.Progress
+﻿namespace HydroDesktop.Plugins.DataImport.CommonPages.Progress
 {
     partial class ProgressPage
     {

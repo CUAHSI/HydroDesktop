@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Plugins.CRWRAggregation")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("CRWRA Aggregation")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Gonzalo Espinosa")]
 [assembly: AssemblyProduct("Plugins.CRWRAggregation")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]

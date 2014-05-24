@@ -8,16 +8,16 @@
     <licenseUrl>http://hydrodesktop.codeplex.com/license</licenseUrl>
     <projectUrl>http://hydrodesktop.codeplex.com/</projectUrl>
     <iconUrl>http://tinyurl.com/cc7votd</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
     <language>en-US</language>
     <tags></tags>
     <dependencies>
-      <dependency id="HydroDesktop.Help" version="1.4.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Binaries\Plugins\EPADelineation\Newtonsoft.Json.dll" target="lib\net40" />
+    <file src="..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\HydroDesktop.Plugins.HydroR.dll.config" target="lib\net40-Client" />
+    <file src="..\..\..\Binaries\Plugins\HydroDesktop.Plugins.HydroR\HydroR_1.3.tar.gz" target="lib\net40-Client" />
   </files>
 </package>

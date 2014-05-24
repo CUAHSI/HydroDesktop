@@ -3,7 +3,7 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common;
 
-namespace HydroDesktop.DataDownload.LayerInformation
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation
 {
     /// <summary>
     /// Class with information about service on the map

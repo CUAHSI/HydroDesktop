@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HydroShare")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("HydroDesktop.Plugins.HydroShare")]
+[assembly: AssemblyDescription("HydroDesktop HydroShare Plugin")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hewlett-Packard Company")]
-[assembly: AssemblyProduct("HydroShare")]
+[assembly: AssemblyProduct("HydroDesktop.Plugins.HydroShare")]
 [assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

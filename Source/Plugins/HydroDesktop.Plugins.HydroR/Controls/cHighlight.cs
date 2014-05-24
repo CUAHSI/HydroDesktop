@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 
-namespace HydroR
+namespace HydroDesktop.Plugins.HydroR
 {
     public class cHighlight : Control
     {

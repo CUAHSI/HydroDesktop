@@ -1,4 +1,4 @@
-﻿namespace HydroR
+﻿namespace HydroDesktop.Plugins.HydroR
 {
     partial class frmInstallR
     {

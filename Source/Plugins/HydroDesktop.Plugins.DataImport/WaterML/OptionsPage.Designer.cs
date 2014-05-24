@@ -1,4 +1,4 @@
-﻿namespace DataImport.WaterML
+﻿namespace HydroDesktop.Plugins.DataImport.WaterML
 {
     partial class OptionsPage
     {

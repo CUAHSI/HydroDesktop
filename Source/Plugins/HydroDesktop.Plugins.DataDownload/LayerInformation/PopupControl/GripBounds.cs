@@ -18,7 +18,7 @@
 
 using System.Drawing;
 
-namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl
 {
     internal struct GripBounds
     {

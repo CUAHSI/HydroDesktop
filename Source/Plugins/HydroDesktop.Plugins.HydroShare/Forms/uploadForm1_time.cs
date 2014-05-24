@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 
 
-namespace HydroShare
+namespace HydroDesktop.Plugins.HydroShare
 {
     public partial class uploadForm1_time : Form
     {

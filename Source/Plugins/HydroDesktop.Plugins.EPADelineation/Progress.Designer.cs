@@ -1,4 +1,4 @@
-﻿namespace EPADelineation
+﻿namespace HydroDesktop.Plugins.EPADelineation
 {
     /// <summary>
     /// Creates a new instance of the progress dialog form

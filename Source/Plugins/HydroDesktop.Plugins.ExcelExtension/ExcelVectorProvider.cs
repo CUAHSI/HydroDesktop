@@ -6,9 +6,9 @@ using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Excel;
-using ExcelExtension.Properties;
+using HydroDesktop.Plugins.ExcelExtension.Properties;
 
-namespace ExcelExtension
+namespace HydroDesktop.Plugins.ExcelExtension
 {
     /// <summary>
     /// Excel Vector Provider. It let converts data from MS Excel files into FeatureSet.

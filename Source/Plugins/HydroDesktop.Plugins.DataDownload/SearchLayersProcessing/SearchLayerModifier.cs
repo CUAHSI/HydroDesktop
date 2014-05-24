@@ -9,12 +9,12 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.DataDownload.Downloading;
+using HydroDesktop.Plugins.DataDownload.Downloading;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.Interfaces.PluginContracts;
 using HydroDesktop.WebServices;
 
-namespace HydroDesktop.DataDownload.SearchLayersProcessing
+namespace HydroDesktop.Plugins.DataDownload.SearchLayersProcessing
 {
     /// <summary>
     /// Class contains methods for modifying "search layer"

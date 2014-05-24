@@ -13,7 +13,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 
-namespace TableView
+namespace HydroDesktop.Plugins.TableView
 {
     /// <summary>
     /// The ThemeManager is responsible for reading themes

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ShaleNetwork.Measure
+namespace Plugins.ShaleNetwork.Measure
 {
     /// <summary>
     /// MeasureModes

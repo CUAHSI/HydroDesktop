@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace HydroDesktop.DataDownload.Downloading
+namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     public partial class RedownloadControl : UserControl
     {

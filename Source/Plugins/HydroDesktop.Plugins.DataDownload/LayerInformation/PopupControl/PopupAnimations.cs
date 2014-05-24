@@ -18,7 +18,7 @@
 
 using System;
 
-namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl
 {
     /// <summary>
     /// Types of animation of the pop-up window.

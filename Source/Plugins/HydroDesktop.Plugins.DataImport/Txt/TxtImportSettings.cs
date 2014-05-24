@@ -3,7 +3,7 @@ using System.Data;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces;
 
-namespace DataImport.Txt
+namespace HydroDesktop.Plugins.DataImport.Txt
 {
     /// <summary>
     /// Settings for txt

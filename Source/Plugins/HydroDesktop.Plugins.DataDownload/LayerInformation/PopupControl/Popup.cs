@@ -29,7 +29,7 @@ using System.Windows.Forms.VisualStyles;
 <li>Base class for custom tooltips.</li>
 <li>Office-2007-like tooltip class.</li>
 */
-namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl
 {
     /// <summary>
     /// Represents a pop-up window.
@@ -82,7 +82,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
         private bool _isChildPopupOpened;
         private bool _resizable;
         /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.DataDownload.LayerInformation.PopupControl.Popup" /> is resizable.
+        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl.Popup" /> is resizable.
         /// </summary>
         /// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
         public bool Resizable
@@ -93,7 +93,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
 
         private bool _nonInteractive;
         /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.DataDownload.LayerInformation.PopupControl.Popup"></see> acts like a transparent windows (so it cannot be clicked).
+        /// Gets or sets a value indicating whether the <see cref="HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl.Popup"></see> acts like a transparent windows (so it cannot be clicked).
         /// </summary>
         /// <value>
         /// <c>true</c> if the popup is noninteractive; otherwise, <c>false</c>.</value>
@@ -143,7 +143,7 @@ namespace HydroDesktop.DataDownload.LayerInformation.PopupControl
         #region " Constructors "
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HydroDesktop.DataDownload.LayerInformation.PopupControl.Popup"/> class.
+        /// Initializes a new instance of the <see cref="HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl.Popup"/> class.
         /// </summary>
         /// <param name="content">The content of the pop-up.</param>
         /// <remarks>

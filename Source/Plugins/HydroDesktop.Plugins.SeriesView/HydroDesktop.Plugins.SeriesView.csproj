@@ -178,7 +178,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="package.nuspec" />
+    <None Include="HydroDesktop.Plugins.SeriesView.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\timeSeries.png" />
   </ItemGroup>

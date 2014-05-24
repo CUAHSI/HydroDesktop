@@ -5,7 +5,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace TableView
+namespace HydroDesktop.Plugins.TableView
 {
     /// <summary>
     /// Form for deleting themes from database

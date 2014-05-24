@@ -7,7 +7,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages.FieldProperties
+namespace HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties
 {
     /// <summary>
     /// View of <see cref="OffsetType"/>

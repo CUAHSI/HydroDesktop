@@ -11,7 +11,7 @@ public enum HttpVerb
     DELETE
 }
 
-namespace HydroShare
+namespace HydroDesktop.Plugins.HydroShare
 {
     public class RestClient
     {

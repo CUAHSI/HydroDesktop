@@ -1,10 +1,10 @@
 ﻿using System;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using HydroDesktop.DataDownload.Downloading;
-using HydroDesktop.DataDownload.LayerInformation;
+using HydroDesktop.Plugins.DataDownload.Downloading;
+using HydroDesktop.Plugins.DataDownload.LayerInformation;
 
-namespace HydroDesktop.DataDownload
+namespace HydroDesktop.Plugins.DataDownload
 {
     /// <summary>
     /// Converts classes from one type to another

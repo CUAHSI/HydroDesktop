@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using Wizard.UI;
 
-namespace DataImport
+namespace HydroDesktop.Plugins.DataImport
 {
     /// <summary>
     /// Data Series Import Wizard

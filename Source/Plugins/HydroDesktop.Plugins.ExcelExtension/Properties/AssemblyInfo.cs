@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ExcelExtension")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("HydroDesktop.Plugins.ExcelExtension")]
+[assembly: AssemblyDescription("HydroDesktop ExcelExtension")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ExcelExtension")]
+[assembly: AssemblyCompany("HydroDesktop Team")]
+[assembly: AssemblyProduct("HydroDesktop.Plugins.ExcelExtension")]
 [assembly: AssemblyCopyright("Copyright ©  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,3 +20,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("6bc37729-570a-404c-92f9-377ed7aab498")]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

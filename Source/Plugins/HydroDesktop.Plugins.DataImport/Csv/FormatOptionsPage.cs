@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Wizard.UI;
 
-namespace DataImport.Csv
+namespace HydroDesktop.Plugins.DataImport.Csv
 {
     /// <summary>
     /// Format options page for Csv

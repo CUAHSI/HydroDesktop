@@ -6,10 +6,10 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using HydroDesktop.DataDownload.LayerInformation.PopupControl;
-using HydroDesktop.DataDownload.SearchLayersProcessing;
+using HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl;
+using HydroDesktop.Plugins.DataDownload.SearchLayersProcessing;
 
-namespace HydroDesktop.DataDownload.LayerInformation
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation
 {
     /// <summary>
     /// Provides access to services in search layer

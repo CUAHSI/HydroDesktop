@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace HydroDesktop.DataDownload.Downloading.Exceptions
+namespace HydroDesktop.Plugins.DataDownload.Downloading.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when converting data series from xml.

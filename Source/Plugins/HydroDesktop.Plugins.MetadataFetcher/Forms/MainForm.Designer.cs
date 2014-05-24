@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace HydroDesktop.MetadataFetcher.Forms
+namespace HydroDesktop.Plugins.MetadataFetcher.Forms
 {
     partial class MainForm
     {

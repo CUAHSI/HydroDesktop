@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("HydroDesktop.Plugins.GraphView")> 
 <Assembly: AssemblyDescription("Graph Data")> 
 <Assembly: AssemblyCompany("Utah State University")> 
-<Assembly: AssemblyProduct("Graph")> 
+<Assembly: AssemblyProduct("HydroDesktop.Plugins.GraphView")> 
 <Assembly: AssemblyCopyright("Copyright ©  2009")> 
 <Assembly: AssemblyTrademark("")>
 

@@ -22,7 +22,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace ShaleNetwork.Measure
+namespace Plugins.ShaleNetwork.Measure
 {
     /// <summary>
     /// MeasureDialog
@@ -127,7 +127,7 @@ namespace ShaleNetwork.Measure
             this.tsbDistance.CheckOnClick = true;
             this.tsbDistance.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tsbDistance.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbDistance.Image = global::ShaleNetwork.Properties.Resources.Line;
+            this.tsbDistance.Image = global::Plugins.ShaleNetwork.Properties.Resources.Line;
             resources.ApplyResources(this.tsbDistance, "tsbDistance");
             this.tsbDistance.Name = "tsbDistance";
             this.tsbDistance.Click += new System.EventHandler(this.DistanceButton_Click);
@@ -136,7 +136,7 @@ namespace ShaleNetwork.Measure
             //
             this.tsbArea.CheckOnClick = true;
             this.tsbArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbArea.Image = global::ShaleNetwork.Properties.Resources.Area;
+            this.tsbArea.Image = global::Plugins.ShaleNetwork.Properties.Resources.Area;
             resources.ApplyResources(this.tsbArea, "tsbArea");
             this.tsbArea.Name = "tsbArea";
             this.tsbArea.Click += new System.EventHandler(this.AreaButton_Click);

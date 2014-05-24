@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 
-namespace DataImport.CommonPages.FieldProperties
+namespace HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties
 {
     /// <summary>
     /// Shows grid with columns to import

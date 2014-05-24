@@ -7,17 +7,16 @@
     <owners />
     <licenseUrl>http://hydrodesktop.codeplex.com/license</licenseUrl>
     <projectUrl>http://hydrodesktop.codeplex.com/</projectUrl>
-    <iconUrl></iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <iconUrl>http://tinyurl.com/cc7votd</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
     <language>en-US</language>
     <tags></tags>
+    <dependencies>
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="HydroDesktop.Configuration"/>
-    <dependency id="HydroDesktop.Interfaces" />
-	  <dependency id="HydroDesktop.Data" />
-    <dependency id="HydroDesktop.Help" />
-  </dependencies>
+  <files>
+    <file src="..\..\..\Binaries\Plugins\HydroDesktop.Plugins.DataDownload\HydroDesktop.Plugins.DataDownload.dll.config" target="lib\net40-Client" />
+  </files>
 </package>

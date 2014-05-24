@@ -9,7 +9,7 @@ using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
 
-namespace TableView
+namespace HydroDesktop.Plugins.TableView
 {
     public class TableViewPlugin : Extension
     {

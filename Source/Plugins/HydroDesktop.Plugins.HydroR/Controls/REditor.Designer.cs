@@ -1,4 +1,4 @@
-﻿namespace HydroR.Controls
+﻿namespace HydroDesktop.Plugins.HydroR.Controls
 {
     partial class REditor
     {

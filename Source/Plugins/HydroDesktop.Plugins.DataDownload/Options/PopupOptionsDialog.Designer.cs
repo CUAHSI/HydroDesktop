@@ -1,4 +1,4 @@
-﻿namespace HydroDesktop.DataDownload.Options
+﻿namespace HydroDesktop.Plugins.DataDownload.Options
 {
     partial class PopupOptionsDialog
     {

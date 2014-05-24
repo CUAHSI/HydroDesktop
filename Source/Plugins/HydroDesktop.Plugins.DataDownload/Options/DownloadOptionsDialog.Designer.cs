@@ -1,5 +1,5 @@
-﻿using HydroDesktop.DataDownload.Properties;
-namespace HydroDesktop.DataDownload.Options
+﻿using HydroDesktop.Plugins.DataDownload.Properties;
+namespace HydroDesktop.Plugins.DataDownload.Options
 {
     partial class DownloadOptionsDialog
     {

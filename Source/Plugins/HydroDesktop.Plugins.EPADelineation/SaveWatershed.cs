@@ -14,7 +14,7 @@ using DotSpatial.Topology;
 using Hydrodesktop.Common;
 using HydroDesktop.Help;
 
-namespace EPADelineation
+namespace HydroDesktop.Plugins.EPADelineation
 {
     /// <summary>
     /// This class is responsible for saving the watershed.

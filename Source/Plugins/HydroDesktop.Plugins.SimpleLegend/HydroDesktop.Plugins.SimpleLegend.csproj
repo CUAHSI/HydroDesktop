@@ -150,6 +150,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="HydroDesktop.Plugins.SimpleLegend.nuspec" />
     <None Include="packages.config" />
     <None Include="Resources\legend_16x16.png" />
   </ItemGroup>

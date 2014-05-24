@@ -15,16 +15,16 @@ using Hydrodesktop.Common;
 using HydroDesktop.Common;
 using HydroDesktop.Common.Controls;
 using HydroDesktop.Common.Tools;
-using HydroDesktop.DataDownload.Downloading;
-using HydroDesktop.DataDownload.LayerInformation;
-using HydroDesktop.DataDownload.Properties;
-using HydroDesktop.DataDownload.SearchLayersProcessing;
+using HydroDesktop.Plugins.DataDownload.Downloading;
+using HydroDesktop.Plugins.DataDownload.LayerInformation;
+using HydroDesktop.Plugins.DataDownload.Properties;
+using HydroDesktop.Plugins.DataDownload.SearchLayersProcessing;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
-using Msg = HydroDesktop.DataDownload.MessageStrings;
-using HydroDesktop.DataDownload.Options;
+using Msg = HydroDesktop.Plugins.DataDownload.MessageStrings;
+using HydroDesktop.Plugins.DataDownload.Options;
 
-namespace HydroDesktop.DataDownload
+namespace HydroDesktop.Plugins.DataDownload
 {
     /// <summary>
     /// Plug-in that allows to download Features data.

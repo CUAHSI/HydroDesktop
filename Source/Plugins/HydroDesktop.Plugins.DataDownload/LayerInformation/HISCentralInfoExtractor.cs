@@ -4,7 +4,7 @@ using DotSpatial.Controls;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.PluginContracts;
 
-namespace HydroDesktop.DataDownload.LayerInformation
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation
 {
     /// <summary>
     /// Provides methods to extract some service info

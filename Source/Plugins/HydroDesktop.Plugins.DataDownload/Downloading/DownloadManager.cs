@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using HydroDesktop.DataDownload.Downloading.Exceptions;
+using HydroDesktop.Plugins.DataDownload.Downloading.Exceptions;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterOneFlow;
 
-namespace HydroDesktop.DataDownload.Downloading
+namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     /// <summary>
     /// Download manager. It downloads and saves data series.

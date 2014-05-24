@@ -9,7 +9,7 @@ using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 using HydroDesktop.WebServices.WaterML;
 
-namespace DataImport.WaterML
+namespace HydroDesktop.Plugins.DataImport.WaterML
 {
     class WaterMLImporterImpl : IImporter
     {

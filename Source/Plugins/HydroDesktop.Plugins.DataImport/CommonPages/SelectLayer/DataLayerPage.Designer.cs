@@ -1,4 +1,4 @@
-﻿namespace DataImport.CommonPages.SelectLayer
+﻿namespace HydroDesktop.Plugins.DataImport.CommonPages.SelectLayer
 {
     partial class DataLayerPage
     {

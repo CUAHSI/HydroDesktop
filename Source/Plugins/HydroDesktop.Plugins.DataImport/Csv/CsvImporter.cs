@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using DataImport.CommonPages;
-using DataImport.CommonPages.Complete;
-using DataImport.CommonPages.Progress;
-using DataImport.CommonPages.SelectLayer;
-using DataImport.DataTableImport;
+using HydroDesktop.Plugins.DataImport.CommonPages;
+using HydroDesktop.Plugins.DataImport.CommonPages.Complete;
+using HydroDesktop.Plugins.DataImport.CommonPages.Progress;
+using HydroDesktop.Plugins.DataImport.CommonPages.SelectLayer;
+using HydroDesktop.Plugins.DataImport.DataTableImport;
 using HydroDesktop.ImportExport;
 using Wizard.UI;
 
-namespace DataImport.Csv
+namespace HydroDesktop.Plugins.DataImport.Csv
 {
     class CsvImporter : IWizardImporter
     {

@@ -3,7 +3,7 @@ using System.Data;
 using DotSpatial.Controls;
 using HydroDesktop.Interfaces;
 
-namespace DataImport.Excel
+namespace HydroDesktop.Plugins.DataImport.Excel
 {
     /// <summary>
     /// Settings for Excel

@@ -11,7 +11,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 
-namespace TableView
+namespace HydroDesktop.Plugins.TableView
 {
     public partial class cTableView : UserControl
     {

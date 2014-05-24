@@ -1,4 +1,4 @@
-﻿namespace EPADelineation
+﻿namespace HydroDesktop.Plugins.EPADelineation
 {
     partial class SaveWatershed
     {

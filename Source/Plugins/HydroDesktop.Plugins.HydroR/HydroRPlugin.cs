@@ -7,7 +7,7 @@ using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
 using HydroDesktop.Interfaces;
 
-namespace HydroR
+namespace HydroDesktop.Plugins.HydroR
 {
     public class HydroRPlugin : Extension
     {

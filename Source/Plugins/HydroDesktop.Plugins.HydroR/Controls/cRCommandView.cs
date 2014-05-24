@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 
-namespace HydroR
+namespace HydroDesktop.Plugins.HydroR
 {
     public partial class cRCommandView : UserControl
     {

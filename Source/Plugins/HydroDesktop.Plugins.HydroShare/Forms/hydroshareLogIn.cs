@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace HydroShare.Forms
+namespace HydroDesktop.Plugins.HydroShare.Forms
 {
     public partial class hydroshareLogIn : Form
     {

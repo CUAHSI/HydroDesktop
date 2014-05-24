@@ -1,4 +1,4 @@
-﻿namespace ShaleNetwork.Properties
+﻿namespace Plugins.ShaleNetwork.Properties
 {
 
 

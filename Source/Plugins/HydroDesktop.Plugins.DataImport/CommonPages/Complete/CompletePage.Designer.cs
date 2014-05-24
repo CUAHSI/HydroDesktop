@@ -1,4 +1,4 @@
-﻿namespace DataImport.CommonPages.Complete
+﻿namespace HydroDesktop.Plugins.DataImport.CommonPages.Complete
 {
     partial class CompletePage
     {

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using HydroDesktop.Common;
 
-namespace HydroDesktop.DataDownload.Downloading
+namespace HydroDesktop.Plugins.DataDownload.Downloading
 {
     /// <summary>
     /// Information about download progress

@@ -31,7 +31,7 @@ using DotSpatial.Topology;
 using DotSpatial.Topology.Algorithm;
 using Point = System.Drawing.Point;
 
-namespace ShaleNetwork.Measure
+namespace Plugins.ShaleNetwork.Measure
 {
     /// <summary>
     /// A MapFunction that allows measuring the distance on the map.

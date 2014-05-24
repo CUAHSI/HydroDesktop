@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace DataImport.Txt
+namespace HydroDesktop.Plugins.DataImport.Txt
 {
     /// <summary>
     /// Txt file type

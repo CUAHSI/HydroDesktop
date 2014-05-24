@@ -5,10 +5,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using HydroDesktop.DataDownload.Downloading;
-using HydroDesktop.DataDownload.LayerInformation.PopupControl;
+using HydroDesktop.Plugins.DataDownload.Downloading;
+using HydroDesktop.Plugins.DataDownload.LayerInformation.PopupControl;
 
-namespace HydroDesktop.DataDownload.LayerInformation
+namespace HydroDesktop.Plugins.DataDownload.LayerInformation
 {
     /// <summary>
     /// Custom tooltip to show info about services.

@@ -5,7 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using DataAggregation.UI;
+using HydroDesktop.Plugins.DataAggregation.UI;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using HydroDesktop.Common.Tools;
@@ -14,7 +14,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using IProgressHandler = HydroDesktop.Common.IProgressHandler;
 
-namespace DataAggregation
+namespace HydroDesktop.Plugins.DataAggregation
 {
     /// <summary>
     /// Used for aggregating data values.

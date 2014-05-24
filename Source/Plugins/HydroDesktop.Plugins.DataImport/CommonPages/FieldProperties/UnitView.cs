@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace DataImport.CommonPages.FieldProperties
+namespace HydroDesktop.Plugins.DataImport.CommonPages.FieldProperties
 {
     /// <summary>
     /// View of <see cref="Unit"/>

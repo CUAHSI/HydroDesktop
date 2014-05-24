@@ -4,7 +4,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.ObjectModel;
 
-namespace HydroDesktop.MetadataFetcher
+namespace HydroDesktop.Plugins.MetadataFetcher
 {
 	class DatabaseOperations
 	{

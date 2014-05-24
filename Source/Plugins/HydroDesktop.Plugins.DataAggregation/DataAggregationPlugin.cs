@@ -7,7 +7,7 @@ using HydroDesktop.Common;
 using HydroDesktop.Common.UserMessage;
 using HydroDesktop.Interfaces.PluginContracts;
 
-namespace DataAggregation
+namespace HydroDesktop.Plugins.DataAggregation
 {
     /// <summary>
     /// Allow to aggregate data in features layers

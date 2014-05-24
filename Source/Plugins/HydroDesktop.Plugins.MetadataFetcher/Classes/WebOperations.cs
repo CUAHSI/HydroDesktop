@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace HydroDesktop.MetadataFetcher
+namespace HydroDesktop.Plugins.MetadataFetcher
 {
 	class WebOperations
 	{

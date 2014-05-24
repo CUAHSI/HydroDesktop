@@ -2,7 +2,7 @@
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
-namespace EPADelineation
+namespace HydroDesktop.Plugins.EPADelineation
 {
     /// <summary>
     /// EPA Delineation extension for HydroDesktop

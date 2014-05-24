@@ -7,7 +7,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using HydroDesktop.Interfaces.PluginContracts;
 
-namespace TableView
+namespace HydroDesktop.Plugins.TableView
 {
     public partial class ChangeDatabaseForm : Form
     {

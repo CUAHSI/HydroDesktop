@@ -1,4 +1,4 @@
-﻿namespace DataImport.Txt
+﻿namespace HydroDesktop.Plugins.DataImport.Txt
 {
     partial class FormatOptionsPage
     {

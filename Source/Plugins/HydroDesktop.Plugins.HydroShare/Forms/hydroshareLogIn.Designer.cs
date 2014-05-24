@@ -1,4 +1,4 @@
-﻿namespace HydroShare.Forms
+﻿namespace HydroDesktop.Plugins.HydroShare.Forms
 {
     partial class hydroshareLogIn
     {

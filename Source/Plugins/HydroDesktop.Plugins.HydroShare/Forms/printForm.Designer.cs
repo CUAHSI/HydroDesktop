@@ -1,4 +1,4 @@
-﻿namespace HydroShare
+﻿namespace HydroDesktop.Plugins.HydroShare
 {
     partial class printForm
     {
@@ -259,7 +259,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::HydroShare.Properties.Resources.hydroshare_logo1;
+            this.pictureBox1.Image = global::HydroDesktop.Plugins.HydroShare.Properties.Resources.hydroshare_logo1;
             this.pictureBox1.Location = new System.Drawing.Point(125, 43);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(364, 74);

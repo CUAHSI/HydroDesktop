@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
-namespace HydroR
+namespace HydroDesktop.Plugins.HydroR
 {
     public partial class frmInstallR : Form
     {

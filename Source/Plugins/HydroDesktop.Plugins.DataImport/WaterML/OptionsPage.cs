@@ -4,7 +4,7 @@ using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 using Wizard.UI;
 
-namespace DataImport.WaterML
+namespace HydroDesktop.Plugins.DataImport.WaterML
 {
     public partial class OptionsPage : InternalWizardPage
     {

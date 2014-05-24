@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using HydroDesktop.Common.Tools;
 
-namespace HydroDesktop.DataDownload.Options
+namespace HydroDesktop.Plugins.DataDownload.Options
 {
     public partial class DownloadOptionsDialog : Form
     {

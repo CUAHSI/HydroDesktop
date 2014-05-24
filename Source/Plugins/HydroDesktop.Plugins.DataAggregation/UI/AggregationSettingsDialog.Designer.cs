@@ -1,4 +1,4 @@
-﻿namespace DataAggregation.UI
+﻿namespace HydroDesktop.Plugins.DataAggregation.UI
 {
     partial class AggregationSettingsDialog
     {

@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 using System.IO;
 using Ionic.Zlib;
 
-namespace HydroShare
+namespace HydroDesktop.Plugins.HydroShare
 {
     public partial class downloadForm : Form
     {

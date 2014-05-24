@@ -9,7 +9,7 @@ using HydroDesktop.Configuration;
 using HydroDesktop.Database;
 using HydroDesktop.Interfaces;
 
-namespace HydroDesktop.DataDownload.SearchLayersProcessing
+namespace HydroDesktop.Plugins.DataDownload.SearchLayersProcessing
 {
     /// <summary>
     /// The ThemeManager is responsible for reading themes

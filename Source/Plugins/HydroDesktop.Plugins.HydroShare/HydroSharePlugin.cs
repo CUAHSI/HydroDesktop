@@ -5,13 +5,13 @@ using System.Text;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using HydroDesktop.Common;
-using HydroShare.Properties;
+using HydroDesktop.Plugins.HydroShare.Properties;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using HydroShare.Forms;
+using HydroDesktop.Plugins.HydroShare.Forms;
 
-namespace HydroShare
+namespace HydroDesktop.Plugins.HydroShare
 {
     public class HydroSharePlugin : Extension
     {
