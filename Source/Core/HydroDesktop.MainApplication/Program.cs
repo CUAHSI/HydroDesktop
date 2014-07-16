@@ -39,7 +39,7 @@ namespace HydroDesktop.MainApplication
                             ProcessUnhandled((Exception)e.ExceptionObject, true);
                             AppContext.Instance.Dispose();
                         };
-            
+
             log.Info("Application Started");
             _mainForm = new MainForm();
             if (args.Length > 0 && System.IO.File.Exists(args[0]))
