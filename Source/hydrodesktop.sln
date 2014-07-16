@@ -29,6 +29,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.Interfaces", "Core\HydroDesktop.Interfaces\HydroDesktop.Interfaces.csproj", "{0B9BA90B-2016-4754-915A-0AD74FD0067A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.MainApplication", "Core\HydroDesktop.MainApplication\HydroDesktop.MainApplication.csproj", "{A064E7D2-5730-4214-A29F-FDB790691E47}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2FAAF21B-10DD-4430-87DC-54E981495485} = {2FAAF21B-10DD-4430-87DC-54E981495485}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDesktop.ObjectModel.Controls", "Core\HydroDesktop.ObjectModel.Controls\HydroDesktop.ObjectModel.Controls.csproj", "{58B443B0-D995-434B-B403-D5D62959D32E}"
 EndProject
@@ -240,7 +243,6 @@ Global
 		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8630D6D-65EB-447B-B7F5-82CC0D35A8B8}.Release|x86.ActiveCfg = Release|Any CPU
 		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6A64307-6AA8-4753-A507-03E746BB49E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -307,11 +309,9 @@ Global
 		{0913BF38-CA92-462C-8B77-BA8937A989F4}.Release|x86.ActiveCfg = Release|x86
 		{0913BF38-CA92-462C-8B77-BA8937A989F4}.Release|x86.Build.0 = Release|x86
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Debug|x86.ActiveCfg = Debug|x86
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Debug|x86.Build.0 = Debug|x86
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|x86.ActiveCfg = Release|x86
 		{D26B704D-1FC9-4040-A29D-21FB8707ECE1}.Release|x86.Build.0 = Release|x86
 		{4CEB19CE-54D1-420C-A817-FB544DCF1DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -396,7 +396,6 @@ Global
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{764FCBD2-3B42-4B77-818A-4D4115C66C1D}.Release|x86.ActiveCfg = Release|Any CPU
 		{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E15F7F49-A879-4FE1-AF78-2EE7D2C9B7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -419,7 +418,6 @@ Global
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Debug|x86.ActiveCfg = Debug|x86
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Debug|x86.Build.0 = Debug|x86
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|x86.ActiveCfg = Release|x86
 		{B0526359-9A59-42FE-AE66-B0ADED8AB53B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection

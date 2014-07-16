@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace HydroDesktop.Common.Logging
 {
@@ -15,16 +16,19 @@ namespace HydroDesktop.Common.Logging
             Destination = initializer.Destination;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)] 
         public void Info(string message)
         {
             LogMessage(message, "INFO");
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)] 
         public void Warn(string message, Exception exception = null)
         {
             LogMessage(message, "WARN", exception);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)] 
         public void Error(string message, Exception exception = null)
         {
             LogMessage(message, "ERROR", exception);

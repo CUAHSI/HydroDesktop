@@ -40,7 +40,7 @@
 AppID={{DED92382-70DE-4917-9956-431324047ABD}
 
 PrivilegesRequired=poweruser
-MinVersion=,5.01
+MinVersion=5.01
 ; Necessary setting for the 64bit version
 ArchitecturesInstallIn64BitMode="x64 ia64"
 AppName={#AppName}
@@ -110,10 +110,13 @@ Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#S
 Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
 ;Plugins
-Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Excludes: "ShaleNetwork, HydroShare, Aggregation_Plugin"; Flags: recursesubdirs ignoreversion;
+Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.1\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.1"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.MenuBar.1.0.1200\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.MenuBar.1.0.1200"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.Ribbon.1.4.38\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.Ribbon.1.4.38"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.WebMap.1.1.0.0\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.WebMap.1.1.0.0"; Flags: recursesubdirs ignoreversion;
 
 ;Windows Specific Folders
-Source: "..\Binaries\Windows Extensions\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Excludes: "HydroModeler"; Flags: recursesubdirs ignoreversion;
 Source: "..\Binaries\Support\Windows\*"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 
 [Icons]

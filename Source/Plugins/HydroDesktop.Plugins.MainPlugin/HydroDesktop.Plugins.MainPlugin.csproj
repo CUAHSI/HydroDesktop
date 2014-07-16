@@ -70,36 +70,31 @@
       <HintPath>..\..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-client\BruTile.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\packages\DotSpatial.Controls.1.6.0.1\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Controls.1.6.1\lib\net40-Client\DotSpatial.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Data, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Data.1.6.0.0\lib\net40-Client\DotSpatial.Data.dll</HintPath>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\packages\DotSpatial.Data.1.6.1\lib\net40-Client\DotSpatial.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Data.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Data.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\..\packages\DotSpatial.Data.Forms.1.6.1\lib\net40-Client\DotSpatial.Data.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Extensions">
-      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.0.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Extensions.1.6.1\lib\net40-Client\DotSpatial.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Modeling.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Modeling.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
+    <Reference Include="DotSpatial.Modeling.Forms">
+      <HintPath>..\..\packages\DotSpatial.Modeling.Forms.1.6.1\lib\net40-Client\DotSpatial.Modeling.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Mono, Version=1.6.0.0, Culture=neutral, PublicKeyToken=425ba4de41127026, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Mono.1.6.0.0\lib\net40-Client\DotSpatial.Mono.dll</HintPath>
+    <Reference Include="DotSpatial.Mono">
+      <HintPath>..\..\packages\DotSpatial.Mono.1.6.1\lib\net40-Client\DotSpatial.Mono.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Plugins.ExtensionManager, Version=0.11.9.8, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1203\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+    <Reference Include="DotSpatial.Plugins.ExtensionManager">
+      <HintPath>..\..\packages\DotSpatial.Plugins.ExtensionManager.1.1.1\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Plugins.MenuBar, Version=0.11.9.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -109,38 +104,33 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\DotSpatial.Plugins.WebMap.1.1.0.0\lib\net40-Client\DotSpatial.Plugins.WebMap.dll</HintPath>
     </Reference>
-    <Reference Include="DotSpatial.Projections, Version=1.6.0.0, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Projections.1.6.0.0\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\packages\DotSpatial.Projections.1.6.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Projections.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=52099474f11b7ff0, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Projections.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\..\packages\DotSpatial.Projections.Forms.1.6.1\lib\net40-Client\DotSpatial.Projections.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Serialization, Version=1.6.0.0, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Serialization.1.6.0.0\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\..\packages\DotSpatial.Serialization.1.6.1\lib\net40-Client\DotSpatial.Serialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Symbology, Version=1.6.0.0, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Symbology.1.6.0.0\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\packages\DotSpatial.Symbology.1.6.1\lib\net40-Client\DotSpatial.Symbology.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
-      <HintPath>..\..\packages\DotSpatial.Symbology.Forms.1.6.0.0\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Symbology.Forms.1.6.1\lib\net40-Client\DotSpatial.Symbology.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotSpatial.Topology, Version=1.6.0.0, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Topology.1.6.0.0\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\packages\DotSpatial.Topology.1.6.1\lib\net40-Client\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NuGet.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotSpatial.Plugins.ExtensionManager.1.0.1203\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\..\packages\DotSpatial.Plugins.ExtensionManager.1.1.1\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -152,6 +142,9 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Updater">
+      <HintPath>..\..\packages\DotSpatial.Plugins.ExtensionManager.1.1.1\lib\net40-Client\Updater.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeTableManager.cs" />
@@ -185,8 +178,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="WelcomeScreen.resx">
       <DependentUpon>WelcomeScreen.cs</DependentUpon>
@@ -245,72 +238,22 @@
     <None Include="Resources\Logo_Small1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\box_closed_32x32.png" />
     <None Include="Resources\check_mark.png" />
     <None Include="Resources\check_mark %281%29.png" />
     <Content Include="Resources\cursor_arrow_16x16.png" />
     <Content Include="Resources\cursor_arrow_32x32.png" />
-    <Content Include="Resources\deselect_16x16.png" />
-    <Content Include="Resources\deselect_32x32.png" />
-    <Content Include="Resources\disk_16x16.png" />
-    <Content Include="Resources\disk_32x32.png" />
-    <Content Include="Resources\document_empty_16x16.png" />
-    <Content Include="Resources\document_empty_32x32.png" />
     <None Include="Resources\down %281%29.png" />
     <None Include="Resources\down.1.png" />
     <None Include="Resources\down.1.002.png" />
-    <None Include="Resources\download.ico" />
     <None Include="Resources\down %281%29.ico" />
-    <Content Include="Resources\draw_eraser.png" />
-    <Content Include="Resources\folder_16x16.png" />
-    <Content Include="Resources\folder_32x32.png" />
-    <Content Include="Resources\google_custom_search.png" />
-    <Content Include="Resources\info_rhombus_16x16.png" />
-    <Content Include="Resources\info_rhombus_32x32.png" />
-    <Content Include="Resources\layer_add_16x16.png" />
-    <Content Include="Resources\layer_add_32x32.png" />
-    <Content Include="Resources\layer_remove_16x16.png" />
-    <Content Include="Resources\layer_remove_32x32.png" />
-    <Content Include="Resources\layer_save_16x16.png" />
-    <Content Include="Resources\layer_save_32x32.png" />
     <None Include="Resources\logo_32x32.png" />
     <None Include="Resources\logo_16x16.png" />
-    <Content Include="Resources\measure_16x16.png" />
-    <Content Include="Resources\measure_32x32.png" />
-    <None Include="Resources\plugin_16x16.png" />
-    <None Include="Resources\plugin_32x32.png" />
     <None Include="Resources\online.png" />
-    <Content Include="Resources\plugin_add_16x16.png" />
-    <Content Include="Resources\plugin_add_32x32.png" />
-    <Content Include="Resources\plugin_delete_16x16.png" />
-    <Content Include="Resources\plugin_delete_32x32.png" />
-    <Content Include="Resources\plugin_disabled_16x16.png" />
-    <Content Include="Resources\plugin_disabled_32x32.png" />
-    <Content Include="Resources\printer_16x16.png" />
-    <Content Include="Resources\printer_32x32.png" />
     <None Include="Resources\recent_project.png" />
-    <Content Include="Resources\save_as_16x16.png" />
-    <Content Include="Resources\save_as_32x32.png" />
-    <Content Include="Resources\select_16x16.png" />
-    <Content Include="Resources\select_32x32.png" />
     <Content Include="Resources\table_16x16.png" />
     <Content Include="Resources\table_32x32.png" />
     <None Include="Resources\welcomeLogo5.png" />
     <None Include="Resources\Template.png" />
-    <Content Include="Resources\zoom_16x16.png" />
-    <Content Include="Resources\zoom_32x32.png" />
-    <Content Include="Resources\zoom_coordinate_16x16.png" />
-    <Content Include="Resources\zoom_coordinate_32x32.png" />
-    <Content Include="Resources\zoom_extend_16x16.png" />
-    <Content Include="Resources\zoom_extend_32x32.png" />
-    <Content Include="Resources\zoom_in_16x16.png" />
-    <Content Include="Resources\zoom_in_32x32.png" />
-    <Content Include="Resources\zoom_layer_16x16.png" />
-    <Content Include="Resources\zoom_layer_32x32.png" />
-    <Content Include="Resources\zoom_out_16x16.png" />
-    <Content Include="Resources\zoom_out_32x32.png" />
-    <Content Include="Resources\zoom_selection_16x16.png" />
-    <Content Include="Resources\zoom_selection_32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -322,6 +265,9 @@
     <PostBuildEvent>cd "$(ProjectDir)"
 "$(ProjectDir)..\..\.nuget\nuget.exe" pack
 move /y "*.nupkg" "$(TargetDir)"
+
+if $(ConfigurationName) == Release goto :release
+
 md "$(TargetDir)..\DotSpatial.Plugins.ExtensionManager"
 move /y "$(TargetDir)NuGet.Core.*" "$(TargetDir)..\DotSpatial.Plugins.ExtensionManager\"
 move /y "$(TargetDir)DotSpatial.Plugins.ExtensionManager.*" "$(TargetDir)..\DotSpatial.Plugins.ExtensionManager\"
@@ -329,7 +275,15 @@ md "$(TargetDir)..\DotSpatial.Plugins.MenuBar"
 move /Y "$(TargetDir)DotSpatial.Plugins.MenuBar.*" "$(TargetDir)..\DotSpatial.Plugins.MenuBar\"
 md "$(TargetDir)..\DotSpatial.Plugins.WebMap"
 move /Y "$(TargetDir)DotSpatial.Plugins.WebMap.*" "$(TargetDir)..\DotSpatial.Plugins.WebMap\"
-move /Y "$(TargetDir)BruTile.*" "$(TargetDir)..\DotSpatial.Plugins.WebMap\"</PostBuildEvent>
+move /Y "$(TargetDir)BruTile.*" "$(TargetDir)..\DotSpatial.Plugins.WebMap\"
+goto :exit
+
+:release
+del "$(TargetDir)NuGet.Core.*"
+del "$(TargetDir)DotSpatial.Plugins.*"
+del "$(TargetDir)BruTile.*"
+
+:exit</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
