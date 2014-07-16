@@ -155,7 +155,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TestDatabases\DataRepository.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

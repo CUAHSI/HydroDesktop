@@ -138,7 +138,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="TestFiles\v20\TimeSeries_1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
