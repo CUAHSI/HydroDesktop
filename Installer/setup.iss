@@ -40,7 +40,7 @@
 AppID={{DED92382-70DE-4917-9956-431324047ABD}
 
 PrivilegesRequired=poweruser
-MinVersion=5.01
+MinVersion=,5.01
 ; Necessary setting for the 64bit version
 ArchitecturesInstallIn64BitMode="x64 ia64"
 AppName={#AppName}
