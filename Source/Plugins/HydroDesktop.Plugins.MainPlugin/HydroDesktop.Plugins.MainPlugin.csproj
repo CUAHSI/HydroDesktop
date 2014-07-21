@@ -262,11 +262,7 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(ProjectDir)"
-"$(ProjectDir)..\..\.nuget\nuget.exe" pack
-move /y "*.nupkg" "$(TargetDir)"
-
-if $(ConfigurationName) == Release goto :release
+    <PostBuildEvent>if $(ConfigurationName) == Release goto :release
 
 md "$(TargetDir)..\DotSpatial.Plugins.ExtensionManager"
 move /y "$(TargetDir)NuGet.Core.*" "$(TargetDir)..\DotSpatial.Plugins.ExtensionManager\"
